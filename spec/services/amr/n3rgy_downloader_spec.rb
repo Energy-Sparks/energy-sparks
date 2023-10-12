@@ -8,13 +8,13 @@ module Amr
     let(:today)     { Time.zone.today }
     let(:yesterday) { today - 1 }
 
-    it "should invoke the api" do
+    it "invokes the api" do
       expect(n3rgy_api).to receive(:readings)
       loader = Amr::N3rgyDownloader.new(n3rgy_api: n3rgy_api, meter: meter, start_date: nil, end_date: nil)
       loader.readings
     end
 
-    it "should pass in correct params" do
+    it "passes in correct params" do
       expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, today, yesterday)
       loader = Amr::N3rgyDownloader.new(n3rgy_api: n3rgy_api, meter: meter, start_date: today, end_date: yesterday)
       loader.readings

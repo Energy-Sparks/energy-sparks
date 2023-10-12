@@ -26,25 +26,34 @@ describe User do
     let(:school) { }
     let(:school_group) { }
     let(:user) { create(:user, school_group: school_group, school: school) }
+
     subject(:default_school_group) { user.default_school_group }
 
     context "User has school with a school group" do
       let(:school) { create(:school, :with_school_group) }
+
       it { expect(default_school_group).to eq(school.school_group) }
     end
+
     context "User doesn't have school but has a school group" do
       let(:school_group) { create(:school_group) }
+
       it { expect(default_school_group).to eq(school_group) }
     end
+
     context "User has school with no school group but has group" do
       let(:school) { create(:school) }
       let(:school_group) { create(:school_group) }
+
       it { expect(default_school_group).to eq(school_group) }
     end
+
     context "User has school with no school group and no group" do
       let(:school) { create(:school) }
+
       it { expect(default_school_group).to be_nil }
     end
+
     context "User has no school or school group" do
       it { expect(default_school_group).to be_nil }
     end
@@ -68,7 +77,7 @@ describe User do
     let!(:existing_pupil) { create(:pupil, pupil_password: 'testtest', school: school) }
 
     it 'checks for unique passwords within the school' do
-      expect(build(:pupil, school: school, pupil_password: 'testtest')).to_not be_valid
+      expect(build(:pupil, school: school, pupil_password: 'testtest')).not_to be_valid
       expect(build(:pupil, school: school, pupil_password: 'testtest123')).to be_valid
       expect(build(:pupil, school: create(:school), pupil_password: 'testtest')).to be_valid
     end
@@ -89,6 +98,7 @@ describe User do
   describe '#schools' do
     context 'for user without school' do
       let(:user) { create(:user)}
+
       it 'returns empty' do
         expect(user.schools).to eq([])
       end
@@ -97,6 +107,7 @@ describe User do
     context 'for user with school' do
       let(:school)  { create(:school) }
       let(:user)    { create(:user, school: school)}
+
       it 'returns schools' do
         expect(user.schools).to match_array([school])
       end
@@ -111,10 +122,12 @@ describe User do
           expect(user.schools).to eq([])
         end
       end
+
       context 'with schools in group' do
         let(:school_1)        { create(:school, school_group: school_group) }
         let(:school_2)        { create(:school, school_group: school_group) }
         let(:school_3)        { create(:school) }
+
         it 'returns schools from group' do
           expect(user.schools).to match_array([school_1, school_2])
         end

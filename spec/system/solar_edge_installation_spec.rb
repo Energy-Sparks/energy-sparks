@@ -12,7 +12,7 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
   let!(:api_key) { "api_key" }
 
   context 'as an admin' do
-    before(:each) do
+    before do
       allow_any_instance_of(SolarEdgeAPI).to receive(:site_details).and_return({})
       allow_any_instance_of(SolarEdgeAPI).to receive(:site_start_end_dates).and_return([Date.yesterday, Time.zone.today])
       allow_any_instance_of(SolarEdgeAPI).to receive(:smart_meter_data).and_return({})
@@ -22,7 +22,7 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
     end
 
     context 'adding a new installation' do
-      before(:each) do
+      before do
         click_on 'Manage Solar API feeds'
       end
 
@@ -50,12 +50,12 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
     context 'with existing installation' do
       let!(:api_feed) { create(:solar_edge_installation, school: school) }
 
-      before(:each) do
+      before do
         click_on 'Manage Solar API feeds'
       end
 
       it 'displays the feed config' do
-        expect(page).to_not have_content("This school has no Solar Edge API feeds")
+        expect(page).not_to have_content("This school has no Solar Edge API feeds")
         expect(page).to have_content(api_feed.site_id)
       end
 
@@ -81,7 +81,7 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
     context 'with an installation with meters' do
       let!(:api_feed) { create(:solar_edge_installation_with_meters_and_validated_readings, school: school) }
 
-      before(:each) do
+      before do
         click_on 'Manage Solar API feeds'
       end
 

@@ -20,9 +20,10 @@ describe "School Batch Reports", type: :system do
     end
 
     context 'with report' do
-      before(:each) do
+      before do
         click_on 'Equivalences'
       end
+
       it 'shows equivalence' do
         expect(page).to have_content("1 equivalence generated")
         expect(page).to have_content(equivalence_type.meter_type.humanize)

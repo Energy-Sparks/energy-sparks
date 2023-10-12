@@ -61,11 +61,13 @@ RSpec.describe ActivityTypeFilter, type: :service do
         service = ActivityTypeFilter.new(school: school)
         expect(service.selected_key_stages).to match_array([])
       end
+
       it 'uses none when no school is set' do
         service = ActivityTypeFilter.new(school: nil)
         expect(service.selected_key_stages).to match_array([])
       end
     end
+
     context 'when parameters are passed in' do
       it 'loads the key stages from the ids' do
         service = ActivityTypeFilter.new(query: { key_stage_ids: [ks2.id] }, school: school)
@@ -81,6 +83,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
         expect(service.selected_subjects).to match_array([])
       end
     end
+
     context 'when parameters are passed in' do
       it 'loads the subjects from the ids' do
         service = ActivityTypeFilter.new(query: { subject_ids: [science.id] })
@@ -96,6 +99,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
         expect(service.selected_topics).to match_array([])
       end
     end
+
     context 'when parameters are passed in' do
       it 'loads the topics from the ids' do
         service = ActivityTypeFilter.new(query: { topic_ids: [pie_charts.id] })
@@ -117,6 +121,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
         service = ActivityTypeFilter.new(query: { activity_timing_ids: [half_hour.id] })
         expect(service.selected_activity_timings).to match_array([half_hour])
       end
+
       it 'includes lower timings when selected' do
         service = ActivityTypeFilter.new(query: { activity_timing_ids: [hour.id] })
         expect(service.selected_activity_timings).to match_array([half_hour, hour])
@@ -131,6 +136,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
         expect(service.selected_impacts).to match_array([])
       end
     end
+
     context 'when parameters are passed in' do
       it 'loads the impacts from the ids' do
         service = ActivityTypeFilter.new(query: { impact_ids: [reducing_gas.id] })
@@ -144,33 +150,38 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'when a key stage is selected' do
       let(:query) { { key_stage_ids: ks2.id }}
+
       it { is_expected.to match_array([activity_type_1]) }
     end
 
     context 'when a subject is selected' do
       let(:query) { { subject_ids: maths.id }}
+
       it { is_expected.to match_array([activity_type_2, activity_type_3]) }
     end
 
     context 'when a topic is selected' do
       let(:query) { { topic_ids: pie_charts.id }}
+
       it { is_expected.to match_array([activity_type_3]) }
     end
 
     context 'when a timing is selected' do
       let(:query) { { activity_timing_ids: half_hour.id }}
+
       it { is_expected.to match_array([activity_type_1, activity_type_3]) }
     end
 
     context 'when an impact is selected' do
       let(:query) { { impact_ids: reducing_electricity.id }}
+
       it { is_expected.to match_array([]) }
     end
 
     context 'when nothing is selected' do
       let(:query) {{}}
 
-      it 'should have custom activity type last' do
+      it 'has custom activity type last' do
         expect(subject.last).to eq activity_type_1
       end
 
@@ -209,7 +220,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     subject { ActivityTypeFilter.new(school: school) }
 
-    before :each do
+    before do
       activity_category_1.update(live_data: true)
     end
 
@@ -221,6 +232,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'when school does have active CAD' do
       let!(:cad) { create(:cad, school: school, active: true) }
+
       it 'includes activity types where activity category is live data' do
         expect(subject.activity_types).to match_array([activity_type_1, activity_type_2, activity_type_3])
       end

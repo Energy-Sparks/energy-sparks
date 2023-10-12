@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "storage heaters advice page", type: :system do
   let(:key) { 'storage_heaters' }
   let(:expected_page_title) { "Storage heater usage analysis" }
+
   include_context "storage advice page"
 
   context 'as school admin' do
@@ -78,10 +79,13 @@ RSpec.describe "storage heaters advice page", type: :system do
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
+
       it_behaves_like "an advice page tab", tab: "Insights"
     end
+
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
+
       it_behaves_like "an advice page tab", tab: "Analysis"
       it 'shows expected content' do
         expect(page).to have_css('#chart_wrapper_storage_heater_group_by_week')
@@ -95,8 +99,10 @@ RSpec.describe "storage heaters advice page", type: :system do
         expect(page).to have_content(Date.new(2021, 12, 18).to_s(:es_short))
       end
     end
+
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

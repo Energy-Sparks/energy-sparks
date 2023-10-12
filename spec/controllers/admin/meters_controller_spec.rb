@@ -17,7 +17,7 @@ RSpec.describe Schools::MetersController, type: :controller do
   let!(:school) { create(:school) }
 
   context "as an admin user" do
-    before(:each) do
+    before do
       sign_in_user(:admin)
     end
 
@@ -52,6 +52,7 @@ RSpec.describe Schools::MetersController, type: :controller do
             sandbox: "1"
           }
         end
+
         it "creates a sandbox meter" do
           allow_any_instance_of(MeterManagement).to receive(:check_n3rgy_status).and_return(true)
           post :create, params: { school_id: school.id, meter: dcc_meter_attributes }

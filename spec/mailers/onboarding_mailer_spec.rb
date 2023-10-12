@@ -28,17 +28,21 @@ RSpec.describe OnboardingMailer do
 
   describe '#onboarding_email' do
     before { OnboardingMailer.with(school_onboarding: school_onboarding).onboarding_email.deliver_now }
+
     context "country is wales" do
       let(:country) { 'wales' }
+
       it "subject is in both languages" do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject') + " / " + I18n.t('onboarding_mailer.onboarding_email.subject', locale: :cy))
       end
+
       it "has English text" do
         I18n.t('onboarding_mailer.onboarding_email').except(:subject).each_value do |email_content|
           expect(body).to include(email_content.gsub('%{school_name}', school.name))
         end
         expect(body).to include("http://localhost/school_setup/")
       end
+
       it "has Welsh text" do
         expect(body).to include(I18n.t('onboarding_mailer.onboarding_email.paragraph_1_html', school_name: school.name, locale: :cy))
         expect(body).to include(I18n.t('onboarding_mailer.onboarding_email.paragraph_2', locale: :cy))
@@ -46,22 +50,26 @@ RSpec.describe OnboardingMailer do
         expect(body).to include("http://cy.localhost/school_setup/")
       end
     end
+
     context "country is england" do
       let(:country) { 'england' }
+
       it "subject is in English" do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject'))
       end
+
       it "has English text" do
         I18n.t('onboarding_mailer.onboarding_email').except(:subject).each_value do |email_content|
           expect(body).to include(email_content.gsub('%{school_name}', school.name))
         end
         expect(body).to include("http://localhost/school_setup/")
       end
+
       it "does not have the Welsh text" do
-        expect(body).to_not include(I18n.t('onboarding_mailer.onboarding_email.paragraph_1_html', school_name: school.name, locale: :cy))
-        expect(body).to_not include(I18n.t('onboarding_mailer.onboarding_email.paragraph_2', locale: :cy))
-        expect(body).to_not include(I18n.t('onboarding_mailer.onboarding_email.set_up_your_school_on_energy_sparks', locale: :cy))
-        expect(body).to_not include("http://cy.localhost/school_setup/")
+        expect(body).not_to include(I18n.t('onboarding_mailer.onboarding_email.paragraph_1_html', school_name: school.name, locale: :cy))
+        expect(body).not_to include(I18n.t('onboarding_mailer.onboarding_email.paragraph_2', locale: :cy))
+        expect(body).not_to include(I18n.t('onboarding_mailer.onboarding_email.set_up_your_school_on_energy_sparks', locale: :cy))
+        expect(body).not_to include("http://cy.localhost/school_setup/")
       end
     end
   end
@@ -85,9 +93,11 @@ RSpec.describe OnboardingMailer do
       expect(body).to include(I18n.t("paragraph_3.#{context}", scope: scope, locale: locale))
       expect(body).to include(I18n.t("the_energy_sparks_team", scope: scope, locale: locale))
     end
+
     it "has the welsh link", if: locale == :cy do
       expect(body).to include("http://cy.localhost/school_setup/")
     end
+
     it "has the english link", if: locale == :en do
       expect(body).to include("http://localhost/school_setup/")
     end
@@ -95,17 +105,19 @@ RSpec.describe OnboardingMailer do
 
   shared_examples "a reminder email not in locale" do |locale:, context:|
     it "does not have the #{locale} text" do
-      expect(body).to_not include(I18n.t("title.#{context}", scope: scope, locale: locale))
-      expect(body).to_not include(I18n.t("paragraph_1_html.#{context}", scope: scope, locale: locale, school_name: school.name))
-      expect(body).to_not include(I18n.t("paragraph_2.#{context}", scope: scope, locale: locale))
-      expect(body).to_not include(I18n.t("paragraph_3.#{context}", scope: scope, locale: locale))
-      expect(body).to_not include(I18n.t("the_energy_sparks_team", scope: scope, locale: locale))
+      expect(body).not_to include(I18n.t("title.#{context}", scope: scope, locale: locale))
+      expect(body).not_to include(I18n.t("paragraph_1_html.#{context}", scope: scope, locale: locale, school_name: school.name))
+      expect(body).not_to include(I18n.t("paragraph_2.#{context}", scope: scope, locale: locale))
+      expect(body).not_to include(I18n.t("paragraph_3.#{context}", scope: scope, locale: locale))
+      expect(body).not_to include(I18n.t("the_energy_sparks_team", scope: scope, locale: locale))
     end
+
     it "does not have the welsh link", if: locale == :cy do
-      expect(body).to_not include("http://cy.localhost/school_setup/")
+      expect(body).not_to include("http://cy.localhost/school_setup/")
     end
+
     it "does not have the english link", if: locale == :en do
-      expect(body).to_not include("http://localhost/school_setup/")
+      expect(body).not_to include("http://localhost/school_setup/")
     end
   end
 
@@ -124,11 +136,12 @@ RSpec.describe OnboardingMailer do
       unless EnergySparks::FeatureFlags.active?(:send_automated_reminders)
         I18n.backend.store_translations(:cy, { onboarding_mailer: { reminder_email: missing_translations } })
       end
+      OnboardingMailer.with(school_onboardings: school_onboardings, email: school_onboarding.contact_email).reminder_email.deliver_now
     end
 
     let(:scope) { [:onboarding_mailer, :reminder_email] }
     let(:school_onboardings) { [] }
-    before { OnboardingMailer.with(school_onboardings: school_onboardings, email: school_onboarding.contact_email).reminder_email.deliver_now }
+
 
     context "country is wales" do
       let(:country) { 'wales' }
@@ -196,9 +209,9 @@ RSpec.describe OnboardingMailer do
         end
 
         it "doesn't have links to schools in Welsh" do
-          expect(body).to_not have_link(school_onboardings[0].school_name,
+          expect(body).not_to have_link(school_onboardings[0].school_name,
             href: "http://cy.localhost/school_setup/#{school_onboardings[0].uuid}")
-          expect(body).to_not have_link(school_onboardings[1].school_name,
+          expect(body).not_to have_link(school_onboardings[1].school_name,
             href: "http://cy.localhost/school_setup/#{school_onboardings[1].uuid}")
         end
 
@@ -210,8 +223,10 @@ RSpec.describe OnboardingMailer do
 
   describe '#activation_email' do
     before { OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.activation_email.deliver_now } }
+
     context "preferred locale is cy" do
       let(:preferred_locale) { :cy }
+
       it 'sends the activation email in cy' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject', locale: :cy).gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.activation_email', locale: :cy).except(:subject, :set_your_first_targets).each_value do |text|
@@ -219,8 +234,10 @@ RSpec.describe OnboardingMailer do
         end
       end
     end
+
     context "preferred locale is en" do
       let(:preferred_locale) { :en }
+
       it 'sends the activation email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject').gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.activation_email', locale: :en).except(:subject, :set_your_first_targets).each_value do |text|
@@ -232,8 +249,10 @@ RSpec.describe OnboardingMailer do
 
   describe '#onboarded_email' do
     before { OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.onboarded_email.deliver_now } }
+
     context "preferred locale is cy" do
       let(:preferred_locale) { :cy }
+
       it 'sends the onboarded email in cy' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject', locale: :cy).gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.onboarded_email', locale: :cy).except(:subject).each_value do |text|
@@ -241,8 +260,10 @@ RSpec.describe OnboardingMailer do
         end
       end
     end
+
     context "preferred locale is en" do
       let(:preferred_locale) { :en }
+
       it 'sends the onboarded email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject').gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.onboarded_email', locale: :en).except(:subject).each_value do |text|
@@ -254,8 +275,10 @@ RSpec.describe OnboardingMailer do
 
   describe '#data_enabled_email' do
     before { OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.data_enabled_email.deliver_now } }
+
     context "preferred locale is cy" do
       let(:preferred_locale) { :cy }
+
       it 'sends the data enabled_email in cy' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.data_enabled_email.subject', locale: :cy).gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.data_enabled_email', locale: :cy).except(:subject, :set_your_first_targets).each_value do |text|
@@ -263,8 +286,10 @@ RSpec.describe OnboardingMailer do
         end
       end
     end
+
     context "preferred locale is en" do
       let(:preferred_locale) { :en }
+
       it 'sends the data enabled_email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.data_enabled_email.subject', locale: :en).gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.data_enabled_email', locale: :en).except(:subject, :set_your_first_targets).each_value do |text|
@@ -276,8 +301,10 @@ RSpec.describe OnboardingMailer do
 
   describe '#welcome_email' do
     before { OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.welcome_email.deliver_now } }
+
     context "preferred locale is cy" do
       let(:preferred_locale) { :cy }
+
       it 'sends the welcome email in cy' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.welcome_email.subject', locale: :cy))
         I18n.t('onboarding_mailer.welcome_email', locale: :cy).except(:subject).each_value do |text|
@@ -285,8 +312,10 @@ RSpec.describe OnboardingMailer do
         end
       end
     end
+
     context "preferred locale is en" do
       let(:preferred_locale) { :en }
+
       it 'sends the welcome email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.welcome_email.subject', locale: :en))
         I18n.t('onboarding_mailer.welcome_email', locale: :en).except(:subject).each_value do |text|

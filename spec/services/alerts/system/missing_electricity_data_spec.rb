@@ -12,6 +12,7 @@ describe Alerts::System::MissingElectricityData do
     it 'has a rating of 10' do
       expect(report.rating).to eq(10.0)
     end
+
     it 'has a priority relevance of 5' do
       expect(report.priority_data[:time_of_year_relevance]).to eq(5)
     end
@@ -34,6 +35,7 @@ describe Alerts::System::MissingElectricityData do
 
     context 'with much older readings' do
       let!(:meter) { create(:electricity_meter_with_validated_reading_dates, start_date: 52.weeks.ago, end_date: 51.weeks.ago, school: school) }
+
       it 'has a rating of 0' do
         expect(report.rating).to eq(0.0)
       end

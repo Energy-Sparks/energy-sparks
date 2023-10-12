@@ -5,7 +5,7 @@ describe 'School admin user management' do
   let(:school_admin) { create(:school_admin, school: school) }
 
   describe 'as school admin' do
-    before(:each) do
+    before do
       sign_in(school_admin)
       visit school_path(school)
     end
@@ -20,7 +20,7 @@ describe 'School admin user management' do
         click_on 'Create account'
 
         pupil = school.users.pupil.first
-        expect(pupil.email).to_not be_nil
+        expect(pupil.email).not_to be_nil
         expect(pupil.pupil_password).to eq('the elektrons')
 
         expect(ActionMailer::Base.deliveries.last).to be_nil
@@ -51,7 +51,7 @@ describe 'School admin user management' do
       let!(:teacher_role) { create :staff_role, :teacher, title: 'Teacher or teaching assistant' }
 
       context 'it can create staff' do
-        before(:each) do
+        before do
           click_on 'Manage users'
           click_on 'New staff account'
 
@@ -111,7 +111,7 @@ describe 'School admin user management' do
         within '.staff' do
           click_on 'Edit'
         end
-        expect(page).to_not have_checked_field('contact_auto_create_alert_contact')
+        expect(page).not_to have_checked_field('contact_auto_create_alert_contact')
         check "Subscribe to school alerts"
         expect { click_on 'Update account' }.to change { Contact.count }.by(1)
       end
@@ -199,7 +199,7 @@ describe 'School admin user management' do
 
     describe 'managing school admins' do
       context 'when adding a user' do
-        before(:each) do
+        before do
           click_on 'Manage users'
           click_on 'New school admin account'
 
@@ -229,7 +229,7 @@ describe 'School admin user management' do
         let(:new_admin) { create(:school_admin, name: "New admin", school: school) }
         let!(:contact) { create(:contact_with_name_email, user: new_admin, school: school) }
 
-        before(:each) do
+        before do
           click_on 'Manage users'
         end
 
@@ -276,13 +276,13 @@ describe 'School admin user management' do
               click_on 'Edit'
             end
           end
-          expect(page).to_not have_checked_field('contact_auto_create_alert_contact')
+          expect(page).not_to have_checked_field('contact_auto_create_alert_contact')
           check "Subscribe to school alerts"
           expect { click_on 'Update account' }.to change { Contact.count }.by(1)
         end
 
         context 'when deleting' do
-          before(:each) do
+          before do
             within '.school_admin' do
               #there's only one delete button because users cant delete themselves
               click_on 'Delete'
@@ -303,7 +303,7 @@ describe 'School admin user management' do
         let!(:other_school_admin) { create(:school_admin, name: "Other admin") }
         let!(:contact) { create(:contact_with_name_email, user: other_school_admin, school: other_school_admin.school) }
 
-        before(:each) do
+        before do
           click_on 'Manage users'
         end
 
@@ -338,7 +338,7 @@ describe 'School admin user management' do
           click_on "Add an existing Energy Sparks user as a school admin"
           fill_in "Email", with: other_school_admin.email
           uncheck "Subscribe to school alerts"
-          expect { click_on "Add user" }.to_not(change { Contact.count })
+          expect { click_on "Add user" }.not_to(change { Contact.count })
         end
       end
 
@@ -346,7 +346,7 @@ describe 'School admin user management' do
         let!(:other_school_admin) { create(:school_admin, name: "Other admin", cluster_schools: [school]) }
         let!(:contact) { create(:contact_with_name_email, user: other_school_admin, school: other_school_admin.school) }
 
-        before(:each) do
+        before do
           click_on 'Manage users'
           expect(page).to have_content("Other admin")
         end
@@ -371,7 +371,7 @@ describe 'School admin user management' do
         end
 
         context 'when deleting' do
-          before(:each) do
+          before do
             within '.school_admin' do
               #there's only one delete button because users cant delete themselves
               click_on 'Delete'
@@ -408,7 +408,7 @@ describe 'School admin user management' do
     let(:deliveries)  { ActionMailer::Base.deliveries.count }
     let(:email)       { ActionMailer::Base.deliveries.last }
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit school_path(school)
       click_on('Manage users')

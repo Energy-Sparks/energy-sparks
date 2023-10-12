@@ -3,7 +3,7 @@ require 'rails_helper'
 describe AmrUploadedReading, type: :system do
   let!(:admin) { create(:admin) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Manage'
@@ -14,7 +14,7 @@ describe AmrUploadedReading, type: :system do
   describe 'normal file format' do
     let!(:config) { create(:amr_data_feed_config) }
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -33,7 +33,7 @@ describe AmrUploadedReading, type: :system do
 
         it { expect(AmrUploadedReading.count).to be 1 }
         it { expect(AmrUploadedReading.first.imported).to be false }
-        it { expect(page).to_not have_content('We have identified a problem') }
+        it { expect(page).not_to have_content('We have identified a problem') }
         it { expect(page).to have_content('Data preview') }
         it { expect(page).to have_content('2200012767323') }
         it { expect(page).to have_content('2200012030374') }
@@ -45,14 +45,15 @@ describe AmrUploadedReading, type: :system do
           end
 
           it { expect(page).to have_content("Processing") }
-          it { expect(page).to_not have_link("Upload another file") }
+          it { expect(page).not_to have_link("Upload another file") }
 
           context "when complete" do
             before do
               expect_any_instance_of(ManualDataLoadRun).to receive(:complete?).at_least(:once).and_return true
               visit current_path # force / speed up page reload (that would usually happen after 5 secs anyway)
             end
-            it { expect(page).to_not have_content("Processing") }
+
+            it { expect(page).not_to have_content("Processing") }
 
             it "has a link to upload another file" do
               expect(page).to have_link("Upload another file")
@@ -72,7 +73,7 @@ describe AmrUploadedReading, type: :system do
 
     it 'produces an error message when an invalid CSV file is uploaded' do
       attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/not_a_csv.csv')
-      expect { click_on 'Preview' }.to_not(change { AmrUploadedReading.count })
+      expect { click_on 'Preview' }.not_to(change { AmrUploadedReading.count })
 
       expect(AmrUploadedReading.count).to be 0
 
@@ -81,7 +82,7 @@ describe AmrUploadedReading, type: :system do
 
     it 'produces an error message when an invalid xlsx file is uploaded' do
       attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/not_a_xlsx.xlsx')
-      expect { click_on 'Preview' }.to_not(change { AmrUploadedReading.count })
+      expect { click_on 'Preview' }.not_to(change { AmrUploadedReading.count })
 
       expect(AmrUploadedReading.count).to be 0
 
@@ -149,7 +150,7 @@ describe AmrUploadedReading, type: :system do
                                           number_of_header_rows: 1)
     end
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -185,7 +186,7 @@ describe AmrUploadedReading, type: :system do
                                           number_of_header_rows: 2)
     end
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -202,7 +203,7 @@ describe AmrUploadedReading, type: :system do
       expect(AmrUploadedReading.count).to be 1
       expect(AmrUploadedReading.first.imported).to be false
 
-      expect(page).to_not have_content('We have identified a problem')
+      expect(page).not_to have_content('We have identified a problem')
       expect(page).to have_content('Data preview')
       expect(page).to have_content('1712423842469')
 

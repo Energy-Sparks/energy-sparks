@@ -15,12 +15,15 @@ describe Alerts::System::UpcomingHoliday do
     it 'has a rating related to the number of days' do
       expect(report.rating).to eq(3.0)
     end
+
     it 'has a priority relevance related to the number of days' do
       expect(report.priority_data[:time_of_year_relevance]).to eq(10)
     end
+
     it 'has a variable that represents the start date' do
       expect(report.template_data[:holiday_start_date]).to eq('29/04/2019')
     end
+
     it 'has a variable that represents the end date' do
       expect(report.template_data[:holiday_end_date]).to eq('06/05/2019')
     end
@@ -36,6 +39,7 @@ describe Alerts::System::UpcomingHoliday do
     it 'is not relevant' do
       expect(report.relevance).to eq(:not_relevant)
     end
+
     it 'has no variables' do
       expect(report.template_data).to be_empty
     end

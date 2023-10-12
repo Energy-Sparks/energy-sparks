@@ -51,6 +51,7 @@ describe Alerts::GenerateManagementDashboardTables do
 
       context 'where the management tables are not active' do
         let(:management_tables_active) { false }
+
         it 'does not include the alert' do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.management_dashboard_tables.count).to be 0

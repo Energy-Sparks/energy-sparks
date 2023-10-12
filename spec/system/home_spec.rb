@@ -123,7 +123,7 @@ RSpec.describe "home", type: :system do
     it 'shows the latest newsletters only' do
       visit root_path
 
-      expect(page).to_not have_content(newsletter_1.title)
+      expect(page).not_to have_content(newsletter_1.title)
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
@@ -149,7 +149,7 @@ RSpec.describe "home", type: :system do
       expect(page).to have_content(case_study_1.title)
       expect(page).to have_content(case_study_2.title)
       expect(page).to have_content(case_study_3.title)
-      expect(page).to_not have_content(case_study_4.title)
+      expect(page).not_to have_content(case_study_4.title)
 
       click_on 'More case studies'
 
@@ -164,13 +164,13 @@ RSpec.describe "home", type: :system do
     let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
     let(:school_admin) { create(:school_admin, school: school)}
 
-    before(:each) do
+    before do
       sign_in(school_admin)
       visit root_path
     end
 
     context 'with not visible school' do
-      before(:each) do
+      before do
         school.update(visible: false)
         visit root_path
       end
@@ -180,8 +180,8 @@ RSpec.describe "home", type: :system do
       end
 
       it 'does not have navigation options' do
-        expect(page).to_not have_css('#my_school_menu')
-        expect(page).to_not have_content('Dashboards')
+        expect(page).not_to have_css('#my_school_menu')
+        expect(page).not_to have_content('Dashboards')
       end
     end
 
@@ -194,7 +194,7 @@ RSpec.describe "home", type: :system do
       end
 
       it 'does not redirect to holding page' do
-        expect(page).to_not have_content('Your school is currently inactive while we are setting up your energy data')
+        expect(page).not_to have_content('Your school is currently inactive while we are setting up your energy data')
       end
 
       it 'does have navigation options' do

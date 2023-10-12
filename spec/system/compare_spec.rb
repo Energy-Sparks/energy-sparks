@@ -20,7 +20,7 @@ describe 'compare pages', :compare, type: :system do
     end
 
     it "doesn't have 'Your group' tab", unless: show_your_group_tab do
-      expect(page).to_not have_link("Your group", href: '#group')
+      expect(page).not_to have_link("Your group", href: '#group')
     end
 
     it "#{tab} tab is selected", js: true do
@@ -39,7 +39,7 @@ describe 'compare pages', :compare, type: :system do
 
     it "has included fragments" do
       within '#intro' do
-        expect(page).to_not have_content('Benchmark name')
+        expect(page).not_to have_content('Benchmark name')
         expect(page).to have_content('intro html')
       end
 
@@ -59,9 +59,9 @@ describe 'compare pages', :compare, type: :system do
 
     it "excludes fragments" do
       within '#tables' do
-        expect(page).to_not have_content('table text')
-        expect(page).to_not have_content('analytics html')
-        expect(page).to_not have_content('chart data')
+        expect(page).not_to have_content('table text')
+        expect(page).not_to have_content('analytics html')
+        expect(page).not_to have_content('chart data')
       end
     end
 
@@ -109,7 +109,7 @@ describe 'compare pages', :compare, type: :system do
         expect(page).to have_content(I18n.t("common.school_types.#{school_type}"))
       end
       all_school_types.excluding(school_types).each do |school_type|
-        expect(page).to_not have_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).not_to have_content(I18n.t("common.school_types.#{school_type}"))
       end
     end
 
@@ -118,7 +118,7 @@ describe 'compare pages', :compare, type: :system do
         expect(page).to have_content(I18n.t("common.school_types.#{school_type}"))
       end
       school_types_excluding.each do |school_type|
-        expect(page).to_not have_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).not_to have_content(I18n.t("common.school_types.#{school_type}"))
       end
     end
 
@@ -221,6 +221,7 @@ describe 'compare pages', :compare, type: :system do
 
         context "Changing options" do
           before { click_on "Change options" }
+
           it_behaves_like "an index page", tab: 'Your group'
           it_behaves_like "a form filter", id: '#group', school_types_excluding: ['junior']
         end
@@ -228,11 +229,13 @@ describe 'compare pages', :compare, type: :system do
         context "results page" do
           include_context 'results page context'
           before { click_on 'Benchmark name' }
+
           it_behaves_like "a results page"
           it_behaves_like "a filter summary", school_types_excluding: ['junior']
 
           context "Changing options" do
             before { click_on "Change options" }
+
             it_behaves_like "an index page", tab: 'Your group'
             it_behaves_like "a form filter", id: '#group', school_types_excluding: ['junior']
           end
@@ -245,6 +248,7 @@ describe 'compare pages', :compare, type: :system do
 
       it_behaves_like "an index page", tab: 'Choose country'
       it { expect(page).to have_content "Compare schools by country" }
+
       it_behaves_like "a form filter", id: '#country', country: "All countries"
 
       context "Benchmark page" do
@@ -256,11 +260,13 @@ describe 'compare pages', :compare, type: :system do
             click_on 'Compare schools'
           end
         end
+
         it_behaves_like "a benchmark list page"
         it_behaves_like "a filter summary", country: "Scotland", school_types_excluding: ['middle']
 
         context "Changing options" do
           before { click_on "Change options" }
+
           it_behaves_like "an index page", tab: 'Choose country'
           it_behaves_like "a form filter", id: '#country', country: 'scotland', school_types_excluding: ['middle']
         end
@@ -274,6 +280,7 @@ describe 'compare pages', :compare, type: :system do
 
           context "Changing options" do
             before { click_on "Change options" }
+
             it_behaves_like "an index page", tab: 'Choose country'
             it_behaves_like "a form filter", id: '#country', country: 'scotland', school_types_excluding: ['middle']
           end
@@ -286,6 +293,7 @@ describe 'compare pages', :compare, type: :system do
 
       it_behaves_like "an index page", tab: 'Choose type'
       it { expect(page).to have_content "Compare schools by type" }
+
       it_behaves_like "a form filter", id: '#type', school_type: []
 
       context "Benchmark page" do
@@ -296,11 +304,13 @@ describe 'compare pages', :compare, type: :system do
             click_on 'Compare schools'
           end
         end
+
         it_behaves_like "a filter summary", school_types: ['primary']
         it_behaves_like "a benchmark list page"
 
         context "Changing options" do
           before { click_on "Change options" }
+
           it_behaves_like "an index page", tab: 'Choose type'
           it_behaves_like "a form filter", id: '#type', school_type: 'Primary'
         end
@@ -314,6 +324,7 @@ describe 'compare pages', :compare, type: :system do
 
           context "Changing options" do
             before { click_on "Change options" }
+
             it_behaves_like "an index page", tab: 'Choose type'
             it_behaves_like "a form filter", id: '#type', school_type: 'Primary'
           end
@@ -344,6 +355,7 @@ describe 'compare pages', :compare, type: :system do
 
         context "Changing options" do
           before { click_on "Change options" }
+
           it_behaves_like "an index page", tab: 'Choose groups'
           it_behaves_like "a form filter", id: '#groups', school_groups: ["Group 1", "Group 2"], school_types_excluding: ['infant']
         end
@@ -351,11 +363,13 @@ describe 'compare pages', :compare, type: :system do
         context "results page" do
           include_context 'results page context'
           before { click_on 'Benchmark name' }
+
           it_behaves_like "a results page"
           it_behaves_like "a filter summary", school_types_excluding: ['infant'], school_groups: ["Group 1", "Group 2"]
 
           context "Changing options" do
             before { click_on "Change options" }
+
             it_behaves_like "an index page", tab: 'Choose groups'
             it_behaves_like "a form filter", id: '#groups', school_groups: ["Group 1", "Group 2"], school_types_excluding: ['infant']
           end
@@ -366,11 +380,13 @@ describe 'compare pages', :compare, type: :system do
 
   context "Logged in user without school group" do
     let(:user) { create(:admin) }
+
     it_behaves_like "an index page", tab: 'Choose country', show_your_group_tab: false
   end
 
   context "Logged out user" do
     let(:user) {}
+
     it_behaves_like "an index page", tab: 'Choose country', show_your_group_tab: false
   end
 
@@ -381,6 +397,7 @@ describe 'compare pages', :compare, type: :system do
 
     context "/benchmarks" do
       let(:old_benchmark_url) { "/benchmarks" }
+
       it { expect(response).to redirect_to('/compare') }
       it { expect(response.status).to eq(301) }
     end
@@ -388,17 +405,21 @@ describe 'compare pages', :compare, type: :system do
     context "/benchmark" do
       context "with school groups" do
         let(:old_benchmark_url) { "/benchmark?benchmark_type=a_benchmark_key&benchmark%5Bschool_group_ids%5D%5B%5D=&benchmark%5Bschool_group_ids%5D%5B%5D=#{school_group.id}&benchmark%5Bschool_group_ids%5D%5B%5D=#{school_group_2.id}&benchmark%5Bschool_types%5D%5B%5D=&benchmark%5Bschool_types%5D%5B%5D=0&benchmark%5Bschool_types%5D%5B%5D=1&benchmark%5Bschool_types%5D%5B%5D=2&benchmark%5Bschool_types%5D%5B%5D=3&benchmark%5Bschool_group_ids%5D%5B%5D=&benchmark%5Bschool_types%5D%5B%5D=4&benchmark%5Bschool_types%5D%5B%5D=5&benchmark%5Bschool_types%5D%5B%5D=6&commit=Compare" }
+
         it "redirects to the new pages" do
           expect(response).to redirect_to("/compare/a_benchmark_key?search=groups&school_group_ids%5B%5D=#{school_group.id}&school_group_ids%5B%5D=#{school_group_2.id}&school_types%5B%5D=primary&school_types%5B%5D=secondary&school_types%5B%5D=special&school_types%5B%5D=infant&school_types%5B%5D=junior&school_types%5B%5D=middle&school_types%5B%5D=mixed_primary_and_secondary")
         end
+
         it { expect(response.status).to eq(301) }
       end
 
       context "without school groups" do
         let(:old_benchmark_url) { '/benchmark?benchmark%5Bschool_types%5D%5B%5D=0&benchmark%5Bschool_types%5D%5B%5D=1&benchmark%5Bschool_types%5D%5B%5D=2&benchmark%5Bschool_types%5D%5B%5D=3&benchmark%5Bschool_types%5D%5B%5D=4&benchmark%5Bschool_types%5D%5B%5D=5&benchmark%5Bschool_types%5D%5B%5D=6&benchmark_type=a_benchmark_key' }
+
         it "redirects to the new pages" do
           expect(response).to redirect_to('/compare/a_benchmark_key?search=groups&school_types%5B%5D=primary&school_types%5B%5D=secondary&school_types%5B%5D=special&school_types%5B%5D=infant&school_types%5B%5D=junior&school_types%5B%5D=middle&school_types%5B%5D=mixed_primary_and_secondary')
         end
+
         it { expect(response.status).to eq(301) }
       end
     end

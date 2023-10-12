@@ -8,7 +8,7 @@ module Cads
     let(:cad)                 { create(:cad, school: school, device_identifier: device_identifier) }
 
     context 'when api returns response' do
-      before :each do
+      before do
         expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:login).and_return(token)
       end
 

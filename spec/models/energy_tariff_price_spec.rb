@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe EnergyTariffPrice do
-  it { should validate_presence_of(:start_time) }
-  it { should validate_presence_of(:end_time) }
-  it { should validate_presence_of(:units) }
-  it { should validate_numericality_of(:value).is_greater_than(EnergyTariffPrice::MINIMUM_VALUE) }
-  it { should validate_numericality_of(:value).is_less_than(EnergyTariffPrice::MAXIMUM_VALUE) }
+  it { is_expected.to validate_presence_of(:start_time) }
+  it { is_expected.to validate_presence_of(:end_time) }
+  it { is_expected.to validate_presence_of(:units) }
+  it { is_expected.to validate_numericality_of(:value).is_greater_than(EnergyTariffPrice::MINIMUM_VALUE) }
+  it { is_expected.to validate_numericality_of(:value).is_less_than(EnergyTariffPrice::MAXIMUM_VALUE) }
 
   describe '#time_duration' do
     it 'calculates the time duration in minutes between the start and end date' do
@@ -28,7 +28,7 @@ describe EnergyTariffPrice do
   end
 
   describe '#total_minutes' do
-    it 'it returns the sum of all minutes in a collection of energy tariff prices' do
+    it 'returns the sum of all minutes in a collection of energy tariff prices' do
       energy_tariff = EnergyTariff.create!(name: 'A new tariff', tariff_holder: create(:school), tariff_type: 'flat_rate')
       EnergyTariffPrice.delete_all
       EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 07:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)

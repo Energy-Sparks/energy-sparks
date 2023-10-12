@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "gas out of hours advice page", type: :system do
   let(:key) { 'gas_out_of_hours' }
   let(:expected_page_title) { "Out of school hours gas use" }
+
   include_context "gas advice page"
 
   context 'as school admin' do
@@ -59,6 +60,7 @@ RSpec.describe "gas out of hours advice page", type: :system do
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
+
       it_behaves_like "an advice page tab", tab: "Insights"
 
       it 'shows expected content' do
@@ -72,6 +74,7 @@ RSpec.describe "gas out of hours advice page", type: :system do
 
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
+
       it_behaves_like "an advice page tab", tab: "Analysis"
 
       it 'shows expected content' do
@@ -89,6 +92,7 @@ RSpec.describe "gas out of hours advice page", type: :system do
 
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

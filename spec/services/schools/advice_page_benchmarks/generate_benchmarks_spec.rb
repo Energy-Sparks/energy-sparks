@@ -10,13 +10,14 @@ RSpec.describe Schools::AdvicePageBenchmarks::GenerateBenchmarks, type: :service
 
   let(:generator)     { double('generator') }
 
-  context '#generate!' do
-    before(:each) do
+  describe '#generate!' do
+    before do
       expect(Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator).to receive(:generator_for).with(advice_page: advice_page_1, school: school, aggregate_school: aggregate_school).and_return(generator)
       expect(Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator).to receive(:generator_for).with(advice_page: advice_page_2, school: school, aggregate_school: aggregate_school).and_return(generator)
       expect(generator).to receive(:perform).twice
     end
-    it 'should process all pages' do
+
+    it 'processes all pages' do
       service.generate!
     end
   end

@@ -11,7 +11,7 @@ describe Programmes::Creator do
     let(:programme) { school.programmes.first }
 
     context 'when school has no activities' do
-      before(:each) do
+      before do
         service.create
       end
 
@@ -51,9 +51,11 @@ describe Programmes::Creator do
 
     context "when school has recent activity in programme" do
       let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first)}
-      before(:each) do
+
+      before do
         service.create
       end
+
       it "recognises progress when recent" do
         expect(programme.programme_activities.count).to be 1
         expect(programme.activities.any?).to be true
@@ -66,7 +68,7 @@ describe Programmes::Creator do
       let!(:recent) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Date.yesterday)}
       let!(:old_activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.today.last_year)}
 
-      before(:each) do
+      before do
         service.create
       end
 
@@ -79,9 +81,11 @@ describe Programmes::Creator do
 
     context "when school recorded an activity last year" do
       let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.today.last_year)}
-      before(:each) do
+
+      before do
         service.create
       end
+
       it "this doesnt count towards progress" do
         expect(programme.programme_activities.count).to be 0
         expect(programme.activities.any?).to be false

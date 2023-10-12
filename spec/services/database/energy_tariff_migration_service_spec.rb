@@ -147,7 +147,7 @@ describe Database::EnergyTariffMigrationService do
     }
   end
 
-  context '#date_or_nil' do
+  describe '#date_or_nil' do
     it 'returns expected values' do
       expect(Database::EnergyTariffMigrationService.date_or_nil(Time.zone.today)).to eq Time.zone.today
       expect(Database::EnergyTariffMigrationService.date_or_nil(nil)).to eq nil
@@ -156,14 +156,16 @@ describe Database::EnergyTariffMigrationService do
     end
   end
 
-  context '#meter_types' do
+  describe '#meter_types' do
     let(:attribute)   { OpenStruct.new(meter_types: meter_types) }
     let(:meter_types) { [] }
+
     context 'with invalid type' do
       it 'raises exception' do
         expect { Database::EnergyTariffMigrationService.meter_type(attribute) }.to raise_error("Unexpected meter type")
       end
     end
+
     context 'with basic fuel types' do
       %w[gas electricity solar_pv exported_solar_pv].each do |type|
         it "recognises #{type}" do
@@ -172,21 +174,25 @@ describe Database::EnergyTariffMigrationService do
         end
       end
     end
+
     context 'with aggregate types' do
       it "recognises aggregated_electricity" do
         attribute = OpenStruct.new(meter_types: ["aggregated_electricity"])
         expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq :electricity
       end
+
       it "recognises aggregated_gas" do
         attribute = OpenStruct.new(meter_types: ["aggregated_gas"])
         expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq :gas
       end
     end
+
     context 'with solar sub meters' do
       it "recognises solar_pv_consumed_sub_meter" do
         attribute = OpenStruct.new(meter_types: ["solar_pv_consumed_sub_meter"])
         expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq :solar_pv
       end
+
       it "recognises solar_pv_exported_sub_meter" do
         attribute = OpenStruct.new(meter_types: ["solar_pv_exported_sub_meter"])
         expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq :exported_solar_pv
@@ -195,7 +201,7 @@ describe Database::EnergyTariffMigrationService do
   end
 
 
-  context '#tariff_types' do
+  describe '#tariff_types' do
     let(:tariff_holder) { create(:school_group) }
     let!(:school_group_attribute) do
       tariff_holder.meter_attributes.create(
@@ -204,11 +210,13 @@ describe Database::EnergyTariffMigrationService do
         meter_types: ["electricity"]
       )
     end
+
     context 'with flat rate' do
       it 'identifies the type' do
         expect(Database::EnergyTariffMigrationService.tariff_type(school_group_attribute)).to eq :flat_rate
       end
     end
+
     context 'with differential' do
       let(:rates) do
         {
@@ -226,10 +234,12 @@ describe Database::EnergyTariffMigrationService do
           }
         }
       end
+
       it 'identifies the type' do
         expect(Database::EnergyTariffMigrationService.tariff_type(school_group_attribute)).to eq :differential
       end
     end
+
     context 'with data from meter attribute editor' do
       let(:rates) do
         {
@@ -251,13 +261,14 @@ describe Database::EnergyTariffMigrationService do
           }
         }
       end
+
       it 'identifies the type' do
         expect(Database::EnergyTariffMigrationService.tariff_type(school_group_attribute)).to eq :flat_rate
       end
     end
   end
 
-  context '#migrate_global_solar_meter_attributes' do
+  describe '#migrate_global_solar_meter_attributes' do
     let!(:tariff_holder)           { SiteSettings.create! }
     let(:meter_type)               { "exported_solar_pv" }
 
@@ -282,7 +293,7 @@ describe Database::EnergyTariffMigrationService do
     end
   end
 
-  context '#migrate_global_meter_attributes' do
+  describe '#migrate_global_meter_attributes' do
     let!(:tariff_holder) { SiteSettings.create! }
 
     let!(:global_meter_attribute) do
@@ -306,7 +317,7 @@ describe Database::EnergyTariffMigrationService do
     end
   end
 
-  context '#migrate_school_group_economic_tariffs' do
+  describe '#migrate_school_group_economic_tariffs' do
     let(:system_wide)    { false }
     let(:tariff_holder)  { create(:school_group) }
 
@@ -321,7 +332,7 @@ describe Database::EnergyTariffMigrationService do
     let(:charge)              { energy_tariff.energy_tariff_charges.first }
     let(:price)               { energy_tariff.energy_tariff_prices.first }
 
-    before(:each) do
+    before do
       Database::EnergyTariffMigrationService.migrate_school_group_economic_tariffs(tariff_holder)
     end
 
@@ -371,11 +382,12 @@ describe Database::EnergyTariffMigrationService do
           }
         }
       end
+
       it_behaves_like "a migrated differential economic tariff"
     end
   end
 
-  context '#migrate_school_group_accounting_tariffs' do
+  describe '#migrate_school_group_accounting_tariffs' do
     let(:system_wide)    { false }
     let(:tariff_holder)  { create(:school_group) }
 
@@ -388,14 +400,14 @@ describe Database::EnergyTariffMigrationService do
     end
     let(:energy_tariff) { EnergyTariff.first }
 
-    before(:each) do
+    before do
       Database::EnergyTariffMigrationService.migrate_school_group_accounting_tariffs(tariff_holder)
     end
 
     it_behaves_like 'a migrated flat rate accounting tariff'
   end
 
-  context '#migrate_school_economic_tariffs' do
+  describe '#migrate_school_economic_tariffs' do
     let(:system_wide) { false }
     let(:default) { false }
     let(:tariff_holder) { create(:school) }
@@ -409,7 +421,7 @@ describe Database::EnergyTariffMigrationService do
     end
     let(:energy_tariff) { EnergyTariff.first }
 
-    before(:each) do
+    before do
       Database::EnergyTariffMigrationService.migrate_school_economic_tariffs
     end
 
@@ -459,11 +471,12 @@ describe Database::EnergyTariffMigrationService do
           }
         }
       end
+
       it_behaves_like "a migrated differential economic tariff"
     end
   end
 
-  context '#migrate meter accounting tariffs' do
+  describe '#migrate meter accounting tariffs' do
     let(:sytem_wide)      { false }
     let(:default)         { false }
     let(:attribute_type)  { "accounting_tariff" }
@@ -481,7 +494,7 @@ describe Database::EnergyTariffMigrationService do
     end
     let(:energy_tariff) { EnergyTariff.first }
 
-    before(:each) do
+    before do
       Database::EnergyTariffMigrationService.migrate_meter_accounting_tariffs
     end
 
@@ -493,8 +506,6 @@ describe Database::EnergyTariffMigrationService do
 
     context 'with differential tariff' do
       let(:attribute_type) { "accounting_tariff_differential" }
-      it_behaves_like 'a migrated differential accounting tariff'
-
       let(:rates) do
         {
           daytime_rate: {
@@ -515,6 +526,9 @@ describe Database::EnergyTariffMigrationService do
           }
         }
       end
+
+      it_behaves_like 'a migrated differential accounting tariff'
+
 
       it_behaves_like "a migrated differential accounting tariff"
     end

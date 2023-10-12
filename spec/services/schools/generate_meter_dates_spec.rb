@@ -21,7 +21,7 @@ describe Schools::GenerateMeterDates, type: :service do
 
   let(:service) { Schools::GenerateMeterDates.new(meter_collection)}
 
-  before(:each) do
+  before do
     allow(electricity_amr_data).to receive(:start_date).and_return(electricity_start_date)
     allow(electricity_amr_data).to receive(:end_date).and_return(electricity_end_date)
 
@@ -40,13 +40,14 @@ describe Schools::GenerateMeterDates, type: :service do
     allow(meter_collection).to receive(:aggregate_meter).with(:storage_heater).and_return(heaters_aggregate_meter)
   end
 
-  context '#perform' do
+  describe '#perform' do
     context 'all fuel types are present' do
-      before(:each) do
+      before do
         allow(meter_collection).to receive(:gas?).and_return(true)
         allow(meter_collection).to receive(:electricity?).and_return(true)
         allow(meter_collection).to receive(:storage_heaters?).and_return(true)
       end
+
       it 'generates expected values' do
         dates = service.generate
         expect(dates[:electricity][:start_date]).to eql("2020-01-01")
@@ -61,11 +62,12 @@ describe Schools::GenerateMeterDates, type: :service do
     end
 
     context 'has only electricity' do
-      before(:each) do
+      before do
         allow(meter_collection).to receive(:gas?).and_return(false)
         allow(meter_collection).to receive(:electricity?).and_return(true)
         allow(meter_collection).to receive(:storage_heaters?).and_return(false)
       end
+
       it 'generates expected values' do
         dates = service.generate
         expect(dates[:electricity][:start_date]).to eql("2020-01-01")

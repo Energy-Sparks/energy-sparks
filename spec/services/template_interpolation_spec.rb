@@ -59,7 +59,7 @@ describe TemplateInterpolation do
     it 'creates objects with the specified interfaces that have been templated' do
       view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, with: { usage: 'low' })
       expect(view_object.template_1).to eq('Your energy usage is quite low')
-      expect(view_object.methods).to_not include(:template_2)
+      expect(view_object.methods).not_to include(:template_2)
     end
 
     it 'exposes the underlying variables' do

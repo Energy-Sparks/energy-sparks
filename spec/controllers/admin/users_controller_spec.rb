@@ -13,16 +13,19 @@ RSpec.describe Admin::UsersController, type: :controller do
   let(:invalid_attributes) do
     { email: nil }
   end
+
   context "As an admin user" do
-    before(:each) do
+    before do
       sign_in_user(:admin)
     end
+
     describe "GET #index" do
       it "assigns all users as @users" do
         user = create :staff
         get :index, params: {}
         expect(assigns(:users)).to include user
       end
+
       it "returns http success" do
         get :index
         expect(response).to have_http_status(:success)

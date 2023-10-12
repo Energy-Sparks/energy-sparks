@@ -7,7 +7,7 @@ RSpec.describe "advice pages", type: :system do
   let(:school) { create(:school) }
 
   context 'default index' do
-    before(:each) do
+    before do
       allow_any_instance_of(School).to receive(:has_electricity?).and_return(true)
       visit school_advice_path(school)
     end
@@ -140,14 +140,15 @@ RSpec.describe "advice pages", type: :system do
   end
 
   context 'for a non-public school' do
-    before { school.update(public: false) }
-    let(:user) {}
-    let(:login_text) { 'Log in with your email address and password' }
-
     before do
+      school.update(public: false)
       sign_in(user) if user
       visit school_advice_path(school)
     end
+
+    let(:user) {}
+    let(:login_text) { 'Log in with your email address and password' }
+
 
     context 'logged out user' do
       it 'shows login page' do
@@ -157,8 +158,9 @@ RSpec.describe "advice pages", type: :system do
 
     context 'school user' do
       let(:user) { create(:staff, school: school) }
+
       it 'does not show login page' do
-        expect(page).to_not have_link(login_text)
+        expect(page).not_to have_link(login_text)
       end
     end
   end

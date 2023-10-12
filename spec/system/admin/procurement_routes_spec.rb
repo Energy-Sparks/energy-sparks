@@ -57,6 +57,7 @@ RSpec.describe 'Procurement route admin', :school_groups, type: :system, include
 
     context 'as a non-admin user' do
       let!(:user) { create(:staff) }
+
       it { expect(page).to have_content('You are not authorized to view that page.') }
     end
   end
@@ -122,19 +123,23 @@ RSpec.describe 'Procurement route admin', :school_groups, type: :system, include
             end
 
             it { expect(page).to have_content("Edit #{existing_procurement_route.organisation_name}")}
+
             it_behaves_like "a procurement route form" do
               let(:procurement_route) { existing_procurement_route }
             end
 
             context "and saving new data" do
               let(:new_procurement_route) { build(:procurement_route) }
+
               before do
                 text_attributes.each do |text_field, label|
                   fill_in label, with: new_procurement_route[text_field]
                 end
                 click_button 'Save'
               end
+
               it { expect(page).to have_content("Procurement route was successfully updated") }
+
               it_behaves_like "a displayed procurement route" do
                 let(:procurement_route) { new_procurement_route }
               end
@@ -149,7 +154,8 @@ RSpec.describe 'Procurement route admin', :school_groups, type: :system, include
             before do
               click_on "Delete"
             end
-            it { expect(page).to_not have_content(existing_procurement_route.organisation_name) }
+
+            it { expect(page).not_to have_content(existing_procurement_route.organisation_name) }
             it { expect(page).to have_content("Procurement route was successfully deleted") }
           end
 
@@ -177,11 +183,14 @@ RSpec.describe 'Procurement route admin', :school_groups, type: :system, include
       end
 
       it { expect(page).to have_link('New procurement route') }
+
       context "creating a new procurement route" do
         before do
           click_on 'New procurement route'
         end
+
         it { expect(page).to have_content("New procurement route")}
+
         it_behaves_like "a procurement route form" do
           let(:procurement_route) { ProcurementRoute.new }
         end
@@ -189,24 +198,29 @@ RSpec.describe 'Procurement route admin', :school_groups, type: :system, include
           before do
             click_on 'Save'
           end
+
           it { expect(page).to have_content("Organisation name *\ncan't be blank") }
         end
 
         context "with new valid attributes" do
           let(:new_procurement_route) { build(:procurement_route) }
+
           before do
             text_attributes.each do |text_field, label|
               fill_in label, with: new_procurement_route[text_field]
             end
             click_button 'Save'
           end
+
           it { expect(page).to have_content("Procurement route was successfully created") }
+
           context "and viewing new procurement route" do
             before do
               within('table') do
                 click_on "Manage"
               end
             end
+
             it_behaves_like "a displayed procurement route" do
               let(:procurement_route) { new_procurement_route }
             end

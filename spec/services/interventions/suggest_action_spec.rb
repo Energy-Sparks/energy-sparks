@@ -89,7 +89,7 @@ describe Interventions::SuggestAction, type: :service do
 
     let(:content) { double(find_out_more_intervention_types: [intervention_type_1, intervention_type_2, intervention_type_3]) }
 
-    before :each do
+    before do
       expect(school).to receive(:latest_content).and_return(content)
     end
 
@@ -104,9 +104,10 @@ describe Interventions::SuggestAction, type: :service do
     end
 
     context 'when interventions have been done in last year' do
-      before :each do
+      before do
         expect(school).to receive(:intervention_types_in_academic_year).and_return([intervention_type_1, intervention_type_2])
       end
+
       it 'filters out already completed interventions' do
         result = service.suggest
         expect(result).to match_array([intervention_type_3, intervention_type_4])

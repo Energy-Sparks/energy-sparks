@@ -52,6 +52,7 @@ RSpec.describe "heating control advice page", type: :system do
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
+
       it_behaves_like "an advice page tab", tab: "Insights"
       it 'includes expected sections' do
         expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.title'))
@@ -69,19 +70,22 @@ RSpec.describe "heating control advice page", type: :system do
 
       context 'and theres is no average start time' do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
+
         it 'does not show that text' do
-          expect(page).to_not have_content('the average start time for your heating')
+          expect(page).not_to have_content('the average start time for your heating')
         end
       end
     end
+
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
+
       it_behaves_like "an advice page tab", tab: "Analysis"
       it 'includes expected sections' do
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.title'))
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.school_day_heating.title'))
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.seasonal_control.title'))
-        expect(page).to_not have_content(I18n.t('advice_pages.heating_control.analysis.meter_breakdown.title'))
+        expect(page).not_to have_content(I18n.t('advice_pages.heating_control.analysis.meter_breakdown.title'))
       end
 
       it 'includes expected charts' do
@@ -104,14 +108,17 @@ RSpec.describe "heating control advice page", type: :system do
 
       context 'and theres is no average start time' do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
+
         it 'does not show the table' do
-          expect(page).to_not have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html '))
-          expect(page).to_not have_css('#heating-start-times')
+          expect(page).not_to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html '))
+          expect(page).not_to have_css('#heating-start-times')
         end
       end
     end
+
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

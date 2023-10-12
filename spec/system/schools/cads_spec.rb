@@ -5,7 +5,7 @@ describe 'CADs', type: :system do
   let!(:admin)            { create(:admin) }
 
   context 'as an admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit school_path(school)
     end

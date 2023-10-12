@@ -18,6 +18,7 @@ RSpec.describe SchoolsController, type: :controller do
       get :index, params: {}
       expect(assigns(:ungrouped_visible_schools)).to eq([school])
     end
+
     it "assigns not visible schools as @schools_not_visible" do
       school = FactoryBot.create :school, visible: false
       get :index, params: {}
@@ -30,12 +31,12 @@ RSpec.describe SchoolsController, type: :controller do
       school = FactoryBot.create :school
       get :show, params: { id: school.to_param }
       expect(assigns(:school)).to eq(school)
-      expect(response).to_not redirect_to(school_pupils_path(school))
+      expect(response).not_to redirect_to(school_pupils_path(school))
     end
   end
 
   context "As an admin user" do
-    before(:each) do
+    before do
       sign_in_user(:admin)
     end
 
@@ -61,6 +62,7 @@ RSpec.describe SchoolsController, type: :controller do
             post :create, params: { school: valid_attributes }
           end.to change(School, :count).by(1)
         end
+
         it "assigns a newly created school as @school" do
           post :create, params: { school: valid_attributes }
           expect(assigns(:school)).to be_a(School)

@@ -180,6 +180,7 @@ describe MeterManagement do
 
       context 'when meter has validated readings' do
         let!(:meter) { create(:electricity_meter_with_validated_reading, dcc_meter: true) }
+
         it "removes validated readings" do
           MeterManagement.new(meter).remove_data!
           expect(meter.amr_validated_readings.count).to eq 0

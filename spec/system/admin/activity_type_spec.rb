@@ -27,7 +27,7 @@ describe "activity type", type: :system do
   end
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -123,7 +123,7 @@ describe "activity type", type: :system do
 
       expect(page.has_content?("Score can't be blank"))
 
-      expect(page.has_content?("Activity type was successfully created.")).to_not be true
+      expect(page.has_content?("Activity type was successfully created.")).not_to be true
       expect(ActivityType.count).to be 0
     end
 
@@ -141,7 +141,7 @@ describe "activity type", type: :system do
 
       activity_type.reload
 
-      expect(activity_type.key_stages).to_not include(ks1)
+      expect(activity_type.key_stages).not_to include(ks1)
       expect(activity_type.key_stages).to     include(ks2)
       expect(activity_type.key_stages).to     include(ks3)
 

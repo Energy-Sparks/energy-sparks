@@ -1,27 +1,27 @@
 RSpec.shared_examples "a public school group dashboard" do
   it 'allows user to navigate to all tabs' do
     visit map_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit comparisons_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/comparisons"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/comparisons", ignore_query: true
     visit priority_actions_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/priority_actions"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/priority_actions", ignore_query: true
     visit current_scores_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/current_scores"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/current_scores", ignore_query: true
   end
 end
 
 RSpec.shared_examples "a private school group dashboard" do
   it 'the user can only access the map view' do
     visit map_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit comparisons_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit priority_actions_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit current_scores_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
-    expect(page).to_not have_content('View group')
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
+    expect(page).not_to have_content('View group')
   end
 end
 
@@ -63,7 +63,7 @@ RSpec.shared_examples "school dashboard navigation" do
   end
 
   it 'has expected path' do
-    expect(current_path).to eq expected_path
+    expect(page).to have_current_path expected_path, ignore_query: true
   end
 
   it 'shows right breadcrumb' do
@@ -74,14 +74,14 @@ end
 RSpec.shared_examples "visiting chart updates redirects to group map page" do
   it 'redirects to ' do
     visit school_group_chart_updates_path(school_group)
-    expect(current_path).to eq(map_school_group_path(school_group))
+    expect(page).to have_current_path(map_school_group_path(school_group), ignore_query: true)
   end
 end
 
 RSpec.shared_examples "visiting chart updates redirects to group page" do
   it 'redirects to ' do
     visit school_group_chart_updates_path(school_group)
-    expect(current_path).to eq(school_group_path(school_group))
+    expect(page).to have_current_path(school_group_path(school_group), ignore_query: true)
   end
 end
 
@@ -93,7 +93,7 @@ end
 
 RSpec.shared_examples "redirects to login page" do
   it 'redirects to login page' do
-    expect(current_path).to eq("/users/sign_in")
+    expect(page).to have_current_path("/users/sign_in", ignore_query: true)
   end
 end
 
@@ -271,9 +271,10 @@ RSpec.shared_examples "not showing the cluster column" do
   before do
     visit url if defined?(url)
   end
+
   it "doesn't show the cluster column" do
-    expect(page).to_not have_content('Cluster')
-    expect(page).to_not have_content('Not set')
+    expect(page).not_to have_content('Cluster')
+    expect(page).not_to have_content('Not set')
   end
 end
 
@@ -282,6 +283,7 @@ RSpec.shared_examples "showing the cluster column" do
   before do
     visit url if defined?(url)
   end
+
   it { expect(page).to have_content('Cluster') }
 
   context "school does not have a cluster" do
@@ -290,6 +292,7 @@ RSpec.shared_examples "showing the cluster column" do
 
   context "school is in a cluster" do
     let!(:cluster) { create(:school_group_cluster, name: "My Cluster", schools: [school]) }
+
     it { expect(page).to have_content('My Cluster') }
   end
 end
@@ -299,7 +302,8 @@ RSpec.shared_examples "not showing the cluster column in the download" do
     before do
       all(:link, 'Download as CSV').last.click
     end
-    it { expect(page.source).to_not have_content ",Cluster," }
+
+    it { expect(page.source).not_to have_content ",Cluster," }
   end
 end
 
@@ -308,6 +312,7 @@ RSpec.shared_examples "showing the cluster column in the download" do
     before do
       all(:link, 'Download as CSV').last.click
     end
+
     it { expect(page.source).to have_content ",Cluster," }
   end
 end

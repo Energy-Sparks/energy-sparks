@@ -68,6 +68,7 @@ describe Alerts::GenerateManagementPriorities do
 
       context 'where the management priorities are not active' do
         let(:management_priorities_active) { false }
+
         it 'does not include the alert' do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.management_priorities.count).to be 0

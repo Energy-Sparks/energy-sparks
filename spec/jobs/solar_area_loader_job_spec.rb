@@ -8,7 +8,7 @@ describe SolarAreaLoaderJob do
 
   let(:job)           { SolarAreaLoaderJob.new }
 
-  context '#perfom' do
+  describe '#perfom' do
     it 'requests 2 years data' do
       expect(DataFeeds::SolarPvTuosLoader).to receive(:new).with(start_date).and_return(loader)
       expect(job.perform(area)).to eq(result)

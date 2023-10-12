@@ -7,15 +7,16 @@ describe 'activity type reports', type: :system do
   let!(:school)            { create(:school) }
   let!(:activity)          { create(:activity, school: school, activity_type: activity_type) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit admin_reports_path
   end
 
   context 'the activity type management report' do
-    before(:each) do
+    before do
       click_on "Activity type management report"
     end
+
     it 'displays the report' do
       expect(page).to have_content("Activity Type Management Report")
       expect(page).to have_content(activity_type.name)
@@ -25,7 +26,7 @@ describe 'activity type reports', type: :system do
   end
 
   context 'the activity type report' do
-    before(:each) do
+    before do
       visit admin_reports_path
       click_on "Activity type management report"
     end

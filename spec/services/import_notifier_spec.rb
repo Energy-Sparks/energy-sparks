@@ -20,6 +20,7 @@ describe ImportNotifier do
 
     context 'and the school is inactive' do
       let(:school)         { create(:school, active: false)}
+
       it 'does not include the meters' do
         expect(meters_running_behind).to match_array([])
       end
@@ -150,6 +151,7 @@ describe ImportNotifier do
 
     context 'and the school is inactive' do
       let(:school) { create(:school, active: false)}
+
       it 'ignores the meter' do
         expect(meters_with_blank_data).to match_array([])
       end
@@ -183,6 +185,7 @@ describe ImportNotifier do
 
     context 'and the school is inactive' do
       let(:school) { create(:school, active: false)}
+
       it 'ignores the meter' do
         expect(meters_with_zero_data).to match_array([])
       end
@@ -278,6 +281,7 @@ describe ImportNotifier do
 
     context 'with a description provided' do
       let(:description) {'Energy Sparks early morning import' }
+
       it 'overrides the subject' do
         expect(email.subject).to include(description)
       end

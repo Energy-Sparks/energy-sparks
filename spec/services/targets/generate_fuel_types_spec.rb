@@ -6,7 +6,7 @@ describe Targets::GenerateFuelTypes do
 
   let!(:service)            { Targets::GenerateFuelTypes.new(school, aggregated_school) }
 
-  before(:each) do
+  before do
     school.configuration.update!(fuel_configuration: fuel_configuration)
   end
 
@@ -17,7 +17,7 @@ describe Targets::GenerateFuelTypes do
           has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(::TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
       end
 
@@ -32,7 +32,7 @@ describe Targets::GenerateFuelTypes do
           has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: false)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(::TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
       end
 
@@ -47,7 +47,7 @@ describe Targets::GenerateFuelTypes do
           has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(::TargetsService).to receive(:enough_data_to_set_target?).and_return(false)
       end
 
@@ -62,7 +62,7 @@ describe Targets::GenerateFuelTypes do
           has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(::TargetsService).to receive(:enough_data_to_set_target?).and_raise("error")
       end
 
@@ -79,7 +79,7 @@ describe Targets::GenerateFuelTypes do
           has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(::TargetsService).to receive(:suggest_use_of_estimate?).and_return(true)
       end
 
@@ -94,7 +94,7 @@ describe Targets::GenerateFuelTypes do
           has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: false)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(::TargetsService).to receive(:suggest_use_of_estimate?).and_return(true)
       end
 
@@ -109,7 +109,7 @@ describe Targets::GenerateFuelTypes do
           has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(::TargetsService).to receive(:suggest_use_of_estimate?).and_return(false)
       end
 
@@ -124,7 +124,7 @@ describe Targets::GenerateFuelTypes do
           has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(::TargetsService).to receive(:suggest_use_of_estimate?).and_raise("error")
       end
 

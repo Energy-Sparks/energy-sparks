@@ -6,7 +6,7 @@ describe "Jobs", type: :system do
   let!(:voluntary)   { create(:job, voluntary: true, title: "Voluntary") }
   let!(:open_role)   { create(:job, closing_date: nil, title: "Open role") }
 
-  before(:each) do
+  before do
     visit jobs_path
   end
 
@@ -24,7 +24,7 @@ describe "Jobs", type: :system do
   end
 
   it 'hides older jobs' do
-    expect(page).to_not have_content(old_job.title)
+    expect(page).not_to have_content(old_job.title)
   end
 
   it 'shows expected download links' do

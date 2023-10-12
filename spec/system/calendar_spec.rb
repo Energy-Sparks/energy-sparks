@@ -4,9 +4,9 @@ RSpec.describe "calendar view", type: :system do
   include_context 'calendar data'
 
   context 'as an admin' do
-    let!(:admin)  { create(:admin) }
+    let!(:admin) { create(:admin) }
 
-    before(:each) do
+    before do
       create(:academic_year, calendar: calendar, start_date: Date.parse("01/01/#{Time.zone.today.year}"))
       sign_in(admin)
       visit calendar_path(calendar)

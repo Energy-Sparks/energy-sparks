@@ -7,12 +7,12 @@ RSpec.describe "school alerts", type: :system do
   let(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, description: gas_fuel_alert_type_description) }
   let(:gas_date) { Date.parse('2019-01-01') }
 
-  before(:each) do
+  before do
     sign_in(user)
     visit school_path(school)
   end
 
-  it 'should show all alerts' do
+  it 'shows all alerts' do
     alert_run = create(:alert_generation_run, school: school)
     create(:alert, alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0, alert_generation_run: alert_run)
     create(:alert, alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0, alert_generation_run: alert_run)

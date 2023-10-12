@@ -34,9 +34,11 @@ RSpec.describe Schools::FindOutMoreController, type: :controller do
 
   context 'for an admin user' do
     let(:user) { create(:admin) }
-    before(:each) do
+
+    before do
       sign_in(user)
     end
+
     it 'redirects the user' do
       get :show, params: { school_id: school.to_param, id: FindOutMore.first.to_param }
       expect(response).to redirect_to(school_advice_path(school))
@@ -44,18 +46,22 @@ RSpec.describe Schools::FindOutMoreController, type: :controller do
   end
 
   context 'for a staff user' do
-    before(:each) do
+    before do
       sign_in(user)
     end
+
     it 'redirects the user' do
       get :show, params: { school_id: school.to_param, id: FindOutMore.first.to_param }
       expect(response).to redirect_to(school_advice_path(school))
     end
+
     context 'and there is an advice page' do
       let(:advice_page) { create(:advice_page, key: :baseload) }
-      before(:each) do
+
+      before do
         alert_type_rating.alert_type.update(advice_page: advice_page)
       end
+
       it 'redirects to the page' do
         get :show, params: { school_id: school.to_param, id: FindOutMore.first.to_param }
         expect(response).to redirect_to(insights_school_advice_baseload_path(school))

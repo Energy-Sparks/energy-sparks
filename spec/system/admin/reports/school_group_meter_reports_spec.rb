@@ -9,13 +9,13 @@ describe 'school group meter reports', type: :system do
   let!(:meter)            { create(:electricity_meter, school: school, data_source: data_source) }
   let!(:meter_inactive)   { create(:electricity_meter, school: school, active: false, data_source: data_source) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit admin_reports_path
   end
 
   context 'when on index page' do
-    before :each do
+    before do
       click_on "School group meter reports"
     end
 
@@ -33,13 +33,14 @@ describe 'school group meter reports', type: :system do
           click_on "Email meter report"
         end
       end
+
       it { expect(page).to have_content "Meter report for #{school_group.name} requested to be sent to #{admin.email}" }
       it { expect(page).to have_content "School group meter data reports" }
     end
   end
 
   context 'when viewing the "unlinked" school group meter report page' do
-    before :each do
+    before do
       visit admin_school_group_meter_report_path(school_group)
     end
 

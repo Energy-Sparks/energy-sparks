@@ -8,7 +8,7 @@ describe "downloads", type: :system do
   let!(:meter)                    { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan) }
 
   context 'as teacher' do
-    before(:each) do
+    before do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
 
       sign_in(teacher)
@@ -65,7 +65,7 @@ describe "downloads", type: :system do
     let!(:admin)                  { create(:admin) }
     let!(:filtered_school)        { create(:school, :with_feed_areas, name: "Filter school") }
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit school_path(filtered_school)
       #this is the in-page link
@@ -87,7 +87,7 @@ describe "downloads", type: :system do
 
       # Then check the content
       meter.amr_data_feed_readings.each do |record|
-        expect(page.source).to_not have_content amr_data_feed_reading_to_s(meter, record)
+        expect(page.source).not_to have_content amr_data_feed_reading_to_s(meter, record)
       end
 
       filtered_meter_with_raw_data.amr_data_feed_readings.each do |record|

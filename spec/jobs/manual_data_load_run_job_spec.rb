@@ -8,7 +8,7 @@ describe ManualDataLoadRunJob, ts: false do
   let(:imported)            { 55 }
   let(:updated)             { 99 }
 
-  before(:each) do
+  before do
     #stub the service
     allow_any_instance_of(Amr::ProcessAmrReadingData).to receive(:perform).and_return(true)
     allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(imported)
@@ -16,7 +16,7 @@ describe ManualDataLoadRunJob, ts: false do
   end
 
   context 'with a valid file' do
-    before(:each) do
+    before do
       expect_any_instance_of(Database::VacuumService).to receive(:perform)
       expect(run.status).to eq "pending"
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
@@ -39,23 +39,24 @@ describe ManualDataLoadRunJob, ts: false do
     let(:imported)            { 2 }
     let(:updated)             { 0 }
 
-    before(:each) do
-      expect_any_instance_of(Database::VacuumService).to_not receive(:perform)
+    before do
+      expect_any_instance_of(Database::VacuumService).not_to receive(:perform)
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
+
     it 'completed with no vacuum' do
       expect(run.status).to eq "done"
     end
   end
 
   context 'when a problem occurs' do
-    before(:each) do
+    before do
       #stub the service
       allow_any_instance_of(Amr::ProcessAmrReadingData).to receive(:perform).and_raise("An error occured")
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(0)
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(0)
       expect(run.status).to eq "pending"
-      expect_any_instance_of(Database::VacuumService).to_not receive(:perform)
+      expect_any_instance_of(Database::VacuumService).not_to receive(:perform)
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
 

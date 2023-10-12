@@ -6,7 +6,7 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
   subject(:service) { Amr::UpsertValidatedReadingsForAMeter.new(dashboard_meter) }
 
   describe '#perform' do
-    before(:each) do
+    before do
       service.perform
     end
 

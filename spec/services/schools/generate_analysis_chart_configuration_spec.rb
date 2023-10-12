@@ -45,11 +45,11 @@ module Schools
 
     let(:chart_data) { instance_double(ChartData) }
 
-    before(:each) do
+    before do
       allow(ChartData).to receive(:new).and_return(chart_data)
     end
 
-    context '#generate' do
+    describe '#generate' do
       it 'generates pupil charts' do
         allow(chart_data).to receive(:has_chart_data?).and_return(true, true)
         chart_config = GenerateAnalysisChartConfiguration.new(school, nil, fuel_configuration, page_config).generate([:pupil_analysis_page])

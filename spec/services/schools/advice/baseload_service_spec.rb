@@ -65,6 +65,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     before do
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
     end
+
     it 'returns usage' do
       expect(service.annual_baseload_usage).to eq(usage)
     end
@@ -74,6 +75,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     before do
       allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
     end
+
     it 'returns the baseload vs benchmark' do
       expect(service.average_baseload_kw_benchmark).to eq(average_baseload_kw)
     end
@@ -85,6 +87,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
       allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:average_baseload_kw).with(compare: :benchmark_school).and_return(average_baseload_kw)
       allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:average_baseload_kw).with(compare: :exemplar_school).and_return(exemplar_average_baseload_kw)
     end
+
     it 'returns a comparison' do
       comparison = service.benchmark_baseload
       expect(comparison.school_value).to eq usage
@@ -98,6 +101,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     before do
       allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:baseload_usage).and_return(usage)
     end
+
     it 'returns usage' do
       expect(service.baseload_usage_benchmark).to eq(usage)
     end
@@ -107,6 +111,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     before do
       allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:estimated_savings).and_return(savings)
     end
+
     it 'returns usage' do
       expect(service.estimated_savings).to eq(savings)
     end
@@ -115,10 +120,12 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   describe '#annual_average_baseloads' do
     let(:start_date) { Date.parse('20190101')}
     let(:end_date) { Date.parse('20210101')}
+
     before do
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
     end
+
     it 'returns usage by years' do
       result = service.annual_average_baseloads
       expect(result.count).to eq(3)
@@ -141,6 +148,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
       allow(meter_collection).to receive(:meter?).and_return(double('meter', fuel_type: :electricity, amr_data: amr_data))
     end
+
     it 'returns usage by years' do
       result = service.baseload_meter_breakdown
       expect(result.keys).to match_array([meter_1])
@@ -151,10 +159,11 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#meter_breakdown_table_total' do
-    before(:each) do
+    before do
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
     end
+
     it 'returns the total' do
       result = service.meter_breakdown_table_total
       expect(result.baseload_kw).to eq average_baseload_kw
@@ -167,10 +176,12 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
 
   describe '#seasonal_variation' do
     let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3.0) }
+
     before do
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:seasonal_variation).and_return(seasonal_variation)
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:estimated_costs).and_return(savings)
     end
+
     it 'returns variation' do
       result = service.seasonal_variation
       expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw, :meter, :enough_data?])
@@ -191,14 +202,17 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:data_available_from).and_return(data_available_from)
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:estimated_costs).and_return(savings)
     end
+
     it 'returns variation' do
       result = service.seasonal_variation_by_meter
       expect(result.keys).to match_array(%w[meter1 meter2])
       expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw, :meter, :enough_data?])
     end
+
     context 'and theres not enough data' do
       let(:enough_data) { false }
       let(:data_available_from) { Time.zone.today + 10 }
+
       it 'returns a limited variation' do
         result = service.seasonal_variation_by_meter
         expect(result.keys).to match_array(%w[meter1 meter2])
@@ -209,10 +223,12 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
 
   describe '#intraweek_variation' do
     let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, max_day: 0, min_day: 1) }
+
     before do
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:intraweek_variation).and_return(intraweek_variation)
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:estimated_costs).and_return(savings)
     end
+
     it 'returns variation' do
       result = service.intraweek_variation
       expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating, :meter, :enough_data?, :min_day, :max_day])
@@ -233,14 +249,17 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:data_available_from).and_return(data_available_from)
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:estimated_costs).and_return(savings)
     end
+
     it 'returns variation' do
       result = service.intraweek_variation_by_meter
       expect(result.keys).to match_array(%w[meter1 meter2])
       expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating, :meter, :enough_data?, :min_day, :max_day])
     end
+
     context 'and theres not enough data' do
       let(:enough_data) { false }
       let(:data_available_from) { Time.zone.today + 10 }
+
       it 'returns a limited variation' do
         result = service.intraweek_variation_by_meter
         expect(result.keys).to match_array(%w[meter1 meter2])
@@ -253,6 +272,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(start_date: Date.parse('20190101'), end_date: Date.parse('20200101'))) }
     let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(start_date: Date.parse('20180101'), end_date: Date.parse('20210101'))) }
     let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
+
     it 'returns date ranges' do
       result = service.date_ranges_by_meter
       expect(result.keys).to match_array(%w[meter1 meter2])
@@ -264,21 +284,27 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   describe '#calculate_rating_from_range' do
     let(:good) {0.0}
     let(:bad)  {0.5}
+
     it 'shows 0% as 10.0' do
       expect(service.calculate_rating_from_range(good, bad, 0)).to eq(10.0)
     end
+
     it 'shows 10% as 8.0' do
       expect(service.calculate_rating_from_range(good, bad, 0.1)).to eq(8.0)
     end
+
     it 'shows -10% as 8.0' do
       expect(service.calculate_rating_from_range(good, bad, -0.1.abs)).to eq(8.0)
     end
+
     it 'shows 40% as 2.0' do
       expect(service.calculate_rating_from_range(good, bad, 0.4)).to eq(2.0)
     end
+
     it 'shows -40% as 2.0' do
       expect(service.calculate_rating_from_range(good, bad, -0.4)).to eq(2.0)
     end
+
     it 'shows 50% as 0.0' do
       expect(service.calculate_rating_from_range(good, bad, 0.5)).to eq(0.0)
     end

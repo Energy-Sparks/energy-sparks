@@ -11,7 +11,7 @@ describe 'school groups', :school_groups, type: :system do
   let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, floor_area: 300.0, data_enabled: true, visible: true, active: true) }
 
   before do
-    allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return([:electricity, :gas, :storage_heaters])
     DashboardMessage.create!(messageable_type: 'SchoolGroup', messageable_id: school_group.id, message: 'A school group notice message')
     school_group.schools.reload
   end
@@ -28,23 +28,23 @@ describe 'school groups', :school_groups, type: :system do
     describe 'when not logged in' do
       it 'redirects enhanced page actions to school group page' do
         visit map_school_group_path(school_group)
-        expect(current_path).to eq "/school_groups/#{school_group.slug}"
+        expect(page).to have_current_path "/school_groups/#{school_group.slug}", ignore_query: true
         visit comparisons_school_group_path(school_group)
-        expect(current_path).to eq "/school_groups/#{school_group.slug}"
+        expect(page).to have_current_path "/school_groups/#{school_group.slug}", ignore_query: true
         visit priority_actions_school_group_path(school_group)
-        expect(current_path).to eq "/school_groups/#{school_group.slug}"
+        expect(page).to have_current_path "/school_groups/#{school_group.slug}", ignore_query: true
         visit current_scores_school_group_path(school_group)
-        expect(current_path).to eq "/school_groups/#{school_group.slug}"
+        expect(page).to have_current_path "/school_groups/#{school_group.slug}", ignore_query: true
       end
 
       it 'does show a specific group' do
         visit school_group_path(school_group)
         expect(page).to have_content(school_1.name)
         expect(page).to have_content(school_2.name)
-        expect(page).to_not have_content('Recent Usage')
-        expect(page).to_not have_content('Comparisons')
-        expect(page).to_not have_content('Priority Actions')
-        expect(page).to_not have_content('Current Scores')
+        expect(page).not_to have_content('Recent Usage')
+        expect(page).not_to have_content('Comparisons')
+        expect(page).not_to have_content('Priority Actions')
+        expect(page).not_to have_content('Current Scores')
       end
 
       it 'does not show enhanced page sub navigation bar' do
@@ -79,7 +79,7 @@ describe 'school groups', :school_groups, type: :system do
         it 'doesnt show compare link' do
           visit school_group_path(school_group)
           within('.application') do
-            expect(page).to_not have_link("Compare schools")
+            expect(page).not_to have_link("Compare schools")
           end
         end
       end
@@ -88,9 +88,10 @@ describe 'school groups', :school_groups, type: :system do
     describe 'when logged in as school admin' do
       let!(:user) { create(:school_admin, school: school_1) }
 
-      before(:each) do
+      before do
         sign_in(user)
       end
+
       it 'shows compare link' do
         visit school_group_path(school_group)
         expect(page).to have_link("Compare schools")
@@ -105,7 +106,7 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     describe 'when logged in' do
-      before(:each) do
+      before do
         sign_in(user)
       end
 
@@ -145,6 +146,7 @@ describe 'school groups', :school_groups, type: :system do
     context 'when not logged in' do
       context 'when school group is public' do
         let(:public) { true }
+
         include_examples "a public school group dashboard"
         include_examples 'school group no dashboard notification'
         include_examples 'shows the we are working with message'
@@ -152,7 +154,7 @@ describe 'school groups', :school_groups, type: :system do
         describe 'chart updates' do
           it 'shows a form to select default chart units' do
             visit school_group_chart_updates_path(school_group)
-            expect(current_path).to eq('/users/sign_in')
+            expect(page).to have_current_path('/users/sign_in', ignore_query: true)
           end
         end
 
@@ -163,7 +165,7 @@ describe 'school groups', :school_groups, type: :system do
         describe 'showing recent usage tab' do
           include_context "school group recent usage"
 
-          before(:each) do
+          before do
             visit school_group_path(school_group)
           end
 
@@ -312,7 +314,7 @@ describe 'school groups', :school_groups, type: :system do
 
         describe 'showing comparisons' do
           include_context "school group comparisons"
-          before(:each) do
+          before do
             visit comparisons_school_group_path(school_group)
           end
 
@@ -387,7 +389,7 @@ describe 'school groups', :school_groups, type: :system do
         describe 'showing priority actions' do
           include_context "school group priority actions"
 
-          before(:each) do
+          before do
             visit priority_actions_school_group_path(school_group)
           end
 
@@ -428,18 +430,20 @@ describe 'school groups', :school_groups, type: :system do
             before do
               first(:link, "Spending too much money on heating").click
             end
+
             it 'has a list of schools' do
               expect(page).to have_content("Savings")
               expect(page).to have_content("This action has been identified as a priority for the following schools")
               expect(page).to have_content(school_1.name)
             end
+
             include_examples 'not showing the cluster column'
           end
         end
 
         describe 'showing current_scores' do
           include_context "school group current scores"
-          before(:each) do
+          before do
             visit current_scores_school_group_path(school_group)
           end
 
@@ -483,12 +487,12 @@ describe 'school groups', :school_groups, type: :system do
         end
 
         describe 'showing map' do
-          before(:each) do
+          before do
             visit map_school_group_path(school_group)
           end
 
           it 'has expected path' do
-            expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+            expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
           end
 
           it 'shows breadcrumb' do
@@ -518,6 +522,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is private' do
         let(:public) { false }
+
         include_examples "a private school group dashboard"
         include_examples 'does not show the sub navigation menu'
       end
@@ -526,7 +531,7 @@ describe 'school groups', :school_groups, type: :system do
     context 'when logged in as a school admin' do
       let!(:user) { create(:school_admin, school: school_1) }
 
-      before(:each) do
+      before do
         sign_in(user)
       end
 
@@ -538,6 +543,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is public' do
         let(:public) { true }
+
         include_examples "a public school group dashboard"
         include_examples "school group dashboard notification"
         include_examples "visiting chart updates redirects to group page"
@@ -545,6 +551,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is private' do
         let(:public) { false }
+
         include_examples "a public school group dashboard"
         include_examples "school group dashboard notification"
         include_examples "visiting chart updates redirects to group page"
@@ -552,6 +559,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context "recent usage tab" do
         let(:url) { school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
@@ -559,6 +567,7 @@ describe 'school groups', :school_groups, type: :system do
       context "comparisons tab" do
         include_context "school group comparisons"
         let(:url) { comparisons_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
@@ -566,19 +575,21 @@ describe 'school groups', :school_groups, type: :system do
       context "priority actions tab" do
         include_context "school group priority actions"
         let(:url) { priority_actions_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
 
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
     end
 
     context 'when logged in as a non school admin' do
-      before(:each) do
+      before do
         sign_in(user)
       end
 
@@ -590,6 +601,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is public' do
         let(:public) { true }
+
         include_examples "a public school group dashboard"
         include_examples "school group no dashboard notification"
         include_examples "visiting chart updates redirects to group page"
@@ -597,6 +609,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is private' do
         let(:public) { false }
+
         include_examples "a private school group dashboard"
         include_examples "school group no dashboard notification"
         include_examples "visiting chart updates redirects to group map page"
@@ -604,6 +617,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context "recent usage tab" do
         let(:url) { school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
@@ -611,6 +625,7 @@ describe 'school groups', :school_groups, type: :system do
       context "comparisons tab" do
         include_context "school group comparisons"
         let(:url) { comparisons_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
@@ -618,12 +633,14 @@ describe 'school groups', :school_groups, type: :system do
       context "priority actions tab" do
         include_context "school group priority actions"
         let(:url) { priority_actions_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
 
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
@@ -633,7 +650,7 @@ describe 'school groups', :school_groups, type: :system do
       let!(:user)           { create(:group_admin, school_group: school_group) }
       let!(:school_group2)  { create(:school_group) }
 
-      before(:each) do
+      before do
         sign_in(user)
         school_group.schools.delete_all
         create :school, active: true, school_group: school_group, chart_preference: 'default'
@@ -665,17 +682,20 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is public' do
         let(:public) { true }
+
         include_examples "a public school group dashboard"
       end
 
       context 'when school group is private' do
         let(:public) { false }
+
         include_examples "a public school group dashboard"
       end
 
       context "recent usage tab" do
         let!(:school) { school_group.schools.first }
         let(:url) { school_group_path(school_group) }
+
         include_examples 'showing the cluster column'
         include_examples 'showing the cluster column in the download'
       end
@@ -684,6 +704,7 @@ describe 'school groups', :school_groups, type: :system do
         include_context "school group comparisons"
         let!(:school) { school_1 }
         let(:url) { comparisons_school_group_path(school_group) }
+
         include_examples 'showing the cluster column'
         include_examples 'showing the cluster column in the download'
       end
@@ -692,6 +713,7 @@ describe 'school groups', :school_groups, type: :system do
         include_context "school group priority actions"
         let!(:school) { school_1 }
         let(:url) { priority_actions_school_group_path(school_group) }
+
         include_examples 'showing the cluster column'
         include_examples 'showing the cluster column in the download'
       end
@@ -699,6 +721,7 @@ describe 'school groups', :school_groups, type: :system do
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
         let!(:school) { school_group.schools.first }
+
         include_examples 'showing the cluster column'
         include_examples 'showing the cluster column in the download'
       end
@@ -708,7 +731,7 @@ describe 'school groups', :school_groups, type: :system do
       let!(:user)           { create(:admin) }
       let!(:school_group2)  { create(:school_group) }
 
-      before(:each) do
+      before do
         sign_in(user)
         school_group.schools.delete_all
         create :school, active: true, school_group: school_group, chart_preference: 'default'
@@ -740,6 +763,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is public' do
         let(:public) { true }
+
         include_examples "a public school group dashboard"
       end
 
@@ -750,6 +774,7 @@ describe 'school groups', :school_groups, type: :system do
       context "recent usage tab" do
         let!(:school) { school_group.schools.first }
         let(:url) { school_group_path(school_group) }
+
         include_examples 'showing the cluster column'
         include_examples 'showing the cluster column in the download'
       end
@@ -758,6 +783,7 @@ describe 'school groups', :school_groups, type: :system do
         include_context "school group comparisons"
         let!(:school) { school_1 }
         let(:url) { comparisons_school_group_path(school_group) }
+
         include_examples 'showing the cluster column'
         include_examples 'showing the cluster column in the download'
       end
@@ -766,6 +792,7 @@ describe 'school groups', :school_groups, type: :system do
         include_context "school group priority actions"
         let!(:school) { school_1 }
         let(:url) { priority_actions_school_group_path(school_group) }
+
         include_examples 'showing the cluster column'
         include_examples 'showing the cluster column in the download'
       end
@@ -773,6 +800,7 @@ describe 'school groups', :school_groups, type: :system do
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
         let!(:school) { school_group.schools.first }
+
         include_examples 'showing the cluster column'
       end
     end
@@ -781,7 +809,7 @@ describe 'school groups', :school_groups, type: :system do
       let!(:school_group_2)     { create(:school_group, public: false) }
       let!(:user)               { create(:group_admin, school_group: school_group_2) }
 
-      before(:each) do
+      before do
         sign_in(user)
       end
 
@@ -793,6 +821,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is public' do
         let(:public) { true }
+
         include_examples "a public school group dashboard"
         include_examples "school group no dashboard notification"
         include_examples "visiting chart updates redirects to group page"
@@ -800,6 +829,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is private' do
         let(:public) { false }
+
         include_examples "a private school group dashboard"
         include_examples "school group no dashboard notification"
         include_examples "visiting chart updates redirects to group map page"
@@ -807,6 +837,7 @@ describe 'school groups', :school_groups, type: :system do
 
       context "recent usage tab" do
         let(:url) { school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
@@ -814,6 +845,7 @@ describe 'school groups', :school_groups, type: :system do
       context "comparisons tab" do
         include_context "school group comparisons"
         let(:url) { comparisons_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
@@ -821,12 +853,14 @@ describe 'school groups', :school_groups, type: :system do
       context "priority actions tab" do
         include_context "school group priority actions"
         let(:url) { priority_actions_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end
 
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
+
         include_examples 'not showing the cluster column'
         include_examples 'not showing the cluster column in the download'
       end

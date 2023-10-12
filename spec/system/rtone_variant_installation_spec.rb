@@ -13,7 +13,7 @@ RSpec.describe "Rtone variant installation management", :low_carbon_hub_installa
   let(:end_date)              { start_date + 1.day }
 
   context 'as an admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit school_meters_path(school)
       click_on 'Manage Solar API feeds'
@@ -29,7 +29,7 @@ RSpec.describe "Rtone variant installation management", :low_carbon_hub_installa
 
       expect { click_on 'Submit' }.to change { RtoneVariantInstallation.count }.by(1)
 
-      expect(page).to_not have_content("This school has no Rtone Variant API feeds")
+      expect(page).not_to have_content("This school has no Rtone Variant API feeds")
       expect(page).to have_content(rtone_meter_id)
       expect(school.rtone_variant_installations.first.meter).to eql meter
       expect(school.rtone_variant_installations.first.username).to eql username

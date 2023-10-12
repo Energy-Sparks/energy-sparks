@@ -151,13 +151,13 @@ describe 'Meter', :meters do
         it 'is invalid with a 16 digit number' do
           meter = Meter.new(attributes.merge(mpan_mprn: 9_991_098_598_765_437))
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to_not be_empty
+          expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
 
         it 'is invalid with a number less than 13 digits' do
           meter = Meter.new(attributes.merge(mpan_mprn: 123))
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to_not be_empty
+          expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
       end
 
@@ -180,13 +180,13 @@ describe 'Meter', :meters do
         it 'is invalid with a number less than 14 digits' do
           meter = Meter.new(attributes.merge(mpan_mprn: 1234))
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to_not be_empty
+          expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
 
         it 'is invalid with a 14 digit number not beginning with 6,7,9' do
           meter = Meter.new(attributes.merge(mpan_mprn: 11_098_598_765_437))
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to_not be_empty
+          expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
 
         it 'validates meter type is not changed when there is an update' do
@@ -236,13 +236,13 @@ describe 'Meter', :meters do
         it 'is invalid with a number less than 13 digits' do
           meter = Meter.new(attributes.merge(mpan_mprn: 123_456_789_012))
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to_not be_empty
+          expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
 
         it 'is invalid with a number more than 15 digits' do
           meter = Meter.new(attributes.merge(mpan_mprn: 1_234_567_890_123_456))
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to_not be_empty
+          expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
       end
 
@@ -258,7 +258,7 @@ describe 'Meter', :meters do
         it 'is invalid with a number less than 13 digits' do
           meter = Meter.new(attributes.merge(mpan_mprn: 123_456_789_012))
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to_not be_empty
+          expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
       end
 
@@ -274,7 +274,7 @@ describe 'Meter', :meters do
         it 'is invalid with a number longer than 15 digits' do
           meter = Meter.new(attributes.merge(mpan_mprn: 1_234_567_890_123_456))
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to_not be_empty
+          expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
       end
     end
@@ -340,13 +340,13 @@ describe 'Meter', :meters do
       end
 
       describe '#last_validated_reading' do
-        it "should find latest reading" do
+        it "finds latest reading" do
           expect(meter.last_validated_reading).to eql(base_date + 4.days)
         end
       end
 
       describe '#first_validated_reading' do
-        it "should find first reading" do
+        it "finds first reading" do
           expect(meter.first_validated_reading).to eql(base_date)
         end
       end
@@ -369,13 +369,13 @@ describe 'Meter', :meters do
       end
 
       describe '#modified_validated_readings' do
-        it "should find only non-ORIG readings in last 2 years" do
+        it "finds only non-ORIG readings in last 2 years" do
           expect(meter.modified_validated_readings.count).to eq(5)
         end
       end
 
       describe '#gappy_validated_readings' do
-        it "should find gap in ORIG readings" do
+        it "finds gap in ORIG readings" do
           gaps = meter.gappy_validated_readings(2)
           expect(gaps.count).to eql(2)
           gap = gaps.first
@@ -389,7 +389,7 @@ describe 'Meter', :meters do
     end
   end
 
-  context '.all_meter_attributes' do
+  describe '.all_meter_attributes' do
     let(:school_group)    { create(:school_group) }
     let(:school)          { create(:school, school_group: school_group) }
     let(:meter)           { create(:electricity_meter, school: school) }
@@ -441,8 +441,8 @@ describe 'Meter', :meters do
           let!(:meter_specific_electricity_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :half_hourly) }
           let!(:meter_specific_electricity_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :non_half_hourly) }
 
-          it_should_behave_like 'a meter with a non half hourly meter system', :electricity, [:nhh_amr, :nhh, :smets2_smart]
-          it_should_behave_like 'a meter with a half hourly meter system', :electricity, [:hh]
+          it_behaves_like 'a meter with a non half hourly meter system', :electricity, [:nhh_amr, :nhh, :smets2_smart]
+          it_behaves_like 'a meter with a half hourly meter system', :electricity, [:hh]
         end
 
         it 'includes inherited tariffs with the parent filtered by the meters meter_system (non_half_hourly)' do

@@ -10,13 +10,13 @@ describe ActivationEmailSender, :schools, type: :service do
       let!(:school_admin) { create(:school_admin, school: school) }
       let!(:staff) { create(:staff, school: school) }
 
-      before(:each) do
+      before do
         service.send
       end
 
       it 'sends an activation email to staff and admins' do
         email = ActionMailer::Base.deliveries.last
-        expect(email).to_not be nil
+        expect(email).not_to be nil
         expect(email.subject).to include('is live on Energy Sparks')
         expect(email.to).to match [school_admin.email, staff.email]
       end
@@ -27,10 +27,11 @@ describe ActivationEmailSender, :schools, type: :service do
       let!(:school_onboarding) { create :school_onboarding, school: school, created_user: onboarding_user}
 
       context 'when an email has already been sent' do
-        before(:each) do
+        before do
           school_onboarding.events.create!(event: :activation_email_sent)
           service.send
         end
+
         it 'doesnt send another' do
           expect(ActionMailer::Base.deliveries.size).to eq(0)
         end
@@ -65,6 +66,7 @@ describe ActivationEmailSender, :schools, type: :service do
               create :school_onboarding,
                 created_user: nil
             end
+
             it 'still sends email to staff and admins' do
               service.send
               email = ActionMailer::Base.deliveries.last
@@ -79,7 +81,7 @@ describe ActivationEmailSender, :schools, type: :service do
           let(:email_body) { email.body.to_s }
           let(:matcher) { Capybara::Node::Simple.new(email_body) }
 
-          before :each do
+          before do
             school.update(data_enabled: false)
             # service.send
           end

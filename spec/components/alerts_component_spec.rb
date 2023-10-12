@@ -17,6 +17,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
 
   context "with all params" do
     let(:params) { all_params }
+
     it "adds specified classes" do
       expect(html).to have_css('div.alerts-component')
       expect(html).to have_css('div.positive')
@@ -32,6 +33,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
 
     context 'without links' do
       let(:show_links) { false }
+
       it "does not display links" do
         expect(html).not_to have_link('View analysis')
       end
@@ -43,6 +45,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
 
     context 'without icons' do
       let(:show_links) { false }
+
       it "does not display icons" do
         expect(html).to have_css('i.fa-fire')
       end

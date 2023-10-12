@@ -21,10 +21,11 @@ describe Transifex::Loader, type: :service do
     let!(:activity_type)      { create(:activity_type, active: true, activity_category: activity_category) }
     let(:full_sync) { false }
 
-    before(:each) do
+    before do
       expect_any_instance_of(Transifex::Synchroniser).not_to receive(:push)
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
     end
+
     it 'does pull but not push' do
       service.perform
     end
@@ -34,15 +35,17 @@ describe Transifex::Loader, type: :service do
     let!(:activity_category)  { create(:activity_category) }
     let!(:activity_type)      { create(:activity_type, active: true, activity_category: activity_category) }
 
-    before(:each) do
+    before do
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_raise("Sync error")
     end
+
     it 'logs errors in the database' do
       expect { service.perform }.to change(TransifexLoadError, :count).by(2)
       expect(TransifexLoadError.first.record_type).to eq("ActivityType")
       expect(TransifexLoadError.first.record_id).to eq activity_type.id
       expect(TransifexLoadError.first.error).to eq("Sync error")
     end
+
     it 'logs errors in Rollbar' do
       expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load, record_type: "ActivityType", record_id: activity_type.id)
       expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load, record_type: "ActivityCategory", record_id: activity_category.id)
@@ -66,7 +69,7 @@ describe Transifex::Loader, type: :service do
     let!(:consent_statement)        { create(:consent_statement) }
     let!(:advice_page)              { create(:advice_page, learn_more: advice_page_text) }
 
-    before(:each) do
+    before do
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
       allow_any_instance_of(Transifex::Synchroniser).to receive(:push).and_return(true)
       service.perform
@@ -90,15 +93,18 @@ describe Transifex::Loader, type: :service do
       it 'updates the pull count' do
         expect(TransifexLoad.first.pulled).to eq 10
       end
+
       it 'updates the push count' do
         expect(TransifexLoad.first.pushed).to eq 10
       end
 
       context 'when a record has no contents' do
         let!(:advice_page_text) { "" }
+
         it 'skips the pull' do
           expect(TransifexLoad.first.pulled).to eq 9
         end
+
         it 'skips the push' do
           expect(TransifexLoad.first.pushed).to eq 9
         end

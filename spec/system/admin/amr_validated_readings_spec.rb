@@ -6,13 +6,13 @@ RSpec.describe "meter reports", :amr_validated_readings, type: :system do
   let!(:admin)        { create(:admin)}
   let!(:meter)        { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
   end
 
   context 'when a meter has readings' do
-    before(:each) do
+    before do
       visit admin_school_group_meter_report_path(school.school_group)
     end
 

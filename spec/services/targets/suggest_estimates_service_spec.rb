@@ -23,17 +23,18 @@ describe Targets::SuggestEstimatesService, type: :service do
   let(:target_end_date)      { Date.new(2023, 1, 1)}
   let!(:school_target)       { create(:school_target, school: school, start_date: target_start_date, target_date: target_end_date)}
 
-  before(:each) do
+  before do
     school.configuration.update!(suggest_estimates_fuel_types: suggest_estimates_fuel_types, aggregate_meter_dates: aggregate_meter_dates)
     school.reload
   end
 
-  context '#suggestions' do
+  describe '#suggestions' do
     context 'checking data' do
       it 'removes gas' do
         expect(service.suggestions(check_data: true)).to match_array(["electricity"])
       end
     end
+
     context 'when not checking data' do
       it 'keeps gas' do
         expect(service.suggestions(check_data: false)).to match_array(suggest_estimates_fuel_types)
@@ -41,7 +42,7 @@ describe Targets::SuggestEstimatesService, type: :service do
     end
   end
 
-  context '#suggest_for_fuel_type?' do
+  describe '#suggest_for_fuel_type?' do
     context 'checking data' do
       it 'removes gas' do
         expect(service.suggest_for_fuel_type?(:gas, check_data: true)).to eq false
@@ -55,13 +56,16 @@ describe Targets::SuggestEstimatesService, type: :service do
         end
       end
     end
+
     context 'when not checking data' do
       it 'keeps gas' do
         expect(service.suggest_for_fuel_type?(:gas, check_data: false)).to eq true
       end
     end
+
     context 'with no candidates' do
       let(:suggest_estimates_fuel_types) { [] }
+
       it 'never suggests' do
         expect(service.suggest_for_fuel_type?(:gas, check_data: false)).to eq false
         expect(service.suggest_for_fuel_type?(:gas, check_data: true)).to eq false

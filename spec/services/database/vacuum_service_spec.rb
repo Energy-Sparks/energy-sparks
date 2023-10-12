@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Database::VacuumService do
   let(:tables) { [:amr_data_feed_readings, :amr_reading_warnings] }
+
   subject(:vacuum_service) { Database::VacuumService.new(tables) }
 
   describe "#perform" do

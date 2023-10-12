@@ -65,9 +65,11 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       {}
     end
+
     it 'returns empty list' do
       expect(subject.by_fuel_type).to eq([])
     end
+
     it 'handles date_ranges' do
       expect(subject.date_ranges).to eq('')
     end
@@ -77,6 +79,7 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { available_from: 'Data available from Feb 2022' } } }
     end
+
     it 'shows status and message' do
       expect(subject.by_fuel_type.second.has_data).to be_falsey
       expect(subject.by_fuel_type.second.message).to eq('Data available from Feb 2022')
@@ -88,6 +91,7 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { available_from: available_date.iso8601 } } }
     end
+
     it 'shows status and message' do
       expect(subject.by_fuel_type.second.has_data).to be_falsey
       expect(subject.by_fuel_type.second.message).to eq("Data available from #{available_date.strftime('%b %Y')}")
@@ -99,6 +103,7 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { available_from: available_date.iso8601 } } }
     end
+
     it 'shows status and message' do
       expect(subject.by_fuel_type.second.has_data).to be_falsey
       expect(subject.by_fuel_type.second.message).to eq("Data available from #{available_date.strftime('%a %d %b %Y')}")
@@ -109,6 +114,7 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { kwh: '123' }, workweek: { co2: '456' } } }
     end
+
     it 'shows status' do
       expect(subject.by_fuel_type.first.has_data).to be_truthy
       expect(subject.by_fuel_type.second.has_data).to be_truthy
@@ -119,6 +125,7 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { kwh: '123', recent: 'no recent data' } } }
     end
+
     it 'shows status, message and class' do
       expect(subject.by_fuel_type.second.has_data).to be false
       expect(subject.by_fuel_type.second.message).to eq('no recent data')
@@ -130,6 +137,7 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { kwh: '123', recent: false } } }
     end
+
     it 'shows status, message and class' do
       expect(subject.by_fuel_type.second.has_data).to be false
       expect(subject.by_fuel_type.second.message).to eq('no recent data')
@@ -141,9 +149,10 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { kwh: '123', recent: true } } }
     end
+
     it 'shows status, message and class' do
       expect(subject.by_fuel_type.second.has_data).to be true
-      expect(subject.by_fuel_type.second.message_class).to_not eq('old-data')
+      expect(subject.by_fuel_type.second.message_class).not_to eq('old-data')
     end
   end
 
@@ -151,12 +160,15 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 }, workweek: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 } } }
     end
+
     it 'gives 2 entries' do
       expect(subject.by_fuel_type.count).to eq(2)
     end
+
     it 'gives annual data' do
       expect(subject.by_fuel_type.second.period).to eq('Last year')
     end
+
     it 'gives last week data' do
       expect(subject.by_fuel_type.first.period).to eq('Last week')
     end
@@ -166,13 +178,16 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: {}, workweek: {} }, gas: { year: {}, workweek: {} } }
     end
+
     it 'gives 4 entries' do
       expect(subject.by_fuel_type.count).to eq(4)
     end
+
     it 'gives annual data' do
       expect(subject.by_fuel_type[1].period).to eq('Last year')
       expect(subject.by_fuel_type[3].period).to eq('Last year')
     end
+
     it 'gives last week data' do
       expect(subject.by_fuel_type[0].period).to eq('Last week')
       expect(subject.by_fuel_type[2].period).to eq('Last week')
@@ -183,15 +198,19 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 } } }
     end
+
     it 'shows usage' do
       expect(subject.by_fuel_type.second.usage).to eq('12.3')
     end
+
     it 'shows cost' do
       expect(subject.by_fuel_type.second.cost).to eq('&pound;6.66')
     end
+
     it 'shows co2' do
       expect(subject.by_fuel_type.second.co2).to eq('45.6')
     end
+
     it 'shows savings' do
       expect(subject.by_fuel_type.second.savings).to eq('&pound;7.77')
     end
@@ -201,6 +220,7 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } }
     end
+
     it 'formats percentage' do
       expect(subject.by_fuel_type.first.change).to eq('-9.2%')
       expect(subject.by_fuel_type.second.change).to eq('+11%')
@@ -211,6 +231,7 @@ describe Tables::SummaryTableData do
     let(:template_data) do
       { electricity: { year: { :percent_change => '-' } } }
     end
+
     it 'formats percentage' do
       expect(subject.by_fuel_type.second.change).to eq('-')
     end
@@ -221,26 +242,32 @@ describe Tables::SummaryTableData do
       let(:template_data) do
         {}
       end
+
       it 'handles missing data' do
         expect(subject.date_ranges).to eq('')
       end
     end
+
     context 'when missing date field' do
       let(:template_data) do
         { electricity: { start_date: '', end_date: '2021-11-23' } }
       end
+
       it 'handles the error and does its best' do
         expect(subject.date_ranges).to eq('Electricity data:  - 23 Nov 2021.')
       end
     end
+
     context 'when one fuel type' do
       let(:template_data) do
         { electricity: { start_date: '2020-01-09', end_date: '2021-11-23' } }
       end
+
       it 'formats dates' do
         expect(subject.date_ranges).to eq('Electricity data: 9 Jan 2020 - 23 Nov 2021.')
       end
     end
+
     context 'when multiple fuel types' do
       let(:template_data) do
         {
@@ -248,6 +275,7 @@ describe Tables::SummaryTableData do
           gas: { start_date: '2018-06-09', end_date: '2019-07-23' }
         }
       end
+
       it 'formats dates' do
         expect(subject.date_ranges).to eq('Electricity data: 9 Jan 2020 - 23 Nov 2021. Gas data: 9 Jun 2018 - 23 Jul 2019.')
       end

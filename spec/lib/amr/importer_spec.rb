@@ -19,7 +19,7 @@ describe Amr::Importer do
 
   subject(:amr_importer) { Amr::Importer.new(config, bucket, s3_client) }
 
-  before(:each) do
+  before do
     FileUtils.mkdir_p config.local_bucket_path
     s3_client.stub_responses(:list_objects, list_of_objects)
 

@@ -124,6 +124,7 @@ describe AlertTypeRatingContentVersion do
         expect(AlertTypeRatingContentVersion.tx_resources).to match_array([content_version_pupil, content_version_management, content_version_both, content_version_management_title, content_version_sms, content_version_email])
       end
     end
+
     context 'when serialising fields' do
       it 'only includes fields with active alerts' do
         data = content_version.tx_serialise
@@ -171,25 +172,31 @@ describe AlertTypeRatingContentVersion do
       it 'produces the expected resource key' do
         expect(content_version.resource_key).to eq "alert_type_rating_content_version_#{alert_type_rating.id}"
       end
+
       it 'produces the expected key names' do
         expect(content_version.tx_attribute_key("pupil_dashboard_title")).to eq "pupil_dashboard_title_html"
       end
+
       it 'produces the expected tx values, removing trix content wrapper' do
         expect(content_version.tx_value("pupil_dashboard_title")).to eql "some content with %{tx_chart_chart_name}"
       end
+
       it 'maps all translated fields' do
         data = content_version.tx_serialise
-        expect(data["en"]).to_not be nil
+        expect(data["en"]).not_to be nil
         key = "alert_type_rating_content_version_#{alert_type_rating.id}"
-        expect(data["en"][key]).to_not be nil
+        expect(data["en"][key]).not_to be nil
         expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html"])
       end
+
       it 'created categories' do
         expect(content_version.tx_categories).to match_array(["alert_rating"])
       end
+
       it 'overrides default name' do
         expect(content_version.tx_name).to eq("some alert type - 0 to 10")
       end
+
       it 'fetches status' do
         expect(content_version.tx_status).to be_nil
         status = TransifexStatus.create_for!(content_version)

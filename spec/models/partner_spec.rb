@@ -13,7 +13,7 @@ describe Partner do
       expect(SchoolGroupPartner.count).to eql(2)
       partner.destroy
       expect(SchoolGroupPartner.count).to eql(0)
-      expect(SchoolGroup.count).to_not eql(0)
+      expect(SchoolGroup.count).not_to eql(0)
     end
   end
 
@@ -27,7 +27,7 @@ describe Partner do
       expect(SchoolPartner.count).to eql(2)
       partner.destroy
       expect(SchoolPartner.count).to eql(0)
-      expect(School.count).to_not eql(0)
+      expect(School.count).not_to eql(0)
     end
   end
 end

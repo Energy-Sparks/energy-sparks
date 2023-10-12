@@ -68,6 +68,7 @@ describe Alerts::GenerateDashboardAlerts do
 
       context 'where the pupil alerts are not active' do
         let(:pupil_active) { false }
+
         it 'does not include the alert' do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.dashboard_alerts.pupil_dashboard.count).to be 0
@@ -76,6 +77,7 @@ describe Alerts::GenerateDashboardAlerts do
 
       context 'where the management alerts are not active' do
         let(:management_active) { false }
+
         it 'does not include the alert' do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.dashboard_alerts.management_dashboard.count).to be 0

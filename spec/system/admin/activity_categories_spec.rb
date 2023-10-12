@@ -5,7 +5,7 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
   let!(:activity_category)      { create(:activity_category) }
 
   describe 'when logged in as an admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Admin'

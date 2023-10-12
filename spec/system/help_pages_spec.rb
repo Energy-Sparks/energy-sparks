@@ -11,9 +11,10 @@ describe 'help pages', type: :system do
     end
 
     context 'with an hidden page' do
-      before(:each) do
+      before do
         help_page.update!(published: false)
       end
+
       it 'serves me a 404' do
         visit help_path(help_page)
         expect(page.status_code).to eql 404
@@ -23,12 +24,13 @@ describe 'help pages', type: :system do
 
   context 'as an admin' do
     let(:admin) { create(:admin) }
-    before(:each) do
+
+    before do
       sign_in(admin)
     end
 
     context 'with an hidden page' do
-      before(:each) do
+      before do
         help_page.update!(published: false)
       end
 

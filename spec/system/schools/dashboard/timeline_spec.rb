@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples "dashboard timeline" do
-  before(:each) do
+  before do
     intervention_type = create(:intervention_type, name: 'Upgraded insulation')
     create(:observation, :intervention, school: test_school, intervention_type: intervention_type)
     create(:observation_with_temperature_recording_and_location, school: test_school)
@@ -30,12 +30,13 @@ RSpec.describe "adult dashboard timeline", type: :system do
   let(:calendar)           { create(:school_calendar, based_on: regional_calendar) }
   let(:school)             { create(:school, calendar: calendar) }
 
-  before(:each) do
+  before do
     sign_in(user) if user.present?
   end
 
   context 'as guest' do
     let(:user) { nil }
+
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end
@@ -43,6 +44,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
 
   context 'as pupil' do
     let(:user) { create(:pupil, school: school) }
+
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end
@@ -50,6 +52,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
 
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
+
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end
@@ -57,6 +60,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
+
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end
@@ -66,6 +70,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
     let(:school_group)  { create(:school_group) }
     let(:school)        { create(:school, school_group: school_group, calendar: calendar) }
     let(:user)          { create(:group_admin, school_group: school_group) }
+
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end

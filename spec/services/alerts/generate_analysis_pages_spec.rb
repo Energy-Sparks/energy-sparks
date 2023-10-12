@@ -44,6 +44,7 @@ describe Alerts::GenerateAnalysisPages do
 
       context 'where the analysis pages are not active' do
         let(:active) { false }
+
         it 'does not include the alert' do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.analysis_pages.count).to be 0

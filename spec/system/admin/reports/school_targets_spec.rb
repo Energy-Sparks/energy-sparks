@@ -5,7 +5,7 @@ describe 'school targets report', type: :system do
   let!(:school_target_1)   { create(:school_target, electricity: 1.0, gas: 2.0, storage_heaters: 3.0) }
   let!(:school_target_2)   { create(:school_target) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit admin_reports_path
   end

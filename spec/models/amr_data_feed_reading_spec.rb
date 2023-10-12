@@ -32,6 +32,7 @@ describe AmrDataFeedReading do
         context "it parses #{format}" do
           let(:date_format)   { format }
           let(:reading_date)  { read_date }
+
           it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28).iso8601 }
         end
       end
@@ -48,6 +49,7 @@ describe AmrDataFeedReading do
         context "it parses #{read_date} despite format being #{format}" do
           let(:date_format)   { format }
           let(:reading_date)  { read_date }
+
           it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28).iso8601 }
         end
       end

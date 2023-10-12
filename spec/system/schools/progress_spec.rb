@@ -44,7 +44,7 @@ describe 'target progress report', type: :system do
 
   let(:recent_data) { true }
 
-  before(:each) do
+  before do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     #update here to avoid duplicating records
     school.configuration.update!(fuel_configuration: fuel_electricity, school_target_fuel_types: school_target_fuel_types)
@@ -55,14 +55,16 @@ describe 'target progress report', type: :system do
     let(:user)  { create(:school_admin, school: school) }
 
     context 'visiting old progress path' do
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
+
       it 'redirects the index to electricity' do
         visit school_progress_index_path(school)
         expect(page).to have_content('Tracking progress')
       end
+
       it 'redirects the individual paths path' do
         visit electricity_school_progress_index_path(school)
         expect(page).to have_content('Tracking progress')
@@ -76,9 +78,10 @@ describe 'target progress report', type: :system do
     end
 
     context 'with error from analytics' do
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
       end
+
       it 'handles errors' do
         visit electricity_school_progress_index_path(school)
         expect(page).to have_content("Unfortunately due to an error we are currently unable to display your detailed progress report")
@@ -86,7 +89,7 @@ describe 'target progress report', type: :system do
     end
 
     context 'with current target' do
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(recent_data)
         create(:help_page, title: "Targets", feature: :school_targets, published: true)
@@ -96,7 +99,9 @@ describe 'target progress report', type: :system do
       context "with a link to the expired target report" do
         context "and an expired target for the same fuel" do
           let!(:expired_target) { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday, electricity: 1) }
+
           before { refresh }
+
           it 'links to the expired target report' do
             expect(page).to have_link("View last year’s target report", href: electricity_school_school_target_progress_index_path(school, expired_target))
           end
@@ -104,14 +109,16 @@ describe 'target progress report', type: :system do
 
         context "and an expired target for a different fuel" do
           let!(:expired_target) { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday, electricity: nil, gas: 1) }
+
           before { refresh }
+
           it 'does not link to the expired target report' do
-            expect(page).to_not have_link("View last year’s target report")
+            expect(page).not_to have_link("View last year’s target report")
           end
         end
 
         context "no expired target" do
-          it { expect(page).to_not have_link("View last year’s target report") }
+          it { expect(page).not_to have_link("View last year’s target report") }
         end
       end
 
@@ -135,6 +142,7 @@ describe 'target progress report', type: :system do
 
       context 'if I am achieving my target' do
         let(:cumulative_performance) { [-0.99, -0.99] }
+
         it 'says I am' do
           expect(page).to have_content("Well done, you are using -99% less electricity than last year")
         end
@@ -149,7 +157,7 @@ describe 'target progress report', type: :system do
       end
 
       it 'does not show warning if data is up to date' do
-        expect(page).to_not have_content("We have not received data for your electricity usage for over thirty days")
+        expect(page).not_to have_content("We have not received data for your electricity usage for over thirty days")
       end
 
       it 'does not show message about storage heaters' do
@@ -158,9 +166,9 @@ describe 'target progress report', type: :system do
 
       it 'shows the charts' do
         expect(page).to have_content("Progress charts")
-        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_to_date_cumulative_line')).to_not be_nil
-        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_to_date_line')).to_not be_nil
-        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_one_year_line')).to_not be_nil
+        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_to_date_cumulative_line')).not_to be_nil
+        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_to_date_line')).not_to be_nil
+        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_one_year_line')).not_to be_nil
       end
 
       it 'shows warning message for gas' do
@@ -170,11 +178,13 @@ describe 'target progress report', type: :system do
 
       context 'with out of date data' do
         let(:recent_data) { false }
+
         it 'displays a warning electricity progress' do
           expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
         end
+
         it 'does not say whether I am achieving my target' do
-          expect(page).to_not have_content("Unfortunately you are using +99% more electricity than last year")
+          expect(page).not_to have_content("Unfortunately you are using +99% more electricity than last year")
         end
       end
 
@@ -190,8 +200,8 @@ describe 'target progress report', type: :system do
         it 'doesnt show message if no storage heater target' do
           school_target.update!(storage_heaters: nil)
           refresh
-          expect(page).to_not have_content("This report only shows progress on reducing your electricity usage")
-          expect(page).to_not have_link("storage heater progress report")
+          expect(page).not_to have_content("This report only shows progress on reducing your electricity usage")
+          expect(page).not_to have_link("storage heater progress report")
         end
       end
 
@@ -199,7 +209,7 @@ describe 'target progress report', type: :system do
         let(:start_date) { (Time.zone.today - 6.months).iso8601 }
         let(:end_date) { (Time.zone.today - 1.day).iso8601 }
 
-        before(:each) do
+        before do
           school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: { "electricity" => { "start_date" => start_date, "end_date" => end_date } })
           visit electricity_school_school_target_progress_index_path(school, school_target)
         end
@@ -227,13 +237,13 @@ describe 'target progress report', type: :system do
           it 'doesnt show prompt if different fuel type' do
             school.configuration.update!(suggest_estimates_fuel_types: ["gas"])
             refresh
-            expect(page).to_not have_content("gas")
+            expect(page).not_to have_content("gas")
           end
 
           it 'doesnt show prompt if estimate not needed' do
             school.configuration.update!(suggest_estimates_fuel_types: [""])
             refresh
-            expect(page).to_not have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
+            expect(page).not_to have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
           end
         end
 
@@ -268,7 +278,7 @@ describe 'target progress report', type: :system do
       #version of the target with a saved progress report
       let!(:school_target) { create(:school_target, school: school, electricity_progress: electricity_progress, electricity_report: progress, start_date: start_date, target_date: target_date) }
 
-      before(:each) do
+      before do
         visit electricity_school_school_target_progress_index_path(school, school_target)
       end
 
@@ -292,13 +302,14 @@ describe 'target progress report', type: :system do
 
       context 'if I am achieving my target' do
         let(:cumulative_performance) { [-0.99, -0.99] }
+
         it 'says I am' do
           expect(page).to have_content("Well done! You managed to reduce your electricity usage by -99%")
         end
       end
 
       it 'does not show the charts' do
-        expect(page).to_not have_content("Progress charts")
+        expect(page).not_to have_content("Progress charts")
       end
 
       it 'has a footnote to indicate this is a snapshot' do

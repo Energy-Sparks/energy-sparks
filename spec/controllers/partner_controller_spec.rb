@@ -22,7 +22,7 @@ RSpec.describe Admin::PartnersController, type: :controller do
   let(:partner) { create(:partner) }
 
   context "as an admin user" do
-    before(:each) do
+    before do
       sign_in_user(:admin)
     end
 
@@ -48,6 +48,7 @@ RSpec.describe Admin::PartnersController, type: :controller do
             post :create, params: { partner: valid_attributes }
           end.to change(Partner, :count).by(1)
         end
+
         it "redirects to partner list" do
           post :create, params: { partner: valid_attributes }
           expect(response).to redirect_to admin_partners_path
@@ -97,9 +98,11 @@ RSpec.describe Admin::PartnersController, type: :controller do
 
     describe "with school groups" do
       let(:school_group) { create(:school_group) }
-      before(:each) do
+
+      before do
         partner.school_groups << school_group
       end
+
       it "removes the partner" do
         expect do
           delete :destroy, params: { id: partner.to_param }

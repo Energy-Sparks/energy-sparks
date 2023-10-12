@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Admin::ActivityTypePreviewsController, type: :controller do
   context "As an admin user" do
-    before(:each) do
+    before do
       sign_in_user(:admin)
     end
+
     describe "POST #create" do
       it "uses content from school_specific_description to interpolate content" do
         post :create, params: { activity_type: { school_specific_description: 'some description' } }

@@ -171,7 +171,7 @@ module Amr
 
         expect(AmrDataFeedReading.count).to be 0
         expect(importer.inserted_record_count).to be 0
-        expect(AmrDataFeedImportLog.last.error_messages).to_not be_nil
+        expect(AmrDataFeedImportLog.last.error_messages).not_to be_nil
         end
         FakeFS.activate!
       end
@@ -211,16 +211,16 @@ module Amr
         HEREDOC
       end
 
-      before(:each) do
+      before do
         FileUtils.mkdir_p sheffield_config.local_bucket_path
       end
 
-      it 'should not create records for empty rows (comma, comma)' do
+      it 'does not create records for empty rows (comma, comma)' do
         expect(write_file_and_parse(sheffield_empty_readings, sheffield_config)).to eq 0
         expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_NO_VALID_READINGS
       end
 
-      it 'should not create records for empty rows (comma, comma) but still process file' do
+      it 'does not create records for empty rows (comma, comma) but still process file' do
         expect(write_file_and_parse(sheffield_one_empty_reading, sheffield_config)).to eq 2
         expect(AmrDataFeedImportLog.first.records_imported).to eq 2
         expect(AmrReadingWarning.count).to eq 1
@@ -236,11 +236,11 @@ module Amr
         HEREDOC
       end
 
-      before(:each) do
+      before do
         FileUtils.mkdir_p sheffield_gas_config.local_bucket_path
       end
 
-      it 'should create rows for Sheffield gas' do
+      it 'creates rows for Sheffield gas' do
         expect(write_file_and_parse(example_sheffield_gas, sheffield_gas_config)).to eq 2
       end
 
@@ -268,11 +268,11 @@ module Amr
         HEREDOC
       end
 
-      before(:each) do
+      before do
         FileUtils.mkdir_p historical_frome_config.local_bucket_path
       end
 
-      it 'should handle off by one readings' do
+      it 'handles off by one readings' do
         File.write("#{historical_frome_config.local_bucket_path}/#{file_name}", example_frome_historic_shift_one)
         write_file_and_expect_readings(example_frome_historic_shift_one, historical_frome_config, "1.7", 9)
 
@@ -316,17 +316,17 @@ module Amr
         HEREDOC
       end
 
-      it 'should parse a simple file without a header' do
+      it 'parses a simple file without a header' do
         FileUtils.mkdir_p frome_config.local_bucket_path
         write_file_and_expect_readings(frome, frome_config, "9.9")
       end
 
-      it 'should parse a simple file with a header' do
+      it 'parses a simple file with a header' do
         FileUtils.mkdir_p frome_config.local_bucket_path
         write_file_and_expect_readings(frome_with_header, frome_config, "9.9")
       end
 
-      it 'should parse a simple frome historic file with handle off by one (and not move it a long if it is a single row' do
+      it 'parses a simple frome historic file with handle off by one (and not move it a long if it is a single row' do
         FileUtils.mkdir_p historical_frome_config.local_bucket_path
         write_file_and_expect_readings(frome_historic, historical_frome_config, "11.11")
       end
@@ -408,11 +408,11 @@ module Amr
         HEREDOC
       end
 
-      before(:each) do
+      before do
         FileUtils.mkdir_p config.local_bucket_path
       end
 
-      it 'should create warnings for when final row is truncated' do
+      it 'creates warnings for when final row is truncated' do
         write_file_and_parse(banes_truncated_row, config)
 
         expect(AmrDataFeedReading.count).to be 2
@@ -420,7 +420,7 @@ module Amr
         expect(AmrReadingWarning.count).to be 1
       end
 
-      it 'should create warnings for truncated row' do
+      it 'creates warnings for truncated row' do
         write_file_and_parse(banes_truncated_middle, config)
 
         expect(AmrDataFeedReading.count).to be 3
@@ -428,20 +428,20 @@ module Amr
         expect(AmrReadingWarning.count).to be 1
       end
 
-      it 'should handle banes format' do
+      it 'handles banes format' do
         write_file_and_expect_readings(banes, config)
       end
 
-      it 'should handle duplicate records cleanly' do
+      it 'handles duplicate records cleanly' do
         write_file_and_expect_readings(banes_duplicate_rows, config)
       end
 
-      it 'should handle no header if config set' do
+      it 'handles no header if config set' do
         config.update(number_of_header_rows: 0)
         write_file_and_expect_readings(banes_no_header, config)
       end
 
-      it 'should handle graceful failure' do
+      it 'handles graceful failure' do
         expect { write_file_and_parse(banes_duff, config) }.to raise_error(Amr::DataFileParser::Error)
 
         expect(AmrDataFeedReading.count).to be 0
@@ -449,13 +449,13 @@ module Amr
         expect(AmrDataFeedImportLog.first.records_imported).to be nil
       end
 
-      it 'should upsert if appropriate' do
+      it 'upserts if appropriate' do
         write_file_and_expect_readings(banes, config)
         write_file_and_expect_updated_readings(banes_upsert, config)
         expect(AmrDataFeedReading.first.readings.first).to eq "0.166"
       end
 
-      it 'should create warnings of blank rows' do
+      it 'creates warnings of blank rows' do
         write_file_and_parse(banes_empty_readings, config)
 
         expect(AmrDataFeedReading.count).to be 2
@@ -472,7 +472,7 @@ module Amr
         HEREDOC
       end
 
-      it 'should parse a simple file with a header' do
+      it 'parses a simple file with a header' do
         FileUtils.mkdir_p solar_for_schools_config.local_bucket_path
         write_file_and_expect_readings(solar_for_schools_with_header, solar_for_schools_config, "5.616")
       end

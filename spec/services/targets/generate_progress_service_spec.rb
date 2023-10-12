@@ -40,13 +40,13 @@ describe Targets::GenerateProgressService do
     )
   end
 
-  before(:each) do
+  before do
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
   end
 
-  context '#cumulative_progress' do
+  describe '#cumulative_progress' do
     context 'and there is an error in the progress report generation' do
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
@@ -58,7 +58,7 @@ describe Targets::GenerateProgressService do
     end
 
     context 'and there is an error in the pre-conditions' do
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_raise(StandardError.new('test requested'))
       end
 
@@ -70,13 +70,14 @@ describe Targets::GenerateProgressService do
     context 'for a fuel type' do
       context 'and its not present' do
         let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: false) }
+
         it 'returns nil' do
           expect(service.cumulative_progress(:electricity)).to be_nil
         end
       end
 
       context 'and it is present' do
-        before(:each) do
+        before do
           allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
           allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
           allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
@@ -91,7 +92,7 @@ describe Targets::GenerateProgressService do
     context 'and the data is lagging, only slightly' do
       let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
 
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
@@ -103,8 +104,8 @@ describe Targets::GenerateProgressService do
     end
   end
 
-  context '#current_monthly_target' do
-    before(:each) do
+  describe '#current_monthly_target' do
+    before do
       allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
       allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
       allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
@@ -117,7 +118,7 @@ describe Targets::GenerateProgressService do
     context 'and the data is lagging, only slightly' do
       let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
 
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
@@ -129,8 +130,8 @@ describe Targets::GenerateProgressService do
     end
   end
 
-  context '#current_monthly_usage' do
-    before(:each) do
+  describe '#current_monthly_usage' do
+    before do
       allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
       allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
       allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
@@ -143,7 +144,7 @@ describe Targets::GenerateProgressService do
     context 'and the data is lagging, only slightly' do
       let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
 
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
       end
@@ -154,14 +155,14 @@ describe Targets::GenerateProgressService do
     end
   end
 
-  context '#generate!' do
+  describe '#generate!' do
     it 'does nothing if school has no target' do
       SchoolTarget.all.destroy_all
       expect(service.generate!).to be nil
     end
 
     context 'with only electricity fuel type' do
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
@@ -179,13 +180,13 @@ describe Targets::GenerateProgressService do
       end
 
       it 'records when last run' do
-        expect(target.report_last_generated).to_not be_nil
+        expect(target.report_last_generated).not_to be_nil
       end
 
       it 'includes only that fuel type' do
         expect(target.gas_progress).to eq({})
         expect(target.storage_heaters_progress).to eq({})
-        expect(target.electricity_progress).to_not eq({})
+        expect(target.electricity_progress).not_to eq({})
       end
 
       it 'reports the fuel progress' do
@@ -198,12 +199,13 @@ describe Targets::GenerateProgressService do
     context 'and not enough data' do
       let(:school_target_fuel_types) { [] }
 
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
+
       it 'still generates' do
         expect(service.generate!).to eq school_target
       end
@@ -212,7 +214,7 @@ describe Targets::GenerateProgressService do
     context 'and there is an error in the progress report generation' do
       let(:target) { service.generate! }
 
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         error = StandardError.new('test requested')
@@ -221,7 +223,7 @@ describe Targets::GenerateProgressService do
       end
 
       it 'records when last run' do
-        expect(target.report_last_generated).to_not be_nil
+        expect(target.report_last_generated).not_to be_nil
       end
 
       it 'sets values to nil' do

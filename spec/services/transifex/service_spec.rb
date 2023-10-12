@@ -13,7 +13,8 @@ describe Transifex::Service, type: :service do
 
     context 'and reviews are completed' do
       let(:tx_response) { File.read('spec/fixtures/transifex/get_resource_language_stats_with_params_completed.json') }
-      before(:each) do
+
+      before do
         expect(client).to receive(:get_resource_language_stats).and_return(data)
       end
 
@@ -23,7 +24,7 @@ describe Transifex::Service, type: :service do
     end
 
     context 'and reviews are not completed' do
-      before(:each) do
+      before do
         expect(client).to receive(:get_resource_language_stats).and_return(data)
       end
 
@@ -39,7 +40,8 @@ describe Transifex::Service, type: :service do
 
     context 'and reviews are completed' do
       let(:tx_response) { File.read('spec/fixtures/transifex/get_resource_language_stats_with_params.json') }
-      before(:each) do
+
+      before do
         expect(client).to receive(:get_resource_language_stats).and_return(data)
       end
 
@@ -53,17 +55,21 @@ describe Transifex::Service, type: :service do
     context 'when resource exists' do
       let(:tx_response)   { File.read('spec/fixtures/transifex/get_resource.json') }
       let(:data)          { JSON.parse(tx_response)["data"] }
-      before(:each) do
+
+      before do
         expect(client).to receive(:get_resource).and_return(data)
       end
+
       it 'returns true' do
         expect(service.created_in_transifex?("slug")).to be_truthy
       end
     end
+
     context 'when resource does not exist' do
-      before(:each) do
+      before do
         expect(client).to receive(:get_resource).and_raise(Transifex::Client::NotFound.new('test'))
       end
+
       it 'returns false' do
         expect(service.created_in_transifex?("slug")).to be_falsey
       end
@@ -73,7 +79,8 @@ describe Transifex::Service, type: :service do
   describe '#create_resource' do
     let(:tx_response) { File.read('spec/fixtures/transifex/create_resource.json') }
     let(:data)          { JSON.parse(tx_response)["data"] }
-    before(:each) do
+
+    before do
       expect(client).to receive(:create_resource).and_return(data)
     end
 
@@ -88,7 +95,7 @@ describe Transifex::Service, type: :service do
     let(:get_data)              { JSON.parse(tx_get_response)["data"] }
     let(:hash_for_yaml)         { { 'en' => { 'name' => 'wibble' } } }
 
-    before(:each) do
+    before do
       expect(client).to receive(:create_resource_strings_async_upload).and_return(create_data)
     end
 
@@ -122,6 +129,7 @@ describe Transifex::Service, type: :service do
       before do
         expect(client).to receive(:get_resource_strings_async_upload).and_raise(Transifex::Client::ResponseError.new('test'))
       end
+
       it 'raises error' do
         expect do
           service.push("slug", hash_for_yaml)
@@ -134,7 +142,7 @@ describe Transifex::Service, type: :service do
     let(:tx_create_response)     { File.read('spec/fixtures/transifex/create_resource_translations_async_downloads.json') }
     let(:create_data)            { JSON.parse(tx_create_response)["data"] }
 
-    before(:each) do
+    before do
       expect(client).to receive(:create_resource_translations_async_downloads).and_return(create_data)
     end
 
@@ -170,6 +178,7 @@ describe Transifex::Service, type: :service do
       before do
         expect(client).to receive(:get_resource_translations_async_download).and_raise(Transifex::Client::ResponseError.new('test'))
       end
+
       it 'raises error' do
         expect do
           service.pull("slug", :cy)
@@ -184,7 +193,7 @@ describe Transifex::Service, type: :service do
     let(:items)           { [item_1, item_2] }
 
     context 'when deletions succeed' do
-      before(:each) do
+      before do
         expect(client).to receive(:list_resources).and_return(items)
         expect(client).to receive(:delete_resource).with('activity_type_1').and_return(true)
         expect(client).to receive(:delete_resource).with('activity_type_2').and_return(true)
@@ -196,7 +205,7 @@ describe Transifex::Service, type: :service do
     end
 
     context 'when deletions fail' do
-      before(:each) do
+      before do
         expect(client).to receive(:list_resources).and_return(items)
         expect(client).to receive(:delete_resource).with('activity_type_1').and_raise(Transifex::Client::NotAllowed.new('test'))
       end

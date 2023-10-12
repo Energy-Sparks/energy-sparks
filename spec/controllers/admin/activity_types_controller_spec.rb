@@ -35,10 +35,12 @@ RSpec.describe Admin::ActivityTypesController, type: :controller do
   # in order to pass any filters (e.g. authentication) defined in
   # ActivityTypesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+
   context "As an admin user" do
-    before(:each) do
+    before do
       sign_in_user(:admin)
     end
+
     describe "GET #index" do
       it "assigns all activity_types as @activity_types" do
         activity_type = ActivityType.create! valid_attributes

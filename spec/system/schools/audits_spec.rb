@@ -6,7 +6,7 @@ describe 'Audits', type: :system do
   describe 'as an admin' do
     let(:admin) { create(:admin) }
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit school_path(school)
     end
@@ -75,7 +75,7 @@ describe 'Audits', type: :system do
       end
 
       context 'when saving fails' do
-        before(:each) do
+        before do
           activity_type
           visit school_audits_path(school)
           click_on("New audit")
@@ -154,13 +154,13 @@ describe 'Audits', type: :system do
   describe 'as a school admin' do
     let!(:school_admin) { create(:school_admin, school: school) }
 
-    before(:each) do
+    before do
       sign_in(school_admin)
       visit school_path(school)
     end
 
     it 'doesnt have link to manage audits' do
-      expect(page).to_not have_content("Manage Audits")
+      expect(page).not_to have_content("Manage Audits")
     end
 
     it 'displays a link to view audits' do
@@ -171,12 +171,14 @@ describe 'Audits', type: :system do
     end
 
     context 'with no audit' do
-      before(:each) do
+      before do
         visit school_audits_path(school)
       end
+
       it 'shows introductory page' do
         expect(page).to have_content("Energy Sparks offers two types of energy audits")
       end
+
       it 'offers an audit' do
         expect(page).to have_link("Book an audit")
       end
@@ -187,21 +189,21 @@ describe 'Audits', type: :system do
 
       let!(:other_audit) { create(:audit, :with_activity_and_intervention_types, title: "Unpublished", description: "Description of the audit", school: school, published: false) }
 
-      before(:each) do
+      before do
         Audits::AuditService.new(school).process(audit)
         Audits::AuditService.new(school).process(other_audit)
       end
 
       it 'lets me view a list of audits' do
         visit school_audits_path(school)
-        expect(page).to_not have_content("The Energy Sparks team have not carried out an energy audit for your school")
+        expect(page).not_to have_content("The Energy Sparks team have not carried out an energy audit for your school")
         expect(page).to have_content("Our audit")
         expect(page).to have_content(audit.created_at.strftime("%A, %d %B %Y"))
       end
 
       it 'doesnt show unpublished audits' do
         visit school_audits_path(school)
-        expect(page).to_not have_content("Unpublished")
+        expect(page).not_to have_content("Unpublished")
       end
 
       it 'gives link to book another audit' do
@@ -212,10 +214,10 @@ describe 'Audits', type: :system do
 
       it 'doesnt show admin options on list of audits' do
         visit school_audits_path(school)
-        expect(page).to_not have_content("New audit")
+        expect(page).not_to have_content("New audit")
         within '#audits' do
-          expect(page).to_not have_content("Edit")
-          expect(page).to_not have_content("Remove")
+          expect(page).not_to have_content("Edit")
+          expect(page).not_to have_content("Remove")
         end
       end
 
@@ -231,7 +233,7 @@ describe 'Audits', type: :system do
       it 'doesnt show admin options when viewing audit' do
         visit school_audits_path(school)
         click_on("Our audit")
-        expect(page).to_not have_css("#audit-admin-tools")
+        expect(page).not_to have_css("#audit-admin-tools")
       end
 
       it 'shows links to all activities' do
@@ -265,7 +267,7 @@ describe 'Audits', type: :system do
     let!(:staff) { create(:staff, school: school) }
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
-    before(:each) do
+    before do
       Audits::AuditService.new(school).process(audit)
       sign_in(staff)
       visit school_path(school)
@@ -297,7 +299,7 @@ describe 'Audits', type: :system do
     let(:pupil) { create(:pupil, school: school)}
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
-    before(:each) do
+    before do
       Audits::AuditService.new(school).process(audit)
       sign_in(pupil)
       visit school_path(school)
@@ -328,14 +330,14 @@ describe 'Audits', type: :system do
   describe 'as a guest user' do
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
-    before(:each) do
+    before do
       Audits::AuditService.new(school).process(audit)
     end
 
     it 'shows audit in timeline' do
       visit school_path(school)
       expect(page).to have_content("Received an energy audit")
-      expect(page).to_not have_link(audit.title)
+      expect(page).not_to have_link(audit.title)
     end
 
     it 'does not let me view list of audits' do

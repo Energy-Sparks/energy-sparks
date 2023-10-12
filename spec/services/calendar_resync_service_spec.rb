@@ -36,7 +36,7 @@ describe CalendarResyncService do
     let(:from_date) { Date.parse('2021-06-06') }
     let(:old_regional_calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'old regional event', start_date: '2020-01-01', end_date: '2020-01-01') }
 
-    before :each do
+    before do
       old_regional_calendar_event.update(updated_at: from_date - 1.day)
     end
 
@@ -52,6 +52,7 @@ describe CalendarResyncService do
 
   context 'when child has event based on parent' do
     let!(:calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar, description: 'school event', based_on: regional_calendar_event) }
+
     it 'updates child events' do
       expect(school_calendar.calendar_events.count).to eq(1)
       CalendarResyncService.new(regional_calendar).resync
@@ -134,6 +135,7 @@ describe CalendarResyncService do
       expect(service.successes.first[:calendar]).to eq(school_calendar)
       expect(service.successes.first[:created].count).to eq(1)
     end
+
     it 'adds failure messages' do
       school_calendar.calendar_events << regional_calendar.calendar_events.map(&:dup)
       service = CalendarResyncService.new(regional_calendar)

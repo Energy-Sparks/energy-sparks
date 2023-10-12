@@ -7,7 +7,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
 
   let(:suggest_estimates) { [] }
 
-  before(:each) do
+  before do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     school.configuration.update!(fuel_configuration: fuel_configuration, suggest_estimates_fuel_types: suggest_estimates)
   end
@@ -15,17 +15,18 @@ RSpec.describe 'estimated annual consumption', type: :system do
   context 'as a school admin' do
     let!(:school_admin) { create(:school_admin, school: school) }
 
-    before(:each) do
+    before do
       sign_in(school_admin)
       visit school_path(school)
     end
 
     it 'doesnt show link by default' do
-      expect(page).to_not have_content("Manage usage estimate")
+      expect(page).not_to have_content("Manage usage estimate")
     end
 
     context 'and estimates needed' do
       let(:suggest_estimates) { %w[gas electricity storage_heater] }
+
       it 'shows a link' do
         expect(page).to have_content("Manage usage estimate")
       end
@@ -69,7 +70,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
     context 'and estimated given' do
       let!(:estimate) { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school)}
 
-      before(:each) do
+      before do
         refresh
       end
 
@@ -93,7 +94,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
       end
 
       it 'does not show delete link' do
-        expect(page).to_not have_link("Delete")
+        expect(page).not_to have_link("Delete")
       end
     end
 
@@ -101,9 +102,10 @@ RSpec.describe 'estimated annual consumption', type: :system do
       let!(:estimate) { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school)}
       let(:suggest_estimates) { [] }
 
-      before(:each) do
+      before do
         refresh
       end
+
       it 'still lets me access the estimate' do
         visit school_path(school)
         click_on("Manage usage estimate")
@@ -114,9 +116,11 @@ RSpec.describe 'estimated annual consumption', type: :system do
 
   context 'as a pupil' do
     let(:pupil) { create(:pupil, school: school)}
-    before(:each) do
+
+    before do
       sign_in(pupil)
     end
+
     it 'doesnt let me access page' do
       visit school_estimated_annual_consumptions_path(school)
       expect(current_path).to eql(pupils_school_path(school))
@@ -125,6 +129,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
 
   context 'as a guest' do
     let(:pupil) { create(:pupil, school: school)}
+
     it 'doesnt let me access page' do
       visit school_estimated_annual_consumptions_path(school)
       expect(page).to have_content("Sign in to Energy Sparks")
@@ -135,7 +140,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
     let(:admin) { create(:admin)}
     let!(:estimate) { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school)}
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit school_path(school)
     end

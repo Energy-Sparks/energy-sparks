@@ -6,7 +6,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
   before do
     setup_data
-    allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return([:electricity, :gas, :storage_heaters])
   end
 
   def create_data_for_school_groups(school_groups)
@@ -19,7 +19,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
   end
 
   describe 'when logged in to the admin index' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -28,6 +28,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
     describe "Viewing school groups index page" do
       let(:setup_data) { create_data_for_school_groups(school_groups) }
+
       before do
         click_on 'Manage School Groups'
       end
@@ -42,42 +43,51 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             end
           end
         end
+
         it "displays a grand total" do
           within('table') do
             expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Group type" => "", "Issues admin" => "", "Onboarding" => 2, "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
           end
         end
+
         it "has a link to manage school group" do
           within('table') do
             expect(page).to have_link('Manage')
           end
         end
+
         context "clicking 'Manage'" do
           before do
             within "table" do
               click_on "Manage", id: school_groups.first.slug
             end
           end
+
           it { expect(page).to have_current_path(admin_school_group_path(school_groups.first)) }
         end
 
         it "displays a link to export detail" do
           expect(page).to have_link('Export detail')
         end
+
         context "and exporting detail" do
           before do
             Timecop.freeze
             click_link('Export detail')
           end
+
           after do
             Timecop.return
           end
+
           it "shows csv contents" do
             expect(page.body).to eq SchoolGroups::CsvGenerator.new(SchoolGroup.all.by_name).export_detail
           end
+
           it "has csv content type" do
             expect(response_headers['Content-Type']).to eq 'text/csv'
           end
+
           it "has expected file name" do
             expect(response_headers['Content-Disposition']).to include(SchoolGroups::CsvGenerator.filename)
           end
@@ -98,8 +108,10 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         before do
           click_on 'Create School group'
         end
+
         it { expect(page).to have_content("Name can't be blank") }
       end
+
       context "when all data has been entered" do
         before do
           fill_in 'Name', with: 'BANES'
@@ -111,9 +123,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           choose 'Display chart data in kwh, where available'
           click_on 'Create School group'
         end
+
         it "is created" do
           expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
         end
+
         it { expect(SchoolGroup.where(name: 'BANES').first.default_issues_admin_user).to eq(admin) }
         it { expect(SchoolGroup.where(name: 'BANES').first.default_country).to eq("wales") }
       end
@@ -122,6 +136,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Viewing school group page" do
       let!(:issues_admin) { }
       let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
+
       before do
         click_on 'Manage School Groups'
         within "table" do
@@ -131,13 +146,17 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
       describe "Header" do
         it { expect(page).to have_content("#{school_group.name} School Group")}
+
         it "has a button to view all school groups" do
           expect(page).to have_link('All school groups')
         end
+
         context "clicking on 'All school groups'" do
           before { click_link "All school groups" }
+
           it { expect(page).to have_current_path(admin_school_groups_path) }
         end
+
         it "displays pupils in active schools count" do
           expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
         end
@@ -145,22 +164,28 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         describe "with an issues admin" do
           let(:issues_link) { polymorphic_path([:admin, Issue], user: issues_admin) }
           let!(:setup_data) { issues_admin }
+
           context "that is the same as the logged in user" do
             let!(:issues_admin) { admin }
+
             it { expect(page).to have_link("Default Issues Admin • You", href: issues_link) }
           end
+
           context "that is a different user" do
             let!(:issues_admin) { create(:admin) }
+
             it { expect(page).to have_link("Default Issues Admin • #{issues_admin.display_name}", href: issues_link) }
           end
+
           context "no issues admin user is set" do
-            it { expect(page).to_not have_link(href: issues_link) }
+            it { expect(page).not_to have_link(href: issues_link) }
           end
         end
       end
 
       describe "School counts by status panel" do
         let(:setup_data) { create_data_for_school_groups([school_group]) }
+
         it { expect(page).to have_content("Active 1") }
         it { expect(page).to have_content("Active (with data visible) 1") }
         it { expect(page).to have_content("Invisible 1") }
@@ -172,10 +197,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         School.school_types.each_key do |school_type|
           context "showing active #{school_type} schools" do
             let!(:setup_data) { create(:school, school_group: school_group, school_type: school_type, active: true) }
+
             it { expect(page).to have_content("#{school_type.humanize} 1") }
           end
+
           context "showing inactive #{school_type} schools" do
             let!(:setup_data) { create(:school, school_group: school_group, school_type: school_type, active: false) }
+
             it { expect(page).to have_content("#{school_type.humanize} 0") }
           end
         end
@@ -183,38 +211,58 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
       describe "Button panel" do
         it { expect(page).to have_link('View') }
+
         context "clicking 'View'" do
           before { click_link 'View' }
+
           it { expect(page).to have_current_path(school_group_path(school_group)) }
         end
+
         it { expect(page).to have_link('Edit') }
+
         context "clicking 'Edit'" do
           before { click_link 'Edit' }
+
           it { expect(page).to have_current_path(edit_admin_school_group_path(school_group)) }
         end
+
         it { expect(page).to have_link('Manage partners') }
+
         context "clicking 'Manage partners'" do
           before { click_link 'Manage partners' }
+
           it { expect(page).to have_current_path(admin_school_group_partners_path(school_group)) }
         end
+
         it { expect(page).to have_link('Meter attributes') }
+
         context "clicking 'Meter attributes'" do
           before { click_link 'Meter attributes' }
+
           it { expect(page).to have_current_path(admin_school_group_meter_attributes_path(school_group)) }
         end
+
         it { expect(page).to have_button('Meter report') }
+
         context "clicking 'Meter report'" do
           before { click_on 'Meter report' }
+
           it { expect(page).to have_current_path(admin_school_group_path(school_group)) }
         end
+
         it { expect(page).to have_link('Issues') }
+
         context "clicking 'Download issues' button" do
           before { click_link 'Issues' }
+
           it { expect(page).to have_current_path(admin_school_group_issues_path(school_group, format: :csv)) }
         end
+
         it { expect(page).to have_link('Delete') }
+
         context "clicking 'Delete'" do
           before { click_link 'Delete' }
+
           it { expect(page).to have_current_path(admin_school_groups_path) }
         end
       end
@@ -282,6 +330,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_link('Meters')
             end
           end
+
           it "has status pill buttons" do
             within '#active' do
               expect(page).to have_link('Visible')
@@ -291,45 +340,55 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_link('Regenerate')
             end
           end
+
           context "and clicking 'Issues'" do
             before do
               within '#active' do
                 click_link 'Issues'
               end
             end
+
             it { expect(page).to have_current_path(admin_school_issues_path(school)) }
           end
+
           context "and clicking 'Edit'" do
             before do
               within '#active' do
                 click_link 'Edit'
               end
             end
+
             it { expect(page).to have_current_path(edit_school_path(school)) }
           end
+
           context "and clicking 'Users'" do
             before do
               within '#active' do
                 click_link 'User'
               end
             end
+
             it { expect(page).to have_current_path(school_users_path(school)) }
           end
+
           context "and clicking 'Meters'" do
             before do
               within '#active' do
                 click_link 'Meters'
               end
             end
+
             it { expect(page).to have_current_path(school_meters_path(school)) }
           end
         end
+
         context "when there are inactive schools only" do
           let(:school) { create(:school, active: false, name: "A School", school_group: school_group) }
           let(:setup_data) { school }
+
           it "doesn't show school active tab" do
             within '#active' do
-              expect(page).to_not have_link(school.name)
+              expect(page).not_to have_link(school.name)
               expect(page).to have_content("No active schools for #{school_group.name}.")
             end
           end
@@ -341,12 +400,14 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           before do
             click_on "Onboarding"
           end
+
           it "displays a message" do
             within '#onboarding' do
               expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
             end
           end
         end
+
         it_behaves_like "admin school group onboardings" do
           def after_setup_data
             click_on "Onboarding"
@@ -358,6 +419,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "when there are inactive schools" do
           let!(:school) { create(:school, active: false, name: "A School", school_group: school_group, removal_date: Time.zone.now) }
           let!(:setup_data) { school }
+
           it "lists school in removed tab" do
             within '#removed' do
               expect(page).to have_link(school.name, href: school_path(school))
@@ -367,12 +429,14 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             end
           end
         end
+
         context "when there are only active schools" do
           let!(:school) { create(:school, active: true, name: "A School", school_group: school_group) }
           let!(:setup_data) { school }
+
           it "doesn't show school in removed tab" do
             within '#removed' do
-              expect(page).to_not have_link(school.name)
+              expect(page).not_to have_link(school.name)
               expect(page).to have_content("No removed schools for #{school_group.name}.")
             end
           end
@@ -383,9 +447,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "when there are issues for the school group" do
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
+
           it "displays a count of school group issues" do
             expect(page).to have_content "Group Issues and Notes 1"
           end
+
           it "lists issue in issues tab" do
             within '#school-group-issues' do
               expect(page).to have_content issue.title
@@ -398,9 +464,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             end
           end
         end
+
         context "when there are no issues" do
           it { expect(page).to have_content("No school group issues for #{school_group.name}")}
         end
+
         context "with buttons" do
           it { expect(page).to have_link("New Issue") }
           it { expect(page).to have_link("New Note") }
@@ -412,9 +480,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           let!(:school) { create(:school, school_group: school_group)}
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
+
           it "displays a count of school group issues" do
             expect(page).to have_content "School Issues and Notes 1"
           end
+
           it "lists issue in issues tab" do
             within '#school-issues' do
               expect(page).to have_content issue.title
@@ -427,6 +497,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             end
           end
         end
+
         context "when there are no issues" do
           it { expect(page).to have_content("No school issues for #{school_group.name}")}
         end
@@ -435,6 +506,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
     describe "Editing a school group" do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true) }
+
       before do
         click_on 'Manage School Groups'
         within "table" do
@@ -447,32 +519,39 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         click_on 'Update School group'
         school_group.reload
       end
+
       it { expect(school_group.name).to eq('B & NES') }
-      it { expect(school_group).to_not be_public }
+      it { expect(school_group).not_to be_public }
       it { expect(school_group.default_issues_admin_user).to eq(admin)}
     end
 
     describe "Deleting a school group" do
       let!(:school_group) { create(:school_group) }
+
       before do
         click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
       end
+
       context "when school group is deletable" do
         it "removes school group" do
           expect do
             click_on 'Delete'
           end.to change {SchoolGroup.count}.from(1).to(0)
         end
+
         context "clicking 'Delete'" do
           before { click_on 'Delete' }
+
           it { expect(page).to have_content('There are no School groups') }
         end
       end
+
       context "when the school group can not be deleted" do
         let(:setup_data) { create(:school, school_group: school_group) }
+
         it "has a disabled delete button" do
           expect(page).to have_link('Delete', class: 'disabled')
         end
@@ -483,6 +562,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:school_group) { create(:school_group) }
       let!(:school) { create(:school, school_group: school_group)}
       let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas) }
+
       before do
         Timecop.freeze
         click_on 'Manage School Groups'
@@ -493,13 +573,17 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           click_on 'Issues'
         end
       end
+
       after { Timecop.return }
+
       it "shows csv contents" do
         expect(page.body).to eq school_group.all_issues.by_updated_at.to_csv
       end
+
       it "has csv content type" do
         expect(response_headers['Content-Type']).to eq 'text/csv'
       end
+
       it "has expected file name" do
         expect(response_headers['Content-Disposition']).to include("energy-sparks-issues-#{Time.zone.now.iso8601}".parameterize + '.csv')
       end
@@ -600,6 +684,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "bulk updating charts" do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true, default_chart_preference: "default") }
       let!(:school_group2) { create(:school_group, name: 'BANES 2', public: true, default_chart_preference: "default") }
+
       before do
         create :school, active: false, school_group: school_group, chart_preference: 'default'
         create :school, active: false, school_group: school_group, chart_preference: 'carbon'
@@ -635,6 +720,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Managing partners" do
       let!(:partners) { 3.times.collect { create(:partner) } }
       let!(:school_group) { create(:school_group, name: 'BANES') }
+
       before do
         click_on 'Manage School Groups'
         within "table" do
@@ -642,15 +728,18 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
         click_on 'Manage partners'
       end
+
       it 'has a partner link' do
         expect(page).to have_content("BANES")
         expect(page).to have_content(partners.first.display_name)
       end
+
       it "has blank partner fields for all partners" do
         expect(page.find_field(partners.first.name).value).to be_blank
         expect(page.find_field(partners.second.name).value).to be_blank
         expect(page.find_field(partners.last.name).value).to be_blank
       end
+
       context "assigning 2 partners to school groups via text box position" do
         before do
           fill_in partners.last.name, with: '1'
@@ -658,17 +747,20 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           click_on 'Update associated partners', match: :first
           click_on 'Manage partners'
         end
+
         it "partners are ordered" do
           expect(school_group.partners).to match_array([partners.last, partners.second])
           expect(school_group.school_group_partners.first.position).to eql 1
           expect(school_group.school_group_partners.last.position).to eql 2
         end
+
         context "and then clearing one order position" do
           before do
             fill_in partners.last.name, with: ""
             click_on 'Update associated partners', match: :first
             click_on 'Manage partners'
           end
+
           it "removes partner" do
             expect(school_group.partners).to match_array([partners.second])
           end

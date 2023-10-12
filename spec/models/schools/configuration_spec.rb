@@ -38,7 +38,7 @@ module Schools
       it 'returns the dashboard charts in symbol form properly as they get converted to JSON on save' do
         configuration = Configuration.create(school: school, analysis_charts: page_config)
 
-        expect(configuration.analysis_charts).to_not eq page_config
+        expect(configuration.analysis_charts).not_to eq page_config
         expect(configuration.analysis_charts_as_symbols).to eq page_config
       end
     end

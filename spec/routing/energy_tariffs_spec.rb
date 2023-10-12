@@ -9,6 +9,7 @@ RSpec.describe "routes for energy tariffs editor", type: :routing do
 
     context "with energy tariff" do
       let(:energy_tariff) { create(:energy_tariff) }
+
       it { expect(:get => "#{scope}/energy_tariffs/#{energy_tariff.to_param}").to route_to("energy_tariffs/energy_tariffs#show", { id: energy_tariff.to_param }.merge(param)) }
       it { expect(:get => "#{scope}/energy_tariffs/#{energy_tariff.to_param}/edit_meters").to route_to("energy_tariffs/energy_tariffs#edit_meters", { id: energy_tariff.to_param }.merge(param)) }
       it { expect(:post => "#{scope}/energy_tariffs/#{energy_tariff.to_param}/update_meters").to route_to("energy_tariffs/energy_tariffs#update_meters", { id: energy_tariff.to_param }.merge(param)) }

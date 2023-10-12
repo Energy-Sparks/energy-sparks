@@ -2,11 +2,13 @@ RSpec.shared_examples "a basic gas tariff editor" do
   let(:meter_type) { :gas }
   context 'when adding a new tariff' do
     before { click_link('Add gas tariff') }
+
     include_examples 'the user can create a tariff'
   end
 
   context 'with an existing tariff' do
     let!(:energy_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
+
     before do
       #assumes starting from tariff index
       refresh
@@ -16,7 +18,7 @@ RSpec.shared_examples "a basic gas tariff editor" do
     include_examples "the user can edit the tariff"
 
     it 'does not offer option to edit the type of tariff' do
-      expect(page).to_not have_css('#choose-type')
+      expect(page).not_to have_css('#choose-type')
     end
   end
 end
@@ -25,11 +27,13 @@ RSpec.shared_examples "a basic electricity tariff editor" do
   let(:meter_type) { :electricity }
   context 'when adding a new tariff' do
     before { click_link('Add electricity tariff') }
+
     include_examples 'the user can create a tariff'
   end
 
   context 'with an existing tariff' do
     let!(:energy_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
+
     before do
       #assumes starting from tariff index
       refresh
@@ -216,7 +220,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
 
       click_link('Continue')
 
-      expect(page).to_not have_content(I18n.t('schools.user_tariffs.show.not_usable'))
+      expect(page).not_to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
 
       energy_tariff_price = energy_tariff.energy_tariff_prices.first
       expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
@@ -236,7 +240,7 @@ RSpec.shared_examples "a school tariff editor" do
   let(:tariff_holder)       { school }
   let(:tariff_holder_type)  { 'School' }
 
-  before(:each) do
+  before do
     sign_in(current_user)
     visit school_path(school)
     within '#manage_school_menu' do
@@ -246,12 +250,14 @@ RSpec.shared_examples "a school tariff editor" do
 
   context 'when viewing index' do
     let(:tariff_holder) { school }
+
     before { visit school_energy_tariffs_path(school) }
+
     it_behaves_like "a tariff editor index"
   end
 
   it 'is navigable from the manage school menu' do
-    expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+    expect(page).to have_current_path("/schools/#{school.slug}/energy_tariffs", ignore_query: true)
     expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
     expect(page).to have_link('cost analysis pages')
   end
@@ -260,6 +266,7 @@ RSpec.shared_examples "a school tariff editor" do
     context 'for electricity meters' do
       include_examples 'a basic electricity tariff editor'
     end
+
     context 'for gas meters' do
       include_examples 'a basic gas tariff editor'
     end
@@ -270,10 +277,12 @@ RSpec.shared_examples "a school tariff editor" do
     let(:mpan_mprn)       { electricity_meter.mpan_mprn.to_s }
     let(:meter_type)      { :electricity }
     let!(:energy_tariff)  { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
-    before(:each) do
+
+    before do
       refresh
       click_on(energy_tariff.name)
     end
+
     include_examples "the user can select the meters"
     include_examples "the user can select the meter system"
     include_examples "the user can not see the meterless applies to editor"
@@ -284,10 +293,12 @@ RSpec.shared_examples "a school tariff editor" do
     let(:mpan_mprn)       { gas_meter.mpan_mprn.to_s }
     let(:meter_type)      { :gas }
     let!(:energy_tariff)  { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
-    before(:each) do
+
+    before do
       refresh
       click_on(energy_tariff.name)
     end
+
     include_examples "the user can select the meters"
     include_examples "the user can not select the meter system"
     include_examples "the user can not see the meterless applies to editor"
@@ -295,21 +306,23 @@ RSpec.shared_examples "a school tariff editor" do
 end
 
 RSpec.shared_examples "a school group energy tariff editor" do
-  before(:each) { sign_in(current_user) }
+  before { sign_in(current_user) }
 
   context 'has navigation links', skip: "Group tariff editor is temporarily admin only.  This skip can be removed when the group sub nav template is updated" do
     it 'from school group page to energy tariffs index' do
       visit school_group_path(school_group)
       click_link('Manage Group')
       click_link('Manage tariffs')
-      expect(current_path).to eq("/school_groups/#{school_group.slug}/energy_tariffs")
+      expect(page).to have_current_path("/school_groups/#{school_group.slug}/energy_tariffs", ignore_query: true)
       expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
     end
   end
 
   context 'when viewing index' do
     let(:tariff_holder) { school_group }
+
     before { visit school_group_energy_tariffs_path(school_group) }
+
     it_behaves_like "a tariff editor index"
   end
 
@@ -318,7 +331,7 @@ RSpec.shared_examples "a school group energy tariff editor" do
     let(:tariff_holder)       { school_group }
     let(:tariff_holder_type)  { 'SchoolGroup' }
 
-    before(:each) do
+    before do
       visit tariff_index_path
     end
 
@@ -329,14 +342,16 @@ RSpec.shared_examples "a school group energy tariff editor" do
 end
 
 RSpec.shared_examples "the site settings energy tariff editor" do
-  before(:each) do
+  before do
     visit admin_path
     click_link('Energy Tariffs')
   end
 
   context 'when viewing index' do
     let(:tariff_holder) { SiteSettings.current }
+
     before { visit admin_settings_energy_tariffs_path }
+
     it_behaves_like "a tariff editor index"
   end
 

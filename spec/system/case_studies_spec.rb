@@ -21,7 +21,7 @@ RSpec.describe "case_studies", type: :system do
 
   it 'serves the file' do
     find("a[href='/case_studies/#{case_study.id}/download?locale=en']").click
-    expect(page).to have_http_status(200)
+    expect(page).to have_http_status(:ok)
   end
 
   context "a welsh download is not available" do
@@ -51,7 +51,7 @@ RSpec.describe "case_studies", type: :system do
 
     it 'serves the file' do
       find("a[href='/case_studies/#{case_study.id}/download?locale=cy']").click
-      expect(page).to have_http_status(200)
+      expect(page).to have_http_status(:ok)
     end
   end
 end

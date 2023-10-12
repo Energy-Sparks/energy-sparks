@@ -44,13 +44,15 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
 
   context "Include cluster is not enabled" do
     let(:include_cluster) { false }
-    it { expect(html).to_not have_content('Cluster') }
-    it { expect(html).to_not have_content('Not set') }
-    it { expect(html).to_not have_content('My Area') }
+
+    it { expect(html).not_to have_content('Cluster') }
+    it { expect(html).not_to have_content('Not set') }
+    it { expect(html).not_to have_content('My Area') }
   end
 
   context "Include cluster is enabled" do
     let(:include_cluster) { true }
+
     it { expect(html).to have_content('Cluster') }
     it { expect(html).to have_content('Not set') }
     it { expect(html).to have_content('My Area') }

@@ -56,7 +56,7 @@ module Amr
 
       it 'builds and returns the meter attributes' do
         attributes = factory.build
-        expect(attributes).to_not be_nil
+        expect(attributes).not_to be_nil
         expect(attributes[:accounting_tariff_generic]).to eql(expected_attributes)
       end
     end
@@ -104,7 +104,7 @@ module Amr
 
       it 'builds and returns the meter attributes' do
         attributes = factory.build
-        expect(attributes).to_not be_nil
+        expect(attributes).not_to be_nil
         expect(attributes[:accounting_tariff_generic]).to eql(expected_attributes)
       end
     end

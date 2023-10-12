@@ -5,7 +5,7 @@ describe 'managing school times' do
   let!(:school) { create_active_school(name: school_name)}
   let!(:admin)  { create(:admin)}
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on('View schools')

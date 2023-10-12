@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "electricity recent changes advice page", type: :system do
   let(:key) { 'electricity_recent_changes' }
   let(:expected_page_title) { "Electricity recent changes analysis" }
+
   include_context "electricity advice page"
 
   context 'as school admin' do
@@ -24,6 +25,7 @@ RSpec.describe "electricity recent changes advice page", type: :system do
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
+
       it_behaves_like "an advice page tab", tab: "Insights"
 
       it 'shows expected content' do
@@ -63,6 +65,7 @@ RSpec.describe "electricity recent changes advice page", type: :system do
 
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

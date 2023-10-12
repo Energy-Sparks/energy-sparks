@@ -16,6 +16,7 @@ RSpec.describe SchoolGroups::CsvGenerator do
     let(:school_groups) { 2.times.collect { create(:school_group) } }
     let(:header) { 'School group,Group type,School type,Onboarding,Active,Data visible,Invisible,Removed' }
     subject(:data) { SchoolGroups::CsvGenerator.new(school_groups).export_detail }
+
     let(:line_count) { 1 + (School.school_types.length * school_groups.length) + school_groups.length + 1 }
 
     before do
@@ -41,7 +42,8 @@ RSpec.describe SchoolGroups::CsvGenerator do
 
   describe ".filename" do
     subject(:filename) { SchoolGroups::CsvGenerator.filename }
-    it "should include school-groups and time" do
+
+    it "includes school-groups and time" do
       Timecop.freeze do
         expect(filename).to eq "school-groups-#{Time.zone.now.iso8601.parameterize}.csv"
       end

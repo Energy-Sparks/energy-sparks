@@ -8,7 +8,7 @@ module Meters
     let(:meter) { create(:electricity_meter, dcc_meter: true, consent_granted: true) }
     let(:meter_review) { create(:meter_review, meters: [meter]) }
 
-    it "should call consent api and set consent_granted flag" do
+    it "calls consent api and set consent_granted flag" do
       expect(n3rgy_api).to receive(:withdraw_trusted_consent)
                              .with(meter.mpan_mprn)
                              .and_return(true)

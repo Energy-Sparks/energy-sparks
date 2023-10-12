@@ -7,7 +7,7 @@ describe 'Group admin login and permissions' do
 
   let(:other_school) { create(:school) }
 
-  before(:each) do
+  before do
     sign_in(group_admin)
   end
 
@@ -27,6 +27,6 @@ describe 'Group admin login and permissions' do
     expect(school.name).to eq('New school name')
 
     visit school_path(other_school)
-    expect(page).to_not have_content('Edit school details')
+    expect(page).not_to have_content('Edit school details')
   end
 end

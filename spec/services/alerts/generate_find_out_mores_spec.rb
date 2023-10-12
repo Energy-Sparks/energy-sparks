@@ -43,6 +43,7 @@ describe Alerts::GenerateFindOutMores do
 
       context 'where the find out mores are not active' do
         let(:active) { false }
+
         it 'does not include the alert' do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.find_out_mores.count).to be 0

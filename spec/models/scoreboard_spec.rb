@@ -13,29 +13,38 @@ describe Scoreboard, :scoreboards, type: :model do
       context 'guests' do
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
+
       context 'admin' do
         let(:user) { create(:admin) }
+
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
     end
+
     context 'private scoreboard' do
       let!(:scoreboard) { create :scoreboard, public: false }
+
       context 'guests' do
-        it { expect(ability).to_not be_able_to(:read, scoreboard) }
+        it { expect(ability).not_to be_able_to(:read, scoreboard) }
       end
+
       context 'admin' do
         let(:user) { create(:admin) }
+
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
+
       context 'school_admin' do
         let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
         let!(:user)         { create(:school_admin, school: school)}
+
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
 
       context 'staff' do
         let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
         let!(:user)         { create(:staff, school: school)}
+
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
     end
@@ -62,6 +71,7 @@ describe Scoreboard, :scoreboards, type: :model do
     let!(:scoreboard) { create :scoreboard, academic_year_calendar: template_calendar }
     let!(:template_calendar) { create :template_calendar }
     let(:school_group) { nil }
+
     it_behaves_like 'a scorable'
   end
 end

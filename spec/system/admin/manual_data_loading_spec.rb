@@ -5,13 +5,13 @@ describe "manual data load", type: :system do
 
   let!(:run)                { create(:manual_data_load_run, status: :done) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
   end
 
   describe 'report' do
-    before(:each) do
+    before do
       click_on("Reports")
     end
 

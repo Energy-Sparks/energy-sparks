@@ -6,7 +6,7 @@ RSpec.describe "intervention type groups", type: :system do
 
   context 'as not logged in user' do
     describe 'intervention type groups can be viewed' do
-      before(:each) do
+      before do
         visit intervention_type_groups_path
       end
 
@@ -21,7 +21,7 @@ RSpec.describe "intervention type groups", type: :system do
     let(:user)    { create(:user, school: school) }
 
     describe 'intervention type groups can be viewed' do
-      before(:each) do
+      before do
         sign_in(user)
         visit intervention_type_groups_path
       end

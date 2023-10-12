@@ -40,9 +40,9 @@ describe RollbarNotifierService do
 
         results = RollbarNotifierService.new(rql_jobs).run_queries
         results.each do |_key, reported_result|
-          expect(reported_result[:title]).to_not be_nil
-          expect(reported_result[:rql_query]).to_not be_nil
-          expect(reported_result[:results]).to_not be_nil
+          expect(reported_result[:title]).not_to be_nil
+          expect(reported_result[:rql_query]).not_to be_nil
+          expect(reported_result[:results]).not_to be_nil
           expect(reported_result[:results][:rows]).to eql(job_result["result"]["result"]["rows"])
           expect(reported_result[:results][:columns]).to eql(job_result["result"]["result"]["columns"])
           expect(reported_result[:results][:error]).to be_nil
@@ -54,9 +54,9 @@ describe RollbarNotifierService do
 
       results = RollbarNotifierService.new(rql_jobs).run_queries
       results.each do |_key, reported_result|
-        expect(reported_result[:title]).to_not be_nil
-        expect(reported_result[:rql_query]).to_not be_nil
-        expect(reported_result[:results]).to_not be_nil
+        expect(reported_result[:title]).not_to be_nil
+        expect(reported_result[:rql_query]).not_to be_nil
+        expect(reported_result[:results]).not_to be_nil
         expect(reported_result[:results][:rows]).to eql([])
         expect(reported_result[:results][:columns]).to eql([])
         expect(reported_result[:results][:error]).to eql(true)

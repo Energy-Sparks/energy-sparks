@@ -11,7 +11,7 @@ describe 'editing an activity' do
   let!(:activity_type) { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}") }
   let!(:activity) { create(:activity, school: school, activity_type: activity_type, title: activity_type_name, description: activity_description, happened_on: Date.yesterday)}
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit school_path(school)
     click_on('View all events')

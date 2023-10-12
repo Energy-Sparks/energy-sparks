@@ -5,14 +5,14 @@ RSpec.describe "school batch run", type: :system do
   let!(:user) { create(:admin, school: school)}
   let!(:school_batch_run) { create(:school_batch_run, school: school) }
 
-  before(:each) do
+  before do
     school_batch_run.info('analysing..')
     school_batch_run.error('bogus..')
     sign_in(user)
     visit school_path(school)
   end
 
-  it 'should show school batch runs' do
+  it 'shows school batch runs' do
     click_on('Regenerate')
     expect(page).to have_button('Start regeneration')
     expect(page).to have_content('Previous runs')

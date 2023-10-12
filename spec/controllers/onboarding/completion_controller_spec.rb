@@ -18,6 +18,7 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
       get :show, params: { onboarding_id: onboarding.to_param }
       expect(response).to render_template("show")
     end
+
     it 'redirects to the school if it is active' do
       get :show, params: { onboarding_id: onboarding.to_param }
       expect(response).to redirect_to(school_path(school))
@@ -34,6 +35,7 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
       let!(:onboarding) do
         create(:school_onboarding, :with_events, event_names: [:onboarding_complete], created_user: user)
       end
+
       it 'redirects to the show action' do
         get :new, params: { onboarding_id: onboarding.to_param }
         expect(response).to redirect_to(onboarding_completion_path(onboarding))

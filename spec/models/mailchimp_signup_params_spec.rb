@@ -6,7 +6,7 @@ describe MailchimpSignupParams do
   let(:interests) { { '123' => 'abc', '456' => 'def' } }
   let(:merge_fields) { {} }
 
-  before :each do
+  before do
     @mailchimp_signup_params = MailchimpSignupParams.new(
       email_address: email_address,
       tags: tags,
@@ -30,6 +30,7 @@ describe MailchimpSignupParams do
 
   context 'when no interest specified' do
     let(:interests) { { '123' => '', '456' => '' } }
+
     it 'is not valid' do
       expect(@mailchimp_signup_params.valid?).to be false
       expect(@mailchimp_signup_params.errors[:interests]).to include("At least one group must be specified")

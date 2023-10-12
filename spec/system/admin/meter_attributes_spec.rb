@@ -8,12 +8,12 @@ RSpec.describe "meter attribute management", :meters, type: :system do
   let!(:gas_meter)          { create :gas_meter, name: 'Gas meter', school: school }
 
   context 'as admin' do
-    before(:each) do
+    before do
       sign_in(admin)
     end
 
     context 'when analytics attributs are broken' do
-      before :each do
+      before do
         expect(MeterAttribute).to receive(:to_analytics).at_least(:once).and_raise(StandardError.new('There was an error'))
       end
 
@@ -70,7 +70,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(gas_meter.meter_attributes.size).to eq(1)
       attribute = gas_meter.meter_attributes.first
-      expect { attribute.to_analytics }.to_not raise_error
+      expect { attribute.to_analytics }.not_to raise_error
       expect(attribute.to_analytics.to_s).to include('800')
 
 
@@ -110,7 +110,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(school.meter_attributes.size).to eq(1)
       attribute = school.meter_attributes.first
-      expect { attribute.to_analytics }.to_not raise_error
+      expect { attribute.to_analytics }.not_to raise_error
       expect(attribute.to_analytics.to_s).to include('hotwater_only')
 
 
@@ -151,7 +151,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(school_group.meter_attributes.size).to eq(1)
       attribute = school_group.meter_attributes.first
-      expect { attribute.to_analytics }.to_not raise_error
+      expect { attribute.to_analytics }.not_to raise_error
       expect(attribute.to_analytics.to_s).to include('economy_7')
 
       click_on 'Edit'
@@ -201,7 +201,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(GlobalMeterAttribute.count).to eq(1)
       attribute = GlobalMeterAttribute.first
-      expect { attribute.to_analytics }.to_not raise_error
+      expect { attribute.to_analytics }.not_to raise_error
       expect(attribute.to_analytics.to_s).to include('economy_7')
 
 
@@ -241,7 +241,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       it 'does not display tariff attributes for other meters' do
         visit school_path(school)
         click_on 'Meter attributes'
-        expect(page).to_not have_content("from DCC tariff data")
+        expect(page).not_to have_content("from DCC tariff data")
       end
 
       it 'allows admin to see tariff attributes for dcc meters' do

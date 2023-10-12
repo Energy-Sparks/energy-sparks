@@ -9,7 +9,7 @@ RSpec.describe 'Weather stations', type: :system do
   let(:provider)                { "Meteostat"}
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -63,7 +63,7 @@ RSpec.describe 'Weather stations', type: :system do
     context 'with an existing weather station' do
       let!(:station) { WeatherStation.create!(title: title, latitude: latitude, longitude: longitude, provider: "meteostat") }
 
-      before(:each) do
+      before do
         click_on 'Manage'
         click_on 'Admin'
         click_on 'Weather Stations'

@@ -4,6 +4,7 @@ describe ActivityCategory do
   describe '#by_name' do
     let!(:activity_category_1) { create(:activity_category, name: 'Zebras') }
     let!(:activity_category_2) { create(:activity_category, name: 'Antelopes') }
+
     it 'orders the categories by name based on translated field' do
       expect(ActivityCategory.by_name).to eq([activity_category_2, activity_category_1])
     end
@@ -32,6 +33,7 @@ describe ActivityCategory do
   context 'finding resources for transifex' do
     let!(:activity_category_1) { create(:activity_category, name: 'Learning') }
     let!(:activity_category_2) { create(:activity_category, name: 'Environment') }
+
     it "#tx_resources" do
       expect(ActivityCategory.tx_resources).to match_array([activity_category_1, activity_category_2])
     end

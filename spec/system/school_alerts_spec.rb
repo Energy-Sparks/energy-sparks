@@ -9,7 +9,7 @@ RSpec.describe "dashboard alerts", type: :system do
   let(:gas_date) { Date.parse('2019-01-01') }
   let!(:gas_meter) { create :gas_meter_with_reading, school_id: school.id }
 
-  before(:each) do
+  before do
     sign_in(user)
   end
 

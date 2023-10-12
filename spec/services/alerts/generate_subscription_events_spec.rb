@@ -41,11 +41,11 @@ describe Alerts::GenerateSubscriptionEvents do
         let!(:content_version) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
 
         it 'does not process anything the frequency is set to empty' do
-          expect { service.perform(no_frequency_alerts)}.to_not(change { subscription_generation_run.alert_subscription_events.count })
+          expect { service.perform(no_frequency_alerts)}.not_to(change { subscription_generation_run.alert_subscription_events.count })
         end
 
         it 'does not process anything the frequency is set to a different frequency' do
-          expect { service.perform(termly_alerts)}.to_not(change { subscription_generation_run.alert_subscription_events.count })
+          expect { service.perform(termly_alerts)}.not_to(change { subscription_generation_run.alert_subscription_events.count })
         end
 
         it 'assigns a find out more from the run, if is from the latest school content run' do
@@ -74,7 +74,7 @@ describe Alerts::GenerateSubscriptionEvents do
           expect(email_contact.alert_subscription_events.count).to eq 1
           expect(email_contact.alert_subscription_events.first.communication_type).to eq 'email'
           expect(email_contact.alert_subscription_events.first.content_version).to eq content_version
-          expect(email_contact.alert_subscription_events.first.unsubscription_uuid).to_not be_nil
+          expect(email_contact.alert_subscription_events.first.unsubscription_uuid).not_to be_nil
           expect(sms_contact.alert_subscription_events.count).to eq 1
           expect(sms_contact.alert_subscription_events.first.communication_type).to eq 'sms'
           expect(sms_contact.alert_subscription_events.first.content_version).to eq content_version
@@ -111,6 +111,7 @@ describe Alerts::GenerateSubscriptionEvents do
 
         context 'where SMS content is inactive' do
           let(:sms_active) { false }
+
           it 'does not create events for that type' do
             service.perform(weekly_alerts)
             expect(email_contact.alert_subscription_events.count).to eq 1
@@ -121,6 +122,7 @@ describe Alerts::GenerateSubscriptionEvents do
 
         context 'where email content is inactive' do
           let(:email_active) { false }
+
           it 'does not create events for that type' do
             service.perform(weekly_alerts)
             expect(email_contact.alert_subscription_events.count).to eq 0

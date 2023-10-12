@@ -14,6 +14,7 @@ describe Targets::FuelProgress do
         expect(fuel_progress.achieving_target?).to be true
       end
     end
+
     context 'with failing target' do
       let(:progress)      { 0.25 }
 
@@ -24,6 +25,7 @@ describe Targets::FuelProgress do
 
     context 'with met target' do
       let(:target) { 0 }
+
       it 'says yes' do
         expect(fuel_progress.achieving_target?).to be true
       end

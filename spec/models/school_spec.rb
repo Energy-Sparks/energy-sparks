@@ -3,6 +3,7 @@ require 'rails_helper'
 describe School do
   let(:today) { Time.zone.today }
   let(:calendar) { create :calendar }
+
   subject { create :school, :with_school_group, calendar: calendar }
 
   it 'is valid with valid attributes' do
@@ -74,7 +75,7 @@ describe School do
   it 'validates postcodes' do
     ["BA2 £3Z", "BA14 9 DU", "TS11 7B"].each do |invalid|
       subject.postcode = invalid
-      expect(subject).to_not be_valid
+      expect(subject).not_to be_valid
     end
     ["OL84JZ", "OL8 4JZ"].each do |valid|
       subject.postcode = valid
@@ -85,7 +86,7 @@ describe School do
   it 'validates free school meals' do
     [-1, 200].each do |invalid|
       subject.percentage_free_school_meals = invalid
-      expect(subject).to_not be_valid
+      expect(subject).not_to be_valid
     end
     subject.percentage_free_school_meals = 20
     expect(subject).to be_valid
@@ -98,6 +99,7 @@ describe School do
         expect(school.slug).to eq([school.postcode, school.name].join('-').parameterize)
       end
     end
+
     context 'when three schools have the same name and postcode' do
       it 'builds a different slug using :urn and :name' do
         school = (create_list :school_with_same_name, 3).last
@@ -286,7 +288,7 @@ describe School do
       create(:electricity_meter_with_reading, school: school)
       expect do
         school.process_data!
-      end.to_not raise_error
+      end.not_to raise_error
       expect(school.process_data).to eq(true)
     end
   end
@@ -294,8 +296,8 @@ describe School do
   describe 'geolocation' do
     it 'the school is geolocated on creation' do
       school = create(:school, latitude: nil, longitude: nil)
-      expect(school.latitude).to_not be nil
-      expect(school.longitude).to_not be nil
+      expect(school.latitude).not_to be nil
+      expect(school.longitude).not_to be nil
     end
 
     it 'the school is geolocated if the postcode is changed' do
@@ -377,6 +379,7 @@ describe School do
 
   context 'checking abilities' do
     subject(:ability) { Ability.new(user) }
+
     let(:user) { nil }
 
     let!(:school_group) { create(:school_group, name: 'School Group')}
@@ -386,20 +389,20 @@ describe School do
       let!(:school)       { create(:school, name: 'School', visible: false, school_group: school_group)}
 
       it 'disallows guest access' do
-        expect(ability).to_not be_able_to(:show, school)
-        expect(ability).to_not be_able_to(:show_pupils_dash, school)
-        expect(ability).to_not be_able_to(:show_management_dash, school)
-        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        expect(ability).not_to be_able_to(:show, school)
+        expect(ability).not_to be_able_to(:show_pupils_dash, school)
+        expect(ability).not_to be_able_to(:show_management_dash, school)
+        expect(ability).not_to be_able_to(:read_restricted_analysis, school)
       end
 
       context "as school admin" do
         let!(:user) { create(:school_admin, school: school) }
 
         it 'disallows access' do
-          expect(ability).to_not be_able_to(:show, school)
-          expect(ability).to_not be_able_to(:show_pupils_dash, school)
-          expect(ability).to_not be_able_to(:show_management_dash, school)
-          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+          expect(ability).not_to be_able_to(:show, school)
+          expect(ability).not_to be_able_to(:show_pupils_dash, school)
+          expect(ability).not_to be_able_to(:show_management_dash, school)
+          expect(ability).not_to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -421,9 +424,9 @@ describe School do
       it 'disallows guest access' do
         expect(ability).to be_able_to(:show, school)
         expect(ability).to be_able_to(:show_pupils_dash, school)
-        expect(ability).to_not be_able_to(:show_management_dash, school)
+        expect(ability).not_to be_able_to(:show_management_dash, school)
 
-        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        expect(ability).not_to be_able_to(:read_restricted_analysis, school)
       end
 
       context "as school admin" do
@@ -443,8 +446,8 @@ describe School do
         it 'allows access' do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
-          expect(ability).to_not be_able_to(:show_management_dash, school)
-          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+          expect(ability).not_to be_able_to(:show_management_dash, school)
+          expect(ability).not_to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -464,10 +467,10 @@ describe School do
       let!(:school)       { create(:school, name: 'School', visible: true, public: false, school_group: school_group)}
 
       it 'disallows guest access' do
-        expect(ability).to_not be_able_to(:show, school)
-        expect(ability).to_not be_able_to(:show_pupils_dash, school)
-        expect(ability).to_not be_able_to(:show_management_dash, school)
-        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        expect(ability).not_to be_able_to(:show, school)
+        expect(ability).not_to be_able_to(:show_pupils_dash, school)
+        expect(ability).not_to be_able_to(:show_management_dash, school)
+        expect(ability).not_to be_able_to(:read_restricted_analysis, school)
       end
 
       context "as school admin" do
@@ -499,7 +502,7 @@ describe School do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
-          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+          expect(ability).not_to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -509,8 +512,8 @@ describe School do
         it 'allows access' do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
-          expect(ability).to_not be_able_to(:show_management_dash, school)
-          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+          expect(ability).not_to be_able_to(:show_management_dash, school)
+          expect(ability).not_to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -521,7 +524,7 @@ describe School do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
-          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+          expect(ability).not_to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -532,7 +535,7 @@ describe School do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
-          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+          expect(ability).not_to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -551,6 +554,7 @@ describe School do
 
   context 'with live data' do
     let(:cad) { create(:cad, school: subject, active: true) }
+
     it "checks for presence of active cads" do
       expect(subject.has_live_data?).to be false
       subject.cads << cad
@@ -569,12 +573,12 @@ describe School do
     context "when an estimate is given" do
       let!(:estimate) { create(:estimated_annual_consumption, school: subject, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
 
-      before(:each) do
+      before do
         subject.reload
       end
 
       it "the target should add meter attributes" do
-        expect(subject.all_pseudo_meter_attributes).to_not eql({})
+        expect(subject.all_pseudo_meter_attributes).not_to eql({})
       end
     end
   end
@@ -593,11 +597,11 @@ describe School do
     context "when a target is set" do
       let!(:target) { create(:school_target, start_date: Date.yesterday, school: subject) }
 
-      before(:each) do
+      before do
         subject.reload
       end
 
-      it "should find the target" do
+      it "finds the target" do
         expect(subject.has_target?).to be true
         expect(subject.has_current_target?).to eql true
         expect(subject.current_target).to eql target
@@ -607,13 +611,13 @@ describe School do
       end
 
       it "the target should add meter attributes" do
-        expect(subject.all_pseudo_meter_attributes).to_not eql({})
+        expect(subject.all_pseudo_meter_attributes).not_to eql({})
       end
 
       context "with multiple targets" do
         let!(:future_target) { create(:school_target, start_date: Date.tomorrow, school: subject) }
 
-        it "should find the current target" do
+        it "finds the current target" do
           expect(subject.has_target?).to be true
           expect(subject.has_current_target?).to be true
           expect(subject.current_target).to eql target
@@ -624,11 +628,11 @@ describe School do
       end
 
       context "with expired target" do
-        before(:each) do
+        before do
           target.update!(start_date: Date.yesterday.prev_year)
         end
 
-        it "should find the expired target" do
+        it "finds the expired target" do
           expect(subject.has_target?).to be true
           expect(subject.has_current_target?).to be false
           expect(subject.current_target).to eql nil
@@ -637,16 +641,18 @@ describe School do
           expect(subject.has_expired_target?).to eql true
         end
 
-        it "should still produce meter attributes" do
-          expect(subject.all_pseudo_meter_attributes).to_not eql({})
+        it "stills produce meter attributes" do
+          expect(subject.all_pseudo_meter_attributes).not_to eql({})
         end
       end
 
       describe "#has_expired_target_for_fuel_type?" do
-        before(:each) do
+        before do
           target.update!(electricity: 5)
         end
+
         let!(:expired_target) { create(:school_target, start_date: Date.yesterday.prev_year, school: subject, electricity: 5, gas: nil) }
+
         it { expect(subject.has_expired_target_for_fuel_type?(:electricity)).to be true }
         it { expect(subject.has_expired_target_for_fuel_type?(:gas)).to be false }
       end
@@ -695,7 +701,7 @@ describe School do
     end
   end
 
-  context '#awaiting_activation' do
+  describe '#awaiting_activation' do
     let(:school) { create :school, visible: true, data_enabled: true }
 
     it 'returns expected lists' do
@@ -719,6 +725,7 @@ describe School do
       expect(times.length).to eq 1
       expect(times[0][:day]).to eql :tuesday
     end
+
     it 'serialises community_use' do
       times = school.community_use_times_to_analytics
       expect(times.length).to eq 1
@@ -770,18 +777,19 @@ describe School do
 
     describe '#subscription_frequency' do
       it 'returns the subscription frequency for a school if there is a holiday approaching' do
-        allow(school).to receive(:holiday_approaching?) { true }
+        allow(school).to receive(:holiday_approaching?).and_return(true)
         expect(school.subscription_frequency).to eq([:weekly, :termly, :before_each_holiday])
       end
 
       it 'returns the subscription frequency for a school if there is not a holiday approaching' do
-        allow(school).to receive(:holiday_approaching?) { false }
+        allow(school).to receive(:holiday_approaching?).and_return(false)
         expect(school.subscription_frequency).to eq([:weekly])
       end
     end
 
     context 'when finding intervention types by date' do
       let!(:recent_observation) { create(:observation, :intervention, at: date_1 + 1.day, school: school, intervention_type: intervention_type_2) }
+
       it 'finds intervention types by date, including duplicates, excluding non-intervention observations' do
         expect(school.intervention_types_by_date).to eq([intervention_type_2, intervention_type_1, intervention_type_2])
       end

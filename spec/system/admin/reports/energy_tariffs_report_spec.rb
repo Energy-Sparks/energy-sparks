@@ -12,7 +12,7 @@ describe 'TariffsReport', type: :system do
 
   let!(:school_dcc_tariff)       { create(:energy_tariff, tariff_holder: school, source: :dcc) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Manage'

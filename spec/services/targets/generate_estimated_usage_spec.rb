@@ -6,17 +6,18 @@ describe Targets::GenerateEstimatedUsage, type: :service do
 
   let!(:service)            { Targets::GenerateEstimatedUsage.new(school, aggregated_school) }
 
-  before(:each) do
+  before do
     school.configuration.update!(fuel_configuration: fuel_configuration)
   end
 
-  context '#generate' do
+  describe '#generate' do
     context 'with all fuel types' do
       let(:fuel_configuration) do
         Schools::FuelConfiguration.new(
           has_storage_heaters: true, has_gas: true, has_electricity: true)
       end
-      before(:each) do
+
+      before do
         allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_kwh).and_return(99)
       end
 
@@ -34,7 +35,7 @@ describe Targets::GenerateEstimatedUsage, type: :service do
           has_electricity: true)
       end
 
-      before(:each) do
+      before do
         allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_kwh).and_return(99)
       end
 

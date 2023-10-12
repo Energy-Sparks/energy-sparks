@@ -43,6 +43,7 @@ describe HolidayFactory do
   describe '#process_event_update' do
     describe 'when calendar has a parent' do
       let(:parent_calendar) { create :calendar, calendars: [calendar] }
+
       describe 'when the event has changed' do
         it 'resets the based_on of the event and any updated neighbours' do
           term_1_parent = create(:term, calendar: parent_calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
@@ -60,6 +61,7 @@ describe HolidayFactory do
         end
       end
     end
+
     describe 'when updating a term' do
       describe 'when the start_date has changed' do
         it 'moves a preceding holiday end date forwards' do
@@ -70,6 +72,7 @@ describe HolidayFactory do
           expect(holiday_factory.with_neighbour_updates(term_2, { start_date: Date.new(2018, 4, 25) })).to eq(true)
           expect(calendar.calendar_events.holidays.first.end_date).to eq(Date.new(2018, 4, 24))
         end
+
         it 'moves a preceding holiday end date backwards' do
           create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
           term_2 = create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))
@@ -78,6 +81,7 @@ describe HolidayFactory do
           expect(holiday_factory.with_neighbour_updates(term_2, { start_date: Date.new(2018, 4, 19) })).to eq(true)
           expect(calendar.calendar_events.holidays.first.end_date).to eq(Date.new(2018, 4, 18))
         end
+
         it 'deletes a preceding holiday when it is no longer valid' do
           create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
           term_2 = create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))
@@ -87,6 +91,7 @@ describe HolidayFactory do
           expect(calendar.calendar_events.holidays.count).to eq(0)
         end
       end
+
       describe 'when the end_date has changed' do
         it 'moves a following holiday start date forwards' do
           term_1 = create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
@@ -96,6 +101,7 @@ describe HolidayFactory do
           expect(holiday_factory.with_neighbour_updates(term_1, { end_date: Date.new(2018, 3, 24) })).to eq(true)
           expect(calendar.calendar_events.holidays.first.start_date).to eq(Date.new(2018, 3, 25))
         end
+
         it 'moves a following holiday start date backwards' do
           term_1 = create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
           create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))
@@ -104,6 +110,7 @@ describe HolidayFactory do
           expect(holiday_factory.with_neighbour_updates(term_1, { end_date: Date.new(2018, 3, 21) })).to eq(true)
           expect(calendar.calendar_events.holidays.first.start_date).to eq(Date.new(2018, 3, 22))
         end
+
         it 'deletes a following holiday when it is no longer valid' do
           term_1 = create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
           create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))
@@ -126,6 +133,7 @@ describe HolidayFactory do
           term_1.reload
           expect(term_1.end_date).to eq(Date.new(2018, 3, 21))
         end
+
         it 'moves a preceding term end date forwards' do
           term_1 = create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
           create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))
@@ -135,6 +143,7 @@ describe HolidayFactory do
           term_1.reload
           expect(term_1.end_date).to eq(Date.new(2018, 3, 24))
         end
+
         it 'deletes a preceding term when it is no longer valid' do
           create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
           create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))
@@ -155,6 +164,7 @@ describe HolidayFactory do
           term_2.reload
           expect(term_2.start_date).to eq(Date.new(2018, 4, 21))
         end
+
         it 'moves a following term start date backwards' do
           create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
           term_2 = create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))
@@ -164,6 +174,7 @@ describe HolidayFactory do
           term_2.reload
           expect(term_2.start_date).to eq(Date.new(2018, 4, 16))
         end
+
         it 'deletes a following term when it is no longer valid' do
           create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
           create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))

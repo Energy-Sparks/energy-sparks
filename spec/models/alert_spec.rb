@@ -46,6 +46,7 @@ describe 'Alert' do
         )
       end
     end
+
     it 'returns english if welsh data is empty' do
       alert.update!(template_data_cy: nil)
       expect(Alert.first.template_variables).to eq(

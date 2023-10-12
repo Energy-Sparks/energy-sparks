@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "hot water advice page", type: :system do
   let(:key) { 'hot_water' }
   let(:expected_page_title) { "Hot water usage analysis" }
+
   include_context "gas advice page"
 
   context 'as school admin' do
@@ -130,12 +131,15 @@ RSpec.describe "hot water advice page", type: :system do
       before do
         click_on 'Insights'
       end
+
       it 'shows not enough data page' do
         expect(page).to have_content('Not enough data to run analysis')
       end
     end
+
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
+
       it_behaves_like "an advice page tab", tab: "Insights"
 
       it 'shows expected content' do
@@ -147,6 +151,7 @@ RSpec.describe "hot water advice page", type: :system do
 
       context 'for a investment_choices.gas_better_control.saving_£_percent under 2 percent' do
         let(:saving_£_percent) { 0.001 }
+
         it 'shows below table content' do
           expect(page).to have_content('Your holiday and weekend hot water use is already very low, well done.')
         end
@@ -154,6 +159,7 @@ RSpec.describe "hot water advice page", type: :system do
 
       context 'for a investment_choices.gas_better_control.saving_£_percent above 2 percent but under 10 percent' do
         let(:saving_£_percent) { 0.09 }
+
         it 'shows below table content' do
           expect(page).to have_content('Your holiday and weekend hot water use is already very low. You could reduce your annual gas consumption for hot water by 9&percnt; by switching it off completely outside of school hours.')
         end
@@ -161,6 +167,7 @@ RSpec.describe "hot water advice page", type: :system do
 
       context 'for a investment_choices.gas_better_control.saving_£_percent including and above 10 percent' do
         let(:saving_£_percent) { 0.10 }
+
         it 'shows below table content' do
           expect(page).to have_content('The table below shows that 10&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
           expect(page).to have_content('Or you could investigate replacing your current hot water system with point of use electric heaters.')
@@ -169,6 +176,7 @@ RSpec.describe "hot water advice page", type: :system do
 
       context 'for a investment_choices.gas_better_control.saving_£_percent including and above 10 percent' do
         let(:saving_£_percent) { 0.99 }
+
         it 'shows below table content' do
           expect(page).to have_content('The table below shows that 99&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
           expect(page).to have_content('Or you could investigate replacing your current hot water system with point of use electric heaters.')
@@ -178,6 +186,7 @@ RSpec.describe "hot water advice page", type: :system do
 
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
+
       it_behaves_like "an advice page tab", tab: "Analysis"
 
       it 'shows expected content' do
@@ -191,6 +200,7 @@ RSpec.describe "hot water advice page", type: :system do
 
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

@@ -11,6 +11,7 @@ RSpec.shared_examples "admin school group onboardings" do
     context 'for selected' do
       describe "first onboarding checked" do
         let(:onboarding) { school_group_onboardings.first }
+
         before do
           check "school_group_school_onboarding_ids_#{onboarding.id}"
         end
@@ -18,7 +19,7 @@ RSpec.shared_examples "admin school group onboardings" do
         describe "Make selected visible" do
           before { onboarding.school.update!(visible: false) }
 
-          it { expect(onboarding.school).to_not be_visible }
+          it { expect(onboarding.school).not_to be_visible }
           it { expect(onboarding).to be_incomplete }
 
           context "without consents" do
@@ -26,32 +27,34 @@ RSpec.shared_examples "admin school group onboardings" do
               @back = current_path
               click_button "Make selected visible"
             end
+
             it { expect(page).to have_current_path(@back) }
             it { expect(page).to have_content('School cannot be made visible as we dont have a record of consent') }
-            it { expect(page).to_not have_content('schools made visible') }
-            it { expect(onboarding.reload.school).to_not be_visible }
+            it { expect(page).not_to have_content('schools made visible') }
+            it { expect(onboarding.reload.school).not_to be_visible }
           end
 
           context "with consent" do
             before do
               Wisper.clear
               Wisper.subscribe(Onboarding::OnboardingDataEnabledListener.new)
-            end
-            after { Wisper.clear }
-
-            before do
               create(:consent_grant, school: onboarding.school)
               click_button "Make selected visible"
             end
 
+            after { Wisper.clear }
+
+
             it { expect(page).to have_content("#{school_group.name} schools made visible") }
             it { expect(onboarding.reload.school).to be_visible }
             it { expect(ActionMailer::Base.deliveries.count).to eq(2) }
+
             it "sends onboarding complete email" do
               email = ActionMailer::Base.deliveries.first
               expect(email.to).to include('operations@energysparks.uk')
               expect(email.subject).to eq("#{onboarding.school.name} () has completed the onboarding process")
             end
+
             it "sends school live email" do
               email = ActionMailer::Base.deliveries.second
               expect(email.to).to include(onboarding.created_user.email)
@@ -65,9 +68,11 @@ RSpec.shared_examples "admin school group onboardings" do
             @back = current_path
             click_button "Send reminders to selected"
           end
+
           it { expect(page).to have_current_path(@back) }
           it { expect(onboarding.reload.events.map(&:event)).to include('reminder_sent') }
           it { expect(page).to have_content("#{school_group.name} schools reminders sent") }
+
           it "sends email" do
             email = ActionMailer::Base.deliveries.last
             expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
@@ -82,7 +87,8 @@ RSpec.shared_examples "admin school group onboardings" do
         before do
           click_button "Make selected visible"
         end
-        it { expect(page).to_not have_content('schools made visible') }
+
+        it { expect(page).not_to have_content('schools made visible') }
         it { expect(page).to have_content('Nothing selected') }
       end
 
@@ -90,7 +96,8 @@ RSpec.shared_examples "admin school group onboardings" do
         before do
           click_button "Send reminders to selected"
         end
-        it { expect(page).to_not have_content('schools reminders sent') }
+
+        it { expect(page).not_to have_content('schools reminders sent') }
         it { expect(page).to have_content('Nothing selected') }
       end
     end
@@ -110,6 +117,7 @@ RSpec.shared_examples "admin school group onboardings" do
         before do
           uncheck "check-all-#{school_group.id}"
         end
+
         it "unchecks all checkboxes" do
           school_group.school_onboardings.each do |onboarding|
             expect(page).to have_unchecked_field("school_group_school_onboarding_ids_#{onboarding.id}")
@@ -122,17 +130,20 @@ RSpec.shared_examples "admin school group onboardings" do
   context 'linking to issues' do
     context "when there is an associated school" do
       let(:setup_data) { create :school_onboarding, :with_school, school_group: school_group }
+
       it "has issues link" do
         within "table" do
           expect(page).to have_link('Issues')
         end
       end
     end
+
     context "without an associated school" do
       let(:setup_data) { create :school_onboarding, school_group: school_group }
+
       it "does not have issues link" do
         within "table" do
-          expect(page).to_not have_link('Issues')
+          expect(page).not_to have_link('Issues')
         end
       end
     end
