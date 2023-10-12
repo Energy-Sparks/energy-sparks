@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe DccMailer do
-
   let(:school_1)    { create(:school, name: 'Big School') }
   let(:school_2)    { create(:school, name: 'Little School') }
   let(:meter_1)     { create(:electricity_meter, dcc_meter: false, school: school_1) }

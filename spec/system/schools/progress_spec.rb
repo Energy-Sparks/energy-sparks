@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'target progress report', type: :system do
-
-  let(:school)                    { create_active_school(name: "Big School")}
+  let(:school) { create_active_school(name: "Big School")}
 
   let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: false) }
   let(:school_target_fuel_types)  { ["electricity"] }
@@ -10,40 +9,40 @@ describe 'target progress report', type: :system do
   let!(:electricity_progress)     { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
   let!(:school_target)            { create(:school_target, school: school, electricity_progress: electricity_progress) }
 
-  let(:first)                   { Date.new(Date.today.year, 1, 1) }
-  let(:second)                  { Date.new(Date.today.year, 2, 1) }
+  let(:first)                   { Date.new(Time.zone.today.year, 1, 1) }
+  let(:second)                  { Date.new(Time.zone.today.year, 2, 1) }
   let(:months)                    { [first, second] }
   let(:fuel_type)                 { :electricity }
 
-  let(:monthly_usage_kwh)         { [10,20] }
-  let(:monthly_targets_kwh)       { [8,15] }
-  let(:monthly_performance)       { [-0.25,0.35] }
+  let(:monthly_usage_kwh)         { [10, 20] }
+  let(:monthly_targets_kwh)       { [8, 15] }
+  let(:monthly_performance)       { [-0.25, 0.35] }
 
-  let(:cumulative_usage_kwh)      { [10,30] }
-  let(:cumulative_targets_kwh)    { [8,25] }
-  let(:cumulative_performance)    { [-0.99,0.99] }
+  let(:cumulative_usage_kwh)      { [10, 30] }
+  let(:cumulative_targets_kwh)    { [8, 25] }
+  let(:cumulative_performance)    { [-0.99, 0.99] }
 
   let(:partial_months)            { [false, true] }
   let(:percentage_synthetic)      { [0, 0]}
 
   let(:progress) do
     TargetsProgress.new(
-        fuel_type: fuel_type,
-        months: months,
-        monthly_targets_kwh: monthly_targets_kwh,
-        monthly_usage_kwh: monthly_usage_kwh,
-        monthly_performance: monthly_performance,
-        cumulative_targets_kwh: cumulative_targets_kwh,
-        cumulative_usage_kwh: cumulative_usage_kwh,
-        cumulative_performance: cumulative_performance,
-        cumulative_performance_versus_synthetic_last_year: cumulative_performance,
-        monthly_performance_versus_synthetic_last_year: monthly_performance,
-        partial_months: partial_months,
-        percentage_synthetic: percentage_synthetic
+      fuel_type: fuel_type,
+      months: months,
+      monthly_targets_kwh: monthly_targets_kwh,
+      monthly_usage_kwh: monthly_usage_kwh,
+      monthly_performance: monthly_performance,
+      cumulative_targets_kwh: cumulative_targets_kwh,
+      cumulative_usage_kwh: cumulative_usage_kwh,
+      cumulative_performance: cumulative_performance,
+      cumulative_performance_versus_synthetic_last_year: cumulative_performance,
+      monthly_performance_versus_synthetic_last_year: monthly_performance,
+      partial_months: partial_months,
+      percentage_synthetic: percentage_synthetic
     )
   end
 
-  let(:recent_data)   { true }
+  let(:recent_data) { true }
 
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
@@ -135,7 +134,7 @@ describe 'target progress report', type: :system do
       end
 
       context 'if I am achieving my target' do
-        let(:cumulative_performance)    { [-0.99,-0.99] }
+        let(:cumulative_performance) { [-0.99, -0.99] }
         it 'says I am' do
           expect(page).to have_content("Well done, you are using -99% less electricity than last year")
         end
@@ -170,7 +169,7 @@ describe 'target progress report', type: :system do
       end
 
       context 'with out of date data' do
-        let(:recent_data)   { false }
+        let(:recent_data) { false }
         it 'displays a warning electricity progress' do
           expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
         end
@@ -180,8 +179,8 @@ describe 'target progress report', type: :system do
       end
 
       context 'when school also has storage heaters' do
-        let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: true) }
-        let(:school_target_fuel_types) { ["electricity", "storage_heater"] }
+        let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: true) }
+        let(:school_target_fuel_types) { %w[electricity storage_heater] }
 
         it 'does show message about storage heaters' do
           expect(page).to have_content("This report only shows progress on reducing your electricity usage")
@@ -197,17 +196,17 @@ describe 'target progress report', type: :system do
       end
 
       context 'with partial data' do
-        let(:start_date)  { (Date.today-6.months).iso8601 }
-        let(:end_date)  { (Date.today-1.day).iso8601 }
+        let(:start_date) { (Time.zone.today - 6.months).iso8601 }
+        let(:end_date) { (Time.zone.today - 1.day).iso8601 }
 
         before(:each) do
-          school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: {"electricity"=>{"start_date"=>start_date, "end_date"=>end_date}})
+          school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: { "electricity" => { "start_date" => start_date, "end_date" => end_date } })
           visit electricity_school_school_target_progress_index_path(school, school_target)
         end
 
         context 'and there is missing actual consumption' do
-          let(:monthly_usage_kwh)         { [nil,20] }
-          let(:cumulative_usage_kwh)      { [nil,30] }
+          let(:monthly_usage_kwh)         { [nil, 20] }
+          let(:cumulative_usage_kwh)      { [nil, 30] }
 
           it 'renders the other data' do
             expect(page).to have_content('Tracking progress')
@@ -218,7 +217,7 @@ describe 'target progress report', type: :system do
           end
 
           it 'describes why some consumption data is missing' do
-            expect(page).to have_content("We only have data on your electricity consumption from #{Date.parse(start_date).strftime("%b %Y")}")
+            expect(page).to have_content("We only have data on your electricity consumption from #{Date.parse(start_date).strftime('%b %Y')}")
           end
 
           it 'shows prompt to add estimate' do
@@ -236,14 +235,13 @@ describe 'target progress report', type: :system do
             refresh
             expect(page).to_not have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
           end
-
         end
 
         context 'and there is missing target consumption and performance' do
-          let(:monthly_targets_kwh)       { [nil,15] }
-          let(:monthly_performance)       { [nil,0.35] }
-          let(:cumulative_targets_kwh)    { [nil,25] }
-          let(:cumulative_performance)    { [nil,0.99] }
+          let(:monthly_targets_kwh)       { [nil, 15] }
+          let(:monthly_performance)       { [nil, 0.35] }
+          let(:cumulative_targets_kwh)    { [nil, 25] }
+          let(:cumulative_performance)    { [nil, 0.99] }
 
           it 'renders the other data' do
             expect(page).to have_content('Tracking progress')
@@ -258,18 +256,17 @@ describe 'target progress report', type: :system do
           end
         end
       end
-
     end
 
     context 'with expired target' do
-      let(:start_date)      { Date.today.last_year.beginning_of_month}
-      let(:target_date)     { Date.today.beginning_of_month}
+      let(:start_date)      { Time.zone.today.last_year.beginning_of_month}
+      let(:target_date)     { Time.zone.today.beginning_of_month}
 
       let(:first)                   { start_date }
       let(:second)                  { target_date.prev_month.beginning_of_month }
 
       #version of the target with a saved progress report
-      let!(:school_target)  { create(:school_target, school: school, electricity_progress: electricity_progress, electricity_report: progress, start_date: start_date, target_date: target_date) }
+      let!(:school_target) { create(:school_target, school: school, electricity_progress: electricity_progress, electricity_report: progress, start_date: start_date, target_date: target_date) }
 
       before(:each) do
         visit electricity_school_school_target_progress_index_path(school, school_target)
@@ -294,7 +291,7 @@ describe 'target progress report', type: :system do
       end
 
       context 'if I am achieving my target' do
-        let(:cumulative_performance)    { [-0.99,-0.99] }
+        let(:cumulative_performance) { [-0.99, -0.99] }
         it 'says I am' do
           expect(page).to have_content("Well done! You managed to reduce your electricity usage by -99%")
         end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Targets::ProgressSummary do
-
   let(:progress)      { -0.5 }
   let(:usage)         { 100 }
   let(:target)        { 200 }
@@ -9,9 +8,9 @@ describe Targets::ProgressSummary do
 
   let(:electricity_progress) { Targets::FuelProgress.new(fuel_type: :electricity, progress: progress, usage: usage, target: target) }
 
-  let(:gas_progress)  { Targets::FuelProgress.new(fuel_type: :gas, progress: gas, usage: usage, target: target) }
+  let(:gas_progress) { Targets::FuelProgress.new(fuel_type: :gas, progress: gas, usage: usage, target: target) }
 
-  let(:storage_heater_progress)  { Targets::FuelProgress.new(fuel_type: :storage_heater, progress: progress, usage: usage, target: target) }
+  let(:storage_heater_progress) { Targets::FuelProgress.new(fuel_type: :storage_heater, progress: progress, usage: usage, target: target) }
 
   let(:school_target)     { create(:school_target) }
 
@@ -38,7 +37,7 @@ describe Targets::ProgressSummary do
       end
     end
     context 'with all present fuel types passing' do
-      let(:gas_progress)  { nil }
+      let(:gas_progress) { nil }
       it 'sees all as passing' do
         expect(progress_summary.passing_fuel_targets).to match_array([:electricity, :storage_heater])
         expect(progress_summary.any_passing_targets?).to be true
@@ -61,12 +60,11 @@ describe Targets::ProgressSummary do
       end
     end
     context 'with all present fuel types passing' do
-      let(:gas_progress)  { nil }
+      let(:gas_progress) { nil }
       it 'sees all as passing' do
         expect(progress_summary.failing_fuel_targets).to match_array([])
         expect(progress_summary.any_failing_targets?).to be false
       end
     end
   end
-
 end

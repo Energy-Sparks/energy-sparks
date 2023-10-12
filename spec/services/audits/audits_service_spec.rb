@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Audits::AuditService do
-
   let(:school)            { create(:school) }
   let(:service)           { described_class.new(school) }
 
@@ -16,7 +15,7 @@ describe Audits::AuditService do
     end
 
     context 'an old one' do
-      let(:created_at)      { Date.today.last_year }
+      let(:created_at) { Time.zone.today.last_year }
 
       it 'is ignored' do
         expect(service.recent_audit).to be_nil
@@ -25,7 +24,7 @@ describe Audits::AuditService do
   end
 
   describe '#process' do
-    let(:audit)           { build(:audit, school: school) }
+    let(:audit) { build(:audit, school: school) }
 
     it 'saves audit' do
       service.process(audit)
@@ -44,8 +43,5 @@ describe Audits::AuditService do
       expect(Observation.first.points).to_not be_nil
       expect(Observation.first.audit?).to be true
     end
-
   end
-
-
 end

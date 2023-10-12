@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Alerts::GenerateAnalysisPages do
-
   let(:school)                  { create(:school) }
   let(:content_generation_run)  { create(:content_generation_run, school: school) }
   let(:service)                 { Alerts::GenerateAnalysisPages.new(content_generation_run: content_generation_run) }
@@ -29,7 +28,6 @@ describe Alerts::GenerateAnalysisPages do
     let!(:content_version)     { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
 
     context 'where the rating matches the range' do
-
       it 'creates a page pairing the alert and the content' do
         service.perform(school.latest_alerts_without_exclusions)
         expect(AnalysisPage.count).to be 1
@@ -45,7 +43,7 @@ describe Alerts::GenerateAnalysisPages do
       end
 
       context 'where the analysis pages are not active' do
-        let(:active){ false }
+        let(:active) { false }
         it 'does not include the alert' do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.analysis_pages.count).to be 0

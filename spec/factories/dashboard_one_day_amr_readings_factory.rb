@@ -7,7 +7,7 @@ FactoryBot.define do
       date            { Date.yesterday }
       status          { 'ORIG' }
       substitute_date { nil }
-      upload_datetime { Date.today }
+      upload_datetime { Time.zone.today }
       kwh_data_x48    { Array.new(48, rand.to_f) }
     end
 

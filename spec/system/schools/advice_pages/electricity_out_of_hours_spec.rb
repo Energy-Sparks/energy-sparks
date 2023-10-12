@@ -6,9 +6,9 @@ RSpec.describe "electricity out of hours advice page", type: :system do
   include_context "electricity advice page"
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
-    let(:school_period) { Holiday.new(:xmas, "Xmas 2021/2022", Date.new(2021,12,18), Date.new(2022,01,3), nil) }
-    let(:holiday_usage) {
+    let(:user) { create(:school_admin, school: school) }
+    let(:school_period) { Holiday.new(:xmas, "Xmas 2021/2022", Date.new(2021, 12, 18), Date.new(2022, 0o1, 3), nil) }
+    let(:holiday_usage) do
       OpenStruct.new(
         usage: CombinedUsageMetric.new(
           £: 12.0,
@@ -19,7 +19,7 @@ RSpec.describe "electricity out of hours advice page", type: :system do
         previous_holiday: nil,
         previous_holiday_usage: nil
       )
-    }
+    end
 
     before do
       combined_usage_metric = CombinedUsageMetric.new(
@@ -83,7 +83,7 @@ RSpec.describe "electricity out of hours advice page", type: :system do
         expect(page).to have_css('#chart_wrapper_daytype_breakdown_electricity_tolerant')
         expect(page).to have_css('#chart_wrapper_electricity_by_day_of_week_tolerant')
         expect(page).to have_content("Holiday usage")
-        expect(page).to have_content(Date.new(2021,12,18).to_s(:es_short))
+        expect(page).to have_content(Date.new(2021, 12, 18).to_s(:es_short))
       end
     end
 

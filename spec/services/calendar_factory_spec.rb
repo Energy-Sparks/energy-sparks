@@ -6,7 +6,7 @@ describe CalendarFactory do
   let(:template_calendar) { calendar }
 
   describe 'a parent calendar with a child' do
-    let(:child_calendar)  { CalendarFactory.new(existing_calendar: calendar, title: 'New calendar').create }
+    let(:child_calendar) { CalendarFactory.new(existing_calendar: calendar, title: 'New calendar').create }
 
     it 'has a relationship' do
       expect(child_calendar.based_on).to eq template_calendar

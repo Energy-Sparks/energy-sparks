@@ -69,5 +69,4 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
       expect(html.to_s).to be_blank
     end
   end
-
 end

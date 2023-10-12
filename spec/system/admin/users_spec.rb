@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 describe 'Users', type: :system do
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   describe 'searching for users' do
     before do
       sign_in(admin)
     end
 
-    let!(:user)             { create(:user, email: 'testing@example.com') }
+    let!(:user) { create(:user, email: 'testing@example.com') }
 
     it 'provides a case insensitive search' do
       visit root_path
@@ -54,7 +54,6 @@ describe 'Users', type: :system do
     end
 
     context 'when user exists with consent grant' do
-
       let!(:consent_grant)    { create(:consent_grant) }
       let!(:user)             { create(:user, consent_grants: [consent_grant]) }
 

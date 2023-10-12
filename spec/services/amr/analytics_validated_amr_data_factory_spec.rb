@@ -3,7 +3,6 @@ require 'rails_helper'
 
 module Amr
   describe AnalyticsValidatedAmrDataFactory do
-
     let(:school_name) { 'Active school'}
     let!(:school)     { create(:school, :with_school_group, name: school_name) }
     let!(:config)     { create(:amr_data_feed_config) }

@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 describe SchoolOnboardingDeletor, type: :service do
-
     let(:school)                    { build :school}
     let(:onboarding_user)           { create :onboarding_user }
-    let!(:template_calendar)  { create(:template_calendar, title: 'BANES calendar') }
+    let!(:template_calendar) { create(:template_calendar, title: 'BANES calendar') }
     let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
     let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
     let!(:school_group)       { create(:school_group, name: 'BANES') }
@@ -25,7 +24,7 @@ describe SchoolOnboardingDeletor, type: :service do
         weather_station: weather_station
     end
 
-    let(:service)  { SchoolOnboardingDeletor.new(school_onboarding) }
+    let(:service) { SchoolOnboardingDeletor.new(school_onboarding) }
 
     before :each do
       # use the school creator to set up a realistic onboarding and school, with events, user etc
@@ -46,9 +45,9 @@ describe SchoolOnboardingDeletor, type: :service do
 
     it 'deletes the events' do
       events_count = school_onboarding.events.count
-      expect {
+      expect do
         service.delete!
-      }.to change(SchoolOnboardingEvent, :count).by(-events_count)
+      end.to change(SchoolOnboardingEvent, :count).by(-events_count)
     end
 
     it 'keeps the onboarding user' do
@@ -58,9 +57,9 @@ describe SchoolOnboardingDeletor, type: :service do
     end
 
     it 'removes consent grants' do
-      expect {
+      expect do
         service.delete!
-      }.to change(ConsentGrant, :count).by(-1)
+      end.to change(ConsentGrant, :count).by(-1)
     end
 
     it 'removes school from the onboarding user' do

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Targets::AdminReportService, type: :service do
-
   let(:school_group)         { create(:school_group) }
   let!(:school)              { create(:school, school_group: school_group) }
   let!(:school_target)       { create(:school_target, school: school) }
@@ -16,7 +15,7 @@ describe Targets::AdminReportService, type: :service do
   end
 
   context '#progress_report_as_csv' do
-    let(:report)  { service.progress_report_as_csv }
+    let(:report) { service.progress_report_as_csv }
 
     it 'should not be empty' do
       expect(report).to_not be_nil
@@ -26,19 +25,19 @@ describe Targets::AdminReportService, type: :service do
     it 'should have expected data' do
       array = CSV.parse(report)[1]
       expect(array).to eq([
-        school_group.name,
-        school.name,
-        "true",
-        "true",
-        "#{school_target.start_date.strftime("%Y-%m-%d")}",
-        "#{school_target.target_date.strftime("%Y-%m-%d")}",
-        "-#{school_target.electricity}%",
-        "#{FormatEnergyUnit.format(:relative_percent, progress_summary.electricity_progress.progress, :html, false, true, :target)}",
-        "-#{school_target.gas}%",
-        "#{FormatEnergyUnit.format(:relative_percent, progress_summary.gas_progress.progress, :html, false, true, :target)}",
-        "-#{school_target.storage_heaters}%",
-        "#{FormatEnergyUnit.format(:relative_percent, progress_summary.storage_heater_progress.progress, :html, false, true, :target)}"
-        ])
+                            school_group.name,
+                            school.name,
+                            "true",
+                            "true",
+                            school_target.start_date.strftime('%Y-%m-%d').to_s,
+                            school_target.target_date.strftime('%Y-%m-%d').to_s,
+                            "-#{school_target.electricity}%",
+                            FormatEnergyUnit.format(:relative_percent, progress_summary.electricity_progress.progress, :html, false, true, :target).to_s,
+                            "-#{school_target.gas}%",
+                            FormatEnergyUnit.format(:relative_percent, progress_summary.gas_progress.progress, :html, false, true, :target).to_s,
+                            "-#{school_target.storage_heaters}%",
+                            FormatEnergyUnit.format(:relative_percent, progress_summary.storage_heater_progress.progress, :html, false, true, :target).to_s
+                          ])
     end
   end
 
@@ -66,19 +65,19 @@ describe Targets::AdminReportService, type: :service do
     it 'should have expected data' do
       array = CSV.parse(report)[1]
       expect(array).to eq([
-        school_group.name,
-        school.name,
-        "true",
-        "true",
-        "electricity",
-        "true",
-        "true",
-        "true",
-        "true",
-        "false",
-        "false",
-        "true"
-        ])
+                            school_group.name,
+                            school.name,
+                            "true",
+                            "true",
+                            "electricity",
+                            "true",
+                            "true",
+                            "true",
+                            "true",
+                            "false",
+                            "false",
+                            "true"
+                          ])
     end
   end
 
@@ -114,5 +113,4 @@ describe Targets::AdminReportService, type: :service do
       expect(email.attachments.last.filename).to eql "target-data-report-#{today}.csv"
     end
   end
-
 end

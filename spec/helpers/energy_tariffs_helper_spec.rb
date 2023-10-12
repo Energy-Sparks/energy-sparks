@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe EnergyTariffsHelper do
-
   let(:energy_tariff) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: "School", school: create(:school), tariff_type: 'differential')}
 
   describe '.energy_tariff_prices_text' do
@@ -16,7 +15,6 @@ describe EnergyTariffsHelper do
   end
 
   describe '.energy_tariff_charge_for_type' do
-
     let(:energy_tariff_charge_1) { EnergyTariffCharge.new(charge_type: :fixed_charge) }
     let(:energy_tariff_charge_2) { EnergyTariffCharge.new(charge_type: :other) }
     let(:energy_tariff_charge_3) { EnergyTariffCharge.new(charge_type: :agreed_capacity) }

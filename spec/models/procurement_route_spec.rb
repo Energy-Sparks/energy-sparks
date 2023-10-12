@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ProcurementRoute, type: :model do
-
   describe 'validations' do
     subject { build(:procurement_route) }
     it { is_expected.to be_valid }

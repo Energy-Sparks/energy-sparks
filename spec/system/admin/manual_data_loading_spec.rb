@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe "manual data load", type: :system do
-
   let!(:admin)              { create(:admin) }
 
   let!(:run)                { create(:manual_data_load_run, status: :done) }
@@ -34,6 +33,4 @@ describe "manual data load", type: :system do
       expect(page).to have_content("done")
     end
   end
-
-
 end

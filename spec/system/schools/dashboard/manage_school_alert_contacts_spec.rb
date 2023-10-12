@@ -25,7 +25,7 @@ RSpec.describe "manage school alert contacts", type: :system do
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
+    let(:user) { create(:staff, school: school) }
     it 'should be able to visit the alert contacts page' do
       visit school_contacts_path(school)
       expect(page.current_path).to eq(school_path(school))

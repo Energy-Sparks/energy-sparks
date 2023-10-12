@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe EnergyTariffTableComponent, type: :component do
-
   let(:current_user)      { create(:admin) }
   let(:tariff_holder)     { SiteSettings.current }
   let(:enabled)           { true }
@@ -10,14 +9,14 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
   let(:show_actions)      { true }
   let(:show_prices)       { true }
 
-  let(:params) {
+  let(:params) do
     {
       tariff_holder: tariff_holder,
       tariffs: energy_tariffs,
       show_actions: show_actions,
       show_prices: show_prices
     }
-  }
+  end
 
   let(:component) { EnergyTariffTableComponent.new(**params) }
 
@@ -54,7 +53,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
   end
 
   context '.start_date' do
-    let(:start_date)  { component.start_date(energy_tariffs.first) }
+    let(:start_date) { component.start_date(energy_tariffs.first) }
     it 'returns expected date' do
       expect(start_date).to eq energy_tariffs.first.start_date.to_s(:es_compact)
     end
@@ -67,7 +66,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
   end
 
   context '.end_date' do
-    let(:end_date)  { component.end_date(energy_tariffs.first) }
+    let(:end_date) { component.end_date(energy_tariffs.first) }
     it 'returns expected date' do
       expect(end_date).to eq energy_tariffs.first.end_date.to_s(:es_compact)
     end
@@ -99,7 +98,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     context 'with show no prices option' do
-      let(:show_prices)       { true }
+      let(:show_prices) { true }
       it 'doesnt show price' do
         within('#tariff-table tbody tr[1]') do
           expect(page).to_not have_content(energy_tariffs.first.energy_tariff_price.first)
@@ -117,19 +116,18 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     context 'with an id' do
-      let(:params) {
+      let(:params) do
         {
           tariff_holder: tariff_holder,
           tariffs: energy_tariffs,
           show_actions: show_actions,
           id: 'my-custom-id'
         }
-      }
+      end
       it 'renders table with id' do
         expect(page).to have_css('#my-custom-id')
       end
     end
-
   end
 
   context 'action buttons' do
@@ -141,7 +139,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     context 'with disabled site settings tariff' do
-      let(:enabled)   { false }
+      let(:enabled) { false }
       it 'includes all the actions' do
         expect(page).to have_link(energy_tariffs.first.name)
         expect(page).to have_link('Edit')
@@ -155,14 +153,14 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
 
     context 'with unusable tariff' do
       #no prices
-      let(:energy_tariffs)    { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
+      let(:energy_tariffs) { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
       it 'styles the row' do
         expect(page).to have_css("tr.table-danger")
       end
     end
 
     context 'with dcc tariff' do
-      let(:source)  { :dcc }
+      let(:source) { :dcc }
       it 'includes the actions' do
         expect(page).to have_link(energy_tariffs.first.name)
         expect(page).to have_link('Edit charges')
@@ -171,7 +169,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       end
 
       context 'that is disabled' do
-        let(:enabled)   { false }
+        let(:enabled) { false }
         it 'includes the expected actions' do
           expect(page).to have_link(energy_tariffs.first.name)
           expect(page).to have_link('Edit charges')
@@ -184,7 +182,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     context 'with non-authorised user' do
-      let(:current_user)  { create(:school_admin) }
+      let(:current_user) { create(:school_admin) }
 
       it 'does not include the actions' do
         expect(page).to_not have_link(energy_tariffs.first.name)
@@ -193,6 +191,5 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
         expect(page).to_not have_link('Delete')
       end
     end
-
   end
 end

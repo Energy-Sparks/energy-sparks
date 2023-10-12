@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TranslatableAttachment do
-
   class TranslatableDummy < ApplicationRecord
     def self.load_schema!; end
 
@@ -32,7 +31,7 @@ describe TranslatableAttachment do
 
       it "has non-translated attachments" do
         attachments.each do |attachment|
-          expect(subject).to include("#{attachment}")
+          expect(subject).to include(attachment.to_s)
         end
       end
 

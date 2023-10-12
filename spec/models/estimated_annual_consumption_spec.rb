@@ -1,24 +1,22 @@
 require 'rails_helper'
 
 describe EstimatedAnnualConsumption, type: :model do
-
-  let(:school)          { create(:school) }
+  let(:school) { create(:school) }
 
   context "when validating" do
     it "should require year" do
-      estimate = EstimatedAnnualConsumption.new({school: school, electricity: 10.0})
+      estimate = EstimatedAnnualConsumption.new({ school: school, electricity: 10.0 })
       expect(estimate.valid?).to be false
     end
 
     it "should require a least one estimate" do
-      estimate = EstimatedAnnualConsumption.new({school: school, year: 2021})
+      estimate = EstimatedAnnualConsumption.new({ school: school, year: 2021 })
       expect(estimate.valid?).to be false
     end
   end
 
   context "when converting to meter attributes" do
-
-    let(:estimate)  { create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
+    let(:estimate) { create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
 
     it "should generate aggregated electricity attribute" do
       attribute = MeterAttribute.to_analytics([estimate.meter_attribute_for_electricity_estimate])
@@ -47,6 +45,5 @@ describe EstimatedAnnualConsumption, type: :model do
       expect(attributes[:aggregated_gas]).to_not be_empty
       expect(attributes[:storage_heater_aggregated]).to_not be_empty
     end
-
   end
 end

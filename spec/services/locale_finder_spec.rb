@@ -11,7 +11,7 @@ describe LocaleFinder do
     end
 
     context 'when locale specified in subdomain' do
-      let(:params) { { } }
+      let(:params) { {} }
       let(:request) { double(subdomains: ['test-cy']) }
       it "should return locale from params" do
         expect(LocaleFinder.new(params, request).locale).to match("cy")
@@ -19,7 +19,7 @@ describe LocaleFinder do
     end
 
     context 'when subdomain locale not valid' do
-      let(:params) { { } }
+      let(:params) { {} }
       let(:request) { double(subdomains: ['test-xx']) }
       it "should return default locale" do
         expect(LocaleFinder.new(params, request).locale).to match("en")
@@ -27,7 +27,7 @@ describe LocaleFinder do
     end
 
     context 'when no subdomain' do
-      let(:params) { { } }
+      let(:params) { {} }
       let(:request) { double(subdomains: []) }
       it "should return default locale" do
         expect(LocaleFinder.new(params, request).locale).to match("en")

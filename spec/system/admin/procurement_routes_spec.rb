@@ -2,7 +2,7 @@ require 'rails_helper'
 
 shared_examples_for "a displayed procurement route" do
   it "displays procurement route fields" do
-    text_attributes.keys.each do |text_field|
+    text_attributes.each_key do |text_field|
       expect(page).to have_content(procurement_route[text_field])
     end
   end
@@ -26,7 +26,8 @@ RSpec.describe 'Procurement route admin', :school_groups, type: :system, include
   let(:setup_data)             { }
   let!(:user)                  { }
 
-  let!(:text_attributes) { {
+  let!(:text_attributes) do
+    {
     organisation_name: "Organisation name",
     contact_name: "Contact name",
     contact_email: "Contact email",
@@ -37,7 +38,8 @@ RSpec.describe 'Procurement route admin', :school_groups, type: :system, include
     data_issues_contact_details: "Who to contact about data issues",
     loa_expiry_procedure: "What to do when LOA is about expire",
     comments: "Comments"
-  } }
+  }
+  end
 
   before do
     setup_data

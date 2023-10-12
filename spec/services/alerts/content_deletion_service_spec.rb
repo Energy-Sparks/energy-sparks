@@ -8,7 +8,7 @@ describe Alerts::ContentDeletionService, type: :service do
   let(:electricity_fuel_alert_type)     { create(:alert_type, fuel_type: :electricity, frequency: :termly, description: alert_type_description) }
 
   it 'defaults to beginning of month, 3 months ago' do
-    expect(service.older_than).to eql(1.months.ago.beginning_of_month)
+    expect(service.older_than).to eql(1.month.ago.beginning_of_month)
   end
 
   it 'calls delete!' do

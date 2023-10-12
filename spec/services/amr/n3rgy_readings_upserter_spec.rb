@@ -2,12 +2,11 @@ require 'rails_helper'
 
 module Amr
   describe N3rgyReadingsUpserter do
-
     let(:meter)           { create(:electricity_meter) }
     let(:config)          { create(:amr_data_feed_config)}
-    let(:end_date)     { Date.today }
+    let(:end_date)     { Time.zone.today }
     let(:start_date) { end_date - 1 }
-    let(:readings)        {
+    let(:readings) do
       {
         meter.meter_type => {
             mpan_mprn:        meter.mpan_mprn,
@@ -15,22 +14,22 @@ module Amr
             missing_readings: []
           }
       }
-    }
-    let(:import_log)    { create(:amr_data_feed_import_log) }
+    end
+    let(:import_log) { create(:amr_data_feed_import_log) }
 
     let(:upserter) { Amr::N3rgyReadingsUpserter.new(meter: meter, config: config, readings: readings, import_log: import_log) }
 
     it "inserts new readings" do
-      expect( AmrDataFeedReading.count ).to eql 0
+      expect(AmrDataFeedReading.count).to eql 0
       upserter.perform
-      expect( AmrDataFeedReading.count ).to eql 1
+      expect(AmrDataFeedReading.count).to eql 1
     end
 
     it "handles empty reading for meter" do
-      expect( AmrDataFeedReading.count ).to eql 0
+      expect(AmrDataFeedReading.count).to eql 0
       readings[meter.meter_type][:readings] = {}
       upserter.perform
-      expect( AmrDataFeedReading.count ).to eql 0
+      expect(AmrDataFeedReading.count).to eql 0
     end
 
     it "logs counts of inserts and updates" do
@@ -38,9 +37,8 @@ module Amr
       upserter.perform
     end
 
-    context  "if mpan is new" do
-
-      let(:readings) {
+    context "if mpan is new" do
+      let(:readings) do
         {
           meter.meter_type => {
             mpan_mprn:      meter.mpan_mprn,
@@ -48,14 +46,13 @@ module Amr
             missing_readings: []
           }
         }
-      }
+      end
 
       it "does not create meters" do
         upserter.perform
-        expect( Meter.count ).to eql 1
-        expect( Meter.first.id ).to eql meter.id
+        expect(Meter.count).to eql 1
+        expect(Meter.first.id).to eql meter.id
       end
     end
-
   end
 end

@@ -49,7 +49,7 @@ module DataFeeds
           { temperatures: { start_date => good_warmer_temperature_readings }, missing: nil }
         end
         loader = MeteostatLoader.new(start_date, start_date + 1.day, interface)
-        expect { loader.import_station(weather_station) }.to_not change { WeatherObservation.count}
+        expect { loader.import_station(weather_station) }.to_not(change { WeatherObservation.count})
         expect(WeatherObservation.first.temperature_celsius_x48).to eq good_warmer_temperature_readings
         expect(loader.insert_count).to eql 0
         expect(loader.update_count).to eql 1
@@ -63,7 +63,7 @@ module DataFeeds
         end
 
         loader = MeteostatLoader.new(start_date, start_date + 1.day, interface)
-        expect { loader.import_station(weather_station) }.to_not change { WeatherObservation.count }
+        expect { loader.import_station(weather_station) }.to_not(change { WeatherObservation.count })
       end
     end
 

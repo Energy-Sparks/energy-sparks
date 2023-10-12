@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe AlertMailer do
-
   let(:school)                { create(:school) }
   let(:email_address)         { 'blah@blah.com' }
   let(:email)                 { ActionMailer::Base.deliveries.last }

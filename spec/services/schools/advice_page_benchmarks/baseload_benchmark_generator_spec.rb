@@ -1,22 +1,21 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::BaseloadBenchmarkGenerator, type: :service do
-
   let(:school)      { create(:school) }
   let(:advice_page) { create(:advice_page, key: :baseload) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service)     { Schools::AdvicePageBenchmarks::BaseloadBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::BaseloadBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
 
   context '#benchmark_school' do
     let(:enough_data) { true }
-    let(:comparison) {
+    let(:comparison) do
       Schools::Comparison.new(
         school_value: 10.0,
         benchmark_value: 15.0,
         exemplar_value: 8.0,
         unit: :kw
       )
-    }
+    end
     before(:each) do
       allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:enough_data?).and_return(enough_data)
       allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:benchmark_baseload).and_return(comparison)

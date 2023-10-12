@@ -2,16 +2,15 @@ require 'rails_helper'
 
 
 describe Alerts::System::UpcomingHoliday do
-
   let(:calendar) { create :calendar }
   let!(:holiday) { create :holiday, start_date: start_date, end_date: start_date + 7.days, calendar: calendar }
-  let(:school)  { create :school, calendar: calendar}
+  let(:school) { create :school, calendar: calendar}
 
-  let(:today){ Date.new(2019, 4, 26) }
-  let(:report){ Alerts::System::UpcomingHoliday.new(school: school, today: today, alert_type: nil).report }
+  let(:today) { Date.new(2019, 4, 26) }
+  let(:report) { Alerts::System::UpcomingHoliday.new(school: school, today: today, alert_type: nil).report }
 
   context 'where the start date is in the next 7 days' do
-    let(:start_date){ Date.new(2019, 4, 29) }
+    let(:start_date) { Date.new(2019, 4, 29) }
 
     it 'has a rating related to the number of days' do
       expect(report.rating).to eq(3.0)
@@ -28,8 +27,7 @@ describe Alerts::System::UpcomingHoliday do
   end
 
   context 'where the start date is over 7 days away' do
-
-    let(:start_date){ Date.new(2019, 10, 1) }
+    let(:start_date) { Date.new(2019, 10, 1) }
 
     it 'has a rating of 10' do
       expect(report.rating).to eq(nil)
@@ -42,6 +40,4 @@ describe Alerts::System::UpcomingHoliday do
       expect(report.template_data).to be_empty
     end
   end
-
 end
-

@@ -6,7 +6,7 @@ RSpec.shared_examples "a basic gas tariff editor" do
   end
 
   context 'with an existing tariff' do
-    let!(:energy_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
+    let!(:energy_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
     before do
       #assumes starting from tariff index
       refresh
@@ -29,7 +29,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
   end
 
   context 'with an existing tariff' do
-    let!(:energy_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
+    let!(:energy_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
     before do
       #assumes starting from tariff index
       refresh
@@ -102,7 +102,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
   end
 
   context 'with an existing differential tariff' do
-    let!(:energy_tariff)         { create(:energy_tariff, tariff_type: :differential, tariff_holder: tariff_holder, meter_type: meter_type)}
+    let!(:energy_tariff) { create(:energy_tariff, tariff_type: :differential, tariff_holder: tariff_holder, meter_type: meter_type)}
 
     before do
       #assumes starting from tariff index
@@ -111,7 +111,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
     end
 
     it 'can create a differential tariff and add, edit, delete, and reset prices and charges' do
-      find('#prices-section-edit').click()
+      find('#prices-section-edit').click
       expect(page).to have_content('Rate from 00:00 to 07:00')
       expect(page).to have_content('Rate from 07:00 to 00:00')
       expect(page).to have_link('Add rate')
@@ -269,7 +269,7 @@ RSpec.shared_examples "a school tariff editor" do
     let(:meter)           { electricity_meter }
     let(:mpan_mprn)       { electricity_meter.mpan_mprn.to_s }
     let(:meter_type)      { :electricity }
-    let!(:energy_tariff)  { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
+    let!(:energy_tariff)  { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
     before(:each) do
       refresh
       click_on(energy_tariff.name)
@@ -283,7 +283,7 @@ RSpec.shared_examples "a school tariff editor" do
     let(:meter)           { gas_meter }
     let(:mpan_mprn)       { gas_meter.mpan_mprn.to_s }
     let(:meter_type)      { :gas }
-    let!(:energy_tariff)  { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
+    let!(:energy_tariff)  { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
     before(:each) do
       refresh
       click_on(energy_tariff.name)

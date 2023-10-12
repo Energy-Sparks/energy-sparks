@@ -1,14 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Schools::BillRequestService do
-
   let!(:school)           { create(:school) }
   let!(:service)          { Schools::BillRequestService.new(school) }
   let(:email)             { ActionMailer::Base.deliveries.last }
   let(:email_body)        { email.body.to_s }
 
   context 'listing users' do
-
     context 'with no users' do
       it 'returns empty list' do
         expect(service.users).to eql([])
@@ -51,18 +49,18 @@ RSpec.describe Schools::BillRequestService do
   end
 
   context '#request_documentation!' do
-    let!(:school_admin)     { create(:school_admin, school: school)}
+    let!(:school_admin) { create(:school_admin, school: school)}
 
     it 'should generate an email' do
-      expect{
+      expect do
         service.request_documentation!([school_admin])
-      }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
+      end.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
     end
 
     it 'should set flag on school' do
-      expect{
+      expect do
         service.request_documentation!([school_admin])
-      }.to change(school, :bill_requested).from(false).to(true).and change { school.bill_requested_at.class }.from(NilClass).to(ActiveSupport::TimeWithZone)
+      end.to change(school, :bill_requested).from(false).to(true).and change { school.bill_requested_at.class }.from(NilClass).to(ActiveSupport::TimeWithZone)
     end
 
     context 'when formatting email' do

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "school adult dashboard", type: :system do
-
   let(:school_name)         { 'Oldfield Park Infants' }
   let!(:school_group)       { create(:school_group, name: 'School Group')}
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
@@ -75,27 +74,27 @@ RSpec.describe "school adult dashboard", type: :system do
       it 'does not show invisible school or the group' do
         visit root_path
         click_on('View schools')
-        expect(page.has_content? school_name).to be true
-        expect(page.has_content? 'Invisible School').to_not be true
-        expect(page.has_content? 'School Group').to_not be true
+        expect(page.has_content?(school_name)).to be true
+        expect(page.has_content?('Invisible School')).to_not be true
+        expect(page.has_content?('School Group')).to_not be true
       end
 
       it 'prompts user to login when viewing' do
         visit school_path(school_invisible)
-        expect(page.has_content? 'You are not authorized to access this page').to be true
+        expect(page.has_content?('You are not authorized to access this page')).to be true
       end
 
       context 'when also not data enabled' do
         it 'does not raise a double render error' do
           school_invisible.update(data_enabled: false)
           visit school_path(school_invisible)
-          expect(page.has_content? 'You are not authorized to access this page').to be true
+          expect(page.has_content?('You are not authorized to access this page')).to be true
         end
       end
     end
 
     context 'as admin' do
-      let!(:admin)              { create(:admin)}
+      let!(:admin) { create(:admin)}
 
       before(:each) do
         sign_in(admin)
@@ -104,43 +103,40 @@ RSpec.describe "school adult dashboard", type: :system do
       end
 
       it 'does show invisible school, but not the group' do
-        expect(page.has_content? school_name).to be true
-        expect(page.has_content? 'Not visible schools').to be true
-        expect(page.has_content? 'Invisible School').to be true
-        expect(page.has_content? 'School Group').to_not be true
+        expect(page.has_content?(school_name)).to be true
+        expect(page.has_content?('Not visible schools')).to be true
+        expect(page.has_content?('Invisible School')).to be true
+        expect(page.has_content?('School Group')).to_not be true
       end
 
       it 'shows school' do
         visit school_path(school_invisible)
-        expect(page.has_link? "Pupil dashboard").to be true
-        expect(page.has_content? school_invisible.name).to be true
+        expect(page.has_link?("Pupil dashboard")).to be true
+        expect(page.has_content?(school_invisible.name)).to be true
       end
-
     end
-
   end
 
   context 'non-public school' do
-    let!(:non_public_school)       { create(:school, name: 'Non-public School', visible: true, public: false, school_group: school_group)}
+    let!(:non_public_school) { create(:school, name: 'Non-public School', visible: true, public: false, school_group: school_group)}
 
     context 'as unknown user' do
-
       it 'is listed on school page' do
         visit root_path
         click_on('View schools')
 
-        expect(page.has_content? non_public_school.name).to be true
-        expect(page.has_content? 'School Group').to be true
+        expect(page.has_content?(non_public_school.name)).to be true
+        expect(page.has_content?('School Group')).to be true
       end
 
       it 'prompts user to login when viewing' do
         visit school_path(non_public_school)
-        expect(page.has_content? 'This school has disabled public access').to be true
+        expect(page.has_content?('This school has disabled public access')).to be true
       end
     end
 
     context 'as staff' do
-      let!(:school_admin)          { create(:school_admin, school: non_public_school) }
+      let!(:school_admin) { create(:school_admin, school: non_public_school) }
 
       before(:each) do
         sign_in(school_admin)
@@ -157,7 +153,6 @@ RSpec.describe "school adult dashboard", type: :system do
         expect(page).to have_content(non_public_school.name)
         expect(page).to have_link("Compare schools")
       end
-
     end
 
     context 'as a user in the same school group' do
@@ -173,7 +168,6 @@ RSpec.describe "school adult dashboard", type: :system do
         expect(page).to have_content(non_public_school.name)
         expect(page).to have_link("Compare schools")
       end
-
     end
 
     context 'as a unrelated school user' do
@@ -184,11 +178,8 @@ RSpec.describe "school adult dashboard", type: :system do
 
       it 'prompts user to login when viewing' do
         visit school_path(non_public_school)
-        expect(page.has_content? 'This school has disabled public access').to be true
+        expect(page.has_content?('This school has disabled public access')).to be true
       end
-
     end
-
   end
-
 end

@@ -3,7 +3,6 @@
 require "rails_helper"
 
 RSpec.describe PageNavComponent, type: :component do
-
   let(:all_header_params) { { name: 'Name', icon: 'bars', href: 'link', classes: 'bg-header' } }
   let(:all_section_params) { { name: "Section Name", icon: 'bolt', visible: true, classes: 'bg-section' } }
   let(:all_item_params) { { name: 'Item Name', href: '/schools/index' } }
@@ -102,5 +101,4 @@ RSpec.describe PageNavComponent, type: :component do
   end
 
   pending "CollapseButton testing to be completed after decided on responsive behaviour"
-
 end

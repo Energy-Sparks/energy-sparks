@@ -2,9 +2,9 @@ require 'rails_helper'
 
 module Schools
   describe Configuration do
-
     let(:school)      { create :school }
-    let(:page_config) {{
+    let(:page_config) do
+      {
       main_dashboard_electric:  {
         name:   'One Two',
         charts: [:benchmark]
@@ -31,7 +31,8 @@ module Schools
           }
         ]
       }
-    }}
+    }
+    end
 
     describe '#dashboard_charts_symbols' do
       it 'returns the dashboard charts in symbol form properly as they get converted to JSON on save' do
@@ -65,7 +66,6 @@ module Schools
         expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Electricity", "Storage", :electric_storage)).to eq(true)
 
         expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Electricity", "Lemons", :electric_storage)).to eq(false)
-
       end
     end
   end

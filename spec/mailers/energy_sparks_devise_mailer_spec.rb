@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe EnergySparksDeviseMailer do
-
   let(:school)                { create(:school) }
   let(:user)                  { create(:user, school: school) }
   let(:country)               { "england" }

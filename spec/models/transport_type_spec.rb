@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TransportType do
-
   describe 'validations' do
     subject { build(:transport_type) }
 
@@ -21,18 +20,18 @@ describe TransportType do
     subject! { create :transport_type }
 
     context "with associated transport survey response" do
-      let!(:response) { create(:transport_survey_response, transport_type: subject )}
+      let!(:response) { create(:transport_survey_response, transport_type: subject)}
 
       it 'raises exception and does not destroy' do
         expect { subject.safe_destroy }
-        .to raise_error( EnergySparks::SafeDestroyError, 'Transport type has associated responses')
-        .and( not_change{ TransportType.count } )
+        .to raise_error(EnergySparks::SafeDestroyError, 'Transport type has associated responses')
+        .and(not_change { TransportType.count })
       end
     end
 
     context "without an associated transport survey response" do
       it 'does not raise' do
-        expect{ subject.safe_destroy }.not_to raise_error
+        expect { subject.safe_destroy }.not_to raise_error
       end
       it "destroys transport type" do
         expect { subject.safe_destroy }.to change { TransportType.count }.from(1).to(0)
@@ -42,11 +41,10 @@ describe TransportType do
 
   describe "#categories_with_other" do
     it "adds 'other' to categories" do
-      expect(TransportType.categories_with_other.keys).to eql( TransportType.categories.keys + ['other'] )
+      expect(TransportType.categories_with_other.keys).to eql(TransportType.categories.keys + ['other'])
     end
     it "sets other to nil" do
       expect(TransportType.categories_with_other['other']).to be_nil
     end
   end
-
 end

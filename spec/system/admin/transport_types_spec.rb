@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe "admin transport type", type: :system, include_application_helper: true do
-
   let!(:admin)  { create(:admin) }
   let!(:transport_type) { create(:transport_type, can_share: false, park_and_stride: false) }
 
@@ -28,12 +27,12 @@ describe "admin transport type", type: :system, include_application_helper: true
   end
 
   describe 'when logged in' do
-
     before(:each) do
       sign_in(admin)
     end
 
-    let(:attributes) { {
+    let(:attributes) do
+      {
       'Name' => transport_type.name,
       'Image' => transport_type.image,
       'Speed (km/h)' => transport_type.speed_km_per_hour,
@@ -45,9 +44,11 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Position' => transport_type.position,
       'Created at' => nice_date_times(transport_type.created_at),
       'Updated at' => nice_date_times(transport_type.updated_at)
-    } }
+    }
+    end
 
-    let(:new_valid_attributes) { {
+    let(:new_valid_attributes) do
+      {
       'Name' => 'Plane',
       'Image' => '✈️',
       'Speed (km/h)' => 740,
@@ -57,9 +58,10 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Category' => 'Public transport',
       'Position' => 1,
       'Note' => 'Why not?'
-    } }
+    }
+    end
 
-    let(:translated_fields) { {'Name' => :transport_type_name_en} }
+    let(:translated_fields) { { 'Name' => :transport_type_name_en } }
     let(:checkbox_fields) { ['Can share', 'Park and stride'] }
     let(:select_fields) { ['Category'] }
     let(:date_fields) { ['Created at', 'Updated at'] }
@@ -330,7 +332,6 @@ describe "admin transport type", type: :system, include_application_helper: true
 
     describe "Deleting a transport type" do
       context "from the index page" do
-
         context "when the transport type has associated responses" do
           before(:each) do
             create(:transport_survey_response, transport_type: transport_type)
@@ -340,7 +341,7 @@ describe "admin transport type", type: :system, include_application_helper: true
           it { expect(page).to have_selector(:table_row, display_attributes) }
 
           it "disables delete button" do
-            expect(find_link("Delete")['class']).to match /disabled/
+            expect(find_link("Delete")['class']).to match(/disabled/)
           end
         end
 
@@ -409,6 +410,5 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
       end
     end
-
   end
 end

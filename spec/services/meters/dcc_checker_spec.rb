@@ -2,11 +2,10 @@ require 'rails_helper'
 
 module Meters
   describe DccChecker do
-
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
 
-    let(:meter)  { create(:electricity_meter, dcc_meter: false) }
+    let(:meter) { create(:electricity_meter, dcc_meter: false) }
 
     it "should set dcc true and timestamp if found" do
       expect(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_return(true)
@@ -24,16 +23,16 @@ module Meters
 
     it 'should generate an email if status changed' do
       expect(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_return(true)
-      expect{
+      expect do
         Meters::DccChecker.new([meter], n3rgy_api_factory).perform
-      }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
+      end.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
     end
 
     it 'should not generate an email if status not changed' do
       expect(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_return(false)
-      expect{
+      expect do
         Meters::DccChecker.new([meter], n3rgy_api_factory).perform
-      }.not_to change(ActionMailer::Base.deliveries, :count)
+      end.not_to change(ActionMailer::Base.deliveries, :count)
     end
   end
 end

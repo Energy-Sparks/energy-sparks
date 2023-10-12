@@ -10,9 +10,8 @@ RSpec.describe AdminMailer, include_application_helper: true do
   end
 
   describe '#school_group_meters_report' do
-
     shared_examples "a report with gaps in the meter readings" do
-      let(:base_date) { Date.today - 1.year }
+      let(:base_date) { Time.zone.today - 1.year }
 
       before do
         create(:amr_validated_reading, meter: active_meter, reading_date: base_date, status: 'ORIG')
@@ -72,12 +71,12 @@ RSpec.describe AdminMailer, include_application_helper: true do
 
     context "All meters" do
       let(:all_meters) { true }
-      it { expect(email.subject).to eql ("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - all meters") }
+      it { expect(email.subject).to eql("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - all meters") }
     end
 
     context "Only active meters" do
       let(:all_meters) { false }
-      it { expect(email.subject).to eql ("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - active meters") }
+      it { expect(email.subject).to eql("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - active meters") }
     end
 
     context "html report" do
@@ -120,7 +119,6 @@ RSpec.describe AdminMailer, include_application_helper: true do
   end
 
   describe '#issues_report' do
-
     before { Timecop.freeze(Time.zone.now) }
     after { Timecop.return }
 

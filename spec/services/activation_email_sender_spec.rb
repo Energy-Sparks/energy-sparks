@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 describe ActivationEmailSender, :schools, type: :service do
-
   let(:service) { ActivationEmailSender.new(school) }
 
   describe 'send' do
-    let(:school){ create :school, visible: false}
+    let(:school) { create :school, visible: false}
 
     context 'where the school has not been created via the onboarding process' do
-      let!(:school_admin)  { create(:school_admin, school: school) }
+      let!(:school_admin) { create(:school_admin, school: school) }
       let!(:staff) { create(:staff, school: school) }
 
       before(:each) do
@@ -24,8 +23,8 @@ describe ActivationEmailSender, :schools, type: :service do
     end
 
     context 'where the school has been created as part of the onboarding process' do
-      let(:onboarding_user){ create :onboarding_user }
-      let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
+      let(:onboarding_user) { create :onboarding_user }
+      let!(:school_onboarding) { create :school_onboarding, school: school, created_user: onboarding_user}
 
       context 'when an email has already been sent' do
         before(:each) do
@@ -51,7 +50,7 @@ describe ActivationEmailSender, :schools, type: :service do
         end
 
         context 'when there are staff and admins' do
-          let!(:school_admin)  { create(:school_admin, school: school) }
+          let!(:school_admin) { create(:school_admin, school: school) }
           let!(:staff) { create(:staff, school: school) }
 
           it 'sends the email to staff and admins' do
@@ -103,7 +102,6 @@ describe ActivationEmailSender, :schools, type: :service do
             expect(matcher).to have_link("Join a webinar")
             expect(matcher).to have_link("Get in touch")
           end
-
         end
       end
     end

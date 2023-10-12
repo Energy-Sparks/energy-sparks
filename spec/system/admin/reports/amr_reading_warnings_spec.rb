@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe AmrReadingWarning, type: :system, include_application_helper: true do
-
   let(:mpan)      { '123' }
   let!(:admin)    { create(:admin) }
   let!(:log)      { create(:amr_data_feed_import_log) }

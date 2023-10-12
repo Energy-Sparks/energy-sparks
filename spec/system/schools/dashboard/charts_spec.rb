@@ -51,21 +51,21 @@ RSpec.shared_examples "dashboard chart display" do
 end
 
 RSpec.describe "adult dashboard charts", type: :system do
-  let(:school)             { create(:school) }
+  let(:school) { create(:school) }
 
   before(:each) do
     sign_in(user) if user.present?
   end
 
   context 'as guest' do
-    let(:user)                { nil }
+    let(:user) { nil }
     include_examples "dashboard chart display" do
       let(:test_school) { school }
     end
   end
 
   context 'as pupil' do
-    let(:user)          { create(:pupil, school: school) }
+    let(:user) { create(:pupil, school: school) }
     include_examples "dashboard chart display" do
       let(:test_school) { school }
     end
@@ -81,7 +81,7 @@ RSpec.describe "adult dashboard charts", type: :system do
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
+    let(:user) { create(:staff, school: school) }
     include_examples "dashboard chart display" do
       let(:test_school) { school }
     end
@@ -97,7 +97,7 @@ RSpec.describe "adult dashboard charts", type: :system do
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
     include_examples "dashboard chart display" do
       let(:test_school) { school }
     end

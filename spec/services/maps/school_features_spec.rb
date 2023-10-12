@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Maps::SchoolFeatures do
-
   #
   # Format of JSON for features looks like this:
   #
@@ -73,5 +72,4 @@ describe Maps::SchoolFeatures do
     expect(feature['properties']['schoolPopupHtml']).not_to include('<i class="fas fa-fire">') # does not have gas
     expect(feature['properties']['schoolPopupHtml']).to include('<i class="fas fa-sun">') # has solar pv
   end
-
 end

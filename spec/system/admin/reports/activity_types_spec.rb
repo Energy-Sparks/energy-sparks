@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'activity type reports', type: :system do
-
   let(:admin)              { create(:admin) }
 
   let!(:activity_type)     { create(:activity_type) }
@@ -40,7 +39,7 @@ describe 'activity type reports', type: :system do
     end
 
     context 'when the activity has been recorded multiple times' do
-      let!(:activity2)          { create(:activity, school: school, activity_type: activity_type) }
+      let!(:activity2) { create(:activity, school: school, activity_type: activity_type) }
 
       it 'includes a summary' do
         click_on activity_type.name
@@ -48,5 +47,4 @@ describe 'activity type reports', type: :system do
       end
     end
   end
-
 end

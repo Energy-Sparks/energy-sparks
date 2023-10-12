@@ -13,7 +13,7 @@ module Transifex
 
     context 'when creating connection' do
       let(:client)          { Transifex::Client.new(api_key, project) }
-      let(:request_headers) { { "Authorization"=>"Bearer #{api_key}", "Content-Type"=>"application/vnd.api+json"} }
+      let(:request_headers) { { "Authorization" => "Bearer #{api_key}", "Content-Type" => "application/vnd.api+json" } }
 
       it 'supplies headers' do
         expect(Faraday).to receive(:new).with(Transifex::Client::BASE_URL, headers: request_headers).and_return(connection)
@@ -111,22 +111,22 @@ module Transifex
 
         it 'handles missing env var' do
           ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: nil do
-            expect {
+            expect do
               client.delete_resource(slug)
-            }.to raise_error(Transifex::Client::AccessError)
+            end.to raise_error(Transifex::Client::AccessError)
           end
         end
 
         it 'raise error if project is not development' do
           ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "not-this-project, some-other-project" do
-            expect {
+            expect do
               client.delete_resource(slug)
-            }.to raise_error(Transifex::Client::AccessError)
+            end.to raise_error(Transifex::Client::AccessError)
           end
         end
 
         it 'deletes url and returns true' do
-          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "#{project}" do
+          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: project.to_s do
             expect(connection).to receive(:delete).with(expected_path).and_return(response)
             expect(client.delete_resource(slug)).to be_truthy
           end
@@ -138,11 +138,11 @@ module Transifex
           let(:body)          { File.read('spec/fixtures/transifex/delete_resource_error.json') }
 
           it 'raises error if api returns error' do
-            ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "#{project}" do
+            ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: project.to_s do
               expect(connection).to receive(:delete).with(expected_path).and_return(response)
-              expect {
+              expect do
                 client.delete_resource(slug)
-              }.to raise_error(Transifex::Client::NotAuthorised)
+              end.to raise_error(Transifex::Client::NotAuthorised)
             end
           end
         end
@@ -217,7 +217,7 @@ module Transifex
         let(:expected_path) { "resource_strings_async_uploads/#{upload_id}" }
 
         context 'when translation has not yet completed' do
-          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_pending.json') }
+          let(:body) { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_pending.json') }
           it 'requests url with path and returns data' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             ret = client.get_resource_strings_async_upload(upload_id)
@@ -227,7 +227,7 @@ module Transifex
         end
 
         context 'when translation has completed' do
-          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_succeeded.json') }
+          let(:body) { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_succeeded.json') }
           it 'requests url with path and returns data' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             ret = client.get_resource_strings_async_upload(upload_id)
@@ -279,7 +279,7 @@ module Transifex
         let(:expected_path) { "resource_translations_async_downloads/#{download_id}" }
 
         context 'when translation has not yet completed' do
-          let(:body)        { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_pending.json') }
+          let(:body) { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_pending.json') }
 
           it 'returns file contents' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
@@ -302,7 +302,7 @@ module Transifex
         end
 
         context 'when translation has errors' do
-          let(:body)        { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_errors.json') }
+          let(:body) { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_errors.json') }
           it 'raises error which includes messages' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             begin

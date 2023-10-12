@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe "meter collections", type: :system do
-
   let(:school_name)   { 'Oldfield Park Infants'}
-  let!(:school)       { create(:school,:with_school_group, name: school_name)}
+  let!(:school)       { create(:school, :with_school_group, name: school_name)}
   let!(:admin)        { create(:admin)}
 
   before(:each) do
@@ -21,8 +20,8 @@ describe "meter collections", type: :system do
       click_on 'Unvalidated meter data'
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /unvalidated-data-#{school.name.parameterize}.yaml$/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/unvalidated-data-#{school.name.parameterize}.yaml$/)
     end
   end
 
@@ -33,22 +32,20 @@ describe "meter collections", type: :system do
       click_on 'Validated meter data'
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /validated-data-#{school.name.parameterize}.yaml$/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/validated-data-#{school.name.parameterize}.yaml$/)
     end
   end
 
   context 'when a school has no meters' do
-
     it 'can download an aggregated meter collection - no meters to aggregate' do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
 
       click_on 'Aggregated meter collection'
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /aggregated-meter-collection-#{school.name.parameterize}.yaml$/
-
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/aggregated-meter-collection-#{school.name.parameterize}.yaml$/)
     end
   end
 end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Tables::SummaryTableData do
-
   subject { described_class.new(template_data) }
 
   # Format of the template_data from the analtyics ManagementSummaryTable should be:
@@ -85,13 +84,13 @@ describe Tables::SummaryTableData do
   end
 
   describe 'when year period does not have data - new style' do
-    let(:available_date) { Date.today.next_year }
+    let(:available_date) { Time.zone.today.next_year }
     let(:template_data) do
       { electricity: { year: { available_from: available_date.iso8601 } } }
     end
     it 'shows status and message' do
       expect(subject.by_fuel_type.second.has_data).to be_falsey
-      expect(subject.by_fuel_type.second.message).to eq("Data available from #{available_date.strftime("%b %Y")}")
+      expect(subject.by_fuel_type.second.message).to eq("Data available from #{available_date.strftime('%b %Y')}")
     end
   end
 
@@ -102,7 +101,7 @@ describe Tables::SummaryTableData do
     end
     it 'shows status and message' do
       expect(subject.by_fuel_type.second.has_data).to be_falsey
-      expect(subject.by_fuel_type.second.message).to eq("Data available from #{available_date.strftime("%a %d %b %Y")}")
+      expect(subject.by_fuel_type.second.message).to eq("Data available from #{available_date.strftime('%a %d %b %Y')}")
     end
   end
 
@@ -118,7 +117,7 @@ describe Tables::SummaryTableData do
 
   describe 'when data is not recent' do
     let(:template_data) do
-      { electricity: { year: { kwh: '123', recent: 'no recent data'} } }
+      { electricity: { year: { kwh: '123', recent: 'no recent data' } } }
     end
     it 'shows status, message and class' do
       expect(subject.by_fuel_type.second.has_data).to be false
@@ -129,7 +128,7 @@ describe Tables::SummaryTableData do
 
   describe 'when data is not recent - new style' do
     let(:template_data) do
-      { electricity: { year: { kwh: '123', recent: false} } }
+      { electricity: { year: { kwh: '123', recent: false } } }
     end
     it 'shows status, message and class' do
       expect(subject.by_fuel_type.second.has_data).to be false
@@ -140,7 +139,7 @@ describe Tables::SummaryTableData do
 
   describe 'when data is recent - new style' do
     let(:template_data) do
-      { electricity: { year: { kwh: '123', recent: true} } }
+      { electricity: { year: { kwh: '123', recent: true } } }
     end
     it 'shows status, message and class' do
       expect(subject.by_fuel_type.second.has_data).to be true
@@ -165,7 +164,7 @@ describe Tables::SummaryTableData do
 
   describe 'when 2 fuel types' do
     let(:template_data) do
-      { electricity: { year: { }, workweek: {  } },  gas: { year: { }, workweek: {  } } }
+      { electricity: { year: {}, workweek: {} }, gas: { year: {}, workweek: {} } }
     end
     it 'gives 4 entries' do
       expect(subject.by_fuel_type.count).to eq(4)
@@ -220,7 +219,7 @@ describe Tables::SummaryTableData do
   describe 'date_ranges' do
     context 'when no fuel type' do
       let(:template_data) do
-        { }
+        {}
       end
       it 'handles missing data' do
         expect(subject.date_ranges).to eq('')

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "intervention type groups", type: :system do
-
   let!(:intervention_type_1) { create(:intervention_type) }
   let!(:intervention_type_2) { create(:intervention_type) }
 

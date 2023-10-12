@@ -1,23 +1,25 @@
 require 'rails_helper'
 
 describe BenchmarkContentFilter, type: :service do
-  subject(:content) {[
-    { type: :title, content: 'Benchmark name'},
-    { type: :html, content: 'intro html'},
-    { type: :chart, content: { title: 'chart 1', config_name: "config_name", x_axis: ["a school"] } },
-    { type: :html, content: 'chart html'},
-    { type: :table_composite, content: { header: ['table composite header'], rows: [[]] }},
+  subject(:content) do
+    [
+      { type: :title, content: 'Benchmark name' },
+      { type: :html, content: 'intro html' },
+      { type: :chart, content: { title: 'chart 1', config_name: "config_name", x_axis: ["a school"] } },
+      { type: :html, content: 'chart html' },
+      { type: :table_composite, content: { header: ['table composite header'], rows: [[]] } },
 
-    ## second benchmark
-    { type: :title, content: 'Benchmark 2 name'},
-    { type: :html, content: 'Benchmark 2 intro'},
-    { type: :chart, content: { title: 'chart 2 title', config_name: "config_name", x_axis: ["a school"] } },
+      ## second benchmark
+      { type: :title, content: 'Benchmark 2 name' },
+      { type: :html, content: 'Benchmark 2 intro' },
+      { type: :chart, content: { title: 'chart 2 title', config_name: "config_name", x_axis: ["a school"] } },
 
-    { type: :html, content: 'table 2 html'},
-    { type: :html, content: 'table 2 more html'},
-    { type: :table_composite, content: { header: ['table 2 composite header'], rows: [[]] }},
-    { type: :html, content: 'table 2 even more html'},
-  ]}
+      { type: :html, content: 'table 2 html' },
+      { type: :html, content: 'table 2 more html' },
+      { type: :table_composite, content: { header: ['table 2 composite header'], rows: [[]] } },
+      { type: :html, content: 'table 2 even more html' },
+    ]
+  end
 
   subject(:filter) { BenchmarkContentFilter.new(content) }
 

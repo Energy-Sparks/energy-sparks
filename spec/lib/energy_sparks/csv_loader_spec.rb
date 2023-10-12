@@ -2,7 +2,6 @@ require 'energy_sparks/csv_loader'
 
 
 describe EnergySparks::CsvLoader do
-
   it 'converts headers to symbols' do
     csv = <<~CSV
       Header 1, Header 2
@@ -38,6 +37,6 @@ describe EnergySparks::CsvLoader do
        1, 2
     CSV
     results = EnergySparks::CsvLoader.from_text(csv)
-    expect(results.first.fields).to eq(["1", "2"])
+    expect(results.first.fields).to eq(%w[1 2])
   end
 end

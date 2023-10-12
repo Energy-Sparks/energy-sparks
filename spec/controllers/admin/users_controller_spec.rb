@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Admin::UsersController, type: :controller do
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     {
       email: 'school@test.com',
       password: 'testpassword',
@@ -9,10 +9,10 @@ RSpec.describe Admin::UsersController, type: :controller do
       staff_role_id: create(:staff_role, :teacher).id,
       school_id: create(:school).id
     }
-  }
-  let(:invalid_attributes) {
+  end
+  let(:invalid_attributes) do
     { email: nil }
-  }
+  end
   context "As an admin user" do
     before(:each) do
       sign_in_user(:admin)
@@ -48,9 +48,9 @@ RSpec.describe Admin::UsersController, type: :controller do
     describe "POST #create" do
       context "with valid params" do
         it "creates a new User" do
-          expect {
+          expect do
             post :create, params: { user: valid_attributes }
-          }.to change(User, :count).by(1)
+          end.to change(User, :count).by(1)
         end
 
         it "assigns a newly created user as @user" do
@@ -80,9 +80,9 @@ RSpec.describe Admin::UsersController, type: :controller do
 
     describe "PUT #update" do
       context "with valid params" do
-        let(:new_attributes) {
+        let(:new_attributes) do
           { email: 'new@test.com' }
-        }
+        end
 
         it "updates the requested user" do
           user = create :staff
@@ -122,9 +122,9 @@ RSpec.describe Admin::UsersController, type: :controller do
     describe "DELETE #destroy" do
       it "destroys the requested user" do
         user = create :staff
-        expect {
+        expect do
           delete :destroy, params: { id: user.to_param }
-        }.to change(User, :count).by(-1)
+        end.to change(User, :count).by(-1)
       end
 
       it "redirects to the users list" do
@@ -134,5 +134,4 @@ RSpec.describe Admin::UsersController, type: :controller do
       end
     end
   end
-
 end

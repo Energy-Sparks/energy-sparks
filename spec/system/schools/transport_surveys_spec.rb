@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 describe 'TransportSurveys', type: :system, include_application_helper: true do
-
   let!(:school)            { create(:school, :with_school_group) }
   let!(:transport_type)    { create(:transport_type, category: :car, can_share: true) }
 
   describe "Transport survey results page" do
     describe 'as a public user with read only access' do
-
       let(:transport_survey) { create(:transport_survey, school: school) }
       let(:cat_cols) { ["Transport category", "Total pupils & staff", "Percentage pupils & staff"] }
       let(:car_cols) { ["Time travelled by car", "Total pupils & staff"] }
@@ -155,7 +153,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
     # pupil - as above except deleting Surveys and Transport Survey Responses
     # public user - read access only for everything (but not the start page)
 
-    MANAGING_USER_TYPES = [:admin, :group_admin, :school_admin, :staff]
+    MANAGING_USER_TYPES = [:admin, :group_admin, :school_admin, :staff].freeze
     SURVEYING_USER_TYPES = MANAGING_USER_TYPES + [:pupil]
 
     SURVEYING_USER_TYPES.each do |user_type|

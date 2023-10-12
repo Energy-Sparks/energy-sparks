@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'alert type management', type: :system do
-
   let!(:admin)                    { create(:admin) }
 
   let(:gas_fuel_alert_type_title) { 'Your gas usage is too high' }
@@ -18,10 +17,9 @@ describe 'alert type management', type: :system do
 
   describe 'schools' do
     before(:each) do
-
       click_on gas_fuel_alert_type_title
 
-      within ('ul.alert-type') do
+      within('ul.alert-type') do
         click_on 'School alert type exclusions'
       end
       expect(page).to have_content('No school exclusions for this alert')

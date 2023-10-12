@@ -1,5 +1,4 @@
 RSpec.shared_examples "an advice page" do
-
   it 'shows advice breadcrumbs' do
     within '.page-breadcrumb' do
       expect(page).to have_link('Schools')

@@ -1,17 +1,16 @@
 require 'rails_helper'
 
 describe 'Activity' do
-
   describe '#between' do
     let!(:activity_1) { create(:activity, happened_on: '2020-02-01') }
     let!(:activity_2) { create(:activity, happened_on: '2020-03-01') }
     let!(:activity_3) { create(:activity, happened_on: '2020-04-01') }
 
     it 'should return ranges of activities' do
-      expect( Activity.between('2020-01-01', '2020-01-31') ).to match_array([])
-      expect( Activity.between('2020-01-01', '2020-02-01') ).to match_array([activity_1])
-      expect( Activity.between('2020-01-01', '2020-03-31') ).to match_array([activity_1, activity_2])
-      expect( Activity.between('2020-01-01', '2020-04-01') ).to match_array([activity_1, activity_2, activity_3])
+      expect(Activity.between('2020-01-01', '2020-01-31')).to match_array([])
+      expect(Activity.between('2020-01-01', '2020-02-01')).to match_array([activity_1])
+      expect(Activity.between('2020-01-01', '2020-03-31')).to match_array([activity_1, activity_2])
+      expect(Activity.between('2020-01-01', '2020-04-01')).to match_array([activity_1, activity_2, activity_3])
     end
   end
 
@@ -27,7 +26,7 @@ describe 'Activity' do
     end
 
     it 'should exclude older activities' do
-      expect( Activity.recorded_in_last_week ).to match_array([activity_last_week_1, activity_last_week_2])
+      expect(Activity.recorded_in_last_week).to match_array([activity_last_week_1, activity_last_week_2])
     end
   end
 end

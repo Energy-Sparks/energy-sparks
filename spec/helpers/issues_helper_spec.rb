@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe IssuesHelper do
-
   describe '.issue_type_icon' do
     context "count is specified" do
       subject { helper.issue_type_icon(issue_type, count) }
@@ -16,16 +15,16 @@ describe IssuesHelper do
           it { expect(subject).to have_css('i.fa-sticky-note.text-secondary') }
         end
       end
-     context "for issue" do
-        let(:issue_type) { :issue }
-        context "when count is > 0" do
-          let(:count) { 3 }
-          it { expect(subject).to have_css('i.fa-exclamation-circle.text-danger') }
-        end
-        context "when count is 0" do
-          let(:count) { 0 }
-          it { expect(subject).to have_css('i.fa-exclamation-circle.text-secondary') }
-        end
+      context "for issue" do
+         let(:issue_type) { :issue }
+         context "when count is > 0" do
+           let(:count) { 3 }
+           it { expect(subject).to have_css('i.fa-exclamation-circle.text-danger') }
+         end
+         context "when count is 0" do
+           let(:count) { 0 }
+           it { expect(subject).to have_css('i.fa-exclamation-circle.text-secondary') }
+         end
       end
     end
   end

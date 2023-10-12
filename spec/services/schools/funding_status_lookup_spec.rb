@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Schools::FundingStatusLookup do
-
   let!(:school)           { create(:school, urn: urn) }
   let!(:service)          { Schools::FundingStatusLookup.new(school) }
 

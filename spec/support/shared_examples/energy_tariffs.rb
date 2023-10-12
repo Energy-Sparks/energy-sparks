@@ -18,7 +18,7 @@ RSpec.shared_examples "the user does not have access to the tariff editor" do
 end
 
 RSpec.shared_examples "a tariff editor index" do
-  before { allow_any_instance_of( EnergyTariffsHelper ).to receive(:any_smart_meters?).and_return(true) }
+  before { allow_any_instance_of(EnergyTariffsHelper).to receive(:any_smart_meters?).and_return(true) }
 
   it 'navigates the index tabs' do
     expect(current_path).to end_with('energy_tariffs')
@@ -75,7 +75,7 @@ RSpec.shared_examples "a tariff editor index" do
         expect(page).to have_content(gas_tariff.end_date.to_s(:es_compact))
         expect(page).to have_link(gas_tariff.name)
         expect(page).to have_link("Edit")
-        expect(page).to have_link("Delete") if !tariff_holder.site_settings?
+        expect(page).to have_link("Delete") unless tariff_holder.site_settings?
       end
     end
     it 'displays the electricity tariff' do
@@ -84,7 +84,7 @@ RSpec.shared_examples "a tariff editor index" do
         expect(page).to have_content(electricity_tariff.end_date.to_s(:es_compact))
         expect(page).to have_link(electricity_tariff.name)
         expect(page).to have_link("Edit")
-        expect(page).to have_link("Delete") if !tariff_holder.site_settings?
+        expect(page).to have_link("Delete") unless tariff_holder.site_settings?
       end
     end
   end
@@ -201,7 +201,7 @@ RSpec.shared_examples "the user can change the type of tariff" do
     # Switching tariff types should delete all energy tariff prices associated with the previous tariff type
     expect(energy_tariff.tariff_type).to eq('flat_rate')
     expect(energy_tariff.energy_tariff_prices.count).to eq(1)
-    find('#tariff-type-section-edit').click()
+    find('#tariff-type-section-edit').click
     expect(page).to have_content('Is this a flat rate tariff?')
     expect(page).to have_content('Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)')
     click_button('Differential tariff')
@@ -223,7 +223,7 @@ RSpec.shared_examples "the user can change the type of tariff" do
     expect(page).to have_content('£0.25 per kWh')
 
     # Selecting the existing tariff type should retain all energy tariff prices
-    find('#tariff-type-section-edit').click()
+    find('#tariff-type-section-edit').click
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(2)
     click_button('Differential tariff')
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(2)
@@ -232,7 +232,7 @@ RSpec.shared_examples "the user can change the type of tariff" do
     expect(page).to have_content('£0.25 per kWh')
 
     # Switching tariff types should delete all energy tariff prices associated with the previous tariff type
-    find('#tariff-type-section-edit').click()
+    find('#tariff-type-section-edit').click
     click_button('Flat rate tariff')
     expect(page).to have_content('Flat rate tariff')
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(0)
@@ -245,7 +245,7 @@ RSpec.shared_examples "the user can change the type of tariff" do
     expect(page).to have_content('£0.15 per kWh')
 
     # Selecting the existing tariff type should retain all energy tariff prices
-    find('#tariff-type-section-edit').click()
+    find('#tariff-type-section-edit').click
     click_button('Flat rate tariff')
     expect(page).to have_content('Flat rate tariff')
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(1)
@@ -305,8 +305,8 @@ RSpec.shared_examples "the user can not see the meterless applies to editor" do
 end
 
 RSpec.shared_examples "the meterless applies to editor" do
-  let!(:electricity_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: :electricity)}
-  let!(:gas_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: :gas)}
+  let!(:electricity_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: :electricity)}
+  let!(:gas_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: :gas)}
 
   it 'can select which meter system types an electricity tariff applies to' do
     # assumes starting from tariff index
@@ -377,5 +377,4 @@ RSpec.shared_examples "the user can select the meters" do
     expect(page).to have_content('Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters')
     expect(page).to have_content('Select meters for this tariff')
   end
-
 end

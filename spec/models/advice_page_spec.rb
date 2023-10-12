@@ -1,18 +1,17 @@
 require 'rails_helper'
 
 describe AdvicePage do
-
   it 'rejects duplicate keys' do
     AdvicePage.create(key: 'same')
-    expect {
+    expect do
       AdvicePage.create(key: 'same')
-    }.to raise_error(ActiveRecord::RecordNotUnique)
+    end.to raise_error(ActiveRecord::RecordNotUnique)
   end
 
   describe '#t_fuel_type' do
     it 'returns a translated fuel type used in data warnings etc' do
       advice_page = AdvicePage.create(key: 'same')
-      AdvicePage.fuel_types.keys.each do |fuel_type|
+      AdvicePage.fuel_types.each_key do |fuel_type|
         advice_page.update(fuel_type: fuel_type)
         if fuel_type == 'solar_pv'
           expect(advice_page.t_fuel_type).to eq(I18n.t("advice_pages.fuel_type.electricity"))

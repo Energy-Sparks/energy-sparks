@@ -63,7 +63,6 @@ RSpec.describe 'Solar pv areas', type: :system do
     end
 
     context 'with an existing area' do
-
       let!(:area) { SolarPvTuosArea.create!(title: title, latitude: latitude, longitude: longitude, gsp_name: 'ABC') }
 
       before(:each) do

@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'activation', type: :system do
+  let!(:admin) { create(:admin)}
 
-  let!(:admin)  { create(:admin)}
-
-  let!(:school_group)  { create(:school_group, name: 'BANES') }
+  let!(:school_group) { create(:school_group, name: 'BANES') }
   let!(:not_visible)      { create(:school, name: "Not visible", school_group: school_group, visible: false)}
   let!(:not_data_visible) { create(:school, name: "Not data visible", school_group: school_group, visible: true, data_enabled: false)}
 
@@ -21,5 +20,4 @@ RSpec.describe 'activation', type: :system do
   it 'lists schools that are not data visible' do
     expect(page).to have_content("Not data visible")
   end
-
 end

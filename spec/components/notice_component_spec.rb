@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe NoticeComponent, type: :component, include_application_helper: true do
@@ -40,7 +41,7 @@ RSpec.describe NoticeComponent, type: :component, include_application_helper: tr
 
   context "with no link" do
     let(:html) do
-      render_inline(NoticeComponent.new(**params)) do |c|
+      render_inline(NoticeComponent.new(**params)) do |_c|
         content
       end
     end

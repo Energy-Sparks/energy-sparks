@@ -2,7 +2,6 @@ require 'rails_helper'
 
 module Alerts
   describe GenerateAlertTypeRunResult do
-
     let(:framework_adapter)       { double :framework_adapter }
     let(:adapter_instance)        { double :adapter_instance }
     let(:aggregate_school)        { double :aggregate_school }
@@ -10,19 +9,20 @@ module Alerts
     let(:asof_date)                 { Date.parse('01/01/2019') }
 
     describe '#perform' do
-
       let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
-      let(:alert_report_attributes) {{
+      let(:alert_report_attributes) do
+        {
         valid: true,
         rating: 5.0,
         enough_data: :enough,
         relevance: :relevant,
-        template_data: {template: 'variables'},
-        chart_data: {chart: 'variables'},
-        table_data: {table: 'variables'},
-        priority_data: {priority: 'variables'},
-        benchmark_data: {benchmark: 'variables'}
-      }}
+        template_data: { template: 'variables' },
+        chart_data: { chart: 'variables' },
+        table_data: { table: 'variables' },
+        priority_data: { priority: 'variables' },
+        benchmark_data: { benchmark: 'variables' }
+      }
+      end
 
       let(:alert_report) { Adapters::Report.new(**alert_report_attributes) }
 

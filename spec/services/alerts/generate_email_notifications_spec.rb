@@ -9,13 +9,13 @@ describe Alerts::GenerateEmailNotifications do
   let!(:school_admin)        { create(:school_admin, school: school) }
   let!(:email_contact)       { create(:contact_with_name_email, school: school) }
 
-  let(:alert_type_rating_1){ create :alert_type_rating, alert_type: alert_1.alert_type, email_active: true }
-  let(:alert_type_rating_2){ create :alert_type_rating, alert_type: alert_2.alert_type, email_active: true }
+  let(:alert_type_rating_1) { create :alert_type_rating, alert_type: alert_1.alert_type, email_active: true }
+  let(:alert_type_rating_2) { create :alert_type_rating, alert_type: alert_2.alert_type, email_active: true }
 
-  let!(:content_version_1){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_1, email_title: 'You need to do something!', email_content: 'You really do'}
-  let!(:content_version_2){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_2, email_title: 'You need to fix something!', email_content: 'You really do'}
+  let!(:content_version_1) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_1, email_title: 'You need to do something!', email_content: 'You really do'}
+  let!(:content_version_2) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_2, email_title: 'You need to fix something!', email_content: 'You really do'}
 
-  let!(:subscription_generation_run){ create(:subscription_generation_run, school: school) }
+  let!(:subscription_generation_run) { create(:subscription_generation_run, school: school) }
 
   let(:alert_subscription_event_1) { AlertSubscriptionEvent.find_by!(content_version: content_version_1) }
   let(:alert_subscription_event_2) { AlertSubscriptionEvent.find_by!(content_version: content_version_2) }
@@ -27,7 +27,6 @@ describe Alerts::GenerateEmailNotifications do
   end
 
   context '#perform' do
-
     before(:each) do
       Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
       Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
@@ -112,8 +111,8 @@ describe Alerts::GenerateEmailNotifications do
     end
 
     context 'and target is set' do
-      let(:active)  { true }
-      let!(:target)          { create(:school_target, school: school) }
+      let(:active) { true }
+      let!(:target) { create(:school_target, school: school) }
 
       before(:each) do
         allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
@@ -128,11 +127,10 @@ describe Alerts::GenerateEmailNotifications do
         expect(matcher).to_not have_link("Set your first target")
         expect(matcher).to have_link("View your progress report")
       end
-
     end
 
     context 'but feature is disabled for our school' do
-      let!(:target)          { create(:school_target, school: school) }
+      let!(:target) { create(:school_target, school: school) }
 
       before(:each) do
         school.update!(enable_targets_feature: false)
@@ -148,7 +146,6 @@ describe Alerts::GenerateEmailNotifications do
         expect(matcher).to_not have_link("Set a new target")
         expect(matcher).to_not have_link("Set your first target")
       end
-
     end
 
     context 'and feature is active and target is expired' do
@@ -167,11 +164,10 @@ describe Alerts::GenerateEmailNotifications do
         expect(matcher).to have_link("Set a new target")
       end
     end
-
   end
 
   context 'when generating email content' do
-    let(:alert_1)              { create(:alert, school: school, alert_type: alert_type, alert_generation_run: alert_generation_run) }
+    let(:alert_1) { create(:alert, school: school, alert_type: alert_type, alert_generation_run: alert_generation_run) }
 
     before(:each) do
       alert_type_rating_1.update!(find_out_more_active: true)
@@ -185,5 +181,4 @@ describe Alerts::GenerateEmailNotifications do
       expect(email.body.to_s).to include('Find out more')
     end
   end
-
 end

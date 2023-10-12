@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe SchoolGroups::MeterReport do
-
   let(:frozen_time) { Time.zone.now }
   before { Timecop.freeze(frozen_time) }
   after { Timecop.return }
@@ -38,7 +37,7 @@ RSpec.describe SchoolGroups::MeterReport do
       it { expect(csv.lines.second).to include(active_meter.school_name) }
 
       context 'and the school is inactive' do
-        let!(:school)       { create(:school, school_group: school_group, active: false) }
+        let!(:school) { create(:school, school_group: school_group, active: false) }
         it { expect(csv.lines.first.chomp).to eq(header) }
         it { expect(csv.lines.count).to eq(1) }
       end
@@ -52,7 +51,5 @@ RSpec.describe SchoolGroups::MeterReport do
       it { expect(csv).to include(active_meter.school_name) }
       it { expect(csv).to include(inactive_meter.school_name) }
     end
-
-
   end
 end

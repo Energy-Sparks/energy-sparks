@@ -7,7 +7,7 @@ RSpec.describe 'consent_grants', type: :system do
   let(:job_title) { 'Chief Granter' }
   let(:ip_address) { '123.456.789.000' }
 
-  let(:consent_statement) { ConsentStatement.create!( title: 'First consent statement', content: 'You may use my data..') }
+  let(:consent_statement) { ConsentStatement.create!(title: 'First consent statement', content: 'You may use my data..') }
 
   context 'as admin' do
     let(:admin) { create(:admin) }
@@ -17,7 +17,7 @@ RSpec.describe 'consent_grants', type: :system do
     end
 
     context 'when consent grants exist' do
-      let!(:grant)       {
+      let!(:grant) do
         ConsentGrant.create!(
           user: user,
           school: school,
@@ -26,9 +26,9 @@ RSpec.describe 'consent_grants', type: :system do
           job_title: job_title,
           ip_address: ip_address
         )
-      }
+      end
 
-      let!(:meter)     { create(:gas_meter, school: school) }
+      let!(:meter) { create(:gas_meter, school: school) }
 
       before(:each) do
         visit root_path

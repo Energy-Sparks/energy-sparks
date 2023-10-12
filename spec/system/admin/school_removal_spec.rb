@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "school removal", :schools, type: :system do
-
   let(:visible) { true }
   let(:school)  { create(:school, name: 'My High School', visible: visible) }
 
-  let(:admin)  { create(:admin) }
+  let(:admin) { create(:admin) }
 
   before(:each) do
     sign_in(admin)
@@ -34,7 +33,7 @@ RSpec.describe "school removal", :schools, type: :system do
       end
     end
     context 'and there are meters' do
-      let!(:electricity_meter)  { create(:electricity_meter, school: school) }
+      let!(:electricity_meter) { create(:electricity_meter, school: school) }
       context 'when deactivating them' do
         before do
           refresh

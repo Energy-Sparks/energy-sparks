@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :gas_meter, class: 'Meter'do
+  factory :gas_meter, class: 'Meter' do
     school
     sequence(:mpan_mprn)  { |n| n }
     meter_type            { :gas }
@@ -20,7 +20,6 @@ FactoryBot.define do
           create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.log)
         end
       end
-
     end
 
     factory :gas_meter_with_reading do
@@ -44,7 +43,7 @@ FactoryBot.define do
         status          { 'ORIG' }
         kwh_data_x48    { Array.new(48, rand) }
         one_day_kwh     { 139.0 }
-        upload_datetime { Date.today }
+        upload_datetime { Time.zone.today }
         substitute_date { nil }
       end
 

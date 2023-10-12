@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'AlertMailer', type: :system do
-
   let(:admin) { create(:admin) }
   let(:email) { create(:email) }
 

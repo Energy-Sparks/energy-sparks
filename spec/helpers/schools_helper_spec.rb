@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe SchoolsHelper do
-  let(:school)                    { create(:school) }
+  let(:school) { create(:school) }
 
   let(:feature_flag)      { 'false' }
   let(:alert_type)        { create(:alert_type) }
@@ -12,7 +12,7 @@ describe SchoolsHelper do
       rating: 9.0
     )
   end
-  let(:find_out_more)     { create(:find_out_more, alert: alert)}
+  let(:find_out_more) { create(:find_out_more, alert: alert)}
 
   let(:alert_content) { OpenStruct.new(alert: alert, find_out_more: find_out_more) }
 
@@ -26,14 +26,14 @@ describe SchoolsHelper do
         expect(path).to eq insights_school_advice_baseload_path(school)
       end
       context 'and utm params' do
-        let(:params)   { {utm_medium: 'email'} }
+        let(:params)   { { utm_medium: 'email' } }
         it 'returns expected path' do
           path = helper.find_out_more_path_from_alert_content(school, alert_content, params: params)
           expect(path).to eq insights_school_advice_baseload_path(school, params: params)
         end
         context 'and link_to_content' do
           let(:anchor) { 'some-section' }
-          let(:alert_type)   { create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor) }
+          let(:alert_type) { create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor) }
           it 'returns the expected path' do
             path = helper.find_out_more_path_from_alert_content(school, alert_content, params: params)
             expect(path).to eq analysis_school_advice_baseload_path(school, params: params, anchor: anchor)
@@ -60,7 +60,7 @@ describe SchoolsHelper do
 
       context 'and link_to_content' do
         let(:anchor) { 'some-section' }
-        let(:alert_type)   { create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor) }
+        let(:alert_type) { create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor) }
 
         it 'returns the expected path' do
           buttons = helper.dashboard_alert_buttons(school, alert_content)

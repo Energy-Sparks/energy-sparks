@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe TariffImportLog, type: :system, include_application_helper: true do
-
-  let!(:admin)           { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   before(:each) do
     sign_in(admin)

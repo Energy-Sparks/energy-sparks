@@ -1,8 +1,7 @@
 require "rails_helper"
 
 describe Partner do
-
-  let(:partner)     { create(:partner) }
+  let(:partner) { create(:partner) }
 
   context "with school_groups" do
     let(:school_group)    { create(:school_group, name: "Nottingham") }

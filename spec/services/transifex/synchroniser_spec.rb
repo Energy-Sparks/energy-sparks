@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Transifex::Synchroniser, type: :service do
-
   let(:activity_type) { create(:activity_type) }
   let(:service)       { Transifex::Synchroniser.new(activity_type, :cy) }
   let(:resource_key)  { activity_type.resource_key }
@@ -74,16 +73,16 @@ describe Transifex::Synchroniser, type: :service do
   describe '#updated_since_last_pushed?' do
     let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_last_push: last_push)}
     before(:each) do
-      activity_type.update!(updated_at: Date.today - 1)
+      activity_type.update!(updated_at: Time.zone.today - 1)
     end
     context 'not updated' do
-      let(:last_push) { Date.today }
+      let(:last_push) { Time.zone.today }
       it 'returns false' do
         expect(service.updated_since_last_pushed?).to be false
       end
     end
     context 'updated' do
-      let(:last_push) { Date.today - 2 }
+      let(:last_push) { Time.zone.today - 2 }
       it 'returns true' do
         expect(service.updated_since_last_pushed?).to be true
       end
@@ -91,19 +90,19 @@ describe Transifex::Synchroniser, type: :service do
   end
 
   describe '#translations_updated_since_last_pull?' do
-    let(:last_pull) { Date.today - 1 }
+    let(:last_pull) { Time.zone.today - 1 }
     let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_last_pull: last_pull)}
     before(:each) do
       allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(last_reviewed)
     end
     context 'not updated' do
-      let(:last_reviewed) { Date.today - 2 }
+      let(:last_reviewed) { Time.zone.today - 2 }
       it 'returns false' do
         expect(service.translations_updated_since_last_pull?).to be false
       end
     end
     context 'updated' do
-      let(:last_reviewed) { Date.today }
+      let(:last_reviewed) { Time.zone.today }
       it 'returns true' do
         expect(service.translations_updated_since_last_pull?).to be true
       end
@@ -117,7 +116,7 @@ describe Transifex::Synchroniser, type: :service do
         end
       end
       context 'and has been reviewed' do
-        let(:last_reviewed) { Date.today }
+        let(:last_reviewed) { Time.zone.today }
         it 'returns true' do
           expect(service.translations_updated_since_last_pull?).to be true
         end
@@ -149,15 +148,16 @@ describe Transifex::Synchroniser, type: :service do
     end
 
     context 'when translations are reviewed' do
-      let(:resource_key)  { activity_type.resource_key }
-      let(:translations) { {
+      let(:resource_key) { activity_type.resource_key }
+      let(:translations) do
+        {
           "cy" => {
             resource_key => {
               "name" => "Welsh name"
             }
            }
          }
-      }
+      end
       before(:each) do
         allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
@@ -183,7 +183,7 @@ describe Transifex::Synchroniser, type: :service do
       before(:each) do
         allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
-        allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(Date.today - 1)
+        allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(Time.zone.today - 1)
       end
 
       it 'doesnt do a pull' do
@@ -192,14 +192,15 @@ describe Transifex::Synchroniser, type: :service do
     end
 
     context 'when changed in transifex' do
-      let(:yesterday)      { Date.today - 1 }
+      let(:yesterday)      { Time.zone.today - 1 }
       let(:tx_last_pulled) { yesterday }
-      let(:translations) { {
+      let(:translations) do
+        {
           "cy" => {
-            resource_key => {"name": "Updated"}
+            resource_key => { "name": "Updated" }
            }
          }
-      }
+      end
       before(:each) do
         allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
@@ -238,7 +239,7 @@ describe Transifex::Synchroniser, type: :service do
       end
     end
     context 'when there are local changes' do
-      let(:yesterday)      { Date.today - 1 }
+      let(:yesterday)      { Time.zone.today - 1 }
       let(:tx_last_pushed) { yesterday }
       before(:each) do
         allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)

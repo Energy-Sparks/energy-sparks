@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'compare pages', :compare, type: :system do
-
-  shared_examples "an index page" do |tab:, show_your_group_tab:true|
+  shared_examples "an index page" do |tab:, show_your_group_tab: true|
     it "has standard header information" do
       expect(page).to have_content "School Comparison Tool"
       expect(page).to have_content "Identify examples of best practice"
@@ -70,10 +69,10 @@ describe 'compare pages', :compare, type: :system do
   end
 
   shared_examples "a form filter" do |id:, school_types_excluding: nil, school_type: nil, country: nil, school_groups: nil|
-    let(:all_school_types)  { School.school_types.keys }
+    let(:all_school_types) { School.school_types.keys }
 
     it 'has school_type checkbox fields', if: school_types_excluding do
-      within "#{id}" do
+      within id.to_s do
         all_school_types.excluding(school_types_excluding).each do |school_type|
           expect(page).to have_checked_field(I18n.t("common.school_types.#{school_type}"))
         end
@@ -84,19 +83,19 @@ describe 'compare pages', :compare, type: :system do
     end
 
     it "has school type select", if: school_type do
-      within "#{id}" do
+      within id.to_s do
         expect(page).to have_select('school_type', selected: school_type)
       end
     end
 
     it "has country radio buttons", if: country do
-      within "#{id}" do
+      within id.to_s do
         expect(page).to have_checked_field(country)
       end
     end
 
     it "has school group select", if: school_groups do
-      within "#{id}" do
+      within id.to_s do
         expect(page).to have_select('school_group_ids', selected: school_groups)
       end
     end
@@ -146,7 +145,7 @@ describe 'compare pages', :compare, type: :system do
 
   shared_context 'benchmarks page context' do
     let(:content_manager)   { double(:content_manager) }
-    let!(:benchmark_run)    { BenchmarkResultSchoolGenerationRun.create(school: school, benchmark_result_generation_run: BenchmarkResultGenerationRun.create! ) }
+    let!(:benchmark_run)    { BenchmarkResultSchoolGenerationRun.create(school: school, benchmark_result_generation_run: BenchmarkResultGenerationRun.create!) }
 
     before do
       expect(Benchmarking::BenchmarkContentManager).to receive(:new).at_least(:once).and_return(content_manager)
@@ -157,21 +156,21 @@ describe 'compare pages', :compare, type: :system do
   shared_context 'results page context' do
     let(:description) { 'all about this alert type' }
     let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
-    let(:example_content) {
+    let(:example_content) do
       [
-        { type: :title, content: 'Benchmark name'},
-        { type: :html, content: 'intro html'},
+        { type: :title, content: 'Benchmark name' },
+        { type: :html, content: 'intro html' },
         { type: :chart, content: { title: 'chart title', config_name: "config_name", x_axis: ["a school"] } },
-        { type: :html, content: 'chart html'},
-        { type: :table_composite, content: { header: ['table composite header'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
-        { type: :table_text, content: 'table text'},
-        { type: :html, content: 'table html'},
-        { type: :analytics_html, content: 'analytics html'},
-        { type: :title, content: 'Benchmark 2'},
-        { type: :table_composite, content: { header: ['table composite 2 header'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
-        { type: :html, content: 'table 2 html'},
+        { type: :html, content: 'chart html' },
+        { type: :table_composite, content: { header: ['table composite header'], rows: [[{ formatted: 'row 1', raw: 'row 1' }], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] } },
+        { type: :table_text, content: 'table text' },
+        { type: :html, content: 'table html' },
+        { type: :analytics_html, content: 'analytics html' },
+        { type: :title, content: 'Benchmark 2' },
+        { type: :table_composite, content: { header: ['table composite 2 header'], rows: [[{ formatted: 'row 1', raw: 'row 1' }], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] } },
+        { type: :html, content: 'table 2 html' },
       ]
-    }
+    end
 
     before do
       expect(content_manager).to receive(:content).at_least(:once).and_return(example_content)
@@ -187,7 +186,7 @@ describe 'compare pages', :compare, type: :system do
   let!(:school_group_2)  { create(:school_group, name: "Group 2") }
   let!(:school_2)        { create(:school, school_group: school_group_2)}
 
-  let(:benchmark_groups) { [ { name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { a_benchmark_key: 'Benchmark name'} } ] }
+  let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { a_benchmark_key: 'Benchmark name' } }] }
 
   include_context "index page context"
 
@@ -404,5 +403,4 @@ describe 'compare pages', :compare, type: :system do
       end
     end
   end
-
 end

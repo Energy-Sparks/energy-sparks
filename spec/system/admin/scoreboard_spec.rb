@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'scoreboards', :scoreboards, type: :system do
-
   let!(:admin)                  { create(:admin) }
   let!(:regional_calendar)      { create(:regional_calendar, national_title: 'Scotland') }
 
@@ -40,15 +39,14 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
     end
 
     it 'can delete a scoreboard' do
-      scoreboard = create(:scoreboard, name: 'BANES and Frome')
+      create(:scoreboard, name: 'BANES and Frome')
       visit admin_scoreboards_path
 
-      expect {
+      expect do
         click_on 'Delete'
-      }.to change{Scoreboard.count}.from(1).to(0)
+      end.to change {Scoreboard.count}.from(1).to(0)
 
       expect(page).to have_content('There are no Scoreboards')
     end
   end
-
 end

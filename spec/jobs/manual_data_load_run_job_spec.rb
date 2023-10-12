@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe ManualDataLoadRunJob, ts: false do
-
   let!(:run)                { create(:manual_data_load_run) }
 
   let(:job)                 { ManualDataLoadRunJob.new }
@@ -71,7 +70,5 @@ describe ManualDataLoadRunJob, ts: false do
     it 'marks data as imported' do
       expect(run.amr_uploaded_reading.imported).to be false
     end
-
   end
-
 end

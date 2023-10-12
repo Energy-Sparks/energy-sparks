@@ -86,7 +86,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
     let(:activities_2023_feature) { true }
 
     context 'as guest' do
-      let(:user)          { nil }
+      let(:user) { nil }
       it_behaves_like "a dashboard not showing dashboard messages"
       it_behaves_like "a dashboard not showing training prompt"
       it_behaves_like "a dashboard not showing complete programme prompt"
@@ -101,21 +101,21 @@ RSpec.describe "adult dashboard prompts", type: :system do
     end
 
     context 'as pupil' do
-      let(:user)  { create(:pupil, school: school, confirmed_at: confirmed_at) }
+      let(:user) { create(:pupil, school: school, confirmed_at: confirmed_at) }
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
     end
 
     context 'as staff' do
-      let(:user)  { create(:staff, school: school, confirmed_at: confirmed_at) }
+      let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
     end
 
     context 'as school admin' do
-      let(:user)  { create(:school_admin, school: school, confirmed_at: confirmed_at) }
+      let(:user) { create(:school_admin, school: school, confirmed_at: confirmed_at) }
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
@@ -131,7 +131,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
     end
 
     context 'as admin' do
-      let(:user)  { create(:admin, confirmed_at: confirmed_at) }
+      let(:user) { create(:admin, confirmed_at: confirmed_at) }
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
@@ -142,17 +142,17 @@ RSpec.describe "adult dashboard prompts", type: :system do
   context "with activities_2023 feature flag switched off" do
     let(:activities_2023_feature) { false }
     context 'as pupil' do
-      let(:user)  { create(:pupil, school: school, confirmed_at: confirmed_at) }
+      let(:user) { create(:pupil, school: school, confirmed_at: confirmed_at) }
       it_behaves_like "a dashboard not showing complete programme prompt"
     end
 
     context 'as staff' do
-      let(:user)  { create(:staff, school: school, confirmed_at: confirmed_at) }
+      let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
       it_behaves_like "a dashboard not showing complete programme prompt"
     end
 
     context 'as school admin' do
-      let(:user)  { create(:school_admin, school: school, confirmed_at: confirmed_at) }
+      let(:user) { create(:school_admin, school: school, confirmed_at: confirmed_at) }
       it_behaves_like "a dashboard not showing complete programme prompt"
     end
 
@@ -164,7 +164,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
     end
 
     context 'as admin' do
-      let(:user)  { create(:admin, confirmed_at: confirmed_at) }
+      let(:user) { create(:admin, confirmed_at: confirmed_at) }
       it_behaves_like "a dashboard not showing complete programme prompt"
     end
   end

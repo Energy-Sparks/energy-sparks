@@ -18,7 +18,6 @@ describe SiteSettings do
 
   describe 'prices' do
     it 'validates values for all price fields are floats' do
-
       ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'true' do
         site_setting = SiteSettings.new(electricity_price: 1, solar_export_price: 1, gas_price: 1)
 

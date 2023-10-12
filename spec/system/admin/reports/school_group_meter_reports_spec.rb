@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'school group meter reports', type: :system do
-
   let(:admin)                   { create(:admin) }
   let(:school_group)            { create(:school_group, name: 'Big Group') }
   let(:school)                  { create(:school, school_group: school_group) }
@@ -16,7 +15,6 @@ describe 'school group meter reports', type: :system do
   end
 
   context 'when on index page' do
-
     before :each do
       click_on "School group meter reports"
     end

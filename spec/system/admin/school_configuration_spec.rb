@@ -13,9 +13,9 @@ RSpec.describe "manage school configuration", type: :system do
   before(:each) do
     sign_in(admin)
     visit root_path
-    expect(page.has_content? 'Sign Out').to be true
+    expect(page.has_content?('Sign Out')).to be true
     click_on('View schools')
-    expect(page.has_content? "Energy Sparks schools across the UK").to be true
+    expect(page.has_content?("Energy Sparks schools across the UK")).to be true
   end
 
   it 'I can set up a school for KS1' do
@@ -138,5 +138,4 @@ RSpec.describe "manage school configuration", type: :system do
     school.reload
     expect(school.chart_preference).to eq "cost"
   end
-
 end

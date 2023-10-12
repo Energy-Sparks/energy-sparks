@@ -7,19 +7,18 @@ RSpec.describe ActivitiesController, type: :controller do
   let!(:activity_type) { create(:activity_type, name: "One", activity_category: activity_category, data_driven: true) }
   let(:activity_type2) { create(:activity_type, name: "Two", activity_category: activity_category) }
 
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     { school_id: school.id,
       activity_type_id: activity_type.id,
       activity_category_id: activity_category.id,
       title: 'test title',
       description: '<div>Content</div>',
-      happened_on: Date.today
-    }
-  }
+      happened_on: Time.zone.today }
+  end
 
-  let(:invalid_attributes) {
+  let(:invalid_attributes) do
     { happened_on: nil }
-  }
+  end
 
   describe "GET #index" do
     it "assigns all school's activities as @activities" do
@@ -137,9 +136,8 @@ RSpec.describe ActivitiesController, type: :controller do
 
     it "redirects when not authorised" do
       get :new, params: { school_id: school.id }
-      expect(response).to have_http_status(:redirect  )
+      expect(response).to have_http_status(:redirect)
     end
-
   end
 
   describe "GET #edit" do
@@ -189,7 +187,6 @@ RSpec.describe ActivitiesController, type: :controller do
       it "redirects to the activity completed" do
         expect(response).to redirect_to(completed_school_activity_path(school, Activity.last))
       end
-
     end
   end
 
@@ -200,9 +197,9 @@ RSpec.describe ActivitiesController, type: :controller do
 
     it "destroys the requested activity" do
       activity = Activity.create! valid_attributes
-      expect {
+      expect do
         delete :destroy, params: { school_id: school.id, id: activity.to_param }
-      }.to change(Activity, :count).by(-1)
+      end.to change(Activity, :count).by(-1)
     end
 
     it "redirects to the activities index" do
@@ -218,13 +215,12 @@ RSpec.describe ActivitiesController, type: :controller do
     end
 
     context "with valid params" do
-      let(:new_attributes) {
+      let(:new_attributes) do
         { title: 'new_title',
           description: 'new_description',
           activity_type_id: activity_type2.id,
-          happened_on: Date.today
-        }
-      }
+          happened_on: Time.zone.today }
+      end
 
       it "updates the requested activity" do
         activity = Activity.create! valid_attributes
@@ -263,5 +259,4 @@ RSpec.describe ActivitiesController, type: :controller do
       end
     end
   end
-
 end

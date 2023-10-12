@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'site-wide settings' do
-
-  let!(:admin)  { create(:admin)}
+  let!(:admin) { create(:admin)}
 
   before do
     sign_in(admin)
@@ -60,7 +59,7 @@ describe 'site-wide settings' do
       end
 
       context 'that have tariffs' do
-        let!(:tariff)   { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current)}
+        let!(:tariff) { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current)}
 
         it 'updates price' do
           click_on 'Site Settings'
@@ -70,10 +69,8 @@ describe 'site-wide settings' do
           expect(SiteSettings.current.electricity_price).to eq(0.99)
           expect(SiteSettings.current.energy_tariffs.first).to eq tariff
         end
-
       end
     end
-
   end
 
   context 'with pricing feature flag disabled' do
@@ -102,8 +99,5 @@ describe 'site-wide settings' do
       expect(SiteSettings.current.gas_price).to eq(nil)
       expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
     end
-
   end
-
-
 end

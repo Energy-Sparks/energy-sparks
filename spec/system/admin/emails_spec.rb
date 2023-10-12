@@ -116,4 +116,3 @@ describe 'Emails', type: :system do
     end
   end
 end
-

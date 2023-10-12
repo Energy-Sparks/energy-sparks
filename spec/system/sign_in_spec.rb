@@ -122,7 +122,6 @@ RSpec.describe "sign in", type: :system do
   end
 
   context "pupil login" do
-
     let!(:user) { create(:pupil, school: school, pupil_password: "correctpassword") }
     let!(:saved_last_sign_in_at) { user.last_sign_in_at }
 

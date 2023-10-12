@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Interventions report', type: :system do
-
   let!(:admin)          { create(:admin) }
   let!(:intervention)   { create(:observation, :intervention) }
 

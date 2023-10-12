@@ -15,7 +15,6 @@
 module Alerts
   module System
     class DummyAlert
-
       def initialize(args = {})
       end
 
@@ -48,11 +47,11 @@ module Alerts
       end
 
       def self.front_end_template_charts
-        TEMPLATE_VARIABLES.select{|key, value| value[:units] == :chart }
+        TEMPLATE_VARIABLES.select {|_key, value| value[:units] == :chart }
       end
 
       def self.front_end_template_tables
-        TEMPLATE_VARIABLES.select{|key, value| value[:units] == :table }
+        TEMPLATE_VARIABLES.select {|_key, value| value[:units] == :table }
       end
 
       def self.front_end_template_variables

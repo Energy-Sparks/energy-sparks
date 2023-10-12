@@ -7,8 +7,8 @@ describe 'Alert' do
   let(:school)                          { create(:school) }
 
   it 'ignores alerts if there is an exception' do
-    alert_1 = create(:alert, school: school, alert_type: gas_fuel_alert_type, created_at: Date.today)
-    alert_2 = create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Date.today)
+    alert_1 = create(:alert, school: school, alert_type: gas_fuel_alert_type, created_at: Time.zone.today)
+    alert_2 = create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Time.zone.today)
 
     expect(Alert.without_exclusions).to eq([alert_1, alert_2])
 
@@ -22,19 +22,19 @@ describe 'Alert' do
   end
 
   context 'when loading alert variables' do
-    let(:template_data) {
+    let(:template_data) do
       {
         "urn" => "1234",
-        "timescale"=>"last 2 years"
+        "timescale" => "last 2 years"
       }
-    }
-    let(:template_data_cy) {
+    end
+    let(:template_data_cy) do
       {
         "urn" => "1234",
-        "timescale"=>"2 flynedd diwethaf"
+        "timescale" => "2 flynedd diwethaf"
       }
-    }
-    let!(:alert)     { create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Date.today, template_data: template_data, template_data_cy: template_data_cy) }
+    end
+    let!(:alert) { create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Time.zone.today, template_data: template_data, template_data_cy: template_data_cy) }
 
     it 'returns welsh template data for cy locale' do
       I18n.with_locale(:cy) do

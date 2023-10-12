@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe SolarAreaLoaderJob do
-
   let(:area)          { create(:solar_pv_tuos_area) }
   let(:start_date)    { Date.yesterday - 2.years }
   let(:result)        { "Imported xx records, Updated xx records" }

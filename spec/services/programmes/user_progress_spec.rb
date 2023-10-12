@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Programmes::UserProgress, type: :service do
-
   let(:user)            { nil }
   let(:service)         { Programmes::UserProgress.new(user) }
 
@@ -31,7 +30,7 @@ describe Programmes::UserProgress, type: :service do
   end
 
   context 'with an admin user' do
-    let(:school)          { create(:school) }
+    let(:school) { create(:school) }
     let(:user)      { create(:school_admin, school: school) }
 
     context 'and no programmes or activities' do

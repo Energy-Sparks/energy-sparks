@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "manage school", type: :system do
-  let(:school)             { create(:school, :with_school_group) }
+  let(:school) { create(:school, :with_school_group) }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
   before(:each) do
@@ -14,7 +14,7 @@ RSpec.describe "manage school", type: :system do
   end
 
   context 'as guest' do
-    let(:user)                { nil }
+    let(:user) { nil }
     it 'should not have a manage menu' do
       visit school_path(school)
       expect(page).to_not have_css("#manage_school")
@@ -30,7 +30,7 @@ RSpec.describe "manage school", type: :system do
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
+    let(:user) { create(:staff, school: school) }
     before(:each) do
       visit school_path(school)
     end
@@ -90,7 +90,7 @@ RSpec.describe "manage school", type: :system do
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
     before { visit school_path(school) }
     it_behaves_like "a manage school menu"
     it_behaves_like "a manage school menu not displaying admin section"
@@ -106,7 +106,7 @@ RSpec.describe "manage school", type: :system do
   end
 
   context 'as admin' do
-    let(:user)          { create(:admin) }
+    let(:user) { create(:admin) }
     before { visit school_path(school) }
     it_behaves_like "a manage school menu"
     it_behaves_like "a manage school menu displaying admin section"
