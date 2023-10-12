@@ -6,8 +6,8 @@ describe AmrReadingData do
 
   describe 'handles when reading date is a date' do
     let(:amr_reading) { AmrReadingData.new(reading_data: [
-                                                      { :mpan_mprn => 123, :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-                                                      { :mpan_mprn => 123, :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
+                                                      { :mpan_mprn => '1234050000000', :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
+                                                      { :mpan_mprn => '1234050000000', :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
                                                       ],
                                             date_format: date_format) }
 
@@ -21,8 +21,8 @@ describe AmrReadingData do
 
   describe 'handles when reading date is actually a string' do
     let(:amr_reading) { AmrReadingData.new(reading_data: [
-                                                      { :mpan_mprn => 123, :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-                                                      { :mpan_mprn => 123, :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
+                                                      { :mpan_mprn => '1234050000000', :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
+                                                      { :mpan_mprn => '1234050000000', :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
                                                       ],
                                             date_format: date_format) }
 
@@ -53,8 +53,8 @@ describe AmrReadingData do
     let(:date_format) { '%Y-%m-%d' }
     let(:amr_reading_data) {{
                               reading_data: [
-                                { :mpan_mprn => 123, :reading_date => '2022-01-01', readings: Array.new(48, '0.0')  },
-                                { :mpan_mprn => 123, :reading_date => '2022-01-02', readings: Array.new(48, '0.0')  },
+                                { :mpan_mprn => '1234050000000', :reading_date => '2022-01-01', readings: Array.new(48, '0.0')  },
+                                { :mpan_mprn => '1234050000000', :reading_date => '2022-01-02', readings: Array.new(48, '0.0')  },
                               ],
                               date_format: date_format
                             }}
@@ -77,6 +77,40 @@ describe AmrReadingData do
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
         expect(amr_reading.warnings.first[:warnings]).to include(:missing_mpan_mprn)
+      end
+
+      it 'with invalid non-numeric mpan_mprn' do
+        amr_reading_data[:reading_data].first[:mpan_mprn] = '1.23405E+12'
+        amr_reading = AmrReadingData.new(**amr_reading_data)
+        expect(amr_reading.valid?).to be true
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 1
+        expect(amr_reading.warnings.count).to be 1
+        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+
+        amr_reading_data[:reading_data].first[:mpan_mprn] = '+1234050000000'
+        amr_reading = AmrReadingData.new(**amr_reading_data)
+        expect(amr_reading.valid?).to be true
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 1
+        expect(amr_reading.warnings.count).to be 1
+        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+
+        amr_reading_data[:reading_data].first[:mpan_mprn] = '1234.50000000'
+        amr_reading = AmrReadingData.new(**amr_reading_data)
+        expect(amr_reading.valid?).to be true
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 1
+        expect(amr_reading.warnings.count).to be 1
+        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+
+        amr_reading_data[:reading_data].first[:mpan_mprn] = 1234.50000000
+        amr_reading = AmrReadingData.new(**amr_reading_data)
+        expect(amr_reading.valid?).to be true
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 1
+        expect(amr_reading.warnings.count).to be 1
+        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
       end
 
       it 'with missing reading date' do

@@ -121,9 +121,15 @@ describe AmrUploadedReading, type: :system do
     end
 
     it 'is helpful if a dodgy mpan format file is loaded' do
-      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/banes-bad-example-missing-mpan-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/banes-bad-example-missing-and-invalid-mpan-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::WARNING_MISSING_MPAN_MPRN)
+    end
+
+    it 'is helpful if a invalid mpan format file is loaded' do
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/banes-bad-example-missing-and-invalid-mpan-file.csv')
+      click_on 'Preview'
+      expect(page).to have_content(AmrReadingData::WARNING_INVALID_NON_NUMERIC_MPAN_MPRN)
     end
 
     it 'is helpful if a reading is missing' do
