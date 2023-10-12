@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'issues', :issues, type: :system, include_application_helper: true do
   let!(:school_group_issues_admin) { create(:admin, name: "Group Issues Admin") }
-  let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin )}
+  let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin)}
   let!(:school) { create(:school, school_group: school_group) }
   let!(:gas_meter) { create(:gas_meter, school: school) }
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:other_issues_admin) { create(:admin, name: "Other Issues Admin") }
-  let!(:issue)   {}
-  let!(:user)   {}
+  let!(:issue) {}
+  let!(:user) {}
 
   shared_examples "an adminable issueable type" do
     describe "Viewing issues admin page" do
@@ -31,7 +31,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let!(:user) { create(:admin) }
 
         context "and creating a new issue" do
-          Issue.issue_types.keys.each do |issue_type|
+          Issue.issue_types.each_key do |issue_type|
             it { expect(page).to have_link(text: /New #{issue_type.capitalize}/) }
             context "of type #{issue_type}" do
               before do
@@ -87,7 +87,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 end
 
                 it "creates new issue" do
-                  expect(page).to have_content "#{issue_type.capitalize}"
+                  expect(page).to have_content issue_type.capitalize.to_s
                   expect(page).to have_content "#{issue_type} title"
                   expect(page).to have_content "#{issue_type} desc"
                   expect(page).to have_content "Gas"
@@ -107,7 +107,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
 
         context "and editing an issue" do
-          Issue.issue_types.keys.each do |issue_type|
+          Issue.issue_types.each_key do |issue_type|
             context "of type #{issue_type}" do
               let!(:issue) { create(:issue, issueable: issueable, issue_type: issue_type, fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin, pinned: true) }
               before do

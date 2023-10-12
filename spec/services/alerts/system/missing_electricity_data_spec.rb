@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Alerts::System::MissingElectricityData do
 
   let(:school)  { create :school }
-  let(:today) { Date.today }
+  let(:today) { Time.zone.today }
 
   let(:report){ Alerts::System::MissingElectricityData.new(school: school, today: today, alert_type: nil).report }
 

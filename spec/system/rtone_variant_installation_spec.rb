@@ -2,11 +2,10 @@ require 'rails_helper'
 require 'dashboard'
 
 RSpec.describe "Rtone variant installation management", :low_carbon_hub_installations, type: :system do
-
   let!(:admin)                { create(:admin) }
   let!(:school)               { create(:school) }
   let!(:meter)                { create(:electricity_meter, school: school)}
-  let(:rtone_meter_id)         { "216057958" }
+  let(:rtone_meter_id) { "216057958" }
   let(:username)              { "rtone-user" }
   let(:password)              { "rtone-pass" }
   let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :rtone_variant_api) }
@@ -54,6 +53,5 @@ RSpec.describe "Rtone variant installation management", :low_carbon_hub_installa
 
       expect(page).to have_content("This school has no Rtone Variant API feeds")
     end
-
   end
 end

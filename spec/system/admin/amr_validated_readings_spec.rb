@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "meter reports", :amr_validated_readings, type: :system do
-
   let(:school_name)   { 'Oldfield Park Infants'}
-  let!(:school)       { create(:school,:with_school_group, name: school_name)}
+  let!(:school)       { create(:school, :with_school_group, name: school_name)}
   let!(:admin)        { create(:admin)}
   let!(:meter)        { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
@@ -35,7 +34,7 @@ RSpec.describe "meter reports", :amr_validated_readings, type: :system do
   end
 
   context 'when there are gaps in the meter readings' do
-    let(:base_date) { Date.today - 1.year }
+    let(:base_date) { Time.zone.today - 1.year }
 
     before do
       create(:amr_validated_reading, meter: meter, reading_date: base_date, status: 'ORIG')

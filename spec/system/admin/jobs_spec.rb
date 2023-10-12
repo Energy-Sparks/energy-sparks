@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'Jobs', type: :system do
-
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   before do
     sign_in(admin)
@@ -37,5 +36,4 @@ describe 'Jobs', type: :system do
     expect(page).to have_content('Job was successfully deleted.')
     expect(Job.count).to eq(0)
   end
-
 end

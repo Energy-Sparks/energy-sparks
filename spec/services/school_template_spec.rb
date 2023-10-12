@@ -1,8 +1,6 @@
-
 require 'rails_helper'
 
 describe SchoolTemplate do
-
   it 'allows a chart to be rendered with an attribute' do
     school = double :school, to_param: 'school-slug'
 

@@ -1,20 +1,18 @@
 require 'rails_helper'
 
 describe 'viewing and recording action', type: :system do
-
   let(:title)       { "Changed boiler" }
   let(:summary)     { 'Old boiler bad, new boiler good' }
   let(:description) { 'How to change your boiler' }
   let(:photo_bonus_points) { nil }
-  let!(:intervention_type){ create :intervention_type, name: title, summary: summary, description: description }
-  let(:school) { create_active_school() }
+  let!(:intervention_type) { create :intervention_type, name: title, summary: summary, description: description }
+  let(:school) { create_active_school }
 
   before do
     SiteSettings.current.update(photo_bonus_points: photo_bonus_points)
   end
 
   context 'as a public user' do
-
     it 'there is a top-level navigation item' do
       visit root_path
       expect(page).to have_link("Actions", href: intervention_type_groups_path)
@@ -100,7 +98,7 @@ describe 'viewing and recording action', type: :system do
       it 'should associate intervention with correct school from group' do
         select other_school.name, from: :school_id
         click_on "Record this action"
-        fill_in :observation_at, with: Date.today.strftime("%d/%m/%Y")
+        fill_in :observation_at, with: Time.zone.today.strftime("%d/%m/%Y")
         click_on 'Record action'
         expect(page).to have_content("Congratulations! We've recorded your action")
         expect(other_school.observations.count).to eq(1)
@@ -108,7 +106,7 @@ describe 'viewing and recording action', type: :system do
     end
 
     context 'when school is not in group' do
-      let(:school_not_in_group)   { create(:school)}
+      let(:school_not_in_group) { create(:school)}
 
       it 'should not allow recording an intervention' do
         visit new_school_intervention_path(school_not_in_group, intervention_type_id: intervention_type.id)
@@ -187,7 +185,7 @@ describe 'viewing and recording action', type: :system do
 
         expect(page).to have_content("can't be blank")
 
-        fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+        fill_in 'observation_at', with: Time.zone.today.strftime("%d/%m/%Y")
         fill_in_trix with: 'We changed to a more efficient boiler'
         fill_in 'How many pupils were involved in this activity?', with: 3
 
@@ -203,7 +201,7 @@ describe 'viewing and recording action', type: :system do
         observation = school.observations.intervention.first
         expect(observation.intervention_type).to eq(intervention_type)
         expect(observation.points).to eq(intervention_type.score)
-        expect(observation.at.to_date).to eq(Date.today)
+        expect(observation.at.to_date).to eq(Time.zone.today)
       end
 
       it 'does not show points if none scored' do
@@ -241,22 +239,22 @@ describe 'viewing and recording action', type: :system do
 
         it "adds photo bonus" do
           click_on 'Record this action'
-          fill_in 'observation_at', with: Date.today
+          fill_in 'observation_at', with: Time.zone.today
           fill_in_trix with: 'We changed to a more efficient boiler<figure></figure>'
           click_on 'Record action'
-          expect(page).to have_content("You've just scored #{(intervention_type.score + photo_bonus_points)} points")
+          expect(page).to have_content("You've just scored #{intervention_type.score + photo_bonus_points} points")
         end
       end
 
       context 'on podium' do
         context 'nil points' do
-          let!(:scoreboard)   { create :scoreboard }
+          let!(:scoreboard) { create :scoreboard }
           before(:each) do
             school.update!(scoreboard: scoreboard)
           end
           it 'records action' do
             click_on 'Record this action'
-            fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+            fill_in 'observation_at', with: Time.zone.today.strftime("%d/%m/%Y")
             fill_in 'How many pupils were involved in this activity?', with: 3
             fill_in_trix with: 'We changed to a more efficient boiler'
             click_on 'Record action'
@@ -271,7 +269,7 @@ describe 'viewing and recording action', type: :system do
           context 'in first place' do
             it 'records action' do
               click_on 'Record this action'
-              fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+              fill_in 'observation_at', with: Time.zone.today.strftime("%d/%m/%Y")
               fill_in_trix with: 'We changed to a more efficient boiler'
               fill_in 'How many pupils were involved in this activity?', with: 3
               click_on 'Record action'
@@ -287,7 +285,7 @@ describe 'viewing and recording action', type: :system do
 
             it 'records action' do
               click_on 'Record this action'
-              fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+              fill_in 'observation_at', with: Time.zone.today.strftime("%d/%m/%Y")
               fill_in 'How many pupils were involved in this activity?', with: 3
               fill_in_trix with: 'We changed to a more efficient boiler'
               click_on 'Record action'
@@ -329,9 +327,9 @@ describe 'viewing and recording action', type: :system do
         visit school_path(school)
         click_on 'View all events'
 
-        expect{
+        expect do
           click_on 'Delete'
-        }.to change{Observation.count}.from(1).to(0)
+        end.to change {Observation.count}.from(1).to(0)
       end
     end
   end

@@ -1,14 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe 'consent_requests', type: :system do
-
   let!(:school)                { create(:school) }
   let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false) }
 
   let!(:admin)                 { create(:admin) }
 
   context 'with pending meter review' do
-
     before(:each) do
       login_as admin
     end
@@ -17,18 +15,16 @@ RSpec.describe 'consent_requests', type: :system do
       visit root_path
       click_on 'Admin'
       click_on 'Meter Reviews'
-      expect(page).to have_link("Request consent", href: new_admin_school_consent_request_path(school) )
+      expect(page).to have_link("Request consent", href: new_admin_school_consent_request_path(school))
     end
   end
 
   context 'requesting consent' do
-
     before(:each) do
       login_as admin
     end
 
     context 'with no users' do
-
       before(:each) do
         visit new_admin_school_consent_request_path(school)
       end
@@ -83,14 +79,13 @@ RSpec.describe 'consent_requests', type: :system do
           expect(ActionMailer::Base.deliveries.count).to be 1
         end
       end
-
     end
   end
 
   context 'when providing consent' do
     let!(:consent_statement) { ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true) }
 
-    let!(:school_admin)          { create(:school_admin, school: school)}
+    let!(:school_admin) { create(:school_admin, school: school)}
 
     context "as the school admin" do
       before(:each) do
@@ -134,15 +129,12 @@ RSpec.describe 'consent_requests', type: :system do
           body = Capybara::Node::Simple.new(email_body)
           expect(body).to have_link('terms and conditions')
         end
-
       end
-
-
     end
 
     context 'with non visible school' do
-        let!(:school)                   { create(:school, name: "School", visible: false)}
-        let!(:school_admin)          { create(:school_admin, school: school)}
+        let!(:school) { create(:school, name: "School", visible: false)}
+        let!(:school_admin) { create(:school_admin, school: school)}
 
         it 'displays login page' do
           visit school_consents_path(school)
@@ -161,7 +153,7 @@ RSpec.describe 'consent_requests', type: :system do
         end
 
         context 'when logging in as another user' do
-          let!(:other_user)       { create(:staff) }
+          let!(:other_user) { create(:staff) }
 
           it 'denies access' do
             visit school_consent_documents_path(school)
@@ -173,6 +165,5 @@ RSpec.describe 'consent_requests', type: :system do
           end
         end
     end
-
   end
 end

@@ -1,22 +1,21 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::HeatingControlBenchmarkGenerator, type: :service do
-
   let(:school)      { create(:school) }
   let(:advice_page) { create(:advice_page, key: :heating_control, fuel_type: :gas) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service)     { Schools::AdvicePageBenchmarks::HeatingControlBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::HeatingControlBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
 
   context '#benchmark_school' do
     let(:enough_data) { true }
-    let(:comparison) {
+    let(:comparison) do
       Schools::Comparison.new(
         school_value: 10,
         benchmark_value: 11,
         exemplar_value: 6,
         unit: :days
       )
-    }
+    end
     before(:each) do
       allow_any_instance_of(Schools::Advice::HeatingControlService).to receive(:enough_data_for_seasonal_analysis?).and_return(enough_data)
       allow_any_instance_of(Schools::Advice::HeatingControlService).to receive(:benchmark_warm_weather_days).and_return(comparison)

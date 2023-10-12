@@ -30,8 +30,8 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
       end
 
       context 'and the analytics returns valid data' do
-        let(:start_date)        { Date.today - 2 }
-        let(:end_date)          { Date.today }
+        let(:start_date)        { Time.zone.today - 2 }
+        let(:end_date)          { Time.zone.today }
         let(:expected_readings) { 3 }
 
         let(:kwh_data_x48)      { Array.new(48, 2.0) }
@@ -67,8 +67,8 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
     end
 
     context 'when there are validated readings in the database' do
-      let(:start_date)        { Date.today - 2 }
-      let(:end_date)          { Date.today }
+      let(:start_date)        { Time.zone.today - 2 }
+      let(:end_date)          { Time.zone.today }
       let(:expected_readings) { 3 }
 
       #Same values for all readings
@@ -139,7 +139,7 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         let(:new_datetime)         { (DateTime.now - 10).utc }
         let(:new_data)             { Array.new(48, 1.5) }
         let(:new_status)           { 'GSS1' }
-        let(:new_substitute_date)  { Date.today - 7 }
+        let(:new_substitute_date)  { Time.zone.today - 7 }
         #force this to be very different so we can be sure we're saving right value
 
         let(:dashboard_meter)   { build(:dashboard_gas_meter_with_validated_reading,

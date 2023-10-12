@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'meter_reviews', type: :system do
-
   let!(:school)                { create(:school) }
   let!(:reviewed_school)       { create(:school) }
   let!(:other_school)          { create(:school) }
@@ -55,7 +54,6 @@ RSpec.describe 'meter_reviews', type: :system do
       it 'offers option to complete review' do
         expect(page).to have_link('Perform review')
       end
-
     end
 
     context 'with no consent' do
@@ -74,11 +72,10 @@ RSpec.describe 'meter_reviews', type: :system do
       it 'does not offer to complete review' do
         expect(page).to_not have_link('Perform review')
       end
-
     end
 
     context 'with bills' do
-      let!(:consent_document)       { create(:consent_document, school: school) }
+      let!(:consent_document) { create(:consent_document, school: school) }
 
       before(:each) do
         click_on 'Meter Reviews'
@@ -87,7 +84,6 @@ RSpec.describe 'meter_reviews', type: :system do
       it 'displays a tick' do
         expect(page).to have_css('td.bills i.fa-check-circle')
       end
-
     end
 
     context 'without bills' do
@@ -109,7 +105,6 @@ RSpec.describe 'meter_reviews', type: :system do
   end
 
   context 'when performing a review' do
-
     before(:each) do
       allow_any_instance_of(MeterManagement).to receive(:is_meter_known_to_n3rgy?).and_return(true)
       login_as(admin)
@@ -185,7 +180,6 @@ RSpec.describe 'meter_reviews', type: :system do
           expect(MeterReview.first.consent_documents).to match([consent_document])
         end
       end
-
     end
   end
 
@@ -202,25 +196,25 @@ RSpec.describe 'meter_reviews', type: :system do
     end
 
     it 'should display user' do
-      expect(page.has_text?( meter_review.user.name )).to be true
+      expect(page.has_text?(meter_review.user.name)).to be true
     end
 
     it 'should list the meters' do
       meter = meter_review.meters.first
-      expect(page.has_link?( meter.mpan_mprn.to_s )).to be true
+      expect(page.has_link?(meter.mpan_mprn.to_s)).to be true
     end
 
     it 'should link to consent documents' do
-      expect(page.has_link?( consent_document.title )).to be true
+      expect(page.has_link?(consent_document.title)).to be true
     end
 
     context 'when viewing meters' do
       let(:meter_review) { create(:meter_review) }
-      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: true, meter_review: meter_review, mpan_mprn: 1234567890111, school: school) }
+      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: true, meter_review: meter_review, mpan_mprn: 1_234_567_890_111, school: school) }
 
       it 'provides a link to meter reviews' do
         visit school_meters_path(school)
-        expect(page).to have_link("Completed DCC meter reviews", href: admin_school_meter_reviews_path(school) )
+        expect(page).to have_link("Completed DCC meter reviews", href: admin_school_meter_reviews_path(school))
       end
     end
   end

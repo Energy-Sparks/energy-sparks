@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "school batch run", type: :system do
   let!(:school) { create(:school) }
-  let!(:user)  { create(:admin, school: school)}
+  let!(:user) { create(:admin, school: school)}
   let!(:school_batch_run) { create(:school_batch_run, school: school) }
 
   before(:each) do

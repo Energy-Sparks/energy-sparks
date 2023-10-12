@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe "admin meters", type: :system do
   let(:admin) { create(:admin) }
 
-  let!(:gmeter)     { create(:gas_meter, mpan_mprn: 1234567001) }
-  let!(:emeter)     { create(:electricity_meter, mpan_mprn: 1234567809876) }
+  let!(:gmeter)     { create(:gas_meter, mpan_mprn: 1_234_567_001) }
+  let!(:emeter)     { create(:electricity_meter, mpan_mprn: 1_234_567_809_876) }
 
   context 'as admin' do
     before do

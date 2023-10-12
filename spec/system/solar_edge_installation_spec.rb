@@ -2,21 +2,19 @@ require 'rails_helper'
 require 'dashboard'
 
 RSpec.describe "Solar edge installation management", :solar_edge_installations, type: :system do
-
   let!(:admin)  { create(:admin) }
   let!(:school) { create(:school) }
 
   let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :solar_edge_api) }
 
-  let!(:mpan)   { "123456789" }
+  let!(:mpan) { "123456789" }
   let!(:site_id) { "9999" }
   let!(:api_key) { "api_key" }
 
   context 'as an admin' do
-
     before(:each) do
       allow_any_instance_of(SolarEdgeAPI).to receive(:site_details).and_return({})
-      allow_any_instance_of(SolarEdgeAPI).to receive(:site_start_end_dates).and_return([Date.yesterday, Date.today])
+      allow_any_instance_of(SolarEdgeAPI).to receive(:site_start_end_dates).and_return([Date.yesterday, Time.zone.today])
       allow_any_instance_of(SolarEdgeAPI).to receive(:smart_meter_data).and_return({})
 
       sign_in(admin)
@@ -47,11 +45,9 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
         expect(SolarEdgeInstallation.first.site_id).to eql site_id
         expect(SolarEdgeInstallation.first.api_key).to eql api_key
       end
-
     end
 
     context 'with existing installation' do
-
       let!(:api_feed) { create(:solar_edge_installation, school: school) }
 
       before(:each) do
@@ -93,7 +89,6 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
         expect(AmrValidatedReading.count).to eql 3
         expect { click_on 'Delete' }.to change { Meter.count }.by(-3).and change { SolarEdgeInstallation.count }.by(-1).and change { AmrValidatedReading.count }.by(-3)
       end
-
     end
   end
 end

@@ -26,7 +26,6 @@ RSpec.shared_examples_for "a listed meter" do |admin: true|
 end
 
 RSpec.describe "meter management", :meters, type: :system, include_application_helper: true do
-
   let(:school_name)     { 'Oldfield Park Infants'}
   let!(:school)         { create_active_school(name: school_name)}
   let!(:admin)          { create(:admin)}
@@ -55,7 +54,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     end
 
     context 'when the school has a meter with readings' do
-      let!(:meter) { create(:electricity_meter_with_reading, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
+      let!(:meter) { create(:electricity_meter_with_reading, name: 'Electricity meter', school: school, mpan_mprn: 1_234_567_890_123) }
 
       it 'the meter cannot be deleted' do
         click_on 'Manage meters'
@@ -66,9 +65,9 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     end
 
     context 'when the school has a DCC meter' do
-      let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
+      let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1_234_567_890_123) }
 
-      let!(:data_api) { double(status: :available, readings_available_date_range: Date.today..Date.today) }
+      let!(:data_api) { double(status: :available, readings_available_date_range: Time.zone.today..Time.zone.today) }
 
       before(:each) do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
@@ -206,8 +205,8 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     end
 
     context 'when the school has a DCC meter' do
-      let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:data_api) { double(find: true, status: :available, inventory: {device_id: 123999}, readings_available_date_range: Date.today..Date.today) }
+      let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1_234_567_890_123) }
+      let!(:data_api) { double(find: true, status: :available, inventory: { device_id: 123_999 }, readings_available_date_range: Time.zone.today..Time.zone.today) }
 
       before(:each) do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
@@ -217,7 +216,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       it 'shows the status and dates' do
         click_on meter.mpan_mprn.to_s
         expect(page).to have_content("Available")
-        expect(page).to have_content(Date.today.iso8601)
+        expect(page).to have_content(Time.zone.today.iso8601)
       end
 
       it 'the meter inventory button can be shown' do
@@ -250,7 +249,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     end
 
     context 'when creating meters' do
-      let!(:data_api) { double(status: :available, inventory: {device_id: 123999}) }
+      let!(:data_api) { double(status: :available, inventory: { device_id: 123_999 }) }
 
       before(:each) do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).and_return(data_api)
@@ -269,16 +268,16 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         click_on 'Create Meter'
 
         expect(school.meters.count).to eq(1)
-        expect(school.meters.first.mpan_mprn).to eq(123543)
+        expect(school.meters.first.mpan_mprn).to eq(123_543)
         expect(school.meters.first.data_source.name).to eq('Data Co')
       end
     end
 
     context 'when the school has a meter' do
       let!(:gas_meter) { create :gas_meter, name: 'Gas meter', school: school }
-      before(:each) {
+      before(:each) do
         click_on 'Manage meters'
-      }
+      end
 
       it 'allows editing' do
         click_on 'Edit'
@@ -331,9 +330,9 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
       end
 
-      before(:each) {
+      before(:each) do
         click_on 'Manage meters'
-      }
+      end
 
       it 'allows deletion of inactive meters' do
         click_on 'Deactivate'

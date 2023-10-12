@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 describe 'Group admin login and permissions' do
+  let(:school_group) { create(:school_group) }
+  let!(:school) { create(:school, school_group: school_group) }
+  let(:group_admin) { create(:group_admin, school_group: school_group) }
 
-  let(:school_group){ create(:school_group) }
-  let!(:school){ create(:school, school_group: school_group) }
-  let(:group_admin){ create(:group_admin, school_group: school_group) }
-
-  let(:other_school){ create(:school) }
+  let(:other_school) { create(:school) }
 
   before(:each) do
     sign_in(group_admin)
@@ -30,5 +29,4 @@ describe 'Group admin login and permissions' do
     visit school_path(other_school)
     expect(page).to_not have_content('Edit school details')
   end
-
 end

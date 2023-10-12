@@ -44,8 +44,8 @@ describe AggregateSchoolService, type: :service do
       expect( AggregateSchoolService.analysis_date(meter_collection, :storage_heater)).to eq(electricity_end_date)
     end
     it 'returns today otherwise' do
-      expect( AggregateSchoolService.analysis_date(meter_collection, nil)).to eq(Date.today)
-      expect( AggregateSchoolService.analysis_date(meter_collection, :solar_pv)).to eq(Date.today)
+      expect( AggregateSchoolService.analysis_date(meter_collection, nil)).to eq(Time.zone.today)
+      expect( AggregateSchoolService.analysis_date(meter_collection, :solar_pv)).to eq(Time.zone.today)
     end
   end
 end

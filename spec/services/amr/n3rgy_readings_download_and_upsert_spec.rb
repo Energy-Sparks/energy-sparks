@@ -62,7 +62,7 @@ module Amr
       context "when there are readings" do
 
         # Note: this is a Date object as the reading date needs to be stored in the database in ISO 8601 format e.g. 2023-06-29
-        let(:last_week) { Date.today - 7 }
+        let(:last_week) { Time.zone.today - 7 }
 
         before do
           create(:amr_data_feed_reading, meter: meter, reading_date: last_week)

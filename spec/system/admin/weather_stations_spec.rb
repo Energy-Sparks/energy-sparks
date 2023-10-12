@@ -61,7 +61,6 @@ RSpec.describe 'Weather stations', type: :system do
     end
 
     context 'with an existing weather station' do
-
       let!(:station) { WeatherStation.create!(title: title, latitude: latitude, longitude: longitude, provider: "meteostat") }
 
       before(:each) do
@@ -123,10 +122,9 @@ RSpec.describe 'Weather stations', type: :system do
       end
 
       it 'deletes old temperature readings if lat/long changed' do
-
         WeatherObservation.create!(
           reading_date: '2020-03-25',
-          temperature_celsius_x48: 48.times.map{rand(40.0)},
+          temperature_celsius_x48: Array.new(48) {rand(40.0)},
           weather_station_id: station.id
         )
 
@@ -157,9 +155,7 @@ RSpec.describe 'Weather stations', type: :system do
         expect(page).to have_content new_latitude
         expect(page).to have_content new_longitude
         expect(station.weather_observations.count).to eq(0)
-
       end
-
     end
   end
 end

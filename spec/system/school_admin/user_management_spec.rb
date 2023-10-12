@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe 'School admin user management' do
-
-  let(:school){ create(:school) }
-  let(:school_admin){ create(:school_admin, school: school) }
+  let(:school) { create(:school) }
+  let(:school_admin) { create(:school_admin, school: school) }
 
   describe 'as school admin' do
     before(:each) do
@@ -12,9 +11,7 @@ describe 'School admin user management' do
     end
 
     describe 'for pupils' do
-
       it 'can create pupils' do
-
         click_on 'Manage users'
         click_on 'New pupil account'
 
@@ -26,7 +23,7 @@ describe 'School admin user management' do
         expect(pupil.email).to_not be_nil
         expect(pupil.pupil_password).to eq('the elektrons')
 
-        expect( ActionMailer::Base.deliveries.last ).to be_nil
+        expect(ActionMailer::Base.deliveries.last).to be_nil
       end
 
       it 'can edit and delete pupils' do
@@ -48,14 +45,12 @@ describe 'School admin user management' do
 
         expect(school.users.pupil.count).to eq(0)
       end
-
     end
 
     describe 'for staff' do
-      let!(:teacher_role){ create :staff_role, :teacher, title: 'Teacher or teaching assistant' }
+      let!(:teacher_role) { create :staff_role, :teacher, title: 'Teacher or teaching assistant' }
 
       context 'it can create staff' do
-
         before(:each) do
           click_on 'Manage users'
           click_on 'New staff account'
@@ -104,7 +99,7 @@ describe 'School admin user management' do
 
       it 'can edit alert contact' do
         staff = create(:staff, school: school)
-        contact = create(:contact, name: staff.name, user: staff, email_address: staff.email, school: school)
+        create(:contact, name: staff.name, user: staff, email_address: staff.email, school: school)
         click_on 'Manage users'
         within '.staff' do
           click_on 'Edit'
@@ -122,7 +117,7 @@ describe 'School admin user management' do
       end
 
       it 'cannot edit alert contact if user is not yet confirmed' do
-        staff = create(:staff, school: school, confirmed_at: nil)
+        create(:staff, school: school, confirmed_at: nil)
         click_on 'Manage users'
         within '.staff' do
           click_on 'Edit'
@@ -141,7 +136,7 @@ describe 'School admin user management' do
 
         fill_in 'Email', with: 'blah@test.com'
 
-        expect { click_on 'Update account' }.not_to change { Contact.count }
+        expect { click_on 'Update account' }.not_to(change { Contact.count })
 
         contact.reload
         expect(contact.email_address).to eq('blah@test.com')
@@ -155,7 +150,7 @@ describe 'School admin user management' do
           click_on 'Edit'
         end
 
-        expect { click_on 'Update account' }.not_to change { Contact.count }
+        expect { click_on 'Update account' }.not_to(change { Contact.count })
 
         contact.reload
         expect(contact.user).to eq(staff)
@@ -176,7 +171,7 @@ describe 'School admin user management' do
 
       it 'can promote staff user to school admin' do
         staff = create(:staff, school: school)
-        contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school: school)
+        create(:contact, name: staff.name, user: nil, email_address: staff.email, school: school)
         click_on 'Manage users'
         within '.staff' do
           expect(page).to have_content(staff.name)
@@ -193,7 +188,7 @@ describe 'School admin user management' do
 
       context 'when displaying users' do
         it 'shows preferred language' do
-          staff = create(:staff, school: school, preferred_locale: :cy)
+          create(:staff, school: school, preferred_locale: :cy)
           click_on 'Manage users'
           within '.staff' do
             expect(page).to have_content('Welsh')
@@ -203,7 +198,6 @@ describe 'School admin user management' do
     end
 
     describe 'managing school admins' do
-
       context 'when adding a user' do
         before(:each) do
           click_on 'Manage users'
@@ -285,7 +279,6 @@ describe 'School admin user management' do
           expect(page).to_not have_checked_field('contact_auto_create_alert_contact')
           check "Subscribe to school alerts"
           expect { click_on 'Update account' }.to change { Contact.count }.by(1)
-
         end
 
         context 'when deleting' do
@@ -345,9 +338,8 @@ describe 'School admin user management' do
           click_on "Add an existing Energy Sparks user as a school admin"
           fill_in "Email", with: other_school_admin.email
           uncheck "Subscribe to school alerts"
-          expect { click_on "Add user" }.to_not change { Contact.count }
+          expect { click_on "Add user" }.to_not(change { Contact.count })
         end
-
       end
 
       context "when managing an existing user" do
@@ -394,14 +386,12 @@ describe 'School admin user management' do
           it 'removes alert contact' do
             expect(school.contacts.count).to eq(0)
           end
-
         end
-
       end
 
       context 'when displaying users' do
         it 'shows preferred language' do
-          school_admin = create(:school_admin, school: school, preferred_locale: :cy)
+          create(:school_admin, school: school, preferred_locale: :cy)
           click_on 'Manage users'
           within '.school_admin' do
             expect(page).to have_content('Welsh')
@@ -429,11 +419,11 @@ describe 'School admin user management' do
       click_on("Resend confirmation")
       #this is 2 as Devise will send one because the user we just created isnt
       #confirmed. So we're looking for 2 deliveries
-      expect( deliveries ).to eq 2
+      expect(deliveries).to eq 2
       #check the email we just sent
-      expect( email.subject ).to eq 'Energy Sparks: confirm your account'
-      expect( page ).to have_content("Confirmation email sent")
-      expect( page ).to have_content("School admin accounts")
+      expect(email.subject).to eq 'Energy Sparks: confirm your account'
+      expect(page).to have_content("Confirmation email sent")
+      expect(page).to have_content("School admin accounts")
     end
   end
 end

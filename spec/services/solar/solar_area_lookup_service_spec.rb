@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Solar::SolarAreaLookupService, type: :service do
-
   #location is somewhere in north america
   let!(:solar_area)      { create(:solar_pv_tuos_area, gsp_id: 1, latitude: 42.143042, longitude: -106.352703) }
 
@@ -13,7 +12,7 @@ describe Solar::SolarAreaLookupService, type: :service do
   let(:school_onboarding) { create(:school_onboarding, solar_pv_tuos_area: solar_area)}
   let(:school)            { create(:school) }
 
-  let(:service)         { Solar::SolarAreaLookupService.new(school, school_onboarding) }
+  let(:service) { Solar::SolarAreaLookupService.new(school, school_onboarding) }
 
   it 'finds nearest area' do
     expect(service.lookup).to eq bath_area

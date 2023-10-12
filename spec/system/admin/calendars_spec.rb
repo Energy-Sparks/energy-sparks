@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'calendars', :calendar, type: :system do
-
   let!(:admin) { create(:admin) }
 
   let(:events) do
@@ -11,11 +10,11 @@ RSpec.describe 'calendars', :calendar, type: :system do
     CSV
   end
 
-  let!(:england_and_wales_calendar) { create :national_calendar, title: 'England and Wales'  }
+  let!(:england_and_wales_calendar) { create :national_calendar, title: 'England and Wales' }
   let!(:bank_holiday)               { create :bank_holiday, calendar: england_and_wales_calendar, start_date: "2012-04-06", end_date: "2012-04-06" }
 
   before do
-    travel_to Time.zone.local(2023,8,24)
+    travel_to Time.zone.local(2023, 8, 24)
     create_all_calendar_events
     AcademicYearFactory.new(england_and_wales_calendar).create(start_year: 2014, end_year: 2016)
   end

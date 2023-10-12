@@ -6,26 +6,26 @@ RSpec.describe "electricity costs advice page", type: :system do
   include_context "electricity advice page"
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
 
     let(:complete_tariff_coverage) { false }
     let(:multiple_meters) { false }
-    let(:period_start)  { Date.today.beginning_of_year }
+    let(:period_start) { Time.zone.today.beginning_of_year }
     let(:periods_with_missing_tariffs) { [[period_start, period_start + 1.month]] }
-    let(:annual_costs)  { OpenStruct.new(£: 1000, days: 365) }
-    let(:annual_costs_breakdown_by_meter) { Hash.new }
-    let(:beginning_of_month)  { Date.today.beginning_of_month }
-    let(:costs_for_latest_twelve_months) {
+    let(:annual_costs) { OpenStruct.new(£: 1000, days: 365) }
+    let(:annual_costs_breakdown_by_meter) { {} }
+    let(:beginning_of_month) { Time.zone.today.beginning_of_month }
+    let(:costs_for_latest_twelve_months) do
       { beginning_of_month => Costs::MeterMonth.new(
         month_start_date: beginning_of_month,
         start_date: beginning_of_month,
         end_date: beginning_of_month.end_of_month,
         bill_component_costs: {}
-      )}
-    }
-    let(:change_in_costs) {
-      {beginning_of_month => nil}
-    }
+      ) }
+    end
+    let(:change_in_costs) do
+      { beginning_of_month => nil }
+    end
 
     before do
       allow(electricity_aggregate_meter).to receive(:mpan_mprn).and_return("999999")
@@ -68,7 +68,6 @@ RSpec.describe "electricity costs advice page", type: :system do
           expect(page).to have_content("The information below provides a good estimate of your annual costs")
         end
       end
-
     end
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }

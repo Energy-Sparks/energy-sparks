@@ -10,7 +10,7 @@ describe Alerts::DeleteBenchmarkRunService, type: :service do
     benchmark_result_generation_run: run ) }
   let!(:alert_type)        { create(:alert_type, benchmark: true, source: :analytics) }
   let!(:benchmark_result)  { BenchmarkResult.create!(alert_type: alert_type,
-    asof: Date.today, benchmark_result_school_generation_run: school_run) }
+    asof: Time.zone.today, benchmark_result_school_generation_run: school_run) }
 
   let!(:benchmark_error)    { BenchmarkResultError.create!(
                               alert_type: alert_type,
@@ -36,7 +36,7 @@ describe Alerts::DeleteBenchmarkRunService, type: :service do
     let!(:new_school_run)   { BenchmarkResultSchoolGenerationRun.create(school: school,
       benchmark_result_generation_run: new_run ) }
     let!(:new_benchmark_result)  { BenchmarkResult.create!(alert_type: alert_type,
-        asof: Date.today, benchmark_result_school_generation_run: new_school_run) }
+        asof: Time.zone.today, benchmark_result_school_generation_run: new_school_run) }
 
     it 'deletes only the older runs' do
       expect(BenchmarkResultGenerationRun.count).to eq 2

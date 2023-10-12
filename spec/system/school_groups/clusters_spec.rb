@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'school group clusters', :school_group_clusters, type: :system do
   let(:public)                  { true }
-  let!(:school_group)           { create(:school_group, public: public, group_type: :multi_academy_trust ) }
+  let!(:school_group)           { create(:school_group, public: public, group_type: :multi_academy_trust) }
 
   let!(:school_1)               { create(:school, name: 'School 1', school_group: school_group) }
   let!(:school_2)               { create(:school, name: 'School 2', school_group: school_group) }
@@ -14,7 +14,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     end
   end
 
-  shared_examples "school group clusters index page" do |name:nil, count:0|
+  shared_examples "school group clusters index page" do |name: nil, count: 0|
     it 'shows breadcrumbs' do
       expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters'])
     end
@@ -42,7 +42,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     end
   end
 
-  shared_examples "school group cluster form" do |name:''|
+  shared_examples "school group cluster form" do |name: ''|
     it 'shows breadcrumbs' do
       expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters', (name.blank? ? "New" : name)])
     end

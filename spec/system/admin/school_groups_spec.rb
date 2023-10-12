@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'school groups', :school_groups, type: :system, include_application_helper: true do
   let!(:admin)                  { create(:admin) }
-  let(:setup_data)             {}
+  let(:setup_data) {}
 
   before do
     setup_data
@@ -11,10 +11,10 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
   def create_data_for_school_groups(school_groups)
     school_groups.each do |school_group|
-      onboarding = create :school_onboarding, created_by: admin, school_group: school_group
-      active_and_data_visible = create :school, visible: true, data_enabled: true, school_group: school_group
-      invisible = create :school, visible: false, school_group: school_group
-      removed = create :school, active: false, school_group: school_group
+      create :school_onboarding, created_by: admin, school_group: school_group
+      create :school, visible: true, data_enabled: true, school_group: school_group
+      create :school, visible: false, school_group: school_group
+      create :school, active: false, school_group: school_group
     end
   end
 
@@ -38,13 +38,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         it "displays totals for each group" do
           within('table') do
             school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Group type" => school_group.group_type.humanize, "Issues admin" => school_group.default_issues_admin_user.try(:display_name) || "", "Onboarding" => 1 , "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
+              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Group type" => school_group.group_type.humanize, "Issues admin" => school_group.default_issues_admin_user.try(:display_name) || "", "Onboarding" => 1, "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
             end
           end
         end
         it "displays a grand total" do
           within('table') do
-            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Group type" => "", "Issues admin" => "", "Onboarding" => 2 , "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
+            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Group type" => "", "Issues admin" => "", "Onboarding" => 2, "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
           end
         end
         it "has a link to manage school group" do
@@ -169,7 +169,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       describe "School counts by school type panel" do
-        School.school_types.keys.each do |school_type|
+        School.school_types.each_key do |school_type|
           context "showing active #{school_type} schools" do
             let!(:setup_data) { create(:school, school_group: school_group, school_type: school_type, active: true) }
             it { expect(page).to have_content("#{school_type.humanize} 1") }
@@ -227,7 +227,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context 'when clicking on the delete message link', js: true do
           let(:message) { 'This is a school group message' }
           let(:setup_data) { messageable.create_dashboard_message(message: message) }
-                    let(:messageable) { school_group }
+          let(:messageable) { school_group }
 
           context 'delete a message' do
             it 'deletes a message' do
@@ -265,7 +265,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "when there are active schools" do
           let(:school_onboarding) { create :school_onboarding, school_group: school_group }
           let(:school) { create(:school, active: true, name: "A School", school_group: school_group, school_onboarding: school_onboarding) }
-          let(:issues) { [ create(:issue, issue_type: :note, school: school), create(:issue, issue_type: :issue, school: school)] }
+          let(:issues) { [create(:issue, issue_type: :note, school: school), create(:issue, issue_type: :issue, school: school)] }
           let(:setup_data) { [school, issues] }
 
           it "lists school in active tab" do
@@ -356,7 +356,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
       describe "Removed schools tab" do
         context "when there are inactive schools" do
-          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group, removal_date: Time.now) }
+          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group, removal_date: Time.zone.now) }
           let!(:setup_data) { school }
           it "lists school in removed tab" do
             within '#removed' do
@@ -462,9 +462,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
       context "when school group is deletable" do
         it "removes school group" do
-          expect {
+          expect do
             click_on 'Delete'
-          }.to change{SchoolGroup.count}.from(1).to(0)
+          end.to change {SchoolGroup.count}.from(1).to(0)
         end
         context "clicking 'Delete'" do
           before { click_on 'Delete' }
@@ -551,13 +551,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         click_on 'Meter updates'
 
 
-        create(:gas_meter, mpan_mprn: 1234567891231, school: school_1, data_source_id: nil, procurement_route_id: nil)
-        create(:electricity_meter, mpan_mprn: 1234567891232, school: school_1, data_source_id: nil, procurement_route_id: nil)
-        create(:solar_pv_meter, mpan_mprn: 1234567891233, school: school_1, data_source_id: nil, procurement_route_id: nil)
+        create(:gas_meter, mpan_mprn: 1_234_567_891_231, school: school_1, data_source_id: nil, procurement_route_id: nil)
+        create(:electricity_meter, mpan_mprn: 1_234_567_891_232, school: school_1, data_source_id: nil, procurement_route_id: nil)
+        create(:solar_pv_meter, mpan_mprn: 1_234_567_891_233, school: school_1, data_source_id: nil, procurement_route_id: nil)
 
-        create(:gas_meter, mpan_mprn: 1234567891234, school: school_2, data_source_id: nil, procurement_route_id: nil)
-        create(:electricity_meter, mpan_mprn: 1234567891235, school: school_2, data_source_id: nil, procurement_route_id: nil)
-        create(:solar_pv_meter, mpan_mprn: 1234567891236, school: school_2, data_source_id: nil, procurement_route_id: nil)
+        create(:gas_meter, mpan_mprn: 1_234_567_891_234, school: school_2, data_source_id: nil, procurement_route_id: nil)
+        create(:electricity_meter, mpan_mprn: 1_234_567_891_235, school: school_2, data_source_id: nil, procurement_route_id: nil)
+        create(:solar_pv_meter, mpan_mprn: 1_234_567_891_236, school: school_2, data_source_id: nil, procurement_route_id: nil)
       end
 
       it 'shows a form to bulk update ' do
@@ -594,7 +594,6 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         click_on 'Update solar pv procurement route for all schools in this group'
         expect(school_1.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", "Electricity data source", "Electricity procurement route"], ["gas", "Gas data source", "Gas procurement route"], ["solar_pv", "Solar PV data source", "Solar PV procurement route"]])
         expect(school_2.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
-
       end
     end
 
@@ -618,24 +617,24 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       it 'shows a form to select default chart units' do
         expect(school_group.default_chart_preference).to eq('default')
         expect(school_group2.default_chart_preference).to eq('default')
-        expect(school_group.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
-        expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
+        expect(school_group.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
+        expect(school_group2.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
         expect(page).to have_content("BANES chart settings")
-        SchoolGroup.default_chart_preferences.keys.each do |preference|
+        SchoolGroup.default_chart_preferences.each_key do |preference|
           expect(page).to have_content(I18n.t("school_groups.chart_updates.index.default_chart_preference.#{preference}"))
         end
         choose 'Display chart data in £, where available'
         click_on 'Update all schools in this group'
         expect(school_group.reload.default_chart_preference).to eq('cost')
         expect(school_group2.reload.default_chart_preference).to eq('default')
-        expect(school_group.schools.map(&:chart_preference).sort).to eq(['cost','cost','cost'])
-        expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
+        expect(school_group.schools.map(&:chart_preference).sort).to eq(%w[cost cost cost])
+        expect(school_group2.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
       end
     end
 
     describe "Managing partners" do
-      let!(:partners) { 3.times.collect { create(:partner) } }
-      let!(:school_group)      { create(:school_group, name: 'BANES') }
+      let!(:partners) { Array.new(3) { create(:partner) } }
+      let!(:school_group) { create(:school_group, name: 'BANES') }
       before do
         click_on 'Manage School Groups'
         within "table" do

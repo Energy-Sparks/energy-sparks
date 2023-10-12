@@ -242,7 +242,7 @@ describe ImportNotifier do
       it 'has an attachment' do
         attachment = email.attachments[0]
         expect(attachment.content_type).to include('text/csv')
-        expect(attachment.filename).to eq("[energy-sparks-unknown] Energy Sparks import report: #{Date.today.strftime('%d/%m/%Y')}.csv")
+        expect(attachment.filename).to eq("[energy-sparks-unknown] Energy Sparks import report: #{Time.zone.today.strftime('%d/%m/%Y')}.csv")
         expect(attachment.body.raw_source.split("\r\n").first).to eq("\"\",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,Last validated reading date,Admin meter status,Issues,Notes,Group admin name")
       end
     end

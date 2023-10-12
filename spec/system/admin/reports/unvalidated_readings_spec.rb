@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe "unvalidated readings", type: :system do
-
   let!(:admin)       { create(:admin) }
   let!(:config)      { create(:amr_data_feed_config, description: 'Description', date_format: '%d-%m-%Y') }
   let!(:reading)     { create(:amr_data_feed_reading, reading_date: '23-06-2023', amr_data_feed_config: config)}
@@ -45,7 +44,7 @@ describe "unvalidated readings", type: :system do
       expect(response_headers['Content-Type']).to eq 'text/csv'
     end
     it "has expected file name" do
-      expect(response_headers['Content-Disposition']).to include ("energy-sparks-unvalidated-readings-report-#{Time.zone.now.iso8601.parameterize}.csv")
+      expect(response_headers['Content-Disposition']).to include("energy-sparks-unvalidated-readings-report-#{Time.zone.now.iso8601.parameterize}.csv")
     end
   end
 end

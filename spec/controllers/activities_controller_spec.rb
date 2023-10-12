@@ -13,7 +13,7 @@ RSpec.describe ActivitiesController, type: :controller do
       activity_category_id: activity_category.id,
       title: 'test title',
       description: '<div>Content</div>',
-      happened_on: Date.today
+      happened_on: Time.zone.today
     }
   }
 
@@ -222,7 +222,7 @@ RSpec.describe ActivitiesController, type: :controller do
         { title: 'new_title',
           description: 'new_description',
           activity_type_id: activity_type2.id,
-          happened_on: Date.today
+          happened_on: Time.zone.today
         }
       }
 

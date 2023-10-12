@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Amr::N3rgyEnergyTariffInserter do
   let(:school)                      { create(:school) }
   let(:meter)                       { create(:electricity_meter, school: school) }
-  let(:start_date)                  { Date.today }
+  let(:start_date)                  { Time.zone.today }
   let(:import_log)                  { create(:tariff_import_log) }
 
   let(:price)                       { 0.14168 }

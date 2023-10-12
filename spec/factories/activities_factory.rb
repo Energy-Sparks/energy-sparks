@@ -5,7 +5,7 @@ FactoryBot.define do
     activity_category
     title             { 'test activity title' }
     description       { 'test activity description' }
-    happened_on       { Date.today - 1.days }
+    happened_on       { Time.zone.today - 1.days }
 
     to_create { |instance| ActivityCreator.new(instance).process }
   end

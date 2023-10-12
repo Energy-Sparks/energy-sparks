@@ -150,7 +150,7 @@ describe Database::EnergyTariffMigrationService do
 
   context '#date_or_nil' do
     it 'returns expected values' do
-      expect(Database::EnergyTariffMigrationService.date_or_nil(Date.today)).to eq Date.today
+      expect(Database::EnergyTariffMigrationService.date_or_nil(Time.zone.today)).to eq Time.zone.today
       expect(Database::EnergyTariffMigrationService.date_or_nil(nil)).to eq nil
       expect(Database::EnergyTariffMigrationService.date_or_nil("")).to eq nil
       expect(Database::EnergyTariffMigrationService.date_or_nil("2020-01-01")).to eq Date.new(2020,1,1)

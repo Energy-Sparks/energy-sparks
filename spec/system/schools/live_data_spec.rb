@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'live data', type: :system do
-
   let!(:school)             { create(:school) }
   let!(:school_admin)       { create(:school_admin, school: school) }
 
@@ -12,7 +11,6 @@ RSpec.describe 'live data', type: :system do
   end
 
   context 'with feature disabled' do
-
     before(:each) do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
       sign_in(school_admin)
@@ -28,7 +26,6 @@ RSpec.describe 'live data', type: :system do
   end
 
   context 'with feature enabled and active cad' do
-
     let!(:cad) { create(:cad, active: true, school: school) }
 
     let!(:activity_category)  { create(:activity_category, live_data: true) }
@@ -55,7 +52,6 @@ RSpec.describe 'live data', type: :system do
     end
 
     context 'when logged in' do
-
       before(:each) do
         sign_in(school_admin)
         visit school_path(school)
@@ -132,7 +128,7 @@ RSpec.describe 'live data', type: :system do
         visit school_cad_live_data_path(school, school.cads.last, format: :json)
 
         expect(page.status_code).to eql 500
-        expect(page.body).to eql ('api is broken')
+        expect(page.body).to eql('api is broken')
       end
     end
   end

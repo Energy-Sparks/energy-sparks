@@ -12,7 +12,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
   describe '#school_group_meters_report' do
 
     shared_examples "a report with gaps in the meter readings" do
-      let(:base_date) { Date.today - 1.year }
+      let(:base_date) { Time.zone.today - 1.year }
 
       before do
         create(:amr_validated_reading, meter: active_meter, reading_date: base_date, status: 'ORIG')

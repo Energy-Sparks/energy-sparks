@@ -1,11 +1,12 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   NewCops: disable
   SuggestExtensions: false
   Include:
     - 'app/**/*.rb'
     - 'lib/**/*.rb'
-# Disable specs for now
-#   - 'spec/**/*.rb'
+    - 'spec/**/*.rb'
   Exclude:
     - 'app/services/schools/funding_status_lookup.rb'
     - 'lib/data_feeds/weather_underground_loader.rb'
@@ -26,10 +27,6 @@ require:
 # - rubocop-rspec
 
 # Rails cops
-Naming/AsciiIdentifiers:
-  Exclude:
-    - 'app/controllers/schools/advice/baseload_controller.rb'
-    - 'app/controllers/concerns/advice_pages.rb'
 Security/Eval:
   Exclude:
     - 'app/services/mailchimp_api.rb'
@@ -355,26 +352,6 @@ Performance/StringInclude: # (new in 1.7)
   Enabled: false
 Performance/Sum: # (new in 1.8)
   Enabled: false
-
-# Rspec cops
-#
-# Have switched this off for now, as would want to fix any relevant cops which the
-# rest of the codebase comply in the tests rather than switch them off
-
-# RSpec/MultipleExpectations:
-#   Enabled: false
-# RSpec/AnyInstance:
-#   Enabled: false
-# RSpec/ExampleLength:
-#   Enabled: false
-# RSpec/ExpectInHook:
-#   Enabled: false
-# RSpec/LetSetup:
-#   Enabled: false
-# RSpec/ContextWording:
-#   Enabled: false
-# RSpec/DescribeClass:
-#   Enabled: false
 
 Naming/VariableNumber:
   Enabled: false

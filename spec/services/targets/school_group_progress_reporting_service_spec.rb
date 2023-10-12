@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 describe Targets::SchoolGroupProgressReportingService, type: :service do
-
   let(:enable_targets)      { false }
   let(:enough_data)         { true }
   let(:school_target)       { nil }
   let(:progress_summary)    { nil }
 
   let(:school_group)        { create(:school_group) }
-  let!(:school)              { create(:school, school_group: school_group, enable_targets_feature: enable_targets) }
+  let!(:school) { create(:school, school_group: school_group, enable_targets_feature: enable_targets) }
 
   let(:service) { Targets::SchoolGroupProgressReportingService.new(school_group) }
 
@@ -17,7 +16,6 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
   end
 
   describe '#report' do
-
     before(:each) do
       allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(enough_data)
     end

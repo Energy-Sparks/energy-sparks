@@ -331,7 +331,7 @@ describe 'Meter', :meters do
     let(:meter) { create(:electricity_meter) }
 
     context 'with dates' do
-      let(:base_date) { Date.today - 1.year }
+      let(:base_date) { Time.zone.today - 1.year }
 
       before do
         create(:amr_validated_reading, meter: meter, reading_date: base_date)
@@ -353,7 +353,7 @@ describe 'Meter', :meters do
     end
 
     context 'with statuses' do
-      let(:base_date) { Date.today - 2.years }
+      let(:base_date) { Time.zone.today - 2.years }
 
       before do
         create(:amr_validated_reading, meter: meter, reading_date: base_date - 2.days, status: 'NOT_ORIG')

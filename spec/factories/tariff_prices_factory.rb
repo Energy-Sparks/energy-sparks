@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :tariff_price do
     association :meter, factory: :electricity_meter
-    sequence(:tariff_date) { |n| Date.today - n.days }
+    sequence(:tariff_date) { |n| Time.zone.today - n.days }
     association :tariff_import_log, factory: :tariff_import_log
 
     trait :with_flat_rate do

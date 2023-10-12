@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'TariffsReport', type: :system do
-
   let(:admin)                    { create(:admin) }
   let!(:school_group)            { create(:school_group) }
   let!(:school)                  { create(:school, school_group: school_group) }

@@ -1,7 +1,6 @@
 RSpec.shared_examples "a scorable" do
-
   describe '#scored_schools' do
-    let!(:schools)  { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, scoreboard: scoreboard, school_group: school_group, activities_happened_on: 6.months.ago, template_calendar: subject.scorable_calendar}}
+    let!(:schools) { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, scoreboard: scoreboard, school_group: school_group, activities_happened_on: 6.months.ago, template_calendar: subject.scorable_calendar}}
 
     it 'returns schools in points order' do
       expect(subject.scored_schools.map(&:id)).to eq(schools.map(&:id))
@@ -23,7 +22,6 @@ RSpec.shared_examples "a scorable" do
         expect(subject.scored_schools.to_a.size).to be 6
       end
     end
-
   end
 
   describe '#this_academic_year' do
@@ -39,5 +37,4 @@ RSpec.shared_examples "a scorable" do
       expect(subject.previous_academic_year).to eq subject.scorable_calendar.academic_year_for(Time.zone.today).previous_year
     end
   end
-
 end

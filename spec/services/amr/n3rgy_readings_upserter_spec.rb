@@ -5,7 +5,7 @@ module Amr
 
     let(:meter)           { create(:electricity_meter) }
     let(:config)          { create(:amr_data_feed_config)}
-    let(:end_date)     { Date.today }
+    let(:end_date)     { Time.zone.today }
     let(:start_date) { end_date - 1 }
     let(:readings)        {
       {

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "onboarding", :schools, type: :system do
-
   let(:admin) { create(:admin) }
   let(:school_name)               { 'Oldfield Park Infants'}
 
@@ -31,7 +30,7 @@ RSpec.describe "onboarding", :schools, type: :system do
   let(:last_email) { ActionMailer::Base.deliveries.last }
 
   context 'as an admin' do
-    let!(:other_template_calendar)  { create(:regional_calendar, :with_terms, title: 'Oxford calendar') }
+    let!(:other_template_calendar) { create(:regional_calendar, :with_terms, title: 'Oxford calendar') }
 
     before(:each) do
       sign_in(admin)
@@ -119,8 +118,11 @@ RSpec.describe "onboarding", :schools, type: :system do
     end
 
     context 'when completing onboarding as admin with consents already given' do
-      before  { Wisper.clear; Wisper.subscribe(wisper_subscriber) }
-      after   { Wisper.clear }
+      before do
+        Wisper.clear
+        Wisper.subscribe(wisper_subscriber)
+      end
+      after { Wisper.clear }
 
       let!(:school_onboarding)  { create :school_onboarding, :with_school, created_by: admin }
 
@@ -167,8 +169,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_link 'Download as CSV', href: admin_school_onboardings_path(format: :csv)
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /filename=\"#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}\"/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/filename=\"#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}\"/)
 
       expect(page.source).to have_content 'Email sent'
       expect(page.source).to have_content onboarding.school_name
@@ -185,8 +187,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_link 'Download as CSV', href: admin_school_group_school_onboardings_path(onboarding.school_group, format: :csv)
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /filename=\"#{onboarding.school_group.slug}-onboarding-schools.csv\"/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/filename=\"#{onboarding.school_group.slug}-onboarding-schools.csv\"/)
 
       expect(page.source).to have_content 'Email sent'
       expect(page.source).to have_content 'In progress'

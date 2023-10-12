@@ -29,7 +29,7 @@ RSpec.describe DatePickerFormComponent, type: :component do
   context 'with empty value' do
     let(:value) { nil }
     it 'defaults to today' do
-      expect(html).to have_field('job[start_date]', with: Date.today.strftime("%d/%m/%Y"))
+      expect(html).to have_field('job[start_date]', with: Time.zone.today.strftime("%d/%m/%Y"))
     end
 
     context 'and a default supplied' do

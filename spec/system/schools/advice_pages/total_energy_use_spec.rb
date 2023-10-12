@@ -6,12 +6,12 @@ RSpec.describe "total energy use advice page", type: :system do
   include_context "total energy advice page"
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
-    let(:gas_aggregate_meter)   { double('gas-aggregated-meter')}
+    let(:user) { create(:school_admin, school: school) }
+    let(:gas_aggregate_meter) { double('gas-aggregated-meter')}
 
-    let(:management_data) {
+    let(:management_data) do
       Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
-    }
+    end
 
     let(:enough_data)  { true }
     let(:annual_usage) { CombinedUsageMetric.new(kwh: 1000, £: 500, co2: 1500) }

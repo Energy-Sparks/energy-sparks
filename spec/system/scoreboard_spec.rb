@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'scoreboards', :scoreboards, type: :system do
-
   let!(:scoreboard)         { create(:scoreboard, name: 'Super scoreboard')}
-  let!(:school)             { create(:school, :with_school_group, scoreboard: scoreboard, name: "No points" ) }
+  let!(:school)             { create(:school, :with_school_group, scoreboard: scoreboard, name: "No points") }
   let(:points)              { 123 }
   let!(:school_with_points) { create :school, :with_points, score_points: points, scoreboard: scoreboard }
 
@@ -39,8 +38,8 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
   end
 
   describe 'with private scoreboards' do
-    let!(:private_scoreboard)   { create(:scoreboard, name: 'Private scoreboard', public: false)}
-    let!(:other_school)       { create(:school, :with_school_group, scoreboard: private_scoreboard) }
+    let!(:private_scoreboard) { create(:scoreboard, name: 'Private scoreboard', public: false)}
+    let!(:other_school) { create(:school, :with_school_group, scoreboard: private_scoreboard) }
 
     it 'doesnt list the scoreboard' do
       visit schools_path
@@ -70,7 +69,6 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
         expect(page).to have_content('Private scoreboard')
         expect(page).to have_content(other_school.name)
       end
-
     end
   end
 

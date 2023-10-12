@@ -1,14 +1,12 @@
 require 'rails_helper'
 
 describe 'temperature recordings as school admin' do
-
   let(:school_name) { 'Active school'}
   let!(:school)     { create(:school, name: school_name) }
 
-  let!(:the_hall){ create(:location, school: school, name: 'The Hall') }
+  let!(:the_hall) { create(:location, school: school, name: 'The Hall') }
 
   context 'as a pupil' do
-
     let!(:user)       { create(:pupil, school: school)}
 
     context 'when the site settings are turned off' do
@@ -23,7 +21,6 @@ describe 'temperature recordings as school admin' do
     end
 
     context 'when temperature recoding is turned on' do
-
       before(:each) do
         SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s), electricity_price: 1, solar_export_price: 1, gas_price: 1)
         sign_in(user)
@@ -65,7 +62,6 @@ describe 'temperature recordings as school admin' do
           expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
           expect(page).to have_field('The Hall', with: 2000)
         end
-
       end
 
       context 'manage locations' do
@@ -98,7 +94,6 @@ describe 'temperature recordings as school admin' do
   end
 
   context 'deleting a temperature recording as admin' do
-
     let!(:user)       { create(:school_admin, school: school)}
     let!(:observation) do
       create(:observation, :temperature, school: school).tap do |obs|

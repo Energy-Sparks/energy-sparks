@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'bill_requests', type: :system do
-
   let!(:school)                { create(:school) }
   let!(:unreviewed_dcc_meter)  { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false, meter_review_id: nil) }
   let!(:reviewed_dcc_meter)    { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: true) }
@@ -13,19 +12,16 @@ RSpec.describe 'bill_requests', type: :system do
   end
 
   context 'with pending meter review' do
-
     it 'should provide navigation' do
       visit root_path
       click_on 'Admin'
       click_on 'Meter Reviews'
-      expect(page).to have_link("Request bill", href: new_admin_school_bill_request_path(school) )
+      expect(page).to have_link("Request bill", href: new_admin_school_bill_request_path(school))
     end
   end
 
   context 'requesting a bill' do
-
     context 'with no users' do
-
       before(:each) do
         visit new_admin_school_bill_request_path(school)
       end
@@ -89,8 +85,6 @@ RSpec.describe 'bill_requests', type: :system do
           expect(page).to have_content('Bill last requested from the school on')
         end
       end
-
     end
-
   end
 end

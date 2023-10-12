@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe 'Videos', type: :system do
-
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   describe 'managing videos' do
-
     before do
       sign_in(admin)
       visit root_path
@@ -16,7 +14,7 @@ describe 'Videos', type: :system do
     end
 
     it 'allows the user to create, edit and delete a video' do
-#      create(:video, youtube_id: "abcdef", title: 'My video')
+      #      create(:video, youtube_id: "abcdef", title: 'My video')
 
       title = 'My title'
       new_title = 'The edited title'
@@ -40,6 +38,5 @@ describe 'Videos', type: :system do
       expect(page).to have_content('Video was successfully deleted.')
       expect(Video.count).to eq(0)
     end
-
   end
 end

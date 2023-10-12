@@ -1,22 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe "gas recent changes advice page", type: :system do
-
   let(:key) { 'gas_recent_changes' }
   let(:expected_page_title) { "Gas recent changes analysis" }
   include_context "gas advice page"
 
   context 'as school admin' do
-
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
 
     before do
-#      allow_any_instance_of(Usage::RecentUsagePeriodCalculationService).to receive(:recent_usage) do
-#        OpenStruct.new(
-#          date_range: [Time.zone.today, Time.zone.today - 1.week],
-#          combined_usage_metric: CombinedUsageMetric.new(kwh: 12.0, £: 12.0, co2: 12.0)
-#        )
-#      end
+      #      allow_any_instance_of(Usage::RecentUsagePeriodCalculationService).to receive(:recent_usage) do
+      #        OpenStruct.new(
+      #          date_range: [Time.zone.today, Time.zone.today - 1.week],
+      #          combined_usage_metric: CombinedUsageMetric.new(kwh: 12.0, £: 12.0, co2: 12.0)
+      #        )
+      #      end
 
       sign_in(user)
       visit school_advice_gas_recent_changes_path(school)
@@ -37,7 +35,6 @@ RSpec.describe "gas recent changes advice page", type: :system do
     end
 
     context "clicking the 'Analysis' tab" do
-
       before do
         click_on 'Analysis'
       end

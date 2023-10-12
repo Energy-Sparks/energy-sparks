@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 describe Meters::MeterAttributeManager, type: :service do
-
   let(:admin)       { create(:admin) }
   let(:school)      { create(:school) }
-  let(:meter)       { create(:electricity_meter, school: school ) }
+  let(:meter)       { create(:electricity_meter, school: school) }
 
   let!(:service)    { Meters::MeterAttributeManager.new(school) }
 
@@ -48,7 +47,6 @@ describe Meters::MeterAttributeManager, type: :service do
       it 'broadcasts an event' do
         expect { service.update!(meter_attribute.id, input_data, reason, admin) }.to broadcast(:meter_attribute_updated)
       end
-
     end
     context 'with invalid attributes' do
       it 'doesnt create a new attribute' do
@@ -70,5 +68,4 @@ describe Meters::MeterAttributeManager, type: :service do
       expect { service.delete!(meter_attribute.id, admin) }.to broadcast(:meter_attribute_deleted, meter_attribute)
     end
   end
-
 end

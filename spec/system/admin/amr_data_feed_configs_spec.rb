@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe AmrDataFeedConfig, type: :system do
-
   let!(:admin)              { create(:admin) }
   let!(:config)             { create(:amr_data_feed_config) }
 

@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe SchoolTarget, type: :model do
 
   let(:school)          { create(:school) }
-  let(:start_date)      { Date.today.beginning_of_month}
-  let(:target_date)     { Date.today.beginning_of_month.next_year}
+  let(:start_date)      { Time.zone.today.beginning_of_month}
+  let(:target_date)     { Time.zone.today.beginning_of_month.next_year}
 
   context "when saving" do
     before(:each) do
@@ -27,7 +27,7 @@ RSpec.describe SchoolTarget, type: :model do
     end
 
     context "and dates are mismatched" do
-      let(:start_date) { Date.today.last_year }
+      let(:start_date) { Time.zone.today.last_year }
 
       it 'ensures end date is 12 months from start' do
         expect(SchoolTarget.first.start_date).to eq start_date
@@ -43,7 +43,7 @@ RSpec.describe SchoolTarget, type: :model do
 
     it 'updates the observation date' do
       expect(Observation.first.at.to_date).to eql SchoolTarget.first.start_date
-      SchoolTarget.first.update!(start_date: Date.today.beginning_of_month.prev_month)
+      SchoolTarget.first.update!(start_date: Time.zone.today.beginning_of_month.prev_month)
       expect(Observation.first.at.to_date).to eql SchoolTarget.first.start_date
     end
   end
@@ -77,7 +77,7 @@ RSpec.describe SchoolTarget, type: :model do
       target = SchoolTarget.new({school: school, electricity: 10, start_date: start_date, target_date: target_date})
       expect(target.current?).to be true
 
-      target = SchoolTarget.new({school: school, electricity: 10, start_date: start_date, target_date: Date.today.last_year})
+      target = SchoolTarget.new({school: school, electricity: 10, start_date: start_date, target_date: Time.zone.today.last_year})
       expect(target.current?).to be false
 
       target = SchoolTarget.new({school: school, electricity: 10, start_date: Date.tomorrow, target_date: target_date})
@@ -116,8 +116,8 @@ RSpec.describe SchoolTarget, type: :model do
   end
 
   context '#saved_progress_report_for' do
-    let(:january)                   { Date.new(Date.today.year, 1, 1) }
-    let(:february)                  { Date.new(Date.today.year, 2, 1) }
+    let(:january)                   { Date.new(Time.zone.today.year, 1, 1) }
+    let(:february)                  { Date.new(Time.zone.today.year, 2, 1) }
     let(:months)                    { [january, february] }
     let(:fuel_type)                 { :electricity }
 

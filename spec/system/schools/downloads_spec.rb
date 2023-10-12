@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 describe "downloads", type: :system do
-
   let(:school_name)               { 'Active school'}
   let!(:school)                   { create_active_school(name: school_name)}
   let!(:teacher)                  { create(:staff, school: school)}
-  let(:mpan)                      { 1234567890123 }
-  let!(:meter)                    { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan ) }
+  let(:mpan)                      { 1_234_567_890_123 }
+  let!(:meter)                    { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan) }
 
   context 'as teacher' do
     before(:each) do
@@ -24,8 +23,8 @@ describe "downloads", type: :system do
       click_on 'Download meter data for all meters combined'
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /school-amr-readings-#{school.name.parameterize}.csv$/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/school-amr-readings-#{school.name.parameterize}.csv$/)
 
       # Then check the content
       meter.amr_validated_readings.each do |amr|
@@ -40,8 +39,8 @@ describe "downloads", type: :system do
 
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /filename=\"meter-amr-readings-#{meter.mpan_mprn}.csv\"/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/filename=\"meter-amr-readings-#{meter.mpan_mprn}.csv\"/)
 
       # Then check the content
       meter.amr_validated_readings.each do |amr|
@@ -63,7 +62,6 @@ describe "downloads", type: :system do
   end
 
   context 'as admin' do
-
     let!(:admin)                  { create(:admin) }
     let!(:filtered_school)        { create(:school, :with_feed_areas, name: "Filter school") }
 
@@ -82,8 +80,8 @@ describe "downloads", type: :system do
 
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /#{filtered_school.name.parameterize}-amr-raw-readings.csv$/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/#{filtered_school.name.parameterize}-amr-raw-readings.csv$/)
 
       expect(page.source).to have_content AmrDataFeedReading::CSV_HEADER_DATA_FEED_READING
 

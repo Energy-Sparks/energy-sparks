@@ -40,7 +40,7 @@ describe School do
       meter2 = create(:electricity_meter, school: subject)
       meter3 = create(:electricity_meter, school: subject)
 
-      base_date = Date.today - 1.years
+      base_date = Time.zone.today - 1.years
       create(:amr_validated_reading, meter: meter, reading_date: base_date)
       create(:amr_validated_reading, meter: meter, reading_date: base_date + 2.days)
       create(:amr_validated_reading, meter: meter, reading_date: base_date + 4.days)
@@ -197,7 +197,7 @@ describe School do
     context 'where there is an alert run' do
 
       let(:alert_generation_run_1){ create(:alert_generation_run, school: school, created_at: 1.day.ago)}
-      let(:alert_generation_run_2){ create(:alert_generation_run, school: school, created_at: Date.today)}
+      let(:alert_generation_run_2){ create(:alert_generation_run, school: school, created_at: Time.zone.today)}
 
       let!(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type, school: school, alert_generation_run: alert_generation_run_1) }
       let!(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type, school: school, alert_generation_run: alert_generation_run_2) }
@@ -223,7 +223,7 @@ describe School do
     let(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:content_generation_run_1){ create(:content_generation_run, school: school, created_at: 1.day.ago)}
-    let(:content_generation_run_2){ create(:content_generation_run, school: school, created_at: Date.today)}
+    let(:content_generation_run_2){ create(:content_generation_run, school: school, created_at: Time.zone.today)}
 
     context 'where there is a content run' do
 

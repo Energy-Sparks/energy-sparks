@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe SchoolRemover, :schools, type: :service do
-
   let(:school)                   { create(:school, visible: false, number_of_pupils: 12) }
   let(:visible_school)           { create(:school, visible: true, number_of_pupils: 12) }
 
@@ -99,9 +98,9 @@ describe SchoolRemover, :schools, type: :service do
 
     it 'fails if school is visible' do
       school.update(visible: true)
-      expect {
+      expect do
         service.remove_school!
-      }.to raise_error(SchoolRemover::Error)
+      end.to raise_error(SchoolRemover::Error)
     end
 
     context 'when archive flag set true' do
@@ -119,7 +118,7 @@ describe SchoolRemover, :schools, type: :service do
   end
 
   describe '#remove_users!' do
-    let(:remove)    { service.remove_users! }
+    let(:remove) { service.remove_users! }
 
     it 'locks the user accounts' do
       remove
@@ -193,5 +192,4 @@ describe SchoolRemover, :schools, type: :service do
 
   # remove onboarding?
   # remove calendars?
-
 end

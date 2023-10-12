@@ -133,7 +133,6 @@ RSpec.describe "hot water advice page", type: :system do
       it 'shows not enough data page' do
         expect(page).to have_content('Not enough data to run analysis')
       end
-
     end
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }

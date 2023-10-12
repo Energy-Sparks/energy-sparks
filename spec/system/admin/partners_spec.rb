@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe 'Partners', type: :system do
-
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   describe 'Managing' do
-
     before do
       sign_in(admin)
     end
@@ -30,7 +28,7 @@ describe 'Partners', type: :system do
     end
 
     context "an existing partner" do
-      let!(:partner)       { create(:partner) }
+      let!(:partner) { create(:partner) }
 
       before(:each) do
         visit admin_partners_path
@@ -81,6 +79,5 @@ describe 'Partners', type: :system do
         expect(page).to have_content("Partnered School")
       end
     end
-
   end
 end

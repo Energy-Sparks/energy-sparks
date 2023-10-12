@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Programmes::Enroller do
-
   let(:school)          { create(:school) }
   let(:programme_type)  { create(:programme_type_with_activity_types) }
   let(:enrol_programme) { nil }
@@ -13,7 +12,6 @@ describe Programmes::Enroller do
   end
 
   describe "#enrol" do
-
     context "when there is no default programme type" do
       before(:each) do
         service.enrol(school)

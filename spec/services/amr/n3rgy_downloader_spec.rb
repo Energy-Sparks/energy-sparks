@@ -5,7 +5,7 @@ module Amr
     let(:n3rgy_api) { double("n3rgy_api") }
     let(:meter)     { create(:electricity_meter) }
     let(:config)    { create(:amr_data_feed_config)}
-    let(:today)     { Date.today }
+    let(:today)     { Time.zone.today }
     let(:yesterday) { today - 1 }
 
     it "should invoke the api" do

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Targets::TargetMailerService do
-
   include Rails.application.routes.url_helpers
 
   let!(:school)             { create(:school) }
@@ -12,7 +11,7 @@ RSpec.describe Targets::TargetMailerService do
   end
 
   describe '#list_schools' do
-      let!(:other_school)       { create(:school) }
+      let!(:other_school) { create(:school) }
 
       let(:enough_data) { true }
       let(:list_of_schools) { service.list_schools }
@@ -60,13 +59,13 @@ RSpec.describe Targets::TargetMailerService do
   end
 
   describe '#list_schools_requiring_reminder' do
-    let!(:other_school)       { create(:school) }
+    let!(:other_school) { create(:school) }
 
     let(:enough_data) { true }
     let(:list_of_schools) { service.list_schools_requiring_reminder }
 
     it 'should list only schools that have had an invite 30 days ago' do
-      create(:school_target_event, school: school, event: :first_target_sent, created_at: Date.today - 45)
+      create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45)
       expect(list_of_schools).to contain_exactly(school)
     end
 
@@ -76,19 +75,19 @@ RSpec.describe Targets::TargetMailerService do
     end
 
     it 'ignores non-visible schools' do
-      create(:school_target_event, school: school, event: :first_target_sent, created_at: Date.today - 45)
+      create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45)
       school.update!(visible: false)
       expect(list_of_schools).to be_empty
     end
 
     it 'should ignore schools with a target' do
-      create(:school_target_event, school: school, event: :first_target_sent, created_at: Date.today - 45)
+      create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45)
       create(:school_target, school: school)
       expect(list_of_schools).to be_empty
     end
 
     context 'when a school cant use feature because of data' do
-      let!(:event) { create(:school_target_event, school: school, event: :first_target_sent, created_at: Date.today - 45) }
+      let!(:event) { create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45) }
 
       context 'because they lack data' do
         let(:enough_data) { false }
@@ -109,7 +108,7 @@ RSpec.describe Targets::TargetMailerService do
   end
 
   describe '#list_schools_requiring_review' do
-      let!(:other_school)       { create(:school) }
+      let!(:other_school) { create(:school) }
       let(:enough_data) { true }
       let(:list_of_schools) { service.list_schools_requiring_review }
 
@@ -148,7 +147,6 @@ RSpec.describe Targets::TargetMailerService do
           expect(list_of_schools).to be_empty
         end
       end
-
   end
 
   describe '#invite_schools_to_set_first_target' do
@@ -191,7 +189,7 @@ RSpec.describe Targets::TargetMailerService do
     end
 
     context 'when preferred locales specified' do
-      let!(:school_admin)  { create(:school_admin, school: school, preferred_locale: :cy) }
+      let!(:school_admin) { create(:school_admin, school: school, preferred_locale: :cy) }
       it 'uses preferred locale' do
         service.invite_schools_to_set_first_target
         expect(ActionMailer::Base.deliveries.count).to eql 2
@@ -215,7 +213,6 @@ RSpec.describe Targets::TargetMailerService do
       }
       expect(matcher).to have_link("Set your first target", href: school_school_targets_url(school, params: params, host: "localhost"))
     end
-
   end
 
   describe '#invite_schools_to_review_target' do
@@ -266,14 +263,13 @@ RSpec.describe Targets::TargetMailerService do
       }
       expect(matcher).to have_link("Set a new target", href: school_school_targets_url(school, params: params, host: "localhost"))
     end
-
   end
 
   describe '#remind_schools_to_set_first_target' do
     let!(:school_admin)  { create(:school_admin, school: school) }
     let!(:staff)         { create(:staff, school: school) }
 
-    let!(:event) { create(:school_target_event, school: school, event: :first_target_sent, created_at: Date.today - 45) }
+    let!(:event) { create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45) }
 
     let(:enough_data) { true }
 
@@ -318,7 +314,5 @@ RSpec.describe Targets::TargetMailerService do
       }
       expect(matcher).to have_link("Set your first target", href: school_school_targets_url(school, params: params, host: "localhost"))
     end
-
   end
-
 end

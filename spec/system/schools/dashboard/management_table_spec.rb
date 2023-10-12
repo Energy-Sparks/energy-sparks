@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.shared_examples "summary table" do
-  let(:management_data) {
+  let(:management_data) do
     Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
-  }
+  end
 
   before(:each) do
     allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
@@ -32,7 +32,7 @@ RSpec.shared_examples "summary table" do
 end
 
 RSpec.describe "adult dashboard summary table", type: :system do
-  let(:school)             { create(:school) }
+  let(:school) { create(:school) }
 
   before(:each) do
     sign_in(user) if user.present?
@@ -46,21 +46,21 @@ RSpec.describe "adult dashboard summary table", type: :system do
   end
 
   context 'as pupil' do
-    let(:user)          { create(:pupil, school: school) }
+    let(:user) { create(:pupil, school: school) }
     include_examples "summary table" do
       let(:test_school) { school }
     end
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
+    let(:user) { create(:staff, school: school) }
     include_examples "summary table" do
       let(:test_school) { school }
     end
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
     include_examples "summary table" do
       let(:test_school) { school }
     end
@@ -76,11 +76,11 @@ RSpec.describe "adult dashboard summary table", type: :system do
   end
 
   context 'as admin' do
-    let(:user)        { create(:admin) }
+    let(:user) { create(:admin) }
 
-    let(:management_data) {
+    let(:management_data) do
       Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
-    }
+    end
 
     before(:each) do
       allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)

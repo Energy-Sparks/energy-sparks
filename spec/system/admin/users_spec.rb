@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Users', type: :system do
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   describe 'searching for users' do
     before do
@@ -54,7 +54,6 @@ describe 'Users', type: :system do
     end
 
     context 'when user exists with consent grant' do
-
       let!(:consent_grant)    { create(:consent_grant) }
       let!(:user)             { create(:user, consent_grants: [consent_grant]) }
 

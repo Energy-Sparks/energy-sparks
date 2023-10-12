@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'School Users', :schools, type: :system do
-
-  let(:confirmation_token)    { 'abc123' }
+  let(:confirmation_token) { 'abc123' }
 
   context "when confirming new user without school" do
     let!(:user) { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: nil, email: 'foo@bar.com', name: 'Foo Bar') }

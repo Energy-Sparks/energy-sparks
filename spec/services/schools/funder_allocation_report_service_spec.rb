@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Schools::FunderAllocationReportService, type: :service do
-
   let(:service) { Schools::FunderAllocationReportService.new }
 
   describe '.csv_filename' do
@@ -15,16 +14,20 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
   end
 
   describe '.csv' do
-    let!(:academic_year_start) { Date.today - 6.months }
-    let!(:academic_year_end) { Date.today + 6.months }
-    let!(:academic_year) { create(:academic_year,
-      start_date: academic_year_start, end_date: academic_year_end) }
+    let!(:academic_year_start) { Time.zone.today - 6.months }
+    let!(:academic_year_end) { Time.zone.today + 6.months }
+    let!(:academic_year) do
+      create(:academic_year,
+      start_date: academic_year_start, end_date: academic_year_end)
+    end
     let!(:calendar) { create(:calendar, academic_years: [academic_year]) }
 
-    let(:local_authority_area)  { create(:local_authority_area) }
+    let(:local_authority_area) { create(:local_authority_area) }
 
-    let(:school_onboarding) { create(:school_onboarding, :with_events,
-      event_names: [:onboarding_complete, :onboarding_data_enabled]) }
+    let(:school_onboarding) do
+      create(:school_onboarding, :with_events,
+      event_names: [:onboarding_complete, :onboarding_data_enabled])
+    end
 
     let(:data_source_1) { create(:data_source) }
     let(:procurement_route_1) { create(:procurement_route) }
@@ -38,9 +41,10 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let!(:funder) { Funder.create(name: 'Funder 1') }
     let!(:funder_2) { Funder.create(name: 'Funder 2') }
 
-    let(:school_group)  { create(:school_group, funder: funder) }
+    let(:school_group) { create(:school_group, funder: funder) }
 
-    let!(:school_1)  { create(:school,
+    let!(:school_1) do
+      create(:school,
       visible: true,
       school_onboarding: school_onboarding,
       school_group: school_group,
@@ -52,7 +56,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       funder: nil,
       removal_date: nil,
       )
-    }
+    end
 
     let!(:activities)  { create_list(:activity, 5, school: school_1) }
     let!(:actions)     { create_list(:observation, 3, :intervention, school: school_1) }
@@ -62,9 +66,9 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let!(:solar_meter) { create(:solar_pv_meter, active: true, data_source: data_source_3, procurement_route: procurement_route_3, school: school_1)}
 
     #only basic data, helps to catch errors checking for nils
-    let!(:school_2)  { create(:school, visible: true, active: false, removal_date: nil, school_group: create(:school_group), funder: funder_2) }
+    let!(:school_2) { create(:school, visible: true, active: false, removal_date: nil, school_group: create(:school_group), funder: funder_2) }
     #not included in export
-    let!(:not_visible)  { create(:school, visible: true, active: false, removal_date: Date.today, school_group: school_group) }
+    let!(:not_visible) { create(:school, visible: true, active: false, removal_date: Time.zone.today, school_group: school_group) }
 
     let(:csv)   { service.csv }
 

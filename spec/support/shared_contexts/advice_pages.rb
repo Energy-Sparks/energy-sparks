@@ -17,8 +17,8 @@ RSpec.shared_context "total energy advice page" do
   include_context "advice page base"
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 
-  let(:start_date)  { Date.today - 366}
-  let(:end_date)    { Date.today - 1}
+  let(:start_date)  { Time.zone.today - 366}
+  let(:end_date)    { Time.zone.today - 1}
   let(:amr_data)    { double('amr-data') }
 
   let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
@@ -42,8 +42,8 @@ RSpec.shared_context "electricity advice page" do
   include_context "advice page base"
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 
-  let(:start_date)  { Date.today - 366}
-  let(:end_date)    { Date.today - 1}
+  let(:start_date)  { Time.zone.today - 366}
+  let(:end_date)    { Time.zone.today - 1}
   let(:amr_data)    { double('amr-data') }
 
   let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
@@ -56,7 +56,7 @@ RSpec.shared_context "electricity advice page" do
     allow(amr_data).to receive(:kwh_date_range).and_return(nil)
     allow(electricity_aggregate_meter).to receive(:fuel_type).and_return(:electricity)
     allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
-    allow(electricity_aggregate_meter).to receive(:mpan_mprn).and_return(912345)
+    allow(electricity_aggregate_meter).to receive(:mpan_mprn).and_return(912_345)
     allow(meter_collection).to receive(:aggregate_meter).with(:electricity).and_return(electricity_aggregate_meter)
     allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
     allow(meter_collection).to receive(:amr_data).and_return(amr_data)
@@ -70,12 +70,12 @@ RSpec.shared_context "gas advice page" do
 
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 
-  let(:start_date)  { Date.today - 366}
-  let(:end_date)    { Date.today - 1}
+  let(:start_date)  { Time.zone.today - 366}
+  let(:end_date)    { Time.zone.today - 1}
   let(:amr_data)    { double('amr-data') }
 
-  let(:gas_aggregate_meter)   { double('gas-aggregated-meter')}
-  let(:meter_collection)              { double('meter-collection', heater_meters: []) }
+  let(:gas_aggregate_meter) { double('gas-aggregated-meter')}
+  let(:meter_collection) { double('meter-collection', heater_meters: []) }
 
   before do
     school.configuration.update!(fuel_configuration: fuel_configuration)
@@ -96,8 +96,8 @@ RSpec.shared_context "solar advice page" do
   include_context "advice page base"
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 
-  let(:start_date)  { Date.today - 366}
-  let(:end_date)    { Date.today - 1}
+  let(:start_date)  { Time.zone.today - 366}
+  let(:end_date)    { Time.zone.today - 1}
   let(:amr_data)    { double('amr-data') }
 
   let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
@@ -122,12 +122,12 @@ RSpec.shared_context "storage advice page" do
   # let(:fuel_type) { :solar_pv }
   # include_context "advice page base"
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
-  let(:start_date)  { Date.today - 366}
-  let(:end_date)    { Date.today - 1}
+  let(:start_date)  { Time.zone.today - 366}
+  let(:end_date)    { Time.zone.today - 1}
   let(:amr_data)    { double('amr-data') }
   let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
   let(:meter_collection)              { double('meter-collection', electricity_meters: []) }
-  let(:storage_heater_meter)   { double('storage-heater-meter')}
+  let(:storage_heater_meter) { double('storage-heater-meter')}
 
   before do
     school.configuration.update!(fuel_configuration: fuel_configuration)

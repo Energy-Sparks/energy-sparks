@@ -85,7 +85,7 @@ describe Tables::SummaryTableData do
   end
 
   describe 'when year period does not have data - new style' do
-    let(:available_date) { Date.today.next_year }
+    let(:available_date) { Time.zone.today.next_year }
     let(:template_data) do
       { electricity: { year: { available_from: available_date.iso8601 } } }
     end

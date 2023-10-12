@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'account confirmation' do
-
-  let(:school){ create :school }
+  let(:school) { create :school }
 
   it 'requires my account is confirmed before I can log in' do
     teacher = create :staff, confirmed_at: nil, email: 'unconfirmed@test.com', school: school
@@ -20,7 +19,5 @@ describe 'account confirmation' do
 
     teacher.reload
     expect(teacher.confirmed?).to eq(true)
-
   end
-
 end

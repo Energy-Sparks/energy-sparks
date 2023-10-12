@@ -6,9 +6,9 @@ RSpec.describe "storage heaters advice page", type: :system do
   include_context "storage advice page"
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
-    let(:school_period) { Holiday.new(:xmas, "Xmas 2021/2022", Date.new(2021,12,18), Date.new(2022,01,3), nil) }
-    let(:holiday_usage) {
+    let(:user) { create(:school_admin, school: school) }
+    let(:school_period) { Holiday.new(:xmas, "Xmas 2021/2022", Date.new(2021, 12, 18), Date.new(2022, 0o1, 3), nil) }
+    let(:holiday_usage) do
       OpenStruct.new(
         usage: CombinedUsageMetric.new(
           £: 12.0,
@@ -19,7 +19,7 @@ RSpec.describe "storage heaters advice page", type: :system do
         previous_holiday: nil,
         previous_holiday_usage: nil
       )
-    }
+    end
 
     before do
       combined_usage_metric = CombinedUsageMetric.new(
@@ -53,14 +53,14 @@ RSpec.describe "storage heaters advice page", type: :system do
       allow_any_instance_of(Heating::HeatingThermostaticAnalysisService).to receive(:create_model) {
         OpenStruct.new(
           r2: 0.37,
-          insulation_hotwater_heat_loss_estimate_kwh: 16240.67,
+          insulation_hotwater_heat_loss_estimate_kwh: 16_240.67,
           insulation_hotwater_heat_loss_estimate_£: 2436.1,
           average_heating_school_day_a: 798.72,
           average_heating_school_day_b: -29.57,
           average_outside_temperature_high: 12.0,
           average_outside_temperature_low: 4.0,
           predicted_kwh_for_high_average_outside_temperature: 443.88,
-          predicted_kwh_for_low_average_outside_temperature:680.44
+          predicted_kwh_for_low_average_outside_temperature: 680.44
         )
       }
 
@@ -92,7 +92,7 @@ RSpec.describe "storage heaters advice page", type: :system do
         expect(page).to have_css('#chart_wrapper_heating_on_off_by_week_storage_heater')
         expect(page).to have_css('#chart_wrapper_storage_heater_thermostatic')
         expect(page).to have_content("Storage heater use during holidays")
-        expect(page).to have_content(Date.new(2021,12,18).to_s(:es_short))
+        expect(page).to have_content(Date.new(2021, 12, 18).to_s(:es_short))
       end
     end
     context "clicking the 'Learn More' tab" do

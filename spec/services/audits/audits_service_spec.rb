@@ -16,7 +16,7 @@ describe Audits::AuditService do
     end
 
     context 'an old one' do
-      let(:created_at)      { Date.today.last_year }
+      let(:created_at)      { Time.zone.today.last_year }
 
       it 'is ignored' do
         expect(service.recent_audit).to be_nil

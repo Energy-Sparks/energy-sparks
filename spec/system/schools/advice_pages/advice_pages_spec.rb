@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "advice pages", type: :system do
-
   include_context "electricity advice page"
 
   let(:key) { 'total_energy_use' }
@@ -50,13 +49,13 @@ RSpec.describe "advice pages", type: :system do
   end
 
   context 'when school doesnt have enough data' do
-    let(:data_available_from)  { nil }
-    let(:analysable) {
+    let(:data_available_from) { nil }
+    let(:analysable) do
       OpenStruct.new(
         enough_data?: false,
         data_available_from: data_available_from
       )
-    }
+    end
     before do
       allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:create_analysable).and_return(analysable)
     end
@@ -69,7 +68,7 @@ RSpec.describe "advice pages", type: :system do
       expect(page).to_not have_content('Assuming we continue to regularly receive data')
     end
     context 'and we can estimate a date' do
-      let(:data_available_from) { Date.today + 10 }
+      let(:data_available_from) { Time.zone.today + 10 }
       it 'also includes the data' do
         visit school_advice_path(school)
         within '#page-nav' do
@@ -106,7 +105,6 @@ RSpec.describe "advice pages", type: :system do
   end
 
   context 'as admin' do
-
     let(:admin) { create(:admin) }
 
     before do

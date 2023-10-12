@@ -8,7 +8,7 @@ RSpec.shared_examples "dashboard timeline" do
     activity_type = create(:activity_type) # doesn't get saved if built with activity below
     create(:activity, school: test_school, activity_type: activity_type)
     #will automatically add observation
-    create(:school_target, school: test_school, start_date: Date.today)
+    create(:school_target, school: test_school, start_date: Time.zone.today)
     visit school_path(test_school, switch: true)
   end
 
@@ -35,28 +35,28 @@ RSpec.describe "adult dashboard timeline", type: :system do
   end
 
   context 'as guest' do
-    let(:user)                { nil }
+    let(:user) { nil }
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end
   end
 
   context 'as pupil' do
-    let(:user)          { create(:pupil, school: school) }
+    let(:user) { create(:pupil, school: school) }
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
+    let(:user) { create(:staff, school: school) }
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
     include_examples "dashboard timeline" do
       let(:test_school) { school }
     end

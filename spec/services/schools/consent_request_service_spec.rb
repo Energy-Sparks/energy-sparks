@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Schools::ConsentRequestService do
-
   let!(:preferred_locale) { :en }
   let!(:school)           { create(:school) }
   let!(:service)          { Schools::ConsentRequestService.new(school) }
@@ -28,8 +27,9 @@ RSpec.describe Schools::ConsentRequestService do
     let!(:school_admin) { create(:school_admin, school: school, preferred_locale: preferred_locale) }
 
     it 'should generate an email' do
-      expect { service.request_consent!([school_admin])
-      }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
+      expect do
+        service.request_consent!([school_admin])
+      end.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
     end
 
     context 'when formatting email' do
@@ -70,8 +70,9 @@ RSpec.describe Schools::ConsentRequestService do
       let!(:staff)            { create(:staff, school: school) }
 
       it 'should generate 2 emails' do
-        expect { service.request_consent!([school_admin, staff])
-        }.to change(ActionMailer::Base.deliveries, :count).from(0).to(2)
+        expect do
+          service.request_consent!([school_admin, staff])
+        end.to change(ActionMailer::Base.deliveries, :count).from(0).to(2)
       end
 
       context 'when locales are different' do

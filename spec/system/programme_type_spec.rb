@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "programme types", type: :system, include_application_helper: true do
-
   let!(:school) { create(:school)}
   let!(:school_admin) { create(:school_admin, school: school)}
   let!(:pupil) { create(:pupil, school: school)}
@@ -11,7 +10,6 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
   let!(:programme_type_3) { create(:programme_type)}
 
   context 'as a public user' do
-
     before(:each) do
       visit programme_types_path
     end
@@ -60,7 +58,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       end
 
       context 'when logging in to enrol' do
-        let!(:staff)  { create(:staff, school: school)}
+        let!(:staff) { create(:staff, school: school)}
 
         it 'should redirect back to programme after login' do
           click_on "Sign in now"
@@ -97,9 +95,9 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       end
 
       it 'successfully enrols the school' do
-        expect {
+        expect do
           click_link 'Start'
-        }.to change(Programme, :count).from(0).to(1)
+        end.to change(Programme, :count).from(0).to(1)
         expect(page).to have_content('You started this programme')
         expect(school.reload.programmes).not_to be_empty
       end
@@ -120,7 +118,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       it 'says I have started' do
         expect(page).to have_content("You started this programme")
         expect(page).to have_content("Current Progress")
-        expect(page).to have_content( nice_dates(school.programmes.first.started_on) )
+        expect(page).to have_content(nice_dates(school.programmes.first.started_on))
       end
 
       it 'indicates I have not completed some activities' do
@@ -129,13 +127,13 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
 
       it 'indicates I have completed an activity' do
         expect(page).to have_css("i.fa-check-circle.text-success")
-        expect(page).to have_content( nice_dates(activity.happened_on) )
+        expect(page).to have_content(nice_dates(activity.happened_on))
       end
 
       it 'doesnt link to activities that are completed' do
         expect(page).to have_content(activity_type.name)
         expect(page).to_not have_link(href: activity_type_path(activity_type))
-        expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last) )
+        expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last))
       end
 
       it 'indicates I am enrolled on list of programmes' do
@@ -177,9 +175,9 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       end
 
       it 'successfully enrols the school' do
-        expect {
+        expect do
           click_link 'Start'
-        }.to change(Programme, :count).from(0).to(1)
+        end.to change(Programme, :count).from(0).to(1)
         expect(page).to have_content('You started this programme')
         expect(school.reload.programmes).not_to be_empty
       end
@@ -200,7 +198,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       it 'says I have started' do
         expect(page).to have_content("You started this programme")
         expect(page).to have_content("Current Progress")
-        expect(page).to have_content( nice_dates(school.programmes.first.started_on) )
+        expect(page).to have_content(nice_dates(school.programmes.first.started_on))
       end
 
       it 'indicates I have not completed some activities' do
@@ -209,13 +207,13 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
 
       it 'indicates I have completed an activity' do
         expect(page).to have_css("i.fa-check-circle.text-success")
-        expect(page).to have_content( nice_dates(activity.happened_on) )
+        expect(page).to have_content(nice_dates(activity.happened_on))
       end
 
       it 'doesnt link to activities that are completed' do
         expect(page).to have_content(activity_type.name)
         expect(page).to_not have_link(href: activity_type_path(activity_type))
-        expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last) )
+        expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last))
       end
 
       it 'indicates I am enrolled on list of programmes' do

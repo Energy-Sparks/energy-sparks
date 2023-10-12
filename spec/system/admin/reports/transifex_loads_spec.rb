@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-describe 'TransifexLoads', type: :system,include_application_helper: true do
-
+describe 'TransifexLoads', type: :system, include_application_helper: true do
   let(:admin)                   { create(:admin) }
   let!(:transifex_load)         { create(:transifex_load, pulled: 6, pushed: 7) }
   let!(:transifex_load_error)   { create(:transifex_load_error) }
@@ -54,5 +53,4 @@ describe 'TransifexLoads', type: :system,include_application_helper: true do
       expect(page).to have_content("0 errors occured")
     end
   end
-
 end

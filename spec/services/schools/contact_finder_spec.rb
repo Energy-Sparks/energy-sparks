@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Schools::ContactFinder do
-
   let!(:school)           { create(:school) }
   let!(:user)             { create(:user, school: school, email: 'blah@example.com')}
 
