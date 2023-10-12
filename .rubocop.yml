@@ -4,8 +4,7 @@ AllCops:
   Include:
     - 'app/**/*.rb'
     - 'lib/**/*.rb'
-# Disable specs for now
-#   - 'spec/**/*.rb'
+#    - 'spec/**/*.rb'
   Exclude:
     - 'app/services/schools/funding_status_lookup.rb'
     - 'lib/data_feeds/weather_underground_loader.rb'
@@ -25,7 +24,8 @@ require:
 # - rubocop-factory_bot
 # - rubocop-rspec
 
-# Rails cops
+#Security/YAMLLoad:
+#   - 'spec/system/admin/meter_attributes_spec.rb'
 Naming/AsciiIdentifiers:
   Exclude:
     - 'app/controllers/schools/advice/baseload_controller.rb'

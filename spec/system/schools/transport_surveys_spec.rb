@@ -1,7 +1,6 @@
 require 'rails_helper'
-include ApplicationHelper
 
-describe 'TransportSurveys', type: :system do
+describe 'TransportSurveys', type: :system, include_application_helper: true do
 
   let!(:school)            { create(:school, :with_school_group) }
   let!(:transport_type)    { create(:transport_type, category: :car, can_share: true) }
