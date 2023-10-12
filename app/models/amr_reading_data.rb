@@ -10,6 +10,7 @@ class AmrReadingData
   WARNING_MISSING_MPAN_MPRN = 'Mpan or MPRN field is missing'.freeze
   WARNING_MISSING_READINGS = 'Missing readings (should be 48)'.freeze
   WARNING_DUPLICATE_READING = 'Another reading exists for the same Mpan or MPRN for the same date'.freeze
+  WARNING_INVALID_NON_NUMERIC_MPAN_MPRN = 'MPAN or MPRN field must be numeric'.freeze
 
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
   ERROR_NO_VALID_READINGS = 'No valid readings in file'.freeze
@@ -21,7 +22,8 @@ class AmrReadingData
     missing_reading_date: WARNING_READING_DATE_MISSING,
     invalid_reading_date: WARNING_BAD_DATE_FORMAT,
     future_reading_date: WARNING_READING_FUTURE_DATE,
-    duplicate_reading: WARNING_DUPLICATE_READING
+    duplicate_reading: WARNING_DUPLICATE_READING,
+    invalid_non_numeric_mpan_mprn: WARNING_INVALID_NON_NUMERIC_MPAN_MPRN
   }.freeze
 
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
