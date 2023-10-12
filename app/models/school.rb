@@ -135,8 +135,6 @@ class School < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
 
-  has_many :simulations, inverse_of: :school
-
   has_many :estimated_annual_consumptions
 
   has_many :amr_data_feed_readings,       through: :meters
