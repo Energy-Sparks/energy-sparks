@@ -9,7 +9,7 @@ FactoryBot.define do
     process_data    { true }
     data_enabled    { true }
     address         { '1 Station Road' }
-    postcode        { 'ab1 2cd' }
+    postcode        { 'AB1 2CD' }
     country         { :england }
     floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }

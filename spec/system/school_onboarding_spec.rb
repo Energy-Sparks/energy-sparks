@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe "onboarding", :schools, type: :system do
-
   let(:admin)                     { create(:admin) }
   let(:school_name)               { 'Oldfield Park Infants'}
 
   # This calendar is there to allow for the calendar area selection
-  let(:template_calendar)   { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
-  let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
-  let!(:consent_statement)  { ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true) }
+  let(:template_calendar) { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
+  let(:solar_pv_area) { create(:solar_pv_tuos_area, title: 'BANES solar') }
+  let!(:consent_statement) { ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true) }
 
   context 'as a user' do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
@@ -45,6 +44,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         click_on 'Start'
 
         #Account
+        expect(page).to have_content('Step 1: Create your school administrator account')
         fill_in 'Your name', with: 'A Teacher'
         select 'Headteacher', from: 'Role'
         fill_in 'Password', with: 'testtest1', match: :prefer_exact
@@ -53,9 +53,10 @@ RSpec.describe "onboarding", :schools, type: :system do
         click_on 'Create my account'
 
         #School details
+        expect(page).to have_content('Step 2: Tell us about your school')
         fill_in 'Unique Reference Number', with: '4444244'
         fill_in 'Address', with: '1 Station Road'
-        fill_in 'Postcode', with: 'A1 2BC'
+        fill_in 'Postcode', with: 'AB1 2CD'
         fill_in 'Website', with: 'http://oldfield.sch.uk'
         choose('Primary')
         click_on 'Save school details'
@@ -65,6 +66,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         expect(onboarding.school.data_enabled).to be_falsey
 
         #Consent
+        expect(page).to have_content('Step 3: Grant consent')
         fill_in 'Name', with: 'Boss user'
         fill_in 'Job title', with: 'Boss'
         fill_in 'School name', with: 'Boss school'
@@ -81,6 +83,40 @@ RSpec.describe "onboarding", :schools, type: :system do
         #Completion
         click_on "Complete setup", match: :first
         expect(page).to have_content("Your school is now active!")
+      end
+
+      it 'shows an error message for an invalid postcode' do
+        # Note: stubbed valid postcodes (e.g. AB1 2CD) are defined in config/initializers/geocoder.rb
+
+        #Welcome
+        click_on 'Start'
+
+        #Account
+        expect(page).to have_content('Step 1: Create your school administrator account')
+        fill_in 'Your name', with: 'A Teacher'
+        select 'Headteacher', from: 'Role'
+        fill_in 'Password', with: 'testtest1', match: :prefer_exact
+        fill_in 'Password confirmation', with: 'testtest1'
+        check :privacy
+        click_on 'Create my account'
+
+        #School details
+        expect(page).to have_content('Step 2: Tell us about your school')
+        fill_in 'Unique Reference Number', with: '4444244'
+        fill_in 'Address', with: '1 Station Road'
+        fill_in 'Postcode', with: 'AB 2CD'
+        fill_in 'Website', with: 'http://oldfield.sch.uk'
+        choose('Primary')
+        click_on 'Save school details'
+        expect(page).to have_content('Step 2: Tell us about your school')
+        expect(page).to have_content('is invalid and not found')
+        fill_in 'Postcode', with: 'AB2 2CD'
+        click_on 'Save school details'
+        expect(page).to have_content('Step 2: Tell us about your school')
+        expect(page).to have_content('not found')
+        fill_in 'Postcode', with: 'AB1 2CD'
+        click_on 'Save school details'
+        expect(page).to have_content('Step 3: Grant consent')
       end
 
       it 'starts at the welcome page' do
@@ -107,8 +143,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       end
 
       context 'and user already has an account' do
-        let(:existing_user)    { nil }
-        let(:school_group)    { create(:school_group) }
+        let(:existing_user) { nil }
+        let(:school_group) { create(:school_group) }
 
         before(:each) do
           onboarding.update!(school_group: school_group)
@@ -135,7 +171,7 @@ RSpec.describe "onboarding", :schools, type: :system do
             #School details
             fill_in 'Unique Reference Number', with: '4444244'
             fill_in 'Address', with: '1 Station Road'
-            fill_in 'Postcode', with: 'A1 2BC'
+            fill_in 'Postcode', with: 'AB1 2CD'
             fill_in 'Website', with: 'http://oldfield.sch.uk'
             choose('Primary')
             click_on 'Save school details'
@@ -161,7 +197,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         end
 
         context 'as a group admin' do
-          let(:existing_user)   { create(:group_admin, school_group: school_group) }
+          let(:existing_user) { create(:group_admin, school_group: school_group) }
 
           it 'allows them to sign in' do
             expect(page).to have_content("Step 1: Confirm your administrator account")
@@ -173,7 +209,7 @@ RSpec.describe "onboarding", :schools, type: :system do
             #School details
             fill_in 'Unique Reference Number', with: '4444244'
             fill_in 'Address', with: '1 Station Road'
-            fill_in 'Postcode', with: 'A1 2BC'
+            fill_in 'Postcode', with: 'AB1 2CD'
             fill_in 'Website', with: 'http://oldfield.sch.uk'
             choose('Primary')
             click_on 'Save school details'
@@ -248,7 +284,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           fill_in 'Floor area in square metres', with: 400
           fill_in 'Percentage of pupils eligible for free school meals at any time during the past 6 years', with: 16
           fill_in 'Address', with: '1 Station Road'
-          fill_in 'Postcode', with: 'A1 2BC'
+          fill_in 'Postcode', with: 'AB1 2CD'
           fill_in 'Website', with: 'http://oldfield.sch.uk'
 
           check 'Our school has solar PV panels'
@@ -315,7 +351,6 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(consent_grant.school).to eq(onboarding.school)
           expect(consent_grant.ip_address).not_to be_nil
         end
-
       end
 
       context 'having given consent' do
@@ -389,7 +424,6 @@ RSpec.describe "onboarding", :schools, type: :system do
         end
 
         context 'when data enabled' do
-
           let(:wisper_subscriber) { Onboarding::OnboardingDataEnabledListener.new }
 
           before :each do
@@ -472,7 +506,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
       it 'inset days can be added' do
         create :calendar_event_type, title: 'In school Inset Day', description: 'Training day in school', inset_day: true
-        academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31), calendar: template_calendar
+        create :academic_year, start_date: Date.new(2018, 9, 1), end_date: Date.new(2019, 8, 31), calendar: template_calendar
         visit new_onboarding_completion_path(onboarding)
 
         # Inset days
