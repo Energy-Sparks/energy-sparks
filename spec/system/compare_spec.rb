@@ -73,11 +73,11 @@ describe 'compare pages', :compare, type: :system do
 
     it 'has school_type checkbox fields', if: school_types_excluding do
       within id.to_s do
-        all_school_types.excluding(school_types_excluding).each do |school_type|
-          expect(page).to have_checked_field(I18n.t("common.school_types.#{school_type}"))
+        all_school_types.excluding(school_types_excluding).each do |type|
+          expect(page).to have_checked_field(I18n.t("common.school_types.#{type}"))
         end
-        school_types_excluding.each do |school_type|
-          expect(page).to have_unchecked_field(I18n.t("common.school_types.#{school_type}"))
+        school_types_excluding.each do |type|
+          expect(page).to have_unchecked_field(I18n.t("common.school_types.#{type}"))
         end
       end
     end
