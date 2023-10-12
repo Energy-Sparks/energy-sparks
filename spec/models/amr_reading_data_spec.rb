@@ -95,6 +95,22 @@ describe AmrReadingData do
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
         expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+
+        amr_reading_data[:reading_data].first[:mpan_mprn] = '1234.50000000'
+        amr_reading = AmrReadingData.new(**amr_reading_data)
+        expect(amr_reading.valid?).to be true
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 1
+        expect(amr_reading.warnings.count).to be 1
+        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+
+        amr_reading_data[:reading_data].first[:mpan_mprn] = 1234.50000000
+        amr_reading = AmrReadingData.new(**amr_reading_data)
+        expect(amr_reading.valid?).to be true
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 1
+        expect(amr_reading.warnings.count).to be 1
+        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
       end
 
       it 'with missing reading date' do

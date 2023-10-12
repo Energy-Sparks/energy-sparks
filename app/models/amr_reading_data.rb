@@ -63,9 +63,9 @@ class AmrReadingData
 
   def invalid_non_numeric_mpan_mprn?(mpan_mprn)
     return false unless mpan_mprn.present? # This is covered by a :missing_mpan_mprn warning
-    return false if mpan_mprn.is_a?(Numeric)
+    return false if mpan_mprn.is_a?(Integer)
 
-    /^(\d)+$/.match?(mpan_mprn) ? false : true
+    /^(\d)+$/.match?(mpan_mprn.to_s) ? false : true
   end
 
   def any_valid_readings?
