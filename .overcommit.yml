@@ -396,7 +396,7 @@ PreCommit:
     enabled: true
     description: 'Analyze with RuboCop'
     required_executable: 'rubocop'
-    flags: ['--format=simple', '--force-exclusion', '--display-cop-names', 'app', 'lib']
+    flags: ['--format=simple', '--force-exclusion', '--display-cop-names', 'app', 'lib', 'spec']
     install_command: 'gem install rubocop'
 
   RubyLint:
