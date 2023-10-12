@@ -17,14 +17,6 @@ Lint/ConstantDefinitionInBlock:
     - 'spec/services/alerts/adapters/analytics_adapter_spec.rb'
     - 'spec/system/schools/transport_surveys_spec.rb'
 
-# Offense count: 4
-# Configuration parameters: AsciiConstants.
-Naming/AsciiIdentifiers:
-  Exclude:
-    - 'spec/models/meter_attribute_spec.rb'
-    - 'spec/services/schools/advice/baseload_service_spec.rb'
-    - 'spec/system/schools/advice_pages/hot_water_spec.rb'
-
 # Offense count: 2
 # Configuration parameters: MinSize.
 Performance/CollectionLiteralInLoop:

@@ -362,9 +362,16 @@ Style/NumericLiterals:
 Performance/TimesMap:
   Enabled: false
 
+### Things we're unlikely to fix: ###
+
 Security/JSONLoad:
   Exclude:
     - 'spec/services/events/list_events_spec.rb'
 Security/YAMLLoad:
   Exclude:
     - 'spec/system/admin/meter_attributes_spec.rb'
+Naming/AsciiIdentifiers:
+  Exclude:
+    - 'spec/models/meter_attribute_spec.rb'
+    - 'spec/services/schools/advice/baseload_service_spec.rb'
+    - 'spec/system/schools/advice_pages/hot_water_spec.rb'
