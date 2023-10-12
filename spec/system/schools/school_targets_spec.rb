@@ -506,7 +506,7 @@ RSpec.describe 'school targets', type: :system do
   context 'as a school admin' do
     let!(:user) { create(:school_admin, school: school) }
 
-    it_behaves_like "managing targets" do
+    include_examples "managing targets" do
       let(:test_school) { school }
     end
 
@@ -533,7 +533,7 @@ RSpec.describe 'school targets', type: :system do
   context 'as staff' do
     let!(:user) { create(:staff, school: school) }
 
-    it_behaves_like "managing targets" do
+    include_examples "managing targets" do
       let(:test_school) { school }
     end
 
@@ -563,7 +563,7 @@ RSpec.describe 'school targets', type: :system do
   context 'as an admin' do
     let(:user) { create(:admin) }
 
-    it_behaves_like "managing targets" do
+    include_examples "managing targets" do
       let(:test_school) { school }
     end
 
