@@ -349,6 +349,8 @@ en:
       new:
         create: Create account
         title: New pupil account
+    recommendations:
+      title: Recommended Pupil Activities & Adult Actions
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
