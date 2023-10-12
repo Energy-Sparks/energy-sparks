@@ -62,7 +62,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
       visit school_group_clusters_url(school_group)
     end
 
-    include_examples "redirects to login page"
+    it_behaves_like "redirects to login page"
   end
 
   context "when logged in" do
@@ -77,7 +77,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
         visit school_group_clusters_url(school_group)
       end
 
-      include_examples "redirects to school group page"
+      it_behaves_like "redirects to school group page"
     end
 
     context "as a group admin of a different group" do
@@ -87,7 +87,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
         visit school_group_clusters_url(school_group)
       end
 
-      include_examples "redirects to school group page"
+      it_behaves_like "redirects to school group page"
     end
 
     [:admin, :group_admin].each do |user_type|
