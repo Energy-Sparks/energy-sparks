@@ -55,6 +55,7 @@ class AmrDataFeedConfig < ApplicationRecord
     {
       mpan_mprn_index:    header_array.find_index(mpan_mprn_field),
       reading_date_index: header_array.find_index(reading_date_field),
+      reading_time_index: header_array.find_index(reading_time_field),
       postcode_index: header_array.find_index(postcode_field),
       units_index: header_array.find_index(units_field),
       description_index: header_array.find_index(meter_description_field),

@@ -7,9 +7,10 @@ namespace :after_party do
     config['description'] = "MyCorona Portal"
     config['identifier'] = 'mycorona-portal'
     config['number_of_header_rows'] = 1
-    config['date_format'] = "%d/%m/%Y" # e.g. 01/06/2023
+    config['date_format'] = "%d/%m/%Y %H:%M" # e.g. 01/06/2023
     config['mpan_mprn_field'] = 'Site Name'
     config['reading_date_field'] = 'Read date'
+    config['reading_time_field'] = 'Time'
     config['reading_fields'] = ['Actual (KWH)']
     config['header_example'] = "Read date,Time,Site Name,Actual (KWH)"
     config['row_per_reading'] = true
