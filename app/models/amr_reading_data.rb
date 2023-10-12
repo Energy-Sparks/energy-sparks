@@ -61,10 +61,11 @@ class AmrReadingData
 
   private
 
-  def invalid_mpan_mprn?(mpan_mprn)
-    return unless mpan_mprn.present?
+  def invalid_non_numeric_mpan_mprn?(mpan_mprn)
+    return false unless mpan_mprn.present? # This is covered by a :missing_mpan_mprn warning
+    return false if mpan_mprn.is_a?(Numeric)
 
-    /^(\d)+$/.match?(mpan_mprn)
+    /^(\d)+$/.match?(mpan_mprn) ? false : true
   end
 
   def any_valid_readings?
@@ -82,7 +83,7 @@ class AmrReadingData
 
       warnings << :missing_readings if missing_readings?(readings)
       warnings << :missing_mpan_mprn if reading[:mpan_mprn].blank?
-      warnings << :invalid_mpan_mprn if invalid_mpan_mprn?(reading[:mpan_mprn])
+      warnings << :invalid_non_numeric_mpan_mprn if invalid_non_numeric_mpan_mprn?(reading[:mpan_mprn])
       warnings << :missing_reading_date if reading_date.blank?
       warnings << :duplicate_reading if duplicate_reading?(reading, @reading_data[index + 1..-1])
 
