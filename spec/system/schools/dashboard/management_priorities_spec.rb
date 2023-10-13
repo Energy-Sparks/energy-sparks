@@ -57,7 +57,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
   context 'as guest' do
     let(:user) { nil }
 
-    include_examples "dashboard priorities" do
+    it_behaves_like "dashboard priorities" do
       let(:test_school) { school }
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
   context 'as pupil' do
     let(:user) { create(:pupil, school: school) }
 
-    include_examples "dashboard priorities" do
+    it_behaves_like "dashboard priorities" do
       let(:test_school) { school }
     end
   end
@@ -73,7 +73,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 
-    include_examples "dashboard priorities" do
+    it_behaves_like "dashboard priorities" do
       let(:test_school) { school }
     end
   end
@@ -81,7 +81,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
-    include_examples "dashboard priorities" do
+    it_behaves_like "dashboard priorities" do
       let(:test_school) { school }
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
 
-    include_examples "dashboard priorities" do
+    it_behaves_like "dashboard priorities" do
       let(:test_school) { school }
     end
   end

@@ -137,10 +137,10 @@ RSpec.describe "adult dashboard target prompts", type: :system do
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 
-    include_examples "target prompts" do
+    it_behaves_like "target prompts" do
       let(:test_school) { school }
     end
-    include_examples "progress reports" do
+    it_behaves_like "progress reports" do
       let(:test_school) { school }
     end
   end
@@ -148,10 +148,10 @@ RSpec.describe "adult dashboard target prompts", type: :system do
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
-    include_examples "target prompts" do
+    it_behaves_like "target prompts" do
       let(:test_school) { school }
     end
-    include_examples "progress reports" do
+    it_behaves_like "progress reports" do
       let(:test_school) { school }
     end
   end
@@ -172,7 +172,7 @@ RSpec.describe "adult dashboard target prompts", type: :system do
       end
     end
 
-    include_examples "progress reports" do
+    it_behaves_like "progress reports" do
       let(:test_school) { school }
     end
   end
@@ -182,10 +182,10 @@ RSpec.describe "adult dashboard target prompts", type: :system do
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
 
-    include_examples "target prompts" do
+    it_behaves_like "target prompts" do
       let(:test_school) { school }
     end
-    include_examples "progress reports" do
+    it_behaves_like "progress reports" do
       let(:test_school) { school }
     end
   end

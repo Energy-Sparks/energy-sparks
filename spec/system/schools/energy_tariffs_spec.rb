@@ -13,13 +13,13 @@ describe 'school energy tariffs', type: :system do
     context 'as an admin user' do
       let!(:current_user) { create(:admin) }
 
-      include_examples "a school tariff editor"
+      it_behaves_like "a school tariff editor"
     end
 
     context 'as a school admin user' do
       let!(:current_user) { create(:school_admin, school: school) }
 
-      include_examples "a school tariff editor"
+      it_behaves_like "a school tariff editor"
     end
 
     context 'as a group_admin user' do
@@ -39,7 +39,7 @@ describe 'school energy tariffs', type: :system do
 
       before { sign_in(current_user) }
 
-      include_examples "the user does not have access to the tariff editor"
+      it_behaves_like "the user does not have access to the tariff editor"
     end
 
     context 'as a pupil user' do
@@ -48,7 +48,7 @@ describe 'school energy tariffs', type: :system do
 
       let(:path) { school_energy_tariffs_path(school) }
 
-      include_examples "the user does not have access to the tariff editor"
+      it_behaves_like "the user does not have access to the tariff editor"
     end
 
     context 'as a school_onboarding user' do
@@ -57,7 +57,7 @@ describe 'school energy tariffs', type: :system do
 
       before { sign_in(current_user) }
 
-      include_examples "the user does not have access to the tariff editor"
+      it_behaves_like "the user does not have access to the tariff editor"
     end
 
     context 'as a staff user' do
@@ -66,7 +66,7 @@ describe 'school energy tariffs', type: :system do
 
       before { sign_in(current_user) }
 
-      include_examples "the user does not have access to the tariff editor"
+      it_behaves_like "the user does not have access to the tariff editor"
     end
 
     context 'as a volunteer user' do
@@ -75,7 +75,7 @@ describe 'school energy tariffs', type: :system do
 
       before { sign_in(current_user) }
 
-      include_examples "the user does not have access to the tariff editor"
+      it_behaves_like "the user does not have access to the tariff editor"
     end
 
     context 'as a non school user' do
@@ -85,7 +85,7 @@ describe 'school energy tariffs', type: :system do
 
       before { sign_in(current_user) }
 
-      include_examples "the user does not have access to the tariff editor"
+      it_behaves_like "the user does not have access to the tariff editor"
     end
 
     context 'as a non school admin user' do
@@ -95,14 +95,14 @@ describe 'school energy tariffs', type: :system do
 
       before { sign_in(current_user) }
 
-      include_examples "the user does not have access to the tariff editor"
+      it_behaves_like "the user does not have access to the tariff editor"
     end
 
     context 'with no signed in user' do
       let!(:current_user) { nil }
       let(:path)          { school_energy_tariffs_path(school) }
 
-      include_examples "the user does not have access to the tariff editor"
+      it_behaves_like "the user does not have access to the tariff editor"
     end
   end
 end

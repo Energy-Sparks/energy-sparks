@@ -3,7 +3,7 @@ RSpec.shared_examples "a basic gas tariff editor" do
   context 'when adding a new tariff' do
     before { click_link('Add gas tariff') }
 
-    include_examples 'the user can create a tariff'
+    it_behaves_like 'the user can create a tariff'
   end
 
   context 'with an existing tariff' do
@@ -15,7 +15,7 @@ RSpec.shared_examples "a basic gas tariff editor" do
       click_on energy_tariff.name
     end
 
-    include_examples "the user can edit the tariff"
+    it_behaves_like "the user can edit the tariff"
 
     it 'does not offer option to edit the type of tariff' do
       expect(page).not_to have_css('#choose-type')
@@ -28,7 +28,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
   context 'when adding a new tariff' do
     before { click_link('Add electricity tariff') }
 
-    include_examples 'the user can create a tariff'
+    it_behaves_like 'the user can create a tariff'
   end
 
   context 'with an existing tariff' do
@@ -40,8 +40,8 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       click_on energy_tariff.name
     end
 
-    include_examples "the user can edit the tariff"
-    include_examples 'the user can change the type of tariff'
+    it_behaves_like "the user can edit the tariff"
+    it_behaves_like 'the user can change the type of tariff'
 
     it 'allows adding all the charges' do
       find('#charges-section-edit').click
@@ -264,11 +264,11 @@ RSpec.shared_examples "a school tariff editor" do
 
   context 'when creating tariffs' do
     context 'for electricity meters' do
-      include_examples 'a basic electricity tariff editor'
+      it_behaves_like 'a basic electricity tariff editor'
     end
 
     context 'for gas meters' do
-      include_examples 'a basic gas tariff editor'
+      it_behaves_like 'a basic gas tariff editor'
     end
   end
 
@@ -283,9 +283,9 @@ RSpec.shared_examples "a school tariff editor" do
       click_on(energy_tariff.name)
     end
 
-    include_examples "the user can select the meters"
-    include_examples "the user can select the meter system"
-    include_examples "the user can not see the meterless applies to editor"
+    it_behaves_like "the user can select the meters"
+    it_behaves_like "the user can select the meter system"
+    it_behaves_like "the user can not see the meterless applies to editor"
   end
 
   context 'when editing a school gas tariff' do
@@ -299,9 +299,9 @@ RSpec.shared_examples "a school tariff editor" do
       click_on(energy_tariff.name)
     end
 
-    include_examples "the user can select the meters"
-    include_examples "the user can not select the meter system"
-    include_examples "the user can not see the meterless applies to editor"
+    it_behaves_like "the user can select the meters"
+    it_behaves_like "the user can not select the meter system"
+    it_behaves_like "the user can not see the meterless applies to editor"
   end
 end
 
