@@ -15,4 +15,7 @@ describe 'Recommendations Page', type: :system  do
   end
 
   it_behaves_like "a page with breadcrumbs", ['Schools', 'School Name','Recommended Pupil Activities & Adult Actions']
+  it "has the intro" do
+    expect(page).to have_content("Find your next energy saving activity to score points for your school, reduce your energy usage and learn more about energy and climate change")
+  end
 end
