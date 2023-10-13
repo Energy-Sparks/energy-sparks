@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "advice pages", type: :system do
-
   let(:key) { 'total_energy_use' }
   let!(:advice_page) { create(:advice_page, key: key) }
 
-  let(:school)             { create(:school) }
+  let(:school) { create(:school) }
 
   context 'default index' do
     before(:each) do
@@ -41,11 +40,11 @@ RSpec.describe "advice pages", type: :system do
         management_priorities_title: 'Spending too much money on heating',
       )
     end
-    let(:alert_summary){ 'Summary of the alert' }
+    let(:alert_summary) { 'Summary of the alert' }
     let!(:alert) do
       create(:alert, :with_run,
         alert_type: gas_fuel_alert_type,
-        run_on: Date.today, school: school,
+        run_on: Time.zone.today, school: school,
         rating: 9.0,
         template_data: {
           average_one_year_saving_gbp: '£5,000',
@@ -60,7 +59,7 @@ RSpec.describe "advice pages", type: :system do
     before do
       Alerts::GenerateContent.new(school).perform
       visit school_advice_path(school)
-      click_on ('Priority actions')
+      click_on('Priority actions')
     end
 
     it "has an active priorities tab" do
@@ -73,7 +72,6 @@ RSpec.describe "advice pages", type: :system do
       expect(page).to have_content('9,400')
       expect(page).to have_content('6,500')
     end
-
   end
 
   context 'with dashboard alerts' do
@@ -95,11 +93,11 @@ RSpec.describe "advice pages", type: :system do
         management_dashboard_title_cy: 'Gallwch arbed {{average_one_year_saving_gbp}} mewn {{average_payback_years}}',
       )
     end
-    let(:alert_summary){ 'Summary of the alert' }
+    let(:alert_summary) { 'Summary of the alert' }
     let!(:alert) do
       create(:alert, :with_run,
         alert_type: gas_fuel_alert_type,
-        run_on: Date.today, school: school,
+        run_on: Time.zone.today, school: school,
         rating: 9.0,
         template_data: {
           average_one_year_saving_gbp: '£5,000',
@@ -115,7 +113,7 @@ RSpec.describe "advice pages", type: :system do
     before do
       Alerts::GenerateContent.new(school).perform
       visit school_advice_path(school)
-      click_on ('Recent alerts')
+      click_on('Recent alerts')
     end
 
     context 'in English' do

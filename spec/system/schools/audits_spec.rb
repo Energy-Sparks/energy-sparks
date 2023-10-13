@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'Audits', type: :system do
-
-  let!(:school)            { create(:school) }
+  let!(:school) { create(:school) }
 
   describe 'as an admin' do
     let(:admin) { create(:admin) }
@@ -43,7 +42,6 @@ describe 'Audits', type: :system do
     end
 
     context 'when adding activities and interventions', js: true do
-
       let!(:activity_type) { create(:activity_type) }
       let!(:intervention_type) { create(:intervention_type) }
 
@@ -77,7 +75,6 @@ describe 'Audits', type: :system do
       end
 
       context 'when saving fails' do
-
         before(:each) do
           activity_type
           visit school_audits_path(school)
@@ -155,7 +152,7 @@ describe 'Audits', type: :system do
   end
 
   describe 'as a school admin' do
-    let!(:school_admin)       { create(:school_admin, school: school) }
+    let!(:school_admin) { create(:school_admin, school: school) }
 
     before(:each) do
       sign_in(school_admin)
@@ -261,7 +258,6 @@ describe 'Audits', type: :system do
         expect(page).to have_content("Received an energy audit")
         expect(page).to have_link(audit.title)
       end
-
     end
   end
 
@@ -295,11 +291,10 @@ describe 'Audits', type: :system do
       click_on "Our audit"
       expect(page).to have_content("Description of the audit")
     end
-
   end
 
   describe 'as pupil' do
-    let(:pupil)            { create(:pupil, school: school)}
+    let(:pupil) { create(:pupil, school: school)}
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
     before(:each) do
@@ -328,7 +323,6 @@ describe 'Audits', type: :system do
       click_on "Our audit"
       expect(page).to have_content("Description of the audit")
     end
-
   end
 
   describe 'as a guest user' do
@@ -353,6 +347,5 @@ describe 'Audits', type: :system do
       visit school_audit_path(school, audit)
       expect(page).to have_content("You need to sign in")
     end
-
   end
 end

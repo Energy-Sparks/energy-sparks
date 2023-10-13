@@ -6,11 +6,11 @@ RSpec.shared_examples "navigation" do
   end
 
   it 'has link to pupil dashboard' do
-    expect(page.has_link? "Pupil dashboard").to be true
+    expect(page.has_link?("Pupil dashboard")).to be true
     within('.sub-navbar') do
       click_on('Pupil dashboard')
     end
-    expect(page.has_title? 'Pupil dashboard').to be true
+    expect(page.has_title?('Pupil dashboard')).to be true
   end
 
   context 'and school is not data-enabled' do
@@ -33,13 +33,12 @@ RSpec.shared_examples "navigation" do
   end
 
   context 'when school has partners' do
-
     let(:partner)             { create(:partner, name: "School Sponsor", url: "http://example.org") }
     let(:other_partner)       { create(:partner, name: "Big Tech Co", url: "https://example.com") }
     let(:school_group)        { create(:school_group, name: 'School Group')}
 
     before(:each) do
-      test_school.update!( { school_group: school_group })
+      test_school.update!({ school_group: school_group })
     end
 
     it 'displays school group partners' do
@@ -61,7 +60,6 @@ RSpec.shared_examples "navigation" do
       expect(page).to have_link("School Sponsor", href: "http://example.org")
       expect(page).to have_link("Big Tech Co", href: "https://example.com")
     end
-
   end
 
   context 'when school in public group' do
@@ -79,8 +77,8 @@ RSpec.shared_examples "navigation" do
 end
 
 RSpec.describe "adult dashboard navigation", type: :system do
-  let(:school_name)         { 'Oldfield Park Infants' }
-  let(:school)             { create(:school, name: school_name) }
+  let(:school_name) { 'Oldfield Park Infants' }
+  let(:school) { create(:school, name: school_name) }
 
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
@@ -93,7 +91,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
   end
 
   context 'as guest' do
-    let(:user)                { nil }
+    let(:user) { nil }
     include_examples "navigation" do
       let(:test_school) { school }
     end
@@ -101,9 +99,9 @@ RSpec.describe "adult dashboard navigation", type: :system do
     it 'shows me the adult dashboard by default' do
       visit root_path
       click_on('View schools')
-      expect(page.has_content? "Energy Sparks schools across the UK").to be true
+      expect(page.has_content?("Energy Sparks schools across the UK")).to be true
       click_on(school_name)
-      expect(page.has_link? "Pupil dashboard").to be true
+      expect(page.has_link?("Pupil dashboard")).to be true
     end
 
     it 'shows login form' do
@@ -124,20 +122,19 @@ RSpec.describe "adult dashboard navigation", type: :system do
         end
       end
     end
-
   end
 
   context 'as pupil' do
-    let(:user)          { create(:pupil, school: school) }
+    let(:user) { create(:pupil, school: school) }
     include_examples "navigation" do
       let(:test_school) { school }
     end
 
     it 'shows me the public dashboard by default' do
       visit schools_path
-      expect(page.has_content? "Energy Sparks schools across the UK").to be true
+      expect(page.has_content?("Energy Sparks schools across the UK")).to be true
       click_on(school_name, match: :first)
-      expect(page.has_link? "Adult dashboard").to be true
+      expect(page.has_link?("Adult dashboard")).to be true
     end
 
     it 'displays a printable version of the dashboard' do
@@ -161,7 +158,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
+    let(:user) { create(:staff, school: school) }
 
     include_examples "navigation" do
       let(:test_school) { school }
@@ -169,9 +166,9 @@ RSpec.describe "adult dashboard navigation", type: :system do
 
     it 'shows me the adult dashboard by default' do
       visit schools_path
-      expect(page.has_content? "Energy Sparks schools across the UK").to be true
+      expect(page.has_content?("Energy Sparks schools across the UK")).to be true
       click_on(school_name, match: :first)
-      expect(page.has_link? "Pupil dashboard").to be true
+      expect(page.has_link?("Pupil dashboard")).to be true
     end
 
     it 'should have my school menu' do
@@ -240,20 +237,19 @@ RSpec.describe "adult dashboard navigation", type: :system do
         end
       end
     end
-
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
     include_examples "navigation" do
       let(:test_school) { school }
     end
 
     it 'shows me the adult dashboard by default' do
       visit schools_path
-      expect(page.has_content? "Energy Sparks schools across the UK").to be true
+      expect(page.has_content?("Energy Sparks schools across the UK")).to be true
       click_on(school_name, match: :first)
-      expect(page.has_link? "Pupil dashboard").to be true
+      expect(page.has_link?("Pupil dashboard")).to be true
     end
 
     it 'should have my school menu' do
@@ -354,9 +350,9 @@ RSpec.describe "adult dashboard navigation", type: :system do
 
     it 'shows me the adult dashboard by default' do
       visit schools_path
-      expect(page.has_content? "Energy Sparks schools across the UK").to be true
+      expect(page.has_content?("Energy Sparks schools across the UK")).to be true
       click_on(school_name, match: :first)
-      expect(page.has_link? "Pupil dashboard").to be true
+      expect(page.has_link?("Pupil dashboard")).to be true
     end
 
     it 'displays a printable report version of the page' do
@@ -388,7 +384,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
   end
 
   context 'as admin' do
-    let(:user)        { create(:admin) }
+    let(:user) { create(:admin) }
     context 'and school is not data-enabled' do
       before(:each) do
         school.update!(data_enabled: false, school_group: create(:school_group))

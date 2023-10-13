@@ -2,9 +2,8 @@ require 'rails_helper'
 require "cancan/matchers"
 
 describe User do
-
   it 'generates display name' do
-    user = create(:user, name:"Name")
+    user = create(:user, name: "Name")
     expect(user.display_name).to eql user.name
 
     user = create(:user, name: nil)
@@ -65,8 +64,8 @@ describe User do
   end
 
   describe 'pupil validation' do
-    let(:school){ create(:school) }
-    let!(:existing_pupil){ create(:pupil, pupil_password: 'testtest', school: school) }
+    let(:school) { create(:school) }
+    let!(:existing_pupil) { create(:pupil, pupil_password: 'testtest', school: school) }
 
     it 'checks for unique passwords within the school' do
       expect(build(:pupil, school: school, pupil_password: 'testtest')).to_not be_valid
@@ -76,9 +75,8 @@ describe User do
   end
 
   describe 'staff roles as symbols' do
-
     it 'returns nil if no staff role' do
-      expect(User.new().staff_role_as_symbol).to be nil
+      expect(User.new.staff_role_as_symbol).to be nil
     end
 
     it 'returns symbol if staff role' do
@@ -90,7 +88,7 @@ describe User do
 
   describe '#schools' do
     context 'for user without school' do
-      let(:user)    { create(:user)}
+      let(:user) { create(:user)}
       it 'returns empty' do
         expect(user.schools).to eq([])
       end
@@ -178,7 +176,7 @@ describe User do
 
     it 'sends welcome email after confirmation for school roles' do
       expect(user.confirmed?).to eql(false)
-      expect(user.confirm ).to eql(true)
+      expect(user.confirm).to eql(true)
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Welcome to Energy Sparks')
@@ -187,11 +185,10 @@ describe User do
     it 'does not send welcome email for other users' do
       other_user = create(:user, role: :guest, confirmed_at: nil)
       expect(other_user.confirmed?).to eql(false)
-      expect(other_user.confirm ).to eql(true)
+      expect(other_user.confirm).to eql(true)
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Energy Sparks: confirm your account')
     end
-
   end
 end

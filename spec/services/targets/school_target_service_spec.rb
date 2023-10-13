@@ -1,14 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Targets::SchoolTargetService do
-
   let!(:school)             { create(:school) }
   let!(:aggregated_school)  { double('meter-collection') }
 
   let!(:service)            { Targets::SchoolTargetService.new(school) }
 
-  let(:fuel_configuration)   { Schools::FuelConfiguration.new(
-    has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true) }
+  let(:fuel_configuration) do
+    Schools::FuelConfiguration.new(
+      has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true)
+  end
 
   before(:each) do
     school.configuration.update!(fuel_configuration: fuel_configuration)
@@ -34,8 +35,10 @@ RSpec.describe Targets::SchoolTargetService do
       end
 
       context 'and school has limited fuel types' do
-        let(:fuel_configuration)   { Schools::FuelConfiguration.new(
-          has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
+        let(:fuel_configuration) do
+          Schools::FuelConfiguration.new(
+            has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true)
+        end
 
         before(:each) do
           school.configuration.update!(fuel_configuration: fuel_configuration)
@@ -46,15 +49,14 @@ RSpec.describe Targets::SchoolTargetService do
           expect(target.gas).to be nil
           expect(target.storage_heaters).to be nil
         end
-
       end
     end
 
     context 'an updated target' do
-      let(:start_date)      { Date.today.last_year}
+      let(:start_date)      { Time.zone.today.last_year}
       let(:target_date)     { start_date.next_year }
 
-      let!(:old_target)  { create(:school_target, school: school, start_date: start_date, target_date: target_date) }
+      let!(:old_target) { create(:school_target, school: school, start_date: start_date, target_date: target_date) }
       let(:target) { service.build_target }
 
       it 'should default to end of previous target' do
@@ -89,7 +91,6 @@ RSpec.describe Targets::SchoolTargetService do
       it 'should default to the previous month' do
         expect(target.start_date).to eql last_month
       end
-
     end
   end
 
@@ -109,5 +110,4 @@ RSpec.describe Targets::SchoolTargetService do
       expect(service.enough_data_for_storage_heater?).to be false
     end
   end
-
 end

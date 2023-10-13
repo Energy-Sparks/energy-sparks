@@ -19,7 +19,7 @@ RSpec.describe ConsentRequestMailer do
     context 'user locale is :en' do
       let(:preferred_locale) { :en }
       it 'sends an email with en strings' do
-        expect(email.subject).to eql ("We need permission to access your school's energy data")
+        expect(email.subject).to eql("We need permission to access your school's energy data")
         expect(email.body.to_s).to include("Please provide permission for Energy Sparks to access data for Test School")
       end
     end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Targets::FuelProgress do
-
   let(:fuel_type)     { :electricity }
   let(:progress)      { -0.5 }
   let(:usage)         { 100 }
@@ -24,11 +23,10 @@ describe Targets::FuelProgress do
     end
 
     context 'with met target' do
-      let(:target)      { 0 }
+      let(:target) { 0 }
       it 'says yes' do
         expect(fuel_progress.achieving_target?).to be true
       end
     end
   end
-
 end

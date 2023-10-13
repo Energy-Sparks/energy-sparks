@@ -2,16 +2,15 @@ require 'rails_helper'
 
 module Cads
   describe RealtimePowerConsumptionService do
-
     let!(:school)              { create(:school) }
     let!(:meter)               { create(:electricity_meter, school: school)}
     let!(:cad)                 { create(:cad, school: school, meter: meter) }
     let(:meter_collection)    { double(:meter_collection).as_null_object }
 
     let(:analytics_meter)     { double(:meter).as_null_object }
-    let(:power_consumption_service)    { double(:power_consumption_service) }
+    let(:power_consumption_service) { double(:power_consumption_service) }
 
-    let(:cache_key)   { "#{cad.school.id}-#{cad.school.name.parameterize}-power-consumption-service-#{cad.id}" }
+    let(:cache_key) { "#{cad.school.id}-#{cad.school.name.parameterize}-power-consumption-service-#{cad.id}" }
 
     context '#cache_power_consumption_service' do
       it 'caches the service' do
@@ -38,7 +37,7 @@ module Cads
     end
 
     context '#read_consumption' do
-      let(:power_consumption_service)    { double(:power_consumption_service) }
+      let(:power_consumption_service) { double(:power_consumption_service) }
       before(:each) do
         allow(::PowerConsumptionService).to receive(:create_service).with(meter_collection, analytics_meter).and_return(power_consumption_service)
       end
@@ -49,7 +48,7 @@ module Cads
       end
 
       context 'service not in cache' do
-        let(:power_consumption_service)    { nil }
+        let(:power_consumption_service) { nil }
         it 'does not error' do
           expect(RealtimePowerConsumptionService.read_consumption(cad)).to be_nil
         end

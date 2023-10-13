@@ -14,7 +14,7 @@ RSpec.describe "electricity long term advice page", type: :system do
   let(:savings_vs_exemplar) { CombinedUsageMetric.new(kwh: 500, £: 200, co2: 500) }
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
 
     before do
       allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive_messages(
@@ -82,7 +82,6 @@ RSpec.describe "electricity long term advice page", type: :system do
         #not enough data for these
         expect(page).to_not have_css('#chart_wrapper_electricity_by_month_year_0_1')
         expect(page).to_not have_css('#chart_wrapper_electricity_longterm_trend')
-
       end
     end
     context "clicking the 'Learn More' tab" do

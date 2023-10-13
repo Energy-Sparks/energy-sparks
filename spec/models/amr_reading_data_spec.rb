@@ -1,15 +1,16 @@
 require 'rails_helper'
 
 describe AmrReadingData do
-
   let(:date_format) { '%Y-%m-%d' }
 
   describe 'handles when reading date is a date' do
-    let(:amr_reading) { AmrReadingData.new(reading_data: [
-                                                      { :mpan_mprn => '1234050000000', :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-                                                      { :mpan_mprn => '1234050000000', :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
-                                                      ],
-                                            date_format: date_format) }
+    let(:amr_reading) do
+      AmrReadingData.new(reading_data: [
+                           { :mpan_mprn => '1234050000000', :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
+                           { :mpan_mprn => '1234050000000', :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
+                         ],
+                                            date_format: date_format)
+    end
 
     it 'knows when it is valid' do
       expect(amr_reading.valid?).to be true
@@ -20,11 +21,13 @@ describe AmrReadingData do
   end
 
   describe 'handles when reading date is actually a string' do
-    let(:amr_reading) { AmrReadingData.new(reading_data: [
-                                                      { :mpan_mprn => '1234050000000', :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-                                                      { :mpan_mprn => '1234050000000', :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
-                                                      ],
-                                            date_format: date_format) }
+    let(:amr_reading) do
+      AmrReadingData.new(reading_data: [
+                           { :mpan_mprn => '1234050000000', :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
+                           { :mpan_mprn => '1234050000000', :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
+                         ],
+                                            date_format: date_format)
+    end
 
     it 'knows when it is valid' do
       expect(amr_reading.valid?).to be true
@@ -35,11 +38,13 @@ describe AmrReadingData do
   end
 
   describe 'handles when each row is invalid' do
-    let(:amr_reading) { AmrReadingData.new(reading_data: [
-                                                      { :mpan_mprn => nil, :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-                                                      { :mpan_mprn => nil, :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
-                                                      ],
-                                            date_format: date_format) }
+    let(:amr_reading) do
+      AmrReadingData.new(reading_data: [
+                           { :mpan_mprn => nil, :reading_date => '2019-01-01', readings: Array.new(48, '0.0') },
+                           { :mpan_mprn => nil, :reading_date => '2019-01-02', readings: Array.new(48, '0.0') },
+                         ],
+                                            date_format: date_format)
+    end
 
     it 'whole file is invalid' do
       expect(amr_reading.valid?).to be false
@@ -51,13 +56,15 @@ describe AmrReadingData do
 
   describe 'handles when reading date is a string' do
     let(:date_format) { '%Y-%m-%d' }
-    let(:amr_reading_data) {{
+    let(:amr_reading_data) do
+      {
                               reading_data: [
                                 { :mpan_mprn => '1234050000000', :reading_date => '2022-01-01', readings: Array.new(48, '0.0')  },
                                 { :mpan_mprn => '1234050000000', :reading_date => '2022-01-02', readings: Array.new(48, '0.0')  },
                               ],
                               date_format: date_format
-                            }}
+                            }
+    end
 
     it 'knows when it is valid, even if the dates are not in the correct format' do
       amr_reading = AmrReadingData.new(**amr_reading_data)
@@ -147,7 +154,6 @@ describe AmrReadingData do
       end
 
       it 'with missing readings but with tolerance for 1 missing' do
-
         amr_reading_data[:reading_data].first[:readings].shift
         amr_reading_data[:missing_reading_threshold] = 1
         amr_reading = AmrReadingData.new(**amr_reading_data)
@@ -244,5 +250,4 @@ describe AmrReadingData do
       end
     end
   end
-
 end

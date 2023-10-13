@@ -8,11 +8,11 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
   let(:service)   { Alerts::DeleteContentGenerationRunService.new }
 
   it 'defaults to beginning of month, 1 month ago' do
-    expect(service.older_than).to eql(1.months.ago.beginning_of_month)
+    expect(service.older_than).to eql(1.month.ago.beginning_of_month)
   end
 
   it 'doesnt delete new runs' do
-    date_time = (Time.zone.now - 1.months)
+    date_time = (Time.zone.now - 1.month)
     school.content_generation_runs.create!(created_at: date_time + 1.day)
     school.content_generation_runs.create!(created_at: date_time + 1.week)
     school.content_generation_runs.create!(created_at: date_time + 1.month)

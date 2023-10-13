@@ -19,7 +19,7 @@ RSpec.shared_examples "target prompts" do
     end
 
     context 'and not enough data' do
-      let(:enough_data)      { false }
+      let(:enough_data) { false }
       it 'doesnt display prompt' do
         expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
       end
@@ -54,10 +54,9 @@ RSpec.shared_examples "target prompts" do
 end
 
 RSpec.shared_examples "progress reports" do
-
   context 'when a target is set' do
     let(:progress_summary) { nil }
-    let!(:school_target)    { create(:school_target, school: school) }
+    let!(:school_target) { create(:school_target, school: school) }
 
     before(:each) do
       allow_any_instance_of(Targets::ProgressService).to receive(:progress_summary).and_return(progress_summary)
@@ -76,7 +75,7 @@ RSpec.shared_examples "progress reports" do
     end
 
     context 'and is being met' do
-      let(:progress_summary)  { build(:progress_summary, school_target: school_target) }
+      let(:progress_summary) { build(:progress_summary, school_target: school_target) }
       it 'displays a notice' do
         expect(page).to have_content("Well done, you are making progress towards achieving your target")
       end
@@ -87,7 +86,7 @@ RSpec.shared_examples "progress reports" do
     end
 
     context 'and gas is not being met' do
-      let(:progress_summary)  { build(:progress_summary_with_failed_target, school_target: school_target) }
+      let(:progress_summary) { build(:progress_summary_with_failed_target, school_target: school_target) }
 
       it 'displays a notice' do
         expect(page).to have_content("Unfortunately you are not meeting your target to reduce your gas usage")
@@ -110,7 +109,7 @@ RSpec.shared_examples "progress reports" do
 
     context 'with lagging data' do
       let(:electricity_progress) { build(:fuel_progress, recent_data: false)}
-      let(:progress_summary)  { build(:progress_summary, electricity: electricity_progress, school_target: school_target) }
+      let(:progress_summary) { build(:progress_summary, electricity: electricity_progress, school_target: school_target) }
 
       it 'displays a notice' do
         expect(page).to_not have_content("Unfortunately you are not meeting your target")
@@ -125,14 +124,14 @@ RSpec.shared_examples "progress reports" do
 end
 
 RSpec.describe "adult dashboard target prompts", type: :system do
-  let(:school)             { create(:school) }
+  let(:school) { create(:school) }
 
   before(:each) do
     sign_in(user) if user.present?
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
+    let(:user) { create(:staff, school: school) }
     include_examples "target prompts" do
       let(:test_school) { school }
     end
@@ -142,7 +141,7 @@ RSpec.describe "adult dashboard target prompts", type: :system do
   end
 
   context 'as school admin' do
-    let(:user)   { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
     include_examples "target prompts" do
       let(:test_school) { school }
     end
@@ -152,7 +151,7 @@ RSpec.describe "adult dashboard target prompts", type: :system do
   end
 
   context 'as pupil' do
-    let(:user)   { create(:pupil, school: school) }
+    let(:user) { create(:pupil, school: school) }
 
     context 'when no target is set' do
       before(:each) do

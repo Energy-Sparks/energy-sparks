@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "home", type: :system do
-
   it 'has a home page' do
     visit root_path
-    expect(page.has_content? "Energy Sparks")
+    expect(page.has_content?("Energy Sparks"))
   end
 
   it 'allows locale switch retaining extra parameters' do
@@ -67,13 +66,13 @@ RSpec.describe "home", type: :system do
     within('#about-menu') do
       click_on('Contact')
     end
-    expect(page.has_content? "Contact us")
+    expect(page.has_content?("Contact us"))
   end
 
   it 'has an enrol page' do
     visit root_path
     click_on('Enrol')
-    expect(page.has_content? "Enrol with Energy Sparks")
+    expect(page.has_content?("Enrol with Energy Sparks"))
   end
 
   describe 'having a training page' do
@@ -112,7 +111,7 @@ RSpec.describe "home", type: :system do
     within('#about-menu') do
       click_on('Datasets')
     end
-    expect(page.has_content? "Data used in Energy Sparks")
+    expect(page.has_content?("Data used in Energy Sparks"))
   end
 
   context 'with newsletters' do
@@ -171,7 +170,6 @@ RSpec.describe "home", type: :system do
     end
 
     context 'with not visible school' do
-
       before(:each) do
         school.update(visible: false)
         visit root_path
@@ -188,7 +186,6 @@ RSpec.describe "home", type: :system do
     end
 
     context 'with a visible school' do
-
       it 'redirects from teacher page' do
         visit "/teachers/schools/#{school.slug}"
         within('.dashboard-school-title') do

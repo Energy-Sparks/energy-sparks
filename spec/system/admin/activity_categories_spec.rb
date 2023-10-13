@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Activity categories', :scoreboards, type: :system do
-
   let!(:admin)                  { create(:admin) }
   let!(:activity_category)      { create(:activity_category) }
 

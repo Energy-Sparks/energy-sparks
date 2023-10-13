@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 describe 'TransportSurveys - App', type: :system do
-
   let!(:school)            { create(:school, :with_school_group) }
-  let!(:transport_type_shareable)    { create(:transport_type, can_share: true) }
+  let!(:transport_type_shareable) { create(:transport_type, can_share: true) }
   let!(:transport_type_not_shareable) { create(:transport_type, can_share: false, image: "🚌") }
 
   describe "Survey app" do
-
     describe "as a pupil who can carry out surveys" do
       let(:user) { create(:pupil, school: school) }
 

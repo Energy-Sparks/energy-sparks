@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'viewing and recording activities', type: :system do
-
   let!(:activity_category) { create(:activity_category)}
 
   let!(:subject)  { Subject.create(name: "Science and Technology") }
@@ -9,15 +8,14 @@ describe 'viewing and recording activities', type: :system do
   let(:activity_data_driven)    { true }
   let(:school_data_enabled)     { true }
 
-  let(:activity_type_name)           { 'Exciting activity' }
-  let(:activity_description)    { "It's An #{activity_type_name}" }
+  let(:activity_type_name) { 'Exciting activity' }
+  let(:activity_description) { "It's An #{activity_type_name}" }
 
   let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven) }
 
   let(:school) { create_active_school(data_enabled: school_data_enabled) }
 
   context 'as a public user' do
-
     before(:each) do
       visit activity_type_path(activity_type)
     end
@@ -53,11 +51,10 @@ describe 'viewing and recording activities', type: :system do
         expect(page).to have_content("Are you an Energy Sparks user?")
         expect(page).to have_link("Sign in to record activity")
       end
-
     end
 
     context 'when logging in to record' do
-      let!(:staff)  { create(:staff, school: school)}
+      let!(:staff) { create(:staff, school: school)}
 
       it 'should redirect back to activity after login' do
         click_on "Sign in to record activity"
@@ -97,7 +94,7 @@ describe 'viewing and recording activities', type: :system do
     end
 
     context 'viewing a previously recorded activity' do
-      let!(:activity)     { create(:activity, school: school, activity_type: activity_type) }
+      let!(:activity) { create(:activity, school: school, activity_type: activity_type) }
 
       before(:each) do
         refresh
@@ -130,7 +127,7 @@ describe 'viewing and recording activities', type: :system do
         end
 
         context 'when activity not data driven' do
-          let(:activity_data_driven)  { false }
+          let(:activity_data_driven) { false }
 
           it 'should show school specific description' do
             visit school_activity_path(school, activity)
@@ -139,7 +136,6 @@ describe 'viewing and recording activities', type: :system do
           end
         end
       end
-
     end
 
     context 'recording an activity' do
@@ -149,14 +145,14 @@ describe 'viewing and recording activities', type: :system do
         visit activity_type_path(activity_type)
 
         click_on 'Record this activity'
-        fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+        fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
 
         click_on 'Save activity'
         expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
         expect(page.has_content?("You've just scored #{activity_type.score} points")).to be true
         click_on 'View your activity'
         expect(page.has_content?(activity_type_name)).to be true
-        expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
+        expect(page.has_content?(Time.zone.today.strftime("%A, %d %B %Y"))).to be true
       end
 
       context 'which is custom' do
@@ -173,7 +169,7 @@ describe 'viewing and recording activities', type: :system do
           click_on 'Record this activity'
           fill_in :activity_title, with: custom_title
           fill_in_trix with: activity_description
-          fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+          fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
 
           click_on 'Save activity'
           expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
@@ -186,14 +182,14 @@ describe 'viewing and recording activities', type: :system do
 
       context 'on podium' do
         context 'nil points' do
-          let!(:scoreboard)   { create :scoreboard }
+          let!(:scoreboard) { create :scoreboard }
           before(:each) do
             school.update!(scoreboard: scoreboard)
           end
           it 'records activity' do
              visit activity_type_path(activity_type)
              click_on 'Record this activity'
-             fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+             fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
              click_on 'Save activity'
              expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
           end
@@ -207,7 +203,7 @@ describe 'viewing and recording activities', type: :system do
             it 'records activity' do
               visit activity_type_path(activity_type)
               click_on 'Record this activity'
-              fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+              fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
               click_on 'Save activity'
               expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
               expect(page.has_content?("You've just scored #{activity_type.score} points")).to be true
@@ -220,7 +216,7 @@ describe 'viewing and recording activities', type: :system do
             it 'records activity' do
               visit activity_type_path(activity_type)
               click_on 'Record this activity'
-              fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+              fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
               click_on 'Save activity'
               expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
               expect(page.has_content?("You've just scored #{activity_type.score} points")).to be true
@@ -267,7 +263,7 @@ describe 'viewing and recording activities', type: :system do
       it 'should associate activity with correct school from group' do
         select other_school.name, from: :school_id
         click_on "Record this activity"
-        fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+        fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
         click_on 'Save activity'
         expect(page).to have_content("Congratulations! We've recorded your activity")
         expect(other_school.activities.count).to eq(1)
@@ -275,7 +271,7 @@ describe 'viewing and recording activities', type: :system do
     end
 
     context 'when school is not in group' do
-      let(:school_not_in_group)   { create(:school)}
+      let(:school_not_in_group) { create(:school)}
 
       it 'should not allow recording an activity' do
         visit new_school_activity_path(school_not_in_group, activity_type_id: activity_type.id)
@@ -350,7 +346,7 @@ describe 'viewing and recording activities', type: :system do
         end
 
         context 'when activity not data driven' do
-          let(:activity_data_driven)  { false }
+          let(:activity_data_driven) { false }
 
           it 'should see school specific content' do
             visit activity_type_path(activity_type)
@@ -363,7 +359,7 @@ describe 'viewing and recording activities', type: :system do
   end
 
   context "displaying prizes" do
-    let!(:activity)     { create(:activity, school: school, activity_type: activity_type) }
+    let!(:activity) { create(:activity, school: school, activity_type: activity_type) }
     let(:feature_active) { false }
     let(:prize_excerpt) { 'Our top scoring schools this year could win' }
     before do

@@ -2,7 +2,6 @@ require 'rails_helper'
 
 module Cads
   describe SyntheticDataService do
-
     let(:school)    { create(:school) }
     let(:cad)       { create(:cad, school: school, max_power: max_power) }
     let(:max_power) { 3 }

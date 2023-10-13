@@ -36,7 +36,7 @@ describe 'ActivityType' do
 
   it 'applies live data scope via category' do
     activity_type_1 = create(:activity_type, activity_category: create(:activity_category, live_data: true))
-    activity_type_2 = create(:activity_type, activity_category: create(:activity_category, live_data: false))
+    create(:activity_type, activity_category: create(:activity_category, live_data: false))
     expect(ActivityType.live_data).to match_array([activity_type_1])
   end
 
@@ -108,7 +108,7 @@ describe 'ActivityType' do
       key_stage_1 = create(:key_stage)
       key_stage_2 = create(:key_stage)
       activity_type_1 = create(:activity_type, name: 'KeyStage One', key_stages: [key_stage_1])
-      activity_type_2 = create(:activity_type, name: 'KeyStage Two', key_stages: [key_stage_2])
+      create(:activity_type, name: 'KeyStage Two', key_stages: [key_stage_2])
       activity_type_3 = create(:activity_type, name: 'KeyStage One and Two', key_stages: [key_stage_1, key_stage_2])
 
       expect(ActivityType.for_key_stages([key_stage_1])).to match_array([activity_type_1, activity_type_3])
@@ -117,7 +117,7 @@ describe 'ActivityType' do
     it 'does not return duplicates' do
       key_stage_1 = create(:key_stage)
       key_stage_2 = create(:key_stage)
-      activity_type_1 = create(:activity_type, name: 'foo one', key_stages: [key_stage_1, key_stage_2])
+      create(:activity_type, name: 'foo one', key_stages: [key_stage_1, key_stage_2])
 
       expect(ActivityType.for_key_stages([key_stage_1, key_stage_2]).count).to eq(1)
     end
@@ -128,7 +128,7 @@ describe 'ActivityType' do
       subject_1 = create(:subject)
       subject_2 = create(:subject)
       activity_type_1 = create(:activity_type, name: 'KeyStage One', subjects: [subject_1])
-      activity_type_2 = create(:activity_type, name: 'KeyStage Two', subjects: [subject_2])
+      create(:activity_type, name: 'KeyStage Two', subjects: [subject_2])
       activity_type_3 = create(:activity_type, name: 'KeyStage One and Two', subjects: [subject_1, subject_2])
 
       expect(ActivityType.for_subjects([subject_1])).to match_array([activity_type_1, activity_type_3])
@@ -137,7 +137,7 @@ describe 'ActivityType' do
     it 'does not return duplicates' do
       subject_1 = create(:subject)
       subject_2 = create(:subject)
-      activity_type_1 = create(:activity_type, name: 'foo one', subjects: [subject_1, subject_2])
+      create(:activity_type, name: 'foo one', subjects: [subject_1, subject_2])
 
       expect(ActivityType.for_subjects([subject_1, subject_2]).count).to eq(1)
     end

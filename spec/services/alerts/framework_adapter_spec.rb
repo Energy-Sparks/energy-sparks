@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Alerts::FrameworkAdapter do
-
   let(:school)            { build(:school) }
   let(:aggregate_school)  { double :aggregate_school }
   let!(:alert_type)       { create :alert_type, source: :system }
@@ -10,12 +9,12 @@ describe Alerts::FrameworkAdapter do
     Alert.new(
       run_on: gas_date,
       alert_type: alert_type,
-      rating: 5.0 ,
+      rating: 5.0,
       enough_data: :enough,
-      template_data: {template: 'variables'},
-      chart_data: {chart: 'variables'},
-      table_data: {table: 'variables'},
-      priority_data: {priority: 'variables'}
+      template_data: { template: 'variables' },
+      chart_data: { chart: 'variables' },
+      table_data: { table: 'variables' },
+      priority_data: { priority: 'variables' }
     )
   end
 
@@ -25,13 +24,12 @@ describe Alerts::FrameworkAdapter do
       rating: 5.0,
       enough_data: :enough,
       relevance: :relevant,
-      template_data: {template: 'variables'},
-      chart_data: {chart: 'variables'},
-      table_data: {table: 'variables'},
-      priority_data: {priority: 'variables'},
+      template_data: { template: 'variables' },
+      chart_data: { chart: 'variables' },
+      table_data: { table: 'variables' },
+      priority_data: { priority: 'variables' },
       benchmark_data: {} # System alerts don't create benchmark data
     )
-
   end
 
   it 'uses the adapters to create an alert object from the returned reports' do

@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "school", type: :system do
-
   let(:school_name) { 'Oldfield Park Infants' }
   let!(:school) { create(:school, :with_school_group, name: school_name) }
   let!(:teacher) { create(:staff, school: school) }
 
   describe 'when logged in as a school admin' do
-
     let!(:school_admin) { create(:school_admin, school: school) }
 
     before(:each) do
@@ -35,12 +33,10 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'multiple contacts' do
-
       let!(:contact) { create(:contact_with_name_email, user: school_admin, school: school) }
       let!(:other_school) { create(:school, :with_school_group, name: 'School Two') }
 
       it 'lets me sign up for alerts for correct school' do
-
         expect(school_admin.contact_for_school).to eq(contact)
 
         school_admin.update(school: other_school)
@@ -69,7 +65,6 @@ RSpec.describe "school", type: :system do
   end
 
   describe 'when logged in as an admin' do
-
     let!(:admin) { create(:admin) }
 
     before(:each) do
@@ -102,9 +97,9 @@ RSpec.describe "school", type: :system do
 
       it 'allows contacts to be deleted' do
         visit school_contacts_path(school)
-        expect {
+        expect do
           click_on('Delete')
-        }.to change { Contact.count }.by(-1)
+        end.to change { Contact.count }.by(-1)
       end
     end
 
@@ -124,9 +119,9 @@ RSpec.describe "school", type: :system do
 
       it 'allows contacts to be deleted' do
         visit school_contacts_path(school)
-        expect {
+        expect do
           click_on('Disable alerts')
-        }.to change { Contact.count }.by(-1)
+        end.to change { Contact.count }.by(-1)
       end
     end
 
@@ -159,21 +154,19 @@ RSpec.describe "school", type: :system do
 
       it 'allows existing contacts to be deleted' do
         visit school_contacts_path(school)
-        expect {
+        expect do
           click_on('Delete')
-        }.to change { Contact.count }.by(-1)
+        end.to change { Contact.count }.by(-1)
       end
     end
   end
 
   describe 'when logged in as a teacher' do
-
     before(:each) do
       sign_in(teacher)
     end
 
     it 'lets me sign up for alerts' do
-
       expect(teacher.contact_for_school).to be_nil
       visit school_path(school)
 

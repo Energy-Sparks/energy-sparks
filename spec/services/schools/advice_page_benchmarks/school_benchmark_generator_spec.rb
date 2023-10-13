@@ -1,13 +1,12 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :service do
-
-  let(:school)      { create(:school) }
+  let(:school) { create(:school) }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
   let(:advice_page) { create(:advice_page, key: :baseload, fuel_type: :electricity) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service)     { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
 
   context '.can_benchmark?' do
     let(:result) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.can_benchmark?(advice_page: advice_page)}
@@ -42,7 +41,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
   end
 
   context '#perform' do
-    let(:result)      { service.perform }
+    let(:result) { service.perform }
 
     before(:each) do
       school.configuration.update!(fuel_configuration: fuel_configuration)

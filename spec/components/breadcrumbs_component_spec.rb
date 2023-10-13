@@ -3,7 +3,6 @@
 require "rails_helper"
 
 RSpec.describe BreadcrumbsComponent, type: :component do
-
   let(:last) { list_items.last }
   let(:first) { list_items.first }
 
@@ -16,7 +15,7 @@ RSpec.describe BreadcrumbsComponent, type: :component do
 
   context "when there is a school and no items" do
     let(:list_items) do
-      render_inline(BreadcrumbsComponent.new()) do |c|
+      render_inline(BreadcrumbsComponent.new) do |c|
         c.with_school(school)
       end.css("li")
     end
@@ -51,11 +50,11 @@ RSpec.describe BreadcrumbsComponent, type: :component do
 
   context "when there are items and no school" do
     let(:list_items) do
-      render_inline(BreadcrumbsComponent.new()) do |c|
+      render_inline(BreadcrumbsComponent.new) do |c|
         c.with_items([
-          { name: "Advice", href: 'school_advice_url' },
-          { name: "Baseload", href: 'school_advice_baseload_url' },
-        ])
+                       { name: "Advice", href: 'school_advice_url' },
+                       { name: "Baseload", href: 'school_advice_baseload_url' },
+                     ])
       end.css("li")
     end
     it { expect(list_items.count).to eq(2) }
@@ -70,12 +69,12 @@ RSpec.describe BreadcrumbsComponent, type: :component do
   context "when there is a school and items" do
     let(:school) { create(:school, :with_school_group) }
     let(:list_items) do
-      render_inline(BreadcrumbsComponent.new()) do |c|
+      render_inline(BreadcrumbsComponent.new) do |c|
         c.with_school(school)
         c.with_items([
-          { name: "Advice", href: 'school_advice_url' },
-          { name: "Baseload", href: 'school_advice_baseload_url' },
-        ])
+                       { name: "Advice", href: 'school_advice_url' },
+                       { name: "Baseload", href: 'school_advice_baseload_url' },
+                     ])
       end.css("li")
     end
     it { expect(list_items.count).to eq(5) }
@@ -99,11 +98,11 @@ RSpec.describe BreadcrumbsComponent, type: :component do
   context "conditional items" do
     let(:href) { 'a_link' }
     let(:list_items) do
-      render_inline(BreadcrumbsComponent.new()) do |c|
+      render_inline(BreadcrumbsComponent.new) do |c|
         c.with_items([
-          { name: "Electricty", href: href, visible: visible },
-          { name: "First item", href: 'a_link' },
-        ])
+                       { name: "Electricty", href: href, visible: visible },
+                       { name: "First item", href: 'a_link' },
+                     ])
       end.css("li")
     end
     context "when item is visible" do
@@ -119,6 +118,5 @@ RSpec.describe BreadcrumbsComponent, type: :component do
       let(:visible) { false }
       it { expect(first).to_not have_link('Electricty') }
     end
-
   end
 end

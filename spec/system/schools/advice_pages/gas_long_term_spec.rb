@@ -14,8 +14,7 @@ RSpec.describe "gas long term advice page", type: :system do
   let(:savings_vs_exemplar) { CombinedUsageMetric.new(kwh: 500, £: 200, co2: 500) }
 
   context 'as school admin' do
-
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
 
     before do
       allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive_messages(
@@ -58,7 +57,6 @@ RSpec.describe "gas long term advice page", type: :system do
       it 'includes the comparison' do
         expect(page).to have_css('#gas-comparison')
       end
-
     end
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
@@ -79,9 +77,7 @@ RSpec.describe "gas long term advice page", type: :system do
         #not enough data for these
         expect(page).to_not have_css('#chart_wrapper_gas_by_month_year_0_1')
         expect(page).to_not have_css('#chart_wrapper_gas_longterm_trend')
-
       end
-
     end
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }

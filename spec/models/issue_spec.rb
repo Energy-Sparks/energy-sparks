@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Issue, type: :model do
-
   let(:school_group) { create(:school_group) }
   let(:school) { create(:school, school_group: school_group) }
   let(:data_source) { create(:data_source) }

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'school groups', :school_groups, type: :system do
-  let(:public)                 { true }
+  let(:public) { true }
   let!(:template_calendar) { create :template_calendar }
   let!(:school_group)          { create(:school_group, public: public, default_template_calendar: template_calendar) }
 
@@ -67,7 +67,7 @@ describe 'school groups', :school_groups, type: :system do
       end
 
       context 'when group is private' do
-        let(:public)    { false }
+        let(:public) { false }
 
         it 'does not show enhanced page sub navigation bar' do
           visit school_group_path(school_group)
@@ -282,28 +282,28 @@ describe 'school groups', :school_groups, type: :system do
 
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
-              expect(header).to match /^attachment/
+              expect(header).to match(/^attachment/)
               filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
 
               visit school_group_path(school_group, metric: 'usage')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
-              expect(header).to match /^attachment/
+              expect(header).to match(/^attachment/)
               filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
 
               visit school_group_path(school_group, metric: 'cost')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
-              expect(header).to match /^attachment/
+              expect(header).to match(/^attachment/)
               filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
 
               visit school_group_path(school_group, metric: 'co2')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
-              expect(header).to match /^attachment/
+              expect(header).to match(/^attachment/)
               filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
             end
@@ -330,27 +330,27 @@ describe 'school groups', :school_groups, type: :system do
           end
 
           it 'shows expected content' do
-            [
-              'baseload',
-              'electricity_long_term',
-              'gas_long_term',
-              'gas_out_of_hours'
+            %w[
+              baseload
+              electricity_long_term
+              gas_long_term
+              gas_out_of_hours
             ].each do |advice_page_key|
               expect(page).to have_content(I18n.t("advice_pages.#{advice_page_key}.page_title"))
             end
 
-            [
-              'electricity_costs',
-              'electricity_intraday',
-              'electricity_out_of_hours',
-              'electricity_recent_changes',
-              'gas_costs',
-              'gas_recent_changes',
-              'heating_control',
-              'hot_water',
-              'solar_pv',
-              'storage_heaters',
-              'thermostatic_control'
+            %w[
+              electricity_costs
+              electricity_intraday
+              electricity_out_of_hours
+              electricity_recent_changes
+              gas_costs
+              gas_recent_changes
+              heating_control
+              hot_water
+              solar_pv
+              storage_heaters
+              thermostatic_control
             ].each do |advice_page_key|
               expect(page).not_to have_content(I18n.t("advice_pages.#{advice_page_key}.page_title"))
             end
@@ -365,7 +365,7 @@ describe 'school groups', :school_groups, type: :system do
             visit comparisons_school_group_path(school_group)
             first(:link, 'Download as CSV', id: 'download-comparisons-school-csv-baseload').click
             header = page.response_headers['Content-Disposition']
-            expect(header).to match /^attachment/
+            expect(header).to match(/^attachment/)
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
             expect(page.source).to eq "Fuel,Description,School,Category\nElectricity,Baseload analysis,School 5,Exemplar\nElectricity,Baseload analysis,School 6,Exemplar\nElectricity,Baseload analysis,School 3,Well managed\nElectricity,Baseload analysis,School 4,Well managed\nElectricity,Baseload analysis,School 1,Action needed\nElectricity,Baseload analysis,School 2,Action needed\n"
@@ -373,7 +373,7 @@ describe 'school groups', :school_groups, type: :system do
             visit comparisons_school_group_path(school_group)
             first(:link, 'Download as CSV', id: 'download-comparisons-school-csv-gas_out_of_hours').click
             header = page.response_headers['Content-Disposition']
-            expect(header).to match /^attachment/
+            expect(header).to match(/^attachment/)
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
             expect(page.source).to eq "Fuel,Description,School,Category\nGas,Out of school hours gas use,School 5,Exemplar\nGas,Out of school hours gas use,School 6,Exemplar\nGas,Out of school hours gas use,School 3,Well managed\nGas,Out of school hours gas use,School 4,Well managed\nGas,Out of school hours gas use,School 1,Action needed\nGas,Out of school hours gas use,School 2,Action needed\n"
@@ -399,7 +399,7 @@ describe 'school groups', :school_groups, type: :system do
           it 'allows a csv download of all priority actions for a school group' do
             click_link('Download as CSV', id: 'download-priority-actions-school-group-csv')
             header = page.response_headers['Content-Disposition']
-            expect(header).to match /^attachment/
+            expect(header).to match(/^attachment/)
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
             expect(page.source).to eq "Fuel,Description,Schools,Energy (kWh),Cost (£),CO2 (kg)\nGas,Spending too much money on heating,1,\"2,200\",\"£1,000\",\"1,100\"\n"
@@ -408,7 +408,7 @@ describe 'school groups', :school_groups, type: :system do
           it 'allows a csv download of a specific priority action for schools in a school group' do
             click_link('Download as CSV', id: 'download-priority-actions-school-csv')
             header = page.response_headers['Content-Disposition']
-            expect(header).to match /^attachment/
+            expect(header).to match(/^attachment/)
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
             expect(page.source).to eq "Fuel,Description,School,Number of pupils,Floor area (m2),Energy (kWh),Cost (£),CO2 (kg)\nGas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0,£1000,1100\n"
@@ -438,7 +438,6 @@ describe 'school groups', :school_groups, type: :system do
         end
 
         describe 'showing current_scores' do
-
           include_context "school group current scores"
           before(:each) do
             visit current_scores_school_group_path(school_group)
@@ -460,7 +459,7 @@ describe 'school groups', :school_groups, type: :system do
           it 'allows a csv download of scores' do
             click_on 'Download as CSV'
             header = page.response_headers['Content-Disposition']
-            expect(header).to match /^attachment/
+            expect(header).to match(/^attachment/)
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.current_scores')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
             expect(page.source).to have_content "Position,School,Score\n=1,School 1,20\n=1,School 2,20\n2,School 3,18\n-,School 4,0\n-,School 5,0\n"
@@ -481,7 +480,6 @@ describe 'school groups', :school_groups, type: :system do
             expect(page).to have_link("18")
             expect(page).to have_content("0")
           end
-
         end
 
         describe 'showing map' do

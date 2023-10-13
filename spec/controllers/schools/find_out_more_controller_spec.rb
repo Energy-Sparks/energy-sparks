@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Schools::FindOutMoreController, type: :controller do
-
   let(:school)    { create(:school) }
   let(:user)      { create(:staff, school: school) }
 
@@ -34,7 +33,7 @@ RSpec.describe Schools::FindOutMoreController, type: :controller do
   end
 
   context 'for an admin user' do
-    let(:user)   { create(:admin) }
+    let(:user) { create(:admin) }
     before(:each) do
       sign_in(user)
     end
@@ -53,7 +52,7 @@ RSpec.describe Schools::FindOutMoreController, type: :controller do
       expect(response).to redirect_to(school_advice_path(school))
     end
     context 'and there is an advice page' do
-      let(:advice_page)  { create(:advice_page, key: :baseload) }
+      let(:advice_page) { create(:advice_page, key: :baseload) }
       before(:each) do
         alert_type_rating.alert_type.update(advice_page: advice_page)
       end

@@ -1,11 +1,8 @@
-
 require 'rails_helper'
-require 'loader/bank_holidays.rb'
+require 'loader/bank_holidays'
 
 module Loader
-
   describe BankHolidays do
-
     let!(:sample_file)        { 'spec/fixtures/test-bank-holidays.json' }
     let!(:national_calendar)  { create :calendar, calendar_type: :national, title: 'test-area' }
     let!(:bank_holiday)       { create :calendar_event_type, :bank_holiday }
@@ -24,4 +21,3 @@ module Loader
     end
   end
 end
-

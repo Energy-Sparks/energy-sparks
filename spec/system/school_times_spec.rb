@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'managing school times' do
-
   let(:school_name) { 'Oldfield Park Infants'}
   let!(:school) { create_active_school(name: school_name)}
   let!(:admin)  { create(:admin)}
@@ -29,5 +28,4 @@ describe 'managing school times' do
 
     expect(page).to have_content("School times have been updated")
   end
-
 end

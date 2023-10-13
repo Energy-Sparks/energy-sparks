@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Amr::ValidateAndPersistReadingsService, type: :service do
-
   let(:school)            { create(:school) }
   let!(:meter)            { create(:gas_meter_with_reading, school: school)}
   let(:logger)            { double(Rails.logger) }

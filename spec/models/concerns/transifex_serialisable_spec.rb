@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 describe TransifexSerialisable do
-
   class Dummy
     include TransifexSerialisable
   end
 
   context 'when converting rich text' do
-
     let(:test) { Dummy.new }
 
     describe '#mustache_to_yaml' do
@@ -51,11 +49,10 @@ describe TransifexSerialisable do
   end
 
   context 'with real classes' do
-
     before do
       #we have to explicitly require the classes otherwise they're not loaded and
       #check for included modules fails
-      Dir[Rails.root.join("app/models/**/*.rb")].each { |f| require f }
+      Dir[Rails.root.join("app/models/**/*.rb")].sort.each { |f| require f }
       @tx_serialisables = ApplicationRecord.descendants.select { |c| c.included_modules.include? TransifexSerialisable }
     end
 

@@ -290,10 +290,10 @@ RSpec.shared_context "school group current scores" do
     allow_any_instance_of(SchoolGroup).to receive(:scored_schools) do
       OpenStruct.new(
         with_points: OpenStruct.new(
-                       schools_with_positions: {
-                        1 => [OpenStruct.new(name: 'School 1', sum_points: 20, school_group_cluster_name: "My Cluster"), OpenStruct.new(name: 'School 2', sum_points: 20, school_group_cluster_name: "Not set")],
-                        2 => [OpenStruct.new(name: 'School 3', sum_points: 18, school_group_cluster_name: "Not set")]
-                       }
+          schools_with_positions: {
+           1 => [OpenStruct.new(name: 'School 1', sum_points: 20, school_group_cluster_name: "My Cluster"), OpenStruct.new(name: 'School 2', sum_points: 20, school_group_cluster_name: "Not set")],
+           2 => [OpenStruct.new(name: 'School 3', sum_points: 18, school_group_cluster_name: "Not set")]
+          }
                      ),
         without_points: [OpenStruct.new(name: 'School 4', school_group_cluster_name: "Not set"), OpenStruct.new(name: 'School 5', school_group_cluster_name: "Not set")]
       )

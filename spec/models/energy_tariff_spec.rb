@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe EnergyTariff do
-
   let(:tariff_holder)         { create(:school) }
   let(:tariff_type)           { :flat_rate }
   let(:vat_rate)              { 5 }
@@ -10,7 +9,7 @@ describe EnergyTariff do
   let(:energy_tariff_charges) { [] }
   let(:meters)                { [] }
 
-  let(:energy_tariff)  do
+  let(:energy_tariff) do
     EnergyTariff.create(
       tariff_holder: tariff_holder,
       start_date: '2021-04-01',
@@ -57,7 +56,7 @@ describe EnergyTariff do
         expect(energy_tariff).to be_valid
         energy_tariff.update(start_date: nil, end_date: nil)
         expect(energy_tariff).not_to be_valid
-        expect(energy_tariff.errors.messages).to eq({end_date: ["start and end date can't both be empty"], start_date: ["start and end date can't both be empty"]})
+        expect(energy_tariff.errors.messages).to eq({ end_date: ["start and end date can't both be empty"], start_date: ["start and end date can't both be empty"] })
       end
     end
 
@@ -79,7 +78,7 @@ describe EnergyTariff do
       expect(energy_tariff).to be_valid
       energy_tariff.update(start_date: '2022-03-31', end_date: '2021-04-01')
       expect(energy_tariff).not_to be_valid
-      expect(energy_tariff.errors.messages).to eq({start_date: ["start date must be earlier than or equal to end date"]})
+      expect(energy_tariff.errors.messages).to eq({ start_date: ["start date must be earlier than or equal to end date"] })
     end
 
     it "should prevent same start and end time" do
@@ -124,15 +123,15 @@ describe EnergyTariff do
       energy_tariff_price_1.update(start_time: '08:00', end_time: '09:00')
       energy_tariff.update(tariff_type: 'differential')
       expect(energy_tariff_price_1).not_to be_valid
-      expect(energy_tariff_price_1.errors.messages).to eq({end_time: ["overlaps with another time range"], start_time: ["overlaps with another time range"]})
+      expect(energy_tariff_price_1.errors.messages).to eq({ end_time: ["overlaps with another time range"], start_time: ["overlaps with another time range"] })
       energy_tariff.update(tariff_type: 'flat_rate')
       expect(energy_tariff_price_1).to be_valid
     end
 
     it 'should require applies to always be set to both except for electricity meter type tariffs' do
-      EnergyTariff.meter_types.keys.each do |meter_type|
+      EnergyTariff.meter_types.each_key do |meter_type|
         energy_tariff.meter_type = meter_type
-        (EnergyTariff.applies_tos.keys).each do |applies_to|
+        EnergyTariff.applies_tos.each_key do |applies_to|
           energy_tariff.applies_to = applies_to
           if meter_type == 'electricity'
             expect(energy_tariff).to be_valid
@@ -163,7 +162,7 @@ describe EnergyTariff do
   end
 
   context '.to_hash' do
-    let(:attributes)      { energy_tariff.to_hash }
+    let(:attributes) { energy_tariff.to_hash }
 
     it "should include basic fields" do
       expect(attributes[:name]).to eq('My First Tariff')
@@ -182,7 +181,7 @@ describe EnergyTariff do
         end
       end
       context 'when attached to a meter' do
-        let(:meters)  { [create(:electricity_meter)] }
+        let(:meters) { [create(:electricity_meter)] }
         it "should identify tariff holder as a meter" do
           expect(attributes[:tariff_holder]).to eq :meter
         end
@@ -233,7 +232,7 @@ describe EnergyTariff do
 
       it "should include standing charges" do
         rates = attributes[:rates]
-        expect(rates[:fixed_charge]).to eq({per: 'month', rate: '4.56'})
+        expect(rates[:fixed_charge]).to eq({ per: 'month', rate: '4.56' })
       end
 
       it "should include rate" do
@@ -241,11 +240,10 @@ describe EnergyTariff do
         expect(rates[:flat_rate][:per]).to eq('kwh')
         expect(rates[:flat_rate][:rate]).to eq('0.23')
       end
-
     end
 
     context 'with differential electricity tariff' do
-      let(:tariff_type)     { :differential }
+      let(:tariff_type) { :differential }
 
       let(:energy_tariff_price_1)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 0.23, units: 'kwh') }
       let(:energy_tariff_price_2)  { EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 0.46, units: 'kwh') }
@@ -275,7 +273,7 @@ describe EnergyTariff do
         end
 
         context "and agreed_availability_charge is present" do
-          let(:agreed_availability_charge)  { EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+          let(:agreed_availability_charge) { EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
           let(:energy_tariff_charges) { [asc_limit_kw_charge, agreed_availability_charge] }
           it "should be included" do
             expect(attributes[:asc_limit_kw]).to eq('5.43')
@@ -286,7 +284,7 @@ describe EnergyTariff do
         end
 
         context "and excess_availability_charge is present" do
-          let(:excess_availability_charge)  { EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
+          let(:excess_availability_charge) { EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
           let(:energy_tariff_charges) { [asc_limit_kw_charge, excess_availability_charge] }
           it "should be included" do
             expect(attributes[:asc_limit_kw]).to eq('5.43')
@@ -297,7 +295,7 @@ describe EnergyTariff do
         end
 
         context 'only agreed availability charge is present' do
-          let(:agreed_availability_charge)  { EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+          let(:agreed_availability_charge) { EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
           let(:energy_tariff_charges) { [agreed_availability_charge] }
           it "should not be included" do
             expect(attributes[:rates]).to_not have_key(:asc_limit_kw)
@@ -308,7 +306,7 @@ describe EnergyTariff do
         end
 
         context 'only excess_availability_charge charge is present' do
-          let(:excess_availability_charge)  { EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
+          let(:excess_availability_charge) { EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
           let(:energy_tariff_charges) { [excess_availability_charge] }
           it "should not be included" do
             expect(attributes).to_not have_key(:asc_limit_kw)
@@ -326,27 +324,27 @@ describe EnergyTariff do
             expect(attributes).to have_key(:asc_limit_kw)
           end
           it 'should include the charges' do
-            expect(attributes[:rates][:agreed_availability_charge]).to eq({:per => 'kva', :rate => '6.78'})
-            expect(attributes[:rates][:excess_availability_charge]).to eq({:per => 'kva', :rate => '6.78'})
+            expect(attributes[:rates][:agreed_availability_charge]).to eq({ :per => 'kva', :rate => '6.78' })
+            expect(attributes[:rates][:excess_availability_charge]).to eq({ :per => 'kva', :rate => '6.78' })
           end
         end
       end
 
       it "should include standing charges" do
         rates = attributes[:rates]
-        expect(rates[:fixed_charge]).to eq({:per => 'month', :rate => '4.56'})
+        expect(rates[:fixed_charge]).to eq({ :per => 'month', :rate => '4.56' })
       end
 
       it "should include rates with adjusted end times" do
         rates = attributes[:rates]
         expect(rates[:rate0][:per]).to eq('kwh')
         expect(rates[:rate0][:rate]).to eq('0.23')
-        expect(rates[:rate0][:from]).to eq({hour: "00", minutes: "00"})
-        expect(rates[:rate0][:to]).to eq({hour: "03", minutes: "00"})
+        expect(rates[:rate0][:from]).to eq({ hour: "00", minutes: "00" })
+        expect(rates[:rate0][:to]).to eq({ hour: "03", minutes: "00" })
         expect(rates[:rate1][:per]).to eq('kwh')
         expect(rates[:rate1][:rate]).to eq('0.46')
-        expect(rates[:rate1][:from]).to eq({hour: "04", minutes: "00"})
-        expect(rates[:rate1][:to]).to eq({hour: "23", minutes: "00"})
+        expect(rates[:rate1][:from]).to eq({ hour: "04", minutes: "00" })
+        expect(rates[:rate1][:to]).to eq({ hour: "23", minutes: "00" })
       end
     end
   end
@@ -466,16 +464,15 @@ describe EnergyTariff do
         expect(energy_tariff.reload.usable?).to eq(true)
       end
     end
-
   end
 
   context '.by_start_and_end' do
-    let(:energy_tariff_open_start) {
-      create(:energy_tariff, tariff_holder: tariff_holder, start_date: nil, end_date: Date.new(2022,3,31))
-    }
-    let(:energy_tariff_open_end) {
-      create(:energy_tariff, tariff_holder: tariff_holder, start_date: Date.new(2022,3,31), end_date: nil)
-    }
+    let(:energy_tariff_open_start) do
+      create(:energy_tariff, tariff_holder: tariff_holder, start_date: nil, end_date: Date.new(2022, 3, 31))
+    end
+    let(:energy_tariff_open_end) do
+      create(:energy_tariff, tariff_holder: tariff_holder, start_date: Date.new(2022, 3, 31), end_date: nil)
+    end
     it 'sorts as expected' do
       tariffs = tariff_holder.energy_tariffs.by_start_and_end
       #using eq not match_array as we're expecting exactly this order

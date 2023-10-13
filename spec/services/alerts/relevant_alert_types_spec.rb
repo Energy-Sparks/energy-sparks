@@ -13,7 +13,7 @@ describe Alerts::RelevantAlertTypes do
   let!(:disabled_storage_heater_alert_type)   { create(:alert_type, fuel_type: :storage_heater, enabled: false) }
   let!(:disabled_solar_pv_alert_type)         { create(:alert_type, fuel_type: :solar_pv, enabled: false) }
 
-  let(:school)                      { create(:school) }
+  let(:school) { create(:school) }
 
   it 'returns electricity and gas ones' do
     fuel_configuration = Schools::FuelConfiguration.new(has_gas: true, has_electricity: true)

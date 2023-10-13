@@ -18,11 +18,11 @@ RSpec.shared_examples "dashboard priorities" do
       management_priorities_title: 'Spending too much money on heating',
     )
   end
-  let(:alert_summary){ 'Summary of the alert' }
+  let(:alert_summary) { 'Summary of the alert' }
   let!(:alert) do
     create(:alert, :with_run,
       alert_type: gas_fuel_alert_type,
-      run_on: Date.today, school: test_school,
+      run_on: Time.zone.today, school: test_school,
       rating: 9.0,
       template_data: {
         average_one_year_saving_gbp: '£5,000',
@@ -45,39 +45,38 @@ RSpec.shared_examples "dashboard priorities" do
     expect(page).to have_content('9,400 kg CO2')
     expect(page).to_not have_content('0 days')
   end
-
 end
 
 RSpec.describe "adult dashboard priorities", type: :system do
-  let(:school)             { create(:school) }
+  let(:school) { create(:school) }
 
   before(:each) do
     sign_in(user) if user.present?
   end
 
   context 'as guest' do
-    let(:user)                { nil }
+    let(:user) { nil }
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end
   end
 
   context 'as pupil' do
-    let(:user)          { create(:pupil, school: school) }
+    let(:user) { create(:pupil, school: school) }
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
+    let(:user) { create(:staff, school: school) }
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end

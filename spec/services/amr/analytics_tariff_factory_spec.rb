@@ -3,7 +3,6 @@ require 'dashboard'
 
 module Amr
   describe AnalyticsTariffFactory do
-
     let(:meter) { create(:electricity_meter, dcc_meter: true) }
     let(:factory) { Amr::AnalyticsTariffFactory.new(meter) }
 
@@ -18,10 +17,9 @@ module Amr
     end
 
     context 'with differential tariff' do
-
       let!(:prices) { create(:tariff_price, :with_differential_tariff, meter: meter, tariff_date: date) }
 
-      let(:expected_attributes) {
+      let(:expected_attributes) do
         [{
            start_date: date,
            end_date: date,
@@ -54,21 +52,19 @@ module Amr
            type: :differential,
            source: :dcc
          }]
-      }
+      end
 
       it 'builds and returns the meter attributes' do
         attributes = factory.build
         expect(attributes).to_not be_nil
         expect(attributes[:accounting_tariff_generic]).to eql(expected_attributes)
       end
-
     end
 
     context 'with differential tiered tariff' do
-
       let!(:prices) { create(:tariff_price, :with_differential_tiered_tariff, meter: meter, tariff_date: date) }
 
-      let(:expected_attributes) {
+      let(:expected_attributes) do
         [{
           :start_date => date,
           :end_date => date,
@@ -104,15 +100,13 @@ module Amr
           :type => :differential_tiered,
           :source => :dcc
         }]
-      }
+      end
 
       it 'builds and returns the meter attributes' do
         attributes = factory.build
         expect(attributes).to_not be_nil
         expect(attributes[:accounting_tariff_generic]).to eql(expected_attributes)
       end
-
     end
-
   end
 end

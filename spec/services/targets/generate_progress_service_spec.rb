@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Targets::GenerateProgressService do
-
   let!(:school)                   { create(:school) }
   let!(:aggregated_school)        { double('meter-collection') }
   let!(:school_target)            { create(:school_target, school: school) }
@@ -13,31 +12,31 @@ describe Targets::GenerateProgressService do
 
   let!(:service)                  { Targets::GenerateProgressService.new(school, aggregated_school) }
 
-  let(:months)                    { [Date.today.last_month.beginning_of_month, Date.today.beginning_of_month] }
+  let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.beginning_of_month] }
   let(:fuel_type)                 { :electricity }
-  let(:monthly_targets_kwh)       { [10,10] }
-  let(:monthly_usage_kwh)         { [10,5] }
-  let(:monthly_performance)       { [-0.25,0.35] }
-  let(:cumulative_targets_kwh)    { [10,20] }
-  let(:cumulative_usage_kwh)      { [10,15] }
-  let(:cumulative_performance)    { [-0.99,0.99] }
+  let(:monthly_targets_kwh)       { [10, 10] }
+  let(:monthly_usage_kwh)         { [10, 5] }
+  let(:monthly_performance)       { [-0.25, 0.35] }
+  let(:cumulative_targets_kwh)    { [10, 20] }
+  let(:cumulative_usage_kwh)      { [10, 15] }
+  let(:cumulative_performance)    { [-0.99, 0.99] }
   let(:partial_months)            { [false, true] }
   let(:percentage_synthetic)      { [0, 0]}
 
   let(:progress) do
     TargetsProgress.new(
-        fuel_type: fuel_type,
-        months: months,
-        monthly_targets_kwh: monthly_targets_kwh,
-        monthly_usage_kwh: monthly_usage_kwh,
-        monthly_performance: monthly_performance,
-        cumulative_targets_kwh: cumulative_targets_kwh,
-        cumulative_usage_kwh: cumulative_usage_kwh,
-        cumulative_performance: cumulative_performance,
-        cumulative_performance_versus_synthetic_last_year: cumulative_performance,
-        monthly_performance_versus_synthetic_last_year: monthly_performance,
-        partial_months: partial_months,
-        percentage_synthetic: percentage_synthetic
+      fuel_type: fuel_type,
+      months: months,
+      monthly_targets_kwh: monthly_targets_kwh,
+      monthly_usage_kwh: monthly_usage_kwh,
+      monthly_performance: monthly_performance,
+      cumulative_targets_kwh: cumulative_targets_kwh,
+      cumulative_usage_kwh: cumulative_usage_kwh,
+      cumulative_performance: cumulative_performance,
+      cumulative_performance_versus_synthetic_last_year: cumulative_performance,
+      monthly_performance_versus_synthetic_last_year: monthly_performance,
+      partial_months: partial_months,
+      percentage_synthetic: percentage_synthetic
     )
   end
 
@@ -70,14 +69,13 @@ describe Targets::GenerateProgressService do
 
     context 'for a fuel type' do
       context 'and its not present' do
-        let(:fuel_electricity)    { Schools::FuelConfiguration.new(has_electricity: false) }
+        let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: false) }
         it 'returns nil' do
           expect(service.cumulative_progress(:electricity)).to be_nil
         end
       end
 
       context 'and it is present' do
-
         before(:each) do
           allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
           allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
@@ -91,7 +89,7 @@ describe Targets::GenerateProgressService do
     end
 
     context 'and the data is lagging, only slightly' do
-      let(:months)                    { [Date.today.last_month.beginning_of_month, Date.today.prev_month.beginning_of_month] }
+      let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
@@ -117,7 +115,7 @@ describe Targets::GenerateProgressService do
     end
 
     context 'and the data is lagging, only slightly' do
-      let(:months)                    { [Date.today.last_month.beginning_of_month, Date.today.prev_month.beginning_of_month] }
+      let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
@@ -143,7 +141,7 @@ describe Targets::GenerateProgressService do
     end
 
     context 'and the data is lagging, only slightly' do
-      let(:months)                    { [Date.today.last_month.beginning_of_month, Date.today.prev_month.beginning_of_month] }
+      let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
@@ -159,11 +157,10 @@ describe Targets::GenerateProgressService do
   context '#generate!' do
     it 'does nothing if school has no target' do
       SchoolTarget.all.destroy_all
-      expect( service.generate! ).to be nil
+      expect(service.generate!).to be nil
     end
 
     context 'with only electricity fuel type' do
-
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
@@ -174,32 +171,32 @@ describe Targets::GenerateProgressService do
       let(:target) { service.generate! }
 
       it 'updates the target' do
-        expect( target ).to eql school_target
+        expect(target).to eql school_target
       end
 
       it 'saved the progress report' do
-        expect( target.saved_progress_report_for(:electricity).to_json ).to eq(progress.to_json)
+        expect(target.saved_progress_report_for(:electricity).to_json).to eq(progress.to_json)
       end
 
       it 'records when last run' do
-        expect( target.report_last_generated ).to_not be_nil
+        expect(target.report_last_generated).to_not be_nil
       end
 
       it 'includes only that fuel type' do
-        expect( target.gas_progress ).to eq({})
-        expect( target.storage_heaters_progress ).to eq({})
-        expect( target.electricity_progress ).to_not eq({})
+        expect(target.gas_progress).to eq({})
+        expect(target.storage_heaters_progress).to eq({})
+        expect(target.electricity_progress).to_not eq({})
       end
 
       it 'reports the fuel progress' do
-        expect( target.electricity_progress["progress"] ).to eql 0.99
-        expect( target.electricity_progress["usage"] ).to eql 15
-        expect( target.electricity_progress["target"] ).to eql 20
+        expect(target.electricity_progress["progress"]).to eql 0.99
+        expect(target.electricity_progress["usage"]).to eql 15
+        expect(target.electricity_progress["target"]).to eql 20
       end
     end
 
     context 'and not enough data' do
-      let(:school_target_fuel_types)  { [] }
+      let(:school_target_fuel_types) { [] }
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
@@ -208,7 +205,7 @@ describe Targets::GenerateProgressService do
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
       it 'still generates' do
-        expect( service.generate! ).to eq school_target
+        expect(service.generate!).to eq school_target
       end
     end
 
@@ -224,15 +221,13 @@ describe Targets::GenerateProgressService do
       end
 
       it 'records when last run' do
-        expect( target.report_last_generated ).to_not be_nil
+        expect(target.report_last_generated).to_not be_nil
       end
 
       it 'sets values to nil' do
-        expect( target.electricity_progress ).to eq({})
-        expect( target.electricity_report ).to be_nil
+        expect(target.electricity_progress).to eq({})
+        expect(target.electricity_report).to be_nil
       end
     end
-
   end
-
 end

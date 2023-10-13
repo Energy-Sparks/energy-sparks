@@ -19,7 +19,6 @@ describe Calendar do
   end
 
   describe 'does lots of good calendar work' do
-
     it 'creates a calendar with academic years' do
       expect(calendar.calendar_events.count).to be 6
       expect(calendar.holidays.count).to be 3
@@ -66,7 +65,7 @@ describe Calendar do
     end
 
     it 'knows there is a holiday approaching' do
-      empty_calendar = create(:calendar)
+      create(:calendar)
       expect(calendar.holiday_approaching?).to be false
     end
   end

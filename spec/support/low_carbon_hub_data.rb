@@ -1,5 +1,4 @@
-RSpec.shared_context  "low carbon hub data", shared_context: :metadata do
-
+RSpec.shared_context "low carbon hub data", shared_context: :metadata do
   let!(:school)               { create(:school) }
   let(:low_carbon_hub_api)    { double("low_carbon_hub_api") }
   let(:rbee_meter_id)         { "216057958" }
@@ -10,7 +9,7 @@ RSpec.shared_context  "low carbon hub data", shared_context: :metadata do
   let(:information)           { { info: info_text } }
   let(:start_date)            { Date.parse('02/08/2016') }
   let(:end_date)              { start_date + 1.day }
-  let(:readings)              {
+  let(:readings)              do
     {
       solar_pv: {
         mpan_mprn: 70000000123085,
@@ -34,14 +33,13 @@ RSpec.shared_context  "low carbon hub data", shared_context: :metadata do
         }
       },
     }
-  }
+  end
 
   before(:each) do
     allow(low_carbon_hub_api).to receive(:full_installation_information).with(rbee_meter_id).and_return(information)
     allow(low_carbon_hub_api).to receive(:first_meter_reading_date).with(rbee_meter_id).and_return(start_date)
     allow(low_carbon_hub_api).to receive(:download).with(rbee_meter_id, school.urn, start_date, end_date).and_return(readings)
   end
-
 end
 
 RSpec.configure do |rspec|

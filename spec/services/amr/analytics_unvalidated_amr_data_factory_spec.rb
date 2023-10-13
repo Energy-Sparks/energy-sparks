@@ -2,7 +2,6 @@ require 'rails_helper'
 
 module Amr
   describe AnalyticsUnvalidatedAmrDataFactory do
-
     let(:school_name) { 'Active school'}
     let!(:school)     { create(:school, :with_school_group, name: school_name) }
     let!(:config)     { create(:amr_data_feed_config) }
@@ -20,7 +19,7 @@ module Amr
       expect(first_electricity_meter[:identifier]).to eq e_meter.mpan_mprn
       expect(first_electricity_meter[:dcc_meter]).to be false
       expect(first_electricity_meter[:readings].size).to eq 2
-      expect(first_electricity_meter[:readings].map { |reading| reading.kwh_data_x48 }).to match_array e_meter.amr_data_feed_readings.map { |reading| reading.readings.map(&:to_f) }
+      expect(first_electricity_meter[:readings].map(&:kwh_data_x48)).to match_array(e_meter.amr_data_feed_readings.map { |reading| reading.readings.map(&:to_f) })
 
       first_gas_meter = amr_data[:heat_meters].first
 
@@ -36,7 +35,7 @@ module Amr
       expect(e_meter.amr_data_feed_readings.count).to be 3
       amr_data = AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build
       expect(amr_data[:electricity_meters].first[:readings].size).to eq 3
-      expect(amr_data[:electricity_meters].first[:readings].map{|reading| reading.date}).to include Date.tomorrow
+      expect(amr_data[:electricity_meters].first[:readings].map(&:date)).to include Date.tomorrow
     end
 
     it 'skips invalid date formats' do
@@ -69,12 +68,12 @@ module Amr
     end
 
     context 'with custom_tariffs' do
-      let(:date)        { Date.yesterday }
+      let(:date) { Date.yesterday }
 
       let!(:standing_charge) { create(:tariff_standing_charge, meter: g_meter, start_date: date) }
       let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: g_meter, tariff_date: date) }
 
-      let(:amr_data)  { AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build }
+      let(:amr_data) { AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build }
 
       it 'includes meter attributes' do
         first_electricity_meter = amr_data[:electricity_meters].first
@@ -86,8 +85,6 @@ module Amr
         expect(first_gas_meter[:attributes]).to_not be_nil
         expect(first_gas_meter[:attributes][:accounting_tariff_generic]).to_not be_nil
       end
-
     end
-
   end
 end

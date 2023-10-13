@@ -7,7 +7,7 @@ RSpec.describe "calendar view", type: :system do
     let!(:admin)  { create(:admin) }
 
     before(:each) do
-      create(:academic_year, calendar: calendar, start_date: Date.parse("01/01/#{Date.today.year}"))
+      create(:academic_year, calendar: calendar, start_date: Date.parse("01/01/#{Time.zone.today.year}"))
       sign_in(admin)
       visit calendar_path(calendar)
     end
@@ -63,11 +63,9 @@ RSpec.describe "calendar view", type: :system do
         expect { click_on('Delete') }.to change { calendar.calendar_events.count }.by(-1)
       end
     end
-
   end
 
   describe 'a school admin can' do
-
     let!(:school)           { create_active_school }
     let!(:school_admin)     { create(:school_admin, school: school) }
     let!(:school_calendar) do

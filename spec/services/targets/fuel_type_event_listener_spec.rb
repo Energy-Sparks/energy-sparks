@@ -1,15 +1,14 @@
 require 'rails_helper'
 
 describe Targets::FuelTypeEventListener, type: :system do
-
-  let(:listener)  { Targets::FuelTypeEventListener.new }
+  let(:listener) { Targets::FuelTypeEventListener.new }
 
   let!(:school)    { create(:school) }
   let!(:meter)     { create(:electricity_meter, school: school) }
 
   describe '#meter_attribute_created' do
     context 'with a school target' do
-      let!(:school_target)   { create(:school_target, school: school) }
+      let!(:school_target) { create(:school_target, school: school) }
 
       context 'for non storage heater attributes' do
         let(:meter_attribute) { create(:meter_attribute) }
@@ -50,7 +49,6 @@ describe Targets::FuelTypeEventListener, type: :system do
           expect(school_target.suggest_revision?).to be false
           expect(school_target.revised_fuel_types).to be_empty
         end
-
       end
     end
   end
@@ -59,7 +57,7 @@ describe Targets::FuelTypeEventListener, type: :system do
     let!(:gas_meter) { create(:gas_meter, school: school) }
 
     context 'with a school target' do
-        let!(:school_target)   { create(:school_target, school: school) }
+        let!(:school_target) { create(:school_target, school: school) }
 
         it 'updates target when its the first gas meter' do
           listener.meter_activated(gas_meter)

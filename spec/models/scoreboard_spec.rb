@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Scoreboard, :scoreboards, type: :model do
-
   let!(:scoreboard) { create :scoreboard }
 
   subject { scoreboard }
@@ -18,7 +17,6 @@ describe Scoreboard, :scoreboards, type: :model do
         let(:user) { create(:admin) }
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
-
     end
     context 'private scoreboard' do
       let!(:scoreboard) { create :scoreboard, public: false }
@@ -46,17 +44,17 @@ describe Scoreboard, :scoreboards, type: :model do
   describe '#safe_destroy' do
     it 'does not let you delete if there is an associated school' do
       create(:school, scoreboard: subject)
-      expect{
+      expect do
         subject.safe_destroy
-      }.to raise_error(
+      end.to raise_error(
         EnergySparks::SafeDestroyError, 'Scoreboard has associated schools'
-      ).and(not_change{ Scoreboard.count })
+      ).and(not_change { Scoreboard.count })
     end
 
     it 'lets you delete if there are no schools' do
-      expect{
+      expect do
         subject.safe_destroy
-      }.to change{Scoreboard.count}.from(1).to(0)
+      end.to change {Scoreboard.count}.from(1).to(0)
     end
   end
 

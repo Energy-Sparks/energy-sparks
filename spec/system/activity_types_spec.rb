@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe 'activity types', type: :system do
-
   context 'activity types search page' do
-
     let!(:activity_type_1) { create(:activity_type, name: 'foo', description: 'activity') }
     let!(:activity_type_2) { create(:activity_type, name: 'bar', description: 'second activity') }
 
@@ -71,7 +69,6 @@ describe 'activity types', type: :system do
         expect(page).not_to have_content(activity_type_1.name)
         expect(page).to have_content(activity_type_2.name)
       end
-
     end
 
     context 'when filtering' do

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe CalendarInitService do
-
   let(:holiday) { create(:calendar_event_type, :holiday, title: 'Holiday') }
   let(:bank_holiday) { create(:calendar_event_type, :bank_holiday, title: 'Bank Holiday') }
   let(:inset_day) { create(:calendar_event_type, :inset_day_in_school, title: 'In school Inset Day') }

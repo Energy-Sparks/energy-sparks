@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Intervention Type Groups', type: :system do
-
   let!(:admin)                    { create(:admin) }
   let!(:intervention_type_group)  { create(:intervention_type_group)}
 
@@ -54,7 +53,6 @@ RSpec.describe 'Intervention Type Groups', type: :system do
       expect(page).to have_content(new_name)
       expect(page).to have_content(new_description)
     end
-
   end
 
   describe 'when not logged in' do

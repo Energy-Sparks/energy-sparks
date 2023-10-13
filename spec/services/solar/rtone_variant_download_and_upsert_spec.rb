@@ -2,27 +2,26 @@ require 'rails_helper'
 
 module Solar
   describe RtoneVariantDownloadAndUpsert do
-
     let(:meter)         { create(:electricity_meter) }
     let(:installation)  { create(:rtone_variant_installation, meter: meter)}
 
-    let(:end_date)    { Date.today }
-    let(:start_date)    { Date.today - 1 }
+    let(:end_date) { Time.zone.today }
+    let(:start_date)    { Time.zone.today - 1 }
 
-    let(:readings)      {
+    let(:readings)      do
       {
         mpan_mprn:        meter.mpan_mprn,
         readings:         { start_date: OneDayAMRReading.new(meter.mpan_mprn, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
         missing_readings: []
       }
-    }
+    end
 
-    let(:api)       { double("low-carbon-hub-api") }
+    let(:api) { double("low-carbon-hub-api") }
 
     let(:requested_start_date) { nil }
     let(:requested_end_date) { nil }
 
-    let(:upserter)  { Solar::RtoneVariantDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
+    let(:upserter) { Solar::RtoneVariantDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
 
     before(:each) do
       expect(LowCarbonHubMeterReadings).to receive(:new).with(installation.username, installation.password).and_return(api)
@@ -31,8 +30,8 @@ module Solar
     it "should handle and log exceptions" do
       expect(api).to receive(:download_by_component).and_raise(StandardError)
       upserter.perform
-      expect( AmrDataFeedImportLog.count ).to eql 1
-      expect( AmrDataFeedImportLog.first.error_messages ).to_not be_blank
+      expect(AmrDataFeedImportLog.count).to eql 1
+      expect(AmrDataFeedImportLog.first.error_messages).to_not be_blank
     end
 
     context "when a date window is given" do
@@ -55,10 +54,10 @@ module Solar
     end
 
     context "when there are existing readings" do
-      let!(:reading) {
+      let!(:reading) do
         create(:amr_data_feed_reading, reading_date: reading_date,
         meter: meter)
-      }
+      end
 
       before(:each) do
         expect(api).to receive(:download_by_component).with(installation.rtone_meter_id, installation.rtone_component_type, installation.meter.mpan_mprn, expected_start, expected_end).and_return(readings)
@@ -92,6 +91,5 @@ module Solar
         upserter.perform
       end
     end
-
   end
 end

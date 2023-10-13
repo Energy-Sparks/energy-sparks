@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Schools::CountryLookup do
-
   let!(:school)           { build(:school, postcode: postcode) }
   let!(:service)          { Schools::CountryLookup.new(school) }
 

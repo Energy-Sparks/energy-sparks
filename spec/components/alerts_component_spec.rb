@@ -3,7 +3,6 @@
 require "rails_helper"
 
 RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
-
   let(:school) { create(:school) }
   let(:show_links) { true }
   let(:show_icons) { true }
@@ -11,7 +10,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
   let(:alert_type) { create(:alert_type, advice_page: advice_page) }
   let(:alert) { create(:alert, alert_type: alert_type) }
   let(:alert_content) { double(management_dashboard_title: "some alert text", colour: :positive, alert: alert) }
-  let(:dashboard_alerts)  { [alert_content] }
+  let(:dashboard_alerts) { [alert_content] }
   let(:all_params) { { dashboard_alerts: dashboard_alerts, alert_types: [alert_type], school: school, show_links: show_links, show_icons: show_icons } }
 
   let(:html) { render_inline(AlertsComponent.new(**params)) }

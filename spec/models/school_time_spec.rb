@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'SchoolTime' do
-
-  let!(:school)      { create(:school) }
+  let!(:school) { create(:school) }
 
   context 'basic validation' do
     it 'allows valid objects' do
@@ -29,8 +28,8 @@ describe 'SchoolTime' do
       result = morning_time.to_analytics
       expect(result[:usage_type]).to eql :community_use
       expect(result[:day]).to eql :tuesday
-      expect(result[:opening_time]).to eql TimeOfDay.new(7,0)
-      expect(result[:closing_time]).to eql TimeOfDay.new(8,30)
+      expect(result[:opening_time]).to eql TimeOfDay.new(7, 0)
+      expect(result[:closing_time]).to eql TimeOfDay.new(8, 30)
       expect(result[:calendar_period]).to eql :term_times
     end
 
@@ -38,8 +37,8 @@ describe 'SchoolTime' do
       result = evening_time.to_analytics
       expect(result[:usage_type]).to eql :community_use
       expect(result[:day]).to eql :monday
-      expect(result[:opening_time]).to eql TimeOfDay.new(18,0)
-      expect(result[:closing_time]).to eql TimeOfDay.new(20,30)
+      expect(result[:opening_time]).to eql TimeOfDay.new(18, 0)
+      expect(result[:closing_time]).to eql TimeOfDay.new(20, 30)
       expect(result[:calendar_period]).to eql :term_times
     end
   end
@@ -89,12 +88,12 @@ describe 'SchoolTime' do
         params = {
           "school_times_attributes" => {
             "123" => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :term_times },
-            "456" => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :all_year}
+            "456" => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :all_year }
           }
         }
         school.attributes = params
-        expect( school.save(context: :school_time_update) ).to be false
-        expect( school.school_times.count).to eql 0
+        expect(school.save(context: :school_time_update)).to be false
+        expect(school.school_times.count).to eql 0
       end
     end
 
@@ -105,8 +104,10 @@ describe 'SchoolTime' do
       let(:opening_time)     { 800 }
       let(:closing_time)     { 1200 }
 
-      let!(:time)  { school.school_times.create(day: day, usage_type: usage_type,
-        calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)}
+      let!(:time) do
+        school.school_times.create(day: day, usage_type: usage_type,
+        calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)
+      end
 
       context 'with other community use periods' do
         before(:each) do
@@ -115,34 +116,34 @@ describe 'SchoolTime' do
 
         it 'should be valid when there are no overlaps' do
           #13-14, no overlap. OK
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400) ).to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400)).to be_valid
         end
         it 'should not allow longer periods' do
           #7-2, longer period
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400)).to_not be_valid
         end
         it 'should not allow shorter periods' do
           #9-11, longer period
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1100) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1100)).to_not be_valid
         end
         it 'should not allow identical periods' do
           #8-12, identical
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200)).to_not be_valid
         end
         it 'should reject overlaps on first part of period' do
           #7-10, overlapping first part of range
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000)).to_not be_valid
         end
         it 'should reject overlaps on the end of the period' do
           #9-1, overlapping second part
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300)).to_not be_valid
         end
         it 'allows same times on different days' do
-          expect( school.school_times.create(day: :tuesday, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to be_valid
+          expect(school.school_times.create(day: :tuesday, usage_type: :community_use, opening_time: 700, closing_time: 1000)).to be_valid
         end
         it 'allows same times on different calendar period' do
-          expect( school.school_times.create(day: day, calendar_period: :only_holidays, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to be_valid
-          expect( school.school_times.create(day: day, calendar_period: :all_year, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
+          expect(school.school_times.create(day: day, calendar_period: :only_holidays, usage_type: :community_use, opening_time: 700, closing_time: 1000)).to be_valid
+          expect(school.school_times.create(day: day, calendar_period: :all_year, usage_type: :community_use, opening_time: 700, closing_time: 1000)).to_not be_valid
         end
       end
 
@@ -150,27 +151,27 @@ describe 'SchoolTime' do
         let(:usage_type) { :school_day }
         it 'should be valid when there are no overlaps' do
           #13-14, no overlap. OK
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400) ).to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400)).to be_valid
         end
         it 'should not allow longer periods' do
           #7-2, longer period
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400)).to_not be_valid
         end
         it 'should not allow shorter periods' do
           #9-11, longer period
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1100) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1100)).to_not be_valid
         end
         it 'should not allow identical periods' do
           #8-12, identical
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200)).to_not be_valid
         end
         it 'should reject overlaps on first part of period' do
           #7-10, overlapping first part of range
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000)).to_not be_valid
         end
         it 'should reject overlaps on the end of the period' do
           #9-1, overlapping second part
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300) ).to_not be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300)).to_not be_valid
         end
       end
 
@@ -178,18 +179,18 @@ describe 'SchoolTime' do
         let(:day) { :weekdays }
         it 'should allow saturday to overlap with weekday' do
           #week day and weekends dont overlap
-          expect( school.school_times.create(day: :saturday, usage_type: :community_use, opening_time: 1300, closing_time: 1400) ).to be_valid
+          expect(school.school_times.create(day: :saturday, usage_type: :community_use, opening_time: 1300, closing_time: 1400)).to be_valid
         end
         it 'should allow weekdays and weekends to overlap' do
-          expect( school.school_times.create(day: :weekends, usage_type: :community_use, opening_time: 1300, closing_time: 1400) ).to be_valid
+          expect(school.school_times.create(day: :weekends, usage_type: :community_use, opening_time: 1300, closing_time: 1400)).to be_valid
         end
         it 'should not allow monday to overlap with weekdays' do
           #830-1230, mondays, overlaps with the week day range
-          expect( school.school_times.create(day: :monday, usage_type: :community_use, opening_time: 830, closing_time: 1230) ).to_not be_valid
+          expect(school.school_times.create(day: :monday, usage_type: :community_use, opening_time: 830, closing_time: 1230)).to_not be_valid
         end
         it 'should not allow everyday to overlap with weekdays' do
           #830-1230, everyday, overlaps with the week day range
-          expect( school.school_times.create(day: :everyday, usage_type: :community_use, opening_time: 830, closing_time: 1230) ).to_not be_valid
+          expect(school.school_times.create(day: :everyday, usage_type: :community_use, opening_time: 830, closing_time: 1230)).to_not be_valid
         end
       end
     end

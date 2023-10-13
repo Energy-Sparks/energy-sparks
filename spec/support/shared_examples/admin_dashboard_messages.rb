@@ -1,5 +1,4 @@
-RSpec.shared_examples "admin dashboard messages" do | permitted: true |
-
+RSpec.shared_examples "admin dashboard messages" do |permitted: true|
   context "when permitted", if: permitted do
     let(:message) { 'Hello message' }
     let!(:messageable_school) { messageable.is_a?(SchoolGroup) ? create(:school, school_group: messageable) : messageable }

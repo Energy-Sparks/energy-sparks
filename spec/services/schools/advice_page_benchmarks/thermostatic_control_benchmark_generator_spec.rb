@@ -1,15 +1,14 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::ThermostaticControlBenchmarkGenerator, type: :service do
-
   let(:school)      { create(:school) }
   let(:advice_page) { create(:advice_page, key: :thermostatic, fuel_type: :gas) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service)     { Schools::AdvicePageBenchmarks::ThermostaticControlBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::ThermostaticControlBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
 
   context '#benchmark_school' do
     let(:enough_data) { true }
-    let(:comparison) {
+    let(:comparison) do
       Schools::Comparison.new(
         school_value: 0.75,
         benchmark_value: 0.6,
@@ -17,7 +16,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::ThermostaticControlBenchmarkGenera
         unit: :r2,
         low_is_good: false
       )
-    }
+    end
     before(:each) do
       allow_any_instance_of(Schools::Advice::ThermostaticAnalysisService).to receive(:enough_data?).and_return(enough_data)
       allow_any_instance_of(Schools::Advice::ThermostaticAnalysisService).to receive(:benchmark_thermostatic_control).and_return(comparison)

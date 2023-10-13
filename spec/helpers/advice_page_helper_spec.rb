@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe AdvicePageHelper do
-
   let(:school)                    { create(:school) }
   let(:advice_page)               { create(:advice_page, key: 'baseload') }
   let(:advice_page_not_in_routes) { create(:advice_page, key: 'notapage') }
@@ -58,13 +57,12 @@ describe AdvicePageHelper do
 
   describe '#months_between' do
     it 'calculates the floored number of months between two dates' do
-      expect(helper.months_between((Date.new(2022,12,31) - 2.years),  Date.new(2022,12,31) )).to eq(24)
-      expect(helper.months_between((Date.new(2022,12,31) - 2.years + 1.day), Date.new(2022,12,31) )).to eq(23)
+      expect(helper.months_between((Date.new(2022, 12, 31) - 2.years), Date.new(2022, 12, 31))).to eq(24)
+      expect(helper.months_between((Date.new(2022, 12, 31) - 2.years + 1.day), Date.new(2022, 12, 31))).to eq(23)
     end
   end
 
   describe '.advice_page_path' do
-
     it 'returns path to insights by default' do
       expect(helper.advice_page_path(school, advice_page)).to end_with("/schools/#{school.slug}/advice/baseload/insights")
     end
@@ -78,35 +76,34 @@ describe AdvicePageHelper do
     end
 
     it 'errors if advice page is not legit' do
-      expect {
+      expect do
         helper.advice_page_path(school, advice_page_not_in_routes)
-      }.to raise_error(NoMethodError)
+      end.to raise_error(NoMethodError)
     end
 
     it 'errors if tab is not legit' do
-      expect {
+      expect do
         helper.advice_page_path(school, advice_page, :blah)
-      }.to raise_error(NoMethodError)
+      end.to raise_error(NoMethodError)
     end
-
   end
 
   describe '.sort_by_label' do
     before :each do
-      I18n.backend.store_translations("en", {advice_pages: {nav: { pages: { one: "ZZZ", two: "AAA" }}}})
-      I18n.backend.store_translations("cy", {advice_pages: {nav: { pages: { one: "AAA", two: "ZZZ" }}}})
+      I18n.backend.store_translations("en", { advice_pages: { nav: { pages: { one: "ZZZ", two: "AAA" } } } })
+      I18n.backend.store_translations("cy", { advice_pages: { nav: { pages: { one: "AAA", two: "ZZZ" } } } })
     end
     let(:advice_page_1) { create(:advice_page, key: 'one') }
     let(:advice_page_2) { create(:advice_page, key: 'two') }
     let(:advice_pages) { [advice_page_1, advice_page_2] }
     it 'sorts by default label' do
       sorted_advice_pages = helper.sort_by_label(advice_pages)
-      expect(sorted_advice_pages.map(&:key)).to eq(["two", "one"])
+      expect(sorted_advice_pages.map(&:key)).to eq(%w[two one])
     end
     it 'sorts by cy label' do
       I18n.with_locale(:cy) do
         sorted_advice_pages = helper.sort_by_label(advice_pages)
-        expect(sorted_advice_pages.map(&:key)).to eq(["one", "two"])
+        expect(sorted_advice_pages.map(&:key)).to eq(%w[one two])
       end
     end
   end
@@ -118,11 +115,11 @@ describe AdvicePageHelper do
     let(:alert_change) { create(:alert, :with_run, alert_type: alert_type_change, run_on: Time.zone.today, school: school, rating: 9.0) }
     let(:dashboard_alert_advice)  { OpenStruct.new(alert: alert_advice) }
     let(:dashboard_alert_change)  { OpenStruct.new(alert: alert_change) }
-    let(:dashboard_alerts)  { [dashboard_alert_advice, dashboard_alert_change] }
+    let(:dashboard_alerts) { [dashboard_alert_advice, dashboard_alert_change] }
 
     describe '.dashboard_alert_groups' do
       it 'should return list of groups with alerts' do
-        expect(helper.dashboard_alert_groups(dashboard_alerts)).to eq(['change', 'advice'])
+        expect(helper.dashboard_alert_groups(dashboard_alerts)).to eq(%w[change advice])
       end
     end
 

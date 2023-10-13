@@ -1,5 +1,4 @@
 RSpec.shared_examples "admin school group onboardings" do
-
   before do
     setup_data
     after_setup_data
@@ -10,7 +9,6 @@ RSpec.shared_examples "admin school group onboardings" do
     let(:setup_data) { school_group_onboardings }
 
     context 'for selected' do
-
       describe "first onboarding checked" do
         let(:onboarding) { school_group_onboardings.first }
         before do
@@ -18,7 +16,7 @@ RSpec.shared_examples "admin school group onboardings" do
         end
 
         describe "Make selected visible" do
-          before {  onboarding.school.update!(visible: false) }
+          before { onboarding.school.update!(visible: false) }
 
           it { expect(onboarding.school).to_not be_visible }
           it { expect(onboarding).to be_incomplete }
@@ -35,8 +33,11 @@ RSpec.shared_examples "admin school group onboardings" do
           end
 
           context "with consent" do
-            before  { Wisper.clear; Wisper.subscribe(Onboarding::OnboardingDataEnabledListener.new) }
-            after   { Wisper.clear }
+            before do
+              Wisper.clear
+              Wisper.subscribe(Onboarding::OnboardingDataEnabledListener.new)
+            end
+            after { Wisper.clear }
 
             before do
               create(:consent_grant, school: onboarding.school)

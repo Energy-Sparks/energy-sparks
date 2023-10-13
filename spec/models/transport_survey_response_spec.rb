@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TransportSurveyResponse do
-
   describe 'validations' do
     subject { build(:transport_survey_response) }
 
@@ -73,20 +72,20 @@ describe TransportSurveyResponse do
 
     context "with responses" do
       let!(:responses) do
-        [ create(:transport_survey_response, transport_survey: transport_survey),
-          create(:transport_survey_response, transport_survey: transport_survey) ]
+        [create(:transport_survey_response, transport_survey: transport_survey),
+         create(:transport_survey_response, transport_survey: transport_survey)]
       end
       it { expect(subject.lines.count).to eq(3) }
       it { expect(subject.lines.first.chomp).to eq(header) }
       2.times do |i|
-        it { expect(subject.lines[i+1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather_name, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].passengers, responses[i].carbon_kg_co2, responses[i].surveyed_at].join(',')) }
+        it { expect(subject.lines[i + 1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather_name, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].passengers, responses[i].carbon_kg_co2, responses[i].surveyed_at].join(',')) }
       end
     end
 
     context "with responses for other schools" do
       let!(:responses) do
-        [ create(:transport_survey_response),
-          create(:transport_survey_response) ]
+        [create(:transport_survey_response),
+         create(:transport_survey_response)]
       end
       it { expect(subject.lines.count).to eq(1) }
     end

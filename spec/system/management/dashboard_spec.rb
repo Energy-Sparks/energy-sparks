@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Management dashboard' do
-
   let(:school_name)         { 'Theresa Green Infants'}
   let!(:school_group)       { create(:school_group) }
 

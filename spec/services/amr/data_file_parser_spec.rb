@@ -2,11 +2,10 @@ require 'rails_helper'
 require 'fileutils'
 
 describe Amr::DataFileParser, type: :service do
-
   let!(:config) { create(:amr_data_feed_config) }
   let(:path_and_file_name) { "spec/fixtures/amr_upload_data_files/" + file_name }
 
-  let(:parser)    { Amr::DataFileParser.new(config, path_and_file_name)}
+  let(:parser) { Amr::DataFileParser.new(config, path_and_file_name)}
   let(:parsed_lines) { parser.perform }
 
   context 'with standard csv file' do

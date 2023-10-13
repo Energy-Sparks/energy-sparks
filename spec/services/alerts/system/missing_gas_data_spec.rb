@@ -1,15 +1,13 @@
 require 'rails_helper'
 
 describe Alerts::System::MissingGasData do
-
   let(:school)  { create :school }
-  let(:today) { Date.today }
+  let(:today) { Time.zone.today }
 
-  let(:report){ Alerts::System::MissingGasData.new(school: school, today: today, alert_type: nil).report }
+  let(:report) { Alerts::System::MissingGasData.new(school: school, today: today, alert_type: nil).report }
 
   context 'where the school has gas data in the last 2 weeks' do
-
-    let!(:meter){ create(:gas_meter_with_validated_reading_dates, start_date: 4.weeks.ago, end_date: 2.days.ago, school: school) }
+    let!(:meter) { create(:gas_meter_with_validated_reading_dates, start_date: 4.weeks.ago, end_date: 2.days.ago, school: school) }
 
     it 'has a rating of 10' do
       expect(report.rating).to eq(10.0)
@@ -20,8 +18,7 @@ describe Alerts::System::MissingGasData do
   end
 
   context 'where the gas data is from over 2 weeks ago' do
-
-    let!(:meter){ create(:gas_meter_with_validated_reading_dates, start_date: 4.weeks.ago, end_date: 3.weeks.ago, school: school) }
+    let!(:meter) { create(:gas_meter_with_validated_reading_dates, start_date: 4.weeks.ago, end_date: 3.weeks.ago, school: school) }
 
     it 'has a rating related to the number of days late' do
       expect(report.rating).to eq(3.0)
@@ -32,20 +29,18 @@ describe Alerts::System::MissingGasData do
     end
 
     it 'has the mpan_mprns as a variable' do
-      expect(report.template_data[:mpan_mprns]).to eq("#{meter.mpan_mprn}")
+      expect(report.template_data[:mpan_mprns]).to eq(meter.mpan_mprn.to_s)
     end
 
     context 'with much older readings' do
-      let!(:meter){ create(:gas_meter_with_validated_reading_dates, start_date: 52.weeks.ago, end_date: 51.weeks.ago, school: school) }
+      let!(:meter) { create(:gas_meter_with_validated_reading_dates, start_date: 52.weeks.ago, end_date: 51.weeks.ago, school: school) }
       it 'has a rating of 0' do
         expect(report.rating).to eq(0.0)
       end
     end
-
   end
 
   context 'where there are no gas meters' do
-
     it 'has no rating' do
       expect(report.rating).to eq(nil)
     end
@@ -53,7 +48,5 @@ describe Alerts::System::MissingGasData do
     it 'is never relevant' do
       expect(report.relevance).to eq(:never_relevant)
     end
-
   end
-
 end

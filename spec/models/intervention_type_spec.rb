@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'InterventionType' do
-
   subject { create :intervention_type }
 
   it 'is valid with valid attributes' do
@@ -10,8 +9,8 @@ describe 'InterventionType' do
 
   it 'is invalid with invalid attributes' do
     type = build :intervention_type, score: -1
-    expect( type ).to_not be_valid
-    expect( type.errors[:score] ).to include('must be greater than or equal to 0')
+    expect(type).to_not be_valid
+    expect(type.errors[:score]).to include('must be greater than or equal to 0')
   end
 
   it 'validates every fuel type is valid' do
@@ -93,7 +92,7 @@ describe 'InterventionType' do
     let!(:intervention_type_1) { create(:intervention_type, name: "one", active: true)}
     let!(:intervention_type_2) { create(:intervention_type, name: "two", active: false)}
     it "#tx_resources" do
-      expect( InterventionType.tx_resources ).to match_array([intervention_type_1])
+      expect(InterventionType.tx_resources).to match_array([intervention_type_1])
     end
   end
 
@@ -118,7 +117,7 @@ describe 'InterventionType' do
         expect(data["en"]).to_not be nil
         key = "intervention_type_#{intervention_type.id}"
         expect(data["en"][key]).to_not be nil
-        expect(data["en"][key].keys).to match_array(["name", "summary", "description_html", "download_links_html"])
+        expect(data["en"][key].keys).to match_array(%w[name summary description_html download_links_html])
       end
       it 'created categories' do
         expect(intervention_type.tx_categories).to match_array(["intervention_type"])
@@ -141,7 +140,8 @@ describe 'InterventionType' do
     let(:summary) { subject.summary }
     let(:description) { subject.description }
     let(:download_links) { subject.download_links }
-    let(:data) { {
+    let(:data) do
+      {
       "cy" => {
         resource_key => {
           "name" => "Welsh name",
@@ -151,7 +151,7 @@ describe 'InterventionType' do
         }
       }
     }
-    }
+    end
     before(:each) do
       subject.tx_update(data, :cy)
       subject.reload

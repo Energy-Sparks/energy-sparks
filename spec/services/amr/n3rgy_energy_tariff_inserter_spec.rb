@@ -3,30 +3,30 @@ require 'rails_helper'
 describe Amr::N3rgyEnergyTariffInserter do
   let(:school)                      { create(:school) }
   let(:meter)                       { create(:electricity_meter, school: school) }
-  let(:start_date)                  { Date.today }
+  let(:start_date)                  { Time.zone.today }
   let(:import_log)                  { create(:tariff_import_log) }
 
   let(:price)                       { 0.14168 }
   let(:charge)                      { 0.2048 }
   let(:raw_prices)                  { Array.new(48, price) }
 
-  let(:kwh_tariffs)                 {
+  let(:kwh_tariffs)                 do
     {
       start_date => raw_prices
     }
-  }
-  let(:standing_charges)            {
+  end
+  let(:standing_charges) do
     { start_date => charge }
-  }
-  let(:tariff)                     {
+  end
+  let(:tariff) do
     {
       kwh_tariffs: kwh_tariffs,
       standing_charges: standing_charges,
       missing_readings: []
     }
-  }
+  end
 
-  let(:service)   { Amr::N3rgyEnergyTariffInserter.new(meter: meter, start_date: start_date, tariff: tariff, import_log: import_log) }
+  let(:service) { Amr::N3rgyEnergyTariffInserter.new(meter: meter, start_date: start_date, tariff: tariff, import_log: import_log) }
 
   context 'with no existing tariff' do
     let(:energy_tariff)  { EnergyTariff.first }
@@ -94,7 +94,7 @@ describe Amr::N3rgyEnergyTariffInserter do
     let(:raw_prices) { [{ :tariffs => { 1 => 0.485, 2 => 0.16774 }, :thresholds => { 1 => 1000 }, :type => :tiered }] + Array.new(15, price) + Array.new(32, price * 2)}
 
     it 'throws an exception' do
-      expect{ service.perform }.to raise_error(Amr::N3rgyEnergyTariffInserter::UnexpectedN3rgyTariffError)
+      expect { service.perform }.to raise_error(Amr::N3rgyEnergyTariffInserter::UnexpectedN3rgyTariffError)
     end
   end
 
@@ -102,17 +102,17 @@ describe Amr::N3rgyEnergyTariffInserter do
     it 'throws an exception' do
       tariff_without_rates = tariff.merge(kwh_tariffs: {})
       service = Amr::N3rgyEnergyTariffInserter.new(meter: meter, start_date: start_date, tariff: tariff_without_rates, import_log: import_log)
-      expect{ service.perform }.to raise_error(Amr::N3rgyEnergyTariffInserter::MissingRatesN3rgyTariffError)
+      expect { service.perform }.to raise_error(Amr::N3rgyEnergyTariffInserter::MissingRatesN3rgyTariffError)
     end
   end
 
   context 'when the tariff has not changed' do
-    let!(:existing_energy_tariff) {
+    let!(:existing_energy_tariff) do
       create(:energy_tariff, :with_flat_price, source: :dcc, school: school, meters: [meter], value: price, end_date: nil)
-    }
-    let!(:existing_charge) {
+    end
+    let!(:existing_charge) do
       create(:energy_tariff_charge, energy_tariff: existing_energy_tariff, charge_type: :standing_charge, units: :day, value: charge)
-    }
+    end
 
     before(:each) do
       service.perform
@@ -128,35 +128,34 @@ describe Amr::N3rgyEnergyTariffInserter do
     end
 
     context 'when the previous tariff has expired' do
-      let!(:existing_energy_tariff) {
-        create(:energy_tariff, :with_flat_price, source: :dcc, school: school, meters: [meter], value: price, end_date: Date.new(2022,12,1))
-      }
+      let!(:existing_energy_tariff) do
+        create(:energy_tariff, :with_flat_price, source: :dcc, school: school, meters: [meter], value: price, end_date: Date.new(2022, 12, 1))
+      end
       it 'adds a new tariff' do
         expect(EnergyTariff.count).to eq 2
       end
     end
-
   end
 
   context 'when the tariff has changed' do
     let(:old_price)   { price }
     let(:old_charge)  { charge }
-    let!(:existing_energy_tariff) {
+    let!(:existing_energy_tariff) do
       create(:energy_tariff, :with_flat_price, source: :dcc, school: school, meters: [meter], value: old_price, end_date: nil)
-    }
-    let!(:existing_charge) {
+    end
+    let!(:existing_charge) do
       create(:energy_tariff_charge, energy_tariff: existing_energy_tariff, charge_type: :standing_charge, units: :day, value: old_charge)
-    }
+    end
 
     before(:each) do
       service.perform
     end
 
     context 'because the standing charge has updated' do
-      let(:old_charge)  { 0.1 }
+      let(:old_charge) { 0.1 }
       it 'updates end date of previous tariff' do
         existing_energy_tariff.reload
-        expect(existing_energy_tariff.end_date).to eq (Time.zone.today - 1)
+        expect(existing_energy_tariff.end_date).to eq(Time.zone.today - 1)
       end
       it 'creates a new tariff' do
         expect(EnergyTariff.count).to eq 2
@@ -169,7 +168,7 @@ describe Amr::N3rgyEnergyTariffInserter do
 
       it 'updates end date of previous tariff' do
         existing_energy_tariff.reload
-        expect(existing_energy_tariff.end_date).to eq (Time.zone.today - 1)
+        expect(existing_energy_tariff.end_date).to eq(Time.zone.today - 1)
       end
 
       it 'creates a new tariff' do
@@ -179,10 +178,10 @@ describe Amr::N3rgyEnergyTariffInserter do
     end
 
     context 'because the flat rate prices have changed' do
-      let(:old_price)  { 0.22 }
+      let(:old_price) { 0.22 }
       it 'updates end date of previous tariff' do
         existing_energy_tariff.reload
-        expect(existing_energy_tariff.end_date).to eq (Time.zone.today - 1)
+        expect(existing_energy_tariff.end_date).to eq(Time.zone.today - 1)
       end
       it 'creates a new tariff' do
         expect(EnergyTariff.count).to eq 2
@@ -194,18 +193,18 @@ describe Amr::N3rgyEnergyTariffInserter do
       #00:00-05:30, 05:30-23:30
       let(:raw_prices) { Array.new(12, old_price) + Array.new(36, old_price * 2)}
 
-      let!(:existing_energy_tariff) {
+      let!(:existing_energy_tariff) do
         create(:energy_tariff, tariff_type: :differential, source: :dcc, school: school, meters: [meter], end_date: nil)
-      }
-      let!(:existing_period_1) {
+      end
+      let!(:existing_period_1) do
         create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "00:00", end_time: "07:00")
-      }
-      let!(:existing_period_2) {
+      end
+      let!(:existing_period_2) do
         create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "07:00", end_time: "00:00")
-      }
+      end
       it 'updates end date of previous tariff' do
         existing_energy_tariff.reload
-        expect(existing_energy_tariff.end_date).to eq (Time.zone.today - 1)
+        expect(existing_energy_tariff.end_date).to eq(Time.zone.today - 1)
       end
 
       it 'creates a new tariff' do
@@ -216,18 +215,18 @@ describe Amr::N3rgyEnergyTariffInserter do
       #00:00-04:30, 05:00-23:30
       let(:raw_prices) { Array.new(10, price) + Array.new(38, price * 2)}
 
-      let!(:existing_energy_tariff) {
+      let!(:existing_energy_tariff) do
         create(:energy_tariff, tariff_type: :differential, source: :dcc, school: school, meters: [meter], end_date: nil)
-      }
-      let!(:existing_period_1) {
+      end
+      let!(:existing_period_1) do
         create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "00:00", end_time: "07:00")
-      }
-      let!(:existing_period_2) {
+      end
+      let!(:existing_period_2) do
         create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "07:00", end_time: "00:00")
-      }
+      end
       it 'updates end date of previous tariff' do
         existing_energy_tariff.reload
-        expect(existing_energy_tariff.end_date).to eq (Time.zone.today - 1)
+        expect(existing_energy_tariff.end_date).to eq(Time.zone.today - 1)
       end
 
       it 'creates a new tariff' do
@@ -246,7 +245,7 @@ describe Amr::N3rgyEnergyTariffInserter do
       end
       it 'updates end date of previous tariff' do
         existing_energy_tariff.reload
-        expect(existing_energy_tariff.end_date).to eq (Time.zone.today - 1)
+        expect(existing_energy_tariff.end_date).to eq(Time.zone.today - 1)
       end
     end
   end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Transifex::Loader, type: :service do
-
   let(:logger)      { double(info: true) }
   let(:locale)      { :cy }
   let(:full_sync)   { true }
@@ -14,13 +13,13 @@ describe Transifex::Loader, type: :service do
   end
 
   it 'creates a transifex load record' do
-    expect{ service.perform }.to change(TransifexLoad, :count).by(1)
+    expect { service.perform }.to change(TransifexLoad, :count).by(1)
   end
 
   context 'when configured to only pull' do
     let!(:activity_category)  { create(:activity_category) }
     let!(:activity_type)      { create(:activity_type, active: true, activity_category: activity_category) }
-    let(:full_sync)                 { false }
+    let(:full_sync) { false }
 
     before(:each) do
       expect_any_instance_of(Transifex::Synchroniser).not_to receive(:push)
@@ -39,7 +38,7 @@ describe Transifex::Loader, type: :service do
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_raise("Sync error")
     end
     it 'logs errors in the database' do
-      expect{ service.perform }.to change(TransifexLoadError, :count).by(2)
+      expect { service.perform }.to change(TransifexLoadError, :count).by(2)
       expect(TransifexLoadError.first.record_type).to eq("ActivityType")
       expect(TransifexLoadError.first.record_id).to eq activity_type.id
       expect(TransifexLoadError.first.error).to eq("Sync error")
@@ -96,7 +95,7 @@ describe Transifex::Loader, type: :service do
       end
 
       context 'when a record has no contents' do
-        let!(:advice_page_text)   { "" }
+        let!(:advice_page_text) { "" }
         it 'skips the pull' do
           expect(TransifexLoad.first.pulled).to eq 9
         end

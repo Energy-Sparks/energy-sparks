@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Onboarding::ReminderMailer, type: :service do
-
   let(:email_sent_less_than_a_week_ago)       { create(:school_onboarding_event, event: :email_sent, created_at: 6.days.ago) }
   let(:email_sent_over_a_week_ago)            { create(:school_onboarding_event, event: :email_sent, created_at: 8.days.ago) }
   let(:reminder_sent_less_than_a_week_ago)    { create(:school_onboarding_event, event: :reminder_sent, created_at: 6.days.ago) }
@@ -25,7 +24,7 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
         expect(deliveries.count).to be 1
       end
       it "creates reminder_sent event" do
-        expect(onboarding.events.pluck(:event)).to match_array ["email_sent", "reminder_sent"]
+        expect(onboarding.events.pluck(:event)).to match_array %w[email_sent reminder_sent]
       end
     end
 
@@ -36,7 +35,7 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
         expect(deliveries.count).to be 1
       end
       it "creates another reminder_sent event" do
-        expect(onboarding.events.pluck(:event)).to match_array ["email_sent", "reminder_sent", "reminder_sent"]
+        expect(onboarding.events.pluck(:event)).to match_array %w[email_sent reminder_sent reminder_sent]
       end
     end
 
@@ -47,7 +46,7 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
         expect(deliveries.count).to be 0
       end
       it "events remain the same" do
-        expect(onboarding.events.pluck(:event)).to match_array ["email_sent", "reminder_sent"]
+        expect(onboarding.events.pluck(:event)).to match_array %w[email_sent reminder_sent]
       end
     end
 
@@ -58,7 +57,7 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
         expect(deliveries.count).to be 0
       end
       it "events remain the same" do
-        expect(onboarding.events.pluck(:event)).to match_array ["email_sent", "reminder_sent", "reminder_sent"]
+        expect(onboarding.events.pluck(:event)).to match_array %w[email_sent reminder_sent reminder_sent]
       end
     end
 
@@ -80,8 +79,8 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
     before { Onboarding::ReminderMailer.deliver(school_onboardings: onboardings) }
     context "two onboardings with the same contact email" do
       let(:onboardings) do
-        [ create(:school_onboarding, events: [], contact_email: 'test@test.com'),
-          create(:school_onboarding, events: [], contact_email: 'test@test.com') ]
+        [create(:school_onboarding, events: [], contact_email: 'test@test.com'),
+         create(:school_onboarding, events: [], contact_email: 'test@test.com')]
       end
 
       it "sends one email" do
@@ -100,8 +99,8 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
 
     context "two onboardings with different contact emails" do
       let(:onboardings) do
-        [ create(:school_onboarding, events: [], contact_email: 'email_a@test.com'),
-          create(:school_onboarding, events: [], contact_email: 'email_b@test.com')]
+        [create(:school_onboarding, events: [], contact_email: 'email_a@test.com'),
+         create(:school_onboarding, events: [], contact_email: 'email_b@test.com')]
       end
 
       it "sends seperate emails" do
@@ -122,9 +121,9 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
 
     context "three onboardings, two with the same contact emails" do
       let(:onboardings) do
-        [ create(:school_onboarding, events: [], contact_email: 'email_a@test.com'),
-          create(:school_onboarding, events: [], contact_email: 'email_b@test.com'),
-          create(:school_onboarding, events: [], contact_email: 'email_a@test.com')]
+        [create(:school_onboarding, events: [], contact_email: 'email_a@test.com'),
+         create(:school_onboarding, events: [], contact_email: 'email_b@test.com'),
+         create(:school_onboarding, events: [], contact_email: 'email_a@test.com')]
       end
 
       it "sends two emails" do

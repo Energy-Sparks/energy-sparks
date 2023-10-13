@@ -1,19 +1,18 @@
 require 'rails_helper'
 
 describe AggregateSchoolService, type: :service do
+  let(:school) { create(:school) }
 
-  let(:school)              { create(:school) }
-
-  let(:electricity_end_date)    { Date.new(2020,12,31)}
+  let(:electricity_end_date)    { Date.new(2020, 12, 31)}
   let(:electricity_amr_data)    { double('electricity-amr-data') }
 
-  let(:gas_end_date)            { Date.new(2019,12,01) }
+  let(:gas_end_date)            { Date.new(2019, 12, 0o1) }
   let(:gas_amr_data)            { double('gas-amr-data') }
 
-  let(:heaters_end_date)        { Date.new(2020,12,01)}
+  let(:heaters_end_date)        { Date.new(2020, 12, 0o1)}
   let(:heaters_amr_data)        { double('heaters-amr-data') }
 
-  let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
+  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter')}
   let(:gas_aggregate_meter)     { double('gas-aggregated-meter')}
   let(:heaters_aggregate_meter) { double('heaters-aggregated-meter')}
 
@@ -35,17 +34,17 @@ describe AggregateSchoolService, type: :service do
 
   context '#analysis_date' do
     it 'returns end date for gas' do
-      expect( AggregateSchoolService.analysis_date(meter_collection, :gas)).to eq(gas_end_date)
+      expect(AggregateSchoolService.analysis_date(meter_collection, :gas)).to eq(gas_end_date)
     end
     it 'returns end date for electricity' do
-      expect( AggregateSchoolService.analysis_date(meter_collection, :electricity)).to eq(electricity_end_date)
+      expect(AggregateSchoolService.analysis_date(meter_collection, :electricity)).to eq(electricity_end_date)
     end
     it 'returns end date for storage heaters' do
-      expect( AggregateSchoolService.analysis_date(meter_collection, :storage_heater)).to eq(electricity_end_date)
+      expect(AggregateSchoolService.analysis_date(meter_collection, :storage_heater)).to eq(electricity_end_date)
     end
     it 'returns today otherwise' do
-      expect( AggregateSchoolService.analysis_date(meter_collection, nil)).to eq(Date.today)
-      expect( AggregateSchoolService.analysis_date(meter_collection, :solar_pv)).to eq(Date.today)
+      expect(AggregateSchoolService.analysis_date(meter_collection, nil)).to eq(Time.zone.today)
+      expect(AggregateSchoolService.analysis_date(meter_collection, :solar_pv)).to eq(Time.zone.today)
     end
   end
 end

@@ -2,8 +2,7 @@ require 'rails_helper'
 
 module Events
   describe Event do
-
-    let(:org_event) {
+    let(:org_event) do
       EventbriteSDK::OrgEvent.new(
         id: 123,
         url: "https://example/org/123",
@@ -20,14 +19,14 @@ module Events
           is_sold_out: true
         }
       )
-    }
+    end
 
     it "initialises properly" do
       event = Events::Event.new(org_event)
-      expect( event.name ).to eql("html name")
-      expect( event.date ).to eql( DateTime.parse("2021-03-23T16:00:00") )
-      expect( event.url ).to eql("https://example/org/123")
-      expect( event.sold_out? ).to eql(true)
+      expect(event.name).to eql("html name")
+      expect(event.date).to eql(DateTime.parse("2021-03-23T16:00:00"))
+      expect(event.url).to eql("https://example/org/123")
+      expect(event.sold_out?).to eql(true)
     end
   end
 end

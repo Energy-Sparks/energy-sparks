@@ -23,13 +23,13 @@ RSpec.describe Admin::ActivityTypesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # ActivityType. As you add validations to ActivityType, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     { name: 'test name', activity_category_id: activity_category.id, description: 'test description', active: true, score: 10 }
-  }
+  end
 
-  let(:invalid_attributes) {
+  let(:invalid_attributes) do
     { name: nil }
-  }
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -73,9 +73,9 @@ RSpec.describe Admin::ActivityTypesController, type: :controller do
     describe "POST #create" do
       context "with valid params" do
         it "creates a new ActivityType" do
-          expect {
+          expect do
             post :create, params: { activity_type: valid_attributes }
-          }.to change(ActivityType, :count).by(1)
+          end.to change(ActivityType, :count).by(1)
         end
 
         it "assigns a newly created activity_type as @activity_type" do
@@ -105,9 +105,9 @@ RSpec.describe Admin::ActivityTypesController, type: :controller do
 
     describe "PUT #update" do
       context "with valid params" do
-        let(:new_attributes) {
+        let(:new_attributes) do
           { name: 'new name', description: 'new description', active: false }
-        }
+        end
 
         it "updates the requested activity_type" do
           activity_type = ActivityType.create! valid_attributes
@@ -149,9 +149,9 @@ RSpec.describe Admin::ActivityTypesController, type: :controller do
     describe "DELETE #destroy" do
       it "does NOT destroy the requested activity_type" do
         activity_type = ActivityType.create! valid_attributes
-        expect {
+        expect do
           delete :destroy, params: { id: activity_type.to_param }
-        }.to change(ActivityType, :count).by(0)
+        end.to change(ActivityType, :count).by(0)
       end
 
       it "redirects to the activity_types list" do

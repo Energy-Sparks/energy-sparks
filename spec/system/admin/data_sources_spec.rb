@@ -3,7 +3,7 @@ require 'rails_helper'
 shared_examples_for "a displayed data source" do
   it "displays data source fields" do
     expect(page).to have_content(data_source.organisation_type.try(:humanize).presence || "")
-    text_attributes.keys.each do |text_field|
+    text_attributes.each_key do |text_field|
       expect(page).to have_content(data_source[text_field])
     end
   end
@@ -28,7 +28,8 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
   let(:setup_data)             { }
   let!(:user)                  { }
 
-  let!(:text_attributes) { {
+  let!(:text_attributes) do
+    {
     name: "Organisation name",
     contact_name: "Contact name",
     contact_email: "Contact email",
@@ -41,7 +42,8 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
     historic_data: "Historic data",
     loa_expiry_procedure: "What to do when LOA is about expire",
     comments: "Comments"
-  } }
+  }
+  end
 
   before do
     setup_data

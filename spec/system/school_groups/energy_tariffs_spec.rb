@@ -28,7 +28,7 @@ describe 'school group energy tariffs', type: :system do
   context 'as a group_admin user of a different group' do
     let!(:school_group_2) { create(:school_group, public: true) }
     let(:current_user) { create(:user, role: :group_admin, school_group: school_group_2)}
-    let(:path)          { school_group_energy_tariffs_path(school_group) }
+    let(:path) { school_group_energy_tariffs_path(school_group) }
     before(:each) { sign_in(current_user) }
     include_examples "the user does not have access to the tariff editor"
   end

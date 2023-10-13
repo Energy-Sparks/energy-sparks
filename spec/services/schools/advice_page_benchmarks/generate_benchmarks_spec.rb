@@ -1,6 +1,5 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::GenerateBenchmarks, type: :service do
-
   let(:advice_page_1) { create(:advice_page, key: :baseload) }
   let(:advice_page_2) { create(:advice_page, key: :electricity_out_of_hours) }
 

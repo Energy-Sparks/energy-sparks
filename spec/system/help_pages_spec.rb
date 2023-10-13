@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'help pages', type: :system do
-
   let(:help_page) { create(:help_page, title: "The page", feature: :school_targets, description: "Content", published: true)}
 
   context 'as a user' do
@@ -20,7 +19,6 @@ describe 'help pages', type: :system do
         expect(page.status_code).to eql 404
       end
     end
-
   end
 
   context 'as an admin' do
@@ -39,7 +37,6 @@ describe 'help pages', type: :system do
         expect(page).to have_content("The page")
         expect(page).to have_content("Content")
       end
-
     end
   end
 end

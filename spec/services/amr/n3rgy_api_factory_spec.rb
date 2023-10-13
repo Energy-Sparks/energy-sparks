@@ -2,7 +2,6 @@ require 'rails_helper'
 
 module Amr
   describe N3rgyApiFactory do
-
     let(:key1)      { 'prod-api-key' }
     let(:url1)      { 'prod-data-url' }
 

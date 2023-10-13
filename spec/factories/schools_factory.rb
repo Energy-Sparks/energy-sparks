@@ -24,25 +24,24 @@ FactoryBot.define do
     end
 
     trait :with_school_group do
-      after(:create) do |school, evaluator|
+      after(:create) do |school, _evaluator|
         school.update(school_group: create(:school_group))
       end
     end
 
     trait :with_calendar do
-      after(:create) do |school, evaluator|
+      after(:create) do |school, _evaluator|
         school.update(calendar: create(:school_calendar))
       end
     end
 
     trait :with_feed_areas do
-      after(:create) do |school, evaluator|
+      after(:create) do |school, _evaluator|
         school.update(dark_sky_area: create(:dark_sky_area), solar_pv_tuos_area: create(:solar_pv_tuos_area), weather_station: create(:weather_station))
       end
     end
 
     trait :with_points do
-
       transient do
         score_points { 1 }
         activities_happened_on { 1.month.ago }

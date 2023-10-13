@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'estimated annual consumption', type: :system do
-  let!(:school)     { create(:school) }
+  let!(:school) { create(:school) }
 
-  let(:fuel_configuration)   { Schools::FuelConfiguration.new(has_storage_heaters: true, has_gas: true, has_electricity: true) }
+  let(:fuel_configuration) { Schools::FuelConfiguration.new(has_storage_heaters: true, has_gas: true, has_electricity: true) }
 
-  let(:suggest_estimates)   { [] }
+  let(:suggest_estimates) { [] }
 
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
@@ -13,7 +13,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
   end
 
   context 'as a school admin' do
-    let!(:school_admin)     { create(:school_admin, school: school) }
+    let!(:school_admin) { create(:school_admin, school: school) }
 
     before(:each) do
       sign_in(school_admin)
@@ -25,7 +25,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
     end
 
     context 'and estimates needed' do
-      let(:suggest_estimates)   { ["gas", "electricity", "storage_heater"] }
+      let(:suggest_estimates) { %w[gas electricity storage_heater] }
       it 'shows a link' do
         expect(page).to have_content("Manage usage estimate")
       end
@@ -58,7 +58,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
       end
 
       it 'displays our estimate' do
-        school.configuration.update!(estimated_consumption: {"electricity": 1515.0, "gas": 2515.0, "storage_heater": 3515.0})
+        school.configuration.update!(estimated_consumption: { "electricity": 1515.0, "gas": 2515.0, "storage_heater": 3515.0 })
         click_on("Manage usage estimate")
         expect(page).to have_content("Based on the available data we estimate your gas usage")
         expect(page).to have_content("Based on the available data we estimate your electricity usage")
@@ -67,7 +67,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
     end
 
     context 'and estimated given' do
-      let!(:estimate)   { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school )}
+      let!(:estimate) { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school)}
 
       before(:each) do
         refresh
@@ -98,8 +98,8 @@ RSpec.describe 'estimated annual consumption', type: :system do
     end
 
     context 'and previous estimate given, but is now not needed' do
-      let!(:estimate)   { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school )}
-      let(:suggest_estimates)   { [] }
+      let!(:estimate) { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school)}
+      let(:suggest_estimates) { [] }
 
       before(:each) do
         refresh
@@ -113,7 +113,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
   end
 
   context 'as a pupil' do
-    let(:pupil)            { create(:pupil, school: school)}
+    let(:pupil) { create(:pupil, school: school)}
     before(:each) do
       sign_in(pupil)
     end
@@ -124,7 +124,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
   end
 
   context 'as a guest' do
-    let(:pupil)            { create(:pupil, school: school)}
+    let(:pupil) { create(:pupil, school: school)}
     it 'doesnt let me access page' do
       visit school_estimated_annual_consumptions_path(school)
       expect(page).to have_content("Sign in to Energy Sparks")
@@ -132,8 +132,8 @@ RSpec.describe 'estimated annual consumption', type: :system do
   end
 
   context 'as an admin' do
-    let(:admin)            { create(:admin)}
-    let!(:estimate)   { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school )}
+    let(:admin) { create(:admin)}
+    let!(:estimate) { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school)}
 
     before(:each) do
       sign_in(admin)

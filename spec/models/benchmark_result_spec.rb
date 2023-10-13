@@ -6,17 +6,17 @@ describe BenchmarkResult do
 
   context '#convert_for_processing' do
     it 'returns simple json unchanged' do
-      data = {foo: 123, bar: 1.2, other: "String", check: true, var: Date.new(2022,4,1)}
+      data = { foo: 123, bar: 1.2, other: "String", check: true, var: Date.new(2022, 4, 1) }
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
           other: "String",
           check: true,
-          var: Date.new(2022,4,1)
+          var: Date.new(2022, 4, 1)
         })
     end
     it 'replaces .inf with Infinity' do
-      data = {foo: 123, bar: 1.2, var: ".inf"}
+      data = { foo: 123, bar: 1.2, var: ".inf" }
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
@@ -24,7 +24,7 @@ describe BenchmarkResult do
         })
     end
     it 'replaces -.Inf with -Infinity' do
-      data = {foo: 123, bar: 1.2, var: "-.Inf"}
+      data = { foo: 123, bar: 1.2, var: "-.Inf" }
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
@@ -32,7 +32,7 @@ describe BenchmarkResult do
         })
     end
     it 'replaces .Nan with NaN' do
-      data = {foo: 123, bar: 1.2, var: ".NAN"}
+      data = { foo: 123, bar: 1.2, var: ".NAN" }
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
@@ -43,43 +43,43 @@ describe BenchmarkResult do
 
   context '#convert_for_storage' do
     it 'leaves simple json unchanged' do
-      data = {foo: 123, bar: 1.2, var: Date.new(2022,4,1)}
+      data = { foo: 123, bar: 1.2, var: Date.new(2022, 4, 1) }
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
-          var: Date.new(2022,4,1)
+          var: Date.new(2022, 4, 1)
         })
     end
     it 'replaces Infinity with .inf' do
-      data = {foo: 123, bar: 1.2, var: Float::INFINITY}
+      data = { foo: 123, bar: 1.2, var: Float::INFINITY }
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
           var: ".inf"
         })
-        data = {foo: 123, bar: 1.2, var: BigDecimal('Infinity')}
-        expect(BenchmarkResult.convert_for_storage(data)).to eq({
-            foo: 123,
-            bar: 1.2,
-            var: ".inf"
-          })
+      data = { foo: 123, bar: 1.2, var: BigDecimal('Infinity') }
+      expect(BenchmarkResult.convert_for_storage(data)).to eq({
+          foo: 123,
+          bar: 1.2,
+          var: ".inf"
+        })
     end
     it 'replaces -Infinity with -.Inf' do
-      data = {foo: 123, bar: 1.2, var: -Float::INFINITY}
+      data = { foo: 123, bar: 1.2, var: -Float::INFINITY }
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
           var: "-.Inf"
         })
-        data = {foo: 123, bar: 1.2, var: BigDecimal('-Infinity')}
-        expect(BenchmarkResult.convert_for_storage(data)).to eq({
-            foo: 123,
-            bar: 1.2,
-            var: "-.Inf"
-          })
+      data = { foo: 123, bar: 1.2, var: BigDecimal('-Infinity') }
+      expect(BenchmarkResult.convert_for_storage(data)).to eq({
+          foo: 123,
+          bar: 1.2,
+          var: "-.Inf"
+        })
     end
     it 'replaces with NaN with .NaN' do
-      data = {foo: 123, bar: 1.2, var: Float::NAN}
+      data = { foo: 123, bar: 1.2, var: Float::NAN }
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
@@ -87,5 +87,4 @@ describe BenchmarkResult do
         })
     end
   end
-
 end

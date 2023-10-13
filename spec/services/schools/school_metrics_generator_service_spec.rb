@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Schools::SchoolMetricsGeneratorService, type: :service do
-
   let!(:benchmark_run)    { BenchmarkResultGenerationRun.create! }
 
   let(:school)            { create(:school) }
@@ -68,8 +67,5 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
         service.perform
       end
     end
-
   end
-
-
 end

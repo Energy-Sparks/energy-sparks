@@ -16,7 +16,7 @@ RSpec.describe OnboardingMailer do
   end
 
   def replace_variables(email_content, locale: :en)
-    prefix = (locale == :en) ? "" : "#{locale}."
+    prefix = locale == :en ? "" : "#{locale}."
     email_content.gsub('%{school_name}', school.name)
                  .gsub('%{contact_url}', "http://#{prefix}localhost/contact")
                  .gsub('%{activity_categories_url}', "http://#{prefix}localhost/activity_categories")
@@ -34,7 +34,7 @@ RSpec.describe OnboardingMailer do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject') + " / " + I18n.t('onboarding_mailer.onboarding_email.subject', locale: :cy))
       end
       it "has English text" do
-        I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
+        I18n.t('onboarding_mailer.onboarding_email').except(:subject).each_value do |email_content|
           expect(body).to include(email_content.gsub('%{school_name}', school.name))
         end
         expect(body).to include("http://localhost/school_setup/")
@@ -52,7 +52,7 @@ RSpec.describe OnboardingMailer do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject'))
       end
       it "has English text" do
-        I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
+        I18n.t('onboarding_mailer.onboarding_email').except(:subject).each_value do |email_content|
           expect(body).to include(email_content.gsub('%{school_name}', school.name))
         end
         expect(body).to include("http://localhost/school_setup/")
@@ -71,7 +71,7 @@ RSpec.describe OnboardingMailer do
     it 'sends the completion email' do
       OnboardingMailer.with(school_onboarding: school_onboarding).completion_email.deliver_now
       expect(email.subject).to eq(I18n.t('onboarding_mailer.completion_email.subject').gsub('%{school}', school.name).gsub('%{school_group}', school.area_name))
-      I18n.t('onboarding_mailer.completion_email').except(:subject).values.each do |email_content|
+      I18n.t('onboarding_mailer.completion_email').except(:subject).each_value do |email_content|
         expect(body).to include(email_content.gsub('%{school_name}', school.name).gsub('%{school_group}', school.area_name))
       end
     end
@@ -113,17 +113,16 @@ RSpec.describe OnboardingMailer do
     ## These next two statements can be removed when we have translations from transifex for these
     ## This will be when send_automated_reminders feature flag is switched on
     let(:missing_translations) do
-      { subject:          { other: "cy other subject"},
-        title:            { other: "cy other title"},
+      { subject:          { other: "cy other subject" },
+        title:            { other: "cy other title" },
         paragraph_1_html: { other: "cy other paragraph_1_html" },
         paragraph_2:      { other: "cy other paragraph_2" },
-        paragraph_3:      { other: "cy other paragraph_3" },
-      }
+        paragraph_3:      { other: "cy other paragraph_3" }, }
     end
 
     before do
       unless EnergySparks::FeatureFlags.active?(:send_automated_reminders)
-        I18n.backend.store_translations(:cy, { onboarding_mailer: { reminder_email: missing_translations } } )
+        I18n.backend.store_translations(:cy, { onboarding_mailer: { reminder_email: missing_translations } })
       end
     end
 
@@ -215,7 +214,7 @@ RSpec.describe OnboardingMailer do
       let(:preferred_locale) { :cy }
       it 'sends the activation email in cy' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject', locale: :cy).gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.activation_email', locale: :cy).except(:subject, :set_your_first_targets).values.each do |text|
+        I18n.t('onboarding_mailer.activation_email', locale: :cy).except(:subject, :set_your_first_targets).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :cy))
         end
       end
@@ -224,7 +223,7 @@ RSpec.describe OnboardingMailer do
       let(:preferred_locale) { :en }
       it 'sends the activation email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject').gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.activation_email', locale: :en).except(:subject, :set_your_first_targets).values.each do |text|
+        I18n.t('onboarding_mailer.activation_email', locale: :en).except(:subject, :set_your_first_targets).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :en))
         end
       end
@@ -237,7 +236,7 @@ RSpec.describe OnboardingMailer do
       let(:preferred_locale) { :cy }
       it 'sends the onboarded email in cy' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject', locale: :cy).gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.onboarded_email', locale: :cy).except(:subject).values.each do |text|
+        I18n.t('onboarding_mailer.onboarded_email', locale: :cy).except(:subject).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :cy))
         end
       end
@@ -246,7 +245,7 @@ RSpec.describe OnboardingMailer do
       let(:preferred_locale) { :en }
       it 'sends the onboarded email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject').gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.onboarded_email', locale: :en).except(:subject).values.each do |text|
+        I18n.t('onboarding_mailer.onboarded_email', locale: :en).except(:subject).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :en))
         end
       end
@@ -259,7 +258,7 @@ RSpec.describe OnboardingMailer do
       let(:preferred_locale) { :cy }
       it 'sends the data enabled_email in cy' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.data_enabled_email.subject', locale: :cy).gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.data_enabled_email', locale: :cy).except(:subject, :set_your_first_targets).values.each do |text|
+        I18n.t('onboarding_mailer.data_enabled_email', locale: :cy).except(:subject, :set_your_first_targets).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :cy))
         end
       end
@@ -268,7 +267,7 @@ RSpec.describe OnboardingMailer do
       let(:preferred_locale) { :en }
       it 'sends the data enabled_email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.data_enabled_email.subject', locale: :en).gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.data_enabled_email', locale: :en).except(:subject, :set_your_first_targets).values.each do |text|
+        I18n.t('onboarding_mailer.data_enabled_email', locale: :en).except(:subject, :set_your_first_targets).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :en))
         end
       end
@@ -281,7 +280,7 @@ RSpec.describe OnboardingMailer do
       let(:preferred_locale) { :cy }
       it 'sends the welcome email in cy' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.welcome_email.subject', locale: :cy))
-        I18n.t('onboarding_mailer.welcome_email', locale: :cy).except(:subject).values.each do |text|
+        I18n.t('onboarding_mailer.welcome_email', locale: :cy).except(:subject).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :cy))
         end
       end
@@ -290,7 +289,7 @@ RSpec.describe OnboardingMailer do
       let(:preferred_locale) { :en }
       it 'sends the welcome email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.welcome_email.subject', locale: :en))
-        I18n.t('onboarding_mailer.welcome_email', locale: :en).except(:subject).values.each do |text|
+        I18n.t('onboarding_mailer.welcome_email', locale: :en).except(:subject).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :en))
         end
       end

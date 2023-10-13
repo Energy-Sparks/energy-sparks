@@ -1,20 +1,19 @@
 require 'rails_helper'
 
 describe Schools::GenerateMeterDates, type: :service do
-
-  let(:electricity_start_date)  { Date.new(2020,01,01)}
-  let(:electricity_end_date)    { Date.new(2020,12,31)}
+  let(:electricity_start_date)  { Date.new(2020, 0o1, 0o1)}
+  let(:electricity_end_date)    { Date.new(2020, 12, 31)}
   let(:electricity_amr_data)    { double('electricity-amr-data') }
 
-  let(:gas_start_date)          { Date.new(2019,01,01)}
-  let(:gas_end_date)            { Date.new(2019,12,01) }
+  let(:gas_start_date)          { Date.new(2019, 0o1, 0o1)}
+  let(:gas_end_date)            { Date.new(2019, 12, 0o1) }
   let(:gas_amr_data)            { double('gas-amr-data') }
 
-  let(:heaters_start_date)      { Date.new(2020,02,01)}
-  let(:heaters_end_date)        { Date.new(2020,12,01)}
+  let(:heaters_start_date)      { Date.new(2020, 0o2, 0o1)}
+  let(:heaters_end_date)        { Date.new(2020, 12, 0o1)}
   let(:heaters_amr_data)        { double('heaters-amr-data') }
 
-  let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
+  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter')}
   let(:gas_aggregate_meter)     { double('gas-aggregated-meter')}
   let(:heaters_aggregate_meter) { double('heaters-aggregated-meter')}
 
@@ -74,8 +73,6 @@ describe Schools::GenerateMeterDates, type: :service do
         expect(dates[:gas]).to be_nil
         expect(dates[:storage_heater]).to be_nil
       end
-
     end
   end
-
 end

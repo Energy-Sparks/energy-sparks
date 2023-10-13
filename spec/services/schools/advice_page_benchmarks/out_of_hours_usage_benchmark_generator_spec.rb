@@ -1,11 +1,10 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator, type: :service do
-
   let(:school)      { create(:school) }
   let(:advice_page) { create(:advice_page, key: :electricity_out_of_hours, fuel_type: :electricity) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service)     { Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
 
   context '#benchmark_school' do
     let(:enough_data) { true }
@@ -31,6 +30,5 @@ RSpec.describe Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator,
         expect(service.benchmark_school).to eq :exemplar_school
       end
     end
-
   end
 end
