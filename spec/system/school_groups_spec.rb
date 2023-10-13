@@ -174,6 +174,8 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Group Dashboard' }
           end
 
+          it_behaves_like 'a page not showing the cluster column'
+
           describe 'changes in metrics params' do
             it 'shows intro text' do
               expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
@@ -275,10 +277,6 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).to have_content('8,540')
             end
 
-            include_examples 'not showing the cluster column' do
-              let(:url) { school_group_path(school_group) }
-            end
-
             it 'allows a csv download of recent data metrics' do
               visit school_group_path(school_group)
 
@@ -317,6 +315,8 @@ describe 'school groups', :school_groups, type: :system do
           before do
             visit comparisons_school_group_path(school_group)
           end
+
+          it_behaves_like 'a page not showing the cluster column'
 
           it_behaves_like "school dashboard navigation" do
             let(:expected_path) { "/school_groups/#{school_group.slug}/comparisons" }
@@ -380,10 +380,6 @@ describe 'school groups', :school_groups, type: :system do
             expect(header).to match filename
             expect(page.source).to eq "Fuel,Description,School,Category\nGas,Out of school hours gas use,School 5,Exemplar\nGas,Out of school hours gas use,School 6,Exemplar\nGas,Out of school hours gas use,School 3,Well managed\nGas,Out of school hours gas use,School 4,Well managed\nGas,Out of school hours gas use,School 1,Action needed\nGas,Out of school hours gas use,School 2,Action needed\n"
           end
-
-          include_examples 'not showing the cluster column' do
-            let(:url) { comparisons_school_group_path(school_group) }
-          end
         end
 
         describe 'showing priority actions' do
@@ -437,7 +433,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).to have_content(school_1.name)
             end
 
-            include_examples 'not showing the cluster column'
+            it_behaves_like 'a page not showing the cluster column'
           end
         end
 
@@ -451,6 +447,8 @@ describe 'school groups', :school_groups, type: :system do
             let(:expected_path) { "/school_groups/#{school_group.slug}/current_scores" }
             let(:breadcrumb)    { 'Current Scores' }
           end
+
+          it_behaves_like 'a page not showing the cluster column'
 
           it 'includes a link to previous year' do
             expect(page).to have_content("View the final scores from last year")
@@ -467,10 +465,6 @@ describe 'school groups', :school_groups, type: :system do
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.current_scores')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
             expect(page.source).to have_content "Position,School,Score\n=1,School 1,20\n=1,School 2,20\n2,School 3,18\n-,School 4,0\n-,School 5,0\n"
-          end
-
-          include_examples 'not showing the cluster column' do
-            let(:url) { current_scores_school_group_path(school_group) }
           end
 
           it 'lists the schools' do
@@ -557,35 +551,7 @@ describe 'school groups', :school_groups, type: :system do
         it_behaves_like "visiting chart updates redirects to group page"
       end
 
-      context "recent usage tab" do
-        let(:url) { school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "comparisons tab" do
-        include_context "school group comparisons"
-        let(:url) { comparisons_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "priority actions tab" do
-        include_context "school group priority actions"
-        let(:url) { priority_actions_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "current scores tab" do
-        let(:url) { current_scores_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
+      it_behaves_like "school group tabs not showing the cluster column"
     end
 
     context 'when logged in as a non school admin' do
@@ -615,35 +581,7 @@ describe 'school groups', :school_groups, type: :system do
         it_behaves_like "visiting chart updates redirects to group map page"
       end
 
-      context "recent usage tab" do
-        let(:url) { school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "comparisons tab" do
-        include_context "school group comparisons"
-        let(:url) { comparisons_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "priority actions tab" do
-        include_context "school group priority actions"
-        let(:url) { priority_actions_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "current scores tab" do
-        let(:url) { current_scores_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
+      it_behaves_like "school group tabs not showing the cluster column"
     end
 
     context 'when logged in as the group admin' do
@@ -692,39 +630,7 @@ describe 'school groups', :school_groups, type: :system do
         it_behaves_like "a public school group dashboard"
       end
 
-      context "recent usage tab" do
-        let!(:school) { school_group.schools.first }
-        let(:url) { school_group_path(school_group) }
-
-        include_examples 'showing the cluster column'
-        include_examples 'showing the cluster column in the download'
-      end
-
-      context "comparisons tab" do
-        include_context "school group comparisons"
-        let!(:school) { school_1 }
-        let(:url) { comparisons_school_group_path(school_group) }
-
-        include_examples 'showing the cluster column'
-        include_examples 'showing the cluster column in the download'
-      end
-
-      context "priority actions tab" do
-        include_context "school group priority actions"
-        let!(:school) { school_1 }
-        let(:url) { priority_actions_school_group_path(school_group) }
-
-        include_examples 'showing the cluster column'
-        include_examples 'showing the cluster column in the download'
-      end
-
-      context "current scores tab" do
-        let(:url) { current_scores_school_group_path(school_group) }
-        let!(:school) { school_group.schools.first }
-
-        include_examples 'showing the cluster column'
-        include_examples 'showing the cluster column in the download'
-      end
+      it_behaves_like "school group tabs showing the cluster column"
     end
 
     context 'when logged in as an admin' do
@@ -771,38 +677,7 @@ describe 'school groups', :school_groups, type: :system do
         let(:public) { false }
       end
 
-      context "recent usage tab" do
-        let!(:school) { school_group.schools.first }
-        let(:url) { school_group_path(school_group) }
-
-        include_examples 'showing the cluster column'
-        include_examples 'showing the cluster column in the download'
-      end
-
-      context "comparisons tab" do
-        include_context "school group comparisons"
-        let!(:school) { school_1 }
-        let(:url) { comparisons_school_group_path(school_group) }
-
-        include_examples 'showing the cluster column'
-        include_examples 'showing the cluster column in the download'
-      end
-
-      context "priority actions tab" do
-        include_context "school group priority actions"
-        let!(:school) { school_1 }
-        let(:url) { priority_actions_school_group_path(school_group) }
-
-        include_examples 'showing the cluster column'
-        include_examples 'showing the cluster column in the download'
-      end
-
-      context "current scores tab" do
-        let(:url) { current_scores_school_group_path(school_group) }
-        let!(:school) { school_group.schools.first }
-
-        include_examples 'showing the cluster column'
-      end
+      it_behaves_like "school group tabs showing the cluster column"
     end
 
     context 'when logged in as a group admin for a different group' do
@@ -835,35 +710,7 @@ describe 'school groups', :school_groups, type: :system do
         it_behaves_like "visiting chart updates redirects to group map page"
       end
 
-      context "recent usage tab" do
-        let(:url) { school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "comparisons tab" do
-        include_context "school group comparisons"
-        let(:url) { comparisons_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "priority actions tab" do
-        include_context "school group priority actions"
-        let(:url) { priority_actions_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
-
-      context "current scores tab" do
-        let(:url) { current_scores_school_group_path(school_group) }
-
-        include_examples 'not showing the cluster column'
-        include_examples 'not showing the cluster column in the download'
-      end
+      it_behaves_like "school group tabs not showing the cluster column"
     end
   end
 end

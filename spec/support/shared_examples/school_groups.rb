@@ -267,37 +267,31 @@ RSpec.shared_examples "shows the we are working with message" do
   end
 end
 
-RSpec.shared_examples "not showing the cluster column" do
-  before do
-    visit url if defined?(url)
-  end
-
+RSpec.shared_examples "a page not showing the cluster column" do
   it "doesn't show the cluster column" do
     expect(page).not_to have_content('Cluster')
     expect(page).not_to have_content('Not set')
   end
 end
 
-RSpec.shared_examples "showing the cluster column" do
-  let!(:cluster) {}
-  before do
-    visit url if defined?(url)
-  end
-
+RSpec.shared_examples "a page showing the cluster column" do
   it { expect(page).to have_content('Cluster') }
 
   context "school does not have a cluster" do
+    let(:cluster) { }
+
     it { expect(page).to have_content('Not set') }
   end
 
-  context "school is in a cluster" do
-    let!(:cluster) { create(:school_group_cluster, name: "My Cluster", schools: [school]) }
+  context "with a school in a cluster" do
+    let(:cluster) { create(:school_group_cluster, name: "My Cluster", schools: [school]) }
 
     it { expect(page).to have_content('My Cluster') }
   end
 end
 
-RSpec.shared_examples "not showing the cluster column in the download" do
+
+RSpec.shared_examples "a page not showing the cluster column in the download" do
   context "Clicking the Download as CSV link" do
     before do
       all(:link, 'Download as CSV').last.click
@@ -307,12 +301,102 @@ RSpec.shared_examples "not showing the cluster column in the download" do
   end
 end
 
-RSpec.shared_examples "showing the cluster column in the download" do
+RSpec.shared_examples "a page showing the cluster column in the download" do
   context "Clicking the Download as CSV link" do
     before do
       all(:link, 'Download as CSV').last.click
     end
 
     it { expect(page.source).to have_content ",Cluster," }
+  end
+end
+
+RSpec.shared_examples "school group tabs showing the cluster column" do
+  let!(:cluster) {} # hook to create cluster before page loads if there is one
+
+  context "recent usage tab" do
+    let!(:school) { school_group.schools.first }
+
+    before do
+      visit school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page showing the cluster column'
+    it_behaves_like 'a page showing the cluster column in the download'
+  end
+
+  context "comparisons tab" do
+    let!(:school) { school_1 }
+
+    include_context "school group comparisons"
+    before do
+      visit comparisons_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page showing the cluster column'
+    it_behaves_like 'a page showing the cluster column in the download'
+  end
+
+  context "priority actions tab" do
+    let!(:school) { school_1 }
+
+    include_context "school group priority actions"
+    before do
+      visit priority_actions_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page showing the cluster column'
+    it_behaves_like 'a page showing the cluster column in the download'
+  end
+
+  context "current scores tab" do
+    let!(:school) { school_group.schools.first }
+
+    before do
+      visit current_scores_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page showing the cluster column'
+    it_behaves_like 'a page showing the cluster column in the download'
+  end
+end
+
+RSpec.shared_examples "school group tabs not showing the cluster column" do
+  context "recent usage tab" do
+    before do
+      visit school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page not showing the cluster column'
+    it_behaves_like 'a page not showing the cluster column in the download'
+  end
+
+  context "comparisons tab" do
+    include_context "school group comparisons"
+    before do
+      visit comparisons_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page not showing the cluster column'
+    it_behaves_like 'a page not showing the cluster column in the download'
+  end
+
+  context "priority actions tab" do
+    include_context "school group priority actions"
+    before do
+      visit priority_actions_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page not showing the cluster column'
+    it_behaves_like 'a page not showing the cluster column in the download'
+  end
+
+  context "current scores tab" do
+    before do
+      visit current_scores_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page not showing the cluster column'
+    it_behaves_like 'a page not showing the cluster column in the download'
   end
 end
