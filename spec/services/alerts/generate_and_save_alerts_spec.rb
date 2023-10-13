@@ -47,7 +47,7 @@ module Alerts
       AlertTypeRunResult.new(alert_type: alert_type, reports: [], error_messages: error_messages, asof_date: asof_date)
     end
 
-    before(:each) do
+    before do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
     end
 
@@ -64,9 +64,9 @@ module Alerts
 
         service = GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school)
         expect { service.perform }.to change { Alert.count }.by(2).and change { AlertError.count }.by(1)
-        expect(Alert.first.run_on).to_not be_nil
-        expect(Alert.first.template_data).to_not be_nil
-        expect(Alert.first.template_data_cy).to_not be_nil
+        expect(Alert.first.run_on).not_to be_nil
+        expect(Alert.first.template_data).not_to be_nil
+        expect(Alert.first.template_data_cy).not_to be_nil
       end
 
       it 'handles just errors' do

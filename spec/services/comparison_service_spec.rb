@@ -13,6 +13,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'as an admin' do
       let(:user)   { create(:admin) }
+
       it 'lists all scoreboards' do
         expect(service.list_scoreboards).to match_array([scoreboard, private_scoreboard])
       end
@@ -26,6 +27,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'as a staff member in a school with private scoreboard' do
       let!(:user) { create(:staff, school: other_school)}
+
       it 'lists public and private' do
         expect(service.list_scoreboards).to match_array([scoreboard, private_scoreboard])
       end
@@ -33,6 +35,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'as a staff member in a school with a public scoreboard' do
       let!(:user) { create(:staff, school: school)}
+
       it 'lists only public' do
         expect(service.list_scoreboards).to match_array([scoreboard])
       end
@@ -48,6 +51,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'as an admin' do
       let(:user)   { create(:admin) }
+
       it 'lists all groups' do
         expect(service.list_school_groups).to match_array([school_group, private_school_group])
       end
@@ -61,6 +65,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'as a staff member in a school with private group' do
       let!(:user) { create(:staff, school: other_school)}
+
       it 'lists public and private' do
         expect(service.list_school_groups).to match_array([school_group, private_school_group])
       end
@@ -68,6 +73,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'as a staff member in a school with a public group' do
       let!(:user) { create(:staff, school: school)}
+
       it 'lists only public' do
         expect(service.list_school_groups).to match_array([school_group])
       end

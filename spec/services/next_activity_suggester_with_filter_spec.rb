@@ -47,6 +47,7 @@ describe NextActivitySuggesterWithFilter do
 
       context 'where the filter restricts the available activities' do
         let(:activity_type_filter) { ActivityTypeFilter.new(query: { subject_ids: [maths.id] }, school: school)}
+
         it 'applies the subject filter' do
           expect(subject.suggest_from_activity_history).to match_array(activity_types_with_suggestions_for_ks3)
         end

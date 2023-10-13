@@ -43,7 +43,7 @@ describe Programmes::UserProgress, type: :service do
     end
 
     context 'and enrolled in programme' do
-      before(:each) do
+      before do
         #this is because the Enroller relies on this currently
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
 
@@ -59,7 +59,8 @@ describe Programmes::UserProgress, type: :service do
 
       context 'and activity completed' do
         let(:activity)      { create(:activity, school: school, activity_type: programme_type_1.activity_types.first)}
-        before(:each) do
+
+        before do
           ActivityCreator.new(activity).process
         end
 

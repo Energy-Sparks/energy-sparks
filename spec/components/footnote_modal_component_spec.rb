@@ -30,7 +30,7 @@ RSpec.describe FootnoteModalComponent, type: :component do
       end
     end
 
-    it { expect(html).to_not have_text(body_content) }
+    it { expect(html).not_to have_text(body_content) }
   end
 
   context "with body_content" do

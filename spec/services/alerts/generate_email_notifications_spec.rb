@@ -26,8 +26,8 @@ describe Alerts::GenerateEmailNotifications do
     end
   end
 
-  context '#perform' do
-    before(:each) do
+  describe '#perform' do
+    before do
       Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
       Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
       alert_subscription_event_1.reload
@@ -43,16 +43,17 @@ describe Alerts::GenerateEmailNotifications do
     it 'records that emails were sent' do
       expect(alert_subscription_event_1.status).to eq 'sent'
       expect(alert_subscription_event_2.status).to eq 'sent'
-      expect(alert_subscription_event_1.email_id).to_not be_nil
+      expect(alert_subscription_event_1.email_id).not_to be_nil
       expect(alert_subscription_event_1.email_id).to eq alert_subscription_event_2.email_id
       expect(Email.find(alert_subscription_event_1.email_id).sent?).to be true
     end
 
     context 'when alerts are re-run' do
-      before(:each) do
+      before do
         ActionMailer::Base.deliveries.clear
         Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
       end
+
       it 'doesnt send emails again' do
         expect(ActionMailer::Base.deliveries).to be_empty
         expect(Email.count).to be 1
@@ -67,7 +68,7 @@ describe Alerts::GenerateEmailNotifications do
         it 'includes all alert content' do
           expect(email_body).to include('You need to do something')
           expect(email_body).to include('You need to fix something')
-          expect(email_body).to_not include('Find out more')
+          expect(email_body).not_to include('Find out more')
         end
 
         it 'includes unsubscription links' do
@@ -95,9 +96,9 @@ describe Alerts::GenerateEmailNotifications do
     let(:matcher) { Capybara::Node::Simple.new(email_body.to_s) }
 
     context 'and theres enough data' do
-      let(:active)  { true }
+      let(:active) { true }
 
-      before(:each) do
+      before do
         allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
         Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
         Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
@@ -114,7 +115,7 @@ describe Alerts::GenerateEmailNotifications do
       let(:active) { true }
       let!(:target) { create(:school_target, school: school) }
 
-      before(:each) do
+      before do
         allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
         Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
         Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
@@ -124,7 +125,7 @@ describe Alerts::GenerateEmailNotifications do
 
       it 'links to progress report' do
         expect(school.has_current_target?).to be true
-        expect(matcher).to_not have_link("Set your first target")
+        expect(matcher).not_to have_link("Set your first target")
         expect(matcher).to have_link("View your progress report")
       end
     end
@@ -132,7 +133,7 @@ describe Alerts::GenerateEmailNotifications do
     context 'but feature is disabled for our school' do
       let!(:target) { create(:school_target, school: school) }
 
-      before(:each) do
+      before do
         school.update!(enable_targets_feature: false)
         allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
         Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
@@ -142,16 +143,16 @@ describe Alerts::GenerateEmailNotifications do
       end
 
       it 'the link isnt included' do
-        expect(matcher).to_not have_link("View your progress report")
-        expect(matcher).to_not have_link("Set a new target")
-        expect(matcher).to_not have_link("Set your first target")
+        expect(matcher).not_to have_link("View your progress report")
+        expect(matcher).not_to have_link("Set a new target")
+        expect(matcher).not_to have_link("Set your first target")
       end
     end
 
     context 'and feature is active and target is expired' do
       let!(:target) { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday) }
 
-      before(:each) do
+      before do
         allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
         Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
         Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
@@ -160,7 +161,7 @@ describe Alerts::GenerateEmailNotifications do
       end
 
       it 'prompts to set new target' do
-        expect(matcher).to_not have_link("Set your first target")
+        expect(matcher).not_to have_link("Set your first target")
         expect(matcher).to have_link("Set a new target")
       end
     end
@@ -169,7 +170,7 @@ describe Alerts::GenerateEmailNotifications do
   context 'when generating email content' do
     let(:alert_1) { create(:alert, school: school, alert_type: alert_type, alert_generation_run: alert_generation_run) }
 
-    before(:each) do
+    before do
       alert_type_rating_1.update!(find_out_more_active: true)
       Alerts::GenerateContent.new(school).perform
       Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])

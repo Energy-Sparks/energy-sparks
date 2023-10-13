@@ -24,7 +24,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
   end
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
     end
@@ -42,7 +42,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
       fill_in 'Terms CSV', with: events
       click_on 'Create Calendar'
       expect(page).to have_content("Calendar created")
-      expect(page).to_not have_content("can't be blank")
+      expect(page).not_to have_content("can't be blank")
 
       calendar = Calendar.regional.first!
       expect(calendar.terms.count).to eq(1)

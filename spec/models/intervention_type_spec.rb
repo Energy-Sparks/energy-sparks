@@ -9,7 +9,7 @@ describe 'InterventionType' do
 
   it 'is invalid with invalid attributes' do
     type = build :intervention_type, score: -1
-    expect(type).to_not be_valid
+    expect(type).not_to be_valid
     expect(type.errors[:score]).to include('must be greater than or equal to 0')
   end
 
@@ -22,11 +22,11 @@ describe 'InterventionType' do
     end
 
     intervention_type.fuel_type = InterventionType::VALID_FUEL_TYPES + ['coal']
-    expect(intervention_type).to_not be_valid
+    expect(intervention_type).not_to be_valid
     expect(intervention_type.errors[:fuel_type]).to include('invalid fuel type: coal')
 
     intervention_type.fuel_type = InterventionType::VALID_FUEL_TYPES + ['coal', 'exported solar pv']
-    expect(intervention_type).to_not be_valid
+    expect(intervention_type).not_to be_valid
     expect(intervention_type.errors[:fuel_type]).to include('invalid fuel types: coal and exported solar pv')
   end
 
@@ -91,6 +91,7 @@ describe 'InterventionType' do
   context 'finding resources for transifex' do
     let!(:intervention_type_1) { create(:intervention_type, name: "one", active: true)}
     let!(:intervention_type_2) { create(:intervention_type, name: "two", active: false)}
+
     it "#tx_resources" do
       expect(InterventionType.tx_resources).to match_array([intervention_type_1])
     end
@@ -99,32 +100,39 @@ describe 'InterventionType' do
   context 'serialising for transifex' do
     context 'when mapping fields' do
       let!(:intervention_type) { create(:intervention_type, name: "My intervention", description: "description", summary: "summary")}
+
       it 'produces the expected key names' do
         expect(intervention_type.tx_attribute_key("name")).to eq "name"
         expect(intervention_type.tx_attribute_key("summary")).to eq "summary"
         expect(intervention_type.tx_attribute_key("description")).to eq "description_html"
         expect(intervention_type.tx_attribute_key("download_links")).to eq "download_links_html"
       end
+
       it 'produces the expected tx values, removing trix content wrapper' do
         expect(intervention_type.tx_value("name")).to eql intervention_type.name
         expect(intervention_type.tx_value("description")).to eql("description")
       end
+
       it 'produces the expected resource key' do
         expect(intervention_type.resource_key).to eq "intervention_type_#{intervention_type.id}"
       end
+
       it 'maps all translated fields' do
         data = intervention_type.tx_serialise
-        expect(data["en"]).to_not be nil
+        expect(data["en"]).not_to be nil
         key = "intervention_type_#{intervention_type.id}"
-        expect(data["en"][key]).to_not be nil
+        expect(data["en"][key]).not_to be nil
         expect(data["en"][key].keys).to match_array(%w[name summary description_html download_links_html])
       end
+
       it 'created categories' do
         expect(intervention_type.tx_categories).to match_array(["intervention_type"])
       end
+
       it 'overrides default name' do
         expect(intervention_type.tx_name).to eq("My intervention")
       end
+
       it 'fetches status' do
         expect(intervention_type.tx_status).to be_nil
         status = TransifexStatus.create_for!(intervention_type)
@@ -152,15 +160,18 @@ describe 'InterventionType' do
       }
     }
     end
-    before(:each) do
+
+    before do
       subject.tx_update(data, :cy)
       subject.reload
     end
+
     it 'updates simple fields' do
       expect(subject.name).to eq name
       expect(subject.name_cy).to eq "Welsh name"
       expect(subject.summary_cy).to eq "The Welsh summary"
     end
+
     it 'updates HTML fields' do
       expect(subject.description).to eq description
       expect(subject.description_cy.to_s).to eql("<div class=\"trix-content\">\n  The Welsh description\n</div>\n")

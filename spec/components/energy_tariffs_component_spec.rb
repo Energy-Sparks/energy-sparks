@@ -32,11 +32,13 @@ RSpec.describe EnergyTariffsComponent, type: :component do
     it 'renders tables for selected tariff types' do
       expect(html).to have_css('#electricity-tariffs-table')
       expect(html).to have_css('#gas-tariffs-table')
-      expect(html).to_not have_css('#solar_pv-tariffs-table')
-      expect(html).to_not have_css('#exported_solar_pv-tariffs-table')
+      expect(html).not_to have_css('#solar_pv-tariffs-table')
+      expect(html).not_to have_css('#exported_solar_pv-tariffs-table')
     end
+
     context 'with a full list' do
       let(:tariff_types) { EnergyTariff.meter_types.keys }
+
       it 'renders tables for selected tariff types' do
         expect(html).to have_css('#electricity-tariffs-table')
         expect(html).to have_css('#gas-tariffs-table')
@@ -44,20 +46,25 @@ RSpec.describe EnergyTariffsComponent, type: :component do
         expect(html).to have_css('#exported_solar_pv-tariffs-table')
       end
     end
+
     context 'with smart meter tariffs' do
       let(:source) { :dcc }
+
       context 'and no gas meters' do
         let!(:gas_tariffs) { nil }
+
         it 'adds correct message' do
           expect(html).to have_content(I18n.t('schools.user_tariffs.index.no_smart_meter_tariffs', meter_type: :gas))
         end
       end
     end
+
     context 'with default tariffs' do
       let(:default_tariffs) { true }
 
       context 'and no gas meters' do
         let!(:gas_tariffs) { nil }
+
         it 'adds correct message' do
           expect(html).to have_content(I18n.t('schools.user_tariffs.index.no_defaults', meter_type: :gas))
         end
@@ -66,6 +73,7 @@ RSpec.describe EnergyTariffsComponent, type: :component do
       context 'and no gas meters' do
         let!(:tariff_holder) { create(:school_group) }
         let!(:gas_tariffs) { nil }
+
         it 'returns no default message if there are no usable and enabled site settings tariffs for this meter type' do
           expect(html).to have_content(I18n.t('schools.user_tariffs.index.no_defaults', meter_type: :gas))
         end
@@ -80,15 +88,17 @@ RSpec.describe EnergyTariffsComponent, type: :component do
   end
 
   context 'when rendering controls' do
-    it 'should have button to add tariffs' do
+    it 'has button to add tariffs' do
       expect(html).to have_link(I18n.t("schools.user_tariffs.index.electricity.add_label"))
       expect(html).to have_link(I18n.t("schools.user_tariffs.index.gas.add_label"))
     end
+
     context 'when adding new tariffs is disabled' do
       let(:show_add_button) { false }
-      it 'should not have the buttons' do
-        expect(html).to_not have_link(I18n.t("schools.user_tariffs.index.electricity.add_label"))
-        expect(html).to_not have_link(I18n.t("schools.user_tariffs.index.gas.add_label"))
+
+      it 'does not have the buttons' do
+        expect(html).not_to have_link(I18n.t("schools.user_tariffs.index.electricity.add_label"))
+        expect(html).not_to have_link(I18n.t("schools.user_tariffs.index.gas.add_label"))
       end
     end
   end
@@ -101,6 +111,7 @@ RSpec.describe EnergyTariffsComponent, type: :component do
         c.with_footer   { "<small>I'm a footer</small>".html_safe }
       end
     end
+
     it { expect(html).to have_selector("strong", text: "I'm a header") }
     it { expect(html).to have_selector("small", text: "I'm a footer") }
   end

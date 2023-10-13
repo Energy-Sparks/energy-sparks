@@ -27,22 +27,29 @@ describe SchoolGroup, :school_groups, type: :model do
     context "with no associated schools or users" do
       it { expect(subject).to be_safe_to_destroy }
     end
+
     context "with associated schools" do
       let!(:school) { create(:school, school_group: subject) }
-      it { expect(subject).to_not be_safe_to_destroy }
+
+      it { expect(subject).not_to be_safe_to_destroy }
     end
+
     context "with associated users" do
       let!(:user) { create(:user, school_group: subject) }
-      it { expect(subject).to_not be_safe_to_destroy }
+
+      it { expect(subject).not_to be_safe_to_destroy }
+
       context "and school" do
         let!(:user) { create(:user, school_group: subject) }
-        it { expect(subject).to_not be_safe_to_destroy }
+
+        it { expect(subject).not_to be_safe_to_destroy }
       end
     end
   end
 
   describe '#with_active_schools' do
     before { SchoolGroup.delete_all }
+
     it 'returns all school groups that have one or more associated active schools' do
       sg1 = create(:school_group, public: public)
       sg2 = create(:school_group, public: public)
@@ -115,6 +122,7 @@ describe SchoolGroup, :school_groups, type: :model do
     let(:user) { create(:admin) }
     let(:school_group) { create(:school_group) }
     let(:data_source) { create(:data_source) }
+
     subject(:csv) { school_group.all_issues.to_csv }
 
     context "with issues" do
@@ -144,9 +152,9 @@ describe SchoolGroup, :school_groups, type: :model do
       it { expect(csv).to include(issue_csv_line(closed_school_group_issue)) }
       it { expect(csv).to include(issue_csv_line(school_group_note)) }
 
-      it { expect(csv).to_not include(issue_csv_line(school_in_different_school_group_issue)) }
-      it { expect(csv).to_not include(issue_csv_line(different_school_group_issue)) }
-      it { expect(csv).to_not include(issue_csv_line(school_issue_with_issueable_id_same_as_school_group_id)) }
+      it { expect(csv).not_to include(issue_csv_line(school_in_different_school_group_issue)) }
+      it { expect(csv).not_to include(issue_csv_line(different_school_group_issue)) }
+      it { expect(csv).not_to include(issue_csv_line(school_issue_with_issueable_id_same_as_school_group_id)) }
     end
 
     context "with no issues" do
@@ -174,19 +182,21 @@ describe SchoolGroup, :school_groups, type: :model do
 
       context 'as guest' do
         it 'does not allow comparison' do
-          expect(ability).to_not be_able_to(:compare, school_group)
+          expect(ability).not_to be_able_to(:compare, school_group)
         end
       end
 
       context 'as user from another school' do
         let!(:user) { create(:school_admin) }
+
         it 'does not allow comparison' do
-          expect(ability).to_not be_able_to(:compare, school_group)
+          expect(ability).not_to be_able_to(:compare, school_group)
         end
       end
 
       context 'as admin' do
         let!(:user) { create(:admin) }
+
         it 'allows comparison' do
           expect(ability).to be_able_to(:compare, school_group)
         end
@@ -214,6 +224,7 @@ describe SchoolGroup, :school_groups, type: :model do
         let(:group)           { school_group }
         let(:other_school)    { create(:school, school_group: school_group) }
         let!(:user)           { create(:school_admin, school: other_school) }
+
         it 'allows comparison' do
           expect(ability).to be_able_to(:compare, school_group)
         end
@@ -225,6 +236,7 @@ describe SchoolGroup, :school_groups, type: :model do
     let!(:school_group)      { create :school_group, default_template_calendar: template_calendar }
     let!(:template_calendar) { create :template_calendar }
     let(:scoreboard)   { nil }
+
     it_behaves_like 'a scorable'
   end
 end

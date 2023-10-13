@@ -5,7 +5,7 @@ describe "meter collections", type: :system do
   let!(:school)       { create(:school, :with_school_group, name: school_name)}
   let!(:admin)        { create(:admin)}
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on('Reports')

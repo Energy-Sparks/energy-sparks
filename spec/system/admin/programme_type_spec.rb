@@ -92,7 +92,7 @@ describe 'programme type management', type: :system do
       let!(:activity_1)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.yesterday) }
       let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Time.zone.today) }
 
-      before :each do
+      before do
         # enrolment only enabled if targets enabled...
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
       end

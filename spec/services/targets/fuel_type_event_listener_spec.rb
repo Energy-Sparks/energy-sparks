@@ -13,7 +13,7 @@ describe Targets::FuelTypeEventListener, type: :system do
       context 'for non storage heater attributes' do
         let(:meter_attribute) { create(:meter_attribute) }
 
-        before(:each) do
+        before do
           listener.meter_attribute_created(meter_attribute)
         end
 

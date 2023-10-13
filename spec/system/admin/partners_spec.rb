@@ -30,7 +30,7 @@ describe 'Partners', type: :system do
     context "an existing partner" do
       let!(:partner) { create(:partner) }
 
-      before(:each) do
+      before do
         visit admin_partners_path
       end
 
@@ -65,7 +65,7 @@ describe 'Partners', type: :system do
       let(:partner)               { create(:partner) }
       let(:school)                { create(:school, name: "Partnered School") }
 
-      before(:each) do
+      before do
         partner.school_groups << school_group
         partner.schools << school
         visit admin_partner_path(partner)

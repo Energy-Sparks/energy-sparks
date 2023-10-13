@@ -4,7 +4,7 @@ describe AmrDataFeedImportLog, type: :system, include_application_helper: true d
   let!(:admin)           { create(:admin) }
   let(:sheffield_config) { create(:amr_data_feed_config, description: 'Sheffield') }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Manage'

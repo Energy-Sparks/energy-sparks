@@ -46,12 +46,12 @@ describe 'activity types', type: :system do
     end
 
     context 'when paginating' do
-      before :each do
+      before do
         Pagy::DEFAULT[:items] = 1
         visit search_activity_types_path
       end
 
-      after :each do
+      after do
         Pagy::DEFAULT[:items] = 20
       end
 
@@ -80,12 +80,12 @@ describe 'activity types', type: :system do
       let!(:activity_type_2) { create(:activity_type, name: 'baz two', key_stages: [key_stage_2], subjects: [subject_2]) }
 
       context "visiting the search page" do
-        before :each do
+        before do
           Pagy::DEFAULT[:items] = 20
           visit search_activity_types_path
         end
 
-        after :each do
+        after do
           Pagy::DEFAULT[:items] = 20
         end
 

@@ -31,6 +31,7 @@ describe Alerts::DeleteAlertGenerationRunService, type: :service do
         expect(AlertGenerationRun.count).to eq 4
         expect { service.delete! }.to change(AlertGenerationRun, :count).from(4).to(2)
       end
+
       it 'deletes all of the dependent objects' do
         date_time = (Time.zone.now - 1.month).beginning_of_month
         alert_generation_run = school.alert_generation_runs.create!(created_at: date_time)

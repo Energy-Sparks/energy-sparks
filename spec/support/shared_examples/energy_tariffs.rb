@@ -2,17 +2,17 @@ RSpec.shared_examples "the user does not have access to the tariff editor" do
   it 'redirects away from the editor' do
     visit path
     if current_user.nil?
-      expect(current_path).to eq('/users/sign_in')
+      expect(page).to have_current_path('/users/sign_in', ignore_query: true)
     elsif current_user.school
       if current_user.pupil?
-        expect(current_path).to eq("/pupils/schools/#{current_user.school.slug}")
+        expect(page).to have_current_path("/pupils/schools/#{current_user.school.slug}", ignore_query: true)
       else
-        expect(current_path).to eq("/schools/#{current_user.school.slug}")
+        expect(page).to have_current_path("/schools/#{current_user.school.slug}", ignore_query: true)
       end
     elsif current_user.group_admin?
-      expect(current_path).to eq("/school_groups/#{current_user.school_group.slug}")
+      expect(page).to have_current_path("/school_groups/#{current_user.school_group.slug}", ignore_query: true)
     else
-      expect(current_path).to eq('/schools')
+      expect(page).to have_current_path('/schools', ignore_query: true)
     end
   end
 end
@@ -26,14 +26,14 @@ RSpec.shared_examples "a tariff editor index" do
     if tariff_holder.school?
       expect(page).not_to have_content('School tariffs')
       visit group_school_tariffs_school_energy_tariffs_path(tariff_holder)
-      expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+      expect(page).to have_current_path("/schools/#{school.slug}/energy_tariffs", ignore_query: true)
     elsif tariff_holder.site_settings?
       expect(page).not_to have_content('School tariffs')
       visit group_school_tariffs_admin_settings_energy_tariffs_path(tariff_holder)
-      expect(current_path).to eq('/admin/settings/energy_tariffs')
+      expect(page).to have_current_path('/admin/settings/energy_tariffs', ignore_query: true)
     else
       click_link('School tariffs')
-      expect(current_path).to eq("/school_groups/#{school_group.slug}/energy_tariffs/group_school_tariffs")
+      expect(page).to have_current_path("/school_groups/#{school_group.slug}/energy_tariffs/group_school_tariffs", ignore_query: true)
     end
 
     if tariff_holder.school? || tariff_holder.school_group?
@@ -69,6 +69,7 @@ RSpec.shared_examples "a tariff editor index" do
   context 'when there are existing tariffs' do
     include_context "with flat price electricity and gas tariffs"
     before { refresh }
+
     it 'displays the gas tariff' do
       within '#gas-tariffs-table' do
         expect(page).to have_content(gas_tariff.start_date.to_s(:es_compact))
@@ -78,6 +79,7 @@ RSpec.shared_examples "a tariff editor index" do
         expect(page).to have_link("Delete") unless tariff_holder.site_settings?
       end
     end
+
     it 'displays the electricity tariff' do
       within '#electricity-tariffs-table' do
         expect(page).to have_content(electricity_tariff.start_date.to_s(:es_compact))
@@ -107,7 +109,7 @@ RSpec.shared_examples "the user can create a tariff" do
     expect(page).to have_content('Flat rate tariff')
     #Not yet usable
     expect(page).to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
-    expect(page).to_not have_css('#tariff-meters') unless tariff_holder.school?
+    expect(page).not_to have_css('#tariff-meters') unless tariff_holder.school?
 
     if current_user.admin?
       expect(page).to have_content('Notes (admin only)')
@@ -129,7 +131,7 @@ RSpec.shared_examples "the user can create a tariff" do
     select 'day', from: 'energy_tariff_charges[standing_charge][units]'
     click_button('Continue')
 
-    expect(page).to_not have_content("Add standing charges for this tariff")
+    expect(page).not_to have_content("Add standing charges for this tariff")
     expect(page).to have_content('£1.11 per day')
 
     click_on('Finished')
@@ -160,7 +162,7 @@ RSpec.shared_examples "the user can edit the tariff" do
     fill_in "energy_tariff_price[value]", with: '0.15'
     click_button('Continue')
     expect(page).to have_content('£0.15 per kWh')
-    expect(page).to_not have_content(I18n.t('schools.user_tariffs.show.not_usable'))
+    expect(page).not_to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
   end
 
   it 'allows me to edit the standing charge' do
@@ -172,7 +174,7 @@ RSpec.shared_examples "the user can edit the tariff" do
     select 'day', from: 'energy_tariff_charges[standing_charge][units]'
     click_button('Continue')
 
-    expect(page).to_not have_content("No standing charges have been added")
+    expect(page).not_to have_content("No standing charges have been added")
     expect(page).to have_content('£1.11 per day')
   end
 
@@ -348,7 +350,7 @@ RSpec.shared_examples "the user can select the meters" do
     check(mpan_mprn)
     click_button('Continue')
 
-    expect(page).to_not have_content("All electricity meters")
+    expect(page).not_to have_content("All electricity meters")
     expect(page).to have_content(meter.name_or_mpan_mprn)
     energy_tariff.reload
     expect(energy_tariff.meters).to match_array([meter])

@@ -43,19 +43,20 @@ RSpec.shared_examples "dashboard priorities" do
     expect(page).to have_content('£2,000')
     expect(page).to have_content('£5,000')
     expect(page).to have_content('9,400 kg CO2')
-    expect(page).to_not have_content('0 days')
+    expect(page).not_to have_content('0 days')
   end
 end
 
 RSpec.describe "adult dashboard priorities", type: :system do
   let(:school) { create(:school) }
 
-  before(:each) do
+  before do
     sign_in(user) if user.present?
   end
 
   context 'as guest' do
     let(:user) { nil }
+
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end
@@ -63,6 +64,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
 
   context 'as pupil' do
     let(:user) { create(:pupil, school: school) }
+
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end
@@ -70,6 +72,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
 
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
+
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end
@@ -77,6 +80,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
+
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end
@@ -86,6 +90,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
     let(:school_group)  { create(:school_group) }
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
+
     include_examples "dashboard priorities" do
       let(:test_school) { school }
     end

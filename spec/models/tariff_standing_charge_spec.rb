@@ -7,7 +7,7 @@ describe TariffStandingCharge do
   let(:start_date) { Date.parse('2021-01-01') }
   let(:value) { 0.123 }
 
-  before :each do
+  before do
     @tariff_standing_charge = TariffStandingCharge.create!(start_date: start_date, value: value, tariff_import_log: tariff_import_log, meter: meter)
   end
 
@@ -28,6 +28,7 @@ describe TariffStandingCharge do
 
     context 'with duplicates on following day' do
       let!(:second) { create(:tariff_standing_charge, meter: meter, start_date: Date.new(2023, 1, 2), value: charge) }
+
       it 'deletes duplicates' do
         expect { TariffStandingCharge.delete_duplicates_for_meter!(meter) }.to change {TariffStandingCharge.count}.by(-1)
       end
@@ -35,6 +36,7 @@ describe TariffStandingCharge do
 
     context 'with many duplicates' do
       let!(:duplicates) { create_list(:tariff_standing_charge, 10, meter: meter, value: charge) }
+
       it 'deletes duplicates' do
         #should remove all but one of the 10
         expect { TariffStandingCharge.delete_duplicates_for_meter!(meter) }.to change {TariffStandingCharge.count}.by(-9)
@@ -43,6 +45,7 @@ describe TariffStandingCharge do
 
     context 'with duplicates on different days' do
       let!(:third) { create(:tariff_standing_charge, meter: meter, start_date: Date.new(2023, 1, 3), value: charge) }
+
       it 'does not delete duplicates' do
         expect { TariffStandingCharge.delete_duplicates_for_meter!(meter) }.not_to(change {TariffStandingCharge.count})
       end

@@ -11,7 +11,7 @@ RSpec.describe Targets::ProgressService do
 
   let!(:service)                  { Targets::ProgressService.new(school) }
 
-  context '#progress_summary' do
+  describe '#progress_summary' do
     it 'returns nil if school has no target' do
       SchoolTarget.all.destroy_all
       expect(service.progress_summary).to be nil
@@ -27,7 +27,7 @@ RSpec.describe Targets::ProgressService do
       it 'includes only that fuel type' do
         expect(progress_summary.gas_progress).to be nil
         expect(progress_summary.storage_heater_progress).to be nil
-        expect(progress_summary.electricity_progress).to_not be nil
+        expect(progress_summary.electricity_progress).not_to be nil
       end
 
       it 'reports the fuel progress' do
@@ -38,7 +38,7 @@ RSpec.describe Targets::ProgressService do
     end
   end
 
-  context '#display_progress_for_fuel_type' do
+  describe '#display_progress_for_fuel_type' do
     it 'checks only for fuel type' do
       expect(service.display_progress_for_fuel_type?(:electricity)).to be true
       expect(service.display_progress_for_fuel_type?(:gas)).to be false

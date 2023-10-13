@@ -10,7 +10,7 @@ RSpec.describe "manage school configuration", type: :system do
   let(:school_name)         { 'Oldfield Park Infants' }
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     expect(page.has_content?('Sign Out')).to be true
@@ -21,24 +21,24 @@ RSpec.describe "manage school configuration", type: :system do
   it 'I can set up a school for KS1' do
     click_on(school_name)
     click_on('Edit school details')
-    expect(school.key_stages).to_not include(ks1)
-    expect(school.key_stages).to_not include(ks2)
-    expect(school.key_stages).to_not include(ks3)
+    expect(school.key_stages).not_to include(ks1)
+    expect(school.key_stages).not_to include(ks2)
+    expect(school.key_stages).not_to include(ks3)
 
     check('KS1')
     click_on('Update School')
     school.reload
     expect(school.key_stages).to include(ks1)
-    expect(school.key_stages).to_not include(ks2)
-    expect(school.key_stages).to_not include(ks3)
+    expect(school.key_stages).not_to include(ks2)
+    expect(school.key_stages).not_to include(ks3)
   end
 
   it 'I can set up a school for KS1 and KS2' do
     click_on(school_name)
     click_on('Edit school details')
-    expect(school.key_stages).to_not include(ks1)
-    expect(school.key_stages).to_not include(ks2)
-    expect(school.key_stages).to_not include(ks3)
+    expect(school.key_stages).not_to include(ks1)
+    expect(school.key_stages).not_to include(ks2)
+    expect(school.key_stages).not_to include(ks3)
 
     check('KS1')
     check('KS2')
@@ -46,7 +46,7 @@ RSpec.describe "manage school configuration", type: :system do
     school.reload
     expect(school.key_stages).to include(ks1)
     expect(school.key_stages).to include(ks2)
-    expect(school.key_stages).to_not include(ks3)
+    expect(school.key_stages).not_to include(ks3)
   end
 
   it 'can set climate impact reporting preference' do

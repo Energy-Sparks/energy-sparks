@@ -23,7 +23,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
   # academic years are automatically created with factory instances, but not "real" ones, so we need to create..
   let!(:academic_years) { AcademicYearFactory.new(parent_template_calendar).create(start_year: 2021, end_year: 2023) }
 
-  before(:each) do
+  before do
     sign_in_user(:admin)
   end
 
@@ -33,6 +33,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
       event = CalendarEvent.where(calendar: calendar, start_date: Date.parse("2022-01-01")).last
       expect(response).to redirect_to(calendar_path(calendar, anchor: "calendar_event_#{event.id}"))
     end
+
     it 'broadcasts calendar changed' do
       expect do
         post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
@@ -48,6 +49,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
       }
     end
     let!(:event) { CalendarEvent.first }
+
     it 'updates event' do
       put :update, params: { calendar_id: event.calendar.id, id: event.to_param, calendar_event: new_attributes }
       event.reload
@@ -63,6 +65,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
 
   describe "DELETE #destroy" do
     let!(:event) { CalendarEvent.first }
+
     it 'removes event' do
       expect do
         delete :destroy, params: { calendar_id: event.calendar.id, id: event.to_param }

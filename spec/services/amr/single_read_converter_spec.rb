@@ -444,6 +444,7 @@ module Amr
         48.times { |idx| data << { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", period: idx + 1, :reading_date => "26/08/2019", :readings => ["7"] } }
         data
       end
+
       subject(:results) { SingleReadConverter.new(readings, indexed: true).perform }
 
       it "truncates after 48 readings" do

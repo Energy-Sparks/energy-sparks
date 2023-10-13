@@ -35,7 +35,7 @@ describe TranslatableAttachment do
         end
       end
 
-      it "should contain all attached attributes" do
+      it "contains all attached attributes" do
         expect(subject.count).to eq(t_attachments.count * I18n.available_locales.count + 1)
       end
     end
@@ -51,6 +51,12 @@ describe TranslatableAttachment do
 
   describe "#t_attached_or_default" do
     let(:attachment) { { io: File.open(Rails.root.join('spec', 'fixtures', 'images', 'sheffield.png')), filename: 'sheffield.png', content_type: 'image/png' } }
+
+    after do
+      I18n.locale = :en
+      I18n.default_locale = :en
+    end
+
     context "when current locale is default" do
       before do
         I18n.locale = :en
@@ -59,6 +65,7 @@ describe TranslatableAttachment do
 
       context "when specified locale file is attached" do
         before { test.file_cy.attach(**attachment) }
+
         it "serves default locale file" do
           expect(test.t_attached_or_default(:file, :cy).name).to eq("file_cy")
         end
@@ -70,6 +77,7 @@ describe TranslatableAttachment do
         it "serves default locale file" do
           expect(test.t_attached_or_default(:file, :cy).name).to eq("file_en")
         end
+
         it "serves current locale file by default" do
           expect(test.t_attached_or_default(:file).name).to eq("file_en")
         end
@@ -102,11 +110,6 @@ describe TranslatableAttachment do
         it { expect(test.t_attached_or_default(:file, :cy)).to be_nil }
         it { expect(test.t_attached_or_default(:file, :en)).to be_nil }
       end
-    end
-
-    after do
-      I18n.locale = :en
-      I18n.default_locale = :en
     end
   end
 end

@@ -8,7 +8,7 @@ RSpec.describe 'Dark sky areas', type: :system do
   let(:back_fill_years)         { 5 }
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -58,7 +58,7 @@ RSpec.describe 'Dark sky areas', type: :system do
     context 'with an existing dark sky area' do
       let!(:area) { DarkSkyArea.create!(title: title, latitude: latitude, longitude: longitude) }
 
-      before(:each) do
+      before do
         click_on 'Manage'
         click_on 'Admin'
         click_on 'Dark Sky Areas'

@@ -13,7 +13,7 @@ RSpec.describe 'School Partners', :schools, type: :system do
       let!(:partner_2)         { create(:partner) }
       let!(:partner_3)         { create(:partner) }
 
-      before(:each) do
+      before do
         sign_in(admin)
         visit school_path(school)
       end

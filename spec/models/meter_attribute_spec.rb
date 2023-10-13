@@ -52,6 +52,7 @@ describe MeterAttribute do
     let!(:other_attribute) { create(:meter_attribute, attribute_type: :tariff, input_data: { type: 'economy_7' })}
     let(:solar_panels)  { MeterAttribute.solar_panels }
     let(:panel)         { solar_panels.first }
+
     it 'returns expected data' do
       expect(solar_panels.size).to eq 1
       expect(panel.meter_attribute_id).to eq solar_attribute.id

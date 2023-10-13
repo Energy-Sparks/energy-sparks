@@ -35,6 +35,7 @@ describe ChartDataValues do
   context 'with scatter chart' do
     let(:chart_type)  { :scatter }
     let(:x_axis)      { [0.1, 0.2, 0.3]}
+
     it 'doesnt translate series labels' do
       first_series = chart_data_values.series_data[0]
       first_item = first_series[:data].first
@@ -46,41 +47,51 @@ describe ChartDataValues do
   context 'when setting colours' do
     context 'for gas dashboard and pupil analysis charts' do
       let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
+
       it 'sets the right colours' do
         expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
       end
     end
+
     context 'for electricity dashboard and pupil analysis charts' do
       let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
+
       it 'sets the right colours' do
         expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
       end
     end
+
     context 'for electricity line charts' do
       let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
       let(:chart_type) { :line }
+
       it 'sets the right colours' do
         expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
       end
     end
+
     context 'for gas line charts' do
       let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
       let(:chart_type) { :line }
+
       it 'sets the right colours' do
         expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
       end
     end
+
     it 'works out the best colour when label matches' do
       label = chart_data_values.colour_lookup.keys.first
       colour = chart_data_values.colour_lookup[label]
       expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to eq(colour)
     end
+
     it 'works out the best colour when label includes one of the keys' do
       colour_key = chart_data_values.colour_lookup.keys.first
       label = "AB#{colour_key}C"
       colour = chart_data_values.colour_lookup[colour_key]
       expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to eq(colour)
     end
+
     it 'does not re-use included colours' do
       colour_key = chart_data_values.colour_lookup.keys.first
       label = "AB#{colour_key}C"
@@ -95,6 +106,7 @@ describe ChartDataValues do
     let(:y1_axis_choices) { [:kwh, :£] }
     let(:chart_type) { :line }
     let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
+
     it 'sets the choices' do
       expect(chart_data_values.y1_axis_choices).to eql y1_axis_choices
     end
@@ -194,29 +206,37 @@ describe ChartDataValues do
         expect(chart_data_values.subtitle_end_date).to eq "04 Feb 2023"
       end
     end
+
     context 'with drill down' do
       let(:transformations) { [[:drilldown, 293]] }
+
       it 'does not include the chart date range' do
         expect(chart_data_values.subtitle_start_date).to be_nil
         expect(chart_data_values.subtitle_end_date).to be_nil
       end
     end
+
     context 'with move then drill down' do
       let(:transformations) { [[:move, -2], [:drilldown, 141]] }
+
       it 'does not include the chart date range' do
         expect(chart_data_values.subtitle_start_date).to be_nil
         expect(chart_data_values.subtitle_end_date).to be_nil
       end
     end
+
     context 'with drill down then move' do
       let(:transformations) { [[:drilldown, 1], [:move, -1]] }
+
       it 'does not include the chart date range' do
         expect(chart_data_values.subtitle_start_date).to be_nil
         expect(chart_data_values.subtitle_end_date).to be_nil
       end
     end
+
     context 'with move back' do
       let(:transformations) { [[:move, 1]] }
+
       it 'includes the chart date range' do
         expect(chart_data_values.subtitle_start_date).to eq "31 Jan 2023"
         expect(chart_data_values.subtitle_end_date).to eq "04 Feb 2023"

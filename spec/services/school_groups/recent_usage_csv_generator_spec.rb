@@ -11,6 +11,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
   shared_examples "a school group recent usage csv including cluster" do
     context "when include cluster is set to true" do
       let(:include_cluster) { true }
+
       it { expect(csv.lines.count).to eq(3) }
       it { expect(csv.lines[0]).to start_with("School,Cluster,")}
       it { expect(csv.lines[1]).to start_with("#{school_group.schools.first.name},A Cluster,")}
@@ -57,6 +58,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
                                                   "-12%", "312", "111", "1,111" #sh year
           ])
     end
+
     it_behaves_like "a school group recent usage csv including cluster"
   end
 end

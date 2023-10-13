@@ -31,6 +31,7 @@ describe Alerts::FetchContent do
 
     context 'where the rating is too precise but rounds down' do
       let(:rating) { 6.02 }
+
       it 'still returns the content' do
         expect(service.content_versions(scope: :find_out_more)).to match_array([content_version])
       end
@@ -38,6 +39,7 @@ describe Alerts::FetchContent do
 
     context 'where the rating rounds up' do
       let(:rating) { 6.09 }
+
       it 'does not return any content' do
         expect(service.content_versions(scope: :find_out_more)).to match_array([])
       end
@@ -45,6 +47,7 @@ describe Alerts::FetchContent do
 
     context 'where the rating is nil' do
       let(:rating) { nil }
+
       it 'does not return any content' do
         expect(service.content_versions(scope: :find_out_more)).to match_array([])
       end
@@ -52,6 +55,7 @@ describe Alerts::FetchContent do
 
     context 'where the rating does not match the range' do
       let!(:alert_type_rating) { create :alert_type_rating, alert_type: create(:alert_type), rating_from: 1, rating_to: 4}
+
       it 'returns no content' do
         expect(service.content_versions(scope: :find_out_more)).to match_array([])
       end
@@ -59,6 +63,7 @@ describe Alerts::FetchContent do
 
     context 'the scope is inactive' do
       let!(:alert_type_rating) { create :alert_type_rating, alert_type: create(:alert_type), rating_from: 1, rating_to: 6, find_out_more_active: false}
+
       it 'returns no content' do
         expect(service.content_versions(scope: :find_out_more)).to match_array([])
       end

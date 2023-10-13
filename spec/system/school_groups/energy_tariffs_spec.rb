@@ -29,55 +29,70 @@ describe 'school group energy tariffs', type: :system do
     let!(:school_group_2) { create(:school_group, public: true) }
     let(:current_user) { create(:user, role: :group_admin, school_group: school_group_2)}
     let(:path) { school_group_energy_tariffs_path(school_group) }
-    before(:each) { sign_in(current_user) }
+
+    before { sign_in(current_user) }
+
     include_examples "the user does not have access to the tariff editor"
   end
 
   context 'as a guest user' do
     let!(:current_user) { create(:guest) }
     let(:path)          { school_group_energy_tariffs_path(school_group) }
-    before(:each)       { sign_in(current_user) }
+
+    before { sign_in(current_user) }
+
     include_examples "the user does not have access to the tariff editor"
   end
 
   context 'as a pupil user' do
     let!(:current_user) { create(:pupil) }
     let(:path)          { school_group_energy_tariffs_path(school_group) }
-    before(:each) { sign_in(current_user) }
+
+    before { sign_in(current_user) }
+
     include_examples "the user does not have access to the tariff editor"
   end
 
   context 'as a school admin user' do
     let!(:current_user) { create(:school_admin) }
     let(:path)          { school_group_energy_tariffs_path(school_group) }
+
     before              { sign_in(current_user) }
+
     include_examples "the user does not have access to the tariff editor"
   end
 
   context 'as a school_onboarding user' do
     let!(:current_user) { create(:onboarding_user) }
     let(:path)          { school_group_energy_tariffs_path(school_group) }
-    before(:each)       { sign_in(current_user) }
+
+    before { sign_in(current_user) }
+
     include_examples "the user does not have access to the tariff editor"
   end
 
   context 'as a staff user' do
     let!(:current_user) { create(:staff) }
     let(:path)          { school_group_energy_tariffs_path(school_group) }
-    before(:each)       { sign_in(current_user) }
+
+    before { sign_in(current_user) }
+
     include_examples "the user does not have access to the tariff editor"
   end
 
   context 'as a volunteer user' do
     let!(:current_user) { create(:volunteer) }
     let(:path)          { school_group_energy_tariffs_path(school_group) }
-    before(:each)       { sign_in(current_user) }
+
+    before { sign_in(current_user) }
+
     include_examples "the user does not have access to the tariff editor"
   end
 
   context 'with no signed in user' do
     let!(:current_user) { nil }
     let(:path)          { school_group_energy_tariffs_path(school_group) }
+
     include_examples "the user does not have access to the tariff editor"
   end
 end

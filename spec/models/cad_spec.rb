@@ -14,9 +14,9 @@ describe Cad do
     end
 
     it 'rejects if missing fields' do
-      expect(Cad.new(school: nil, name: name, device_identifier: 'abc123')).to_not be_valid
-      expect(Cad.new(school: school, name: '', device_identifier: 'abc123')).to_not be_valid
-      expect(Cad.new(school: school, name: name, device_identifier: '')).to_not be_valid
+      expect(Cad.new(school: nil, name: name, device_identifier: 'abc123')).not_to be_valid
+      expect(Cad.new(school: school, name: '', device_identifier: 'abc123')).not_to be_valid
+      expect(Cad.new(school: school, name: name, device_identifier: '')).not_to be_valid
     end
   end
 end

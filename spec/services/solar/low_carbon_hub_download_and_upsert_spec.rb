@@ -44,31 +44,31 @@ module Solar
 
     let(:upserter) { Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
 
-    before(:each) do
+    before do
       expect(LowCarbonHubMeterReadings).to receive(:new).with(installation.username, installation.password).and_return(api)
     end
 
-    it "should handle and log exceptions" do
+    it "handles and log exceptions" do
       expect(api).to receive(:download).and_raise(StandardError)
       upserter.perform
       expect(AmrDataFeedImportLog.count).to eql 1
-      expect(AmrDataFeedImportLog.first.error_messages).to_not be_blank
+      expect(AmrDataFeedImportLog.first.error_messages).not_to be_blank
     end
 
     context "when a date window is given" do
       let(:requested_start_date) { requested_end_date - 1 }
       let(:requested_end_date) { Time.zone.today }
 
-      before(:each) do
+      before do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
           installation.school.urn, requested_start_date, requested_end_date).and_return(readings)
       end
 
-      it "should use that" do
+      it "uses that" do
         upserter.perform
       end
 
-      it "should insert data" do
+      it "inserts data" do
         expect(AmrDataFeedReading.count).to eql 0
         upserter.perform
         expect(AmrDataFeedReading.count).to eql 6
@@ -81,7 +81,7 @@ module Solar
         meter: meter)
       end
 
-      before(:each) do
+      before do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
           installation.school.urn, expected_start, expected_end).and_return(readings)
       end
@@ -91,18 +91,21 @@ module Solar
         let(:expected_start) { reading_date }
         let(:expected_end) { Date.yesterday }
 
-        it "should use last reading date as start" do
+        it "uses last reading date as start" do
           upserter.perform
         end
       end
+
       context "and they are recent" do
         let(:reading_date)  { Date.yesterday }
         let(:expected_start) { Date.yesterday - 5 }
         let(:expected_end) { Date.yesterday }
-        it "should default to reloading last 6 days" do
+
+        it "defaults to reloading last 6 days" do
           upserter.perform
         end
-        it "should insert data" do
+
+        it "inserts data" do
           expect(AmrDataFeedReading.count).to eql 1
           upserter.perform
           expect(AmrDataFeedReading.count).to eql 7
@@ -114,7 +117,7 @@ module Solar
       let(:expected_end) { Date.yesterday }
       let(:expected_start) { nil }
 
-      it "should load all data" do
+      it "loads all data" do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
           installation.school.urn, expected_start, expected_end).and_return(readings)
         upserter.perform

@@ -8,7 +8,7 @@ RSpec.describe "school", type: :system do
   describe 'when logged in as a school admin' do
     let!(:school_admin) { create(:school_admin, school: school) }
 
-    before(:each) do
+    before do
       sign_in(school_admin)
       visit root_path
       click_on 'Manage alert contacts'
@@ -50,7 +50,7 @@ RSpec.describe "school", type: :system do
         click_button 'Enable alerts'
 
         school_admin.reload
-        expect(school_admin.contact_for_school).to_not be_nil
+        expect(school_admin.contact_for_school).not_to be_nil
 
         click_on 'My alerts'
 
@@ -67,12 +67,13 @@ RSpec.describe "school", type: :system do
   describe 'when logged in as an admin' do
     let!(:admin) { create(:admin) }
 
-    before(:each) do
+    before do
       sign_in(admin)
     end
 
     describe 'existing standalone contacts' do
       let!(:contact) { create(:contact_with_name_email, school: school) }
+
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
         expect(page).to have_content('Standalone contacts')
@@ -105,6 +106,7 @@ RSpec.describe "school", type: :system do
 
     describe 'existing account contacts' do
       let!(:contact) { create(:contact_with_name_email, user: teacher, school: school) }
+
       it 'allows contacts to be edited' do
         visit school_contacts_path(school)
 
@@ -127,6 +129,7 @@ RSpec.describe "school", type: :system do
 
     describe 'existing standalone contacts' do
       let!(:contact) { create(:contact_with_name_email, school: school) }
+
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
 
@@ -162,7 +165,7 @@ RSpec.describe "school", type: :system do
   end
 
   describe 'when logged in as a teacher' do
-    before(:each) do
+    before do
       sign_in(teacher)
     end
 
@@ -180,7 +183,7 @@ RSpec.describe "school", type: :system do
       click_button 'Enable alerts'
 
       teacher.reload
-      expect(teacher.contact_for_school).to_not be_nil
+      expect(teacher.contact_for_school).not_to be_nil
       expect(teacher.contact_for_school.mobile_phone_number).to eq('01122333444')
       expect(teacher.preferred_locale).to eq('cy')
 

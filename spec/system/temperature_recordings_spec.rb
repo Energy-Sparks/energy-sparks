@@ -10,18 +10,19 @@ describe 'temperature recordings as school admin' do
     let!(:user)       { create(:pupil, school: school)}
 
     context 'when the site settings are turned off' do
-      before(:each) do
+      before do
         SiteSettings.create!(temperature_recording_months: [], electricity_price: 1, solar_export_price: 1, gas_price: 1)
       end
+
       it 'does not show temperature recording links' do
         sign_in(user)
         visit root_path
-        expect(page).to_not have_link('Enter temperatures')
+        expect(page).not_to have_link('Enter temperatures')
       end
     end
 
     context 'when temperature recoding is turned on' do
-      before(:each) do
+      before do
         SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s), electricity_price: 1, solar_export_price: 1, gas_price: 1)
         sign_in(user)
         visit root_path
@@ -76,7 +77,7 @@ describe 'temperature recordings as school admin' do
           fill_in :location_name, with: 'The Great Hall'
           click_on 'Update Location'
 
-          expect(page).to_not have_content('The Hall')
+          expect(page).not_to have_content('The Hall')
           expect(page).to have_content('The Great Hall')
           expect(page).to have_content('Location updated')
         end
@@ -101,7 +102,7 @@ describe 'temperature recordings as school admin' do
       end
     end
 
-    before(:each) do
+    before do
       SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s), electricity_price: 1, solar_export_price: 1, gas_price: 1)
       sign_in(user)
       visit root_path

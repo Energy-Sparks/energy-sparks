@@ -62,7 +62,7 @@ RSpec.describe 'equivalence type management', type: :system do
   end
 
   context 'allows the deletion equivalences with context types' do
-    before(:each) do
+    before do
       equivalence_type = create(:equivalence_type, meter_type: :electricity, time_period: :last_month)
       equivalence_text = "You used {{kwh}} of electricity last month, that's like {{number_trees}} trees"
       create(

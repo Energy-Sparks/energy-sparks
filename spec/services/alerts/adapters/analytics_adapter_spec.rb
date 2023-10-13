@@ -165,7 +165,7 @@ module Alerts
 
     let(:analysis_date) { Date.parse('2019-01-01') }
 
-    it 'should return an analysis report' do
+    it 'returns an analysis report' do
       normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAnalyticsAlertClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
       expect(normalised_report.valid).to eq true
       expect(normalised_report.enough_data).to eq :enough
@@ -177,13 +177,13 @@ module Alerts
       expect(normalised_report.benchmark_data).to eq({ benchmark: 'data' })
     end
 
-    it 'should return structured data' do
+    it 'returns structured data' do
       adapter = Adapters::AnalyticsAdapter.new(alert_type: DummyAdviceWithStructuredClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school)
       expect(adapter.has_structured_content?).to be true
       expect(adapter.structured_content).to eq DummyAdviceWithStructuredClass::STRUCTURED_CONTENT
     end
 
-    it 'should return an analysis report but no benchmark data as an advice class' do
+    it 'returns an analysis report but no benchmark data as an advice class' do
       normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAdviceAlertClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
       expect(normalised_report.valid).to eq true
       expect(normalised_report.enough_data).to eq :enough

@@ -18,11 +18,13 @@ RSpec.describe SchoolGroups::MeterReport do
   describe "#csv_filename" do
     context "when all_meters is false" do
       let(:all_meters) { false }
+
       it { expect(meter_report.csv_filename).to eq("a-group-meter-report-#{frozen_time.iso8601.parameterize}.csv") }
     end
 
     context "when all_meters is true" do
       let(:all_meters) { true }
+
       it { expect(meter_report.csv_filename).to eq("a-group-meter-report-#{frozen_time.iso8601.parameterize}-all-meters.csv") }
     end
   end
@@ -32,12 +34,14 @@ RSpec.describe SchoolGroups::MeterReport do
 
     context "only active meters" do
       let(:all_meters) { false }
+
       it { expect(csv.lines.first.chomp).to eq(header) }
       it { expect(csv.lines.count).to eq(2) }
       it { expect(csv.lines.second).to include(active_meter.school_name) }
 
       context 'and the school is inactive' do
         let!(:school) { create(:school, school_group: school_group, active: false) }
+
         it { expect(csv.lines.first.chomp).to eq(header) }
         it { expect(csv.lines.count).to eq(1) }
       end

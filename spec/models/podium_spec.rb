@@ -59,6 +59,7 @@ describe Podium do
       expect(podium.high_to_low[1].school).to eq(school_3)
       expect(podium.high_to_low[2].school).to eq(school_2)
     end
+
     it 'returns the next highest school' do
       podium = Podium.create(scoreboard: scoreboard, school: school_3)
       expect(podium.next_school_position.school).to eq(school_4)
@@ -72,6 +73,7 @@ describe Podium do
       expect(podium.high_to_low[1].school).to eq(school_4)
       expect(podium.high_to_low[2].school).to eq(school_3)
     end
+
     it 'returns nothing for the next highest school' do
       podium = Podium.create(scoreboard: scoreboard, school: school_5)
       expect(podium.next_school_position).to be_nil

@@ -6,7 +6,7 @@ describe AmrReadingWarning, type: :system, include_application_helper: true do
   let!(:log)      { create(:amr_data_feed_import_log) }
   let!(:warning)  { AmrReadingWarning.create(amr_data_feed_import_log: log, mpan_mprn: mpan, warning_types: [AmrReadingWarning::WARNINGS.key(:missing_readings)]) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Manage'

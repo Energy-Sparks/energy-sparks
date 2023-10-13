@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "gas costs advice page", type: :system do
   let(:key) { 'gas_costs' }
   let(:expected_page_title) { "Gas cost analysis" }
+
   include_context "gas advice page"
 
   context 'as school admin' do
@@ -50,71 +51,88 @@ RSpec.describe "gas costs advice page", type: :system do
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
+
       it_behaves_like "an advice page tab", tab: "Insights"
 
       it 'has the intro' do
         expect(page).to have_content("Your gas bill is broken down into a variety of different charges")
       end
+
       it 'displays a brief summary of total cost' do
         expect(page).to have_content("We estimate your total gas cost over the last 12 months to be £1,000")
       end
+
       context 'and incomplete tariffs' do
         it 'displays warning about incomplete tariffs' do
           expect(page).to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
         end
       end
+
       context 'and complete tariffs' do
         let(:complete_tariff_coverage) { true }
+
         it 'does not display warning about incomplete tariffs' do
-          expect(page).to_not have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
+          expect(page).not_to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
           expect(page).to have_content("The information below provides a good estimate of your annual costs")
         end
       end
     end
+
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
+
       it_behaves_like "an advice page tab", tab: "Analysis"
 
       context 'with single meter' do
         it 'displays a brief summary of total cost' do
-          expect(page).to_not have_content(I18n.t('advice_pages.gas_costs.analysis.cost_breakdown_by_meter.title'))
+          expect(page).not_to have_content(I18n.t('advice_pages.gas_costs.analysis.cost_breakdown_by_meter.title'))
           expect(page).to have_content("We estimate your total gas cost over the last 12 months to be £1,000")
         end
+
         context 'and incomplete tariffs' do
           it 'displays warning about incomplete tariffs' do
             expect(page).to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
           end
         end
+
         context 'and complete tariffs' do
           let(:complete_tariff_coverage) { true }
+
           it 'does not display warning about incomplete tariffs' do
-            expect(page).to_not have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
+            expect(page).not_to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
             expect(page).to have_content("The information below provides a good estimate of your annual costs")
           end
         end
+
         it 'with only 12 months data' do
           expect(page).to have_css('#chart_wrapper_electricity_cost_1_year_accounting_breakdown')
-          expect(page).to_not have_css('#chart_wrapper_electricity_cost_comparison_last_2_years_accounting')
+          expect(page).not_to have_css('#chart_wrapper_electricity_cost_comparison_last_2_years_accounting')
         end
       end
+
       context 'with multiple meters' do
         let(:multiple_meters) { true }
-        before(:each) do
+
+        before do
           allow_any_instance_of(Schools::Advice::CostsService).to receive_messages(
             annual_costs_breakdown_by_meter: annual_costs_breakdown_by_meter
           )
         end
+
         it 'does not display a brief summary of total cost' do
-          expect(page).to_not have_content("We estimate your total gas cost over the last 12 months to be £1,000")
+          expect(page).not_to have_content("We estimate your total gas cost over the last 12 months to be £1,000")
         end
+
         it 'displays table' do
           expect(page).to have_content("Total cost for the last 12 months")
           expect(page).to have_content('Whole school')
         end
       end
     end
+
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

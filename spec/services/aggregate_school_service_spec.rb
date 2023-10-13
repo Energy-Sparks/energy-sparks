@@ -18,7 +18,7 @@ describe AggregateSchoolService, type: :service do
 
   let(:meter_collection)        { double('meter-collection') }
 
-  before(:each) do
+  before do
     allow(electricity_amr_data).to receive(:end_date).and_return(electricity_end_date)
     allow(gas_amr_data).to receive(:end_date).and_return(gas_end_date)
     # allow(heaters_amr_data).to receive(:end_date).and_return(heaters_end_date)
@@ -32,16 +32,19 @@ describe AggregateSchoolService, type: :service do
     # allow(meter_collection).to receive(:aggregate_meter).with(:storage_heater).and_return(heaters_aggregate_meter)
   end
 
-  context '#analysis_date' do
+  describe '#analysis_date' do
     it 'returns end date for gas' do
       expect(AggregateSchoolService.analysis_date(meter_collection, :gas)).to eq(gas_end_date)
     end
+
     it 'returns end date for electricity' do
       expect(AggregateSchoolService.analysis_date(meter_collection, :electricity)).to eq(electricity_end_date)
     end
+
     it 'returns end date for storage heaters' do
       expect(AggregateSchoolService.analysis_date(meter_collection, :storage_heater)).to eq(electricity_end_date)
     end
+
     it 'returns today otherwise' do
       expect(AggregateSchoolService.analysis_date(meter_collection, nil)).to eq(Time.zone.today)
       expect(AggregateSchoolService.analysis_date(meter_collection, :solar_pv)).to eq(Time.zone.today)

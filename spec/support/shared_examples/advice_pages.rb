@@ -36,7 +36,7 @@ RSpec.shared_examples "an advice page tab" do |tab:|
 
   it "all tabs except #{tab} are inactive" do
     ['Insights', 'Analysis', 'Learn More'].excluding(tab).each do |option|
-      expect(page).to_not have_link(option, class: 'active')
+      expect(page).not_to have_link(option, class: 'active')
     end
   end
 
@@ -45,6 +45,7 @@ RSpec.shared_examples "an advice page tab" do |tab:|
       advice_page.update(restricted: true)
       refresh
     end
+
     it 'still shows the analysis' do
       expect(page).to have_content(expected_page_title)
     end

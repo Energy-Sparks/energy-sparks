@@ -12,15 +12,19 @@ describe TransifexSerialisable do
       it 'converts chart tags' do
         expect(test.mustache_to_yaml('text {{#chart}}some_chart{{/chart}} here')).to eq('text %{tx_chart_some_chart} here')
       end
+
       it 'converts simple variable tags' do
         expect(test.mustache_to_yaml('text {{position}} here')).to eq('text %{tx_var_position} here')
       end
+
       it 'converts multiple simple variable tags' do
         expect(test.mustache_to_yaml('text {{position}} {{count}} here')).to eq('text %{tx_var_position} %{tx_var_count} here')
       end
+
       it 'converts combinations of tags' do
         expect(test.mustache_to_yaml('text {{#chart}}some_chart{{/chart}} at {{position}} here')).to eq('text %{tx_chart_some_chart} at %{tx_var_position} here')
       end
+
       it 'handles odd chars in chart names' do
         expect(test.mustache_to_yaml('text {{#chart}}some_chart|£{{/chart}} here')).to eq('text %{tx_chart_some_chart|£} here')
       end
@@ -30,18 +34,23 @@ describe TransifexSerialisable do
       it 'converts original chart tags' do
         expect(test.yaml_template_to_mustache('text %{some_chart} here')).to eq('text {{#chart}}some_chart{{/chart}} here')
       end
+
       it 'converts new chart tags' do
         expect(test.yaml_template_to_mustache('text %{tx_chart_some_chart} here')).to eq('text {{#chart}}some_chart{{/chart}} here')
       end
+
       it 'converts simple variable tags' do
         expect(test.yaml_template_to_mustache('text %{tx_var_position} here')).to eq('text {{position}} here')
       end
+
       it 'converts multiple simple variable tags' do
         expect(test.yaml_template_to_mustache('text %{tx_var_position} %{tx_var_count} here')).to eq('text {{position}} {{count}} here')
       end
+
       it 'converts combinations of tags' do
         expect(test.yaml_template_to_mustache('text %{tx_chart_some_chart} and %{other_chart} at %{tx_var_position} here')).to eq('text {{#chart}}some_chart{{/chart}} and {{#chart}}other_chart{{/chart}} at {{position}} here')
       end
+
       it 'handles odd chars in chart names' do
         expect(test.yaml_template_to_mustache('text %{tx_chart_some_chart|£} here')).to eq('text {{#chart}}some_chart|£{{/chart}} here')
       end

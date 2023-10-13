@@ -30,7 +30,7 @@ RSpec.describe 'consent_grants', type: :system do
 
       let!(:meter) { create(:gas_meter, school: school) }
 
-      before(:each) do
+      before do
         visit root_path
         click_on 'Reports'
         click_on 'Consents Granted'
@@ -50,6 +50,7 @@ RSpec.describe 'consent_grants', type: :system do
       shared_examples 'a search page with no results' do
         context "when term is not found" do
           let(:term) { "none" }
+
           it { expect(page).to have_content "No results were found" }
         end
       end
@@ -64,6 +65,7 @@ RSpec.describe 'consent_grants', type: :system do
 
         context "by school name" do
           let(:field) { "School" }
+
           it_behaves_like "a search page with no results"
           it_behaves_like "a search page with a result" do
             let(:term) { "Primary" }
@@ -78,6 +80,7 @@ RSpec.describe 'consent_grants', type: :system do
 
         context "by reference" do
           let(:field) { "Reference" }
+
           it_behaves_like "a search page with no results"
           it_behaves_like "a search page with a result" do
             let(:term) { grant.guid }
@@ -86,6 +89,7 @@ RSpec.describe 'consent_grants', type: :system do
 
         context "by mpxn" do
           let(:field) { 'Mpxn' }
+
           it_behaves_like "a search page with no results"
           it_behaves_like "a search page with a result" do
             let(:term) { meter.mpan_mprn }
@@ -97,6 +101,7 @@ RSpec.describe 'consent_grants', type: :system do
         before do
           click_on 'View'
         end
+
         it 'shows consent details and contents' do
           expect(page).to have_content(school.name)
           expect(page).to have_content(name)

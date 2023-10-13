@@ -10,7 +10,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
   let!(:programme_type_3) { create(:programme_type)}
 
   context 'as a public user' do
-    before(:each) do
+    before do
       visit programme_types_path
     end
 
@@ -26,7 +26,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
     end
 
     context 'viewing a programme type' do
-      before(:each) do
+      before do
         click_on programme_type_1.title
       end
 
@@ -44,12 +44,12 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       end
 
       it 'does not have checklist' do
-        expect(page).to_not have_css("i.fa-circle.text-muted")
-        expect(page).to_not have_css("i.fa-circle.text-success")
+        expect(page).not_to have_css("i.fa-circle.text-muted")
+        expect(page).not_to have_css("i.fa-circle.text-success")
       end
 
       it 'doesnt prompt to start' do
-        expect(page).to_not have_content("You can enrol your school in this programme")
+        expect(page).not_to have_content("You can enrol your school in this programme")
       end
 
       it 'prompts to login' do
@@ -60,7 +60,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       context 'when logging in to enrol' do
         let!(:staff) { create(:staff, school: school)}
 
-        it 'should redirect back to programme after login' do
+        it 'redirects back to programme after login' do
           click_on "Sign in now"
           fill_in 'Email', with: staff.email
           fill_in 'Password', with: staff.password
@@ -75,13 +75,13 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
   end
 
   context 'as a school admin' do
-    before(:each) do
+    before do
       sign_in school_admin
       visit programme_types_path
     end
 
     context 'enrolling in a programme' do
-      before(:each) do
+      before do
         click_on programme_type_1.title
       end
 
@@ -90,8 +90,8 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       end
 
       it 'does not prompt to login' do
-        expect(page).to_not have_content("Are you an Energy Sparks user?")
-        expect(page).to_not have_link("Sign in now")
+        expect(page).not_to have_content("Are you an Energy Sparks user?")
+        expect(page).not_to have_link("Sign in now")
       end
 
       it 'successfully enrols the school' do
@@ -107,7 +107,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       let(:activity_type) { programme_type_1.activity_types.first }
       let(:activity)      { create(:activity, school: school, activity_type: activity_type, happened_on: Date.yesterday)}
 
-      before(:each) do
+      before do
         #this is because the Enroller relies on this currently
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
         Programmes::Enroller.new(programme_type_1).enrol(school)
@@ -132,7 +132,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
 
       it 'doesnt link to activities that are completed' do
         expect(page).to have_content(activity_type.name)
-        expect(page).to_not have_link(href: activity_type_path(activity_type))
+        expect(page).not_to have_link(href: activity_type_path(activity_type))
         expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last))
       end
 
@@ -144,7 +144,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       end
 
       context 'after completing the programme' do
-        before(:each) do
+        before do
           programme_type_1.programme_for_school(school).complete!
         end
 
@@ -160,13 +160,13 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
   end
 
   context 'as a pupil' do
-    before(:each) do
+    before do
       sign_in pupil
       visit programme_types_path
     end
 
     context 'enrolling in a programme' do
-      before(:each) do
+      before do
         click_on programme_type_1.title
       end
 
@@ -187,7 +187,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       let(:activity_type) { programme_type_1.activity_types.first }
       let(:activity)      { create(:activity, school: school, activity_type: activity_type, happened_on: Date.yesterday)}
 
-      before(:each) do
+      before do
         #this is because the Enroller relies on this currently
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
         Programmes::Enroller.new(programme_type_1).enrol(school)
@@ -212,7 +212,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
 
       it 'doesnt link to activities that are completed' do
         expect(page).to have_content(activity_type.name)
-        expect(page).to_not have_link(href: activity_type_path(activity_type))
+        expect(page).not_to have_link(href: activity_type_path(activity_type))
         expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last))
       end
 

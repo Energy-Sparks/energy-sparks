@@ -16,7 +16,7 @@ describe 'alert type management', type: :system do
   end
 
   describe 'schools' do
-    before(:each) do
+    before do
       click_on gas_fuel_alert_type_title
 
       within('ul.alert-type') do
@@ -42,7 +42,7 @@ describe 'alert type management', type: :system do
       fill_in "school_reasons_#{school_2.id}", with: reason_2
 
       expect { click_on "Create exclusions" }.to change { SchoolAlertTypeExclusion.count }.by(2)
-      expect(page).to_not have_content('No school exclusions for this alert')
+      expect(page).not_to have_content('No school exclusions for this alert')
 
       within 'table' do
         expect(page).to have_content(school.name)
@@ -54,8 +54,8 @@ describe 'alert type management', type: :system do
       end
 
       within 'table' do
-        expect(page).to_not have_content(school.name)
-        expect(page).to_not have_content(reason_1)
+        expect(page).not_to have_content(school.name)
+        expect(page).not_to have_content(reason_1)
         expect(page).to have_content(school_2.name)
         expect(page).to have_content(reason_2)
       end

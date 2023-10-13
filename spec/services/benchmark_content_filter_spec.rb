@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe BenchmarkContentFilter, type: :service do
-  subject(:content) do
+  let(:content) do
     [
       { type: :title, content: 'Benchmark name' },
       { type: :html, content: 'intro html' },
@@ -39,12 +39,14 @@ describe BenchmarkContentFilter, type: :service do
 
   describe "#intro" do
     subject(:intro) { filter.intro }
+
     it { expect(intro.count).to be(1)}
     it { expect(intro[0][:content]).to eq("intro html")}
   end
 
   describe "#table" do
     subject(:tables) { filter.tables }
+
     it { expect(tables.count).to be(7)}
     it { expect(tables[0][:content][:header]).to eq(["table composite header"])}
     it { expect(tables[1][:content]).to eq("Benchmark 2 name")}
@@ -57,6 +59,7 @@ describe BenchmarkContentFilter, type: :service do
 
   describe "#chart" do
     subject(:charts) { filter.charts }
+
     it { expect(charts.count).to be(5)}
     it { expect(charts[0][:content][:title]).to eq("chart 1")}
     it { expect(charts[1][:content]).to eq("chart html")}

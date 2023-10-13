@@ -11,7 +11,7 @@ describe Meters::MeterAttributeManager, type: :service do
   let(:reason)         { 'testing' }
   let(:input_data)     { 'heating_only' }
 
-  context '#create!' do
+  describe '#create!' do
     context 'with valid attributes' do
       it 'creates the attribute' do
         expect { service.create!(meter.id, attribute_type, input_data, reason, admin) }.to change(MeterAttribute, :count).from(0).to(1)
@@ -34,20 +34,21 @@ describe Meters::MeterAttributeManager, type: :service do
     end
   end
 
-  context '#update!' do
+  describe '#update!' do
     let!(:meter_attribute) { create(:meter_attribute) }
 
     context 'with valid attributes' do
       it 'creates a new linked attribute' do
         expect { service.update!(meter_attribute.id, input_data, reason, admin) }.to change(MeterAttribute, :count).from(1).to(2)
         meter_attribute.reload
-        expect(meter_attribute.replaced_by).to_not be nil
+        expect(meter_attribute.replaced_by).not_to be nil
       end
 
       it 'broadcasts an event' do
         expect { service.update!(meter_attribute.id, input_data, reason, admin) }.to broadcast(:meter_attribute_updated)
       end
     end
+
     context 'with invalid attributes' do
       it 'doesnt create a new attribute' do
         expect { service.update!(meter_attribute.id, "invalid", reason, admin) }.to raise_error(ActiveRecord::RecordInvalid)
@@ -55,7 +56,7 @@ describe Meters::MeterAttributeManager, type: :service do
     end
   end
 
-  context '#delete!' do
+  describe '#delete!' do
     let(:meter_attribute) { create(:meter_attribute) }
 
     it 'delete the attribute' do

@@ -10,6 +10,7 @@ describe Audit do
 
   context 'when no title' do
     let(:title) { '' }
+
     it 'fails validation' do
       expect do
         audit.save!

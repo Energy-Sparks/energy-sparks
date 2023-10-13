@@ -34,9 +34,11 @@ describe ChartHelper do
 
     context 'when adding y-axis' do
       let(:school) { create(:school, chart_preference: :usage) }
+
       it 'uses school preference when set' do
         expect(helper.create_chart_config(school, chart_name)).to eq({ y_axis_units: :kwh, export_title: '', export_subtitle: '' })
       end
+
       it 'the preference can be overridden' do
         expect(helper.create_chart_config(school, chart_name, apply_preferred_units: false)).to eq({ export_title: '', export_subtitle: '' })
       end

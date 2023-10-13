@@ -6,7 +6,7 @@ module Cads
     let(:cad)       { create(:cad, school: school, max_power: max_power) }
     let(:max_power) { 3 }
 
-    before :each do
+    before do
       @service = Cads::SyntheticDataService.new(cad)
     end
 

@@ -26,7 +26,7 @@ describe SchoolOnboardingDeletor, type: :service do
 
     let(:service) { SchoolOnboardingDeletor.new(school_onboarding) }
 
-    before :each do
+    before do
       # use the school creator to set up a realistic onboarding and school, with events, user etc
       SchoolCreator.new(school).onboard_school!(school_onboarding)
       school_onboarding.reload

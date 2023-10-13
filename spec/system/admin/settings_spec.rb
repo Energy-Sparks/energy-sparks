@@ -43,6 +43,7 @@ describe 'site-wide settings' do
       before do
         SiteSettings.create!(message_for_no_contacts: false, electricity_price: 1.2, gas_price: 0.2, solar_export_price: 0.1, temperature_recording_months: [1, 2, 3, 4, 5])
       end
+
       it 'updates price' do
         click_on 'Site Settings'
         check 'Message for no contacts'
@@ -87,9 +88,9 @@ describe 'site-wide settings' do
       uncheck 'Message for no contacts'
       uncheck 'October'
       check 'May'
-      expect(page).to_not have_content('Electricity price')
-      expect(page).to_not have_content('Solar export price')
-      expect(page).to_not have_content('Gas price')
+      expect(page).not_to have_content('Electricity price')
+      expect(page).not_to have_content('Solar export price')
+      expect(page).not_to have_content('Gas price')
       expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
       click_on 'Update settings'
       expect(SiteSettings.current.message_for_no_contacts).to eq(false)

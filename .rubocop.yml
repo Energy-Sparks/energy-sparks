@@ -20,11 +20,9 @@ AllCops:
 require:
   - rubocop-rails
   - rubocop-performance
-# Disable specs for now
-# - rubocop-rspec
+  - rubocop-rspec
 # - rubocop-capybara
 # - rubocop-factory_bot
-# - rubocop-rspec
 
 Rails/DynamicFindBy:
   Enabled: false
@@ -360,6 +358,24 @@ Style/ZeroLengthPredicate:
 Style/NumericLiterals:
   Enabled: false
 Performance/TimesMap:
+  Enabled: false
+
+### RSpec cops we're configuring for our project ###
+
+RSpec/ChangeByZero:
+  Enabled: false
+RSpec/DescribedClass:
+  Enabled: false
+RSpec/LeadingSubject:
+  Enabled: false
+RSpec/ScatteredLet:
+  Enabled: false
+RSpec/NestedGroups:
+  Enabled: false
+RSpec/VariableName:
+  Exclude:
+    - 'spec/system/schools/advice_pages/hot_water_spec.rb'
+RSpec/ScatteredSetup:
   Enabled: false
 
 ### Things we're unlikely to fix: ###

@@ -12,7 +12,7 @@ describe "Intervention Types", type: :system do
   end
 
   describe 'when logged in as admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'

@@ -15,7 +15,7 @@ describe 'Pupil dashboard' do
   let(:pupil) { create(:pupil, school: school)}
 
   context 'when viewing as guest user' do
-    before(:each) do
+    before do
       visit pupils_school_path(school)
     end
 
@@ -29,7 +29,7 @@ describe 'Pupil dashboard' do
     end
 
     context 'for non-public school' do
-      before(:each) do
+      before do
         school.update!(public: false)
       end
 
@@ -41,7 +41,7 @@ describe 'Pupil dashboard' do
   end
 
   context 'when logged in as pupil' do
-    before(:each) do
+    before do
       sign_in(pupil)
       visit pupils_school_path(school)
     end
@@ -71,7 +71,7 @@ describe 'Pupil dashboard' do
     end
 
     context 'with observations' do
-      before(:each) do
+      before do
         intervention_type = create(:intervention_type, name: 'Upgraded insulation')
         create(:observation, :intervention, school: school, intervention_type: intervention_type)
         create(:observation_with_temperature_recording_and_location, school: school)
@@ -96,7 +96,7 @@ describe 'Pupil dashboard' do
       equivalence.update!(to_date: 50.days.ago)
       visit pupils_school_path(school)
       expect(page).to have_content(school_name)
-      expect(page).to_not have_content('Your school spent £2.00 on electricity last year!')
+      expect(page).not_to have_content('Your school spent £2.00 on electricity last year!')
     end
 
     it "hides old equivalences unless it's an old academic year one" do
@@ -110,12 +110,13 @@ describe 'Pupil dashboard' do
   end
 
   context 'when school is not data-enabled' do
-    before(:each) do
+    before do
       school.update!(data_enabled: false)
       visit pupils_school_path(school)
     end
+
     it 'doesnt show generated equivalences' do
-      expect(page).to_not have_content('Your school spent £2.00 on electricity last year!')
+      expect(page).not_to have_content('Your school spent £2.00 on electricity last year!')
     end
 
     it 'shows default equivalences' do

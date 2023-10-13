@@ -29,6 +29,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
+
     it 'includes id' do
       expect(html).to have_css('#cost-table-id')
     end
@@ -84,8 +85,9 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
+
     it 'does not include month' do
-      expect(html).to_not have_text("Feb")
+      expect(html).not_to have_text("Feb")
     end
   end
 
@@ -157,6 +159,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
 
     context 'with costs' do
       let(:change_in_costs) { { january => 80.0 } }
+
       it 'includes change in cost row' do
         expect(html).to have_css("tbody tr", :count => 4)
         expect(html).to have_text("£80")
@@ -165,6 +168,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
 
     context 'with no costs for month' do
       let(:change_in_costs) { { january => nil } }
+
       it 'does not include change in cost row' do
         expect(html).to have_css("tbody tr", :count => 3)
       end

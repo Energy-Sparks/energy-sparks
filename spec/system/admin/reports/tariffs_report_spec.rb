@@ -21,7 +21,7 @@ describe 'TariffsReport', type: :system, include_application_helper: true do
   let(:energy_tariff_3) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2020-01-01', end_date: '2020-12-31', tariff_holder_type: "School", school: school, tariff_type: 'differential')}
   let(:energy_tariff_4) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2021-01-01', end_date: '2021-12-31', tariff_holder_type: "School", school: school_without_group, tariff_type: 'differential')}
 
-  before(:each) do
+  before do
     meter.update!(energy_tariffs: [energy_tariff_1, energy_tariff_2, energy_tariff_3])
     meter_without_group.update!(energy_tariffs: [energy_tariff_4])
     sign_in(admin)

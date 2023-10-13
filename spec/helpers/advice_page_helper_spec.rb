@@ -35,9 +35,11 @@ describe AdvicePageHelper do
     it 'returns true if value higher than 0.0' do
       expect(helper.advice_baseload_high?(0.1)).to be_truthy
     end
+
     it 'returns false if value less than 0.0' do
       expect(helper.advice_baseload_high?(-0.1)).to be_falsey
     end
+
     it 'returns false if value equals 0.0' do
       expect(helper.advice_baseload_high?(0.0)).to be_falsey
     end
@@ -89,17 +91,20 @@ describe AdvicePageHelper do
   end
 
   describe '.sort_by_label' do
-    before :each do
+    before do
       I18n.backend.store_translations("en", { advice_pages: { nav: { pages: { one: "ZZZ", two: "AAA" } } } })
       I18n.backend.store_translations("cy", { advice_pages: { nav: { pages: { one: "AAA", two: "ZZZ" } } } })
     end
+
     let(:advice_page_1) { create(:advice_page, key: 'one') }
     let(:advice_page_2) { create(:advice_page, key: 'two') }
     let(:advice_pages) { [advice_page_1, advice_page_2] }
+
     it 'sorts by default label' do
       sorted_advice_pages = helper.sort_by_label(advice_pages)
       expect(sorted_advice_pages.map(&:key)).to eq(%w[two one])
     end
+
     it 'sorts by cy label' do
       I18n.with_locale(:cy) do
         sorted_advice_pages = helper.sort_by_label(advice_pages)
@@ -118,28 +123,29 @@ describe AdvicePageHelper do
     let(:dashboard_alerts) { [dashboard_alert_advice, dashboard_alert_change] }
 
     describe '.dashboard_alert_groups' do
-      it 'should return list of groups with alerts' do
+      it 'returns list of groups with alerts' do
         expect(helper.dashboard_alert_groups(dashboard_alerts)).to eq(%w[change advice])
       end
     end
 
     describe '.dashboard_alerts_for_group' do
-      it 'should return alerts for group' do
+      it 'returns alerts for group' do
         expect(helper.dashboard_alerts_for_group(dashboard_alerts, 'change')).to eq([dashboard_alert_change])
       end
     end
 
     describe '.alert_types_for_group' do
-      it 'should return alert types for group' do
+      it 'returns alert types for group' do
         expect(helper.alert_types_for_group('change')).to eq([alert_type_change])
       end
+
       it 'handles unknown group' do
         expect(helper.alert_types_for_group('blah')).to eq([])
       end
     end
 
     describe '.alert_types_for_class' do
-      it 'should return alert types for class name' do
+      it 'returns alert types for class name' do
         expect(helper.alert_types_for_class('ChangeAlert')).to eq([alert_type_change])
       end
     end

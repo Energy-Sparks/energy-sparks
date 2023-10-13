@@ -24,6 +24,7 @@ describe Schools::FuelConfiguration do
       expect(Schools::FuelConfiguration.new(has_gas: true, has_electricity: false, fuel_types_for_analysis: :x).no_meters_with_validated_readings).to eq(false)
       expect(Schools::FuelConfiguration.new(has_gas: true, has_electricity: true, fuel_types_for_analysis: :x).no_meters_with_validated_readings).to eq(false)
     end
+
     it 'is true if the school is missing both' do
       expect(Schools::FuelConfiguration.new(has_gas: false, has_electricity: false, fuel_types_for_analysis: :x).no_meters_with_validated_readings).to eq(true)
     end

@@ -25,7 +25,7 @@ RSpec.describe "school creation", :schools, type: :system do
     )
   end
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Admin'

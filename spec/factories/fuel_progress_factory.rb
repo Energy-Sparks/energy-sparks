@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :fuel_progress, class: Targets::FuelProgress do
+  factory :fuel_progress, class: 'Targets::FuelProgress' do
     transient do
       fuel_type  { :electricity }
       progress   { -0.5 }

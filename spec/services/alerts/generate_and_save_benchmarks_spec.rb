@@ -51,7 +51,7 @@ module Alerts
       AlertTypeRunResult.new(alert_type: alert_type, reports: [], error_messages: error_messages, asof_date: asof_date)
     end
 
-    before(:each) do
+    before do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
       allow(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil).and_return(adapter_instance)
       allow(adapter_instance).to receive(:benchmark_dates).and_return([asof_date, asof_date - 1.year])
@@ -80,8 +80,8 @@ module Alerts
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
         service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
         service.perform
-        expect(BenchmarkResult.last.results).to_not eq({})
-        expect(BenchmarkResult.last.results_cy).to_not eq({})
+        expect(BenchmarkResult.last.results).not_to eq({})
+        expect(BenchmarkResult.last.results_cy).not_to eq({})
         expect(BenchmarkResult.last.results["var"]).to eq ".inf"
       end
 

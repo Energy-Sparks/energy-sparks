@@ -4,7 +4,7 @@ describe AmrDataFeedConfig, type: :system do
   let!(:admin)              { create(:admin) }
   let!(:config)             { create(:amr_data_feed_config) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
   end

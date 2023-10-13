@@ -12,11 +12,12 @@ module Cads
 
     let(:cache_key) { "#{cad.school.id}-#{cad.school.name.parameterize}-power-consumption-service-#{cad.id}" }
 
-    context '#cache_power_consumption_service' do
+    describe '#cache_power_consumption_service' do
       it 'caches the service' do
         expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 45.minutes)
         RealtimePowerConsumptionService.cache_power_consumption_service(meter_collection, cad)
       end
+
       it 'uses the right meter' do
         expect(meter_collection).to receive(:meter?).with(meter.mpan_mprn.to_s).and_return(analytics_meter)
 
@@ -36,11 +37,13 @@ module Cads
       end
     end
 
-    context '#read_consumption' do
+    describe '#read_consumption' do
       let(:power_consumption_service) { double(:power_consumption_service) }
-      before(:each) do
+
+      before do
         allow(::PowerConsumptionService).to receive(:create_service).with(meter_collection, analytics_meter).and_return(power_consumption_service)
       end
+
       it 'calls the service' do
         expect(Rails.cache).to receive(:fetch).with(cache_key).and_return(power_consumption_service)
         expect(power_consumption_service).to receive(:perform).and_return(99)
@@ -49,6 +52,7 @@ module Cads
 
       context 'service not in cache' do
         let(:power_consumption_service) { nil }
+
         it 'does not error' do
           expect(RealtimePowerConsumptionService.read_consumption(cad)).to be_nil
         end

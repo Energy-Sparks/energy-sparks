@@ -21,11 +21,14 @@ RSpec.describe SchoolGroups::SchoolsPriorityActionCsvGenerator do
 
         it { expect(csv.lines.count).to eq(2) }
         it { expect(csv.lines[0]).to eq("Fuel,Description,School,Cluster,Number of pupils,Floor area (m2),Energy (kWh),Cost (£),CO2 (kg)\n") }
+
         context "when school doesn't have cluster" do
           it { expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},Not set,10,200.0,0,£1000,1100\n") }
         end
+
         context "when school has a cluster" do
           let!(:cluster) { create(:school_group_cluster, school_group: school_group, name: "My Cluster", schools: [school_1]) }
+
           it { expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},My Cluster,10,200.0,0,£1000,1100\n") }
         end
       end

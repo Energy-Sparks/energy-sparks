@@ -34,6 +34,7 @@ describe SchoolsLoader, type: :service do
         before do
           school_1.update(school_group: create(:school_group))
         end
+
         it 'deduplicates the schools' do
           schools = service.schools
           expect(schools.count).to eq(2)
@@ -73,6 +74,7 @@ describe SchoolsLoader, type: :service do
 
   describe 'when loading the real config file' do
     let(:filepath) { Rails.root.join('config/test_schools.yml') }
+
     it 'gets valid list of schools' do
       slugs = service.school_slugs
       expect(slugs).not_to be_empty

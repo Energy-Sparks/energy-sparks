@@ -16,7 +16,7 @@ describe Amr::ValidateAndPersistReadingsService, type: :service do
     allow(meter_collection).to receive(:electricity_meters).and_return([])
   end
 
-  context '#perform' do
+  describe '#perform' do
     before do
       expect_any_instance_of(Amr::AnalyticsMeterCollectionFactory).to receive(:unvalidated).and_return(meter_collection)
       expect_any_instance_of(AggregateDataService).to receive(:validate_meter_data).and_return(meter_collection)

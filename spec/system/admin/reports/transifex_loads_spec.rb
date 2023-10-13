@@ -5,7 +5,7 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
   let!(:transifex_load)         { create(:transifex_load, pulled: 6, pushed: 7) }
   let!(:transifex_load_error)   { create(:transifex_load_error) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Manage'
@@ -19,7 +19,7 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
   end
 
   context 'viewing report' do
-    before(:each) do
+    before do
       click_on "Transifex Content Loads"
     end
 
@@ -34,9 +34,10 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
   end
 
   context 'viewing a report with errors' do
-    before(:each) do
+    before do
       visit admin_reports_transifex_load_path(transifex_load_error.transifex_load)
     end
+
     it 'shows errors' do
       expect(page).to have_content("1 error occured")
       expect(page).to have_content("A problem occured")
@@ -44,9 +45,10 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
   end
 
   context 'viewing a report without errors' do
-    before(:each) do
+    before do
       visit admin_reports_transifex_load_path(transifex_load)
     end
+
     it 'shows a summary' do
       expect(page).to have_content("pulled 6 resources")
       expect(page).to have_content("pushed 7 resources")

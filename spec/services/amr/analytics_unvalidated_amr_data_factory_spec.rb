@@ -82,8 +82,8 @@ module Amr
 
       it 'includes extra meter attributes for dcc_meters' do
         first_gas_meter = amr_data[:heat_meters].first
-        expect(first_gas_meter[:attributes]).to_not be_nil
-        expect(first_gas_meter[:attributes][:accounting_tariff_generic]).to_not be_nil
+        expect(first_gas_meter[:attributes]).not_to be_nil
+        expect(first_gas_meter[:attributes][:accounting_tariff_generic]).not_to be_nil
       end
     end
   end

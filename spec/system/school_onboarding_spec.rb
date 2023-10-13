@@ -31,7 +31,7 @@ RSpec.describe "onboarding", :schools, type: :system do
     after   { Wisper.clear }
 
     context 'completing onboarding' do
-      before(:each) do
+      before do
         visit onboarding_path(onboarding)
       end
 
@@ -39,7 +39,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       #this test just fills in the required fields at each stage
       #then checks it completes as expected.
       #Add specific tests for each stage, rather than lots of assertions here
-      it 'it walks through the expected sequence' do
+      it 'walks through the expected sequence' do
         #Welcome
         click_on 'Start'
 
@@ -146,7 +146,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         let(:existing_user) { nil }
         let(:school_group) { create(:school_group) }
 
-        before(:each) do
+        before do
           onboarding.update!(school_group: school_group)
           click_on 'Start'
           click_on 'Use an existing account'
@@ -165,6 +165,7 @@ RSpec.describe "onboarding", :schools, type: :system do
             expect(page).to have_content("Step 1: Confirm your administrator account")
             expect(page).to have_content("Do you want to use this user as your administrator account")
           end
+
           it 'allows them to complete onboarding' do
             click_on 'Yes, use this account'
 
@@ -203,6 +204,7 @@ RSpec.describe "onboarding", :schools, type: :system do
             expect(page).to have_content("Step 1: Confirm your administrator account")
             expect(page).to have_content("Do you want to complete onboarding for Oldfield Park Infants using this school group admin account?")
           end
+
           it 'allows them to complete onboarding', js: true do
             click_on 'Yes, use this account'
 
@@ -250,7 +252,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         let(:user) { create(:onboarding_user) }
         let(:school) { build(:school) }
 
-        before(:each) do
+        before do
           onboarding.update!(created_user: user)
           onboarding.events.create!(event: :onboarding_user_created)
           SchoolCreator.new(school).onboard_school!(onboarding)
@@ -271,7 +273,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       context 'having created an account' do
         let(:user) { create(:onboarding_user) }
 
-        before(:each) do
+        before do
           onboarding.update!(created_user: user)
           sign_in(user)
           visit new_onboarding_school_details_path(onboarding)
@@ -315,7 +317,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         let(:user) { create(:onboarding_user) }
         let(:school) { build(:school) }
 
-        before(:each) do
+        before do
           onboarding.update!(created_user: user)
           onboarding.events.create!(event: :onboarding_user_created)
           SchoolCreator.new(school).onboard_school!(onboarding)
@@ -357,7 +359,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         let(:user) { create(:onboarding_user) }
         let(:school) { build(:school) }
 
-        before(:each) do
+        before do
           onboarding.update!(created_user: user)
           SchoolCreator.new(school).onboard_school!(onboarding)
           sign_in(user)
@@ -372,7 +374,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           onboarding.reload
           expect(onboarding).to have_event(:pupil_account_created)
           pupil = onboarding.school.users.pupil.first
-          expect(pupil.email).to_not be_nil
+          expect(pupil.email).not_to be_nil
           expect(pupil.pupil_password).to eq('theenergysavers')
         end
 
@@ -388,7 +390,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         let(:user) { create(:onboarding_user) }
         let(:school) { build(:school, visible: false, name: school_name) }
 
-        before(:each) do
+        before do
           onboarding.update!(created_user: user)
           SchoolCreator.new(school).onboard_school!(onboarding)
 
@@ -426,7 +428,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         context 'when data enabled' do
           let(:wisper_subscriber) { Onboarding::OnboardingDataEnabledListener.new }
 
-          before :each do
+          before do
             allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
             visit new_onboarding_completion_path(onboarding)
           end
@@ -466,7 +468,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       let(:user) { create(:onboarding_user) }
       let(:school) { build(:school) }
 
-      before(:each) do
+      before do
         onboarding.update!(created_user: user)
         SchoolCreator.new(school).onboard_school!(onboarding)
         sign_in(user)
@@ -581,7 +583,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         expect(onboarding.school.users.count).to eql 2
         expect(onboarding.school.users.first).to be_confirmed
-        expect(onboarding.school.users.last).to_not be_confirmed
+        expect(onboarding.school.users.last).not_to be_confirmed
       end
     end
   end

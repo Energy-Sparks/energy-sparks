@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :progress_summary, class: Targets::ProgressSummary do
+  factory :progress_summary, class: 'Targets::ProgressSummary' do
     transient do
       school_target   { create(:school_target) }
       electricity     { build(:fuel_progress) }
@@ -9,7 +9,7 @@ FactoryBot.define do
     initialize_with { new(school_target: school_target, electricity: electricity, gas: gas, storage_heater: storage_heater) }
   end
 
-  factory :progress_summary_with_failed_target, class: Targets::ProgressSummary do
+  factory :progress_summary_with_failed_target, class: 'Targets::ProgressSummary' do
     transient do
       school_target   { create(:school_target) }
       electricity     { build(:fuel_progress) }

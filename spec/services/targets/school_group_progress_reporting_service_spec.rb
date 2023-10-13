@@ -11,12 +11,12 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
 
   let(:service) { Targets::SchoolGroupProgressReportingService.new(school_group) }
 
-  before(:each) do
+  before do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
   end
 
   describe '#report' do
-    before(:each) do
+    before do
       allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(enough_data)
     end
 
@@ -62,9 +62,10 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
       let(:school_target)       { create(:school_target, school: school) }
       let(:progress_summary)    { build(:progress_summary, school_target: school_target) }
 
-      before(:each) do
+      before do
         allow_any_instance_of(Targets::ProgressService).to receive(:progress_summary).and_return(progress_summary)
       end
+
       it 'includes the school' do
         expect(report.size).to eql 1
         expect(report.first.school).to eq school

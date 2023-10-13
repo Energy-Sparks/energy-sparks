@@ -7,6 +7,7 @@ RSpec.describe Issue, type: :model do
 
   describe "with valid attributes" do
     subject { create :issue }
+
     it { is_expected.to be_valid }
   end
 
@@ -14,6 +15,7 @@ RSpec.describe Issue, type: :model do
     it "is issue by default" do
       expect(Issue.new(issue_type: nil).issue_type).to eq('issue')
     end
+
     it "can be set" do
       expect(Issue.new(issue_type: :note).issue_type).to eq('note')
     end
@@ -23,6 +25,7 @@ RSpec.describe Issue, type: :model do
     it "is open by default" do
       expect(Issue.new(status: nil).status).to eq('open')
     end
+
     it "can be set" do
       expect(Issue.new(status: :closed).status).to eq('closed')
     end
@@ -30,16 +33,22 @@ RSpec.describe Issue, type: :model do
 
   describe "#status_summary" do
     subject(:status_summary) { issue.status_summary }
+
     context "closed issue" do
       let(:issue) { build(:issue, issue_type: :issue, status: :closed) }
+
       it { expect(status_summary).to eq("closed issue") }
     end
+
     context "open issue" do
       let(:issue) { build(:issue, issue_type: :issue, status: :open) }
+
       it { expect(status_summary).to eq("open issue") }
     end
+
     context "note" do
       let(:issue) { build(:issue, issue_type: :note, status: :open) }
+
       it { expect(status_summary).to eq("note") }
     end
   end
@@ -48,14 +57,18 @@ RSpec.describe Issue, type: :model do
     before do
       issue.save
     end
+
     context "issue is a note" do
       subject(:issue) { build(:issue, issue_type: :note, status: :closed) }
+
       it "is sets status to open when saved" do
         expect(issue).to be_status_open
       end
     end
+
     context "issue is an issue" do
       subject(:issue) { build(:issue, issue_type: :issue, status: :closed) }
+
       it "is does not change status" do
         expect(issue).to be_status_closed
       end
@@ -64,43 +77,60 @@ RSpec.describe Issue, type: :model do
 
   describe "validate :school_issue_meters_only" do
     let(:meter) { create(:gas_meter) }
+
     before do
       issue.meters << meter
       issue.save
     end
+
     context "issueable is a school" do
       subject(:issue) { create(:issue, issueable: create(:school)) }
+
       it { expect(issue).to be_valid }
     end
+
     context "issueable is a school group" do
       subject(:issue) { create(:issue, issueable: create(:school_group)) }
-      it { expect(issue).to_not be_valid }
+
+      it { expect(issue).not_to be_valid }
       it { expect(issue.errors.messages[:base]).to include("Only school issues can have associated meters") }
     end
+
     context "issueable is a data source" do
       subject(:issue) { create(:issue, issueable: create(:data_source)) }
-      it { expect(issue).to_not be_valid }
+
+      it { expect(issue).not_to be_valid }
       it { expect(issue.errors.messages[:base]).to include("Only school issues can have associated meters") }
     end
   end
 
   describe "#resolve!" do
     let!(:user) { create(:admin) }
+
     context "when issue is of type note" do
       subject(:issue) { create(:issue, issue_type: :note) }
-      it { expect(issue.resolve!(updated_by: user)).to be_falsey }
+
       before do
         issue.resolve!(updated_by: user)
       end
+
+      it { expect(issue.resolve!(updated_by: user)).to be_falsey }
+
+
       it { expect(issue).to be_status_open }
       it { expect(issue.updated_by).to eq(user) }
     end
+
     context "when issue is of type issue" do
       subject(:issue) { create(:issue, issue_type: :issue) }
-      it { expect(issue.resolve!(updated_by: user)).to be_truthy }
+
       before do
         issue.resolve!(updated_by: user)
       end
+
+      it { expect(issue.resolve!(updated_by: user)).to be_truthy }
+
+
       it { expect(issue).to be_status_closed }
       it { expect(issue.updated_by).to eq(user) }
     end
@@ -121,13 +151,16 @@ RSpec.describe Issue, type: :model do
 
       context "and issues for different school group" do
         let!(:different_school_group_issue) { create(:issue, issueable: create(:school_group)) }
+
         it { expect(issues.count).to eq(3) }
-        it { expect(issues).to_not include(different_school_group_issue) }
+        it { expect(issues).not_to include(different_school_group_issue) }
       end
+
       context "and issues for schools in other groups" do
         let!(:different_school_group_school_issue) { create(:issue, issueable: create(:school)) }
+
         it { expect(issues.count).to eq(3) }
-        it { expect(issues).to_not include(different_school_group_school_issue) }
+        it { expect(issues).not_to include(different_school_group_school_issue) }
       end
     end
   end
@@ -135,24 +168,31 @@ RSpec.describe Issue, type: :model do
   describe "#data_source_names" do
     let(:issue) { create(:issue, meters: meters) }
     let(:meters) { [] }
+
     subject(:data_source_names) { issue.data_source_names }
 
     context "with no meters" do
       it { expect(data_source_names).to be_nil }
     end
+
     context "with meters with no data source" do
       let(:meters) { [create(:gas_meter), create(:gas_meter)] }
+
       it { expect(data_source_names).to be_nil }
     end
+
     context "with meters with same data source" do
       let(:meters) { [create(:gas_meter, data_source: data_source), create(:gas_meter, data_source: data_source)] }
+
       it "displays unique data sources" do
         expect(data_source_names).to eq(data_source.name)
       end
     end
+
     context "with meters from multiple sources" do
       let(:another_data_source) { create(:data_source) }
       let(:meters) { [create(:gas_meter, data_source: data_source), create(:gas_meter, data_source: another_data_source)]}
+
       it "joins data source names with a pipe" do
         expect(data_source_names).to eq("#{data_source.name}|#{another_data_source.name}")
       end
@@ -163,22 +203,26 @@ RSpec.describe Issue, type: :model do
     context "issuable is a school" do
       context "school has school group" do
         let(:school_issue) { create(:issue, issueable: school) }
+
         it { expect(school_issue.school_group).to eq(school_group) }
       end
 
       context "school has no school group" do
         let(:school_issue) { create(:issue, issueable: create(:school)) }
+
         it { expect(school_issue.school_group).to be_nil }
       end
     end
 
     context "issuable is a data source" do
       let(:data_source_issue) { create(:issue, issueable: data_source) }
+
       it { expect(data_source_issue.school_group).to be_nil }
     end
 
     context "issuable is a data source" do
       let(:school_group_issue) { create(:issue, issueable: school_group) }
+
       it { expect(school_group_issue.school_group).to eq(school_group) }
     end
   end

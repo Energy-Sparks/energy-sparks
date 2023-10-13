@@ -7,7 +7,7 @@ RSpec.describe 'activation', type: :system do
   let!(:not_visible)      { create(:school, name: "Not visible", school_group: school_group, visible: false)}
   let!(:not_data_visible) { create(:school, name: "Not data visible", school_group: school_group, visible: true, data_enabled: false)}
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit admin_path
     click_on 'Schools awaiting activation'

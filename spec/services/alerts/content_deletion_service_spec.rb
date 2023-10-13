@@ -13,9 +13,9 @@ describe Alerts::ContentDeletionService, type: :service do
 
   it 'calls delete!' do
     # Note: there are specific specs with full test coverage for each of these classes in the spec/services/alerts folder
-    allow_any_instance_of(Alerts::DeleteContentGenerationRunService).to receive(:delete!) { true }
-    allow_any_instance_of(Alerts::DeleteBenchmarkRunService).to receive(:delete!) { true }
-    allow_any_instance_of(Alerts::DeleteAlertGenerationRunService).to receive(:delete!) { true }
+    allow_any_instance_of(Alerts::DeleteContentGenerationRunService).to receive(:delete!).and_return(true)
+    allow_any_instance_of(Alerts::DeleteBenchmarkRunService).to receive(:delete!).and_return(true)
+    allow_any_instance_of(Alerts::DeleteAlertGenerationRunService).to receive(:delete!).and_return(true)
     expect(service.delete!).to eq(true)
   end
 end

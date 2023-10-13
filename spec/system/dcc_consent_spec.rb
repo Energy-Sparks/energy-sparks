@@ -7,7 +7,7 @@ RSpec.describe "DCC consents", type: :system do
   let!(:admin)        { create(:admin)}
 
   context 'as admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on('Admin')
@@ -39,6 +39,7 @@ RSpec.describe "DCC consents", type: :system do
 
       context 'when granting consent' do
         let!(:meter_review) { create(:meter_review, meters: [meter_1]) }
+
         it 'allows grant of consent' do
           expect_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([''])
           expect_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:grant_trusted_consent).with(1234567890123, meter_review.consent_grant.guid).and_return(true)

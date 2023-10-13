@@ -22,7 +22,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
     }
   end
 
-  before(:each) do
+  before do
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
     allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
@@ -50,7 +50,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
     let(:last_year) { Time.zone.today.last_year }
 
     context "with all fuel types" do
-      before(:each) do
+      before do
         visit school_school_targets_path(school)
       end
 
@@ -112,13 +112,13 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
           has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true)
       end
 
-      before(:each) do
+      before do
         visit school_school_targets_path(school)
       end
 
       it "allows electricity target to be created" do
-        expect(page).to_not have_content("Reducing gas usage by")
-        expect(page).to_not have_content("Reducing storage heater usage by")
+        expect(page).not_to have_content("Reducing gas usage by")
+        expect(page).not_to have_content("Reducing storage heater usage by")
 
         fill_in "Reducing electricity usage by", with: 15
         click_on 'Set this target'
@@ -138,7 +138,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
     let!(:intervention_type)   { create(:intervention_type) }
     let!(:expired_targets)     { }
 
-    before(:each) do
+    before do
       visit school_school_targets_path(test_school)
     end
 
@@ -187,34 +187,41 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
     context "when an expired target is present" do
       let(:expired_target) { create(:school_target, school: test_school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday) }
       let(:expired_targets) { [expired_target] }
+
       it "links to expired target" do
         expect(page).to have_link("View results")
       end
+
       context "and clicking 'View results'" do
         before { click_on "View results" }
+
         it "shows previous expired target" do
           expect(page).to have_content("Your school set a target to reduce its energy usage between #{nice_dates(expired_target.start_date)} and #{nice_dates(expired_target.target_date)}")
         end
-        it { expect(page).to_not have_link("View results") }
+
+        it { expect(page).not_to have_link("View results") }
+
         context "more than one expired targets" do
           let(:older_expired_target) { create(:school_target, school: test_school, start_date: Date.yesterday.years_ago(2), target_date: Date.yesterday.years_ago(1)) }
           let(:expired_targets) { [expired_target, older_expired_target] }
+
           it "shows previous expired target" do
             expect(page).to have_content("Your school set a target to reduce its energy usage between #{nice_dates(expired_target.start_date)} and #{nice_dates(expired_target.target_date)}")
           end
         end
+
         context "no more expired targets" do
-          it { expect(page).to_not have_link("View results") }
+          it { expect(page).not_to have_link("View results") }
         end
       end
     end
 
     context "no expired target" do
-      it { expect(page).to_not have_link("View results") }
+      it { expect(page).not_to have_link("View results") }
     end
 
     context 'and I edit the target' do
-        before(:each) do
+        before do
           click_on "Revise your target"
         end
 
@@ -231,7 +238,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         end
 
         it "does not show a delete button" do
-          expect(page).to_not have_link("Delete") unless user.admin?
+          expect(page).not_to have_link("Delete") unless user.admin?
         end
 
         it "validates target values" do
@@ -247,7 +254,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
       it "displays message to come back tomorrow" do
         expect(page).to have_content("We are calculating your progress")
         expect(page).to have_content("Check back tomorrow to see the results.")
-        expect(page).to_not have_link("View progress", href: electricity_school_progress_index_path(school))
+        expect(page).not_to have_link("View progress", href: electricity_school_progress_index_path(school))
       end
     end
 
@@ -261,7 +268,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         electricity_progress: electricity_progress, gas_progress: gas_progress, report_last_generated: last_generated)
       end
 
-      before(:each) do
+      before do
         visit school_school_targets_path(test_school)
       end
 
@@ -270,23 +277,25 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
         let!(:last_generated)       { Time.zone.today }
 
-        before(:each) do
+        before do
           school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
           visit school_school_targets_path(test_school)
         end
 
         it 'cannot show progress with no recent data' do
-          expect(page).to_not have_content("last week")
+          expect(page).not_to have_content("last week")
         end
 
         context 'and some recent management data' do
           let(:management_data) do
             Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :kwh => 100, :percent_change => -0.0923132131 } } })
           end
-          before(:each) do
+
+          before do
             allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
             refresh
           end
+
           it 'shows the same data as the management dashboard' do
             expect(page).to have_content("last week")
           end
@@ -303,14 +312,14 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
 
         it 'shows detailed progress data' do
           expect(page).to have_content("99%")
-          expect(page).to_not have_content("last week")
+          expect(page).not_to have_content("last week")
         end
 
         context "and fuel types are out of date" do
           let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15, recent_data: false) }
           let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17, recent_data: false) }
 
-          before(:each) do
+          before do
             #both gas and electricity will be out of date
             visit school_school_targets_path(test_school)
           end
@@ -333,7 +342,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         end
 
         context "and storage heater was added" do
-          before(:each) do
+          before do
             visit school_school_targets_path(test_school)
             click_on("Review your target")
           end
@@ -348,7 +357,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
 
           it "no longer prompts after target is revised" do
             click_on "Update our target"
-            expect(page).to_not have_content("Your Storage heater configuration has changed")
+            expect(page).not_to have_content("Your Storage heater configuration has changed")
             target.reload
             expect(target.suggest_revision?).to be false
             expect(school.current_target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATER_TARGET
@@ -357,10 +366,11 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
       end
 
       context "and an estimate would be useful" do
-        before(:each) do
+        before do
           school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
           visit school_school_targets_path(test_school)
         end
+
         it 'shows prompt to add estimate' do
           expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your electricity")
         end
@@ -381,7 +391,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
     let!(:target_date)          { Date.yesterday }
     let!(:target) { create(:school_target, school: test_school, start_date: start_date, target_date: target_date, electricity_progress: electricity_progress, gas_progress: gas_progress, report_last_generated: last_generated) }
 
-    before(:each) do
+    before do
       visit school_school_target_path(test_school, target)
     end
 
@@ -398,7 +408,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
     end
 
     it "prompts to create a new target" do
-      expect(page).to_not have_link("Revise your target")
+      expect(page).not_to have_link("Revise your target")
       expect(page).to have_link("Set a new target")
       expect(page).to have_content("It's now time to review your progress")
       click_on("Set a new target", match: :first)
@@ -430,7 +440,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
       let!(:intervention)       { create(:observation, :intervention, school: test_school, intervention_type: intervention_type, at: start_date + 1.day)}
       let!(:activity)           { create(:activity, school: test_school, activity_type: activity_type, happened_on: target_date - 1.day) }
 
-      before(:each) do
+      before do
         refresh
       end
 
@@ -442,7 +452,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
     end
 
     context 'it allows me to create a new target' do
-      before(:each) do
+      before do
         click_on("Set a new target", match: :first)
       end
 
@@ -468,7 +478,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         click_on 'Set this target'
         expect(page).to have_content("We are calculating your progress")
         visit school_school_target_path(test_school, target)
-        expect(page).to_not have_content("It's now time to review your progress")
+        expect(page).not_to have_content("It's now time to review your progress")
       end
     end
 
@@ -501,7 +511,7 @@ RSpec.describe 'school targets', type: :system do
     end
 
     context 'with targets disabled for school' do
-      before(:each) do
+      before do
         school.update!(enable_targets_feature: false)
       end
 
@@ -509,7 +519,7 @@ RSpec.describe 'school targets', type: :system do
         visit school_path(school)
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
         within '#my_school_menu' do
-          expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+          expect(page).not_to have_link("Review targets", href: school_school_targets_path(school))
         end
       end
 
@@ -528,7 +538,7 @@ RSpec.describe 'school targets', type: :system do
     end
 
     context 'with targets disabled for school' do
-      before(:each) do
+      before do
         school.update!(enable_targets_feature: false)
       end
 
@@ -536,7 +546,7 @@ RSpec.describe 'school targets', type: :system do
         visit school_path(school)
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
         within '#my_school_menu' do
-          expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+          expect(page).not_to have_link("Review targets", href: school_school_targets_path(school))
         end
       end
 
@@ -552,6 +562,7 @@ RSpec.describe 'school targets', type: :system do
   #otherwise same as school admin
   context 'as an admin' do
     let(:user) { create(:admin) }
+
     include_examples "managing targets" do
       let(:test_school) { school }
     end
@@ -564,7 +575,7 @@ RSpec.describe 'school targets', type: :system do
     context 'when viewing a target' do
        let!(:target) { create(:school_target, school: school) }
 
-       before(:each) do
+       before do
          visit school_school_targets_path(school)
          click_on "Revise your target"
        end
@@ -581,21 +592,26 @@ RSpec.describe 'school targets', type: :system do
   context 'as a guest user' do
      let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
      let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
-     before(:each) do
+
+     before do
        visit school_school_targets_path(school)
      end
+
      it 'lets me view a target' do
        expect(page).to have_content("Reducing your energy usage by")
      end
+
      it 'shows me a link to the report' do
        expect(page).to have_link("View monthly report", href: electricity_school_school_target_progress_index_path(school, target))
      end
+
      it 'doesnt have a revise link' do
-       expect(page).to_not have_link("Revise your target")
+       expect(page).not_to have_link("Revise your target")
      end
+
      it 'doesnt have action links' do
-       expect(page).to_not have_link("Choose another activity")
-       expect(page).to_not have_link("Record an energy saving action")
+       expect(page).not_to have_link("Choose another activity")
+       expect(page).not_to have_link("Record an energy saving action")
      end
   end
 
@@ -605,31 +621,37 @@ RSpec.describe 'school targets', type: :system do
     let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
 
     let(:pupil) { create(:pupil, school: school)}
-    before(:each) do
+
+    before do
       sign_in(pupil)
       visit school_school_targets_path(school)
     end
+
     it 'lets me view a target' do
       expect(page).to have_content("Reducing your energy usage by")
     end
+
     it 'shows me a link to the report' do
       expect(page).to have_link("View monthly report", href: electricity_school_school_target_progress_index_path(school, target))
     end
+
     it 'doesnt have a revise link' do
-      expect(page).to_not have_link("Revise your target")
+      expect(page).not_to have_link("Revise your target")
     end
+
     it 'doesnt have action links' do
       expect(page).to have_link("Choose another activity")
     end
+
     context 'with targets disabled for school' do
-      before(:each) do
+      before do
         school.update!(enable_targets_feature: false)
       end
 
       it 'doesnt have a link to review targets' do
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
         within '#my_school_menu' do
-          expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+          expect(page).not_to have_link("Review targets", href: school_school_targets_path(school))
         end
       end
 
