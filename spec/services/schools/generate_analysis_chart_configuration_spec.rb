@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 module Schools
-
   describe GenerateAnalysisChartConfiguration do
-
     let!(:school)     { create(:school, :with_school_group) }
-    let(:page_config) {{
+    let(:page_config) do
+      {
                         pupil_analysis_page: {
                                 name:   'Pupil analysis',
                                 sub_pages: [
@@ -23,7 +22,8 @@ module Schools
                                   }
                                 ]
                               }
-                      }}
+                      }
+    end
 
     let(:pupil_analysis_failed_gas) do
       {
@@ -45,11 +45,11 @@ module Schools
 
     let(:chart_data) { instance_double(ChartData) }
 
-    before(:each) do
+    before do
       allow(ChartData).to receive(:new).and_return(chart_data)
     end
 
-    context '#generate' do
+    describe '#generate' do
       it 'generates pupil charts' do
         allow(chart_data).to receive(:has_chart_data?).and_return(true, true)
         chart_config = GenerateAnalysisChartConfiguration.new(school, nil, fuel_configuration, page_config).generate([:pupil_analysis_page])
@@ -67,9 +67,6 @@ module Schools
         chart_config = GenerateAnalysisChartConfiguration.new(school, nil, fuel_configuration, page_config).generate([:pupil_analysis_page])
         expect(chart_config).to eq({})
       end
-
     end
-
-
   end
 end

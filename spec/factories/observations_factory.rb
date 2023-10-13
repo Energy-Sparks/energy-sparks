@@ -20,7 +20,7 @@ FactoryBot.define do
 
     factory :observation_with_temperature_recording_and_location do
       observation_type { :temperature }
-      after(:create) do |observation, evaluator|
+      after(:create) do |observation, _evaluator|
         location = create(:location, school: observation.school)
         create(:temperature_recording, observation: observation, location: location)
       end

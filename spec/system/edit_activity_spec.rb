@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'editing an activity' do
-
   let(:school_name) { 'Active school'}
   let(:activity_type_name) { 'Exciting activity' }
   let(:activity_description) { 'What we did' }
@@ -12,7 +11,7 @@ describe 'editing an activity' do
   let!(:activity_type) { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}") }
   let!(:activity) { create(:activity, school: school, activity_type: activity_type, title: activity_type_name, description: activity_description, happened_on: Date.yesterday)}
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit school_path(school)
     click_on('View all events')
@@ -23,10 +22,10 @@ describe 'editing an activity' do
     expect(page.has_content?('Update your activity'))
     expect(find_field(:activity_happened_on).value).to eq Date.yesterday.strftime("%d/%m/%Y")
 
-    fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+    fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
     click_on 'Update activity'
     expect(page.has_content?('Activity was successfully updated.')).to be true
-    expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
+    expect(page.has_content?(Time.zone.today.strftime("%A, %d %B %Y"))).to be true
   end
 
   it 'allows an activity to be updated with custom title' do

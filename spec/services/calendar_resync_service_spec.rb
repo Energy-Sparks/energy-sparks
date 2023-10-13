@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe CalendarResyncService do
-
   let!(:bank_holiday) { create(:calendar_event_type, :bank_holiday, title: 'Bank Holiday')}
   let!(:holiday) { create(:calendar_event_type, :holiday, title: 'Holiday')}
 
@@ -37,7 +36,7 @@ describe CalendarResyncService do
     let(:from_date) { Date.parse('2021-06-06') }
     let(:old_regional_calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'old regional event', start_date: '2020-01-01', end_date: '2020-01-01') }
 
-    before :each do
+    before do
       old_regional_calendar_event.update(updated_at: from_date - 1.day)
     end
 
@@ -53,6 +52,7 @@ describe CalendarResyncService do
 
   context 'when child has event based on parent' do
     let!(:calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar, description: 'school event', based_on: regional_calendar_event) }
+
     it 'updates child events' do
       expect(school_calendar.calendar_events.count).to eq(1)
       CalendarResyncService.new(regional_calendar).resync
@@ -89,7 +89,7 @@ describe CalendarResyncService do
 
     it 'does not delete other events on child during failed sync' do
       other_regional_calendar_event = create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'ealier regional event', start_date: '2009-01-01', end_date: '2009-02-01')
-      other_school_calendar_event = create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar, description: 'earlier school event', start_date: '2009-01-01', end_date: '2009-02-01', based_on: other_regional_calendar_event)
+      create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar, description: 'earlier school event', start_date: '2009-01-01', end_date: '2009-02-01', based_on: other_regional_calendar_event)
       school_calendar.reload
       expect(school_calendar.calendar_events.count).to eq(2)
       CalendarResyncService.new(regional_calendar).resync
@@ -116,7 +116,7 @@ describe CalendarResyncService do
 
     it 'still updates other child where no conflicting events' do
       other_calendar = create(:school_calendar, based_on: regional_calendar)
-      other_calendar_event = create(:calendar_event, calendar_event_type: holiday, calendar: other_calendar, description: 'other calendar event', start_date: '2019-01-01', end_date: '2019-02-01')
+      create(:calendar_event, calendar_event_type: holiday, calendar: other_calendar, description: 'other calendar event', start_date: '2019-01-01', end_date: '2019-02-01')
       expect(other_calendar.calendar_events.count).to eq(1)
       CalendarResyncService.new(regional_calendar).resync
       expect(other_calendar.calendar_events.count).to eq(2)
@@ -135,8 +135,9 @@ describe CalendarResyncService do
       expect(service.successes.first[:calendar]).to eq(school_calendar)
       expect(service.successes.first[:created].count).to eq(1)
     end
+
     it 'adds failure messages' do
-      school_calendar.calendar_events << regional_calendar.calendar_events.map {|event| event.dup}
+      school_calendar.calendar_events << regional_calendar.calendar_events.map(&:dup)
       service = CalendarResyncService.new(regional_calendar)
       service.resync
       expect(service.failures.count).to eq(1)
@@ -144,5 +145,4 @@ describe CalendarResyncService do
       expect(service.failures.first[:message]).to include('overlaps another term or holiday')
     end
   end
-
 end

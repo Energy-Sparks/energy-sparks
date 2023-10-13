@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Schools::GenerateDashboardChartConfiguration, type: :service do
-
   let!(:school)            { create(:school, :with_school_group) }
   let(:meter_collection)   { double(:meter_collection) }
   let(:chart_data)         { instance_double(ChartData) }

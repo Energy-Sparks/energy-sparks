@@ -9,7 +9,7 @@ RSpec.describe 'Solar pv areas', type: :system do
   let(:gsp_name)                { 'MELK_1' }
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -63,10 +63,9 @@ RSpec.describe 'Solar pv areas', type: :system do
     end
 
     context 'with an existing area' do
-
       let!(:area) { SolarPvTuosArea.create!(title: title, latitude: latitude, longitude: longitude, gsp_name: 'ABC') }
 
-      before(:each) do
+      before do
         click_on 'Manage'
         click_on 'Admin'
         click_on 'Solar PV Areas'

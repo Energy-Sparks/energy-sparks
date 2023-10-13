@@ -1,16 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe 'alert type management', type: :system do
-
-  let!(:admin)  { create(:admin)}
+  let!(:admin) { create(:admin)}
 
   let(:gas_fuel_alert_type_title) { 'Your gas usage is too high' }
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, title: gas_fuel_alert_type_title, has_ratings: has_ratings) }
-  let(:has_ratings){ true }
+  let(:has_ratings) { true }
 
 
   describe 'managing associated activities' do
-
     let!(:alert_type_rating) { create(:alert_type_rating, alert_type: gas_fuel_alert_type)}
     let!(:activity_category) { create(:activity_category)}
     let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
@@ -48,7 +46,6 @@ RSpec.describe 'alert type management', type: :system do
     end
 
     it 'assigns activity types to alerts via a text box position' do
-
       click_on gas_fuel_alert_type_title
       click_on 'Content management'
 
@@ -67,16 +64,14 @@ RSpec.describe 'alert type management', type: :system do
 
       expect(alert_type_rating.activity_types).to match_array([activity_type_2])
       expect(alert_type_rating.alert_type_rating_activity_types.first.position).to eq(1)
-
     end
   end
 
 
   describe 'creating analysis content' do
-
     let!(:analysis_alert_type) { create(:alert_type, source: :analysis, frequency: :termly, title: 'Carbon analysis') }
     let!(:alert) do
-      create(:alert, alert_type: analysis_alert_type, template_data: {carbon: '100 tonnes', chart_a: :example_chart_value}, school: create(:school))
+      create(:alert, alert_type: analysis_alert_type, template_data: { carbon: '100 tonnes', chart_a: :example_chart_value }, school: create(:school))
     end
 
     before do
@@ -88,7 +83,6 @@ RSpec.describe 'alert type management', type: :system do
     end
 
     context 'with ratings' do
-
       it 'allows creation and editing of content', js: true do
         click_on analysis_alert_type.title
         click_on 'Content management'
@@ -102,7 +96,6 @@ RSpec.describe 'alert type management', type: :system do
         check 'Analysis'
 
         within '.analysis_active' do
-
           fill_in 'Analysis title', with: 'Carbon report'
           fill_in 'Analysis subtitle', with: 'You are producing {{carbon}} of carbon'
 
@@ -126,9 +119,8 @@ RSpec.describe 'alert type management', type: :system do
   end
 
   describe 'creating alert content' do
-
     let!(:alert) do
-      create(:alert, alert_type: gas_fuel_alert_type, template_data: {gas_percentage: '10%', chart_a: :example_chart_value}, school: create(:school))
+      create(:alert, alert_type: gas_fuel_alert_type, template_data: { gas_percentage: '10%', chart_a: :example_chart_value }, school: create(:school))
     end
 
     before do
@@ -140,7 +132,6 @@ RSpec.describe 'alert type management', type: :system do
     end
 
     context 'with ratings' do
-
       it 'allows creation and editing of alert content', js: true do
         click_on gas_fuel_alert_type_title
         click_on 'Content management'
@@ -239,8 +230,7 @@ RSpec.describe 'alert type management', type: :system do
     end
 
     context 'without ratings' do
-
-      let(:has_ratings){ false }
+      let(:has_ratings) { false }
 
       it 'does not ask for ratings and defaults them' do
         click_on gas_fuel_alert_type_title
@@ -259,7 +249,6 @@ RSpec.describe 'alert type management', type: :system do
         expect(alert_type_rating.rating_from).to eq(0.0)
         expect(alert_type_rating.rating_to).to eq(10.0)
       end
-
     end
   end
 end

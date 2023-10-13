@@ -13,7 +13,7 @@ module Transifex
 
     context 'when creating connection' do
       let(:client)          { Transifex::Client.new(api_key, project) }
-      let(:request_headers) { { "Authorization"=>"Bearer #{api_key}", "Content-Type"=>"application/vnd.api+json"} }
+      let(:request_headers) { { "Authorization" => "Bearer #{api_key}", "Content-Type" => "application/vnd.api+json" } }
 
       it 'supplies headers' do
         expect(Faraday).to receive(:new).with(Transifex::Client::BASE_URL, headers: request_headers).and_return(connection)
@@ -39,7 +39,7 @@ module Transifex
         end
       end
 
-      context '#get_languages' do
+      describe '#get_languages' do
         let(:body)          { File.read('spec/fixtures/transifex/get_languages.json') }
         let(:expected_path) { "projects/o:energy-sparks:p:#{project}/languages" }
 
@@ -50,7 +50,7 @@ module Transifex
         end
       end
 
-      context '#list_resources' do
+      describe '#list_resources' do
         let(:body)          { File.read('spec/fixtures/transifex/list_resources.json') }
         let(:expected_path) { "resources?filter[project]=o:energy-sparks:p:#{project}" }
 
@@ -61,7 +61,7 @@ module Transifex
         end
       end
 
-      context '#get_resource' do
+      describe '#get_resource' do
         let(:body)          { File.read('spec/fixtures/transifex/get_resource.json') }
         let(:slug)          { "some-slug" }
         let(:expected_path) { "resources/o:energy-sparks:p:#{project}:r:#{slug}" }
@@ -73,7 +73,7 @@ module Transifex
         end
       end
 
-      context '#create_resource' do
+      describe '#create_resource' do
         let(:slug)              { 'slug-jh1' }
         let(:name)              { 'some resource' }
         let(:categories)        { ['some category'] }
@@ -105,28 +105,28 @@ module Transifex
         end
       end
 
-      context '#delete_resource' do
+      describe '#delete_resource' do
         let(:slug)          { "some-slug" }
         let(:expected_path) { "resources/o:energy-sparks:p:#{project}:r:#{slug}" }
 
         it 'handles missing env var' do
           ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: nil do
-            expect {
+            expect do
               client.delete_resource(slug)
-            }.to raise_error(Transifex::Client::AccessError)
+            end.to raise_error(Transifex::Client::AccessError)
           end
         end
 
         it 'raise error if project is not development' do
           ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "not-this-project, some-other-project" do
-            expect {
+            expect do
               client.delete_resource(slug)
-            }.to raise_error(Transifex::Client::AccessError)
+            end.to raise_error(Transifex::Client::AccessError)
           end
         end
 
         it 'deletes url and returns true' do
-          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "#{project}" do
+          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: project.to_s do
             expect(connection).to receive(:delete).with(expected_path).and_return(response)
             expect(client.delete_resource(slug)).to be_truthy
           end
@@ -138,17 +138,17 @@ module Transifex
           let(:body)          { File.read('spec/fixtures/transifex/delete_resource_error.json') }
 
           it 'raises error if api returns error' do
-            ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "#{project}" do
+            ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: project.to_s do
               expect(connection).to receive(:delete).with(expected_path).and_return(response)
-              expect {
+              expect do
                 client.delete_resource(slug)
-              }.to raise_error(Transifex::Client::NotAuthorised)
+              end.to raise_error(Transifex::Client::NotAuthorised)
             end
           end
         end
       end
 
-      context '#get_resource_language_stats' do
+      describe '#get_resource_language_stats' do
         context 'for project' do
           let(:body)          { File.read('spec/fixtures/transifex/get_resource_language_stats.json') }
           let(:expected_path) { "resource_language_stats?filter[project]=o:energy-sparks:p:#{project}" }
@@ -183,7 +183,7 @@ module Transifex
         end
       end
 
-      context '#create_resource_strings_async_upload' do
+      describe '#create_resource_strings_async_upload' do
         let(:slug)              { 'slug-jh1' }
         let(:content)           { 'some yaml' }
         let(:body)              { File.read('spec/fixtures/transifex/create_resource_strings_async_upload.json') }
@@ -212,12 +212,13 @@ module Transifex
         end
       end
 
-      context '#get_resource_strings_async_upload' do
+      describe '#get_resource_strings_async_upload' do
         let(:upload_id)     { 'abc-123' }
         let(:expected_path) { "resource_strings_async_uploads/#{upload_id}" }
 
         context 'when translation has not yet completed' do
-          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_pending.json') }
+          let(:body) { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_pending.json') }
+
           it 'requests url with path and returns data' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             ret = client.get_resource_strings_async_upload(upload_id)
@@ -227,7 +228,8 @@ module Transifex
         end
 
         context 'when translation has completed' do
-          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_succeeded.json') }
+          let(:body) { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_succeeded.json') }
+
           it 'requests url with path and returns data' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             ret = client.get_resource_strings_async_upload(upload_id)
@@ -238,7 +240,7 @@ module Transifex
         end
       end
 
-      context '#create_resource_translations_async_downloads' do
+      describe '#create_resource_translations_async_downloads' do
         let(:slug)              { 'slug-jh1' }
         let(:language)          { 'cy' }
         let(:mode)              { 'onlyreviewed' }
@@ -274,12 +276,12 @@ module Transifex
         end
       end
 
-      context '#get_resource_translations_async_download' do
+      describe '#get_resource_translations_async_download' do
         let(:download_id)   { 'xyz-987' }
         let(:expected_path) { "resource_translations_async_downloads/#{download_id}" }
 
         context 'when translation has not yet completed' do
-          let(:body)        { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_pending.json') }
+          let(:body) { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_pending.json') }
 
           it 'returns file contents' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
@@ -302,7 +304,8 @@ module Transifex
         end
 
         context 'when translation has errors' do
-          let(:body)        { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_errors.json') }
+          let(:body) { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_errors.json') }
+
           it 'raises error which includes messages' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             begin

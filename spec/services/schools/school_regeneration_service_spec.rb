@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Schools::SchoolRegenerationService, type: :service do
-
   let(:school)            { create(:school) }
 
   let(:logger)            { double(Rails.logger) }
@@ -16,12 +15,11 @@ describe Schools::SchoolRegenerationService, type: :service do
     allow(logger).to receive(:error)
   end
 
-  context '#perform' do
-
+  describe '#perform' do
     context 'when there are no errors' do
       it 'calls validate, update cache and regenerate metrics ' do
         expect_any_instance_of(Amr::ValidateAndPersistReadingsService).to receive(:perform).and_return(meter_collection)
-        expect_any_instance_of(Amr::AnalyticsMeterCollectionFactory).to_not receive(:validated)
+        expect_any_instance_of(Amr::AnalyticsMeterCollectionFactory).not_to receive(:validated)
         expect_any_instance_of(AggregateDataService).to receive(:aggregate_heat_and_electricity_meters)
         expect_any_instance_of(AggregateSchoolService).to receive(:cache)
         expect_any_instance_of(Schools::SchoolMetricsGeneratorService).to receive(:perform)

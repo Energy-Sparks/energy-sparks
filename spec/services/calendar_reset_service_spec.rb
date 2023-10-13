@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe CalendarResetService do
-
   let(:parent_calendar) { create(:calendar, :with_academic_years) }
   let!(:parent_calendar_event) { create(:holiday, calendar: parent_calendar, description: 'parent event') }
   let!(:parent_calendar_bank_holiday_event) { create(:bank_holiday, calendar: parent_calendar, description: 'parent bank holiday') }

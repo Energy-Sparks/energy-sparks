@@ -1,6 +1,6 @@
 RSpec.shared_context "school group recent usage" do
   before do
-    allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return([:electricity, :gas, :storage_heaters])
     electricity_changes = OpenStruct.new(
       change: "-16%",
       usage: '910',
@@ -90,16 +90,15 @@ RSpec.shared_context "school group priority actions" do
     }
   end
 
-  before(:each) do
+  before do
     allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:priority_actions).and_return(priority_actions)
     allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:total_savings).and_return(total_savings)
   end
 end
 
 RSpec.shared_context "school group comparisons" do
-  before(:each) do
-    allow_any_instance_of(SchoolGroup).to receive(:categorise_schools) {
-      {
+  before do
+    allow_any_instance_of(SchoolGroup).to receive(:categorise_schools).and_return({
         electricity: {
           baseload: {
             other_school: [
@@ -280,20 +279,19 @@ RSpec.shared_context "school group comparisons" do
             ]
           }
         }
-      }
-    }
+      })
   end
 end
 
 RSpec.shared_context "school group current scores" do
-  before(:each) do
+  before do
     allow_any_instance_of(SchoolGroup).to receive(:scored_schools) do
       OpenStruct.new(
         with_points: OpenStruct.new(
-                       schools_with_positions: {
-                        1 => [OpenStruct.new(name: 'School 1', sum_points: 20, school_group_cluster_name: "My Cluster"), OpenStruct.new(name: 'School 2', sum_points: 20, school_group_cluster_name: "Not set")],
-                        2 => [OpenStruct.new(name: 'School 3', sum_points: 18, school_group_cluster_name: "Not set")]
-                       }
+          schools_with_positions: {
+           1 => [OpenStruct.new(name: 'School 1', sum_points: 20, school_group_cluster_name: "My Cluster"), OpenStruct.new(name: 'School 2', sum_points: 20, school_group_cluster_name: "Not set")],
+           2 => [OpenStruct.new(name: 'School 3', sum_points: 18, school_group_cluster_name: "Not set")]
+          }
                      ),
         without_points: [OpenStruct.new(name: 'School 4', school_group_cluster_name: "Not set"), OpenStruct.new(name: 'School 5', school_group_cluster_name: "Not set")]
       )

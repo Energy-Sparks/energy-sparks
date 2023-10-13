@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :programme do
-
     school
 
     factory :programme_with_activities do
@@ -10,7 +9,7 @@ FactoryBot.define do
     factory :programme_with_activities_first_completed do
       programme_type_with_activity_types
 
-      after(:create) do |programme, evaluator|
+      after(:create) do |programme, _evaluator|
         first_activity_type = programme.programme_type.activity_types.first
         create(:activity, school: programme.school, activity_type: first_activity_type)
       end

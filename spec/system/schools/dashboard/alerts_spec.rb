@@ -19,11 +19,11 @@ RSpec.shared_examples "dashboard alerts" do
       management_dashboard_title_cy: 'Gallwch arbed {{average_one_year_saving_gbp}} mewn {{average_payback_years}}',
     )
   end
-  let(:alert_summary){ 'Summary of the alert' }
+  let(:alert_summary) { 'Summary of the alert' }
   let!(:alert) do
     create(:alert, :with_run,
       alert_type: gas_fuel_alert_type,
-      run_on: Date.today, school: test_school,
+      run_on: Time.zone.today, school: test_school,
       rating: 9.0,
       template_data: {
         average_one_year_saving_gbp: '£5,000',
@@ -56,36 +56,40 @@ RSpec.shared_examples "dashboard alerts" do
 end
 
 RSpec.describe "adult dashboard alerts", type: :system do
-  let(:school)             { create(:school) }
+  let(:school) { create(:school) }
 
-  before(:each) do
+  before do
     sign_in(user) if user.present?
   end
 
   context 'as guest' do
-    let(:user)                { nil }
-    include_examples "dashboard alerts" do
+    let(:user) { nil }
+
+    it_behaves_like "dashboard alerts" do
       let(:test_school) { school }
     end
   end
 
   context 'as pupil' do
-    let(:user)          { create(:pupil, school: school) }
-    include_examples "dashboard alerts" do
+    let(:user) { create(:pupil, school: school) }
+
+    it_behaves_like "dashboard alerts" do
       let(:test_school) { school }
     end
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
-    include_examples "dashboard alerts" do
+    let(:user) { create(:staff, school: school) }
+
+    it_behaves_like "dashboard alerts" do
       let(:test_school) { school }
     end
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
-    include_examples "dashboard alerts" do
+    let(:user) { create(:school_admin, school: school) }
+
+    it_behaves_like "dashboard alerts" do
       let(:test_school) { school }
     end
   end
@@ -94,7 +98,8 @@ RSpec.describe "adult dashboard alerts", type: :system do
     let(:school_group)  { create(:school_group) }
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
-    include_examples "dashboard alerts" do
+
+    it_behaves_like "dashboard alerts" do
       let(:test_school) { school }
     end
   end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Scoreboard, :scoreboards, type: :model do
-
   let!(:scoreboard) { create :scoreboard }
 
   subject { scoreboard }
@@ -14,30 +13,38 @@ describe Scoreboard, :scoreboards, type: :model do
       context 'guests' do
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
+
       context 'admin' do
         let(:user) { create(:admin) }
+
+        it { expect(ability).to be_able_to(:read, scoreboard) }
+      end
+    end
+
+    context 'private scoreboard' do
+      let!(:scoreboard) { create :scoreboard, public: false }
+
+      context 'guests' do
+        it { expect(ability).not_to be_able_to(:read, scoreboard) }
+      end
+
+      context 'admin' do
+        let(:user) { create(:admin) }
+
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
 
-    end
-    context 'private scoreboard' do
-      let!(:scoreboard) { create :scoreboard, public: false }
-      context 'guests' do
-        it { expect(ability).to_not be_able_to(:read, scoreboard) }
-      end
-      context 'admin' do
-        let(:user) { create(:admin) }
-        it { expect(ability).to be_able_to(:read, scoreboard) }
-      end
       context 'school_admin' do
         let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
         let!(:user)         { create(:school_admin, school: school)}
+
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
 
       context 'staff' do
         let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
         let!(:user)         { create(:staff, school: school)}
+
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
     end
@@ -46,17 +53,17 @@ describe Scoreboard, :scoreboards, type: :model do
   describe '#safe_destroy' do
     it 'does not let you delete if there is an associated school' do
       create(:school, scoreboard: subject)
-      expect{
+      expect do
         subject.safe_destroy
-      }.to raise_error(
+      end.to raise_error(
         EnergySparks::SafeDestroyError, 'Scoreboard has associated schools'
-      ).and(not_change{ Scoreboard.count })
+      ).and(not_change { Scoreboard.count })
     end
 
     it 'lets you delete if there are no schools' do
-      expect{
+      expect do
         subject.safe_destroy
-      }.to change{Scoreboard.count}.from(1).to(0)
+      end.to change {Scoreboard.count}.from(1).to(0)
     end
   end
 
@@ -64,6 +71,7 @@ describe Scoreboard, :scoreboards, type: :model do
     let!(:scoreboard) { create :scoreboard, academic_year_calendar: template_calendar }
     let!(:template_calendar) { create :template_calendar }
     let(:school_group) { nil }
+
     it_behaves_like 'a scorable'
   end
 end

@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 describe ChartDataValues do
-
   let(:chart) { :management_dashboard_group_by_week_electricity }
   let(:chart_type)  { :column }
   let(:x_axis)      { %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday] }
   let(:x_axis_ranges) { [[Date.parse('Sun, 28 Apr 2019'), Date.parse('Sun, 28 Apr 2019')]] }
-  let(:config) {
+  let(:config) do
     {
       title: "Comparison of last 2 weeks gas consumption - adjusted for outside temperature £7.70",
       x_axis: x_axis,
@@ -18,14 +17,14 @@ describe ChartDataValues do
       config_name: chart,
       configuration: {}
     }
-  }
+  end
   let(:transformations) { [] }
   let(:allowed_operations) { {} }
   let(:drilldown_available) { false }
   let(:parent_timescale_description) { nil }
   let(:y1_axis_choices) { [] }
 
-  let(:chart_data_values)  { ChartDataValues.new(config, chart, transformations: transformations, allowed_operations: allowed_operations, drilldown_available: drilldown_available, parent_timescale_description: parent_timescale_description, y1_axis_choices: y1_axis_choices).process }
+  let(:chart_data_values) { ChartDataValues.new(config, chart, transformations: transformations, allowed_operations: allowed_operations, drilldown_available: drilldown_available, parent_timescale_description: parent_timescale_description, y1_axis_choices: y1_axis_choices).process }
 
   it 'handles labels properly' do
     expect(chart_data_values.series_data.first[:name]).to eq "Sun 21 Apr 19 - Sat 27 Apr 19"
@@ -36,6 +35,7 @@ describe ChartDataValues do
   context 'with scatter chart' do
     let(:chart_type)  { :scatter }
     let(:x_axis)      { [0.1, 0.2, 0.3]}
+
     it 'doesnt translate series labels' do
       first_series = chart_data_values.series_data[0]
       first_item = first_series[:data].first
@@ -47,41 +47,51 @@ describe ChartDataValues do
   context 'when setting colours' do
     context 'for gas dashboard and pupil analysis charts' do
       let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
+
       it 'sets the right colours' do
         expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
       end
     end
+
     context 'for electricity dashboard and pupil analysis charts' do
       let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
+
       it 'sets the right colours' do
         expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
       end
     end
+
     context 'for electricity line charts' do
       let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
-      let(:chart_type)  { :line }
+      let(:chart_type) { :line }
+
       it 'sets the right colours' do
         expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
       end
     end
+
     context 'for gas line charts' do
       let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
-      let(:chart_type)  { :line }
+      let(:chart_type) { :line }
+
       it 'sets the right colours' do
         expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
       end
     end
+
     it 'works out the best colour when label matches' do
       label = chart_data_values.colour_lookup.keys.first
       colour = chart_data_values.colour_lookup[label]
       expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to eq(colour)
     end
+
     it 'works out the best colour when label includes one of the keys' do
       colour_key = chart_data_values.colour_lookup.keys.first
       label = "AB#{colour_key}C"
       colour = chart_data_values.colour_lookup[colour_key]
       expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to eq(colour)
     end
+
     it 'does not re-use included colours' do
       colour_key = chart_data_values.colour_lookup.keys.first
       label = "AB#{colour_key}C"
@@ -96,6 +106,7 @@ describe ChartDataValues do
     let(:y1_axis_choices) { [:kwh, :£] }
     let(:chart_type) { :line }
     let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
+
     it 'sets the choices' do
       expect(chart_data_values.y1_axis_choices).to eql y1_axis_choices
     end
@@ -104,7 +115,7 @@ describe ChartDataValues do
   describe '#series_translation_key_lookup' do
     it 'returns a hash matching series text keys to translation key values' do
       expect(chart_data_values.series_translation_key_lookup).to eq(
-        { "Degree Days" => "degree_days", "Temperature" => "temperature", "School Day Closed" => "school_day_closed", "School Day Open" => "school_day_open", "Holiday" => "holiday", "Weekend" => "weekend", "Storage heater charge (school day)" => "storage_heater_charge", "Hot Water Usage" => "useful_hot_water_usage", "Wasted Hot Water Usage" => "wasted_hot_water_usage", "solar pv (consumed onsite)" => "solar_pv", "Solar Irradiance" => "solar_irradiance", "Carbon Intensity of Electricity Grid (kg/kWh)" => "gridcarbon", "Carbon Intensity of Gas (kg/kWh)" => "gascarbon", "Heating on in cold weather" => "heating_day", "Hot Water (& Kitchen)" => "non_heating_day", "Heating on in warm weather" => "heating_day_warm_weather", "electricity" => "electricity", "gas" => "gas", "storage heaters" => "storage_heaters", "Predicted Heat" => "predicted_heat", "Target degree days" => "target_degree_days", "CUSUM" => "cusum", "BASELOAD" => "baseload", "Peak (kW)" => "peak_kw", "Heating On School Days" => "school_day_heating", "Heating On Holidays" => "holiday_heating", "Heating On Weekends" => "weekend_heating", "Hot water/kitchen only On School Days" => "school_day_hot_water_kitchen", "Hot water/kitchen only On Holidays" => "holiday_hot_water_kitchen", "Hot water/kitchen only On Weekends" => "weekend_hot_water_kitchen", "Boiler Off" => "boiler_off", "Energy" => "none", "Exemplar School" => "exemplar_school", "Benchmark (Good) School" => "benchmark_school", "Community" => "community", "Community Baseload" => "community_baseload", "Electricity consumed from solar pv" => "electricity_consumed_from_solar_pv", "Exported solar electricity (not consumed onsite)" => "exported_solar_electricity", "Electricity consumed from mains" => "electricity_consumed_from_mains"}
+        { "Degree Days" => "degree_days", "Temperature" => "temperature", "School Day Closed" => "school_day_closed", "School Day Open" => "school_day_open", "Holiday" => "holiday", "Weekend" => "weekend", "Storage heater charge (school day)" => "storage_heater_charge", "Hot Water Usage" => "useful_hot_water_usage", "Wasted Hot Water Usage" => "wasted_hot_water_usage", "solar pv (consumed onsite)" => "solar_pv", "Solar Irradiance" => "solar_irradiance", "Carbon Intensity of Electricity Grid (kg/kWh)" => "gridcarbon", "Carbon Intensity of Gas (kg/kWh)" => "gascarbon", "Heating on in cold weather" => "heating_day", "Hot Water (& Kitchen)" => "non_heating_day", "Heating on in warm weather" => "heating_day_warm_weather", "electricity" => "electricity", "gas" => "gas", "storage heaters" => "storage_heaters", "Predicted Heat" => "predicted_heat", "Target degree days" => "target_degree_days", "CUSUM" => "cusum", "BASELOAD" => "baseload", "Peak (kW)" => "peak_kw", "Heating On School Days" => "school_day_heating", "Heating On Holidays" => "holiday_heating", "Heating On Weekends" => "weekend_heating", "Hot water/kitchen only On School Days" => "school_day_hot_water_kitchen", "Hot water/kitchen only On Holidays" => "holiday_hot_water_kitchen", "Hot water/kitchen only On Weekends" => "weekend_hot_water_kitchen", "Boiler Off" => "boiler_off", "Energy" => "none", "Exemplar School" => "exemplar_school", "Benchmark (Good) School" => "benchmark_school", "Community" => "community", "Community Baseload" => "community_baseload", "Electricity consumed from solar pv" => "electricity_consumed_from_solar_pv", "Exported solar electricity (not consumed onsite)" => "exported_solar_electricity", "Electricity consumed from mains" => "electricity_consumed_from_mains" }
       )
     end
 
@@ -154,7 +165,7 @@ describe ChartDataValues do
     it 'returns a hash with colours assigned to chart series names' do
       #pry
       expect(chart_data_values.colour_lookup).to eq(
-        {"Degree Days" => "#232b49", "Temperature" => "#232b49", "School Day Closed" => "#3bc0f0", "School Day Open" => "#5cb85c", "Holiday" => "#ff4500", "Weekend" => "#ffac21", "Heating on in cold weather" => "#3bc0f0", "Hot Water (& Kitchen)" => "#5cb85c", "Hot Water Usage" => "#3bc0f0", "Wasted Hot Water Usage" => "#ff4500", "Solar PV (consumed onsite)" => "#ffac21", "Electricity" => "#007EFF", "Gas" => "#FF8438", "Storage heaters" => "#501e74", "£" => "#232B49", "Electricity consumed from solar pv" => "#5cb85c", "Electricity consumed from mains" => "#007EFF", "Exported solar electricity (not consumed onsite)" => "#FCB43A", "Solar irradiance (brightness of sunshine)" => "#FFB138", "Rating" => "#232b49"}
+        { "Degree Days" => "#232b49", "Temperature" => "#232b49", "School Day Closed" => "#3bc0f0", "School Day Open" => "#5cb85c", "Holiday" => "#ff4500", "Weekend" => "#ffac21", "Heating on in cold weather" => "#3bc0f0", "Hot Water (& Kitchen)" => "#5cb85c", "Hot Water Usage" => "#3bc0f0", "Wasted Hot Water Usage" => "#ff4500", "Solar PV (consumed onsite)" => "#ffac21", "Electricity" => "#007EFF", "Gas" => "#FF8438", "Storage heaters" => "#501e74", "£" => "#232B49", "Electricity consumed from solar pv" => "#5cb85c", "Electricity consumed from mains" => "#007EFF", "Exported solar electricity (not consumed onsite)" => "#FCB43A", "Solar irradiance (brightness of sunshine)" => "#FFB138", "Rating" => "#232b49" }
       )
     end
   end
@@ -174,20 +185,20 @@ describe ChartDataValues do
     it 'merges elements of the x_axis with corresponding data elements replacing all but the maximum and minimum values with nil' do
       # Trendline data needs to be reduced to maximum and minimum values only to reliably plot
       # a non-breaking straight line between two points.
-      expect(chart_data_values.send(:reduced_trendline_series_data_for, [0,1,2,3,4,5,6])).to eq([["Sunday", 0], ["Monday", nil], ["Tuesday", nil], ["Wednesday", nil], ["Thursday", nil], ["Friday", nil], ["Saturday", 6]])
-      expect(chart_data_values.send(:reduced_trendline_series_data_for, [0,6,2,-1,4,5,3])).to eq([["Sunday", nil], ["Monday", 6], ["Tuesday", nil], ["Wednesday", -1], ["Thursday", nil], ["Friday", nil], ["Saturday", nil]])
+      expect(chart_data_values.send(:reduced_trendline_series_data_for, [0, 1, 2, 3, 4, 5, 6])).to eq([["Sunday", 0], ["Monday", nil], ["Tuesday", nil], ["Wednesday", nil], ["Thursday", nil], ["Friday", nil], ["Saturday", 6]])
+      expect(chart_data_values.send(:reduced_trendline_series_data_for, [0, 6, 2, -1, 4, 5, 3])).to eq([["Sunday", nil], ["Monday", 6], ["Tuesday", nil], ["Wednesday", -1], ["Thursday", nil], ["Friday", nil], ["Saturday", nil]])
     end
   end
 
   describe '#scatter_series_data_for' do
     it 'merges elements of the x_axis with corresponding data elements' do
-      expect(chart_data_values.send(:scatter_series_data_for, [0,1,2,3,4,5,6])).to eq([["Sunday", 0], ["Monday", 1], ["Tuesday", 2], ["Wednesday", 3], ["Thursday", 4], ["Friday", 5], ["Saturday", 6]])
-      expect(chart_data_values.send(:scatter_series_data_for, [6,2,5,4,3,0,1])).to eq([["Sunday", 6], ["Monday", 2], ["Tuesday", 5], ["Wednesday", 4], ["Thursday", 3], ["Friday", 0], ["Saturday", 1]])
+      expect(chart_data_values.send(:scatter_series_data_for, [0, 1, 2, 3, 4, 5, 6])).to eq([["Sunday", 0], ["Monday", 1], ["Tuesday", 2], ["Wednesday", 3], ["Thursday", 4], ["Friday", 5], ["Saturday", 6]])
+      expect(chart_data_values.send(:scatter_series_data_for, [6, 2, 5, 4, 3, 0, 1])).to eq([["Sunday", 6], ["Monday", 2], ["Tuesday", 5], ["Wednesday", 4], ["Thursday", 3], ["Friday", 0], ["Saturday", 1]])
     end
   end
 
   context 'sub-title dates' do
-    let(:x_axis_ranges) { [[Date.new(2023,1,31), Date.new(2023,2,4)]] }
+    let(:x_axis_ranges) { [[Date.new(2023, 1, 31), Date.new(2023, 2, 4)]] }
 
     context 'with no transformations' do
       it 'includes the chart date range' do
@@ -195,29 +206,37 @@ describe ChartDataValues do
         expect(chart_data_values.subtitle_end_date).to eq "04 Feb 2023"
       end
     end
+
     context 'with drill down' do
       let(:transformations) { [[:drilldown, 293]] }
+
       it 'does not include the chart date range' do
         expect(chart_data_values.subtitle_start_date).to be_nil
         expect(chart_data_values.subtitle_end_date).to be_nil
       end
     end
+
     context 'with move then drill down' do
       let(:transformations) { [[:move, -2], [:drilldown, 141]] }
+
       it 'does not include the chart date range' do
         expect(chart_data_values.subtitle_start_date).to be_nil
         expect(chart_data_values.subtitle_end_date).to be_nil
       end
     end
+
     context 'with drill down then move' do
       let(:transformations) { [[:drilldown, 1], [:move, -1]] }
+
       it 'does not include the chart date range' do
         expect(chart_data_values.subtitle_start_date).to be_nil
         expect(chart_data_values.subtitle_end_date).to be_nil
       end
     end
+
     context 'with move back' do
       let(:transformations) { [[:move, 1]] }
+
       it 'includes the chart date range' do
         expect(chart_data_values.subtitle_start_date).to eq "31 Jan 2023"
         expect(chart_data_values.subtitle_end_date).to eq "04 Feb 2023"
@@ -227,19 +246,19 @@ describe ChartDataValues do
 
   context 'with benchmark charts' do
     let(:chart) { :benchmark }
-    let(:chart_type)  { :bar }
+    let(:chart_type) { :bar }
     let(:x_axis) { ["09 Feb 2019 to 07 Feb 2020", "08 Feb 2020 to 05 Feb 2021", "Exemplar School", "Benchmark (Good) School"] }
-    let(:x_axis_ranges) { [["Sat, 09 Feb 2019", "Fri, 07 Feb 2020"],
-         ["Sat, 08 Feb 2020", "Fri, 05 Feb 2021"],
-         ["Sat, 06 Feb 2021", "Fri, 04 Feb 2022"],
-         ["Sat, 05 Feb 2022", "Fri, 03 Feb 2023"]]
-    }
-    let(:x_data) {
-      { "electricity"=> [77230.65592499996,60319.60000000002,32928.30656992425,47040.43795703465],
-        "gas"=> [21031.15421717688,19455.429877914285,15151.625158016384,16335.345873486414]
-      }
-    }
-    let(:config) {
+    let(:x_axis_ranges) do
+      [["Sat, 09 Feb 2019", "Fri, 07 Feb 2020"],
+       ["Sat, 08 Feb 2020", "Fri, 05 Feb 2021"],
+       ["Sat, 06 Feb 2021", "Fri, 04 Feb 2022"],
+       ["Sat, 05 Feb 2022", "Fri, 03 Feb 2023"]]
+    end
+    let(:x_data) do
+      { "electricity" => [77230.65592499996, 60319.60000000002, 32928.30656992425, 47040.43795703465],
+        "gas" => [21031.15421717688, 19455.429877914285, 15151.625158016384, 16335.345873486414] }
+    end
+    let(:config) do
       {
         title: "Annual Electricity and Gas Consumption Comparison with other schools in your region",
         x_axis: x_axis,
@@ -249,23 +268,22 @@ describe ChartDataValues do
         chart1_subtype: :stacked,
         y_axis_label: "£",
         config_name: :benchmark,
-        configuration: {:name=>"Annual Electricity and Gas Consumption Comparison",
-           :chart1_type=>:bar,
-           :chart1_subtype=>:stacked,
-           :meter_definition=>:all,
-           :x_axis=>:year,
-           :series_breakdown=>:fuel,
-           :yaxis_units=>:£,
-           :restrict_y1_axis=>[:£, :co2],
-           :yaxis_scaling=>:none,
-           :inject=>:benchmark,
-           :y_axis_label=>"£",
-           :min_combined_school_date=>"Sun, 13 Jan 2019",
-           :max_combined_school_date=>"Fri, 03 Feb 2023"
-         },
+        configuration: { :name => "Annual Electricity and Gas Consumption Comparison",
+           :chart1_type => :bar,
+           :chart1_subtype => :stacked,
+           :meter_definition => :all,
+           :x_axis => :year,
+           :series_breakdown => :fuel,
+           :yaxis_units => :£,
+           :restrict_y1_axis => [:£, :co2],
+           :yaxis_scaling => :none,
+           :inject => :benchmark,
+           :y_axis_label => "£",
+           :min_combined_school_date => "Sun, 13 Jan 2019",
+           :max_combined_school_date => "Fri, 03 Feb 2023" },
          name: :benchmark
       }
-    }
+    end
     let(:transformations) { [] }
     let(:allowed_operations) { {} }
     let(:drilldown_available) { false }
@@ -309,6 +327,5 @@ describe ChartDataValues do
       expect(benchmark[:y]).to be_within(0.1).of(16335.3)
       expect(benchmark[:color]).to eq '#FFB138' #middle gas
     end
-
   end
 end

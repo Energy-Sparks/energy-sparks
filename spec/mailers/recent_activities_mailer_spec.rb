@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe RecentActivitiesMailer do
-
   let(:activity_1)            { create(:activity, title: 'first activity') }
   let(:activity_2)            { create(:activity, title: 'second activity') }
-  let(:intervention_type_1)   { create(:intervention_type, name: 'first action' ) }
-  let(:intervention_type_2)   { create(:intervention_type, name: 'second action' ) }
+  let(:intervention_type_1)   { create(:intervention_type, name: 'first action') }
+  let(:intervention_type_2)   { create(:intervention_type, name: 'second action') }
   let(:observation_1)         { create(:observation, observation_type: :temperature, intervention_type: intervention_type_1) }
   let(:observation_2)         { create(:observation, observation_type: :temperature, intervention_type: intervention_type_2) }
 

@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'issues', :issues, type: :system, include_application_helper: true do
   let!(:school_group_issues_admin) { create(:admin, name: "Group Issues Admin") }
-  let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin )}
+  let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin)}
   let!(:school) { create(:school, school_group: school_group) }
   let!(:gas_meter) { create(:gas_meter, school: school) }
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:other_issues_admin) { create(:admin, name: "Other Issues Admin") }
-  let!(:issue)   {}
-  let!(:user)   {}
+  let!(:issue) {}
+  let!(:user) {}
 
   shared_examples "an adminable issueable type" do
     describe "Viewing issues admin page" do
@@ -19,11 +19,13 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
       context 'when not logged in' do
         let!(:user) { }
+
         it { expect(page).to have_content('You need to sign in or sign up before continuing.') }
       end
 
       context 'as a non-admin user' do
         let!(:user) { create(:staff) }
+
         it { expect(page).to have_content('You are not authorized to view that page.') }
       end
 
@@ -31,12 +33,14 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let!(:user) { create(:admin) }
 
         context "and creating a new issue" do
-          Issue.issue_types.keys.each do |issue_type|
+          Issue.issue_types.each_key do |issue_type|
             it { expect(page).to have_link(text: /New #{issue_type.capitalize}/) }
+
             context "of type #{issue_type}" do
               before do
                 click_link text: /New #{issue_type.capitalize}/
               end
+
               it { expect(page).to have_current_path(new_polymorphic_path([:admin, issueable, Issue], issue_type: issue_type)) }
               it { expect(page).to have_content("New #{issue_type.capitalize} for #{issueable.name}")}
 
@@ -58,23 +62,28 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 before do
                   click_button 'Save'
                 end
+
                 it "has error message on fields" do
                   expect(page).to have_content "Title *\ncan't be blank"
                   expect(page).to have_content "Description *\ncan't be blank"
                 end
+
                 context "and then saving with correct values" do
                   before do
                     fill_in 'Title', with: "#{issue_type} title"
                     fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                     click_button 'Save'
                   end
-                  it "should redirect back to the calling page" do
+
+                  it "redirects back to the calling page" do
                     expect(page).to have_current_path(url_for([:admin, issueable, :issues]))
                   end
                 end
               end
+
               context "with fields filled in" do
                 let(:frozen_time) { Time.zone.now }
+
                 before do
                   Timecop.freeze(frozen_time)
                   fill_in 'Title', with: "#{issue_type} title"
@@ -86,8 +95,10 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   click_button 'Save'
                 end
 
+                after { Timecop.return }
+
                 it "creates new issue" do
-                  expect(page).to have_content "#{issue_type.capitalize}"
+                  expect(page).to have_content issue_type.capitalize.to_s
                   expect(page).to have_content "#{issue_type} title"
                   expect(page).to have_content "#{issue_type} desc"
                   expect(page).to have_content "Gas"
@@ -96,24 +107,25 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
-                    expect(page).to_not have_content electricity_meter.mpan_mprn
+                    expect(page).not_to have_content electricity_meter.mpan_mprn
                     expect(page).to have_content gas_meter.mpan_mprn
                   end
                 end
-                after { Timecop.return }
               end
             end
           end
         end
 
         context "and editing an issue" do
-          Issue.issue_types.keys.each do |issue_type|
+          Issue.issue_types.each_key do |issue_type|
             context "of type #{issue_type}" do
               let!(:issue) { create(:issue, issueable: issueable, issue_type: issue_type, fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin, pinned: true) }
+
               before do
                 issue.meters << electricity_meter if issueable.is_a? School
                 click_link("Edit")
               end
+
               it "shows edit form" do
                 expect(page).to have_field('Title', with: issue.title)
                 expect(find_field('issue[description]', type: :hidden).value).to eq(issue.description.to_plain_text)
@@ -127,9 +139,11 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_unchecked_field(gas_meter.mpan_mprn.to_s)
                 end
               end
+
               context "and saving new values" do
                 let(:frozen_time) { Time.zone.now }
                 let(:new_issue_type) { Issue.issue_types.keys.excluding(issue_type).first.capitalize }
+
                 before do
                   Timecop.freeze(frozen_time)
                   fill_in 'Title', with: "#{issue_type} title"
@@ -146,6 +160,8 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   click_button 'Save'
                 end
 
+                after { Timecop.return }
+
                 it "saves new values" do
                   expect(page).to have_content new_issue_type
                   expect(page).to have_content "#{issue_type} title"
@@ -155,13 +171,12 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content "Other Issues Admin"
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
-                  expect(page).to_not have_css("i[class*='fa-thumbtack']")
+                  expect(page).not_to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).to have_content gas_meter.mpan_mprn
-                    expect(page).to_not have_content electricity_meter.mpan_mprn
+                    expect(page).not_to have_content electricity_meter.mpan_mprn
                   end
                 end
-                after { Timecop.return }
               end
             end
           end
@@ -178,36 +193,44 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
           context "displaying school context menu" do
             it { expect(page).to have_link("Manage School") if issueable.is_a?(School) }
-            it { expect(page).to_not have_link("Manage School") unless issueable.is_a?(School) }
+            it { expect(page).not_to have_link("Manage School") unless issueable.is_a?(School) }
           end
 
           context "and deleting a issue" do
             before do
               click_link("Delete")
             end
+
             it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, Issue])) }
+
             it "does not show removed issue" do
-              expect(page).to_not have_content issue.title
+              expect(page).not_to have_content issue.title
             end
           end
 
           it { expect(page).to have_link('View') }
+
           context "and clicking 'View'" do
             before do
               click_link("View")
             end
+
             it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, issue])) }
+
             it_behaves_like "a displayed issue" do
               let(:issue_admin) { other_issues_admin }
             end
           end
 
           it { expect(page).to have_link('Resolve') }
+
           context "and clicking 'Resolve'" do
             before do
               click_link("Resolve")
             end
+
             it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, Issue])) }
+
             it "displays issue as closed" do
               expect(page).to have_content "Closed"
             end
@@ -223,13 +246,16 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let(:issueable) { school }
       end
     end
+
     context "school group" do
       it_behaves_like "an adminable issueable type" do
         let(:issueable) { school_group }
       end
     end
+
     context "data source" do
       let(:data_source) { create(:data_source) }
+
       it_behaves_like "an adminable issueable type" do
         let(:issueable) { data_source }
       end
@@ -281,39 +307,46 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
             uncheck 'Note'
             click_button 'Filter'
           end
-          it "should only show issues" do
-            expect(page).to_not have_content note_issue.title
+
+          it "onlies show issues" do
+            expect(page).not_to have_content note_issue.title
             expect(page).to have_content issue_issue.title
           end
         end
+
         context "and deselecting issues" do
           before do
             uncheck 'Issue'
             click_button 'Filter'
           end
-          it "should only show notes" do
+
+          it "onlies show notes" do
             expect(page).to have_content note_issue.title
-            expect(page).to_not have_content issue_issue.title
+            expect(page).not_to have_content issue_issue.title
           end
         end
+
         context "and deselecting open" do
           before do
             uncheck 'Open'
             click_button 'Filter'
           end
-          it "should only show closed issues" do
-            expect(page).to_not have_content open_issue.title
+
+          it "onlies show closed issues" do
+            expect(page).not_to have_content open_issue.title
             expect(page).to have_content closed_issue.title
           end
         end
+
         context "and deselecting closed" do
           before do
             uncheck 'Closed'
             click_button 'Filter'
           end
-          it "should only show open issues" do
+
+          it "onlies show open issues" do
             expect(page).to have_content open_issue.title
-            expect(page).to_not have_content closed_issue.title
+            expect(page).not_to have_content closed_issue.title
           end
         end
       end
@@ -327,16 +360,18 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
           select user.display_name, from: 'User'
           click_button 'Filter'
         end
+
         it_behaves_like "a displayed list issue" do
           let(:issue) { user_issue }
         end
         it "doesn't display issue for other user" do
-          expect(page).to_not have_content other_user_issue.title
+          expect(page).not_to have_content other_user_issue.title
         end
       end
 
       context "when there are no issues" do
         let(:setup_data) {}
+
         it { expect(page).to have_content("No issues or notes to display")}
       end
     end

@@ -2,18 +2,17 @@ require 'rails_helper'
 
 RSpec.describe "school content report", type: :system do
   let!(:school) { create(:school) }
-  let!(:user)  { create(:admin)}
+  let!(:user) { create(:admin)}
   let(:description) { 'all about this alert type' }
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, description: description) }
   let(:gas_date) { Date.parse('2019-01-01') }
   let!(:gas_meter) { create :gas_meter_with_reading, school_id: school.id }
 
-  before(:each) do
+  before do
     sign_in(user)
   end
 
   context 'with generated alert' do
-
     let!(:alert_type_rating) do
       create(
         :alert_type_rating,
@@ -33,7 +32,7 @@ RSpec.describe "school content report", type: :system do
         pupil_dashboard_title: 'It is too warm'
       )
     end
-    let(:alert_summary){ 'Summary of the alert' }
+    let(:alert_summary) { 'Summary of the alert' }
     let!(:alert) do
       create(:alert, :with_run,
         alert_type: gas_fuel_alert_type,
@@ -58,8 +57,6 @@ RSpec.describe "school content report", type: :system do
 
       expect(page).to have_content('Your heating is on!')
       expect(page).to have_content('It is too warm')
-
     end
-
   end
 end
