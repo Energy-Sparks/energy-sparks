@@ -1,0 +1,40 @@
+<table id="configuration-detail" class="table table-striped table-sm table-sorted">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Identifier</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="Number of header rows in CSV">Header rows</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="Column that identifies the meter">MPXN field</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="Column that identifies the date or date-time of the reading(s)">Date field</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="What format are the dates?">Date format</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="Identifify the meter by serial number not MPAN (and which column is used)">Uses serial number?</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="Are the rows filtered at all?">Applies Filters?</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="Is there one row per HH reading or one row per day">Row per HH reading?</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="Only applies to row per HH reading files">Numbered HH periods?</th>
+      <th data-toggle="tooltip" data-placement="bottom" title="Which columns contain the readings">Reading Fields</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% configurations.each do |config| %>
+      <tr>
+        <td><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
+        <td class="no-wrap"><code><%= config.identifier %></code></td>
+        <td><%= config.number_of_header_rows %></td>
+        <td class="nowrap"><code><%= config.mpan_mprn_field %></code></td>
+        <td class="nowrap"><code><%= config.reading_date_field %></code></td>
+        <td class="nowrap"><code><%= config.date_format %></code></td>
+        <td><%= checkmark(config.lookup_by_serial_number, off_class: 'text-muted') %>
+          <% if config.lookup_by_serial_number %>
+          <br>(<code><%= config.msn_field %></code>)
+          <% end %>
+        </td>
+        <td><%= checkmark(!config.column_row_filters.empty?, off_class: 'text-muted') %> </td>
+        <td><%= checkmark(config.row_per_reading, off_class: 'text-muted') %>
+        <td><%= checkmark(config.positional_index, off_class: 'text-muted') %> </td>
+        <td width="100%" class="overflow">
+          <code><%= config.reading_fields %></code>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
