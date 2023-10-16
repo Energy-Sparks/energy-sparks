@@ -40,6 +40,8 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
+  scope :enabled,       -> { where(enabled: true) }
+
   enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api, :n3rgy_api, :rtone_variant_api]
   enum source_type: [:email, :manual, :api, :sftp]
 
@@ -49,6 +51,7 @@ class AmrDataFeedConfig < ApplicationRecord
   has_rich_text :notes
 
   validates :identifier, :description, uniqueness: true
+  validates_presence_of :identifier, :description
 
   def map_of_fields_to_indexes(header = nil)
     this_header = header || header_example

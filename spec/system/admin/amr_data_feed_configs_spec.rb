@@ -24,9 +24,11 @@ describe AmrDataFeedConfig, type: :system do
     click_on 'AMR Data feed configuration'
     expect(page).to have_content(config.description)
     click_on 'Edit'
+    fill_in 'Description', with: 'New title'
     fill_in 'Import warning days', with: 21
     click_on 'Update'
     config.reload
     expect(config.import_warning_days).to eq(21)
+    expect(config.description).to eq('New title')
   end
 end
