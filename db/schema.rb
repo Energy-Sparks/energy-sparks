@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_11_141535) do
+ActiveRecord::Schema.define(version: 2023_10_16_123737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -395,6 +395,7 @@ ActiveRecord::Schema.define(version: 2023_10_11_141535) do
     t.jsonb "column_row_filters", default: {}
     t.boolean "positional_index", default: false, null: false
     t.string "period_field"
+    t.boolean "enabled", default: true, null: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
