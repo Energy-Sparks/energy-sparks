@@ -146,7 +146,7 @@ class MeterCostsTableComponent < ViewComponent::Base
       monthly_costs = @monthly_costs[month]
       yield monthly_costs.present? ? format(monthly_costs.total) : nil
     end
-    yield format(@monthly_costs.values.compact.map(&:total).sum)
+    yield format(@monthly_costs.values.compact.sum(&:total))
   end
 
   def change_in_costs_row

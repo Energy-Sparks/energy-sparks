@@ -3,18 +3,19 @@ require 'rails_helper'
 RSpec.describe "electricity recent changes advice page", type: :system do
   let(:key) { 'electricity_recent_changes' }
   let(:expected_page_title) { "Electricity recent changes analysis" }
+
   include_context "electricity advice page"
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
     before do
-#      allow_any_instance_of(Usage::RecentUsagePeriodCalculationService).to receive(:recent_usage) do
-#        OpenStruct.new(
-#          date_range: [Time.zone.today, Time.zone.today - 1.week],
-#          combined_usage_metric: CombinedUsageMetric.new(kwh: 12.0, £: 12.0, co2: 12.0)
-#        )
-#      end
+      #      allow_any_instance_of(Usage::RecentUsagePeriodCalculationService).to receive(:recent_usage) do
+      #        OpenStruct.new(
+      #          date_range: [Time.zone.today, Time.zone.today - 1.week],
+      #          combined_usage_metric: CombinedUsageMetric.new(kwh: 12.0, £: 12.0, co2: 12.0)
+      #        )
+      #      end
 
       sign_in(user)
       visit school_advice_electricity_recent_changes_path(school)
@@ -24,6 +25,7 @@ RSpec.describe "electricity recent changes advice page", type: :system do
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
+
       it_behaves_like "an advice page tab", tab: "Insights"
 
       it 'shows expected content' do
@@ -63,6 +65,7 @@ RSpec.describe "electricity recent changes advice page", type: :system do
 
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

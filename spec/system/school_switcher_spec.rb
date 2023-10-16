@@ -1,13 +1,12 @@
 require 'rails_helper'
 
 describe 'school switcher', type: :system do
-
   let!(:school_1)              { create(:school, number_of_pupils: 10) }
   let!(:school_2)              { create(:school, number_of_pupils: 20) }
   let!(:user)                  { create(:school_admin, school: school_1, cluster_schools: [school_2]) }
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(user)
     end
 

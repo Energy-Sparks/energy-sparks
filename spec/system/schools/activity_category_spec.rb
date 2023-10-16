@@ -22,7 +22,7 @@ RSpec.describe "activity type", type: :system do
 
   context 'as a school user' do
     describe 'activity types can be listed' do
-      before(:each) do
+      before do
         sign_in(admin)
       end
 

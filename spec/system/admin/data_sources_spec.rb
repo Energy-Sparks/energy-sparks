@@ -3,7 +3,7 @@ require 'rails_helper'
 shared_examples_for "a displayed data source" do
   it "displays data source fields" do
     expect(page).to have_content(data_source.organisation_type.try(:humanize).presence || "")
-    text_attributes.keys.each do |text_field|
+    text_attributes.each_key do |text_field|
       expect(page).to have_content(data_source[text_field])
     end
   end
@@ -28,7 +28,8 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
   let(:setup_data)             { }
   let!(:user)                  { }
 
-  let!(:text_attributes) { {
+  let!(:text_attributes) do
+    {
     name: "Organisation name",
     contact_name: "Contact name",
     contact_email: "Contact email",
@@ -41,7 +42,8 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
     historic_data: "Historic data",
     loa_expiry_procedure: "What to do when LOA is about expire",
     comments: "Comments"
-  } }
+  }
+  end
 
   before do
     setup_data
@@ -59,6 +61,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
     context 'as a non-admin user' do
       let!(:user) { create(:staff) }
+
       it { expect(page).to have_content('You are not authorized to view that page.') }
     end
   end
@@ -122,12 +125,14 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             it { expect(page).to have_content("Edit #{existing_data_source.name}")}
+
             it_behaves_like "a data source form" do
               let(:data_source) { existing_data_source }
             end
 
             context "and saving new data" do
               let(:new_data_source) { build(:data_source, organisation_type: :council) }
+
               before do
                 select new_data_source.organisation_type.humanize, from: 'Organisation type'
                 text_attributes.each do |text_field, label|
@@ -135,7 +140,9 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
                 end
                 click_button 'Save'
               end
+
               it { expect(page).to have_content("Data source was successfully updated") }
+
               it_behaves_like "a displayed data source" do
                 let(:data_source) { new_data_source }
               end
@@ -150,17 +157,21 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             before do
               click_on "Delete"
             end
-            it { expect(page).to_not have_content(existing_data_source.name) }
+
+            it { expect(page).not_to have_content(existing_data_source.name) }
             it { expect(page).to have_content("Data source was successfully deleted") }
           end
+
           describe "Issues tab" do
             context "when there are issues for the data source" do
               let(:admin) { create(:admin) }
               let(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: existing_data_source, fuel_type: :gas, pinned: true) }
               let(:setup_data) { issue }
+
               it "displays a count of issues" do
                 expect(page).to have_content "Issues 1"
               end
+
               it "lists issue in issues tab" do
                 within '#issues' do
                   expect(page).to have_content issue.title
@@ -172,9 +183,11 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
                 end
               end
             end
+
             context "when there are no issues" do
               it { expect(page).to have_content("No issues for #{existing_data_source.name}")}
             end
+
             context "with buttons" do
               it { expect(page).to have_link("New Issue") }
               it { expect(page).to have_link("New Note") }
@@ -192,22 +205,27 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
         let(:setup_data) { existing_data_source }
 
         it { expect(page).to have_content(existing_data_source.name) }
+
         context "clicking manage" do
           before do
             within('table') do
               click_on "Manage"
             end
           end
+
           it { expect(page).to have_content(existing_data_source.name) }
         end
       end
 
       it { expect(page).to have_link('New data source') }
+
       context "creating a new data source" do
         before do
           click_on 'New data source'
         end
+
         it { expect(page).to have_content("New data source")}
+
         it_behaves_like "a data source form" do
           let(:data_source) { DataSource.new }
         end
@@ -215,11 +233,13 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           before do
             click_on 'Save'
           end
+
           it { expect(page).to have_content("Organisation name *\ncan't be blank") }
         end
 
         context "with new valid attributes" do
           let(:new_data_source) { build(:data_source, organisation_type: :council) }
+
           before do
             select new_data_source.organisation_type.humanize, from: 'Organisation type'
             text_attributes.each do |text_field, label|
@@ -227,13 +247,16 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
             click_button 'Save'
           end
+
           it { expect(page).to have_content("Data source was successfully created") }
+
           context "and viewing new data source" do
             before do
               within('table') do
                 click_on "Manage"
               end
             end
+
             it_behaves_like "a displayed data source" do
               let(:data_source) { new_data_source }
             end

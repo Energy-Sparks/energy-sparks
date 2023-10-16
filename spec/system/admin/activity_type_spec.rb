@@ -1,24 +1,23 @@
 require 'rails_helper'
 
 describe "activity type", type: :system do
-
-  let!(:admin)  { create(:admin)}
+  let!(:admin) { create(:admin)}
   let!(:activity_category) { create(:activity_category)}
   let!(:ks1) { KeyStage.create(name: 'KS1') }
   let!(:ks2) { KeyStage.create(name: 'KS2') }
   let!(:ks3) { KeyStage.create(name: 'KS3') }
 
-  let!(:science){ Subject.create(name: 'Science') }
-  let!(:maths){ Subject.create(name: 'Maths') }
+  let!(:science) { Subject.create(name: 'Science') }
+  let!(:maths) { Subject.create(name: 'Maths') }
 
-  let!(:half_hour){ ActivityTiming.create(name: '30 mins') }
-  let!(:hour){ ActivityTiming.create(name: 'Hour') }
+  let!(:half_hour) { ActivityTiming.create(name: '30 mins') }
+  let!(:hour) { ActivityTiming.create(name: 'Hour') }
 
-  let!(:reducing_gas){ Impact.create(name: 'Reducing gas') }
-  let!(:reducing_electricity){ Impact.create(name: 'Reducing electricity') }
+  let!(:reducing_gas) { Impact.create(name: 'Reducing gas') }
+  let!(:reducing_electricity) { Impact.create(name: 'Reducing electricity') }
 
-  let!(:pie_charts){ Topic.create(name: 'Pie charts') }
-  let!(:energy){ Topic.create(name: 'Energy') }
+  let!(:pie_charts) { Topic.create(name: 'Pie charts') }
+  let!(:energy) { Topic.create(name: 'Energy') }
 
   describe 'when not logged in' do
     it 'does not authorise viewing' do
@@ -28,7 +27,7 @@ describe "activity type", type: :system do
   end
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -77,7 +76,7 @@ describe "activity type", type: :system do
       expect(activity_type.summary).to eq(summary)
       expect(activity_type.key_stages).to match_array([ks1])
       expect(activity_type.subjects).to   match_array([science])
-      expect(activity_type.activity_timings).to    match_array([half_hour])
+      expect(activity_type.activity_timings).to match_array([half_hour])
       expect(activity_type.topics).to     match_array([energy])
       expect(activity_type.impacts).to    match_array([reducing_electricity])
 
@@ -124,7 +123,7 @@ describe "activity type", type: :system do
 
       expect(page.has_content?("Score can't be blank"))
 
-      expect(page.has_content?("Activity type was successfully created.")).to_not be true
+      expect(page.has_content?("Activity type was successfully created.")).not_to be true
       expect(ActivityType.count).to be 0
     end
 
@@ -142,7 +141,7 @@ describe "activity type", type: :system do
 
       activity_type.reload
 
-      expect(activity_type.key_stages).to_not include(ks1)
+      expect(activity_type.key_stages).not_to include(ks1)
       expect(activity_type.key_stages).to     include(ks2)
       expect(activity_type.key_stages).to     include(ks3)
 

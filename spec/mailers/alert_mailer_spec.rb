@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe AlertMailer do
-
   let(:school)                { create(:school) }
   let(:email_address)         { 'blah@blah.com' }
   let(:email)                 { ActionMailer::Base.deliveries.last }
@@ -33,6 +32,7 @@ RSpec.describe AlertMailer do
 
     context "SEND_AUTOMATED_EMAILS env var is false" do
       let(:send_automated_emails) { 'false' }
+
       it 'does not send an email' do
         AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
         expect(ActionMailer::Base.deliveries.count).to eql 0
@@ -43,6 +43,7 @@ RSpec.describe AlertMailer do
   describe '#with_contact_locale' do
     let(:user) { create(:user, preferred_locale: :cy) }
     let(:contact) { create(:contact_with_name_email, school: school, user: user) }
+
     it 'uses locale from contact' do
       AlertMailer.with_contact_locale(contact: contact, events: []) { |mailer| mailer.alert_email.deliver_now }
       expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :cy)

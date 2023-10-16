@@ -1,23 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe "DCC consents", type: :system do
-
-  let(:school_name)   { 'Oldfield Park Infants'}
-  let!(:school_group)       { create(:school_group)}
+  let(:school_name) { 'Oldfield Park Infants'}
+  let!(:school_group) { create(:school_group)}
   let!(:school)       { create(:school, name: school_name, school_group: school_group)}
   let!(:admin)        { create(:admin)}
 
   context 'as admin' do
-
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on('Admin')
     end
 
     context 'when the school has a DCC meter' do
-      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, consent_granted: false, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:meter_2) { create(:gas_meter, dcc_meter: true, consent_granted: true, name: 'Gas meter', school: school, mpan_mprn: 987654321 ) }
+      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, consent_granted: false, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123) }
+      let!(:meter_2) { create(:gas_meter, dcc_meter: true, consent_granted: true, name: 'Gas meter', school: school, mpan_mprn: 987654321) }
 
       it 'the DCC consents counts are shown' do
         allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([])
@@ -40,7 +38,8 @@ RSpec.describe "DCC consents", type: :system do
       end
 
       context 'when granting consent' do
-        let!(:meter_review) { create(:meter_review, meters: [meter_1] ) }
+        let!(:meter_review) { create(:meter_review, meters: [meter_1]) }
+
         it 'allows grant of consent' do
           expect_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([''])
           expect_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:grant_trusted_consent).with(1234567890123, meter_review.consent_grant.guid).and_return(true)
@@ -68,8 +67,8 @@ RSpec.describe "DCC consents", type: :system do
     end
 
     context 'when the school has a sandbox DCC meter' do
-      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, consent_granted: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:meter_2) { create(:gas_meter, dcc_meter: true, consent_granted: true, name: 'Gas meter', school: school, mpan_mprn: 987654321, sandbox: true ) }
+      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, consent_granted: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123) }
+      let!(:meter_2) { create(:gas_meter, dcc_meter: true, consent_granted: true, name: 'Gas meter', school: school, mpan_mprn: 987654321, sandbox: true) }
 
       it 'the DCC consents counts are shown' do
         allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([])
@@ -89,7 +88,7 @@ RSpec.describe "DCC consents", type: :system do
 
     context 'when the school has an ungrouped DCC meter' do
       let!(:school_without_group) { create(:school) }
-      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school_without_group, mpan_mprn: 1234567890123 ) }
+      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school_without_group, mpan_mprn: 1234567890123) }
 
       it 'the DCC consents counts are shown' do
         allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([])

@@ -37,6 +37,7 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
         c.with_footer   { "<small>I'm a footer</small>".html_safe }
       end
     end
+
     it { expect(html).to have_selector("h4", text: "I'm a title") }
     it { expect(html).to have_selector("h4", id: "chart-section-baseload") }
     it { expect(html).to have_selector("h5", text: "I'm a subtitle") }

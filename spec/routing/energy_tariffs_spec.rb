@@ -1,9 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "routes for energy tariffs editor", type: :routing do
-
   shared_examples "tariff holder concern" do
-
     it { expect(:get => "#{scope}/energy_tariffs").to route_to("energy_tariffs/energy_tariffs#index", param) }
     it { expect(:get => "#{scope}/energy_tariffs/choose_meters").to route_to("energy_tariffs/energy_tariffs#choose_meters", param) } # doesn't actually work when visiting page
     it { expect(:get => "#{scope}/energy_tariffs/default_tariffs").to route_to("energy_tariffs/energy_tariffs#default_tariffs", param) }
@@ -11,6 +9,7 @@ RSpec.describe "routes for energy tariffs editor", type: :routing do
 
     context "with energy tariff" do
       let(:energy_tariff) { create(:energy_tariff) }
+
       it { expect(:get => "#{scope}/energy_tariffs/#{energy_tariff.to_param}").to route_to("energy_tariffs/energy_tariffs#show", { id: energy_tariff.to_param }.merge(param)) }
       it { expect(:get => "#{scope}/energy_tariffs/#{energy_tariff.to_param}/edit_meters").to route_to("energy_tariffs/energy_tariffs#edit_meters", { id: energy_tariff.to_param }.merge(param)) }
       it { expect(:post => "#{scope}/energy_tariffs/#{energy_tariff.to_param}/update_meters").to route_to("energy_tariffs/energy_tariffs#update_meters", { id: energy_tariff.to_param }.merge(param)) }
@@ -35,7 +34,7 @@ RSpec.describe "routes for energy tariffs editor", type: :routing do
   describe "admin site settings tariff editor" do
     it_behaves_like "tariff holder concern" do
       let(:scope) { "/admin/settings" }
-      let(:param) { { } }
+      let(:param) { {} }
     end
 
     it 'routes site_settings_energy_tariffs_path to the EnergyTariff controller' do

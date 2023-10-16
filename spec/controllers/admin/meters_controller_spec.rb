@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Schools::MetersController, type: :controller do
-
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     {
       mpan_mprn: 2199989617206,
       name: "Test meter",
@@ -10,24 +9,24 @@ RSpec.describe Schools::MetersController, type: :controller do
       meter_type: :electricity,
       sandbox: "0"
     }
-  }
-  let(:invalid_attributes) {
+  end
+  let(:invalid_attributes) do
     { mpan_mprn: nil }
-  }
+  end
 
-  let!(:school)           { create(:school) }
+  let!(:school) { create(:school) }
 
   context "as an admin user" do
-    before(:each) do
+    before do
       sign_in_user(:admin)
     end
 
     describe "POST #create" do
       context "with valid parameters" do
         it "creates a new Meter" do
-          expect {
+          expect do
             post :create, params: { school_id: school.id, meter: valid_attributes }
-          }.to change(Meter, :count).by(1)
+          end.to change(Meter, :count).by(1)
         end
       end
 
@@ -41,11 +40,10 @@ RSpec.describe Schools::MetersController, type: :controller do
           post :create, params: { school_id: school.id, meter: invalid_attributes }
           expect(response).to render_template("index")
         end
-
       end
 
       context "with DCC sandbox meters" do
-        let(:dcc_meter_attributes) {
+        let(:dcc_meter_attributes) do
           {
             mpan_mprn: 2199989617206,
             name: "Test meter",
@@ -53,7 +51,8 @@ RSpec.describe Schools::MetersController, type: :controller do
             meter_type: :electricity,
             sandbox: "1"
           }
-        }
+        end
+
         it "creates a sandbox meter" do
           allow_any_instance_of(MeterManagement).to receive(:check_n3rgy_status).and_return(true)
           post :create, params: { school_id: school.id, meter: dcc_meter_attributes }
@@ -64,7 +63,7 @@ RSpec.describe Schools::MetersController, type: :controller do
 
     describe "PUT #update" do
       context "with valid attributes" do
-        let(:new_attributes) {
+        let(:new_attributes) do
           {
             mpan_mprn: 2199989617206,
             name: "Test meter",
@@ -73,11 +72,11 @@ RSpec.describe Schools::MetersController, type: :controller do
             dcc_meter: "0",
             consent_granted: "0"
           }
-        }
+        end
       end
 
       context "when editing DCC values" do
-        let(:new_attributes) {
+        let(:new_attributes) do
           {
             mpan_mprn: 2199989617206,
             name: "New name",
@@ -86,7 +85,7 @@ RSpec.describe Schools::MetersController, type: :controller do
             dcc_meter: "1",
             sandbox: "1"
           }
-        }
+        end
         let(:meter)             { create :electricity_meter, name: "Original name", school: school, dcc_meter: false }
         let(:n3rgy_api)         { double(:n3rgy_api) }
         let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
@@ -104,6 +103,5 @@ RSpec.describe Schools::MetersController, type: :controller do
         end
       end
     end
-
   end
 end

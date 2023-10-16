@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe ActivityTypeSearchService do
-
   before { ActivityType.delete_all }
 
   context 'search by query term' do
@@ -14,7 +13,7 @@ describe ActivityTypeSearchService do
     end
 
     it 'only finds active activity types' do
-      activity_type_1 = create(:activity_type, name: 'foo baz', active: false)
+      create(:activity_type, name: 'foo baz', active: false)
       activity_type_2 = create(:activity_type, name: 'bar baz')
 
       expect(ActivityTypeSearchService.search('baz')).to eq([activity_type_2])
@@ -46,8 +45,8 @@ describe ActivityTypeSearchService do
     end
 
     it 'ignores simple words' do
-      activity_type_1 = create(:activity_type, name: 'foo and the stuff')
-      activity_type_2 = create(:activity_type, name: 'bar and a thing')
+      create(:activity_type, name: 'foo and the stuff')
+      create(:activity_type, name: 'bar and a thing')
 
       expect(ActivityTypeSearchService.search('and')).to eq([])
       expect(ActivityTypeSearchService.search('the')).to eq([])
@@ -75,7 +74,7 @@ describe ActivityTypeSearchService do
 
     it 'does not match parts of words' do
       activity_type_1 = create(:activity_type, name: 'petrol')
-      activity_type_2 = create(:activity_type, name: 'petroleum')
+      create(:activity_type, name: 'petroleum')
 
       expect(ActivityTypeSearchService.search('petrol')).to eq([activity_type_1])
     end

@@ -7,7 +7,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
   let!(:admin) { create(:admin) }
 
   context 'as an admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit school_meters_path(school)
       click_on 'Manage Solar API feeds'
@@ -25,7 +25,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
 
       expect { click_on 'Submit' }.to change { Meter.count }.by(3).and change { LowCarbonHubInstallation.count }.by(1).and change { AmrDataFeedReading.count }.by(6)
 
-      expect(page).to_not have_content("This school has no Rtone API feeds")
+      expect(page).not_to have_content("This school has no Rtone API feeds")
       expect(page).to have_content(rbee_meter_id)
       expect(school.low_carbon_hub_installations.count).to be 1
       expect(school.low_carbon_hub_installations.first.username).to eql username

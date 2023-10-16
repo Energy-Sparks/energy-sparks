@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "solar pv advice page", type: :system do
   let(:key) { 'solar_pv' }
+
   include_context "solar advice page"
 
   def expected_page_title
@@ -56,7 +57,7 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Insights' tab as a school *without* solar pv" do
       before do
-        allow_any_instance_of(School).to receive(:has_solar_pv?) { false }
+        allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(false)
 
         click_on 'Insights'
       end
@@ -74,7 +75,7 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Insights' tab as a school *with* solar pv" do
       before do
-        allow_any_instance_of(School).to receive(:has_solar_pv?) { true }
+        allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(true)
 
         click_on 'Insights'
       end
@@ -95,7 +96,7 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Analysis' tab as a school *without* solar pv" do
       before do
-        allow_any_instance_of(School).to receive(:has_solar_pv?) { false }
+        allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(false)
         @expected_page_title = "Benefits of installing solar panels"
 
         click_on 'Analysis'
@@ -113,7 +114,7 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Analysis' tab as a school *with* solar pv" do
       before do
-        allow_any_instance_of(School).to receive(:has_solar_pv?) { true }
+        allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(true)
 
         click_on 'Analysis'
       end
@@ -134,6 +135,7 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

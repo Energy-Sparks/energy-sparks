@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'School Users', :schools, type: :system do
-
-  let(:confirmation_token)    { 'abc123' }
+  let(:confirmation_token) { 'abc123' }
 
   context "when confirming new user without school" do
     let!(:user) { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: nil, email: 'foo@bar.com', name: 'Foo Bar') }
@@ -31,7 +30,7 @@ RSpec.describe 'School Users', :schools, type: :system do
     let(:school)  { create(:school) }
     let!(:user)   { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: school, email: 'foo@bar.com', name: 'Foo Bar') }
 
-    before :each do
+    before do
       visit user_confirmation_path(confirmation_token: confirmation_token)
     end
 
@@ -99,12 +98,12 @@ RSpec.describe 'School Users', :schools, type: :system do
     let(:school)  { create(:school) }
     let(:user)    { create(:user, email: 'a@b.com', school: school) }
 
-    before :each do
+    before do
       token = user.send(:set_reset_password_token)
       visit edit_user_password_path(user, reset_password_token: token)
     end
 
-    it "should allow password to be set" do
+    it "allows password to be set" do
       expect(page).to have_content("Set your password")
       fill_in :user_password, with: 'abcdef'
       fill_in :user_password_confirmation, with: 'abcdef'
@@ -112,7 +111,7 @@ RSpec.describe 'School Users', :schools, type: :system do
       expect(page).to have_content("Your password has been changed successfully")
     end
 
-    it "should not show checkboxes for subscriptions" do
+    it "does not show checkboxes for subscriptions" do
       expect(page).to have_content("Set your password")
       expect(page).not_to have_content("Energy Sparks alerts:")
       expect(page).not_to have_content("Newsletters are our main communication channel for:")

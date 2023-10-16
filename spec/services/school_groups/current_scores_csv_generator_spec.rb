@@ -19,6 +19,7 @@ RSpec.describe SchoolGroups::CurrentScoresCsvGenerator do
 
     context "when including cluster" do
       subject(:csv) { SchoolGroups::CurrentScoresCsvGenerator.new(school_group: school_group.reload, include_cluster: true).export }
+
       it 'includes cluster' do
         expect(csv.lines.count).to eq(6)
         expect(csv.lines[0]).to eq("Position,School,Cluster,Score\n")

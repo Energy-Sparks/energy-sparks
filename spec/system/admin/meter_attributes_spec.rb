@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "meter attribute management", :meters, type: :system do
-
   let!(:school_group)       { create(:school_group, name: 'BANES') }
   let!(:school_name)        { 'Oldfield Park Infants'}
   let!(:school)             { create_active_school(name: school_name, school_group: school_group) }
@@ -9,19 +8,17 @@ RSpec.describe "meter attribute management", :meters, type: :system do
   let!(:gas_meter)          { create :gas_meter, name: 'Gas meter', school: school }
 
   context 'as admin' do
-
-    before(:each) do
+    before do
       sign_in(admin)
     end
 
     context 'when analytics attributs are broken' do
-
-      before :each do
+      before do
         expect(MeterAttribute).to receive(:to_analytics).at_least(:once).and_raise(StandardError.new('There was an error'))
       end
 
       it 'shows broken index' do
-        meter_attribute = create(:meter_attribute, meter: gas_meter)
+        create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
         click_on 'Meter attributes'
         expect(page).to have_content('Meter attributes: Oldfield Park Infants')
@@ -29,7 +26,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       end
 
       it 'deletes broken meter attribute' do
-        meter_attribute = create(:meter_attribute, meter: gas_meter)
+        create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
         click_on 'Meter attributes'
         click_on 'Delete'
@@ -39,7 +36,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       end
 
       it 'deletes broken school attribute' do
-        meter_attribute = create(:school_meter_attribute, school: school)
+        create(:school_meter_attribute, school: school)
         visit school_path(school)
         click_on 'Meter attributes'
         click_on 'School-wide attributes'
@@ -50,7 +47,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       end
 
       it 'deletes broken global meter attribute' do
-        meter_attribute = create(:global_meter_attribute)
+        create(:global_meter_attribute)
         visit admin_path(school)
         click_on 'Global Meter Attributes'
         click_on 'Delete'
@@ -73,7 +70,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(gas_meter.meter_attributes.size).to eq(1)
       attribute = gas_meter.meter_attributes.first
-      expect{ attribute.to_analytics }.to_not raise_error
+      expect { attribute.to_analytics }.not_to raise_error
       expect(attribute.to_analytics.to_s).to include('800')
 
 
@@ -97,7 +94,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       expect(gas_meter.meter_attributes.active.size).to eq(0)
       new_attribute.reload
       expect(new_attribute.deleted_by).to eq(admin)
-
     end
 
     it 'allow the admin to manage school meter attributes' do
@@ -114,7 +110,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(school.meter_attributes.size).to eq(1)
       attribute = school.meter_attributes.first
-      expect{ attribute.to_analytics }.to_not raise_error
+      expect { attribute.to_analytics }.not_to raise_error
       expect(attribute.to_analytics.to_s).to include('hotwater_only')
 
 
@@ -134,7 +130,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       expect(school.meter_attributes.active.size).to eq(0)
       new_attribute.reload
       expect(new_attribute.deleted_by).to eq(admin)
-
     end
 
     it 'allow the admin to manage school group meter attributes' do
@@ -156,7 +151,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(school_group.meter_attributes.size).to eq(1)
       attribute = school_group.meter_attributes.first
-      expect{ attribute.to_analytics }.to_not raise_error
+      expect { attribute.to_analytics }.not_to raise_error
       expect(attribute.to_analytics.to_s).to include('economy_7')
 
       click_on 'Edit'
@@ -187,7 +182,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Download meter attributes'
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
+      expect(header).to match(/^attachment/)
       expect(YAML.load(page.source)[meter_attribute.meter.school.urn][:meter_attributes][meter_attribute.meter.mpan_mprn][:function]).to eq([:heating_only])
     end
 
@@ -206,7 +201,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(GlobalMeterAttribute.count).to eq(1)
       attribute = GlobalMeterAttribute.first
-      expect{ attribute.to_analytics }.to_not raise_error
+      expect { attribute.to_analytics }.not_to raise_error
       expect(attribute.to_analytics.to_s).to include('economy_7')
 
 
@@ -240,13 +235,13 @@ RSpec.describe "meter attribute management", :meters, type: :system do
     end
 
     context 'with dcc_meter' do
-      let!(:standing_charge) { create(:tariff_standing_charge, meter: gas_meter, start_date: Date.today) }
-      let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: gas_meter, tariff_date: Date.today) }
+      let!(:standing_charge) { create(:tariff_standing_charge, meter: gas_meter, start_date: Time.zone.today) }
+      let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: gas_meter, tariff_date: Time.zone.today) }
 
       it 'does not display tariff attributes for other meters' do
         visit school_path(school)
         click_on 'Meter attributes'
-        expect(page).to_not have_content("from DCC tariff data")
+        expect(page).not_to have_content("from DCC tariff data")
       end
 
       it 'allows admin to see tariff attributes for dcc meters' do

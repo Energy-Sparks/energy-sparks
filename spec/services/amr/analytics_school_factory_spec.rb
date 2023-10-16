@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Amr::AnalyticsSchoolFactory do
-
   let(:school) { create(:school, data_enabled: true) }
   let(:factory) { Amr::AnalyticsSchoolFactory.new(school) }
 

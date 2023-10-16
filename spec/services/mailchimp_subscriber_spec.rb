@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe MailchimpSubscriber do
-
   let(:school_group) { create(:school_group, name: 'Sussex') }
   let(:staff_role) { create(:staff_role, title: 'Governor') }
 
@@ -30,7 +29,7 @@ describe MailchimpSubscriber do
         params = MailchimpSubscriber.new(api).mailchimp_signup_params(user, list_with_interests)
         expect(params.email_address).to eq(user.email)
         expect(params.tags).to eq('FSM25')
-        expect(params.interests).to eq({'interests_1_2' => 'interests_1_2', 'interests_2_2' => 'interests_2_2'})
+        expect(params.interests).to eq({ 'interests_1_2' => 'interests_1_2', 'interests_2_2' => 'interests_2_2' })
         expect(params.merge_fields['SCHOOL']).to eq(school.name)
         expect(params.merge_fields['FULLNAME']).to eq(user.name)
       end
@@ -44,7 +43,7 @@ describe MailchimpSubscriber do
         params = MailchimpSubscriber.new(api).mailchimp_signup_params(user, list_with_interests)
         expect(params.email_address).to eq(user.email)
         expect(params.tags).to eq('')
-        expect(params.interests).to eq({'interests_1_2' => 'interests_1_2', 'interests_2_2' => 'interests_2_2'})
+        expect(params.interests).to eq({ 'interests_1_2' => 'interests_1_2', 'interests_2_2' => 'interests_2_2' })
         expect(params.merge_fields.keys).to eq(['FULLNAME'])
       end
     end

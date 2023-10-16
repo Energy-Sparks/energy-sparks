@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Admin::SchoolOnboardings::ConfigurationController, type: :controller do
-
   let(:admin)             { create(:admin) }
   let(:school_group)      { create :school_group, name: 'My Super Group' }
   let(:expected_anchor)   { 'my-super-group' }
