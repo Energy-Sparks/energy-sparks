@@ -274,7 +274,7 @@ Rails.application.routes.draw do
           resources :responses, only: [:index, :destroy]
         end
       end
-
+      resources :recommendations, only: [:index]
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :public, only: [:create, :destroy], controller: :public
