@@ -7,6 +7,7 @@
 #  created_at              :datetime         not null
 #  date_format             :text             not null
 #  description             :text             not null
+#  enabled                 :boolean          default(TRUE), not null
 #  expected_units          :string
 #  handle_off_by_one       :boolean          default(FALSE)
 #  header_example          :text
