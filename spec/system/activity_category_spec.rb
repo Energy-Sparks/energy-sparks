@@ -29,7 +29,7 @@ RSpec.describe "activity category", type: :system do
 
   context 'as a public user' do
     describe 'activity categories can be viewed' do
-      before(:each) do
+      before do
         visit activity_categories_path
       end
 

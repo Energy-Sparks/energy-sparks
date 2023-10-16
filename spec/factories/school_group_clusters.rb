@@ -4,4 +4,3 @@ FactoryBot.define do
     sequence(:name) {|n| "cluster name #{n}"}
   end
 end
-

@@ -47,16 +47,15 @@ RSpec.configure do |config|
 
   config.after(:each, type: :system, js: true) do |example|
     errors = page.driver.browser.logs.get(:browser)
-    if errors.present? && !example.metadata.has_key?(:errors_expected)
+    if errors.present? && !example.metadata.key?(:errors_expected)
       aggregate_failures 'javascript errors' do
         errors.each do |error|
           expect(error.level).not_to eq('SEVERE'), error.message
           next unless error.level == 'WARNING'
-          STDERR.puts 'WARN: javascript warning'
-          STDERR.puts error.message
+          warn 'WARN: javascript warning'
+          warn error.message
         end
       end
     end
   end
-
 end

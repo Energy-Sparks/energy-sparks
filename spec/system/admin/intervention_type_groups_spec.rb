@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Intervention Type Groups', type: :system do
-
   let!(:admin)                    { create(:admin) }
   let!(:intervention_type_group)  { create(:intervention_type_group)}
 
   context 'when logged in as admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Admin'
@@ -54,7 +53,6 @@ RSpec.describe 'Intervention Type Groups', type: :system do
       expect(page).to have_content(new_name)
       expect(page).to have_content(new_description)
     end
-
   end
 
   describe 'when not logged in' do

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SchoolGroups::ComparisonsCsvGenerator do
   let(:school_group) { create(:school_group) }
+
   include_context "school group comparisons"
 
   context "with school group data" do

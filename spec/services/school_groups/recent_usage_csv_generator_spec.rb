@@ -11,6 +11,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
   shared_examples "a school group recent usage csv including cluster" do
     context "when include cluster is set to true" do
       let(:include_cluster) { true }
+
       it { expect(csv.lines.count).to eq(3) }
       it { expect(csv.lines[0]).to start_with("School,Cluster,")}
       it { expect(csv.lines[1]).to start_with("#{school_group.schools.first.name},A Cluster,")}
@@ -39,25 +40,25 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
       expected_headers = ["School", "Number of pupils", "Floor area (m2)"] + fuel_type_columns
       expect(CSV.parse_line(csv.lines[0])).to eq(expected_headers)
 
-      expect(CSV.parse_line(csv.lines[1])).to eq([school_group.schools.first.name,"10",nil,
-        "-16%","910", "137", "8,540", #e week
-        "-16%","910", "137", "8,540", #e year
-        "-5%","500", "200", "4,000", #g week
-        "-5%","500", "200", "4,000", #g year
-        "-12%","312", "111", "1,111", #sh week
-        "-12%","312", "111", "1,111" #sh year
+      expect(CSV.parse_line(csv.lines[1])).to eq([school_group.schools.first.name, "10", nil,
+                                                  "-16%", "910", "137", "8,540", #e week
+                                                  "-16%", "910", "137", "8,540", #e year
+                                                  "-5%", "500", "200", "4,000", #g week
+                                                  "-5%", "500", "200", "4,000", #g year
+                                                  "-12%", "312", "111", "1,111", #sh week
+                                                  "-12%", "312", "111", "1,111" #sh year
         ])
 
-      expect(CSV.parse_line(csv.lines[2])).to eq([school_group.schools.second.name,"20","300.0",
-          "-16%","910", "137", "8,540", #e week
-          "-16%","910", "137", "8,540", #e year
-          "-5%","500", "200", "4,000", #g week
-          "-5%","500", "200", "4,000", #g year
-          "-12%","312", "111", "1,111", #sh week
-          "-12%","312", "111", "1,111" #sh year
+      expect(CSV.parse_line(csv.lines[2])).to eq([school_group.schools.second.name, "20", "300.0",
+                                                  "-16%", "910", "137", "8,540", #e week
+                                                  "-16%", "910", "137", "8,540", #e year
+                                                  "-5%", "500", "200", "4,000", #g week
+                                                  "-5%", "500", "200", "4,000", #g year
+                                                  "-12%", "312", "111", "1,111", #sh week
+                                                  "-12%", "312", "111", "1,111" #sh year
           ])
     end
-    it_behaves_like "a school group recent usage csv including cluster"
 
-   end
+    it_behaves_like "a school group recent usage csv including cluster"
+  end
 end

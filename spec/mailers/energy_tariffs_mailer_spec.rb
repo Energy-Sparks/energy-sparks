@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe EnergyTariffsMailer, include_application_helper: true do
-
   around do |example|
     ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
       example.run

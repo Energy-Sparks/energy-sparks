@@ -53,7 +53,7 @@ class Audit < ApplicationRecord
   def create_activities_completed_observation!
     return unless SiteSettings.current.audit_activities_bonus_points
     return unless activities_completed?
-    return if observations&.audit_activities_completed&.present? # Only one audit activities completed observation is permitted per audit
+    return if observations&.audit_activities_completed.present? # Only one audit activities completed observation is permitted per audit
 
     Observation.create!(
       school: school,

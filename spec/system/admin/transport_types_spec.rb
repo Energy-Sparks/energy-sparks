@@ -1,13 +1,12 @@
 require 'rails_helper'
 
 describe "admin transport type", type: :system, include_application_helper: true do
-
   let!(:admin)  { create(:admin) }
   let!(:transport_type) { create(:transport_type, can_share: false, park_and_stride: false) }
 
   describe 'when not logged in' do
     context "and viewing the index" do
-      before(:each) do
+      before do
         visit admin_transport_types_path
       end
 
@@ -17,7 +16,7 @@ describe "admin transport type", type: :system, include_application_helper: true
     end
 
     context "and viewing a transport type" do
-      before(:each) do
+      before do
         visit admin_transport_type_path(transport_type)
       end
 
@@ -28,12 +27,12 @@ describe "admin transport type", type: :system, include_application_helper: true
   end
 
   describe 'when logged in' do
-
-    before(:each) do
+    before do
       sign_in(admin)
     end
 
-    let(:attributes) { {
+    let(:attributes) do
+      {
       'Name' => transport_type.name,
       'Image' => transport_type.image,
       'Speed (km/h)' => transport_type.speed_km_per_hour,
@@ -45,9 +44,11 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Position' => transport_type.position,
       'Created at' => nice_date_times(transport_type.created_at),
       'Updated at' => nice_date_times(transport_type.updated_at)
-    } }
+    }
+    end
 
-    let(:new_valid_attributes) { {
+    let(:new_valid_attributes) do
+      {
       'Name' => 'Plane',
       'Image' => '✈️',
       'Speed (km/h)' => 740,
@@ -57,9 +58,10 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Category' => 'Public transport',
       'Position' => 1,
       'Note' => 'Why not?'
-    } }
+    }
+    end
 
-    let(:translated_fields) { {'Name' => :transport_type_name_en} }
+    let(:translated_fields) { { 'Name' => :transport_type_name_en } }
     let(:checkbox_fields) { ['Can share', 'Park and stride'] }
     let(:select_fields) { ['Category'] }
     let(:date_fields) { ['Created at', 'Updated at'] }
@@ -68,7 +70,7 @@ describe "admin transport type", type: :system, include_application_helper: true
     let(:display_attributes) { attributes.slice(*attributes.keys.excluding(date_fields)) }
 
     describe "Viewing the index" do
-      before(:each) do
+      before do
         visit admin_transport_types_path
       end
 
@@ -79,7 +81,7 @@ describe "admin transport type", type: :system, include_application_helper: true
       end
 
       context "and clicking the transport type link" do
-        before(:each) do
+        before do
           click_link(transport_type.name)
         end
 
@@ -94,7 +96,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         it { expect(page).to have_link('New Transport type') }
 
         context "and clicking the edit button" do
-          before(:each) do
+          before do
             click_link("Edit")
           end
 
@@ -104,7 +106,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
 
         context "and clicking the new button" do
-          before(:each) do
+          before do
             click_link("New Transport type")
           end
 
@@ -114,7 +116,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
 
         context "and clicking on the delete button" do
-          before(:each) do
+          before do
             click_link('Delete')
           end
 
@@ -126,7 +128,7 @@ describe "admin transport type", type: :system, include_application_helper: true
     end
 
     describe "Viewing a transport type" do
-      before(:each) do
+      before do
         visit admin_transport_type_path(transport_type)
       end
 
@@ -146,7 +148,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         it { expect(page).to have_link('Delete') }
 
         context "and clicking on the back button" do
-          before(:each) do
+          before do
             click_link('Back')
           end
 
@@ -156,7 +158,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
 
         context "and clicking on the edit button" do
-          before(:each) do
+          before do
             click_link('Edit')
           end
 
@@ -166,7 +168,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
 
         context "and clicking on the delete button" do
-          before(:each) do
+          before do
             click_link('Delete')
           end
 
@@ -178,7 +180,7 @@ describe "admin transport type", type: :system, include_application_helper: true
     end
 
     describe "Editing a transport type" do
-      before(:each) do
+      before do
         visit edit_admin_transport_type_path(transport_type)
       end
 
@@ -201,7 +203,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       context "when entering new values" do
         context "with valid attributes" do
-          before(:each) do
+          before do
             new_valid_attributes.slice(*text_fields).each do |key, value|
               fill_in key, with: value
             end
@@ -233,7 +235,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
 
         context 'when the form has an invalid entry' do
-          before(:each) do
+          before do
             fill_in 'transport_type_name_en', with: ""
             click_button 'Save'
           end
@@ -252,7 +254,7 @@ describe "admin transport type", type: :system, include_application_helper: true
     end
 
     describe "Creating a transport type" do
-      before(:each) do
+      before do
         visit new_admin_transport_type_path
       end
 
@@ -278,7 +280,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       context "when entering new values" do
         context "with valid attributes" do
-          before(:each) do
+          before do
             new_valid_attributes.slice(*text_fields).each do |key, value|
               fill_in key, with: value
             end
@@ -310,7 +312,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
 
         context 'when the form has an invalid entry' do
-          before(:each) do
+          before do
             fill_in 'transport_type_name_en', with: ""
             click_button 'Save'
           end
@@ -330,9 +332,8 @@ describe "admin transport type", type: :system, include_application_helper: true
 
     describe "Deleting a transport type" do
       context "from the index page" do
-
         context "when the transport type has associated responses" do
-          before(:each) do
+          before do
             create(:transport_survey_response, transport_type: transport_type)
             visit admin_transport_types_path
           end
@@ -340,19 +341,19 @@ describe "admin transport type", type: :system, include_application_helper: true
           it { expect(page).to have_selector(:table_row, display_attributes) }
 
           it "disables delete button" do
-            expect(find_link("Delete")['class']).to match /disabled/
+            expect(find_link("Delete")['class']).to match(/disabled/)
           end
         end
 
         context "when there are no associated responses", js: true do
-          before(:each) do
+          before do
             visit admin_transport_types_path
           end
 
           it { expect(page).to have_selector(:table_row, display_attributes) }
 
           context "and clicking delete and confirming" do
-            before(:each) do
+            before do
               accept_confirm do
                 click_link("Delete")
               end
@@ -368,13 +369,13 @@ describe "admin transport type", type: :system, include_application_helper: true
 
             it "removes transport type" do
               within('table') do
-                expect(page).to_not have_selector(:table_row, display_attributes)
+                expect(page).not_to have_selector(:table_row, display_attributes)
               end
             end
           end
 
           context "and clicking delete and dismissing" do
-            before(:each) do
+            before do
               dismiss_confirm do
                 click_link("Delete")
               end
@@ -393,7 +394,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
 
         context "when the transport type appears deletable but is not" do
-          before(:each) do
+          before do
             visit admin_transport_types_path
             allow_any_instance_of(TransportType).to receive(:safe_destroy).and_raise(EnergySparks::SafeDestroyError, "Transport type has associated responses")
             click_link("Delete")
@@ -409,6 +410,5 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
       end
     end
-
   end
 end

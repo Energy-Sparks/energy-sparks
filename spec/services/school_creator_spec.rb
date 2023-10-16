@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 describe SchoolCreator, :schools, type: :service do
-
   let(:service) { SchoolCreator.new(school) }
 
-  let(:template_calendar)        { create(:template_calendar, title: 'BANES calendar') }
+  let(:template_calendar) { create(:template_calendar, title: 'BANES calendar') }
   let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let(:school_group)             { create(:school_group, name: 'BANES') }
@@ -40,8 +39,8 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
       expect(school.dark_sky_area).to eq(dark_sky_area)
       expect(school.scoreboard).to eq(scoreboard)
-      expect(school.configuration).to_not be_nil
-      expect(school.weather_station).to_not be_nil
+      expect(school.configuration).not_to be_nil
+      expect(school.weather_station).not_to be_nil
     end
 
     it 'converts the onboarding user to a school admin' do
@@ -86,7 +85,7 @@ describe SchoolCreator, :schools, type: :service do
     end
 
     it 'defaults contact name when not set on administrator user' do
-      onboarding_user.update!( {name: ""} )
+      onboarding_user.update!({ name: "" })
       service.onboard_school!(school_onboarding)
       contact = school.contacts.first
       expect(contact.email_address).to eq(onboarding_user.email)
@@ -104,19 +103,19 @@ describe SchoolCreator, :schools, type: :service do
     it 'returns the unsaved school if it is not valid' do
       school.name = nil
       returned_school = service.onboard_school!(school_onboarding)
-      expect(returned_school).to_not be_persisted
+      expect(returned_school).not_to be_persisted
     end
   end
 
   describe 'make_data_enabled!' do
     let(:visible) { true }
     let(:school) { create :school, data_enabled: false, visible: visible }
-    let!(:school_onboarding){ create :school_onboarding, school: school}
+    let!(:school_onboarding) { create :school_onboarding, school: school}
 
     it 'broadcasts message' do
-      expect {
+      expect do
         service.make_data_enabled!
-      }.to broadcast(:school_made_data_enabled)
+      end.to broadcast(:school_made_data_enabled)
     end
 
     it 'updates data enabled status' do
@@ -131,26 +130,27 @@ describe SchoolCreator, :schools, type: :service do
 
     context 'where the school is not visible' do
       let(:visible) { false }
+
       it 'rejects call' do
-        expect {
+        expect do
           service.make_data_enabled!
-        }.to raise_error SchoolCreator::Error
+        end.to raise_error SchoolCreator::Error
       end
     end
   end
 
   describe 'make_visible!' do
-    let(:school){ create :school, visible: false}
+    let(:school) { create :school, visible: false}
 
     context 'where the school has not been created via the onboarding process' do
-      let!(:school_admin)  { create(:school_admin, school: school) }
+      let!(:school_admin) { create(:school_admin, school: school) }
       let!(:staff) { create(:staff, school: school) }
       let!(:consent_grant) { create :consent_grant, school: school }
 
-      before(:each) do
-        expect {
+      before do
+        expect do
           service.make_visible!
-        }.to broadcast(:school_made_visible)
+        end.to broadcast(:school_made_visible)
       end
 
       it 'completes the onboarding process' do
@@ -159,8 +159,8 @@ describe SchoolCreator, :schools, type: :service do
     end
 
     context 'where the school has been created as part of the onboarding process' do
-      let(:onboarding_user){ create :onboarding_user }
-      let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
+      let(:onboarding_user) { create :onboarding_user }
+      let!(:school_onboarding) { create :school_onboarding, school: school, created_user: onboarding_user}
       let!(:consent_grant) { create :consent_grant, school: school }
 
       it 'sets visibility' do
@@ -169,16 +169,16 @@ describe SchoolCreator, :schools, type: :service do
       end
 
       it 'broadcasts message' do
-        expect {
+        expect do
           service.make_visible!
-        }.to broadcast(:school_made_visible, school)
+        end.to broadcast(:school_made_visible, school)
       end
     end
   end
 
   describe '#process_new_school!' do
-    let(:school){ create :school }
-    let!(:alert_type){ create :alert_type }
+    let(:school) { create :school }
+    let!(:alert_type) { create :alert_type }
 
     it 'populates the default opening times' do
       service.process_new_school!
@@ -188,7 +188,7 @@ describe SchoolCreator, :schools, type: :service do
 
     it 'configures the school' do
       service.process_new_school!
-      expect(school.configuration).to_not be_nil
+      expect(school.configuration).not_to be_nil
     end
 
     it 'does not create a new configuration if one exists' do
@@ -200,7 +200,7 @@ describe SchoolCreator, :schools, type: :service do
   end
 
   describe '#process_new_configuration!' do
-    let(:school)              { create :school, template_calendar: template_calendar}
+    let(:school) { create :school, template_calendar: template_calendar}
 
     it 'uses the calendar factory to create a calendar if there is one' do
       service.process_new_configuration!
@@ -212,7 +212,6 @@ describe SchoolCreator, :schools, type: :service do
       service.process_new_configuration!
       expect(school.calendar).to be_nil
     end
-
   end
 
   describe 'with a group admin' do
@@ -236,20 +235,24 @@ describe SchoolCreator, :schools, type: :service do
         service.onboard_school!(school_onboarding)
         expect(school).to be_persisted
       end
+
       it 'does not change role' do
         service.onboard_school!(school_onboarding)
         onboarding_user.reload
         expect(onboarding_user.role).to eq('group_admin')
       end
+
       it 'does not assign the school to the onboarding user' do
         service.onboard_school!(school_onboarding)
         onboarding_user.reload
         expect(onboarding_user.school).to be_nil
       end
+
       it 'does not create an alert contact for the school administrator' do
         service.onboard_school!(school_onboarding)
         expect(school.contacts).to be_empty
       end
+
       it 'does not add a cluster school' do
         service.onboard_school!(school_onboarding)
         expect(onboarding_user.cluster_schools).to be_empty

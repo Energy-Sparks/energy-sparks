@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Baseload advice page", type: :system do
-
   let(:key) { 'baseload' }
   let(:expected_page_title) { "Baseload analysis" }
+
   include_context "electricity advice page"
 
   context 'as a school admin' do
@@ -12,10 +12,10 @@ RSpec.describe "Baseload advice page", type: :system do
     before do
       allow_any_instance_of(Schools::Advice::BaseloadController).to receive_messages({
         build_economic_tariffs_change_caveats: OpenStruct.new(
-                                               last_change_date: Date.new(2022, 9, 1),
-                                               percent_change: 18.857098661736725,
-                                               rate_after_£_per_kwh: 3.066783066364631,
-                                               rate_before_£_per_kwh: 0.1544426564326899)
+          last_change_date: Date.new(2022, 9, 1),
+          percent_change: 18.857098661736725,
+          rate_after_£_per_kwh: 3.066783066364631,
+          rate_before_£_per_kwh: 0.1544426564326899)
 
 
       })
@@ -27,16 +27,18 @@ RSpec.describe "Baseload advice page", type: :system do
     it_behaves_like "an advice page"
 
     context 'when viewing the learn more page' do
-      before(:each) do
+      before do
         visit learn_more_school_advice_baseload_path(school)
       end
 
       it_behaves_like "an advice page tab", tab: "Learn More"
 
       context "with no recent data" do
-        let(:start_date)  { Date.today - 24.months}
-        let(:end_date)    { Date.today - 2.months}
+        let(:start_date)  { Time.zone.today - 24.months}
+        let(:end_date)    { Time.zone.today - 2.months}
+
         before { refresh }
+
         it_behaves_like "an advice page NOT showing electricity data warning"
       end
     end
@@ -46,14 +48,14 @@ RSpec.describe "Baseload advice page", type: :system do
       let(:average_baseload_kw_benchmark) {2.1}
       let(:usage) { double(kwh: 123.0, £: 456.0, co2: 789.0, percent: 0.2) }
       let(:savings) { double(kwh: 11.0, £: 22.0, co2: 33.0) }
-      let(:annual_average_baseload) { {year: 2020, baseload_usage: usage} }
+      let(:annual_average_baseload) { { year: 2020, baseload_usage: usage } }
       let(:baseload_meter_breakdown) { {} }
-      let(:seasonal_variation)  { double(winter_kw: 1, summer_kw: 2, percentage: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6) }
+      let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6) }
       let(:seasonal_variation_by_meter) { {} }
       let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6, min_day: 0, max_day: 1) }
       let(:intraweek_variation_by_meter) { {} }
 
-      before(:each) do
+      before do
         #stub calls to service so we can test the controller/view logic
         allow_any_instance_of(Schools::Advice::BaseloadService).to receive_messages({
           average_baseload_kw: average_baseload_kw,
@@ -101,19 +103,23 @@ RSpec.describe "Baseload advice page", type: :system do
       context "with limited data" do
         let(:start_date)  { Date.parse('28/09/2022') }
         let(:end_date)    { Date.parse('30/05/2023') }
+
         # Note ((Date.parse('30/05/2023') - Date.parse('28/09/2022')).to_f / 365 * 12) => 8.021917808219179
         before do
           visit analysis_school_advice_baseload_path(school)
         end
+
         it 'shows different message' do
           expect(page).to have_content("8 months")
         end
       end
 
       context "with no recent data" do
-        let(:start_date)  { Date.today - 24.months}
-        let(:end_date)    { Date.today - 2.months}
+        let(:start_date)  { Time.zone.today - 24.months}
+        let(:end_date)    { Time.zone.today - 2.months}
+
         before { refresh }
+
         it_behaves_like "an advice page showing electricity data warning"
       end
     end
@@ -128,15 +134,16 @@ RSpec.describe "Baseload advice page", type: :system do
       let(:previous_year_average_baseload_kw) { 2.0 }
       let(:previous_week_average_baseload_kw) { 1.9 }
 
-      let(:comparison) {
+      let(:comparison) do
         Schools::Comparison.new(
           school_value: average_baseload_last_year_kw,
           benchmark_value: average_baseload_kw_benchmark,
           exemplar_value: average_baseload_kw_exemplar,
           unit: :kw
         )
-      }
-      before(:each) do
+      end
+
+      before do
         #current baseload
         allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw).with(period: :year).and_return average_baseload_last_year_kw
         allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw).with(period: :week).and_return average_baseload_last_week_kw
@@ -166,18 +173,21 @@ RSpec.describe "Baseload advice page", type: :system do
       end
 
       context "with no recent data" do
-        let(:start_date)  { Date.today - 24.months}
-        let(:end_date)    { Date.today - 2.months}
+        let(:start_date)  { Time.zone.today - 24.months}
+        let(:end_date)    { Time.zone.today - 2.months}
+
         before do
           visit insights_school_advice_baseload_path(school)
         end
+
         it 'shows different message' do
           #weekly baseload
           within '#current-baseload' do
-            expect(page).to_not have_content("2.2")
+            expect(page).not_to have_content("2.2")
             expect(page).to have_content("no recent data")
           end
         end
+
         it_behaves_like "an advice page showing electricity data warning"
       end
 

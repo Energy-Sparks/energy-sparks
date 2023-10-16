@@ -1,27 +1,27 @@
 RSpec.shared_examples "a public school group dashboard" do
   it 'allows user to navigate to all tabs' do
     visit map_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit comparisons_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/comparisons"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/comparisons", ignore_query: true
     visit priority_actions_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/priority_actions"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/priority_actions", ignore_query: true
     visit current_scores_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/current_scores"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/current_scores", ignore_query: true
   end
 end
 
 RSpec.shared_examples "a private school group dashboard" do
   it 'the user can only access the map view' do
     visit map_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit comparisons_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit priority_actions_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit current_scores_school_group_path(school_group)
-    expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
-    expect(page).to_not have_content('View group')
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
+    expect(page).not_to have_content('View group')
   end
 end
 
@@ -63,7 +63,7 @@ RSpec.shared_examples "school dashboard navigation" do
   end
 
   it 'has expected path' do
-    expect(current_path).to eq expected_path
+    expect(page).to have_current_path expected_path, ignore_query: true
   end
 
   it 'shows right breadcrumb' do
@@ -74,14 +74,14 @@ end
 RSpec.shared_examples "visiting chart updates redirects to group map page" do
   it 'redirects to ' do
     visit school_group_chart_updates_path(school_group)
-    expect(current_path).to eq(map_school_group_path(school_group))
+    expect(page).to have_current_path(map_school_group_path(school_group), ignore_query: true)
   end
 end
 
 RSpec.shared_examples "visiting chart updates redirects to group page" do
   it 'redirects to ' do
     visit school_group_chart_updates_path(school_group)
-    expect(current_path).to eq(school_group_path(school_group))
+    expect(page).to have_current_path(school_group_path(school_group), ignore_query: true)
   end
 end
 
@@ -93,7 +93,7 @@ end
 
 RSpec.shared_examples "redirects to login page" do
   it 'redirects to login page' do
-    expect(current_path).to eq("/users/sign_in")
+    expect(page).to have_current_path("/users/sign_in", ignore_query: true)
   end
 end
 
@@ -267,47 +267,136 @@ RSpec.shared_examples "shows the we are working with message" do
   end
 end
 
-RSpec.shared_examples "not showing the cluster column" do
-  before do
-    visit url if defined?(url)
-  end
+RSpec.shared_examples "a page not showing the cluster column" do
   it "doesn't show the cluster column" do
-    expect(page).to_not have_content('Cluster')
-    expect(page).to_not have_content('Not set')
+    expect(page).not_to have_content('Cluster')
+    expect(page).not_to have_content('Not set')
   end
 end
 
-RSpec.shared_examples "showing the cluster column" do
-  let!(:cluster) {}
-  before do
-    visit url if defined?(url)
-  end
+RSpec.shared_examples "a page showing the cluster column" do
   it { expect(page).to have_content('Cluster') }
 
   context "school does not have a cluster" do
+    let(:cluster) { }
+
     it { expect(page).to have_content('Not set') }
   end
 
-  context "school is in a cluster" do
-    let!(:cluster) { create(:school_group_cluster, name: "My Cluster", schools: [school]) }
+  context "with a school in a cluster" do
+    let(:cluster) { create(:school_group_cluster, name: "My Cluster", schools: [school]) }
+
     it { expect(page).to have_content('My Cluster') }
   end
 end
 
-RSpec.shared_examples "not showing the cluster column in the download" do |id:nil|
+
+RSpec.shared_examples "a page not showing the cluster column in the download" do
   context "Clicking the Download as CSV link" do
     before do
       all(:link, 'Download as CSV').last.click
     end
-    it { expect(page.source).to_not have_content ",Cluster," }
+
+    it { expect(page.source).not_to have_content ",Cluster," }
   end
 end
 
-RSpec.shared_examples "showing the cluster column in the download" do |id: nil|
+RSpec.shared_examples "a page showing the cluster column in the download" do
   context "Clicking the Download as CSV link" do
     before do
       all(:link, 'Download as CSV').last.click
     end
+
     it { expect(page.source).to have_content ",Cluster," }
+  end
+end
+
+RSpec.shared_examples "school group tabs showing the cluster column" do
+  let!(:cluster) {} # hook to create cluster before page loads if there is one
+
+  context "recent usage tab" do
+    let!(:school) { school_group.schools.first }
+
+    before do
+      visit school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page showing the cluster column'
+    it_behaves_like 'a page showing the cluster column in the download'
+  end
+
+  context "comparisons tab" do
+    let!(:school) { school_1 }
+
+    include_context "school group comparisons"
+    before do
+      visit comparisons_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page showing the cluster column'
+    it_behaves_like 'a page showing the cluster column in the download'
+  end
+
+  context "priority actions tab" do
+    let!(:school) { school_1 }
+
+    include_context "school group priority actions"
+    before do
+      visit priority_actions_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page showing the cluster column'
+    it_behaves_like 'a page showing the cluster column in the download'
+  end
+
+  context "current scores tab" do
+    let!(:school) { school_group.schools.first }
+
+    before do
+      visit current_scores_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page showing the cluster column'
+    it_behaves_like 'a page showing the cluster column in the download'
+  end
+end
+
+RSpec.shared_examples "school group tabs not showing the cluster column" do
+  context "recent usage tab" do
+    before do
+      visit school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page not showing the cluster column'
+    it_behaves_like 'a page not showing the cluster column in the download'
+  end
+
+  context "comparisons tab" do
+    include_context "school group comparisons"
+    before do
+      visit comparisons_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page not showing the cluster column'
+    it_behaves_like 'a page not showing the cluster column in the download'
+  end
+
+  context "priority actions tab" do
+    include_context "school group priority actions"
+    before do
+      visit priority_actions_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page not showing the cluster column'
+    it_behaves_like 'a page not showing the cluster column in the download'
+  end
+
+  context "current scores tab" do
+    before do
+      visit current_scores_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a page not showing the cluster column'
+    it_behaves_like 'a page not showing the cluster column in the download'
   end
 end

@@ -24,5 +24,4 @@ describe 'Unsubscribing from email alerts' do
     expect(unsubscription.alert_type_rating).to eq(alert_type_rating)
     expect(unsubscription.effective_until).to eq(6.months.from_now.to_date)
   end
-
 end

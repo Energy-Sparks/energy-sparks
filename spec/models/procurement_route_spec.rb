@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ProcurementRoute, type: :model do
-
   describe 'validations' do
     subject { build(:procurement_route) }
+
     it { is_expected.to be_valid }
     it { is_expected.to validate_presence_of(:organisation_name) }
   end
@@ -12,7 +12,9 @@ RSpec.describe ProcurementRoute, type: :model do
     let(:procurement_route) { create(:procurement_route) }
     let(:data_source) { create(:data_source) }
     subject { procurement_route.to_csv }
+
     let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues" }
+
     before { Timecop.freeze }
     after { Timecop.return }
 
@@ -41,6 +43,7 @@ RSpec.describe ProcurementRoute, type: :model do
 
       it { expect(subject.lines.count).to eq(3) }
       it { expect(subject.lines.first.chomp).to eq(header) }
+
       2.times do |i|
         it 'returns rows for all meters for active schools with this procurement route' do
           expect(subject.lines[i + 1].chomp).to eq(
@@ -69,6 +72,7 @@ RSpec.describe ProcurementRoute, type: :model do
         [create(:gas_meter),
          create(:gas_meter)]
       end
+
       it { expect(subject.lines.count).to eq(1) }
     end
 

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'password reset' do
-
   let(:preferred_locale)  { }
   let!(:user)             { create(:user, preferred_locale: preferred_locale) }
   let(:email)             { ActionMailer::Base.deliveries.last }
@@ -15,7 +14,7 @@ describe 'password reset' do
   end
 
   context 'when using default domain' do
-    before :each do
+    before do
       visit new_user_session_path
       click_link 'Forgot your password'
       fill_in "user_email", with: user.email
@@ -24,6 +23,7 @@ describe 'password reset' do
 
     context 'preferred locale is en' do
       let(:preferred_locale) { :en }
+
       it 'links to non-locale specific site' do
         expect(email.body).to include("http://localhost/users/password/edit?reset_password_token=")
       end
@@ -31,6 +31,7 @@ describe 'password reset' do
 
     context 'preferred locale is cy' do
       let(:preferred_locale) { :cy }
+
       it 'links to locale specific site' do
         expect(email.body).to include("http://cy.localhost/users/password/edit?reset_password_token=")
       end
@@ -38,6 +39,7 @@ describe 'password reset' do
 
     context 'with locale redirects' do
       let(:preferred_locale) { :cy }
+
       it 'shows locale selector' do
         expect(user.reload.preferred_locale).to eq("cy")
         urls = URI.extract(email.body.to_s, ['http'])

@@ -9,7 +9,7 @@ describe 'ActivityType' do
 
   it 'is invalid with invalid attributes' do
     type = build :activity_type, score: -1
-    expect(type).to_not be_valid
+    expect(type).not_to be_valid
     expect(type.errors[:score]).to include('must be greater than or equal to 0')
   end
 
@@ -26,17 +26,17 @@ describe 'ActivityType' do
     end
 
     activity_type.fuel_type = ActivityType::VALID_FUEL_TYPES + ['coal']
-    expect(activity_type).to_not be_valid
+    expect(activity_type).not_to be_valid
     expect(activity_type.errors[:fuel_type]).to include('invalid fuel type: coal')
 
     activity_type.fuel_type = ActivityType::VALID_FUEL_TYPES + ['coal', 'exported solar pv']
-    expect(activity_type).to_not be_valid
+    expect(activity_type).not_to be_valid
     expect(activity_type.errors[:fuel_type]).to include('invalid fuel types: coal and exported solar pv')
   end
 
   it 'applies live data scope via category' do
     activity_type_1 = create(:activity_type, activity_category: create(:activity_category, live_data: true))
-    activity_type_2 = create(:activity_type, activity_category: create(:activity_category, live_data: false))
+    create(:activity_type, activity_category: create(:activity_category, live_data: false))
     expect(ActivityType.live_data).to match_array([activity_type_1])
   end
 
@@ -108,7 +108,7 @@ describe 'ActivityType' do
       key_stage_1 = create(:key_stage)
       key_stage_2 = create(:key_stage)
       activity_type_1 = create(:activity_type, name: 'KeyStage One', key_stages: [key_stage_1])
-      activity_type_2 = create(:activity_type, name: 'KeyStage Two', key_stages: [key_stage_2])
+      create(:activity_type, name: 'KeyStage Two', key_stages: [key_stage_2])
       activity_type_3 = create(:activity_type, name: 'KeyStage One and Two', key_stages: [key_stage_1, key_stage_2])
 
       expect(ActivityType.for_key_stages([key_stage_1])).to match_array([activity_type_1, activity_type_3])
@@ -117,7 +117,7 @@ describe 'ActivityType' do
     it 'does not return duplicates' do
       key_stage_1 = create(:key_stage)
       key_stage_2 = create(:key_stage)
-      activity_type_1 = create(:activity_type, name: 'foo one', key_stages: [key_stage_1, key_stage_2])
+      create(:activity_type, name: 'foo one', key_stages: [key_stage_1, key_stage_2])
 
       expect(ActivityType.for_key_stages([key_stage_1, key_stage_2]).count).to eq(1)
     end
@@ -128,7 +128,7 @@ describe 'ActivityType' do
       subject_1 = create(:subject)
       subject_2 = create(:subject)
       activity_type_1 = create(:activity_type, name: 'KeyStage One', subjects: [subject_1])
-      activity_type_2 = create(:activity_type, name: 'KeyStage Two', subjects: [subject_2])
+      create(:activity_type, name: 'KeyStage Two', subjects: [subject_2])
       activity_type_3 = create(:activity_type, name: 'KeyStage One and Two', subjects: [subject_1, subject_2])
 
       expect(ActivityType.for_subjects([subject_1])).to match_array([activity_type_1, activity_type_3])
@@ -137,7 +137,7 @@ describe 'ActivityType' do
     it 'does not return duplicates' do
       subject_1 = create(:subject)
       subject_2 = create(:subject)
-      activity_type_1 = create(:activity_type, name: 'foo one', subjects: [subject_1, subject_2])
+      create(:activity_type, name: 'foo one', subjects: [subject_1, subject_2])
 
       expect(ActivityType.for_subjects([subject_1, subject_2]).count).to eq(1)
     end
@@ -147,6 +147,7 @@ describe 'ActivityType' do
     context 'finding resources for transifex' do
       let!(:activity_type_1) { create(:activity_type, name: "activity", active: true)}
       let!(:activity_type_2) { create(:activity_type, name: "activity", active: false)}
+
       it "#tx_resources" do
         expect(ActivityType.tx_resources).to match_array([activity_type_1])
       end
@@ -154,33 +155,40 @@ describe 'ActivityType' do
 
     context 'when mapping fields' do
       let!(:activity_type) { create(:activity_type, name: "My activity", description: "description", school_specific_description: "Description {{#chart}}chart_name{{/chart}} {{#chart}}chart_name2|£{{/chart}}")}
+
       it 'produces the expected key names' do
         expect(activity_type.tx_attribute_key("name")).to eq "name"
         expect(activity_type.tx_attribute_key("description")).to eq "description_html"
         expect(activity_type.tx_attribute_key("school_specific_description")).to eq "school_specific_description_html"
         expect(activity_type.tx_attribute_key("download_links")).to eq "download_links_html"
       end
+
       it 'produces the expected tx values, removing trix content wrapper' do
         expect(activity_type.tx_value("name")).to eql activity_type.name
         expect(activity_type.tx_value("description")).to eql("description")
         expect(activity_type.tx_value("school_specific_description")).to eql("Description %{tx_chart_chart_name} %{tx_chart_chart_name2|£}")
       end
+
       it 'produces the expected resource key' do
         expect(activity_type.resource_key).to eq "activity_type_#{activity_type.id}"
       end
+
       it 'maps all translated fields' do
         data = activity_type.tx_serialise
-        expect(data["en"]).to_not be nil
+        expect(data["en"]).not_to be nil
         key = "activity_type_#{activity_type.id}"
-        expect(data["en"][key]).to_not be nil
+        expect(data["en"][key]).not_to be nil
         expect(data["en"][key].keys).to match_array(%w[name description_html school_specific_description_html download_links_html summary])
       end
+
       it 'created categories' do
         expect(activity_type.tx_categories).to match_array(["activity_type"])
       end
+
       it 'overrides default name' do
         expect(activity_type.tx_name).to eq("My activity")
       end
+
       it 'fetches status' do
         expect(activity_type.tx_status).to be_nil
         status = TransifexStatus.create_for!(activity_type)
@@ -206,19 +214,23 @@ describe 'ActivityType' do
        }
      }
     end
+
     context 'when updating from transifex' do
-      before(:each) do
+      before do
         subject.tx_update(data, :cy)
         subject.reload
       end
+
       it 'updates simple fields' do
         expect(subject.name).to eq name
         expect(subject.name_cy).to eq "Welsh name"
       end
+
       it 'updates HTML fields' do
         expect(subject.description).to eq description
         expect(subject.description_cy.to_s).to eql("<div class=\"trix-content\">\n  The Welsh description\n</div>\n")
       end
+
       it 'translates the template syntax' do
         expect(subject.school_specific_description).to eq school_specific_description
         expect(subject.school_specific_description_cy.to_s).to eql("<div class=\"trix-content\">\n  Instructions for schools. {{#chart}}chart_name|£{{/chart}}\n</div>\n")
@@ -229,7 +241,7 @@ describe 'ActivityType' do
       let(:source)    { "http://old.example.org" }
       let(:target)    { "http://new.example.org" }
 
-      before(:each) do
+      before do
         subject.link_rewrites.create(source: source, target: target)
       end
 
@@ -250,7 +262,7 @@ describe 'ActivityType' do
          }
         end
 
-        before(:each) do
+        before do
           subject.tx_update(data, :cy)
           subject.reload
         end
@@ -269,6 +281,7 @@ describe 'ActivityType' do
              }
            }
           end
+
           it 'automatically rewrites links' do
             expect(subject.description_cy.to_s).to eq "<div class=\"trix-content\">\n  The Welsh description <a href=\"http://new.example.org\">Link</a>\n</div>\n"
             expect(subject.school_specific_description_cy.to_s).to eq "<div class=\"trix-content\">\n  Instructions for schools. {{#chart}}chart_name|£{{/chart}}. <a href=\"http://old.example.org\">Link</a>\n</div>\n"

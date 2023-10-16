@@ -1,7 +1,6 @@
 require 'energy_sparks/points_display_normaliser'
 
 describe EnergySparks::PointsDisplayNormaliser do
-
   it 'returns and empty array when no points are passed in' do
     expect(EnergySparks::PointsDisplayNormaliser.normalise([])).to eq([])
   end

@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 describe 'Team members', type: :system do
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   describe 'managing' do
-
     before do
       sign_in(admin)
       visit root_path
@@ -15,7 +14,6 @@ describe 'Team members', type: :system do
     it 'allows the user to create, edit and delete a team member' do
       title = 'John Smith'
       new_title = 'Joe Bloggs'
-      profile = 'World renowned expert'
 
       click_on 'New team member'
       fill_in 'Job description', with: 'Energy Expert'
@@ -43,4 +41,3 @@ describe 'Team members', type: :system do
     end
   end
 end
-

@@ -12,10 +12,13 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
 
   context "with all params" do
     let(:params) { all_params }
+
     it { expect(html).to have_selector("h4 strong", text: "Title text") }
+
     it "adds specified classes" do
       expect(html).to have_css('div.card-deck.recommendations-component.my-class')
     end
+
     it "shows 'limit' amount of cards" do
       expect(cards.count).to eq(5)
     end
@@ -29,16 +32,19 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
         expect(card.css('.card-text')).to have_link(activity_types[i].name, href: polymorphic_path(activity_types[i]))
       end
     end
+
     it "has image" do
       activity_types[0].image_en.attach(**image)
       expect(cards[0].to_s).to include('sheffield.png')
     end
+
     it "has default image" do
       expect(cards[0].to_s).to include('placeholder300x200')
     end
+
     it "adds responsive clasess" do
       cards[0..3].each do |card|
-        expect(card).to_not have_css('.d-none.d-xl-block')
+        expect(card).not_to have_css('.d-none.d-xl-block')
       end
       expect(cards[4]).to have_css('.d-none.d-xl-block')
     end
@@ -46,18 +52,22 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
 
   context "with defaults" do
     let(:params) { all_params.except(:title, :classes, :limit, :max_lg) }
+
     it "does not display title" do
-      expect(html).to_not have_selector("h4 strong")
+      expect(html).not_to have_selector("h4 strong")
     end
+
     it "does not add css" do
-      expect(html).to_not have_css('div.card-deck.recommendations-component.my-class')
+      expect(html).not_to have_css('div.card-deck.recommendations-component.my-class')
     end
+
     it "limits to 4" do
       expect(cards.count).to eq(4)
     end
+
     it "sets max_lg to 3" do
       cards[0..2].each do |card|
-        expect(card).to_not have_css('.d-none.d-xl-block')
+        expect(card).not_to have_css('.d-none.d-xl-block')
       end
       expect(cards[3]).to have_css('.d-none.d-xl-block')
     end
@@ -65,9 +75,9 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
 
   context "with no recommendations" do
     let(:params) { all_params.except(:recommendations) }
+
     it "doesn't render" do
       expect(html.to_s).to be_blank
     end
   end
-
 end

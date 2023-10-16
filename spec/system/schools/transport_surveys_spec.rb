@@ -1,14 +1,11 @@
 require 'rails_helper'
-include ApplicationHelper
 
-describe 'TransportSurveys', type: :system do
-
+describe 'TransportSurveys', type: :system, include_application_helper: true do
   let!(:school)            { create(:school, :with_school_group) }
   let!(:transport_type)    { create(:transport_type, category: :car, can_share: true) }
 
   describe "Transport survey results page" do
     describe 'as a public user with read only access' do
-
       let(:transport_survey) { create(:transport_survey, school: school) }
       let(:cat_cols) { ["Transport category", "Total pupils & staff", "Percentage pupils & staff"] }
       let(:car_cols) { ["Time travelled by car", "Total pupils & staff"] }
@@ -17,6 +14,7 @@ describe 'TransportSurveys', type: :system do
         before do
           visit school_transport_survey_path(school, transport_survey)
         end
+
         it { expect(page).to have_content("No responses have been collected") }
       end
 
@@ -26,6 +24,7 @@ describe 'TransportSurveys', type: :system do
           create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type, passengers: 1, journey_minutes: 5)
           visit school_transport_survey_path(school, transport_survey)
         end
+
         it { expect(page).to have_content("1 pupil or staff member included in this survey generated 0.0kg carbon by travelling to school") }
         it { expect(page).to have_content("That's Carbon Neutral 🌳!") }
         it { expect(page).to have_content("100% walked or cycled, generating zero CO2") }
@@ -58,7 +57,7 @@ describe 'TransportSurveys', type: :system do
       end
 
       context "with a carbon positive result" do
-        before(:each) do
+        before do
           categories.each do |cat|
             transport_type = create(:transport_type, category: cat, kg_co2e_per_km: 0.17148)
             create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type, passengers: 1, journey_minutes: journey_minutes)
@@ -69,13 +68,14 @@ describe 'TransportSurveys', type: :system do
         context "with one result" do
           let(:categories) { [:car] }
           let(:journey_minutes) { 5 }
+
           it { expect(page).to have_content("That's the same as charging 276 smart phones 📱!") }
           it { expect(page).to have_content("That's the same as 1 veggie dinner 🥗!") }
           it { expect(page).to have_content("That's the same as 50 hours of TV 📺!") }
           it { expect(page).to have_content("That's the same as playing 10 hours of computer games 🎮!") }
-          it { expect(page).to_not have_content("would absorb this amount of CO2 in 1 day 🌳!") }
-          it { expect(page).to_not have_content("meat dinner") }
-          it { expect(page).to_not have_content("That's Carbon Neutral 🌳!") }
+          it { expect(page).not_to have_content("would absorb this amount of CO2 in 1 day 🌳!") }
+          it { expect(page).not_to have_content("meat dinner") }
+          it { expect(page).not_to have_content("That's Carbon Neutral 🌳!") }
 
           it { expect(page).to have_content("1 pupil or staff member included in this survey generated 0.46kg carbon by travelling to school") }
           it { expect(page).to have_content("0% walked or cycled, generating zero CO2") }
@@ -110,13 +110,14 @@ describe 'TransportSurveys', type: :system do
         context "with one result per category" do
           let(:categories) { [:car, :walking_and_cycling, :public_transport, :park_and_stride, nil] }
           let(:journey_minutes) { 5 }
+
           it { expect(page).to have_content("1 tree would absorb this amount of CO2 in 1 day 🌳!") }
           it { expect(page).to have_content("That's the same as charging 1381 smart phones 📱!") }
           it { expect(page).to have_content("That's the same as 2 meat dinners 🍲!") }
           it { expect(page).to have_content("That's the same as 5 veggie dinners 🥗!") }
           it { expect(page).to have_content("That's the same as 249 hours of TV 📺!") }
           it { expect(page).to have_content("That's the same as playing 50 hours of computer games 🎮!") }
-          it { expect(page).to_not have_content("That's Carbon Neutral 🌳!") }
+          it { expect(page).not_to have_content("That's Carbon Neutral 🌳!") }
 
           it { expect(page).to have_content("5 pupils and staff included in this survey generated 2.29kg carbon by travelling to school") }
           it { expect(page).to have_content("20% walked or cycled, generating zero CO2") }
@@ -156,19 +157,19 @@ describe 'TransportSurveys', type: :system do
     # pupil - as above except deleting Surveys and Transport Survey Responses
     # public user - read access only for everything (but not the start page)
 
-    MANAGING_USER_TYPES = [:admin, :group_admin, :school_admin, :staff]
+    MANAGING_USER_TYPES = [:admin, :group_admin, :school_admin, :staff].freeze
     SURVEYING_USER_TYPES = MANAGING_USER_TYPES + [:pupil]
 
     SURVEYING_USER_TYPES.each do |user_type|
       describe "as a #{user_type} user who can carry out surveys" do
         let(:user) { create(user_type, school: school) }
 
-        before(:each) do
+        before do
           sign_in(user)
         end
 
         context "viewing the start page" do
-          before(:each) do
+          before do
             visit start_school_transport_surveys_path(school)
           end
 
@@ -176,12 +177,13 @@ describe 'TransportSurveys', type: :system do
           it { expect(page).to have_content('Survey today') }
           it { expect(page).to have_content('Javascript must be enabled to use this functionality') }
           it { expect(page).to have_link('View all transport surveys') }
-          it { expect(page).to_not have_css('#survey_nav') }
+          it { expect(page).not_to have_css('#survey_nav') }
 
           context "and clicking the 'View all transport surveys' button" do
-            before(:each) do
+            before do
               click_link 'View all transport surveys'
             end
+
             it { expect(page).to have_content('No surveys have been completed yet') }
           end
         end
@@ -192,18 +194,17 @@ describe 'TransportSurveys', type: :system do
       describe "as a #{user_type} user who can delete surveys and manage & delete responses" do
         let!(:user) { create(user_type, school: school) }
 
-        before(:each) do
+        before do
           user.school_group = school.school_group if user_type == :group_admin
+          sign_in(user)
         end
 
         let!(:transport_survey) { create(:transport_survey, school: school) }
         let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
 
-        before(:each) do
-          sign_in(user)
-        end
+
         context "viewing transport surveys index" do
-          before(:each) do
+          before do
             visit school_transport_surveys_path(school)
           end
 
@@ -224,7 +225,7 @@ describe 'TransportSurveys', type: :system do
           end
 
           context "and managing responses" do
-            before(:each) do
+            before do
               within('table') do
                 click_link("Manage")
               end
@@ -241,14 +242,16 @@ describe 'TransportSurveys', type: :system do
             end
 
             context "and deleting response" do
-              before(:each) do
+              before do
                 within('table') do
                   click_link('Delete')
                 end
               end
+
               it { expect(page).to have_content("Transport survey response was successfully removed") }
+
               it "removes response" do
-                expect(page).to_not have_content(nice_date_times(transport_survey_response.surveyed_at, localtime: true))
+                expect(page).not_to have_content(nice_date_times(transport_survey_response.surveyed_at, localtime: true))
               end
             end
 
@@ -260,12 +263,15 @@ describe 'TransportSurveys', type: :system do
               before do
                 click_link('Download responses')
               end
+
               it "shows csv contents" do
                 expect(page.body).to eq transport_survey.responses.to_csv
               end
+
               it "has csv content type" do
                 expect(response_headers['Content-Type']).to eq 'text/csv'
               end
+
               it "has expected file name" do
                 expect(response_headers['Content-Disposition']).to include("energy-sparks-transport-survey-#{school.slug}-#{transport_survey.run_on}.csv")
               end
@@ -273,14 +279,16 @@ describe 'TransportSurveys', type: :system do
           end
 
           context "and deleting transport survey" do
-            before(:each) do
+            before do
               within('table') do
                 click_link('Delete')
               end
             end
+
             it { expect(page).to have_content("Transport survey was successfully removed") }
+
             it "removes transport survey" do
-              expect(page).to_not have_content(nice_dates(transport_survey.run_on))
+              expect(page).not_to have_content(nice_dates(transport_survey.run_on))
             end
           end
         end
@@ -292,12 +300,12 @@ describe 'TransportSurveys', type: :system do
       let!(:transport_survey) { create(:transport_survey, school: school) }
       let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
 
-      before(:each) do
+      before do
         sign_in(pupil)
       end
 
       context "viewing transport surveys index" do
-        before(:each) do
+        before do
           visit school_transport_surveys_path(school)
         end
 
@@ -314,15 +322,15 @@ describe 'TransportSurveys', type: :system do
         end
 
         it "doesn't show manage button" do
-          expect(page).to_not have_link('Manage')
+          expect(page).not_to have_link('Manage')
         end
 
         it "doesn't show survey delete button" do
-          expect(page).to_not have_link('Delete')
+          expect(page).not_to have_link('Delete')
         end
 
         context "and viewing results" do
-          before(:each) do
+          before do
             click_link("View results")
           end
 
@@ -331,11 +339,11 @@ describe 'TransportSurveys', type: :system do
           end
 
           it "doesn't show link to manage responses" do
-            expect(page).to_not have_link('Manage responses')
+            expect(page).not_to have_link('Manage responses')
           end
 
           it "shows surveying links" do
-            expect(page).to_not have_link('Start surveying today')
+            expect(page).not_to have_link('Start surveying today')
             expect(page).to have_link('Survey today')
           end
 
@@ -348,17 +356,18 @@ describe 'TransportSurveys', type: :system do
 
     describe 'as a public user with read only access' do
       context "viewing the start page" do
-        before :each do
+        before do
           visit start_school_transport_surveys_path(school)
         end
-        it { expect(page).to_not have_content('Travel to School Surveys') }
+
+        it { expect(page).not_to have_content('Travel to School Surveys') }
       end
 
       context "viewing transport surveys index" do
         let!(:transport_survey) { create(:transport_survey, school: school) }
         let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
 
-        before(:each) do
+        before do
           visit school_transport_surveys_path(school)
         end
 
@@ -371,20 +380,20 @@ describe 'TransportSurveys', type: :system do
         end
 
         it "doesn't show surveying link" do
-          expect(page).to_not have_link('Start surveying today')
-          expect(page).to_not have_link('Survey today')
+          expect(page).not_to have_link('Start surveying today')
+          expect(page).not_to have_link('Survey today')
         end
 
         it "doesn't show survey delete button" do
-          expect(page).to_not have_link('Delete')
+          expect(page).not_to have_link('Delete')
         end
 
         it "doesn't show manage button" do
-          expect(page).to_not have_link('Manage')
+          expect(page).not_to have_link('Manage')
         end
 
         context "and viewing results" do
-          before(:each) do
+          before do
             click_link("View results")
           end
 
@@ -393,11 +402,11 @@ describe 'TransportSurveys', type: :system do
           end
 
           it "doesn't show link to Survey today" do
-            expect(page).to_not have_link('Survey today')
+            expect(page).not_to have_link('Survey today')
           end
 
           it "doesn't show link to Manage responses" do
-            expect(page).to_not have_link('Manage responses')
+            expect(page).not_to have_link('Manage responses')
           end
         end
       end

@@ -16,12 +16,12 @@ FactoryBot.define do
     factory :dashboard_gas_meter_with_validated_reading do
       transient do
         reading_count       { 1 }
-        start_date          { Date.today - reading_count }
-        end_date            { Date.today }
+        start_date          { Time.zone.today - reading_count }
+        end_date            { Time.zone.today }
         actual_meter        { create(:gas_meter) }
         status              { 'ORIG' }
         substitute_date     { nil }
-        upload_datetime     { Date.today }
+        upload_datetime     { Time.zone.today }
         kwh_data_x48        { Array.new(48, rand.to_f) }
       end
 
@@ -48,7 +48,7 @@ FactoryBot.define do
       factory :dashboard_electricity_meter_with_validated_reading do
         transient do
           reading_count       { 1 }
-          start_reading_date  { Date.today - reading_count.days }
+          start_reading_date  { Time.zone.today - reading_count.days }
           actual_meter        { create(:electricity_meter) }
         end
 

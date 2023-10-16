@@ -12,8 +12,7 @@ module Admin
 
       def reminders
         for_selected "reminders sent" do |onboarding|
-          OnboardingMailer.with(school_onboarding: onboarding).reminder_email.deliver_now
-          onboarding.events.create!(event: :reminder_sent)
+          Onboarding::ReminderMailer.deliver(school_onboardings: [onboarding])
         end
       end
 
@@ -78,15 +77,22 @@ module Admin
         ]
       end
 
-      def for_selected(notice)
-        if (ids = params.dig(:school_group, :school_onboarding_ids))
-          @school_group.school_onboardings.find(ids).each do |onboarding|
+      # For all (selected) onboarding ids provided in params[:school_group][:school_onboarding_ids],
+      # Invoke the block provided to for_selected
+      def for_selected(message)
+        if onboardings.any?
+          onboardings.each do |onboarding|
             yield onboarding
           end
+          notice = "Selected #{@school_group.name} schools #{message}"
         else
           notice = "Nothing selected"
         end
-        redirect_to redirect_location, notice: "Selected #{@school_group.name} schools #{notice}"
+        redirect_to redirect_location, notice: notice
+      end
+
+      def onboardings
+        @onboardings ||= @school_group.school_onboardings.find(params.dig(:school_group, :school_onboarding_ids) || [])
       end
 
       def redirect_location

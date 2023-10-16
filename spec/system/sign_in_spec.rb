@@ -3,19 +3,19 @@ require 'rails_helper'
 shared_examples "a logged in user" do
   it "is logged in" do
     expect(page).to have_link("Sign Out")
-    expect(page).to_not have_link("Sign In")
+    expect(page).not_to have_link("Sign In")
   end
 end
 
 shared_examples "a logged out user" do
   it "is logged out" do
     expect(page).to have_link("Sign In")
-    expect(page).to_not have_link("Sign Out")
+    expect(page).not_to have_link("Sign Out")
   end
 end
 
 shared_examples "a user with updated last_sign_in_at" do
-  it { expect(user.reload.last_sign_in_at).to_not eq(saved_last_sign_in_at) }
+  it { expect(user.reload.last_sign_in_at).not_to eq(saved_last_sign_in_at) }
 end
 
 shared_examples "a user with unmodified last_sign_in_at" do
@@ -48,7 +48,6 @@ RSpec.describe "sign in", type: :system do
     let(:travel_forward) {}
     let(:password) {}
     let!(:last_sign_in_at) { user.last_sign_in_at } # should be nil
-    it_behaves_like "a user without a last_sign_in_at"
 
     before do
       within('#staff') do
@@ -58,6 +57,9 @@ RSpec.describe "sign in", type: :system do
         click_on 'Sign in'
       end
     end
+
+    it_behaves_like "a user without a last_sign_in_at"
+
 
     context "with incorrect password" do
       let(:password) { "incorrectpassword" }
@@ -84,15 +86,18 @@ RSpec.describe "sign in", type: :system do
           Timecop.travel(3.weeks) if travel_forward
           visit root_path
         end
-        after(:each) { Timecop.return }
+
+        after { Timecop.return }
 
         context "with remember me checked" do
           let(:check_remember_me) { true }
+
           it_behaves_like "a logged in user"
           it_behaves_like "a user with updated last_sign_in_at"
 
           context "and we have gone past the remember me expirey" do
             let(:travel_forward) { true }
+
             it_behaves_like "a logged out user"
             it_behaves_like "a user with unmodified last_sign_in_at"
           end
@@ -106,6 +111,7 @@ RSpec.describe "sign in", type: :system do
 
           context "and we have gone past the remember me expirey" do
             let(:travel_forward) { true }
+
             it_behaves_like "a logged out user"
             it_behaves_like "a user with unmodified last_sign_in_at"
           end
@@ -122,7 +128,6 @@ RSpec.describe "sign in", type: :system do
   end
 
   context "pupil login" do
-
     let!(:user) { create(:pupil, school: school, pupil_password: "correctpassword") }
     let!(:saved_last_sign_in_at) { user.last_sign_in_at }
 
@@ -138,22 +143,28 @@ RSpec.describe "sign in", type: :system do
 
       context "with blank password" do
         let(:password) { "" }
+
         it { expect(page).to have_content('Please enter a password') }
+
         it_behaves_like "a logged out user"
         it_behaves_like "a user with unmodified last_sign_in_at"
       end
 
       context "with incorrect password" do
         let(:password) { "incorrectpassword" }
+
         it { expect(page).to have_content("Sorry, that password doesn't work") }
+
         it_behaves_like "a logged out user"
         it_behaves_like "a user with unmodified last_sign_in_at"
       end
 
       context "with correct password" do
         let(:password) { "correctpassword" }
+
         it { expect(page).to have_content('Signed in successfully') }
-        it { expect(page.current_path).to eq(pupils_school_path(school)) }
+        it { expect(page).to have_current_path(pupils_school_path(school), ignore_query: true) }
+
         it_behaves_like "a logged in user"
         it_behaves_like "a user with updated last_sign_in_at"
       end
@@ -172,7 +183,9 @@ RSpec.describe "sign in", type: :system do
       context "with school missing & correct password" do
         let(:select_school) { '' }
         let(:password) { "correctpassword" }
+
         it { expect(page).to have_content('Please select a school') }
+
         it_behaves_like "a user with unmodified last_sign_in_at"
         it_behaves_like "a logged out user"
       end
@@ -180,7 +193,9 @@ RSpec.describe "sign in", type: :system do
       context "with school present and incorrect password" do
         let(:select_school) { "#{school.name} (#{school.school_group.name})" }
         let(:password) { "incorrectpassword" }
+
         it { expect(page).to have_content("Sorry, that password doesn't work") }
+
         it_behaves_like "a user with unmodified last_sign_in_at"
         it_behaves_like "a logged out user"
       end
@@ -190,7 +205,8 @@ RSpec.describe "sign in", type: :system do
         let(:password) { "correctpassword" }
 
         it { expect(page).to have_content('Signed in successfully') }
-        it { expect(page.current_path).to eq(pupils_school_path(school)) }
+        it { expect(page).to have_current_path(pupils_school_path(school), ignore_query: true) }
+
         it_behaves_like "a logged in user"
         it_behaves_like "a user with updated last_sign_in_at"
       end

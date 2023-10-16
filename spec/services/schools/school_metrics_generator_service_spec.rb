@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Schools::SchoolMetricsGeneratorService, type: :service do
-
   let!(:benchmark_run)    { BenchmarkResultGenerationRun.create! }
 
   let(:school)            { create(:school) }
@@ -52,12 +51,14 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
 
     context 'when updating school targets' do
       let!(:school_target) { create(:school_target, school: school) }
+
       before do
         service.perform
       end
+
       it 'updates the target' do
         school_target.reload
-        expect(school_target.report_last_generated).to_not be_nil
+        expect(school_target.report_last_generated).not_to be_nil
       end
     end
 
@@ -68,8 +69,5 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
         service.perform
       end
     end
-
   end
-
-
 end

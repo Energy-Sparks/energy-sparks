@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "map", type: :system do
-
   let!(:school_1)             { create(:school, name: 'My School 1')}
   let!(:school_2)             { create(:school, name: 'My School 2')}
   let!(:school_3)             { create(:school, name: 'My School 3')}

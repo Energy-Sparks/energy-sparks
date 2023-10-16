@@ -4,7 +4,7 @@ FactoryBot.define do
     password         { 'testpass' }
     confirmed_at     { Time.zone.now }
 
-    factory :school_admin  do
+    factory :school_admin do
       name { "School manager" }
       role { :school_admin }
       association :staff_role, factory: [:staff_role, :management]

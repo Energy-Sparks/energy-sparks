@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe "Intervention Types", type: :system do
-
   let!(:admin)                    { create(:admin)}
   let!(:intervention_type_group)  { create(:intervention_type_group)}
 
@@ -13,7 +12,7 @@ describe "Intervention Types", type: :system do
   end
 
   describe 'when logged in as admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -74,7 +73,7 @@ describe "Intervention Types", type: :system do
     end
 
     it 'can edit a new activity' do
-      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group )
+      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group)
       refresh
 
       click_on 'Edit'
@@ -102,7 +101,7 @@ describe "Intervention Types", type: :system do
     end
 
     it 'shows user view from index' do
-      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group, score: 99 )
+      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group, score: 99)
       refresh
       click_on intervention_type.name
       expect(page).to have_content('Overview')
@@ -110,11 +109,11 @@ describe "Intervention Types", type: :system do
     end
 
     it 'can add and remove suggested next actions' do
-      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group )
+      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group)
       refresh
 
       click_on 'Edit'
-      within ('.intervention_type_suggestions') do
+      within('.intervention_type_suggestions') do
         find(:xpath, "//option[contains(text(), '#{intervention_type.name}')]", match: :first).select_option
       end
 
@@ -124,7 +123,7 @@ describe "Intervention Types", type: :system do
       expect(intervention_type.suggested_types).to match_array([intervention_type])
 
       click_on 'Edit'
-      within ('.intervention_type_suggestions') do
+      within('.intervention_type_suggestions') do
         first("input[type='checkbox']").check
       end
 

@@ -37,7 +37,6 @@
 
 //= require common_chart_options
 //= require analysis
-//= require simulator
 
 //= require moment
 //= require moment/cy.js

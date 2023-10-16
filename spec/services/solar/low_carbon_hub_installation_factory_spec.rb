@@ -8,7 +8,7 @@ module Solar
     it 'creates the meters and initial readings' do
       allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api)
 
-      expect(amr_data_feed_config).to_not be nil
+      expect(amr_data_feed_config).not_to be nil
 
       factory = LowCarbonHubInstallationFactory.new(school: school, rbee_meter_id: rbee_meter_id, amr_data_feed_config: amr_data_feed_config,
         username: username, password: password)

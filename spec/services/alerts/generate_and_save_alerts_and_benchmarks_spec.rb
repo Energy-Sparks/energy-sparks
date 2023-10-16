@@ -50,7 +50,7 @@ module Alerts
       AlertTypeRunResult.new(alert_type: alert_type, reports: [example_invalid_report], asof_date: asof_date)
     end
 
-    before(:each) do
+    before do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
     end
 
@@ -75,9 +75,9 @@ module Alerts
                                       change { BenchmarkResult.count }.by(0) &&
                                       change { BenchmarkResultError.count }.by(0)
 
-        expect(Alert.first.run_on).to_not be_nil
-        expect(Alert.first.template_data).to_not be_nil
-        expect(Alert.first.template_data_cy).to_not be_nil
+        expect(Alert.first.run_on).not_to be_nil
+        expect(Alert.first.template_data).not_to be_nil
+        expect(Alert.first.template_data_cy).not_to be_nil
       end
 
       it 'handles just alert errors' do
@@ -101,12 +101,12 @@ module Alerts
                                       change { BenchmarkResult.count }.by(2) &&
                                       change { BenchmarkResultError.count }.by(1)
 
-        expect(Alert.first.run_on).to_not be_nil
-        expect(Alert.first.template_data).to_not be_nil
-        expect(Alert.first.template_data_cy).to_not be_nil
+        expect(Alert.first.run_on).not_to be_nil
+        expect(Alert.first.template_data).not_to be_nil
+        expect(Alert.first.template_data_cy).not_to be_nil
 
-        expect(BenchmarkResult.last.results).to_not eq({})
-        expect(BenchmarkResult.last.results_cy).to_not eq({})
+        expect(BenchmarkResult.last.results).not_to eq({})
+        expect(BenchmarkResult.last.results_cy).not_to eq({})
         expect(BenchmarkResult.last.results["var"]).to eq ".inf"
       end
 

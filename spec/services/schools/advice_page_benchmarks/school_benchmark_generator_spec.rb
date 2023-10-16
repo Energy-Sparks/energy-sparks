@@ -1,16 +1,16 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :service do
-
-  let(:school)      { create(:school) }
+  let(:school) { create(:school) }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
   let(:advice_page) { create(:advice_page, key: :baseload, fuel_type: :electricity) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service)     { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
 
-  context '.can_benchmark?' do
+  describe '.can_benchmark?' do
     let(:result) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.can_benchmark?(advice_page: advice_page)}
+
     context 'for existing benchmarks' do
       [:baseload, :electricity_long_term, :gas_long_term, :electricity_out_of_hours, :gas_out_of_hours, :electricity_intraday, :thermostatic_control, :heating_control].each do |key|
         let(:advice_page) { create(:advice_page, key: key) }
@@ -19,39 +19,45 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
         end
       end
     end
+
     context 'for unknown benchmark' do
       let(:advice_page) { create(:advice_page, key: :unknown) }
+
       it 'returns false' do
         expect(result).to eq false
       end
     end
   end
-  context '.generator_for' do
+
+  describe '.generator_for' do
     let(:generator) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.generator_for(advice_page: advice_page, school: school, aggregate_school: aggregate_school) }
 
     it 'returns object for known generator' do
-      expect(generator).to_not be_nil
+      expect(generator).not_to be_nil
       expect(generator.class).to eq Schools::AdvicePageBenchmarks::BaseloadBenchmarkGenerator
     end
+
     context 'for unknown key' do
       let(:advice_page) { create(:advice_page, key: :unknown) }
+
       it 'returns nil for unknown generator' do
         expect(generator).to be_nil
       end
     end
   end
 
-  context '#perform' do
-    let(:result)      { service.perform }
+  describe '#perform' do
+    let(:result) { service.perform }
 
-    before(:each) do
+    before do
       school.configuration.update!(fuel_configuration: fuel_configuration)
     end
 
     context 'when an error occurs' do
-      before(:each) do
+      before do
         allow(service).to receive(:benchmark_school).and_raise
       end
+
       it 'logs rollbar' do
         expect(Rollbar).to receive(:error)
         service.perform
@@ -61,7 +67,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
     context 'when school doesnt have fuel type' do
       let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false, has_gas: true, has_storage_heaters: true)}
 
-      before(:each) do
+      before do
         allow(service).to receive(:benchmark_school).and_return(:exemplar_school)
       end
 
@@ -75,35 +81,40 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
         expect(result).to be_nil
         expect(AdvicePageSchoolBenchmark.count).to eq 0
       end
+
       context 'and a benchmark is generated' do
-        before(:each) do
+        before do
           allow(service).to receive(:benchmark_school).and_return(:exemplar_school)
         end
+
         it 'creates benchmark' do
-          expect(result).to_not be_nil
+          expect(result).not_to be_nil
           expect(result.advice_page).to eq advice_page
           expect(result.school).to eq school
           expect(result.benchmarked_as).to eq "exemplar_school"
         end
       end
     end
+
     context 'with existing benchmark' do
       let!(:benchmark) { create(:advice_page_school_benchmark, school: school, advice_page: advice_page, benchmarked_as: :other_school)}
 
-      before(:each) do
+      before do
         school.reload
       end
 
       context 'and a benchmark is generated' do
-        before(:each) do
+        before do
           allow(service).to receive(:benchmark_school).and_return(:exemplar_school)
         end
+
         it 'updates the benchmark' do
           expect(result).to eq benchmark
           benchmark.reload
           expect(benchmark.benchmarked_as).to eq "exemplar_school"
         end
       end
+
       context 'and benchmark is nil' do
         it 'removes the benchmark' do
           expect(result).to eq nil

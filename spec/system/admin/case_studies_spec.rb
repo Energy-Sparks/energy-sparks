@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe 'Case studies', type: :system do
-
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   describe 'managing' do
-
     before do
       sign_in(admin)
       visit root_path

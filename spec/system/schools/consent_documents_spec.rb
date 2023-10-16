@@ -1,13 +1,12 @@
 require 'rails_helper'
 
 describe 'consent documents', type: :system do
-
   let!(:school)                   { create_active_school(name: "School", bill_requested: true)}
   let(:school_admin)              { create(:school_admin, school: school) }
   let!(:admin)                    { create(:admin) }
 
   context 'with not visible school' do
-      let!(:school)                   { create(:school, name: "School", visible: false)}
+      let!(:school) { create(:school, name: "School", visible: false)}
 
       it 'displays login page' do
         visit school_consent_documents_path(school)
@@ -26,7 +25,7 @@ describe 'consent documents', type: :system do
       end
 
       context 'when logging in as another user' do
-        let!(:other_user)       { create(:staff) }
+        let!(:other_user) { create(:staff) }
 
         it 'denies access' do
           visit school_consent_documents_path(school)
@@ -40,15 +39,15 @@ describe 'consent documents', type: :system do
   end
 
   context 'as a school admin' do
-
-    before(:each) do
+    before do
       sign_in(school_admin)
     end
 
     context 'when viewing dashboard' do
-      before(:each) do
+      before do
         visit school_path(school)
       end
+
       it 'displays a prompt' do
         expect(page).to have_content("We need you to provide a recent energy bill for your school")
       end
@@ -72,7 +71,7 @@ describe 'consent documents', type: :system do
         expect(school.consent_documents.count).to eql(1)
         expect(page).to have_link 'Upload a new bill'
         expect(page).to have_content "Edit"
-        expect(page).to_not have_content "Delete"
+        expect(page).not_to have_content "Delete"
 
         school.reload
         expect(school.bill_requested).to eql(false)
@@ -100,22 +99,21 @@ describe 'consent documents', type: :system do
       it 'cannot delete a bill' do
         bill = create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill")
         visit school_consent_document_path(school, bill)
-        expect(page).to_not have_link "Delete"
+        expect(page).not_to have_link "Delete"
       end
 
       context 'an energysparks admin is emailed' do
-
         let(:deliveries)  { ActionMailer::Base.deliveries.count }
         let(:email)       { ActionMailer::Base.deliveries.last }
         let(:email_body)  { email.body.to_s }
         let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
-        before(:each) do
+        before do
           allow_any_instance_of(School).to receive(:consent_up_to_date?).and_return(true)
         end
 
         context 'when bill uploaded' do
-          before(:each) do
+          before do
             visit school_consent_documents_path(school)
             click_on 'Upload a bill'
             attach_file("File", Rails.root + "spec/fixtures/documents/fake-bill.pdf")
@@ -133,7 +131,7 @@ describe 'consent documents', type: :system do
         end
 
         context 'when bill edited' do
-          before(:each) do
+          before do
             bill = create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill")
             visit school_consent_document_path(school, bill)
             click_on 'Edit'
@@ -151,15 +149,12 @@ describe 'consent documents', type: :system do
             expect(matcher).to have_link("View bill")
             expect(matcher).to have_link("Perform review")
           end
-
         end
-
       end
-
     end
 
     context 'when viewing consent documents' do
-      let!(:consent_document)                 { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
+      let!(:consent_document) { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
 
       it 'can see a list of bills' do
         visit school_consent_documents_path(school)
@@ -181,20 +176,18 @@ describe 'consent documents', type: :system do
         click_on "Download"
         expect(page.status_code).to eql 200
       end
-
     end
-
   end
 
   context 'as admin' do
     let!(:consent_document) { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
 
-    before(:each) do
+    before do
       sign_in(admin)
     end
 
     context 'when viewing documents' do
-      it 'should allow admin to edit and delete' do
+      it 'allows admin to edit and delete' do
         visit school_consent_documents_path(school)
         expect(page).to have_link("Delete")
         expect(page).to have_link("Edit")
@@ -204,12 +197,10 @@ describe 'consent documents', type: :system do
     context 'when managing consent documents' do
       it 'can delete a bill' do
         visit school_consent_document_path(school, consent_document)
-        expect {
+        expect do
           click_on "Delete"
-        }.to change(ConsentDocument, :count).by(-1)
+        end.to change(ConsentDocument, :count).by(-1)
       end
     end
   end
-
-
 end

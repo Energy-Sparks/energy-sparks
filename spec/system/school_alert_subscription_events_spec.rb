@@ -9,13 +9,12 @@ RSpec.describe "school alert subscription events", type: :system do
   let!(:content_version)     { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
   let(:service)              { Alerts::GenerateSubscriptions.new(school) }
 
-  before(:each) do
+  before do
     sign_in(user)
     visit root_path
   end
 
   it 'allows the user to view details of emails' do
-
     service.perform(subscription_frequency: AlertType.frequencies.keys)
     click_on(school.name)
     click_on('Batch reports')

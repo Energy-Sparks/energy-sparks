@@ -160,6 +160,8 @@ ignore_unused:
   - 'schools.user_tariff_differential_prices.index.introduction*'
   - 'activity_types.errors.invalid_fuel_type.*'
   - 'intervention_types.errors.invalid_fuel_type.*'
+  - 'onboarding_mailer.reminder_email.subject.*'
+  - 'onboarding_mailer.reminder_email.paragraph_3.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

@@ -10,9 +10,8 @@ RSpec.describe AdminMailer, include_application_helper: true do
   end
 
   describe '#school_group_meters_report' do
-
     shared_examples "a report with gaps in the meter readings" do
-      let(:base_date) { Date.today - 1.year }
+      let(:base_date) { Time.zone.today - 1.year }
 
       before do
         create(:amr_validated_reading, meter: active_meter, reading_date: base_date, status: 'ORIG')
@@ -42,13 +41,15 @@ RSpec.describe AdminMailer, include_application_helper: true do
         expect(body).to have_content(active_meter.school.name)
         expect(body).to have_content(active_meter.mpan_mprn)
       end
+
       it 'includes school and meters for inactive meters', unless: active_only do
         expect(body).to have_content(inactive_meter.school.name)
         expect(body).to have_content(inactive_meter.mpan_mprn)
       end
+
       it 'does not include school and meters for inactive meters', if: active_only do
-        expect(body).to_not have_content(inactive_meter.school.name)
-        expect(body).to_not have_content(inactive_meter.mpan_mprn)
+        expect(body).not_to have_content(inactive_meter.school.name)
+        expect(body).not_to have_content(inactive_meter.mpan_mprn)
       end
     end
 
@@ -72,12 +73,14 @@ RSpec.describe AdminMailer, include_application_helper: true do
 
     context "All meters" do
       let(:all_meters) { true }
-      it { expect(email.subject).to eql ("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - all meters") }
+
+      it { expect(email.subject).to eql("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - all meters") }
     end
 
     context "Only active meters" do
       let(:all_meters) { false }
-      it { expect(email.subject).to eql ("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - active meters") }
+
+      it { expect(email.subject).to eql("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - active meters") }
     end
 
     context "html report" do
@@ -86,14 +89,18 @@ RSpec.describe AdminMailer, include_application_helper: true do
       it "has heading" do
         expect(body).to include("#{school_group.name} meter report")
       end
+
       it_behaves_like "a report with gaps in the meter readings"
 
       context "All meters" do
         let(:all_meters) { true }
+
         it_behaves_like "a report with standard fields", active_only: false
       end
+
       context "Active meters" do
         let(:all_meters) { false }
+
         it_behaves_like "a report with standard fields", active_only: true
       end
     end
@@ -101,26 +108,30 @@ RSpec.describe AdminMailer, include_application_helper: true do
     context "csv report" do
       let(:attachment) { email.attachments[0] }
 
+      let(:body) { attachment.body.raw_source }
+
       it { expect(email.attachments.count).to eq(1) }
       it { expect(attachment.content_type).to include('text/csv') }
       it { expect(attachment.filename).to eq(meter_report.csv_filename) }
 
-      let(:body) { attachment.body.raw_source }
+
       it_behaves_like "a report with gaps in the meter readings"
 
       context "All meters" do
         let(:all_meters) { true }
+
         it_behaves_like "a report with standard fields", active_only: false
       end
+
       context "Active meters" do
         let(:all_meters) { false }
+
         it_behaves_like "a report with standard fields", active_only: true
       end
     end
   end
 
   describe '#issues_report' do
-
     before { Timecop.freeze(Time.zone.now) }
     after { Timecop.return }
 
@@ -157,20 +168,23 @@ RSpec.describe AdminMailer, include_application_helper: true do
         expect(body).to have_link("View", href: admin_school_issue_url(issue.issueable, issue))
         expect(body).to have_link("Edit", href: edit_admin_issue_url(issue))
       end
+
       it { expect(body).to have_link("View all issues for: #{admin.display_name}", href: admin_issues_url(user: admin)) }
-      it { expect(body).to_not have_content(note.title) }
-      it { expect(body).to_not have_content(closed_issue.title) }
-      it { expect(body).to_not have_content(someone_elses_issue.title) }
+      it { expect(body).not_to have_content(note.title) }
+      it { expect(body).not_to have_content(closed_issue.title) }
+      it { expect(body).not_to have_content(someone_elses_issue.title) }
     end
 
     context "when there are new issues for user" do
       let(:issues) { [new_issue] }
+
       it { expect(body).to have_content("new!") }
     end
 
     context "when there are only old issues for user" do
       let(:issues) { [issue] }
-      it { expect(body).to_not have_content("new!") }
+
+      it { expect(body).not_to have_content("new!") }
     end
 
     context "when there aren't any issues for user" do

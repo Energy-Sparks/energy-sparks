@@ -71,6 +71,14 @@ class SchoolOnboarding < ApplicationRecord
     events.where(event: event_name).any?
   end
 
+  def last_event(event_name)
+    events.by_event_name(event_name).last
+  end
+
+  def last_event_older_than?(event_name, time)
+    last_event(event_name) && last_event(event_name).created_at < time
+  end
+
   def has_only_sent_email_or_reminder?
     (events.pluck(:event).map(&:to_sym) - [:email_sent, :reminder_sent]).empty?
   end

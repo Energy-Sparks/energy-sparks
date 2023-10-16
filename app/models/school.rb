@@ -135,8 +135,6 @@ class School < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
 
-  has_many :simulations, inverse_of: :school
-
   has_many :estimated_annual_consumptions
 
   has_many :amr_data_feed_readings,       through: :meters
@@ -213,6 +211,7 @@ class School < ApplicationRecord
   #simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
   #adjusted to use \A and \z
   validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
+  validate :valid_uk_postcode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   validates_associated :school_times, on: :school_time_update
 
@@ -222,15 +221,15 @@ class School < ApplicationRecord
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
-  geocoded_by :postcode do |obj, results|
+  before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
+
+  geocoded_by :postcode do |school, results|
     if (geo = results.first)
-      obj.latitude = geo.data['latitude']
-      obj.longitude = geo.data['longitude']
-      obj.country = geo.data['country'].downcase
+      school.latitude = geo.data['latitude']
+      school.longitude = geo.data['longitude']
+      school.country = geo.data['country']&.downcase
     end
   end
-
-  after_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   # Note that saved_change_to_activation_date? is a magic ActiveRecord method
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
@@ -667,6 +666,12 @@ class School < ApplicationRecord
   end
 
   private
+
+  def valid_uk_postcode
+    return unless latitude.blank? || longitude.blank? || country.blank?
+
+    errors.add(:postcode, I18n.t('schools.school_details.geocode_not_found_message'))
+  end
 
   def add_joining_observation
     observations.create!(

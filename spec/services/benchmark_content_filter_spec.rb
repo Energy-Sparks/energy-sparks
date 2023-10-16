@@ -1,23 +1,25 @@
 require 'rails_helper'
 
 describe BenchmarkContentFilter, type: :service do
-  subject(:content) {[
-    { type: :title, content: 'Benchmark name'},
-    { type: :html, content: 'intro html'},
-    { type: :chart, content: { title: 'chart 1', config_name: "config_name", x_axis: ["a school"] } },
-    { type: :html, content: 'chart html'},
-    { type: :table_composite, content: { header: ['table composite header'], rows: [[]] }},
+  let(:content) do
+    [
+      { type: :title, content: 'Benchmark name' },
+      { type: :html, content: 'intro html' },
+      { type: :chart, content: { title: 'chart 1', config_name: "config_name", x_axis: ["a school"] } },
+      { type: :html, content: 'chart html' },
+      { type: :table_composite, content: { header: ['table composite header'], rows: [[]] } },
 
-    ## second benchmark
-    { type: :title, content: 'Benchmark 2 name'},
-    { type: :html, content: 'Benchmark 2 intro'},
-    { type: :chart, content: { title: 'chart 2 title', config_name: "config_name", x_axis: ["a school"] } },
+      ## second benchmark
+      { type: :title, content: 'Benchmark 2 name' },
+      { type: :html, content: 'Benchmark 2 intro' },
+      { type: :chart, content: { title: 'chart 2 title', config_name: "config_name", x_axis: ["a school"] } },
 
-    { type: :html, content: 'table 2 html'},
-    { type: :html, content: 'table 2 more html'},
-    { type: :table_composite, content: { header: ['table 2 composite header'], rows: [[]] }},
-    { type: :html, content: 'table 2 even more html'},
-  ]}
+      { type: :html, content: 'table 2 html' },
+      { type: :html, content: 'table 2 more html' },
+      { type: :table_composite, content: { header: ['table 2 composite header'], rows: [[]] } },
+      { type: :html, content: 'table 2 even more html' },
+    ]
+  end
 
   subject(:filter) { BenchmarkContentFilter.new(content) }
 
@@ -37,12 +39,14 @@ describe BenchmarkContentFilter, type: :service do
 
   describe "#intro" do
     subject(:intro) { filter.intro }
+
     it { expect(intro.count).to be(1)}
     it { expect(intro[0][:content]).to eq("intro html")}
   end
 
   describe "#table" do
     subject(:tables) { filter.tables }
+
     it { expect(tables.count).to be(7)}
     it { expect(tables[0][:content][:header]).to eq(["table composite header"])}
     it { expect(tables[1][:content]).to eq("Benchmark 2 name")}
@@ -55,6 +59,7 @@ describe BenchmarkContentFilter, type: :service do
 
   describe "#chart" do
     subject(:charts) { filter.charts }
+
     it { expect(charts.count).to be(5)}
     it { expect(charts[0][:content][:title]).to eq("chart 1")}
     it { expect(charts[1][:content]).to eq("chart html")}

@@ -240,7 +240,6 @@ class ChartDataValues
       Series::DayType::STORAGE_HEATER_CHARGE => Series::DayType::STORAGE_HEATER_CHARGE_I18N_KEY,
       Series::HotWater::USEFULHOTWATERUSAGE => Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY,
       Series::HotWater::WASTEDHOTWATERUSAGE => Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY,
-      Series::MultipleFuels::SOLARPV => Series::MultipleFuels::SOLARPV_I18N_KEY,
       Series::Irradiance::IRRADIANCE => Series::Irradiance::IRRADIANCE_I18N_KEY,
       Series::GridCarbon::GRIDCARBON => Series::GridCarbon::GRIDCARBON_I18N_KEY,
       Series::GasCarbon::GASCARBON => Series::GasCarbon::GASCARBON_I18N_KEY,

@@ -166,30 +166,30 @@ module Amr
 
     #rubocop:disable Rails/Date
     def energy_tariff_prices
-      rates.map do |time_range, price|
-        EnergyTariffPrice.new(
-          start_time: time_range.first.to_time,
-          end_time: to_end_time(time_range.last, flat_rate?),
-          units: :kwh,
-          value: price
-        )
-      end
+  rates.map do |time_range, price|
+    EnergyTariffPrice.new(
+      start_time: time_range.first.to_time,
+      end_time: to_end_time(time_range.last, flat_rate?),
+      units: :kwh,
+      value: price
+    )
+  end
     end
     #rubocop:enable Rails/Date
 
     #rubocop:disable Rails/Date
     def to_end_time(time_of_day, flat_rate = true)
-      flat_rate ? time_of_day.to_time : time_of_day.to_time.advance(minutes: 30)
+  flat_rate ? time_of_day.to_time : time_of_day.to_time.advance(minutes: 30)
     end
     #rubocop:enable Rails/Date
 
     def energy_tariff_charges
-      [
-        EnergyTariffCharge.new(
-          charge_type: :standing_charge,
-          value: standing_charge
-        )
-      ]
+  [
+    EnergyTariffCharge.new(
+      charge_type: :standing_charge,
+      value: standing_charge
+    )
+  ]
     end
 
     def log_error(msg)

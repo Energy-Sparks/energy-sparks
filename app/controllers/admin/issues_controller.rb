@@ -65,9 +65,7 @@ module Admin
 
     def meter_issues
       @meter = Meter.find(params[:meter_id])
-      respond_to do |format|
-        format.js
-      end
+      respond_to(&:js)
     end
 
     private

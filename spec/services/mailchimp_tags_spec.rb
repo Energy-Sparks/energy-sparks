@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe MailchimpTags do
-
   def expect_fsm_tag(fsm_precentage, expected_tag)
     school = create(:school, percentage_free_school_meals: fsm_precentage)
     expect(MailchimpTags.new(school).tags).to eq(expected_tag)
@@ -20,5 +19,4 @@ describe MailchimpTags do
       expect_fsm_tag(14, '')
     end
   end
-
 end

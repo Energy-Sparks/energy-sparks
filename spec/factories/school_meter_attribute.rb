@@ -3,6 +3,6 @@ FactoryBot.define do
     attribute_type { :function_switch }
     input_data { 'heating_only' }
     association :school, factory: :school
-    meter_types { ["gas", "electricity"] }
+    meter_types { %w[gas electricity] }
   end
 end

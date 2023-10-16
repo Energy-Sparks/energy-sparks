@@ -1,8 +1,6 @@
-
 require 'rails_helper'
 
 describe SchoolTemplate do
-
   it 'allows a chart to be rendered with an attribute' do
     school = double :school, to_param: 'school-slug'
 
@@ -25,7 +23,7 @@ describe SchoolTemplate do
     template = SchoolTemplate.new(school)
     rendered = template.render("{{#chart}}daily_electricity_breakdown|kwh{{/chart}}", {})
     expect(rendered).to include('&quot;kwh&quot;')
-    expect(rendered).to_not include('&quot;£&quot;')
+    expect(rendered).not_to include('&quot;£&quot;')
   end
 
   it 'renders axis and analysis controls' do
