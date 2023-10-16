@@ -8,11 +8,11 @@ describe 'Recommendations Page', type: :system  do
     visit school_recommendations_url(school)
   end
 
-  it_behaves_like "a page with breadcrumbs", ['Schools', 'School Name', 'Recommended Pupil Activities & Adult Actions']
+  it_behaves_like "a page with breadcrumbs", ['Schools', 'School Name', 'Recommended Activities']
 
   it "has the title" do
     within("h1") do
-      expect(page).to have_content("Recommended Pupil Activities & Adult Actions")
+      expect(page).to have_content("Recommended Activities")
     end
   end
 
