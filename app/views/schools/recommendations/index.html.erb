@@ -3,3 +3,7 @@
 <p><%= t('schools.recommendations.intro') %></p>
 
 <p>Scope: <%= @scope %></p>
+
+<%= component 'recommendations', recommendations: ActivityType.all.first(4), title: t("advice_pages.insights.recommendations.activities_title"), classes: 'pb-4', max_lg: 3 do |c| %>
+    <% c.with_item(name: "Home", href: "/", image: 'placeholder300x200.png') %>
+<% end %>

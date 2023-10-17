@@ -2,14 +2,15 @@
   <h4><strong><%= title %></strong></h4>
 <% end %>
 <div class="card-deck recommendations-component<%= classes %>">
-  <% recommendations.each_with_index do |recommendation, i| %>
+
+  <% items.first(limit).each_with_index do |item, i| %>
     <div class="card<%= responsive_classes(i) %>">
-      <%= link_to url_for(recommendation) do %>
-        <%= image_tag(recommendation.t_attached_or_default(:image) || default_image, class: 'card-img-top img-fluid activity-card-img') %>
+      <%= link_to item.href do %>
+        <%= image_tag(item.image, class: 'card-img-top img-fluid activity-card-img') %>
       <% end %>
       <div class="card-body">
         <p class="card-text">
-        <%= link_to recommendation.name, url_for(recommendation), class: 'text-decoration-none stretched-link' %>
+        <%= link_to item.name, item.href, class: 'text-decoration-none stretched-link' %>
         </p>
       </div>
       <% if footer %>
