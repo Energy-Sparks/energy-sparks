@@ -351,6 +351,12 @@ en:
         title: New pupil account
     recommendations:
       intro: Find your next energy saving activity to score points for your school, reduce your energy usage and learn more about energy and climate change
+      more_ideas:
+        actions: Browse and search through our list of %{count} adult-led actions
+        activities: Browse and search through our list of %{count} pupil-led activities
+        analysis: Look at our analysis to identify areas to prioritise activity
+        programme: Choose a programme of pupil activities
+        title: More ideas
       title: Recommended Activities
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks

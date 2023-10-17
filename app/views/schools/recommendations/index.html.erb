@@ -4,6 +4,9 @@
 
 <p>Scope: <%= @scope %></p>
 
-<%= component 'recommendations', recommendations: ActivityType.all.first(4), title: t("advice_pages.insights.recommendations.activities_title"), classes: 'pb-4', max_lg: 3 do |c| %>
-    <% c.with_item(name: "Home", href: "/", image: 'placeholder300x200.png') %>
+<%= component 'recommendations', title: t("schools.recommendations.more_ideas.title"), classes: 'pb-4', id: 'more-ideas', max_lg: 4 do |c| %>
+  <% c.with_item(name: t("schools.recommendations.more_ideas.programme"), href: programme_types_path, image: 'recommendations/get-energised.png') %>
+  <% c.with_item(name: t("schools.recommendations.more_ideas.activities", count: ActivityType.count), href: activity_categories_path, image: 'recommendations/opt-in.png') %>
+  <% c.with_item(name:t("schools.recommendations.more_ideas.actions", count: InterventionType.count), href: intervention_type_groups_path, image: 'recommendations/laptop-ipad.png') %>
+  <% c.with_item(name: t("schools.recommendations.more_ideas.analysis"), href: school_advice_path(@school), image: 'recommendations/screen-graph.png') %>
 <% end %>
