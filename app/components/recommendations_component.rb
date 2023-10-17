@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class RecommendationsComponent < ViewComponent::Base
-  attr_reader :title, :limit, :max_lg, :id
+  attr_reader :title, :description, :limit, :max_lg, :id
 
   renders_many :items, "ItemComponent"
 
-  def initialize(title: nil, recommendations: [], classes: '', id: nil, limit: 4, max_lg: 3)
+  def initialize(title: nil, description: nil, recommendations: [], classes: '', id: nil, limit: 4, max_lg: 3)
     @title = title
+    @description = description
     @classes = classes
     @id = id
     @limit = limit

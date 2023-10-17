@@ -4,7 +4,7 @@
 
 <p>Scope: <%= @scope %></p>
 
-<%= component 'recommendations', title: t("schools.recommendations.more_ideas.title"), classes: 'pb-4', id: 'more-ideas', max_lg: 4 do |c| %>
+<%= component 'recommendations', title: t("schools.recommendations.more_ideas.title"), description: t("schools.recommendations.more_ideas.description"), classes: 'pb-4', id: 'more-ideas', max_lg: 4 do |c| %>
   <% c.with_item(name: t("schools.recommendations.more_ideas.programme"), href: programme_types_path, image: 'recommendations/get-energised.png') %>
   <% c.with_item(name: t("schools.recommendations.more_ideas.activities", count: ActivityType.count), href: activity_categories_path, image: 'recommendations/opt-in.png') %>
   <% c.with_item(name:t("schools.recommendations.more_ideas.actions", count: InterventionType.count), href: intervention_type_groups_path, image: 'recommendations/laptop-ipad.png') %>

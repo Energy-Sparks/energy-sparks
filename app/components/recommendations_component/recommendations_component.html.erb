@@ -2,6 +2,9 @@
   <% if title %>
     <h4><strong><%= title %></strong></h4>
   <% end %>
+  <% if description %>
+    <p><%= description %></p>
+  <% end %>
   <div class="card-deck">
     <% items.first(limit).each_with_index do |item, i| %>
       <div class="card<%= responsive_classes(i) %>">

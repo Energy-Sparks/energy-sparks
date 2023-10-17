@@ -27,6 +27,10 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       expect(section).to have_content("More ideas")
     end
 
+    it "has description" do
+      expect(section).to have_content("Looking for more ideas? Explore some of these options")
+    end
+
     it "has a link to programmes" do
       expect(section).to have_link(href: '/programme_types')
     end

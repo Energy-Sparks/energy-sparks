@@ -355,6 +355,7 @@ en:
         actions: Browse and search through our list of %{count} adult-led actions
         activities: Browse and search through our list of %{count} pupil-led activities
         analysis: Look at our analysis to identify areas to prioritise activity
+        description: Looking for more ideas? Explore some of these options
         programme: Choose a programme of pupil activities
         title: More ideas
       title: Recommended Activities
