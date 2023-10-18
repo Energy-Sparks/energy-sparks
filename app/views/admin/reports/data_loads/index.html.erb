@@ -1,6 +1,8 @@
 <h1>Recent manual data loads</h1>
 
-Listing the 50 most recent manual data loads and their status.
+<div class="d-flex justify-content-end pt-4">
+  <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
+</div>
 
 <table class="table table-striped table-sorted">
   <thead>
@@ -21,10 +23,16 @@ Listing the 50 most recent manual data loads and their status.
         <td><%= nice_date_times(manual_data_load_run.created_at) %></td>
         <td><%= manual_data_load_run.status %></td>
         <td>
-          <%= link_to "View", admin_amr_data_feed_config_amr_uploaded_reading_manual_data_load_run_path(manual_data_load_run.amr_uploaded_reading.amr_data_feed_config, manual_data_load_run.amr_uploaded_reading, manual_data_load_run), class: "btn btn-secondary" %>
-          <%= link_to "Delete", admin_amr_data_feed_config_amr_uploaded_reading_manual_data_load_run_path(manual_data_load_run.amr_uploaded_reading.amr_data_feed_config, manual_data_load_run.amr_uploaded_reading, manual_data_load_run), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+          <div class="btn-group">
+            <%= link_to "View", admin_amr_data_feed_config_amr_uploaded_reading_manual_data_load_run_path(manual_data_load_run.amr_uploaded_reading.amr_data_feed_config, manual_data_load_run.amr_uploaded_reading, manual_data_load_run), class: "btn btn-sm btn-secondary" %>
+            <%= link_to "Delete", admin_amr_data_feed_config_amr_uploaded_reading_manual_data_load_run_path(manual_data_load_run.amr_uploaded_reading.amr_data_feed_config, manual_data_load_run.amr_uploaded_reading, manual_data_load_run), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
+          </div>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<div class="d-flex justify-content-end pt-4">
+  <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
+</div>

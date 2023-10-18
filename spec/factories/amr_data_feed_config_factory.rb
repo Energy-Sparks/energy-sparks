@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :amr_data_feed_config do
     source_type                   { :email }
     date_format                   { "%b %e %Y %I:%M%p" }
-    description                   { |n| "Email data feed-#{n}" }
+    sequence(:description)        { |n| "Email data feed-#{n}" }
     mpan_mprn_field               { 'M1_Code1' }
     reading_date_field            { 'Date' }
     number_of_header_rows         { 1 }
