@@ -1,6 +1,6 @@
 <h1>Recent manual data loads</h1>
 
-<div class="d-flex justify-content-end pt-4">
+<div id="paging-top" class="d-flex justify-content-end pt-4">
   <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
 </div>
 
@@ -33,6 +33,6 @@
   </tbody>
 </table>
 
-<div class="d-flex justify-content-end pt-4">
+<div id="paging-bottom" class="d-flex justify-content-end pt-4">
   <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
 </div>
