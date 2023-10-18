@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Programmes::Progress do
   let(:school) { create(:school) }
   let(:programme_type) { create(:programme_type_with_activity_types, bonus_score: 12) }
-  let(:programme) { Programme.create!(programme_type: programme_type, started_on: '2020-01-01', school: school) }
+  let(:programme) { create(:programme, programme_type: programme_type, started_on: '2020-01-01', school: school) }
 
   let(:service) { Programmes::Progress.new(programme) }
 
