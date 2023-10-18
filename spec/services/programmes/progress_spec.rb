@@ -11,27 +11,27 @@ describe Programmes::Progress do
     context 'when the programme is completed within the same academic year as started' do
       it 'returns the full notification text used on the school dashboard' do
         allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-        expect(service.notification_text).to eq("You have completed 0/3 of the activities in the #{programme_type.title} programme. Complete the final 3 activities now to score 87 points")
+        expect(service.notification_text).to eq("You have completed <strong>0/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final <strong>3</strong> activities now to score <span class=\"badge badge-success\">75</span> points and <span class=\"badge badge-success\">12</span> bonus points")
       end
     end
 
     context 'when the programme is completed outside of the academic year as started' do
       it 'returns the full notification text used on the school dashboard' do
         allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-        expect(service.notification_text).to eq("You have completed 0/3 of the activities in the #{programme_type.title} programme. Complete the final 3 activities now to score 75 points")
+        expect(service.notification_text).to eq("You have completed <strong>0/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final <strong>3</strong> activities now to score <span class=\"badge badge-success\">75</span> points and <span class=\"badge badge-success\">0</span> bonus points")
       end
     end
   end
 
-  describe "#total_points" do
+  describe "#programme_points_for_completion" do
     it 'includes bonus points if the programme is completed within the same academic year as started' do
       allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-      expect(service.total_points).to eq(87)
+      expect(service.programme_points_for_completion).to eq(12)
     end
 
     it 'excludes bonus points if the programme is completed outside of the academic year as started' do
       allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-      expect(service.total_points).to eq(75)
+      expect(service.programme_points_for_completion).to eq(0)
     end
   end
 
