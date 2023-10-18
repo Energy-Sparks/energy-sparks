@@ -278,8 +278,8 @@ module ApplicationHelper
     boolean ? I18n.t('common.labels.yes_label') : I18n.t('common.labels.no_label')
   end
 
-  def checkmark(boolean)
-    fa_icon(boolean ? 'check-circle text-success' : 'times-circle text-danger')
+  def checkmark(boolean, on_class: 'text-success', off_class: 'text-danger')
+    fa_icon(boolean ? "check-circle #{on_class}" : "times-circle #{off_class}")
   end
 
   def stars(rating)
