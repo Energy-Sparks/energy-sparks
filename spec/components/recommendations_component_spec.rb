@@ -4,19 +4,30 @@ require "rails_helper"
 
 RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: true do
   let(:image) { { io: File.open(Rails.root.join('spec', 'fixtures', 'images', 'sheffield.png')), filename: 'sheffield.png', content_type: 'image/png' } }
-  let(:html) { render_inline(RecommendationsComponent.new(**params)) }
   let(:activity_types) { 6.times.collect { create(:activity_type) } }
-  let(:all_params) { { recommendations: activity_types, title: 'Title text', classes: 'my-class', limit: 5, max_lg: 4 } }
+  let(:all_params) { { recommendations: activity_types, title: 'Title text', description: 'Description text', classes: 'my-class', id: 'my-id', limit: 5, max_lg: 4 } }
   let(:cards) { html.css("div.card") }
   let(:title) { html.css("h4 strong") }
+  let(:items) { [] }
+
+  let(:html) do
+    render_inline(RecommendationsComponent.new(**params)) do |c|
+      c.with_items(items) if items.any?
+    end
+  end
 
   context "with all params" do
     let(:params) { all_params }
 
     it { expect(html).to have_selector("h4 strong", text: "Title text") }
+    it { expect(html).to have_selector("div.recommendations-component>p", text: "Description text") }
 
     it "adds specified classes" do
-      expect(html).to have_css('div.card-deck.recommendations-component.my-class')
+      expect(html).to have_css('div.recommendations-component.my-class')
+    end
+
+    it "adds specified id" do
+      expect(html).to have_css('div.recommendations-component#my-id')
     end
 
     it "shows 'limit' amount of cards" do
@@ -51,14 +62,22 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
   end
 
   context "with defaults" do
-    let(:params) { all_params.except(:title, :classes, :limit, :max_lg) }
+    let(:params) { all_params.except(:title, :description, :classes, :id, :limit, :max_lg) }
 
     it "does not display title" do
       expect(html).not_to have_selector("h4 strong")
     end
 
+    it "does not display description" do
+      expect(html).not_to have_selector("div.recommendations-component>p")
+    end
+
     it "does not add css" do
-      expect(html).not_to have_css('div.card-deck.recommendations-component.my-class')
+      expect(html).not_to have_css('div.recommendations-component.my-class')
+    end
+
+    it "does not add id" do
+      expect(html).not_to have_css('div.recommendations-component#my-id')
     end
 
     it "limits to 4" do
@@ -73,11 +92,44 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
     end
   end
 
-  context "with no recommendations" do
+  context "with no items" do
+    let(:items) { [] }
     let(:params) { all_params.except(:recommendations) }
 
     it "doesn't render" do
       expect(html.to_s).to be_blank
+    end
+  end
+
+  context "with items" do
+    let(:items) do
+      [{ name: 'Name 1', href: 'my_url', image: 'recommendations/get-energised.png' },
+       { name: 'Name 2', href: 'my_other_url' }]
+    end
+    let(:params) { all_params.except(:recommendations) }
+
+    context "card with image" do
+      let(:item) { cards[0].to_s }
+
+      it "has image" do
+        expect(item).to include('get-energised')
+      end
+
+      it "has text and link" do
+        expect(item).to have_link('Name 1', href: 'my_url')
+      end
+    end
+
+    context "card without image" do
+      let(:item) { cards[1].to_s }
+
+      it "has default image" do
+        expect(item).to include('placeholder300x200')
+      end
+
+      it "has text and link" do
+        expect(item).to have_link('Name 2', href: 'my_other_url')
+      end
     end
   end
 end
