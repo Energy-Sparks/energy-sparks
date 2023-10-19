@@ -12,18 +12,17 @@ module Amr
       @results_array = []
     end
 
-    #Reading will be in formats:
+    # Reading will be in one of the following formats:
     #
-    # With timestamps starting at 00:00:00 or 00:30:00 e.g.:
-    #  {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :readings=>["14.4"]
+    # * With timestamps starting at 00:00:00 or 00:30:00 e.g.:
+    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :readings=>["14.4"]
     #
-    # With reading date and reading time split to 2 fields with timestamps starting at 00:00:00 or 00:30:00 e.g.:
-    #  {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :readings=>["14.4"]
+    # * With `indexed: true` and reading date and reading time split to 2 fields with timestamps starting at 00:00:00 or 00:30:00 e.g.:
+    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :reading_time=>'12:30', :readings=>["14.4"]
     #
-    # `indexed: true`, with a named period number field e.g.:
-    #
-    #  {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=> 1, :readings=>["14.4"]
-    #  {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=> 2, :readings=>["14.4"]
+    # * With `indexed: true`, with a named period number field e.g.:
+    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=>1, :readings=>["14.4"]
+    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=>2, :readings=>["14.4"]
     #
     # ...where each consecutive reading is a new HH period
     # For here we need to determine the period by counting the index into the array
