@@ -277,11 +277,11 @@ module Amr
 
     context 'With reading dates in ISO 8601 format (produced by xlsx to csv conversion)' do
       let(:reading_date) { Time.zone.parse('26 Aug 2019') }
-      let(:readings) { 48.times.collect {|i| { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", :reading_date => (reading_date + ((i + 1) * 30).minutes).iso8601, :readings => [(i + 1).to_s] } } }
+      let(:readings_2) { 48.times.collect {|i| { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", :reading_date => (reading_date + ((i + 1) * 30).minutes).iso8601, :readings => [(i + 1).to_s] } } }
       let(:output) { [{ amr_data_feed_config_id: 6, meter_id: nil, reading_date: reading_date.to_date, mpan_mprn: "1710035168313", readings: 48.times.collect {|i| (i + 1) } }] }
 
       it 'converts a list of single readings per half hour into a day per reading format' do
-        expect(SingleReadConverter.new(readings).perform).to eq output
+        expect(SingleReadConverter.new(readings_2).perform).to eq output
       end
     end
 
@@ -401,7 +401,7 @@ module Amr
 
       it 'handles files with multiple mpans' do
         #create test data that consists of 2 days readings for 2 different meters
-        two_meters_worth_of_readings = readings + readings.map {|r| { amr_data_feed_config_id: 6, mpan_mprn: "123456789012", reading_date: r[:reading_date], period: r[:period], readings: r[:readings] } }
+        two_meters_worth_of_readings = readings + readings.map {|r| { amr_data_feed_config_id: 6, mpan_mprn: "123456789012", reading_date: r[:reading_date], reading_time: r[:reading_time], readings: r[:readings] } }
 
         results = SingleReadConverter.new(two_meters_worth_of_readings, indexed: true).perform
 
@@ -522,6 +522,7 @@ module Amr
 
       it 'converts a list of single readings per half hour into a day per reading format' do
         results = SingleReadConverter.new(readings, indexed: true).perform
+
         expect(results).to eq indexed_output
       end
 
