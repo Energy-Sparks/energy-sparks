@@ -7,9 +7,16 @@ module Schools
 
     def perform
       meter_collection = validate_and_persist_readings
-      run_aggregation(meter_collection)
-      cache_meter_collection(meter_collection)
-      regenerate_school_metrics(meter_collection)
+      continue = run_aggregation(meter_collection)
+      if continue
+        cache_meter_collection(meter_collection)
+        regenerate_school_metrics(meter_collection)
+        return true
+      else
+        @logger.error("Unable to continue with regeneration")
+        remove_meter_collection_from_cache
+        return false
+      end
     end
 
     def validate_and_persist_readings
@@ -27,14 +34,21 @@ module Schools
       #delegate to analytics service to do the aggregation
       AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
       @logger.info("Aggregated school")
+      true
     rescue => e
       log_error("Failed to aggregate school", e)
+      false
     end
 
     def regenerate_school_metrics(meter_collection)
       Schools::SchoolMetricsGeneratorService.new(school: @school, meter_collection: meter_collection, logger: @logger).perform
     rescue => e
       log_error("Failed to regenerate school metrics", e)
+    end
+
+    def remove_meter_collection_from_cache
+      AggregateSchoolService.new(@school).invalidate_cache
+      @logger.info("Removed school from Rails cache")
     end
 
     def cache_meter_collection(meter_collection)
