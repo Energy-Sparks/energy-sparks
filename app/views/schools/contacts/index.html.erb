@@ -40,8 +40,8 @@
           <td><%= I18n.t("languages.#{contact.preferred_locale}") %></td>
           <td class="nowrap">
             <div class="btn-group">
-              <%= link_to t('schools.contacts.edit.disable_alerts'), school_contact_path(@school, contact), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
-              <%= link_to t('schools.contacts.edit.edit_phone_number'), edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
+              <%= link_to t('schools.contacts.edit.disable_alerts'), school_contact_path(@school, contact), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger', id: "disable_alerts_#{contact.id}" %>
+              <%= link_to t('schools.contacts.edit.edit_phone_number'), edit_school_contact_path(@school, contact) %>
             </div>
           </td>
         </tr>
@@ -56,7 +56,7 @@
           <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
           <td class="nowrap">
             <div class="btn-group">
-              <%= link_to t('schools.contacts.edit.enable_alerts'), new_school_contact_path(@school, user_id: user.id), class: 'btn btn-warning' %>
+              <%= link_to t('schools.contacts.edit.enable_alerts'), new_school_contact_path(@school, user_id: user.id), class: 'btn btn-warning', id: "enable_alerts_#{user.id}", class: 'btn btn-warning' %>
             </div>
           </td>
         </tr>

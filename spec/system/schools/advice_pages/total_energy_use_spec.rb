@@ -3,15 +3,16 @@ require 'rails_helper'
 RSpec.describe "total energy use advice page", type: :system do
   let(:key) { 'total_energy_use' }
   let(:expected_page_title) { "Energy usage summary" }
+
   include_context "total energy advice page"
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
-    let(:gas_aggregate_meter)   { double('gas-aggregated-meter')}
+    let(:user) { create(:school_admin, school: school) }
+    let(:gas_aggregate_meter) { double('gas-aggregated-meter')}
 
-    let(:management_data) {
+    let(:management_data) do
       Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
-    }
+    end
 
     let(:enough_data)  { true }
     let(:annual_usage) { CombinedUsageMetric.new(kwh: 1000, £: 500, co2: 1500) }
@@ -27,9 +28,7 @@ RSpec.describe "total energy use advice page", type: :system do
 
 
     before do
-      allow_any_instance_of(Tables::SummaryTableData).to receive(:table_date_ranges) {
-        { electricity: { start_date: '1 Sep 2018', end_date: '3 Feb 2023' }, gas: { start_date: '5 Jan 2023', end_date: '2 Feb 2023' } }
-      }
+      allow_any_instance_of(Tables::SummaryTableData).to receive(:table_date_ranges).and_return({ electricity: { start_date: '1 Sep 2018', end_date: '3 Feb 2023' }, gas: { start_date: '5 Jan 2023', end_date: '2 Feb 2023' } })
 
       allow(gas_aggregate_meter).to receive(:amr_data).and_return(amr_data)
       allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
@@ -56,6 +55,7 @@ RSpec.describe "total energy use advice page", type: :system do
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
+
       it_behaves_like "an advice page tab", tab: "Insights"
 
       it 'has expected content' do
@@ -63,6 +63,7 @@ RSpec.describe "total energy use advice page", type: :system do
         expect(page).to have_css('#management-overview-table')
         expect(page).to have_content("How does your energy use for the last 12 months compare to other primary schools")
       end
+
       it 'includes the comparison' do
         expect(page).to have_css('#electricity-comparison')
         expect(page).to have_css('#gas-comparison')
@@ -80,28 +81,35 @@ RSpec.describe "total energy use advice page", type: :system do
         expect(page).not_to have_content('Your electricity tariffs have changed')
       end
     end
+
     context "clicking the 'Analysis' tab" do
       context 'with default data' do
         before { click_on 'Analysis' }
+
         it_behaves_like "an advice page tab", tab: "Analysis"
         it 'has expected content' do
           expect(page).to have_content(I18n.t('advice_pages.total_energy_use.analysis.comparison.title'))
           #only one year of data in mocked out data
-          expect(page).to_not have_css('#long-term-trend')
+          expect(page).not_to have_css('#long-term-trend')
         end
+
         it 'has expected charts' do
           expect(page).to have_css('#chart_wrapper_benchmark_one_year')
           #only one year of data in mocked out data
-          expect(page).to_not have_css('#chart_wrapper_stacked_all_years')
+          expect(page).not_to have_css('#chart_wrapper_stacked_all_years')
         end
       end
+
       context 'with more data' do
         before { click_on 'Analysis' }
+
         let(:start_date) { end_date - 2.years}
+
         it 'has expected content' do
           expect(page).to have_content(I18n.t('advice_pages.total_energy_use.analysis.comparison.title'))
           expect(page).to have_css('#long-term-trend')
         end
+
         it 'has expected charts' do
           expect(page).to have_css('#chart_wrapper_benchmark_one_year')
           expect(page).to have_css('#chart_wrapper_stacked_all_years')
@@ -120,8 +128,10 @@ RSpec.describe "total energy use advice page", type: :system do
         expect(page).not_to have_content('Your electricity tariffs have changed')
       end
     end
+
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
+
       it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end

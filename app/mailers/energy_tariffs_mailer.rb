@@ -2,7 +2,7 @@ class EnergyTariffsMailer < LocaleMailer
   def group_admin_review_group_tariffs_reminder
     @school_group = SchoolGroup.find(params[:school_group_id])
 
-    @school_group.users.where(role: 'group_admin').each do |group_admin|
+    @school_group.users.where(role: 'group_admin').find_each do |group_admin|
       params[:locale] = group_admin.preferred_locale
 
       make_bootstrap_mail(

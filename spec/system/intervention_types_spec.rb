@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe 'intervention types', type: :system do
-
   context 'intervention types search page' do
-
     let!(:intervention_type_1) { create(:intervention_type, name: 'foo', description: 'intervention') }
     let!(:intervention_type_2) { create(:intervention_type, name: 'bar', description: 'second intervention') }
 

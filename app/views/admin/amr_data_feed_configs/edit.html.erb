@@ -1,8 +1,9 @@
 <h1><%= @configuration.description %></h1>
 
 <%= simple_form_for [:admin, @configuration] do |f| %>
-  <%= f.input :import_warning_days %>
+  <%= f.input :description, as: :string, hint: 'A human-readable name for the configuration' %>
+  <%= f.input :notes, as: :rich_text_area, label: 'Notes', hint: 'Provide additional notes about when the configuration is used' %>
+  <%= f.input :import_warning_days, hint: 'This is the number of days after which meter data using this configuration will be considered to be running behing. Used to drive admin import notification emails' %>
   <%= f.input :missing_readings_limit, hint: 'This is the maximum number of missing data points allowed in a day, above which the entire day will be ignored (without reporting)' %>
-  <%= f.rich_text_area :notes, hint: 'Notes' %>
   <%= f.submit 'Update', class: 'btn'%>
 <% end %>

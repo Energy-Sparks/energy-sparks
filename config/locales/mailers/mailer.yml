@@ -135,12 +135,22 @@ en:
       the_energy_sparks_team: The Energy Sparks Team
       title: Set up your school on Energy Sparks
     reminder_email:
-      paragraph_1_html: Thank you for enrolling %{school_name} with <a href="https://energysparks.uk">Energy Sparks</a>
-      paragraph_2: We need some details from you about your school and your consent to publish your meter data on Energy Sparks.
-      paragraph_3: Set up your school on Energy Sparks
-      subject: Don't forget to set up your school on Energy Sparks
+      paragraph_1_html:
+        one: Thank you for enrolling %{school_name} with <a href="https://energysparks.uk">Energy Sparks</a>
+        other: Thank you for enrolling your schools with <a href="https://energysparks.uk">Energy Sparks</a>
+      paragraph_2:
+        one: We need some details from you about your school and your consent to publish your meter data on Energy Sparks.
+        other: We need some details from you about your schools, including consent to publish meter data on Energy Sparks.
+      paragraph_3:
+        one: Set up your school on Energy Sparks
+        other: 'Please complete the setup process for the following schools:'
+      subject:
+        one: Don't forget to set up your school on Energy Sparks
+        other: Don't forget to set up your schools on Energy Sparks
       the_energy_sparks_team: The Energy Sparks Team
-      title: Don't forget to set up your school on Energy Sparks
+      title:
+        one: Don't forget to set up your school on Energy Sparks
+        other: Don't forget to set up your schools on Energy Sparks
     welcome_email:
       paragraph_1: You can now use Energy Sparks to see how much energy your school is using, find out about the greatest energy saving opportunities and explore our activities and educational resources designed to teach your pupils about energy whilst saving money for their school.
       paragraph_2_html: For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>, watch our <a href="https://energysparks.uk/user-guide-videos">Training Videos</a> or join one of our <a href="https://energysparks.uk/training">live webinar training</a> sessions.

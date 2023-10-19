@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe Programmes::Creator do
-
   let(:calendar)        { create(:school_calendar, :with_academic_years, academic_year_count: 2)}
-  let(:school)          { create(:school, calendar: calendar ) }
+  let(:school)          { create(:school, calendar: calendar) }
   let(:programme_type)  { create(:programme_type_with_activity_types) }
 
   let(:service) { Programmes::Creator.new(school, programme_type) }
@@ -12,7 +11,7 @@ describe Programmes::Creator do
     let(:programme) { school.programmes.first }
 
     context 'when school has no activities' do
-      before(:each) do
+      before do
         service.create
       end
 
@@ -22,7 +21,7 @@ describe Programmes::Creator do
       end
 
       it "starts programme today" do
-        expect(programme.started_on).to eql Date.today
+        expect(programme.started_on).to eql Time.zone.today
       end
 
       it "marks programme as started" do
@@ -52,23 +51,24 @@ describe Programmes::Creator do
 
     context "when school has recent activity in programme" do
       let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first)}
-      before(:each) do
+
+      before do
         service.create
       end
+
       it "recognises progress when recent" do
         expect(programme.programme_activities.count).to be 1
         expect(programme.activities.any?).to be true
         expect(programme.activities.first).to eq activity
       end
-
     end
 
     context "when school has multiple activities" do
       let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first)}
       let!(:recent) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Date.yesterday)}
-      let!(:old_activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Date.today.last_year)}
+      let!(:old_activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.today.last_year)}
 
-      before(:each) do
+      before do
         service.create
       end
 
@@ -77,14 +77,15 @@ describe Programmes::Creator do
         expect(programme.activities.any?).to be true
         expect(programme.activities.first).to eq activity
       end
-
     end
 
     context "when school recorded an activity last year" do
-      let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Date.today.last_year)}
-      before(:each) do
+      let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.today.last_year)}
+
+      before do
         service.create
       end
+
       it "this doesnt count towards progress" do
         expect(programme.programme_activities.count).to be 0
         expect(programme.activities.any?).to be false

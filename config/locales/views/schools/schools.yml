@@ -349,6 +349,16 @@ en:
       new:
         create: Create account
         title: New pupil account
+    recommendations:
+      intro: Find your next energy saving activity to score points for your school, reduce your energy usage and learn more about energy and climate change
+      more_ideas:
+        actions: Browse and search through our list of %{count} adult-led actions
+        activities: Browse and search through our list of %{count} pupil-led activities
+        analysis: Look at our analysis to identify areas to prioritise activity
+        description: Looking for more ideas? Explore some of these options
+        programme: Choose a programme of pupil activities
+        title: More ideas
+      title: Recommended activities & actions
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
@@ -359,6 +369,7 @@ en:
       editing: Editing School
       floor_area_hint: If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT
       geocode_message: Leave these blank to have them set from the postcode
+      geocode_not_found_message: not found.
       key_stage: Key stages
       key_stage_message: If you are in Scotland, KS1 covers P2 and P3, KS2 covers P4 to P7, KS3 covers S1 to S3, KS4 covers S4 and S5, KS5 is S6
       location: Location

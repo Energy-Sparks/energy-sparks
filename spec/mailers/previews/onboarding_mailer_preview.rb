@@ -8,7 +8,7 @@ class OnboardingMailerPreview < ActionMailer::Preview
   end
 
   def reminder_email
-    OnboardingMailer.with(school_onboarding: SchoolOnboarding.complete.first, locale: locale).reminder_email
+    OnboardingMailer.with(email: 'test@test.com', school_onboardings: [SchoolOnboarding.incomplete.first], locale: locale).reminder_email
   end
 
   def activation_email
@@ -30,7 +30,6 @@ class OnboardingMailerPreview < ActionMailer::Preview
   private
 
   def locale
-    locale = @params["locale"].present? ? @params["locale"] : "en"
+    @params["locale"].present? ? @params["locale"] : "en"
   end
-
 end

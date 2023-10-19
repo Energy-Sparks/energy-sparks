@@ -24,21 +24,3 @@ Geocoder.configure(
   # units: :mi,                 # :km for kilometers or :mi for miles
   # distances: :linear          # :spherical or :linear
 )
-
-if Rails.env.test?
-  Geocoder.configure(lookup: :test, ip_lookup: :test)
-
-  Geocoder::Lookup::Test.set_default_stub(
-    [
-      {
-        'latitude'     => 51.340620,
-        'longitude'    => -2.301420,
-        'address'      => 'Freshford Station',
-        'state'        => 'Somerset',
-        'state_code'   => '',
-        'country'      => 'England',
-        'country_code' => 'UK'
-      }
-    ]
-  )
-end

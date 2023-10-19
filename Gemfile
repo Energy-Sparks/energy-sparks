@@ -22,8 +22,8 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.0.3'
-#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'optimise-usage-breakdown'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.0.5'
+#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'post-aggregation-clean-up'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -114,6 +114,9 @@ gem 'delegated_type'
 gem 'roo'
 gem 'roo-xls'
 
+# Used to handle mail processing for the admin mailer
+gem 'premailer-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -130,9 +133,9 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'rubocop', '0.93.1'
-  gem 'rubocop-rails', '2.9.1'
-  gem 'rubocop-performance', '1.8.0'
+  gem 'rubocop'
+  gem 'rubocop-rails'
+  gem 'rubocop-performance'
   gem 'rubocop-rspec'
   gem 'wisper-rspec', require: false
 end

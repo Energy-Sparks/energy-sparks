@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe SchoolFilter do
-
   let(:school_group_a)      { create(:school_group) }
   let(:school_group_b)      { create(:school_group) }
   let(:scoreboard_a)        { create(:scoreboard) }

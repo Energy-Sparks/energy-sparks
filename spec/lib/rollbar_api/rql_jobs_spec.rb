@@ -1,10 +1,9 @@
 require 'rails_helper'
-require 'rollbar_api/rql_jobs.rb'
+require 'rollbar_api/rql_jobs'
 
 module RollbarApi
   describe RqlJobs do
-
-    let(:stubs)     { Faraday::Adapter::Test::Stubs.new }
+    let(:stubs) { Faraday::Adapter::Test::Stubs.new }
     let(:client)      { Faraday.new { |b| b.adapter(:test, stubs) } }
 
     let(:api_token) { "token"}
@@ -16,7 +15,7 @@ module RollbarApi
       Faraday.default_connection = nil
     end
 
-    let(:job) {
+    let(:job) do
         { 'err': 0,
           'result': {
             'status': job_status,
@@ -27,11 +26,10 @@ module RollbarApi
             'project_id': 193054,
             'id': 95683968,
             'project_group_id': 20954
-          }
-        }
-    }
+          } }
+    end
 
-    let(:job_result) {
+    let(:job_result) do
         {
           'err': 0,
           'result': {
@@ -50,10 +48,10 @@ module RollbarApi
             }
           }
         }
-    }
+    end
 
     it 'raises error for missing config' do
-      expect{ RollbarApi::RqlJobs.new(nil) }.to raise_error(RuntimeError)
+      expect { RollbarApi::RqlJobs.new(nil) }.to raise_error(RuntimeError)
     end
 
     context 'when submitting a job' do
@@ -68,28 +66,26 @@ module RollbarApi
           }.to_json)
           [
             200,
-            { 'Content-Type': "application/json"},
+            { 'Content-Type': "application/json" },
             job.to_json
           ]
         end
 
-        expect( rql_jobs.submit_job(query) ).to eql 95683968
+        expect(rql_jobs.submit_job(query)).to eql 95683968
         stubs.verify_stubbed_calls
       end
 
       it 'raises errors' do
-        stubs.post("/api/1/rql/jobs") do |env|
+        stubs.post("/api/1/rql/jobs") do |_env|
           [400, {}, ""]
         end
 
-        expect{ rql_jobs.submit_job(query) }.to raise_error(RuntimeError)
+        expect { rql_jobs.submit_job(query) }.to raise_error(RuntimeError)
         stubs.verify_stubbed_calls
       end
-
     end
 
     context 'when working with jobs' do
-
       let(:job_status) { "running" }
 
       it 'gets a job' do
@@ -97,7 +93,7 @@ module RollbarApi
           expect(env.params).to include("access_token" => api_token)
           [200, {}, "{}"]
         end
-        expect(rql_jobs.get_job(12345) ).to eql({})
+        expect(rql_jobs.get_job(12345)).to eql({})
         stubs.verify_stubbed_calls
       end
 
@@ -106,7 +102,7 @@ module RollbarApi
           expect(env.params).to include("access_token" => api_token)
           [200, {}, job.to_json]
         end
-        expect(rql_jobs.job_status(12345) ).to eql("running")
+        expect(rql_jobs.job_status(12345)).to eql("running")
         stubs.verify_stubbed_calls
       end
 
@@ -116,28 +112,27 @@ module RollbarApi
           [200, {}, job_result.to_json]
         end
         result = rql_jobs.get_result(12345)
-        expect( result["result"]["result"]["rowcount"] ).to eql(2)
+        expect(result["result"]["result"]["rowcount"]).to eql(2)
         stubs.verify_stubbed_calls
       end
-
     end
 
     context 'when running a query' do
       let(:job_status) { "success" }
 
       it 'runs a query' do
-        stubs.post("/api/1/rql/jobs") do |env|
-          [200, {}, { "result": { "id": 4444 }}.to_json
+        stubs.post("/api/1/rql/jobs") do |_env|
+          [200, {}, { "result": { "id": 4444 } }.to_json
           ]
         end
-        stubs.get("/api/1/rql/job/4444") do |env|
+        stubs.get("/api/1/rql/job/4444") do |_env|
           [200, {}, job.to_json]
         end
-        stubs.get("/api/1/rql/job/4444/result") do |env|
+        stubs.get("/api/1/rql/job/4444/result") do |_env|
           [200, {}, job_result.to_json]
         end
         result = rql_jobs.run_query(query)
-        expect( result["result"]["result"]["rowcount"] ).to eql(2)
+        expect(result["result"]["result"]["rowcount"]).to eql(2)
         stubs.verify_stubbed_calls
       end
 
@@ -145,16 +140,15 @@ module RollbarApi
         let(:job_status) { "failed" }
 
         it 'handles cancelled, timeout, failed queries' do
-          stubs.post("/api/1/rql/jobs") do |env|
-            [200, {}, { "result": { "id": 4444 }}.to_json
+          stubs.post("/api/1/rql/jobs") do |_env|
+            [200, {}, { "result": { "id": 4444 } }.to_json
             ]
           end
-          stubs.get("/api/1/rql/job/4444") do |env|
+          stubs.get("/api/1/rql/job/4444") do |_env|
             [200, {}, job.to_json]
           end
-          expect{ rql_jobs.run_query(query) }.to raise_error(RuntimeError)
+          expect { rql_jobs.run_query(query) }.to raise_error(RuntimeError)
         end
-
       end
     end
   end

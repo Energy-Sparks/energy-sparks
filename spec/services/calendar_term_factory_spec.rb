@@ -1,17 +1,16 @@
 require 'rails_helper'
 
 describe CalendarTermFactory do
-
   describe 'creates terms from hashes' do
     it 'creates full calendar with academic years' do
       create_all_calendar_events
 
       example_calendar_hash = [
-        {:term=>"2018-16 Term 1", :start_date=>"2018-09-02", :end_date=>"2018-10-21"},
-        {:term=>"2018-16 Term 2", :start_date=>"2018-11-02", :end_date=>"2018-12-18"},
-        {:term=>"2018-16 Term 3", :start_date=>"2019-01-04", :end_date=>"2019-02-12"},
-        {:term=>"2018-16 Term 4", :start_date=>"2019-02-22", :end_date=>"2019-04-01"},
-        {:term=>"2018-16 Term 5", :start_date=>"2019-04-18", :end_date=>"2019-05-27"}
+        { :term => "2018-16 Term 1", :start_date => "2018-09-02", :end_date => "2018-10-21" },
+        { :term => "2018-16 Term 2", :start_date => "2018-11-02", :end_date => "2018-12-18" },
+        { :term => "2018-16 Term 3", :start_date => "2019-01-04", :end_date => "2019-02-12" },
+        { :term => "2018-16 Term 4", :start_date => "2019-02-22", :end_date => "2019-04-01" },
+        { :term => "2018-16 Term 5", :start_date => "2019-04-18", :end_date => "2019-05-27" }
       ]
 
       holiday_count = 4
@@ -32,9 +31,9 @@ describe CalendarTermFactory do
   end
 
   it 'does not create something if it cannot find type' do
-    example_calendar_hash = [{:toddle=>"2018-16 Term 1", :start_date=>"2018-09-02", :end_date=>"2018-10-21"}]
+    example_calendar_hash = [{ :toddle => "2018-16 Term 1", :start_date => "2018-09-02", :end_date => "2018-10-21" }]
 
     calendar = create(:regional_calendar, :with_academic_years)
-    expect{ CalendarTermFactory.new(calendar, example_calendar_hash).create_terms }.to raise_error(ArgumentError)
+    expect { CalendarTermFactory.new(calendar, example_calendar_hash).create_terms }.to raise_error(ArgumentError)
   end
 end

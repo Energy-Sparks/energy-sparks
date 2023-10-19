@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe Database::VacuumService do
-
   let(:tables) { [:amr_data_feed_readings, :amr_reading_warnings] }
+
   subject(:vacuum_service) { Database::VacuumService.new(tables) }
 
   describe "#perform" do
     # Vacuum can't run inside in a transaction block! ts: false means we don't use transactions for rolling back data created in tests
-    context "under normal running conditions", ts:false do
+    context "under normal running conditions", ts: false do
       it "doesn't raise" do
         expect { subject.perform }.not_to raise_error
       end

@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 9be58bb910ddb0e37c9a2b1682af9dfb3b426c99
-  tag: 4.0.3
+  revision: a116e2a424e391b54c230ea96376c71f51c99487
+  tag: 4.0.5
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -133,6 +133,7 @@ GEM
     aws-sigv4 (1.6.0)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.24.1)
+    base64 (0.1.1)
     bcrypt (3.1.16)
     benchmark-memory (0.1.2)
       memory_profiler (~> 0.9)
@@ -350,6 +351,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.6.3)
     jwt (2.7.1)
+    language_server-protocol (3.17.0.3)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -395,6 +397,10 @@ GEM
     multipart-post (2.0.0)
     mustache (1.1.1)
     nenv (0.3.0)
+    net-protocol (0.2.1)
+      timeout
+    net-smtp (0.4.0)
+      net-protocol
     netrc (0.11.0)
     nio4r (2.5.8)
     nokogiri (1.15.4)
@@ -413,7 +419,7 @@ GEM
       backports
     pagy (5.6.3)
     parallel (1.23.0)
-    parser (3.2.2.3)
+    parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
     pg (1.2.3)
@@ -434,6 +440,10 @@ GEM
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
+    premailer-rails (1.12.0)
+      actionmailer (>= 3)
+      net-smtp
+      premailer (~> 1.7, >= 1.7.9)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -496,7 +506,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
-    regexp_parser (2.8.1)
+    regexp_parser (2.8.2)
     reportbuilder (1.4.2)
       clbustos-rtf (~> 0.4.0)
       prawn (~> 0.8.4)
@@ -548,26 +558,35 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.3)
-    rubocop (0.93.1)
+    rubocop (1.57.0)
+      base64 (~> 0.1.1)
+      json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
-      parser (>= 2.7.1.5)
+      parser (>= 3.2.2.4)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.8)
-      rexml
-      rubocop-ast (>= 0.6.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.28.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 2.0)
+      unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.29.0)
       parser (>= 3.2.1.0)
-    rubocop-performance (1.8.0)
-      rubocop (>= 0.87.0)
-    rubocop-rails (2.9.1)
+    rubocop-capybara (2.19.0)
+      rubocop (~> 1.41)
+    rubocop-factory_bot (2.24.0)
+      rubocop (~> 1.33)
+    rubocop-performance (1.19.1)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.21.2)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
-      rubocop (>= 0.90.0, < 2.0)
-    rubocop-rspec (1.44.1)
-      rubocop (~> 0.87)
-      rubocop-ast (>= 0.7.1)
+      rubocop (>= 1.33.0, < 2.0)
+    rubocop-rspec (2.24.1)
+      rubocop (~> 1.33)
+      rubocop-capybara (~> 2.17)
+      rubocop-factory_bot (~> 2.22)
     ruby-limiter (1.1.0)
     ruby-ole (1.2.12.2)
     ruby-prof (0.17.0)
@@ -652,6 +671,7 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.10)
     timecop (0.9.5)
+    timeout (0.4.0)
     trix-rails (2.3.0)
       rails (> 4.1, < 7.0)
     twilio-ruby (6.6.0)
@@ -665,7 +685,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8)
-    unicode-display_width (1.8.0)
+    unicode-display_width (2.5.0)
     uniform_notifier (1.14.2)
     view_component (3.6.0)
       activesupport (>= 5.2.0, < 8.0)
@@ -701,7 +721,7 @@ GEM
       rubyzip (>= 1.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.11)
+    zeitwerk (2.6.12)
 
 PLATFORMS
   ruby
@@ -760,6 +780,7 @@ DEPENDENCIES
   pagy
   pg
   pg_search
+  premailer-rails
   pry
   pry-byebug (~> 3.10.1)
   puma (= 6.4.0)
@@ -775,9 +796,9 @@ DEPENDENCIES
   roo-xls
   rspec-json_expectations
   rspec-rails (~> 5.1.2)
-  rubocop (= 0.93.1)
-  rubocop-performance (= 1.8.0)
-  rubocop-rails (= 2.9.1)
+  rubocop
+  rubocop-performance
+  rubocop-rails
   rubocop-rspec
   sass-rails (= 5.1.0)
   scout_apm

@@ -1,16 +1,14 @@
-
 require 'rails_helper'
 
 describe Podium do
-
   let!(:scoreboard) { create :scoreboard }
 
-  let!(:school_0){ create :school, scoreboard: scoreboard }
-  let!(:school_1){ create :school, :with_points, score_points: 1, scoreboard: scoreboard }
-  let!(:school_2){ create :school, :with_points, score_points: 2, scoreboard: scoreboard }
-  let!(:school_3){ create :school, :with_points, score_points: 3, scoreboard: scoreboard }
-  let!(:school_4){ create :school, :with_points, score_points: 4, scoreboard: scoreboard }
-  let!(:school_5){ create :school, :with_points, score_points: 5, scoreboard: scoreboard }
+  let!(:school_0) { create :school, scoreboard: scoreboard }
+  let!(:school_1) { create :school, :with_points, score_points: 1, scoreboard: scoreboard }
+  let!(:school_2) { create :school, :with_points, score_points: 2, scoreboard: scoreboard }
+  let!(:school_3) { create :school, :with_points, score_points: 3, scoreboard: scoreboard }
+  let!(:school_4) { create :school, :with_points, score_points: 4, scoreboard: scoreboard }
+  let!(:school_5) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
 
   it 'includes the calculated points' do
     podium = Podium.create(scoreboard: scoreboard, school: school_3)
@@ -24,10 +22,10 @@ describe Podium do
 
   it 'includes the recent points' do
     podium = Podium.create(scoreboard: scoreboard, school: school_3, recent_boundary: 2.months.ago)
-    expect(podium.low_to_high.map(&:recent_points)).to eq([2,3,4])
+    expect(podium.low_to_high.map(&:recent_points)).to eq([2, 3, 4])
 
     podium = Podium.create(scoreboard: scoreboard, school: school_3, recent_boundary: 2.days.ago)
-    expect(podium.low_to_high.map(&:recent_points)).to eq([0,0,0])
+    expect(podium.low_to_high.map(&:recent_points)).to eq([0, 0, 0])
   end
 
   it 'includes the ordinal high to low position as an integer' do
@@ -61,6 +59,7 @@ describe Podium do
       expect(podium.high_to_low[1].school).to eq(school_3)
       expect(podium.high_to_low[2].school).to eq(school_2)
     end
+
     it 'returns the next highest school' do
       podium = Podium.create(scoreboard: scoreboard, school: school_3)
       expect(podium.next_school_position.school).to eq(school_4)
@@ -74,6 +73,7 @@ describe Podium do
       expect(podium.high_to_low[1].school).to eq(school_4)
       expect(podium.high_to_low[2].school).to eq(school_3)
     end
+
     it 'returns nothing for the next highest school' do
       podium = Podium.create(scoreboard: scoreboard, school: school_5)
       expect(podium.next_school_position).to be_nil
@@ -112,5 +112,4 @@ describe Podium do
       expect(podium.high_to_low.size).to eq(1)
     end
   end
-
 end

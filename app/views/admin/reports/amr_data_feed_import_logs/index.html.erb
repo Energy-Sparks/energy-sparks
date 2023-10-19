@@ -3,7 +3,7 @@
 
 <h4>Summary of the last <%= Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS %> days</h4>
 
-<table class="table table-bordered text-center">
+<table class="table table-bordered text-center" id="import-summary-table">
   <thead>
     <tr>
       <th colspan=2></th>
@@ -25,8 +25,8 @@
   </thead>
   <tbody>
   <% @amr_data_feed_configs.each do |config| %>
-    <tr>
-    <% import_logs = config.amr_data_feed_import_logs.where('import_time >= ?', Date.today - Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS.days) %>
+    <tr class="<%= 'table-warning' unless config.enabled %>">
+    <% import_logs = config.amr_data_feed_import_logs.since(Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS.days.ago) %>
     <td class='text-left'><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
     <td><%= import_logs.count %></td>
     <td><%= link_to import_logs.successful.count, admin_reports_amr_data_feed_import_logs_successes_path({config: {config_id: config.id}}) %></td>

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Management dashboard' do
-
   let(:school_name)         { 'Theresa Green Infants'}
   let!(:school_group)       { create(:school_group) }
 
@@ -18,15 +17,15 @@ describe 'Management dashboard' do
   end
 
   describe 'when logged in' do
-    let(:staff)   { create(:staff, school: school) }
+    let(:staff) { create(:staff, school: school) }
 
-    before(:each) do
+    before do
       sign_in(staff)
       visit management_school_path(school)
     end
 
     it 'redirects to school dashboard' do
-      expect(current_path).to eq(school_path(school))
+      expect(page).to have_current_path(school_path(school), ignore_query: true)
     end
   end
 end

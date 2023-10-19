@@ -10,7 +10,6 @@ module Admin
 
       def export
         @jobs = find_jobs_per_queue_and_job_class
-
         respond_to do |format|
           format.csv do
             response.headers['Content-Type'] = 'text/csv'
@@ -30,6 +29,7 @@ module Admin
           serialized_params->>'arguments' as school_id,
           performed_at,
           finished_at,
+          date_trunc('day', performed_at) as run_date,
           extract(EPOCH from (finished_at - performed_at)) as time_to_completion_in_seconds
           from good_jobs
         SQL
@@ -47,6 +47,7 @@ module Admin
             serialized_params->>'job_id' as job_id,
             (finished_at - performed_at) as time_to_completion
             from good_jobs
+            where performed_at > (current_date - interval '2 days')
             group by queue_name, serialized_params->>'job_class', serialized_params->>'job_id', (finished_at - performed_at)
             order by (finished_at - performed_at) desc
           ) jobs

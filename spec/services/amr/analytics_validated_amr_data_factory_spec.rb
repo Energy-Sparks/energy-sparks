@@ -3,7 +3,6 @@ require 'rails_helper'
 
 module Amr
   describe AnalyticsValidatedAmrDataFactory do
-
     let(:school_name) { 'Active school'}
     let!(:school)     { create(:school, :with_school_group, name: school_name) }
     let!(:config)     { create(:amr_data_feed_config) }
@@ -19,14 +18,14 @@ module Amr
 
       expect(first_electricity_meter[:identifier]).to eq e_meter.mpan_mprn
       expect(first_electricity_meter[:readings].size).to eq 2
-      expect(first_electricity_meter[:readings].first[:reading_date]).to eq e_meter.amr_validated_readings.first.reading_date
-      expect(first_electricity_meter[:readings].first[:kwh_data_x48]).to eq e_meter.amr_validated_readings.first.kwh_data_x48.map(&:to_f)
+      expect(first_electricity_meter[:readings].first.date).to eq e_meter.amr_validated_readings.first.reading_date
+      expect(first_electricity_meter[:readings].first.kwh_data_x48).to eq e_meter.amr_validated_readings.first.kwh_data_x48.map(&:to_f)
 
       first_gas_meter = amr_data[:heat_meters].first
 
       expect(first_gas_meter[:identifier]).to eq g_meter.mpan_mprn
-      expect(first_gas_meter[:readings].first[:reading_date]).to eq g_meter.amr_validated_readings.first.reading_date
-      expect(first_gas_meter[:readings].first[:kwh_data_x48]).to eq g_meter.amr_validated_readings.first.kwh_data_x48.map(&:to_f)
+      expect(first_gas_meter[:readings].first.date).to eq g_meter.amr_validated_readings.first.reading_date
+      expect(first_gas_meter[:readings].first.kwh_data_x48).to eq g_meter.amr_validated_readings.first.kwh_data_x48.map(&:to_f)
     end
   end
 end

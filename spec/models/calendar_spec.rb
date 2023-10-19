@@ -8,10 +8,12 @@ describe Calendar do
       national_calendar = create(:national_calendar)
       expect(national_calendar.valid_calendar_event_types).to match_array(CalendarEventType.bank_holiday)
     end
+
     it 'is all apart from bank holidays for regional' do
       regional_calendar = create(:regional_calendar)
       expect(regional_calendar.valid_calendar_event_types).not_to include(CalendarEventType.bank_holiday)
     end
+
     it 'is all apart from bank holidays for school' do
       school_calendar = create(:school_calendar)
       expect(school_calendar.valid_calendar_event_types).not_to include(CalendarEventType.bank_holiday)
@@ -19,7 +21,6 @@ describe Calendar do
   end
 
   describe 'does lots of good calendar work' do
-
     it 'creates a calendar with academic years' do
       expect(calendar.calendar_events.count).to be 6
       expect(calendar.holidays.count).to be 3
@@ -66,7 +67,7 @@ describe Calendar do
     end
 
     it 'knows there is a holiday approaching' do
-      empty_calendar = create(:calendar)
+      create(:calendar)
       expect(calendar.holiday_approaching?).to be false
     end
   end

@@ -1,12 +1,13 @@
-<%- headers = ['queue_name', 'job_class', 'job_id', 'school_id', 'performed_at', 'finished_at', 'time_to_completion_in_seconds'] -%>
+<%- headers = ['queue_name', 'job_class', 'run_date', 'school_id', 'job_id', 'performed_at', 'finished_at', 'time_to_completion_in_seconds'] -%>
 <%= CSV.generate_line headers %>
 <%- @jobs.each do |job| -%>
 <%= CSV.generate_line(
   [
     job['queue_name'],
     job['job_class'],
-    job['job_id'],
+    job['run_date'].strftime('%Y-%m-%d'),
     job['school_id']&.match(/(?<=energy-sparks\/School\/)(.*)(?="})/)&.to_s, # Extract school id from argument
+    job['job_id'],
     job['performed_at'],
     job['finished_at'],
     job['time_to_completion_in_seconds']

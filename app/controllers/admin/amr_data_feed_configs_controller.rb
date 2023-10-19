@@ -1,7 +1,7 @@
 module Admin
   class AmrDataFeedConfigsController < AdminController
     def index
-      @configurations = AmrDataFeedConfig.order(:description)
+      @configurations = AmrDataFeedConfig.allow_manual.order(:description)
     end
 
     def show
@@ -24,7 +24,7 @@ module Admin
     private
 
     def amr_data_feed_config_params
-      params.require(:amr_data_feed_config).permit(:import_warning_days, :missing_readings_limit, :notes)
+      params.require(:amr_data_feed_config).permit(:description, :import_warning_days, :missing_readings_limit, :notes)
     end
   end
 end

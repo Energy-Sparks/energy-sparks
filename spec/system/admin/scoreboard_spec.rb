@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'scoreboards', :scoreboards, type: :system do
-
   let!(:admin)                  { create(:admin) }
   let!(:regional_calendar)      { create(:regional_calendar, national_title: 'Scotland') }
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
     end
 
@@ -36,19 +35,18 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
       scoreboard.reload
       expect(scoreboard.name).to eq('BANES Only')
-      expect(scoreboard).to_not be_public
+      expect(scoreboard).not_to be_public
     end
 
     it 'can delete a scoreboard' do
-      scoreboard = create(:scoreboard, name: 'BANES and Frome')
+      create(:scoreboard, name: 'BANES and Frome')
       visit admin_scoreboards_path
 
-      expect {
+      expect do
         click_on 'Delete'
-      }.to change{Scoreboard.count}.from(1).to(0)
+      end.to change {Scoreboard.count}.from(1).to(0)
 
       expect(page).to have_content('There are no Scoreboards')
     end
   end
-
 end

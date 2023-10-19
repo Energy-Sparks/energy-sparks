@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'consent_statements', type: :system do
-
   let(:admin) { create(:admin) }
 
   before do
@@ -29,9 +28,8 @@ RSpec.describe 'consent_statements', type: :system do
   end
 
   context 'when several consent statements exist' do
-
-    let!(:consent_statement_1) { ConsentStatement.create!( title: 'First consent statement', content: 'You may use my data..', current: true) }
-    let!(:consent_statement_2) { ConsentStatement.create!( title: 'Second consent statement', content: 'You may still use my data..') }
+    let!(:consent_statement_1) { ConsentStatement.create!(title: 'First consent statement', content: 'You may use my data..', current: true) }
+    let!(:consent_statement_2) { ConsentStatement.create!(title: 'Second consent statement', content: 'You may still use my data..') }
 
     it 'allows statement to be made current' do
       click_on 'Consent Statements'
@@ -43,10 +41,9 @@ RSpec.describe 'consent_statements', type: :system do
   end
 
   context 'consent grants exist for consent statement' do
-
     let(:user) { create(:user) }
     let(:school) { create(:school) }
-    let(:consent_statement) { ConsentStatement.create!( title: 'First consent statement', content: 'You may use my data..') }
+    let(:consent_statement) { ConsentStatement.create!(title: 'First consent statement', content: 'You may use my data..') }
 
     before do
       ConsentGrant.create!(

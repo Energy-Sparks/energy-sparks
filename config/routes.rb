@@ -274,7 +274,7 @@ Rails.application.routes.draw do
           resources :responses, only: [:index, :destroy]
         end
       end
-
+      resources :recommendations, only: [:index]
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :public, only: [:create, :destroy], controller: :public
@@ -306,11 +306,6 @@ Rails.application.routes.draw do
       resource :school_group, controller: :school_group
       resource :times, only: [:edit, :update]
       resource :your_school_estate, only: [:edit, :update]
-
-      get 'simulations/:id/simulation_detail', to: 'simulations#show_detailed', as: :simulation_detail
-      get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
-      get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
-      resources :simulations
 
       resources :alerts, only: [:show]
       resources :find_out_more, controller: :find_out_more

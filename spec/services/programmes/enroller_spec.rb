@@ -1,21 +1,19 @@
 require 'rails_helper'
 
 describe Programmes::Enroller do
-
   let(:school)          { create(:school) }
   let(:programme_type)  { create(:programme_type_with_activity_types) }
   let(:enrol_programme) { nil }
 
   let(:service) { Programmes::Enroller.new(enrol_programme) }
 
-  before(:each) do
+  before do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
   end
 
   describe "#enrol" do
-
     context "when there is no default programme type" do
-      before(:each) do
+      before do
         service.enrol(school)
       end
 
@@ -26,7 +24,8 @@ describe Programmes::Enroller do
 
     context "when there is a default programme type" do
       let!(:programme_type)  { create(:programme_type_with_activity_types, default: true) }
-      before(:each) do
+
+      before do
         service.enrol(school)
       end
 
@@ -38,7 +37,8 @@ describe Programmes::Enroller do
 
     context "when the school is already enrolled" do
       let!(:programme_type)  { create(:programme_type_with_activity_types, default: true) }
-      before(:each) do
+
+      before do
         service.enrol(school)
       end
 
@@ -53,7 +53,7 @@ describe Programmes::Enroller do
       let!(:other_programme_type)  { create(:programme_type_with_activity_types, default: true) }
       let(:enrol_programme) { programme_type }
 
-      before(:each) do
+      before do
         service.enrol(school)
       end
 
@@ -68,7 +68,7 @@ describe Programmes::Enroller do
       let!(:enrol_programme) { programme_type }
       let!(:programme_type)  { create(:programme_type_with_activity_types, default: true) }
 
-      before(:each) do
+      before do
         service.enrol_all
       end
 

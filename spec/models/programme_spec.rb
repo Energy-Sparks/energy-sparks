@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Programme' do
-
   let(:school) { create :school }
   let(:programme_type) { create(:programme_type, bonus_score: 12) }
 

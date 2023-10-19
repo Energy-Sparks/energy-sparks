@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "chart view", type: :system do
-
   let(:school_name) { 'Theresa Green Infants' }
   let(:school)      { create(:school, name: school_name) }
 

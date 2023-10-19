@@ -120,7 +120,21 @@ class AmrDataFeedReading < ApplicationRecord
 
   def self.unvalidated_data_report_for_mpans(mpans, amr_data_feed_config_ids = [])
     query = build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
-    rows = ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
-    rows.sort_by { |row| mpans.index(row['mpan_mprn']).to_s.rjust(10, '0') + row['latest_reading'] }
+    query_results = ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
+    sort_query_results_by(mpans, query_results)
+  end
+
+  def self.sort_query_results_by(mpans, query_results)
+    mpans.uniq.each_with_object([]) do |mpan, rows|
+      next if mpan.empty?
+
+      rows_for_mpan = query_results.select { |result| result['mpan_mprn'] == mpan }
+      if rows_for_mpan.present?
+        rows_for_mpan.each { |row_for_mpan| rows << row_for_mpan }
+      else
+        # Add an empty row for for any MPAN/MPRN not found
+        rows << { 'mpan_mprn' => mpan, "meter_id" => '-', "identifier" => "-", "description" => "-", "earliest_reading" => "-", "latest_reading" => "-" }
+      end
+    end
   end
 end

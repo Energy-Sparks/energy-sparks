@@ -3,7 +3,7 @@ require 'rails_helper'
 describe EnergyTariffHolder do
   let!(:energy_tariff_electricity_both) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: 'electricity', name: 'Electricity tariff both') }
 
-  context '.energy_tariff_meter_attributes' do
+  describe '.energy_tariff_meter_attributes' do
     context 'with SiteSettings' do
       let(:tariff_holder) { SiteSettings.current }
 
@@ -94,6 +94,7 @@ describe EnergyTariffHolder do
 
       context 'that has a school group' do
         let(:school_group) { create(:school_group) }
+
         it 'the group is the parent' do
           expect(tariff_holder.parent_tariff_holder).to eq school_group
         end
@@ -101,7 +102,7 @@ describe EnergyTariffHolder do
     end
   end
 
-  context '.all_energy_tariff_attributes' do
+  describe '.all_energy_tariff_attributes' do
     let!(:site_settings)   { SiteSettings.current }
     let(:school_group)     { create(:school_group) }
     let(:tariff_holder)    { create(:school, school_group: school_group) }
@@ -137,8 +138,9 @@ describe EnergyTariffHolder do
     end
   end
 
-  context '.default_tariff_start_date' do
+  describe '.default_tariff_start_date' do
     let(:tariff_holder) { SiteSettings.current }
+
     it 'defaults to one day later' do
       expect(tariff_holder.default_tariff_start_date(:electricity)).to eq energy_tariff_electricity_both.end_date + 1.day
     end

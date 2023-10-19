@@ -1,5 +1,6 @@
 class AdminMailer < ApplicationMailer
   helper :application, :issues
+  layout 'admin_mailer'
 
   def school_data_source_report
     to, data_source_id = params.values_at(:to, :data_source_id)
@@ -7,7 +8,7 @@ class AdminMailer < ApplicationMailer
     title = "#{t('common.application')}-#{@data_source.name}-meters-#{Time.zone.now.iso8601}".parameterize
     attachments[(title + '.csv')] = { mime_type: 'text/csv', content: @data_source.to_csv }
 
-    make_bootstrap_mail(to: to, subject: subject(title))
+    mail(to: to, subject: subject(title))
   end
 
   def school_procurement_route_report
@@ -16,7 +17,7 @@ class AdminMailer < ApplicationMailer
     title = "#{t('common.application')}-#{@procurement_route.organisation_name}-meters-#{Time.zone.now.iso8601}".parameterize
     attachments[(title + '.csv')] = { mime_type: 'text/csv', content: @procurement_route.to_csv }
 
-    make_bootstrap_mail(to: to, subject: subject(title))
+    mail(to: to, subject: subject(title))
   end
 
   def school_group_meters_report
@@ -29,7 +30,7 @@ class AdminMailer < ApplicationMailer
     title += @all_meters ? " - all meters" : " - active meters"
     attachments[meter_report.csv_filename] = { mime_type: 'text/csv', content: meter_report.csv }
 
-    make_bootstrap_mail(to: to, subject: subject(title))
+    mail(to: to, subject: subject(title))
   end
 
   def issues_report
@@ -39,7 +40,7 @@ class AdminMailer < ApplicationMailer
 
     if @issues.any?
       attachments['issues_report.csv'] = { mime_type: 'text/csv', content: build_issues_csv_for(@issues) }
-      make_bootstrap_mail(to: @user.email, subject: subject(title))
+      mail(to: @user.email, subject: subject(title))
     end
   end
 
@@ -47,7 +48,7 @@ class AdminMailer < ApplicationMailer
     to, funder_report = params.values_at(:to, :funder_report)
     title = "Funder allocation report #{Time.zone.today.iso8601}"
     attachments[funder_report.csv_filename] = { mime_type: 'text/csv', content: funder_report.csv }
-    make_bootstrap_mail(to: to, subject: subject(title))
+    mail(to: to, subject: subject(title))
   end
 
   private

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Alerts::GenerateManagementDashboardTables do
-
   let(:school)                  { create(:school) }
   let(:content_generation_run)  { create(:content_generation_run, school: school) }
   let(:service)                 { Alerts::GenerateManagementDashboardTables.new(content_generation_run: content_generation_run) }
@@ -22,8 +21,8 @@ describe Alerts::GenerateManagementDashboardTables do
   end
 
   context 'when there are management tables configured that match the alert type' do
-    let(:rating){ 5.0 }
-    let!(:alert){ create(:alert, :with_run, school: school, rating: rating)}
+    let(:rating) { 5.0 }
+    let!(:alert) { create(:alert, :with_run, school: school, rating: rating)}
     let!(:alert_type_rating) do
       create :alert_type_rating,
         alert_type: alert.alert_type,
@@ -31,12 +30,11 @@ describe Alerts::GenerateManagementDashboardTables do
         rating_to: 6,
         management_dashboard_table_active: management_tables_active
     end
-    let!(:content_version){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
+    let!(:content_version) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
 
-    let(:management_tables_active){ true }
+    let(:management_tables_active) { true }
 
     context 'where the rating matches the range' do
-
       it 'creates a management dashboard table pairing the alert and the content for each active dashboard' do
         service.perform(school.latest_alerts_without_exclusions)
         expect(content_generation_run.management_dashboard_tables.count).to be 1
@@ -52,7 +50,8 @@ describe Alerts::GenerateManagementDashboardTables do
       end
 
       context 'where the management tables are not active' do
-        let(:management_tables_active){ false }
+        let(:management_tables_active) { false }
+
         it 'does not include the alert' do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.management_dashboard_tables.count).to be 0

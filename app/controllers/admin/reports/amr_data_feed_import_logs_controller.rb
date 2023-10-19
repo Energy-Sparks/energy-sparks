@@ -3,7 +3,7 @@ module Admin
     class AmrDataFeedImportLogsController < AdminController
       include Pagy::Backend
       before_action :set_log_counts
-      SUMMARY_PERIOD_IN_DAYS = 7
+      SUMMARY_PERIOD_IN_DAYS = 30
 
       def warnings
         render_for(:with_warnings)
@@ -31,9 +31,9 @@ module Admin
       end
 
       def set_log_counts
-        @successes_count = AmrDataFeedImportLog.successful.count
-        @warnings_count = AmrDataFeedImportLog.with_warnings.count
-        @errors_count = AmrDataFeedImportLog.errored.count
+        @successes_count = AmrDataFeedImportLog.successful.since(SUMMARY_PERIOD_IN_DAYS.days.ago).count
+        @warnings_count = AmrDataFeedImportLog.with_warnings.since(SUMMARY_PERIOD_IN_DAYS.days.ago).count
+        @errors_count = AmrDataFeedImportLog.errored.since(SUMMARY_PERIOD_IN_DAYS.days.ago).count
       end
     end
   end

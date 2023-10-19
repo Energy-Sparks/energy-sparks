@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "onboarding", :schools, type: :system do
-
   let(:admin) { create(:admin) }
   let(:school_name)               { 'Oldfield Park Infants'}
 
@@ -31,9 +30,9 @@ RSpec.describe "onboarding", :schools, type: :system do
   let(:last_email) { ActionMailer::Base.deliveries.last }
 
   context 'as an admin' do
-    let!(:other_template_calendar)  { create(:regional_calendar, :with_terms, title: 'Oxford calendar') }
+    let!(:other_template_calendar) { create(:regional_calendar, :with_terms, title: 'Oxford calendar') }
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -114,13 +113,17 @@ RSpec.describe "onboarding", :schools, type: :system do
     context 'when completing onboarding as admin without consents' do
       it 'doesnt allow school to be made visible' do
         click_on 'Manage school onboarding'
-        expect(page).to_not have_selector(:link_or_button, "Make visible")
+        expect(page).not_to have_selector(:link_or_button, "Make visible")
       end
     end
 
     context 'when completing onboarding as admin with consents already given' do
-      before  { Wisper.clear; Wisper.subscribe(wisper_subscriber) }
-      after   { Wisper.clear }
+      before do
+        Wisper.clear
+        Wisper.subscribe(wisper_subscriber)
+      end
+
+      after { Wisper.clear }
 
       let!(:school_onboarding)  { create :school_onboarding, :with_school, created_by: admin }
 
@@ -167,8 +170,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_link 'Download as CSV', href: admin_school_onboardings_path(format: :csv)
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /filename=\"#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}\"/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/filename=\"#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}\"/)
 
       expect(page.source).to have_content 'Email sent'
       expect(page.source).to have_content onboarding.school_name
@@ -185,8 +188,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_link 'Download as CSV', href: admin_school_group_school_onboardings_path(onboarding.school_group, format: :csv)
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /filename=\"#{onboarding.school_group.slug}-onboarding-schools.csv\"/
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/filename=\"#{onboarding.school_group.slug}-onboarding-schools.csv\"/)
 
       expect(page.source).to have_content 'Email sent'
       expect(page.source).to have_content 'In progress'
@@ -199,35 +202,46 @@ RSpec.describe "onboarding", :schools, type: :system do
       let!(:onboarding) { create :school_onboarding, :with_events, event_names: [:email_sent] }
       let(:email_address) { }
       let(:email_sent_events_count) { onboarding.events.where(event: :email_sent).count }
-      it { expect(email_sent_events_count).to eql(1) }
+
       before do
         click_on 'Manage school onboarding'
         click_on 'Change email address' # link name is hidden in title of email icon
         fill_in(:school_onboarding_contact_email, with: email_address)
         click_on 'Save'
       end
+
+      it { expect(email_sent_events_count).to eql(1) }
+
+
       context "to a blank email address" do
         let(:email_address) { '' }
+
         it "doesn't save" do
           expect(page).to have_content("Contact email *\ncan't be blank")
           expect(page).to have_content('Change email address')
         end
       end
+
       context "to a different email address" do
         let(:email_address) { 'different_address@email.com' }
+
         it "saves" do
           expect(page).to have_content('School onboardings in progress')
           expect(page).to have_content(email_address)
         end
+
         it "sends email" do
           expect(last_email.to).to include(email_address)
         end
+
         it "logs event" do
           expect(email_sent_events_count).to eql(2)
         end
+
         it "updates onboarding record" do
           expect(onboarding.reload.contact_email).to eq email_address
         end
+
         it "doesn't log event types other than email or reminder" do
           expect(onboarding.has_only_sent_email_or_reminder?).to be true
         end

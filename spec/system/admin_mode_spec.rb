@@ -11,6 +11,7 @@ describe 'Admin mode' do
         expect(page).to have_content("Sign in to Energy Sparks")
       end
     end
+
     it 'serves maintenance page for non-admins' do
       ClimateControl.modify ADMIN_MODE: 'true' do
         visit new_user_session_path
@@ -46,6 +47,7 @@ describe 'Admin mode' do
         end
       end
     end
+
     context 'as staff' do
       it 'serves maintenance page for non-admins' do
         ClimateControl.modify ADMIN_MODE: 'true' do

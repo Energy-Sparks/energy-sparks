@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe 'advice page management', type: :system do
-
   let(:school)        { create(:school) }
   let(:admin)         { create(:admin, school: school) }
 
-  let!(:advice_page)   { create(:advice_page, key: 'baseload-summary') }
+  let!(:advice_page) { create(:advice_page, key: 'baseload-summary') }
 
   before do
     sign_in(admin)
@@ -97,6 +96,5 @@ describe 'advice page management', type: :system do
       expect(advice_page.intervention_types).to match_array([intervention_type_2])
       expect(advice_page.advice_page_intervention_types.first.position).to eq(1)
     end
-
   end
 end

@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :intervention_type  do
+  factory :intervention_type do
     sequence(:name) {|n| "Intervention type #{n}"}
     intervention_type_group
     score { 30 }
