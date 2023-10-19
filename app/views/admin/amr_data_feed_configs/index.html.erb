@@ -1,27 +1,25 @@
 <h1>AMR Data Feed Configurations</h1>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Description</th>
-      <th>Identifier</th>
-      <th>Created At</th>
-      <th>Updated At</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @configurations.each do |config| %>
-      <tr>
-        <td><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
-        <td><%= config.identifier %></td>
-        <td><%= nice_date_times config.created_at %></td>
-        <td><%= nice_date_times config.updated_at %></td>
-        <td>
-          <%= link_to 'Upload File', new_admin_amr_data_feed_config_amr_uploaded_reading_path(config), class: 'btn' %>
-          <%= link_to 'Edit', edit_admin_amr_data_feed_config_path(config), class: 'btn' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<ul class="nav nav-tabs" id="all-configs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id='overview-tab' data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id='details-tab' data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">Details</a>
+  </li>
+</ul>
+<div class="tab-content" id="all-configs-tabs">
+  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+    <div class="mt-2">
+      <p>The following table provides a brief overview of each configuration.
+    </div>
+    <%= render 'overview_table', configurations: @configurations %>
+  </div>
+  <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
+    <div class="mt-2">
+      <p>The following table provides a more detailed comparison of each configuration.
+        Click on the name of the configuration to view all configuration options.
+    </div>
+    <%= render 'detail_table', configurations: @configurations %>
+  </div>
+</div>
