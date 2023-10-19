@@ -76,9 +76,9 @@ module Amr
 
     def reading_index_of_record(reading_day, single_reading)
       if @indexed
-        period = if single_reading.key?(:period)
+        period = if single_reading[:period]
                    single_reading[:period]
-                 elsif single_reading.key?(:reading_time)
+                 elsif single_reading[:reading_time]
                    SingleReadConverter::READING_TIMES.index(single_reading[:reading_time]) + 1
                  else
                    raise MissingIndexKeyError
