@@ -61,7 +61,9 @@ describe Amr::DataFeedTranslator do
         reading_date_field: 'Read date',
         reading_time_field: 'Time',
         reading_fields: [' Actual (KWH)'],
-        header_example: "Read date,Time,Site Name, Actual (KWH)"
+        header_example: "Read date,Time,Site Name, Actual (KWH)",
+        row_per_reading: true,
+        positional_index: true
       )
     end
 
