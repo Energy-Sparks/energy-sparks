@@ -19,6 +19,11 @@ module Admin
         redirect_to admin_school_group_users_path(@school_group), notice: "User '#{user.email}' was successfully unlocked."
       end
 
+      def lock_all
+        @school_group.users.each { |user| user.lock_access!(send_instructions: false) }
+        redirect_to admin_school_group_users_path(@school_group), notice: "Users locked."
+      end
+
       private
 
       def filename(school_group)

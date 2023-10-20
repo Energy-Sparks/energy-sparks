@@ -13,7 +13,14 @@
 </div>
 
 <% if @group_admins.any? %>
-  <h2>Group Admins</h2>
+  <div class="flex row justify-content-between">
+    <div>
+      <h2>Group Admins</h2>
+    </div>
+    <div>
+      <%= link_to 'Lock all group users', lock_all_admin_school_group_users_path, class: 'btn btn-warning btn-sm', data: { confirm: 'Are you sure?' } %>
+    </div>
+  </div>
 
   <table class="table table-sm table-sorted">
     <thead>
