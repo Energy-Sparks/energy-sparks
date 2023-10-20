@@ -75,15 +75,15 @@ module Amr
 
     def reading_index_of_record(reading_day, single_reading)
       if @indexed
-        period = if single_reading[:period]
-                   single_reading[:period]
-                 elsif single_reading[:reading_time]
-                   SingleReadConverter::READING_TIMES.index(single_reading[:reading_time]) + 1
-                 else
-                   raise MissingIndexKeyError
-                 end
+        reading_row_index = if single_reading[:period]
+                              single_reading[:period]
+                            elsif single_reading[:reading_time]
+                              SingleReadConverter::READING_TIMES.index(single_reading[:reading_time]) + 1
+                            else
+                              raise MissingIndexKeyError
+                            end
 
-        period.nil? ? nil : period.to_i - 1
+        reading_row_index.nil? ? nil : reading_row_index.to_i - 1
       else
         reading_day_time = Time.parse(single_reading[:reading_date]).utc
         first_reading_time = Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
