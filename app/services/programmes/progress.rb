@@ -17,7 +17,7 @@ module Programmes
         programme_type_title: programme_type_title,
         programme_activities_count: programme_activities_count,
         activity_types_count: activity_types_count,
-        activity_types_uncompleted_count: activity_types_uncompleted_count,
+        count: activity_types_uncompleted_count,
         activity_types_total_scores: activity_types_total_scores,
         activity_types_uncompleted_scores: activity_types_uncompleted_scores,
         programme_points_for_completion: programme_points_for_completion

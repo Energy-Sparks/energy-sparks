@@ -8,15 +8,6 @@ describe Programmes::Progress do
 
   let(:service) { Programmes::Progress.new(programme) }
 
-  context "no activities completed yet" do
-    describe '#notification_text' do
-      it 'returns the full notification text used on the school dashboard' do
-        allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-        expect(service.notification_text).to eq("You have completed <strong>0/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final <strong>3</strong> activities now to score <span class=\"badge badge-success\">75</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
-      end
-    end
-  end
-
   context "a programme activity has been completed" do
     let(:activity) { build(:activity, school: school, activity_type: activity_types.first, happened_on: Date.yesterday) }
 
@@ -98,6 +89,33 @@ describe Programmes::Progress do
       it 'returns the difference between the number of activity types for the programme and those completed' do
         allow_any_instance_of(Programme).to receive(:activity_types_completed) { programme.programme_type.activity_types.limit(1) }
         expect(service.activity_types_uncompleted_count).to eq(2)
+      end
+    end
+  end
+
+  context "no activities completed yet" do
+    describe '#notification_text' do
+      it 'returns the full notification text' do
+        allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
+        expect(service.notification_text).to eq("You have completed <strong>0/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final <strong>3</strong> activities now to score <span class=\"badge badge-success\">75</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
+      end
+    end
+  end
+
+  context "with 1 activity left to complete" do
+    let(:activity) { build(:activity, school: school, activity_type: activity_types.first, happened_on: Date.yesterday) }
+
+    before do
+      activity_types.first(2).each do |activity_type|
+        activity = build(:activity, school: school, activity_type: activity_type, happened_on: Date.yesterday)
+        ActivityCreator.new(activity).process
+      end
+    end
+
+    describe '#notification_text' do
+      it 'returns the singular notification text' do
+        allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
+        expect(service.notification_text).to eq("You have completed <strong>2/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final activity now to score <span class=\"badge badge-success\">25</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
       end
     end
   end
