@@ -2,6 +2,32 @@ require 'rails_helper'
 
 module Amr
   describe SingleReadConverter do
+    let(:valid_reading_times) do
+      [
+        '00:00', '0:00',
+        '00:30', '0:30',
+        '01:00', '1:00',
+        '01:30', '1:30',
+        '02:00', '2:00',
+        '02:30', '2:30',
+        '03:00', '3:00',
+        '03:30', '3:30',
+        '04:00', '4:00',
+        '04:30', '4:30',
+        '05:00', '5:00',
+        '05:30', '5:30',
+        '06:00', '6:00',
+        '06:30', '6:30',
+        '07:00', '7:00',
+        '07:30', '7:30',
+        '08:00', '8:00',
+        '08:30', '8:30',
+        '09:00', '9:00',
+        '09:30', '9:30',
+        '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'
+      ]
+    end
+
     context 'normal file format' do
       let(:readings) do
         [{ :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", :reading_date => "26 Aug 2019 00:30:00", :readings => ["14.4"] },
@@ -578,6 +604,45 @@ module Amr
       it "truncates after 48 readings" do
         expect(results.first[:readings].length).to be(48)
         expect(results.second[:readings].length).to be(48)
+      end
+    end
+
+    describe '.convert_time_string_to_usable_time' do
+      it 'converts a string of integers to a valid time string' do
+        valid_reading_times.each do |time_string|
+          expect(Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string)).to eq(time_string)
+          time_string_without_colon = time_string.delete(':')
+          expect(Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string_without_colon)).to eq(time_string)
+        end
+      end
+
+      it 'raises an error if a string cannot be converted to a valid time string' do
+        valid_reading_times.each do |time_string|
+          time_string_as_integer = time_string.to_i
+          expect do
+            Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string_as_integer)
+          end.to raise_error(Amr::SingleReadConverter::InvalidTimeStringError)
+        end
+
+        ['abc', 130, 0o130].each do |time_string|
+          expect do
+            Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string)
+          end.to raise_error(Amr::SingleReadConverter::InvalidTimeStringError)
+        end
+      end
+    end
+
+    describe '.valid_time_string?' do
+      it 'returns true if a time string is in a format valid and usable by TimeOfDay parse' do
+        valid_reading_times.each do |time_string|
+          expect(Amr::SingleReadConverter).to be_valid_time_string(time_string)
+        end
+      end
+
+      it 'returns false if a time string is not in a format valid and usable by TimeOfDay parse' do
+        ['0', '00', '000', '1', '130', 0, 1, 130, '24:30', '25:00'].each do |time_string|
+          expect(Amr::SingleReadConverter).not_to be_valid_time_string(time_string)
+        end
       end
     end
   end

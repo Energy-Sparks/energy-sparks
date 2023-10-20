@@ -1,5 +1,7 @@
 module Amr
   class SingleReadConverter
+    class InvalidTimeStringError < StandardError; end
+
     BLANK_THRESHOLD = 1
 
     #@param Array single_reading_array an array of readings
@@ -57,6 +59,26 @@ module Amr
       reject_any_low_reading_days
     end
 
+    def self.convert_time_string_to_usable_time(time_string)
+      raise Amr::SingleReadConverter::InvalidTimeStringError, "Invalid time string: #{time_string} is a #{time_string.class}" unless time_string.is_a?(String)
+      return time_string if valid_time_string?(time_string)
+
+      # Inserts a colon into the time string so it is in a valid format
+      # e.g. '130' is converted to '1:30' and '2330' is converted to '23:30'
+      time_string.insert(-3, ':')
+      if valid_time_string?(time_string)
+        time_string
+      else
+        raise Amr::SingleReadConverter::InvalidTimeStringError, "Invalid time string: #{time_string} is a #{time_string.class}"
+      end
+    end
+
+    def self.valid_time_string?(time_string)
+      return false unless time_string.is_a?(String)
+      # Regex matches time formats with and without leading zero (e.g. '1:30' & '01:30') from '0:00' to '23:59'
+      time_string.match?(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
+    end
+
     private
 
     def truncate_too_many_readings
@@ -91,14 +113,10 @@ module Amr
     end
 
     def reading_row_index_for(single_reading)
-      if single_reading[:period]
-        single_reading[:period] - 1
-      elsif single_reading[:reading_time]
-        TimeOfDay.parse(single_reading[:reading_time]).to_halfhour_index
-      end
-    end
+      return single_reading[:period] - 1 if single_reading[:period]
 
-    # def self.convert_time_string_to_usable_time(time_string)
-    # end
+      time_string = SingleReadConverter.convert_time_string_to_usable_time(single_reading[:reading_time])
+      TimeOfDay.parse(time_string).to_halfhour_index
+    end
   end
 end
