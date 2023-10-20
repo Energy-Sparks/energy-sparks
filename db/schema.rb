@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_16_123737) do
+ActiveRecord::Schema.define(version: 2023_10_19_130819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -396,6 +396,7 @@ ActiveRecord::Schema.define(version: 2023_10_16_123737) do
     t.boolean "positional_index", default: false, null: false
     t.string "period_field"
     t.boolean "enabled", default: true, null: false
+    t.text "reading_time_field"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
@@ -429,6 +430,7 @@ ActiveRecord::Schema.define(version: 2023_10_16_123737) do
     t.text "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "reading_time"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id", "amr_data_feed_config_id"], name: "adfr_meter_id_config_id"

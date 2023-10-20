@@ -5,6 +5,7 @@ FactoryBot.define do
     sequence(:description)        { |n| "Email data feed-#{n}" }
     mpan_mprn_field               { 'M1_Code1' }
     reading_date_field            { 'Date' }
+    reading_time_field            { 'Time' }
     number_of_header_rows         { 1 }
     provider_id_field             { 'ID' }
     msn_field                     { 'M1_Code2' }
