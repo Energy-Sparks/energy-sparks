@@ -61,16 +61,15 @@ module Amr
 
     def self.convert_time_string_to_usable_time(time_string)
       raise Amr::SingleReadConverter::InvalidTimeStringError, "Invalid time string: #{time_string} is a #{time_string.class}" unless time_string.is_a?(String)
-
-      # Match and return a valid time for a string of zero's e.g. '0', '00', '000', or '0000'
-      return '00:00' if time_string.to_s.match?(/^0+$/)
-      return '00:30' if time_string == '30'
-
       return time_string if valid_time_string?(time_string)
 
+      # Returns time_string right justified and padded with '0'
+      # e.g. '0' is converted to "0000", '30' is converted to '0030', and '2330' remains '2330'
+      time_string = time_string.rjust(4, '0')
       # Inserts a colon into the time string so it is in a valid format
-      # e.g. '130' is converted to '1:30' and '2330' is converted to '23:30'
+      # e.g. '0130' is converted to '01:30' and '2330' is converted to '23:30'
       time_string.insert(-3, ':')
+
       if valid_time_string?(time_string)
         time_string
       else

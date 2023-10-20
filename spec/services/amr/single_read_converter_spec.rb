@@ -616,7 +616,7 @@ module Amr
         # There's an additional test for possible zero values below so drop the first 2 valid_reading_times
         valid_reading_times.drop(2).each do |time_string|
           time_string_without_colon = time_string.delete(':')
-          expect(Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string_without_colon)).to eq(time_string)
+          expect(Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string_without_colon)).to eq(time_string.rjust(5, '0'))
         end
 
         %w[0 00 000 0000].each do |time_string|
