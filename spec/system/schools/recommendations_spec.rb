@@ -26,7 +26,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
     let(:setup_data) { create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school) }
 
     it "has prompts to complete programme" do
-      expect(page).to have_content("You have completed 0/3 of the activities in the #{programme_type.title} programme. Complete the final 3 activities now to score 75 points and 12 bonus points")
+      expect(page).to have_content("You have completed 0/3 of the activities in the #{programme_type.title} programme. Complete the final 3 activities now to score 75 points and 12 bonus points for completing the programme")
     end
   end
 
