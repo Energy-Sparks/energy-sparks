@@ -1,8 +1,6 @@
 module Amr
   class SingleReadConverter
-    class MissingReadingRowIndexKeyError < StandardError; end
     BLANK_THRESHOLD = 1
-    READING_TIMES = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"].freeze
 
     #@param Array single_reading_array an array of readings
     #@param boolean indexed whether the array should be interpreted in HH order, rather than via timestamp.
@@ -75,25 +73,32 @@ module Amr
 
     def reading_index_of_record(reading_day, single_reading)
       if @indexed
-        reading_row_index = if single_reading[:period]
-                              single_reading[:period]
-                            elsif single_reading[:reading_time]
-                              SingleReadConverter::READING_TIMES.index(single_reading[:reading_time]) + 1
-                            else
-                              raise MissingReadingRowIndexKeyError
-                            end
-
-        reading_row_index.nil? ? nil : reading_row_index.to_i - 1
+        reading_row_index_for(single_reading)
       else
-        reading_day_time = Time.parse(single_reading[:reading_date]).utc
-        first_reading_time = Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
-
-        ((reading_day_time - first_reading_time) / 30.minutes).to_i
+        reading_day_time_for(reading_day, single_reading)
       end
     end
 
     def day_from_results(reading_day, mpan_mprn)
       @results_array.find { |result| result[:reading_date] == reading_day && result[:mpan_mprn] == mpan_mprn }
     end
+
+    def reading_day_time_for(reading_day, single_reading)
+      reading_day_time = Time.parse(single_reading[:reading_date]).utc
+      first_reading_time = Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
+
+      ((reading_day_time - first_reading_time) / 30.minutes).to_i
+    end
+
+    def reading_row_index_for(single_reading)
+      if single_reading[:period]
+        single_reading[:period] - 1
+      elsif single_reading[:reading_time]
+        TimeOfDay.parse(single_reading[:reading_time]).to_halfhour_index
+      end
+    end
+
+    # def self.convert_time_string_to_usable_time(time_string)
+    # end
   end
 end
