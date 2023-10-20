@@ -9,11 +9,26 @@ describe Database::VacuumService do
     # Vacuum can't run inside in a transaction block! ts: false means we don't use transactions for rolling back data created in tests
     context "under normal running conditions", ts: false do
       it "doesn't raise" do
-        expect { subject.perform }.not_to raise_error
+        expect { subject.perform(vacuum: true) }.not_to raise_error
       end
 
       it "logs no error" do
         expect(Rails.logger).not_to receive(:error)
+        subject.perform(vacuum: true)
+      end
+    end
+
+    context 'with analyse only' do
+      before do
+        tables.each do |table|
+          expect(ActiveRecord::Base.connection).to receive(:execute).with("ANALYSE #{table}").and_raise(ActiveRecord::ActiveRecordError.new("ERROR"))
+        end
+      end
+
+      it 'logs expected sql' do
+        tables.each do |table|
+          expect(Rails.logger).to receive(:error).with("ANALYSE #{table} error: ERROR")
+        end
         subject.perform
       end
     end
@@ -25,22 +40,22 @@ describe Database::VacuumService do
         end
       end
 
-      it "logs error" do
+      it "logs expected sql" do
         tables.each do |table|
           expect(Rails.logger).to receive(:error).with("VACUUM ANALYSE #{table} error: ERROR")
         end
-        subject.perform
+        subject.perform(vacuum: true)
       end
 
       it "calls rollbar" do
         tables.each do |table|
           expect(Rollbar).to receive(:error).with("VACUUM ANALYSE #{table} error: ERROR")
         end
-        subject.perform
+        subject.perform(vacuum: true)
       end
 
       it "doesn't raise" do
-        expect { subject.perform }.not_to raise_error
+        expect { subject.perform(vacuum: true) }.not_to raise_error
       end
     end
   end
