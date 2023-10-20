@@ -363,7 +363,7 @@ module Amr
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '23:00', :reading_date => "26/08/2019", :readings => ["15.4"] },
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '23:30', :reading_date => "26/08/2019", :readings => ["48.0"] }, #48
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '0', :reading_date => "27/08/2019", :readings => ["15.2"] }, #1
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '030', :reading_date => "27/08/2019", :readings => ["1.4"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '30', :reading_date => "27/08/2019", :readings => ["1.4"] },
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '100', :reading_date => "27/08/2019", :readings => ["1.3"] },
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '130', :reading_date => "27/08/2019", :readings => ["1.4"] },
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '200', :reading_date => "27/08/2019", :readings => ["1.3"] },
