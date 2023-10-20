@@ -362,54 +362,54 @@ module Amr
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '22:30', :reading_date => "26/08/2019", :readings => ["15.6"] },
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '23:00', :reading_date => "26/08/2019", :readings => ["15.4"] },
           { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '23:30', :reading_date => "26/08/2019", :readings => ["48.0"] }, #48
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '00:00', :reading_date => "27/08/2019", :readings => ["15.2"] }, #1
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '00:30', :reading_date => "27/08/2019", :readings => ["1.4"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '01:00', :reading_date => "27/08/2019", :readings => ["1.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '01:30', :reading_date => "27/08/2019", :readings => ["1.4"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '02:00', :reading_date => "27/08/2019", :readings => ["1.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '02:30', :reading_date => "27/08/2019", :readings => ["1.4"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '03:00', :reading_date => "27/08/2019", :readings => ["1.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '03:30', :reading_date => "27/08/2019", :readings => ["1.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '04:00', :reading_date => "27/08/2019", :readings => ["1.4"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '04:30', :reading_date => "27/08/2019", :readings => ["6.5"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '05:00', :reading_date => "27/08/2019", :readings => ["2.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '05:30', :reading_date => "27/08/2019", :readings => ["3.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '06:00', :reading_date => "27/08/2019", :readings => ["1.8"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '06:30', :reading_date => "27/08/2019", :readings => ["1.6"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '07:00', :reading_date => "27/08/2019", :readings => ["2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '07:30', :reading_date => "27/08/2019", :readings => ["3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '08:00', :reading_date => "27/08/2019", :readings => ["2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '08:30', :reading_date => "27/08/2019", :readings => ["1.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '09:00', :reading_date => "27/08/2019", :readings => ["1.7"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '09:30', :reading_date => "27/08/2019", :readings => ["1.4"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '10:00', :reading_date => "27/08/2019", :readings => ["1.1"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '10:30', :reading_date => "27/08/2019", :readings => ["0.9"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '11:00', :reading_date => "27/08/2019", :readings => ["1.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '11:30', :reading_date => "27/08/2019", :readings => ["0.9"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '12:00', :reading_date => "27/08/2019", :readings => ["1.7"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '12:30', :reading_date => "27/08/2019", :readings => ["0.8"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '13:00', :reading_date => "27/08/2019", :readings => ["0.8"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '13:30', :reading_date => "27/08/2019", :readings => ["0.8"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '14:00', :reading_date => "27/08/2019", :readings => ["1.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '14:30', :reading_date => "27/08/2019", :readings => ["1.1"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '15:00', :reading_date => "27/08/2019", :readings => ["1.7"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '15:30', :reading_date => "27/08/2019", :readings => ["2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '16:00', :reading_date => "27/08/2019", :readings => ["2.8"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '16:30', :reading_date => "27/08/2019", :readings => ["3.8"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '17:00', :reading_date => "27/08/2019", :readings => ["1.6"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '17:30', :reading_date => "27/08/2019", :readings => ["0.5"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '18:00', :reading_date => "27/08/2019", :readings => ["0.7"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '18:30', :reading_date => "27/08/2019", :readings => ["0.9"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '19:00', :reading_date => "27/08/2019", :readings => ["1.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '19:30', :reading_date => "27/08/2019", :readings => ["1.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '20:00', :reading_date => "27/08/2019", :readings => ["1.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '20:30', :reading_date => "27/08/2019", :readings => ["1.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '21:00', :reading_date => "27/08/2019", :readings => ["1.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '21:30', :reading_date => "27/08/2019", :readings => ["1.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '22:00', :reading_date => "27/08/2019", :readings => ["1.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '22:30', :reading_date => "27/08/2019", :readings => ["1.2"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '23:00', :reading_date => "27/08/2019", :readings => ["1.3"] },
-          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '23:30', :reading_date => "27/08/2019", :readings => ["99.0"] }
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '0', :reading_date => "27/08/2019", :readings => ["15.2"] }, #1
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '030', :reading_date => "27/08/2019", :readings => ["1.4"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '100', :reading_date => "27/08/2019", :readings => ["1.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '130', :reading_date => "27/08/2019", :readings => ["1.4"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '200', :reading_date => "27/08/2019", :readings => ["1.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '230', :reading_date => "27/08/2019", :readings => ["1.4"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '300', :reading_date => "27/08/2019", :readings => ["1.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '330', :reading_date => "27/08/2019", :readings => ["1.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '400', :reading_date => "27/08/2019", :readings => ["1.4"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '430', :reading_date => "27/08/2019", :readings => ["6.5"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '500', :reading_date => "27/08/2019", :readings => ["2.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '530', :reading_date => "27/08/2019", :readings => ["3.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '600', :reading_date => "27/08/2019", :readings => ["1.8"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '630', :reading_date => "27/08/2019", :readings => ["1.6"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '700', :reading_date => "27/08/2019", :readings => ["2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '730', :reading_date => "27/08/2019", :readings => ["3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '800', :reading_date => "27/08/2019", :readings => ["2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '830', :reading_date => "27/08/2019", :readings => ["1.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '900', :reading_date => "27/08/2019", :readings => ["1.7"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '930', :reading_date => "27/08/2019", :readings => ["1.4"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1000', :reading_date => "27/08/2019", :readings => ["1.1"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1030', :reading_date => "27/08/2019", :readings => ["0.9"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1100', :reading_date => "27/08/2019", :readings => ["1.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1130', :reading_date => "27/08/2019", :readings => ["0.9"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1200', :reading_date => "27/08/2019", :readings => ["1.7"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1230', :reading_date => "27/08/2019", :readings => ["0.8"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1300', :reading_date => "27/08/2019", :readings => ["0.8"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1330', :reading_date => "27/08/2019", :readings => ["0.8"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1400', :reading_date => "27/08/2019", :readings => ["1.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1430', :reading_date => "27/08/2019", :readings => ["1.1"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1500', :reading_date => "27/08/2019", :readings => ["1.7"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1530', :reading_date => "27/08/2019", :readings => ["2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1600', :reading_date => "27/08/2019", :readings => ["2.8"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1630', :reading_date => "27/08/2019", :readings => ["3.8"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1700', :reading_date => "27/08/2019", :readings => ["1.6"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1730', :reading_date => "27/08/2019", :readings => ["0.5"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1800', :reading_date => "27/08/2019", :readings => ["0.7"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1830', :reading_date => "27/08/2019", :readings => ["0.9"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1900', :reading_date => "27/08/2019", :readings => ["1.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '1930', :reading_date => "27/08/2019", :readings => ["1.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '2000', :reading_date => "27/08/2019", :readings => ["1.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '2030', :reading_date => "27/08/2019", :readings => ["1.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '2100', :reading_date => "27/08/2019", :readings => ["1.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '2130', :reading_date => "27/08/2019", :readings => ["1.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '2200', :reading_date => "27/08/2019", :readings => ["1.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '2230', :reading_date => "27/08/2019", :readings => ["1.2"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '2300', :reading_date => "27/08/2019", :readings => ["1.3"] },
+          { :amr_data_feed_config_id => 6, :mpan_mprn => "1710035168313", reading_time: '2330', :reading_date => "27/08/2019", :readings => ["99.0"] }
         ]
       end
 
@@ -608,11 +608,19 @@ module Amr
     end
 
     describe '.convert_time_string_to_usable_time' do
-      it 'converts a string of integers to a valid time string' do
+      it 'converts a string of numbers to a valid time string' do
         valid_reading_times.each do |time_string|
           expect(Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string)).to eq(time_string)
+        end
+
+        # There's an additional test for possible zero values below so drop the first 2 valid_reading_times
+        valid_reading_times.drop(2).each do |time_string|
           time_string_without_colon = time_string.delete(':')
           expect(Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string_without_colon)).to eq(time_string)
+        end
+
+        %w[0 00 000 0000].each do |time_string|
+          expect(Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string)).to eq('00:00')
         end
       end
 
@@ -624,7 +632,7 @@ module Amr
           end.to raise_error(Amr::SingleReadConverter::InvalidTimeStringError)
         end
 
-        ['abc', 130, 0o130].each do |time_string|
+        ['abc', 130, 0o130, '24:00', '2400', '12345'].each do |time_string|
           expect do
             Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string)
           end.to raise_error(Amr::SingleReadConverter::InvalidTimeStringError)
