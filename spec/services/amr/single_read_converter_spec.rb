@@ -622,6 +622,8 @@ module Amr
         %w[0 00 000 0000].each do |time_string|
           expect(Amr::SingleReadConverter.convert_time_string_to_usable_time(time_string)).to eq('00:00')
         end
+
+        expect(Amr::SingleReadConverter.convert_time_string_to_usable_time('30')).to eq('00:30')
       end
 
       it 'raises an error if a string cannot be converted to a valid time string' do

@@ -64,6 +64,7 @@ module Amr
 
       # Match and return a valid time for a string of zero's e.g. '0', '00', '000', or '0000'
       return '00:00' if time_string.to_s.match?(/^0+$/)
+      return '00:30' if time_string == '30'
 
       return time_string if valid_time_string?(time_string)
 
