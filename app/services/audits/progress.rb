@@ -46,7 +46,7 @@ module Audits
     end
 
     def bonus_points
-      SiteSettings.current.audit_activities_bonus_points
+      audit.available_bonus_points
     end
   end
 end

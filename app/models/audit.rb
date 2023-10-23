@@ -58,6 +58,10 @@ class Audit < ApplicationRecord
     (activity_type_ids - school.activities.where('happened_on >= :start_date AND happened_on <= :end_date', start_date: created_at, end_date: created_at + 12.months).pluck(:activity_type_id)).empty?
   end
 
+  def available_bonus_points
+    activities_completed? ? 0 : SiteSettings.current.audit_activities_bonus_points
+  end
+
   def create_activities_completed_observation!
     return unless SiteSettings.current.audit_activities_bonus_points
     return unless activities_completed?

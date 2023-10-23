@@ -68,4 +68,17 @@ describe Audits::Progress do
       it { expect(service.notification_text).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit. Complete the others to score <span class=\"badge badge-success\">165</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
     end
   end
+
+  context "with all activies completed" do
+    before do
+      audit.activity_types.each do |activity_type|
+        activity = build(:activity, school: school, activity_type: activity_type, happened_on: 2.days.ago)
+        ActivityCreator.new(activity).process
+      end
+    end
+
+    describe "#notification_text" do
+      it { expect(service.notification_text).to eq("You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit. Complete the others to score <span class=\"badge badge-success\">90</span> points and <span class=\"badge badge-success\">0</span> bonus points for completing all audit tasks") }
+    end
+  end
 end
