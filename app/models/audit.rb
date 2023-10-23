@@ -41,6 +41,14 @@ class Audit < ApplicationRecord
   scope :published, -> { where(published: true) }
   scope :by_date,   -> { order(created_at: :desc) }
 
+  def completed_activity_types
+    activity_types.where(id: school.activities.where(happened_on: created_at..).pluck(:activity_type_id))
+  end
+
+  def completed_intervention_types
+    intervention_types.where(id: school.observations.intervention.where(at: created_at..).pluck(:intervention_type_id))
+  end
+
   def activities_completed?
     activity_type_ids = activity_types.pluck(:id)
     return if activity_type_ids.empty?
