@@ -22,7 +22,7 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.0.7'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.0.8'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'post-aggregation-clean-up'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
