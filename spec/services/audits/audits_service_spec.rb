@@ -23,6 +23,23 @@ describe Audits::AuditService do
     end
   end
 
+  describe '#last_audit' do
+    let!(:published_audit)            { create(:audit, school: school, published: true, created_at: 3.days.ago) }
+    let!(:older_published_audit)      { create(:audit, school: school, published: true, created_at: 4.days.ago) }
+
+    it 'returns most recent audit' do
+      expect(service.last_audit).to eql published_audit
+    end
+
+    context 'excluding unpuplished audits' do
+      let!(:unpulished_audit) { create(:audit, school: school, published: false, created_at: 2.days.ago) }
+
+      it 'returns published audit' do
+        expect(service.last_audit).to eql published_audit
+      end
+    end
+  end
+
   describe '#process' do
     let(:audit) { build(:audit, school: school) }
 

@@ -7,7 +7,7 @@ module Audits
     end
 
     def last_audit
-      @school.audits.order(created_at: :desc).first
+      @school.audits.published.order(created_at: :desc).first
     end
 
     def recent_audit
