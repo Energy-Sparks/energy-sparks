@@ -1,5 +1,5 @@
-<% if @programmes_to_prompt.present? %>
-  <% @programmes_to_prompt.each do |programme| %>
+<% if local_assigns[:programmes_to_prompt].try(:any?) %>
+  <% programmes_to_prompt.each do |programme| %>
     <%= component 'info_bar',
         status: :neutral,
         title: Programmes::Progress.new(programme).notification_text,
