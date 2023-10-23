@@ -26,7 +26,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       let(:programme_type) { create(:programme_type_with_activity_types, bonus_score: 12) }
       let(:setup_data) { create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school) }
 
-      it "has prompts to complete programme" do
+      it "has prompts to complete programmes" do
         expect(page).to have_content("You have completed 0/3 of the activities in the #{programme_type.title} programme. Complete the final 3 activities now to score 75 points and 12 bonus points for completing the programme")
       end
     end
@@ -37,7 +37,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
         create(:audit, :with_activity_and_intervention_types, school: school)
       end
 
-      it "has prompts to complete audit actions and activities" do
+      it "has prompt to complete audit actions and activities" do
         expect(page).to have_content("You have completed 0/3 of the activities and 0/3 of the actions from your recent energy audit. Complete the others to score 165 points and 50 bonus points for completing all audit tasks")
       end
     end
