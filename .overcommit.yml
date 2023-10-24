@@ -204,9 +204,8 @@ PreCommit:
     install_command: 'gem install foodcritic'
 
   ForbiddenBranches:
-    enabled: false
-    description: 'Check for commit to forbidden branch'
-    quiet: true
+    enabled: true
+    description: 'Check for commit to forbidden branch (master)'
     branch_patterns: ['master']
 
   GoLint:
