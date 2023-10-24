@@ -16,12 +16,12 @@
     <p>
       <%= t('alert_mailer.alert_email.your_school_has_current_target_html', target_date: nice_dates(@school.current_target.target_date), school_targets_url: school_school_targets_url(@school, params: targets_utm_parameters)) %>.
     </p>
-    <%= link_to t('alert_mailer.alert_email.view_your_progress_report'), school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+    <%= link_to t('alert_mailer.alert_email.view_your_progress_report'), school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 ax-right'%>
   <% elsif @school.has_target? %>
     <p>
       <%= t('alert_mailer.alert_email.your_school_has_target_html', target_date: nice_dates(@school.most_recent_target.target_date), school_targets_url: school_school_target_url(@school, @school.most_recent_target, params: targets_utm_parameters)) %>.
     </p>
-    <%= link_to t('alert_mailer.alert_email.set_a_new_target'), school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+    <%= link_to t('alert_mailer.alert_email.set_a_new_target'), school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 ax-right'%>
   <% else %>
     <%= render 'shared/mailer/first_target_prompt', tracking_params: targets_utm_parameters %>
   <% end %>
@@ -31,7 +31,7 @@
   <%= t('alert_mailer.alert_email.dashboard_and_analysis_message_html', school_url: school_url(@school, params: weekly_alert_utm_parameters), school_analysis_index_url: school_analysis_index_url(@school, params: weekly_alert_utm_parameters)) %>.
 </p>
 
-<%= link_to t('alert_mailer.alert_email.view_your_school_dashboard'), school_url(@school, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+<%= link_to t('alert_mailer.alert_email.view_your_school_dashboard'), school_url(@school, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-3 mb-3 ax-right'%>
 
 <div class="s-3"></div>
 
@@ -40,7 +40,7 @@
 
 <%= t('alert_mailer.alert_email.education_workshops_message') %>.
 
-<%= link_to t('alert_mailer.alert_email.book_a_workshop'), education_workshops_url, class: 'btn btn-primary mt-3 mb-3 float-right'%>
+<%= link_to t('alert_mailer.alert_email.book_a_workshop'), education_workshops_url, class: 'btn btn-primary mt-3 mb-3 ax-right'%>
 
 <div class="s-3"></div>
 
@@ -57,9 +57,10 @@
 
   <div class="row">
     <div class="col col-lg-4">
-      <% if alert_content.find_out_more %>
+      <% path = find_out_more_path_from_alert_content(@school, alert_content, params: weekly_alert_utm_parameters, mailer: true) %>
+      <% if path %>
         <p>
-          <%= link_to t('alert_mailer.alert_email.find_out_more'), school_find_out_more_url(@school, alert_content.find_out_more, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-2 mb-2'%>
+          <%= link_to t('alert_mailer.alert_email.find_out_more'), path, class: 'btn btn-primary mt-2 mb-2'%>
         </p>
       <% end %>
     </div>
@@ -79,7 +80,7 @@
 
 <%= t('alert_mailer.alert_email.need_more_help_message') %>.
 
-<%= link_to t('alert_mailer.alert_email.book_an_audit'), energy_audits_url, class: 'btn btn-primary mt-3 mb-3 float-right'%>
+<%= link_to t('alert_mailer.alert_email.book_an_audit'), energy_audits_url, class: 'btn btn-primary mt-3 mb-3 ax-right'%>
 
 <hr/>
 

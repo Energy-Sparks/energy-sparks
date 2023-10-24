@@ -1,0 +1,77 @@
+---
+en:
+  advice_pages:
+    electricity_costs:
+      analysis:
+        agreed_capacity_notice:
+          nearing_agreed_capacity_html: |-
+            <p>Your capacity usage of %{kw} kW is quite close to your agreed limit of %{agreed_limit_kw} kW for meter %{mpan_mprn}.</p>
+            <p>There is a risk of incurring significantly monthly penalty charges if you go over the limit. We suggest you contact your energy manager or energy supplier to discuss.</p>
+          not_nearing_agreed_capacity:
+            annual_saving_gbp_html: "<p>By reducing your limit you could save up to %{annual_saving_gbp} per year.</p>"
+            introduction_html: |-
+              <b>Potential easy saving:</b>
+              <p>Your current maximum annual capacity usage of %{kw} kW is significantly lower than your agreed limit of %{agreed_limit_kw} kW for meter %{mpan_mprn}.</p>
+            suggestion_html: |-
+              <p>
+                We suggest you contact your energy manager or energy supplier to discuss reducing the
+                limit to save your costs. The main risk of doing this is if your annual usage goes up
+                if you are planning on signficantly increasing the size of the school or electricity
+                consumption in the near future?
+              </p>
+        comparison:
+          title: Cost comparison for last 2 years
+        cost_breakdown_by_charge:
+          title: Cost breakdown by charge for the last %{period}
+        cost_breakdown_by_meter:
+          intro: The following table summarises the total cost associated with each meter for the last %{period} between %{start_date} and %{end_date}
+          title: Total cost for the last %{period}
+          whole_school: We estimate your total electricity cost over the last %{period} to be %{cost}.
+        meter_breakdown:
+          select: Select an option to view costs for the whole school or a specific meter
+          title: Cost breakdown
+          whole_school: Whole school
+        summary: The following sections provide more background and analysis on your electricity costs
+        tariff_note:
+          good_estimate: The information below provides a good estimate of your annual costs for this meter based on meter tariff information which has been provided to Energy Sparks.
+          manage_tariffs: Manage tariffs
+          poor_estimate: Energy Sparks currently doesn't have a complete record of your real tariffs and is using default tariffs between %{period_start_and_end}. This means the costs on this page won't be accurate.
+      charts:
+        cost_1_year_accounting_breakdown:
+          meter_subtitle_html: This chart shows the bill components for the 12 months ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Electricity cost components for the last year for %{meter}
+          subtitle_html: This chart shows the bill components for the 12 months ending on <span class='end-date'>%{end_date}</span> for the whole school
+          title: Electricity cost components for the last year
+        cost_1_year_accounting_breakdown_group_by_day:
+          meter_subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Electricity cost components for the last two weeks for %{meter}
+          subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span> for the whole school
+          title: Electricity cost components for the last two weeks
+        cost_1_year_accounting_breakdown_group_by_week:
+          meter_subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Electricity cost components for the last few weeks for %{meter}
+          subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span> for the whole school
+          title: Electricity cost components for the last few weeks
+        cost_comparison_last_2_years_accounting:
+          meter_title: Electricity cost comparison for last 2 years for %{meter}
+          subtitle_html: This chart compares your monthly consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
+          title: Electricity cost comparison for last 2 years
+      insights:
+        current_costs:
+          title: Your current costs
+        intro_html: |-
+          <p>Your electricity bill is broken down into a variety of different charges. Some of these are fixed standing charges, while others vary depending on how much electricity you use and when you use it.
+          </p>
+          <p>
+          Understanding these charges can help you reduce your costs and may help with bill validation.
+          </p>
+        link: Learn more
+        next_steps_html: To get a better estimate of your costs, <a href="%{link}">update your tariff information</a>
+      page_title: Electricity cost analysis
+      tables:
+        columns:
+          cost: Cost (£)
+          meter: Meter
+          name: Name
+        labels:
+          total: Total

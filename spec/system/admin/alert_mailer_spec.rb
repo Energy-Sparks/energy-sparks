@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'AlertMailer', type: :system do
-
   let(:admin) { create(:admin) }
   let(:email) { create(:email) }
 
-  context '#show' do
+  describe '#show' do
     before do
       sign_in(admin)
       visit admin_emails_alert_mailer_path(email)

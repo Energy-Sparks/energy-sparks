@@ -53,6 +53,12 @@ en:
             split: Your school's daily gas use in your chosen week recorded by meter
     weekly-usage-link: View usage by week
   schools:
+    aggregated_meter_collections:
+      show:
+        error_html: Sorry, we're having trouble processing your energy data today. Try again later or, if it continues to happen, <a href='%{contact_path}'>contact us</a>
+        loading: Loading...
+        paragraph_1: Energy Sparks is processing all of this school's data to provide today's analysis
+        paragraph_2: Once we've finished, we will re-direct you to the school dashboard
     audits:
       created: Audit created
       deleted: Audit was successfully deleted.
@@ -89,7 +95,11 @@ en:
         title: New Audit
       show:
         completed_on: Completed on
+        completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
+        points:
+          one: point
+          other: points
         recommended_energy_saving_actions: Recommended energy saving actions
         recommended_pupil_lead_activities: Recommended pupil-lead activities
         title: "%{school_name} Audits - %{audit_title}"
@@ -106,6 +116,8 @@ en:
     contacts:
       edit:
         disable_alerts: Disable alerts
+        edit_phone_number: Edit phone number
+        enable_alerts: Enable alerts
         update_contact_details: Update contact details
         update_contact_details_for: Update contact details for %{user_name}
         update_contact_details_for_email_or_text_alerts: Update contact details for email or text alerts
@@ -116,18 +128,16 @@ en:
           email: Email address
           mobile_phone_number: Mobile phone number
           name: Name
-          role: Role
       index:
         account_contacts: Account contacts
         actions: Actions
         alert_contacts: Alert Contacts
-        alert_contacts_message: The alerts can be sent to people with an Energy Sparks account or directly by email or text message to a mobile phone.
+        alert_contacts_message: The alerts can be sent to people with an Energy Sparks account by email. Or use this form to enable alerts via text message.
         email_address: Email Address
-        enable_alerts_for: 'Enable alerts for:'
-        enable_alerts_for_an_email_or_phone_number: Enable alerts for an email or phone number
         mobile_phone_number: Mobile Phone Number
         name: Name
-        next: Next
+        preferred_locale: Preferred language
+        receives_alerts: Receives alerts?
         role: Role
         standalone_contacts: Standalone contacts
         title: "%{school_name} Alert Contacts"
@@ -159,6 +169,7 @@ en:
         validated_meter_data: Validated meter data
         we_use_sheffield_solar_pv_api_message_html: We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here
     estimated_annual_consumptions:
+      breadcrumb: Estimated annual consumption
       destroy:
         estimate_successfully_removed: Estimate successfully removed
       edit:
@@ -191,6 +202,14 @@ en:
         tip: Tip
         your_estimate: Your estimate
         your_recent_energy_bills: Your recent energy bills should provide the data you need
+    funding_status:
+      private_school: Private School
+      state_school: State School
+    inactive:
+      description: We are still in the process of setting up your school on Energy Sparks. You will get an email notification when your school's account is activated on Energy Sparks.
+      other_schools: other schools
+      other_schools_html: In the meantine, take a look at how %{other_schools_link} are using Energy Sparks
+      schools_in_area: schools in your area
     index:
       a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
       introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage
@@ -222,7 +241,6 @@ en:
       edit:
         edit_meter: Edit meter
       form:
-        admin_notes: Admin notes
         admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
         create_meter: Create Meter
         data_source: Data source
@@ -231,8 +249,10 @@ en:
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
         leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
         meter_point_number: Meter Point Number
+        meter_system: Meter system
         name: Name
         only_check_if_adding_an_n3rgy_test_meter: Only check if you're adding an n3rgy test meter, not used for live schools
+        procurement_route: Procurement route
         sandbox: Sandbox
         serial_number: Serial number
         title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
@@ -242,30 +262,28 @@ en:
         active_meters: Active meters
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
+        admin_meter_status: Admin meter status
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Data source
-        details: Details
         first: First
         imported: Imported
         inactive_meters: Inactive meters
         large_gaps: Large gaps
         latest: Latest
         manage_solar_api_feeds: Manage Solar API feeds
-        manage_tariffs: Manage tariffs
         meter: Meter
-        meter_reviews: Meter reviews
+        meter_reviews: Completed DCC meter reviews
+        meter_system: Meter system
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name
         no_active_meters: No active meters
         only_admins_message: Only admins can delete meters with meter readings
+        procurement_route: Procurement route
         readings: Readings
         report: Report
-        review_meters: Review meters
+        review_meters: Pending DCC meter reviews
         school_downloads: School downloads
-        school_enough_data_message: This school has enough data for at least one fuel type to generate targets
-        school_not_enough_data_message: This school does not have enough data to generate targets
-        this_may_take_some_time: This may take some time!
-        title: Meters
+        title: Manage meters
         validate_meter_readings: Validate meter readings
         validated: Validated
         validated_readings: Validated Readings
@@ -274,28 +292,31 @@ en:
       inventory:
         meter_title: 'Meter: %{meter_mpan_mprn}'
         title: Inventory
-      meter_notes:
-        meter_notes_mpan_mprn: Meter Notes (%{meter_mpan_mprn})
+      meter_issues:
+        button_label: Issues
+        no_meter_issues: No issues or notes for meter
+        title: Meter Issues & Notes - %{name}
       show:
-        admin_notes: Admin notes
+        available_cache_range: Available date range
         basic_information: Basic information
+        data_source: Data source
         dcc_consented: DCC Consented
-        dcc_information: DCC information
-        dcc_last_checked: DCC last checked
-        download_readings: Download readings
-        earliest_available_data: Earliest Available Data
+        dcc_information: DCC (SMETS2) information
+        dcc_last_checked: Last automated check
+        download_readings: Readings
         grant_consent: Grant consent
         inventory: Inventory
         meter: Meter
-        meter_elements: Meter Elements
         n3rgy_api_status: n3rgy API Status
+        n3rgy_consent_confirmed: n3rgy Confirm Consented
+        n3rgy_known_meter: Available from n3rgy?
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
-        sandbox: Sandbox
+        sandbox: Sandbox (test meter)
         school_meter_management: School meter management
         serial_number: Serial Number
         tariff_report: Tariff Report
         title: "%{meter_name} (%{meter_mpan_mprn})"
-        user_consented: User Consented
+        user_consented: User has consented
         withdraw_consent: Withdraw consent
     observations:
       timeline:
@@ -305,9 +326,41 @@ en:
         activity:
           completed_an_activity: Completed an activity
         audit:
+          completed_audit_activities: Completed all audit activities
           received_an_audit: Received an energy audit
+        programme:
+          completed_a_programme: Completed a programme
         temperatures:
           recorded_temperatures_in: Recorded temperatures in
+    private:
+      access_disabled: This school has disabled public access to energy usage data and insights.
+      login_links_html: Use the links below to log in as a member of staff or pupil from this school. Or <a href='%{schools_path}'>explore another school</a>
+      page_title: "%{school} has no public data"
+    programme:
+      progress:
+        choose_a_new_programme_message: It's time to choose a new programme of activities. What challenge will you take on next?
+        notification_html:
+          one: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme. Complete the final activity now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
+          other: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme. Complete the final <strong>%{count}</strong> activities now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
+        start_a_new_programme: Start a new programme
+        view_now: View now
+    pupils:
+      edit:
+        title: Edit pupil account
+        update: Update account
+      new:
+        create: Create account
+        title: New pupil account
+    recommendations:
+      intro: Find your next energy saving activity to score points for your school, reduce your energy usage and learn more about energy and climate change
+      more_ideas:
+        actions: Browse and search through our list of %{count} adult-led actions
+        activities: Browse and search through our list of %{count} pupil-led activities
+        analysis: Look at our analysis to identify areas to prioritise activity
+        description: Looking for more ideas? Explore some of these options
+        programme: Choose a programme of pupil activities
+        title: More ideas
+      title: Recommended activities & actions
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
@@ -315,42 +368,210 @@ en:
       analysis_preferences: Analysis Preferences
       basic_details: Basic details
       created: "%{school_name} was created on %{created_at}"
+      editing: Editing School
       floor_area_hint: If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT
       geocode_message: Leave these blank to have them set from the postcode
+      geocode_not_found_message: not found.
       key_stage: Key stages
       key_stage_message: If you are in Scotland, KS1 covers P2 and P3, KS2 covers P4 to P7, KS3 covers S1 to S3, KS4 covers S4 and S5, KS5 is S6
       location: Location
+      new: New School
       percentage_free_school_meals_hint: If you don't know, please leave this field blank.
       school_features: School features
       stage_of_education: Stage of education
+      update_school: Update School
       urn_hint: This is your URN in England, SEED in Scotland
       view_on_map: View on map
     school_group:
       compare_schools: Compare schools
       view_schools: View schools
+    school_targets:
+      achieving_your_targets:
+        be_sure_to_regularly_check: Be sure to regularly check your dashboard and weekly alerts for our latest advice
+        choose_another_activity: Choose another activity
+        compare_usage_with_schools_in_your_group: Compare usage with schools in your group
+        daily_variation_in_use: Daily variation in use
+        engaging_with_pupils: Engaging with pupils is an important part of the Energy Sparks programme.  Recording activities will score you points
+        explore_your_data: Explore your data
+        here_are_some_suggested_activities: Here are some suggested activities that can be undertaken with pupils
+        logging_activities: Logging activities will help you monitor progress. We'll display these actions on your usage charts
+        record_an_energy_saving_action: Record an energy saving action
+        review_your_energy_analysis: Review your energy analysis
+        some_suggested_activities: Some suggested activities you can take around the school
+        take_action_around_the_school: Take action around the school
+        title: Achieving your targets
+        view_dashboard: View dashboard
+        view_energy_saving_opportunities: View energy saving opportunities
+        view_recent_alerts: View recent alerts
+        we_analyse_your_data: We analyse your data to provide insights and weekly alerts
+        work_with_the_pupils: Work with the pupils
+      current:
+        page_title: Your current energy saving targets
+      edit:
+        before_changing_your_targets: Before changing your targets, check our recommendations to see what you can do to reduce costs and emissions
+        if_you_do_revise_your_targets: If you do revise your targets we will update your progress report to apply that target to all of your energy usage this year
+        page_title: Update your energy saving target
+        review_your_dashboard: Review your dashboard
+        review_your_targets: Review your targets
+        suggestion: Suggestion
+        tip: Tip
+        update_your_energy_saving_target: Update your energy saving target
+        your_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may need to revisit your targets for this year. You may be able to set additional targets
+        your_current_target: Your current target
+      expired:
+        page_title: Results of reducing your energy usage
+        your_school_set_a_target_to_reduce_html: Your school set a target to reduce its energy usage between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>. This page summarises your results
+      first:
+        careful_planning: Reducing your energy costs and carbon emissions involves careful planning. Energy Sparks provides you with a recommended set of steps to help you achieve your targets by
+        its_time: It's time to set your first target to reduce your energy consumption
+        page_title: Set your first energy saving target
+        providing_more_insight: providing more insight through our detailed analysis of your energy usage
+        providing_reports: providing reports to monitor your progress
+        set_your_first_energy_saving_target: Set your first energy saving target
+        suggesting_activities_for_pupils: suggesting activities for pupils to help you engage the whole school
+        suggesting_ways_to_reduce_consumption: suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders
+      form:
+        reducing_electricity_usage_by: Reducing electricity usage by
+        reducing_gas_usage_by: Reducing gas usage by
+        reducing_storage_heater_usage_by: Reducing storage heater usage by
+        school_target: School target
+        set_this_target: Set this target
+        start_date: Start date
+        update_our_target: Update our target
+        you_are_currently_aiming_to_achieve_your_target_by_html: You are currenly aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
+        your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
+      fuel_type_note:
+        where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
+      generating_report:
+        get_started_with_the_activities: Get started with the activities below to start working towards your goal
+        we_need_to_process_your_data: We need to process your data to create a more detailed progress report that will show progress against your targets. Check back tomorrow to see the results
+      new:
+        before_setting_your_new_target: Before setting your new target, check our recommendations to help inform your planning
+        carried_forward: By default we've carried forward your targets from last year. You can amend them below
+        page_title: Update your energy saving target
+        review_and_set_your_next_energy_saving_target: Review and set your next energy saving target
+        review_your_dashboard: Review your dashboard
+        target_date_reached_html: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target
+        tip: Tip
+        your_new_target: Your new target
+      progress:
+        breadcrumbs:
+          electricity: Electricity progress
+          gas: Gas progress
+          storage_heater: Storage heater progress
+        charts:
+          cumulative_progress: Cumulative progress
+          weekly_progress: Weekly progress
+          weekly_progress_to_date: Weekly progress to date
+        current:
+          actual_consumption_kwh: Actual Consumption (kWh)
+          cumulative_progress: Cumulative progress
+          debug: Debug
+          error: Error
+          error_bad_estimate_html: The <a href='%{estimated_annual_consumptions_path}'>annual estimate</a> of your %{fuel_type} usage that has been provided for your school is too low
+          error_message: Unfortunately due to an error we are currently unable to display your detailed progress report
+          month: Month
+          month_by_month_progress: Month by month progress
+          overall_change_since_last_year: Overall change since last year
+          overall_performance_since_last_year: Overall performance since last year
+          please_review_your_estimate_and_our_guidance_html: Please <a href='%{estimated_annual_consumptions_path}'>review your estimate and our guidance</a> to see if it is correct
+          problem: Problem
+          progress_charts: Progress charts
+          review_targets: Review targets
+          target_consumption_kwh: Target Consumption (kWh)
+          title: Tracking progress to reduce your %{fuel_type} energy usage
+          unfortunately_as_much_as_last_year: Unfortunately you are using as much %{fuel_type} as you did last year
+          unfortunately_more_than_last_year: Unfortunately you are using %{relative_percent} more %{fuel_type} than last year
+          view_last_years_target_report: View last year’s target report
+          we_have_been_notified_about_this_error_1: In the meantime, we have been notified about this error and will investigate
+          we_have_been_notified_about_this_error_2: We have been notified about this error and will investigate
+          we_have_not_received_data: We have not received data for your %{fuel_type} usage for over thirty days. As a result your progress report will be out of date
+          well_done_less_than_last_year: Well done, you are using %{relative_percent} less %{fuel_type} than last year
+          your_school_has_set_a_target_to_reduce_html: Your school has set a target to reduce its %{fuel_type} usage by %{school_target_attributes}% between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>
+        expired:
+          actual_consumption_kwh: Actual Consumption (kWh)
+          cumulative_progress: Cumulative progress
+          month: Month
+          month_by_month_progress: Month by month progress
+          overall_change_since_last_year: Overall change since last year
+          overall_performance_since_last_year: Overall performance since last year
+          results_of_reducing_your_usage: Results of reducing your %{fuel_type} usage by %{target_date}
+          review_targets: Review targets
+          target_consumption_kwh: Target Consumption (kWh)
+          you_didnt_achieve_your_goal_to_reduce: Unfortunately you didn't achieve your goal to reduce your %{fuel_type} usage
+          you_managed_to_reduce_your_usage: Well done! You managed to reduce your %{fuel_type} usage by %{relative_percent}
+          your_school_set_a_target_to_reduce_its_usage_html: Your school set a target to reduce its %{fuel_type} usage by %{school_target_attributes}% between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>
+        footnotes:
+          consumption_data_message_html: <p>Consumption data <span class="partial-month">shown in red</span> indicates a month in which we have only partial data. Your consumption and performance figures will not be accurate until the end of the month. Or until we receive additional historical data.</p>
+          expired_message_html: The values in the table above are a snapshot of your usage data taken on %{report_last_generated_date}. Any later updates to your school configuration or data will not be reflected in these historical results
+          partial_target_data_message_html: We only have limited historical consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress. You can <a href='%{estimated_annual_consumptions_path}'>provide us with an annual estimate</a> to see more detail
+          reporting_period_before_consumption_data_no_start_date_message: We only have limited data on your actual %{fuel_type} consumption. The report will only show your consumption for a portion of your target period
+          reporting_period_before_consumption_data_start_date_message: We only have data on your %{fuel_type} consumption from %{meter_start_date}. The report will only show your consumption for a portion of your target period
+          targets_derived_from_synthetic_data_message_html: Monthly targets <i>shown in italics</i> have been created from the <a href='%{school_estimated_annual_consumptions_path}'>annual estimate</a> you provided, rather than your historical data. Their accuracy will depend on the quality of your estimate
+          this_report_only_shows_message_html: This report only shows progress on reducing your electricity usage. Your <a href='%{storage_heater_path}'>storage heater progress report</a> can be viewed separately
+          title: Footnotes
+          we_use_colour_coding_message_html: We use colour coding to indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">failed to meet your target</span> in a given month
+        missing:
+          tracking_progress_to_reduce_usage: Tracking progress to reduce your %{fuel_type} energy usage
+          we_dont_have_a_record_of: We don't have a record of %{fuel_type} being used at your school
+      prompt_to_add_estimate:
+        add_an_estimate: Add an estimate
+        if_you_can_supply_an_estimate:
+          one: If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your %{fuel_types} target
+          other: If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your %{fuel_types} targets
+      prompt_to_review_target:
+        review_your_target: Review your target
+        your_fuel_types_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may want to revisit your targets for this year
+      prompt_to_set_new_target:
+        set_a_new_target: Set a new target
+        you_set_a_target_to_reduce: You set a target to reduce your energy usage by %{target_date}. It's now time to review your progress and set a new target
+      show:
+        final_results: See the final results of your goal to reduce your target by %{target_date}
+        view_results: View results
+      target_table:
+        current_progress: Current progress
+        final_result: Final result
+        reporting_change_in_energy_usage_between: Reporting change in energy usage between
+        start_date_and_end_date: "%{start_date} and %{end_date}"
+        target_reduction: Target Reduction
+      target_table_row:
+        last_week: last week
+        not_applicable: N/A
+        view_monthly_report: View monthly report
+      target_timeline:
+        a_reminder_of_the_energy_saving: A reminder of the energy saving activities and actions you recorded between %{start_date} and %{target_date}
+        how_did_you_achieve_your_target: How did you achieve your target?
+        how_did_you_try_to_achieve_your_target: How did you try to achieve your target?
+        you_didnt_record_any_energy_saving: You didn't record any energy saving activities or actions between %{start_date} and %{target_date}
+      title:
+        reducing_your_energy_usage_by: Reducing your energy usage by %{target_date}
+        results_of_reducing_your_energy_usage: Results of reducing your energy usage
+        revise_your_target: Revise your target
+        set_a_new_target: Set a new target
+        view_current_target: View current target
+        we_are_calculating_your_progress: We are calculating your progress
+      warn_recent_data:
+        we_have_not_received_data:
+          one: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
+          other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
-      carbon_emissions: Carbon emissions
       compare_schools: Compare schools
-      explore_data: Explore data
       review_energy_analysis: Review energy analysis
     show:
       act_on_energy_usage: Act on energy usage
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
       add_estimate: Add an estimate
-      adult_dashboard: Adult Dashboard
-      co2_kg: CO2 (kg)
       coming_soon: Coming Soon
       complete_activities: Teach pupils about energy and climate change within the context of your own school by completing our freely available activities
       complete_interventions: Record energy saving actions made by school staff and facilities management to help to track whether your interventions have saved energy.
-      complete_short_programme: Take the next step towards completing one of our short programmes of activity to increase your impact and score points for your school
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore
-      cost_£: Cost (£)
       create_pupil_account: Create a pupil account
       dashboard_title: Adult dashboard for %{school_name}
       download_data: Download your data
       energy_bill_required: We need you to provide a recent energy bill for your school to confirm your meter numbers. This will help ensure that we can collect, process and display your school data.
       energy_saving_opportunities: Energy saving opportunities
+      find_out_more: Find out more
       find_training: Find training
       making_progress: Well done, you are making progress towards achieving your target to reduce your %{fuels} usage!
       more_information: More information
@@ -374,8 +595,6 @@ en:
       setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
       summary_of_recent_energy_usage: Summary of recent energy usage
       upload_energy_bill: Upload a bill
-      use_kwh: Use (kWh)
-      view_programmes: View your programmes
     timeline:
       no_events: No events to show
       title: What's been going on?
@@ -423,6 +642,8 @@ en:
       form:
         email: Email
         name: Name
+        preferred_locale: Preferred language
+        preferred_locale_hint: Set the user's preferred language for using the website and receiving emails
         role: Role
         what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
       index:
@@ -440,6 +661,7 @@ en:
         no_school_admin_accounts: There are no school admin accounts for this school
         no_staff_accounts: There are no staff accounts for this school
         password: Password
+        preferred_locale: Preferred language
         pupil_accounts: Pupil accounts
         pupil_accounts_message_1: Pupil accounts allow your school's pupils to log into Energy Sparks using only a password, no email address is required
         pupil_accounts_message_2: These accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils

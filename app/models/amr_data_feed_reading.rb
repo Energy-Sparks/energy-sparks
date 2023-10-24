@@ -22,6 +22,7 @@
 #
 # Indexes
 #
+#  adfr_meter_id_config_id                                      (meter_id,amr_data_feed_config_id)
 #  index_amr_data_feed_readings_on_amr_data_feed_config_id      (amr_data_feed_config_id)
 #  index_amr_data_feed_readings_on_amr_data_feed_import_log_id  (amr_data_feed_import_log_id)
 #  index_amr_data_feed_readings_on_meter_id                     (meter_id)
@@ -35,6 +36,14 @@
 #  fk_rails_...  (meter_id => meters.id) ON DELETE => nullify
 #
 
+# Postgres autovacuum specific settings:
+# See: https://www.postgresql.org/docs/current/runtime-config-autovacuum.html
+# Applied using: ALTER TABLE amr_data_feed_readings SET (X = n)
+# autovacuum_vacuum_cost_delay = 0
+# autovacuum_analyze_scale_factor = 0
+# autovacuum_analyze_threshold = 10000
+# autovacuum_vacuum_scale_factor = 0
+# autovacuum_vacuum_threshold = 50000
 class AmrDataFeedReading < ApplicationRecord
   belongs_to :meter, optional: true
   belongs_to :amr_data_feed_import_log
@@ -77,5 +86,63 @@ class AmrDataFeedReading < ApplicationRecord
       AND   amr.amr_data_feed_config_id = c.id
       ORDER BY s.id, m.mpan_mprn ASC
     QUERY
+  end
+
+  def self.build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
+    amr_data_feed_config_ids = amr_data_feed_config_ids.reject { |id| (id.blank? || id.zero?) }
+    amr_data_feed_config_ids = AmrDataFeedConfig.all.pluck(:id) if amr_data_feed_config_ids.empty?
+
+    list_of_mpans = mpans.map {|m| "'#{m}'"}.join(',')
+    list_of_amr_data_feed_config_ids = amr_data_feed_config_ids.map {|m| "'#{m}'"}.join(',')
+
+    <<~QUERY
+      SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
+        SELECT mpan_mprn, meter_id, identifier, amr_data_feed_configs.description, reading_date,
+        CASE
+          WHEN reading_date ~ '\\d{2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{2}' THEN to_date(reading_date, 'DD-MON-YY')
+          WHEN date_format='%d-%m-%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%d-%m-%Y' THEN to_date(reading_date, 'DD-MM-YYYY')
+          WHEN date_format='%d/%m/%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%d/%m/%Y' THEN to_date(reading_date, 'DD/MM/YYYY')
+          WHEN date_format='%d/%m/%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%d/%m/%y' THEN to_date(reading_date, 'DD/MM/YY')
+          WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD ')
+          WHEN date_format='%y-%m-%d' THEN to_date(reading_date, 'YY-MM-DD ')
+          WHEN date_format='"%d-%m-%Y"' THEN to_date(reading_date, '"DD-MM-YYYY"')
+          WHEN date_format='%d/%m/%Y %H:%M:%S' THEN to_date(reading_date, 'DD/MM/YYYY HH24:MI::SS')
+          WHEN date_format='%H:%M:%S %a %d/%m/%Y' THEN to_date(reading_date, 'HH24:MI::SS Dy DD/MM/YYYY')
+          WHEN date_format='%e %b %Y %H:%M:%S' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%e %b %Y %H:%M:%S' THEN to_date(reading_date, 'DD Mon YYYY HH24:MI::SS')
+          WHEN date_format='%b %e %Y %I:%M%p' THEN to_date(reading_date, 'Mon DD YYYY HH12:MIam')
+          ELSE NULL
+        END parsed_date
+        FROM amr_data_feed_readings
+        JOIN amr_data_feed_configs ON amr_data_feed_configs.id = amr_data_feed_readings.amr_data_feed_config_id
+        WHERE mpan_mprn IN (#{list_of_mpans}) AND amr_data_feed_readings.amr_data_feed_config_id IN (#{list_of_amr_data_feed_config_ids})
+        ) as raw_data
+      GROUP BY mpan_mprn, meter_id, identifier, description
+      ORDER by mpan_mprn, meter_id, latest_reading DESC
+    QUERY
+  end
+
+  def self.unvalidated_data_report_for_mpans(mpans, amr_data_feed_config_ids = [])
+    query = build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
+    query_results = ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
+    sort_query_results_by(mpans, query_results)
+  end
+
+  def self.sort_query_results_by(mpans, query_results)
+    mpans.uniq.each_with_object([]) do |mpan, rows|
+      next if mpan.empty?
+
+      rows_for_mpan = query_results.select { |result| result['mpan_mprn'] == mpan }
+      if rows_for_mpan.present?
+        rows_for_mpan.each { |row_for_mpan| rows << row_for_mpan }
+      else
+        # Add an empty row for for any MPAN/MPRN not found
+        rows << { 'mpan_mprn' => mpan, "meter_id" => '-', "identifier" => "-", "description" => "-", "earliest_reading" => "-", "latest_reading" => "-" }
+      end
+    end
   end
 end

@@ -2,6 +2,7 @@ module Schools
   class AuditsController < ApplicationController
     load_resource :school
     load_and_authorize_resource through: :school
+    before_action :set_breadcrumbs
 
     def index
       if can?(:manage, Audit)
@@ -41,6 +42,10 @@ module Schools
     end
 
   private
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('energy_audits.title') }]
+    end
 
     def audit_params
       params.require(:audit).permit(:school_id, :title, :description, :file, :published, :involved_pupils, audit_activity_types_attributes: audit_activity_types_attributes, audit_intervention_types_attributes: audit_intervention_types_attributes)

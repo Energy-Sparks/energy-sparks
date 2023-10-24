@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'School Partners', :schools, type: :system do
-
   let!(:school_group)  { create(:school_group, name: 'BANES') }
   let(:school_name)   { 'Oldfield Park Infants'}
   let!(:school)       { create_active_school(name: school_name, school_group: school_group) }
@@ -9,14 +8,12 @@ RSpec.describe 'School Partners', :schools, type: :system do
 
 
   context "as admin" do
-
     context "when managing partners" do
-
       let!(:partner_1)         { create(:partner) }
       let!(:partner_2)         { create(:partner) }
       let!(:partner_3)         { create(:partner) }
 
-      before(:each) do
+      before do
         sign_in(admin)
         visit school_path(school)
       end
@@ -53,11 +50,7 @@ RSpec.describe 'School Partners', :schools, type: :system do
 
         school.reload
         expect(school.partners).to match_array([partner_2])
-
       end
-
     end
-
   end
-
 end

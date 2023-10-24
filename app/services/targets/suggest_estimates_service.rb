@@ -53,7 +53,7 @@ module Targets
     end
 
     def months_between(first, second)
-      ((first - second).to_f / 365 * 12).round
+      ((first - second).to_f / 365 * 12).floor
     end
 
     def candidate_suggestions

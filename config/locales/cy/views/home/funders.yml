@@ -1,0 +1,10 @@
+cy:
+  funders:
+    intro_html: |-
+      <p>
+        Mae ein cyllidwyr a'n cefnogwyr yn frwd dros leihau allyriadau carbon mewn ysgolion a chefnogi plant a phobl ifanc i ddatblygu sgiliau bywyd arbed ynni. Gyda'n gilydd rydym yn creu effaith yn <strong><a href='/schools'>%{school_count} o ysgolion y DU</a></strong> yn gweithio gyda Sbarcynni ar hyn o bryd.
+      </p>
+      <p>
+        <a href='/support_us'>Dysgu rhagor am ddod yn bartner ariannu Sbarcynnni</a>.
+      </p>
+    title: Ein Cyllidwyr

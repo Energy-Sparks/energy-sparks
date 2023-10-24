@@ -1,0 +1,58 @@
+<% content_for :page_title, 'Funder allocation report' %>
+
+<h1>Funder allocation report</h1>
+
+<p>
+Generates a report designed to support allocating schools across potential funders.
+</p>
+
+<%= form_tag deliver_admin_reports_funder_allocations_path, method: :post do %>
+  <%= button_tag(type: 'submit', class: 'btn btn-sm') do %>
+    <%= fa_icon('envelope') %> Email funder report
+  <% end %>
+<% end %>
+
+<p>
+  The report includes all visible schools.
+</p>
+
+<p>
+  Summary of column headings:
+</p>
+
+<ul>
+  <li>School group</li>
+  <li>School name</li>
+  <li>School type</li>
+  <li>Data visible? - true or false depending on whether school is data visible</li>
+  <li>Onboarding date - date school onboarding was completed. Will be empty for some older schools, or any created manually</li>
+  <li>Date enabled date - date school was first made data enabled. Consistent with the "recently onboarded" report. Will be empty if school not yet visible</li>
+  <li>Funder</li>
+  <li>Funding status</li>
+  <li>Postcode</li>
+  <li>Country</li>
+  <li>Pupils</li>
+  <li>% FSM</li>
+  <li>Local Authority Name - Local Authority District name. Based on matching school geographic location against latest local authority district boundaries</li>
+  <li>Region name - Government office region. Based on maping geographic location against latest boundaries. Regions only exist for England, so will be empty for Welsh and Scottish schools</li>
+  <li>Activities this year - Number of activities recorded for this academic year. Uses dates from the school's calendar</li>
+  <li>Actions this year - Adult actions recorded for this academic year. Uses dates from the school's calendar</li>
+  <li>Electricity Data Source 1 - Data sources for active electricity meters. Data source names have been sorted alphabetically for consistency. This will be the first</li>
+  <li>Electricity Data Source 2 - Optional</li>
+  <li>Electricity Data Source 3 - Optional</li>
+  <li>Electricity Procurement Route 1 - Procurement routes for active electricity meters. Route names have been sorted alphabetically for consistency. This will be the first</li>
+  <li>Electricity Procurement Route 2 - Optional</li>
+  <li>Electricity Procurement Route 3 - Optional</li>
+  <li>Gas Data Source 1 - Data sources for active gas meters. Data source names have been sorted alphabetically for consistency. This will be the first</li>
+  <li>Gas Data Source 2 - Optional</li>
+  <li>Gas Data Source 3 - Optional</li>
+  <li>Gas Procurement Route 1 - Procurement routes for active gas meters. Route names have been sorted alphabetically for consistency. This will be the first</li>
+  <li>Gas Procurement Route 2 - Optional</li>
+  <li>Gas Procurement Route 3 - Optional</li>
+  <li>Solar Data Source 1 - Data sources for active solar pv or exported solar pv meters. Data source names have been sorted alphabetically for consistency. This will be the first</li>
+  <li>Solar Data Source 2 - Optional</li>
+  <li>Solar Data Source 3 - Optional</li>
+  <li>Solar Procurement Route 1 - Procurement routes for active solar pv or exported solar pv meters. Route names have been sorted alphabetically for consistency. This will be the first</li>
+  <li>Solar Procurement Route 2 - Optional</li>
+  <li>Solar Procurement Route 3 - Optional</li>
+</ul>

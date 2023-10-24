@@ -1,0 +1,70 @@
+---
+en:
+  advice_pages:
+    electricity_intraday:
+      analysis:
+        charts:
+          comparison_chart_explanation_html: |-
+            <p>
+              This chart allows you to see how your school’s electricity consumption compares with other energy efficient schools throughout the school day. A 'benchmark' school represents the 30.0% best ranked %{school_type} schools and 'exemplar' the 17.5% best %{school_type} schools.
+            </p>
+            <p>
+              This chart can be useful to observe where your school’s pattern of energy use differs from other schools. There might be anomalies like jumps in usage outside school hours which can’t be accounted for.
+            </p>
+            <p>
+              If your school has high consumption overnight, compared to the benchmark schools, this could indicate that you need to reduce your baseload. If consumption is mainly high during the middle of the day, this indicates you need to reduce your peak electricity use.
+            </p>
+          comparison_chart_subtitle_html: The chart below provides a comparison of your school's average consumption during school days between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'benchmark' and 'exemplar' schools.
+          comparison_chart_title: Your school day electricity consumption over the last 12 months
+          holidays_chart_subtitle: The graph compares the average electricity consumption for your school during the school holidays over the last 2 years
+          holidays_chart_title: Daily variation in electricity use during school holidays
+          schooldays_chart_explanation_html: |-
+            <p>
+              This chart shows the peak electricity usage at the school (normally during the middle of the day) and the overnight electricity consumption.
+            </p>
+            <p>
+              It is useful in diagnosing what changes have happened over the last year which may have changed electricity consumption.
+            </p>
+          schooldays_chart_subtitle: The chart shows the average electricity consumption for your school during the school day over the last 2 years
+          schooldays_chart_title: Daily variation in electricity use during school days
+          trends_chart_explanation: You can use this type of graph to understand how the schools electricity usage changes over time. You can click on the legend to add or remove lines from the graph to make it clearer.
+          trends_chart_subtitle: The graph shows how the electricity consumption for your school varies during the day over the last week
+          trends_chart_title: Daily variation in electricity use over the last 7 days
+          weekends_chart_subtitle: The graph compares the average electricity consumption for your school during the weekend over the last 2 years
+          weekends_chart_title: Daily variation in electricity use over the weekends
+        comparison:
+          title: How does your school compare?
+        holidays:
+          title: Holidays
+        schooldays:
+          title: School days
+        sections: The following sections provide more background and analysis on your electricity baseload
+        summary: This section gives a more detailed analysis of how your school’s electricity use varies throughout the day. Comparisons are made between your school and benchmark and exemplar schools as well as between this year and the previous year for weekdays, weekends and holidays.
+        title: Analysis
+        trends:
+          title: Recent trends
+        weekends:
+          title: Weekends
+      insights:
+        how_do_you_compare:
+          callout_footer: average peak usage
+          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
+          summary: How does your peak electricity use compare to other %{school_type} schools on Energy Sparks with a similar number of pupils?
+          title: How do you compare?
+        summary_html: |-
+          <p>
+            Intraday use refers to how your electricity use varies at different times of the day. Usage will be at a peak in the middle of the day, but should be low overnight.
+          </p>
+          <p>
+            This page looks at this variation for school days, weekends and holidays and also compares your school to other schools of a similar size.
+          </p>
+        summary_link: Learn more
+        title: What is intraday use?
+        your_current_peak_electricity_use:
+          data_on_peak_kw_usage_available_from: Data on peak kw usage available from %{data_available_from}
+          table:
+            average_peak_kw: Average peak kW
+            percent_change: "% change"
+          the_table_below: The table below provides the average peak kW for electricity consumed between %{start_date} and %{end_date}.
+          title: Your current peak electricity use
+      page_title: Electricity intraday usage analysis

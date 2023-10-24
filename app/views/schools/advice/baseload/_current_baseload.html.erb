@@ -1,0 +1,39 @@
+<%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.baseload.current_baseload.title') %>
+
+<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(AlertChangeInElectricityBaseloadShortTerm), show_links: false, show_icons: false %>
+
+<table class="mt-2 table table-sm advice-table" id="current-baseload">
+    <thead>
+      <th><%= t('advice_pages.tables.columns.period') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.current_baseload.tables.columns.use') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.current_baseload.tables.columns.percentage_change') %></th>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= t('advice_pages.baseload.current_baseload.last_week') %></td>
+        <% if analysis_dates.recent_data %>
+          <td class="text-right"><%= format_unit(current_baseload.average_baseload_kw_last_week, :kw) %></td>
+          <td class="text-right">
+            <%= up_downify( format_unit(current_baseload.percentage_change_week, :relative_percent)) %>
+          </td>
+        <% else %>
+          <td class="text-right old-data">
+            <%= t('advice_pages.no_recent_data') %>
+          </td>
+          <td class="text-right">-</td>
+        <% end %>
+      </tr>
+      <tr>
+        <td><%= t('advice_pages.baseload.current_baseload.last_year') %></td>
+        <td class="text-right"><%= format_unit(current_baseload.average_baseload_kw_last_year, :kw) %></td>
+        <td class="text-right">
+          <% if analysis_dates.one_years_data %>
+            <%= up_downify( format_unit(current_baseload.percentage_change_year, :relative_percent)) %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

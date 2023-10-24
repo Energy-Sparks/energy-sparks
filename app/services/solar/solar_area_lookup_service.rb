@@ -8,12 +8,7 @@ module Solar
     end
 
     def lookup
-      if EnergySparks::FeatureFlags.active?(:auto_assign_solar_area)
-        find_nearest_area
-      else
-        #original behaviour was to use area assigned from the onboarding
-        @school_onboarding.present? ? @school_onboarding.solar_pv_tuos_area : nil
-      end
+      find_nearest_area
     end
 
     def assign

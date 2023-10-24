@@ -1,9 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top fixed-top-sub-nav sub-navbar">
   <div class="container">
-    <div>
-      <%= link_to school.name, school_path(school), class: "navbar-brand" %>
-      <%= render 'shared/school_status_buttons', school: school %>
-    </div>
+    <% if school.active %>
+      <div id="school-status-buttons">
+        <%= render 'shared/school_status_buttons', school: school %>
+      </div>
+    <% else %>
+      <div></div>
+    <% end %>
     <div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

@@ -1,0 +1,21 @@
+<% content_for :page_title, t('compare.benchmarks.title') %>
+
+<h1><%= t('compare.benchmarks.title') %></h1>
+
+<%= render 'summary' %>
+
+<h4><%= t('compare.benchmarks.description') %></h4>
+
+<% @benchmark_groups.each do |benchmark_group| %>
+  <div class="compare card mb-4">
+    <div class="card-header"><%= %><%= benchmark_group[:name] %></div>
+    <div class="card-body pb-0">
+      <div class="card-subtitle text-muted"><%= benchmark_group[:description] %></div>
+      <ul class="fa-ul card-columns">
+        <% benchmark_group[:benchmarks].each do |benchmark, title| %>
+          <li class="pt-1"><i class="fa-li fas fa-check"></i><%= link_to title, compare_path(benchmark, @filter) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

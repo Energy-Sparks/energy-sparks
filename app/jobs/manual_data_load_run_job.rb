@@ -24,7 +24,6 @@ class ManualDataLoadRunJob < ApplicationJob
       amr_uploaded_reading.update!(imported: true)
       manual_data_load_run.info("Inserted: #{amr_data_feed_import_log.records_imported}")
       manual_data_load_run.info("Updated: #{amr_data_feed_import_log.records_updated}")
-      Database::VacuumService.new([:amr_data_feed_readings]).perform
       manual_data_load_run.info("SUCCESS")
       status = :done
     rescue => e

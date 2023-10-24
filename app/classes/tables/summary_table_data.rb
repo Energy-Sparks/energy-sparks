@@ -4,6 +4,17 @@ module Tables
       @template_data = template_data
     end
 
+    def by_fuel_type_table
+      fuel_type_table = {}
+      fuel_types.map do |fuel_type|
+        fuel_type_table[fuel_type] = OpenStruct.new(
+          week: summary_data_for(fuel_type, :workweek),
+          year: summary_data_for(fuel_type, :year)
+        )
+      end
+      OpenStruct.new(fuel_type_table)
+    end
+
     def by_fuel_type
       fuel_types.map do |fuel_type|
         [summary_data_for(fuel_type, :workweek), summary_data_for(fuel_type, :year)]
@@ -14,6 +25,14 @@ module Tables
       fuel_types.map do |fuel_type|
         "#{I18n.t("common.#{fuel_type}", default: fuel_type.to_s.humanize)} #{I18n.t('common.data')}: #{start_date(fuel_type)} - #{end_date(fuel_type)}."
       end.join(' ')
+    end
+
+    def table_date_ranges
+      table_date_ranges = {}
+      fuel_types.each do |fuel_type|
+        table_date_ranges[fuel_type] = { start_date: start_date(fuel_type), end_date: end_date(fuel_type) }
+      end
+      table_date_ranges
     end
 
     def start_date(fuel_type)
@@ -43,10 +62,15 @@ module Tables
         fuel_type: fuel_type,
         period: format_period(period),
         usage: format_number(fetch(fuel_type, period, :kwh), :kwh),
+        usage_text: format_number(fetch(fuel_type, period, :kwh), Float, :text),
         co2: format_number(fetch(fuel_type, period, :co2), :kg),
+        co2_text: format_number(fetch(fuel_type, period, :co2), Float, :text),
         cost: format_number(fetch(fuel_type, period, :£), :£),
+        cost_text: format_number(fetch(fuel_type, period, :£), Float, :text),
         savings: format_number(fetch(fuel_type, period, :savings_£), :£),
+        savings_text: format_number(fetch(fuel_type, period, :savings_£), Float, :text),
         change: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
+        change_text: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
         message: data_validity_message(fuel_type, period),
         message_class: data_validity_class(fuel_type, period),
         has_data: has_data?(fuel_type, period)

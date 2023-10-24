@@ -42,6 +42,10 @@ div.application.container.extra-padding {
   padding-top: 30px;
 }
 
+div.application.container.extra-padding-school-group {
+  padding-top: 42px;
+}
+
 section.home.alerts {
   padding-top: 30px;
 }
@@ -149,6 +153,19 @@ th.fixed-width-150 {
   min-width: 150px;
 }
 
+.table td.fit {
+  white-space: nowrap;
+  width: 1px;
+}
+
+.table td.overflow {
+  white-space: nowrap;
+  text-overflow:ellipsis;
+  overflow: hidden;
+  max-width:1px;
+}
+
+
 div.meter-attributes {
   kbd {
     color: black;
@@ -223,4 +240,13 @@ dl dt {
 
 .text-break {
   white-space: pre-line;
+}
+
+.main-breadcrumbs .breadcrumb-item+.breadcrumb-item::before {
+  content: quote(">");
+}
+
+.main-breadcrumbs {
+  background-color: transparent;
+  padding: 0;
 }

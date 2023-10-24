@@ -1,0 +1,57 @@
+cy:
+  advice_pages:
+    electricity_out_of_hours:
+      analysis:
+        holiday_usage:
+          alert_group_by_week_electricity_14_months:
+            header: Gall y siart hwn helpu eich ysgol i gymharu defnydd trydan yn ystod gwyliau
+            subtitle_html: Mae'r siart hwn yn rhoi dadansoddiad o'r defnydd o drydan rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob wythnos rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span>
+            title: Defnydd o drydan fesul wythnos am y 14 mis diwethaf
+          table_footer: Gall fod rhesymau dros rai gwyliau i ddefnyddio mwy o ynni, er enghraifft goleuadau diogelwch ychwanegol yn y gaeaf neu gontractwyr yn gweithio ar eiddo ysgol. Yn ddelfrydol, dylai'r gwyliau cryno fod yn is na gwyliau eraill oherwydd gellir diffodd mwy o offer a chyfarpar.
+          table_intro: Mae’r tabl isod yn dangos crynodeb o’ch defnydd trydan gwyliau ysgol y llynedd. Mae'n cynnwys defnydd ynni cyfartalog y dydd i alluogi cymhariaeth ar gyfer gwyliau o hyd gwahanol.
+          title: Defnydd gwyliau
+        last_twelve_months:
+          table:
+            co2_kg: kg/co2
+            gbp_at_current_tariff: "£ (ar y tariff presennol)"
+            percent: Canran
+            time_of_use: Amser defnydd
+            total: Cyfanswm
+          table_introduction: Mae'r tabl isod yn dangos faint o drydan a ddefnyddiwyd pan mae'r ysgol ar agor neu ar gau ar ddiwrnod ysgol yn ogystal ag ar benwythnosau a gwyliau.
+          title: 12 mis diwethaf
+        summary: Mae'r adran hon yn rhoi dadansoddiad manylach o ddefnydd trydan eich ysgol y tu allan i oriau ysgol a rhai pethau i gadw llygad amdanynt. Er mwyn rheoli ynni'n dda, rydych am i'r rhan fwyaf o'ch defnydd ynni fod pan fydd yr ysgol ar agor.
+        tables:
+          columns:
+            average_daily_usage: Defnydd dyddiol ar gyfartaledd (kWh)
+        title: Dadansoddiad
+        usage_by_day_of_week:
+          daytype_breakdown_electricity_tolerant_chart:
+            subtitle_html: Mae'r siart hwn yn dangos manylion o'ch defnydd o drydan rhwng <span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>
+            title: Manylion defnydd trydan
+          electricity_by_day_of_week_tolerant_chart:
+            footer: Bydd rhywfaint o ddefnydd trydan ar benwythnosau o offer a dyfeisiau sy'n cael eu gadael ymlaen, ond dylai'r ysgol anelu at leihau'r rhain. Mae ysgolion sydd â defnydd isel o drydan ar benwythnosau yn anelu at ddiffodd cymaint o offer â phosibl ar brynhawn dydd Gwener, gan roi rhestr wirio weithiau i'r gofalwr neu'r staff glanhau o'r hyn y dylent fod yn ei ddiffodd.
+            subtitle_html: Mae'r siart hwn yn dangos cyfanswm y trydan a ddefnyddir gan eich ysgol rhwng <span class="start-date">%{start_month_year}</span> a %{end_month_year}, wedi'i ddadansoddi fesul diwrnod yr wythnos ac amser defnyddio
+            title: Defnydd trydan fesul diwrnod yr wythnos
+          title: Defnydd fesul diwrnod yr wythnos
+      insights:
+        comparison:
+          callout_footer: defnydd blynyddol
+          how_do_you_compare: Sut mae eich defnydd o drydan y tu allan i oriau ysgol yn cymharu ag ysgolion %{school_type} eraill ar Sbarcynni, sydd â nifer tebyg o ddisgyblion?
+          more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
+          title: Sut ydych chi'n cymharu?
+        next_steps: Sicrhewch eich bod yn diffodd y goleuadau ac offer trydan yn ddyddiol a gwnewch wiriad mwy trylwyr cyn penwythnosau a gwyliau.
+        title: Beth yw defnydd y tu allan i oriau?
+        what_is_out_of_hours_usage_html: |-
+          <p>
+            Mae defnydd o drydan y tu allan i oriau yw'r defnydd o drydan a ddefnyddir pan fydd yr ysgol ar gau - dros nos, ar y penwythnos ac yn ystod y gwyliau.
+          </p>
+
+            Lleihau'r defnydd o drydan y tu allan i oriau yn un o'r ffyrdd hawsaf a rhataf o arbed llawer o ynni.
+
+          <p>
+            Noder: Mae dadansoddiad o fewn y dudalen hon yn seiliedig ar oriau agor yr ysgol wedi'u gosod ar gyfer eich ysgol. Mae'n well gosod y rhain i fod mor gywir â phosibl er mwyn i chi gael cyngor priodol.
+          </p>
+        what_is_out_of_hours_usage_link: Dysgu rhagor
+        your_out_of_hours_usage_html: Dros y flwyddyn ddiwethaf, defnyddiwyd %{out_of_hours_percent} o'ch trydan pan gaewyd yr ysgol. Mae hyn wedi costio %{out_of_hours_gbp} i chi ac wedi arwain at allyriau o %{out_of_hours_co2}kg CO2.
+        your_out_of_hours_usage_title: Eich defnydd y tu allan i oriau
+      page_title: Defnydd o drydan y tu allan i oriau ysgol

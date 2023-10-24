@@ -39,4 +39,12 @@ module LocaleHelper
   rescue
     I18n.t("date.other.#{day}", default: '')
   end
+
+  def t_month(month)
+    I18n.t('date.month_names')[month.to_i]
+  end
+
+  def t_role(role)
+    I18n.t("role.#{role}", default: '')
+  end
 end

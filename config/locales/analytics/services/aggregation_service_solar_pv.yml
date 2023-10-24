@@ -1,0 +1,4 @@
+---
+en:
+  aggregation_service_solar_pv:
+    mains_plus_self_consume_name: "%{meter_name} including onsite solar PV consumption"

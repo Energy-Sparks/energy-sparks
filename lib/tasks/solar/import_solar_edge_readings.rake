@@ -7,10 +7,9 @@ namespace :solar do
 
     puts "#{DateTime.now.utc} import_solar_edge_readings start"
     SolarEdgeInstallation.all.each do |installation|
-      puts "Running for #{installation.site_id}"
+      puts "Running for #{installation.school.name} #{installation.site_id}"
       Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date: start_date, end_date: end_date).perform
     end
-    Database::VacuumService.new([:amr_data_feed_readings]).perform
     puts "#{DateTime.now.utc} import_solar_edge_readings end"
   end
 end

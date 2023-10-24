@@ -1,0 +1,12 @@
+<hr>
+
+<div class="d-flex justify-content-between align-items-top">
+  <div>
+    <h2 id="<%= section_id %>" class="scrollable"><%= section_title %></h2>
+  </div>
+  <div>
+    <%= link_to "#" do %>
+      <%= t('common.back_to_top') %> <i class="fa fa-arrow-up" data-toggle="tooltip" title="<%= t('common.back_to_top') %>"></i>
+    <% end %>
+  </div>
+</div>

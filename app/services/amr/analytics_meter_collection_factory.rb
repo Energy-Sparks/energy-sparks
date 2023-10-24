@@ -12,7 +12,7 @@ module Amr
     def unvalidated_data
       heat_meters = @active_record_school.meters_with_readings(:gas)
       electricity_meters = @active_record_school.meters_with_readings(Meter.non_gas_meter_types)
-      data(AnalyticsUnvalidatedAmrDataFactory, heat_meters, electricity_meters, :unvalidated_meter_data)
+      data(AnalyticsUnvalidatedAmrDataFactory, heat_meters, electricity_meters)
     end
 
     def validated
@@ -22,13 +22,13 @@ module Amr
     def validated_data
       heat_meters = @active_record_school.meters_with_validated_readings(:gas)
       electricity_meters = @active_record_school.meters_with_validated_readings([:electricity, :solar_pv, :exported_solar_pv])
-      data(AnalyticsValidatedAmrDataFactory, heat_meters, electricity_meters, :validated_meter_data)
+      data(AnalyticsValidatedAmrDataFactory, heat_meters, electricity_meters)
     end
 
     private
 
-    def data(meter_data_class, heat_meters, electricity_meters, meter_data_type)
-      schedule_data_manager_service = ScheduleDataManagerService.new(@active_record_school, meter_data_type)
+    def data(meter_data_class, heat_meters, electricity_meters)
+      schedule_data_manager_service = ScheduleDataManagerService.new(@active_record_school)
       {
         school_data: AnalyticsSchoolFactory.new(@active_record_school).build,
         schedule_data: {

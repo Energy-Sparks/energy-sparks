@@ -1,27 +1,23 @@
 <% unless dashboard_alerts.empty? %>
-
   <div class="act-on-energy-usage" id="dashboard-alerts">
     <% dashboard_alerts.each do |alert_content|%>
       <% if local_assigns[:show_debug] %>
         <%= link_to 'Alert', school_alert_path(@school, alert_content.alert) %>
         Priority: <%= alert_content.priority %>
       <% end %>
-      <%= render 'schools/dashboard/info_bar',
-        colour: class_for_alert_colour(alert_content.colour),
-        icon: alert_icon(alert_content.alert, 'fa-3x'),
-        content: alert_content.send(content_field),
-        buttons: alert_content.find_out_more ? {t('for_schools.find_out_more') => school_find_out_more_path(school, alert_content.find_out_more)} : {}
+      <%= component 'info_bar',
+          status: alert_content.colour,
+          title: alert_content.send(content_field),
+          icon: fa_icon(alert_icon(alert_content.alert, 'fa-3x')),
+          buttons: dashboard_alert_buttons(@school, alert_content)
       %>
-  <% end %>
-  <% if dashboard_alerts.size > 1 && !local_assigns[:show_all] %>
-    <div class="row">
-      <div class="col text-center">
-        <a href="#" class="btn btn-rounded more-alerts">
-          <%= t('dashboard_alerts.show_more_alerts', count: dashboard_alerts.size - 1) %>
-        </a>
+    <% end %>
+    <% if dashboard_alerts.size > 1 && !local_assigns[:show_all] %>
+      <div class="row">
+        <div class="col text-center">
+          <%= link_to t('advice_pages.index.alerts.title'), alerts_school_advice_path(school), class: 'btn btn-rounded' %>
+        </div>
       </div>
-    </div>
-  <% end %>
-</div>
-
+    <% end %>
+  </div>
 <% end %>

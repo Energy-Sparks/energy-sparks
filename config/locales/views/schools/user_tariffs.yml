@@ -1,9 +1,21 @@
 ---
 en:
   schools:
+    energy_tariffs:
+      title: Energy Tariffs
+    tariffs_helper:
+      charge_value: "%{value} per %{units}"
+      prices_text: Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill.
+      rate_from: Rate from %{start_time} to %{end_time}
+      user_tariff_title: "%{start_date} to %{end_date}"
     user_tariff_charges:
+      charge_ccl:
+        climate_charge_levy: Climate charge levy
+      charge_tnuos:
+        tnuos_transmission_network_use_of_system: TNUoS (Transmission Network Use of System)
       charge_vat:
         rate: Rate
+        vat_rate: VAT rate
       charges_edit_electricity:
         consumption_and_supply_charges: Consumption and supply charges
         distribution_charges: Distribution charges
@@ -12,9 +24,19 @@ en:
       charges_edit_gas:
         consumption_and_supply_charges: Consumption and supply charges
         other_charges: Other charges
+      edit_charges: Edit charges
       index:
+        breadcrumb_title: Add standing charges for this tariff
+        introduction_school: Please provide as much detail as you can about the standing charges associated with this tariff. You can find details about the standing charges by looking at a recent bill
+        introduction_school_group: Please provide as much detail as you can about the standing charges associated with this tariff. You can find details about the standing charges by looking at a recent bill
+        introduction_site_settings: Please provide as much detail as you can about the standing charges associated with this tariff
+        notice: This step is optional and if you do not have this information, you can skip it.
+        notice_site_settings: Site setting tariffs should only have consumption charges.
+        smart_meter_notice: You cannot edit the daily standing charge for this tariff but can edit the other charges.
         title: Add standing charges for this tariff
-        using_your_bill_introduction: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
+      per: per
+      tick_this_box_if_you_pay_this_charge: Tick this box if you pay this charge
+      value_in_gbp: Value in £
     user_tariff_differential_prices:
       form:
         labels:
@@ -22,70 +44,173 @@ en:
           start_time: Start time
           value: Rate in £/kWh
       index:
+        add_rate: Add rate
+        breadcrumb_title: Add consumption charges for each time period for this tariff
+        complete_message: Complete 24 hour coverage
         consumption_charges: Consumption charges
-        title: Add consumption charges for each time period for this tariff
-        using_your_bill_introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        incomplete_message: 'Incomplete 24 hour coverage. For complete 24 hour coverage you will need to add additional prices within these missing time ranges:'
+        incomplete_zero_prices_message: A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default
+        introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
+        invalid_values_message: Please add valid prices for all marked rates
+        reset_to_default: Reset to default
+        title: Add consumption charges for each time period for this %{fuel_type} tariff
     user_tariff_flat_prices:
       edit:
-        introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
-        title: Edit the consumption charges for this tariff
+        breadcrumb_title: Edit the consumption charges for this tariff
+        introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
+        title: Edit the consumption charges for this %{fuel_type} tariff
+      form:
+        rate: Rate
       new:
-        introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
-        title: Add consumption charges for this tariff
+        breadcrumb_title: Add consumption charges for this tariff
+        introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
+        title: Add consumption charges for this %{fuel_type} tariff
+      rate_in_gbp: Rate in £
     user_tariffs:
+      applies_to:
+        breadcrumb_title: Tariff applies to
+        title: Choose which meter systems this tariff applies to
       charges_table:
         climate_charge_levy: Climate charge levy
         tnuos: TNUoS (Transmission Network Use of System)
         vat_rate: VAT rate
       choose_meters:
+        apply_tariff_to_all_meters: Apply tariff to all %{fuel_type} meters
+        both: both half-hourly and non half-hourly meters
+        breadcrumb_title: Choose meters
+        half_hourly: half-hourly meters only
+        missing_meters: Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters
+        non_half_hourly: non half-hourly meters only
+        specific_meters_prompt: Will this tariff apply to all %{fuel_type} meters at the school or just specific meters?
+        tariff_applies_to: Tariff applies to
         title: Select meters for this tariff
         which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
       choose_type:
-        day_night_tariff: Day/Night tariff
-        is_this_a_simple_flat_rate: Is this a simple flat rate?
-        or_a_rate_which_varies_by_time_of_day: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
-        simple: Simple
-        title: Choose the type of this tariff
+        are_you_sure_message: Are you sure? Changing the type will delete all consumption charges associated with this tariff.
+        breadcrumb_title: Choose tariff type
+        differential: Differential tariff
+        flat_rate: Flat rate tariff
+        is_this_a:
+          differential: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
+          flat_rate: Is this a flat rate tariff?
+        title: Choose the type of this %{fuel_type} tariff
       edit:
+        breadcrumb_title: Edit the name and date range
         title: Edit the name and date range for this %{fuel_type} tariff
+      edit_meters:
+        breadcrumb_title: Edit meters for this tariff
       flat_rate:
+        flat_rate_tariff: Flat rate tariff
         no_flat_rate_tariff_has_been_set_yet: No flat rate tariff has been set yet
+        per_kwh: per kWh
+      form:
+        errors:
+          applies_to:
+            must_be_set_to_both: applies to must be set to 'both' for all non-electricity tariffs
+          dates:
+            start_and_end_date_can_not_both_be_empty: start and end date can't both be empty
+            start_date_must_be_earlier_than_or_equal_to_end_date: start date must be earlier than or equal to end date
+        hints:
+          end_date: Leave blank if there is no end date
+          start_date: Leave blank if there is no start date
       index:
-        changes_to_cost_calculations_message: Changes to the cost calculations based on these tariffs will update overnight
+        changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
+        default_tariffs_message_html: These tariffs will apply to any periods not covered by <a href="%{user_supplied_tariffs_link}">user supplied tariffs</a>
+        default_tariffs_message_with_smart_meters_html: These tariffs will apply to any periods not covered by <a href="%{user_supplied_tariffs_link}">user supplied tariffs</a> or any tariffs imported from your <a href="%{smart_meter_tariffs_link}">smart meters</a>
         electricity:
           add_label: Add electricity tariff
           header: Electricity
-          there_are_no_electricity_tariffs_set_up_yet: There are no electricity tariffs set up yet
+          there_are_no_electricity_tariffs_set_up_yet: We have no user supplied tariffs for your electricity meters
+        exported_solar_pv:
+          add_label: Add exported solar PV tariff
+          header: Exported solar PV
+          there_are_no_exported_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your exported solar PV meters.
         gas:
           add_label: Add gas tariff
           header: Gas
-          there_are_no_gas_tariffs_set_up_yet: There are no gas tariffs set up yet
-        introduction_html: Add meter tariffs from your electricity and gas bills here, to improve the accuracy of the cost calculations displayed on your <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</> pages
-        title: Manage tariffs
+          there_are_no_gas_tariffs_set_up_yet: We have no user supplied tariffs for your gas meters.
+        group_school_tariffs:
+          electricity: Electricity tariffs
+          gas: Gas tariffs
+          name: Name
+        group_school_tariffs_message: Schools in the %{school_group_name} group with their own custom tariffs
+        introduction_html: |-
+          <p>
+            You can improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> by adding details about your real tariffs.
+          </p>
+          <p>
+            To add a new tariff, you will need to know the rate you are charged. You will also have the option to add any standing charges that you pay. Details of your rate and standing charges should be listed on a recent bill.
+          </p>
+        no_defaults: We have no default tariffs for your %{meter_type} meters.
+        no_smart_meter_tariffs: We have not imported any tariffs from your %{meter_type} meters.
+        note_about_defaults_html: If we do not have your real tariff information, then we will estimate your costs using our <a href="%{default_tariffs_link}">default tariffs</a>.
+        note_about_smart_meter_tariffs_html: We are currently using tariffs automatically imported from your <a href="%{smart_meter_tariffs_link}">smart meters</a>.
+        solar_pv:
+          add_label: Add solar PV tariff
+          header: Solar PV
+          there_are_no_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your solar PV meters.
+        tabs:
+          default_tariffs: Default tariffs
+          group_school_tariffs: School tariffs
+          smart_meter_tariffs: Smart meter tariffs
+          system_default_tariffs: System default tariffs
+          user_tariffs: User supplied tariffs
+        title: Manage and view tariffs
       meters:
-        meters_associated_with_this_tariff: Meters associated with this tariff
-        there_are_no_meters_associated_with_this_tariff: There are no meters associated with this tariff
+        all_meters: All %{meter_type} meters
+        meter_list: Meters
+      name: Name
       new:
+        breadcrumb_title: Choose a name and date range
         title: Choose a name and date range for this %{fuel_type} tariff
+      not_allowed_for_smart_meter_tariffs: This is not allowed for smart meter tariffs
       rates_table:
         no_consumption_charges_specified_yet: No consumption charges specified yet
         price_per_kwh: "%{price_value} per kWh"
       show:
+        breadcrumb_title: "%{name}"
         consumption_charges: Consumption charges
-        introduction_html: Any changes to the tariff will be reflected in the <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</a> pages which will update overnight
-        meter_attribute_view: Meter attribute view (admin only)
+        created_at: Date created
+        created_by: Created by
+        dates:
+          end_date: End date
+          start_date: Start date
+          title: Dates
+        introduction_html: Any changes to the tariff will be reflected in the <a href='%{analysis_path}'>%{meter_type} cost analysis</a> page which will update overnight
+        meters: Meters
+        no_standing_charges: No standing charges have been added
+        not_usable: This tariff has missing or incomplete prices and so is not yet finished.
+        notes_html: Notes <small>(admin only)</small>
         standing_charges: Standing charges
-        title: Tariff details
+        updated_at: Date last updated
+        updated_by: Last updated by
+      smart_meter_tariffs:
+        introduction_html: |-
+          <p>
+            We are automatically loading basic tariff information from your smart meters. These only include basic information about
+            your daily standing charges.
+          </p>
+          <p>
+            You can choose to edit these tariffs to add more detailed standing charge information for each meter. If you have already added tariffs for the whole school, you can instead choose to disable these tariffs.
+          </p>
+        limited_editing: This tariff information has been automatically imported from your smart meter. You may add additional detail about your standing charges but cannot edit any other information.
+      summary_table:
+        no_end_date: No end date
+        no_start_date: No start date
       tariff_partial:
-        day_night_tariff: Day/night tariff
+        consumption_charges: Consumption charges
+        differential_tariff: Differential tariff
         end_date: End date
-        full_details: Full details
-        no_consumption_charges_have_been_set_yet: No consumption charges have been set yet
-        per_kwh: per kWh
-        price_from_to: "%{price_start_time} to %{price_end_time} : "
-        simple_tariff: Simple tariff
+        flat_rate_tariff: Flat rate tariff
+        price_from_to: "%{price_start_time} to %{price_end_time}:"
         start_date: Start date
         type: Type
-      there_should_only_be_one_tariff_message: There should only be one tariff for each date period, for each meter
       title_partial:
         heading: Tariff
+      view_and_manage_tariffs_html: <a href="%{user_tariffs_path}">View and manage your school tariffs</a>

@@ -21,7 +21,7 @@
     <!-- Energy analysis -->
     <% if current_user.school.data_enabled? %>
       <%= link_to t('my_school_menu.energy_audits'), school_audits_path(current_user.school), class: 'dropdown-item' %>
-      <%= link_to t('my_school_menu.energy_analysis'), school_analysis_index_path(current_user.school), class: 'dropdown-item' %>
+      <%= link_to t('my_school_menu.energy_analysis'), school_advice_path(current_user.school), class: 'dropdown-item' %>
     <% end %>
 
     <!-- Review targets -->
@@ -31,7 +31,7 @@
 
     <% if current_user.school&.school_group&.present? %>
       <!-- Compare schools -->
-      <%= link_to t('schools.school_group.compare_schools'), benchmarks_path(benchmark: {school_group_ids: [current_user.school.school_group.id]}), class: 'dropdown-item' %>
+      <%= link_to t('schools.school_group.compare_schools'), compare_index_path(school_group_ids: [current_user.school.school_group.id]) + '#groups', class: 'dropdown-item' %>
     <% end %>
 
     <!-- Complete pupil activities -->

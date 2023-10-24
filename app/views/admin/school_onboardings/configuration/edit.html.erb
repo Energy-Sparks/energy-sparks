@@ -8,14 +8,6 @@
       <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school_onboarding.template_calendar.id if @school_onboarding.template_calendar)),{},{class: 'form-control'}%>
     </div>
   </div>
-  <% unless EnergySparks::FeatureFlags.active?(:auto_assign_solar_area) %>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
-        <%= f.select :solar_pv_tuos_area_id, options_from_collection_for_select(SolarPvTuosArea.all.active.order(:title), 'id', 'title', (@school_onboarding.solar_pv_tuos_area.id if @school_onboarding.solar_pv_tuos_area)),{}, { class: 'form-control' }%>
-      </div>
-    </div>
-  <% end %>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :dark_sky_area_id, 'Dark Sky Data Feed Area' %>
@@ -34,14 +26,20 @@
       <%= f.select :scoreboard_id, options_from_collection_for_select(Scoreboard.order(:name), 'id', 'name', (@school_onboarding.scoreboard.id if @school_onboarding.scoreboard)),{}, { class: 'form-control' }%>
     </div>
   </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :country, 'Country' %>
+      <%= f.select :country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, @school_onboarding.country), {include_blank: false}, { class: 'form-control' } %>
+    </div>
+  </div>
 
   <div class="form-group">
-    <label><%= t("admin.school_groups.default_chart_preference.form_group") %></label>
-    <p class="small"><%= t("admin.school_groups.default_chart_preference.explanation") %></p>
+    <label><%= t("school_groups.chart_updates.index.default_chart_preference.form_group") %></label>
+    <p class="small"><%= t("school_groups.chart_updates.index.default_chart_preference.explanation") %></p>
     <% SchoolOnboarding.default_chart_preferences.keys.each do |preference| %>
       <div class="form-check">
         <%= f.radio_button :default_chart_preference, preference, checked: @school_onboarding.default_chart_preference == preference, class: "form-check-input" %>
-        <%= f.label "default_chart_preference_#{preference.to_sym}", t("admin.school_groups.default_chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
+        <%= f.label "default_chart_preference_#{preference.to_sym}", t("school_groups.chart_updates.index.default_chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
       </div>
     <% end %>
   </div>

@@ -1,11 +1,16 @@
 module Admin
   class UsersController < AdminController
+    include ApplicationHelper
     load_and_authorize_resource
 
     def index
-      @school_users = school_users
-      @school_group_users = @users.where.not(school_group_id: nil).order('school_groups.name', :email).includes(:school_group)
+      @school_groups = SchoolGroup.all.by_name
+      @search_users = find_users
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
+      respond_to do |format|
+        format.html { }
+        format.csv { send_data produce_user_csv, filename: 'users.csv' }
+      end
     end
 
     def new
@@ -39,7 +44,25 @@ module Admin
       redirect_to admin_users_path, notice: 'User was successfully destroyed.'
     end
 
+    def unlock
+      user = User.find(params['user_id'])
+      user.unlock_access!
+      redirect_to admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
+    end
+
   private
+
+    def find_users
+      if params[:search].present?
+        search = params[:search]
+        if search["email"].present?
+          return User.where("email ILIKE ?", "%#{search['email']}%").where.not(role: :pupil).limit(50)
+        else
+          return []
+        end
+      end
+      []
+    end
 
     def user_params
       params.require(:user).permit(:name, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
@@ -59,6 +82,33 @@ module Admin
         end
       end
       users
+    end
+
+    def produce_user_csv
+      CSV.generate do |csv|
+        csv << [
+          'School Group',
+          'School',
+          'School type',
+          'Name',
+          'Email',
+          'Role',
+          'Staff Role',
+          'Locked'
+        ]
+        User.where.not(role: :pupil).where.not(role: :admin).order(:email).each do |user|
+          csv << [
+            user.group_admin? ? user.school_group.name : user.school&.school_group&.name,
+            user.school.present? ? user.school.name : '',
+            user.school.present? ? user.school.school_type.humanize : '',
+            user.name,
+            user.email,
+            user.role.titleize,
+            user.staff_role&.title,
+            y_n(user.access_locked?)
+          ]
+        end
+      end
     end
   end
 end

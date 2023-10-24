@@ -1,4 +1,4 @@
-<% content_for :page_title, 'Your current energy saving targets' %>
+<% content_for :page_title, t('schools.school_targets.current.page_title') %>
 
 <%= render "title", school_target: @school_target %>
 
@@ -16,5 +16,7 @@
 <% if @suggest_estimates_for_fuel_types.any? %>
   <%= render 'prompt_to_add_estimate', school: @school, fuel_types: @suggest_estimates_for_fuel_types %>
 <% end %>
+
+<%= render "previous_target", previous_target: @school.expired_target %>
 
 <%= render "schools/school_targets/achieving_your_targets", suggestions: @suggestions, actions: @actions, school: @school, daily_variation_url: nil %>

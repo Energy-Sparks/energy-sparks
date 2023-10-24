@@ -3,6 +3,7 @@
 # Table name: school_onboardings
 #
 #  contact_email            :string           not null
+#  country                  :integer          default("england"), not null
 #  created_at               :datetime         not null
 #  created_by_id            :bigint(8)
 #  created_user_id          :bigint(8)
@@ -64,9 +65,18 @@ class SchoolOnboarding < ApplicationRecord
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
 
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
+  enum country: School.countries
 
   def has_event?(event_name)
     events.where(event: event_name).any?
+  end
+
+  def last_event(event_name)
+    events.by_event_name(event_name).last
+  end
+
+  def last_event_older_than?(event_name, time)
+    last_event(event_name) && last_event(event_name).created_at < time
   end
 
   def has_only_sent_email_or_reminder?
@@ -114,11 +124,30 @@ class SchoolOnboarding < ApplicationRecord
     pupil_account_created?
   end
 
+  def email_locales
+    country == 'wales' ? [:en, :cy] : [:en]
+  end
+
   def to_param
     uuid
   end
 
   def page_anchor
     school_group.slug if school_group
+  end
+
+  def onboarding_completed_on
+    events.onboarding_complete.minimum(:created_at)
+  end
+
+  def first_made_data_enabled
+    events.onboarding_data_enabled.minimum(:created_at)
+  end
+
+  def days_until_data_enabled
+    return nil unless complete?
+    data_enabled_on = first_made_data_enabled
+    return nil unless data_enabled_on.present?
+    (data_enabled_on.to_date - onboarding_completed_on.to_date).to_i
   end
 end

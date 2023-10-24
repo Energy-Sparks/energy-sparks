@@ -47,7 +47,7 @@ cy:
         - Cymhariaeth o ddefnydd trydan y 2 wythnos ysgol ddiwethaf
     alert_1_year_baseload:
       title:
-        - Llwyth sylfaen kW - y llynedd
+        - Llwyth sylfaenol kW - y llynedd
     alert_daytype_breakdown_electricity:
       title:
         - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
@@ -104,13 +104,13 @@ cy:
         - Defnydd nwy bob hanner awr yr wythnos ddiwethaf (kWh)
     baseload:
       title:
-        - Llwyth sylfaen kW
+        - Llwyth sylfaenol kW
     baseload_lastyear:
       title:
-        - Llwyth sylfaen kW - y llynedd
+        - Llwyth sylfaenol kW - y llynedd
     baseload_versus_benchmarks:
       title:
-        - Llwyth sylfaen kW
+        - Llwyth sylfaenol kW
     benchmark:
       title:
         - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
@@ -458,7 +458,7 @@ cy:
         - 'Yn ôl Wythnos: Efelychydd Trydan (Goleuadau Diogelwch)'
     group_by_week_electricity_simulator_solar_pv:
       title:
-        - 'Yn ôl Mis: Efelychydd Trydan (Solar PV)'
+        - 'Yn ôl Mis: Efelychydd Trydan (Solar Ffotofoltaig)'
     group_by_week_electricity_unlimited:
       title:
         - 'Yn ôl Wythnos: Trydan (aml-flwyddyn)'
@@ -578,7 +578,7 @@ cy:
         - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd (Efelychydd)'
     intraday_electricity_simulator_solar_pv_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Solar PV)'
+        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Solar  Ffotofoltaig)'
     intraday_line_holidays:
       title:
         - O fewn diwrnod (gwyliau)
@@ -647,10 +647,10 @@ cy:
         - Nwy o fewn diwrnod (7 diwrnod diwethaf)
     management_dashboard_group_by_month_solar_pv:
       title:
-        - Dadansoddiad o baneli solar PV eich ysgol
+        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     management_dashboard_group_by_month_solar_pv_unlimited:
       title:
-        - Dadansoddiad o baneli solar PV eich ysgol
+        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     management_dashboard_group_by_week_electricity:
       title:
         - 'Yn ôl Wythnos: Trydan'
@@ -671,7 +671,7 @@ cy:
         - Defnydd pŵer dyddiol uchaf (kW)
     pupil_dashboard_baseload_lastyear:
       title:
-        - Llwyth sylfaen trydan eich ysgol. Dyma bŵer a ddefnyddir pan fo’r ysgol yn wag (kW)
+        - Llwyth sylfaenol trydan eich ysgol. Dyma bŵer a ddefnyddir pan fo’r ysgol yn wag (kW)
         - Defnydd pŵer trydan ar eich diwrnod dewisol (mewn kW)
     pupil_dashboard_daytype_breakdown_electricity:
       title:
@@ -759,15 +759,15 @@ cy:
         - Faint mae fy ysgol yn ei wario ar drydan o gymharu ag ysgolion eraill (£)
     pupil_dashboard_solar_pv_monthly:
       title:
-        - Sut mae paneli solar PV fy ysgol yn lleihau defnydd fy ysgol o drydan o'r prif gyflenwad (kWh)
-        - Effaith Solar PV yn eich mis a ddewisir (mewn kWh)
-        - Effaith Solar PV ar eich diwrnod a ddewisir (mewn kWh)
+        - Sut mae paneli solar ffotofoltaig fy ysgol yn lleihau defnydd fy ysgol o drydan o'r prif gyflenwad (kWh)
+        - Effaith Solar ffotofoltaig yn eich mis a ddewisir (mewn kWh)
+        - Effaith Solar ffotofoltaig ar eich diwrnod a ddewisir (mewn kWh)
     pupil_dashboard_solar_pv_one_week_by_day:
       title:
-        - Solar PV ar gyfer yr wythnos ddiwethaf
+        - Solar ffotofoltaig ar gyfer yr wythnos ddiwethaf
     pupil_dashboard_solar_pv_one_week_by_day_previous_week:
       title:
-        - Solar PV ar gyfer yr wythnos flaenorol
+        - Solar ffotofoltaig ar gyfer yr wythnos flaenorol
     pupil_dashboard_storage_heaters_benchmark:
       title:
         - Faint mae fy ysgol yn ei wario ar stôr-wresogyddion o gymharu ag ysgolion eraill (£)
@@ -806,22 +806,22 @@ cy:
         - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres, yn ystyried covid
     solar_pv_group_by_month:
       title:
-        - Dadansoddiad o baneli solar PV eich ysgol
+        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     solar_pv_group_by_month_dashboard_overview:
       title:
-        - Dadansoddiad o baneli solar PV eich ysgol
+        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     solar_pv_group_by_week:
       title:
-        - Solar PV yn ôl wythnos o'r flwyddyn
+        - Solar ffotofoltaig yn ôl wythnos o'r flwyddyn
     solar_pv_group_by_week_by_submeter:
       title:
-        - Solar PV yn ôl wythnos o'r flwyddyn
+        - Solar ffotofoltaig yn ôl wythnos o'r flwyddyn
     solar_pv_last_7_days_by_submeter:
       title:
         - Defnydd trydan eich ysgol yn y 7 diwrnod diwethaf
     solar_pv_single_day_adhoc_test:
       title:
-        - Siart prawf PV solar undydd ad hoc
+        - Siart prawf solar ffotofoltaig undydd ad hoc
     storage_heater_by_day_of_week:
       title:
         - Defnydd stôr-wresogyddion yn ôl diwrnod yr wythnos
@@ -879,18 +879,12 @@ cy:
     targeting_and_tracking_unscaled_target_group_by_week_storage_heater:
       title:
         - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
-    targeting_and_tracking_weekly_electricity_one_year_column_deprecated:
-      title:
-        - targedu_ac_olrhain_wythnos_trydan_colofn_un_flwyddyn
     targeting_and_tracking_weekly_electricity_one_year_cumulative_line:
       title:
         - Cynnydd wythnosol yn erbyn y targed hyd yma
     targeting_and_tracking_weekly_electricity_one_year_line:
       title:
         - Cynnydd wythnosol yn erbyn y targed hyd yma
-    targeting_and_tracking_weekly_electricity_to_date_column_deprecated:
-      title:
-        - Cynnydd wythnosol yn erbyn targed
     targeting_and_tracking_weekly_electricity_to_date_cumulative_line:
       title:
         - Cynnydd cronnus yn erbyn targed
@@ -1005,3 +999,17 @@ cy:
     thermostatic_winter_weekend_best:
       title:
         - Thermostatig (Penwythnos y Gaeaf)
+    y_axis_label_name:
+      co2: kg CO2
+      days: dyddiau
+      kw: kW
+      kwh: kWh
+      percent: canran
+      percent_0dp: canran
+      r2: ''
+      relative_percent: canran
+      relative_percent_0dp: canran
+      timeofday: Amser o'r dydd
+      w: W
+      £: "£"
+      £_0dp: "£"

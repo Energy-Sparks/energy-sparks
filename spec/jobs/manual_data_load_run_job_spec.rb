@@ -1,21 +1,22 @@
 require 'rails_helper'
 
 describe ManualDataLoadRunJob, ts: false do
-
   let!(:run)                { create(:manual_data_load_run) }
 
   let(:job)                 { ManualDataLoadRunJob.new }
 
-  before(:each) do
+  let(:imported)            { 55 }
+  let(:updated)             { 99 }
+
+  before do
     #stub the service
     allow_any_instance_of(Amr::ProcessAmrReadingData).to receive(:perform).and_return(true)
-    allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(55)
-    allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(99)
+    allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(imported)
+    allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(updated)
   end
 
   context 'with a valid file' do
-    before(:each) do
-      expect_any_instance_of(Database::VacuumService).to receive(:perform)
+    before do
       expect(run.status).to eq "pending"
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
@@ -34,13 +35,12 @@ describe ManualDataLoadRunJob, ts: false do
   end
 
   context 'when a problem occurs' do
-    before(:each) do
+    before do
       #stub the service
       allow_any_instance_of(Amr::ProcessAmrReadingData).to receive(:perform).and_raise("An error occured")
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(0)
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(0)
       expect(run.status).to eq "pending"
-      expect_any_instance_of(Database::VacuumService).to_not receive(:perform)
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
 
@@ -55,7 +55,5 @@ describe ManualDataLoadRunJob, ts: false do
     it 'marks data as imported' do
       expect(run.amr_uploaded_reading.imported).to be false
     end
-
   end
-
 end

@@ -1,0 +1,7 @@
+<p class="pt-2">
+  <%= t('advice_pages.heating_control.analysis.seasonal_control.estimated_savings_html',
+    estimated_savings_kwh: format_unit(seasonal_analysis.estimated_savings.kwh, :kwh),
+    estimated_savings_gbp: format_unit(seasonal_analysis.estimated_savings.£, :£),
+    estimated_savings_co2: format_unit(seasonal_analysis.estimated_savings.co2, :co2)
+  ) %>
+</p>

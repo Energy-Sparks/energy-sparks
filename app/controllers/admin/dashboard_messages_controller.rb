@@ -20,7 +20,7 @@ module Admin
     def destroy
       @dashboard_message = @messageable.dashboard_message
       @dashboard_message.destroy!
-      redirect_to params[:redirect_back], notice: "#{@messageable.model_name.human} dashboard message removed"
+      redirect_to params[:redirect_back] || request.referer, notice: "#{@messageable.model_name.human} dashboard message removed"
     end
 
   private

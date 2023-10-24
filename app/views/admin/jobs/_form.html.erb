@@ -8,12 +8,7 @@
 
   <div class="form-group">
     <%= f.label :closing_date, "Closing date", class: "form-label" %>
-    <div class="input-group date" id="datetimepickerform" data-target-input="nearest">
-      <%= f.text_field  :closing_date, class: 'form-control datetimepicker-input', data: { target: "#datetimepickerform" }, value: job.closing_date&.strftime('%d/%m/%Y') %>
-      <div class="input-group-append" data-target="#datetimepickerform" data-toggle="datetimepicker">
-        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-      </div>
-    </div>
+    <%= component 'date_picker_form', form: f, field_name: :closing_date, value: job.closing_date&.strftime('%d/%m/%Y') %>
   </div>
 
   <div class="description-trix-editor form-group">

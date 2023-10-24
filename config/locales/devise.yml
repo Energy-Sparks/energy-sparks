@@ -64,9 +64,10 @@ en:
         page_title: Sign In to Energy Sparks
         pupil_password: pupil password
         pupil_sign_in_for: Pupil sign in for
-        remember_me: Remember me
+        remember_me: Stay signed in
         select_your_school: Select your school
         sign_in: Sign in
+        signed_in_successfully: Signed in successfully
         title: Sign in to Energy Sparks with your
         your_pupil_password: Your pupil password
     shared:
@@ -85,9 +86,13 @@ en:
     messages:
       already_confirmed: was already confirmed, please try signing in
       confirmation_period_expired: needs to be confirmed within %{period}, please request a new one
+      enter_a_password: Please enter a password
       expired: has expired, please request a new one
+      invalid_password: Sorry, that password doesn't work!
       not_found: not found
       not_locked: was not locked
       not_saved:
         one: '1 error prohibited this %{resource} from being saved:'
         other: "%{count} errors prohibited this %{resource} from being saved:"
+      reset_password_token_is_invalid: Reset password token is invalid
+      select_a_school: Please select a school

@@ -1,0 +1,57 @@
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-center-">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.capacity_kwp') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.panels') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.area_m2') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.annual_self_consumed_solar_electricity_kwh') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.annual_exported_solar_electricity_kwh') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.annual_output_from_panels_kwh') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.reduction_in_mains_consumption') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.annual_saving') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.annual_saving_co2') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.estimated_capital_cost') %>
+      </th>
+      <th class="text-center">
+        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.payback_years') %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @potential_benefits_estimator.scenarios.each do |scenario| %>
+      <tr class="<%= (scenario.kwp == @potential_benefits_estimator.optimum_kwp) ? 'table-active' : '' %>">
+        <td class="text-left"><%= format_unit(scenario.kwp, :kwh) %></td>
+        <td class="text-right"><%= scenario.panels %></td>
+        <td class="text-right"><%= scenario.area %></td>
+        <td class="text-right"><%= format_unit(scenario.solar_consumed_onsite_kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(scenario.exported_kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(scenario.solar_pv_output_kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(scenario.reduction_in_mains_percent, :percent) %></td>
+        <td class="text-right"><%= format_unit(scenario.mains_savings_£, :£) %></td>
+        <td class="text-right"><%= format_unit(scenario.solar_pv_output_co2, :co2) %></td>
+        <td class="text-right"><%= format_unit(scenario.capital_cost_£, :£) %></td>
+        <td class="text-right"><%= scenario.payback_years.round %> years</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

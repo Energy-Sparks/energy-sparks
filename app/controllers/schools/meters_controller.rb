@@ -5,6 +5,8 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
+    before_action :set_breadcrumbs
+
     def index
       load_meters
       @meter = @school.meters.new
@@ -18,9 +20,7 @@ module Schools
     end
 
     def show
-      manager = MeterManagement.new(@meter)
-      @n3rgy_status = manager.check_n3rgy_status
-      @elements = manager.elements
+      set_n3rgy_status
       respond_to do |format|
         format.html
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_METER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
@@ -79,6 +79,21 @@ module Schools
 
   private
 
+    def set_n3rgy_status
+      return unless can?(:view_dcc_data, @school)
+      manager = MeterManagement.new(@meter)
+      @known_to_n3rgy = manager.is_meter_known_to_n3rgy?
+      if @known_to_n3rgy && @meter.dcc_meter
+        @n3rgy_status = manager.check_n3rgy_status
+        @n3rgy_consent_confirmed = manager.n3rgy_consented?
+        @available_cache_range = manager.available_cache_range if @n3rgy_status == :available
+      end
+    end
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_meters') }]
+    end
+
     def enough_data_for_targets?
       return nil unless can?(:view_target_data, @school)
       Targets::SchoolTargetService.new(@school).enough_data?
@@ -98,7 +113,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data, :data_source_id, :notes)
+      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data, :data_source_id, :procurement_route_id, :admin_meter_statuses_id, :meter_system)
     end
   end
 end

@@ -1,27 +1,27 @@
 class ApplicationController < ActionController::Base
+  include DefaultUrlOptionsHelper
+
   protect_from_forgery with: :exception
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  helper_method :site_settings, :current_school_podium, :current_user_school
+  helper_method :site_settings, :current_school_podium, :current_user_school, :current_school_group
+  before_action :update_trackable!
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
   end
 
+  def after_sign_in_path_for(user)
+    subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
+    root_url(subdomain: subdomain).chomp('/') + session.fetch(:user_return_to, '/')
+  end
+
   def switch_locale(&action)
     locale = LocaleFinder.new(params, request).locale
     I18n.with_locale(locale, &action)
-  end
-
-  def default_url_options
-    if Rails.env.production?
-      { host: I18n.locale == :cy ? ENV['WELSH_APPLICATION_HOST'] : ENV['APPLICATION_HOST'] }
-    else
-      super
-    end
   end
 
   def route_not_found
@@ -33,9 +33,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school_podium
-    if @school && @school.scoreboard
-      @school_podium ||= Podium.create(school: @school, scoreboard: @school.scoreboard)
-    end
+    @current_school_podium ||= if @school && @school&.scoreboard
+                                 podium_for(@school)
+                               elsif @tariff_holder && @tariff_holder&.school? && @tariff_holder&.scoreboard
+                                 podium_for(@tariff_holder)
+                               end
   end
 
   def current_user_school
@@ -48,7 +50,15 @@ class ApplicationController < ActionController::Base
     request.remote_ip
   end
 
+  def current_school_group
+    current_user.try(:default_school_group)
+  end
+
   private
+
+  def podium_for(school)
+    Podium.create(school: school, scoreboard: school.scoreboard)
+  end
 
   def check_admin_mode
     if admin_mode? && !current_user_admin? && !login_page?
@@ -78,5 +88,13 @@ class ApplicationController < ActionController::Base
 
   def header_fix_enabled
     @header_fix_enabled = true
+  end
+
+  # user has signed in via devise "remember me" functionality
+  def update_trackable!
+    if user_signed_in? && !session[:updated_tracked_fields]
+      current_user.update_tracked_fields!(request)
+      session[:updated_tracked_fields] = true
+    end
   end
 end

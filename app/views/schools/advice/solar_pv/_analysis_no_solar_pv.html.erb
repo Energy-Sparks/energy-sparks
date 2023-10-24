@@ -1,0 +1,9 @@
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.installing_solar_pv') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.it_might_take_between') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.the_table_below') %>:</p>
+<%= render 'analysis_no_solar_table' %>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.the_table_contains') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.energy_sparks_has_estimated', optimum_kwp: format_unit(@potential_benefits_estimator.optimum_kwp, :kwh)) %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.however_installing_slightly_more') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.comments') %></p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.comments_list_html', site_settings_electricity_price: format_unit(SiteSettings.current_prices.electricity_price, :£)) %></p>

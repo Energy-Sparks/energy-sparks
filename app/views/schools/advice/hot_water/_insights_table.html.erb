@@ -1,0 +1,47 @@
+<table class="table table-sm table-with-totals">
+  <thead class="thead-dark">
+    <th></th>
+    <th class="text-right"><%= t('advice_pages.hot_water.insights.table.columns.daily_kwh') %></th>
+    <th class="text-right"><%= t('advice_pages.hot_water.insights.table.columns.daily_gbp') %></th>
+    <th class="text-right"><%= t('advice_pages.hot_water.insights.table.columns.annual_kwh') %></th>
+    <th class="text-right"><%= t('advice_pages.hot_water.insights.table.columns.annual_gbp') %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= t('advice_pages.hot_water.insights.table.rows.school_day_open') %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.kwh.school_day_open, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.£.school_day_open, :£) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.kwh.school_day_open, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.£.school_day_open, :£) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.hot_water.insights.table.rows.school_day_closed') %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.kwh.school_day_closed, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.£.school_day_closed, :£) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.kwh.school_day_closed, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.£.school_day_closed, :£) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.hot_water.insights.table.rows.weekends') %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.kwh.weekend, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.£.weekend, :£) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.kwh.weekend, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.£.weekend, :£) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.hot_water.insights.table.rows.holidays') %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.kwh.holiday, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.£.holiday, :£) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.kwh.holiday, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.£.holiday, :£) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.hot_water.insights.table.rows.total') %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.kwh.total, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.daily.£.total, :£) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.kwh.total, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@gas_hot_water.efficiency_breakdowns.annual.£.total, :£) %></td>
+    </tr>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

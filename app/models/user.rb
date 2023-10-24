@@ -16,6 +16,7 @@
 #  last_sign_in_ip        :inet
 #  locked_at              :datetime
 #  name                   :string
+#  preferred_locale       :string           default("en"), not null
 #  pupil_password         :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -54,7 +55,6 @@ class User < ApplicationRecord
   belongs_to :staff_role, optional: true
   belongs_to :school_group, optional: true
   has_many :contacts
-  has_many :simulations, dependent: :destroy
   has_many :consent_grants, inverse_of: :user, dependent: :nullify
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
@@ -81,6 +81,8 @@ class User < ApplicationRecord
   validates :school_id, presence: true, if: :pupil?
 
   validates :school_group_id, presence: true, if: :group_admin?
+
+  validate :preferred_locale_presence_in_available_locales
 
   after_save :update_contact
 
@@ -113,6 +115,12 @@ class User < ApplicationRecord
     cluster_schools.excluding(school).any?
   end
 
+  def self.find_school_users_linked_to_other_schools(school_id:, user_ids:)
+    User.joins(:cluster_schools_users)
+        .where.not('cluster_schools_users.school_id' => school_id)
+        .where('cluster_schools_users.user_id in (?)', user_ids)
+  end
+
   def remove_school(school_to_remove)
     cluster_schools.delete(school_to_remove)
     if school == school_to_remove
@@ -135,8 +143,11 @@ class User < ApplicationRecord
   end
 
   def school_group_name
-    return school.school_group.name if school && school.school_group
-    return school_group.name if school_group
+    default_school_group.try(:name)
+  end
+
+  def default_school_group
+    school.try(:school_group) || school_group
   end
 
   def self.new_pupil(school, attributes)
@@ -183,10 +194,16 @@ class User < ApplicationRecord
   end
 
   def after_confirmation
-    OnboardingMailer.with(user: self).welcome_email.deliver_now if self.school.present?
+    OnboardingMailer.with_user_locales(users: [self], school: school) { |mailer| mailer.welcome_email.deliver_now } if self.school.present?
   end
 
 protected
+
+  def preferred_locale_presence_in_available_locales
+    return if I18n.available_locales.include? preferred_locale&.to_sym
+
+    errors.add(:preferred_locale, "must be present in the list of availale locales")
+  end
 
   def password_required?
     confirmed? ? super : false

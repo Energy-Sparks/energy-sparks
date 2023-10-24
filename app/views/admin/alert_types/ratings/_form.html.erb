@@ -27,19 +27,18 @@
   <% end %>
 
   <%= render 'content_section', form: form, content: content, field: :sms_active, field_name: 'SMS content' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'sms', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms) do %>
-      <%= content.input :sms_content, label: 'SMS content' %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'sms', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms), locales: I18n.available_locales do |locale| %>
+      <%= content.input t_field(:sms_content, locale), label: 'SMS content' %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :email_active, field_name: 'Email content' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'email', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :email) do %>
-      <%= content.input :email_title, as: :string %>
-      <%= content.label 'Email content', for: :email_content %>
-      <%= content.rich_text_area :email_content %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'email', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :email), locales: I18n.available_locales do |locale| %>
+      <%= content.input t_field(:email_title, locale), as: :string %>
+      <%= content.label 'Email content', for: t_field(:email_content, locale) %>
+      <%= content.rich_text_area t_field(:email_content, locale) %>
     <% end %>
   <% end %>
-
 
   <%= render 'content_section', form: form, field: :pupil_dashboard_alert_active, field_name: 'Pupil dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title), locales: I18n.available_locales do |locale| %>
@@ -61,18 +60,4 @@
       <%= content.rich_text_area t_field(:management_priorities_title, locale) %>
     <% end %>
   <% end %>
-
-  <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'find_out_more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
-      <%= content.input :find_out_more_table_variable, as: :radio_buttons, collection: @available_tables %>
-      <%= content.input :find_out_more_chart_variable, as: :radio_buttons, collection: @available_charts %>
-      <%= content.input :find_out_more_chart_title %>
-      <%= content.input :find_out_more_title, hint: 'Main title at top of Find Out More Page' %>
-
-      <%= content.label 'Find out more content', for: :find_out_more_content %>
-      <%= content.rich_text_area :find_out_more_content %>
-      <p class="small text-muted">'Main body copy for Find Out More Page'</p>
-    <% end %>
-  <% end %>
-
 <% end %>

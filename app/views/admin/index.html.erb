@@ -15,9 +15,9 @@
 
     <h2>Schools, groups and scoreboards</h2>
     <ul>
+      <li><%= link_to "Manage School Groups", admin_school_groups_path %></li>
       <li><%= link_to "Find school by MPXN", admin_meters_path %></li>
-      <li><%= link_to "Edit School Groups", admin_school_groups_path %></li>
-      <li><%= link_to "Edit Scoreboards", admin_scoreboards_path %></li>
+      <li><%= link_to "Manage Scoreboards", admin_scoreboards_path %></li>
     </ul>
 
     <h2>Users and consent</h2>
@@ -27,10 +27,11 @@
       <li><%= link_to "Consent Statements", admin_consent_statements_path %></li>
     </ul>
 
-    <h2>Activities, Interventions and Programmes</h2>
+    <h2>Activities, Advice, Interventions and Programmes</h2>
     <ul>
       <li><%= link_to "Activity Categories", admin_activity_categories_path %></li>
       <li><%= link_to "Activity Types", admin_activity_types_path %></li>
+      <li><%= link_to "Advice Pages", admin_advice_pages_path %></li>
       <li><%= link_to "Intervention Categories", admin_intervention_type_groups_path %></li>
       <li><%= link_to "Intervention Types", admin_intervention_types_path %></li>
       <li><%= link_to "Programme Types", admin_programme_types_path %></li>
@@ -38,14 +39,16 @@
 
   </div>
   <div class="col">
-    <h2>Data feeds and meter attributes</h2>
+    <h2>Data, Tariffs, Meter attributes</h2>
     <ul>
-      <li><%= link_to "Global Meter Attributes", admin_global_meter_attributes_path %></li>
       <li><%= link_to "AMR Data feed configuration", admin_amr_data_feed_configs_path %></li>
+      <li><%= link_to "Energy Tariffs", admin_settings_energy_tariffs_path %></li>
       <li><%= link_to "Dark Sky Areas", admin_dark_sky_areas_path %></li>
       <li><%= link_to "Solar PV Areas", admin_solar_pv_tuos_areas_path %></li>
       <li><%= link_to "Weather Stations", admin_weather_stations_path %></li>
       <li><%= link_to "Data Sources", admin_data_sources_path %></li>
+      <li><%= link_to "Procurement Routes", admin_procurement_routes_path %></li>
+      <li><%= link_to "Global Meter Attributes", admin_global_meter_attributes_path %></li>
     </ul>
 
     <h2>Alerts and Equivalences</h2>
@@ -67,6 +70,9 @@
       <li><%= link_to "Transport Types", admin_transport_types_path %></li>
       <li><%= link_to "Videos", admin_videos_path %></li>
       <li><%= link_to "Background Jobs", admin_good_job_path %></li>
+      <li><%= link_to "Admin meter statuses", admin_meter_statuses_path %></li>
+      <li><%= link_to "Funders", admin_funders_path %></li>
+      <li><%= link_to "Email previews", admin_mailer_previews_path %></li>
     </ul>
 
   </div>

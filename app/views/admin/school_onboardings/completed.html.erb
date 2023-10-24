@@ -1,19 +1,29 @@
 <h1>Schools recently onboarded</h1>
 
-<table class="table table-sorted">
+<table class="table table-sorted table-sm">
   <thead>
     <tr>
+      <th>Country</th>
+      <th>School group</th>
       <th>School name</th>
       <th>Contact email</th>
-      <th>Onboarded at event</th>
+      <th>Onboarding Completed</th>
+      <th>Data Enabled?</th>
+      <th>Data Enabled On</th>
+      <th>Days Until Enabled</th>
     </tr>
   </thead>
   <tbody>
     <% @completed_schools.each do |onboarding| %>
       <tr>
+        <td><%= onboarding.school.country.capitalize if onboarding.school.country.present? %></td>
+        <td><%= link_to onboarding.school.school_group.name, admin_school_group_path(onboarding.school.school_group) if onboarding.school.school_group.present? %> </td>
         <td><%= link_to onboarding.school_name, school_path(onboarding.school) %></td>
         <td><%= onboarding.contact_email %></td>
-        <td data-order="<%= onboarding.events.maximum(:created_at) %>"><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
+        <td data-order="<%= onboarding.onboarding_completed_on %>"><%= nice_date_times(onboarding.onboarding_completed_on) %></td>
+        <td><%= onboarding.school.data_enabled %></td>
+        <td data-order="<%= onboarding.first_made_data_enabled %>"><%= nice_date_times(onboarding.first_made_data_enabled) %></td>
+        <td><%= onboarding.days_until_data_enabled %></td>
       </tr>
     <% end %>
   </tbody>

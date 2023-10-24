@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "home", type: :system do
-
   it 'has a home page' do
     visit root_path
-    expect(page.has_content? "Energy Sparks")
+    expect(page.has_content?("Energy Sparks"))
   end
 
   it 'allows locale switch retaining extra parameters' do
@@ -67,22 +66,43 @@ RSpec.describe "home", type: :system do
     within('#about-menu') do
       click_on('Contact')
     end
-    expect(page.has_content? "Contact us")
+    expect(page.has_content?("Contact us"))
   end
 
   it 'has an enrol page' do
     visit root_path
     click_on('Enrol')
-    expect(page.has_content? "Enrol with Energy Sparks")
+    expect(page.has_content?("Enrol with Energy Sparks"))
   end
 
-  it "has a training page" do
+  describe 'having a training page' do
+    let(:sold_out) { OpenStruct.new(date: DateTime.tomorrow, name: 'Event 1', url: 'http://hello', sold_out?: true) }
+    let(:spaces_available) { OpenStruct.new(date: DateTime.now + 10.days, name: 'Event 2', url: 'http://hello2', sold_out?: false) }
+    let(:list_events) { double('list_events') }
+
+    before do
       visit root_path
       click_on('Our services')
+
+      expect(Events::ListEvents).to receive(:new).and_return(list_events)
+      expect(list_events).to receive(:perform).and_return([sold_out, spaces_available])
+
       within('#our-services') do
         click_on('Training')
       end
-    expect(page.has_content? 'Training')
+    end
+
+    it { expect(page).to have_content('Training') }
+
+    it "has available event" do
+      expect(page).to have_content('Event 1')
+      expect(page).to have_content('Spaces available')
+    end
+
+    it "has sold out event" do
+      expect(page).to have_content('Event 2')
+      expect(page).to have_content('Sold out')
+    end
   end
 
   it 'has a datasets page' do
@@ -91,7 +111,7 @@ RSpec.describe "home", type: :system do
     within('#about-menu') do
       click_on('Datasets')
     end
-    expect(page.has_content? "Data used in Energy Sparks")
+    expect(page.has_content?("Data used in Energy Sparks"))
   end
 
   context 'with newsletters' do
@@ -103,7 +123,7 @@ RSpec.describe "home", type: :system do
     it 'shows the latest newsletters only' do
       visit root_path
 
-      expect(page).to_not have_content(newsletter_1.title)
+      expect(page).not_to have_content(newsletter_1.title)
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
@@ -129,7 +149,7 @@ RSpec.describe "home", type: :system do
       expect(page).to have_content(case_study_1.title)
       expect(page).to have_content(case_study_2.title)
       expect(page).to have_content(case_study_3.title)
-      expect(page).to_not have_content(case_study_4.title)
+      expect(page).not_to have_content(case_study_4.title)
 
       click_on 'More case studies'
 
@@ -144,14 +164,13 @@ RSpec.describe "home", type: :system do
     let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
     let(:school_admin) { create(:school_admin, school: school)}
 
-    before(:each) do
+    before do
       sign_in(school_admin)
       visit root_path
     end
 
     context 'with not visible school' do
-
-      before(:each) do
+      before do
         school.update(visible: false)
         visit root_path
       end
@@ -161,20 +180,21 @@ RSpec.describe "home", type: :system do
       end
 
       it 'does not have navigation options' do
-        expect(page).to_not have_css('#my_school_menu')
-        expect(page).to_not have_content('Dashboards')
+        expect(page).not_to have_css('#my_school_menu')
+        expect(page).not_to have_content('Dashboards')
       end
     end
 
     context 'with a visible school' do
-
       it 'redirects from teacher page' do
         visit "/teachers/schools/#{school.slug}"
-        expect(page).to have_content('Adult Dashboard')
+        within('.dashboard-school-title') do
+          expect(page).to have_content(school.name)
+        end
       end
 
       it 'does not redirect to holding page' do
-        expect(page).to_not have_content('Your school is currently inactive while we are setting up your energy data')
+        expect(page).not_to have_content('Your school is currently inactive while we are setting up your energy data')
       end
 
       it 'does have navigation options' do

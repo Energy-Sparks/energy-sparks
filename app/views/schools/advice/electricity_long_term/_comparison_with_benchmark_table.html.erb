@@ -1,0 +1,33 @@
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <th></th>
+    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.annual_usage_kwh') %></th>
+    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.annual_usage_co2') %></th>
+    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.annual_usage_gbp') %></th>
+    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.estimated_savings_gbp') %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= t('advice_pages.benchmarks.your_school') %></td>
+      <td class="text-right"><%= format_unit(annual_usage.kwh, :kwh) %></td>
+      <td class="text-right"><%= format_unit(annual_usage.co2, :co2) %></td>
+      <td class="text-right"><%= format_unit(annual_usage.£, :£) %></td>
+      <td class="text-right">-</td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.benchmarks.benchmark_school') %></td>
+      <td class="text-right"><%= format_unit(vs_benchmark.kwh, :kwh) %></td>
+      <td class="text-right"><%= format_unit(vs_benchmark.co2, :co2) %></td>
+      <td class="text-right"><%= format_unit(vs_benchmark.£, :£) %></td>
+      <td class="text-right"><%= format_unit(estimated_savings_vs_benchmark.£, :£) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.benchmarks.exemplar_school') %></td>
+      <td class="text-right"><%= format_unit(vs_exemplar.kwh, :kwh) %></td>
+      <td class="text-right"><%= format_unit(vs_exemplar.co2, :co2) %></td>
+      <td class="text-right"><%= format_unit(vs_exemplar.£, :£) %></td>
+      <td class="text-right"><%= format_unit(estimated_savings_vs_exemplar.£, :£) %></td>
+    </tr>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

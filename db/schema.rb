@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_13_140853) do
+ActiveRecord::Schema.define(version: 2023_10_19_130819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "activity_category_id"
+    t.integer "pupil_count"
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id"
     t.index ["school_id"], name: "index_activities_on_school_id"
@@ -77,6 +78,7 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.boolean "featured", default: false
     t.boolean "pupil", default: false
     t.boolean "live_data", default: false
+    t.string "icon", default: "clipboard-check"
   end
 
   create_table "activity_timings", force: :cascade do |t|
@@ -142,8 +144,51 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.boolean "data_driven", default: false
     t.boolean "custom", default: false
     t.string "summary"
+    t.boolean "show_on_charts", default: true
+    t.string "fuel_type", default: [], array: true
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
+  end
+
+  create_table "admin_meter_statuses", force: :cascade do |t|
+    t.string "label"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "advice_page_activity_types", force: :cascade do |t|
+    t.bigint "advice_page_id"
+    t.bigint "activity_type_id"
+    t.integer "position"
+    t.index ["activity_type_id"], name: "index_advice_page_activity_types_on_activity_type_id"
+    t.index ["advice_page_id"], name: "index_advice_page_activity_types_on_advice_page_id"
+  end
+
+  create_table "advice_page_intervention_types", force: :cascade do |t|
+    t.bigint "advice_page_id"
+    t.bigint "intervention_type_id"
+    t.integer "position"
+    t.index ["advice_page_id"], name: "index_advice_page_intervention_types_on_advice_page_id"
+    t.index ["intervention_type_id"], name: "index_advice_page_intervention_types_on_intervention_type_id"
+  end
+
+  create_table "advice_page_school_benchmarks", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "advice_page_id", null: false
+    t.integer "benchmarked_as", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["advice_page_id"], name: "index_advice_page_school_benchmarks_on_advice_page_id"
+    t.index ["school_id"], name: "index_advice_page_school_benchmarks_on_school_id"
+  end
+
+  create_table "advice_pages", force: :cascade do |t|
+    t.string "key", null: false
+    t.boolean "restricted", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "fuel_type"
+    t.index ["key"], name: "index_advice_pages_on_key", unique: true
   end
 
   create_table "alert_errors", force: :cascade do |t|
@@ -289,6 +334,12 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.boolean "background", default: false
     t.boolean "benchmark", default: false
     t.boolean "user_restricted", default: false, null: false
+    t.bigint "advice_page_id"
+    t.integer "link_to", default: 0, null: false
+    t.string "link_to_section"
+    t.integer "group", default: 0, null: false
+    t.boolean "enabled", default: true, null: false
+    t.index ["advice_page_id"], name: "index_alert_types_on_advice_page_id"
   end
 
   create_table "alerts", force: :cascade do |t|
@@ -342,6 +393,10 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.integer "missing_readings_limit"
     t.boolean "lookup_by_serial_number", default: false
     t.jsonb "column_row_filters", default: {}
+    t.boolean "positional_index", default: false, null: false
+    t.string "period_field"
+    t.boolean "enabled", default: true, null: false
+    t.text "reading_time_field"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
@@ -375,8 +430,10 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.text "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "reading_time"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
+    t.index ["meter_id", "amr_data_feed_config_id"], name: "adfr_meter_id_config_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
@@ -417,7 +474,6 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.datetime "upload_datetime"
     t.index ["meter_id", "one_day_kwh"], name: "index_amr_validated_readings_on_meter_id_and_one_day_kwh"
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
-    t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
   end
 
@@ -503,11 +559,11 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
   create_table "benchmark_results", force: :cascade do |t|
     t.bigint "alert_type_id", null: false
     t.date "asof", null: false
-    t.text "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "benchmark_result_school_generation_run_id", null: false
     t.json "results", default: {}
+    t.json "results_cy", default: {}
     t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
     t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_index"
   end
@@ -712,6 +768,7 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.text "comments"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "import_warning_days"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -720,6 +777,58 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contact_id"], name: "index_emails_on_contact_id"
+  end
+
+  create_table "energy_tariff_charges", force: :cascade do |t|
+    t.bigint "energy_tariff_id", null: false
+    t.text "charge_type", null: false
+    t.decimal "value", null: false
+    t.text "units"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["energy_tariff_id"], name: "index_energy_tariff_charges_on_energy_tariff_id"
+  end
+
+  create_table "energy_tariff_prices", force: :cascade do |t|
+    t.bigint "energy_tariff_id", null: false
+    t.time "start_time", default: "2000-01-01 00:00:00", null: false
+    t.time "end_time", default: "2000-01-01 23:30:00", null: false
+    t.decimal "value"
+    t.text "units"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["energy_tariff_id"], name: "index_energy_tariff_prices_on_energy_tariff_id"
+  end
+
+  create_table "energy_tariffs", force: :cascade do |t|
+    t.string "tariff_holder_type"
+    t.bigint "tariff_holder_id"
+    t.integer "source", default: 0, null: false
+    t.integer "meter_type", default: 0, null: false
+    t.integer "tariff_type", default: 0, null: false
+    t.text "name", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.boolean "enabled", default: true
+    t.boolean "ccl", default: false
+    t.boolean "tnuos", default: false
+    t.integer "vat_rate"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "applies_to", default: 0
+    t.index ["created_by_id"], name: "index_energy_tariffs_on_created_by_id"
+    t.index ["tariff_holder_type", "tariff_holder_id"], name: "index_energy_tariffs_on_tariff_holder_type_and_tariff_holder_id"
+    t.index ["updated_by_id"], name: "index_energy_tariffs_on_updated_by_id"
+  end
+
+  create_table "energy_tariffs_meters", id: false, force: :cascade do |t|
+    t.bigint "meter_id"
+    t.bigint "energy_tariff_id"
+    t.index ["energy_tariff_id"], name: "index_energy_tariffs_meters_on_energy_tariff_id"
+    t.index ["meter_id"], name: "index_energy_tariffs_meters_on_meter_id"
   end
 
   create_table "equivalence_type_content_versions", force: :cascade do |t|
@@ -785,6 +894,10 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "funders", force: :cascade do |t|
+    t.string "name", null: false
   end
 
   create_table "global_meter_attributes", force: :cascade do |t|
@@ -884,7 +997,18 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.string "summary"
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.boolean "show_on_charts", default: true
+    t.string "fuel_type", default: [], array: true
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
+  end
+
+  create_table "issue_meters", force: :cascade do |t|
+    t.bigint "issue_id"
+    t.bigint "meter_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["issue_id"], name: "index_issue_meters_on_issue_id"
+    t.index ["meter_id"], name: "index_issue_meters_on_meter_id"
   end
 
   create_table "issues", force: :cascade do |t|
@@ -927,6 +1051,13 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["rewriteable_type", "rewriteable_id"], name: "index_link_rewrites_on_rewriteable_type_and_rewriteable_id"
+  end
+
+  create_table "local_authority_areas", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "locations", force: :cascade do |t|
@@ -1034,11 +1165,15 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.bigint "meter_review_id"
     t.datetime "dcc_checked_at"
     t.bigint "data_source_id"
+    t.bigint "admin_meter_statuses_id"
+    t.bigint "procurement_route_id"
+    t.integer "meter_system", default: 0
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
+    t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
   end
@@ -1097,9 +1232,12 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.bigint "audit_id"
     t.boolean "involved_pupils", default: false, null: false
     t.bigint "school_target_id"
+    t.bigint "programme_id"
+    t.integer "pupil_count"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
+    t.index ["programme_id"], name: "index_observations_on_programme_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
     t.index ["school_target_id"], name: "index_observations_on_school_target_id"
   end
@@ -1110,6 +1248,21 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
+  end
+
+  create_table "procurement_routes", force: :cascade do |t|
+    t.string "organisation_name", null: false
+    t.string "contact_name"
+    t.string "contact_email"
+    t.string "loa_contact_details"
+    t.text "data_prerequisites"
+    t.text "new_area_data_feed"
+    t.text "add_existing_data_feed"
+    t.text "data_issues_contact_details"
+    t.text "loa_expiry_procedure"
+    t.text "comments"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "programme_activities", force: :cascade do |t|
@@ -1136,6 +1289,7 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.boolean "default", default: false
     t.datetime "created_at", precision: 6, default: "2022-07-06 12:00:00", null: false
     t.datetime "updated_at", precision: 6, default: "2022-07-06 12:00:00", null: false
+    t.integer "bonus_score", default: 0
   end
 
   create_table "programmes", force: :cascade do |t|
@@ -1207,6 +1361,14 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.index ["school_id"], name: "index_school_batch_runs_on_school_id"
   end
 
+  create_table "school_group_clusters", force: :cascade do |t|
+    t.string "name"
+    t.bigint "school_group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_group_id"], name: "index_school_group_clusters_on_school_group_id"
+  end
+
   create_table "school_group_meter_attributes", force: :cascade do |t|
     t.bigint "school_group_id", null: false
     t.string "attribute_type", null: false
@@ -1245,6 +1407,18 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.boolean "public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.bigint "default_issues_admin_user_id"
+    t.integer "default_country", default: 0, null: false
+    t.bigint "admin_meter_statuses_electricity_id"
+    t.bigint "admin_meter_statuses_gas_id"
+    t.bigint "admin_meter_statuses_solar_pv_id"
+    t.bigint "default_data_source_electricity_id"
+    t.bigint "default_data_source_gas_id"
+    t.bigint "default_data_source_solar_pv_id"
+    t.bigint "default_procurement_route_electricity_id"
+    t.bigint "default_procurement_route_gas_id"
+    t.bigint "default_procurement_route_solar_pv_id"
+    t.integer "group_type", default: 0
+    t.bigint "funder_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
@@ -1298,6 +1472,7 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.bigint "weather_station_id"
     t.boolean "school_will_be_public", default: true
     t.integer "default_chart_preference", default: 0, null: false
+    t.integer "country", default: 0, null: false
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
@@ -1413,8 +1588,15 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.boolean "alternative_heating_district_heating", default: false, null: false
     t.integer "alternative_heating_district_heating_percent", default: 0
     t.text "alternative_heating_district_heating_notes"
+    t.integer "region"
+    t.bigint "local_authority_area_id"
+    t.datetime "bill_requested_at"
+    t.bigint "school_group_cluster_id"
+    t.bigint "funder_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
+    t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
+    t.index ["school_group_cluster_id"], name: "index_schools_on_school_group_cluster_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
@@ -1431,19 +1613,6 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
   end
 
-  create_table "simulations", force: :cascade do |t|
-    t.text "title"
-    t.text "notes"
-    t.bigint "school_id", null: false
-    t.bigint "user_id", null: false
-    t.text "configuration"
-    t.boolean "default"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_simulations_on_school_id"
-    t.index ["user_id"], name: "index_simulations_on_user_id"
-  end
-
   create_table "site_settings", force: :cascade do |t|
     t.boolean "message_for_no_contacts", default: true
     t.datetime "created_at", precision: 6, null: false
@@ -1452,6 +1621,10 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
+    t.integer "default_import_warning_days", default: 10
+    t.jsonb "prices"
+    t.integer "photo_bonus_points", default: 0
+    t.integer "audit_activities_bonus_points", default: 0
   end
 
   create_table "sms_records", force: :cascade do |t|
@@ -1643,43 +1816,6 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.index ["name"], name: "index_transport_types_on_name", unique: true
   end
 
-  create_table "user_tariff_charges", force: :cascade do |t|
-    t.bigint "user_tariff_id", null: false
-    t.text "charge_type", null: false
-    t.decimal "value", null: false
-    t.text "units"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_tariff_id"], name: "index_user_tariff_charges_on_user_tariff_id"
-  end
-
-  create_table "user_tariff_prices", force: :cascade do |t|
-    t.bigint "user_tariff_id", null: false
-    t.decimal "value", null: false
-    t.text "units", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.time "start_time", default: "2000-01-01 00:00:00", null: false
-    t.time "end_time", default: "2000-01-01 23:30:00", null: false
-    t.string "description"
-    t.index ["user_tariff_id"], name: "index_user_tariff_prices_on_user_tariff_id"
-  end
-
-  create_table "user_tariffs", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.text "name", null: false
-    t.text "fuel_type", null: false
-    t.boolean "flat_rate", default: true
-    t.date "start_date", null: false
-    t.date "end_date", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "vat_rate"
-    t.boolean "ccl", default: false
-    t.boolean "tnuos", default: false
-    t.index ["school_id"], name: "index_user_tariffs_on_school_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.bigint "school_id"
     t.string "email", default: "", null: false
@@ -1705,6 +1841,7 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.datetime "confirmation_sent_at"
     t.bigint "school_group_id"
     t.string "unlock_token"
+    t.string "preferred_locale", default: "en", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -1763,6 +1900,8 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
   add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "advice_page_school_benchmarks", "advice_pages", on_delete: :cascade
+  add_foreign_key "advice_page_school_benchmarks", "schools", on_delete: :cascade
   add_foreign_key "alert_errors", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alert_errors", "alert_types", on_delete: :cascade
   add_foreign_key "alert_generation_runs", "schools", on_delete: :cascade
@@ -1821,6 +1960,8 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
   add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "find_out_mores", on_delete: :nullify
   add_foreign_key "emails", "contacts", on_delete: :cascade
+  add_foreign_key "energy_tariffs", "users", column: "created_by_id"
+  add_foreign_key "energy_tariffs", "users", column: "updated_by_id"
   add_foreign_key "equivalence_type_content_versions", "equivalence_type_content_versions", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "equivalence_type_content_versions", "equivalence_types", on_delete: :cascade
   add_foreign_key "equivalences", "equivalence_type_content_versions", on_delete: :cascade
@@ -1834,6 +1975,8 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
   add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
   add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
+  add_foreign_key "issue_meters", "issues"
+  add_foreign_key "issue_meters", "meters"
   add_foreign_key "issues", "users", column: "created_by_id"
   add_foreign_key "issues", "users", column: "owned_by_id"
   add_foreign_key "issues", "users", column: "updated_by_id"
@@ -1863,6 +2006,7 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
+  add_foreign_key "observations", "programmes", on_delete: :cascade
   add_foreign_key "observations", "school_targets"
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
@@ -1875,6 +2019,7 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
   add_foreign_key "school_batch_run_log_entries", "school_batch_runs", on_delete: :cascade
   add_foreign_key "school_batch_runs", "schools", on_delete: :cascade
+  add_foreign_key "school_group_clusters", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "school_group_meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "school_group_meter_attributes", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
@@ -1901,11 +2046,10 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
   add_foreign_key "school_targets", "schools"
   add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars", on_delete: :restrict
+  add_foreign_key "schools", "school_group_clusters", on_delete: :nullify
   add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
-  add_foreign_key "simulations", "schools", on_delete: :cascade
-  add_foreign_key "simulations", "users", on_delete: :nullify
   add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "schools", on_delete: :cascade
@@ -1917,8 +2061,6 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
   add_foreign_key "transport_survey_responses", "transport_surveys", on_delete: :cascade
   add_foreign_key "transport_survey_responses", "transport_types"
   add_foreign_key "transport_surveys", "schools", on_delete: :cascade
-  add_foreign_key "user_tariff_charges", "user_tariffs", on_delete: :cascade
-  add_foreign_key "user_tariff_prices", "user_tariffs", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict
   add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict

@@ -6,7 +6,7 @@ module Admin
     load_and_authorize_resource :school, instance_name: 'issueable'
     load_and_authorize_resource :school_group, instance_name: 'issueable'
     load_and_authorize_resource :data_source, instance_name: 'issueable'
-    load_and_authorize_resource :issue, through: :issueable, shallow: true
+    load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
     load_and_authorize_resource :school # For school context menu if school available
 
     def index
@@ -23,14 +23,14 @@ module Admin
         end
         format.csv do
           @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
-          send_data @issues.issue.status_open.by_updated_at.to_csv,
+          send_data @issues.by_updated_at.to_csv,
           filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
         end
       end
     end
 
     def new
-      @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable)
+      @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable, meter_ids: params[:meter_ids])
     end
 
     def create
@@ -63,6 +63,11 @@ module Admin
       redirect_back_or_index notice: notice
     end
 
+    def meter_issues
+      @meter = Meter.find(params[:meter_id])
+      respond_to(&:js)
+    end
+
     private
 
     def redirect_index(notice:)
@@ -82,7 +87,7 @@ module Admin
     end
 
     def issue_params
-      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned)
+      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned, meter_ids: [])
     end
   end
 end

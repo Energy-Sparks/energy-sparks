@@ -1,14 +1,16 @@
-<div class="table-responsive-sm">
+<div class="table-responsive-sm" id='management-overview-table'>
   <table class="table management-overview">
     <thead class="thead-dark">
       <tr>
         <th class="icon"></th>
         <th class="text-left"></th>
         <th class="text-left"></th>
-        <th class="text-right"><%= t('schools.show.use_kwh') %></th>
-        <th class="text-right"><%= t('schools.show.co2_kg') %></th>
-        <th class="text-right"><%= t('schools.show.cost_£') %></th>
-        <th class="text-right"><%= t('schools.show.potential_savings') %></th>
+        <th class="text-right"><%= t('common.table.columns.use_kwh') %></th>
+        <th class="text-right"><%= t('common.table.columns.co2_kg') %></th>
+        <th class="text-right"><%= t('common.table.columns.cost_gbp') %></th>
+        <% if local_assigns[:show_savings].nil? || local_assigns[:shows_savings] == true %>
+          <th class="text-right"><%= t('schools.show.potential_savings') %></th>
+        <% end %>
         <th class="text-right"><%= t('schools.show.percentage_change') %></th>
       </tr>
     </thead>
@@ -27,7 +29,9 @@
           <td class="text-right <%= data.message_class %>"><%= data.usage %></td>
           <td class="text-right <%= data.message_class %>"><%= data.co2 %></td>
           <td class="text-right <%= data.message_class %>"><%= data.cost %></td>
-          <td class="text-right <%= data.message_class %>"><%= data.savings %></td>
+          <% if local_assigns[:show_savings].nil? || local_assigns[:shows_savings] == true %>
+            <td class="text-right <%= data.message_class %>"><%= data.savings %></td>
+          <% end %>
           <td class="text-right"><%= up_downify(data.change) %></td>
         <% else %>
           <td class="text-center <%= data.message_class %>" colspan='5'><%= data.message %></td>

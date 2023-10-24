@@ -10,7 +10,6 @@ namespace :solar do
       puts "Running for #{installation.rbee_meter_id}"
       Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: start_date, end_date: end_date).perform
     end
-    Database::VacuumService.new([:amr_data_feed_readings]).perform
     puts "#{DateTime.now.utc} import_low_carbon_hub_readings end"
   end
 end

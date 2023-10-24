@@ -5,10 +5,12 @@
 #  active                     :boolean          default(TRUE)
 #  created_at                 :datetime         not null
 #  custom                     :boolean          default(FALSE)
+#  fuel_type                  :string           default([]), is an Array
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
 #  name                       :string
 #  score                      :integer
+#  show_on_charts             :boolean          default(TRUE)
 #  summary                    :string
 #  updated_at                 :datetime         not null
 #
@@ -26,6 +28,7 @@ class InterventionType < ApplicationRecord
   include TransifexSerialisable
   include Searchable
   include TranslatableAttachment
+  include FuelTypeable
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
 
@@ -51,6 +54,7 @@ class InterventionType < ApplicationRecord
   validates :intervention_type_group, :name, presence: true
   validates :name, uniqueness: { scope: :intervention_type_group_id }
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validate :all_fuel_types_are_in_valid_fuel_types_list
 
   scope :by_name,               -> { order(name: :asc) }
   scope :by_id,                 -> { order(id: :asc) }
@@ -58,6 +62,8 @@ class InterventionType < ApplicationRecord
   scope :display_order,         -> { order(:custom, :name) }
   scope :not_custom,            -> { where(custom: false) }
   scope :active_and_not_custom, -> { active.not_custom }
+  scope :custom_last,           -> { order(:custom) }
+  scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
 
   before_save :copy_searchable_attributes
 

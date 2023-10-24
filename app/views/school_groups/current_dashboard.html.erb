@@ -1,0 +1,24 @@
+<% content_for :page_title, @school_group.name %>
+
+<%= render 'header', name: @school_group.name, school_group: @school_group, scoreboard: @school_group.default_scoreboard, benchmark_filter: {school_group_ids: [@school_group.id], anchor: 'groups'} %>
+
+<p>
+<% if @partners.any? %>
+  <%= t('school_groups.show.currently_works_with_schools_from', count: @schools.count) %> <%= @school_group.name %> <%= t('school_groups.show.in_partnership_with') %> <%= list_of_partners_as_links(@partners) %>.
+<% else %>
+  <%= t('school_groups.show.currently_works_with_from', count: @schools.count) %> <%= @school_group.name %>.
+<% end %>
+</p>
+
+<p>
+  <%= t('school_groups.show.if_you_would_like_support_enrol_here_html', enrol_path: enrol_path) %>.
+</p>
+
+<div class="map" id="geo-json-map" data-school-group-id="<%= @school_group.id %>"></div>
+
+<%= render 'schools/list_cards', schools: @school_group.schools.visible.by_name %>
+
+<% if @school_group.schools.not_visible.any? && can?(:read_invisible_schools, School) %>
+  <%= render 'header', name: t('school_groups.show.not_visible_schools'), school_group: nil, scoreboard: nil, benchmark_filter: nil %>
+  <%= render 'schools/list_cards', schools: @school_group.schools.not_visible.by_name %>
+<% end %>

@@ -1,0 +1,45 @@
+.energy_tariff {
+  .table-charges {
+    margin-bottom: 0px;
+    td {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    td.description {
+      width: 60%
+    }
+    td.value {
+      width: 10%
+    }
+    td.value input {
+      width: 7em;
+    }
+    td.units {
+      width: 10%
+    }
+    .form-group {
+      margin-bottom: 0px
+    }
+    tr.positive-row {
+      border-left: 5px solid $green;
+    }
+    tr.negative-row {
+      border-left: 5px solid $new-red;
+    }
+    tr.neutral-row {
+      border-left: 5px solid #97E6FC;
+    }
+  }
+
+  .right {
+    float: right;
+  }
+
+  .spaced {
+    margin: 10px;
+  }
+
+  .energy_tariff-show-button {
+    margin-top: -5px
+  }
+
+}

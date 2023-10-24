@@ -33,7 +33,7 @@ div.axis-controls label:hover {
   font-weight: bold;
 }
 
-div.analysis-chart, div.simulator-chart, div.usage-chart{
+div.analysis-chart, div.usage-chart{
   height: 700px;
   width: 100%;
   text-align: center;
@@ -73,6 +73,18 @@ div.popover {
 
 .table .thead-dark th {
   background-color: $dark-blue !important;
+}
+
+.table-with-totals {
+  tbody tr:last-of-type  {
+    @extend .table-success
+  }
+}
+
+.table-with-totals-footer {
+  tfoot tr:last-of-type  {
+    @extend .table-success
+  }
 }
 
 .analysis, hr.analysis {

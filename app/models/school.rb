@@ -18,6 +18,7 @@
 #  alternative_heating_oil_notes                :text
 #  alternative_heating_oil_percent              :integer          default(0)
 #  bill_requested                               :boolean          default(FALSE)
+#  bill_requested_at                            :datetime
 #  calendar_id                                  :bigint(8)
 #  chart_preference                             :integer          default("default"), not null
 #  cooks_dinners_for_other_schools              :boolean          default(FALSE), not null
@@ -29,6 +30,7 @@
 #  data_enabled                                 :boolean          default(FALSE)
 #  enable_targets_feature                       :boolean          default(TRUE)
 #  floor_area                                   :decimal(, )
+#  funder_id                                    :bigint(8)
 #  funding_status                               :integer          default("state_school"), not null
 #  has_swimming_pool                            :boolean          default(FALSE), not null
 #  id                                           :bigint(8)        not null, primary key
@@ -36,6 +38,7 @@
 #  indicated_has_storage_heaters                :boolean          default(FALSE)
 #  latitude                                     :decimal(10, 6)
 #  level                                        :integer          default(0)
+#  local_authority_area_id                      :bigint(8)
 #  longitude                                    :decimal(10, 6)
 #  met_office_area_id                           :bigint(8)
 #  name                                         :string
@@ -44,7 +47,9 @@
 #  postcode                                     :string
 #  process_data                                 :boolean          default(FALSE)
 #  public                                       :boolean          default(TRUE)
+#  region                                       :integer
 #  removal_date                                 :date
+#  school_group_cluster_id                      :bigint(8)
 #  school_group_id                              :bigint(8)
 #  school_type                                  :integer          not null
 #  scoreboard_id                                :bigint(8)
@@ -62,15 +67,18 @@
 #
 # Indexes
 #
-#  index_schools_on_calendar_id             (calendar_id)
-#  index_schools_on_latitude_and_longitude  (latitude,longitude)
-#  index_schools_on_school_group_id         (school_group_id)
-#  index_schools_on_scoreboard_id           (scoreboard_id)
-#  index_schools_on_urn                     (urn) UNIQUE
+#  index_schools_on_calendar_id              (calendar_id)
+#  index_schools_on_latitude_and_longitude   (latitude,longitude)
+#  index_schools_on_local_authority_area_id  (local_authority_area_id)
+#  index_schools_on_school_group_cluster_id  (school_group_cluster_id)
+#  index_schools_on_school_group_id          (school_group_id)
+#  index_schools_on_scoreboard_id            (scoreboard_id)
+#  index_schools_on_urn                      (urn) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (calendar_id => calendars.id) ON DELETE => restrict
+#  fk_rails_...  (school_group_cluster_id => school_group_clusters.id) ON DELETE => nullify
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
 #
@@ -79,6 +87,7 @@ require 'securerandom'
 
 class School < ApplicationRecord
   extend FriendlyId
+  include EnergyTariffHolder
   include ParentMeterAttributeHolder
 
   class ProcessDataError < StandardError; end
@@ -101,7 +110,6 @@ class School < ApplicationRecord
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
   has_many :consent_grants,       inverse_of: :school
   has_many :meter_reviews,        inverse_of: :school
-  has_many :user_tariffs,         inverse_of: :school
   has_many :school_targets,       inverse_of: :school
   has_many :school_target_events, inverse_of: :school
   has_many :audits,               inverse_of: :school
@@ -127,8 +135,6 @@ class School < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
 
-  has_many :simulations, inverse_of: :school
-
   has_many :estimated_annual_consumptions
 
   has_many :amr_data_feed_readings,       through: :meters
@@ -138,8 +144,11 @@ class School < ApplicationRecord
   has_many :school_alert_type_exclusions, dependent: :destroy
   has_many :school_batch_runs
 
+  has_many :advice_page_school_benchmarks
+
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
+  belongs_to :school_group_cluster, optional: true
 
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
@@ -149,6 +158,9 @@ class School < ApplicationRecord
   delegate :default_issues_admin_user, to: :school_group
 
   belongs_to :scoreboard, optional: true
+  belongs_to :local_authority_area, optional: true
+
+  belongs_to :funder, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
@@ -164,19 +176,29 @@ class School < ApplicationRecord
   enum chart_preference: [:default, :carbon, :usage, :cost]
   enum country: [:england, :scotland, :wales]
   enum funding_status: [:state_school, :private_school]
+  enum region: [:north_east, :north_west, :yorkshire_and_the_humber, :east_midlands, :west_midlands, :east_of_england, :london, :south_east, :south_west]
 
-  scope :active,             -> { where(active: true) }
-  scope :inactive,           -> { where(active: false) }
-  scope :visible,            -> { active.where(visible: true) }
-  scope :not_visible,        -> { active.where(visible: false) }
-  scope :process_data,       -> { active.where(process_data: true) }
-  scope :data_enabled,       -> { active.where(data_enabled: true) }
-  scope :without_group,      -> { active.where(school_group_id: nil) }
-  scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
+  #active flag is a soft-delete, those with a removal date are deleted, others
+  #are archived, with chance of returning if we receive funding
+  scope :active,              -> { where(active: true) }
+  scope :inactive,            -> { where(active: false) }
+  scope :deleted,             -> { inactive.where.not(removal_date: nil) }
+  scope :archived,            -> { inactive.where(removal_date: nil) }
+  scope :visible,             -> { active.where(visible: true) }
+  scope :not_visible,         -> { active.where(visible: false) }
+  scope :process_data,        -> { active.where(process_data: true) }
+  scope :data_enabled,        -> { active.where(data_enabled: true) }
+  scope :without_group,       -> { active.where(school_group_id: nil) }
+  scope :without_scoreboard,  -> { active.where(scoreboard_id: nil) }
   scope :awaiting_activation, -> { active.where("visible = ? or data_enabled = ?", false, false) }
+  scope :data_visible,        -> { data_enabled.visible }
 
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
+
+  scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
+
+  scope :with_energy_tariffs, -> { joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'").group('schools.id').order('schools.name') }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
@@ -189,6 +211,7 @@ class School < ApplicationRecord
   #simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
   #adjusted to use \A and \z
   validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
+  validate :valid_uk_postcode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   validates_associated :school_times, on: :school_time_update
 
@@ -198,19 +221,31 @@ class School < ApplicationRecord
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
-  geocoded_by :postcode do |obj, results|
+  before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
+
+  geocoded_by :postcode do |school, results|
     if (geo = results.first)
-      obj.latitude = geo.data['latitude']
-      obj.longitude = geo.data['longitude']
-      obj.country = geo.data['country'].downcase
+      school.latitude = geo.data['latitude']
+      school.longitude = geo.data['longitude']
+      school.country = geo.data['country']&.downcase
     end
   end
-
-  after_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   # Note that saved_change_to_activation_date? is a magic ActiveRecord method
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
+
+  def deleted?
+    not_active? and removal_date.present?
+  end
+
+  def archived?
+    not_active? && removal_date.nil?
+  end
+
+  def not_active?
+    !active
+  end
 
   def minimum_reading_date
     return unless amr_validated_readings.present?
@@ -219,6 +254,12 @@ class School < ApplicationRecord
     # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
     # config) so we instead use the minimum validated reading date minus 1 year.
     amr_validated_readings.minimum(:reading_date) - 1.year
+  end
+
+  def full_location_to_s
+    return '' unless postcode.present?
+
+    "#{postcode} (#{longitude}, #{latitude})"
   end
 
   def find_user_or_cluster_user_by_id(id)
@@ -256,19 +297,20 @@ class School < ApplicationRecord
   end
 
   def academic_year_for(date)
+    return nil unless calendar.present?
     calendar.academic_year_for(date)
   end
 
   def activities_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      return activities.between(academic_year.start_date, academic_year.end_date)
+      return activities.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
   end
 
   def observations_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      return observations.between(academic_year.start_date, academic_year.end_date)
+      return observations.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
   end
@@ -357,17 +399,17 @@ class School < ApplicationRecord
   end
 
   def all_adult_school_users
-    all_school_admins + staff
+    (all_school_admins + staff).uniq
   end
 
-  def activation_email_list
+  def activation_users
     users = []
     if school_onboarding && school_onboarding.created_user.present?
       users << school_onboarding.created_user
     end
     #also email admin, staff and group users
     users += all_adult_school_users.to_a
-    users.uniq.map(&:email)
+    users.uniq
   end
 
   def latest_content
@@ -446,6 +488,15 @@ class School < ApplicationRecord
     school_targets.by_start_date.expired.first
   end
 
+  def previous_expired_target(current_expired)
+    idx = school_targets.by_start_date.expired.index { |t| t == current_expired } || return
+    school_targets.by_start_date.expired[idx + 1]
+  end
+
+  def has_expired_target_for_fuel_type?(fuel_type)
+    has_expired_target? && expired_target.try(fuel_type).present?
+  end
+
   def has_expired_target?
     expired_target.present?
   end
@@ -491,13 +542,29 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes
       end
       collection
     end
+
+    return all_attributes unless EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
+
+    all_attributes[:aggregated_electricity] ||= []
+    all_attributes[:aggregated_electricity] += all_energy_tariff_attributes(:electricity)
+
+    all_attributes[:aggregated_gas] ||= []
+    all_attributes[:aggregated_gas] += all_energy_tariff_attributes(:gas)
+
+    all_attributes[:solar_pv_consumed_sub_meter] ||= []
+    all_attributes[:solar_pv_consumed_sub_meter] += all_energy_tariff_attributes(:solar_pv)
+
+    all_attributes[:solar_pv_exported_sub_meter] ||= []
+    all_attributes[:solar_pv_exported_sub_meter] += all_energy_tariff_attributes(:exported_solar_pv)
+
+    all_attributes
   end
 
   def pseudo_meter_attributes_to_analytics
@@ -551,10 +618,60 @@ class School < ApplicationRecord
   end
 
   def self.status_counts
-    { active: self.visible.count, data_visible: self.visible.data_enabled.count, invisible: self.not_visible.count, removed: self.inactive.count }
+    { active: self.visible.count, data_visible: self.data_visible.count, invisible: self.not_visible.count, removed: self.inactive.count }
+  end
+
+  def email_locales
+    country == 'wales' ? [:en, :cy] : [:en]
+  end
+
+  def subscription_frequency
+    if holiday_approaching?
+      [:weekly, :termly, :before_each_holiday]
+    else
+      [:weekly]
+    end
+  end
+
+  def recent_usage
+    Schools::ManagementTableService.new(self)&.management_data&.by_fuel_type_table || OpenStruct.new
+  end
+
+  def all_data_sources(meter_type)
+    meters.active.where(meter_type: meter_type).data_source_known.joins(:data_source).order("data_sources.name ASC").distinct.pluck("data_sources.name")
+  end
+
+  def all_procurement_routes(meter_type)
+    meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order("procurement_routes.organisation_name ASC").distinct.pluck("procurement_routes.organisation_name")
+  end
+
+  def school_group_cluster_name
+    school_group_cluster.try(:name) || I18n.t('common.labels.not_set')
+  end
+
+  def parent_tariff_holder
+    school_group.present? ? school_group : SiteSettings.current
+  end
+
+  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
+    raise InvalidAppliesToError unless EnergyTariff.applies_tos.key?(applies_to.to_s)
+
+    applies_to_keys = [:both, applies_to].uniq
+
+    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }, applies_to: applies_to_keys).usable.map(&:meter_attribute)
+  end
+
+  def holds_tariffs_of_type?(meter_type)
+    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type: meter_type).any?
   end
 
   private
+
+  def valid_uk_postcode
+    return unless latitude.blank? || longitude.blank? || country.blank?
+
+    errors.add(:postcode, I18n.t('schools.school_details.geocode_not_found_message'))
+  end
 
   def add_joining_observation
     observations.create!(

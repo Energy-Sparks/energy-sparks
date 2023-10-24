@@ -1,0 +1,31 @@
+<%= render 'enhanced_header' %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="school-group-map map" id="geo-json-map" data-school-group-id="<%= @school_group.id %>"></div>
+  </div>
+</div>
+
+<% @school_group.schools.includes(:configuration).visible.by_name.each do |school| %>
+  <div class='pb-2'>
+    <h4><%= link_to school.name, school_path(school) %></h4>
+    <p>
+      <span class="badge badge-secondary"><%= t("common.school_types.#{school.school_type}") %></span>
+      <% if school.configuration %>
+        <% if school.has_electricity? %>
+          <%= fa_icon(fuel_type_icon(:electricity)) %>
+        <% end %>
+        <% if school.has_gas? %>
+          <%= fa_icon(fuel_type_icon(:gas)) %>
+        <% end %>
+        <% if school.has_solar_pv? %>
+          <%= fa_icon(:sun) %>
+        <% end %>
+        <% if school.has_storage_heaters? %>
+          <%= fab_icon(:intercom) %>
+        <% end %>
+      <% end %>
+      <%= school.address %> <%= school.postcode %>
+    </p>
+  </div>
+<% end %>

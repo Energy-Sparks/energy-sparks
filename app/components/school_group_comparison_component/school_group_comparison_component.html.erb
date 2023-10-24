@@ -1,0 +1,94 @@
+<div class="pb-2">
+  <strong><%= t("advice_pages.#{@advice_page_key}.page_title") %></strong>
+  <p><%= t("school_groups.comparisons.how_does_it_compare.#{@advice_page_key}", default: '') %></p>
+
+  <div class="col">
+    <div
+      id="<%= @id %>"
+      class="school-group-comparison-component-callout-row row mt-4">
+      <% categories.each do |category| %>
+        <% count = count_for(category) %>
+        <div class="col-md-4 justify-content-center <%=category%> d-flex">
+            <div class="school-group-comparison-component-callout-box">
+              <div class="body m-2">
+                <% label = t('school_count', count: count).split(' ') %>
+                <div class="body m-2">
+                  <h2>
+                    <% if count.positive? %>
+                      <a href='#' data-toggle="modal" data-target="#<%= @advice_page_key.to_s.camelize + category.to_s.camelize %>ModalCenter">
+                        <%= label.first %>
+                      </a>
+                    <% else %>
+                      <%= label.first %>
+                    <% end %>
+                  </h2>
+                </div>
+                <div class="footer mb-2">
+                  <small><%= label.last.capitalize %></small>
+                </div>
+                <% if count.positive? %>
+                  <%= render(FootnoteModalComponent.new(title: tag.small(modal_title_for(category)), modal_id: modal_id_for(category))) do |component| %>
+                    <% component.with_body_content do %>
+                      <div class="text-left">
+                        <%= t('school_groups.comparisons.modal_subtitle_html', category_id: category, category: t("advice_pages.benchmarks.#{category}")) %>
+                      </div>
+                      <% if csv_download_link %>
+                        <div class='text-right pt-3'>
+                          <%= csv_download_link %>
+                        </div>
+                      <% end %>
+                      <table class="table table-borderless table-sorted advice-table advice-priority-table">
+                        <thead>
+                          <tr>
+                            <th class="text-left"><%= t('common.school') %></th>
+                            <% if include_cluster? %>
+                              <th class="text-right"><%= t('school_groups.clusters.labels.cluster') %></th>
+                            <% end %>
+                            <th class="no-sort"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% @comparison[category]&.each do |school| %>
+                            <tr>
+                              <td class='text-left'><%= link_to school['school_name'], school_path(id: school['school_slug']) %></td>
+                              <% if include_cluster? %>
+                                <td class='text-right'><%= school['cluster_name'] || t('common.labels.not_set') %></td>
+                              <% end %>
+                              <td class='text-right'><%= link_to t('school_groups.priority_actions.view_analysis'), advice_page_path_for(school['school_slug']) %></td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                      </table>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="school-group-comparison-component-footer-row row">
+    <div class="col-md-4 justify-content-center d-flex">
+      <div>
+        <h4 class="category-label">
+          <%= t('advice_pages.benchmarks.exemplar_school') %>
+        </h4>
+      </div>
+    </div>
+    <div class="col-md-4 justify-content-center d-flex">
+      <div>
+        <h4 class="category-label">
+          <%= t('advice_pages.benchmarks.benchmark_school') %>
+        </h4>
+      </div>
+    </div>
+    <div class="col-md-4 justify-content-center d-flex">
+      <div>
+        <h4 class="category-label">
+          <%= t('advice_pages.benchmarks.other_school') %>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

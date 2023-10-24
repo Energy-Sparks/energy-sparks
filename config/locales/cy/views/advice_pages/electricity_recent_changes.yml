@@ -1,0 +1,37 @@
+cy:
+  advice_pages:
+    electricity_recent_changes:
+      analysis:
+        charts:
+          compare_last_week_chart_explanation: Mae'r siart yn defnyddio'r saith diwrnod diweddaraf sydd ar gael yn awtomatig. Defnyddiwch y botymau archwilio uwchben y siart i gymharu dyddiau amgen. Gallwch glicio ar y chwedl i ychwanegu neu dynnu llinellau o'r graff i'w gwneud yn gliriach.
+          compare_last_week_chart_footer: Gallwch ddefnyddio’r math hwn o siart i ddeall sut mae defnydd yr ysgol o drydan yn amrywio drwy gydol yr wythnos.
+          compare_last_week_chart_subtitle: Cymhariaeth rhwng defnydd trydan eich ysgol drwy gydol y dydd dros y 7 diwrnod diwethaf.
+          compare_last_week_chart_title: Defnydd trydan bob hanner awr eich ysgol dros y 7 diwrnod diwethaf
+          compare_recent_days_chart_explanation: Mae'r siart yn defnyddio'r ddau ddiwrnod diweddaraf sydd ar gael yn awtomatig. Defnyddiwch yr opsiynau o dan y siart i gymharu dyddiau amgen.
+          compare_recent_days_chart_subtitle: Cymhariaeth rhwng defnydd trydan eich ysgol drwy gydol y dydd ar ddau ddiwrnod diweddar.
+          compare_recent_days_chart_title: Defnydd trydan bob hanner awr eich ysgol am ddau ddiwrnod diweddar
+          compare_recent_weeks_chart_explanation: Mae'r siart yn defnyddio'r ddwy wythnos ddiwethaf sydd ar gael yn llawn yn awtomatig. Defnyddiwch yr opsiynau o dan y siart i gymharu wythnosau amgen.
+          compare_recent_weeks_chart_subtitle: Cymhariaeth o ddefnydd trydan dyddiol eich ysgol dros y pythefnos diwethaf.
+          compare_recent_weeks_chart_title: Defnydd trydan dyddiol eich ysgol am ddau wythnos ddiweddar
+        compare_last_week:
+          title: Cymhariaeth o ddefnydd trydan dros y 7 diwrnod diwethaf
+        compare_recent_days:
+          title: Cymhariaeth o ddefnydd trydan dros 2 ddiwrnod diweddar
+        compare_recent_weeks:
+          title: Cymhariaeth o ddefnydd trydan dros 2 wythnos diweddar
+        sections: Mae'r adrannau canlynol yn darparu mwy o gefndir a dadansoddiad ar eich llwyth sylfaenol trydan
+        summary: Mae'r adran hon yn rhoi dadansoddiad manylach o sut mae defnydd trydan eich ysgol wedi newid yn ddiweddar. Gall fod yn arbennig o ddefnyddiol os ydych yn ceisio ymchwilio i newid yn y defnydd o drydan neu fonitro effaith camau a gymerwyd yn yr ysgol.
+        title: Dadansoddiad
+      insights:
+        how_do_you_compare:
+          summary_html: Cymharwch eich defnydd diweddar o drydan <a href='%{comparison_link}'>ag ysgolion eraill yn eich grŵp</a>.
+          title: Sut ydych chi'n cymharu?
+        link: Dysgu rhagor
+        next_steps: Ceisiwch sicrhau eich bod yn deall achosion unrhyw newidiadau sylweddol yn eich defnydd o drydan.
+        summary: Mae'r dudalen hon yn nodi a yw eich defnydd o drydan wedi cynyddu neu owstwng yn ddiweddar. Gall monitro newidiadau diweddar i'ch defnydd o ynni eich helpu i asesu effeithiau newidiadau rydych wedi'u gwneud, neu nodi problemau'n gyflym.
+        title: Beth a olygwn wrth newidiadau diweddar?
+        your_recent_electricity_use:
+          table:
+            change: Newid
+          title: Eich defnydd diweddar o drydan
+      page_title: Dadansoddiad o newidiadau diweddar trydan

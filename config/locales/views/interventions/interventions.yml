@@ -1,23 +1,42 @@
 ---
 en:
   interventions:
+    completed:
+      actions_completed:
+        one: You've recorded 1 action so far this year
+        other: You've recorded %{count} actions so far this year
+      choose_next_action: Choose your next action from the suggestions below.
+      current_school_position: and your school is currently in %{position} place.
+      our_suggestions: Our suggestions based on your energy use alerts and any energy audit completed at your school
+      page_title: "%{school} Action"
+      points_scored: You've just scored %{points} points!
+      points_to_change_position: and need to score %{points} points to reach %{position} place.
+      see_scoreboard: See the scoreboard
+      suggested_actions: Suggested actions for your school
+      title: Congratulations! We've recorded your action.
+      view_action: View your action
+      view_all_actions: View all actions
     edit:
       page_title: Update energy saving action
       title: Update your energy saving action
     form:
+      adding_a_photo_to_document_your_action_will_score_you: Adding a photo to document your action will score you
       adding_some_background_detail_label: Adding some background detail can help you track and monitor improvements
-      if_pupils_were_involved_label: If pupils were involved in proposing, planning, fund-raising or carrying out this action then recording this action will score
-      points_for_your_school:
-        one: points for your school
-        other: points for your school
+      bonus_points:
+        one: bonus point
+        other: bonus points
       record_action: Record action
       tell_us_more: Tell us more about what you did
       update_action: Update action
-      were_the_pupils_involved: Were the pupils involved?
       what_did_you_do: What did you do?
       when_did_you_complete_this_action: When did you complete this action?
       you_can_add_formatting_label: You can add formatting, links and attach images using the toolbar below. Hover over each icon to learn what it does
       you_can_record_label: You can record both recent and older actions to build up a complete record of all of the energy saving activities you've carried out as a school
+    index:
+      record_action: Record an energy saving action
+      title: Your energy saving actions
     new:
       page_title: Record energy saving action
       title: Record an energy saving action for your school
+    show:
+      pupils_involved_in_this_activity: Pupils involved in this activity

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Onboarding::Service, type: :service do
-
   let(:admin)         { create(:admin) }
   let(:school)        { create(:school, visible: false) }
 
@@ -21,17 +20,18 @@ describe Onboarding::Service, type: :service do
 
   subject { Onboarding::Service.new }
 
-  context '#should_complete_onboarding?' do
+  describe '#should_complete_onboarding?' do
     it 'true if onboarding not complete yet' do
       expect(subject.should_complete_onboarding?(school)).to be_truthy
     end
+
     it 'false if onboarding complete already' do
       subject.record_event(onboarding, :onboarding_complete)
       expect(subject.should_complete_onboarding?(school)).to be_falsey
     end
   end
 
-  context '#record_event' do
+  describe '#record_event' do
     it 'executes block and returns result as well as recording event' do
       result = subject.record_event(onboarding, :email_sent) { 42 }
       expect(result).to eq(42)
@@ -39,34 +39,32 @@ describe Onboarding::Service, type: :service do
     end
   end
 
-  context '#complete_onboarding' do
+  describe '#complete_onboarding' do
     it 'records event' do
       subject.complete_onboarding(onboarding, [])
       expect(onboarding.has_event?(:onboarding_complete)).to be_truthy
     end
-    it 'sets school visible if feature flag set' do
-      expect(EnergySparks::FeatureFlags).to receive(:active?).with(:data_enabled_onboarding).and_return(true)
+
+    it 'sets school visible' do
       subject.complete_onboarding(onboarding, [])
       expect(onboarding.school.visible?).to be_truthy
     end
-    it 'does not set school visible if feature flag not set' do
-      expect(EnergySparks::FeatureFlags).to receive(:active?).with(:data_enabled_onboarding).and_return(false)
-      subject.complete_onboarding(onboarding, [])
-      expect(onboarding.school.visible?).to be_falsey
-    end
+
     it 'sends confirmation email to unconfirmed users only' do
       expect(confirmed_user).not_to receive(:send_confirmation_instructions)
       expect(unconfirmed_user).to receive(:send_confirmation_instructions)
       subject.complete_onboarding(onboarding, [confirmed_user, unconfirmed_user])
     end
+
     it 'enrols in default program' do
       expect_any_instance_of(Programmes::Enroller).to receive(:enrol).with(school)
       subject.complete_onboarding(onboarding, [])
     end
+
     it 'broadcasts message' do
-      expect{
+      expect do
         subject.complete_onboarding(onboarding, [])
-      }.to broadcast(:onboarding_completed, onboarding)
+      end.to broadcast(:onboarding_completed, onboarding)
     end
   end
 end

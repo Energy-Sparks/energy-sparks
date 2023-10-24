@@ -1,3 +1,6 @@
-<h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
-
-<p>We don't have a record of <%= @fuel_type.to_s.humanize(capitalize: false) %> being used at your school.<p>
+<h1>
+  <%= t('schools.school_targets.progress.missing.tracking_progress_to_reduce_usage', fuel_type: @fuel_type.to_s.humanize(capitalize: false)) %>
+</h1>
+<p>
+  <%= t('schools.school_targets.progress.missing.we_dont_have_a_record_of', fuel_type: @fuel_type.to_s.humanize(capitalize: false)) %>.
+<p>

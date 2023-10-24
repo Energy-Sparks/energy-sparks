@@ -1,6 +1,7 @@
 class Schools::ContactsController < ApplicationController
   load_and_authorize_resource :school
   load_and_authorize_resource :contact, through: :school
+  before_action :set_breadcrumbs
 
   def index
     @standalone_contacts = @contacts.where(user_id: nil)
@@ -43,6 +44,10 @@ class Schools::ContactsController < ApplicationController
 
 private
 
+  def set_breadcrumbs
+    @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_alert_contacts') }]
+  end
+
   def contact_params
     params.require(:contact).permit(
       :description,
@@ -50,7 +55,8 @@ private
       :mobile_phone_number,
       :name,
       :user_id,
-      :staff_role_id
+      :staff_role_id,
+      user_attributes: [:id, :preferred_locale]
     )
   end
 

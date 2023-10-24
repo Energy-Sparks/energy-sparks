@@ -53,6 +53,11 @@
     overflow-y: auto;
   }
 
+  .dropdown-menu.scrollable {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
   .dropdown-item:hover {
     color: $dark;
   }
@@ -61,6 +66,7 @@
     border-color: rgb(255,255,255);
     margin: 6px;
   }
+
   .navbar-toggler-icon {
     width: 1em;
     height: 1.25em;
@@ -149,3 +155,4 @@
   margin-top: 3px;
   margin-bottom: 3px;
 }
+

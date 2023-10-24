@@ -1,38 +1,37 @@
 require 'rails_helper'
 
 RSpec.describe 'live data', type: :system do
-
   let!(:school)             { create(:school) }
   let!(:school_admin)       { create(:school_admin, school: school) }
 
   let(:aggregate_school)    { double(:aggregate_school) }
 
-  before(:each) do
+  before do
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregate_school)
   end
 
   context 'with feature disabled' do
-
-    before(:each) do
+    before do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
       sign_in(school_admin)
       visit school_live_data_path(school)
     end
 
     it 'does not let me view live data' do
-      expect(page).to have_content("Dashboard")
-      expect(page).to_not have_content("live data")
+      within '.dashboard-school-title' do
+        expect(page).to have_content(school.name)
+      end
+      expect(page).not_to have_content("live data")
     end
   end
 
   context 'with feature enabled and active cad' do
-
     let!(:cad) { create(:cad, active: true, school: school) }
 
     let!(:activity_category)  { create(:activity_category, live_data: true) }
     let!(:activity_type)      { create(:activity_type, name: 'save gas', activity_category: activity_category) }
 
-    before(:each) do
+    before do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
       allow(Cads::RealtimePowerConsumptionService).to receive(:cache_power_consumption_service)
     end
@@ -53,8 +52,7 @@ RSpec.describe 'live data', type: :system do
     end
 
     context 'when logged in' do
-
-      before(:each) do
+      before do
         sign_in(school_admin)
         visit school_path(school)
         click_link 'Live energy data'
@@ -130,7 +128,7 @@ RSpec.describe 'live data', type: :system do
         visit school_cad_live_data_path(school, school.cads.last, format: :json)
 
         expect(page.status_code).to eql 500
-        expect(page.body).to eql ('api is broken')
+        expect(page.body).to eql('api is broken')
       end
     end
   end

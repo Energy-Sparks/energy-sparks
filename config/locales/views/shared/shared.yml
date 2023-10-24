@@ -6,9 +6,9 @@ en:
     child_safeguarding: Child safeguarding
     contact: Contact
     datasets: Datasets
+    funders: Our funders
     jobs: Jobs
     open_data: Open data
-    partners: Partners
     privacy_policy: Privacy policy
     school_statistics: School statistics
     team: Team
@@ -44,10 +44,6 @@ en:
         <li>let you know if you are doing well compared to other schools and your past performance</li>
       </ul>
     title: 'Energy Sparks alerts:'
-  dashboard_alerts:
-    show_more_alerts:
-      one: Show 1 more alert
-      other: Show %{count} more alerts
   dashboards:
     adult_dashboard: Adult dashboard
     pupil_dashboard: Pupil dashboard
@@ -75,10 +71,12 @@ en:
     manage_meters: Manage meters
     manage_partners: Manage partners
     manage_school: Manage School
+    manage_school_group: Manage school group
     manage_tariffs: Manage tariffs
     manage_usage_estimate: Manage usage estimate
     manage_users: Manage users
     meter_attributes: Meter attributes
+    old_analysis_pages: Old analysis pages
     remove_school: Remove school
     review_targets: Review targets
     school_calendar: School calendar

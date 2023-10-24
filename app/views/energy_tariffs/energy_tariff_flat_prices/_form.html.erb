@@ -1,0 +1,24 @@
+<table class="table table-charges">
+  <tbody>
+  <tr>
+    <td class="description align-middle">
+      <%= t('schools.user_tariff_flat_prices.form.rate') %>
+    </td>
+    <td class="value align-middle">
+      <%= t('schools.user_tariff_flat_prices.rate_in_gbp') %>
+    </td>
+    <td class="value align-middle">
+      <%= f.input :value, pattern: '[0-9.]+', label: false,
+        input_html: { value: value_allowing_for_errors(energy_tariff_price), step: 0.01 },
+        error: energy_tariff_price.errors.any? ? energy_tariff_price.errors.full_messages.first : nil,
+        required: false %>
+    </td>
+    <td class="units align-middle">
+      <%= t('schools.user_tariff_charges.per') %>
+    </td>
+    <td class="units align-middle">
+      <%= t('kwh') %>
+    </td>
+  </tr>
+  </tbody>
+</table>

@@ -2,6 +2,10 @@
 en:
   activity_types:
     activity: Activity
+    errors:
+      invalid_fuel_type:
+        one: 'invalid fuel type: '
+        other: 'invalid fuel types: '
     impacts: Impacts
     key_stages: Key Stages
     recommended:

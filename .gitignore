@@ -46,6 +46,9 @@ public/assets
 .idea
 */.rakeTasks
 
+# asdf locally installed versions
+.tool-versions
+
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep

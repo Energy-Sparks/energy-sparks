@@ -37,6 +37,16 @@ en:
     ks3: KS3
     ks4: KS4
     ks5: KS5
+  role:
+    admin: Admin
+    analytics: Analytics
+    group_admin: Group Admin
+    guest: Guest
+    pupil: Pupil
+    school_admin: School Admin
+    school_onboarding: Onboarding
+    staff: Staff
+    volunteer: Volunteer
   staff_role:
     building_site_manager_or_caretaker: Building/site manager or caretaker
     business_manager: Business manager
@@ -50,7 +60,9 @@ en:
   subject:
     citizenship: Citizenship
     design_and_technology: Design and Technology
-    english: English
-    geography: Geography
-    maths: Maths
-    science: Science
+    expressive_arts: Expressive arts
+    health_and_well_being: Health and Well-being
+    humanities: Humanities
+    languages_literacy_and_communication: Languages, Literacy and Communication
+    mathematics_and_numeracy: Mathematics and Numeracy
+    science_and_technology: Science and Technology

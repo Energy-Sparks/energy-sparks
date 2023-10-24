@@ -19,7 +19,7 @@ RSpec.describe "admin meters", type: :system do
     end
 
     it 'does not display empty results message' do
-      expect(page).to_not have_content("No meters were found using this mpxn")
+      expect(page).not_to have_content("No meters were found using this mpxn")
     end
 
     it 'finds a single meter' do

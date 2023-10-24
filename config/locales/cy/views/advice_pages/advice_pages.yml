@@ -1,0 +1,177 @@
+cy:
+  advice_pages:
+    alerts:
+      groups:
+        advice: Tueddiadau a chyngor hirdymor
+        benchmarking: Cymhariaeth ag ysgolion eraill
+        change: Newidiadau diweddar yn eich defnydd o ynni
+        priority: Rhybuddion blaenoriaeth
+    benchmarks:
+      benchmark_school: Dan reolaeth dda
+      exemplar_school: Enghraifft
+      other_school: Angen gweithredu
+      your_school: Eich ysgol
+    breadcrumbs:
+      root: Cyngor
+    charts:
+      controls:
+        select_meter: Dewiswch fesurydd
+    error:
+      data_warning: Nid ydym wedi derbyn data ar gyfer eich defnydd o%{fuel_type} ers dros dri deg diwrnod. O ganlyniad bydd eich dadansoddiad wedi dyddio ac efallai na fydd yn adlewyrchu newidiadau diweddar yn eich ysgol.
+      message: Bu gwall wrth geisio greu eich dadansoddiad. Mae'r tîm Sbarcynni wedi cael gwybod am y broblem.
+      title: Mae'n ddrwg gennym, aeth rhywbeth o'i le
+    fuel_type:
+      electricity: trydan
+      gas: nwy
+      other: arall
+      solar_pv: solar ffotofoltaig
+      storage_heater: stôr-wresogydd
+    how_have_we_analysed_your_data:
+      calculations_based_on_fuel_type: Cyfrifiadau yn seiliedig ar %{fuel_type} a ddefnyddiwyd rhwng %{start_date} a %{end_date}
+      cost_calculations: Cyfrifiadau cost
+      cost_calculations_introduction_html: |-
+        <p>Amcangyfrifir costau defnydd ar sail gwybodaeth tariff hanesyddol</p>
+        <p>Mae arbedion yn y dyfodol yn seiliedig ar wybodaeth tariff ddiweddaraf eich ysgol</p>
+        <p>Mae arbedion cost posibl a ddyfinnir mewn cymariaethau ysgol, e.e. ar gyfer ysgolion tebyg sydd wedi'u "rheoli'n dda" ac "enghreifftiol" hefyd yn seiliedig ar dariffau cyfredol eich ysgol</p>
+      energy_data: Data ynni
+      link_title: Sut wnaethom ni gyfrifo'r ffigurau hyn?
+      page_title: Sut rydym wedi dadansoddi eich data?
+      school_characteristics: Nodweddion ysgol
+      school_characteristics_introduction: Defnyddir y nodwedion canlynol wrth ddadansoddi data ynni eich ysgol. Mae iawndal tymheredd yn defnyddio data tywydd sy'n benodol i leoliad eich ysgol
+      school_characteristics_table:
+        columns:
+          characteristic: Nodwedd
+          value: Gwerth
+        rows:
+          floor_area: Arwynebedd llawr
+          location: Lleoliad
+          pupils: Disgyblion
+          type: Math
+      school_comparisons: Cymhariaethau ysgol
+      school_comparisons_introduction_html: |-
+        <p>Mae cymhariaethau ysgol yn seilied ar feincnodi eich ysgol ag ysgolion tebyg ar sail y nodweddion a amlinellir isod.</p>
+        <p>Mae ysgolion "<strong>enghreifftiol</strong>" yn cynyrchioli'r 17.5% uchaf o ysgolion Sbarcynni</p>
+        <p>Mae ysgolion "<strong>a reolir yn dda</strong>" yn cynrychioli'r 30% uchaf o ysgolion Sbarcynni</p>
+      total_energy_use_table:
+        columns:
+          aggregated_meter_date_range: Ystod dyddiad mesurydd
+          fuel_type: Math o danwydd
+      your_electricity_tariffs_html: Mae eich tariffau trydan wedi newid yn ystod y flwyddyn ddiwethaf, roedd y newid diwethaf %{last_change_date}, cyn y dyddiad hwn y tariff cyfartalog oedd %{rate_before_gbp_per_kwh}/kWh, ac ers hynny  %{rate_after_gbp_per_kwh}/kWh. Bydd hyn yn cynyddu eich costau trydan %{percent_change} yn y dyfodol. Nid yw cyfrifiadau cost a ddefnyddir ar gyfer y rhan fwyaf o siartiau a dadansoddiadau yn cynnwys taliadau sefydlog ac eithrio'r wybodaeth ddilysu biliau mwy cywir a gyflwynir ar y dudalen Dadansoddiad cost.
+    insights:
+      recommendations:
+        actions_title: Gweithredwch o amgylch yr ysgol
+        activities_title: Gweithiwch gyda'r disgyblion
+        title: Beth ddylech chi wneud nesaf?
+    loading_data: Wrthi'n llwytho data...
+    nav:
+      name: Cyngor
+      pages:
+        baseload: Llwyth sylfaenol
+        electricity_costs: Tariffau a chostau
+        electricity_intraday: O fewn un diwrnod
+        electricity_long_term: Newidiadau hirdymor
+        electricity_out_of_hours: Tu allan i oriau ysgol
+        electricity_recent_changes: Newidiadau diweddar
+        gas_costs: Tariffau a chostau
+        gas_long_term: Newidiadau hirdymor
+        gas_out_of_hours: Tu allan i oriau ysgol
+        gas_recent_changes: Newidiadau diweddar
+        heating_control: Rheoli gwresogi
+        hot_water: Dŵr poeth
+        solar_pv: Solar ffotofoltaig
+        storage_heaters: Stôr-wresogyddion
+        thermostatic_control: Rheolaeth thermostatig
+        total_energy_use: Crynodeb defnydd ynni
+      sections:
+        electricity: Trydan
+        gas: Nwy
+        solar_pv: Solar
+        storage_heater: Stôr-wresogyddion
+    no_fuel_type:
+      message: Nid oes gennym ddata %{fuel_type} ar gyfer eich ysgol ar hyn o bryd, felly ni allwn redeg y dadansoddiad hwn
+      title: Methu â rhedeg dadansoddiad y gofynnwyd amdano
+    no_recent_data: dim data diweddar
+    not_enough_data:
+      available_from: Gan gymryd ein bod yn parhau i dderbyn data yn rheolaidd, disgwyliwn i'r dadansoddiad hwn fod ar gael ar ôl %{available_from}.
+      learn_more_html: Yn y cyfamser gallwch <a href="%{learn_more_link}">ddysgu rhagor</a> am y pwnc hwn.
+      message: Ar hyn o bryd nid oes gennym ddigon o ddata %{fuel_type} er mwyn rhedeg y dadansoddiad hwn ar gyfer eich ysgol.
+      table_row_data_available_from: Data ar gael o %{date}
+      table_row_not_enough: dim digon o ddata
+      title: Dim digon o ddata i redeg dadansoddiad
+    tables:
+      columns:
+        name: Enw
+        period: Cyfnod
+        source: Ffynhonnell
+      labels:
+        bill_components:
+          agreed_availability_charge: Tâl argaeledd y cytunwyd arno
+          climate_change_levy__2020_21: Ardoll newid hinsawdd (2020/21)
+          climate_change_levy__2021_22: Ardoll newid hinsawdd (2021/22)
+          commodity_rate: Cyfradd nwyddau
+          data_collection_dcda_agent_charge: Tâl asiant DC/DA
+          day_night: "%{time_from} i %{time_to}"
+          daytime_rate: Cyfradd yn ystod y dydd
+          duos_amber: Deuawd (Ambr)
+          duos_green: Deuawd (Gwyrdd)
+          duos_red: Deuawd (Coch)
+          excess_availability_charge: Tâl argaeledd gormodol
+          feed_in_tariff_levy: Ardoll tariff bwydo i mewn
+          fixed_charge: Tâl sefydlog
+          flat_rate: Cyfradd fflat
+          meter_asset_provider_charge: Tâl darparwr asedau mesurydd
+          nhh_automatic_meter_reading_charge: NHH Tâl darllen mesurydd awtomatig
+          nhh_metering_agent_charge: Tâl asiant mesuryddion NHH
+          nighttime_rate: Cyfradd yn ystod y nos
+          non_commodity_rate: Cyfradd heb fod yn nwyddau
+          rate: Cyfradd
+          reactive_power_charge: Tâl ailweithredu pŵer
+          renewable_energy_obligation: Rhwymedigaeth ynni adnewyddadwy
+          settlement_agency_fee: Ffi asiantaeth setlo
+          site_fee: Ffi safle
+          standing_charge: Tâl sefydlog
+          tnuos: Tnuos
+          vat_20: TAW (20%)
+          vat_5: TAW (5%)
+        change_prev_year: Newid y flwyddyn flaenorol
+        default: Diofyn
+        partial: "(rhannol)"
+        smart_meter: Mesurydd clyfar
+        total: Cyfanswm
+        user_supplied: Cyflenwyd defnyddiwr
+      notice:
+        partial_holiday: data rhannol yn unig sydd ar gael ar gyfer gwyliau presennol
+        partial_months: yn dynodi mis rhannol
+        partial_year: yn dynodi blwyddyn rannol
+        three_significant_figures: Cyflwynir data yn y tabl hwn i 3 ffigwr arwyddocaol.
+        two_significant_figures: Cyflwynir data yn y tabl hwn i 2 ffigwr arwyddocaol.
+      tooltips:
+        bill_components:
+          agreed_availability_charge: Tâl am y ceblau i ddarparu uchafswm y cytunwyd arno mewn KVA o drydan i'r ysgol. Yn aml gellir lleihau hyn trwy drafodaethau gyda'ch cyflenwr ynni
+          all_day: trwy'r dydd
+          climate_change_levy__2021_22: 'Ardoll Newid yn yr Hinsawdd: yn seiliedig ar eich allyriadau carbon (fesul kWh o ddefnydd). Os byddwch yn lleihau eich defnydd bydd eich CCL yn lleihau'
+          commodity_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan
+          data_collection_dcda_agent_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
+          day_night: Dyma'r tâl am drydan a ddefnyddir rhwng %{time_from} a %{time_to} fesul kWh
+          duos: 'Tâl defnyddio system wedi''i ddosbarthu: - tâl fesul kWh o ddefnydd yn ystod yr amseroedd hyn: %{charge_times}. I leihau, lleihau defnydd ysgolion yn ystod yr amseroedd hyn'
+          excess_availability_charge: '''Dirwy'' am fynd dros eich ''Terfyn Argaeledd Cytûn'' mewn mis. Os ydych yn cael eich ‘dirwyo’ am fwy nag ychydig fisoedd y flwyddyn mae’n rhatach ar y cyfan i ofyn i’ch cyflenwr ynni gynyddu eich ‘Terfyn Argaeledd a Gytunwyd’.'
+          feed_in_tariff_levy: Ffi i dalu costau cefnogi ynni adnewyddadwy ar y rhwydwaith trydan. Gallwch leihau hyn drwy leihau eich defnydd o ynni
+          fixed_charge: Ffi sefydlog ar gyfer eich cyflenwad ynni
+          flat_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan
+          meter_asset_provider_charge: Cost trydydd parti i gynnal a chadw eich mesurydd
+          nhh_automatic_meter_reading_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
+          nhh_metering_agent_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
+          non_commodity_rate: Mae’r holl daliadau nad ydynt yn rhai cyfradd yn gymesur â defnydd kWh (ar gyfer rhai contractau mae’r rhain yn cynnwys taliadau rhwydwaith)
+          reactive_power_charge: Tâl yn seiliedig ar ba mor anghytbwys yw foltedd a defnydd presennol eich ysgol. Os yw'n gost fawr yna mae'n bosibl ail-gydbwyso'ch ysgol ond bydd angen trydanwr arnoch i'ch helpu. Ni all Sbarcynni gyfrifo hyn oherwydd ar hyn o bryd nid oes gennym fynediad at y data crai i gyfrifo hyn, felly bydd angen i chi edrych ar eich biliau papur; mae'r gost i'r rhan fwyaf o ysgolion yn llai na £20 y mis
+          renewable_energy_obligation: Rhwymedigaeth Ynni Adnewyddadwy - ar gyfradd sefydlog gan y llywodraeth fesul kWh a ddefnyddir
+          settlement_agency_fee: Ffi i dalu am y gost o gynnal a darllen eich mesurydd
+          site_fee: Ffi sefydlog amrywiol
+          standing_charge: Ffi sefydlog ar gyfer eich cyflenwad ynni
+          tnuos: 'Tâl Defnydd o’r System Rhwydwaith Trawsyrru: yn seiliedig ar ddefnydd brig yr ysgol ar ddiwrnodau’r wythnos yn ystod y gaeaf rhwng 17:00 a 19:30 - i leihau gwnewch yn siŵr bod cymaint o offer â phosibl yn cael eu diffodd yn ystod y gaeaf pan fydd yr ysgol yn cau am y dydd'
+          weekdays: 'dyddiau''r wythnos: %{period}'
+          weekends: 'penwythnosau: %{period}'
+    tabs:
+      analysis: Dadansoddiad
+      insights: Mewnwelediadau
+      learn_more: Dysgu Rhagor
+    tariff_table_intro: Defnyddiwyd y tariffau canlynol i gyfrifo'r costau hyn.

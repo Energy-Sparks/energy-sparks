@@ -12,8 +12,13 @@
       </div>
       <div class="card-body">
         <h5>Benchmark variables (English)</h5>
-        <%= sanitize ap(@result.data, index: false, plain: true)%>
+        <%= sanitize ap(@result.results, index: false, plain: true)%>
       </div>
+      <div class="card-body">
+        <h5>Benchmark variables (Welsh)</h5>
+        <%= sanitize ap(@result.results_cy, index: false, plain: true)%>
+      </div>
+
       <div class="card-footer text-muted">
         <p class="card-text"><b>Run on date</b>: <%= nice_dates @result.created_at %></p>
       </div>

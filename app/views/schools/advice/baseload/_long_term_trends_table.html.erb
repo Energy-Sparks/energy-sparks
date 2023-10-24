@@ -1,0 +1,27 @@
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th><%= t('advice_pages.baseload.tables.columns.year') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_kw') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_gbp') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_co2') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% annual_average_baseloads.each do |annual_average_baseload| %>
+    <tr>
+      <td>
+        <%= annual_average_baseload[:year] %>
+        <%= partial_year_note(annual_average_baseload[:year], analysis_dates.start_date, analysis_dates.end_date) %>
+      </td>
+      <td class="text-right"><%= format_unit(annual_average_baseload[:baseload], :kw) %></td>
+      <td class="text-right"><%= format_unit(annual_average_baseload[:baseload_usage].£, :£) %></td>
+      <td class="text-right"><%= format_unit(annual_average_baseload[:baseload_usage].co2, :co2) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="text-right advice-table-caption">
+  <%= t('advice_pages.baseload.current_baseload.calculation_dates', start_date: I18n.l(analysis_dates.start_date, format: '%-d %B %Y'), end_date: I18n.l(analysis_dates.end_date, format: '%-d %B %Y')) %>
+  <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
+</div>

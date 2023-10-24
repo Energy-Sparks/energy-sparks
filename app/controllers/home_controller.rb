@@ -94,6 +94,9 @@ class HomeController < ApplicationController
   def privacy_and_cookie_policy
   end
 
+  def support_us
+  end
+
   def terms_and_conditions
   end
 
@@ -101,6 +104,11 @@ class HomeController < ApplicationController
   end
 
   def child_safeguarding_policy
+  end
+
+  def funders
+    @school_count = School.visible.count
+    @partners = Partner.order(:position)
   end
 
   def training
@@ -112,17 +120,24 @@ class HomeController < ApplicationController
   end
 
   def school_statistics
-    @report = Schools::ReportingStatisticsService.new
+    @report = find_school_statistics
+  end
+
+  def school_statistics_key_data
+    @school_groups = SchoolGroup.with_active_schools.is_public.order(:name)
   end
 
   def team
     @staff = TeamMember.staff.order(:position)
     @consultants = TeamMember.consultant.order(:position)
     @trustees = TeamMember.trustee.order(:position)
-    @partners = Partner.order(:position)
   end
 
   private
+
+  def find_school_statistics
+    Schools::ReportingStatisticsService.new
+  end
 
   def videos
     [

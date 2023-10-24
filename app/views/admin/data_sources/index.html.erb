@@ -16,7 +16,7 @@
     <% @data_sources.each do |data_source| %>
       <tr>
         <td class="nowrap"><%= data_source.name %></td>
-        <td><span class="badge badge-info"><%= data_source.organisation_type.humanize %></span></td>
+        <td><span class="badge badge-info"><%= data_source.organisation_type.try(:humanize) %></span></td>
         <td class="nowrap text-right">
           <%= link_to 'Manage', admin_data_source_path(data_source), class: "btn btn-sm" %>
         </td>

@@ -1,15 +1,13 @@
-
 require 'rails_helper'
 
 describe MailchimpApi do
-
   let(:lists_api) { double(MailchimpMarketing::ListsApi) }
   let(:client) { double(MailchimpMarketing::Client, lists: lists_api) }
   let(:api) { MailchimpApi.new(client) }
 
-  let!(:lists_data) { YAML.load(File.read('spec/fixtures/mailchimp/lists.yml')) }
-  let!(:categories_data) { YAML.load(File.read('spec/fixtures/mailchimp/categories.yml')) }
-  let!(:interests_data) { YAML.load(File.read('spec/fixtures/mailchimp/interests.yml')) }
+  let!(:lists_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/lists.yml')) }
+  let!(:categories_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/categories.yml')) }
+  let!(:interests_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/interests.yml')) }
 
   context 'when no lists' do
     before do
@@ -23,7 +21,6 @@ describe MailchimpApi do
   end
 
   context 'when lists exist' do
-
     before do
       allow(lists_api).to receive(:get_all_lists).and_return(lists_data)
       allow(lists_api).to receive(:get_list_interest_categories).and_return(categories_data)
@@ -65,19 +62,18 @@ describe MailchimpApi do
   end
 
   context 'when subscribing new members' do
-
     let(:list_id) { '123' }
     let(:email_address) { 'john@comp.school' }
     let(:user_name) { 'john' }
     let(:school_name) { 'Comp' }
-    let(:interests) { { '123' => 'abc', '456' => 'def'} }
+    let(:interests) { { '123' => 'abc', '456' => 'def' } }
     let(:tags) { '  one,  two  ' }
 
     let(:expected_opts) { { skip_merge_validation: true } }
-    let(:expected_interests) { {'abc' => true, 'def' => true} }
-    let(:expected_tags) { ['one','two'] }
+    let(:expected_interests) { { 'abc' => true, 'def' => true } }
+    let(:expected_tags) { %w[one two] }
 
-    let(:merge_fields) { {'FULLNAME' => user_name, 'SCHOOL' => school_name} }
+    let(:merge_fields) { { 'FULLNAME' => user_name, 'SCHOOL' => school_name } }
 
     let(:expected_body) do
       {
@@ -102,10 +98,9 @@ describe MailchimpApi do
       response_body = "{\"type\":\"http://developer.mailchimp.com/documentation/mailchimp/guides/error-glossary/\",\"title\":\"Invalid Resource\",\"status\":400,\"detail\":\"jules@example.com looks fake or invalid, please enter a real email address.\",\"instance\":\"5156bd8f-569c-49d7-8ed6-a825dd42c932\"}"
       mailchimp_marketing_api_error = MailchimpMarketing::ApiError.new(:status => 400, :response_body => response_body)
       expect(lists_api).to receive(:add_list_member).and_raise(mailchimp_marketing_api_error)
-      expect{
+      expect do
         api.subscribe(list_id, params)
-      }.to raise_error(MailchimpApi::Error, /jules@example.com looks fake or invalid/)
+      end.to raise_error(MailchimpApi::Error, /jules@example.com looks fake or invalid/)
     end
-
   end
 end

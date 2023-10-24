@@ -7,6 +7,7 @@ class SchoolsController < ApplicationController
   include DashboardPriorities
   include NonPublicSchools
   include SchoolProgress
+  include Promptable
 
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
@@ -23,7 +24,9 @@ class SchoolsController < ApplicationController
   end
 
   #Redirect users associated with this school to a holding page, if its not
-  #visible yet. Other users will end up getting an access denied error
+  #visible yet.
+  #Admins will be sent to removal page
+  #Other users will end up getting an access denied error
   before_action :redirect_if_not_visible, only: [:show]
 
   #Redirect pupil accounts associated with this school to the pupil dashboard
@@ -33,6 +36,8 @@ class SchoolsController < ApplicationController
   #Redirect guest / not logged in users to the pupil dashboard if not
   #data enabled to offer a better initial user experience
   before_action :redirect_to_pupil_dash_if_not_data_enabled, only: [:show]
+
+  before_action :set_breadcrumbs
 
   def index
     @schools = School.visible.by_name
@@ -110,6 +115,14 @@ class SchoolsController < ApplicationController
 
 private
 
+  def set_breadcrumbs
+    if action_name.to_sym == :edit
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.edit_school_details') }]
+    else
+      @breadcrumbs = [{ name: I18n.t('dashboards.adult_dashboard') }]
+    end
+  end
+
   def user_signed_in_and_linked_to_school?
     user_signed_in? && (current_user.school_id == @school.id)
   end
@@ -120,6 +133,7 @@ private
 
   def redirect_if_not_visible
     redirect_to school_inactive_path(@school) if user_signed_in_and_linked_to_school? && !@school.visible?
+    redirect_to removal_admin_school_path(@school) if !@school.active && can?(:remove_school, @school)
   end
 
   def redirect_pupils
@@ -134,27 +148,24 @@ private
     redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
   end
 
-  def show_standard_prompts?
-    if user_signed_in? && current_user.admin?
-      true
-    elsif user_signed_in_and_linked_to_school? && can?(:show_management_dash, @school)
-      true
-    else
-      false
-    end
-  end
-
   def setup_default_features
     @observations = setup_timeline(@school.observations)
     #Setup management dashboard features if users has permission
     #to do that
-    @show_standard_prompts = show_standard_prompts?
+    @show_standard_prompts = show_standard_prompts?(@school)
     if can?(:show_management_dash, @school)
       @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
       @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
-      @prompt_training = !@show_data_enabled_features || current_user.confirmed_at < 60.days.ago
+      @prompt_training = @show_data_enabled_features && current_user.confirmed_at > 30.days.ago
       @prompt_for_bill = @school.bill_requested && can?(:index, ConsentDocument)
+      @programmes_to_prompt = select_programmes_to_prompt
     end
+  end
+
+  def select_programmes_to_prompt
+    # Initially just a single prompt for the programme that the school most recently started.
+    # We might revise this to show multiple programmes, or choose a random programme.
+    @school.programmes.started.order(started_on: :desc).limit(1)
   end
 
   def setup_data_enabled_features
@@ -210,6 +221,7 @@ private
       :enable_targets_feature,
       :public,
       :chart_preference,
+      :funder_id,
       key_stage_ids: []
     )
   end

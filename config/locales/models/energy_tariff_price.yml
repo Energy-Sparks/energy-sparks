@@ -1,0 +1,6 @@
+---
+en:
+  energy_tariff_price:
+    errors:
+      cannot_be_the_same_as_end_time: can't be the same as end time
+      overlaps_with_another_time_range: overlaps with another time range

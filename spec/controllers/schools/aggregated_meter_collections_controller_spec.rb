@@ -1,13 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller do
-
-  let(:school)             { create(:school, visible: visible, public: public)}
+  let(:school) { create(:school, visible: visible, public: public)}
 
   context "as an admin" do
-    let(:admin)   { create(:admin) }
+    let(:admin) { create(:admin) }
 
-    before(:each) do
+    before do
       sign_in(admin)
     end
 
@@ -15,18 +14,20 @@ RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller 
       let(:visible) { true }
 
       context "that is public" do
-        let(:public)  { true }
+        let(:public) { true }
+
         it "can trigger a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(:ok)
         end
       end
 
       context "that is private" do
-        let(:public)  { false }
+        let(:public) { false }
+
         it "can trigger a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(:ok)
         end
       end
     end
@@ -35,22 +36,23 @@ RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller 
       let(:visible) { false }
 
       context "that is public" do
-        let(:public)  { true }
-        it "can trigger a load" do
-          post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
-        end
-      end
-      context "that is private" do
-        let(:public)  { false }
+        let(:public) { true }
 
         it "can trigger a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "that is private" do
+        let(:public) { false }
+
+        it "can trigger a load" do
+          post :post, format: :json, params: { school_id: school.id }
+          expect(response).to have_http_status(:ok)
         end
       end
     end
-
   end
 
   context "as a guest" do
@@ -58,10 +60,11 @@ RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller 
       let(:visible) { true }
 
       context "that is public" do
-        let(:public)  { true }
+        let(:public) { true }
+
         it "can trigger a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(:ok)
         end
       end
     end
@@ -70,27 +73,29 @@ RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller 
       let(:visible) { false }
 
       context "that is public" do
-        let(:public)  { true }
-        it "can request a load" do
-          post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
-        end
-      end
-      context "that is private" do
-        let(:public)  { false }
+        let(:public) { true }
 
         it "can request a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "that is private" do
+        let(:public) { false }
+
+        it "can request a load" do
+          post :post, format: :json, params: { school_id: school.id }
+          expect(response).to have_http_status(:ok)
         end
       end
     end
   end
 
   context "as a teacher" do
-    let(:teacher)               { create(:school_admin, school: school)}
+    let(:teacher) { create(:school_admin, school: school)}
 
-    before(:each) do
+    before do
       sign_in(teacher)
     end
 
@@ -98,18 +103,20 @@ RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller 
       let(:visible) { true }
 
       context "that is public" do
-        let(:public)  { true }
+        let(:public) { true }
+
         it "can trigger a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(:ok)
         end
       end
 
       context "that is private" do
-        let(:public)  { false }
+        let(:public) { false }
+
         it "can trigger a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(:ok)
         end
       end
     end

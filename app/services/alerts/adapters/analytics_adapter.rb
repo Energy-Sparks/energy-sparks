@@ -62,7 +62,13 @@ module Alerts
           variable_data[:template_data_cy] = analysis_object.front_end_template_data
         end
 
-        variable_data[:benchmark_data] = analysis_object.benchmark_template_data if benchmark
+        if benchmark
+          variable_data[:benchmark_data] = analysis_object.benchmark_template_data
+          I18n.with_locale(:cy) do
+            variable_data[:benchmark_data_cy] = analysis_object.benchmark_template_data
+          end
+        end
+
         variable_data
       end
 

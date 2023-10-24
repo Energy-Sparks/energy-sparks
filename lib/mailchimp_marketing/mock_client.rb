@@ -4,6 +4,7 @@ module MailchimpMarketing
       []
     end
   end
+
   class MockClient
     def lists
       MockList.new

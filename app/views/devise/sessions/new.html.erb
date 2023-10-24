@@ -34,8 +34,9 @@
 
           <% if devise_mapping.rememberable? -%>
             <div class="form-group row">
-              <div class="col-sm-6 offset-sm-4">
-                <%= f.check_box :remember_me %> <%= f.label t('devise.sessions.new.remember_me') %>
+              <%= f.label :remember_me, t('devise.sessions.new.remember_me'), class: "col-sm-4 col-form-label" %>
+              <div class="col-sm-6">
+                <%= f.check_box :remember_me, class: "form-control col-1" %>
               </div>
             </div>
           <% end -%>
@@ -61,7 +62,7 @@
             <h3><%= t('devise.sessions.new.pupil_sign_in_for') %> <%= @school&.name %></h3>
             <%= f.hidden_field :school_id, value: @school&.id %>
           <% else %>
-            <%= f.input :school_id, as: :select, collection: @schools, label_method: :name, label: t('devise.sessions.new.select_your_school') %>
+            <%= f.input :school_id, as: :select, collection: @schools, label_method: lambda { |school| school_name_group(school) } , label: t('devise.sessions.new.select_your_school') %>
           <% end %>
           <%= f.input :password, as: :string, label: t('devise.sessions.new.your_pupil_password'), input_html: {autocapitalize: :none}%>
           <%= f.submit t('devise.sessions.new.sign_in'), class: 'btn btn-primary' %>
@@ -71,4 +72,3 @@
 
   </div>
 </div>
-

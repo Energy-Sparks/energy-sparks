@@ -1,6 +1,8 @@
-class AlertMailer < ApplicationMailer
+class AlertMailer < LocaleMailer
   include MailgunMailerHelper
+
   helper :application
+  helper :schools
 
   after_action :prevent_delivery_from_test
 
@@ -13,7 +15,7 @@ class AlertMailer < ApplicationMailer
     @target_prompt = params[:target_prompt]
     @title = @school.name
 
-    email = make_bootstrap_mail(to: @email_address, subject: I18n.t('alert_mailer.alert_email.subject'))
+    email = make_bootstrap_mail(to: @email_address)
     add_mg_email_tag(email, 'alerts')
   end
 

@@ -1,0 +1,53 @@
+<div class="row mt-4">
+  <div class="col">
+    <%= header %>
+    <% @tariff_types.each do |meter_type| %>
+      <% if @tariff_holder.holds_tariffs_of_type?(meter_type) %>
+        <div class="row pb-4">
+          <div class="col">
+            <h4>
+              <span class="<%= fuel_type_class(meter_type) %>">
+                <%= fa_icon( fuel_type_icon(meter_type) ) %>
+              </span>
+              <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
+            </h4>
+            <% if @tariff_holder.any_tariffs_of_type?(meter_type, @source, only_enabled: @default_tariffs) %>
+              <%= component 'energy_tariff_table',
+                id: table_id(meter_type),
+                tariff_holder: @tariff_holder,
+                tariffs: sorted_tariffs(meter_type),
+                show_actions: @show_actions %>
+            <% else %>
+              <p>
+                <% if @source == :dcc %>
+                  <%= t('schools.user_tariffs.index.no_smart_meter_tariffs', meter_type: meter_type) %>.
+                <% elsif @default_tariffs %>
+                  <% tariffs = SiteSettings.current.energy_tariffs.where(meter_type: meter_type).enabled.usable %>
+                  <% if tariffs.empty? %>
+                    <%= t('schools.user_tariffs.index.no_defaults', meter_type: meter_type) %>
+                  <% else %>
+                    <%= component 'energy_tariff_table',
+                      id: table_id(meter_type),
+                      tariff_holder: SiteSettings.current,
+                      tariffs: tariffs,
+                      show_actions: false %>
+                  <% end %>
+                <% else %>
+                  <%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %>.
+                <% end %>
+              </p>
+              <%= footer %>
+            <% end %>
+            <% if @show_add_button %>
+              <div class="mt-4">
+                <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"),
+                  new_energy_tariff_path(@tariff_holder, meter_type: meter_type),
+                  class: 'btn btn-sm btn-success' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -67,7 +67,7 @@ cy:
     section_6_html: |-
       <h4><strong>Faint o ynni y gall ysgolion sy'n cymryd rhan ei arbed?</strong></h4>
       <p>
-        Gall y rhan fwyaf o ysgolion sy’n cymryd rhan gydag Sbarcynni ddisgwyl cyflawni arbedion ynni o tua 10% yn eu blwyddyn gyntaf o ymgysylltu ag Sbarcynni, gan arwain at arbedion cost o tua £2500 ac 8 tunnell o CO2 yn seiliedig ar ysgol gynradd 2 ddosbarth mynediad ar gyfartaledd. Mae ysgolion sy'n perfformio orau yn Sbarcynni wedi cyflawni arbedion o hyd at 30%, yn gyffredinol trwy leihau'r defnydd o wres yn ystod gwyliau ysgol, penwythnos a thros nos a thorri eu llwyth sylfaen trydan. Rhoddir enghreifftiau o arbedion a gyflawnwyd yn yr ysgolion sy'n cymryd rhan yn <a href="/case-studies">Astudiaethau achos</a> Sbarcynni.
+        Gall y rhan fwyaf o ysgolion sy’n cymryd rhan gyda Sbarcynni ddisgwyl cyflawni arbedion ynni o tua 10% yn eu blwyddyn gyntaf o ymgysylltu â Sbarcynni, gan arwain at arbedion cost o tua £2500-£6000 (yn dibynnu ar dariffau) ac 8 tunnell o CO2 yn seiliedig ar ysgol gynradd 2 ddosbarth mynediad ar gyfartaledd. Mae ysgolion sy'n perfformio orau yn Sbarcynni wedi cyflawni arbedion o hyd at 30%, yn gyffredinol trwy leihau'r defnydd o wres yn ystod gwyliau ysgol, penwythnos a thros nos a thorri eu llwyth sylfaenol trydan. Rhoddir enghreifftiau o arbedion a gyflawnwyd yn yr ysgolion sy'n cymryd rhan yn <a href="/case-studies">Astudiaethau achos</a> Sbarcynni.
       </p>
     section_7_html: |-
       <h4><strong>Pa fesuryddion sydd eu hangen ar yr ysgol i ymuno â Sbarcynni?</strong></h4>
@@ -76,20 +76,17 @@ cy:
       </p>
     section_8:
       list_1_html: |-
-        <p><strong>Ysgolion gwladol (ysgolion a gynhelir ac academïau)</strong></p>
+        <p><strong>Ysgolion gwladol (a gynhelir ac academïau)</strong></p>
         <p>
-        Mae mynediad at yr offeryn ar-lein ac adnoddau addysg ar hyn o bryd yn <strong>rhad ac am ddim</strong> i ysgolion gwladol ar draws y DU drwy gyllid a chefnogaeth Sbarcynni gan lywodraeth ganolog, awdurdodau lleol ac ymddiriedolaethau a sefydliadau elusennol.
+        Mae cyllid o ymddiriedolaethau a sefydliadau elusennol, cwmnïau ynni cymunedol a phartneriaid corfforaethol yn caniatáu Sbarcynni i ddarparu ei wasanaethau yn rhad ac am ddim i nifer gyfyngedig o ysgolion mewn rhanbarthau penodol o'r DU ar hyn o bryd. Mae Sbarcynni yn chwilio am gyllidwyr newydd i'n caniatáu i gynnal ac ymestyn ein cynnig rhad ac am ddim i ragor o ysgolion gwladol.
         </p>
         <p>
-        Mae cyllid yn cwmpasu pob agwedd ar ein gwasanaeth i ysgolion y wladwriaeth ac eithrio <a href="/energy-audits">archwiliadau ynni ar y safle</a> sy'n gofyn am dâl ychwanegol.
+        Rydym hefyd yn cefnogi ysgolion gwladol fel gwasanaeth taledig. Cost mynediad at yr offeryn ar-lein, adnoddau addysg, gweminarau hyfforddi a chymorth e-bost a dros y ffôn yw £475 y flwyddyn fesul ysgol ar gyfer Ymddiriedolaeth Aml-Academi neu glwstwr Awdurdod Lleol neu £525 y flwyddyn i ysgolion unigol. Cwblhewch ein ffurflen gofrestru i gofrestru'ch diddordeb mewn ymuno â Sbarcynni.
         </p>
-        <p><strong>
-        Efallai y bydd eich cyflenwr yn codi ffi fach ychwanegol i ddarparu eich data ynni i Sbarcynni. Os yn berthnasol, bydd y gost hon yn cael ei hychwanegu at eich bil ynni. Bydd unrhyw gostau'n cael eu cadarnhau cyn i'ch cyfrif gael ei sefydlu.
-        </strong></p>
       list_2_html: |-
         <p><strong>Ysgolion annibynnol (preifat)</strong></p>
         <p>
-        Mae mynediad at yr offeryn ar-lein, adnoddau addysg, gweminarau hyfforddi a chymorth e-bost a ffôn yn dechrau o £499 y flwyddyn i ysgolion annibynnol.
+        Mae mynediad at yr offeryn ar-lein, adnoddau addysg, gweminarau hyfforddi a chymorth e-bost a ffôn yn dechrau o £525 y flwyddyn i ysgolion annibynnol.
         </p>
         <p>
         Mae'r pecyn sylfaenol hwn yn cynnwys cymorth am hyd at 10 mesurydd y flwyddyn. Codir £10 y mesurydd y flwyddyn am fesuryddion ychwanegol.
@@ -101,6 +98,6 @@ cy:
         <p>
         Mae <a href="/education-workshops">Gweithdai addysg</a>ac <a href="/energy-audits">archwiliadau ynni</a> rhithwir ac ar y safle ar gael am gost ychwanegol.
         </p>
-      title_html: "<h4><strong>Mynediad am ddim i Sbarcynni i ysgolion y wladwriaeth</strong></h4>"
+      title_html: "<h4><strong>Costau i ymuno â Sbarcynni</strong></h4>"
     section_9_html: <p>Mae ysgolion sy’n cymryd rhan a defnyddwyr sy’n oedolion yn cadarnhau eu cytundeb â <a href="/terms_and_conditions">Thelerau ac Amodau</a> Sbarcynni fel rhan o’u proses sefydlu cyfrif gychwynnol.</p>
     title: Sbarcynni ar gyfer ysgolion

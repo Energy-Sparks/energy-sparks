@@ -8,7 +8,7 @@
 
 <div class="form-group">
   <%= f.label :funding_status %>
-  <%= f.select :funding_status, options_for_select(School.funding_statuses.map {|key, value| [key.titleize, key]}, f.object.funding_status), {include_blank: false}, { class: 'form-control' } %>
+  <%= f.select :funding_status, options_for_select(School.funding_statuses.map {|key, value| [t("schools.funding_status.#{key}"), key]}, f.object.funding_status), {include_blank: false}, { class: 'form-control' } %>
 </div>
 
 <% if current_user.admin? %>
@@ -17,6 +17,8 @@
     <%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil, hint: t('schools.school_details.activation_date_hint') %>
     <%= f.input :enable_targets_feature %>
     <%= f.input :public %>
+    <%= f.label :funder %>
+    <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
   </div>
 <% end %>
 
@@ -29,7 +31,7 @@
   <h2><%= t('schools.school_details.location') %></h2>
   <div class="form-group">
     <%= f.label :country %>
-    <%= f.select :country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, f.object.country), {include_blank: false}, { class: 'form-control' } %>
+    <%= f.select :country, options_for_select(School.countries.map {|key, value| [t('school_statistics.' + key), key]}, f.object.country), {include_blank: false}, { class: 'form-control' } %>
   </div>
   <p><%= t('schools.school_details.geocode_message') %></p>
   <div class="form-group">
@@ -51,7 +53,7 @@
   <% School.school_types.keys.each do |school_type| %>
     <div class="form-check form-check-inline">
       <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
-      <%= f.label "school_type_#{school_type.to_sym}", t("school_types.#{school_type}", default: school_type.humanize),  class: "form-check-label" %>
+      <%= f.label "school_type_#{school_type.to_sym}", t("common.school_types.#{school_type}", default: school_type.humanize),  class: "form-check-label" %>
     </div>
   <% end %>
 </div>

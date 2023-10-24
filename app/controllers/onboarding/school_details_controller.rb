@@ -8,7 +8,7 @@ module Onboarding
     def new
       @school = School.new(
         name: @school_onboarding.school_name,
-        data_enabled: !EnergySparks::FeatureFlags.active?(:data_enabled_onboarding)
+        data_enabled: false
       )
     end
 

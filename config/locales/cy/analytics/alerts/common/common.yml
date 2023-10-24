@@ -18,3 +18,6 @@ cy:
     alert_target_base:
       summary: "%{percent} %{above_or_below} targed"
       timescale: o leiaf 1 flwyddyn
+    tariff_change:
+      change_between_periods_caveat: 'Rhybudd: mae tariff economaidd yr ysgol wedi newid rhwng y ddau gyfnod sy''n cael eu cymharu, nid yw hyn wedi''i adlewyrchu yn yr arbedion cost lle rydym wedi defnyddio''r tariff mwyaf diweddar i gyfrifo''r arbedion.'
+      change_within_period_caveat: 'Rhybudd: mae tariff economaidd yr ysgol wedi newid yn ddiweddar, nid yw hyn yn cael ei adlewyrchu yn yr arbedion cost lle rydym wedi defnyddio''r tariff mwyaf diweddar i gyfrifo''r arbedion.'

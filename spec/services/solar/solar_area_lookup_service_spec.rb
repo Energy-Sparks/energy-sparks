@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Solar::SolarAreaLookupService, type: :service do
-
   #location is somewhere in north america
   let!(:solar_area)      { create(:solar_pv_tuos_area, gsp_id: 1, latitude: 42.143042, longitude: -106.352703) }
 
@@ -13,40 +12,18 @@ describe Solar::SolarAreaLookupService, type: :service do
   let(:school_onboarding) { create(:school_onboarding, solar_pv_tuos_area: solar_area)}
   let(:school)            { create(:school) }
 
-  let(:service)         { Solar::SolarAreaLookupService.new(school, school_onboarding) }
+  let(:service) { Solar::SolarAreaLookupService.new(school, school_onboarding) }
 
-  context 'with feature flag off' do
-    it 'returns the area for the group' do
-      ClimateControl.modify FEATURE_FLAG_AUTO_ASSIGN_SOLAR_AREA: 'false' do
-        expect(service.lookup).to eq solar_area
-        expect(school.solar_pv_tuos_area).to be_nil
-      end
-    end
-
-    it 'assigns the area from the group' do
-      ClimateControl.modify FEATURE_FLAG_AUTO_ASSIGN_SOLAR_AREA: 'false' do
-        expect(service.assign).to eq solar_area
-        expect(school.solar_pv_tuos_area).to eq solar_area
-      end
-    end
+  it 'finds nearest area' do
+    expect(service.lookup).to eq bath_area
+    expect(school.solar_pv_tuos_area).to be_nil
   end
 
-  context 'with feature flag on' do
-    it 'finds nearest area' do
-      ClimateControl.modify FEATURE_FLAG_AUTO_ASSIGN_SOLAR_AREA: 'true' do
-        expect(service.lookup).to eq bath_area
-        expect(school.solar_pv_tuos_area).to be_nil
-      end
-    end
-    it 'assigns the nearest area' do
-      ClimateControl.modify FEATURE_FLAG_AUTO_ASSIGN_SOLAR_AREA: 'true' do
-        expect(SolarAreaLoaderJob).to receive(:perform_later).with(bath_area)
-        expect(service.assign).to eq bath_area
-        expect(school.solar_pv_tuos_area).to eq bath_area
-        bath_area.reload
-        expect(bath_area.active).to eq true
-      end
-    end
+  it 'assigns the nearest area' do
+    expect(SolarAreaLoaderJob).to receive(:perform_later).with(bath_area)
+    expect(service.assign).to eq bath_area
+    expect(school.solar_pv_tuos_area).to eq bath_area
+    bath_area.reload
+    expect(bath_area.active).to eq true
   end
-
 end

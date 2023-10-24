@@ -1,0 +1,163 @@
+<% content_for :page_title, @energy_tariff.name %>
+<h1><%= @energy_tariff.name %></h1>
+
+<div class="energy_tariff">
+  <% if @energy_tariff.usable? %>
+    <% if @energy_tariff.tariff_holder.school? %>
+      <%= component 'notice', classes: 'mb-2', status: :neutral do |c| %>
+        <p>
+          <%= t('schools.user_tariffs.show.introduction_html', analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: cost_analysis_class_for(@energy_tariff.meter_type)), meter_type: t("common.#{@energy_tariff.meter_type}").downcase) %>.
+        </p>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= component 'notice', classes: 'mb-2', status: :negative do |c| %>
+      <div class="d-flex justify-content-between">
+        <%= t('schools.user_tariffs.show.not_usable') %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if @energy_tariff.dcc? %>
+    <%= component 'notice', classes: 'mb-2', status: :neutral do |c| %>
+      <div class="d-flex justify-content-between">
+        <%= t('schools.user_tariffs.smart_meter_tariffs.limited_editing') %>
+        <%= link_to t('schools.user_tariff_charges.edit_charges'),
+          energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]),
+          class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= component 'energy_tariff_section',
+    id: 'metadata',
+    title: t('schools.user_tariffs.show.dates.title'),
+    edit_path: energy_tariffs_path(@energy_tariff, [], { action: :edit }),
+    show_button: !@energy_tariff.dcc? do |c| %>
+    <% c.with_charges_section do %>
+      <tr class="positive-row">
+        <td class="description"><%= t('schools.user_tariffs.show.dates.start_date') %></td>
+        <td class="value"><%= @energy_tariff&.start_date&.to_s(:es_compact) %></td>
+      </tr>
+      <tr class="positive-row">
+        <td class="description"><%= t('schools.user_tariffs.show.dates.end_date') %></td>
+        <td class="value"><%= @energy_tariff&.end_date&.to_s(:es_compact) %></td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <%= component 'energy_tariff_section',
+    id: 'tariff-type',
+    title: t('schools.user_tariffs.choose_type.breadcrumb_title'),
+    edit_path: energy_tariffs_path(@energy_tariff, [], { action: :choose_type }),
+    show_button: @energy_tariff.electricity? && !@energy_tariff.dcc?,
+    btn_class: 'btn' do |c| %>
+    <% c.with_charges_section do %>
+      <tr class="positive-row">
+        <td class="description"><%= t('schools.user_tariffs.tariff_partial.type') %></td>
+        <td class="value"><%= @energy_tariff.flat_rate? ? t('schools.user_tariffs.tariff_partial.flat_rate_tariff') : t('schools.user_tariffs.tariff_partial.differential_tariff') %></td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <% if (@energy_tariff.school_group? || @energy_tariff.site_setting?) && @energy_tariff.electricity? %>
+    <%= component 'energy_tariff_section',
+      id: 'applies-to',
+      title: t('schools.user_tariffs.choose_meters.tariff_applies_to'),
+      edit_path: energy_tariffs_path(@energy_tariff, [], { action: :applies_to }),
+      show_button: true do |c| %>
+      <% c.with_charges_section do %>
+        <tr class="positive-row">
+          <td class="description"><%= t("schools.user_tariffs.choose_meters.#{@energy_tariff.applies_to}").capitalize %></td>
+          <td class="value"></td>
+        </tr>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if @energy_tariff.school? %>
+    <%= component 'energy_tariff_section',
+      id: 'meters',
+      title: t('schools.user_tariffs.show.meters'),
+      edit_path: energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
+      show_button: !@energy_tariff.dcc? do |c| %>
+      <% c.with_charges_section do %>
+        <% if @energy_tariff.meters.empty? %>
+          <tr class="positive-row">
+            <td class="description">
+              <%= t('schools.user_tariffs.meters.all_meters', meter_type: @energy_tariff.meter_type) %>
+              <% if @energy_tariff.electricity? %>
+                (<%= t("schools.user_tariffs.choose_meters.#{@energy_tariff.applies_to}") %>)
+              <% end %>
+            </td>
+            <td class="value"></td>
+          </tr>
+        <% end %>
+        <% @energy_tariff.meters.each do |meter| %>
+          <tr class="positive-row">
+            <td class="description"><%= meter.mpan_mprn_and_name %></td>
+            <td class="value"></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= component 'energy_tariff_section',
+    id: 'prices',
+    title: t('schools.user_tariffs.show.consumption_charges'),
+    edit_path: energy_tariff_prices_path(@energy_tariff),
+    show_button: !@energy_tariff.dcc? do |c| %>
+    <% c.with_charges_section do %>
+      <% if @energy_tariff.flat_rate? %>
+        <%= render 'energy_tariffs/energy_tariffs/flat_rate', energy_tariff: @energy_tariff, allow_edits: false %>
+      <% else %>
+        <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, feedback: true, allow_edits: false %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= component 'energy_tariff_section',
+    id: 'charges',
+    title: t('schools.user_tariffs.show.standing_charges'),
+    edit_path: energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]),
+    show_button: !@energy_tariff.dcc? do |c| %>
+    <% c.with_charges_section do %>
+      <%= render 'energy_tariffs/energy_tariffs/charges_table', energy_tariff: @energy_tariff, allow_edits: false %>
+    <% end %>
+  <% end %>
+
+  <% if current_user.admin? %>
+    <%= component 'energy_tariff_section',
+      id: 'admin',
+      title: t('schools.user_tariffs.show.notes_html'),
+      edit_path: nil,
+      show_button: false do |c| %>
+      <% c.with_charges_section do %>
+        <tr>
+          <td class="description"><%= t('schools.user_tariffs.show.created_at') %></td>
+          <td class="value"><%= @energy_tariff.created_at&.to_s(:es_compact) %></td>
+        </tr>
+        <tr>
+          <td class="description"><%= t('schools.user_tariffs.show.created_by') %></td>
+          <td class="value"><%= @energy_tariff&.created_by&.display_name %></td>
+        </tr>
+        <tr>
+          <td class="description"><%= t('schools.user_tariffs.show.updated_at') %></td>
+          <td class="value">
+            <%= @energy_tariff&.updated_at&.to_s(:es_compact) %>
+          </td>
+        </tr>
+        <tr>
+          <td class="description"><%= t('schools.user_tariffs.show.updated_by') %></td>
+          <td class="value"><%= @energy_tariff&.updated_by&.display_name %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <div class="mt-4">
+    <%= link_to t('common.labels.finished'),
+      energy_tariffs_path(@energy_tariff, [], { energy_tariff_index: true }), class: 'btn' %>
+  </div>
+</div>

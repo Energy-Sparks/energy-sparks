@@ -21,7 +21,6 @@
 @import "test_warning";
 @import "calendars";
 @import "analysis";
-@import "simulator";
 @import "teachers";
 @import "pupils";
 @import "dashboards";
@@ -45,9 +44,14 @@
 @import "reports";
 
 @import "map";
-@import "user_tariffs";
+@import "energy_tariffs";
 @import "targets";
 @import "help";
 @import "live_data";
 @import "activations";
 @import "toggler";
+@import "advice_page";
+@import "compare";
+@import "standout";
+
+@import "../../components/**/*"; // loaded here so bootstrap SASS variables are available

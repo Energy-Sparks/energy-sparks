@@ -4,7 +4,7 @@ FactoryBot.define do
     password         { 'testpass' }
     confirmed_at     { Time.zone.now }
 
-    factory :school_admin  do
+    factory :school_admin do
       name { "School manager" }
       role { :school_admin }
       association :staff_role, factory: [:staff_role, :management]
@@ -14,6 +14,7 @@ FactoryBot.define do
     factory :pupil do
       role { :pupil }
       pupil_password { 'test' }
+      school
     end
 
     factory :staff do
@@ -32,6 +33,17 @@ FactoryBot.define do
     factory :admin do
       name { "Admin"}
       role { :admin }
+    end
+
+    factory :volunteer do
+      name { "Volunteer"}
+      role { :volunteer }
+      school
+    end
+
+    factory :analytics do
+      name { "Analytics"}
+      role { :analytics }
     end
 
     factory :guest do

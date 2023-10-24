@@ -23,8 +23,16 @@ module Amr
     def all_attributes
       attributes = meter_attributes || {}
       tariff_attributes = build_tariff_attributes
-      attributes.merge!(tariff_attributes) if tariff_attributes.present?
-      return nil if attributes.empty?
+
+      return nil if attributes.empty? && tariff_attributes.nil?
+      return attributes if tariff_attributes.nil?
+
+      if attributes.key?(:accounting_tariff_generic)
+        attributes[:accounting_tariff_generic] += tariff_attributes[:accounting_tariff_generic]
+      else
+        attributes[:accounting_tariff_generic] = tariff_attributes
+      end
+
       attributes
     end
 

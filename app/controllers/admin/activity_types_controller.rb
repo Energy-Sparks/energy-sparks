@@ -82,11 +82,13 @@ module Admin
           :activity_category_id,
           :score,
           :data_driven,
+          :show_on_charts,
           key_stage_ids: [],
           impact_ids: [],
           subject_ids: [],
           topic_ids: [],
           activity_timing_ids: [],
+          fuel_type: [],
           link_rewrites_attributes: link_rewrites_params,
           activity_type_suggestions_attributes: suggestions_params)
     end
@@ -108,7 +110,7 @@ module Admin
     end
 
     def load_chart_list
-      analysis_charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS.except(:simulator, :simulator_detail, :simulator_debug, :test, :pupil_analysis_page).map do |top_level_key, config|
+      analysis_charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS.except(:simulator, :simulator_detail, :simulator_debug, :test, :pupil_analysis_page, :heating_model_fitting, :cost_unused).map do |top_level_key, config|
         ["#{config[:name]} (#{top_level_key})", config.fetch(:charts) {[]}]
       end
       custom_activity_charts = [['Activity charts (custom)', ChartManager::STANDARD_CHART_CONFIGURATION.keys.grep(/^activities/)]]

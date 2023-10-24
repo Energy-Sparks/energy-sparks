@@ -262,6 +262,14 @@ PreCommit:
     flags: ['-errors', '-quiet', '-utf8']
     include: '**/*.html'
 
+  I18nTasks:
+    quiet: false
+    enabled: true
+    requires_files: true #only run if specific files changes
+    on_warn: fail # Treat all warnings as failures
+    command: ['i18n-tasks', 'check-normalized']
+    include: 'config/locales/**/*.yml' #apply to i18n yml only
+
   ImageOptim:
     enabled: false
     description: 'Check for optimizable images'
@@ -388,7 +396,7 @@ PreCommit:
     enabled: true
     description: 'Analyze with RuboCop'
     required_executable: 'rubocop'
-    flags: ['--format=simple', '--force-exclusion', '--display-cop-names', 'app', 'lib', 'data-pipeline/handlers']
+    flags: ['--format=simple', '--force-exclusion', '--display-cop-names', 'app', 'lib']
     install_command: 'gem install rubocop'
 
   RubyLint:

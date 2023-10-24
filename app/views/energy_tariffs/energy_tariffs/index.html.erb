@@ -1,0 +1,12 @@
+<%= render 'header_and_nav' %>
+
+<div class="tab-content" id="nav-tabContent">
+  <div id="nav-user-tariffs" role="tabpanel" aria-labelledby="nav-user-tariffs-tab" class="tab-pane fade show active">
+    <%= render 'energy_tariffs_tab',
+      tariff_types: list_of_tariff_types(show_all: true),
+      show_actions: true,
+      default_tariffs: false,
+      show_add_button: true,
+      tariff_holder: @tariff_holder %>
+  </div>
+</div>

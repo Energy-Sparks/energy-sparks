@@ -1,0 +1,10 @@
+<h1><%= @school_group.name %> meter report</h1>
+
+<%= render 'shared/school_group_meter_report', email: true, all_meters: @all_meters %>
+
+<h3>Loader Legend</h3>
+<ul>
+  <li><span class="table-danger">No reading for 30 days</span></li>
+  <li><span class="table-warning">No reading for 5 days</span></li>
+  <li><span class="table-success">Recent reading</span></li>
+</ul>

@@ -7,6 +7,7 @@
 #  created_at              :datetime         not null
 #  date_format             :text             not null
 #  description             :text             not null
+#  enabled                 :boolean          default(TRUE), not null
 #  expected_units          :string
 #  handle_off_by_one       :boolean          default(FALSE)
 #  header_example          :text
@@ -19,6 +20,8 @@
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
 #  number_of_header_rows   :integer          default(0), not null
+#  period_field            :string
+#  positional_index        :boolean          default(FALSE), not null
 #  postcode_field          :text
 #  process_type            :integer          default("s3_folder"), not null
 #  provider_id_field       :text
@@ -37,6 +40,9 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
+  scope :enabled,           -> { where(enabled: true) }
+  scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
+
   enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api, :n3rgy_api, :rtone_variant_api]
   enum source_type: [:email, :manual, :api, :sftp]
 
@@ -46,6 +52,7 @@ class AmrDataFeedConfig < ApplicationRecord
   has_rich_text :notes
 
   validates :identifier, :description, uniqueness: true
+  validates_presence_of :identifier, :description
 
   def map_of_fields_to_indexes(header = nil)
     this_header = header || header_example
@@ -53,12 +60,14 @@ class AmrDataFeedConfig < ApplicationRecord
     {
       mpan_mprn_index:    header_array.find_index(mpan_mprn_field),
       reading_date_index: header_array.find_index(reading_date_field),
+      reading_time_index: header_array.find_index(reading_time_field),
       postcode_index: header_array.find_index(postcode_field),
       units_index: header_array.find_index(units_field),
       description_index: header_array.find_index(meter_description_field),
       total_index: header_array.find_index(total_field),
       meter_serial_number_index: header_array.find_index(msn_field),
-      provider_record_id_index: header_array.find_index(provider_id_field)
+      provider_record_id_index: header_array.find_index(provider_id_field),
+      period_index: header_array.find_index(period_field)
     }
   end
 

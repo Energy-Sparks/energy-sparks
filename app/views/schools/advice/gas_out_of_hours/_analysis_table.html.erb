@@ -1,0 +1,60 @@
+<table class="table table-sm table-with-totals">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-left-">
+        <%= t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.table.time_of_use') %>
+      </th>
+      <th class="text-right">
+        <%= t('kwh') %>
+      </th>
+      <th class="text-right">
+        <%= t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.table.gbp_at_current_tariff') %>
+      </th>
+      <th class="text-right">
+        <%= t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.table.co2_kg') %>
+      </th>
+      <th class="text-right">
+        <%= t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.table.percent') %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @usage_categories.each do |usage_category| %>
+      <tr>
+        <td>
+          <%= t("analytics.series_data_manager.series_name.#{usage_category}") %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).kwh, :kwh) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).£, :£) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).co2, :co2) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).percent, :percent) %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <td>
+        <%= t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.table.total') %>
+      </td>
+      <td class="text-right">
+        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :kwh), :kwh) %>
+      </td>
+      <td class="text-right">
+        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :£), :£) %>
+      </td>
+      <td class="text-right">
+        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :co2), :co2) %>
+      </td>
+      <td class="text-right">
+        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :percent), :percent) %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

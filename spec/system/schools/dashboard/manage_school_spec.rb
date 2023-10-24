@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "manage school", type: :system do
-  let(:school)             { create(:school) }
+  let(:school) { create(:school, :with_school_group) }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
-  before(:each) do
+  before do
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for the has_one
     #relationship
@@ -14,107 +14,112 @@ RSpec.describe "manage school", type: :system do
   end
 
   context 'as guest' do
-    let(:user)                { nil }
-    it 'should not have a manage menu' do
+    let(:user) { nil }
+
+    it 'does not have a manage menu' do
       visit school_path(school)
-      expect(page).to_not have_css("#manage_school")
+      expect(page).not_to have_css("#manage_school")
     end
   end
 
   context 'as pupil' do
-    let(:user)          { create(:pupil, school: school) }
-    it 'should not have my school menu' do
+    let(:user) { create(:pupil, school: school) }
+
+    it 'does not have my school menu' do
       visit school_path(school, switch: true)
-      expect(page).to_not have_css("#manage_school")
+      expect(page).not_to have_css("#manage_school")
     end
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
-    before(:each) do
+    let(:user) { create(:staff, school: school) }
+
+    before do
       visit school_path(school)
     end
-    it 'should not have a manage menu' do
-      expect(page).to_not have_css("#manage_school")
+
+    it 'does not have a manage menu' do
+      expect(page).not_to have_css("#manage_school")
+    end
+  end
+
+  shared_examples "a manage school menu" do
+    it 'has manage school menu' do
+      expect(page).to have_css("#manage_school")
+      within "#manage_school_menu" do
+        expect(page).to have_link("Edit school details")
+        expect(page).to have_link("Edit school times")
+        expect(page).to have_link("School calendar")
+        expect(page).to have_link("Manage users")
+        expect(page).to have_link("Manage alert contacts")
+        expect(page).to have_link("Manage meters")
+      end
+    end
+  end
+
+  shared_examples "a manage school menu displaying admin section" do
+    it 'shows extra manage menu items' do
+      expect(page).to have_css("#manage_school")
+      within "#manage_school_menu" do
+        expect(page).to have_link("School configuration")
+        expect(page).to have_link("Meter attributes")
+        expect(page).to have_link("Manage CADs")
+        expect(page).to have_link("Manage school group")
+        expect(page).to have_link("Manage issues")
+        expect(page).to have_link("Manage partners")
+        expect(page).to have_link("Batch reports")
+        expect(page).to have_link("Review targets")
+        expect(page).to have_link("Expert analysis")
+        expect(page).to have_link("Remove school")
+      end
+    end
+  end
+
+  shared_examples "a manage school menu not displaying admin section" do
+    it 'does not shows extra manage menu items' do
+      expect(page).to have_css("#manage_school")
+      within "#manage_school_menu" do
+        expect(page).not_to have_link("School configuration")
+        expect(page).not_to have_link("Meter attributes")
+        expect(page).not_to have_link("Manage CADs")
+        expect(page).not_to have_link("Manage school group")
+        expect(page).not_to have_link("Manage issues")
+        expect(page).not_to have_link("Manage partners")
+        expect(page).not_to have_link("Batch reports")
+        expect(page).not_to have_link("Review targets")
+        expect(page).not_to have_link("Expert analysis")
+        expect(page).not_to have_link("Remove school")
+      end
     end
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
-    it 'should have manage school menu' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to have_link("Edit school details")
-      expect(page).to have_link("Edit school times")
-      expect(page).to have_link("School calendar")
-      expect(page).to have_link("Manage users")
-      expect(page).to have_link("Manage alert contacts")
-      expect(page).to have_link("Manage meters")
-    end
-    it 'does not shows extra manage menu items' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to_not have_link("School configuration")
-      expect(page).to_not have_link("Meter attributes")
-      expect(page).to_not have_link("Manage CADs")
-      expect(page).to_not have_link("Manage partners")
-      expect(page).to_not have_link("Batch reports")
-      expect(page).to_not have_link("Expert analysis")
-      expect(page).to_not have_link("Remove school")
-    end
+    let(:user) { create(:school_admin, school: school) }
+
+    before { visit school_path(school) }
+
+    it_behaves_like "a manage school menu"
+    it_behaves_like "a manage school menu not displaying admin section"
   end
 
   context 'as group admin' do
     let(:school_group)  { create(:school_group) }
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
-    it 'should have manage school menu' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to have_link("Edit school details")
-      expect(page).to have_link("Edit school times")
-      expect(page).to have_link("School calendar")
-      expect(page).to have_link("Manage users")
-      expect(page).to have_link("Manage alert contacts")
-      expect(page).to have_link("Manage meters")
-    end
-    it 'does not shows extra manage menu items' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to_not have_link("School configuration")
-      expect(page).to_not have_link("Meter attributes")
-      expect(page).to_not have_link("Manage CADs")
-      expect(page).to_not have_link("Manage partners")
-      expect(page).to_not have_link("Batch reports")
-      expect(page).to_not have_link("Expert analysis")
-      expect(page).to_not have_link("Remove school")
-    end
+
+    before { visit school_path(school) }
+
+    it_behaves_like "a manage school menu"
+    it_behaves_like "a manage school menu not displaying admin section"
   end
 
   context 'as admin' do
-    let(:user)          { create(:admin) }
+    let(:user) { create(:admin) }
 
-    it 'should have manage school menu' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to have_link("Edit school details")
-      expect(page).to have_link("Edit school times")
-      expect(page).to have_link("School calendar")
-      expect(page).to have_link("Manage users")
-      expect(page).to have_link("Manage alert contacts")
-      expect(page).to have_link("Manage meters")
-    end
+    before { visit school_path(school) }
 
-    it 'shows extra manage menu items' do
-      visit school_path(school)
-      expect(page).to have_link("School configuration")
-      expect(page).to have_link("Meter attributes")
-      expect(page).to have_link("Manage CADs")
-      expect(page).to have_link("Manage partners")
-      expect(page).to have_link("Batch reports")
-      expect(page).to have_link("Expert analysis")
-      expect(page).to have_link("Remove school")
-    end
+    it_behaves_like "a manage school menu"
+    it_behaves_like "a manage school menu displaying admin section"
 
     it 'displays batch reports' do
       visit school_path(school)
@@ -129,7 +134,7 @@ RSpec.describe "manage school", type: :system do
         visit school_path(school)
         click_on('Public')
         school.reload
-        expect(school).to_not be_public
+        expect(school).not_to be_public
         click_on('Public')
         school.reload
         expect(school).to be_public
@@ -140,7 +145,7 @@ RSpec.describe "manage school", type: :system do
         visit school_path(school)
         click_on('Visible')
         school.reload
-        expect(school).to_not be_visible
+        expect(school).not_to be_visible
         click_on('Visible')
         school.reload
         expect(school).to be_visible
@@ -151,11 +156,11 @@ RSpec.describe "manage school", type: :system do
         visit school_path(school)
         click_on('Visible')
         school.reload
-        expect(school).to_not be_visible
+        expect(school).not_to be_visible
         click_on('Visible')
         expect(page).to have_content("School cannot be made visible as we dont have a record of consent")
         school.reload
-        expect(school).to_not be_visible
+        expect(school).not_to be_visible
       end
 
       it 'allows toggling of data processing' do
@@ -184,7 +189,7 @@ RSpec.describe "manage school", type: :system do
         visit school_path(school)
         click_on('Data visible')
         school.reload
-        expect(school).to_not be_data_enabled
+        expect(school).not_to be_data_enabled
         click_on('Data visible')
         school.reload
         expect(school).to be_data_enabled

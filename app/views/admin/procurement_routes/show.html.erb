@@ -1,0 +1,35 @@
+<%= render 'header', title: "#{@procurement_route.organisation_name} procurement route" do %>
+  <%= header_nav_link 'All procurement routes', admin_procurement_routes_url %>
+<% end %>
+
+<div class="row pb-2">
+  <div class="col-12">
+    <div class="card-deck">
+      <div class="card">
+        <div class="card-body">
+          <div>Active meters <span class="float-right badge badge-success"><%= @procurement_route.meters.active.count %></span></div>
+          <div>Inactive meters <span class="float-right badge badge-secondary"><%= @procurement_route.meters.inactive.count %></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div>Associated schools <span class="float-right badge badge-success"><%=  @procurement_route.schools.count %></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-light border rounded py-2 mb-2">
+  <div class="col-12 clearfix">
+    <span data-toggle="collapse" href="#procurement-route" role="button" aria-expanded="true" aria-controls="procurement-route" class="badge badge-light toggler text-decoration-none collapsed">
+      <%= fa_icon("chevron-down") %><%= fa_icon("chevron-right") %>
+    </span>
+    <span class='float-right'>
+      <%= render 'email_report_button', procurement_route: @procurement_route, class: 'btn btn-sm' %>
+      <%= link_to 'Edit', edit_admin_procurement_route_path(@procurement_route), class: "btn btn-sm" %>
+      <%= link_to 'Delete', admin_procurement_route_path(@procurement_route), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
+    </span>
+  </div>
+  <%= render 'procurement_route', procurement_route: @procurement_route %>
+</div>

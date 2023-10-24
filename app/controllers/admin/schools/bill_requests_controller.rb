@@ -6,7 +6,7 @@ module Admin
       def new
         service = ::Schools::BillRequestService.new(@school)
         @users = service.users
-        @meters = @school.meters.main_meter
+        @meters = @school.meters.unreviewed_dcc_meter
       end
 
       def create

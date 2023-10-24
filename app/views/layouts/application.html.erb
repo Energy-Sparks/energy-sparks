@@ -3,15 +3,11 @@
   <head>
     <%= render 'shared/head' %>
   </head>
-  <body vocab="http://schema.org/" class="<%= 'sub-nav' if show_sub_nav?(@school, @hide_subnav) %>">
-    <% if show_sub_nav?(@school, @hide_subnav) %>
-      <%= render 'shared/mini_nav' %>
-      <%= render 'shared/sub_nav', podium: current_school_podium, school: @school %>
-    <% else %>
-      <%= render 'shared/nav' %>
-    <% end %>
+  <body vocab="http://schema.org/" class="<%= 'sub-nav' if show_sub_nav?(@school || @tariff_holder, @hide_subnav) %>">
+    <%= render 'shared/navigation' %>
 
     <div class="application container<%= conditional_application_container_classes %>">
+      <%= render 'shared/breadcrumbs' %>
       <%= render 'shared/alerts' if flash.any? %>
       <%= yield %>
     </div>

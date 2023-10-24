@@ -39,6 +39,8 @@ class Contact < ApplicationRecord
   validates_uniqueness_of :email_address, scope: :school_id, unless: ->(contact) { contact.email_address.blank? }
   validates_uniqueness_of :mobile_phone_number, scope: :school_id, unless: ->(contact) { contact.mobile_phone_number.blank? }
 
+  accepts_nested_attributes_for :user
+
   def display_name
     name
   end
@@ -48,5 +50,9 @@ class Contact < ApplicationRecord
     self.name = user.display_name
     self.email_address = user.email
     self.staff_role = user.staff_role
+  end
+
+  def preferred_locale
+    user ? user.preferred_locale : :en
   end
 end

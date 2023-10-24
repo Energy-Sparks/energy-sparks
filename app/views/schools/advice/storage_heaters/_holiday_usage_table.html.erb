@@ -1,0 +1,25 @@
+<table class="table advice-table">
+  <thead>
+    <tr>
+      <th><%= t('calendar_event_type.holiday.title') %></th>
+      <th><%= t('advice_pages.tables.columns.period') %></th>
+      <th class="text-right"><%= t('common.table.columns.use_kwh') %></th>
+      <th class="text-right"><%= advice_t('storage_heaters.analysis.tables.columns.average_daily_usage') %></th>
+      <th class="text-right"><%= t('common.table.columns.cost_gbp') %></th>
+      <th class="text-right"><%= t('common.table.columns.co2_kg') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% periods = sort_school_periods(holiday_usage.keys) %>
+    <% periods.each do |holiday| %>
+      <%= render 'previous_holiday_usage_row', holiday: holiday, holiday_usage: holiday_usage %>
+      <%= render 'current_holiday_usage_row', holiday: holiday, holiday_usage: holiday_usage %>
+      <%= render 'holiday_comparison_row', holiday: holiday, holiday_usage: holiday_usage %>
+    <% end %>
+  </tbody>
+</table>
+<% if within_school_period?(periods.last) %>
+  <div class="text-right advice-table-caption">
+    <sup>*</sup> <%= t('advice_pages.tables.notice.partial_holiday') %>
+  </div>
+<% end %>

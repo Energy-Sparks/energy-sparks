@@ -1,0 +1,99 @@
+cy:
+  advice_pages:
+    baseload:
+      analysis:
+        baseload_high: Mae eich llwyth sylfaenol yn uchel.
+        baseload_high_details_html: Pe baech yn cyfateb llwyth sylfaenol ysgolion eraill o'r un maint byddech yn arbed %{estimated_savings} y flwyddyn.
+        baseload_low: Mae eich llwyth sylfaenol yn isel.
+        baseload_low_details_html: Mae hyn yn dda, ac o ganlyniad rydych yn arbed %{estimated_savings} y flwyddyn yn erbyn ysgolion eraill o faint tebyg.
+        baseload_low_extra_savings_html: Pe baech yn cyfateb llwyth sylfaenol ysgolion sy'n perfformio orau gallech arbed %{estimated_savings} y flwyddyn.
+        charts:
+          baseload_chart_considerations: Os mae eich llwyth sylfaenol wedi newid, er enghraifft yn cynyddu neu'n lleihau yn sydyn, dylech allu olrhain ac egluro achos y newid hwn. Ystyriwch a yw'r ysgol wedi prynu offer newydd yn ddiweddar. Mae gostyngiad mawr dros wyliau'r haf yn dda, mae'n dangos bod offer wedi cael eu diffodd. Efallai cafodd oergelloedd a rhewgelloedd yn y gegin eu gwagio neu eu cyfuno. Ystyriwch pa mor arwyddocaol yw'r gostyngiad hwnnw - os cânt eu hachosi gan ddiffodd oergelloedd a rhewgelloedd, efallai y byddant yn ddigon aneffeithlon i ofyn am rai newydd. Meddyliwch a all eich ysgol ailadrodd y gostyngiad hwnnw ar gyfer gwyliau eraill, neu hyd yn oed penwythnosau.
+          baseload_chart_explanation: Mae pob pwynt yn y siart hwn yn cynrychioli'r llwyth sylfaenol cyfartalog dros yr oriau y mae ysgol ar gau ar y diwrnod hwnnw. Gallwch glicio ar bwynt yn y siart a bydd yn drilio i lawr i ddangos y defnydd llawn o drydan i chi ar y diwrnod hwnnw.
+          baseload_chart_subtitle_html: Mae'r siart hwn yn dangos llwyth sylfaenol trydan eich ysgol rhwng<span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>.
+          baseload_chart_title: Llwyth sylfaenol trydan ar gyfer y %{months_analysed} mis diwethaf
+          long_term_baseload_chart_explanation: Gallwch glicio ar y siart i drilio i lawr i ddiwrnodau unigol a gweithio allan ar ba adegau o'r dydd a'r flwyddyn y mae eich ysgol yn ei wneud naill ai'n well neu'n waeth na'r ysgolion hyn.
+          long_term_baseload_chart_subtitle_html: Mae'r siart hwn yn dangos tueddiad hirdymor yn llwyth sylfaenol eich ysgol rhwng <span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>, ac yn cynnwys cymhariaeth gydag ysgolion 'meincnod' ac 'enghreifftiol'.
+          long_term_baseload_chart_title: Cymhariaeth llwyth sylfaenol hirdymor gydag ysgolion enghreifftiol a meincnod
+          long_term_baseload_meter_chart_subtitle: Llwyth sylfaenol trydan o %{start_date} i %{end_date} ar gyfer %{meter}
+          long_term_baseload_meter_chart_title: Tueddiadau hirdymor yn llwyth sylfaenol trydan ar gyfer un mesurydd
+        long_term_trends:
+          intro: Oni bai bod yr ysgol wedi cynyddu'n ffisegol mewn maint, os ydych yn rheoli eich defnydd o drydan sylfaenol yn dda byddech yn disgwyl i'ch llwyth sylfaenol leihau dros amser wrth i offer a chyfrifiaduron ddod yn fwy ynni-effeithlon gyda gofynion pŵer modd gorffwys is. Os nad yw hyn yn wir, dylech geisio canfod achos y cynnydd.
+          table_description: Mae'r tabl isod yn dangos y llwyth sylfaenol cyfartalog blynyddol ar gyfer yr holl flynyddoedd y mae gennym ddata ar gyfer eich ysgol.
+          title: Tueddiadau hirdymor
+        meter_breakdown:
+          intro: Mae gan eich ysgol sawl mesurydd trydan. Mae'r adran isod yn dangos dadansoddiad o'r defnydd trydan sylfaenol ar gyfer pob mesurydd. Efallai y byddwch yn gallu defnyddio'r wybodaeth hon i nodi defnydd uchel o ynni mewn rhai rhannau o'ch ysgol.
+          link_text: manylion y mesurydd
+          table_description: Mae'r tabl isod yn dangos manylion y llwyth sylfaenol cyfartalog ar gyfer eich ysgol yn y %{months_analysed} mis diwethaf fesul mesurydd.
+          title: Manylion llwyth sylfaenol fesul mesurydd
+          whole_school: Ysgol gyfan
+        meter_charts:
+          title: Siartiau llwyth sylfaenol fesul mesurydd
+        multiple_meters_suggestion_html: Yn ddelfrydol, ni ddylai fod llawer o amrywiad yn y llwyth sylfaenol rhwng diwrnodau a thymhorau gwahanol. Os byddwch yn sylwi ar newidiadau anarferol neu lwyth sylfaenol uchel iawn, efallai y gallwch chi leihau'r hyn sy'n ei achosi trwy edrych ar eich llwyth sylfaenol isod.
+        recent_trend:
+          title: Tueddiad diweddar
+        seasonal_variation:
+          intro_1: Mewn ysgol a reolir yn dda dylai’r llwyth sylfaenol aros yr un fath drwy gydol y flwyddyn, ni ddylai fod unrhyw reswm pam y dylai’r defnydd o drydan ganol nos ar ddiwrnod ysgol fod yn uwch yn y gaeaf nag yn yr haf.
+          intro_2: Yr achosion mwyaf cyffredin o amrywiadau tymhorol uchel yw gwresogi trydan neu oleuadau diogelwch aneffeithlon yn cael eu gadael ymlaen dros nos yn y gaeaf.
+          table_description: Efallai y bydd y dadansoddiad o fesuryddion yn y tabl isod yn helpu i nodi o ble yn yr ysgol y daw amrywiad tymhorol.
+          title: Amrywiad tymhorol
+        sections: Mae'r adrannau canlynol yn darparu mwy o gefndir a dadansoddiad ar eich llwyth sylfaenol trydan
+        summary: Mae'r adran hon yn rhoi dadansoddiad manylach o lwyth sylfaenol trydan eich ysgol a rhai pethau i gadw llygad amdanynt.
+        title: Dadansoddiad Llwyth Sylfaenol
+        usage: Roedd eich llwyth sylfaenol dros y %{months_analysed} mis diwethaf yn %{baseload_usage} kW. Mae gan ysgolion eraill sydd â nifer tebyg o ddisgyblion lwyth sylfaenol o %{benchmark_usage} kW.
+        usage_percent_html: Mae eich llwyth sylfaenol yn cynrychioli %{percent} o'ch defnydd blynyddol.
+        weekday_variation:
+          intro_1: Mewn ysgol a reolir yn dda dylai'r llwyth sylfaenol aros yr un fath drwy gydol yr wythnos, ni ddylai fod unrhyw reswm pam y dylai'r defnydd o drydan ganol nos ar ddiwrnod o'r wythnos fod yn uwch nag yn ystod y penwythnos.
+          intro_2: Achos mwyaf cyffredin amrywiad yn ystod yr wythnos yw peiriant sy'n defnyddio llawer o ynni sy'n cael ei droi ymlaen ar ddydd Llun a'i diffodd eto ar ddydd Gwener.
+          table_description: Gall manylion y mesurydd yn y tabl isod eich helpu i nodi o ble yn yr ysgol y mae amrywiad dyddiol yn dod.
+          title: Amrywiad yn llwyth sylfaenol rhwng diwrnodau'r wythnos
+      comparison:
+        callout_footer: llwyth sylfaenol cyfartalog
+        how_do_you_compare: 'Sut mae eich llwyth sylfaenol yn cymharu ag ysgolion %{school_type} eraill ar Sbarcynni, sydd â nifer tebyg o ddisgyblion? '
+        more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
+        title: Sut ydych chi'n cymharu?
+      current_baseload:
+        calculation_dates: 'Cyfrifiad yn seiliedig ar ddefnydd rhwng %{start_date} a %{end_date} '
+        last_week: Wythnos ddiwethaf
+        last_year: Y llynedd
+        tables:
+          columns:
+            percentage_change: "% Newid"
+            use: Llwyth sylfaenol cyfartalog (kW)
+        title: Eich llwyth sylfaenol presennol
+      for_each_1kw_reduction_html: |-
+        <p>
+          Am bob gostyngiad o 1kW yn y llwyth sylfaenol, bydd yr ysgol yn arbed %{kwh_saving} kWh a %{gbp_saving} y flwyddyn, ac yn lleihau ei hôl troed carbon gan %{co2_saving} kg.
+        </p>
+      insights:
+        next_steps: Er mwyn canfod yn llawn beth yw achosion eich defnydd o lwyth sylfaenol mae angen i chi wneud arolwg o ba offer sy'n cael eu gadael ymlaen dros nos a'u defnydd o bŵer
+        title: Beth yw llwyth sylfaenol?
+      page_title: Dadansoddiad llwyth sylfaenol
+      tables:
+        columns:
+          assessment: Asesiad
+          average_annual_baseload_co2: CO2 blynyddol cyfartalog (kg)
+          average_annual_baseload_gbp: Cost blynyddol cyfartalog (£)
+          average_annual_baseload_kw: Llwyth sylfaenol blynyddol cyfartalog (kW)
+          baseload_in_summer: Llwyth sylfaenol yn yr haf (kW)
+          baseload_in_winter: Llwyth sylfaenol yn y gaeaf (kW)
+          change_since_previous_year: Newid ers y flwyddyn flaenorol (kW)
+          highest_day_baseload: Llwyth sylfaenol diwrnod uchaf (kW)
+          lowest_day_baseload: Llwyth sylfaenol diwrnod isaf (kW)
+          meter: Mesurydd
+          name: Enw
+          percentage_difference: "% gwahaniaeth"
+          percentage_of_total: "% o gyfanswm y llwyth sylfaenol"
+          potential_saving_co2: Gostyngiad CO2 (kg)
+          potential_saving_gbp: Arbediad potensial (£)
+          year: Blwyddyn
+        labels:
+          all_meters: Pob mesurydd
+      what_is_baseload_html: |-
+        <p>
+          Llwyth sylfaenol trydanol yw'r trydan sydd ei angen i ddarparu pŵer i offer sy'n dal i redeg bob amser.
+        </p>
+        <p>
+          Gall fod y ffordd gyflymaf o leihau costau ynni ysgol a lleihau ei hôl troed carbon.
+        </p>
+      what_is_baseload_link: Dysgu rhagor

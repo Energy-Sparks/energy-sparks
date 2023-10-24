@@ -1,0 +1,5 @@
+<% url = energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { id: @energy_tariff_price.id }) %>
+
+<%= simple_form_for @energy_tariff_price, url: url, remote: true, method: :put do |f| %>
+  <%= render 'form', energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
+<% end %>

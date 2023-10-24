@@ -1,0 +1,5 @@
+cy:
+  energy_tariff_price:
+    errors:
+      cannot_be_the_same_as_end_time: ni all fod yr un peth â'r amser gorffen
+      overlaps_with_another_time_range: yn gorgyffwrdd ag ystod amser arall

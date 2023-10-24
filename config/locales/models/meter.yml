@@ -1,0 +1,8 @@
+---
+en:
+  meter:
+    meter_system:
+      hh: HH
+      nhh: NHH
+      nhh_amr: NHH AMR
+      smets2_smart: SMETS2/smart

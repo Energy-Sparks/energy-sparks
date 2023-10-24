@@ -1,15 +1,12 @@
 <p>
-It's time to <strong><%= link_to 'set your first target', school_school_targets_url(@school, params: tracking_params) %></strong> for reducing your energy consumption.
+  <%= t('target_mailer.first_target_prompt.its_time_html', school_targets_url: school_school_targets_url(@school, params: tracking_params)) %>.
 </p>
 <div class="s-3"></div>
 <p>
-  We'll provide you with reports to help you monitor your progress,
-  a recommended set of activities that will engage the whole school,
-  and additional insights through our detailed analysis of your energy usage
+  <%= t('target_mailer.first_target_prompt.well_provide_you_with_reports') %>
 </p>
 <div class="s-3"></div>
 <p>
-  Not sure what's achievable? We've suggested an initial target based on our successes
-  working with schools across the country. Take a look.
+  <%= t('target_mailer.first_target_prompt.not_sure_whats_achievable') %>.
 </p>
-<%= link_to 'Set your first target', school_school_targets_url(@school, params: tracking_params), class: 'btn btn-primary mt-3 mb-3 float-right' %>
+<%= link_to t('target_mailer.first_target_prompt.set_your_first_target'), school_school_targets_url(@school, params: tracking_params), class: 'btn btn-primary mt-3 mb-3 ax-right' %>

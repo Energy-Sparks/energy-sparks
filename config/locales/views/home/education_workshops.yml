@@ -3,7 +3,7 @@ en:
   education_workshops:
     availability: Please note, education workshops are currently only available to schools with an active Energy Sparks account. In-person workshops are available in most areas of England and Wales. We are currently only able to offer virtual workshops in Scotland.
     book: Book a workshop
-    cost: Education workshops are free of charge to state schools. Workshops at independent schools cost from £395 subject to location.
+    cost_html: "<p>Workshops are available on a paid-for basis from £250 to £500 dependent on location and whether provided in-person or online. Discounts are available if we are able to co-ordinate workshops for several schools within the same Multi-Academy Trust or Local Authority to cut down travel. Some schools in designated regions will be eligible for free in-person workshops. We will let you know if you are eligible for a free workshop or provide an accurate quote after you have completed the workshop booking form.</p>"
     intro_html: |-
       <p>
         To support engagement and drive impact, Energy Sparks offers in-person and virtual half day education workshops to participating schools across the UK. Education workshops can include:

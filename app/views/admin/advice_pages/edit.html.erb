@@ -1,0 +1,7 @@
+<h1>Editing Advice Page: <%= @advice_page.key %></h1>
+
+<%= render 'form', advice_page: @advice_page %>
+
+<div class="other-actions">
+  <%= link_to 'Back', admin_advice_pages_path, class: 'btn btn-secondary' %>
+</div>

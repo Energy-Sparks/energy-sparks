@@ -1,0 +1,25 @@
+<table id="configuration-overview" class="table table-striped table-sm table-sorted">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Identifier</th>
+      <th data-orderable="false">Notes</th>
+      <th data-orderable="false">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% configurations.each do |config| %>
+      <tr>
+        <td><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
+        <td class="no-wrap"><code><%= config.identifier %></code></td>
+        <td><%= config.notes %></td>
+        <td>
+          <div class="btn-group btn-group-sm" role="group">
+          <%= link_to 'Upload', new_admin_amr_data_feed_config_amr_uploaded_reading_path(config), class: 'btn btn-sm' %>
+          <%= link_to 'Edit', edit_admin_amr_data_feed_config_path(config), class: 'btn btn-sm' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

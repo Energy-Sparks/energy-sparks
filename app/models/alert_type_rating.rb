@@ -42,7 +42,9 @@ class AlertTypeRating < ApplicationRecord
   scope :pupil_dashboard_alert, -> { where(pupil_dashboard_alert_active: true) }
   scope :management_dashboard_alert, -> { where(management_dashboard_alert_active: true) }
   scope :management_priorities_title, -> { where(management_priorities_active: true) }
-  scope :with_dashboard_alerts, -> { pupil_dashboard_alert.or(management_dashboard_alert).or(management_priorities_title) }
+  scope :email_active, -> { where(email_active: true) }
+  scope :sms_active, -> { where(sms_active: true) }
+  scope :with_dashboard_email_sms_alerts, -> { pupil_dashboard_alert.or(management_dashboard_alert).or(management_priorities_title).or(email_active).or(sms_active) }
 
   validates :rating_from, :rating_to, :description, presence: true
   validates :rating_from, :rating_to, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
@@ -89,8 +91,19 @@ class AlertTypeRating < ApplicationRecord
     intervention_types.order('alert_type_rating_intervention_types.position').group('intervention_types.id, alert_type_rating_intervention_types.position')
   end
 
+  def priority_action_modal_text?
+    I18n.t('school_groups.priority_actions.alert_types').key?("#{alert_type_class_key}_html".to_sym)
+  end
+
+  def priority_action_modal_text
+    I18n.t("school_groups.priority_actions.alert_types.#{alert_type_class_key}_html")
+  end
 
 private
+
+  def alert_type_class_key
+    alert_type.class_name.underscore
+  end
 
   def save_and_replace(content, to_replace)
     transaction do

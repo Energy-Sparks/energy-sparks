@@ -1,0 +1,61 @@
+---
+en:
+  advice_pages:
+    gas_costs:
+      analysis:
+        comparison:
+          title: Cost comparison for last 2 years
+        cost_breakdown_by_charge:
+          title: Cost breakdown by charge for the last %{period}
+        cost_breakdown_by_meter:
+          intro: The following table summarises the total cost associated with each meter for the last %{period} between %{start_date} and %{end_date}
+          title: Total cost for the last %{period}
+          whole_school: We estimate your total gas cost over the last %{period} to be %{cost}.
+        meter_breakdown:
+          select: Select an option to view costs for the whole school or a specific meter
+          title: Cost breakdown
+          whole_school: Whole school
+        summary: The following sections provide more background and analysis on your gas costs
+        tariff_note:
+          good_estimate: The information below provides a good estimate of your annual costs for this meter based on meter tariff information which has been provided to Energy Sparks.
+          manage_tariffs: Manage tariffs
+          poor_estimate: Energy Sparks currently doesn't have a complete record of your real tariffs and is using default tariffs between %{period_start_and_end}. This means the costs on this page won't be accurate.
+      charts:
+        cost_1_year_accounting_breakdown:
+          meter_subtitle_html: This chart shows the bill components for the 12 months ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Gas cost components for the last year for %{meter}
+          subtitle_html: This chart shows the bill components for the 12 months ending on <span class='end-date'>%{end_date}</span> for the whole school
+          title: Gas cost components for the last year
+        cost_1_year_accounting_breakdown_group_by_day:
+          meter_subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Gas cost components for the last two weeks for %{meter}
+          subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span> for the whole school
+          title: Gas cost components for the last two weeks
+        cost_1_year_accounting_breakdown_group_by_week:
+          meter_subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Gas cost components for the last few weeks for %{meter}
+          subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span> for the whole school
+          title: Gas cost components for the last few weeks
+        cost_comparison_last_2_years_accounting:
+          meter_title: Gas cost comparison for last 2 years for %{meter}
+          subtitle_html: This chart compares your monthly consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
+          title: Gas cost comparison for last 2 years
+      insights:
+        current_costs:
+          title: Your current costs
+        intro_html: |-
+          <p>Your gas bill is broken down into a variety of different charges.
+          </p>
+          <p>
+          Understanding these charges can help you reduce your costs and may help with bill validation.
+          </p>
+        link: Learn more
+        next_steps_html: To get a better estimate of your costs, <a href="%{link}">update your tariff information</a>
+      page_title: Gas cost analysis
+      tables:
+        columns:
+          cost: Cost (£)
+          meter: Meter
+          name: Name
+        labels:
+          total: Total

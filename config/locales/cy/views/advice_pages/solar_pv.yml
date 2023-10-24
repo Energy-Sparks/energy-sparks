@@ -1,0 +1,106 @@
+cy:
+  advice_pages:
+    solar_pv:
+      has_solar_pv:
+        analysis:
+          after_april_2019: Ar ôl Ebrill 2019
+          after_april_2019_content_html: Bydd arbediad ychwanegol o tua £79 o drydan wedi'i allforio o dan y <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/smart-export-guarantee-seg">SEG (Gwarant Allforio Clyfar)</a>
+          before_april_2019: Cyn Ebrill 2019
+          before_april_2019_content_html: |-
+            <p>Gallai'r ysgol hefyd elwa o gymhorthdal y llywodraeth o'r enw <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/feed-tariffs-fit">'tariff cyflenwi trydan'</a>.</p>
+            <p>Bydd swm y tariff cyflenwi trydan yn dibynnu ar bryd y gosodwyd y paneli ac fel arfer mae o fewn yr ystod 5p/kWh i 40 p/kWh x cyfanswm y 'Cynhyrchiad Ffotofoltäig' o 5,693 kWh, bob blwyddyn</p>
+          benefits_of_having_installed_solar_panels: Manteision gosod paneli solar
+          if_the_panels_are_owned_by_a_third_party: Os yw'r paneli yn eiddo i drydydd parti
+          if_the_panels_are_owned_by_the_school: Os yw'r paneli yn eiddo i'r ysgol
+          installing_solar_panels_has_reduced_html: Mae gosod paneli solar wedi gostwng defnydd trydan eich ysgol gan %{annual_solar_pv_consumed_onsite_kwh} kWh (%{annual_saving_from_solar_pv_percent}) yn y 12 mis diwethaf
+          long_term_trends: Tueddiadau hirdymor
+          recent_electricity_consumption_and_solar_production: Defnydd diweddar o drydan a chynhyrchu solar
+          so_the_savings: Felly bydd yr arbedion yn dibynnu ar y gwahaniaeth rhwng cost y prif gyflenwad trydan a faint mae'r trydydd parti yn ei godi ym drydan
+          solar_pv_group_by_month:
+            footer_html: |-
+              <p>Mae'r siart hwn yn dangos faint o ddefnydd ynni'r ysgol sy'n cael ei gyflenwi gan eich paneli solar a'i ddefnyddio ar y safle. Mae hefyd yn nodi faint o ynni sy'n cael ei allforio i'r Grid Cenedlaethol ar ddiwrnodau pan fo'r paneli'n cynhyrchu mwy o drydan nag sydd ei angen ar yr ysgol.</p>
+              <p>Mae llinell "disgleirdeb yr heulwen" ar y siart yn cynrychioli'r 'arbelydriad solar ar gyfartaledd'. Mae hwn yn fesur o ba mor llachar oedd yr haul yn ystod pob mis.</p>
+            subtitle_html: Mae'r siart isod yn dangos defnydd eich ysgol o drydan, cynhyrchu ynni solar ac ynni solar wedi'i allforio rhwng %{start_date} a %{end_date}. Mae'n cynnwys arwydd o ba mor llachar oedd yr haul yn ystod pob mis.
+            title: Defnydd o drydan a solar ffotofoltaig am y 12 mis diwethaf
+          solar_pv_last_7_days_by_submeter:
+            subtitle_html: Mae'r siart hwn yn dangos y defnydd o drydan yn eich ysgol am bob hanner awr o'r dydd rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span> wedi'i ddadansoddi. Mae'n cynnwys arwydd o ba mor llachar oedd yr haul yn ystod y cyfnod hwnnw.
+            title: Defnydd o drydan a solar ffotofoltaig ar gyfer y 7 diwrnod
+          the_cost_savings: Bydd yr arbedion cost o'ch paneli yn dibynnu a ydynt yn eiddo i'r ysgol neu a yw'r paneli yn eiddo i gwmni ynni trydydd parti
+          the_following_table_summarises: Mae'r tabl canlynol yn crynhoi faint o ynni y mae eich paneli solar wedi'i gynhyrchu a faint sydd wedi'i ddefnyddio ar y safle a'i allforio i'r grid cenedlaethol rhwng %{start_date} a %{end_date}
+          the_panels_have_reduced: Mae'r paneli wedi lleihau eich allyriadau carbon gan tua %{annual_co2_saving_kg} kg CO2 bob blwyddyn
+          the_school_will_have_saved_html: Bydd yr ysgol wedi arbed tua %{saving_current_gbp} o'r trydan rhydd y mae'n ei ddefnyddio o'r paneli
+          there_may_be_extra_returns: Efallai y bydd adenillion ychwanegol ar y buddsoddiad yn dibynnu ar ba bryd y gosodwyd y paneli cyn neu ar ôl Ebrill 2019
+          third_party_companies: Mae cwmnïau trydydd parti yn gosod paneli solar am ddim ac yn codi cyfradd ostyngol ar ysgolion am yr ynni a ddefnyddir o'r paneli hyn
+          this_page_provides: Mae'r dudalen hon yn rhoi cipolwg manylach ar yr ynni a gynhyrchir gan eich paneli solar
+          title: Dadansoddiad
+        insights:
+          advice_html: |-
+            <p>Mae gan lawer o ysgolion baneli solar ffotofoltäig (Solar PV) sy'n cynhyrchu ynni o olau'r haul.</p>
+            <p>Mae'r paneli yn lleihau defnydd yr ysgol o drydan o'r grid cenedlaethol a'i hallyriadau carbon. Ychydig iawn o garbon a gynhyrchir gan drydan a gynhyrchir o baneli solar.</p>
+            <p>Mae paneli ffotofoltäig solar yn gweithio'n dda i ysgolion gan mai nhw sy'n cynhyrchu'r rhan fwyaf o ynni tua hanner dydd, sef pan fydd ysgol fel arfer yn defnyddio'r rhan fwyaf o ynni.</p>
+          for_more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
+          how_do_you_compare: Sut ydych chi'n cymharu?
+          link: Dysgu rhagor
+          table:
+            category: Categori
+            row:
+              electricity_consumed_from_mains: Trydan a ddefnyddir o'r prif gyflenwad
+              electricity_consumed_from_solar_pv: Trydan a ddefnyddir o solar ffotofoltaig
+              exported_solar_electricity: Allforio trydan solar (heb ei ddefnyddio ar y safle)
+              photovoltaic_production: Cynhyrchu ffotofoltäig
+              total_consumption: Cyfanswm y defnydd
+          title: Beth yw solar ffotofoltaig?
+          your_solar_energy_production: Eich cynhyrchiad ynni solar
+          your_solar_panels_have_reduced: Mae eich paneli solar wedi lleihau eich defnydd o drydan o'r grid cenedlaethol erbyn %{annual_saving_from_solar_pv_percent}
+        page_title: Cynhyrchu solar ffotofoltaig
+      no_solar_pv:
+        analysis:
+          comments: Sylwadau
+          comments_list_html: |-
+            <ul>
+              <li>Mae'r cyfrifiadau ar hyn o bryd yn rhagdybio y byddwch yn cael rhywfaint o incwm o unrhyw drydan a allforir. Ers diwedd y Tariff Cyflenwi Trydan ym mis Ebrill 2019 mae incwm awtomatig o allforio wedi’i ddisodli gan y cynllun Gwarant Allforio Clyfar (SEG) ond mae’r incwm hwn yn dibynnu ar gytundeb gyda’ch cyflenwr trydan.</li>
+              <li>Mae’r cyfrifiadau’n seiliedig ar bris trydan cyfredol o %{site_settings_electricity_price}/kWh, os bydd prisiau prif gyflenwad trydan yn cynyddu bydd budd economaidd uwch ac ad-daliad byrrach i’r gosodiad..</li>
+              <li>Os bydd yr ysgol yn dod yn fwy effeithlon wrth ddefnyddio trydan ac yn lleihau ei defnydd o drydan bydd y budd hefyd yn lleihau.</li>
+              <li>Mae'r costau cyfalaf yn y tabl uchod yn amcangyfrifon sy'n seiliedig ar gyfraddau cyfredol y farchnad; efallai y bydd y gost gosod yn eich ysgol ychydig yn wahanol - mae angen i chi gael dyfynbrisiau.</li>
+              <li>Mae'r amcangyfrifon yn rhagdybio bod gennych ofod to a dyna ei fod yn wynebu'r de yn fras - gan fod hyn yn optimaidd ar gyfer ysgolion y mae eu galw brig yn ystod canol dydd pan fydd paneli sy'n wynebu'r de yn cynhyrchu'r mwyaf o drydan.</li>
+              <li>Bydd buddion eich solar ffotofoltaig yn cael eu lleihau os gwnewch eich ysgol yn fwy ynni-effeithlon. Fodd bynnag, os ydych am i'ch ysgol leihau ei hallyriadau carbon dylech ystyried gosod paneli solar a lleihau eich defnydd o drydan.</li>
+            </ul>
+          energy_sparks_has_estimated: Mae Sbarcynni wedi amcangyfrif mai gosod %{optimum_kwp} kWp sy'n rhoi'r ad-daliad gorau
+          however_installing_slightly_more: Fodd bynnag, nid yw gosod ychydig yn fwy neu'n llai na'r ad-daliad gorau yn gwneud llawer o wahaniaeth i'r economeg
+          installing_solar_pv: Bydd gosod  solar ffotofoltaig yn eich ysgol yn lleihau'r trydan a ddefnyddiwch o'r grid cenedlaethol, ac yn lleihau allyriadau carbon eich ysgol. Dylid ei weld fel ychwanegiad at leihau defnydd eich ysgol o drydan drwy effeithlonrwydd ynni yn hytrach na dewis arall
+          it_might_take_between: Gall gymryd rhwng 2 a 15 mlynedd i ad-dalu costau cyfalaf gosod paneli solar yn dibynnu ar eich tybiaethau ar gyfer tariffau trydan yn y dyfodol, ond yn aml bydd Cymdeithasau Rhieni ac Athrawon yn barod i godi rhai o’r costau cyfalaf gan ei gwneud yn fwy darbodus i ysgolion.
+          table:
+            column:
+              annual_exported_solar_electricity_kwh: Trydan solar sydd wedi'i allforio blynyddol (kWh)
+              annual_output_from_panels_kwh: Allbwn blynyddol o baneli (kWh)
+              annual_saving: Arbediad blynyddol
+              annual_saving_co2: Arbediad blynyddol (CO2)
+              annual_self_consumed_solar_electricity_kwh: Trydan solar hunan-ddefnyddio blynyddol (kWh)
+              area_m2: Arwynebedd (m2)
+              capacity_kwp: Cynwysedd (kWp)
+              estimated_capital_cost: Amcangyfrif o'r gost cyfalaf
+              panels: Paneli
+              payback_years: Blynyddoedd talu yn ôl
+              reduction_in_mains_consumption: Gostyngiad yn y defnydd o'r prif gyflenwad
+          the_table_below: Mae’r tabl isod yn rhoi amcangyfrifon o fanteision a chostau posibl gosod gwahanol feintiau o baneli solar ffotofoltäig yn eich ysgol.
+          the_table_contains: Mae’r tabl yn cynnwys ystod o gynwyseddau, wedi’i gyfrifo gan ddefnyddio data mesurydd trydan bob hanner awr o’ch ysgol a data solar ffotofoltäig go iawn ar gyfer eich ardal leol ar gyfer y flwyddyn ddiwethaf i gynhyrchu amcangyfrif rhesymol o’r potensial ar gyfer solar ffotofoltäig i leihau eich prif ddefnydd.
+          title: Dadansoddiad
+        insights:
+          advice_html: |-
+            <p>Mae gan lawer o ysgolion baneli solar ffotofoltäig sy'n cynhyrchu ynni o olau'r haul.</p>
+            <p>Mae'r paneli yn lleihau defnydd yr ysgol o drydan o'r grid cenedlaethol a'i hallyriadau carbon. Ychydig iawn o garbon a gynhyrchir gan drydan a gynhyrchir o baneli solar.</p>
+            <p>Mae paneli ffotofoltäig solar yn gweithio'n dda i ysgolion gan mai nhw sy'n cynhyrchu'r rhan fwyaf o ynni tua hanner dydd, sef pan fydd ysgol fel arfer yn defnyddio'r rhan fwyaf o ynni.</p>
+          if_you_do_get_solar_panels_installed_html: Os ydych yn gosod paneli solar, peidiwch ag anghofio rhoi gwybod i ni yn <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a>  fel y gallwn eu ffurfweddu ar gyfer eich ysgol.
+          installing_solar_panels_could_reduce_html: Gallai gosod paneli solar leihau'r trydan a ddefnyddiwch o'r grid cenedlaethol gan %{optimum_mains_reduction_percent} bob blwyddyn
+          link: Dysgu rhagor
+          next_steps_html: |-
+            <p>Os oes gennych ddiddordeb mewn gosod ffotofoltäig solar yn eich ysgol dylech:</p>
+            <ul>
+              <li>Siaradwch ag arbenigwr a all asesu'r gofod to presennol o ran y gofod sydd ar gael a chywirdeb strwythurol.</li>
+              <li>Gallwch ofyn am gyngor arbenigol gan osodwyr cymwys a restrir ar wefan <a href='https://mcscertified.com/find-an-installer/'>MCS</a>.
+              <li>Ymchwilio i ffynonellau cyllid ar gyfer paneli solar.</li>
+            </ul>
+          potential_benefits_for_your_school: Manteision posib i'ch ysgol
+          title: Beth yw solar ffotofoltaig?
+          your_school_doesnt_have_solar_panels: Nid oes gan eich ysgol baneli solar
+        page_title: Manteision gosod paneli solar

@@ -1,0 +1,34 @@
+<%= component 'energy_tariff_form_title',
+  energy_tariff: @energy_tariff do |c| %>
+  <% c.with_page_title do %>
+    <h1><%= t('schools.user_tariffs.choose_type.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
+  <% end %>
+<% end %>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="energy_tariff">
+      <% form_url = energy_tariffs_path(@energy_tariff, [], { action: :update_type }) %>
+      <div class="pb-4">
+        <p><%= t('schools.user_tariffs.choose_type.is_this_a.flat_rate') %></p>
+        <%= simple_form_for @energy_tariff, url: form_url, method: :post do |f| %>
+          <%= f.hidden_field :tariff_type, value: 'flat_rate' %>
+          <%= submit_tag t('schools.user_tariffs.choose_type.flat_rate'),
+              class: 'btn btn-info',
+              data: (@energy_tariff.tariff_type != 'flat_rate' && @energy_tariff.energy_tariff_prices.present?) ? { confirm: t('schools.user_tariffs.choose_type.are_you_sure_message') } : {}
+              %>
+        <% end %>
+      </div>
+      </div>
+        <p><%= t('schools.user_tariffs.choose_type.is_this_a.differential') %></p>
+        <%= simple_form_for @energy_tariff, url: form_url, method: :post do |f| %>
+          <%= f.hidden_field :tariff_type, value: 'differential' %>
+          <%= submit_tag t('schools.user_tariffs.choose_type.differential'),
+              class: 'btn btn-info',
+              data: (@energy_tariff.tariff_type != 'differential' && @energy_tariff.energy_tariff_prices.present?) ? { confirm: t('schools.user_tariffs.choose_type.are_you_sure_message') } : {}
+          %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

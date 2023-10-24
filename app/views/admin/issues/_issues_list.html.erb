@@ -1,8 +1,11 @@
-<table class="table table-sorted" style="width: 100%">
+<table class="table table-sorted">
   <thead>
     <tr>
       <th class="no-sort"></th>
+      <th><%= local_assigns[:issueable_type] || 'Issue for' %></th>
       <th>Title</th>
+      <th>Fuel</th>
+      <th class="nowrap">Created by</th>
       <th class="nowrap">Assigned to</th>
       <th>Status</th>
       <th>Updated</th>
@@ -12,18 +15,21 @@
   <tbody>
     <% issues.by_priority_order.each do |issue| %>
       <tr class="bg-light admin-issue">
-        <td class="<%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type) %></td>
-        <td class="nowrap"><%= issue.title %> <%= render 'admin/issues/pinned', issue: issue %>
-        <% if show_issueable %>
-          <br /><%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
-        <% end %>
-        <%= render 'admin/issues/fuel_type', issue: issue %>
+        <td class="fit issue-type <%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type) %></td>
+        <td class="fit"><%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %></td>
+        <td width="100%" class="overflow">
+          <%= render 'admin/issues/pinned', issue: issue %>
+          <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span><br />
+          <%= render 'admin/issues/meters', issue: issue %>
         </td>
-        <td><%= render 'admin/issues/owned_by', issue: issue %></td>
-        <td><%= render 'admin/issues/status', issue: issue %></td>
-        <td data-order="<%= issue.updated_at %>"><div class="badge badge-pill bg-white text-dark font-weight-normal nowrap"><%= nice_date_times_today(issue.updated_at) %></div></td>
-        <td class="nowrap text-right">
+        <td class="fit"><%= render 'admin/issues/fuel_type', issue: issue %></td>
+        <td class="fit"><%= render 'admin/issues/created_by', issue: issue %></td>
+        <td class="fit"><%= render 'admin/issues/owned_by', issue: issue %></td>
+        <td class="fit"><%= render 'admin/issues/status', issue: issue %></td>
+        <td class="fit" data-order="<%= issue.updated_at %>"><div class="badge badge-pill bg-white text-dark font-weight-normal nowrap"><%= nice_date_times_today(issue.updated_at) %></div></td>
+        <td class="fit nowrap text-right">
           <%= link_to 'View', polymorphic_path([:admin, issue.issueable, issue]), class: "btn btn-sm" %>
+          <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-info btn-sm' %>
         </td>
       </tr>
     <% end %>

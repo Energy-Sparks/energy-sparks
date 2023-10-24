@@ -1,4 +1,3 @@
----
 cy:
   charts:
     dashboard:
@@ -25,15 +24,15 @@ cy:
           second: Cymharu â
       select_meter:
         all_meters: Pob Mesurydd
-        title: "Pa fesurydd?"
+        title: Pa fesurydd?
       show:
         compare_message:
           other:
-            daily_html: "Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dau ddiwrnod gwahanol"
-            weekly_html: "Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dwy wythnos wahanol"
+            daily_html: Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dau ddiwrnod gwahanol
+            weekly_html: Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dwy wythnos wahanol
           split_meter:
-            daily_html: "Cymharwch ddefnydd dyddiol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion"
-            weekly_html: "Cymharwch ddefnydd wythnosol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion"
+            daily_html: Cymharwch ddefnydd dyddiol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion
+            weekly_html: Cymharwch ddefnydd wythnosol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion
         data_available: "Mae data %{supply} ar gael o %{from_date} i %{to_date}"
         explore_data: Archwilio data
       titles:
@@ -53,111 +52,624 @@ cy:
             split: Defnydd nwy dyddiol eich ysgol yn eich wythnos ddewisol wedi'i gofnodi fesul metr
     weekly-usage-link: Gweld defnydd fesul wythnos
   schools:
+    aggregated_meter_collections:
+      show:
+        error_html: Mae'n ddrwg gennym, rydym yn cael trafferth prosesu eich data ynni heddiw. Rhowch gynnig arall arni'n nes ymlaen neu, os bydd yn parhau i ddigwydd,<a href='%{contact_path}'>cysylltwch â ni</a>
+        loading: Wrthi'n llwytho...
+        paragraph_1: Mae Sbarcynni yn prosesu holl ddata'r ysgol hon i ddarparu dadansoddiad heddiw
+        paragraph_2: Unwaith y byddwn wedi gorffen, byddwn yn eich ailgyfeirio at ddangosfwrdd yr ysgol
+    audits:
+      created: Archwiliad wedi'i greu
+      deleted: Cafodd yr archwiliad ei ddileu yn llwyddiannus.
+      edit:
+        title: Golygu Archwiliad
+      form:
+        action_type: Math o Weithred
+        actions_message_1_html: Ychwanegwch unrhyw nifer o weithrediadau arbed ynni oedolion. Gellir archwilio'r rhestr lawn o'r tudalennau <a href='%{intervention_type_groups_path}'>gweithrediadau arbed ynni</a> cyhoeddus
+        actions_message_2: I ychwanegu cam personol, dewiswch "Arall" o'r categori priodol a chynnwys rhai nodiadau ar gyfer y defnyddiwr
+        activities: Gweithgareddau
+        activities_message_html: Ychwanegwch unrhyw nifer o weithgareddau a arweinir gan ddisgyblion. Gellir archwilio'r rhestr lawn o'r<a href='%{activity_categories_path}'> tudalennau gweithgaredd</a> cyhoeddus
+        activity_type: Math o Weithgaredd
+        add_a_custom_activity_message: I ychwanegu gweithgaredd personol, dewiswch "Arall" o'r categori priodol a chynnwys rhai nodiadau ar gyfer y defnyddiwr
+        add_action: Ychwanegu gweithred
+        add_activity: Ychwanegu gweithgaredd
+        audit_points_message: 'Sylwer: unwaith y caiff ei chreu bydd yr ysgol yn derbyn pwyntiau yn awtomatig am fod wedi derbyn yr archwiliad hwn.'
+        audit_points_message_html: Os oedd disgyblion yn cymryd rhan pan wnaethoch chi eich archwiliad yna bydd yr ysgol yn sgorio <span class="badge badge-success">%{audit_points}</span> o bwyntiau
+        current_file: Ffeil bresennol
+        description: Disgrifiad
+        no_file_attached_yet: Dim ffeil wedi'i hatodi eto
+        notes: Nodiadau
+        report: Adrodd
+        unpublished_audits_message: Ni fydd y defnyddiwr yn gallu gweld archwiliadau sydd heb eu cyhoeddi, ond byddant yn dal i sgorio pwyntiau a byddant yn weladwy yn llinell amser yr ysgol
+      index:
+        book_another_audit: Archebu archwiliad arall
+        completed_on: Cwblhawyd ar
+        energy_audits: Archwiliadau ynni
+        message: Mae tîm Sbarcynni wedi cynnal yr archwiliadau canlynol yn yr ysgol hon
+        name: Enw
+        new_audit: Archwiliad newydd
+        no_audits_exist_for_this_school: Nid oes unrhyw archwiliadau ar gyfer yr ysgol hon
+        title: Archwiliadau
+      new:
+        title: Archwiliad Newydd
+      show:
+        completed_on: Cwblhawyd ar
+        download_report: Lawrlwytho adroddiad
+        recommended_energy_saving_actions: Gweithrediadau arbed ynni a argymhellir
+        recommended_pupil_lead_activities: Gweithgareddau dan arweiniad disgyblion a argymhellir
+        title: "%{school_name} Archwiliadau - %{audit_title}"
+        view_all_audits: Gweld pob archwiliad
+        visibility_note_html: "<strong>Sylwer</strong>: nid yw'r archwiliad hwn yn weladwy i ddefnyddwyr"
+      updated: Archwiliad wedi'i ddiweddaru
     chart_preference:
-      carbon: "Dewis arddangos data siart mewn kg CO2, pan fo ar gael"
-      cost: "Dewis arddangos data siartiau mewn £, pan fo ar gael"
+      carbon: Dewis arddangos data siart mewn kg CO2, pan fo ar gael
+      cost: Dewis arddangos data siartiau mewn £, pan fo ar gael
       default: Dewis uned ddiofyn synhwyrol ar gyfer pob siart yn awtomatig
       explanation: Dewis opsiwn diofyn ar gyfer sut mae data defnydd ynni yn cael eu harddangos mewn siartiau
       form_group: Unedau a ffefrir ar gyfer data siart
-      usage: "Dewis arddangos data siart mewn kwh, pan fo ar gael"
+      usage: Dewis arddangos data siart mewn kwh, pan fo ar gael
+    contacts:
+      edit:
+        disable_alerts: Analluogi rhybuddion
+        edit_phone_number: Golygu rhif ffôn
+        enable_alerts: Galluogi rhybuddion
+        update_contact_details: Diweddaru manylion cyswllt
+        update_contact_details_for: Diweddaru manylion cyswllt ar gyfer %{user_name}
+        update_contact_details_for_email_or_text_alerts: Diweddaru manylion cyswllt ar gyfer rhybuddion e-bost neu neges destun
+        update_details: Diweddaru'r manylion
+      form:
+        enter_at_least_one_method_message: Rhowch o leiaf un dull o gyfathrebu
+        labels:
+          email: Cyfeiriad e-bost
+          mobile_phone_number: Rhif ffôn symudol
+          name: Enw
+      index:
+        account_contacts: Cysylltiadau cyfrif
+        actions: Camau
+        alert_contacts: Cysylltiadau Rhybuddio
+        alert_contacts_message: Gellir anfon y rhybuddion at bobl sydd â chyfrif Sbarcynni trwy e-bost. Neu defnyddiwch y ffurflen hon i alluogi rhybuddion trwy neges testun.
+        email_address: Cyfeiriad E-bost
+        mobile_phone_number: Rhif Ffôn Symudol
+        name: Enw
+        preferred_locale: Dewis iaith
+        receives_alerts: Yn derbyn rhybuddion?
+        role: Rôl
+        standalone_contacts: Cysylltiadau annibynnol
+        title: "%{school_name} o Gysylltiadau Rhybuddio"
+      new:
+        enable_alerts: Galluogi rhybuddion
+        enable_alerts_for: Galluogi rhybuddion ar gyfer %{user_name}
+        sign_up_for_email_or_text_alerts: Cofrestrwch ar gyfer rhybuddion e-bost neu neges destun
+    downloads:
+      index:
+        aggregated_meter_collection: Casgliad mesuryddion cyfun
+        back_to_school_dashboard: Yn ôl i'r dangosfwrdd ysgol
+        carbon_intensity_data: Data dwyster carbon
+        carbon_intensity_data_csv: Data dwyster carbon CSV
+        dark_sky_data: Data Dark Sky
+        darksky_product_message_html: Rydym yn defnyddio'r cynnyrch <a href="https://darksky.net/">Dark Sky</a> ar gyfer data tymheredd, gallwch lawrlwytho'r data tymheredd sydd gennym ar gyfer eich ysgol yma
+        darksky_weather_data_csv_for_your_area: Data Dark Sky Weather CSV ar gyfer eich ardal, %{dark_sky_area_title}
+        download_meter_data_for_all_meters_combined: Lawrlwythwch ddata mesurydd ar gyfer pob mesurydd gyda'i gilydd
+        download_the_data_for_each_active_meter: Lawrlwythwch y data ar gyfer pob mesurydd gweithredol
+        download_the_data_for_each_inactive_meter: Lawrlwythwch y data ar gyfer pob mesurydd anweithredol
+        downloads_for: Lawrlwythiadau ar gyfer %{school_name}
+        email_contact_message_html: Cysylltwch â <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> am ragor o wybodaeth
+        meters: Mesuryddion
+        solar_pv_data: Data Solar Ffotofoltaig
+        solar_pv_data_csv_for_your_area: Data Solar Ffotofoltaig CSV ar gyfer eich ardal, %{solar_pv_tuos_area_title}
+        temperature_carbon_intensity_and_solar_pv_message: Efallai y bydd data tymheredd, dwyster Carbon a solar ffotofoltaig ar gael ar gais yn dibynnu ar y defnydd terfynol
+        title: "Lawrlwythiadau %{school_name}"
+        unvalidated_meter_data: Data mesurydd sydd heb eu dilysu
+        unvalidated_meter_data_as_csv: Data mesurydd sydd heb eu dilysu fel CSV
+        validated_meter_data: Data mesurydd sydd wedi'u dilysu
+        we_use_sheffield_solar_pv_api_message_html: Rydym yn defnyddio <a href="https://www.solar.sheffield.ac.uk/pvlive/">API Solar Ffotofoltaig Prifysgol Sheffield</a> ar gyfer data cynhyrchu solar ffotofoltaig, gallwch lawrlwytho'r data sydd gennym ar gyfer eich ysgol yma
+    estimated_annual_consumptions:
+      breadcrumb: Amcangyfrif o ddefnydd blynyddol
+      destroy:
+        estimate_successfully_removed: Tynnwyd yr amcangyfrif yn llwyddiannus
+      edit:
+        check_our_energy_bill: Gwiriwch ein bil ynni
+        estimate_was_successfully_updated: Diweddarwyd yr amcangyfrif yn llwyddiannus
+        note: Nodyn
+        page_title: Diweddaru amcangyfrif defnydd blynyddol
+        paragraph_1_html: Pan fydd gennym wybodaeth gyfyngedig am eich defnydd hanesyddol o ynni ni allwn roi adroddiad cynnydd manwl i chi a fydd yn eich helpu i <a href='%{school_targets_path}'>gyrraedd eich targedau arbed ynni</a>
+        paragraph_2: Os gallwch chi roi amcangyfrif i ni o'ch defnydd ynni blynyddol, yna gallwn ddefnyddio hwn i gyfrifo eich targedau misol a chynnydd
+        tip: Awgrym
+        update_your_estimated_annual_energy_consumption: Diweddarwch eich defnydd blynyddol amcangyfrifedig o ynni
+        weve_recorded_your_estimate: Rydym wedi cofnodi eich amcangyfrif a byddwn yn defnyddio hwn pan fyddwn yn dadansoddi eich data dros nos
+        your_estimate: Eich amcangyfrif
+        your_recent_energy_bills_should_provide_the_data_you_need: Dylai eich biliau ynni diweddar ddarparu'r data sydd eu hangen arnoch
+      form:
+        annual_electricity_consumption: Defnydd blynyddol o drydan
+        annual_gas_consumption: Defnydd blynyddol o nwy
+        annual_storage_heater_electricity_consumption: Defnydd blynyddol o drydan stôr-wresogyddion
+        estimate: Amcangyfrif
+        estimated_consumption_for_electricity_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o drydan yn debygol o fod o leiaf %{estimated_usage_for_school_electricity} kwh
+        estimated_consumption_for_gas_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o nwy yn debygol o fod o leiaf %{estimated_usage_for_school_gas} kwh
+        estimated_consumption_for_storage_heater_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o drydan stôr-wresogyddion yn debygol o fod o leiaf %{estimated_usage_for_school_storage_heater} kwh
+        year_estimate_based_on: Ar ba flwyddyn mae eich amcangyfrif yn seiliedig?
+      new:
+        check_our_energy_bill: Gwiriwch ein bil ynni
+        page_title: Ychwanegu amcangyfrif defnydd blynyddol
+        paragraph_1_html: Pan fydd gennym wybodaeth gyfyngedig am eich defnydd hanesyddol o ynni ni allwn roi adroddiad cynnydd manwl i chi a fydd yn eich helpu i <a href='%{school_targets_path}'>gyrraedd eich targedau arbed ynni</a>
+        paragraph_2: Os gallwch chi roi amcangyfrif i ni o'ch defnydd ynni blynyddol, yna gallwn ddefnyddio hwn i gyfrifo eich targedau misol a chynnydd
+        provide_an_estimate: Rhowch amcangyfrif o'ch defnydd blynyddol o ynni
+        tip: Awgrym
+        your_estimate: Eich amcangyfrif
+        your_recent_energy_bills: Dylai eich biliau ynni diweddar ddarparu'r data sydd eu hangen arnoch
+    funding_status:
+      private_school: Ysgol Breifat
+      state_school: Ysgol y Wladwriaeth
+    inactive:
+      description: Rydym yn dal yn y broses o sefydlu eich ysgol ar Sbarcynni. Byddwch yn cael hysbysiad e-bost pan fydd cyfrif eich ysgol wedi'i weithredu ar Sbarcynni.
+      other_schools: ysgolion eraill
+      other_schools_html: Yn y cyfamser, edrychwch sut mae %{other_schools_link} yn defnyddio Sbarcynni
+      schools_in_area: ysgolion yn eich ardal
     index:
-      a_to_z_of_all_energy_sparks_schools: A i Y o holl ysgolion Energy Sparks
+      a_to_z_of_all_energy_sparks_schools: A i Y o holl ysgolion Sbarcynni
       introduction_1: Darganfod pa ysgolion sy'n defnyddio Energy Sparks i leihau eu defnydd o ynni
-      introduction_2: "Mae gennym %{count} o ysgolion ar draws Cymru, Lloegr a'r Alban gan gynnwys ysgolion cynradd ac uwchradd y wladwriaeth, ysgolion annibynnol, ysgolion arbennig ac ysgolion meithrin"
-      introduction_3: "Archwiliwch eu data defnydd trydan a nwy, darganfod faint o ynni maen nhw'n ei gynhyrchu o'u paneli solar a dysgu am eu gweithgareddau arbed ynni"
+      introduction_2: Mae gennym %{count} o ysgolion ar draws Cymru, Lloegr a'r Alban gan gynnwys ysgolion cynradd ac uwchradd y wladwriaeth, ysgolion annibynnol, ysgolion arbennig ac ysgolion meithrin
+      introduction_3: Archwiliwch eu data defnydd trydan a nwy, darganfod faint o ynni maen nhw'n ei gynhyrchu o'u paneli solar a dysgu am eu gweithgareddau arbed ynni
       introduction_4: Rydym yn falch o gael rhwydwaith gwych o ysgolion i gyd yn gweithio’n galed i arbed ynni a helpu i frwydro yn erbyn newid hinsawdd
       not_visible_schools: Ysgolion nad ydynt yn weladwy
       page_title: Map
-      title: Ysgolion Energy Sparks ledled y DU
-      view_all_energy_sparks_schools: Gweld holl ysgolion Energy Sparks
-      view_energy_sparks_schools_by_group: Gweld ysgolion Energy Sparks fesul grŵp
+      title: Ysgolion Sbarcynni ledled y DU
+      view_all_energy_sparks_schools: Gweld holl ysgolion Sbarcynni
+      view_energy_sparks_schools_by_group: Gweld ysgolion Sbarcynni fesul grŵp
+    live_data:
+      show:
+        choose_another_activity: Dewis gweithgaredd arall
+        record_an_energy_saving_action: Cofnodi gweithred arbed ynni
+        title: Eich data trydan byw
+        understanding_your_energy_consumption: Deall eich defnydd o ynni
+        view_pupil_dashboard: Gweld y dangosfwrdd disgyblion
+        what_can_you_switch_off: Beth allwch chi ei ddiffodd i leihau eich defnydd o dan eich defnydd arferol?
+      timeout_modal:
+        still_watching_your_live_data_usage: Dal i wylio eich defnydd data byw?
+        temporarily_paused_message_html: Rydych chi wedi bod yn edrych ar eich data byw ers %{timeout_interval} munud. Rydym wedi seibio diweddariadau dros dro. Cliciwch Ailgychwyn i barhau i wylio
+    meters:
+      creatable_meter_types:
+        electricity: Trydan
+        exported_solar_pv: Solar ffotofoltaig wedi'i allforio
+        gas: Nwy
+        solar_pv: Solar ffotofoltaig
+      edit:
+        edit_meter: Golygu mesurydd
+      form:
+        admin_only_features_for_n3rgy_integration: Nodweddion gweinyddiwr yn unig ar gyfer integreiddio n3rgy
+        create_meter: Creu Mesurydd
+        data_source: Ffynhonnell ddata
+        dcc_smart_meter: Mesurydd Clyfar DCC
+        earliest_available_data: Y data cynharaf sydd ar gael
+        editing_disabled_for_pseudo_meters: Analluogwyd golygu ar gyfer mesuryddion ffug
+        leave_this_blank_message: Gadewch hwn yn wag am fesuryddion newydd a bydd y system yn gwirio ei fod wedi'i gofrestru gyda n3rgy
+        meter_point_number: Rhif Pwynt Mesurydd
+        name: Enw
+        only_check_if_adding_an_n3rgy_test_meter: Gwiriwch a ydych yn ychwanegu mesurydd prawf n3rgy, nad yw'n cael ei ddefnyddio ar gyfer ysgolion byw, yn unig
+        procurement_route: Llwybr caffael
+        sandbox: Blwch tywod
+        serial_number: Rhif cyfresol
+        title: Gelwir y Rhif Pwynt Mesurydd hefyd yn MPAN (ar gyfer mesuryddion trydan) a'r MPRN (ar gyfer mesuryddion nwy).
+        type: Math
+        update_meter: Diweddaru'r Mesurydd
+      index:
+        active_meters: Mesuryddion gweithredol
+        active_pseudo_meters: Mesuryddion ffug gweithredol
+        add_meter: Ychwanegu mesurydd
+        admin_meter_status: Statws mesurydd gweinyddol
+        data_processing_turned_on_message: Rhaid troi prosesu data ymlaen ar gyfer yr ysgol hon cyn y gellir dilysu darlleniadau mesurydd
+        data_source: Ffynhonnell ddata
+        first: Cyntaf
+        imported: Mewnforiwyd
+        inactive_meters: Mesuryddion anweithredol
+        large_gaps: Bylchau mawr
+        latest: Diweddaraf
+        manage_solar_api_feeds: Rheoli ffrydiau API Solar
+        meter: Mesurydd
+        meter_reviews: Adolygiadau mesurydd
+        mpan_warning_message: Mae yna fesuryddion trydan gydag MPAN nad yw'n ymddangos bod ganddynt y digid gwirio cywir
+        name: Enw
+        no_active_meters: Dim mesuryddion gweithredol
+        only_admins_message: Dim ond gweinyddwyr all ddileu mesuryddion gyda darlleniadau mesurydd
+        procurement_route: Llwybr caffael
+        readings: Darlleniadau
+        report: Adrodd
+        review_meters: Adolygu mesuryddion
+        school_downloads: Lawrlwythiadau ysgol
+        title: Mesuryddion
+        validate_meter_readings: Dilysu darlleniadau mesurydd
+        validated: Dilyswyd
+        validated_readings: Darlleniadau sydd wedi'u Dilysu
+        view_target_data: Gweld data targed
+        zero_days: Dim dyddiau
+      inventory:
+        meter_title: 'Mesurydd: %{meter_mpan_mprn}'
+        title: Stocrestr
+      meter_issues:
+        button_label: Problemau
+        no_meter_issues: Dim problemau na nodiadau ar gyfer mesurydd
+        title: Nodiadau a Phroblemau Mesurydd - %{name}
+      show:
+        basic_information: Gwybodaeth sylfaenol
+        data_source: Ffynhonnell ddata
+        dcc_consented: Caniatâd DCC
+        dcc_information: Gwybodaeth DCC
+        dcc_last_checked: Gwiriwyd DCC ddiwethaf
+        download_readings: Darlleniadau
+        grant_consent: Rhoi caniatâd
+        inventory: Stocrestr
+        meter: Mesurydd
+        n3rgy_api_status: Statws API n3rgy
+        not_configured_as_a_dcc_meter: Heb ei ffurfweddu fel mesurydd DCC
+        sandbox: Blwch tywod
+        school_meter_management: Rheoli mesuryddion ysgol
+        serial_number: Rhif Cyfresol
+        tariff_report: Adroddiad Tariff
+        title: "%{meter_name} (%{meter_mpan_mprn})"
+        user_consented: Caniatâd Defnyddiwr
+        withdraw_consent: Tynnu caniatâd
     observations:
       timeline:
         action:
-          one: "%{count} weithred"
-          two: "%{count} weithred"
-          many: "%{count} o weithredoedd"
-          other: "%{count} o weithredoedd"
+          one: '%{count} weithred'
+          two: '%{count} weithred'
+          many: '%{count} o weithredoedd'
+          other: '%{count} o weithredoedd'
         activity:
           completed_an_activity: Cwblhawyd gweithgaredd
         audit:
           received_an_audit: Wedi cael archwiliad ynni
         temperatures:
           recorded_temperatures_in: Tymheredd a gofnodwyd yn
+    private:
+      access_disabled: Mae gan yr ysgol hon fynediad cyhoeddus anabl i ddata defnydd ynni a mewnwelediadau.
+      login_links_html: Defnyddiwch y dolenni isod i fewngofnodi fel aelod o staff neu ddisgybl o'r ysgol hon. Neu <a href='%{schools_path}'>archwilio ysgol arall</a>
+      page_title: "Nid oes gan %{school} unrhyw ddata cyhoeddus"
+    pupils:
+      edit:
+        title: Golygu cyfrif disgybl
+        update: Diweddaru cyfrif
+      new:
+        create: Creu cyfrif
+        title: Cyfrif disgybl newydd
     school_details:
-      activation_date_hint: Dyma'r dyddiad pan fydd yr ysgol yn dod yn weithredol ar Energy Sparks
+      activation_date_hint: Dyma'r dyddiad pan fydd yr ysgol yn dod yn weithredol ar Sbarcynni
       address: Cyfeiriad
       admin_options: Opsiynau gweinyddol
       analysis_preferences: Dewisiadau Dadansoddiad
       basic_details: Manylion sylfaenol
       created: "Crëwyd %{school_name} ar %{created_at}"
-      floor_area_hint: "Os nad ydych yn gwybod hyn, gadewch ef yn wag a byddwn yn ceisio cael y wybodaeth hon gan eich Awdurdod Lleol neu MAT"
+      editing: Ysgol Olygu
+      floor_area_hint: Os nad ydych yn gwybod hyn, gadewch ef yn wag a byddwn yn ceisio cael y wybodaeth hon gan eich Awdurdod Lleol neu MAT
       geocode_message: Gadewch y rhain yn wag i gael eu gosod o'r cod post
       key_stage: Cyfnodau allweddol
-      key_stage_message: "Os ydych yn yr Alban, mae CA1 yn cwmpasu P2 a P3, mae CA2 yn cwmpasu P4 i P7, mae CA3 yn cwmpasu S1 i S3, mae CA4 yn cwmpasu S4 a S5, mae CA5 yn cwmpasu S6"
+      key_stage_message: Os ydych yn yr Alban, mae CA1 yn cwmpasu P2 a P3, mae CA2 yn cwmpasu P4 i P7, mae CA3 yn cwmpasu S1 i S3, mae CA4 yn cwmpasu S4 a S5, mae CA5 yn cwmpasu S6
       location: Lleoliad
-      percentage_free_school_meals_hint: "Os nad ydych yn gwybod, gadewch y maes hwn yn wag."
+      new: Ysgol Newydd
+      percentage_free_school_meals_hint: Os nad ydych yn gwybod, gadewch y maes hwn yn wag.
       school_features: Nodweddion yr ysgol
       stage_of_education: Cyfnod addysg
-      urn_hint: "Bydd hyn eich URN yn Lloegr, SEED yn yr Alban"
+      update_school: Ysgol Ddiweddaru
+      urn_hint: Bydd hyn eich URN yn Lloegr, SEED yn yr Alban
       view_on_map: Gweld ar y map
     school_group:
       compare_schools: Cymharu ysgolion
       view_schools: Gweld ysgolion
+    school_targets:
+      achieving_your_targets:
+        be_sure_to_regularly_check: Gwnewch yn siŵr eich bod yn gwirio'ch dangosfwrdd a hysbysebion wythnosol yn rheolaidd i gael ein cyngor diweddaraf
+        choose_another_activity: Dewiswch weithgaredd arall
+        compare_usage_with_schools_in_your_group: Cymharu defnydd ag ysgolion yn eich grŵp
+        daily_variation_in_use: Amrywiad dyddiol yn y defnydd
+        engaging_with_pupils: Mae ymgysylltu â disgyblion yn rhan bwysig o'r rhaglen Sbarcynni. Bydd cofnodi gweithgareddau yn sgorio pwyntiau i chi
+        explore_your_data: Archwilio eich data
+        here_are_some_suggested_activities: Dyma rai gweithgareddau a awgrymir y gellir eu gwneud gyda disgyblion
+        logging_activities: Bydd cofnodi gweithgareddau yn eich helpu i fonitro cynnydd. Byddwn yn arddangos y gweithrediadau hyn ar eich siartiau defnydd
+        record_an_energy_saving_action: Cofnodi gweithred arbed ynni
+        review_your_energy_analysis: Adolygu eich dadansoddiad ynni
+        some_suggested_activities: Rhai gweithgareddau y gallwch eu gwneud o amgylch yr ysgol
+        take_action_around_the_school: Gweithredwch o amgylch yr ysgol
+        title: Cyrraedd eich targedau
+        view_dashboard: Gweld y dangosfwrdd
+        view_energy_saving_opportunities: Gweld cyfleoedd arbed ynni
+        view_recent_alerts: Gweld hysbysiadau diweddar
+        we_analyse_your_data: Rydym yn dadansoddi'ch data i ddarparu mewnwelediadau a hysbysiadau wythnosol
+        work_with_the_pupils: Gweithiwch gyda'r disgyblion
+      current:
+        page_title: Eich targedau arbed ynni presennol
+      edit:
+        before_changing_your_targets: Cyn newid eich targedau, cymerwch olwg ar ein hargymhellion i weld beth allwch chi ei wneud i leihau costau ac allyriadau
+        if_you_do_revise_your_targets: Os byddwch yn addasu eich targedau byddwn yn diweddaru eich adroddiad cynnydd i gymhwyso'r targed hwnnw at eich holl ddefnydd ynni eleni
+        page_title: Diweddaru'ch targed arbed ynni
+        review_your_dashboard: Adolygu'ch dangosfwrdd
+        review_your_targets: Adolygu'ch targedau
+        suggestion: Awgrym
+        tip: Cyngor
+        update_your_energy_saving_target: Diweddaru'ch targed arbed ynni
+        your_configuration_has_changed: Mae eich ffurfweddiad %{fuel_types_changed} wedi newid, sy'n golygu efallai bydd angen i chi adolygu'ch targedau ar gyfer y flwyddyn hon. Efallai y byddwch yn gallu gosod targedau ychwanegol
+        your_current_target: Eich targed presennol
+      expired:
+        page_title: Canlyniadau lleihau'ch defnydd ynni
+        your_school_set_a_target_to_reduce_html: Gosododd eich ysgol darged i leihau ei defnydd o ynni rhwng <strong>%{start_date}</strong> a <strong>%{target_date}</strong>. Mae'r dudalen hon yn crynhoi'ch canlyniadau
+      first:
+        careful_planning: Mae lleihau eich costau ynni ac allyriadau carbon yn golygu cynllunio gofalus. Mae Sbarcynni yn darparu set o gamau a argymhellir i'ch helpu i gyrraedd eich targedau trwy
+        its_time: Mae'n amser gosod eich targed cyntaf i leihau eich defnydd ynni
+        page_title: Gosodwch eich targed arbed ynni cyntaf
+        providing_more_insight: ddarparu rhagor o fewnwelediad trwy ein dadansoddiad manwl o'ch defnydd ynni
+        providing_reports: darparu adroddiadau i fonitro'ch cynnydd
+        set_your_first_energy_saving_target: Gosodwch eich targed arbed ynni cyntaf
+        suggesting_activities_for_pupils: awgrymu gweithgareddau i ddisgyblion i'ch helpu i ymddiddori'r ysgol gyfan
+        suggesting_ways_to_reduce_consumption: awgrymu ffurdd i leihau defnydd trwy'ch dangosfwrdd, hysbysiadau wythnosol ac atgoffwyr
+      form:
+        reducing_electricity_usage_by: Lleihau defnydd trydan gan
+        reducing_gas_usage_by: Lleihau defnydd nwy gan
+        reducing_storage_heater_usage_by: Lleihau defnydd stôr-wresogyddion gan
+        school_target: Targed ysgol
+        set_this_target: Gosod y targed hwn
+        start_date: Dyddiad cychwyn
+        update_our_target: Diweddaru ein targed
+        you_are_currently_aiming_to_achieve_your_target_by_html: Rydych yn anelu at gyrraedd eich targed erbyn <strong>%{target_date}</strong> ar hyn o bryd. Gallwch addasu dechrau'r cyfnod 12 mis
+        your_new_target_will_run_for_12_months: Bydd eich targed newydd yn rhedeg am 12 mis o'r dyddiad a nodwch
+      fuel_type_note:
+        where_we_have_enough_data_note: Lle mae gennym ddigon o ddata i asesu eich perfformiad byddwch yn gallu gosod targed ar gyfer defnydd trydan, nwy neu stôr-wresogyddion. Os byddwn yn derbyn data ychwanegol, byddwn yn eich annog i adolygu eich targedau
+      generating_report:
+        get_started_with_the_activities: Cychwynnwch arni gyda'r gweithgareddau isod i ddechrau gweithio tuag at eich nod
+        we_need_to_process_your_data: Mae angen i ni brosesu'ch data i greu adroddiad cynnydd mwy manwl a fydd yn dangos cynnydd yn erbyn eich targedau. Dewch yn ôl yfory i weld y canlyniadau
+      new:
+        before_setting_your_new_target: Cyn gosod eich targed newydd, gwiriwch ein hargymhellion i helpu i lywio eich cynllunio
+        carried_forward: 'Rydym wedi cario eich targedau o''r llynedd drosodd yn ddiofyn. Gallwch eu haddasu isod '
+        page_title: Diweddaru'ch targed arbed ynni
+        review_and_set_your_next_energy_saving_target: Adolygu a gosod eich targed arbed ynni nesaf
+        review_your_dashboard: Adolygu'ch dangosfwrdd
+        target_date_reached_html: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i <a href=''%{school_target_path}''>adolygu eich cynnydd</a> a gosod targed newydd '
+        tip: Awgrym
+        your_new_target: Eich targed newydd
+      progress:
+        breadcrumbs:
+          electricity: Cynnydd trydan
+          gas: Cynnydd nwy
+          storage_heater: Cynnydd stôr-wresogydd
+        charts:
+          cumulative_progress: Cynnydd cronnus
+          weekly_progress: Cynnydd wythnosol
+          weekly_progress_to_date: Cynnydd wythnosol hyd yma
+        current:
+          actual_consumption_kwh: Defnydd Gwirioneddol (kWh)
+          cumulative_progress: Cynnydd cronnus
+          debug: Dadfygio
+          error: Gwall
+          error_bad_estimate_html: Mae'r <a href='%{estimated_annual_consumptions_path}'>amcangyfrif blynyddol</a> o'ch defnydd %{fuel_type} a ddarparwyd ar gyfer eich ysgol yn rhy isel
+          error_message: Yn anffodus oherwydd gwall ni allwn arddangos eich adroddiad cynnydd manwl ar hyn o bryd
+          month: Mis
+          month_by_month_progress: Cynnydd o fis i fis
+          overall_change_since_last_year: Newid cyffredinol ers y llynedd
+          overall_performance_since_last_year: Perfformiad cyffredinol ers y llynedd
+          please_review_your_estimate_and_our_guidance_html: <a href='%{estimated_annual_consumptions_path}'>Adolygwch eich amcangyfrif ac ein arweiniad</a> i weld a yw'n gywir
+          problem: Problem
+          progress_charts: Siartiau cynnydd
+          review_targets: Adolygu targedau
+          target_consumption_kwh: Defnydd Targed (kWh)
+          title: Olrhain cynnydd i lehau'ch defnydd ynni %{fuel_type}
+          unfortunately_as_much_as_last_year: Yn anffodus rydych chi'n defnyddio cymaint o %{fuel_type} ag y llynedd
+          unfortunately_more_than_last_year: 'Yn anffodus rydych chi''n defnyddio %{relative_percent} yn fwy o %{fuel_type}na''r llynedd '
+          we_have_been_notified_about_this_error_1: Yn y cyfamser, rydym wedi cael gwybod am y gwall hwn ac byddwn yn ymchwilio iddo
+          we_have_been_notified_about_this_error_2: Rydym wedi cael gwybod am y gwall hwn ac byddwn yn ymchwilio iddo
+          we_have_not_received_data: Nid ydym wedi derbyn eich data am eich defnydd %{fuel_type} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
+          well_done_less_than_last_year: Da iawn, rydych chi'n defnyddio %{relative_percent} yn llai o %{fuel_type} na'r llynedd
+          your_school_has_set_a_target_to_reduce_html: Mae eich ysgol wedi gosod targed i leihau ei defnydd o %{fuel_type} gan %{school_target_attributes}% rhwng <strong>%{start_date}</strong> a <strong>%{target_date}</strong>
+        expired:
+          actual_consumption_kwh: Defnydd Gwirioneddol (kWh)
+          cumulative_progress: Cynnydd cronnus
+          month: Mis
+          month_by_month_progress: Cynnydd o fis i fis
+          overall_change_since_last_year: Newid cyffredinol ers y llynedd
+          overall_performance_since_last_year: Perfformiad cyffredinol ers y llynedd
+          results_of_reducing_your_usage: Canlyniadau lleihau eich defnydd o %{fuel_type} erbyn %{target_date}
+          review_targets: Adolygu targedau
+          target_consumption_kwh: Defnydd Targed (kWh)
+          you_didnt_achieve_your_goal_to_reduce: Yn anffodus ni wnaethoch gyrraedd eich targed i leihau eich defnydd o %{fuel_type}
+          you_managed_to_reduce_your_usage: Da iawn! Gwnaethoch lwyddo i leihau eich defnydd o %{fuel_type} gan %{relative_percent}
+          your_school_set_a_target_to_reduce_its_usage_html: Gosododd eich ysgol darged i leihau ei defnydd o %{fuel_type} gan %{school_target_attributes}% rhwng <strong>%{start_date}</strong> a <strong>%{target_date}</strong>
+        footnotes:
+          consumption_data_message_html: Mae <p>data defnydd <span class="partial-month">a ddangosir yn goch</span> yn nodi mis pan mae gennym data rhannol yn unig. Ni fydd eich ffigurau defnydd a pherfformiad yn gywir tan ddiwedd y mis, neu hyd nes y byddwn yn derbyn data hanesyddol ychwanegol.</p>
+          expired_message_html: Mae'r gwerthoedd yn y tabl uchod yn giplun o'ch data defnydd a gymerwyd ar %{report_last_generated_date}. Ni fydd unrhyw ddiweddariadau mwy diweddar i ffurfweddiad neu ddata'ch ysgol yn cael eu hadlewyrchu yn y canlyniadau hanesyddol hyn.
+          partial_target_data_message_html: Dim ond data defnydd hanesyddol cyfyngedig sydd gennym ar gufer eich ysgol, felly ni allwn gyfrifo set lawn o dargedau misol neu gynnydd ar hyn o bryd. Gallwch <a href='%{estimated_annual_consumptions_path}'>ddarparu amcangyfrif blynyddol i ni</a> i weld rhagor o fanylion
+          reporting_period_before_consumption_data_no_start_date_message: Dim ond data cyfyngedig sydd gennym ar eich defnydd %{fuel_type} gwirioneddol. Bydd yr adroddiad yn dangos eich defnydd am gyfran o'ch cyfnod targed yn unig
+          reporting_period_before_consumption_data_start_date_message: Dim ond data o %{meter_start_date} sydd gennym am eich defnydd o %{fuel_type}. Bydd yr adroddiad yn dangos eich defnydd am gyfran o'ch cyfnod targed yn unig
+          targets_derived_from_synthetic_data_message_html: Mae targedau misol <i>a ddangosir mewn llythrennau italig</i> wedi'u creu o'r <a href='%{school_estimated_annual_consumptions_path}'>amcangyfrif blynyddol</a> a ddarparoch, yn hytrach na'ch data hanesyddol. Bydd y cywirdeb yn dibynnu ar ansawdd eich amcangyfrif
+          this_report_only_shows_message_html: Mae'r adroddiad hwn yn dangos cynnyd ar eich defnydd o drydan yn unig. Gellir gweld eich <a href='%{storage_heater_path}'>adroddiad cynnydd stôr-wresogyddion</a> ar wahân
+          title: Troednodiadau
+          we_use_colour_coding_message_html: Rydym yn defnyddio codio lliw i nodi lle rydych wedi <span class="bg-positive-dark">cwrdd â'ch targed</span> neu <span class="bg-negative-dark">fethu â chwrdd â'ch targed</span> mewn mis penodol
+        missing:
+          tracking_progress_to_reduce_usage: Olrhain cynnydd i lehau'ch defnydd ynni %{fuel_type}
+          we_dont_have_a_record_of: Nid oes gennym gofnod o %{fuel_type} yn cael ei ddefnyddio yn eich ysgol
+      prompt_to_add_estimate:
+        add_an_estimate: Ychwanegu amcangyfrif
+        if_you_can_supply_an_estimate:
+          one: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targed %{fuel_types}
+          two: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
+          many: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
+          other: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
+      prompt_to_review_target:
+        review_your_target: Adolygu eich targed
+        your_fuel_types_configuration_has_changed: Mae eich ffurfweddiad %{fuel_types_changed} wedi newid, sy'n golygu efallai y byddwch am adolygu'ch targedau ar gyfer eleni
+      prompt_to_set_new_target:
+        set_a_new_target: Gosod targed newydd
+        you_set_a_target_to_reduce: Gwnaethoch osod targed i leihau eich defnydd o ynni erbyn %{target_date}. Mae'n bryd adolygu eich cynnydd a gosod targed newydd
+      target_table:
+        current_progress: Cynnydd presennol
+        final_result: Canlyniad terfynol
+        reporting_change_in_energy_usage_between: Adrodd am newid yn nefnydd ynni rhwng
+        start_date_and_end_date: "%{start_date} a %{end_date}"
+        target_reduction: Gostyngiad Targed
+      target_table_row:
+        last_week: wythnos diwethaf
+        not_applicable: Amh
+        view_monthly_report: Gweld adroddiad misol
+      target_timeline:
+        a_reminder_of_the_energy_saving: Atgoffwr o'r gweithgareddau a chamau gweithredu arbed ynni a gofnodoch rhwng %{start_date} a %{target_date}
+        how_did_you_achieve_your_target: Sut gwnaethoch chi gyrraedd eich targed?
+        how_did_you_try_to_achieve_your_target: Sut gwnaethoch chi geisio gyrraedd eich targed?
+        you_didnt_record_any_energy_saving: Ni wnaethoch gofnodi unrhyw weithgareddau neu gamau gweithredu arbed ynni rhwng %{start_date} a %{target_date}
+      title:
+        reducing_your_energy_usage_by: Lleihau'ch defnydd ynni erbyn %{target_date}
+        results_of_reducing_your_energy_usage: Canlyniadau lleihau'ch defnydd ynni
+        revise_your_target: Addasu'ch targed
+        set_a_new_target: Gosod targed newydd
+        view_current_target: Gweld targed presennol
+        we_are_calculating_your_progress: Rydym yn cyfrifo'ch cynnydd
+      warn_recent_data:
+        we_have_not_received_data:
+          one: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
+          two: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
+          many: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
+          other: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
     schools:
-      carbon_emissions: Allyriadau carbon
       compare_schools: Cymharu ysgolion
-      explore_data: Archwilio data
       review_energy_analysis: Adolygu dadansoddiad ynni
     show:
-      act_on_energy_usage: Gweithredu ar y defnydd o ynni
-      add_alert_contacts: Ychwanegu cysylltiadau rhybuddio
-      add_consumption_estimate: "Ychwanegwch amcangyfrif o'ch defnydd %{fuels} blynyddol fel y gallwn ddarparu adroddiad cynnydd manylach i'ch helpu i gyrraedd eich targedau"
-      add_estimate: Ychwanegu amcangyfrif
-      adult_dashboard: Dangosfwrdd Oedolion
-      co2_kg: CO2 (kg)
-      coming_soon: Dod yn fuan
+      record_action: Cofnodi gweithred
+      record_pupil_activity: Cofnodi gweithgaredd disgybl
       complete_activities: Dysgwch ddisgyblion am ynni a newid hinsawdd o fewn cyd-destun eich ysgol eich hun drwy gwblhau ein gweithgareddau sydd ar gael am ddim
       complete_interventions: Cofnodi camau arbed ynni a wneir gan staff ysgol a rheolwyr cyfleusterau i helpu i olrhain a yw eich ymyriadau wedi arbed ynni.
-      complete_short_programme: Cymerwch y cam nesaf tuag at gwblhau un o'n rhaglenni gweithgaredd byr i gynyddu eich effaith a sgorio pwyntiau ar gyfer eich ysgol
+      act_on_energy_usage: Gweithredu ar y defnydd o ynni
+      add_alert_contacts: Ychwanegu cysylltiadau rhybuddio
+      add_consumption_estimate: Ychwanegwch amcangyfrif o'ch defnydd %{fuels} blynyddol fel y gallwn ddarparu adroddiad cynnydd manylach i'ch helpu i gyrraedd eich targedau
+      add_estimate: Ychwanegu amcangyfrif
+      coming_soon: Dod yn fuan
       configuring_data_access: Rydym yn ffurfweddu mynediad at eich data ynni a byddwn yn eich hysbysu pan fydd yn barod i'w archwilio
-      cost_£: Cost (£)
       create_pupil_account: Creu cyfrif disgybl
-      dashboard_title: "Dangosfwrdd oedolion ar gyfer %{school_name}"
+      dashboard_title: Dangosfwrdd oedolion ar gyfer %{school_name}
       download_data: Lawrlwytho'ch data
-      energy_bill_required: "Rydym angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd. Bydd hyn yn helpu i sicrhau y gallwn gasglu, prosesu ac arddangos data eich ysgol."
+      energy_bill_required: Rydym angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd. Bydd hyn yn helpu i sicrhau y gallwn gasglu, prosesu ac arddangos data eich ysgol.
       energy_saving_opportunities: Cyfleoedd arbed ynni
+      find_out_more: Dysgu rhagor
       find_training: Dod o hyd i hyfforddiant
-      making_progress: "Da iawn, rydych yn gwneud cynnydd tuag at gyrraedd eich targed i leihau eich defnydd %{fuels}!"
+      making_progress: Da iawn, rydych yn gwneud cynnydd tuag at gyrraedd eich targed i leihau eich defnydd %{fuels}!
       more_information: Rhagor o wybodaeth
-      not_meeting_target: "Yn anffodus nid ydych yn cyrraedd eich targed i leihau eich defnydd %{fuels}"
-      online_training_signup: "Newydd i Energy Sparks? Cofrestrwch ar gyfer un o'n cyrsiau hyfforddi ar-lein rhad ac am ddim sydd ar ddod i'ch helpu i gael y gorau o'r gwasanaeth."
+      not_meeting_target: Yn anffodus nid ydych yn cyrraedd eich targed i leihau eich defnydd %{fuels}
+      online_training_signup: Newydd i Sbarcynni? Cofrestrwch ar gyfer un o'n cyrsiau hyfforddi ar-lein rhad ac am ddim sydd ar ddod i'ch helpu i gael y gorau o'r gwasanaeth.
       percentage_change: "% Newid"
       potential_savings: Arbedion posib
       print_view: Gwedd argraffu
-      recent_energy_audit: Mae'r tîm Energy Sparks wedi cwblhau archwiliad ynni ar gyfer yr ysgol hon yn ddiweddar
+      recent_energy_audit: Mae'r tîm Sbarcynni wedi cwblhau archwiliad ynni ar gyfer yr ysgol hon yn ddiweddar
       recent_energy_usage: Defnydd diweddar o ynni
-      record_action: Cofnodi gweithred
-      record_pupil_activity: Cofnodi gweithgaredd disgybl
       review_audit: Adolygu archwiliad
       review_progress: Adolygu cynnydd
       review_target: Adolygu eich targed
-      revisit_targets: "Mae ffurfweddiad eich ysgol wedi newid, efallai y bydd angen i chi ailedrych ar eich targedau ar gyfer eleni."
-      set_new_target: "Gwnaeth eich ysgol osod targed i leihau ei defnydd o ynni erbyn %{target_date}. Mae'n bryd adolygu eich cynnydd a gosod targed newydd ar gyfer y flwyddyn i ddod."
+      revisit_targets: Mae ffurfweddiad eich ysgol wedi newid, efallai y bydd angen i chi ailedrych ar eich targedau ar gyfer eleni.
+      set_new_target: Gwnaeth eich ysgol osod targed i leihau ei defnydd o ynni erbyn %{target_date}. Mae'n bryd adolygu eich cynnydd a gosod targed newydd ar gyfer y flwyddyn i ddod.
       set_target: Gosod targed arbed ynni
-      set_targets: Gosodwch dargedau i leihau defnydd eich ysgol o ynni dros y flwyddyn nesaf. Bydd Energy Sparks yn rhoi cyfres o gamau a argymhellir i chi i'ch helpu i gyrraedd eich targedau a lleihau ôl troed carbon eich ysgol.
-      setup_alert_contacts: Cofrestrwch ar gyfer rhybuddion e-bost neu neges destun Energy Sparks. Mae rhybuddion Energy Sparks yn rhoi rhybudd cynnar i chi o newidiadau yn nefnydd ynni eich ysgol ac yn amlygu problemau hirdymor gyda'ch defnydd o ynni gydag argymhellion penodol i arbed ynni.
+      set_targets: Gosodwch dargedau i leihau defnydd eich ysgol o ynni dros y flwyddyn nesaf. Bydd Sbarcynni yn rhoi cyfres o gamau a argymhellir i chi i'ch helpu i gyrraedd eich targedau a lleihau ôl troed carbon eich ysgol.
+      setup_alert_contacts: Cofrestrwch ar gyfer rhybuddion e-bost neu neges destun Sbarcynni. Mae rhybuddion Sbarcynni yn rhoi rhybudd cynnar i chi o newidiadau yn nefnydd ynni eich ysgol ac yn amlygu problemau hirdymor gyda'ch defnydd o ynni gydag argymhellion penodol i arbed ynni.
       setup_pupil_account: Sefydlwch gyfrif disgybl ar gyfer eich ysgol i roi mynediad uniongyrchol i'ch disgyblion i'r dangosfwrdd disgyblion. Nid oes angen cyfeiriad e-bost ar gyfer cyfrif disgybl.
       summary_of_recent_energy_usage: Crynodeb o ddefnydd ynni diweddar
       upload_energy_bill: Uwchlwytho bil
-      use_kwh: Defnyddio (kWh)
-      view_programmes: Gweld eich rhaglenni
     timeline:
       no_events: Dim digwyddiadau i'w dangos
-      title: "Beth sydd wedi bod yn digwydd?"
+      title: Beth sydd wedi bod yn digwydd?
     times:
       closing_time: Amser Cau
       day: Diwrnod
+      edit:
+        community_use:
+          add_time: Ychwanegu amser
+          closing_time: Amser Cau
+          day: Diwrnod
+          opening_time: Amser Agor
+          save_community_use_times: Cadw amseroedd defnydd cymunedol
+          school_premises_message: Mae adeiladau ysgol yn aml yn cael eu defnyddio y tu allan i oriau ysgol gan eich cymuned. Er enghraifft i gynnal digwyddiadau, clybiau neu osodiadau preifat eraill
+          time_of_year: Amser o'r flwyddyn
+          title: Amseroedd defnydd cymunedol
+          twenty_four_hour_format_message: Dylid nodi amseroedd mewn fformat 24 awr
+          use_the_form_message: Defnyddiwch y ffurflen isod i ychwanegu amseroedd defnydd cymunedol rheolaidd yn eich ysgol. Gallwn ddefnyddio'r wybodaeth hon i roi mewnwelediadau ychwanegol at eich defnydd o ynni y tu allan i oriau ysgol
+        introduction_message: Sylwch, er y byddwn yn cadw unrhyw newidiadau a wneir i oriau agor eich ysgol neu amserau defnydd cymunedol ar unwaith, dim ond dros nos y bydd unrhyw un o'n dadansoddiadau ynni sy'n dibynnu ar y cyfnodau amser hyn yn diweddaru.
+        save_school_times: Cadw amseroedd yr ysgol
+        title: Oriau agor yr ysgol
       message_1: Rhowch yr amseroedd pan fydd disgyblion yn cyrraedd ac yn gadael yr ysgol. Gan gynnwys amseroedd unrhyw glybiau cyn neu ar ôl ysgol.
       message_2: Dylid rhoi amseroedd mewn fformat 24 awr.
       opening_time: Amser Agor
+      school_time_fields:
+        remove_time: Tynnu amser
+    users:
+      auto_create_alert_contact:
+        energy_sparks_alerts: Mae rhybuddion Sbarcynni
+        energy_sparks_alerts_list_item_1: yn rhoi rhybudd i chi o newidiadau yn nefnydd ynni eich ysgol
+        energy_sparks_alerts_list_item_2: yn amlygu problemau hirdymor gyda'ch defnydd o ynni gydag argymhellion penodol i arbed ynni
+        energy_sparks_alerts_list_item_3: yn rhoi gwybod i chi os ydych yn gwneud yn dda o gymharu ag ysgolion eraill a'ch perfformiad yn y gorffennol
+        subscribe_to_school_alerts: Tanysgrifio i rybuddion ysgol
+      auto_subscribe_newsletter:
+        newsletters_main_communication_channel: Cylchlythyrau yw ein prif sianel gyfathrebu ar gyfer
+        newsletters_main_communication_channel_list_item_1: tynnu sylw at adnoddau newydd
+        newsletters_main_communication_channel_list_item_2: rhannu gweithgareddau sydd dan sylw
+        newsletters_main_communication_channel_list_item_3: dathlu arfer gorau a llwyddiannau yn yr ysgolion sy'n cymryd rhan
+        newsletters_main_communication_channel_list_item_4: hyrwyddo gwasanaethau ategol megis gweithdai, hyfforddiant ac archwiliadau
+        subscribe_to_newsletters: Tanysgrifio i gylchlythyrau
+        we_strongly_recommend_you_sign_up: Rydym yn argymell yn gryf eich bod yn cofrestru i gael y gorau o Sbarcynni (ni fyddwn byth yn rhannu eich cyfeiriad e-bost ag unrhyw un arall)
+      edit:
+        title: Golygu cyfrif %{user_role}
+        update_account: Diweddaru cyfrif
+      form:
+        email: E-bost
+        name: Enw
+        preferred_locale: Dewis iaith
+        preferred_locale_hint: Gosod dewis iaith y defnyddiwr ar gyfer defnyddio'r wefan a derbyn e-byst
+        role: Rôl
+        what_is_their_primary_role: Beth yw eu prif rôl mewn perthynas â Sbarcynni?
+      index:
+        account_confirmed: Cyfrif wedi'i gadarnhau?
+        add_existing_user_as_admin: Ychwanegu defnyddiwr Sbarcynni presennol fel gweinyddwr ysgol
+        could_not_decrypt: "(methu â dadgryptio)"
+        email: E-bost
+        introduction: Mae gan gyfrifon gweinyddwr ysgolion fynediad at holl swyddogaethau Sbarcynni a gallant reoli defnyddwyr eraill a diweddaru manylion yr ysgol
+        make_school_admin: Gwneud yn weinyddwr ysgol
+        name: Enw
+        new_pupil_account: Cyfrif disgybl newydd
+        new_school_admin_account: Cyfrif gweinyddwr ysgol newydd
+        new_staff_account: Cyfrif staff newydd
+        no_pupil_accounts: Nid oes unrhyw gyfrifon disgyblion ar gyfer yr ysgol hon
+        no_school_admin_accounts: Nid oes unrhyw gyfrifon gweinyddol ar gyfer yr ysgol hon
+        no_staff_accounts: Nid oes unrhyw gyfrifon staff ar gyfer yr ysgol hon
+        password: Cyfrinair
+        preferred_locale: Dewis iaith
+        pupil_accounts: Cyfrifon disgyblion
+        pupil_accounts_message_1: Mae cyfrifon disgyblion yn caniatáu i ddisgyblion eich ysgol fewngofnodi i Sbarcynni gan ddefnyddio cyfrinair yn unig, nid oes angen cyfeiriad e-bost
+        pupil_accounts_message_2: Gellir creu’r cyfrifon hyn i’w defnyddio mewn ystafelloedd dosbarth neu gyda thimau eco, un cyfrif fesul dosbarth neu dîm ac yna gellir rhannu’r cyfrineiriau gyda’r disgyblion
+        receives_alerts: Yn derbyn rhybuddion?
+        resend_confirmation: Ailanfon cadarnhad
+        role: Rôl
+        staff_accounts: Cyfrifon staff
+        staff_accounts_have_access_message: Mae gan gyfrifon staff fynediad at swyddogaethau a rhybuddion Sbarcynni athrawon, rheolwyr a disgyblion ond ni allant reoli cyfrifon eraill
+        title: Cyfrifon gweinyddwr ysgol
+      new:
+        create_account: Creu cyfrif
+        introduction: Anfonir e-bost at ddefnyddwyr newydd i gadarnhau eu cyfrif ac yna gofynnir iddynt osod cyfrinair ar gyfer eu cyfrif cyn y gellir ei gyrchu
+        title: Cyfrif %{user_role} newydd
+    your_school_estates:
+      edit:
+        alternative_heating_sources:
+          biomass:
+            label: Mae gan ein hysgol foeler Biomas
+            percentage: Pa ganran o'r ysgol sy'n defnyddio boeler Biomas ar gyfer gwresogi?
+          description_1: Dywedwch wrthym am unrhyw ffynonellau gwresogi eraill rydych yn eu defnyddio yn eich ysgol
+          description_2: Ar hyn o bryd dim ond eich data nwy rydym yn eu dadansoddi. Ond trwy roi gwybod i ni am ffynonellau eraill, gallwn gymhwyso unrhyw arbedion cost neu argymhellion posibl
+          district_heating:
+            label: Mae gan ein hysgol Wresogi Ardal
+            percentage: Pa ganran o'r ysgol sy'n defnyddio Gwresogi Ardal ar gyfer gwresogi?
+          header: Ffynonellau gwresogi amgen
+          lpg:
+            label: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
+            percentage: Pa ganran o'r ysgol sy'n defnyddio LPG ar gyfer gwresogi?
+          notes: A oes unrhyw beth arall y dylem ei wybod?
+          oil:
+            label: Mae ein hysgol yn defnyddio Olew ar gyfer gwresogi
+            percentage: Pa ganran o'r ysgol sy'n cael ei gwresogi gan Gwresogi Olew?
+        description: Mae Sbarcynni yn defnyddio amrywiaeth o ddata am eich ysgol i deilwra ein dadansoddiad a'n cyngor. Drwy ddweud ychydig mwy wrthym am eich ystâd ysgol gallwn wella'r cymorth rydym yn ei gynnig i chi
+        school_was_successfully_updated: Diweddarwyd yr ysgol yn llwyddiannus
+        solar_panels: Paneli solar
+        solar_panels_label: Mae gan ein hysgol baneli solar ffotofoltaig
+        storage_heaters: Stôr-wresogyddion
+        storage_heaters_label: Mae gan ein hysgol stôr-wresogyddion nos
+        swimming_pool: Pwll Nofio
+        swimming_pool_label: Mae gan ein hysgol ei phwll nofio ei hun
+        title: Ystâd Eich Ysgol

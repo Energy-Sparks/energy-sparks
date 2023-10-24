@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @schools.with_points.schools_with_positions.each do |position, schools| %>
+    <% schools.with_points.schools_with_positions.each do |position, schools| %>
       <% schools.each do |school|%>
         <tr>
           <td scope="row">
@@ -17,7 +17,7 @@
             <h2><%= link_to school.name, school_path(school) %></h2>
           </td>
           <td>
-            <h2>
+            <h2 class="nowrap">
               <%= link_to school.sum_points, school_timeline_path(school, academic_year: @academic_year), class: 'badge badge-success' %>
               &nbsp;
               <% if school.recent_points&.positive? %>
@@ -28,7 +28,7 @@
         </tr>
       <% end %>
     <% end %>
-    <% @schools.without_points.each do |school| %>
+    <% schools.without_points.each do |school| %>
       <tr>
         <td><h2><span class="badge badge-secondary">-</span></h2></td>
         <td>

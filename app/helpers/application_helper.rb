@@ -55,7 +55,7 @@ module ApplicationHelper
   end
 
   def display_last_signed_in_as(user)
-    user.last_sign_in_at ? nice_date_times(user.last_sign_in_at) : 'Never signed in'
+    user.last_sign_in_at ? user.last_sign_in_at.strftime('%d/%m/%Y %H:%M') : '-'
   end
 
   def options_from_collection_for_select_with_data(collection, value_method, text_method, selected = nil, data = {})
@@ -89,6 +89,11 @@ module ApplicationHelper
     if dates.count > 0
       dates.count
     end
+  end
+
+  def status_for_alert_colour(colour)
+    return :neutral if colour.nil?
+    colour
   end
 
   def class_for_alert_colour(colour)
@@ -162,8 +167,12 @@ module ApplicationHelper
     icon('far', icon_type)
   end
 
+  def alert_type_icon(alert_type, size = nil)
+    alert_type.fuel_type.nil? ? "calendar-alt #{size}" : "#{fuel_type_icon(alert_type.fuel_type)} #{size}"
+  end
+
   def alert_icon(alert, size = nil)
-    alert.alert_type.fuel_type.nil? ? "calendar-alt #{size}" : "#{fuel_type_icon(alert.alert_type.fuel_type)} #{size}"
+    alert_type_icon(alert.alert_type, size)
   end
 
   def fuel_type_icon(fuel_type)
@@ -178,6 +187,25 @@ module ApplicationHelper
       'fire-alt'
     when :exported_solar_pv
       'arrow-right'
+    end
+  end
+
+  def fuel_type_image(fuel_type)
+    image_tag "email/#{fuel_type_icon(fuel_type)}.png", width: '20px', height: '20px'
+  end
+
+  def fuel_type_background_class(fuel_type)
+    case fuel_type.to_sym
+    when :electricity
+      'bg-electric-light'
+    when :gas
+      'bg-gas-light'
+    when :solar_pv
+      'bg-solar-light'
+    when :storage_heater, :storage_heaters
+      'bg-storage-light'
+    when :exported_solar_pv
+      'bg-solar-light'
     end
   end
 
@@ -250,8 +278,8 @@ module ApplicationHelper
     boolean ? I18n.t('common.labels.yes_label') : I18n.t('common.labels.no_label')
   end
 
-  def checkmark(boolean)
-    fa_icon(boolean ? 'check-circle text-success' : 'times-circle text-danger')
+  def checkmark(boolean, on_class: 'text-success', off_class: 'text-danger')
+    fa_icon(boolean ? "check-circle #{on_class}" : "times-circle #{off_class}")
   end
 
   def stars(rating)
@@ -321,7 +349,7 @@ module ApplicationHelper
   end
 
   def format_target(value, units)
-    FormatEnergyUnit.format(units, value, :html, false, true, :target)
+    FormatEnergyUnit.format(units, value, :html, false, true, :target).html_safe
   end
 
   def progress_as_percent(completed, total)
@@ -416,5 +444,30 @@ module ApplicationHelper
         fa_icon(:info)
       end
     end
+  end
+
+  def toggler
+    (fa_icon("chevron-down") + fa_icon("chevron-right")).html_safe
+  end
+
+  def text_with_icon(text, icon)
+    (icon ? "#{fa_icon(icon)} #{text}" : text).html_safe
+  end
+
+  def component(name, *args, **kwargs, &block)
+    component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
+    render(component.new(*args, **kwargs), &block)
+  end
+
+  def school_name_group(school)
+    if school.school_group
+      "#{school.name} (#{school.school_group.name})"
+    else
+      school.name
+    end
+  end
+
+  def user_school_role(user)
+    user.staff_role ? user.staff_role.title : user.role.humanize
   end
 end

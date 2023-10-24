@@ -26,6 +26,7 @@
             <th><%= t('onboarding.users.table.email') %></th>
             <th><%= t('onboarding.users.table.admin') %></th>
             <th><%= t('onboarding.users.table.role') %></th>
+            <th><%= t('onboarding.users.table.preferred_locale') %></th>
             <th></th>
           </tr>
         </thead>
@@ -37,6 +38,7 @@
                 <td><%= user.email %></td>
                 <td><%= y_n(user.school_admin?) %></td>
                 <td><%= user.staff_role.try(:title) %></td>
+                <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
                 <td>
                   <div class="btn-group">
                     <%= link_to(t('common.labels.edit'), edit_onboarding_user_path(@school_onboarding, user), { class: 'btn btn-default btn-sm', remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-window' }) if can?(:edit, user) %>

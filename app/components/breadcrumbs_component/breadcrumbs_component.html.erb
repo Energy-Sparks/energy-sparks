@@ -1,0 +1,10 @@
+<nav aria-label="breadcrumb">
+  <ol class="main-breadcrumbs breadcrumb pt-2">
+    <% school.selected = items.none? if school %>
+    <%= school %>
+    <% items.each_with_index do |item, i| %>
+      <% item.selected = (i == items.length - 1) %>
+      <%= item %>
+    <% end %>
+  </ol>
+</nav>

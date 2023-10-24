@@ -34,15 +34,20 @@ class Issue < ApplicationRecord
 
   delegated_type :issueable, types: %w[School SchoolGroup DataSource]
   delegate :name, to: :issueable
+
   belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true
   belongs_to :school, -> { where(issues: { issueable_type: 'School' }) }, foreign_key: 'issueable_id', optional: true
+
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
 
+  has_many :issue_meters, dependent: :destroy
+  has_many :meters, through: :issue_meters
+
   scope :for_school_group, ->(school_group) do
-    where(schools: { school_group: school_group }).or(
-      where(school_group: school_group)).left_joins(:school)
+    where(issues: { issueable_type: 'SchoolGroup', issueable_id: school_group }).or(
+      where(issues: { issueable_type: 'School', issueable_id: school_group.schools }))
   end
 
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
@@ -52,6 +57,8 @@ class Issue < ApplicationRecord
   scope :by_pinned, -> { order(pinned: :desc) }
   scope :by_status, -> { order(status: :asc) }
   scope :by_updated_at, -> { order(updated_at: :desc) }
+  scope :by_created_at, -> { order(created_at: :desc) }
+
   scope :by_priority_order, -> { by_pinned.by_status.by_updated_at }
 
   has_rich_text :description
@@ -60,6 +67,7 @@ class Issue < ApplicationRecord
   enum status: { open: 0, closed: 1 }, _prefix: true
 
   validates :issue_type, :status, :title, :description, presence: true
+  validate :school_issue_meters_only
 
   before_save :set_note_status
   after_initialize :set_enum_defaults
@@ -74,11 +82,11 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["Issue type", "Name", "Title", "Description", "Fuel type", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
+    ["For", "Name", "Title", "Description", "Fuel type", "Type", "Status", "Status summary", "Meters", "Meter status", "Data sources", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
   end
 
   def self.csv_attributes
-    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
+    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status status_summary mpan_mprns admin_meter_statuses data_source_names owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
   end
 
   def self.issue_type_images
@@ -97,6 +105,10 @@ class Issue < ApplicationRecord
     { open: 'info', closed: 'secondary' }
   end
 
+  def status_summary
+    issue? ? "#{status} issue" : "note"
+  end
+
   def issue_type_image
     self.class.issue_type_image(issue_type)
   end
@@ -113,6 +125,25 @@ class Issue < ApplicationRecord
     issueable_images[issueable.model_name.to_s.underscore.to_sym]
   end
 
+  def mpan_mprns
+    meters.map(&:mpan_mprn).compact.join('|').presence
+  end
+
+  def admin_meter_statuses
+    labels = meters.map { |meter| meter.admin_meter_status&.label }
+    return nil if labels.compact.empty?
+    return labels.first if labels.uniq.size == 1
+    labels.map { |label| label || 'None' }.join('|')
+  end
+
+  def data_source_names
+    meters.map {|meter| meter.data_source.try(:name) }.compact.uniq.join('|').presence
+  end
+
+  def school_group
+    issueable.is_a?(SchoolGroup) ? issueable : issueable.try(:school_group)
+  end
+
   private
 
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition
@@ -124,5 +155,11 @@ class Issue < ApplicationRecord
 
   def set_note_status
     self.status = :open if self.note?
+  end
+
+  def school_issue_meters_only
+    if meters.any? && !issueable.is_a?(School)
+      errors.add(:base, "Only school issues can have associated meters")
+    end
   end
 end

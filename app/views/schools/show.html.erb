@@ -1,6 +1,8 @@
 <%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
-<%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
+<%= render 'shared/dashboard_title', school: @school do %>
+  <%= render 'adult_dashboard_buttons', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
+<% end %>
 
 <% if @overview_data %>
   <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
@@ -9,6 +11,10 @@
     <%= @overview_data.date_ranges %>
     <%= link_to_help_for_feature :management_summary_overview, title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
   </div>
+<% end %>
+
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+<%= render('schools/prompt_to_complete_program', programmes_to_prompt: @programmes_to_prompt) %>
 <% end %>
 
 <h3><%= t('schools.show.act_on_energy_usage') %></h3>
@@ -53,13 +59,7 @@
 <% end %>
 
 <% if @show_standard_prompts %>
-  <%= render 'management/schools/complete_programmes', school: @school %>
-
-  <%= render 'management/schools/record_activity', school: @school %>
-
-  <%= render 'management/schools/record_intervention', school: @school %>
-
-  <%= render 'schools/dashboard/transport_surveys', school: @school %>
+  <%= render 'schools/engagement_prompts', school: @school %>
 <% end %>
 
 <% if @add_pupils %>
@@ -101,7 +101,7 @@
           <%= fa_icon('file-alt') %>
           <%= t('schools.show.print_view') %>
         <% end %>
-        <%= link_to t('schools.show.download_data'), school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+        <%= link_to t('schools.show.download_data'), school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:download_school_data, @school) %>
     </div>
   </div>
 <% end %>

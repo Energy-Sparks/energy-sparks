@@ -13,9 +13,14 @@ FactoryBot.define do
       intervention_type
     end
 
+    trait :activity do
+      observation_type { :activity }
+      activity
+    end
+
     factory :observation_with_temperature_recording_and_location do
       observation_type { :temperature }
-      after(:create) do |observation, evaluator|
+      after(:create) do |observation, _evaluator|
         location = create(:location, school: observation.school)
         create(:temperature_recording, observation: observation, location: location)
       end

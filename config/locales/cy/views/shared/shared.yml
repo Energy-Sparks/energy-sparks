@@ -5,9 +5,9 @@ cy:
     child_safeguarding: Diogelu plant
     contact: Cysylltu
     datasets: Setiau data
+    funders: Ein cyllidwyr
     jobs: Swyddi
     open_data: Agor data
-    partners: Partneriaid
     privacy_policy: Polisi preifatrwydd
     school_statistics: Ystadegau ysgolion
     team: Tîm
@@ -18,7 +18,7 @@ cy:
       completed_on: 'ar'
       previously_completed: "%{label} wedi'i gwblhau o'r blaen"
     prompt_login_to_record:
-      are_you_an_energy_sparks_user: Ydych chi'n ddefnyddiwr Energy Sparks?
+      are_you_an_energy_sparks_user: Ydych chi'n ddefnyddiwr Sbarcynni
       sign_in_html:
         one: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>1</strong> pwynt i'ch ysgol!
         two: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> bwynt i'ch ysgol!
@@ -36,22 +36,25 @@ cy:
   common_nav_bar_menus:
     actions: Gweithredoedd
     activities: Gweithgareddau
-  dashboard_alerts:
-    show_more_alerts:
-      one: Dangos 1 rhybudd arall
-      two: Dangos %{count} rybudd arall
-      many: Dangos %{count} o rybuddion eraill
-      other: Dangos %{count} o rybuddion eraill
+  contact_explainer:
+    alerts_message: Anfonir rhybuddion newid defnydd tymor byr yn wythnosol. Anfonir rhybuddion sy'n dweud wrthych am eich defnydd ynni hirdymor bob tymor.
+    list_html: |-
+      <ul>
+        <li>rhoi rhybudd i chi o newidiadau yn nefnydd ynni eich ysgol</li>
+        <li>amlygu problemau hirdymor gyda'ch defnydd o ynni gydag argymhellion penodol i arbed ynni</li>
+        <li>rhoi gwybod i chi os ydych yn gwneud yn dda o gymharu ag ysgolion eraill a'ch perfformiad yn y gorffennol</li>
+      </ul>
+    title: 'Rhybuddion Sbarcynni:'
   dashboards:
     adult_dashboard: Dangosfwrdd oedolion
     pupil_dashboard: Dangosfwrdd disgyblion
   footer:
     cc_licence_notice_html: Cyhoeddir cynnwys ar y wefan hon o dan <a href="https://creativecommons.org/licenses/by/4.0/">Drwydded Creative Commons Attribution 4.0</a>
     child_safeguarding_policy: Polisi diogelu plant
-    follow_energy_sparks: Dilyn Energy Sparks
+    follow_energy_sparks: Dilyn Sbarcynni
     more_information: Rhagor o wybodaeth
     privacy_and_cookie_policy: Polisi preifatrwydd a chwcis
-    registered_charity_notice: Mae Energy Sparks yn elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273
+    registered_charity_notice: Mae Sbarcynni yn elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273
     terms_and_conditions: Telerau ac amodau
   manage_menu:
     admin: Gweinyddwr
@@ -65,17 +68,21 @@ cy:
     manage_alert_contacts: Rheoli cysylltiadau rhybuddio
     manage_audits: Rheoli Archwiliadau
     manage_cads: Rheoli CADs
+    manage_issues: Rheoli problemau
     manage_meters: Rheoli mesuryddion
     manage_partners: Rheoli partneriaid
     manage_school: Rheoli'r Ysgol
+    manage_school_group: Rheoli grŵp ysgol
     manage_tariffs: Rheoli tariffau
     manage_usage_estimate: Rheoli amcangyfrif defnydd
     manage_users: Rheoli defnyddwyr
     meter_attributes: Priodweddau mesurydd
+    old_analysis_pages: Hen dudalennau dadansoddi
     remove_school: Tynnu'r ysgol
     review_targets: Adolygu targedau
     school_calendar: Calendr ysgol
     school_configuration: Ffurfweddiad ysgol
+    your_school_estate: Stad eich ysgol
   my_school_menu:
     complete_pupil_activities: Gweithgareddau disgyblion cyflawn
     download_our_data: Lawrlwytho ein data
@@ -114,11 +121,13 @@ cy:
     training: Hyfforddiant
     videos: Fideos
   partners:
-    supports_in_partnership_with: Mae Energy Sparks yn cefnogi %{school_name} mewn partneriaeth â
+    supports_in_partnership_with: Mae Sbarcynni yn cefnogi %{school_name} mewn partneriaeth â
   switch_schools_menu:
     switch_school: Newid ysgol
+  terms_and_conditions:
+    message_html: Rwy'n cadarnhau cytundeb gyda %{terms_and_conditions_link} a %{privacy_policy_link} Sbarcynni
   timeline:
     view_all_events: Gweld pob digwyddiad
     whats_been_going_on: Beth sydd wedi bod yn digwydd?
   translation_coming_soon:
-    message: Rydym yn dal i weithio tuag at gael Energy Sparks wedi'i gyfieithu'n llawn i'r Gymraeg. Rydym wedi rhoi blaenoriaeth i gyfieithu ein gweithgareddau addysgol a'n gweithgareddau sy'n ymwneud â disgyblion. Mae cyfieithu'r rhan hon o'r wefan yn dal i fynd rhagddo, felly am y tro rydym yn defnyddio'r gosodiad diofyn o Saesneg.
+    message: Rydym yn dal i weithio tuag at gael Sbarcynni wedi'i gyfieithu'n llawn i'r Gymraeg. Rydym wedi rhoi blaenoriaeth i gyfieithu ein gweithgareddau addysgol a'n gweithgareddau sy'n ymwneud â disgyblion. Mae cyfieithu'r rhan hon o'r wefan yn dal i fynd rhagddo, felly am y tro rydym yn defnyddio'r gosodiad diofyn o Saesneg.

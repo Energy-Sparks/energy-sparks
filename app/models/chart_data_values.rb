@@ -23,19 +23,23 @@ class ChartDataValues
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
+  BENCHMARK_LABELS = [
+    I18n.t('analytics.series_data_manager.series_name.benchmark_school'), I18n.t('analytics.series_data_manager.series_name.exemplar_school')
+  ].freeze
+
   def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
     if chart
       @chart_type         = chart_type
       @chart              = chart
       @title              = chart[:title]
       @subtitle           = chart[:subtitle]
-      @x_axis_categories  = translate_categories_for(chart[:x_axis])
-      @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
-      @x_max_value        = chart[:x_max_value]
-      @x_min_value        = chart[:x_min_value]
       @chart1_type        = chart[:chart1_type]
       @chart1_subtype     = chart[:chart1_subtype]
-      @x_axis_label       = chart[:x_axis_label]
+      @x_axis_categories  = translate_categories_for(chart[:x_axis])
+      @x_axis_ranges      = chart[:x_axis_ranges]
+      @x_max_value        = chart[:x_max_value]
+      @x_min_value        = chart[:x_min_value]
+      @x_axis_label       = translated_series_item_for(chart[:x_axis_label]) if chart[:x_axis_label]
       @y_axis_label       = format_y_axis_label_for(chart[:y_axis_label])
       @configuration      = chart[:configuration]
       @advice_header      = chart[:advice_header]
@@ -62,7 +66,7 @@ class ChartDataValues
 
   def translate_categories_for(categories)
     return categories unless categories.is_a? Array
-
+    return categories if @chart1_type == :scatter
     categories.map { |category_label| translated_series_item_for(category_label) }
   end
 
@@ -132,13 +136,13 @@ class ChartDataValues
       I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY}") => '#3bc0f0',
       I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY}") => '#ff4500',
       I18n.t("analytics.series_data_manager.series_name.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => '#ffac21',
-      I18n.t('analytics.series_data_manager.series_name.electricity') => MIDDLE_ELECTRICITY,
-      I18n.t('analytics.series_data_manager.series_name.gas') => MIDDLE_GAS,
+      I18n.t('analytics.series_data_manager.series_name.electricity') => DARK_ELECTRICITY,
+      I18n.t('analytics.series_data_manager.series_name.gas') => DARK_GAS,
       I18n.t('analytics.series_data_manager.series_name.storage_heaters') => STORAGE_HEATER,
       '£' => MONEY,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => GREEN,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME}") => MIDDLE_ELECTRICITY,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME}") => LIGHT_GAS_LINE,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME_I18N_KEY}") => DARK_ELECTRICITY,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME_I18N_KEY}") => LIGHT_GAS_LINE,
       I18n.t('analytics.series_data_manager.y2_solar_label') => MIDDLE_GAS,
       I18n.t('analytics.series_data_manager.y2_rating') => '#232b49'
     }
@@ -183,14 +187,42 @@ class ChartDataValues
       :y1_axis_choices,
       :explore_message,
       :pinch_and_zoom_message,
-      :click_and_drag_message
+      :click_and_drag_message,
+      :subtitle_start_date,
+      :subtitle_end_date
     ].inject({}) do |json, field|
       json[field] = output.public_send(field)
       json
     end
   end
 
+  def subtitle_start_date
+    return nil unless x_axis_ranges_present? && transformations_empty_or_only_move?
+    format_subtitle_date(@x_axis_ranges.first.first)
+  end
+
+  def subtitle_end_date
+    return nil unless x_axis_ranges_present? && transformations_empty_or_only_move?
+    format_subtitle_date(@x_axis_ranges.last.last)
+  end
+
+  def format_subtitle_date(date)
+    date.to_s(:es_short)
+  end
+
+  def translate_bill_component_series(series_key_as_string)
+    I18n.t("advice_pages.tables.labels.bill_components.#{series_key_as_string}")
+  end
+
   def translated_series_item_for(series_key_as_string)
+    series_key_as_string = series_key_as_string.to_s
+    return I18n.t('analytics.series_data_manager.series_name.baseload') if series_key_as_string.casecmp('baseload').zero?
+    return I18n.t('advice_pages.benchmarks.benchmark_school') if series_key_as_string == 'benchmark'
+    return I18n.t('advice_pages.benchmarks.exemplar_school') if series_key_as_string == 'exemplar'
+    return I18n.t('analytics.common.school_day') if series_key_as_string == 'school day'
+
+    return translate_bill_component_series(series_key_as_string) if I18n.t("advice_pages.tables.labels.bill_components").keys.map(&:to_s).include?(series_key_as_string)
+
     i18n_key = series_translation_key_lookup[series_key_as_string]
     return series_key_as_string unless i18n_key
 
@@ -208,7 +240,6 @@ class ChartDataValues
       Series::DayType::STORAGE_HEATER_CHARGE => Series::DayType::STORAGE_HEATER_CHARGE_I18N_KEY,
       Series::HotWater::USEFULHOTWATERUSAGE => Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY,
       Series::HotWater::WASTEDHOTWATERUSAGE => Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY,
-      Series::MultipleFuels::SOLARPV => Series::MultipleFuels::SOLARPV_I18N_KEY,
       Series::Irradiance::IRRADIANCE => Series::Irradiance::IRRADIANCE_I18N_KEY,
       Series::GridCarbon::GRIDCARBON => Series::GridCarbon::GRIDCARBON_I18N_KEY,
       Series::GasCarbon::GASCARBON => Series::GasCarbon::GASCARBON_I18N_KEY,
@@ -301,6 +332,10 @@ private
       if data.detect { |record| record.is_a?(TimeOfDay) }
         @uses_time_of_day = true
         data = data.map { |record| record.present? ? convert_relative_time(record.relative_time) : nil }
+      end
+
+      if is_benchmark_chart?
+        colour_benchmark_bars(data_type, data)
       end
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
@@ -397,7 +432,7 @@ private
       end
 
       @y2_axis_label = @y2_data.keys[0]
-      @y2_axis_label = 'Temperature' if @y2_axis_label.start_with?('Temp')
+      @y2_axis_label = translated_series_item_for('Temperature') if @y2_axis_label.start_with?('Temp')
 
       @y2_data.each do |data_type, data|
         data_type = tidy_and_keep_label(data_type)
@@ -492,5 +527,80 @@ private
 
   def y2_is_rating?(y2_data_title)
     y2_data_title.casecmp('rating').zero?
+  end
+
+  def x_axis_ranges_present?
+    @x_axis_ranges.present? && !@x_axis_ranges.empty?
+  end
+
+  def transformations_empty_or_only_move?
+    return true if @transformations.nil? || @transformations.empty?
+    return true if @transformations.length == 1 && transformation_type(@transformations[0]) == :move
+    false
+  end
+
+  def transformation_type(transformation)
+    transformation.first
+  end
+
+  def is_benchmark_chart?
+    @configuration.present? && @configuration[:inject].present? && @configuration[:inject] == :benchmark
+  end
+
+  def colour_benchmark_bars(data_type, data)
+    @x_axis_categories.each_with_index do |category, index|
+      if BENCHMARK_LABELS.include?(category)
+         #replace the scalar value with an object that
+         #holds the original y axis data and specifies a custom colour
+         data[index] = {
+           y: data[index], color: benchmark_colour(data_type, category)
+         }
+      end
+    end
+  end
+
+  #category = benchmark, exemplar
+  #data_type = Gas, Electricity
+  def benchmark_colour(data_type, category)
+    #this has multiple fuel types
+    if [:benchmark, :benchmark_one_year].include?(@chart_type)
+      return colours_for_multiple_fuel_type_bencmark(data_type, category)
+    end
+    if @chart_type.match?(/_gas_/)
+      if benchmark_school_category?(category)
+        MIDDLE_GAS
+      else
+        LIGHT_GAS
+      end
+    elsif @chart_type.match?(/_storage_/)
+      DARK_STORAGE
+    elsif benchmark_school_category?(category)
+      MIDDLE_ELECTRICITY
+    else
+      LIGHT_ELECTRICITY
+    end
+  end
+
+  def colours_for_multiple_fuel_type_bencmark(data_type, category)
+    case data_type
+    when translated_series_item_for('Gas')
+      if benchmark_school_category?(category)
+        MIDDLE_GAS
+      else
+        LIGHT_GAS
+      end
+    when translated_series_item_for('Electricity')
+      if benchmark_school_category?(category)
+        MIDDLE_ELECTRICITY
+      else
+        LIGHT_ELECTRICITY
+      end
+    else
+      DARK_STORAGE
+    end
+  end
+
+  def benchmark_school_category?(category)
+    category == I18n.t('analytics.series_data_manager.series_name.benchmark_school')
   end
 end

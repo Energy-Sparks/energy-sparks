@@ -1,0 +1,23 @@
+<h1>Funders</h1>
+
+<table class="table mt-2">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <% @funders.each do |funder| %>
+      <tr>
+        <td><%= funder.name %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_funder_path(funder), class: 'btn' %>
+            <%= link_to 'Delete', admin_funder_path(funder), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+<p><%= link_to 'New Funder', new_admin_funder_path, class: 'btn'%></p>

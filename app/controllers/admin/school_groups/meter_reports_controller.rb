@@ -5,55 +5,21 @@ module Admin
       load_and_authorize_resource :school_group
 
       def show
-        @meter_scope = if params.key?(:all_meters)
-                         {}
-                       else
-                         { active: true }
-                       end
-
         respond_to do |format|
-          format.html { }
-          format.csv { send_data produce_csv(@school_group, @meter_scope), filename: filename(@school_group) }
+          format.html { @meters = meter_report.meters }
+          format.csv { send_data meter_report.csv, filename: meter_report.csv_filename }
         end
+      end
+
+      def deliver
+        SchoolGroupMeterReportJob.perform_later(to: current_user.email, school_group: @school_group, all_meters: params[:all_meters].present?)
+        redirect_back fallback_location: admin_school_group_path(@school_group), notice: "Meter report for #{@school_group.name} requested to be sent to #{current_user.email}"
       end
 
       private
 
-      def filename(school_group)
-        school_group.name.parameterize + '-meter-report.csv'
-      end
-
-      def produce_csv(school_group, meter_scope)
-        CSV.generate do |csv|
-          csv << [
-            'School',
-            'Supply',
-            'Number',
-            'Meter',
-            'Active',
-            'First validated reading',
-            'Last validated reading',
-            'Large gaps (last 2 years)',
-            'Modified readings (last 2 years)',
-            'Zero reading days'
-          ]
-          school_group.schools.by_name.each do |school|
-            school.meters.where(meter_scope).order(:mpan_mprn).each do |meter|
-              csv << [
-                school.name,
-                meter.meter_type,
-                meter.mpan_mprn,
-                meter.name,
-                y_n(meter.active),
-                nice_dates(meter.first_validated_reading),
-                nice_dates(meter.last_validated_reading),
-                date_range_from_reading_gaps(meter.gappy_validated_readings),
-                meter.modified_validated_readings.count,
-                meter.zero_reading_days.count
-              ]
-            end
-          end
-        end
+      def meter_report
+        @meter_report ||= ::SchoolGroups::MeterReport.new(@school_group, all_meters: params[:all_meters].present?)
       end
     end
   end

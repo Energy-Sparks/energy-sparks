@@ -1,0 +1,29 @@
+<% if valid_config? %>
+
+  <div id="chart_wrapper_<%= chart_type %>" class="chart-wrapper">
+
+    <% if title %>
+      <h4 id="chart-section-<%= chart_type %>" class="chart-title"><%= title %></h4>
+    <% end %>
+
+    <% if subtitle %>
+      <h5 class="chart-subtitle"><%= subtitle %></h5>
+    <% end %>
+
+    <%= header %>
+
+    <%= render 'shared/analysis_controls', chart_type: chart_type, axis_controls: axis_controls, analysis_controls: analysis_controls %>
+    <%= chart_tag(school, chart_type, no_zoom: no_zoom, wrap: false, html_class: html_class, chart_config: chart_config, fuel_type: fuel_type) %>
+  </div>
+
+  <%= footer %>
+
+<% else %>
+
+  <div class="padded-row">
+    <div class="bg-negative-light">
+      <p>The chart can't be displayed - please check the configuration</p>
+    </div>
+  </div>
+
+<% end %>

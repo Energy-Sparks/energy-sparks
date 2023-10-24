@@ -1,51 +1,38 @@
-<h1><%= t('schools.meters.index.title') %></h1>
+<div class='d-flex justify-content-between align-items-baseline'>
+  <h1><%= t('schools.meters.index.title') %></h1>
+  <% if current_user.admin? && @school&.school_group %>
+    <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school&.school_group %>
+  <% end %>
+</div>
 
 <% if current_user.admin? %>
   <% if can? :manage, DashboardMessage %>
     <%= render 'admin/shared/dashboard_message', messageable: @school %>
   <% end %>
-<div class="alert alert-secondary mb-2">
-  <%= link_to t('schools.meters.index.school_downloads'), school_downloads_path(@school), class: 'btn' %>
-  <% if can? :manage_solar_feed_configuration, School %>
-  <% end %>
-  <%= link_to t('schools.meters.index.manage_solar_api_feeds'), school_solar_feeds_configuration_index_path(@school), class: 'btn' %>
-  <% if can? :manage, MeterReview %>
-    <%= link_to t('schools.meters.index.meter_reviews'), admin_school_meter_reviews_path(@school), class: 'btn' %>
-    <% if @pending_reviews %>
-      <%= link_to t('schools.meters.index.review_meters'), new_admin_school_meter_review_path(@school), class: 'btn' %>
+  <div class="alert alert-secondary mb-2">
+    <% if can?(:validate_meters, @school) && @school.meters_with_readings.any? && @school.process_data? %>
+      <%= link_to t('schools.meters.index.validate_meter_readings'), school_meter_readings_validation_path(@school), method: :post, class: 'btn' %>
+    <% else %>
+      <button type="button" class="btn disabled" data-toggle="tooltip" data-placement="top" title="<%= t('schools.meters.index.data_processing_turned_on_message') %>">
+        <%= t('schools.meters.index.validate_meter_readings') %>
+      </button>
     <% end %>
-  <% end %>
-  <% if can? :manage, UserTariff %>
-    <%= link_to t('schools.meters.index.manage_tariffs'), school_user_tariffs_path(@school), class: 'btn' %>
-  <% end %>
-</div>
-<% end %>
 
-<% if can?(:validate_meters, @school) && @school.meters_with_readings.any? %>
-  <% if @school.process_data? %>
-    <div class="alert alert-secondary mb-2">
-      <%= link_to t('schools.meters.index.validate_meter_readings'), school_meter_readings_validation_path(@school), method: :post, class: 'btn mr-3' %>
-      <%= t('schools.meters.index.this_may_take_some_time') %>
-    </div>
-  <% else %>
-    <div class="alert alert-warning mb-2">
-      <%= t('schools.meters.index.data_processing_turned_on_message') %>
-    </div>
-  <% end %>
-<% end %>
+    <%= link_to t('schools.meters.index.school_downloads'), school_downloads_path(@school), class: 'btn' %>
 
-<% if can?(:view_target_data, @school) %>
-  <% if @enough_data_for_targets %>
-    <div class="alert alert-success mb-2">
-      <%= link_to t('schools.meters.index.view_target_data'), admin_school_target_data_path(@school), class: 'btn mr-3' %>
-      <%= t('schools.meters.index.school_enough_data_message') %>
-    </div>
-  <% else %>
-    <div class="alert alert-warning mb-2">
-      <%= link_to t('schools.meters.index.view_target_data'), admin_school_target_data_path(@school), class: 'btn mr-3' %>
-      <%= t('schools.meters.index.school_not_enough_data_message') %>
-    </div>
-  <% end %>
+    <% if can? :manage_solar_feed_configuration, School %>
+      <%= link_to t('schools.meters.index.manage_solar_api_feeds'), school_solar_feeds_configuration_index_path(@school), class: 'btn' %>
+    <% end %>
+
+    <% if can? :manage, MeterReview %>
+      <% if @school.meters.reviewed_dcc_meter %>
+        <%= link_to t('schools.meters.index.meter_reviews'), admin_school_meter_reviews_path(@school), class: 'btn' %>
+      <% end %>
+      <% if @pending_reviews %>
+        <%= link_to t('schools.meters.index.review_meters'), new_admin_school_meter_review_path(@school), class: 'btn' %>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
 
 <% unless @invalid_mpan.empty? %>
@@ -54,7 +41,7 @@
   </div>
 <% end %>
 
-<% colspan = current_user.admin? ? 12 : 11 %>
+<% colspan = current_user.admin? ? 14 : 11 %>
 <% first_colspan = current_user.admin? ? 3 : 2 %>
 
 <div class="table-responsive">
@@ -78,7 +65,10 @@
       <th scope="col"><%= t('schools.meters.index.meter') %></th>
       <th scope="col"><%= t('schools.meters.index.name') %></th>
       <% if current_user.admin? %>
+        <th scope="col"><%= t('schools.meters.index.meter_system') %></th>
         <th scope="col"><%= t('schools.meters.index.data_source') %></th>
+        <th scope="col"><%= t('schools.meters.index.procurement_route') %></th>
+        <th scope="col"><%= t('schools.meters.index.admin_meter_status') %></th>
       <% end %>
       <th scope="col"><%= t('schools.meters.index.imported') %></th>
       <th scope="col"><%= t('schools.meters.index.validated') %></th>
@@ -115,61 +105,18 @@
   </tbody>
   <% end %>
 
-  <% if @inactive_meters.any? %>
+  <% if @inactive_meters.any? || @inactive_pseudo_meters.any? %>
     <thead>
       <tr class="bg-light">
         <th colspan="<%= colspan %>"><%= t('schools.meters.index.inactive_meters') %></th>
       </tr>
     </thead>
     <tbody>
-      <% @inactive_meters.each do |meter| %>
-        <tr scope="row">
-          <td title="<%= (meter.meter_type.to_s.humanize) %>"><%= fa_icon(fuel_type_icon(meter.meter_type)) %></td>
-          <td><%= meter.mpan_mprn %></td>
-          <td><%= meter.name %></td>
-          <% if current_user.admin? %>
-            <td><%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %></td>
-          <% end %>
-          <td><%= meter.amr_data_feed_readings.count %></td>
-          <td><%= meter.amr_validated_readings.count %></td>
-          <td><%= short_dates meter.first_validated_reading %></td>
-          <td><%= short_dates meter.last_validated_reading %></td>
-          <td><%= meter.zero_reading_days.count %></td>
-          <td><%= meter.gappy_validated_readings.count %></td>
-          <td>
-            <div class="btn-group btn-group-sm" role="group">
-              <% if can?(:edit, meter) %>
-                <%= link_to t('schools.meters.index.details'), school_meter_path(@school, meter), class: 'btn btn-sm' %>
-              <% end %>
-              <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-                <%= link_to t('schools.meters.index.report'), admin_reports_amr_validated_reading_path(meter), class: 'btn btn-sm' %>
-              <% end %>
-              <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-                <%= link_to school_meter_path(@school, meter, format: "csv"), class: 'btn btn-info btn-sm' do %>
-                  <i class="fas fa-file-download"></i>
-                <% end %>
-              <% end %>
-              <% if current_user.admin? && meter.notes.present? %>
-                <%= render 'meter_notes', meter: meter %>
-              <% end %>
-            </div>
-          </td>
-          <td>
-            <div class="btn-group btn-group-sm" role="group">
-              <%= link_to t('common.labels.edit'), edit_school_meter_path(@school, meter), class: 'btn btn-sm' if can?(:edit, meter) %>
-              <%= link_to t('common.labels.activate'), activate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm' if can?(:activate, meter) %>
-              <% if can? :delete, meter %>
-                <%= link_to t('common.labels.delete'), school_meter_path(@school, meter), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-sm' %>
-              <% else %>
-                <button class="btn btn-sm" disabled title="<%= t('schools.meters.index.only_admins_message') %>"><%= t('common.labels.delete') %></button>
-              <% end %>
-
-            </div>
-          </td>
-        </tr>
-      <% end %>
+      <%= render 'inactive_meters', inactive_meters: @inactive_meters %>
+      <%= render 'inactive_meters', inactive_meters: @inactive_pseudo_meters %>
     </tbody>
   <% end %>
+
 </table>
 </div>
 

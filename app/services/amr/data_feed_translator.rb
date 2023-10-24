@@ -18,11 +18,13 @@ module Amr
       data_feed_reading_hash = meter_details_from_row(row)
       data_feed_reading_hash[:amr_data_feed_config_id] = @config.id
       data_feed_reading_hash[:reading_date] = fetch_from_row(:reading_date_index, row)
+      data_feed_reading_hash[:reading_time] = fetch_from_row(:reading_time_index, row)
       data_feed_reading_hash[:postcode] = fetch_from_row(:postcode_index, row)
       data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
       data_feed_reading_hash[:description] = fetch_from_row(:description_index, row)
       data_feed_reading_hash[:provider_record_id] = fetch_from_row(:provider_record_id_index, row)
       data_feed_reading_hash[:readings] = readings_as_array(row)
+      data_feed_reading_hash[:period] = fetch_from_row(:period_index, row) if @config.positional_index
       data_feed_reading_hash
     end
 
@@ -58,7 +60,7 @@ module Amr
     end
 
     def find_meter_by_mpan_mprn(mpan_mprn)
-      unless @meters_by_mpan_mprn.key(mpan_mprn)
+      unless @meters_by_mpan_mprn.key?(mpan_mprn)
         meters = Meter.where(mpan_mprn: mpan_mprn)
         raise DataFeedException.new("Multiple meters found with mpan_mprn #{mpan_mprn}") if meters.size > 1
         @meters_by_mpan_mprn[mpan_mprn] = meters.first
@@ -67,7 +69,7 @@ module Amr
     end
 
     def find_meter_by_serial_number(meter_serial_number)
-      unless @meters_by_serial_number.key(meter_serial_number)
+      unless @meters_by_serial_number.key?(meter_serial_number)
         meters = Meter.where(meter_serial_number: meter_serial_number)
         raise DataFeedException.new("Multiple meters found with meter_serial_number #{meter_serial_number}") if meters.size > 1
         @meters_by_serial_number[meter_serial_number] = meters.first

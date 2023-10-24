@@ -460,9 +460,6 @@ en:
     group_by_week_electricity_meter_breakdown_one_year:
       title:
       - 'By Week: Electricity (Meter Breakdown)'
-    group_by_week_electricity_school_comparison_line:
-      title:
-      - ''
     group_by_week_electricity_simulator:
       title:
       - 'By Week: Electricity (Simulator)'
@@ -910,18 +907,12 @@ en:
     targeting_and_tracking_unscaled_target_group_by_week_storage_heater:
       title:
       - Unscaled target <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
-    targeting_and_tracking_weekly_electricity_one_year_column_deprecated:
-      title:
-      - targeting_and_tracking_weekly_electricity_one_year_column
     targeting_and_tracking_weekly_electricity_one_year_cumulative_line:
       title:
       - Weekly progress versus target to date
     targeting_and_tracking_weekly_electricity_one_year_line:
       title:
       - Weekly progress versus target to date
-    targeting_and_tracking_weekly_electricity_to_date_column_deprecated:
-      title:
-      - Weekly progress versus target
     targeting_and_tracking_weekly_electricity_to_date_cumulative_line:
       title:
       - Cumulative progress versus target
@@ -1036,3 +1027,17 @@ en:
     thermostatic_winter_weekend_best:
       title:
       - Thermostatic (Winter Weekend)
+    y_axis_label_name:
+      co2: kg CO2
+      days: days
+      kw: kW
+      kwh: kWh
+      percent: percent
+      percent_0dp: percent
+      r2: ''
+      relative_percent: percent
+      relative_percent_0dp: percent
+      timeofday: Time of day
+      w: W
+      "£": "£"
+      "£_0dp": "£"

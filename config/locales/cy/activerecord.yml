@@ -1,4 +1,3 @@
----
 cy:
   activerecord:
     attributes:
@@ -25,14 +24,14 @@ cy:
         alternative_heating_lpg: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
         alternative_heating_oil: Mae ein hysgol yn defnyddio Olew ar gyfer gwresogi
         cooks_dinners_for_other_schools: Mae'r gegin yn coginio ciniawau ar gyfer ysgolion eraill
-        cooks_dinners_for_other_schools_count: "Ar gyfer faint o ysgolion mae eich ysgol yn coginio cinio?"
+        cooks_dinners_for_other_schools_count: Ar gyfer faint o ysgolion mae eich ysgol yn coginio cinio?
         cooks_dinners_onsite: Ciniawau yn cael eu coginio ar y safle
         country: Gwlad
         enable_targets_feature: Galluogi nodwedd targedau
         floor_area: Arwynebedd llawr mewn metrau sgwâr
         funding_status: Statws ariannu
         has_swimming_pool: Mae gan ein hysgol ei phwll nofio ei hun
-        indicated_has_solar_panels: Mae gan ein hysgol baneli solar PV
+        indicated_has_solar_panels: Mae gan ein hysgol baneli solar ffotofoltaig
         indicated_has_storage_heaters: Mae gan ein hysgol stôr-wresogyddion nos
         latitude: Lledred
         longitude: Hydred
@@ -77,8 +76,8 @@ cy:
       messages:
         record_invalid: 'Wedi methu â dilysu: %{errors}'
         restrict_dependent_destroy:
-          has_many: "Methu â dileu cofnod oherwydd bod dibynnydd %{record} yn bodoli"
-          has_one: "Methu â dileu cofnod oherwydd bod dibynnydd %{record} yn bodoli"
+          has_many: Methu â dileu cofnod oherwydd bod dibynnydd %{record} yn bodoli
+          has_one: Methu â dileu cofnod oherwydd bod dibynnydd %{record} yn bodoli
     models:
       transport_survey:
         one: Arolwg trafnidiaeth
@@ -98,22 +97,22 @@ cy:
     messages:
       accepted: rhaid derbyn
       blank: methu â bod yn wag
-      confirmation: "nid yw'n cyfateb i %{attribute}"
+      confirmation: nid yw'n cyfateb i %{attribute}
       empty: methu â bod yn wag
-      equal_to: "rhaid bod yn hafal i %{count}"
+      equal_to: rhaid bod yn hafal i %{count}
       even: rhaid bod yn eilrif
       exclusion: yn cael ei gadw
-      greater_than: "rhaid bod yn fwy na %{count}"
-      greater_than_or_equal_to: "rhaid bod yn fwy na neu'n hafal i %{count}"
+      greater_than: rhaid bod yn fwy na %{count}
+      greater_than_or_equal_to: rhaid bod yn fwy na neu'n hafal i %{count}
       inclusion: heb ei gynnwys yn y rhestr
       invalid: yn annilys
-      less_than: "rhaid bod yn llai na %{count}"
-      less_than_or_equal_to: "rhaid bod yn llai na neu'n hafal i %{count}"
+      less_than: rhaid bod yn llai na %{count}
+      less_than_or_equal_to: rhaid bod yn llai na neu'n hafal i %{count}
       model_invalid: 'Wedi methu â dilysu: %{errors}'
       not_a_number: nid yw'n rhif
       not_an_integer: rhaid bod yn gyfanrif
       odd: rhaid bod yn odrif
-      other_than: "rhaid bod heblaw am %{count}"
+      other_than: rhaid bod heblaw am %{count}
       present: rhaid bod yn wag
       required: rhaid bodoli
       taken: eisoes wedi'i gymryd
@@ -136,6 +135,6 @@ cy:
       body: 'Roedd problemau gyda’r meysydd canlynol:'
       header:
         one: Roedd 1 gwall yn gwahardd y %{model} hwn rhag cael ei gadw
-        two: "Roedd %{count} wall yn gwahardd y %{model} hwn rhag cael ei gadw"
-        many: "Roedd %{count} gwall yn gwahardd y %{model} hwn rhag cael ei gadw"
-        other: "Roedd %{count} gwall yn gwahardd y %{model} hwn rhag cael ei gadw"
+        two: Roedd %{count} wall yn gwahardd y %{model} hwn rhag cael ei gadw
+        many: Roedd %{count} gwall yn gwahardd y %{model} hwn rhag cael ei gadw
+        other: Roedd %{count} gwall yn gwahardd y %{model} hwn rhag cael ei gadw

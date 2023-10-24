@@ -2,6 +2,8 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Funder</th>
+      <th>Archived?</th>
       <th>Removal date</th>
       <th class="no-sort"></th>
     </tr>
@@ -10,9 +12,11 @@
     <% school_group.schools.inactive.by_name.each do |school| %>
       <tr class="bg-light">
         <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= school.funder&.name || school&.school_group&.funder&.name %></td>
+        <td><%= y_n(school.archived?) %></td>
         <td><%= nice_dates(school.removal_date) %></td>
         <td class="nowrap text-right">
-          <%= render 'issues_link', path: admin_school_issues_path(school), issues_count: school.issues.issue.status_open.count, notes_count: school.issues.note.count %>
+          <%= link_to issue_type_icons(school.issues, label: 'Issues'), admin_school_issues_path(school), class: 'btn btn-sm' %>
           <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
         </td>
       </tr>

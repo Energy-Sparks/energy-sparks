@@ -55,10 +55,30 @@ en:
       message: We need your school to update its consent to allow Energy Sparks to continue to collect, process and display your energy data.
       subject: We need permission to access your school's energy data
       view_school_account: view your school account
+  energy_tariffs_mailer:
+    group_admin_review_group_tariffs_reminder:
+      mail_body:
+        click_here_html: "<a href='%{click_here_link}'>Click here</a>"
+        in_future: It's best to update your tariffs on Energy Sparks when you change supply contract. We will mail you twice a year, in March and September as a reminder.
+        to_help:
+          general: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we're contacting you to ask you to review the information we have about the Energy Tariffs for your group.
+          local_authority: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we’re contacting you to ask you to review the information we have about the Energy Tariffs for your local authority.
+          multi_academy_trust: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we’re contacting you to ask you to review the information we have about the Energy Tariffs for your Multi-Academy Trust.
+        to_review: To review your current tariffs and to add or update the information based on your latest contract
+        you_can_set: You can set an average tariff for all schools to provide better defaults for all schools. Individual schools can add their own tariff information
+      subject: It's time to review the energy tariffs for %{school_group_name} on Energy Sparks
+    school_admin_review_school_tariffs_reminder:
+      mail_body:
+        click_here_html: "<a href='%{click_here_link}'>click here</a>"
+        in_future: It's best to update your tariffs on Energy Sparks when you change supply contract. We will mail you twice a year, in March and September as a reminder.
+        to_help: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we're contacting you to ask you to review the information we have about the energy tariffs for %{school_name}.
+        to_review: To review your current tariffs and to add or update the information based on your latest contract
+      subject: It’s time to review the energy tariffs for %{school_name} on Energy Sparks
   mailer:
     get_in_touch: Get in touch
   onboarding_mailer:
     activation_email:
+      explore_activities: Explore activities
       get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions
       header: "%{school_name} is now live on Energy Sparks"
       join_a_webinar: Join a webinar
@@ -69,15 +89,15 @@ en:
       paragraph_4: We will be in touch shortly to confirm when we have completed getting access to your energy data.
       paragraph_5_html: For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>, watch our <a href="%{user_guide_videos_url}">Training Videos</a> or join one of our <a href="%{training_url}">live webinar training</a> sessions.
       paragraph_6: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
-      set_your_first_targets: Set your first targets
       subject: "%{school} is live on Energy Sparks"
       thanks_for_joining: Thanks for joining!
       the_energy_sparks_team: The Energy Sparks Team
     completion_email:
       find_them_on_energy_sparks: Find them on Energy Sparks
-      subject: "%{school} has completed the onboarding process"
-      title: "%{school_name} has completed the automatic setup process"
+      subject: "%{school} (%{school_group}) has completed the onboarding process"
+      title: "%{school_name} (%{school_group}) has completed the automatic setup process"
     data_enabled_email:
+      explore_data: Explore your data
       get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions.
       join_a_webinar: Join a webinar
       need_some_help: Need some help?
@@ -115,12 +135,22 @@ en:
       the_energy_sparks_team: The Energy Sparks Team
       title: Set up your school on Energy Sparks
     reminder_email:
-      paragraph_1_html: Thank you for enrolling %{school_name} with <a href="https://energysparks.uk">Energy Sparks</a>
-      paragraph_2: We need some details from you about your school and your consent to publish your meter data on Energy Sparks.
-      paragraph_3: Set up your school on Energy Sparks
-      subject: Don't forget to set up your school on Energy Sparks
+      paragraph_1_html:
+        one: Thank you for enrolling %{school_name} with <a href="https://energysparks.uk">Energy Sparks</a>
+        other: Thank you for enrolling your schools with <a href="https://energysparks.uk">Energy Sparks</a>
+      paragraph_2:
+        one: We need some details from you about your school and your consent to publish your meter data on Energy Sparks.
+        other: We need some details from you about your schools, including consent to publish meter data on Energy Sparks.
+      paragraph_3:
+        one: Set up your school on Energy Sparks
+        other: 'Please complete the setup process for the following schools:'
+      subject:
+        one: Don't forget to set up your school on Energy Sparks
+        other: Don't forget to set up your schools on Energy Sparks
       the_energy_sparks_team: The Energy Sparks Team
-      title: Don't forget to set up your school on Energy Sparks
+      title:
+        one: Don't forget to set up your school on Energy Sparks
+        other: Don't forget to set up your schools on Energy Sparks
     welcome_email:
       paragraph_1: You can now use Energy Sparks to see how much energy your school is using, find out about the greatest energy saving opportunities and explore our activities and educational resources designed to teach your pupils about energy whilst saving money for their school.
       paragraph_2_html: For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>, watch our <a href="https://energysparks.uk/user-guide-videos">Training Videos</a> or join one of our <a href="https://energysparks.uk/training">live webinar training</a> sessions.
@@ -133,7 +163,18 @@ en:
       subject: Target Progress and Data Report
     first_target:
       subject: Set your first energy saving target
+      title: Set your first energy saving target
+    first_target_prompt:
+      its_time_html: It's time to <strong><a href='%{school_targets_url}'>set your first target</a></strong> for reducing your energy consumption
+      not_sure_whats_achievable: Not sure what's achievable? We've suggested an initial target based on our successes working with schools across the country. Take a look
+      set_your_first_target: Set your first target
+      well_provide_you_with_reports: We'll provide you with reports to help you monitor your progress, a recommended set of activities that will engage the whole school, and additional insights through our detailed analysis of your energy usage
     first_target_reminder:
       subject: Reminder to set your first energy saving target
+      title: Set your first energy saving target
     review_target:
+      its_time_html: It's time to <a href='%{school_target_url}'>review your progress</a> and set a new target for the year ahead
+      set_a_new_target: Set a new target
       subject: Review your progress and set a new saving target
+      title: Set your next energy saving target
+      your_school_set_a_target_to_reduce_its_energy_usage_by: Your school set a target to reduce its energy usage by %{target_date}

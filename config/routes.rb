@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'
+  get 'case-studies/:id/download', to: 'case_studies#download', as: :case_study_download
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
   get 'resources/:id/:serve', to: 'resource_files#download', as: :serve_resource
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
   get 'home-page', to: 'home#show'
   get 'map', to: 'map#index'
   get 'school_statistics', to: 'home#school_statistics'
+  get 'school_statistics_key_data', to: 'home#school_statistics_key_data'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -31,9 +33,13 @@ Rails.application.routes.draw do
   get 'datasets', to: 'home#datasets'
   get 'attribution', to: 'home#attribution'
   get 'child-safeguarding-policy', to: 'home#child_safeguarding_policy'
-  get 'user-guide-videos', to: 'home#user_guide_videos'
+  get 'user-guide-videos', to: 'home#user_guide_videos' # keep old route for now
+  get 'user-guide-youtube', to: redirect('https://www.youtube.com/@energysparksuk') # this is a redirect so it can be used in the sitemap
+
   get 'team', to: 'home#team'
+  get 'funders', to: 'home#funders'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
+  get 'support_us', to: 'home#support_us', as: :support_us
   get 'terms_and_conditions', to: 'home#terms_and_conditions', as: :terms_and_conditions
   get 'training', to: 'home#training'
   get 'energy-audits', to: 'home#energy_audits'
@@ -45,8 +51,16 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
-  get 'benchmarks', to: 'benchmarks#index'
-  get 'benchmark', to: 'benchmarks#show'
+  resources :compare, controller: 'compare', param: :benchmark, only: [:index, :show] do
+    collection do
+      get :benchmarks
+    end
+  end
+
+  # redirect old benchmark URLs
+  get '/benchmarks', to: redirect('/compare')
+  get '/benchmark', to: redirect(BenchmarkRedirector.new)
+
   get 'version', to: 'version#show'
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
@@ -54,6 +68,39 @@ Rails.application.routes.draw do
   resources :help, controller: 'help_pages', only: [:show]
 
   resources :mailchimp_signups, only: [:new, :create, :index]
+
+  concern :tariff_holder do
+    scope module: 'energy_tariffs' do
+      resources :energy_tariffs do
+        collection do
+          get :choose_meters
+          get :default_tariffs
+          get :smart_meter_tariffs
+          get :group_school_tariffs
+        end
+        member do
+          get :choose_type
+          get :edit_meters
+          get :applies_to
+          post :update_meters
+          post :update_type
+          post :toggle_enabled
+          post :update_applies_to
+        end
+        resources :energy_tariff_flat_prices
+        resources :energy_tariff_charges
+        resources :energy_tariff_differential_prices do
+          collection do
+            get :reset
+          end
+        end
+      end
+    end
+  end
+
+  scope '/admin/settings', as: :admin_settings do
+    concerns :tariff_holder
+  end
 
   resources :activity_types, only: [:show] do
     collection do
@@ -99,7 +146,30 @@ Rails.application.routes.draw do
 
   resource :school_switcher, only: [:create], controller: :school_switcher
 
-  resources :school_groups, only: [:show]
+  resources :school_groups, only: [:show] do
+    concerns :tariff_holder
+
+    scope module: :school_groups do
+      resources :chart_updates, only: [:index] do
+        post :bulk_update_charts
+      end
+      resources :clusters do
+        member do
+          post :unassign
+        end
+        collection do
+          post :assign
+        end
+      end
+    end
+    member do
+      get :map
+      get :recent_usage
+      get :comparisons
+      get :priority_actions
+      get :current_scores
+    end
+  end
   resources :scoreboards, only: [:show, :index]
   resources :transport_types, only: [:index]
 
@@ -129,16 +199,46 @@ Rails.application.routes.draw do
       end
     end
 
+    concerns :tariff_holder
+
     scope module: :schools do
 
-      [
-        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
-        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
-      ].each do |tab|
-        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis")
+      resource :advice, controller: 'advice', only: [:show] do
+        [:total_energy_use,
+         :baseload,
+         :electricity_costs,
+         :electricity_long_term,
+         :electricity_intraday,
+         :electricity_out_of_hours,
+         :electricity_recent_changes,
+         :heating_control,
+         :thermostatic_control,
+         :gas_costs,
+         :gas_long_term,
+         :gas_out_of_hours,
+         :gas_recent_changes,
+         :hot_water,
+         :solar_pv,
+         :storage_heaters].each do |page|
+          resource page, controller: "advice/#{page}", only: [:show] do
+            member do
+              get :insights
+              get :analysis
+              get :learn_more
+              if [:electricity_costs, :gas_costs].include?(page)
+                get :meter_costs
+              end
+            end
+          end
+        end
+        collection do
+          get :priorities
+          get :alerts
+        end
       end
 
       resources :analysis, controller: :analysis, only: [:index, :show]
+
       resources :progress, controller: :progress, only: [:index] do
         collection do
           get :electricity
@@ -174,7 +274,7 @@ Rails.application.routes.draw do
           resources :responses, only: [:index, :destroy]
         end
       end
-
+      resources :recommendations, only: [:index]
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :public, only: [:create, :destroy], controller: :public
@@ -188,6 +288,7 @@ Rails.application.routes.draw do
       resources :meters do
         member do
           get :inventory
+          get :n3rgy_status
           put :activate
           put :deactivate
         end
@@ -195,7 +296,7 @@ Rails.application.routes.draw do
 
       resources :solar_feeds_configuration, only: [:index]
 
-      resources :solar_edge_installations, only: [:new, :create, :edit, :update, :destroy]
+      resources :solar_edge_installations, only: [:new, :show, :create, :edit, :update, :destroy]
       resources :low_carbon_hub_installations, only: [:new, :show, :create, :edit, :update, :destroy]
       resources :rtone_variant_installations, only: [:new, :create, :edit, :update, :destroy]
 
@@ -205,11 +306,6 @@ Rails.application.routes.draw do
       resource :school_group, controller: :school_group
       resource :times, only: [:edit, :update]
       resource :your_school_estate, only: [:edit, :update]
-
-      get 'simulations/:id/simulation_detail', to: 'simulations#show_detailed', as: :simulation_detail
-      get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
-      get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
-      resources :simulations
 
       resources :alerts, only: [:show]
       resources :find_out_more, controller: :find_out_more
@@ -257,19 +353,6 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
-      resources :user_tariffs do
-        resources :user_tariff_prices, only: [:index, :new, :edit]
-        resources :user_tariff_flat_prices
-        resources :user_tariff_differential_prices
-        resources :user_tariff_charges
-        collection do
-          get :choose_meters, to: 'user_tariffs#choose_meters'
-        end
-        member do
-          get :choose_type, to: 'user_tariffs#choose_type'
-        end
-      end
-
     end
 
     # Maintain old scoreboard URL
@@ -296,10 +379,19 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :mailer_previews, only: [:index]
     concerns :issueable
+    resources :funders
     resources :users do
+      get 'unlock', to: 'users#unlock'
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
+      end
+    end
+    resources :advice_pages, only: [:index, :edit, :update] do
+      scope module: :advice_pages do
+        resource :activity_types, only: [:show, :update]
+        resource :intervention_types, only: [:show, :update]
       end
     end
     resources :case_studies
@@ -308,6 +400,8 @@ Rails.application.routes.draw do
     post 'dcc_consents/:mpxn/grant', to: 'dcc_consents#grant', as: :grant_dcc_consent
     resources :consent_grants, only: [:index, :show]
     resources :meters, only: [:index]
+    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues'
+
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
     resources :partners
@@ -320,14 +414,25 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
+        resources :meter_updates, only: [:index] do
+          post :bulk_update_meter_data_source
+          post :bulk_update_meter_procurement_route
+        end
         resources :school_onboardings, only: [:index] do
           collection do
             post :reminders
             post :make_visible
           end
         end
+        resource :users, only: [:show] do
+          get 'lock', to: 'users#lock'
+          get 'unlock', to: 'users#unlock'
+          get 'lock_all', to: 'users#lock_all'
+        end
         resource :partners, only: [:show, :update]
-        resource :meter_report, only: [:show]
+        resource :meter_report, only: [:show] do
+          post :deliver, on: :member
+        end
         concerns :messageable
         concerns :issueable
       end
@@ -365,6 +470,7 @@ Rails.application.routes.draw do
 
     resources :meter_attributes, only: :index
     resources :meter_reviews, only: :index
+    resources :meter_statuses, except: :show
 
     resources :programme_types do
       scope module: :programme_types do
@@ -403,7 +509,12 @@ Rails.application.routes.draw do
     resources :global_meter_attributes
     resources :consents
     resources :transport_types
+    resources :prob_data_reports
+    resources :procurement_routes do
+      post :deliver
+    end
     resources :data_sources do
+      post :deliver
       scope module: :data_sources do
         concerns :issueable
       end
@@ -433,12 +544,12 @@ Rails.application.routes.draw do
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings, defaults: { format: 'csv' }
       get 'tariffs', to: 'tariffs#index', as: :tariffs
       get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
-      resources :benchmark_result_generation_runs, only: [:index, :show]
       resources :amr_data_feed_import_logs, only: [:index]
       get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
       get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
       get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
 
+      resources :recent_audits, only: [:index]
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
       resources :activities, only: :index
@@ -448,6 +559,13 @@ Rails.application.routes.draw do
       resources :data_loads, only: :index
       resources :transifex_loads, only: [:index, :show]
       resources :activity_types, only: [:index, :show]
+      resources :dcc_status, only: [:index]
+      resources :solar_panels, only: [:index]
+      resource :unvalidated_readings, only: [:show]
+      resource :funder_allocations, only: [:show] do
+        post :deliver
+      end
+      get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
     end
 
     resource :settings, only: [:show, :update]
@@ -475,10 +593,13 @@ Rails.application.routes.draw do
         resource :target_data, only: :show
       end
       member do
-        get :removal
-        post :deactivate_meters
+        post :archive
+        post :archive_meters
+        post :delete_meters
         post :deactivate_users
-        post :deactivate
+        post :reenable
+        get :removal
+        post :delete
       end
       concerns :issueable
     end
@@ -487,6 +608,8 @@ Rails.application.routes.draw do
       mount GoodJob::Engine => 'good_job'
     end
   end # Admin name space
+
+  get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
 
   #redirect from old teacher dashboard
   namespace :teachers do

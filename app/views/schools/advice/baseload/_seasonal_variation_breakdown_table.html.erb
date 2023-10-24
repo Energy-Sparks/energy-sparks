@@ -1,0 +1,61 @@
+<table class="table table-sm table-with-totals-footer table-sorted">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-left"><%= t('advice_pages.baseload.tables.columns.meter') %></th>
+      <th class="text-left no-sort"><%= t('advice_pages.baseload.tables.columns.name') %></th>
+      <th class="text-left no-sort"><%= t('advice_pages.baseload.tables.columns.assessment') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.baseload_in_winter') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.baseload_in_summer') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.percentage_difference') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.potential_saving_gbp') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.potential_saving_co2') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% meters_by_estimated_saving(seasonal_variation_by_meter).each do |mpan_mprn, variation| %>
+        <tr>
+          <td class="text-left"><%= variation.meter.present? ? variation.meter.mpan_mprn : mpan_mprn %></td>
+          <td><%= variation.meter.present? ? variation.meter.name : '' %></td>
+          <% if variation.enough_data? %>
+            <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
+            <td class="text-right" data-order="<%= variation.winter_kw %>">
+              <%= format_unit(variation.winter_kw, :kw) %>
+            </td>
+            <td class="text-right" data-order="<%= variation.summer_kw %>">
+              <%= format_unit(variation.summer_kw, :kw) %>
+            </td>
+            <td class="text-right" data-order="<%= variation.percentage %>">
+              <%= format_unit(variation.percentage, :percent) %>
+            </td>
+            <td class="text-right" data-order="<%= variation.estimated_saving_£ %>">
+              <%= format_unit(variation.estimated_saving_£, :£) %>
+            </td>
+            <td class="text-right" data-order="<%= variation.estimated_saving_co2 %>">
+              <%= format_unit(variation.estimated_saving_co2, :kg) %>
+            </td>
+          <% else %>
+            <td colspan="6" class="text-center old-data">
+              <% if variation.data_available_from.present? %>
+                <%= t('advice_pages.not_enough_data.table_row_data_available_from', date: variation.data_available_from.to_s(:es_short)) %>
+              <% else %>
+                <%= t('advice_pages.not_enough_data.table_row_not_enough') %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+    <% end %>
+  <tbody>
+  <tfoot>
+    <tr>
+      <td class="text-left"><%= t('advice_pages.baseload.tables.labels.all_meters') %></td>
+      <td></td>
+      <td class="text-left"><%= format_rating(seasonal_variation.variation_rating) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.winter_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.summer_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.percentage, :percent) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.estimated_saving_£, :£) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.estimated_saving_co2, :kg) %></td>
+    </tr>
+  </tfoot>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

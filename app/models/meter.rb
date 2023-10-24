@@ -3,6 +3,7 @@
 # Table name: meters
 #
 #  active                         :boolean          default(TRUE)
+#  admin_meter_statuses_id        :bigint(8)
 #  consent_granted                :boolean          default(FALSE)
 #  created_at                     :datetime         not null
 #  data_source_id                 :bigint(8)
@@ -13,9 +14,11 @@
 #  low_carbon_hub_installation_id :bigint(8)
 #  meter_review_id                :bigint(8)
 #  meter_serial_number            :text
+#  meter_system                   :integer          default("nhh_amr")
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
+#  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
 #  sandbox                        :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
@@ -29,6 +32,7 @@
 #  index_meters_on_meter_review_id                 (meter_review_id)
 #  index_meters_on_meter_type                      (meter_type)
 #  index_meters_on_mpan_mprn                       (mpan_mprn) UNIQUE
+#  index_meters_on_procurement_route_id            (procurement_route_id)
 #  index_meters_on_school_id                       (school_id)
 #  index_meters_on_solar_edge_installation_id      (solar_edge_installation_id)
 #
@@ -41,25 +45,26 @@
 #
 
 class Meter < ApplicationRecord
-  include CsvExportable
-
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
+  belongs_to :procurement_route, optional: true
+  belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
   has_one :rtone_variant_installation, required: false
 
-  has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
+  has_many :amr_data_feed_readings,     inverse_of: :meter
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
   has_many :tariff_prices,              inverse_of: :meter, dependent: :destroy
   has_many :tariff_standing_charges,    inverse_of: :meter, dependent: :destroy
   has_many :meter_attributes
+  has_many :issue_meters, dependent: :destroy
+  has_many :issues, through: :issue_meters
 
-  has_and_belongs_to_many :user_tariffs, inverse_of: :meters
-
-  has_rich_text :notes
+  has_one :school_group, through: :school
+  has_and_belongs_to_many :energy_tariffs, inverse_of: :meters
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
   MAIN_METER_TYPES = [:electricity, :gas].freeze
@@ -73,13 +78,33 @@ class Meter < ApplicationRecord
   scope :sub_meter, -> { where(pseudo: true, meter_type: SUB_METER_TYPES) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
-  scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review: nil) }
+  scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review_id: nil) }
+  scope :reviewed_dcc_meter, -> { where(dcc_meter: true).where.not(meter_review_id: nil) }
   scope :awaiting_trusted_consent, -> { where(dcc_meter: true, consent_granted: false).where.not(meter_review: nil) }
+  scope :not_dcc, -> { where(dcc_meter: false) }
   scope :dcc, -> { where(dcc_meter: true) }
   scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
+  scope :not_recently_checked, -> { where("dcc_checked_at is NULL OR dcc_checked_at < ?", 1.month.ago) }
+  scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
+  scope :data_source_known, -> { where.not(data_source: nil) }
+  scope :procurement_route_known, -> { where.not(procurement_route: nil) }
+  scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
 
-  # If adding a new one, add to the amr_validated_reading case statement for downloading data
+  scope :with_zero_reading_days_and_dates, -> {
+      left_outer_joins(:amr_validated_readings)
+        .group('schools.id', 'meters.id')
+        .select(
+          "meters.*,
+           MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
+           MAX(amr_validated_readings.reading_date) AS last_validated_reading_date,
+           COUNT(1) FILTER (WHERE one_day_kwh = 0.0) AS zero_reading_days_count")
+  }
+
+  # If adding a new meter_type, add to the amr_validated_reading case statement for downloading data
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
+  # The Meter's meter sytem defaults to NHH AMR (Non Half-Hourly Automatic Meter Reading)
+  # Other options are: NHH (Non Half-Hourly), HH (Half-Hourly), and SMETS2/smart (SMETS2 Smart Meters)
+  enum meter_system: [:nhh_amr, :nhh, :hh, :smets2_smart]
 
   delegate :area_name, to: :school
 
@@ -101,12 +126,28 @@ class Meter < ApplicationRecord
     school.name
   end
 
+  def t_meter_system
+    I18n.t("meter.meter_system.#{meter_system}")
+  end
+
+  def admin_meter_status_label
+    for_fuel_type = (fuel_type == :exported_solar_pv ? :solar_pv : fuel_type)
+    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{for_fuel_type}")&.label || ''
+  end
+
   def fuel_type
     meter_type.to_sym
   end
 
   def self.non_gas_meter_types
     Meter.meter_types.keys - ['gas']
+  end
+
+  def number_of_validated_readings
+    last_reading = last_validated_reading
+    first_reading = first_validated_reading
+    return 0 if last_reading.nil?
+    return (last_reading - first_reading).to_i + 1
   end
 
   def first_validated_reading
@@ -127,7 +168,7 @@ class Meter < ApplicationRecord
     # only interested if there are enough non_ORIG readings
     return [] unless amr_validated_readings.since(since_date).modified.count >= gap_size
     # find chunks where consecutive readings were all non-ORIG
-    gaps = amr_validated_readings.since(since_date).by_date.chunk_while { |r1, r2| r1.modified && r2.modified }
+    gaps = amr_validated_readings.since(since_date).by_date.select(:reading_date, :status).chunk_while { |r1, r2| r1.status != 'ORIG' && r2.status != 'ORIG' }
     # return chunks of specified size or bigger
     gaps.select { |gap| gap.count >= gap_size }
   end
@@ -137,7 +178,19 @@ class Meter < ApplicationRecord
   end
 
   def zero_reading_days_warning?
-    return true if fuel_type == :electricity && zero_reading_days.count > 0
+    return true if fuel_type == :electricity && zero_reading_days.any?
+  end
+
+  def has_readings?
+    amr_validated_readings.any?
+  end
+
+  def name_or_mpan_mprn
+    name.present? ? name : mpan_mprn.to_s
+  end
+
+  def mpan_mprn_and_name
+    name.present? ? "#{mpan_mprn} - #{name}" : mpan_mprn
   end
 
   def display_name
@@ -146,6 +199,14 @@ class Meter < ApplicationRecord
 
   def display_meter_mpan_mprn
     "#{mpan_mprn} - #{meter_type.to_s.humanize}"
+  end
+
+  def display_summary(display_name: true, display_data_source: true, display_inactive: false)
+    output = mpan_mprn.to_s
+    output += " - #{name}" if display_name && name.present?
+    output += " - #{data_source.name}" if display_data_source && data_source
+    output += " (inactive)" if display_inactive && !active?
+    output
   end
 
   def school_meter_attributes
@@ -160,12 +221,42 @@ class Meter < ApplicationRecord
     GlobalMeterAttribute.for(self)
   end
 
-  def user_tariff_meter_attributes
-    user_tariffs.map(&:meter_attribute)
+  def all_meter_attributes
+    global_meter_attributes +
+      school_group_meter_attributes +
+      school_meter_attributes +
+      active_meter_attributes +
+      energy_tariff_meter_attributes
   end
 
-  def all_meter_attributes
-    global_meter_attributes + school_group_meter_attributes + school_meter_attributes + meter_attributes.active + user_tariff_meter_attributes
+  def active_meter_attributes
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
+      meter_attributes.where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
+    else
+      meter_attributes.active
+    end
+  end
+
+  def energy_tariff_meter_attributes
+    attributes = []
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
+      school_attributes = school.all_energy_tariff_attributes(meter_type, applies_to_for_meter_system)
+      attributes += school_attributes unless school_attributes.nil?
+    end
+    # It should NOT filter the tariffs with which it is directly associated.
+    # If a meter is explicitly linked to a tariff then it applies to it, regardless.
+    attributes += energy_tariffs.enabled.usable.map(&:meter_attribute)
+    attributes
+  end
+
+  def applies_to_for_meter_system
+    return :both unless electricity?
+
+    case meter_system.to_sym
+    when :nhh_amr, :nhh, :smets2_smart then :non_half_hourly
+    when :hh then :half_hourly
+    else :both
+    end
   end
 
   def meter_attributes_to_analytics
@@ -188,12 +279,20 @@ class Meter < ApplicationRecord
     consent_granted
   end
 
-  def self.csv_headers
-    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "Created at", "Updated at"]
+  def smart_meter_tariff_attributes
+    @smart_meter_tariff_attributes ||= Amr::AnalyticsTariffFactory.new(self).build
   end
 
-  def self.csv_attributes
-    %w{school.school_group.name school.name mpan_mprn meter_type.humanize active created_at updated_at}
+  def open_issues_count
+    open_issues.count
+  end
+
+  def open_issues_as_list
+    open_issues.order(created_at: :asc).map { |issue| issue&.description&.body&.to_plain_text }
+  end
+
+  def open_issues
+    issues&.where(issue_type: "issue")&.status_open
   end
 
   private

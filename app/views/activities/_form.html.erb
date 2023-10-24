@@ -40,7 +40,19 @@
     <small class="form-text text-muted">
       <%= t('activities.form.tell_us_more_formatting_message') %>.
     </small>
+    <% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
+      <small class="form-text text-muted">
+        <%= t('activities.form.adding_a_photo_to_document_your_activity_will_score_you') %>
+        <span class="badge badge-success"><%= SiteSettings.current.photo_bonus_points %></span>
+        <%= t('activities.form.bonus_points', count: SiteSettings.current.photo_bonus_points) %>
+      </small>
+    <% end %>
+
     <%= f.rich_text_area :description, required: true %>
+  </div>
+
+  <div class="form-group mt-4">
+    <%= f.input :pupil_count, as: :numeric, label: t('activities.form.how_many_pupils_were_involved_in_this_activity') %>
   </div>
 
   <div class="actions">

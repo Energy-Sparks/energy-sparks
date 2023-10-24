@@ -3,12 +3,14 @@ en:
   co2: CO2
   common:
     application: Energy Sparks
+    back_to_top: Back to top
     bar_charts: Bar charts
     confirm: Are you sure?
     data: data
     electricity: Electricity
     electricity_and_solar_pv: Electricity and Solar PV
     email_us: email us
+    exported_solar_pv: Exported Solar PV
     gas: Gas
     labels:
       actions: Actions
@@ -19,20 +21,27 @@ en:
       back: Back
       cancel: Cancel
       close: Close
+      continue: Continue
       create: Create
       created: Created
       deactivate: Deactivate
       delete: Delete
-      details: Details
+      disable: Disable
       download: Download
       edit: Edit
+      enable: Enable
+      finish: Finish
       finished: Finished
       home: Home
       inactive: Inactive
       last_updated: Last updated
+      last_week: Last week
+      last_year: Last year
       manage: Manage
       next: Next
       no_label: 'No'
+      not_applicable: N/A
+      not_set: Not set
       previous: Previous
       remove: Remove
       report: Report
@@ -50,14 +59,27 @@ en:
     pie_charts: Pie charts
     privacy_policy: privacy policy
     school: School
+    school_types:
+      infant: Infant
+      junior: Junior
+      middle: Middle
+      mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
+      primary: Primary
+      secondary: Secondary
+      special: Special or Alternative Provision
+    schools: Schools
+    solar_pv: Solar PV
     storage_heater: Storage heater
     storage_heaters: Storage heaters
+    table:
+      columns:
+        co2_kg: CO2 (kg)
+        cost_gbp: Cost (£)
+        use_kwh: Use (kWh)
     terms_and_conditions: terms and conditions
     units:
       minutes:
         one: "%{count} minute"
         other: "%{count} minutes"
   kwh: kWh
-  school_types:
-    mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
   "£": "£"

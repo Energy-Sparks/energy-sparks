@@ -5,12 +5,12 @@
         <thead class="thead-dark">
           <th class="icon"></th>
           <th></th>
-          <th class="text-right">Target Reduction</th>
+          <th class="text-right"><%= t('schools.school_targets.target_table.target_reduction') %></th>
           <th class="text-right">
             <% if school_target.current? %>
-              Current progress
+              <%= t('schools.school_targets.target_table.current_progress') %>
             <% else %>
-              Final result
+              <%= t('schools.school_targets.target_table.final_result') %>
             <% end %>
           </th>
           <th class="text-right"></th>
@@ -32,11 +32,11 @@
       </table>
     </div>
     <div class="text-right management-overview-caption">
-        Reporting change in energy usage between
+        <%= t('schools.school_targets.target_table.reporting_change_in_energy_usage_between') %>
         <% if school_target.current? %>
-          <%= school_target.start_date.strftime("%B %Y") %> and <%= school_target.report_last_generated.strftime("%B %Y") %>
+          <%= t('schools.school_targets.target_table.start_date_and_end_date', start_date: I18n.l(school_target.start_date, format: '%B %Y'), end_date: I18n.l(school_target.report_last_generated, format: '%B %Y')) %>
         <% else %>
-          <%= school_target.start_date.strftime("%B %Y") %> and <%= school_target.target_date.strftime("%B %Y") %>
+          <%= t('schools.school_targets.target_table.start_date_and_end_date', start_date: I18n.l(school_target.start_date, format: '%B %Y'), end_date: I18n.l(school_target.target_date, format: '%B %Y')) %>
         <% end %>. <%= link_to_help_for_feature :school_targets, title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
     </div>
   </div>

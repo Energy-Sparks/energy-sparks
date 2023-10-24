@@ -8,7 +8,7 @@ class CalendarInitService
 
   def call
     @calendar.transaction do
-      @calendar.calendar_events.where(based_on: nil).each do |calendar_event|
+      @calendar.calendar_events.where(based_on: nil).find_each do |calendar_event|
         if (parent_event = find_matching_event(@calendar.based_on, calendar_event))
           messages << "Matched child #{calendar_event.display_title} (#{calendar_event.id}) with parent #{parent_event.display_title} (#{parent_event.id})"
           calendar_event.update!(based_on: parent_event)

@@ -7,6 +7,7 @@
 #  created_at           :datetime         not null
 #  happened_on          :date
 #  id                   :bigint(8)        not null, primary key
+#  pupil_count          :integer
 #  school_id            :bigint(8)        not null
 #  title                :string
 #  updated_at           :datetime         not null
@@ -55,6 +56,6 @@ class Activity < ApplicationRecord
   end
 
   def description_includes_images?
-    description.body.to_trix_html.include?("figure")
+    description&.body&.to_trix_html&.include?("figure")
   end
 end

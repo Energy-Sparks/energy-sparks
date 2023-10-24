@@ -1,0 +1,51 @@
+<table class="table table-sm table-with-totals-footer table-sorted">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-left"><%= t('advice_pages.baseload.tables.columns.meter') %></th>
+      <th class="text-left no-sort"><%= t('advice_pages.baseload.tables.columns.name') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_kw') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_gbp') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.change_since_previous_year') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.percentage_of_total') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% meters_by_percentage_baseload(baseload_meter_breakdown).each do |mpan_mprn, breakdown| %>
+    <tr>
+      <td><%= breakdown.meter.present? ? breakdown.meter.mpan_mprn : mpan_mprn %></td>
+      <td><%= breakdown.meter.present? ? breakdown.meter.name : '' %></td>
+      <td class="text-right" data-order="<%= breakdown.baseload_kw %>">
+        <%= format_unit(breakdown.baseload_kw, :kw) %>
+      </td>
+      <td class="text-right" data-order="<%= breakdown.baseload_cost_£ %>">
+        <%= format_unit(breakdown.baseload_cost_£, :£) %>
+      </td>
+      <td class="text-right" data-order="<%= breakdown.baseload_change_kw %>">
+        <%= format_unit(breakdown.baseload_change_kw, :kw) %>
+      </td>
+      <td class="text-right" data-order="<%= breakdown.percentage_baseload %>">
+        <%= format_unit(breakdown.percentage_baseload, :percent) %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td><%= t('advice_pages.baseload.tables.labels.all_meters') %></td>
+      <td></td>
+      <td class="text-right">
+        <%= format_unit(baseload_meter_breakdown_total.baseload_kw, :kw) %>
+      </td>
+      <td class="text-right">
+        <%= format_unit(baseload_meter_breakdown_total.baseload_cost_£, :£) %>
+      </td>
+      <td class="text-right">
+        <%= format_unit(baseload_meter_breakdown_total.baseload_change_kw, :kw) %>
+      </td>
+      <td class="text-right">
+        <%= format_unit(baseload_meter_breakdown_total.percentage_baseload, :percent) %>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

@@ -43,7 +43,7 @@ en:
       pa: "%{cost}pa"
       previous_school_week: previous school week
       school_day: school day
-      storage_heaters: storage_heaters
+      storage_heaters: storage heaters
       weekend: weekend
     holidays:
       autumn_half_term: Autumn half term
@@ -60,11 +60,11 @@ en:
       mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
       primary: Primary
       secondary: Secondary
-      special: Special
+      special: Special or Alternative Provision
     series_data_manager:
       series_name:
         baseload: BASELOAD
-        benchmark_school: Benchmark (Good) School
+        benchmark_school: Well managed
         boiler_off: Boiler Off
         community: Community
         community_baseload: Community Baseload

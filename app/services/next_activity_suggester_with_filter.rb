@@ -67,6 +67,8 @@ class NextActivitySuggesterWithFilter
 
 private
 
+  #Find the "initial" activity type suggestions, these are entries in ActivityTypeSuggestion
+  #where activity_type == nil.
   def get_initial_suggestions(suggestions)
     ActivityTypeSuggestion.initial.order(:id).each do |ats|
       suggestions << ats.suggested_type if suggestion_can_be_added?(ats.suggested_type, suggestions)

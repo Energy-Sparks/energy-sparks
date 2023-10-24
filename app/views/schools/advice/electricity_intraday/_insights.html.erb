@@ -1,0 +1,30 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.electricity_intraday.insights.summary_link'), learn_more_school_advice_electricity_intraday_path(@school) } %>
+  <%= t('advice_pages.electricity_intraday.insights.summary_html') %>
+<% end %>
+
+<!-- Your current peak electricity use section -->
+<%= render 'schools/advice/section_title', section_id: 'your_current_peak_electricity_use', section_title: t('advice_pages.electricity_intraday.insights.your_current_peak_electricity_use.title') %>
+
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertElectricityPeakKWVersusBenchmark), show_links: false, show_icons: false %>
+
+<% if @not_enough_data_data_available_from %>
+  <p>
+    <%= t('advice_pages.electricity_intraday.insights.your_current_peak_electricity_use.data_on_peak_kw_usage_available_from', data_available_from: short_dates(@not_enough_data_data_available_from)) %>
+  </p>
+<% else %>
+  <%= render 'insights_your_current_peak_electricity_use_table', average_peak_kw: @average_peak_kw, peak_kw_usage_percentage_change: @peak_kw_usage_percentage_change %>
+
+  <!-- How do you compare section -->
+  <%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.electricity_intraday.insights.how_do_you_compare.title') %>
+
+  <%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.summary', school_type: @school.school_type.downcase) %>
+
+    <div class="col">
+      <%= component 'school_comparison', id: 'comparison-electricity-out-of-hours', comparison: @benchmarked_usage do |c| %>
+        <% c.with_footer { advice_t('electricity_intraday.insights.how_do_you_compare.callout_footer') } %>
+      <% end %>
+    </div>
+
+  <%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.more_detail_html', link: compare_for_school_group_path(:electricity_peak_kw_per_pupil, @school)) %>
+<% end %>

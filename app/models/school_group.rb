@@ -2,20 +2,32 @@
 #
 # Table name: school_groups
 #
-#  created_at                    :datetime         not null
-#  default_chart_preference      :integer          default("default"), not null
-#  default_dark_sky_area_id      :bigint(8)
-#  default_issues_admin_user_id  :bigint(8)
-#  default_scoreboard_id         :bigint(8)
-#  default_solar_pv_tuos_area_id :bigint(8)
-#  default_template_calendar_id  :bigint(8)
-#  default_weather_station_id    :bigint(8)
-#  description                   :string
-#  id                            :bigint(8)        not null, primary key
-#  name                          :string           not null
-#  public                        :boolean          default(TRUE)
-#  slug                          :string           not null
-#  updated_at                    :datetime         not null
+#  admin_meter_statuses_electricity_id      :bigint(8)
+#  admin_meter_statuses_gas_id              :bigint(8)
+#  admin_meter_statuses_solar_pv_id         :bigint(8)
+#  created_at                               :datetime         not null
+#  default_chart_preference                 :integer          default("default"), not null
+#  default_country                          :integer          default("england"), not null
+#  default_dark_sky_area_id                 :bigint(8)
+#  default_data_source_electricity_id       :bigint(8)
+#  default_data_source_gas_id               :bigint(8)
+#  default_data_source_solar_pv_id          :bigint(8)
+#  default_issues_admin_user_id             :bigint(8)
+#  default_procurement_route_electricity_id :bigint(8)
+#  default_procurement_route_gas_id         :bigint(8)
+#  default_procurement_route_solar_pv_id    :bigint(8)
+#  default_scoreboard_id                    :bigint(8)
+#  default_solar_pv_tuos_area_id            :bigint(8)
+#  default_template_calendar_id             :bigint(8)
+#  default_weather_station_id               :bigint(8)
+#  description                              :string
+#  funder_id                                :bigint(8)
+#  group_type                               :integer          default("general")
+#  id                                       :bigint(8)        not null, primary key
+#  name                                     :string           not null
+#  public                                   :boolean          default(TRUE)
+#  slug                                     :string           not null
+#  updated_at                               :datetime         not null
 #
 # Indexes
 #
@@ -34,11 +46,14 @@
 
 class SchoolGroup < ApplicationRecord
   extend FriendlyId
+  include EnergyTariffHolder
   include ParentMeterAttributeHolder
+  include Scorable
 
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :schools
+  has_many :meters, through: :schools
   has_many :school_onboardings
   has_many :calendars, through: :schools
   has_many :users
@@ -57,14 +72,50 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_weather_station, class_name: 'WeatherStation', foreign_key: 'default_weather_station_id', optional: true
   belongs_to :default_scoreboard, class_name: 'Scoreboard', optional: true
   belongs_to :default_issues_admin_user, class_name: 'User', foreign_key: 'default_issues_admin_user_id', optional: true
+  belongs_to :admin_meter_status_electricity, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_electricity_id', optional: true
+  belongs_to :admin_meter_status_gas, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_gas_id', optional: true
+  belongs_to :admin_meter_status_solar_pv, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_solar_pv_id', optional: true
+  belongs_to :default_data_source_electricity, class_name: 'DataSource', foreign_key: 'default_data_source_electricity_id', optional: true
+  belongs_to :default_data_source_gas, class_name: 'DataSource', foreign_key: 'default_data_source_gas_id', optional: true
+  belongs_to :default_data_source_solar_pv, class_name: 'DataSource', foreign_key: 'default_data_source_solar_pv_id', optional: true
+  belongs_to :default_procurement_route_electricity, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_electricity_id', optional: true
+  belongs_to :default_procurement_route_gas, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_gas_id', optional: true
+  belongs_to :default_procurement_route_solar_pv, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_solar_pv_id', optional: true
+  belongs_to :funder, optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
+  has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
+
+  has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
   validates :name, presence: true
 
+  enum group_type: [:general, :local_authority, :multi_academy_trust]
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
+  enum default_country: School.countries
+
+  def visible_schools_count
+    schools.visible.count
+  end
+
+  def fuel_types
+    school_ids = schools.visible.pluck(:id)
+    return [] if school_ids.empty?
+    query = <<-SQL.squish
+      SELECT DISTINCT(fuel_types.key) FROM (
+        SELECT
+          row_to_json(json_each(fuel_configuration))->>'key' as key,
+          (row_to_json(json_each(fuel_configuration))->>'value') as value
+        FROM configurations
+        WHERE school_id IN (#{school_ids.join(',')})
+      ) as fuel_types
+      WHERE fuel_types.value = 'true';
+    SQL
+    sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)
+    SchoolGroup.connection.select_all(sanitized_query).rows.flatten.map { |fuel_type| fuel_type.gsub('has_', '').to_sym }
+  end
 
   def has_visible_schools?
     schools.visible.any?
@@ -105,5 +156,25 @@ class SchoolGroup < ApplicationRecord
 
   def all_issues
     Issue.for_school_group(self)
+  end
+
+  def email_locales
+    default_country == 'wales' ? [:en, :cy] : [:en]
+  end
+
+  def categorise_schools
+    SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools
+  end
+
+  def parent_tariff_holder
+    SiteSettings.current
+  end
+
+  def holds_tariffs_of_type?(meter_type)
+    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
+  end
+
+  def scorable_calendar
+    default_template_calendar
   end
 end

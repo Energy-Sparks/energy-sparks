@@ -1,0 +1,83 @@
+.page-nav-component a.nav-link.item:hover {
+  background-color: $light-grey;
+}
+
+.page-nav-component a.nav-link.current {
+  font-weight: bolder;
+}
+
+.page-nav-component a.electric-section {
+  background-color: $electric-dark;
+  color: white;
+  font-weight: bold;
+}
+
+.page-nav-component a.nav-link.electric-item {
+  border-left: 1px solid $electric-light;
+}
+
+.page-nav-component a.nav-link.electric-item:hover {
+  background-color: rgba(147, 255, 246, 0.5); //electric-light, 0.5 opacity
+}
+
+.page-nav-component a.nav-link.electric-item.current {
+  background-color: rgba(147, 255, 246, 0.5); //electric-light, 0.5 opacity
+  font-weight: bolder;
+}
+
+.page-nav-component a.gas-section {
+  background-color: $gas-dark;
+  color: white;
+  font-weight: bold;
+}
+
+.page-nav-component a.nav-link.gas-item {
+  border-left: 1px solid $gas-light;
+}
+
+.page-nav-component a.nav-link.gas-item:hover {
+  background-color: rgba(255, 221, 75, 0.5); //gas-light, 0.5 opacity;
+}
+
+.page-nav-component a.nav-link.gas-item.current {
+  background-color: rgba(255, 221, 75, 0.5); //gas-light, 0.5 opacity;
+  font-weight: bolder;
+}
+
+.page-nav-component a.solar-section {
+  background-color: $solar-dark;
+  color: white;
+  font-weight: bold;
+}
+
+.page-nav-component a.nav-link.solar-item {
+  border-left: 1px solid $solar-light;
+}
+
+.page-nav-component a.nav-link.solar-item:hover {
+  background-color: rgba(161, 255, 233, 0.5); //solar-light, 0.5 opacity;
+}
+
+.page-nav-component a.nav-link.solar-item.current {
+  background-color: rgba(161, 255, 233, 0.5); //solar-light, 0.5 opacity;
+  font-weight: bolder;
+}
+
+.page-nav-component a.storage-section {
+  background-color: $storage-dark;
+  color: white;
+  font-weight: bold;
+}
+
+.page-nav-component a.nav-link.storage-item {
+  border-left: 1px solid $storage-light;
+}
+
+.page-nav-component a.nav-link.storage-item:hover {
+  background-color: rgba(224, 151, 252, 0.5); //storage-light, 0.5 opacity;
+}
+
+.page-nav-component a.nav-link.storage-item.current {
+  background-color: rgba(224, 151, 252, 0.5); //storage-light, 0.5 opacity;
+  font-weight: bolder;
+}

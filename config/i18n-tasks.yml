@@ -136,7 +136,31 @@ ignore_unused:
   - 'devise.mailer.confirmation_instructions.subject'
   - 'common.storage_heater'
   - 'chart_configuration.*'
+  - 'aggregation_service_solar_pv.*'
   - 'pagy.*'
+  - 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
+  - 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title'
+  - 'advice_pages.heating_control.analysis.meter_breakdown.chart_subtitle_html'
+  - 'advice_pages.heating_control.analysis.meter_breakdown.chart_title'
+  - 'advice_pages.*.analysis.title'
+  - 'advice_pages.*.insights.title'
+  - 'advice_pages.*.insights.next_steps'
+  - 'advice_pages.electricity_costs.charts.cost_1_year_accounting_breakdown*'
+  - 'advice_pages.gas_costs.charts.cost_1_year_accounting_breakdown*'
+  - 'advice_pages.tables.tooltips.bill_components.*'
+  - 'school_groups.show.we_are_working_with.*'
+  - 'school_groups.priority_actions.alert_types.*_html'
+  - 'schools.user_tariffs.index.exported_solar_pv.*'
+  - 'schools.user_tariffs.index.solar_pv.*'
+  - 'schools.user_tariffs.index.*'
+  - 'schools.user_tariffs.there*'
+  - 'schools.user_tariff_charges.index.introduction*'
+  - 'schools.user_tariff_flat_prices.*.introduction*'
+  - 'schools.user_tariff_differential_prices.index.introduction*'
+  - 'activity_types.errors.invalid_fuel_type.*'
+  - 'intervention_types.errors.invalid_fuel_type.*'
+  - 'onboarding_mailer.reminder_email.subject.*'
+  - 'onboarding_mailer.reminder_email.paragraph_3.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
@@ -169,3 +193,7 @@ ignore_unused:
 #
 # <%# I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
 #       patterns: [['\bSpree\.t[( ]\s*%{key}', 'spree.%{key}']] %>
+ <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
+       patterns: [
+         ['\badvice_t[( ]\s*%{key}', 'advice_pages.%{key}']
+       ] %>

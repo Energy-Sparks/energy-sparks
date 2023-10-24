@@ -4,6 +4,7 @@
       <tr>
         <th class="no-sort"><%= check_box_tag "check-all-#{school_group.id}", false, false, { class: 'check-all' } %></th>
         <th>School</th>
+        <th>Funder</th>
         <th>Contact email</th>
         <th>Last event</th>
         <th class="no-sort"></th>
@@ -14,6 +15,7 @@
         <tr class="bg-light">
           <td><%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %></td>
           <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
+          <td><%= onboarding&.school&.funder&.name || onboarding&.school_group&.funder&.name %></td>
           <td class="wrap"><%= onboarding.contact_email %> <%= link_to fa_icon('edit'), edit_admin_school_onboarding_email_path(onboarding), class: "", title: "Change email address" if onboarding.has_only_sent_email_or_reminder? %></td>
           <td class="nowrap" data-order="<%= onboarding.events.maximum(:created_at) %>">
             <%= nice_date_times(onboarding.events.maximum(:created_at)) %><br />
@@ -21,7 +23,7 @@
           </td>
           <td class="nowrap text-right">
             <% if onboarding.school %>
-              <%= render 'admin/school_groups/issues_link', path: admin_school_issues_path(onboarding.school), issues_count: onboarding.school.issues.issue.status_open.count, notes_count: onboarding.school.issues.note.count %>
+              <%= link_to issue_type_icons(onboarding.school.issues, label: 'Issues'), admin_school_issues_path(onboarding.school), class: 'btn btn-sm' %>
             <% end %>
             <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>

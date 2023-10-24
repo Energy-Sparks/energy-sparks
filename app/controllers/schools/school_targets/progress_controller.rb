@@ -9,6 +9,7 @@ module Schools
 
       before_action :redirect_if_disabled
       before_action :check_aggregated_school_in_cache
+      before_action :set_breadcrumbs
 
       skip_before_action :authenticate_user!
 
@@ -24,10 +25,17 @@ module Schools
 
       def storage_heater
         #find school target, redirect
-        progress_service.display_progress_for_fuel_type?(:storage_heaters) ? index_for(:storage_heater) : missing(:storage_heater)
+        progress_service.display_progress_for_fuel_type?(:storage_heaters) ? index_for(:storage_heaters) : missing(:storage_heaters)
       end
 
       private
+
+      def set_breadcrumbs
+        @breadcrumbs = [
+          { name: I18n.t('manage_school_menu.review_targets'), href: school_school_targets_path(@school) },
+          { name: I18n.t("schools.school_targets.progress.breadcrumbs.#{action_name.to_sym}") }
+        ]
+      end
 
       #extract into helper?
       def index_for(fuel_type)

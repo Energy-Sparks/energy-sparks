@@ -1,0 +1,45 @@
+cy:
+  advice_pages:
+    gas_recent_changes:
+      analysis:
+        charts:
+          compare_last_week_chart_explanation: Mae'r siart yn defnyddio'r saith diwrnod diweddaraf sydd ar gael yn awtomatig. Defnyddiwch y botymau archwilio uwchben y siart i gymharu dyddiau amgen. Gallwch glicio ar y chwedl i ychwanegu neu dynnu llinellau o'r graff i'w gwneud yn gliriach.
+          compare_last_week_chart_footer: Gallwch ddefnyddio’r math hwn o siart i ddeall sut mae defnydd nwy yr ysgol yn amrywio drwy gydol yr wythnos.
+          compare_last_week_chart_subtitle: Cymhariaeth rhwng defnydd nwy eich ysgol drwy gydol y dydd dros y 7 diwrnod diwethaf.
+          compare_last_week_chart_title: Defnydd nwy eich ysgol bob hanner awr dros y 7 diwrnod diwethaf
+          compare_recent_days_chart_explanation: Mae'r siart yn defnyddio'r ddiwrnodau diweddaraf sydd ar gael yn awtomatig. Defnyddiwch yr opsiynau o dan y siart i gymharu dyddiau amgen.
+          compare_recent_days_chart_subtitle: Mae'r siart hwn yn dangos defnydd o nwy trwy gydol y dydd ar ddau ddiwrnod diweddar.
+          compare_recent_days_chart_title: Defnydd nwy eich ysgol bob hanner awr am ddau ddiwrnod diweddar
+          compare_recent_weeks_chart_explanation: Mae'r siart yn defnyddio'r ddwy wythnos ddiwethaf sydd ar gael yn llawn yn awtomatig. Defnyddiwch yr opsiynau o dan y siart i gymharu wythnosau amgen.
+          compare_recent_weeks_chart_subtitle: Cymhariaeth o ddefnydd nwy eich ysgol dros dau wythnos ddiweddar.
+          compare_recent_weeks_chart_title: Defnydd nwy dyddiol eich ysgol am ddau wythnos ddiweddar
+          impact_of_temperature_chart_explanation_html: Dyddraddau yw'r gwrthdro tymheredd. Po uchaf yw'r dyddraddau, yr isaf yw'r tymheredd.%{more_detail_url}. Os yw'r boeler gwresogi yn gweithio'n dda yn eich ysgol, dylai dyddraddau olrhain y defnydd o nwy yn eithaf agos.
+          impact_of_temperature_chart_subtitle_html: Mae'r siart hwn yn dangos defnydd nwy eich ysgol rhwng <span class="start-date">%{start_date}</span> a %{end_date}, gan gynnwys cymhariaeth â dyddraddau.
+          impact_of_temperature_chart_title: Defnydd nwy eich ysgol dros y pythefnos diwethaf
+        compare_last_week:
+          title: Cymhariaeth o ddefnydd nwy dros y 7 diwrnod diwethaf
+        compare_recent_days:
+          title: Cymhariaeth o ddefnydd nwy dros 2 ddiwrnod diweddar
+        compare_recent_weeks:
+          title: Cymhariaeth o ddefnydd nwy dros 2 wythnos diweddar
+        expected_usage_patterns: Mewn ysgol sydd â system gwresogi sy'n gweithio'n dda (boeler da, pibellau da ar gyfer darparu gwres, rheiddiaduron digon mawr, ac inswleiddio rhesymol), efallai y byddwch yn disgwyl i'r gwres droi ymlaen tua 6am, ac ar ei uchaf am y 2 awr nesaf tra bod yr ysgol yn cael ei chynhesu, ac yna'n lleihau'n raddol yn ystod y dydd. Yn y rhan fwyaf o ysgolion byddai'r gwres a gynhyrchir gan offer trydan a 30 o ddisgyblion mewn ystafell ddosbarth yn awgrymu mai ychydig iawn o wres ychwanegol o foeler yr ysgol sydd ei angen ar ystafelloedd dosbarth, unwaith y bydd y disgyblion yn cyrraedd.
+        impact_of_temperature:
+          title: Effaith y tymheredd ar ddefnydd nwy
+        optimal_start_control: Os oes gan y boeler 'reolaeth cychwyn optimaidd' wedi'i ffurfweddi, efallai y byddwch yn sylwi ar amser cychwy y boeler yn newid yn awtomatig - o efallai 6:30am mewn tywydd mwynach i gynharad e.e. 4:30pm mewn tywydd oerach. Mewn tywydd oer iawn efallai y byddwch yn sylwi ar y gwres yn dod ymlaen 'ar hap' - mae hyn yn fwyaf tebygol o amddiffyniad rhag rhew - y boeler yn troi'r system wresogi ymlaen i atal pibellau'r ysgol rhag rhewi.
+        sections: Mae'r adran canlynol yn dangos fwy o gefndir a dadansoddiad ar eich lwyth sylfaenol o nwy
+        see_more_detail: Gweler esboniad manylach
+        summary: Mae'r adran hon yn rhoi dadansoddiad manylach o sut mae defnydd nwy eich ysgol wedi newid yn ddiweddar. Gall fod yn arbennig o ddefnyddiol os ydych yn ceisio ymchwilio i newid yn y defnydd o nwy  neu fonitro effaith camau a gymerwyd yn yr ysgol.
+        title: Dadansoddiad
+      insights:
+        how_do_you_compare:
+          summary_html: Cymharwch eich defnydd diweddar o nwy <a href='%{comparison_link}'>ag ysgolion eraill yn eich grŵp</a>.
+          title: Sut ydych chi'n cymharu?
+        link: Dysgu rhagor
+        next_steps: Ceisiwch sicrhau eich bod yn deall achosion unrhyw newidiadau sylweddol yn eich defnydd o nwy.
+        summary: Mae'r dudalen hon yn nodi a yw eich defnydd o nwy wedi cynyddu neu owstwng yn ddiweddar. Gall monitro newidiadau diweddar i'ch defnydd o ynni eich helpu i asesu effeithiau newidiadau rydych wedi'u gwneud, neu nodi problemau'n gyflym.
+        title: Beth a olygwn wrth newidiadau diweddar?
+        your_recent_gas_use:
+          table:
+            change: Newid
+          title: Eich defnydd o nwy diweddar
+      page_title: Dadansoddiad o newidiadau diweddar o nwy

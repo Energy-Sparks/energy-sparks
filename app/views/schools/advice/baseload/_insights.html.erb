@@ -1,0 +1,4 @@
+  <%= render 'what_is_baseload', school: @school %>
+  <%= render 'current_baseload', school: @school, analysis_dates: @analysis_dates,
+  current_baseload: @current_baseload, dashboard_alerts: @dashboard_alerts %>
+  <%= render 'comparison', school: @school, benchmarked_baseload: @benchmarked_baseload %>

@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 describe 'programme type management', type: :system do
-
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
   describe 'managing' do
-
     before do
       sign_in(admin)
       visit root_path
@@ -18,6 +16,7 @@ describe 'programme type management', type: :system do
       description = 'SPN1'
       old_title = 'Super programme number 1'
       new_title = 'Super programme number 2'
+      bonus_score = 1234
       click_on 'New Programme Type'
       fill_in :programme_type_title_en, with: old_title
       fill_in_trix '#programme_type_description_en', with: description
@@ -33,6 +32,7 @@ describe 'programme type management', type: :system do
 
       click_on 'Edit'
       fill_in :programme_type_title_en, with: new_title
+      fill_in :programme_type_bonus_score, with: bonus_score
       check("Active", allow_label_click: true)
       check("Default", allow_label_click: true)
 
@@ -44,6 +44,7 @@ describe 'programme type management', type: :system do
 
       click_on new_title
       expect(page).to have_content(description)
+      expect(page).to have_content(bonus_score)
       click_on 'All programme types'
 
       click_on 'Delete'
@@ -57,7 +58,6 @@ describe 'programme type management', type: :system do
       let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
 
       it 'assigns activity types to programme types via a text box position' do
-
         description = 'SPN1'
         old_title = 'Super programme number 1'
 
@@ -80,20 +80,19 @@ describe 'programme type management', type: :system do
         expect(programme_type.programme_type_activity_types.first.position).to eq(1)
         expect(programme_type.programme_type_activity_types.second.position).to eq(2)
 
-        expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating','Turn off the lights']
+        expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating', 'Turn off the lights']
       end
     end
 
     context 'when progammes exist for schools' do
-
       let!(:activity_type_1)    { create(:activity_type) }
       let!(:activity_type_2)    { create(:activity_type) }
       let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
-      let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Date.today) }
+      let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Time.zone.today) }
       let!(:activity_1)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.yesterday) }
-      let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Date.today) }
+      let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Time.zone.today) }
 
-      before :each do
+      before do
         # enrolment only enabled if targets enabled...
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
       end

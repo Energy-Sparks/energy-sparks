@@ -12,6 +12,7 @@ module Schools
 
     before_action :check_aggregated_school_in_cache, only: :show
     before_action :redirect_if_disabled
+    before_action :set_breadcrumbs
 
     def index
       if @school.has_target?
@@ -97,6 +98,10 @@ module Schools
     end
 
     private
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.review_targets') }]
+    end
 
     def school_target_params
       params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)

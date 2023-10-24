@@ -7,18 +7,29 @@
   <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: "form-control form-control-lg" } %>
   <small class="form-text text-muted"><%= t('interventions.form.you_can_record_label') %>.</small>
 </fieldset>
-<fieldset class="form-group mt-4">
-  <%= f.input :involved_pupils, as: :boolean, label: t('interventions.form.were_the_pupils_involved'), inline_label: true %>
-  <small class="form-text text-muted"><%= t('interventions.form.if_pupils_were_involved_label') %> <span class="badge badge-success"><%= intervention_type.score %></span> <%= t('interventions.form.points_for_your_school', count: intervention_type.score) %>.</small>
-</fieldset>
+
 <fieldset class="form-group mt-5">
   <%= f.label t('interventions.form.tell_us_more'), for: :description %>
   <small class="form-text text-muted"><%= t('interventions.form.adding_some_background_detail_label') %></small>
   <small class="form-text text-muted"><%= t('interventions.form.you_can_add_formatting_label') %>.</small>
+
+  <% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
+    <small class="form-text text-muted">
+      <%= t('interventions.form.adding_a_photo_to_document_your_action_will_score_you') %>
+      <span class="badge badge-success"><%= SiteSettings.current.photo_bonus_points %></span>
+      <%= t('interventions.form.bonus_points', count: SiteSettings.current.photo_bonus_points) %>
+    </small>
+  <% end %>
+
   <div class="mt-4">
-  <%= f.rich_text_area :description, wrapper_html: {class: ''}%>
+    <%= f.rich_text_area :description, wrapper_html: {class: ''}%>
   </div>
 </fieldset>
+
+<fieldset class="form-group mt-5">
+  <%= f.input :pupil_count, as: :numeric, label: t('activities.form.how_many_pupils_were_involved_in_this_activity') %>
+</fieldset>
+
 <fieldset>
   <%= f.hidden_field :intervention_type_id, value: intervention_type.id, required: true %>
 </fieldset>

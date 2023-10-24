@@ -37,7 +37,6 @@
 
 //= require common_chart_options
 //= require analysis
-//= require simulator
 
 //= require moment
 //= require moment/cy.js
@@ -50,11 +49,13 @@
 //= require date_pickers
 //= require checkboxes
 //= require select
+//= require tabbed_charts
 
 //= require observations
 //= require form_wizard
 //= require trix_customisations
 //= require multi_select
+//= require depends_on
 
 //= require table_sorting
 //= require mailchimp

@@ -23,19 +23,19 @@ describe ApplicationHelper do
     end
 
     it 'does not add other strings' do
-      expect(helper.up_downify('hello')).to_not include('<i')
-      expect(helper.up_downify('hello + goodbye')).to_not include('<i')
+      expect(helper.up_downify('hello')).not_to include('<i')
+      expect(helper.up_downify('hello + goodbye')).not_to include('<i')
     end
   end
 
   describe 'last signed in helper' do
     it 'shows a message if a user has never signed in' do
-      expect(display_last_signed_in_as(build(:user))).to eq 'Never signed in'
+      expect(display_last_signed_in_as(build(:user))).to eq '-'
     end
 
     it 'shows the last time as user signed in' do
       last_sign_in_at = DateTime.new(2001, 2, 3, 4, 5, 6)
-      expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq nice_date_times(last_sign_in_at)
+      expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq last_sign_in_at.strftime('%d/%m/%Y %H:%M')
     end
   end
 
@@ -43,6 +43,7 @@ describe ApplicationHelper do
     it 'makes a name from wordy category title' do
       expect(helper.other_field_name('Local authority')).to eq('OTHER_LA')
     end
+
     it 'makes a name from abbreviated category title' do
       expect(helper.other_field_name('MAT')).to eq('OTHER_MAT')
     end
@@ -52,12 +53,15 @@ describe ApplicationHelper do
     it 'shows 0 as once' do
       expect(helper.human_counts([])).to eq('no times')
     end
+
     it 'shows 1 as once' do
       expect(helper.human_counts([1])).to eq('once')
     end
+
     it 'shows 2 as twice' do
       expect(helper.human_counts([1, 2])).to eq('twice')
     end
+
     it 'shows more than 2 as several times' do
       expect(helper.human_counts([1, 2, 3])).to eq('several times')
     end
@@ -67,15 +71,19 @@ describe ApplicationHelper do
     it 'formats as percent' do
       expect(helper.progress_as_percent(10, 100)).to eq('10 %')
     end
+
     it 'to 0 dp' do
       expect(helper.progress_as_percent(1, 3)).to eq('33 %')
     end
+
     it 'handles overachievment' do
       expect(helper.progress_as_percent(110, 100)).to eq('100 %')
     end
+
     it 'handles non-numbers' do
       expect(helper.progress_as_percent('foo', 'bar')).to eq(nil)
     end
+
     it 'handles divide by zero' do
       expect(helper.progress_as_percent(10, 0)).to eq(nil)
     end
@@ -85,12 +93,15 @@ describe ApplicationHelper do
     it 'adds item when empty' do
       expect(helper.add_or_remove(nil, 'KS1')).to eq('KS1')
     end
+
     it 'adds item to list' do
       expect(helper.add_or_remove('KS1,KS2', 'KS3')).to eq('KS1,KS2,KS3')
     end
+
     it 'handles whitespace' do
       expect(helper.add_or_remove(' KS1   , KS2', 'KS3')).to eq('KS1,KS2,KS3')
     end
+
     it 'removes item from list' do
       expect(helper.add_or_remove('KS1,KS2,KS3', 'KS2')).to eq('KS1,KS3')
     end
@@ -100,6 +111,7 @@ describe ApplicationHelper do
     it 'has the non-selected class' do
       expect(helper.activity_types_badge_class('KS1, KS2', 'KS3', 'info')).to include('badge-light')
     end
+
     it 'has the selected class' do
       expect(helper.activity_types_badge_class('KS1, KS2', 'KS1', 'info')).to include('badge-info')
     end
@@ -110,10 +122,12 @@ describe ApplicationHelper do
       expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')).to include('<i')
       expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')).to include('file-excel')
     end
+
     it 'renders a doc icon' do
       expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.wordprocessingml.document')).to include('<i')
       expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.wordprocessingml.document')).to include('file-word')
     end
+
     it 'renders a download icon' do
       expect(helper.file_type_icon('image/vnd.dwg')).to include('<i')
       expect(helper.file_type_icon('image/vnd.dwg')).to include('file-download')
@@ -136,11 +150,14 @@ describe ApplicationHelper do
 
       context "and display_timezone config option is not set" do
         before { Rails.application.config.display_timezone = nil }
+
         it { expect(subject).to eql(utc_nice_date_time) }
       end
+
       context "and display_timezone config option is set" do
         before { Rails.application.config.display_timezone = "Saskatchewan" }
-        it { expect(subject).to_not eql(utc_nice_date_time) }
+
+        it { expect(subject).not_to eql(utc_nice_date_time) }
       end
     end
 
@@ -149,12 +166,14 @@ describe ApplicationHelper do
 
       context "and display_timezone config option is set" do
         before { Rails.application.config.display_timezone = "Saskatchewan" }
+
         it { expect(subject).to eql(utc_nice_date_time) }
       end
     end
 
     context "when date is nil" do
       subject {nice_date_times(nil)}
+
       it { expect(nice_date_times(nil)).to be_blank }
     end
   end
@@ -164,6 +183,7 @@ describe ApplicationHelper do
       expect(helper.current_locale?(:en)).to be_truthy
       expect(helper.current_locale?(:cy)).to be_falsey
     end
+
     it 'handles strings' do
       expect(helper.current_locale?('en')).to be_truthy
       expect(helper.current_locale?('cy')).to be_falsey
@@ -173,6 +193,7 @@ describe ApplicationHelper do
   describe 'nice_dates' do
     before { I18n.locale = 'en' }
     after { I18n.locale = 'en' }
+
     it 'outputs dates as strings in a nice way' do
       # Test for no date
       expect(helper.nice_dates(nil)).to eq('')
@@ -226,6 +247,7 @@ describe ApplicationHelper do
   describe 'nice_times_only' do
     before { I18n.locale = 'en' }
     after { I18n.locale = 'en' }
+
     it 'outputs times as strings in a nice way' do
       start_of_the_day = DateTime.new(2022, 1, 1, 0, 0, 0).to_i
       end_of_the_day = DateTime.new(2022, 1, 1, 23, 30, 0).to_i
@@ -241,6 +263,7 @@ describe ApplicationHelper do
     it 'adds parameter when no other parameters' do
       expect(helper.path_with_locale('/search?q=blah', :cy)).to eq('/search?q=blah&locale=cy')
     end
+
     it 'adds parameter when other parameters' do
       expect(helper.path_with_locale('/search', :cy)).to eq('/search?locale=cy')
     end
@@ -250,17 +273,58 @@ describe ApplicationHelper do
     it 'handles simple strings' do
       expect(helper.i18n_key_from('Electricity+Solar PV')).to eq('electricity_and_solar_pv')
     end
+
     it 'handles simple strings' do
       expect(helper.i18n_key_from('Gas')).to eq('gas')
     end
+
     it 'removes spaces' do
       expect(helper.i18n_key_from('some thing')).to eq('something')
     end
+
     it 'adds underscores between caps' do
       expect(helper.i18n_key_from('SomeThing')).to eq('some_thing')
     end
+
     it 'applies both' do
       expect(helper.i18n_key_from('Some Thing')).to eq('some_thing')
+    end
+  end
+
+  describe '#school_name_group' do
+    let(:school_group)          { create(:school_group, name: 'Some School Group') }
+    let(:school_with_group)     { create(:school, name: "School One", school_group: school_group) }
+    let(:school_without_group)  { create(:school, name: "School Two") }
+
+    it 'handles school with group' do
+      expect(helper.school_name_group(school_with_group)).to eq('School One (Some School Group)')
+    end
+
+    it 'handles school without group' do
+      expect(helper.school_name_group(school_without_group)).to eq('School Two')
+    end
+  end
+
+  describe '#status_for_alert_colour' do
+    it 'returns neutral if no colour supplied' do
+      expect(helper.status_for_alert_colour(nil)).to eq(:neutral)
+    end
+
+    it 'returns colour if supplied' do
+      expect(helper.status_for_alert_colour(:green)).to eq(:green)
+    end
+  end
+
+  describe '#user_school_role' do
+    let(:user_with_staff_role) { create(:staff) }
+    let(:user_without_staff_role) { create(:group_admin) }
+
+    it 'returns staff role title' do
+      expect(helper.user_school_role(user_with_staff_role)).to eq('Teacher')
+    end
+
+    it 'returns role' do
+      expect(helper.user_school_role(user_without_staff_role)).to eq('Group admin')
     end
   end
 end

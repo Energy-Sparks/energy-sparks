@@ -1,7 +1,13 @@
 <div class="d-flex justify-content-between align-items-center">
-  <h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
+  <h1>
+    <%= t('schools.school_targets.progress.current.title', fuel_type: @fuel_type.to_s.humanize(capitalize: false)) %>
+  </h1>
+
   <div>
-    <%= link_to "Review targets", school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+    <% if @school_target.school.has_expired_target_for_fuel_type?(@fuel_type) %>
+      <%= link_to t('schools.school_targets.progress.current.view_last_years_target_report'), {school_target_id: @school_target.school.expired_target }, class: "btn btn-outline-dark font-weight-bold" %>
+    <% end %>
+    <%= link_to t('schools.school_targets.progress.current.review_targets'), school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
     <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
 </div>
@@ -14,42 +20,41 @@
   <% if @latest_progress %>
     <% if @latest_progress == 0.0 %>
       <p>
-        Unfortunately you are using as much <%= human_fuel_type(@fuel_type) %> as you did last year.
+        <%= t('schools.school_targets.progress.current.unfortunately_as_much_as_last_year', fuel_type: human_fuel_type(@fuel_type)) %>
       </p>
     <% elsif @latest_progress > 0.0 %>
-      <%= @latest_progress %>
       <p>
-        Unfortunately you are using
-        <%= format_target(@latest_progress, :relative_percent) %> more <%= human_fuel_type(@fuel_type) %> than last year.
+        <%= t('schools.school_targets.progress.current.unfortunately_more_than_last_year', fuel_type: human_fuel_type(@fuel_type), relative_percent: format_target(@latest_progress, :relative_percent)) %>.
       </p>
     <% else %>
       <p>
-        Well done, you are using
-        <%= format_target(@latest_progress, :relative_percent) %> less <%= human_fuel_type(@fuel_type) %> than last year.
+        <%= t('schools.school_targets.progress.current.well_done_less_than_last_year', fuel_type: human_fuel_type(@fuel_type), relative_percent: format_target(@latest_progress, :relative_percent)) %>.
       </p>
     <% end %>
   <% end %>
 <% else %>
   <div class="row alert info-bar text-light bg-negative">
     <div class="col">
-      <span class="align-middle">We have not received data for your <%= human_fuel_type(@fuel_type) %> usage for over thirty days. As a result your progress report will be out of date.</span>
+      <span class="align-middle">
+        <%= t('schools.school_targets.progress.current.we_have_not_received_data', fuel_type: human_fuel_type(@fuel_type)) %>.
+      </span>
     </div>
   </div>
 <% end %>
 
 <p>
-  Your school has set a target to reduce its <%= human_fuel_type(@fuel_type, include_storage_heaters: true) %> usage by <%= @school_target.attributes[@fuel_type.to_s] %>% between <strong><%= nice_dates(@school_target.start_date) %></strong> and <strong><%= nice_dates(@school_target.target_date) %></strong>.
+  <%= t('schools.school_targets.progress.current.your_school_has_set_a_target_to_reduce_html', fuel_type: human_fuel_type(@fuel_type, include_storage_heaters: true), school_target_attributes: @school_target.attributes[@fuel_type.to_s], start_date: nice_dates(@school_target.start_date), target_date: nice_dates(@school_target.target_date)) %>.
 </p>
 
 <% if @progress  %>
 
-  <h3>Month by month progress</h3>
+  <h3><%= t('schools.school_targets.progress.current.month_by_month_progress') %></h3>
 
   <table class="table table-bordered table-hover table-sm">
     <thead class="thead-dark">
     <tr>
       <th>
-        Month
+        <%= t('schools.school_targets.progress.current.month') %>
       </th>
       <% @reporting_months.each do |month| %>
         <th class="text-right">
@@ -59,19 +64,19 @@
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target Consumption (kWh)', progress: @progress, data: @progress.monthly_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Actual Consumption (kWh)', progress: @progress, data: @progress.monthly_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall change since last year', progress: @progress, data: @progress.monthly_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: t('schools.school_targets.progress.current.target_consumption_kwh'), progress: @progress, data: @progress.monthly_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
+    <%= render 'row', title: t('schools.school_targets.progress.current.actual_consumption_kwh'), progress: @progress, data: @progress.monthly_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: t('schools.school_targets.progress.current.overall_change_since_last_year'), progress: @progress, data: @progress.monthly_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
-  <h3>Cumulative progress</h3>
+  <h3><%= t('schools.school_targets.progress.current.cumulative_progress') %></h3>
 
   <table class="table table-bordered table-hover table-sm">
     <thead class="thead-dark">
     <tr>
       <th>
-        Month
+        <%= t('schools.school_targets.progress.current.month') %>
       </th>
       <% @reporting_months.each do |month| %>
         <th class="text-right">
@@ -81,20 +86,20 @@
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.cumulative_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.cumulative_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: t('schools.school_targets.progress.current.target_consumption_kwh'), data: @progress.cumulative_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
+    <%= render 'row', title: t('schools.school_targets.progress.current.actual_consumption_kwh'), data: @progress.cumulative_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: t('schools.school_targets.progress.current.overall_performance_since_last_year'), data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
   <%= render 'footnotes', fuel_type: @fuel_type, school_target: @school_target, show_storage_heater_notes: @show_storage_heater_notes, progress: @progress %>
 
-  <h3>Progress charts</h3>
+  <h3><%= t('schools.school_targets.progress.current.progress_charts') %></h3>
 
-  <%= render 'charts', school: @school, fuel_type: @fuel_type, progress: @progress %>
+  <%= render 'charts', school: @school, fuel_type: @fuel_type == :storage_heaters ? :storage_heater : @fuel_type, progress: @progress %>
 
   <% if current_user.present? && current_user.analytics? %>
-    <h2>Debug</h2>
+    <h2><%= t('schools.school_targets.progress.current.debug') %></h2>
     <pre class="debug">
       <%= JSON.pretty_generate(@debug_content) %>
     </pre>
@@ -102,28 +107,28 @@
 <% else %>
 
   <div class="alert alert-danger">
-    <h4>Unfortunately due to an error we are currently unable to display your detailed progress report</h4>
+    <h4><%= t('schools.school_targets.progress.current.error_message') %></h4>
 
     <% if @bad_estimate %>
       <p>
-        The <%= link_to 'annual estimate', school_estimated_annual_consumptions_path(@school) %> of your <%= @fuel_type %> usage that has been provided for your school is too low.
+        <%= t('schools.school_targets.progress.current.error_bad_estimate_html', estimated_annual_consumptions_path: school_estimated_annual_consumptions_path(@school), fuel_type: @fuel_type) %>.
       </p>
       <p>
-        Please <%= link_to 'review your estimate and our guidance', school_estimated_annual_consumptions_path(@school) %> to see if it is correct.
+        <%= t('schools.school_targets.progress.current.please_review_your_estimate_and_our_guidance_html', estimated_annual_consumptions_path: school_estimated_annual_consumptions_path(@school)) %>.
       </p>
       <p>
-        In the meantime, we have been notified about this error and will investigate.
+        <%= t('schools.school_targets.progress.current.we_have_been_notified_about_this_error_1') %>.
       </p>
     <% else %>
-      <p>We have been notified about this error and will investigate.</p>
+      <p><%= t('schools.school_targets.progress.current.we_have_been_notified_about_this_error_2') %>.</p>
     <% end %>
   </div>
 
   <% if current_user.present? && current_user.analytics? %>
   <div class="alert alert-secondary">
-    <h4>Debug</h4>
-    <p><strong>Error</strong>: <%= @debug_error if @debug_error.present? %></p>
-    <p><strong>Problem</strong>: <%= @debug_problem if @debug_problem.present? %></p>
+    <h4><%= t('schools.school_targets.progress.current.debug') %></h4>
+    <p><strong><%= t('schools.school_targets.progress.current.error') %></strong>: <%= @debug_error if @debug_error.present? %></p>
+    <p><strong><%= t('schools.school_targets.progress.current.problem') %></strong>: <%= @debug_problem if @debug_problem.present? %></p>
   </div>
   <% end %>
 

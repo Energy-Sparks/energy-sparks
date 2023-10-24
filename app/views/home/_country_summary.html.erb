@@ -16,13 +16,13 @@
             <% country = School.countries.key(row['country']) %>
             <td><%= I18n.t("school_statistics.#{country}") %></td>
             <td class="text-right"><%= row['school_count'] %></td>
-            <td class="text-right"><%= row['user_count'] %></td>
+            <td class="text-right"><%= row['pupil_count'] %></td>
           </tr>
         <% end %>
         <tr>
           <td><strong><%= t('school_statistics.total') %></strong></td>
           <td class="text-right"><%= School.visible.count %></td>
-          <td class="text-right"><%= School.visible.joins(:users).count('users.*') %></td>
+          <td class="text-right"><%= School.visible.sum(:number_of_pupils) %></td>
         </tr>
       </tbody>
     </table>

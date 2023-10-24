@@ -1,0 +1,48 @@
+<% content_for :page_title, 'Energy tariffs report' %>
+
+<h1>Energy tariffs overview</h1>
+
+<p>
+The following table summarises the energy tariffs currently configured in the system.
+</p>
+
+<p>
+ It only counts tariffs that are currently enabled and in-use. As well as a count
+ of how many tariffs for each school group, it lists how many schools in those groups
+ have their own tariffs, either manually entered or imported via their smart meters.
+</p>
+
+<table class="advice-table mt-4 table table-sm table-sorted">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>Tariffs</th>
+      <th>Schools with Tariffs</th>
+      <th>Schools with DCC Tariffs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% SchoolGroup.all.order(:name).each do |school_group| %>
+      <tr>
+        <td><%= link_to school_group.name, school_group_energy_tariffs_path(school_group) %></td>
+        <td><%= @count_by_school_group[school_group.slug].present? ? link_to(@count_by_school_group[school_group.slug], school_group_energy_tariffs_path(school_group)) : '-' %></td>
+        <td>
+          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group) %>
+          <% if count > 0 %>
+            <%= link_to count, group_school_tariffs_school_group_energy_tariffs_path(school_group) %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td>
+          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :dcc) %>
+          <% if count > 0 %>
+            <%= link_to count, admin_reports_tariffs_path(anchor: school_group.name.parameterize) %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

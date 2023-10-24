@@ -6,23 +6,21 @@ module Schools
         school,
         aggregated_meter_collection,
         fuel_configuration,
-        dashboard_fuel_types = DashboardConfiguration::DASHBOARD_FUEL_TYPES,
         dashboard_page_configuration = DashboardConfiguration::DASHBOARD_PAGE_GROUPS
       )
       @school = school
       @aggregated_meter_collection = aggregated_meter_collection
       @fuel_configuration = fuel_configuration
-      @dashboard_fuel_types = dashboard_fuel_types
       @dashboard_page_configuration = dashboard_page_configuration
     end
 
-    def generate(pages = pages_from_fuel_types)
+    def generate(pages)
       if @fuel_configuration.no_meters_with_validated_readings
         Rails.logger.info "No readings for #{@school.name}, so no configuration"
         return {}
       end
 
-      Rails.logger.info "Generating chart configuration for #{@school.name} - using default values"
+      Rails.logger.info "Generating pupil chart configuration for #{@school.name}"
       page_and_chart_config = {}
       pages.each do |page|
         page_configuration = page_config(page)
@@ -49,11 +47,16 @@ module Schools
     end
 
     def keep?(chart_type, chart_config = { y_axis_units: :kwh })
-      ChartData.new(@school, @aggregated_meter_collection, chart_type, chart_config).has_chart_data?
-    end
-
-    def pages_from_fuel_types
-      @dashboard_fuel_types[@fuel_configuration.fuel_types_for_analysis]
+      # This method confirms whether a given chart can run for a school, which is recorded as part of the
+      # overnight run and used to populate the pupil “Explore data” pages. We therefore mark reraise exception
+      # false here (used by ChartManager#run_chart) as we don't want to log errors unnecessarily.
+      ChartData.new(
+        @school,
+        @aggregated_meter_collection,
+        chart_type,
+        chart_config,
+        reraise_exception: false
+      ).has_chart_data?
     end
 
     def page_config(page)

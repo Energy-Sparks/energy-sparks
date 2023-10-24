@@ -1,5 +1,11 @@
 class ConsentRequestMailerPreview < ActionMailer::Preview
   def request_consent
-    ConsentRequestMailer.with(school: School.first, emails: 'test@blah.com').request_consent
+    ConsentRequestMailer.with(school: School.first, users: School.first.users, locale: locale).request_consent
+  end
+
+  private
+
+  def locale
+    @params["locale"].present? ? @params["locale"] : "en"
   end
 end

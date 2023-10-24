@@ -1,0 +1,22 @@
+<h1><%= @school.name %> Site id <%= @solar_edge_installation.site_id %></h1>
+
+<p><%= link_to "All Solar API feeds for #{@school.name}",  school_solar_feeds_configuration_index_path(@school) %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @solar_edge_installation.information.each do |key, value| %>
+      <tr>
+        <th><%= key %></th>
+        <td><%= value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to 'Delete', school_solar_edge_installation_path(@school, @solar_edge_installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>

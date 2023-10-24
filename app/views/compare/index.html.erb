@@ -1,0 +1,29 @@
+<% content_for :page_title, t('compare.index.title') %>
+
+<div class="row mt-2">
+  <div class="col">
+    <p class="display-3"><strong><%= t('compare.index.title') %></strong></p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <p><%= t("compare.index.intro") %></p>
+    <p><%= t("compare.index.options_html", school_count: School.data_visible.count, benchmark_count: @benchmark_count) %></p>
+  </div>
+  <div class="col-sm-6">
+    <ul class="fa-ul">
+      <li class="pb-3"><i class="fa-li fas fa-2x fa-check"></i><%= t('compare.index.summary.item_1') %></li>
+      <li class="pb-3"><i class="fa-li fas fa-2x fa-check"></i><%= t('compare.index.summary.item_2') %></li>
+      <li class="pb-3"><i class="fa-li fas fa-2x fa-check"></i><%= t('compare.index.summary.item_3') %></li>
+    </ul>
+  </div>
+</div>
+
+<%= render 'search_tabs' %>
+
+<div class="tab-content" id="compare-content">
+  <%= render 'compare/tab_content/group' if current_school_group %>
+  <%= render 'compare/tab_content/country' %>
+  <%= render 'compare/tab_content/type' %>
+  <%= render 'compare/tab_content/groups' %>
+</div>

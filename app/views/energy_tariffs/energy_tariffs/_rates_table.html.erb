@@ -1,0 +1,34 @@
+<% if energy_tariff.energy_tariff_prices.any? %>
+  <% energy_tariff.energy_tariff_prices.by_start_time.each do |energy_tariff_price| %>
+    <tr class="<%= local_assigns[:feedback] ? charge_row_feedback(energy_tariff) : '' %>">
+      <td ><%= energy_tariff_price_title(energy_tariff_price) %></td>
+      <td class="value">
+        <%= icon('text-danger', 'x') if energy_tariff_price.value.nil? || energy_tariff_price.value.zero? %>
+        <%= t('schools.user_tariffs.rates_table.price_per_kwh', price_value: convert_value_to_long_currency(energy_tariff_price.value)) %>
+      </td>
+      <% if allow_edits %>
+        <td class="value">
+          <% edit_path =  energy_tariffs_path(energy_tariff, [:energy_tariff_differential_price], { action: 'edit', id: energy_tariff_price.id }) %>
+          <%= link_to t('common.labels.edit'),
+              edit_path,
+              { class: 'btn energy-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', id: "energy-tariff-show-button-#{energy_tariff_price.id}" }
+          %>
+          <% delete_path =  energy_tariffs_path(energy_tariff, [:energy_tariff_differential_price], { id: energy_tariff_price.id }) %>
+          <%= link_to t('common.labels.delete'),
+              delete_path,
+              method: :delete,
+              data: { confirm: t('common.confirm') },
+              class: 'btn energy-tariff-show-button',
+              id: "energy-tariff-#{energy_tariff_price.id}-delete"
+          %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+<% else %>
+  <tr class="<%= local_assigns[:feedback] ? 'negative-row' : '' %>">
+    <td colspan='10'>
+      <%= t('schools.user_tariffs.rates_table.no_consumption_charges_specified_yet') %>
+    </td>
+  </tr>
+<% end %>

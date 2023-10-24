@@ -23,6 +23,8 @@ module Amr
       start_date = @start_date || Amr::N3rgyDownloaderDates.start_date(available_dates, current_dates)
       end_date = @end_date || Amr::N3rgyDownloaderDates.end_date(available_dates)
 
+      return if (start_date.strftime('Y%m%d') == end_date.strftime('%Y%m%d')) && (end_date.strftime('%H%M') != '2330')
+
       import_log = create_import_log
       readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).readings
       N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings: readings, import_log: import_log).perform
@@ -50,7 +52,7 @@ module Amr
       if meter.amr_data_feed_readings.any?
         first = meter.amr_data_feed_readings.minimum(:reading_date)
         last = meter.amr_data_feed_readings.maximum(:reading_date)
-        (Date.parse(first)..Date.parse(last))
+        (DateTime.parse(first + 'T00:00')..DateTime.parse(last + 'T23:30'))
       end
     end
   end

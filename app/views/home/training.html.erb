@@ -33,7 +33,10 @@
               </td>
               <td>
                 <h3 class="pt-1"><strong><%= link_to event.name, event.url, target: "_blank" %></strong></h3>
-                <span class="text-muted"><%= nice_date_times(event.date) %></span>
+                <span class="text-muted">
+                  <%= nice_date_times(event.date) %> |
+                  <%= event.sold_out? ? t('training.sold_out') : t('training.spaces_available') %>
+                </span>
               </td>
               <td class="text-right">
               </td>
