@@ -3,8 +3,10 @@ RSpec.shared_examples "a scorable" do
     let!(:schools) { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, scoreboard: scoreboard, school_group: school_group, activities_happened_on: 6.months.ago, template_calendar: subject.scorable_calendar}}
 
     it 'returns schools in points order' do
-      expect(subject.scored_schools.map(&:sum_points)).to eq([5, 4, 3, 2, 1])
-      expect(subject.scored_schools.map(&:id)).to match_array(schools.map(&:id))
+      travel_to subject.previous_academic_year.start_date do
+        expect(subject.scored_schools.map(&:sum_points)).to eq([5, 4, 3, 2, 1])
+        expect(subject.scored_schools.map(&:id)).to eq(schools.map(&:id))
+      end
     end
 
     context 'with academic years' do
