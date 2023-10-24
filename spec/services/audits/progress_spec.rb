@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Audits::Progress do
+describe Audits::Progress, type: :service do
   let!(:site_settings) { SiteSettings.create!(audit_activities_bonus_points: 50) }
   let!(:school) { create(:school) }
 

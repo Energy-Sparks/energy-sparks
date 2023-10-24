@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Audits::AuditService do
+describe Audits::AuditService, type: :service do
   let(:school)            { create(:school) }
   let(:service)           { described_class.new(school) }
 
