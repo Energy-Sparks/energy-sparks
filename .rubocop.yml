@@ -1,5 +1,6 @@
 inherit_from: .rubocop_todo.yml
-
+## regenerate .rubocop_todo.yml after any changes to this config using:
+## rubocop --regenerate-todo --no-exclude-limit --no-auto-gen-only-exclude
 AllCops:
   NewCops: disable
   SuggestExtensions: false
@@ -378,7 +379,15 @@ RSpec/VariableName:
 RSpec/ScatteredSetup:
   Enabled: false
 RSpec/ItBehavesLike:
-  EnforcedStyle: 'it_behaves_like'
+  EnforcedStyle: 'it_behaves_like' # rather than 'it_should_behave_like'
+RSpec/MultipleExpectations:
+  Max: 12 # max expectations per test
+RSpec/AnyInstance:
+  Enabled: false
+RSpec/LetSetup:
+  Enabled: false
+RSpec/Rails/InferredSpecType:
+  Enabled: false
 
 ### Things we're unlikely to fix: ###
 
