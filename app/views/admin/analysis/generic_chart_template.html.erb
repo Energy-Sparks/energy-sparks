@@ -22,7 +22,7 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
       <h3 class="analysis">Loading: <%= chart.to_s.humanize %></h3>
     </div>
     <div class="advice-header"></div>
-    <%= component 'chart', chart_type: chart.to_s, analysis_controls: true, school: @school, chart_config: @chart_config, wrap: false, show_advice: true %>
+    <%= component 'chart', chart_type: chart.to_s, analysis_controls: true, school: @school, chart_config: @chart_config, show_advice: true %>
     <div class="advice-footer"></div>
   </div>
 <% end %>
