@@ -377,6 +377,8 @@ RSpec/VariableName:
     - 'spec/system/schools/advice_pages/hot_water_spec.rb'
 RSpec/ScatteredSetup:
   Enabled: false
+RSpec/ItBehavesLike:
+  EnforcedStyle: 'it_behaves_like'
 
 ### Things we're unlikely to fix: ###
 
