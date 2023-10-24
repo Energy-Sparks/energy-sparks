@@ -6,7 +6,8 @@ describe Audits::AuditService do
 
   describe '#recent_audit' do
     let(:created_at)       { Date.yesterday }
-    let!(:audit)           { create(:audit, school: school, created_at: created_at) }
+    let(:published)        { true }
+    let!(:audit)           { create(:audit, school: school, created_at: created_at, published: published) }
 
     context 'a recent one' do
       it 'is returned' do
@@ -16,6 +17,14 @@ describe Audits::AuditService do
 
     context 'an old one' do
       let(:created_at) { Time.zone.today.last_year }
+
+      it 'is ignored' do
+        expect(service.recent_audit).to be_nil
+      end
+    end
+
+    context 'an unpublished one' do
+      let(:published) { false }
 
       it 'is ignored' do
         expect(service.recent_audit).to be_nil
