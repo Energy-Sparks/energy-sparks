@@ -9,8 +9,6 @@ namespace :after_party do
           next if user.has_other_schools?
           next if user.locked_at?
 
-          # Lock account if user is linked to only this school
-          user.contacts.for_school(school).first&.destroy
           user.lock_access!(send_instructions: false)
         end
       end
@@ -19,10 +17,8 @@ namespace :after_party do
     School.deleted.each do |school|
       school.transaction do
         school.users.each do |user|
-          next if user.has_other_schools?
           next if user.locked_at?
 
-          # Lock account if user is linked to only this school
           user.contacts.for_school(school).first&.destroy
           user.lock_access!(send_instructions: false)
         end
