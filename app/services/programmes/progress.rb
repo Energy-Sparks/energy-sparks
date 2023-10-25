@@ -13,7 +13,7 @@ module Programmes
     delegate :count, to: :activity_types_completed, prefix: :activity_types_completed
 
     def notification_text
-      I18n.t('schools.programme.progress.notification_html',
+      I18n.t('schools.prompts.programme.message_html',
         programme_type_title: programme_type_title,
         programme_activities_count: programme_activities_count,
         activity_types_count: activity_types_count,
