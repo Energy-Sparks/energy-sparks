@@ -339,12 +339,6 @@ cy:
       access_disabled: Mae gan yr ysgol hon fynediad cyhoeddus anabl i ddata defnydd ynni a mewnwelediadau.
       login_links_html: Defnyddiwch y dolenni isod i fewngofnodi fel aelod o staff neu ddisgybl o'r ysgol hon. Neu <a href='%{schools_path}'>archwilio ysgol arall</a>
       page_title: "Nid oes gan %{school} unrhyw ddata cyhoeddus"
-    programme:
-      progress:
-        choose_a_new_programme_message: Mae'n bryd dewis rhaglen newydd o weithgareddau. Pa her fyddwch chi'n ei chymryd nesaf?
-        notification: 'Rydych chi wedi cwblhau %{programme_activities_count}/%{activity_types_count} o''r gweithgareddau yn y rhaglen%{programme_type_title}. Cwblhewch y gweithgareddau%{activity_types_uncompleted_count} olaf nawr i ennill %{total_points}o bwyntiau '
-        start_a_new_programme: Dechrau rhaglen newydd
-        view_now: Gweld nawr
     pupils:
       edit:
         title: Golygu cyfrif disgybl
