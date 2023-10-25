@@ -67,16 +67,18 @@ RSpec.describe 'Weather stations', type: :system do
         click_on 'Manage'
         click_on 'Admin'
         click_on 'Weather Stations'
+      end
 
-        expect(WeatherStation.count).to be 1
+      it 'displays the station' do
         expect(page).to have_content('Weather Stations')
         expect(page).to have_content title
         expect(page).to have_content latitude
         expect(page).to have_content longitude
+        expect(page).to have_content('Report')
+        expect(page).to have_content('CSV')
       end
 
       it 'can be edited' do
-        expect(WeatherStation.count).to be 1
         click_on 'Edit'
 
         new_latitude = 111.111

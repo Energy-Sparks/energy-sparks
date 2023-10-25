@@ -64,83 +64,21 @@
 
 <hr>
 
-<h2>External Data Feed Reports</h2>
+<h2>Other Reports</h2>
 
 <div class="row">
   <div class="col">
     <h3>Carbon Intensity</h3>
     <ul>
       <li><%= link_to 'Carbon intensity data', data_feeds_carbon_intensity_readings_path %></li>
-    </ul>
-  </div>
-  <div class="col">
-    <h3>Dark Sky Feed</h3>
-    <ul>
-      <% DarkSkyArea.all.order(:title).each do |area| %>
-        <li><%= link_to "#{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id) %></li>
-      <% end %>
-    </ul>
-  </div>
-  <div class="col">
-    <h3>Solar PV Feed</h3>
-    <ul>
-      <% SolarPvTuosArea.all.order(:title).each do |area| %>
-        <li><%= link_to "#{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id) %></li>
-      <% end %>
-    </ul>
-  </div>
-  <div class="col">
-    <h3>Weather Stations</h3>
-    <ul>
-      <% WeatherStation.by_title.each do |area| %>
-        <li><%= link_to "#{area.title}", data_feeds_weather_observations_path(area.id) %></li>
-      <% end %>
-    </ul>
-  </div>
-</div>
-
-<hr>
-
-<h2>Downloads</h2>
-
-<div class="row">
-  <div class="col">
-    <ul>
-      <li><%= link_to "Download meter collections", admin_schools_meter_collections_path %></li>
-      <li><%= link_to "Download meter attributes", admin_meter_attributes_path(format: :yaml) %></li>
-    </ul>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col">
-    <h3>Carbon Intensity</h3>
-    <ul>
       <li><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: "csv") %></li>
     </ul>
   </div>
   <div class="col">
-    <h3>Dark Sky Feed</h3>
+    <h3>Misc Downloads</h3>
     <ul>
-      <% DarkSkyArea.all.order(:title).each do |area| %>
-        <li><%= link_to "CSV for #{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id, format: "csv") %></li>
-      <% end %>
-    </ul>
-  </div>
-  <div class="col">
-    <h3>Solar PV Feed</h3>
-    <ul>
-      <% SolarPvTuosArea.all.order(:title).each do |area| %>
-        <li><%= link_to "CSV for #{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id, format: "csv") %></li>
-      <% end %>
-    </ul>
-  </div>
-  <div class="col">
-    <h3>Weather Stations</h3>
-    <ul>
-      <% WeatherStation.by_title.each do |area| %>
-        <li><%= link_to "CSV for #{area.title}", data_feeds_weather_observations_path(area.id, format: "csv") %></li>
-      <% end %>
+      <li><%= link_to "Download meter collections", admin_schools_meter_collections_path %></li>
+      <li><%= link_to "Download meter attributes", admin_meter_attributes_path(format: :yaml) %></li>
     </ul>
   </div>
 </div>
