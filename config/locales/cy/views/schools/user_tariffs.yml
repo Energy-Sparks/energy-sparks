@@ -72,6 +72,9 @@ cy:
         title: Ychwanegu taliadau defnydd ar gyfer y tariff %{fuel_type} hwn
       rate_in_gbp: Cyfradd mewn £
     user_tariffs:
+      applies_to:
+        breadcrumb_title: Mae tariff yn berthnasol i
+        title: Dewiswch pa systemau mesurydd y mae'r tariff hwn yn berthnasol iddynt
       charges_table:
         climate_charge_levy: Ardoll tâl hinsawdd
         tnuos: TNUoS (Defnydd System Rhwydwaith Trosglwyddo)
@@ -84,7 +87,7 @@ cy:
         missing_meters: Dewiswch o leiaf un mesurydd ar gyfer y tariff hwn. Neu dad-diciwch yr opsiwn i gymhwydo'r tariff i bob mesurydd
         non_half_hourly: mesuryddion nad ydynt yn hanner awr yn unig
         specific_meters_prompt: A fydd y tariff hwn yn berthnasol i bob mesurydd %{fuel_type} yn yr ysgol neu fesuryddion penodol yn unig?
-        tariff_applies_to: Mae'r tariff hwn yn berthnasol i
+        tariff_applies_to: Mae tariff yn berthnasol i
         title: Dewiswch fesuryddion ar gyfer y tariff hwn
         which_meters_will_this_tariff_apply_to: I ba fesuryddion y bydd y tariff hwn yn berthnasol?
       choose_type:
