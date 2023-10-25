@@ -59,7 +59,7 @@ cy:
       mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
       primary: Cynradd
       secondary: Uwchradd
-      special: Arbennig
+      special: Darpariaeth Arbennig neu Amgen
     series_data_manager:
       series_name:
         baseload: LLWYTH SYLFAENOL
