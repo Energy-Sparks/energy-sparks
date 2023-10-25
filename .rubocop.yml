@@ -1,9 +1,12 @@
 inherit_from: .rubocop_todo.yml
 
+## regenerate .rubocop_todo.yml after any changes to this config using:
+## rubocop --auto-gen-config --exclude-limit=1000
 AllCops:
   NewCops: disable
   SuggestExtensions: false
   Include:
+    # RuboCop by default ignores files and directories starting with `.`, so they have to be listed explicitly
     - 'app/**/*.rb'
     - 'lib/**/*.rb'
     - 'spec/**/*.rb'
@@ -13,10 +16,13 @@ AllCops:
     - 'lib/data_feeds/solar_pv_tuos_loader.rb'
     - 'lib/data_feeds/dark_sky_temperature_loader.rb'
     - 'lib/data_feeds/solar_pv_tuos_v2_loader.rb'
-    - 'bin/**'
-    - 'script/**'
-    - 'node_modules/**'
+    - 'bin/**/*'
+    - 'script/**/*'
+    - 'node_modules/**/*'
     - 'node_modules/node-sass/src/libsass/script/spec'
+    - 'log/**/*'
+    - 'storage/**/*'
+    - 'tmp/**/*'
 require:
   - rubocop-rails
   - rubocop-performance
@@ -373,9 +379,36 @@ RSpec/ScatteredLet:
 RSpec/NestedGroups:
   Enabled: false
 RSpec/VariableName:
-  Exclude:
-    - 'spec/system/schools/advice_pages/hot_water_spec.rb'
+  AllowedPatterns:
+    - _£_
 RSpec/ScatteredSetup:
+  Enabled: false
+RSpec/ItBehavesLike:
+  EnforcedStyle: 'it_behaves_like' # rather than 'it_should_behave_like'
+RSpec/MultipleExpectations:
+  Max: 12 # max expectations per test
+  Exclude:
+    - 'spec/helpers/application_helper_spec.rb'
+    - 'spec/helpers/nav_helper_spec.rb'
+    - 'spec/helpers/school_groups_helper_spec.rb'
+    - 'spec/models/amr_reading_data_spec.rb'
+    - 'spec/models/chart_data_values_spec.rb'
+    - 'spec/services/amr/analytics_school_factory_spec.rb'
+    - 'spec/services/maps/school_features_spec.rb'
+    - 'spec/services/school_groups/comparisons_csv_generator_spec.rb'
+    - 'spec/services/solar/low_carbon_hub_installation_factory_spec.rb'
+    - 'spec/support/shared_examples/energy_tariff_editors.rb'
+    - 'spec/support/shared_examples/energy_tariffs.rb'
+    - 'spec/support/shared_examples/school_groups.rb'
+    - 'spec/system/admin/activity_type_spec.rb'
+    - 'spec/system/admin/alert_type_management_ratings_spec.rb'
+    - 'spec/system/admin/school_creation_spec.rb'
+    - 'spec/system/admin/school_groups_spec.rb'
+    - 'spec/system/rtone_variant_installation_spec.rb'
+    - 'spec/system/school_onboarding_spec.rb'
+RSpec/AnyInstance:
+  Enabled: false
+RSpec/LetSetup:
   Enabled: false
 
 ### Things we're unlikely to fix: ###
@@ -387,7 +420,7 @@ Security/YAMLLoad:
   Exclude:
     - 'spec/system/admin/meter_attributes_spec.rb'
 Naming/AsciiIdentifiers:
-  Exclude:
+  Exclude: # excluding these are they have £ signs in method names
     - 'spec/models/meter_attribute_spec.rb'
     - 'spec/services/schools/advice/baseload_service_spec.rb'
     - 'spec/system/schools/advice_pages/hot_water_spec.rb'
