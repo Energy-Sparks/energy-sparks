@@ -41,6 +41,14 @@ class Audit < ApplicationRecord
   scope :published, -> { where(published: true) }
   scope :by_date,   -> { order(created_at: :desc) }
 
+  def completed_activity_types
+    activity_types.where(id: school.activities.where(happened_on: created_at..).pluck(:activity_type_id))
+  end
+
+  def completed_intervention_types
+    intervention_types.where(id: school.observations.intervention.where(at: created_at..).pluck(:intervention_type_id))
+  end
+
   def activities_completed?
     activity_type_ids = activity_types.pluck(:id)
     return if activity_type_ids.empty?
@@ -48,6 +56,10 @@ class Audit < ApplicationRecord
     # listed in the audit.  It only includes activities logged after the audit was created and completed within
     # 12 months of the audit's creation date.
     (activity_type_ids - school.activities.where('happened_on >= :start_date AND happened_on <= :end_date', start_date: created_at, end_date: created_at + 12.months).pluck(:activity_type_id)).empty?
+  end
+
+  def available_bonus_points
+    activities_completed? ? 0 : SiteSettings.current.audit_activities_bonus_points
   end
 
   def create_activities_completed_observation!

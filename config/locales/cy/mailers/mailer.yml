@@ -117,15 +117,20 @@ cy:
     reminder_email:
       paragraph_1_html:
         one: Diolch am gofrestru %{school_name} gyda <a href="https://energysparks.uk">Sbarcynni</a>
+        other: ''
       paragraph_2:
         one: Mae angen rhywfaint o fanylion gennych chi am eich ysgol a'ch caniatâd i gyhoeddi data eich mesurydd ar Sbarcynni.
+        other: ''
       paragraph_3:
         one: Sefydlwch eich ysgol ar Sbarcynni
+        other: ''
       subject:
         one: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
+        other: ''
       the_energy_sparks_team: Tîm Sbarcynni
       title:
         one: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
+        other: ''
     welcome_email:
       paragraph_1: Gallwch bellach ddefnyddio Sbarcynni i weld faint o ynni y mae eich ysgol yn ei ddefnyddio, cael gwybod am y cyfleoedd arbed ynni mwyaf ac archwilio ein gweithgareddau a’n hadnoddau addysgol sydd wedi’u cynllunio i addysgu’ch disgyblion am ynni tra’n arbed arian i’w hysgol.
       paragraph_2_html: I gael help i ddefnyddio Sbarcynni darllenwch ein <a href="https://energysparks.uk/resources/12/download">Canllaw Defnyddiwr</a>, gwyliwch ein <a href="https://energysparks.uk/user-guide-videos">Fideos Hyfforddi</a> neu ymunwch ag un o'n sesiynau <a href="https://energysparks.uk/training">hyfforddi gweminar byw</a>.

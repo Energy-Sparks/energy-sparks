@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Programmes::Progress do
+describe Programmes::Progress, type: :service do
   let!(:school) { create(:school) }
   let!(:activity_types) { create_list(:activity_type, 3, score: 25) }
   let!(:programme_type) { create(:programme_type, activity_types: activity_types, bonus_score: 12) }
