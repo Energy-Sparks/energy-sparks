@@ -204,9 +204,8 @@ PreCommit:
     install_command: 'gem install foodcritic'
 
   ForbiddenBranches:
-    enabled: false
-    description: 'Check for commit to forbidden branch'
-    quiet: true
+    enabled: true
+    description: 'Check for commit to forbidden branch (master)'
     branch_patterns: ['master']
 
   GoLint:
@@ -798,6 +797,11 @@ PrePush:
     #  - '...'
     required_executable: 'rake'
     install_command: 'gem install rake'
+
+  ForbiddenBranches:
+    enabled: true
+    description: 'Check for commit to forbidden branch (master)'
+    branch_patterns: ['master']
 
 # Hooks that run during `git rebase`, before any commits are rebased.
 # If a hook fails, the rebase is aborted.

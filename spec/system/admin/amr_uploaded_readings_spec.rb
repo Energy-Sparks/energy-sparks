@@ -20,7 +20,9 @@ describe AmrUploadedReading, type: :system do
       click_on 'Manage'
       click_on 'Admin'
       click_on 'AMR Data feed configuration'
-      click_on config.description
+      within '#configuration-overview' do
+        click_on config.description
+      end
       click_on 'Upload file'
     end
 
@@ -156,7 +158,9 @@ describe AmrUploadedReading, type: :system do
       click_on 'Manage'
       click_on 'Admin'
       click_on 'AMR Data feed configuration'
-      click_on config.description
+      within '#configuration-overview' do
+        click_on config.description
+      end
       click_on 'Upload file'
     end
 
@@ -192,7 +196,9 @@ describe AmrUploadedReading, type: :system do
       click_on 'Manage'
       click_on 'Admin'
       click_on 'AMR Data feed configuration'
-      click_on config.description
+      within '#configuration-overview' do
+        click_on config.description
+      end
       click_on 'Upload file'
     end
 

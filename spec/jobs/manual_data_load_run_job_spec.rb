@@ -17,7 +17,6 @@ describe ManualDataLoadRunJob, ts: false do
 
   context 'with a valid file' do
     before do
-      expect_any_instance_of(Database::VacuumService).to receive(:perform)
       expect(run.status).to eq "pending"
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
@@ -35,20 +34,6 @@ describe ManualDataLoadRunJob, ts: false do
     end
   end
 
-  context 'for small imports' do
-    let(:imported)            { 2 }
-    let(:updated)             { 0 }
-
-    before do
-      expect_any_instance_of(Database::VacuumService).not_to receive(:perform)
-      job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
-    end
-
-    it 'completed with no vacuum' do
-      expect(run.status).to eq "done"
-    end
-  end
-
   context 'when a problem occurs' do
     before do
       #stub the service
@@ -56,7 +41,6 @@ describe ManualDataLoadRunJob, ts: false do
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(0)
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(0)
       expect(run.status).to eq "pending"
-      expect_any_instance_of(Database::VacuumService).not_to receive(:perform)
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
 

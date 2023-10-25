@@ -7,13 +7,17 @@ module Targets
 
     def generate
       estimates = {}
-      add_estimate_for_fuel_type(estimates, :electricity) if @school.has_electricity?
-      add_estimate_for_fuel_type(estimates, :gas) if @school.has_gas?
-      add_estimate_for_fuel_type(estimates, :storage_heater) if @school.has_storage_heaters?
+      add_estimate_for_fuel_type(estimates, :electricity) if @school.has_electricity? && suggested?(:electricity)
+      add_estimate_for_fuel_type(estimates, :gas) if @school.has_gas? && suggested?(:gas)
+      add_estimate_for_fuel_type(estimates, :storage_heater) if @school.has_storage_heaters? && suggested?(:storage_heater)
       estimates
     end
 
     private
+
+    def suggested?(fuel_type)
+      @school.configuration.suggest_annual_estimate_for_fuel_type?(fuel_type)
+    end
 
     def add_estimate_for_fuel_type(estimates, fuel_type)
       begin

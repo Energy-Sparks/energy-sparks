@@ -40,7 +40,8 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
-  scope :enabled,       -> { where(enabled: true) }
+  scope :enabled,           -> { where(enabled: true) }
+  scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
 
   enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api, :n3rgy_api, :rtone_variant_api]
   enum source_type: [:email, :manual, :api, :sftp]
@@ -59,6 +60,7 @@ class AmrDataFeedConfig < ApplicationRecord
     {
       mpan_mprn_index:    header_array.find_index(mpan_mprn_field),
       reading_date_index: header_array.find_index(reading_date_field),
+      reading_time_index: header_array.find_index(reading_time_field),
       postcode_index: header_array.find_index(postcode_field),
       units_index: header_array.find_index(units_field),
       description_index: header_array.find_index(meter_description_field),
