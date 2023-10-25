@@ -13,8 +13,17 @@ describe Alerts::System::MissingElectricityData do
       expect(report.rating).to eq(10.0)
     end
 
+    it 'does not have mpan_mprns as a variable' do
+      expect(report.template_data).to eq({})
+      expect(report.template_data_cy).to eq({})
+    end
+
     it 'has a priority relevance of 5' do
       expect(report.priority_data[:time_of_year_relevance]).to eq(5)
+    end
+
+    it 'has enough data' do
+      expect(report.enough_data).to eq(:enough)
     end
   end
 
@@ -31,6 +40,11 @@ describe Alerts::System::MissingElectricityData do
 
     it 'has the mpan_mprns as a variable' do
       expect(report.template_data[:mpan_mprns]).to eq(meter.mpan_mprn.to_s)
+      expect(report.template_data_cy[:mpan_mprns]).to eq(meter.mpan_mprn.to_s)
+    end
+
+    it 'has enough data' do
+      expect(report.enough_data).to eq(:enough)
     end
 
     context 'with much older readings' do
@@ -45,6 +59,10 @@ describe Alerts::System::MissingElectricityData do
   context 'where there are no electricity meters' do
     it 'has no rating' do
       expect(report.rating).to eq(nil)
+    end
+
+    it 'has not enough data' do
+      expect(report.enough_data).to eq(:not_enough)
     end
 
     it 'is never relevant' do
