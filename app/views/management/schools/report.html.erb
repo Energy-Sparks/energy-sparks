@@ -18,6 +18,8 @@
                 school: @school,
                 chart_type: chart_config[:chart],
                 no_zoom: true,
+                analysis_controls: false,
+                axis_controls: false,
                 chart_config: { y_axis_units: select_y_axis(@school, chart_config[:chart], chart_config[:units]) }
   %>
 <% end %>
