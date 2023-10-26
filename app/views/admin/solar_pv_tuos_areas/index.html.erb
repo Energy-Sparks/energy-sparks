@@ -43,7 +43,9 @@
         <td><%= area.schools.count %></td>
         <td>
           <div class='btn-group'>
-            <%= link_to 'Edit', edit_admin_solar_pv_tuos_area_path(area), class: 'btn' %>
+            <%= link_to 'Edit', edit_admin_solar_pv_tuos_area_path(area), class: 'btn btn-sm' %>
+            <%= link_to "Report", data_feeds_solar_pv_tuos_readings_path(area.id), class: 'btn btn-sm' %>
+            <%= link_to "CSV", data_feeds_solar_pv_tuos_readings_path(area.id, format: "csv"), class: 'btn btn-sm' %>
           </div>
         </td>
       </tr>

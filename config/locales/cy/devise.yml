@@ -63,9 +63,10 @@ cy:
         page_title: Mewngofnodi i Sbarcynni
         pupil_password: cyfrinair disgybl
         pupil_sign_in_for: Mewngofnodi disgybl ar gyfer
-        remember_me: Cofio fi
+        remember_me: Arhoswch wedi'ch mewngofnodi
         select_your_school: Dewiswch eich ysgol
         sign_in: Mewngofnodi
+        signed_in_successfully: Wedi mewngofnodi'n llwyddiannus
         title: Mewngofnodwch i Sbarcynni gyda'ch
         your_pupil_password: Eich cyfrinair disgybl
     shared:
@@ -84,7 +85,9 @@ cy:
     messages:
       already_confirmed: wedi'i gadarnhau eisoes, rhowch gynnig ar fewngofnodi
       confirmation_period_expired: angen ei gadarnhau o fewn %{period}, gofynnwch am un newydd
+      enter_a_password: Rhowch gyfrinair
       expired: wedi darfod, gofynna am un newydd
+      invalid_password: Mae'n ddrwg gennym, nid yw'r cyfrinair hwnnw'n gweithio!
       not_found: heb ei ganfod
       not_locked: heb ei gloi
       not_saved:
@@ -93,3 +96,4 @@ cy:
         many: 'Roedd %{count} o wallau yn gwahardd y %{resource} hwn rhag cael ei gadw:'
         other: 'Roedd %{count} o wallau yn gwahardd y %{resource} hwn rhag cael ei gadw:'
       reset_password_token_is_invalid: Mae tocyn ailosod cyfrinair yn annilys
+      select_a_school: Dewiswch ysgol

@@ -1,6 +1,11 @@
----
 cy:
   intervention_types:
+    errors:
+      invalid_fuel_type:
+        one: 'math o danwydd annilys:'
+        two: 'mathau o danwydd annilys:'
+        many: 'mathau o danwydd annilys:'
+        other: 'mathau o danwydd annilys:'
     intervention_type_points:
       points_for_this_action:
         one: pwynt ar gyfer y weithred hon
@@ -27,9 +32,9 @@ cy:
       pupil_activities: Gweithgareddau disgyblion
       results_found:
         one: Wedi canfod 1 canlyniad
-        two: "Wedi canfod %{count} ganlyniad"
-        many: "Wedi canfod %{count} o ganlyniadau"
-        other: "Wedi canfod %{count} o ganlyniadau"
+        two: Wedi canfod %{count} ganlyniad
+        many: Wedi canfod %{count} o ganlyniadau
+        other: Wedi canfod %{count} o ganlyniadau
       search: Chwilio
       search_for_actions_by_keyword: Chwilio am gamau gweithredu yn ôl allweddair
       title: Dod o hyd i gamau gweithredu

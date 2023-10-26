@@ -94,7 +94,13 @@ cy:
         title: Archwiliad Newydd
       show:
         completed_on: Cwblhawyd ar
+        completing_all_of_these_activities_will_award_you: Bydd cwblhau'r holl weithgareddau hyn yn rhoi
         download_report: Lawrlwytho adroddiad
+        points:
+          one: un pwynt i chi
+          two: dau bwynt i chi
+          many: o bwyntiau i chi
+          other: o bwyntiau i chi
         recommended_energy_saving_actions: Gweithrediadau arbed ynni a argymhellir
         recommended_pupil_lead_activities: Gweithgareddau dan arweiniad disgyblion a argymhellir
         title: "%{school_name} Archwiliadau - %{audit_title}"
@@ -244,6 +250,7 @@ cy:
         editing_disabled_for_pseudo_meters: Analluogwyd golygu ar gyfer mesuryddion ffug
         leave_this_blank_message: Gadewch hwn yn wag am fesuryddion newydd a bydd y system yn gwirio ei fod wedi'i gofrestru gyda n3rgy
         meter_point_number: Rhif Pwynt Mesurydd
+        meter_system: System mesurydd
         name: Enw
         only_check_if_adding_an_n3rgy_test_meter: Gwiriwch a ydych yn ychwanegu mesurydd prawf n3rgy, nad yw'n cael ei ddefnyddio ar gyfer ysgolion byw, yn unig
         procurement_route: Llwybr caffael
@@ -266,7 +273,8 @@ cy:
         latest: Diweddaraf
         manage_solar_api_feeds: Rheoli ffrydiau API Solar
         meter: Mesurydd
-        meter_reviews: Adolygiadau mesurydd
+        meter_reviews: Cwblhawyd adolygiadau mesurydd DCC
+        meter_system: System mesurydd
         mpan_warning_message: Mae yna fesuryddion trydan gydag MPAN nad yw'n ymddangos bod ganddynt y digid gwirio cywir
         name: Enw
         no_active_meters: Dim mesuryddion gweithredol
@@ -274,9 +282,9 @@ cy:
         procurement_route: Llwybr caffael
         readings: Darlleniadau
         report: Adrodd
-        review_meters: Adolygu mesuryddion
+        review_meters: Wrthi'n aros am adolygiadau mesurydd DCC
         school_downloads: Lawrlwythiadau ysgol
-        title: Mesuryddion
+        title: Rheoli mesuryddion
         validate_meter_readings: Dilysu darlleniadau mesurydd
         validated: Dilyswyd
         validated_readings: Darlleniadau sydd wedi'u Dilysu
@@ -290,23 +298,26 @@ cy:
         no_meter_issues: Dim problemau na nodiadau ar gyfer mesurydd
         title: Nodiadau a Phroblemau Mesurydd - %{name}
       show:
+        available_cache_range: Ystod dyddiadau ar gael
         basic_information: Gwybodaeth sylfaenol
         data_source: Ffynhonnell ddata
         dcc_consented: Caniatâd DCC
-        dcc_information: Gwybodaeth DCC
-        dcc_last_checked: Gwiriwyd DCC ddiwethaf
+        dcc_information: Gwybodaeth DCC (SMETS2).
+        dcc_last_checked: Gwiriad awtomataidd diwethaf
         download_readings: Darlleniadau
         grant_consent: Rhoi caniatâd
         inventory: Stocrestr
         meter: Mesurydd
         n3rgy_api_status: Statws API n3rgy
+        n3rgy_consent_confirmed: n3rgy Cadarnhau Caniatâd
+        n3rgy_known_meter: Ar gael gan n3rgy?
         not_configured_as_a_dcc_meter: Heb ei ffurfweddu fel mesurydd DCC
-        sandbox: Blwch tywod
+        sandbox: Blwch tywod (mesurydd prawf)
         school_meter_management: Rheoli mesuryddion ysgol
         serial_number: Rhif Cyfresol
         tariff_report: Adroddiad Tariff
         title: "%{meter_name} (%{meter_mpan_mprn})"
-        user_consented: Caniatâd Defnyddiwr
+        user_consented: Defnyddiwr wedi cydsynio
         withdraw_consent: Tynnu caniatâd
     observations:
       timeline:
@@ -318,7 +329,10 @@ cy:
         activity:
           completed_an_activity: Cwblhawyd gweithgaredd
         audit:
+          completed_audit_activities: Wedi cwblhau pob gweithgaredd archwilio
           received_an_audit: Wedi cael archwiliad ynni
+        programme:
+          completed_a_programme: Wedi cwblhau'r rhaglen
         temperatures:
           recorded_temperatures_in: Tymheredd a gofnodwyd yn
     private:
@@ -332,6 +346,9 @@ cy:
       new:
         create: Creu cyfrif
         title: Cyfrif disgybl newydd
+    recommendations:
+      intro: Chwiliwch am eich gweithgaredd arbed ynni nesaf i sgorio pwyntiau ar gyfer eich ysgol, lleihau eich defnydd o ynni a dysgu rhagor am ynni a newid yn yr hinsawdd
+      title: Gweithgareddau a Argymhellir
     school_details:
       activation_date_hint: Dyma'r dyddiad pan fydd yr ysgol yn dod yn weithredol ar Sbarcynni
       address: Cyfeiriad
@@ -342,6 +359,7 @@ cy:
       editing: Ysgol Olygu
       floor_area_hint: Os nad ydych yn gwybod hyn, gadewch ef yn wag a byddwn yn ceisio cael y wybodaeth hon gan eich Awdurdod Lleol neu MAT
       geocode_message: Gadewch y rhain yn wag i gael eu gosod o'r cod post
+      geocode_not_found_message: heb ei ganfod.
       key_stage: Cyfnodau allweddol
       key_stage_message: Os ydych yn yr Alban, mae CA1 yn cwmpasu P2 a P3, mae CA2 yn cwmpasu P4 i P7, mae CA3 yn cwmpasu S1 i S3, mae CA4 yn cwmpasu S4 a S5, mae CA5 yn cwmpasu S6
       location: Lleoliad
@@ -452,6 +470,7 @@ cy:
           title: Olrhain cynnydd i lehau'ch defnydd ynni %{fuel_type}
           unfortunately_as_much_as_last_year: Yn anffodus rydych chi'n defnyddio cymaint o %{fuel_type} ag y llynedd
           unfortunately_more_than_last_year: 'Yn anffodus rydych chi''n defnyddio %{relative_percent} yn fwy o %{fuel_type}na''r llynedd '
+          view_last_years_target_report: Gweld adroddiad targed y llynedd
           we_have_been_notified_about_this_error_1: Yn y cyfamser, rydym wedi cael gwybod am y gwall hwn ac byddwn yn ymchwilio iddo
           we_have_been_notified_about_this_error_2: Rydym wedi cael gwybod am y gwall hwn ac byddwn yn ymchwilio iddo
           we_have_not_received_data: Nid ydym wedi derbyn eich data am eich defnydd %{fuel_type} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
@@ -496,6 +515,9 @@ cy:
       prompt_to_set_new_target:
         set_a_new_target: Gosod targed newydd
         you_set_a_target_to_reduce: Gwnaethoch osod targed i leihau eich defnydd o ynni erbyn %{target_date}. Mae'n bryd adolygu eich cynnydd a gosod targed newydd
+      show:
+        final_results: Gweld canlyniadau terfynol eich nod i leihau eich targed erbyn %{target_date}
+        view_results: Gweld canlyniadau
       target_table:
         current_progress: Cynnydd presennol
         final_result: Canlyniad terfynol
@@ -528,15 +550,13 @@ cy:
       compare_schools: Cymharu ysgolion
       review_energy_analysis: Adolygu dadansoddiad ynni
     show:
-      record_action: Cofnodi gweithred
-      record_pupil_activity: Cofnodi gweithgaredd disgybl
-      complete_activities: Dysgwch ddisgyblion am ynni a newid hinsawdd o fewn cyd-destun eich ysgol eich hun drwy gwblhau ein gweithgareddau sydd ar gael am ddim
-      complete_interventions: Cofnodi camau arbed ynni a wneir gan staff ysgol a rheolwyr cyfleusterau i helpu i olrhain a yw eich ymyriadau wedi arbed ynni.
       act_on_energy_usage: Gweithredu ar y defnydd o ynni
       add_alert_contacts: Ychwanegu cysylltiadau rhybuddio
       add_consumption_estimate: Ychwanegwch amcangyfrif o'ch defnydd %{fuels} blynyddol fel y gallwn ddarparu adroddiad cynnydd manylach i'ch helpu i gyrraedd eich targedau
       add_estimate: Ychwanegu amcangyfrif
       coming_soon: Dod yn fuan
+      complete_activities: Dysgwch ddisgyblion am ynni a newid hinsawdd o fewn cyd-destun eich ysgol eich hun drwy gwblhau ein gweithgareddau sydd ar gael am ddim
+      complete_interventions: Cofnodi camau arbed ynni a wneir gan staff ysgol a rheolwyr cyfleusterau i helpu i olrhain a yw eich ymyriadau wedi arbed ynni.
       configuring_data_access: Rydym yn ffurfweddu mynediad at eich data ynni a byddwn yn eich hysbysu pan fydd yn barod i'w archwilio
       create_pupil_account: Creu cyfrif disgybl
       dashboard_title: Dangosfwrdd oedolion ar gyfer %{school_name}
@@ -554,6 +574,8 @@ cy:
       print_view: Gwedd argraffu
       recent_energy_audit: Mae'r tîm Sbarcynni wedi cwblhau archwiliad ynni ar gyfer yr ysgol hon yn ddiweddar
       recent_energy_usage: Defnydd diweddar o ynni
+      record_action: Cofnodi gweithred
+      record_pupil_activity: Cofnodi gweithgaredd disgybl
       review_audit: Adolygu archwiliad
       review_progress: Adolygu cynnydd
       review_target: Adolygu eich targed

@@ -458,7 +458,7 @@ Rails.application.routes.draw do
     resources :intervention_type_groups, except: [:destroy]
     resources :intervention_types, except: [:show]
 
-    resources :dark_sky_areas, except: [:destroy, :show]
+    resources :dark_sky_areas, only: :index
     resources :weather_stations, except: [:destroy, :show]
     resources :solar_pv_tuos_areas, except: [:destroy, :show]
 

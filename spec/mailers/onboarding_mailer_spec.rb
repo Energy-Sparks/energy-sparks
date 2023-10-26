@@ -122,20 +122,7 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#reminder_email' do
-    ## These next two statements can be removed when we have translations from transifex for these
-    ## This will be when send_automated_reminders feature flag is switched on
-    let(:missing_translations) do
-      { subject:          { other: "cy other subject" },
-        title:            { other: "cy other title" },
-        paragraph_1_html: { other: "cy other paragraph_1_html" },
-        paragraph_2:      { other: "cy other paragraph_2" },
-        paragraph_3:      { other: "cy other paragraph_3" }, }
-    end
-
     before do
-      unless EnergySparks::FeatureFlags.active?(:send_automated_reminders)
-        I18n.backend.store_translations(:cy, { onboarding_mailer: { reminder_email: missing_translations } })
-      end
       OnboardingMailer.with(school_onboardings: school_onboardings, email: school_onboarding.contact_email).reminder_email.deliver_now
     end
 
