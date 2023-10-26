@@ -361,6 +361,9 @@ en:
         description: Looking for more ideas? Explore some of these options
         programme: Choose a programme of pupil activities
         title: More ideas
+      recent_activity:
+        description: These suggestions are based on your most recently recorded activity
+        title: Based on your recent activity
       title: Recommended activities & actions
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks

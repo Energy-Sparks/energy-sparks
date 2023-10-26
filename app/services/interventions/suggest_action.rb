@@ -36,6 +36,19 @@ module Interventions
       end
     end
 
+    ## For prototyping. Actual algorithm to be defined ##
+    def suggest_from_recent_interventions(limit = 4)
+      suggestions = []
+      intervention_types = @school.intervention_types_by_date # most recent is first
+
+      while (suggested_types = intervention_types.shift.try(:suggested_types)) && suggestions.length < limit
+        suggestions = top_up_from_list(suggested_types, suggestions)
+      end
+
+      suggestions = top_up_from_list(suggest_random(limit), suggestions) if suggestions.length < limit
+      suggestions.take(limit)
+    end
+
     def suggest_random(limit)
       InterventionType.not_custom.sample(limit)
     end
