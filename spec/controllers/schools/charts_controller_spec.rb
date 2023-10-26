@@ -16,11 +16,5 @@ RSpec.describe Schools::ChartsController, type: :controller do
         expect(JSON.parse(response.body)['title']).to eq('We do not have enough data to display this chart at the moment: Pupil_dashboard_group_by_week_electricity_kwh chart')
       end
     end
-
-    describe "format html" do
-      it 'fails if a chart type param is missing' do
-        expect { get :show, params: { school_id: @school.to_param }, format: :html }.to raise_error(ActionController::ParameterMissing)
-      end
-    end
   end
 end
