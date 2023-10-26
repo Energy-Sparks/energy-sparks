@@ -12,7 +12,6 @@ namespace :amr do
     Meter.where(dcc_meter: true, consent_granted: true).each do |meter|
       Amr::N3rgyReadingsDownloadAndUpsert.new(meter: meter, config: config, start_date: start_date, end_date: end_date).perform
     end
-    Database::VacuumService.new([:amr_data_feed_readings]).perform
     puts "#{DateTime.now.utc} #{config.description} end"
   end
 end

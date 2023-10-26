@@ -8,8 +8,8 @@ class SchoolBatchRunJob < ApplicationJob
   def perform(school_batch_run)
     school_batch_run.info('STARTED')
     school_batch_run.update(status: :running)
-    Schools::SchoolRegenerationService.new(school: school_batch_run.school, logger: school_batch_run).perform
-    school_batch_run.info('FINISHED')
+    success = Schools::SchoolRegenerationService.new(school: school_batch_run.school, logger: school_batch_run).perform
+    school_batch_run.info(success ? 'FINISHED' : 'FAILED')
     school_batch_run.update(status: :done)
   rescue => e
     school_batch_run.error(e.message)

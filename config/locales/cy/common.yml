@@ -65,7 +65,7 @@ cy:
       mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
       primary: Cynradd
       secondary: Uwchradd
-      special: Arbennig
+      special: Darpariaeth Arbennig neu Amgen
     schools: Ysgolion
     solar_pv: Solar ffotofoltaig
     storage_heater: Stôr-wresogydd

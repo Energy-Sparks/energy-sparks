@@ -4,6 +4,10 @@
 
 <p>Scope: <%= @scope %></p>
 
+<!-- we may move fetching the params for these into the controller later on -->
+<%= render('schools/prompt_to_complete_programme', programmes: @school.programmes.started.order(started_on: :desc)) %>
+<%= render('schools/prompt_audit', audit: Audits::AuditService.new(@school).last_audit) %>
+
 <%= component 'recommendations', title: t("schools.recommendations.more_ideas.title"), description: t("schools.recommendations.more_ideas.description"), classes: 'pb-4', id: 'more-ideas', max_lg: 4 do |c| %>
   <% c.with_item(name: t("schools.recommendations.more_ideas.programme"), href: programme_types_path, image: 'recommendations/get-energised.png') %>
   <% c.with_item(name: t("schools.recommendations.more_ideas.activities", count: ActivityType.count), href: activity_categories_path, image: 'recommendations/opt-in.png') %>

@@ -13,21 +13,23 @@ module Programmes
     delegate :count, to: :activity_types_completed, prefix: :activity_types_completed
 
     def notification_text
-      I18n.t('schools.programme.progress.notification',
+      I18n.t('schools.prompts.programme.message_html',
         programme_type_title: programme_type_title,
         programme_activities_count: programme_activities_count,
         activity_types_count: activity_types_count,
-        activity_types_uncompleted_count: activity_types_uncompleted_count,
-        total_points: total_points
-      )
-    end
-
-    def total_points
-      activity_types.sum(:score) + programme.points_for_completion
+        count: activity_types_uncompleted_count,
+        activity_types_total_scores: activity_types_total_scores,
+        activity_types_uncompleted_scores: activity_types_uncompleted_scores,
+        programme_points_for_completion: programme_points_for_completion
+      ).html_safe
     end
 
     def activity_types_total_scores
       activity_types.sum(:score)
+    end
+
+    def programme_points_for_completion
+      programme.points_for_completion
     end
 
     def programme_type_title
@@ -44,6 +46,14 @@ module Programmes
 
     def activity_types_completed
       programme.activity_types_completed
+    end
+
+    def activity_types_completed_scores
+      programme.activity_types_completed.sum(&:score)
+    end
+
+    def activity_types_uncompleted_scores
+      activity_types_total_scores - activity_types_completed_scores
     end
 
     def activity_types_uncompleted_count

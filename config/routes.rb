@@ -425,7 +425,9 @@ Rails.application.routes.draw do
           end
         end
         resource :users, only: [:show] do
+          get 'lock', to: 'users#lock'
           get 'unlock', to: 'users#unlock'
+          get 'lock_all', to: 'users#lock_all'
         end
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show] do
@@ -450,7 +452,7 @@ Rails.application.routes.draw do
     resources :intervention_type_groups, except: [:destroy]
     resources :intervention_types, except: [:show]
 
-    resources :dark_sky_areas, except: [:destroy, :show]
+    resources :dark_sky_areas, only: :index
     resources :weather_stations, except: [:destroy, :show]
     resources :solar_pv_tuos_areas, except: [:destroy, :show]
 

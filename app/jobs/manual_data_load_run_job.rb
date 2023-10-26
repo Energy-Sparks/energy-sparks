@@ -24,7 +24,6 @@ class ManualDataLoadRunJob < ApplicationJob
       amr_uploaded_reading.update!(imported: true)
       manual_data_load_run.info("Inserted: #{amr_data_feed_import_log.records_imported}")
       manual_data_load_run.info("Updated: #{amr_data_feed_import_log.records_updated}")
-      vaccuum_for_large_imports(amr_data_feed_import_log.records_imported, amr_data_feed_import_log.records_updated)
       manual_data_load_run.info("SUCCESS")
       status = :done
     rescue => e
@@ -37,12 +36,6 @@ class ManualDataLoadRunJob < ApplicationJob
   end
 
   private
-
-  def vaccuum_for_large_imports(imported, updated)
-    if (imported.to_i + updated.to_i) > 10
-      Database::VacuumService.new([:amr_data_feed_readings]).perform
-    end
-  end
 
   def create_import_log(amr_data_feed_config, file_name)
     AmrDataFeedImportLog.create(
