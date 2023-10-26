@@ -6,11 +6,11 @@ class ChartComponent < ViewComponent::Base
   renders_one :header
   renders_one :footer
 
-  attr_reader :school, :chart_type, :analysis_controls, :no_zoom, :axis_controls, :html_class, :fuel_type, :autoload_chart
+  attr_reader :school, :chart_type, :analysis_controls, :no_zoom, :axis_controls, :html_class, :fuel_type, :autoload_chart, :dynamic_titles
 
   include ChartHelper
 
-  def initialize(chart_type:, school:, chart_config: nil, analysis_controls: true, no_zoom: true, axis_controls: true, html_class: 'analysis-chart', fuel_type: nil, autoload_chart: true)
+  def initialize(chart_type:, school:, chart_config: nil, analysis_controls: true, no_zoom: true, axis_controls: true, html_class: 'analysis-chart', fuel_type: nil, autoload_chart: true, dynamic_titles: false)
     @chart_type = chart_type
     @school = school
     @chart_config = chart_config
@@ -20,6 +20,7 @@ class ChartComponent < ViewComponent::Base
     @html_class = html_class
     @fuel_type = fuel_type
     @autoload_chart = autoload_chart
+    @dynamic_titles = dynamic_titles
   end
 
   def chart_config
