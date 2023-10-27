@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 7452a9c5896f2c93dd14035da69c574da2653950
-  tag: 4.0.9
+  revision: e9550a8e297fb6c0a143ea9d8eeaebb22ab7465c
+  branch: remove-old-tariff-attribute-configuration
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
