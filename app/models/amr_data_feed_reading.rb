@@ -99,7 +99,7 @@ class AmrDataFeedReading < ApplicationRecord
       SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
         SELECT mpan_mprn, meter_id, identifier, amr_data_feed_configs.description, reading_date,
         CASE
-          WHEN reading_date ~ '\\d{2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{2}' THEN to_date(reading_date, 'DD-MON-YY')
+          WHEN reading_date ~ '\\d{1,2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{2}' THEN to_date(reading_date, 'DD-MON-YY')
           WHEN date_format='%d-%m-%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
           WHEN date_format='%d-%m-%Y' THEN to_date(reading_date, 'DD-MM-YYYY')
           WHEN date_format='%d/%m/%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
