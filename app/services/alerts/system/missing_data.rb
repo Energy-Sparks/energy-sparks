@@ -11,7 +11,7 @@ module Alerts
 
       def report
         return empty_meters_report unless @aggregated_meters
-        return late_running_meters_empty_report if late_running_meters?
+        return late_running_meters_report if late_running_meters?
 
         meters_report
       end
@@ -35,7 +35,7 @@ module Alerts
         (@aggregated_meters.amr_data.end_date - cutoff_minus_10_days).to_f
       end
 
-      def late_running_meters_empty_report
+      def late_running_meters_report
         Adapters::Report.new(
           valid: true,
           rating: [0.0, rating].max,
