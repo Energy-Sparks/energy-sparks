@@ -8,7 +8,6 @@ describe Alerts::System::MissingGasData do
   let(:gas_aggregate_meter) { instance_double('gas-aggregated-meter')}
 
   let(:meter_collection) { instance_double('meter-collection') }
-  let(:meter) { OpenStruct.new(mpan_mprn: '100001111122') }
 
   before do
     allow(gas_amr_data).to receive(:end_date).and_return(gas_end_date)
@@ -21,7 +20,7 @@ describe Alerts::System::MissingGasData do
     let(:gas_end_date) { today - 21.days }
 
     before do
-      allow(gas_aggregate_meter).to receive(:meter_list).and_return([meter.mpan_mprn])
+      allow(gas_aggregate_meter).to receive(:meter_list).and_return(%w[11234567890 21234567890 31234567890])
       allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
     end
 
@@ -42,8 +41,8 @@ describe Alerts::System::MissingGasData do
     end
 
     it 'has the mpan_mprns as a variable' do
-      expect(report.template_data[:mpan_mprns]).to eq(meter.mpan_mprn.to_s)
-      expect(report.template_data_cy[:mpan_mprns]).to eq(meter.mpan_mprn.to_s)
+      expect(report.template_data[:mpan_mprns]).to eq('11234567890, 21234567890, and 31234567890')
+      expect(report.template_data_cy[:mpan_mprns]).to eq('11234567890, 21234567890, a 31234567890')
     end
 
     it 'has a priority relevance of 5' do

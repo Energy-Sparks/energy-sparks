@@ -45,7 +45,7 @@ module Alerts
             mpan_mprns: mpan_mprns
           },
           template_data_cy: {
-            mpan_mprns: mpan_mprns(:cy)
+            mpan_mprns: mpan_mprns(locale: :cy)
           },
           priority_data: {
             time_of_year_relevance: 5.0
@@ -70,9 +70,7 @@ module Alerts
         @cutoff ||= @today - MISSING_CUTOFF_DAYS.days
       end
 
-      def mpan_mprns(locale = :en)
-        return @aggregated_meters.meter_list.to_sentence if locale == :en
-
+      def mpan_mprns(locale: :en)
         I18n.with_locale(locale) { @aggregated_meters.meter_list.to_sentence }
       end
     end
