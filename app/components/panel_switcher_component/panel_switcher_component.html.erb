@@ -1,0 +1,21 @@
+<div <%= "id=#{id}" if id %> class="panel-switcher-component<%= classes %>">
+  <% if title %>
+    <h4><strong><%= title %></strong></h4>
+  <% end %>
+  <% if description %>
+    <p><%= description %></p>
+  <% end %>
+
+  <% panels.each do |panel| %>
+    <div class="form-check form-check-inline">
+      <input type="radio" name="panel-switcher" id="<%= panel.name %>" value='<%= panel.name %>' class="form-check-input" <%= 'checked' if panel.name == selected %>>
+      <label class="form-check-label" for="<%= panel.name %>" data-toggle="tooltip" data-placement="top" title="Change to <%= panel.label %>"><%= panel.label %></label>
+    </div>
+  <% end %>
+
+  <% panels.each do |panel| %>
+    <div class="panel <%= panel.name %>" <%= 'hidden' unless panel.name == selected %>>
+      <%= panel %>
+    </div>
+  <% end %>
+</div>

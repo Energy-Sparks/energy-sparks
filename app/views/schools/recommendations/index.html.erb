@@ -8,7 +8,14 @@
 <%= render('schools/prompt_to_complete_programme', programmes: @school.programmes.started.order(started_on: :desc)) %>
 <%= render('schools/prompt_audit', audit: Audits::AuditService.new(@school).last_audit) %>
 
-<%= component 'recommendations', recommendations: Interventions::SuggestAction.new(@school).suggest_from_recent_interventions(4), title: t("schools.recommendations.recent_activity.title"), description: t("schools.recommendations.recent_activity.description"), classes: 'pb-4', id: 'more-ideas', max_lg: 4 %>
+<%= component 'panel_switcher', title: t("schools.recommendations.recent_activity.title"), description: t("schools.recommendations.recent_activity.description") do |switcher| %>
+  <% switcher.with_panel(label: 'Pupil', name: 'pupil') do |panel| %>
+    <%= component 'recommendations', recommendations: NextActivitySuggesterWithFilter.new(@school, ActivityTypeFilter.new(school: @school)).suggest_from_activity_history, classes: 'pb-4', max_lg: 4 %>
+  <% end %>
+  <% switcher.with_panel(label: 'Adult', name: 'adult') do |panel| %>
+    <%= component 'recommendations', recommendations: Interventions::SuggestAction.new(@school).suggest_from_recent_interventions(4), classes: 'pb-4', max_lg: 4 %>
+  <% end %>
+<% end %>
 
 <%= component 'recommendations', title: t("schools.recommendations.more_ideas.title"), description: t("schools.recommendations.more_ideas.description"), classes: 'pb-4', id: 'more-ideas', max_lg: 4 do |c| %>
   <% c.with_item(name: t("schools.recommendations.more_ideas.programme"), href: programme_types_path, image: 'recommendations/get-energised.png') %>
