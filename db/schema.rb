@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_19_130819) do
+ActiveRecord::Schema.define(version: 2023_10_27_093450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1178,13 +1178,6 @@ ActiveRecord::Schema.define(version: 2023_10_19_130819) do
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
   end
 
-  create_table "meters_user_tariffs", id: false, force: :cascade do |t|
-    t.bigint "meter_id"
-    t.bigint "user_tariff_id"
-    t.index ["meter_id"], name: "index_meters_user_tariffs_on_meter_id"
-    t.index ["user_tariff_id"], name: "index_meters_user_tariffs_on_user_tariff_id"
-  end
-
   create_table "mobility_string_translations", force: :cascade do |t|
     t.string "locale", null: false
     t.string "key", null: false
@@ -1695,30 +1688,6 @@ ActiveRecord::Schema.define(version: 2023_10_19_130819) do
     t.integer "standing_charges_updated", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "tariff_prices", force: :cascade do |t|
-    t.bigint "meter_id"
-    t.bigint "tariff_import_log_id"
-    t.date "tariff_date", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.text "prices"
-    t.index ["meter_id", "tariff_date"], name: "index_tariff_prices_on_meter_id_and_tariff_date", unique: true
-    t.index ["meter_id"], name: "index_tariff_prices_on_meter_id"
-    t.index ["tariff_import_log_id"], name: "index_tariff_prices_on_tariff_import_log_id"
-  end
-
-  create_table "tariff_standing_charges", force: :cascade do |t|
-    t.bigint "meter_id"
-    t.bigint "tariff_import_log_id"
-    t.date "start_date", null: false
-    t.decimal "value", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["meter_id", "start_date"], name: "index_tariff_standing_charges_on_meter_id_and_start_date", unique: true
-    t.index ["meter_id"], name: "index_tariff_standing_charges_on_meter_id"
-    t.index ["tariff_import_log_id"], name: "index_tariff_standing_charges_on_tariff_import_log_id"
   end
 
   create_table "task_records", id: false, force: :cascade do |t|

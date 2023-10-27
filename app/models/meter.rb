@@ -57,8 +57,6 @@ class Meter < ApplicationRecord
 
   has_many :amr_data_feed_readings,     inverse_of: :meter
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
-  has_many :tariff_prices,              inverse_of: :meter, dependent: :destroy
-  has_many :tariff_standing_charges,    inverse_of: :meter, dependent: :destroy
   has_many :meter_attributes
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
@@ -277,10 +275,6 @@ class Meter < ApplicationRecord
 
   def can_withdraw_consent?
     consent_granted
-  end
-
-  def smart_meter_tariff_attributes
-    @smart_meter_tariff_attributes ||= Amr::AnalyticsTariffFactory.new(self).build
   end
 
   def open_issues_count
