@@ -8,7 +8,7 @@
 <%= render('schools/prompt_to_complete_programme', programmes: @school.programmes.started.order(started_on: :desc)) %>
 <%= render('schools/prompt_audit', audit: Audits::AuditService.new(@school).last_audit) %>
 
-<%= component 'panel_switcher', title: t("schools.recommendations.recent_activity.title"), description: t("schools.recommendations.recent_activity.description") do |switcher| %>
+<%= component 'panel_switcher', selected: @scope, title: t("schools.recommendations.recent_activity.title"), description: t("schools.recommendations.recent_activity.description") do |switcher| %>
   <% switcher.with_panel(label: 'Pupil', name: 'pupil') do |panel| %>
     <%= component 'recommendations', recommendations: NextActivitySuggesterWithFilter.new(@school, ActivityTypeFilter.new(school: @school)).suggest_from_activity_history, classes: 'pb-4', max_lg: 4 %>
   <% end %>

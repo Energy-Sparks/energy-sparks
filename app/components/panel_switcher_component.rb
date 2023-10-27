@@ -14,7 +14,13 @@ class PanelSwitcherComponent < ViewComponent::Base
   end
 
   def selected
-    @selected.blank? ? panels.first.name : @selected
+    @selected.blank? || !have_panel_with_selected_name? ? panels.first.name : @selected
+  end
+
+  private
+
+  def have_panel_with_selected_name?
+    panels.map(&:name).include?(@selected)
   end
 
   class PanelComponent < ViewComponent::Base
