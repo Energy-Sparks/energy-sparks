@@ -223,24 +223,15 @@ class Meter < ApplicationRecord
     global_meter_attributes +
       school_group_meter_attributes +
       school_meter_attributes +
-      active_meter_attributes +
+      meter_attributes.active +
       energy_tariff_meter_attributes
-  end
-
-  def active_meter_attributes
-    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-      meter_attributes.where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
-    else
-      meter_attributes.active
-    end
   end
 
   def energy_tariff_meter_attributes
     attributes = []
-    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-      school_attributes = school.all_energy_tariff_attributes(meter_type, applies_to_for_meter_system)
-      attributes += school_attributes unless school_attributes.nil?
-    end
+    school_attributes = school.all_energy_tariff_attributes(meter_type, applies_to_for_meter_system)
+    attributes += school_attributes unless school_attributes.nil?
+
     # It should NOT filter the tariffs with which it is directly associated.
     # If a meter is explicitly linked to a tariff then it applies to it, regardless.
     attributes += energy_tariffs.enabled.usable.map(&:meter_attribute)
