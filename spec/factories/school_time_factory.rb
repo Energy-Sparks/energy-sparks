@@ -9,7 +9,7 @@ FactoryBot.define do
     calendar_period   { :term_times }
   end
 
-  factory :school_time, traits: [:school_open_time] do
+  factory :school_time, traits: [:school_opening_time] do
     school
     day             { :monday }
     opening_time    { 800 }
