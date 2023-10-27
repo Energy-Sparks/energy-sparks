@@ -9,7 +9,7 @@
   <% panels.each do |panel| %>
     <div class="form-check form-check-inline">
       <input type="radio" name="panel-switcher" id="<%= panel.name %>" value='<%= panel.name %>' class="form-check-input" <%= 'checked' if panel.name == selected %>>
-      <label class="form-check-label" for="<%= panel.name %>" data-toggle="tooltip" data-placement="top" title="Change to <%= panel.label %>"><%= panel.label %></label>
+      <label class="form-check-label" for="<%= panel.name %>" data-toggle="tooltip" data-placement="top" title="<%= t('components.panel_switcher.change_to', name: panel.label) %>"><%= panel.label %></label>
     </div>
   <% end %>
 
