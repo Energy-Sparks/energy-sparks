@@ -2,8 +2,7 @@
               school: school,
               chart_type: content,
               no_zoom: true,
-              chart_config: create_chart_config(school, content, mpan_mprn)
-do |c| %>
+              chart_config: create_chart_config(school, content, mpan_mprn) do |c| %>
   <% c.with_header do %>
     <div class="dynamic-titles">
       <h5 class="text-center"></h5>
