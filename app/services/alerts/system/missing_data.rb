@@ -3,11 +3,12 @@ module Alerts
     class MissingData
       MISSING_CUTOFF_DAYS = 14
 
-      def initialize(school:, alert_type:, today: Time.zone.today, meter_type:)
-        @school = school
+      attr_reader :aggregated_meters
+
+      def initialize(aggregated_meters:, alert_type:, today: Time.zone.today)
+        @aggregated_meters = aggregated_meters
         @today = today
         @alert_type = alert_type
-        @meter_type = meter_type
       end
 
       def report
@@ -18,10 +19,6 @@ module Alerts
       end
 
       private
-
-      def aggregate_school
-        @aggregate_school ||= AggregateSchoolService.new(@school).aggregate_school
-      end
 
       def meters_report
         Adapters::Report.new(
@@ -60,13 +57,6 @@ module Alerts
           relevance: :never_relevant,
           enough_data: :not_enough
         )
-      end
-
-      def aggregated_meters
-        @aggregated_meters ||= case @meter_type
-                               when :electricity then aggregate_school.aggregated_electricity_meters
-                               when :gas then aggregate_school.aggregated_heat_meters
-                               end
       end
 
       def late_running_meters?
