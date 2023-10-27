@@ -1,6 +1,6 @@
 <% if valid_config? %>
 
-  <div id="chart_wrapper_<%= chart_type %>" class="col-md-12 chart-wrapper">
+  <div id="chart_wrapper_<%= chart_type %>" class="chart-wrapper">
 
     <% if title %>
       <h4 id="chart-section-<%= chart_type %>" class="chart-title"><%= title %></h4>
@@ -13,11 +13,6 @@
     <%= header %>
 
     <%= render 'shared/analysis_controls', chart_type: chart_type, axis_controls: axis_controls, analysis_controls: analysis_controls %>
-    <% if dynamic_titles %>
-      <div class="dynamic-titles">
-        <h5 class="text-center"></h5>
-      </div>
-    <% end %>
 
     <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
     </div>

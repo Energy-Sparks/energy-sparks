@@ -25,15 +25,17 @@
   </div>
 
   <div class="row">
-    <%= component 'chart',
-                  school: @school,
-                  chart_type: @chart_config[@period],
-                  analysis_controls: true,
-                  no_zoom: true,
-                  analysis_controls: false,
-                  chart_config: create_chart_config(@school, @chart_config[@period]),
-                  html_class: 'usage-chart'
-    %>
+    <div class="col-md-12">
+      <%= component 'chart',
+                    school: @school,
+                    chart_type: @chart_config[@period],
+                    analysis_controls: true,
+                    no_zoom: true,
+                    analysis_controls: false,
+                    chart_config: create_chart_config(@school, @chart_config[@period]),
+                    html_class: 'usage-chart'
+      %>
+    </div>
   </div>
 
   <%= render 'shared/usage_controls', chart_config: @chart_config, period: @period, supply: @supply, split_meters: @split_meters, meters: @meters  %>
