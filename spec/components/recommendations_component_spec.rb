@@ -7,7 +7,6 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
   let(:activity_types) { 6.times.collect { create(:activity_type) } }
   let(:all_params) { { recommendations: activity_types, title: 'Title text', description: 'Description text', classes: 'my-class', id: 'my-id', limit: 5, max_lg: 4 } }
   let(:cards) { html.css("div.card") }
-  let(:title) { html.css("h4 strong") }
   let(:items) { [] }
 
   let(:html) do

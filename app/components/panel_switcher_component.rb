@@ -8,18 +8,22 @@ class PanelSwitcherComponent < ViewComponent::Base
   def initialize(title: nil, description: nil, selected: nil, classes: '', id: nil)
     @title = title
     @description = description
-    @classes = classes
     @selected = selected
+    @classes = classes
     @id = id
   end
 
   def selected
-    @selected.blank? || !have_panel_with_selected_name? ? panels.first.name : @selected
+    @selected.blank? || !selected_panel_exists? ? panels.first.name : @selected
+  end
+
+  def render?
+    panels.any?
   end
 
   private
 
-  def have_panel_with_selected_name?
+  def selected_panel_exists?
     panels.map(&:name).include?(@selected)
   end
 
