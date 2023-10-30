@@ -79,6 +79,7 @@ cy:
     current_scores:
       introduction: Mae ysgolion yn sgorio pwyntiau trwy gofnodi eu gweithgareddau a'u gweithredoedd arbed ynni. Dyma'r sgorau ar gyfer y flwyddyn academaidd gyfredol.
       regional_scoreboard_html: Gweld safle'r ysgolion yn erbyn ysgolion eraill ar <a href="%{scoreboard}">eu bwrdd sgorio rhanbarthol</a>.
+      view_current_scores: Gweld y sgorau cyfredol
     download_as_csv: Lawrlwytho fel CSV
     header:
       compare_schools: Cymharu ysgolion
@@ -261,6 +262,7 @@ cy:
       comparisons: Cymariaethau
       current_scores: Sgoriau Presennol
       map: Map
+      previous_scores: Sgorau Blaenorol
       priority_actions: Gweithredoedd Blaenoriaeth
       recent_usage: Defnydd Diweddar
       show: Dangosfwrdd Grŵp

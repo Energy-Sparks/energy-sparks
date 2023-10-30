@@ -1,12 +1,17 @@
----
 cy:
   activity_types:
     activity: Gweithgaredd
+    errors:
+      invalid_fuel_type:
+        one: 'math o danwydd annilys:'
+        two: 'mathau o danwydd annilys:'
+        many: 'mathau o danwydd annilys:'
+        other: 'mathau o danwydd annilys:'
     impacts: Effeithiau
     key_stages: Cyfnodau Allweddol
     recommended:
       all_activities: Pob gweithgaredd
-      introduction: "Mae'r rhain yn weithgareddau a awgrymir ar gyfer eich ysgol, yn seiliedig ar eich gweithgaredd blaenorol a'ch targedau"
+      introduction: Mae'r rhain yn weithgareddau a awgrymir ar gyfer eich ysgol, yn seiliedig ar eich gweithgaredd blaenorol a'ch targedau
       title: Argymhellir ar gyfer eich ysgol
     score_for_this_activity: Sgôr ar gyfer y gweithgaredd hwn
     search:
@@ -18,9 +23,9 @@ cy:
       no_results_found: Heb ganfod unrhyw ganlyniadau
       results_found:
         one: Wedi canfod 1 canlyniad
-        two: "Wedi canfod %{count} ganlyniad"
-        many: "Wedi canfod %{count} o ganlyniadau"
-        other: "Wedi canfod %{count} o ganlyniadau"
+        two: Wedi canfod %{count} ganlyniad
+        many: Wedi canfod %{count} o ganlyniadau
+        other: Wedi canfod %{count} o ganlyniadau
       title: Dod o hyd i weithgareddau disgyblion
     show:
       complete_this_activity_for_group_html:

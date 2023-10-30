@@ -3,12 +3,19 @@
 <h1>Solar Panel Summary</h1>
 
 <p>
-  This report summarises the solar panels configured on Energy Sparks to allow us
-  to generate synthetic solar data.
+  This report lists all <strong><%= @number_of_schools %></strong> schools with a "solar_pv" meter attribute. We use this
+  configuration to estimate the school's solar power generation using data from
+  Sheffield University.
 </p>
 
 <p>
-  Solar panel overrides are not included.
+  The table lists a number of optional attributes. Only the dates and kwp values are
+  required.
+</p>
+
+<p>
+  Solar panel overrides, which are used to substitute data where we have actual
+  meter solar data are not included here.
 </p>
 
 <div class="row">
@@ -24,14 +31,13 @@
       <th>tilt</th>
       <th>shading</th>
       <th>fit_£_per_kwh</th>
-      <th>maximum_export_level_kw</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     <% @solar_panels.each do |solar_panel_config| %>
       <tr>
-        <td><%= link_to(solar_panel_config.meter.school_name, school_path(solar_panel_config.meter.school)) %></td>
+        <td><%= link_to(solar_panel_config.school_name, school_path(solar_panel_config.meter.school)) %></td>
         <td><%= link_to(solar_panel_config.meter.display_name, school_meter_path(solar_panel_config.meter.school, solar_panel_config.meter)) %></td>
         <td><%= solar_panel_config.start_date %></td>
         <td><%= solar_panel_config.end_date %></td>
@@ -40,7 +46,6 @@
         <td><%= solar_panel_config.tilt %></td>
         <td><%= solar_panel_config.shading %></td>
         <td><%= solar_panel_config.fit_£_per_kwh %></td>
-        <td><%= solar_panel_config.maximum_export_level_kw %></td>
         <td>
           <div class="btn-group">
             <%= link_to 'Edit', edit_admin_school_meter_attribute_path(solar_panel_config.meter.school, id: solar_panel_config.meter_attribute_id), class: 'btn btn-sm' %>

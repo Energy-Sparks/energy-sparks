@@ -69,17 +69,19 @@ RSpec.describe 'Solar pv areas', type: :system do
         click_on 'Manage'
         click_on 'Admin'
         click_on 'Solar PV Areas'
+      end
 
-        expect(SolarPvTuosArea.count).to be 1
+      it 'shows the area' do
         expect(page).to have_content('Solar PV Areas')
         expect(page).to have_content title
         expect(page).to have_content latitude
         expect(page).to have_content longitude
         expect(page).to have_content 'ABC'
+        expect(page).to have_content('Report')
+        expect(page).to have_content('CSV')
       end
 
       it 'can be edited' do
-        expect(SolarPvTuosArea.count).to be 1
         click_on 'Edit'
 
         new_latitude = 111.111

@@ -16,8 +16,10 @@ cy:
     postcode: Cod post
     pupil_numbers: Niferoedd disgyblion
     school_group: Grŵp ysgol
+    school_key_data_tab: Data allweddol yr ysgol
     school_name: Enw
     school_summary: Data allweddol ar gyfer ysgolion gweithredol
+    school_summary_tab: Crynodeb ysgol
     school_type: Math o ysgol
     school_types: Ysgolion gweithredol yn ôl math
     scotland: Yr Alban

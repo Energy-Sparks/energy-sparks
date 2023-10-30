@@ -54,6 +54,25 @@ cy:
       message: Rhaid i'ch ysgol ddiweddaru ei chaniatâd i ganiatáu i Sbarcynni barhau i gasglu, prosesu ac arddangos eich data ynni.
       subject: Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol
       view_school_account: gweld eich cyfrif ysgol
+  energy_tariffs_mailer:
+    group_admin_review_group_tariffs_reminder:
+      mail_body:
+        click_here_html: "<a href='%{click_here_link}'>Cliciwch yma</a>"
+        in_future: Mae'n well diweddaru eich tariffau ar Sbarcynni pan fyddwch chi'n newid contract cyflenwi. Byddwn yn eich postio ddwywaith y flwyddyn, ym mis Mawrth a mis Medi i'ch atgoffa.
+        to_help:
+          general: Er mwyn helpu Sbarcynni i roi amcangyfrifon cywir i chi o'ch costau ynni a'ch arbedion posib, rydym yn cysylltu â chi i ofyn i chi adolygu'r wybodaeth sydd gennym am y Tariffau Ynni ar gyfer eich grŵp.
+          local_authority: Er mwyn helpu Sbarcynni i roi amcangyfrifon cywir i chi o’ch costau ynni a’ch arbedion posibl, rydym yn cysylltu â chi i ofyn i chi adolygu’r wybodaeth sydd gennym am y Tariffau Ynni ar gyfer eich awdurdod lleol.
+          multi_academy_trust: Er mwyn helpu Sbarcynni i roi amcangyfrifon cywir i chi o’ch costau ynni a’ch arbedion posibl, rydym yn cysylltu â chi i ofyn i chi adolygu’r wybodaeth sydd gennym am y Tariffau Ynni ar gyfer eich Ymddiriedolaeth Aml-Academi.
+        to_review: I adolygu eich tariffau presennol ac i ychwanegu neu ddiweddaru'r wybodaeth yn seiliedig ar eich contract diweddaraf
+        you_can_set: Gallwch osod tariff cyfartalog ar gyfer pob ysgol i ddarparu gwell rhagosodiadau i bob ysgol. Gall ysgolion unigol ychwanegu eu gwybodaeth tariff eu hunain
+      subject: Mae'n bryd adolygu'r tariffau ynni ar gyfer %{school_group_name} ar Sbarcynni
+    school_admin_review_school_tariffs_reminder:
+      mail_body:
+        click_here_html: "<a href='%{click_here_link}'>cliciwch yma</a>"
+        in_future: Mae'n well diweddaru eich tariffau ar Sbarcynni pan fyddwch chi'n newid contract cyflenwi. Byddwn yn eich postio ddwywaith y flwyddyn, ym mis Mawrth a mis Medi i'ch atgoffa.
+        to_help: Er mwyn helpu Sbarcynni i roi amcangyfrifon cywir i chi o'ch costau ynni a'ch arbedion posib, rydym yn cysylltu â chi i ofyn i chi adolygu'r wybodaeth sydd gennym am y tariffau ynni ar gyfer %{school_name}.
+        to_review: I adolygu eich tariffau presennol ac i ychwanegu neu ddiweddaru'r wybodaeth yn seiliedig ar eich contract diweddaraf
+      subject: Mae'n bryd adolygu'r tariffau ynni ar gyfer %{school_name} ar Sbarcynni
   mailer:
     get_in_touch: Cysylltwch
   onboarding_mailer:
@@ -74,8 +93,8 @@ cy:
       the_energy_sparks_team: Tîm Sbarcynni
     completion_email:
       find_them_on_energy_sparks: Dewch o hyd iddynt ar Sbarcynni
-      subject: "Mae %{school} wedi cwblhau'r broses ymuno"
-      title: "Mae %{school_name} wedi cwblhau'r broses gosod awtomatig"
+      subject: "Mae %{school} (%{school_group}) wedi cwblhau'r broses ymuno"
+      title: "Mae %{school_name} (%{school_group}) wedi cwblhau'r broses gosod awtomatig"
     data_enabled_email:
       explore_data: Archwilio eich data
       get_in_touch_html: <a href="%{contact_url}">Cysylltwch</a> os oes gennych unrhyw gwestiynau pellach.
@@ -116,21 +135,31 @@ cy:
       title: Sefydlwch eich ysgol ar Sbarcynni
     reminder_email:
       paragraph_1_html:
-        one: Diolch am gofrestru %{school_name} gyda <a href="https://energysparks.uk">Sbarcynni</a>
-        other: ''
+        one: Diolch i chi am gofrestru e%{school_name} gyda <a href="https://energysparks.uk">Sbarcynni</a>
+        two: Diolch i chi am gofrestru eich ysgolion gyda <a href="https://energysparks.uk">Sbarcynn</a>i
+        many: Diolch i chi am gofrestru eich ysgolion gyda <a href="https://energysparks.uk">Sbarcynni</a>
+        other: Diolch i chi am gofrestru eich ysgolion gyda <a href="https://energysparks.uk">Sbarcynni</a>
       paragraph_2:
-        one: Mae angen rhywfaint o fanylion gennych chi am eich ysgol a'ch caniatâd i gyhoeddi data eich mesurydd ar Sbarcynni.
-        other: ''
+        one: Mae angen rhai manylion gennych am eich ysgol, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
+        two: Mae angen rhai manylion gennych am eich ysgolion, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
+        many: Mae angen rhai manylion gennych am eich ysgolion, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
+        other: Mae angen rhai manylion gennych am eich ysgolion, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
       paragraph_3:
         one: Sefydlwch eich ysgol ar Sbarcynni
-        other: ''
+        two: 'Cwblhewch y broses sefydlu ar gyfer yr ysgolion canlynol:'
+        many: 'Cwblhewch y broses sefydlu ar gyfer yr ysgolion canlynol:'
+        other: 'Cwblhewch y broses sefydlu ar gyfer yr ysgolion canlynol:'
       subject:
         one: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
-        other: ''
+        two: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+        many: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+        other: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
       the_energy_sparks_team: Tîm Sbarcynni
       title:
         one: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
-        other: ''
+        two: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+        many: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+        other: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
     welcome_email:
       paragraph_1: Gallwch bellach ddefnyddio Sbarcynni i weld faint o ynni y mae eich ysgol yn ei ddefnyddio, cael gwybod am y cyfleoedd arbed ynni mwyaf ac archwilio ein gweithgareddau a’n hadnoddau addysgol sydd wedi’u cynllunio i addysgu’ch disgyblion am ynni tra’n arbed arian i’w hysgol.
       paragraph_2_html: I gael help i ddefnyddio Sbarcynni darllenwch ein <a href="https://energysparks.uk/resources/12/download">Canllaw Defnyddiwr</a>, gwyliwch ein <a href="https://energysparks.uk/user-guide-videos">Fideos Hyfforddi</a> neu ymunwch ag un o'n sesiynau <a href="https://energysparks.uk/training">hyfforddi gweminar byw</a>.

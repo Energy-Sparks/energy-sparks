@@ -117,7 +117,7 @@ module Amr
     end
 
     def reading_row_index_for(single_reading)
-      return single_reading[:period] - 1 if single_reading[:period]
+      return single_reading[:period].to_i - 1 if single_reading[:period]
 
       time_string = SingleReadConverter.convert_time_string_to_usable_time(single_reading[:reading_time])
       TimeOfDay.parse(time_string).to_halfhour_index

@@ -452,7 +452,7 @@ Rails.application.routes.draw do
     resources :intervention_type_groups, except: [:destroy]
     resources :intervention_types, except: [:show]
 
-    resources :dark_sky_areas, except: [:destroy, :show]
+    resources :dark_sky_areas, only: :index
     resources :weather_stations, except: [:destroy, :show]
     resources :solar_pv_tuos_areas, except: [:destroy, :show]
 
@@ -561,6 +561,7 @@ Rails.application.routes.draw do
       resources :activity_types, only: [:index, :show]
       resources :dcc_status, only: [:index]
       resources :solar_panels, only: [:index]
+      resources :community_use, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
