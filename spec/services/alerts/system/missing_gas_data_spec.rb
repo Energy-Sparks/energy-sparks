@@ -4,47 +4,96 @@ describe Alerts::System::MissingGasData do
   let(:school)  { create :school }
   let(:today) { Time.zone.today }
 
-  let(:report) { Alerts::System::MissingGasData.new(school: school, today: today, alert_type: nil).report }
+  let(:gas_amr_data) { instance_double('gas-amr-data') }
+  let(:gas_aggregate_meter) { instance_double('gas-aggregated-meter')}
 
-  context 'where the school has gas data in the last 2 weeks' do
-    let!(:meter) { create(:gas_meter_with_validated_reading_dates, start_date: 4.weeks.ago, end_date: 2.days.ago, school: school) }
+  let(:meter_collection) { instance_double('meter-collection') }
 
-    it 'has a rating of 10' do
-      expect(report.rating).to eq(10.0)
-    end
-
-    it 'has a priority relevance of 5' do
-      expect(report.priority_data[:time_of_year_relevance]).to eq(5)
-    end
+  before do
+    allow(gas_amr_data).to receive(:end_date).and_return(gas_end_date)
+    allow(gas_aggregate_meter).to receive(:amr_data).and_return(gas_amr_data)
   end
 
-  context 'where the gas data is from over 2 weeks ago' do
-    let!(:meter) { create(:gas_meter_with_validated_reading_dates, start_date: 4.weeks.ago, end_date: 3.weeks.ago, school: school) }
+  let(:report) { Alerts::System::MissingGasData.new(school: school, aggregate_school: meter_collection, today: today, alert_type: nil).report }
+
+  context 'where the school has only gas data older than the last 2 weeks (late running meters)' do
+    let(:gas_end_date) { today - 21.days }
+
+    before do
+      allow(gas_aggregate_meter).to receive(:meter_list).and_return(%w[11234567890 21234567890 31234567890])
+      allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
+    end
+
+    it 'is valid' do
+      expect(report.valid).to eq(true)
+    end
 
     it 'has a rating related to the number of days late' do
       expect(report.rating).to eq(3.0)
     end
 
-    it 'has a priority relevance of 5' do
-      expect(report.priority_data[:time_of_year_relevance]).to eq(5)
+    it 'has enough data' do
+      expect(report.enough_data).to eq(:enough)
+    end
+
+    it 'is relevant' do
+      expect(report.relevance).to eq(:relevant)
     end
 
     it 'has the mpan_mprns as a variable' do
-      expect(report.template_data[:mpan_mprns]).to eq(meter.mpan_mprn.to_s)
+      expect(report.template_data[:mpan_mprns]).to eq('11234567890, 21234567890, and 31234567890')
+      expect(report.template_data_cy[:mpan_mprns]).to eq('11234567890, 21234567890, a 31234567890')
     end
 
-    context 'with much older readings' do
-      let!(:meter) { create(:gas_meter_with_validated_reading_dates, start_date: 52.weeks.ago, end_date: 51.weeks.ago, school: school) }
-
-      it 'has a rating of 0' do
-        expect(report.rating).to eq(0.0)
-      end
+    it 'has a priority relevance of 5' do
+      expect(report.priority_data[:time_of_year_relevance]).to eq(5)
     end
   end
 
-  context 'where there are no gas meters' do
+  context 'where the school has gas data within the last 2 weeks' do
+    let(:gas_end_date) { today - 14.days }
+
+    before do
+      allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
+    end
+
+    it 'is valid' do
+      expect(report.valid).to eq(true)
+    end
+
+    it 'has a rating of 10' do
+      expect(report.rating).to eq(10.0)
+    end
+
+    it 'has enough data' do
+      expect(report.relevance).to eq(:relevant)
+    end
+
+    it 'does not have mpan_mprns as a variable' do
+      expect(report.template_data).to eq({})
+      expect(report.template_data_cy).to eq({})
+    end
+
+    it 'has a priority relevance of 5' do
+      expect(report.priority_data[:time_of_year_relevance]).to eq(5)
+    end
+  end
+
+  context 'where the school has no gas meters' do
+    let(:gas_end_date) { today }
+
+    before { allow(meter_collection).to receive(:aggregated_heat_meters).and_return(nil) }
+
+    it 'is valid' do
+      expect(report.valid).to eq(true)
+    end
+
     it 'has no rating' do
       expect(report.rating).to eq(nil)
+    end
+
+    it 'has not enough data' do
+      expect(report.enough_data).to eq(:not_enough)
     end
 
     it 'is never relevant' do

@@ -27,14 +27,15 @@ module Alerts
         {}
       end
 
-      def initialize(school:, alert_type:, today: Time.zone.today)
+      def initialize(school:, aggregate_school:, alert_type:, today: Time.zone.today)
         @school = school
+        @aggregate_school = aggregate_school
         @today = today
         @alert_type = alert_type
       end
 
       def report
-        MissingData.new(school: @school, alert_type: @alert_type, today: @today, meter_type: :gas).report
+        MissingData.new(aggregated_meters: @aggregate_school.aggregated_heat_meters, alert_type: @alert_type, today: @today).report
       end
     end
   end
