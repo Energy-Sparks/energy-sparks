@@ -21,27 +21,7 @@ module Amr
     private
 
     def all_attributes
-      attributes = meter_attributes || {}
-      tariff_attributes = build_tariff_attributes
-
-      return nil if attributes.empty? && tariff_attributes.nil?
-      return attributes if tariff_attributes.nil?
-
-      if attributes.key?(:accounting_tariff_generic)
-        attributes[:accounting_tariff_generic] += tariff_attributes[:accounting_tariff_generic]
-      else
-        attributes[:accounting_tariff_generic] = tariff_attributes
-      end
-
-      attributes
-    end
-
-    def meter_attributes
-      @active_record_meter.meter_attributes_to_analytics
-    end
-
-    def build_tariff_attributes
-      Amr::AnalyticsTariffFactory.new(@active_record_meter).build
+      @active_record_meter.meter_attributes_to_analytics || {}
     end
   end
 end

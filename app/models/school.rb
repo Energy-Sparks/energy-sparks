@@ -551,8 +551,6 @@ class School < ApplicationRecord
       collection
     end
 
-    return all_attributes unless EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-
     all_attributes[:aggregated_electricity] ||= []
     all_attributes[:aggregated_electricity] += all_energy_tariff_attributes(:electricity)
 

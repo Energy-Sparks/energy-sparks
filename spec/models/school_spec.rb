@@ -567,7 +567,7 @@ describe School do
   context 'with annual estimates' do
     it "there are no meter attributes without an estimate" do
       expect(subject.estimated_annual_consumption_meter_attributes).to eql({})
-      expect(subject.all_pseudo_meter_attributes).to eql({})
+      expect(subject.all_pseudo_meter_attributes).to eql({ :aggregated_electricity => [], :aggregated_gas => [], :solar_pv_consumed_sub_meter => [], :solar_pv_exported_sub_meter => [] })
     end
 
     context "when an estimate is given" do
@@ -578,7 +578,7 @@ describe School do
       end
 
       it "the target should add meter attributes" do
-        expect(subject.all_pseudo_meter_attributes).not_to eql({})
+        expect(subject.all_pseudo_meter_attributes[:aggregated_electricity]).not_to be_empty
       end
     end
   end
@@ -591,7 +591,7 @@ describe School do
 
     it "there are no meter attributes without a target" do
       expect(subject.school_target_attributes).to eql({})
-      expect(subject.all_pseudo_meter_attributes).to eql({})
+      expect(subject.all_pseudo_meter_attributes).to eql({ :aggregated_electricity => [], :aggregated_gas => [], :solar_pv_consumed_sub_meter => [], :solar_pv_exported_sub_meter => [] })
     end
 
     context "when a target is set" do
@@ -611,7 +611,7 @@ describe School do
       end
 
       it "the target should add meter attributes" do
-        expect(subject.all_pseudo_meter_attributes).not_to eql({})
+        expect(subject.all_pseudo_meter_attributes[:aggregated_electricity]).not_to be_empty
       end
 
       context "with multiple targets" do
@@ -642,7 +642,7 @@ describe School do
         end
 
         it "stills produce meter attributes" do
-          expect(subject.all_pseudo_meter_attributes).not_to eql({})
+          expect(subject.all_pseudo_meter_attributes[:aggregated_electricity]).not_to be_empty
         end
       end
 
@@ -799,53 +799,27 @@ describe School do
   describe '.all_pseudo_meter_attributes' do
     let(:school_group)    { create(:school_group) }
     let(:school)          { create(:school, school_group: school_group) }
-    let(:feature_flag)    { 'false' }
 
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: feature_flag do
-        example.run
-      end
-    end
+    let(:all_pseudo_meter_attributes) { school.all_pseudo_meter_attributes }
 
-    context 'with :new_energy_tariff_editor enabled' do
-      let(:feature_flag) { 'true' }
+    context 'when there are EnergyTariffs' do
+      let!(:site_wide)        { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current) }
+      let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
+      let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
+      let!(:target) { create(:school_target, start_date: Date.yesterday, school: school) }
+      let!(:estimate)  { create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
 
-      let(:all_pseudo_meter_attributes) { school.all_pseudo_meter_attributes }
-
-      let!(:global_meter_attribute)       do
-        GlobalMeterAttribute.create(attribute_type: 'accounting_tariff',
-        meter_types: ["aggregated_electricity"], input_data: {})
-      end
-      let!(:school_group_meter_attribute) do
-        SchoolGroupMeterAttribute.create(attribute_type: 'economic_tariff',
-        meter_types: ["", "electricity", "aggregated_electricity"], school_group: school_group, input_data: {})
-      end
-
-      context 'when there are tariffs stored as pseudo meter attributes' do
-        it 'ignores them' do
-          expect(all_pseudo_meter_attributes[:aggregated_electricity]).to be_empty
-        end
-      end
-
-      context 'when there are tariffs stored as EnergyTariffs' do
-        let!(:site_wide)        { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current) }
-        let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
-        let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
-        let!(:target) { create(:school_target, start_date: Date.yesterday, school: school) }
-        let!(:estimate)  { create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
-
-        it 'maps them to the pseudo meters, targets, and estimates' do
-          expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 5
-          expect(all_pseudo_meter_attributes[:aggregated_electricity].map(&:attribute_type)).to match_array(
-            %w[
-              targeting_and_tracking
-              estimated_period_consumption
-              accounting_tariff_generic
-              accounting_tariff_generic
-              accounting_tariff_generic
-            ]
-          )
-        end
+      it 'maps them to the pseudo meters, targets, and estimates' do
+        expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 5
+        expect(all_pseudo_meter_attributes[:aggregated_electricity].map(&:attribute_type)).to match_array(
+          %w[
+            targeting_and_tracking
+            estimated_period_consumption
+            accounting_tariff_generic
+            accounting_tariff_generic
+            accounting_tariff_generic
+          ]
+        )
       end
     end
   end
