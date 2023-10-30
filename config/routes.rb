@@ -561,6 +561,7 @@ Rails.application.routes.draw do
       resources :activity_types, only: [:index, :show]
       resources :dcc_status, only: [:index]
       resources :solar_panels, only: [:index]
+      resources :community_use, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver

@@ -1,0 +1,35 @@
+<% content_for :page_title, 'Community Use Report' %>
+
+<h1>Community Use Report</h1>
+
+<p>
+  This report list the <strong><%= @schools.length %></strong> schools that has at least one "community use" period configured, along with
+  a brief summary of their configuration. Click through to view the detailed configuration of times.
+</p>
+
+<div class="row">
+  <table class="table table-sorted">
+    <thead>
+    <tr>
+      <th>School</th>
+      <th>Days</th>
+      <th>Time Of Year</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @schools.each do |school| %>
+      <tr>
+        <td><%= link_to(school.name, school_path(school)) %></td>
+        <td><%= school.school_times.community_use.unique_days.map{|d| t_day(d) }.to_sentence %></td>
+        <td><%= school.school_times.community_use.unique_calendar_periods.map{|t| t_period(t) }.sort.to_sentence %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'View', edit_school_times_path(school, id: 'community-use-section'), class: 'btn btn-sm' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

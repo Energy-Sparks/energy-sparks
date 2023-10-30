@@ -47,7 +47,7 @@ describe MeterAttribute do
   end
 
   describe '.solar_panels' do
-    let(:config) { { start_date: "2022-01-01", kwp: "10", end_date: "2023-01-01", orientation: '0', tilt: '30', shading: '6', fit_£_per_kwh: '0.3', maximum_export_level_kw: '5' } }
+    let(:config) { { start_date: "2022-01-01", kwp: "10", end_date: "2023-01-01", orientation: '0', tilt: '30', shading: '6', fit_£_per_kwh: '0.3' } }
     let!(:solar_attribute) { create(:meter_attribute, attribute_type: :solar_pv, input_data: config)}
     let!(:other_attribute) { create(:meter_attribute, attribute_type: :tariff, input_data: { type: 'economy_7' })}
     let(:solar_panels)  { MeterAttribute.solar_panels }
@@ -58,13 +58,13 @@ describe MeterAttribute do
       expect(panel.meter_attribute_id).to eq solar_attribute.id
       expect(panel.meter).to eq solar_attribute.meter
       expect(panel.school_id).to eq solar_attribute.meter.school.id
+      expect(panel.school_name).to eq solar_attribute.meter.school_name
       expect(panel.start_date).to eq '2022-01-01'
       expect(panel.end_date).to eq '2023-01-01'
       expect(panel.orientation).to eq '0'
       expect(panel.tilt).to eq '30'
       expect(panel.shading).to eq '6'
       expect(panel.fit_£_per_kwh).to eq '0.3'
-      expect(panel.maximum_export_level_kw).to eq '5'
     end
   end
 end

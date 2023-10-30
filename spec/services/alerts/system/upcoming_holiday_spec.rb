@@ -5,9 +5,10 @@ describe Alerts::System::UpcomingHoliday do
   let(:calendar) { create :calendar }
   let!(:holiday) { create :holiday, start_date: start_date, end_date: start_date + 7.days, calendar: calendar }
   let(:school) { create :school, calendar: calendar}
+  let!(:aggregate_school) { instance_double('meter-collection') }
 
   let(:today) { Date.new(2019, 4, 26) }
-  let(:report) { Alerts::System::UpcomingHoliday.new(school: school, today: today, alert_type: nil).report }
+  let(:report) { Alerts::System::UpcomingHoliday.new(school: school, aggregate_school: aggregate_school, today: today, alert_type: nil).report }
 
   context 'where the start date is in the next 7 days' do
     let(:start_date) { Date.new(2019, 4, 29) }

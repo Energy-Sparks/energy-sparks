@@ -57,8 +57,6 @@ class Meter < ApplicationRecord
 
   has_many :amr_data_feed_readings,     inverse_of: :meter
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
-  has_many :tariff_prices,              inverse_of: :meter, dependent: :destroy
-  has_many :tariff_standing_charges,    inverse_of: :meter, dependent: :destroy
   has_many :meter_attributes
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
@@ -225,24 +223,15 @@ class Meter < ApplicationRecord
     global_meter_attributes +
       school_group_meter_attributes +
       school_meter_attributes +
-      active_meter_attributes +
+      meter_attributes.active +
       energy_tariff_meter_attributes
-  end
-
-  def active_meter_attributes
-    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-      meter_attributes.where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
-    else
-      meter_attributes.active
-    end
   end
 
   def energy_tariff_meter_attributes
     attributes = []
-    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-      school_attributes = school.all_energy_tariff_attributes(meter_type, applies_to_for_meter_system)
-      attributes += school_attributes unless school_attributes.nil?
-    end
+    school_attributes = school.all_energy_tariff_attributes(meter_type, applies_to_for_meter_system)
+    attributes += school_attributes unless school_attributes.nil?
+
     # It should NOT filter the tariffs with which it is directly associated.
     # If a meter is explicitly linked to a tariff then it applies to it, regardless.
     attributes += energy_tariffs.enabled.usable.map(&:meter_attribute)
@@ -277,10 +266,6 @@ class Meter < ApplicationRecord
 
   def can_withdraw_consent?
     consent_granted
-  end
-
-  def smart_meter_tariff_attributes
-    @smart_meter_tariff_attributes ||= Amr::AnalyticsTariffFactory.new(self).build
   end
 
   def open_issues_count
