@@ -22,6 +22,9 @@
 class SchoolTime < ApplicationRecord
   belongs_to :school, inverse_of: :school_times
 
+  scope :unique_days, -> { distinct(:days).pluck(:day) }
+  scope :unique_calendar_periods, -> { distinct(:calendar_periods).pluck(:calendar_period) }
+
   enum day: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :weekdays, :weekends, :everyday]
   enum usage_type: [:school_day, :community_use]
   enum calendar_period: [:term_times, :only_holidays, :all_year]

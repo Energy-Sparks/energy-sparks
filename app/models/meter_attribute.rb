@@ -48,27 +48,28 @@ class MeterAttribute < ApplicationRecord
 
   def self.solar_panels
     query = <<-SQL.squish
-      SELECT ma.id, m.school_id, ma.meter_id, solar.*
+      SELECT ma.id, m.school_id, s.name, ma.meter_id, solar.*
       FROM meter_attributes ma
-      INNER JOIN meters m ON ma.meter_id = m.id,
-      JSON_TO_RECORD(ma.input_data) AS solar(start_date TEXT, end_date TEXT, kwp TEXT, orientation TEXT, tilt TEXT, shading TEXT, fit_£_per_kwh TEXT, maximum_export_level_kw TEXT)
+      INNER JOIN meters m ON ma.meter_id = m.id
+      INNER JOIN schools s ON m.school_id = s.id,
+      JSON_TO_RECORD(ma.input_data) AS solar(start_date TEXT, end_date TEXT, kwp TEXT, orientation TEXT, tilt TEXT, shading TEXT, fit_£_per_kwh TEXT)
       WHERE ma.attribute_type='solar_pv' AND ma.deleted_by_id IS NULL AND ma.replaced_by_id IS NULL
-      ORDER BY meter_id;
+      ORDER BY s.name;
     SQL
     sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)
     MeterAttribute.connection.select_all(sanitized_query).rows.map do |row|
       OpenStruct.new(
         meter_attribute_id: row[0],
         school_id: row[1],
-        meter: Meter.find(row[2]),
-        start_date: row[3],
-        end_date: row[4],
-        kwp: row[5],
-        orientation: row[6],
-        tilt: row[7],
-        shading: row[8],
-        fit_£_per_kwh: row[9],
-        maximum_export_level_kw: row[10]
+        school_name: row[2],
+        meter: Meter.find(row[3]),
+        start_date: row[4],
+        end_date: row[5],
+        kwp: row[6],
+        orientation: row[7],
+        tilt: row[8],
+        shading: row[9],
+        fit_£_per_kwh: row[10]
       )
     end
   end
