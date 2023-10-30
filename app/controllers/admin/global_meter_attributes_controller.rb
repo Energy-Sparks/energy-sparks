@@ -5,7 +5,7 @@ module Admin
     def index
       @meter_attributes = GlobalMeterAttribute.active
       @deleted_meter_attributes = GlobalMeterAttribute.deleted
-      @available_meter_attributes = MeterAttributes.all
+      @available_meter_attributes = MeterAttributes.all(filter: true)
     end
 
     def new
