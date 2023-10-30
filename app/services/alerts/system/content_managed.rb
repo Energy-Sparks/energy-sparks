@@ -27,8 +27,9 @@ module Alerts
         {}
       end
 
-      def initialize(school:, alert_type:, today: Time.zone.today)
+      def initialize(school:, aggregate_school:, alert_type:, today: Time.zone.today)
         @school = school
+        @aggregate_school = aggregate_school
         @today = today
         @alert_type = alert_type
       end
