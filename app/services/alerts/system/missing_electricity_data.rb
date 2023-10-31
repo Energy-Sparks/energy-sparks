@@ -1,18 +1,8 @@
 module Alerts
   module System
     class MissingElectricityData
-      # Temporary constant to match analytics
-      TEMPLATE_VARIABLES = {
-        mpan_mprns: {
-          description: 'A list of the MPAN/MPRNs for the late running meters',
-          units: :string
-        }
-      }.freeze
-
       def self.front_end_template_variables
-        {
-          'General' => TEMPLATE_VARIABLES
-        }
+        {}
       end
 
       def self.front_end_template_charts
