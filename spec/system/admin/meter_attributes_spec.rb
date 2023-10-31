@@ -233,25 +233,5 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       expect(page).to have_content('New attribute: Accounting tariff (generic + DCC)')
     end
-
-    context 'with dcc_meter' do
-      let!(:standing_charge) { create(:tariff_standing_charge, meter: gas_meter, start_date: Time.zone.today) }
-      let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: gas_meter, tariff_date: Time.zone.today) }
-
-      it 'does not display tariff attributes for other meters' do
-        visit school_path(school)
-        click_on 'Meter attributes'
-        expect(page).not_to have_content("from DCC tariff data")
-      end
-
-      it 'allows admin to see tariff attributes for dcc meters' do
-        gas_meter.update!(dcc_meter: true)
-        visit school_path(school)
-        click_on 'Meter attributes'
-        expect(page).to have_content("from DCC tariff data")
-        expect(page).to have_link("DCC tariff data")
-        expect(page).to have_content("Tariff from DCC SMETS2 meter")
-      end
-    end
   end
 end

@@ -105,8 +105,6 @@ class MeterManagement
   def remove_data!(archive: false)
     result = true
     @meter.transaction do
-      @meter.tariff_prices.delete_all
-      @meter.tariff_standing_charges.delete_all
       @meter.amr_data_feed_readings.delete_all unless archive
       @meter.amr_validated_readings.delete_all
     end

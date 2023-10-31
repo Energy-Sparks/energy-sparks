@@ -237,12 +237,6 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         expect(page).to have_content("Smart meter tariffs")
       end
 
-      it 'the single meter attributes view can be shown' do
-        click_on meter.mpan_mprn.to_s
-        click_on 'Attributes'
-        expect(page).to have_content("Individual Meter attributes")
-      end
-
       it 'the dcc checkboxes and status are shown on the edit form' do
         click_on 'Edit'
         check "DCC Smart Meter"

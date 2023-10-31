@@ -20,7 +20,6 @@ describe Alerts::System::MissingGasData do
     let(:gas_end_date) { today - 21.days }
 
     before do
-      allow(gas_aggregate_meter).to receive(:meter_list).and_return(%w[11234567890 21234567890 31234567890])
       allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
     end
 
@@ -40,9 +39,8 @@ describe Alerts::System::MissingGasData do
       expect(report.relevance).to eq(:relevant)
     end
 
-    it 'has the mpan_mprns as a variable' do
-      expect(report.template_data[:mpan_mprns]).to eq('11234567890, 21234567890, and 31234567890')
-      expect(report.template_data_cy[:mpan_mprns]).to eq('11234567890, 21234567890, a 31234567890')
+    it 'has no template variables' do
+      expect(report.template_data).to be_empty
     end
 
     it 'has a priority relevance of 5' do
