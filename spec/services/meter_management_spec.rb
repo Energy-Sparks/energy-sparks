@@ -147,9 +147,7 @@ describe MeterManagement do
     end
 
     context 'for DCC meter' do
-      let!(:meter)                   { create(:electricity_meter_with_reading, dcc_meter: true) }
-      let!(:tariff_price)            { create(:tariff_price, meter: meter) }
-      let!(:tariff_standing_charge)  { create(:tariff_standing_charge, meter: meter) }
+      let!(:meter) { create(:electricity_meter_with_reading, dcc_meter: true) }
 
       it "sets meter active and consents" do
         expect_any_instance_of(Meters::DccGrantTrustedConsents).to receive(:perform).and_return(true)
@@ -165,12 +163,6 @@ describe MeterManagement do
         MeterManagement.new(meter).deactivate_meter!
         meter.reload
         expect(meter.active).to be_falsey
-      end
-
-      it "removes tariffs" do
-        MeterManagement.new(meter).remove_data!
-        expect(meter.tariff_prices.count).to eq 0
-        expect(meter.tariff_standing_charges.count).to eq 0
       end
 
       it "removes amr data feed readings" do

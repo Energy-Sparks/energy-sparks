@@ -41,12 +41,8 @@ module Alerts
           rating: [0.0, rating].max,
           enough_data: :enough,
           relevance: :relevant,
-          template_data: {
-            mpan_mprns: mpan_mprns
-          },
-          template_data_cy: {
-            mpan_mprns: mpan_mprns(locale: :cy)
-          },
+          template_data: {},
+          template_data_cy: {},
           priority_data: {
             time_of_year_relevance: 5.0
           }
@@ -68,10 +64,6 @@ module Alerts
 
       def cutoff
         @cutoff ||= @today - MISSING_CUTOFF_DAYS.days
-      end
-
-      def mpan_mprns(locale: :en)
-        I18n.with_locale(locale) { @aggregated_meters.meter_list.to_sentence }
       end
     end
   end

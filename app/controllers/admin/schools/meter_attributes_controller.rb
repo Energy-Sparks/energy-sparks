@@ -3,8 +3,6 @@ module Admin
     class MeterAttributesController < AdminController
       load_and_authorize_resource :school
 
-      include MeterAttributesHelper
-
       def index
         @available_meter_attributes = MeterAttributes.all
         @meters = @school.meters.order(:mpan_mprn)
