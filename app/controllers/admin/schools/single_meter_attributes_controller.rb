@@ -4,8 +4,6 @@ module Admin
       before_action :set_view_paths
       load_and_authorize_resource :school
 
-      include MeterAttributesHelper
-
       def show
         @available_meter_attributes = MeterAttributes.all
         @meter = @school.meters.find(params[:id])
