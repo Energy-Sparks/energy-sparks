@@ -4,7 +4,7 @@ module Admin
       load_and_authorize_resource :school
 
       def index
-        @available_meter_attributes = MeterAttributes.all
+        @available_meter_attributes = MeterAttributes.all(filter: true)
         @meters = @school.meters.order(:mpan_mprn)
       end
 
