@@ -8,7 +8,89 @@ describe AmrUploadedReading, type: :system do
     visit root_path
     click_on 'Manage'
     click_on 'Admin'
-    click_on 'AMR Data feed configuration'
+  end
+
+  describe 'viewing configuration summary' do
+    before do
+      config
+      click_on 'AMR Data feed configuration'
+      within '#configuration-overview' do
+        click_on 'Upload'
+      end
+    end
+
+    context 'with row per day config' do
+      let!(:config) { create(:amr_data_feed_config, row_per_reading: false, number_of_header_rows: 1) }
+
+      it 'explains this to user' do
+        expect(page).to have_content('One row per day, with all half-hourly periods in columns')
+      end
+
+      it 'says how many header rows' do
+        expect(page).to have_content('1 header rows')
+      end
+
+      context 'with no header rows' do
+        let!(:config) { create(:amr_data_feed_config, row_per_reading: false, number_of_header_rows: 0) }
+
+        it 'says there are no header rows' do
+          expect(page).to have_content('No header row')
+        end
+      end
+
+      it 'explains the MPAN field' do
+        expect(page).to have_content('The MPAN/MPRN to be in a column labelled ' + config.mpan_mprn_field)
+      end
+
+      it 'explains the date field' do
+        expect(page).to have_content('The reading date to be in a column labelled ' + config.reading_date_field)
+      end
+
+      it 'explains the reading fields' do
+        expect(page).to have_content('Reading fields to be in columns labelled')
+      end
+
+      context 'with a serial number config' do
+        let!(:config) { create(:amr_data_feed_config, row_per_reading: false, msn_field: 'Serial', lookup_by_serial_number: true) }
+
+        it 'explains the serial number field' do
+          expect(page).to have_content('The Meter Serial Numbers in a column labelled ' + config.msn_field)
+        end
+      end
+    end
+
+    context 'with row per reading config' do
+      let!(:config) { create(:amr_data_feed_config, row_per_reading: true, reading_fields: ['Reading']) }
+
+      it 'explains this to user' do
+        expect(page).to have_content('One row per half hour reading')
+      end
+
+      it 'explains the date field' do
+        expect(page).to have_content('The reading date to be in a column labelled ' + config.reading_date_field)
+      end
+
+      it 'explains the reading field column' do
+        expect(page).to have_content('A reading field column labelled Reading')
+      end
+
+      context 'with a positional index' do
+        let!(:config) { create(:amr_data_feed_config, row_per_reading: true, reading_fields: ['Reading'], positional_index: true, period_field: 'SettlementTime') }
+
+        it 'explains the index column' do
+          expect(page).to have_content('A numbered half-hourly period in a column labelled SettlementTime')
+        end
+      end
+
+      context 'with a separate reading time column' do
+        let!(:config) { create(:amr_data_feed_config, row_per_reading: true, reading_fields: ['Reading'], reading_time_field: 'ReadingTime') }
+
+        it 'explains the reading time column' do
+          expect(page).to have_content('The reading times to specified in a separate column labelled ReadingTime')
+          expect(page).to have_content('The separate reading times to be formatted like this')
+        end
+      end
+    end
   end
 
   describe 'normal file format' do

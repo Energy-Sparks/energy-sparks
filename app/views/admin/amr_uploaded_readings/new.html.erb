@@ -60,29 +60,53 @@
   </div>
   <div class="tab-pane fade show" id="config" role="tabpanel" aria-labelledby="config-tab">
       <h4>Configuration summary</h4>
+
       <p>The import process is expecting a file with:</p>
+
       <ul>
-        <li>a date format of <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b></li>
-        <% if @amr_data_feed_config.number_of_header_rows > 0 %>
-          <li>the file to have <b><%= @amr_data_feed_config.number_of_header_rows %> header rows</b></li>
+        <% if @amr_data_feed_config.row_per_reading %>
+          <li>One <b>row per half hour reading</b></li>
         <% else %>
-          <li>the file to not have a header row</li>
+          <li>One <b>row per day</b>, with all half-hourly periods in columns</li>
         <% end %>
+
+        <% if @amr_data_feed_config.number_of_header_rows > 0 %>
+          <li><b><%= @amr_data_feed_config.number_of_header_rows %> header rows</b></li>
+        <% else %>
+          <li>No header row</li>
+        <% end %>
+
+        <% if @amr_data_feed_config.lookup_by_serial_number %>
+          <li>The Meter Serial Numbers in a column labelled <b><%= @amr_data_feed_config.msn_field %></b>
+        <% else %>
+          <li>The MPAN/MPRN to be in a column labelled <b><%= @amr_data_feed_config.mpan_mprn_field %></b></li>
+        <% end %>
+
+        <% if @amr_data_feed_config.row_per_reading && (@amr_data_feed_config.reading_time_field.nil? && @amr_data_feed_config.period_field.nil?) %>
+          <li>The date and time for the reading date to be in a column labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
+        <% else %>
+          <li>The reading date to be in a column labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
+        <% end %>
+
+        <li>Dates formatted like this <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b> (<code><%= @amr_data_feed_config.date_format %></code>)</li>
+
+        <% if @amr_data_feed_config.row_per_reading %>
+          <li>A reading field column labelled  <b><%= @amr_data_feed_config.reading_fields.first %></b></li>
+          <% if @amr_data_feed_config.positional_index && @amr_data_feed_config.period_field %>
+            <li>A <b>numbered</b> half-hourly period in a column labelled <b><%= @amr_data_feed_config.period_field %></b></li>
+          <% end %>
+          <% if @amr_data_feed_config.reading_time_field %>
+            <li>The reading times to specified in a separate column labelled <b><%= @amr_data_feed_config.reading_time_field %></b></li>
+            <li>The separate reading times to be formatted like this <b>01:30</b>, <b>23:30</b> but this format is also supported: <b>130</b>, <b>2330</b></li>
+          <% end %>
+        <% else %>
+          <li>Reading fields to be in columns labelled <b><%= @amr_data_feed_config.reading_fields.join(',').truncate(70) %></b></li>
+        <% end %>
+
         <% if @amr_data_feed_config.handle_off_by_one %>
           <li>It is expecting the half hourly readings to be off by one half hour</li>
         <% end %>
 
-        <% if @amr_data_feed_config.header_example %>
-          <li>the header to be <b><%= @amr_data_feed_config.header_example.truncate(70) %></b></li>
-        <% end %>
-
-        <li>the MPAN/MPRN to be in a field titled <b><%= @amr_data_feed_config.mpan_mprn_field %></b></li>
-        <li>the reading date to be in a field titled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
-        <li>It expects the reading fields to be titled <b><%= @amr_data_feed_config.reading_fields.join(',').truncate(70) %></b></li>
-
-        <% if @amr_data_feed_config.row_per_reading %>
-          <li>It expects there to be <b>a row per half hour reading</b>, rather than a row per day</li>
-        <% end %>
       </ul>
 
       <h3>Header example</h3>
@@ -90,7 +114,9 @@
       <p>The file will have a header that looks like:</p>
 
       <p style="overflow-wrap: anywhere;">
-      <%= @amr_data_feed_config.header_example %>
+        <code>
+        <%= @amr_data_feed_config.header_example %>
+        </code>
       </p>
   </div>
 </div>
