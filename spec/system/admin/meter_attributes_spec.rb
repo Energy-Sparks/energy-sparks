@@ -100,7 +100,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       visit school_path(school)
       click_on 'Meter attributes'
       click_on 'School-wide attributes'
-      select 'Function > Switch', from: 'type'
+      select 'Meter > Energy Use', from: 'type'
       click_on 'New attribute'
 
       check 'gas'
@@ -142,7 +142,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       end
       click_on 'Meter attributes'
 
-      select 'Function > Switch', from: 'type'
+      select 'Meter > Energy Use', from: 'type'
       click_on 'New attribute'
 
       check 'gas'
@@ -191,7 +191,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Manage'
       click_on 'Admin'
       click_on 'Global Meter Attributes'
-      select 'Function > Switch', from: 'type'
+      select 'Meter > Energy Use', from: 'type'
       click_on 'New attribute'
 
       check 'gas'
