@@ -1,16 +1,26 @@
 <h1>Engaged Schools</h1>
 
 
-<table class="table">
+<table class="table table-sorted">
   <thead>
     <tr>
+      <th>School Group</th>
       <th>School</th>
+      <th>Recent activities</th>
+      <th>Recent actions</th>
+      <th>Current target?</th>
+      <th>Recent logged in users</th>
     </tr>
   </thead>
   <tbody>
     <% @engaged_schools.each do |school| %>
       <tr>
+        <td><%= school.school_group.name %></td>
         <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= school.activities.where('created_at >= ?', 30.days.ago).count %></td>
+        <td><%= school.observations.intervention.where('created_at >= ?', 30.days.ago).count %></td>
+        <td data-order="<%= school.school_targets.currently_active.any? ? '1' : '0' %>"><%= checkmark(school.school_targets.currently_active.any?, off_class: 'text-muted') %></td>
+        <td><%= school.users.recently_logged_in(30.days.ago).count %></td>
       </tr>
     <% end %>
   </tbody>
