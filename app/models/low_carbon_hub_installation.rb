@@ -40,7 +40,7 @@ class LowCarbonHubInstallation < ApplicationRecord
   end
 
   def latest_electricity_reading
-    if electricity_meter && electricity_meter.amr_data_feed_readings
+    if electricity_meter && electricity_meter.amr_data_feed_readings.any?
       Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
     end
   end

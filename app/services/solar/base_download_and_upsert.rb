@@ -9,10 +9,10 @@ module Solar
     def perform
       download_and_upsert
     rescue => e
+      Rollbar.error(e, job: job, school: school.name, start_date: start_date, end_date: end_date, installation_id: @installation.id)
       import_log.update!(error_messages: "Error downloading data from #{start_date} to #{end_date} for #{school.name} : #{e.class}  #{e.message}")
       Rails.logger.error "Exception: downloading solar data from #{start_date} to #{end_date} : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, job: job, school: school.name, start_date: start_date, end_date: end_date, installation_id: @installation.id)
     end
 
     protected
