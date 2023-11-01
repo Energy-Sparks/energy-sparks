@@ -22,8 +22,7 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
       <h3 class="analysis">Loading: <%= chart.to_s.humanize %></h3>
     </div>
     <div class="advice-header"></div>
-    <%= render 'shared/analysis_controls', chart_type: chart.to_s, axis_controls: true, analysis_controls: true %>
-    <%= chart_tag(@school, chart.to_s, chart_config: @chart_config, wrap: false, show_advice: true) %>
+    <%= component 'chart', chart_type: chart.to_s, analysis_controls: true, school: @school, chart_config: @chart_config.merge!(show_advice: true) %>
     <div class="advice-footer"></div>
   </div>
 <% end %>

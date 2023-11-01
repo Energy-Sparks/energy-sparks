@@ -25,9 +25,16 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12 chart-wrapper" id="chart_wrapper_<%=@chart_config[@period]%>">
-      <%= render 'shared/analysis_controls', chart_type: @chart_config[@period].to_s, analysis_controls: false, axis_controls: @show_measurements %>
-      <%= chart_tag(@school, @chart_config[@period], no_zoom: true, wrap: false, html_class: 'usage-chart', chart_config: create_chart_config(@school, @chart_config[@period])) %>
+    <div class="col-md-12">
+      <%= component 'chart',
+                    school: @school,
+                    chart_type: @chart_config[@period],
+                    analysis_controls: true,
+                    no_zoom: true,
+                    analysis_controls: false,
+                    chart_config: create_chart_config(@school, @chart_config[@period]),
+                    html_class: 'usage-chart'
+      %>
     </div>
   </div>
 
