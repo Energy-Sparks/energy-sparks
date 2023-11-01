@@ -30,7 +30,7 @@
         </td>
         <td><%= checkmark(!config.column_row_filters.empty?, off_class: 'text-muted') %> </td>
         <td><%= checkmark(config.row_per_reading, off_class: 'text-muted') %>
-        <td><%= checkmark(config.positional_index, off_class: 'text-muted') %> </td>
+        <td><%= checkmark(config.positional_index && config.period_field, off_class: 'text-muted') %> </td>
         <td width="100%" class="overflow">
           <code><%= config.reading_fields %></code>
         </td>
