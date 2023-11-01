@@ -10,6 +10,7 @@
       <th>Recent actions</th>
       <th>Current target?</th>
       <th>Recent logged in users</th>
+      <th>Most recent sign-in</th>
     </tr>
   </thead>
   <tbody>
@@ -17,10 +18,12 @@
       <tr>
         <td><%= school.school_group.name %></td>
         <td><%= link_to school.name, school_path(school) %></td>
-        <td><%= school.activities.where('created_at >= ?', 30.days.ago).count %></td>
-        <td><%= school.observations.intervention.where('created_at >= ?', 30.days.ago).count %></td>
+        <td><%= school.activities.where('created_at >= ?', AcademicYear.current.start_date).count %></td>
+        <td><%= school.observations.intervention.where('created_at >= ?', AcademicYear.current.start_date).count %></td>
         <td data-order="<%= school.school_targets.currently_active.any? ? '1' : '0' %>"><%= checkmark(school.school_targets.currently_active.any?, off_class: 'text-muted') %></td>
-        <td><%= school.users.recently_logged_in(30.days.ago).count %></td>
+        <td><%= school.users.recently_logged_in(AcademicYear.current.start_date).count %></td>
+        <% most_recent = school.users.recently_logged_in(AcademicYear.current.start_date).pluck(:last_sign_in_at).max %>
+        <td data-order="<%= most_recent.present? ? most_recent.iso8601 : '' %>"><%= nice_date_times(most_recent) %></td>
       </tr>
     <% end %>
   </tbody>

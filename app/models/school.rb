@@ -203,10 +203,10 @@ class School < ApplicationRecord
 
   #includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
   #TODO: exclude default programme
-  scope :with_recent_engagement, -> { where(id: Observation.engagement.recorded_since(30.days.ago).select(:school_id)) }
+  scope :with_recent_engagement, -> { where(id: Observation.engagement.recorded_since(AcademicYear.current.start_date).select(:school_id)) }
 
   #TODO: cluster users, not just those directly linked
-  scope :with_recently_logged_in_users, -> { where(id: User.recently_logged_in(30.days.ago).select(:school_id))}
+  scope :with_recently_logged_in_users, -> { where(id: User.recently_logged_in(AcademicYear.current.start_date).select(:school_id))}
 
   scope :engaged, -> { with_recent_engagement.or(with_recently_logged_in_users) }
 
