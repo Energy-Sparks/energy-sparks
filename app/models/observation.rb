@@ -71,6 +71,8 @@ class Observation < ApplicationRecord
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
 
+  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme]) }
+
   has_rich_text :description
 
   before_save :add_points_for_interventions, if: :intervention?

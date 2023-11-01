@@ -1,0 +1,17 @@
+<h1>Engaged Schools</h1>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>School</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @engaged_schools.each do |school| %>
+      <tr>
+        <td><%= link_to school.name, school_path(school) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>

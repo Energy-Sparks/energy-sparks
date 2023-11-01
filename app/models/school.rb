@@ -201,6 +201,14 @@ class School < ApplicationRecord
   scope :with_energy_tariffs, -> { joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'").group('schools.id').order('schools.name') }
   scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id))}
 
+  #includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
+  #TODO: exclude default programme
+  scope :with_recent_engagement, -> { where(id: Observation.engagement.recorded_in_last_year.select(:school_id)) }
+  #TODO: cluster users, not just those directly linked
+  scope :with_recently_logged_in_users, -> { where(id: User.recently_logged_in.select(:school_id))}
+
+  scope :engaged, -> { with_recent_engagement.or(with_recently_logged_in_users) }
+
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }

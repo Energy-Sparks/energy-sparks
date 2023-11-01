@@ -69,6 +69,7 @@ class User < ApplicationRecord
 
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin], User.roles[:volunteer]]) }
 
+  scope :recently_logged_in, -> { where('last_sign_in_at >= ?', 1.year.ago) }
   validates :email, presence: true
 
   validates :pupil_password, presence: true, if: :pupil?
