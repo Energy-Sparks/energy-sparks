@@ -206,11 +206,12 @@ class School < ApplicationRecord
   scope :with_recent_engagement, -> { where(id: Observation.engagement.recorded_since(AcademicYear.current.start_date).select(:school_id)) }
 
   scope :with_transport_survey, -> { where(id: TransportSurvey.recently_added(AcademicYear.current.start_date).select(:school_id))}
+  scope :joined_programme, -> { where(id: Programme.recently_started_non_default(AcademicYear.current.start_date).select(:school_id))}
 
   #TODO: cluster users, not just those directly linked
   scope :with_recently_logged_in_users, -> { where(id: User.recently_logged_in(AcademicYear.current.start_date).select(:school_id))}
 
-  scope :engaged, -> { with_recent_engagement.or(with_recently_logged_in_users).or(with_transport_survey) }
+  scope :engaged, -> { with_recent_engagement.or(with_recently_logged_in_users).or(with_transport_survey).or(joined_programme) }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn

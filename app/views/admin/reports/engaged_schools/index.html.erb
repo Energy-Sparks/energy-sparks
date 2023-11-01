@@ -16,10 +16,13 @@
 <ul>
   <li>We only started comprehensively logging all visits by logged in users in October 2023. So this may explain why there are no logged in users, but schools have, e.g. recorded an activity.</li>
   <li>Users can record they've attended training by recording an action, but otherwise attendance at our training events isn't included as a measure of engagement</li>
+  <li>All schools are enrolled in the default programme when they finish onboarding. This isn't included in the below figures, which only include programmes where the school have opted to start it themselves</li>
   <li>When we check the dates for activity and actions being recorded, we check the date it was added to the system. So recording historical activities and actions count as engagement for the current academic year, because the user is engaging with the site</li>
   <li>For audits the date checked is when the auditor starts adding the report to the website, which may be after the actual audit date</li>
   <li>We're looking at engagement since early September of the current English school year</li>
 </ul>
+
+<p>Using the above measures, EnergySparks currently has <strong><%= @engaged_schools.count %></strong> engaged schools</p>
 
 <table class="table table-sorted">
   <thead>
@@ -27,11 +30,13 @@
       <th>School Group</th>
       <th>School</th>
       <th>Funder</th>
+      <th>Country</th>
       <th>Activities</th>
       <th>Actions</th>
+      <th>Programmes</th>
       <th>Target?</th>
       <th>Transport survey?</th>
-      <th>Logged temperatures?</th>
+      <th>Temperatures?</th>
       <th>Active users</th>
       <th>Most recent visit</th>
     </tr>
@@ -42,12 +47,22 @@
         <td><%= link_to school.school_group.name, school_group_path(school.school_group) %></td>
         <td><%= link_to school.name, school_path(school) %></td>
         <td><%= school.funder.name if school.funder %></td>
+        <td><%= school.country.humanize %></td>
         <td><%= link_to school.activities.where('created_at >= ?', AcademicYear.current.start_date).count, school_timeline_path(school) %></td>
         <td><%= link_to school.observations.intervention.where('created_at >= ?', AcademicYear.current.start_date).count, school_timeline_path(school) %></td>
-        <td data-order="<%= school.school_targets.currently_active.any? ? '1' : '0' %>"><%= checkmark(school.school_targets.currently_active.any?, off_class: 'text-muted') %></td>
-        <td data-order="<%= school.transport_surveys.recently_run(AcademicYear.current.start_date).any? ? '1' : '0' %>"><%= checkmark(school.transport_surveys.recently_run(AcademicYear.current.start_date).any?, off_class: 'text-muted') %></td>
-        <td data-order="<%= school.observations.temperature.where('created_at >= ?', AcademicYear.current.start_date).any? ? '1' : '0' %>"><%= checkmark(school.observations.temperature.where('created_at >= ?', AcademicYear.current.start_date).any?, off_class: 'text-muted') %></td>
+        <td><%= school.programmes.recently_started_non_default(AcademicYear.current.start_date).count %></td>
+
+        <% active_targets = school.school_targets.currently_active.any? %>
+        <td data-order="<%= active_targets ? '1' : '0' %>"><%= checkmark(active_targets, off_class: 'text-muted') %></td>
+
+        <% surveys = school.transport_surveys.recently_run(AcademicYear.current.start_date).any? %>
+        <td data-order="<%= surveys ? '1' : '0' %>"><%= checkmark(surveys, off_class: 'text-muted') %></td>
+
+        <% temperatures = school.observations.temperature.where('created_at >= ?', AcademicYear.current.start_date).any? %>
+        <td data-order="<%= temperatures ? '1' : '0' %>"><%= checkmark(temperatures, off_class: 'text-muted') %></td>
+
         <td><%= link_to school.users.recently_logged_in(AcademicYear.current.start_date).count, admin_school_group_users_path(school.school_group) %></td>
+
         <% most_recent = school.users.recently_logged_in(AcademicYear.current.start_date).pluck(:last_sign_in_at).max %>
         <td data-order="<%= most_recent.present? ? most_recent.iso8601 : '' %>"><%= nice_date_times(most_recent) %></td>
       </tr>
