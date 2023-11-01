@@ -141,29 +141,29 @@ RSpec.describe "meter attribute management", :meters, type: :system do
         click_on 'Manage'
       end
       click_on 'Meter attributes'
-      select 'Tariff', from: 'type'
+
+      select 'Function > Switch', from: 'type'
       click_on 'New attribute'
 
-      check 'electricity'
-      select 'economy_7', from: 'Type'
+      check 'gas'
+      select 'hotwater_only', from: 'attribute_root'
 
       click_on 'Create'
 
       expect(school_group.meter_attributes.size).to eq(1)
-      attribute = school_group.meter_attributes.first
-      expect { attribute.to_analytics }.not_to raise_error
-      expect(attribute.to_analytics.to_s).to include('economy_7')
+      attribute = school_group.meter_attributes.active.first
+      expect(attribute.selected_meter_types).to eq([:gas])
 
       click_on 'Edit'
 
-      check 'gas'
-      uncheck 'electricity'
+      check 'electricity'
+      uncheck 'gas'
 
       click_on 'Update'
 
       school_group.reload
       new_attribute = school_group.meter_attributes.active.first
-      expect(new_attribute.selected_meter_types).to eq([:gas])
+      expect(new_attribute.selected_meter_types).to eq([:electricity])
       attribute.reload
       expect(attribute.replaced_by).to eq(new_attribute)
 
@@ -191,29 +191,27 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Manage'
       click_on 'Admin'
       click_on 'Global Meter Attributes'
-      select 'Tariff', from: 'type'
+      select 'Function > Switch', from: 'type'
       click_on 'New attribute'
 
-      check 'electricity'
-      select 'economy_7', from: 'Type'
+      check 'gas'
+      select 'hotwater_only', from: 'attribute_root'
 
       click_on 'Create'
 
       expect(GlobalMeterAttribute.count).to eq(1)
       attribute = GlobalMeterAttribute.first
       expect { attribute.to_analytics }.not_to raise_error
-      expect(attribute.to_analytics.to_s).to include('economy_7')
-
 
       click_on 'Edit'
 
-      check 'gas'
-      uncheck 'electricity'
+      check 'electricity'
+      uncheck 'gas'
 
       click_on 'Update'
 
       new_attribute = GlobalMeterAttribute.active.first
-      expect(new_attribute.selected_meter_types).to eq([:gas])
+      expect(new_attribute.selected_meter_types).to eq([:electricity])
       attribute.reload
       expect(attribute.replaced_by).to eq(new_attribute)
 
@@ -221,17 +219,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       expect(GlobalMeterAttribute.active.count).to eq(0)
       new_attribute.reload
       expect(new_attribute.deleted_by).to eq(admin)
-    end
-
-    it 'works with tiered tariffs in generic accounting tariff' do
-      visit root_path
-      click_on 'Manage'
-      click_on 'Admin'
-      click_on 'Global Meter Attributes'
-      select 'Accounting tariff (generic + DCC)', from: 'type'
-      click_on 'New attribute'
-
-      expect(page).to have_content('New attribute: Accounting tariff (generic + DCC)')
     end
   end
 end

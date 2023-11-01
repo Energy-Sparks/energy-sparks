@@ -7,6 +7,15 @@ FactoryBot.define do
     username { |n| "username_#{n}" }
     password { |n| "password_#{n}" }
 
+    trait :with_electricity_meter do
+      after(:create) do |low_carbon_hub_installation, _evaluator|
+        create(:electricity_meter,
+          mpan_mprn: 60000000000000 + low_carbon_hub_installation.rbee_meter_id.to_i,
+          pseudo: true,
+          low_carbon_hub_installation: low_carbon_hub_installation)
+      end
+    end
+
     factory :low_carbon_hub_installation_with_meters_and_validated_readings do
       transient do
         reading_count { 1 }

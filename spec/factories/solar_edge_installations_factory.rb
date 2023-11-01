@@ -6,6 +6,15 @@ FactoryBot.define do
     sequence(:mpan) { |n| n }
     sequence(:api_key) { |n| "api_key_#{n}" }
 
+    trait :with_electricity_meter do
+      after(:create) do |solar_edge_installation, _evaluator|
+        create(:electricity_meter,
+          mpan_mprn: 60000000000000 + solar_edge_installation.mpan.to_i,
+          pseudo: true,
+          solar_edge_installation: solar_edge_installation)
+      end
+    end
+
     factory :solar_edge_installation_with_meters_and_validated_readings do
       transient do
         reading_count { 1 }

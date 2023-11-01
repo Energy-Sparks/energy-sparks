@@ -11,7 +11,7 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
     let(:html) { render_inline(ChartComponent.new(**params)) }
 
     it { expect(html).not_to have_selector("h4") }
-    it { expect(html).not_to have_selector("h5") }
+    it { expect(html).not_to have_selector("h5.chart-subtitle") }
     it { expect(html).to have_selector("div", id: "chart_wrapper_baseload") }
     it { expect(html).to have_selector("div", class: "usage-chart") }
 
@@ -40,7 +40,7 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
 
     it { expect(html).to have_selector("h4", text: "I'm a title") }
     it { expect(html).to have_selector("h4", id: "chart-section-baseload") }
-    it { expect(html).to have_selector("h5", text: "I'm a subtitle") }
+    it { expect(html).to have_selector("h5.chart-subtitle", text: "I'm a subtitle") }
     it { expect(html).to have_selector("strong", text: "I'm a header") }
     it { expect(html).to have_selector("small", text: "I'm a footer") }
   end

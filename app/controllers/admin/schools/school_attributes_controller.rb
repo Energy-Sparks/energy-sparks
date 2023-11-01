@@ -8,7 +8,7 @@ module Admin
         @deleted_meter_attributes = @school.meter_attributes.deleted
         @group_meter_attributes = @school.school_group.meter_attributes.active
         @global_meter_attributes = GlobalMeterAttribute.active
-        @available_meter_attributes = MeterAttributes.all
+        @available_meter_attributes = MeterAttributes.all(filter: true)
       end
 
       def new

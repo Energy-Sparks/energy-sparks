@@ -6,7 +6,7 @@ module Admin
       def index
         @meter_attributes = @school_group.meter_attributes.active
         @deleted_meter_attributes = @school_group.meter_attributes.deleted
-        @available_meter_attributes = MeterAttributes.all
+        @available_meter_attributes = MeterAttributes.all(filter: true)
       end
 
       def new

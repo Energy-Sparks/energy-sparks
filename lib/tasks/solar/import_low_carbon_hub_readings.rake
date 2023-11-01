@@ -6,9 +6,17 @@ namespace :solar do
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : nil
 
     puts "#{DateTime.now.utc} import_low_carbon_hub_readings start"
-    LowCarbonHubInstallation.all.each do |installation|
-      puts "Running for #{installation.rbee_meter_id}"
-      Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: start_date, end_date: end_date).perform
+    begin
+      LowCarbonHubInstallation.all.each do |installation|
+        puts "Running for #{installation.rbee_meter_id}"
+        Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: start_date, end_date: end_date).perform
+      end
+    rescue => e
+      puts "Exception: importing readings #{e.class} #{e.message}"
+      puts e.backtrace.join("\n")
+      Rails.logger.error "Exception: importing readings: #{e.class} #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      Rollbar.error(e, job: :import_low_carbon_hub_readings)
     end
     puts "#{DateTime.now.utc} import_low_carbon_hub_readings end"
   end
