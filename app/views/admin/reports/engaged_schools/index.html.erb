@@ -22,9 +22,9 @@
   <li>We're looking at engagement since early September of the current English school year</li>
 </ul>
 
-<p>Using the above measures, EnergySparks currently has <strong><%= @engaged_schools.count %></strong> engaged schools</p>
+<p>Using the above measures, EnergySparks currently has <strong><%= @engaged_schools.count %></strong> engaged schools out of <strong><%= @visible_schools %></strong> schools (<strong><%= @percentage %>%</strong>)</p>
 
-<table class="table table-sorted">
+<table class="table table-sorted table-sm">
   <thead>
     <tr>
       <th>School Group</th>
@@ -38,33 +38,24 @@
       <th>Transport survey?</th>
       <th>Temperatures?</th>
       <th>Active users</th>
-      <th>Most recent visit</th>
+      <th>Last visit</th>
     </tr>
   </thead>
   <tbody>
-    <% @engaged_schools.each do |school| %>
+    <% @engaged_schools.each do |service| %>
       <tr>
-        <td><%= link_to school.school_group.name, school_group_path(school.school_group) %></td>
-        <td><%= link_to school.name, school_path(school) %></td>
-        <td><%= school.funder.name if school.funder %></td>
-        <td><%= school.country.humanize %></td>
-        <td><%= link_to school.activities.where('created_at >= ?', AcademicYear.current.start_date).count, school_timeline_path(school) %></td>
-        <td><%= link_to school.observations.intervention.where('created_at >= ?', AcademicYear.current.start_date).count, school_timeline_path(school) %></td>
-        <td><%= school.programmes.recently_started_non_default(AcademicYear.current.start_date).count %></td>
-
-        <% active_targets = school.school_targets.currently_active.any? %>
-        <td data-order="<%= active_targets ? '1' : '0' %>"><%= checkmark(active_targets, off_class: 'text-muted') %></td>
-
-        <% surveys = school.transport_surveys.recently_run(AcademicYear.current.start_date).any? %>
-        <td data-order="<%= surveys ? '1' : '0' %>"><%= checkmark(surveys, off_class: 'text-muted') %></td>
-
-        <% temperatures = school.observations.temperature.where('created_at >= ?', AcademicYear.current.start_date).any? %>
-        <td data-order="<%= temperatures ? '1' : '0' %>"><%= checkmark(temperatures, off_class: 'text-muted') %></td>
-
-        <td><%= link_to school.users.recently_logged_in(AcademicYear.current.start_date).count, admin_school_group_users_path(school.school_group) %></td>
-
-        <% most_recent = school.users.recently_logged_in(AcademicYear.current.start_date).pluck(:last_sign_in_at).max %>
-        <td data-order="<%= most_recent.present? ? most_recent.iso8601 : '' %>"><%= nice_date_times(most_recent) %></td>
+        <td><%= link_to service.school_group.name, school_group_path(service.school_group) %></td>
+        <td><%= link_to service.school.name, school_path(service.school) %></td>
+        <td><%= service.school.funder.name if service.school.funder %></td>
+        <td><%= service.school.country.humanize %></td>
+        <td><%= link_to service.recent_activity_count, school_timeline_path(service.school) %></td>
+        <td><%= link_to service.recent_action_count, school_timeline_path(service.school) %></td>
+        <td><%= service.recently_enrolled_programme_count %></td>
+        <td data-order="<%= service.active_target? ? '1' : '0' %>"><%= checkmark(service.active_target?, off_class: 'text-muted') %></td>
+        <td data-order="<%= service.transport_surveys? ? '1' : '0' %>"><%= checkmark(service.transport_surveys?, off_class: 'text-muted') %></td>
+        <td data-order="<%= service.temperature_recordings? ? '1' : '0' %>"><%= checkmark(service.temperature_recordings?, off_class: 'text-muted') %></td>
+        <td><%= link_to service.recently_logged_in_user_count, admin_school_group_users_path(service.school_group) %></td>
+        <td data-order="<%= service.most_recent_login.present? ? service.most_recent_login.iso8601 : '' %>"><%= nice_date_times(service.most_recent_login) %></td>
       </tr>
     <% end %>
   </tbody>
