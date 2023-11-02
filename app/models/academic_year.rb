@@ -18,6 +18,10 @@ class AcademicYear < ApplicationRecord
 
   scope :for_date, ->(date) { where('start_date <= ? AND end_date >= ?', date, date) }
 
+  def self.current
+    for_date(Time.zone.today).first
+  end
+
   def current?(today = Time.zone.today)
     (start_date <= today) && (end_date >= today)
   end
