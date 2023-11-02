@@ -10,6 +10,11 @@
       <h3></h3>
       <h5></h5>
   </div>
-  <%= render 'shared/analysis_controls', chart_type: @chart_type.to_s, analysis_controls: true %>
-  <%= chart_tag(@school, @chart_type.to_s, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, @chart_type, apply_preferred_units: false)) %>
+  <%= component 'chart',
+                school: @school,
+                chart_type: @chart_type.to_s,
+                no_zoom: true,
+                chart_config: create_chart_config(@school, @chart_type, apply_preferred_units: false),
+                fuel_type: @fuel_type
+  %>
 </div>

@@ -34,13 +34,13 @@ describe MeterAttribute do
     end
 
     it 'uses the key for normal attribute types' do
-      attribute_1 = MeterAttribute.new(attribute_type: :tariff, input_data: { type: 'economy_7' })
+      attribute_1 = MeterAttribute.new(attribute_type: :targeting_and_tracking_profiles_maximum_retries, input_data: { number_of_retries: 1 })
 
       results = MeterAttribute.to_analytics([attribute_1])
 
       expect(results).to eq(
         {
-          tariff: { type: :economy_7 }
+          targeting_and_tracking_profiles_maximum_retries: { number_of_retries: 1 }
         }
       )
     end
@@ -49,7 +49,7 @@ describe MeterAttribute do
   describe '.solar_panels' do
     let(:config) { { start_date: "2022-01-01", kwp: "10", end_date: "2023-01-01", orientation: '0', tilt: '30', shading: '6', fit_£_per_kwh: '0.3' } }
     let!(:solar_attribute) { create(:meter_attribute, attribute_type: :solar_pv, input_data: config)}
-    let!(:other_attribute) { create(:meter_attribute, attribute_type: :tariff, input_data: { type: 'economy_7' })}
+    let!(:other_attribute) { create(:meter_attribute, attribute_type: :targeting_and_tracking_profiles_maximum_retries, input_data: { number_of_retries: 1 })}
     let(:solar_panels)  { MeterAttribute.solar_panels }
     let(:panel)         { solar_panels.first }
 

@@ -10,20 +10,10 @@ class Schools::ChartsController < ApplicationController
   before_action :check_aggregated_school_in_cache
 
   def show
-    respond_to do |format|
-      format.html { render_html }
-      format.json { render_json }
-    end
+    render_json
   end
 
-private
-
-  def render_html
-    @chart_type = params.require(:chart_type).to_sym
-    set_measurement_options
-    @measurement = measurement_unit(params[:measurement])
-    @title = @chart_type.to_s.humanize
-  end
+  private
 
   def render_json
     @chart_type ||= begin
