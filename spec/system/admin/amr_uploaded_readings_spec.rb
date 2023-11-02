@@ -78,7 +78,7 @@ describe AmrUploadedReading, type: :system do
         let!(:config) { create(:amr_data_feed_config, row_per_reading: true, reading_fields: ['Reading'], positional_index: true, period_field: 'SettlementTime') }
 
         it 'explains the index column' do
-          expect(page).to have_content('A numbered half-hourly period in a column labelled SettlementTime')
+          expect(page).to have_content('A numbered half-hourly period in a column labelled SettlementTime, e.g. 1, 2, 3, 4')
         end
       end
 
