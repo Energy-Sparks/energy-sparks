@@ -93,7 +93,7 @@
         <% if @amr_data_feed_config.row_per_reading %>
           <li>A reading field column labelled  <b><%= @amr_data_feed_config.reading_fields.first %></b></li>
           <% if @amr_data_feed_config.positional_index && @amr_data_feed_config.period_field %>
-            <li>A <b>numbered</b> half-hourly period in a column labelled <b><%= @amr_data_feed_config.period_field %></b></li>
+            <li>A <b>numbered</b> half-hourly period in a column labelled <b><%= @amr_data_feed_config.period_field %></b>, e.g. 1, 2, 3, 4 </li>
           <% end %>
           <% if @amr_data_feed_config.reading_time_field %>
             <li>The reading times to specified in a separate column labelled <b><%= @amr_data_feed_config.reading_time_field %></b></li>
