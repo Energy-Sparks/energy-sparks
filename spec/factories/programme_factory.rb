@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :programme do
     school
+    programme_type
+    started_on { Time.zone.today }
 
     factory :programme_with_activities do
       programme_type_with_activity_types

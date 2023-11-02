@@ -23,9 +23,24 @@ module Admin
 
       def csv_report(engaged_schools)
         CSV.generate(headers: true) do |csv|
-          csv << []
+          csv << ['School Group', 'School', 'Funder', 'Country', 'Activities', 'Actions',
+                  'Programmes', 'Target?', 'Transport survey?', 'Temperatures?',
+                  'Active users', 'Last visit']
           engaged_schools.each do |service|
-            csv << [service.school.name]
+            csv << [
+              service.school_group.name,
+              service.school.name,
+              service.school.funder.present? ? service.school.funder.name : nil,
+              service.school.country.humanize,
+              service.recent_activity_count,
+              service.recent_action_count,
+              service.recently_enrolled_programme_count,
+              service.active_target? ? 'Y' : 'N',
+              service.transport_surveys? ? 'Y' : 'N',
+              service.temperature_recordings? ? 'Y' : 'N',
+              service.recently_logged_in_user_count,
+              service.most_recent_login.present? ? service.most_recent_login.iso8601 : nil
+            ]
           end
         end
       end

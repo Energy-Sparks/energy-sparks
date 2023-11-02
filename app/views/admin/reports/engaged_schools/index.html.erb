@@ -24,6 +24,10 @@
 
 <p>Using the above measures, EnergySparks currently has <strong><%= @engaged_schools.count %></strong> engaged schools out of <strong><%= @visible_schools %></strong> schools (<strong><%= @percentage %>%</strong>)</p>
 
+<div class="d-flex justify-content-end">
+  <%= link_to 'Download as CSV', admin_reports_engaged_schools_path(format: :csv), class: 'btn btn-outline-dark font-weight-bold' %>
+</div>
+
 <table class="table table-sorted table-sm">
   <thead>
     <tr>

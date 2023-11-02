@@ -49,7 +49,9 @@ class Programme < ApplicationRecord
     end
   end
 
-  scope :recently_started_non_default, ->(date) { Programme.where.not(programme_type: ProgrammeType.default).where('created_at > ?', date) }
+  scope :recently_started, ->(date) { where('created_at > ?', date) }
+  scope :recently_started_non_default, ->(date) { recently_started(date).where.not(programme_type: ProgrammeType.default) }
+
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
 
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
