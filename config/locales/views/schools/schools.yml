@@ -353,6 +353,9 @@ en:
         create: Create account
         title: New pupil account
     recommendations:
+      energy_usage:
+        description: These suggestions are based on our analysis of your energy usage data
+        title: Based on your energy usage
       intro: Find your next energy saving activity to score points for your school, reduce your energy usage and learn more about energy and climate change
       more_ideas:
         actions: Browse and search through our list of %{count} adult-led actions

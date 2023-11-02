@@ -43,6 +43,21 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
     end
   end
 
+  context "based on your energy usage section" do
+    let(:section) { find(:css, '#energy-usage') }
+
+    it "has a title" do
+      expect(section).to have_content("Based on your energy usage")
+    end
+
+    it "has description" do
+      expect(section).to have_content("These suggestions are based on our analysis of your energy usage data")
+    end
+
+    ## insert more tests to check adult / pupil scope
+    ## insert js tests to check selector works
+  end
+
   context "based on your recent activity section" do
     let(:section) { find(:css, '#recent-activity') }
 
