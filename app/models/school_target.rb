@@ -42,7 +42,7 @@ class SchoolTarget < ApplicationRecord
   scope :by_date, -> { order(created_at: :desc) }
   scope :by_start_date, -> { order(start_date: :desc) }
   scope :expired, -> { where(":now >= start_date and :now >= target_date", now: Time.zone.today) }
-  scope :currently_active, -> { where('start_date <= ? and target_date <= ?', Time.zone.today, Time.zone.today.next_year) }
+  scope :currently_active, -> { where('start_date <= :now and :now <= target_date', now: Time.zone.today) }
 
   before_save :adjust_target_date
   after_save :add_observation

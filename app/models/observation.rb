@@ -70,6 +70,9 @@ class Observation < ApplicationRecord
   scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
+  scope :recorded_since, ->(date) { where('created_at >= ?', date)}
+
+  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme]) }
 
   has_rich_text :description
 
