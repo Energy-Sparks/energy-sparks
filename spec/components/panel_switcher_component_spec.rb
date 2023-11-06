@@ -10,6 +10,7 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
     render_inline(PanelSwitcherComponent.new(**params)) do |c|
       c.with_panel(name: 'name_1', label: 'Label 1') { 'Content 1' }
       c.with_panel(name: 'name_2', label: 'Label 2') { 'Content 2' }
+      c.with_panel(name: 'name_3', label: 'Label 3') { 'Content 3' }
     end
   end
 
@@ -42,6 +43,7 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
     it "checks the selected radio button" do
       expect(html).to have_checked_field("Label 2")
       expect(html).to have_unchecked_field("Label 1")
+      expect(html).to have_unchecked_field("Label 3")
     end
 
     it "shows selected panel" do
@@ -50,15 +52,20 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
 
     it "hides other panel" do
       expect(html).to have_selector('.panel.name_1', visible: :hidden)
+      expect(html).to have_selector('.panel.name_3', visible: :hidden)
     end
   end
 
   context "when selected doesn't exist" do
     let(:params) { all_params.merge({ selected: 'not_found' }) }
 
-    it "checks the first one" do
+    it "selects the first one" do
       expect(html).to have_checked_field("Label 1")
+    end
+
+    it "others are unselected" do
       expect(html).to have_unchecked_field("Label 2")
+      expect(html).to have_unchecked_field("Label 3")
     end
   end
 
@@ -89,8 +96,9 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
       expect(html).to have_selector('.panel.name_1', visible: :visible)
     end
 
-    it "hides other panel" do
+    it "hides other panels" do
       expect(html).to have_selector('.panel.name_2', visible: :hidden)
+      expect(html).to have_selector('.panel.name_3', visible: :hidden)
     end
   end
 end

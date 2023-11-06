@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PanelSwitcherComponent < ViewComponent::Base
-  attr_reader :title, :description, :classes, :id
+  attr_reader :title, :description, :classes, :id, :name
 
   renders_many :panels, "PanelComponent"
 
@@ -11,6 +11,7 @@ class PanelSwitcherComponent < ViewComponent::Base
     @selected = selected
     @classes = classes
     @id = id
+    @name = title.try(:parameterize) || SecureRandom.uuid
   end
 
   def selected

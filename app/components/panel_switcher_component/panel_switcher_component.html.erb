@@ -1,4 +1,4 @@
-<div <%= "id=#{id}" if id %> class="panel-switcher-component<%= " #{classes}" if classes %>">
+<div<%= " id=#{id}" if id %> class="panel-switcher-component<%= " #{classes}" if classes %>">
   <% if title %>
     <h4><strong><%= title %></strong></h4>
   <% end %>
@@ -8,8 +8,8 @@
 
   <% panels.each do |panel| %>
     <div class="form-check form-check-inline">
-      <input type="radio" name="panel-switcher" id="<%= panel.name %>" value='<%= panel.name %>' class="form-check-input" <%= 'checked' if panel.name == selected %>>
-      <label class="form-check-label" for="<%= panel.name %>" data-toggle="tooltip" data-placement="top" title="<%= t('components.panel_switcher.change_to', name: panel.label) %>"><%= panel.label %></label>
+      <%= radio_button_tag name, panel.name, panel.name == selected, class: 'form-check-input' %>
+      <%= label_tag  "#{name}_#{panel.name}", panel.label, title: t('components.panel_switcher.change_to', name: panel.label), 'data-toggle': 'tooltip', class: "form-check-label" %>
     </div>
   <% end %>
 

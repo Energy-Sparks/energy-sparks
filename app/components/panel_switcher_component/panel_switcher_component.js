@@ -1,7 +1,6 @@
 window.onload = function(){
   $('.panel-switcher-component').on('change', 'input', function() {
-    let selected = $('input[name="panel-switcher"]:checked').val();
-
+    let selected = this.value;
     let component = $(this).closest('.panel-switcher-component');
     // hide all panels
     component.find('.panel').prop('hidden', true);
