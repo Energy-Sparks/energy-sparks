@@ -6,7 +6,7 @@ module Interventions
       @school = school
     end
 
-    def suggest(limit = NUMBER_OF_SUGGESTIONS)
+    def suggest(limit = 5)
       suggestions = []
       suggestions = top_up_from_list(suggest_from_audits, suggestions)
       suggestions = top_up_from_list(suggest_from_alerts, suggestions) if suggestions.length < limit
