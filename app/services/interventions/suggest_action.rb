@@ -60,7 +60,7 @@ module Interventions
     end
 
     def suggest_from_energy_usage(limit = NUMBER_OF_SUGGESTIONS)
-      suggestions = suggest_from_alerts.limit(limit)
+      suggestions = suggest_from_alerts.take(limit)
 
       suggestions + suggest_random(limit, suggestions: suggestions)
     end

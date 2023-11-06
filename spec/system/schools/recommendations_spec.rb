@@ -3,9 +3,45 @@ require 'rails_helper'
 describe 'Recommendations Page', type: :system, include_application_helper: true do
   let!(:school) { create :school, name: "School Name" }
   let!(:setup_data) {}
+  let(:user) {}
+
+  shared_examples_for "a panel selector with scope" do
+    context "when current user is pupil" do
+      let(:user) { create(:pupil) }
+
+      it "has pupil checked" do
+        expect(section).to have_checked_field("Pupil")
+      end
+    end
+
+    context "when current user is staff" do
+      let(:user) { create(:staff) }
+
+      it "has pupil checked" do
+        expect(section).to have_checked_field("Pupil")
+      end
+    end
+
+    context "when current user is not staff or pupil" do
+      let(:user) { create(:school_admin) }
+
+      it "has adult checked" do
+        expect(section).to have_checked_field("Adult")
+      end
+    end
+
+    context "when there is no current user" do
+      it "has adult checked" do
+        expect(section).to have_checked_field("Adult")
+      end
+    end
+  end
+
+  ### TESTS START HERE ###
 
   before do
     # later we should simulate navigating here
+    sign_in(user) if user
     visit school_recommendations_url(school)
   end
 
@@ -43,6 +79,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
     end
   end
 
+
   context "based on your energy usage section" do
     let(:section) { find(:css, '#energy-usage') }
 
@@ -54,8 +91,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       expect(section).to have_content("These suggestions are based on our analysis of your energy usage data")
     end
 
-    ## insert more tests to check adult / pupil scope
-    ## insert js tests to check selector works
+    it_behaves_like "a panel selector with scope"
   end
 
   context "based on your recent activity section" do
@@ -69,8 +105,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       expect(section).to have_content("These suggestions are based on your most recently recorded activity")
     end
 
-    ## insert more tests to check adult / pupil scope
-    ## insert js tests to check selector works
+    it_behaves_like "a panel selector with scope"
   end
 
   context "more ideas section" do
