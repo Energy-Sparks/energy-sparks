@@ -10,19 +10,19 @@
 
 <%= component 'panel_switcher', selected: @scope, title: t("schools.recommendations.energy_usage.title"), description: t("schools.recommendations.energy_usage.description"), id: 'energy-usage' do |switcher| %>
   <% switcher.with_panel(label: t("common.labels.pupil"), name: 'pupil') do |panel| %>
-    <%= component 'recommendations', recommendations: NextActivitySuggesterWithFilter.new(@school, ActivityTypeFilter.new(school: @school)).suggest_from_activity_history, classes: 'pb-4', max_lg: 4 %>
+    <%= component 'recommendations', recommendations: NextActivitySuggesterWithFilter.new(@school).suggest_from_find_out_mores, classes: 'pb-4', max_lg: 4 %>
   <% end %>
   <% switcher.with_panel(label: t("common.labels.adult"), name: 'adult') do |panel| %>
-    <%= component 'recommendations', recommendations: Interventions::SuggestAction.new(@school).suggest_from_recent_activity(4), classes: 'pb-4', max_lg: 4 %>
+    <%= component 'recommendations', recommendations: Interventions::SuggestAction.new(@school).suggest_from_energy_usage(4), classes: 'pb-4', max_lg: 4 %>
   <% end %>
 <% end %>
 
 <%= component 'panel_switcher', selected: @scope, title: t("schools.recommendations.recent_activity.title"), description: t("schools.recommendations.recent_activity.description"), id: 'recent-activity' do |switcher| %>
   <% switcher.with_panel(label: t("common.labels.pupil"), name: 'pupil') do |panel| %>
-    <%= component 'recommendations', recommendations: NextActivitySuggesterWithFilter.new(@school, ActivityTypeFilter.new(school: @school)).suggest_from_activity_history, classes: 'pb-4', max_lg: 4 %>
+    <%= component 'recommendations', recommendations: NextActivitySuggesterWithFilter.new(@school).suggest_from_activity_history, classes: 'pb-4', max_lg: 4 %>
   <% end %>
   <% switcher.with_panel(label: t("common.labels.adult"), name: 'adult') do |panel| %>
-    <%= component 'recommendations', recommendations: Interventions::SuggestAction.new(@school).suggest_from_recent_interventions(4), classes: 'pb-4', max_lg: 4 %>
+    <%= component 'recommendations', recommendations: Interventions::SuggestAction.new(@school).suggest_from_recent_activity(4), classes: 'pb-4', max_lg: 4 %>
   <% end %>
 <% end %>
 

@@ -1,12 +1,12 @@
 module Interventions
   class SuggestAction
-    NUMBER_OF_SUGGESTIONS = 6
+    NUMBER_OF_SUGGESTIONS = 4
 
     def initialize(school)
       @school = school
     end
 
-    def suggest(limit = 5)
+    def suggest(limit = NUMBER_OF_SUGGESTIONS)
       suggestions = []
       suggestions = top_up_from_list(suggest_from_audits, suggestions)
       suggestions = top_up_from_list(suggest_from_alerts, suggestions) if suggestions.length < limit
@@ -45,7 +45,7 @@ module Interventions
     end
 
     ## For prototyping. Actual algorithm to be defined ##
-    def suggest_from_recent_interventions(limit = 4)
+    def suggest_from_recent_activity(limit = NUMBER_OF_SUGGESTIONS)
       suggestions = []
 
       # Get completed intervention types for school in reverse order (most recent is first)
@@ -59,7 +59,7 @@ module Interventions
       suggestions + suggest_random(limit, suggestions: suggestions)
     end
 
-    def suggest_from_recent_activity(limit = 4)
+    def suggest_from_energy_usage(limit = NUMBER_OF_SUGGESTIONS)
       suggestions = suggest_from_alerts.limit(limit)
 
       suggestions + suggest_random(limit, suggestions: suggestions)
