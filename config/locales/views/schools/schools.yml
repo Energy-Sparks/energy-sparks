@@ -353,6 +353,9 @@ en:
         create: Create account
         title: New pupil account
     recommendations:
+      energy_usage:
+        description: These suggestions are based on our analysis of your energy usage data
+        title: Based on your energy usage
       intro: Find your next energy saving activity to score points for your school, reduce your energy usage and learn more about energy and climate change
       more_ideas:
         actions: Browse and search through our list of %{count} adult-led actions
@@ -361,6 +364,9 @@ en:
         description: Looking for more ideas? Explore some of these options
         programme: Choose a programme of pupil activities
         title: More ideas
+      recent_activity:
+        description: These suggestions are based on your most recently recorded activity
+        title: Based on your recent activity
       title: Recommended activities & actions
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks

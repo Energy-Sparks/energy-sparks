@@ -3,9 +3,45 @@ require 'rails_helper'
 describe 'Recommendations Page', type: :system, include_application_helper: true do
   let!(:school) { create :school, name: "School Name" }
   let!(:setup_data) {}
+  let(:user) {}
+
+  shared_examples_for "a panel selector with scope" do
+    context "when current user is pupil" do
+      let(:user) { create(:pupil) }
+
+      it "has pupil checked" do
+        expect(section).to have_checked_field("Pupil")
+      end
+    end
+
+    context "when current user is staff" do
+      let(:user) { create(:staff) }
+
+      it "has pupil checked" do
+        expect(section).to have_checked_field("Pupil")
+      end
+    end
+
+    context "when current user is not staff or pupil" do
+      let(:user) { create(:school_admin) }
+
+      it "has adult checked" do
+        expect(section).to have_checked_field("Adult")
+      end
+    end
+
+    context "when there is no current user" do
+      it "has adult checked" do
+        expect(section).to have_checked_field("Adult")
+      end
+    end
+  end
+
+  ### TESTS START HERE ###
 
   before do
     # later we should simulate navigating here
+    sign_in(user) if user
     visit school_recommendations_url(school)
   end
 
@@ -41,6 +77,35 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
         expect(page).to have_content("You have completed 0/3 of the activities and 0/3 of the actions from your recent energy audit. Complete the others to score 165 points and 50 bonus points for completing all audit tasks")
       end
     end
+  end
+
+
+  context "based on your energy usage section" do
+    let(:section) { find(:css, '#energy-usage') }
+
+    it "has a title" do
+      expect(section).to have_content("Based on your energy usage")
+    end
+
+    it "has description" do
+      expect(section).to have_content("These suggestions are based on our analysis of your energy usage data")
+    end
+
+    it_behaves_like "a panel selector with scope"
+  end
+
+  context "based on your recent activity section" do
+    let(:section) { find(:css, '#recent-activity') }
+
+    it "has a title" do
+      expect(section).to have_content("Based on your recent activity")
+    end
+
+    it "has description" do
+      expect(section).to have_content("These suggestions are based on your most recently recorded activity")
+    end
+
+    it_behaves_like "a panel selector with scope"
   end
 
   context "more ideas section" do
