@@ -15,18 +15,18 @@ describe Programmes::Progress, type: :service do
       ActivityCreator.new(activity).process
     end
 
-    describe '#notification_text' do
+    describe '#notification' do
       context 'when the programme is completed within the same academic year as started' do
         it 'returns the full notification text used on the school dashboard' do
           allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-          expect(service.notification_text).to eq("You have completed <strong>1/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final <strong>2</strong> activities now to score <span class=\"badge badge-success\">50</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
+          expect(service.notification).to eq("You have completed <strong>1/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme<br />Complete the final <strong>2</strong> activities now to score <span class=\"badge badge-success\">50</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
         end
       end
 
       context 'when the programme is completed outside of the academic year as started' do
         it 'returns the full notification text used on the school dashboard' do
           allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-          expect(service.notification_text).to eq("You have completed <strong>1/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final <strong>2</strong> activities now to score <span class=\"badge badge-success\">50</span> points and <span class=\"badge badge-success\">0</span> bonus points for completing the programme")
+          expect(service.notification).to eq("You have completed <strong>1/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme<br />Complete the final <strong>2</strong> activities now to score <span class=\"badge badge-success\">50</span> points and <span class=\"badge badge-success\">0</span> bonus points for completing the programme")
         end
       end
     end
@@ -94,10 +94,10 @@ describe Programmes::Progress, type: :service do
   end
 
   context "no activities completed yet" do
-    describe '#notification_text' do
+    describe '#notification' do
       it 'returns the full notification text' do
         allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-        expect(service.notification_text).to eq("You have completed <strong>0/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final <strong>3</strong> activities now to score <span class=\"badge badge-success\">75</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
+        expect(service.notification).to eq("You have completed <strong>0/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme<br />Complete the final <strong>3</strong> activities now to score <span class=\"badge badge-success\">75</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
       end
     end
   end
@@ -112,10 +112,10 @@ describe Programmes::Progress, type: :service do
       end
     end
 
-    describe '#notification_text' do
-      it 'returns the singular notification text' do
+    describe '#notification' do
+      it 'returns the singular notification' do
         allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-        expect(service.notification_text).to eq("You have completed <strong>2/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme. Complete the final activity now to score <span class=\"badge badge-success\">25</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
+        expect(service.notification).to eq("You have completed <strong>2/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme<br />Complete the final activity now to score <span class=\"badge badge-success\">25</span> points and <span class=\"badge badge-success\">12</span> bonus points for completing the programme")
       end
     end
   end

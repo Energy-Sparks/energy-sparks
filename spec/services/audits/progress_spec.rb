@@ -10,8 +10,8 @@ describe Audits::Progress, type: :service do
   subject(:service) { Audits::Progress.new(audit) }
 
   context "with no actions or activities completed" do
-    describe "#notification_text" do
-      it { expect(service.notification_text).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit. Complete the others to score <span class=\"badge badge-success\">165</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
+    describe "#notification" do
+      it { expect(service.notification).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <span class=\"badge badge-success\">165</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
     end
 
     describe "#completed_activities_count" do
@@ -53,8 +53,8 @@ describe Audits::Progress, type: :service do
 
     before { ActivityCreator.new(activity).process }
 
-    describe "#notification_text" do
-      it { expect(service.notification_text).to eq("You have completed <strong>1/3</strong> of the activities and <strong>1/3</strong> of the actions from your recent energy audit. Complete the others to score <span class=\"badge badge-success\">110</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
+    describe "#notification" do
+      it { expect(service.notification).to eq("You have completed <strong>1/3</strong> of the activities and <strong>1/3</strong> of the actions from your recent energy audit<br />Complete the others to score <span class=\"badge badge-success\">110</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
     end
   end
 
@@ -64,8 +64,8 @@ describe Audits::Progress, type: :service do
 
     before { ActivityCreator.new(activity).process }
 
-    describe "#notification_text" do
-      it { expect(service.notification_text).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit. Complete the others to score <span class=\"badge badge-success\">165</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
+    describe "#notification" do
+      it { expect(service.notification).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <span class=\"badge badge-success\">165</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
     end
   end
 
@@ -77,8 +77,8 @@ describe Audits::Progress, type: :service do
       end
     end
 
-    describe "#notification_text" do
-      it { expect(service.notification_text).to eq("You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit. Complete the others to score <span class=\"badge badge-success\">90</span> points and <span class=\"badge badge-success\">0</span> bonus points for completing all audit tasks") }
+    describe "#notification" do
+      it { expect(service.notification).to eq("You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <span class=\"badge badge-success\">90</span> points and <span class=\"badge badge-success\">0</span> bonus points for completing all audit tasks") }
     end
   end
 end

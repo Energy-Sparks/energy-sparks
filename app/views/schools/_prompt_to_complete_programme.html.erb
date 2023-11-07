@@ -2,7 +2,7 @@
   <% programmes.each do |programme| %>
     <%= component 'info_bar',
         status: :neutral,
-        title: Programmes::Progress.new(programme).notification_text,
+        title: Programmes::Progress.new(programme).notification,
         icon: fa_icon('fas fa-tasks fa-3x'),
         buttons: { I18n.t('common.labels.view_now') => programme_type_path(programme.programme_type) }
     %>
