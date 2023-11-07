@@ -8,13 +8,16 @@ RSpec.describe InfoBarComponent, type: :component do
   let(:button_link)   { 'http://www.example.com' }
   let(:icon)          { '<i class="fas fa-school fa-3x"></i>' }
   let(:status)        { :neutral }
-  let(:params)        do
+  let(:all_params) do
     {
       icon: icon.html_safe,
       title: title,
-      buttons: { button_title => button_link }
+      buttons: { button_title => button_link },
+      classes: "extra-classes"
     }
   end
+
+  let(:params) { all_params }
 
   let(:component) { InfoBarComponent.new(**params) }
 
@@ -57,6 +60,19 @@ RSpec.describe InfoBarComponent, type: :component do
   it 'includes the link' do
     within('.row .col-md-3') do
       expect(html).to have_link(button_title, href: button_link)
+    end
+  end
+
+  it "has additional classes" do
+    expect(html).to have_css('div.notice-component.extra-classes')
+  end
+
+  context "with no classes" do
+    let(:params) { all_params.except(:classes) }
+
+    it "adds default classes" do
+      expect(html).to have_css('div.notice-component.p-4')
+      expect(html).to have_css('div.notice-component.mb-2')
     end
   end
 end

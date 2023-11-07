@@ -4,8 +4,8 @@ class NoticeComponent < ViewComponent::Base
   renders_one :link
 
   def initialize(status:, classes: nil)
-    @classes = classes
     @status = status
+    @classes = classes
     validate
   end
 
@@ -15,7 +15,7 @@ class NoticeComponent < ViewComponent::Base
 
   def classes
     classes = " #{@status}"
-    classes += " #{@classes}" if @classes
+    classes += @classes ? " #{@classes}" : " p-4"
     classes
   end
 

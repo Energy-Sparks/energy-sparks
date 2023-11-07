@@ -41,6 +41,14 @@ RSpec.describe NoticeComponent, type: :component, include_application_helper: tr
         end
       end
     end
+
+    context "with no classes" do
+      let(:params) { all_params.except(:classes) }
+
+      it "adds default classes" do
+        expect(html).to have_css('div.notice-component.p-4')
+      end
+    end
   end
 
   context "with no link" do
