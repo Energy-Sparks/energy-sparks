@@ -68,7 +68,7 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_link('Change benchmark') }
   end
 
-  shared_examples "a form filter" do |id:, school_types_excluding: nil, school_type: nil, country: nil, school_groups: nil|
+  shared_examples "a form filter" do |id:, school_types_excluding: nil, school_type: nil, country: nil, funder: nil, school_groups: nil|
     let(:all_school_types) { School.school_types.keys }
 
     it 'has school_type checkbox fields', if: school_types_excluding do
@@ -94,6 +94,12 @@ describe 'compare pages', :compare, type: :system do
       end
     end
 
+    it "has funder select", if: funder do
+      within id.to_s do
+        expect(page).to have_select('funder', selected: funder)
+      end
+    end
+
     it "has school group select", if: school_groups do
       within id.to_s do
         expect(page).to have_select('school_group_ids', selected: school_groups)
@@ -101,7 +107,7 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
-  shared_examples "a filter summary" do |school_types: nil, school_types_excluding: nil, country: nil, school_groups: nil|
+  shared_examples "a filter summary" do |school_types: nil, school_types_excluding: nil, country: nil, school_groups: nil, funder: nil|
     let(:all_school_types)  { School.school_types.keys }
 
     it 'displays school types', if: school_types do
@@ -130,6 +136,10 @@ describe 'compare pages', :compare, type: :system do
       school_groups.each do |group|
         expect(page).to have_content(group)
       end
+    end
+
+    it 'displays funder', if: funder do
+      expect(page).to have_content funder
     end
 
     it { expect(page).to have_link('Change options')}
@@ -181,8 +191,9 @@ describe 'compare pages', :compare, type: :system do
 
   let(:user) {}
   let(:all_school_types) { School.school_types.keys }
+  let!(:funder)          { create(:funder, name: "Grant Funder") }
   let!(:school_group)    { create(:school_group, name: "Group 1") }
-  let!(:school)          { create(:school, school_group: school_group)}
+  let!(:school)          { create(:school, school_group: school_group, funder: funder)}
   let!(:school_group_2)  { create(:school_group, name: "Group 2") }
   let!(:school_2)        { create(:school, school_group: school_group_2)}
 
@@ -388,6 +399,61 @@ describe 'compare pages', :compare, type: :system do
     let(:user) {}
 
     it_behaves_like "an index page", tab: 'Choose country', show_your_group_tab: false
+  end
+
+  context "Admin user" do
+    let(:user) { create(:admin) }
+
+    context "'Country' filter tab" do
+      before { click_on 'Choose country' }
+
+      it_behaves_like "an index page", tab: 'Choose country'
+      it { expect(page).to have_content "Compare schools by country" }
+      it { expect(page).to have_content "Limit to funder (admin only option)"}
+
+      it_behaves_like "a form filter", id: '#country', country: "All countries"
+      it_behaves_like "a form filter", id: '#funder', country: "All schools"
+
+      context "Benchmark page" do
+        include_context 'benchmarks page context'
+        before do
+          within '#country' do
+            choose 'Scotland'
+            uncheck 'Middle'
+            choose 'Funded by Grant Funder'
+            click_on 'Compare schools'
+          end
+        end
+
+        it_behaves_like "a benchmark list page"
+        it_behaves_like "a filter summary", country: "Scotland", school_types_excluding: ['middle']
+        it_behaves_like "a filter summary", funder: "Funded By Grant Funder"
+
+        context "Changing options" do
+          before { click_on "Change options" }
+
+          it_behaves_like "an index page", tab: 'Choose country'
+          it_behaves_like "a form filter", id: '#country', country: 'scotland', school_types_excluding: ['middle']
+          it_behaves_like "a form filter", id: '#funder', funder: "Funded by Grant Funder"
+        end
+
+        context "results page" do
+          include_context 'results page context'
+          before { click_on 'Benchmark name' }
+
+          it_behaves_like "a results page"
+          it_behaves_like "a filter summary", country: "Scotland", school_types_excluding: ['middle']
+          it_behaves_like "a filter summary", funder: "Funded by Grant Funder"
+
+          context "Changing options" do
+            before { click_on "Change options" }
+
+            it_behaves_like "an index page", tab: 'Choose country'
+            it_behaves_like "a form filter", id: '#country', country: 'scotland', school_types_excluding: ['middle']
+          end
+        end
+      end
+    end
   end
 
   describe "Redirecting old benchmark to new compare routes", type: :request do

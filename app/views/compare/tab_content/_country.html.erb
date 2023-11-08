@@ -15,6 +15,7 @@
         <%= label_tag 'country_', t('compare.filter.all_countries'), class: 'form-check-label' %>
       </div>
       <%= render 'school_type_filter', type: 'categories' %>
+      <%= render 'funder_filter' if can?(:compare, :funders) %>
       <div class="pt-2">
         <%= submit_tag 'Compare schools', class: 'btn' %>
       </div>
