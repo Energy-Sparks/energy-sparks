@@ -1,5 +1,5 @@
 <% unless dashboard_alerts.empty? %>
-  <div class="act-on-energy-usage" id="dashboard-alerts">
+  <div class="mb-4" id="dashboard-alerts">
     <% dashboard_alerts.each do |alert_content|%>
       <% if local_assigns[:show_debug] %>
         <%= link_to 'Alert', school_alert_path(@school, alert_content.alert) %>
