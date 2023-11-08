@@ -128,6 +128,22 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.has_school_onboarding_event?(:onboarding_data_enabled)).to be_truthy
     end
 
+    it 'records activation date' do
+      service.make_data_enabled!
+      school.reload
+      expect(school.activation_date).to eq(Time.zone.today)
+    end
+
+    context 'when there is an activation date' do
+      let(:school) { create :school, data_enabled: false, visible: visible, activation_date: Time.zone.today - 1 }
+
+      it 'does not change the activation date' do
+        service.make_data_enabled!
+        school.reload
+        expect(school.activation_date).to eq(Time.zone.today - 1)
+      end
+    end
+
     context 'where the school is not visible' do
       let(:visible) { false }
 
