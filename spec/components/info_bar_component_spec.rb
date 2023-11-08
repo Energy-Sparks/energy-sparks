@@ -81,7 +81,7 @@ RSpec.describe InfoBarComponent, type: :component do
       let(:params) { all_params.merge({ style: :compact })}
 
       it "adds compact classes" do
-        expect(html).to have_css('div.notice-component.p-3.mb-2')
+        expect(html).to have_css('div.notice-component.p-3.mb-3')
       end
     end
 

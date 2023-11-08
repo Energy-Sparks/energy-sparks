@@ -3,9 +3,10 @@
 class NoticeComponent < ViewComponent::Base
   renders_one :link
 
-  def initialize(status:, classes: nil)
+  def initialize(status:, classes: nil, style: :normal)
     @status = status
     @classes = classes
+    @style = style
     validate
   end
 
@@ -15,7 +16,8 @@ class NoticeComponent < ViewComponent::Base
 
   def classes
     classes = " #{@status}"
-    classes += @classes ? " #{@classes}" : " p-4 mb-4"
+    classes += @style == :compact ? ' p-3' : ' p-4'
+    classes += " #{@classes}" if @classes
     classes
   end
 
