@@ -1,6 +1,6 @@
 module Interventions
   class SuggestAction
-    NUMBER_OF_SUGGESTIONS = 6
+    NUMBER_OF_SUGGESTIONS = 4
 
     def initialize(school)
       @school = school
@@ -36,8 +36,33 @@ module Interventions
       end
     end
 
-    def suggest_random(limit)
-      InterventionType.not_custom.sample(limit)
+    def suggest_random(limit, suggestions: [])
+      if suggestions.length < limit
+        InterventionType.not_custom.not_including(already_done + suggestions).sample(limit - suggestions.count)
+      else
+        [] # We already have enough
+      end
+    end
+
+    ## For prototyping. Actual algorithm to be defined ##
+    def suggest_from_recent_activity(limit = NUMBER_OF_SUGGESTIONS)
+      suggestions = []
+
+      # Get completed intervention types for school in reverse order (most recent is first)
+      intervention_types = @school.intervention_types_by_date
+
+      # For each one, get the suggested intervention types and add them to the list until we have enough
+      while (intervention_type = intervention_types.shift) && suggestions.length < limit
+        suggestions += intervention_type.suggested_types.not_including(already_done + suggestions).take(limit - suggestions.length)
+      end
+
+      suggestions + suggest_random(limit, suggestions: suggestions)
+    end
+
+    def suggest_from_energy_usage(limit = NUMBER_OF_SUGGESTIONS)
+      suggestions = suggest_from_alerts.take(limit)
+
+      suggestions + suggest_random(limit, suggestions: suggestions)
     end
 
     private

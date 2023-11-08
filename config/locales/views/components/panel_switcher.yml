@@ -1,0 +1,5 @@
+---
+en:
+  components:
+    panel_switcher:
+      change_to: Change to %{name}

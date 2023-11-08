@@ -338,13 +338,15 @@ en:
       page_title: "%{school} has no public data"
     prompts:
       audit:
-        message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your recent energy audit. Complete the others to score <span class="badge badge-success">%{remaining_points}</span> points and <span class="badge badge-success">%{bonus_points}</span> bonus points for completing all audit tasks
+        message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your recent energy audit
+        summary_html: Complete the others to score <span class="badge badge-success">%{remaining_points}</span> points and <span class="badge badge-success">%{bonus_points}</span> bonus points for completing all audit tasks
       programme:
         choose_a_new_programme_message: It's time to choose a new programme of activities. What challenge will you take on next?
-        message_html:
-          one: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme. Complete the final activity now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
-          other: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme. Complete the final <strong>%{count}</strong> activities now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
+        message_html: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme
         start_a_new_programme: Start a new programme
+        summary_html:
+          one: Complete the final activity now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
+          other: Complete the final <strong>%{count}</strong> activities now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
     pupils:
       edit:
         title: Edit pupil account
@@ -353,6 +355,9 @@ en:
         create: Create account
         title: New pupil account
     recommendations:
+      energy_usage:
+        description: These suggestions are based on our analysis of your energy usage data
+        title: Based on your energy usage
       intro: Find your next energy saving activity to score points for your school, reduce your energy usage and learn more about energy and climate change
       more_ideas:
         actions: Browse and search through our list of %{count} adult-led actions
@@ -361,6 +366,9 @@ en:
         description: Looking for more ideas? Explore some of these options
         programme: Choose a programme of pupil activities
         title: More ideas
+      recent_activity:
+        description: These suggestions are based on your most recently recorded activity
+        title: Based on your recent activity
       title: Recommended activities & actions
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
