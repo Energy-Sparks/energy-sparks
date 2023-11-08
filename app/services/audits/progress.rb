@@ -6,15 +6,24 @@ module Audits
       @audit = audit
     end
 
-    def notification_text
+    def message
       I18n.t('schools.prompts.audit.message_html',
         completed_activities_count: completed_activities_count,
         total_activities_count: total_activities_count,
         completed_actions_count: completed_actions_count,
-        total_actions_count: total_actions_count,
+        total_actions_count: total_actions_count
+      )
+    end
+
+    def summary
+      I18n.t('schools.prompts.audit.summary_html',
         remaining_points: remaining_points,
         bonus_points: bonus_points
-      ).html_safe
+      )
+    end
+
+    def notification
+      (message + "<br />" + summary).html_safe
     end
 
     def completed_activities_count

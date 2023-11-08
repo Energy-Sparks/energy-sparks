@@ -12,16 +12,23 @@ module Programmes
     # The number of different activity types associated with the programme that have been completed.
     delegate :count, to: :activity_types_completed, prefix: :activity_types_completed
 
-    def notification_text
+    def message
       I18n.t('schools.prompts.programme.message_html',
         programme_type_title: programme_type_title,
         programme_activities_count: programme_activities_count,
         activity_types_count: activity_types_count,
+        activity_types_total_scores: activity_types_total_scores)
+    end
+
+    def summary
+      I18n.t('schools.prompts.programme.summary_html',
         count: activity_types_uncompleted_count,
-        activity_types_total_scores: activity_types_total_scores,
         activity_types_uncompleted_scores: activity_types_uncompleted_scores,
-        programme_points_for_completion: programme_points_for_completion
-      ).html_safe
+        programme_points_for_completion: programme_points_for_completion)
+    end
+
+    def notification
+      (message + "<br />" + summary).html_safe
     end
 
     def activity_types_total_scores

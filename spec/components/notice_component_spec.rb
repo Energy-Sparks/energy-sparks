@@ -41,6 +41,32 @@ RSpec.describe NoticeComponent, type: :component, include_application_helper: tr
         end
       end
     end
+
+    context "with :style" do
+      context "when :style is :normal" do
+        let(:params) { all_params.merge({ style: :normal })}
+
+        it "adds normal classes" do
+          expect(html).to have_css('div.notice-component.p-4')
+        end
+      end
+
+      context "when :style is :compact" do
+        let(:params) { all_params.merge({ style: :compact })}
+
+        it "adds compact classes" do
+          expect(html).to have_css('div.notice-component.p-3')
+        end
+      end
+
+      context "when :style is not provided" do
+        let(:params) { all_params.except(:style) }
+
+        it "adds normal classes" do
+          expect(html).to have_css('div.notice-component.p-4')
+        end
+      end
+    end
   end
 
   context "with no link" do

@@ -6,12 +6,14 @@
     <p><%= description %></p>
   <% end %>
 
-  <% panels.each do |panel| %>
-    <div class="form-check form-check-inline">
-      <%= radio_button_tag name, panel.name, panel.name == selected, class: 'form-check-input' %>
-      <%= label_tag  "#{name}_#{panel.name}", panel.label, title: t('components.panel_switcher.change_to', name: panel.label), 'data-toggle': 'tooltip', class: "form-check-label" %>
-    </div>
-  <% end %>
+  <div class="pb-1">
+    <% panels.each do |panel| %>
+      <div class="form-check form-check-inline">
+        <%= radio_button_tag name, panel.name, panel.name == selected, class: 'form-check-input' %>
+        <%= label_tag  "#{name}_#{panel.name}", panel.label, title: t('components.panel_switcher.change_to', name: panel.label), 'data-toggle': 'tooltip', class: "form-check-label" %>
+      </div>
+    <% end %>
+  </div>
 
   <% panels.each do |panel| %>
     <div class="panel <%= panel.name %>" <%= 'hidden' unless panel.name == selected %>>

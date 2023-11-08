@@ -1,8 +1,9 @@
 <% if local_assigns[:audit] %>
   <%= component 'info_bar',
     status: :neutral,
-    title: Audits::Progress.new(audit).notification_text,
-    icon: fa_icon('fas fa-tasks fa-3x'),
+    style: :compact,
+    title: Audits::Progress.new(audit).notification,
+    icon: fa_icon('fas fa-laptop fa-3x'),
     buttons:  { t('common.labels.view_now') => school_audit_path(audit.school, audit) }
   %>
 <% end %>

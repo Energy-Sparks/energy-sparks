@@ -8,13 +8,17 @@ RSpec.describe InfoBarComponent, type: :component do
   let(:button_link)   { 'http://www.example.com' }
   let(:icon)          { '<i class="fas fa-school fa-3x"></i>' }
   let(:status)        { :neutral }
-  let(:params)        do
+  let(:all_params) do
     {
       icon: icon.html_safe,
       title: title,
-      buttons: { button_title => button_link }
+      buttons: { button_title => button_link },
+      classes: "extra-classes",
+      style: :compact
     }
   end
+
+  let(:params) { all_params }
 
   let(:component) { InfoBarComponent.new(**params) }
 
@@ -39,7 +43,7 @@ RSpec.describe InfoBarComponent, type: :component do
   end
 
   it 'right aligns the button link' do
-    expect(html).to have_css('.col-md-3.justify-content-end')
+    expect(html).to have_css('.col-md-2.justify-content-end')
   end
 
   it 'includes icon' do
@@ -55,8 +59,38 @@ RSpec.describe InfoBarComponent, type: :component do
   end
 
   it 'includes the link' do
-    within('.row .col-md-3') do
+    within('.row .col-md-2') do
       expect(html).to have_link(button_title, href: button_link)
+    end
+  end
+
+  it "has additional classes" do
+    expect(html).to have_css('div.notice-component.extra-classes')
+  end
+
+  context "with :style" do
+    context "when :style is :normal" do
+      let(:params) { all_params.merge({ style: :normal })}
+
+      it "adds normal classes" do
+        expect(html).to have_css('div.notice-component.p-4.mb-4')
+      end
+    end
+
+    context "when :style is :compact" do
+      let(:params) { all_params.merge({ style: :compact })}
+
+      it "adds compact classes" do
+        expect(html).to have_css('div.notice-component.p-3.mb-3')
+      end
+    end
+
+    context "when :style is not provided" do
+      let(:params) { all_params.except(:style) }
+
+      it "adds normal classes" do
+        expect(html).to have_css('div.notice-component.p-4.mb-4')
+      end
     end
   end
 end
