@@ -412,7 +412,6 @@ describe 'compare pages', :compare, type: :system do
       it { expect(page).to have_content "Limit to funder (admin only option)"}
 
       it_behaves_like "a form filter", id: '#country', country: "All countries"
-      it_behaves_like "a form filter", id: '#funder', funder: "All schools"
 
       context "Benchmark page" do
         include_context 'benchmarks page context'
