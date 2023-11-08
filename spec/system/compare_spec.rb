@@ -407,12 +407,12 @@ describe 'compare pages', :compare, type: :system do
     context "'Country' filter tab" do
       before { click_on 'Choose country' }
 
-      it_behaves_like "an index page", tab: 'Choose country'
+      it_behaves_like "an index page", tab: 'Choose country', show_your_group_tab: false
       it { expect(page).to have_content "Compare schools by country" }
       it { expect(page).to have_content "Limit to funder (admin only option)"}
 
       it_behaves_like "a form filter", id: '#country', country: "All countries"
-      it_behaves_like "a form filter", id: '#funder', country: "All schools"
+      it_behaves_like "a form filter", id: '#funder', funder: "All schools"
 
       context "Benchmark page" do
         include_context 'benchmarks page context'
@@ -420,21 +420,25 @@ describe 'compare pages', :compare, type: :system do
           within '#country' do
             choose 'Scotland'
             uncheck 'Middle'
-            choose 'Funded by Grant Funder'
+          end
+          within '#funder' do
+            select 'Funded by Grant Funder'
+          end
+          within '#country' do
             click_on 'Compare schools'
           end
         end
 
         it_behaves_like "a benchmark list page"
         it_behaves_like "a filter summary", country: "Scotland", school_types_excluding: ['middle']
-        it_behaves_like "a filter summary", funder: "Funded By Grant Funder"
+        it_behaves_like "a filter summary", funder: "Grant Funder"
 
         context "Changing options" do
           before { click_on "Change options" }
 
-          it_behaves_like "an index page", tab: 'Choose country'
+          it_behaves_like "an index page", tab: 'Choose country', show_your_group_tab: false
           it_behaves_like "a form filter", id: '#country', country: 'scotland', school_types_excluding: ['middle']
-          it_behaves_like "a form filter", id: '#funder', funder: "Funded by Grant Funder"
+          it_behaves_like "a form filter", id: '#country', funder: "Funded by Grant Funder"
         end
 
         context "results page" do
@@ -443,12 +447,12 @@ describe 'compare pages', :compare, type: :system do
 
           it_behaves_like "a results page"
           it_behaves_like "a filter summary", country: "Scotland", school_types_excluding: ['middle']
-          it_behaves_like "a filter summary", funder: "Funded by Grant Funder"
+          it_behaves_like "a filter summary", funder: "Grant Funder"
 
           context "Changing options" do
             before { click_on "Change options" }
 
-            it_behaves_like "an index page", tab: 'Choose country'
+            it_behaves_like "an index page", tab: 'Choose country', show_your_group_tab: false
             it_behaves_like "a form filter", id: '#country', country: 'scotland', school_types_excluding: ['middle']
           end
         end
