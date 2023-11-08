@@ -2,7 +2,8 @@
   <% programmes.each do |programme| %>
     <%= component 'info_bar',
         status: :neutral,
-        title: Programmes::Progress.new(programme).notification_text,
+        style: :compact,
+        title: Programmes::Progress.new(programme).notification,
         icon: fa_icon('fas fa-tasks fa-3x'),
         buttons: { I18n.t('common.labels.view_now') => programme_type_path(programme.programme_type) }
     %>
@@ -10,6 +11,7 @@
 <% else %>
   <%= component 'info_bar',
       status: :positive,
+      style: :compact,
       title: I18n.t('schools.prompts.programme.choose_a_new_programme_message'),
       icon: fa_icon('fas fa-tasks fa-3x'),
       buttons: { I18n.t('schools.prompts.programme.start_a_new_programme') => programme_types_path }

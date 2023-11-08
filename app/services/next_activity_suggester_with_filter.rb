@@ -1,9 +1,9 @@
 class NextActivitySuggesterWithFilter
   NUMBER_OF_SUGGESTIONS = 6
 
-  def initialize(school, filter)
+  def initialize(school, filter = nil)
     @school = school
-    @filter = filter
+    @filter = filter || ActivityTypeFilter.new(school: @school)
   end
 
   def suggest_from_activity_history
