@@ -79,7 +79,6 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
     end
   end
 
-
   context "based on your energy usage section" do
     let(:section) { find(:css, '#energy-usage') }
 

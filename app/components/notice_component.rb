@@ -15,7 +15,7 @@ class NoticeComponent < ViewComponent::Base
 
   def classes
     classes = " #{@status}"
-    classes += @classes ? " #{@classes}" : " p-4"
+    classes += @classes ? " #{@classes}" : " p-4 mb-4"
     classes
   end
 

@@ -4,15 +4,18 @@ class InfoBarComponent < ViewComponent::Base
   include ApplicationHelper
   attr_accessor :status, :title, :icon, :buttons
 
-  def initialize(status: :neutral, title:, icon:, buttons:, classes: nil)
+  def initialize(status: :neutral, title:, icon:, buttons:, classes: nil, style: :normal)
     @status = status
     @title = title
     @icon = icon
     @buttons = buttons
     @classes = classes
+    @style = style
   end
 
   def classes
-    @classes || ' p-4 mb-2'
+    classes = " #{@classes}"
+    classes += @style == :compact ? ' p-3 mb-2' : ' p-4 mb-4'
+    classes
   end
 end

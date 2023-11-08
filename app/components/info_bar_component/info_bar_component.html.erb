@@ -6,11 +6,11 @@
       </div>
     </div>
     <% if buttons.present? %>
-      <div class='<%= "col-md-#{11 - buttons.size * 3}" %>'>
+      <div class='<%= "col-md-#{11 - buttons.size * 2}" %>'>
         <%= title %>
       </div>
       <% buttons.each do |title, path| %>
-        <div class="col-md-3 d-flex justify-content-end">
+        <div class="col-md-2 d-flex justify-content-end">
           <%= link_to sanitize(title), path, class: "btn btn-light btn rounded-pill font-weight-bold", style: 'height: fit-content;' %>
         </div>
       <% end %>
