@@ -133,5 +133,9 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
     it "has a link to schools advice page" do
       expect(section).to have_link(href: "/schools/#{school.slug}/advice")
     end
+
+    it "has a link to schools recent alerts" do
+      expect(section).to have_link(href: "/schools/#{school.slug}/advice/alerts")
+    end
   end
 end

@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class RecommendationsComponent < ViewComponent::Base
-  attr_reader :title, :description, :limit, :max_lg, :id
+  attr_reader :title, :description, :limit, :limit_lg, :id
 
   renders_many :items, "ItemComponent"
 
-  def initialize(title: nil, description: nil, recommendations: [], classes: '', id: nil, limit: 4, max_lg: 3)
+  def initialize(title: nil, description: nil, recommendations: [], classes: '', id: nil, limit: 4, limit_lg: 3)
     @title = title
     @description = description
     @classes = classes
     @id = id
     @limit = limit
-    @max_lg = max_lg
+    @limit_lg = limit_lg
     @recommendations = recommendations
   end
 
@@ -27,7 +27,7 @@ class RecommendationsComponent < ViewComponent::Base
   end
 
   def responsive_classes(index)
-    " d-none d-xl-block" if index >= max_lg # limit to max_lg for screens less than XL
+    " d-none d-xl-block" if index >= limit_lg # limit to limit_lg for screens less than XL
   end
 
   # this is for when we add activity key stages etc

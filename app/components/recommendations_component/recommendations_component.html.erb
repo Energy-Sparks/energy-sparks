@@ -5,7 +5,7 @@
   <% if description %>
     <p><%= description %></p>
   <% end %>
-  <div class="card-deck">
+  <div class="card-deck justify-content-center">
     <% items.first(limit).each_with_index do |item, i| %>
       <div class="card<%= responsive_classes(i) %>">
         <%= link_to item.href do %>
@@ -17,7 +17,7 @@
           </p>
         </div>
         <% if footer %>
-          <div class="card-footer border-top-0 bg-transparent"></div>
+          <div class="card-footer border-top-0 bg-transparent"><%= footer %></div>
         <% end %>
       </div>
     <% end %>
