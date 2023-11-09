@@ -46,6 +46,7 @@ class SchoolCreator
   def make_data_enabled!
     raise Error.new('School must be visible before enabling data') unless @school.visible
     @school.update!(data_enabled: true)
+    @school.update!(activation_date: Time.zone.today) unless @school.activation_date.present?
     onboarding_service.record_event(@school.school_onboarding, :onboarding_data_enabled)
     broadcast(:school_made_data_enabled, @school)
   end
