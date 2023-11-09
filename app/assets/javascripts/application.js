@@ -63,3 +63,4 @@
 //= require live_data
 //= require gtag
 //= require cocoon
+//= require loading

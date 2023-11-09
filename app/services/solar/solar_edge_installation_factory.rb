@@ -29,6 +29,16 @@ module Solar
       end
     end
 
+    def self.check(installation)
+      begin
+        solar_edge_api = SolarEdgeAPI.new(installation.api_key)
+        solar_edge_api.site_details
+        true
+      rescue
+        false
+      end
+    end
+
     def perform
       installation = SolarEdgeInstallation.where(school_id: @school.id, mpan: @mpan, site_id: @site_id, api_key: @api_key, amr_data_feed_config: @amr_data_feed_config).first_or_create!
 
