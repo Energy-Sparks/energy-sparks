@@ -5,7 +5,9 @@ describe SchoolFilter do
   let(:school_group_b)      { create(:school_group) }
   let(:scoreboard_a)        { create(:scoreboard) }
   let(:scoreboard_b)        { create(:scoreboard) }
-  let!(:school_1)                 { create(:school, school_group: school_group_a, scoreboard: scoreboard_a) }
+  let(:funder_1)            { create(:funder) }
+  let(:funder_2)            { create(:funder) }
+  let!(:school_1)                 { create(:school, school_group: school_group_a, scoreboard: scoreboard_a, funder: funder_1) }
   let!(:school_2)                 { create(:school, school_group: school_group_b, scoreboard: scoreboard_b, school_type: :secondary) }
   let!(:school_3_invisible)       { create(:school, school_group: school_group_b, scoreboard: scoreboard_a, visible: false) }
   let!(:school_no_data)           { create(:school, school_group: school_group_a, process_data: false) }
@@ -50,5 +52,10 @@ describe SchoolFilter do
 
   it 'filters by scoreboard and group' do
     expect(SchoolFilter.new(include_invisible: true, scoreboard_ids: [scoreboard_a], school_group_ids: [school_group_b.id]).filter).to eq [school_3_invisible]
+  end
+
+  it 'filters by funder' do
+    expect(SchoolFilter.new(funder: funder_1.id).filter).to eq [school_1]
+    expect(SchoolFilter.new(funder: funder_2.id).filter).to eq []
   end
 end

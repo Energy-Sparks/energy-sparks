@@ -27,7 +27,7 @@ class CompareController < ApplicationController
 
   def filter
     @filter ||=
-      params.permit(:search, :benchmark, :country, :school_type, school_group_ids: [], school_types: [])
+      params.permit(:search, :benchmark, :country, :school_type, :funder, school_group_ids: [], school_types: [])
         .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
         .to_hash.symbolize_keys
   end
@@ -51,7 +51,7 @@ class CompareController < ApplicationController
   def included_schools
     # wonder if this can be replaced by a use of the scope accessible_by(current_ability)
     include_invisible = can? :show, :all_schools
-    school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country).merge(include_invisible: include_invisible)
+    school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible)
 
     schools = SchoolFilter.new(**school_params).filter
     schools.select {|s| can?(:show, s) } unless include_invisible

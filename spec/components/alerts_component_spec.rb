@@ -43,11 +43,19 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
       expect(html).to have_css('i.fa-fire')
     end
 
+    it "has 11 columns" do
+      expect(html).to have_css('div.col-md-11')
+    end
+
     context 'without icons' do
-      let(:show_links) { false }
+      let(:show_icons) { false }
 
       it "does not display icons" do
-        expect(html).to have_css('i.fa-fire')
+        expect(html).not_to have_css('i.fa-fire')
+      end
+
+      it "has 12 columns" do
+        expect(html).to have_css('div.col-md-12')
       end
     end
   end
