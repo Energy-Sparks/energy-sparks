@@ -15,8 +15,8 @@
           <td>
             <p>
               <%= link_to 'Edit', edit_school_solar_edge_installation_path(school, installation), class: 'btn' %>
-              <%= link_to 'Delete', school_solar_edge_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure? This will delete the meters' }, class: 'btn btn-danger' %>
               <%= link_to "#{fa_icon('circle-question')} Check".html_safe, check_school_solar_edge_installation_path(school, installation), id: "solar-edge-#{installation.id}-test", method: :post, remote: true, class: 'btn' %>
+              <%= link_to 'Delete', school_solar_edge_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure? This will delete the meters' }, class: 'btn btn-danger' %>
             </p>
           </td>
         </tr>
