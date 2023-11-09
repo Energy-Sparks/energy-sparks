@@ -7,7 +7,7 @@
             <%= fa_icon( alert_icon(alert_content.alert, 'fa-3x') ) %>
           </div>
         <% end %>
-        <div class="col-md-11">
+        <div class="<%= show_icons ? "col-md-11" : "col-md-12" %>">
           <%= alert_content.send(content_field) %>
           <% if show_links && alert_content.alert.advice_page.present? %>
             <div class="text-right">

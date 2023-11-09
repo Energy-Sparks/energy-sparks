@@ -10,7 +10,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       let(:user) { create(:pupil) }
 
       it "has pupil checked" do
-        expect(section).to have_checked_field("Pupil")
+        expect(section).to have_checked_field("Pupil activities")
       end
     end
 
@@ -18,7 +18,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       let(:user) { create(:staff) }
 
       it "has pupil checked" do
-        expect(section).to have_checked_field("Pupil")
+        expect(section).to have_checked_field("Pupil activities")
       end
     end
 
@@ -26,13 +26,13 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       let(:user) { create(:school_admin) }
 
       it "has adult checked" do
-        expect(section).to have_checked_field("Adult")
+        expect(section).to have_checked_field("Adult actions")
       end
     end
 
     context "when there is no current user" do
       it "has adult checked" do
-        expect(section).to have_checked_field("Adult")
+        expect(section).to have_checked_field("Adult actions")
       end
     end
   end
@@ -132,6 +132,10 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
     it "has a link to schools advice page" do
       expect(section).to have_link(href: "/schools/#{school.slug}/advice")
+    end
+
+    it "has a link to schools recent alerts" do
+      expect(section).to have_link(href: "/schools/#{school.slug}/advice/alerts")
     end
   end
 end

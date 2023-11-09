@@ -16,7 +16,7 @@ en:
       actions: Actions
       activate: Activate
       active: Active
-      adult: Adult
+      adult_actions: Adult actions
       are_you_sure: Are you sure?
       attributes: Attributes
       back: Back
@@ -44,7 +44,7 @@ en:
       not_applicable: N/A
       not_set: Not set
       previous: Previous
-      pupil: Pupil
+      pupil_activities: Pupil activities
       remove: Remove
       report: Report
       restart: Restart
