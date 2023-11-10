@@ -2,20 +2,22 @@
   <table class="table table-sm">
     <tbody>
       <tr>
-        <th class="w-25">Mpan</th>
-        <th class="w-25">Site Id</th>
+        <th>Mpan (or Id)</th>
+        <th>Site Id</th>
         <th>API Key</th>
-        <th class="w-25">Actions</th>
+        <th>Last updated</th>
+        <th>Actions</th>
       </tr>
       <% solar_edge_installations.each do |installation| %>
         <tr>
           <td><%= link_to installation.mpan, school_solar_edge_installation_path(school, installation) %></td>
           <td><%= installation.site_id %></td>
           <td><%= installation.api_key %></td>
+          <td><%= nice_date_times(installation.updated_at) %></td>
           <td>
             <p>
               <%= link_to 'Edit', edit_school_solar_edge_installation_path(school, installation), class: 'btn' %>
-              <%= link_to "#{fa_icon('circle-question')} Check".html_safe, check_school_solar_edge_installation_path(school, installation), id: "solar-edge-#{installation.id}-test", method: :post, remote: true, class: 'btn' %>
+              <%= link_to "#{fa_icon('circle-question')} Check API".html_safe, check_school_solar_edge_installation_path(school, installation), id: "solar-edge-#{installation.id}-test", method: :post, remote: true, class: 'btn' %>
               <%= link_to 'Delete', school_solar_edge_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure? This will delete the meters' }, class: 'btn btn-danger' %>
             </p>
           </td>
@@ -24,7 +26,7 @@
     </tbody>
   </table>
 <% else %>
-  <p>This school has no Solar Edge API feeds</p>
+  <p>This school has no Solar Edge sites</p>
 <% end %>
 
 <p><%= link_to 'New Solar Edge API feed', new_school_solar_edge_installation_path, class: 'btn' %></p>
