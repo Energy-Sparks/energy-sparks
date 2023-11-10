@@ -83,6 +83,41 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
         expect(page).to have_content("dates")
         expect(page).to have_link("Data Period")
       end
+
+      it 'displays the check button with a question mark by default' do
+        within "#solar-edge-#{installation.id}-test" do
+          expect(page).to have_content('Check')
+          expect(page).to have_css("i[class*='fa-circle-question']")
+        end
+      end
+
+      context 'when checking an installation', js: true do
+        before do
+          allow(Solar::SolarEdgeInstallationFactory).to receive(:check).and_return(ok)
+        end
+
+        context 'when check returns true' do
+          let(:ok) { true }
+
+          it 'updates the button correctly' do
+            find("#solar-edge-#{installation.id}-test").click
+            within "#solar-edge-#{installation.id}-test" do
+              expect(page).to have_css("i[class*='fa-circle-check']")
+            end
+          end
+        end
+
+        context 'when check returns false' do
+          let(:ok) { false }
+
+          it 'updates the button correctly' do
+            find("#solar-edge-#{installation.id}-test").click
+            within "#solar-edge-#{installation.id}-test" do
+              expect(page).to have_css("i[class*='fa-circle-xmark']")
+            end
+          end
+        end
+      end
     end
 
     context 'with an installation with meters' do
