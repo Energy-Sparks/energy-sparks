@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TransportSurveyResponse do
+describe TransportSurvey::Response do
   describe 'validations' do
     subject { build(:transport_survey_response) }
 
@@ -9,8 +9,8 @@ describe TransportSurveyResponse do
     [:transport_survey_id, :transport_type_id, :passengers, :run_identifier, :surveyed_at, :journey_minutes, :weather].each do |attribute|
       it { is_expected.to validate_presence_of(attribute) }
     end
-    it { is_expected.to validate_inclusion_of(:journey_minutes).in_array(TransportSurveyResponse.journey_minutes_options) }
-    it { is_expected.to validate_inclusion_of(:passengers).in_array(TransportSurveyResponse.passengers_options)}
+    it { is_expected.to validate_inclusion_of(:journey_minutes).in_array(TransportSurvey::Response.journey_minutes_options) }
+    it { is_expected.to validate_inclusion_of(:passengers).in_array(TransportSurvey::Response.passengers_options)}
   end
 
   describe 'enums' do
@@ -18,8 +18,8 @@ describe TransportSurveyResponse do
   end
 
   describe '#weather_image' do
-    TransportSurveyResponse.weather_images.each do |key, value|
-      context "for #{key}" do
+    TransportSurvey::Response.weather_images.each do |key, value|
+      context "when key is: #{key}" do
         subject(:response) { create :transport_survey_response, weather: key }
 
         it { expect(response.weather_image).to eq(value) }
@@ -55,18 +55,18 @@ describe TransportSurveyResponse do
     context "when transport type uses park and stride" do
       let(:park_and_stride) { true }
       let(:can_share) { false }
-      let(:carbon_calc_ps) { ((transport_type.speed_km_per_hour * (response.journey_minutes - TransportSurveyResponse.park_and_stride_mins)) / 60) * transport_type.kg_co2e_per_km }
+      let(:carbon_calc_ps) { ((transport_type.speed_km_per_hour * (response.journey_minutes - TransportSurvey::Response.park_and_stride_mins)) / 60) * transport_type.kg_co2e_per_km }
 
-      context "for journeys #{TransportSurveyResponse.park_and_stride_mins} minutes and under" do
-        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurveyResponse.park_and_stride_mins }
+      context "when journeys are #{TransportSurvey::Response.park_and_stride_mins} minutes and under" do
+        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurvey::Response.park_and_stride_mins }
 
         it { expect(response.carbon).to eq(0) }
       end
 
-      context "for journeys over #{TransportSurveyResponse.park_and_stride_mins} mins" do
-        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurveyResponse.park_and_stride_mins + 5 }
+      context "when journeys are over #{TransportSurvey::Response.park_and_stride_mins} mins" do
+        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurvey::Response.park_and_stride_mins + 5 }
 
-        it "calculates the carbon with #{TransportSurveyResponse.park_and_stride_mins} less minutes" do
+        it "calculates the carbon with #{TransportSurvey::Response.park_and_stride_mins} less minutes" do
           expect(response.carbon).to eq(carbon_calc_ps)
         end
       end
@@ -75,36 +75,30 @@ describe TransportSurveyResponse do
 
   describe ".to_csv" do
     let(:transport_survey) { create(:transport_survey) }
-    subject { transport_survey.responses.to_csv }
+    subject(:csv) { transport_survey.responses.to_csv }
 
     let(:header) { 'Id,Run identifier,Weather,Journey minutes,Transport type name,Passengers,Carbon kg co2,Surveyed at' }
 
     context "with responses" do
-      let!(:responses) do
-        [create(:transport_survey_response, transport_survey: transport_survey),
-         create(:transport_survey_response, transport_survey: transport_survey)]
-      end
+      let!(:responses) { create_list(:transport_survey_response, 2, transport_survey: transport_survey) }
 
-      it { expect(subject.lines.count).to eq(3) }
-      it { expect(subject.lines.first.chomp).to eq(header) }
+      it { expect(csv.lines.count).to eq(3) }
+      it { expect(csv.lines.first.chomp).to eq(header) }
 
       2.times do |i|
-        it { expect(subject.lines[i + 1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather_name, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].passengers, responses[i].carbon_kg_co2, responses[i].surveyed_at].join(',')) }
+        it { expect(csv.lines[i + 1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather_name, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].passengers, responses[i].carbon_kg_co2, responses[i].surveyed_at].join(',')) }
       end
     end
 
     context "with responses for other schools" do
-      let!(:responses) do
-        [create(:transport_survey_response),
-         create(:transport_survey_response)]
-      end
+      let!(:responses) { create_list(:transport_survey_response, 2) }
 
-      it { expect(subject.lines.count).to eq(1) }
+      it { expect(csv.lines.count).to eq(1) }
     end
 
     context "with no responses" do
-      it { expect(subject.lines.count).to eq(1) }
-      it { expect(subject.lines.first.chomp).to eq(header) }
+      it { expect(csv.lines.count).to eq(1) }
+      it { expect(csv.lines.first.chomp).to eq(header) }
     end
   end
 end
