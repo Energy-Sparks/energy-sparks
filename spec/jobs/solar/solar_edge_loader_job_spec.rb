@@ -21,12 +21,13 @@ describe Solar::SolarEdgeLoaderJob do
   #parse the html string into something we can match against
   let(:html_email)    { Capybara::Node::Simple.new(email_body) }
 
+  let(:meters_url) { school_meters_url(installation.school, host: 'localhost') }
+
   describe '#perform' do
     let(:job_result)  { job.perform(installation: installation, start_date: start_date, end_date: end_date, notify_email: admin.email) }
 
     context 'when the load is successful' do
-      let(:title)       { "Solar Edge Import for #{installation.school.name}" }
-      let(:results_url) { school_meters_path(installation.school) }
+      let(:expected_subject) { "[energy-sparks-unknown] Solar Edge Import for #{installation.school.name} Completed" }
 
       before do
         allow(Solar::SolarEdgeDownloadAndUpsert).to receive(:new).and_return(upserter)
@@ -37,16 +38,18 @@ describe Solar::SolarEdgeLoaderJob do
 
         job_result
 
-        expect(email_subject).to eq "[energy-sparks-unknown] #{title}"
-        expect(html_email).to have_link("view the results here", href: results_url)
-        expect(html_email).to have_text("The requested import for the Solar Edge Site Id #{installation.site_id} has completed")
-        expect(html_email).to have_text("100 records were imported and 4 updated")
+        expect(email_subject).to eq expected_subject
+        expect(html_email).to have_text("The requested import for Solar Edge installation #{installation.site_id} has completed successfully")
+        expect(html_email).to have_text("100 records were imported and 4 were updated")
+        expect(html_email).to have_link("View the school meters", href: meters_url)
+        expect(html_email).to have_link("View the import logs")
       end
     end
 
     context 'when the load is unsuccessful' do
-      let(:import_log)    { create(:amr_data_feed_import_log, error_messages: "There are errors here") }
-      let(:results_url)   { admin_reports_amr_data_feed_import_logs_errors_path({ config: { config_id: import_log.amr_data_feed_config.id } }) }
+      let(:expected_subject) { "[energy-sparks-unknown] Solar Edge Import for #{installation.school.name} Completed" }
+
+      let(:import_log) { create(:amr_data_feed_import_log, error_messages: "There are errors here") }
 
       before do
         allow(Solar::SolarEdgeDownloadAndUpsert).to receive(:new).and_return(upserter)
@@ -56,9 +59,11 @@ describe Solar::SolarEdgeLoaderJob do
         it 'reports the error messages via email' do
           expect(Solar::SolarEdgeDownloadAndUpsert).to receive(:new).with(start_date: start_date, end_date: end_date, installation: installation)
           job_result
-          expect(html_email).to have_text("The requested import for the Solar Edge Site Id #{installation.site_id} has failed")
-          expect(html_email).to have_text("There are errors here")
-          expect(html_email).to have_link("view the results here", href: results_url)
+          expect(email_subject).to eq expected_subject
+          expect(html_email).to have_text("The requested import for Solar Edge installation #{installation.site_id} has failed")
+          expect(html_email).to have_text("The error reported was: There are errors here")
+          expect(html_email).to have_link("View the school meters", href: meters_url)
+          expect(html_email).to have_link("View the import logs")
         end
       end
 
@@ -69,7 +74,9 @@ describe Solar::SolarEdgeLoaderJob do
 
         it 'reports the failure via email' do
           job_result
-          expect(html_email).to have_text("The job failed to run. An error has been logged: Its broken")
+          expect(html_email).to have_text("The requested import job has failed. An error has been logged")
+          expect(html_email).to have_text("Its broken")
+          expect(html_email).to have_link("View the school meters", href: meters_url)
         end
 
         it 'reports to Rollbar' do

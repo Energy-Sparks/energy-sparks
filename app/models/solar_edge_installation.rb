@@ -30,6 +30,10 @@ class SolarEdgeInstallation < ApplicationRecord
 
   validates_presence_of :site_id, :mpan, :api_key
 
+  def display_name
+    site_id
+  end
+
   def school_number
     school.urn
   end

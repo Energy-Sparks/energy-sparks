@@ -32,4 +32,8 @@ class AmrDataFeedImportLog < ApplicationRecord
   def errors?
     error_messages.present?
   end
+
+  def warnings?
+    amr_reading_warnings.any?
+  end
 end
