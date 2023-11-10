@@ -52,6 +52,11 @@ module Schools
       respond_to(&:js)
     end
 
+    def submit_job
+      Solar::SolarEdgeLoaderJob.perform_later(installation: @solar_edge_installation, notify_email: current_user.email)
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Loading job has been submitted. An email will be sent to #{current_user.email} when complete."
+    end
+
     private
 
     def solar_edge_installation_params

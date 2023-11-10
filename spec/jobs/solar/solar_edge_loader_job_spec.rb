@@ -22,7 +22,7 @@ describe Solar::SolarEdgeLoaderJob do
   let(:html_email)    { Capybara::Node::Simple.new(email_body) }
 
   describe '#perform' do
-    let(:job_result)  { job.perform(installation, start_date, end_date, admin.email) }
+    let(:job_result)  { job.perform(installation: installation, start_date: start_date, end_date: end_date, notify_email: admin.email) }
 
     context 'when the load is successful' do
       let(:title)       { "Solar Edge Import for #{installation.school.name}" }

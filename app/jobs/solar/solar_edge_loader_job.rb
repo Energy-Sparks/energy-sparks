@@ -8,7 +8,7 @@ module Solar
       5
     end
 
-    def perform(installation, start_date, end_date, notify_email)
+    def perform(installation:, notify_email:, start_date: nil, end_date: nil)
       @installation = installation
       @upserter = upserter(start_date, end_date)
       @upserter.perform

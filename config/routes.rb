@@ -299,6 +299,7 @@ Rails.application.routes.draw do
       resources :solar_edge_installations, only: [:new, :show, :create, :edit, :update, :destroy] do
         member do
           post :check
+          post :submit_job
         end
       end
       resources :low_carbon_hub_installations, only: [:new, :show, :create, :edit, :update, :destroy]

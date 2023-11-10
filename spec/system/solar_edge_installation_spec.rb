@@ -125,6 +125,21 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
           end
         end
       end
+
+      context 'when submitting a loading job' do
+        before do
+          #do nothing
+          allow(Solar::SolarEdgeLoaderJob).to receive(:perform_later).and_return(true)
+        end
+
+        it 'submits the job' do
+          #...but check the method is called
+          expect(Solar::SolarEdgeLoaderJob).to receive(:perform_later).with(installation: installation, notify_email: admin.email)
+          expect(page).to have_content("Run Loader")
+          find("#solar-edge-#{installation.id}-run-load").click
+          expect(page).to have_content("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
+        end
+      end
     end
 
     context 'with an installation with meters' do
