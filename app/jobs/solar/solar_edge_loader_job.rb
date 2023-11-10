@@ -26,17 +26,17 @@ module Solar
     end
 
     def send_notification(notify_email)
-      AdminMailer.with(to: notify_email,
+      SolarLoaderJobMailer.with(to: notify_email,
                        title: title,
                        summary: summary,
-                       results_url: results_url).background_job_complete.deliver_now
+                       results_url: results_url).job_complete.deliver_now
     end
 
     def send_failure_notification(notify_email, error)
-      AdminMailer.with(to: notify_email,
+      SolarLoaderJobMailer.with(to: notify_email,
                        title: title,
                        summary: "The job failed to run. An error has been logged: #{error.message}",
-                       results_url: nil).background_job_complete.deliver_now
+                       results_url: nil).job_complete.deliver_now
     end
 
     def title
