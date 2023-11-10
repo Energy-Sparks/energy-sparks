@@ -10,7 +10,7 @@
             <h1><%= equivalence[:statement] %></h1>
             <div>
               <ul>
-                <% TransportType.categories.keys.each do |cat| %>
+                <% TransportSurvey::TransportType.categories.keys.each do |cat| %>
                   <li><%= t("schools.transport_surveys.show.percentages.#{cat}_html", amount: tag.strong("#{@transport_survey.percentage_per_category[cat].round}%")) %></li>
                 <% end %>
               </ul>

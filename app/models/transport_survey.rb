@@ -19,7 +19,7 @@
 #
 class TransportSurvey < ApplicationRecord
   belongs_to :school
-  has_many :responses, class_name: 'TransportSurveyResponse', inverse_of: :transport_survey
+  has_many :responses, class_name: 'TransportSurvey::Response', inverse_of: :transport_survey
 
   validates :run_on, :school_id, presence: true
   validates :run_on, uniqueness: { scope: :school_id }
@@ -45,7 +45,7 @@ class TransportSurvey < ApplicationRecord
   def responses_per_category
     responses_per_cat = self.responses.with_transport_type.group(:category).count
     # also include counts of zero for categories without responses
-    TransportType.categories_with_other.transform_values { |v| responses_per_cat[v] || 0 }
+    TransportSurvey::TransportType.categories_with_other.transform_values { |v| responses_per_cat[v] || 0 }
   end
 
   def percentage_per_category
@@ -55,7 +55,7 @@ class TransportSurvey < ApplicationRecord
   def responses_per_time_for_category(category)
     responses_per_time = responses.with_transport_type.where(transport_types: { category: category }).group(:journey_minutes).count
     # also include counts of zero for times without responses
-    TransportSurveyResponse.journey_minutes_options.index_with { |mins| responses_per_time[mins] || 0 }
+    TransportSurvey::Response.journey_minutes_options.index_with { |mins| responses_per_time[mins] || 0 }
   end
 
   def responses_per_time_for_category_car
@@ -65,7 +65,7 @@ class TransportSurvey < ApplicationRecord
   end
 
   def pie_chart_data
-    percentage_per_category.collect { |k, v| { name: TransportType.human_enum_name(:category, k), y: v } }
+    percentage_per_category.collect { |k, v| { name: TransportSurvey::TransportType.human_enum_name(:category, k), y: v } }
   end
 
   def self.equivalence_images
@@ -97,7 +97,7 @@ class TransportSurvey < ApplicationRecord
         amount = (total_carbon / equivalence[:rate]).round
         if amount > 0
           { statement: I18n.t(equivalence[:name], scope: 'schools.transport_surveys.equivalences', image: equivalence[:image], count: amount),
-                    svg: self.class.equivalence_svgs[equivalence[:name]] }
+            svg: self.class.equivalence_svgs[equivalence[:name]] }
         end
       end.compact.shuffle
     end
