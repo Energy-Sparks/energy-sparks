@@ -9,17 +9,17 @@ describe Solar::SolarEdgeLoaderJob do
 
   let(:start_date)    { nil }
   let(:end_date)      { nil }
-  let(:result)        { true }
 
-  let(:import_log)    { create(:amr_data_feed_import_log) }
-  let(:upserter)      { instance_double(Solar::SolarEdgeDownloadAndUpsert, perform: result, import_log: import_log) }
+  let(:import_log)    { create(:amr_data_feed_import_log, records_updated: 4, records_imported: 100) }
+  let(:upserter)      { instance_double(Solar::SolarEdgeDownloadAndUpsert, perform: nil, import_log: import_log) }
 
-  # rubocop:disable RSpec/VerifiedDoubles
-  # Rubocop doesn't like use of the double() here, but also don't allow use of receive_message_chain
-  # But this seems more concise to me, as I just want to set expections around the call to the
-  # Mailer. Not sure of a better way to do this.
-  let(:mailer)        { instance_double(AdminMailer, background_job_complete: double(deliver: result)) }
-  # rubocop:enable RSpec/VerifiedDoubles
+  let(:email)         { ActionMailer::Base.deliveries.last }
+  #access to html might change depending on type of email sent, e.g. mail vs make_bootstrap_mail
+  #this returns the html body as a string
+  let(:email_body)    { email.html_part.body.decoded }
+  let(:email_subject) { email.subject }
+  #parse the html string into something we can match against
+  let(:html_email)    { Capybara::Node::Simple.new(email_body) }
 
   describe '#perform' do
     let(:job_result)  { job.perform(installation, start_date, end_date, admin.email) }
@@ -30,25 +30,52 @@ describe Solar::SolarEdgeLoaderJob do
 
       before do
         allow(Solar::SolarEdgeDownloadAndUpsert).to receive(:new).and_return(upserter)
-        allow(AdminMailer).to receive(:with).and_return(mailer)
       end
 
       it 'reports the success via email' do
         expect(Solar::SolarEdgeDownloadAndUpsert).to receive(:new).with(start_date: start_date, end_date: end_date, installation: installation)
-        expect(AdminMailer).to receive(:with).with(to: admin.email, title: title, summary: anything, results_url: results_url)
-        expect(job_result).to eq(result)
+
+        job_result
+
+        expect(email_subject).to eq "[energy-sparks-unknown] #{title}"
+        expect(html_email).to have_link("view the results here", href: results_url)
+        expect(html_email).to have_text("The requested import for the Solar Edge Site Id #{installation.site_id} has completed")
+        expect(html_email).to have_text("100 records were imported and 4 updated")
       end
     end
 
     context 'when the load is unsuccessful' do
-      let(:import_log) { create(:amr_data_feed_import_log) }
+      let(:import_log)    { create(:amr_data_feed_import_log, error_messages: "There are errors here") }
+      let(:results_url)   { admin_reports_amr_data_feed_import_logs_errors_path({ config: { config_id: import_log.amr_data_feed_config.id } }) }
+
+      before do
+        allow(Solar::SolarEdgeDownloadAndUpsert).to receive(:new).and_return(upserter)
+      end
 
       context 'with a loading error' do
-        it 'reports the error messages via email'
+        it 'reports the error messages via email' do
+          expect(Solar::SolarEdgeDownloadAndUpsert).to receive(:new).with(start_date: start_date, end_date: end_date, installation: installation)
+          job_result
+          expect(html_email).to have_text("The requested import for the Solar Edge Site Id #{installation.site_id} has failed")
+          expect(html_email).to have_text("There are errors here")
+          expect(html_email).to have_link("view the results here", href: results_url)
+        end
       end
 
       context 'with an unexpected exception' do
-        it 'reports the failure via email'
+        before do
+          allow(Solar::SolarEdgeDownloadAndUpsert).to receive(:new).and_raise("Its broken")
+        end
+
+        it 'reports the failure via email' do
+          job_result
+          expect(html_email).to have_text("The job failed to run. An error has been logged: Its broken")
+        end
+
+        it 'reports to Rollbar' do
+          expect(Rollbar).to receive(:error).with(anything, job: :import_solar_edge_readings)
+          job_result
+        end
       end
     end
   end

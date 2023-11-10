@@ -7,7 +7,9 @@
   <%= @summary %>
 </p>
 
-<div class="s-3"></div>
-<p>
-  You can <%= link_to 'view the results here', @results_url %>
-</p>
+<% if @results_url.present? %>
+  <div class="s-3"></div>
+  <p>
+    You can <%= link_to 'view the results here', @results_url %>
+  </p>
+<% end %>
