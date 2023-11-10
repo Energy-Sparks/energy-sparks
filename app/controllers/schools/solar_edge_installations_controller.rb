@@ -2,6 +2,17 @@ module Schools
   class SolarEdgeInstallationsController < ApplicationController
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
+    before_action :set_breadcrumbs
+
+    def show
+      @api_params = { api_key: @solar_edge_installation.api_key, format: :json }
+
+      if @solar_edge_installation.cached_api_information?
+        start_time = @solar_edge_installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
+        end_time = @solar_edge_installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
+        @reading_params = @api_params.merge({ timeUnit: "QUARTER_OF_AN_HOUR", startTime: start_time, endTime: end_time })
+      end
+    end
 
     def new
     end
@@ -63,6 +74,12 @@ module Schools
       params.require(:solar_edge_installation).permit(
         :site_id, :amr_data_feed_config_id, :mpan, :api_key
       )
+    end
+
+    def set_breadcrumbs
+      @breadcrumbs = [
+        { name: "Solar API Feeds" },
+      ]
     end
   end
 end

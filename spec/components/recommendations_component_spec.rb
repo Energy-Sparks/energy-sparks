@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: true do
   let(:image) { { io: File.open(Rails.root.join('spec', 'fixtures', 'images', 'sheffield.png')), filename: 'sheffield.png', content_type: 'image/png' } }
   let(:activity_types) { 6.times.collect { create(:activity_type) } }
-  let(:all_params) { { recommendations: activity_types, title: 'Title text', description: 'Description text', classes: 'my-class', id: 'my-id', limit: 5, max_lg: 4 } }
+  let(:all_params) { { recommendations: activity_types, title: 'Title text', description: 'Description text', classes: 'my-class', id: 'my-id', limit: 5, limit_lg: 4 } }
   let(:cards) { html.css("div.card") }
   let(:items) { [] }
 
@@ -61,7 +61,7 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
   end
 
   context "with defaults" do
-    let(:params) { all_params.except(:title, :description, :classes, :id, :limit, :max_lg) }
+    let(:params) { all_params.except(:title, :description, :classes, :id, :limit, :limit_lg) }
 
     it "does not display title" do
       expect(html).not_to have_selector("h4 strong")
@@ -83,7 +83,7 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
       expect(cards.count).to eq(4)
     end
 
-    it "sets max_lg to 3" do
+    it "sets limit_lg to 3" do
       cards[0..2].each do |card|
         expect(card).not_to have_css('.d-none.d-xl-block')
       end
