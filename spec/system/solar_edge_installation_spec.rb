@@ -98,6 +98,18 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
         end
       end
 
+      context 'when installation has no cached data' do
+        let!(:installation) { create(:solar_edge_installation, school: school, information: nil) }
+
+        it 'can still be viewed' do
+          click_on(installation.mpan)
+          expect(page).not_to have_content("Cached site information")
+          expect(page).to have_content("There is no cached copy of the site metadata")
+          expect(page).to have_link("Data Period")
+          expect(page).not_to have_link("Readings")
+        end
+      end
+
       context 'when checking an installation', js: true do
         before do
           allow(Solar::SolarEdgeInstallationFactory).to receive(:check).and_return(ok)
