@@ -51,6 +51,11 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: subject(title))
   end
 
+  def background_job_complete
+    to, @title, @summary, @results_url = params.values_at(:to, :title, :summary, :results_url)
+    mail(to: to, subject: "[energy-sparks-#{env}] #{@title}")
+  end
+
   private
 
   def build_issues_csv_for(issues)

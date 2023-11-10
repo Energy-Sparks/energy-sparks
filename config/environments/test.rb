@@ -39,7 +39,7 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
-  config.action_mailer.default_url_options = { host: 'localhost' }
+  config.action_mailer.default_url_options = { host: 'localhost:' }
 
   # # Allows mailer previews to be viewed on production
   # # See also: config/initializers/action_mailer.rb
