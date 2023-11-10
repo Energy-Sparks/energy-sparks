@@ -38,11 +38,11 @@ class TransportSurvey::TransportType < ApplicationRecord
   enum category: [:walking_and_cycling, :car, :public_transport, :park_and_stride]
 
   def self.app_data
-    self.all.select(:id, :name, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride).index_by(&:id)
+    all.select(:id, :name, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride).index_by(&:id)
   end
 
   def self.categories_with_other
-    self.categories.merge(other: nil)
+    categories.merge(other: nil)
   end
 
   def safe_destroy

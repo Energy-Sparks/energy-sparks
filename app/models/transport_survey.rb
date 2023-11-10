@@ -19,7 +19,7 @@
 #
 class TransportSurvey < ApplicationRecord
   belongs_to :school
-  has_many :responses, class_name: 'TransportSurvey::Response', inverse_of: :transport_survey
+  has_many :responses, inverse_of: :transport_survey
 
   validates :run_on, :school_id, presence: true
   validates :run_on, uniqueness: { scope: :school_id }
@@ -43,7 +43,7 @@ class TransportSurvey < ApplicationRecord
   end
 
   def responses_per_category
-    responses_per_cat = self.responses.with_transport_type.group(:category).count
+    responses_per_cat = responses.with_transport_type.group(:category).count
     # also include counts of zero for categories without responses
     TransportSurvey::TransportType.categories_with_other.transform_values { |v| responses_per_cat[v] || 0 }
   end
@@ -105,7 +105,7 @@ class TransportSurvey < ApplicationRecord
 
   def responses=(responses_attributes)
     responses_attributes.each do |response_attributes|
-      self.responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))
+      responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))
     end
   end
 end
