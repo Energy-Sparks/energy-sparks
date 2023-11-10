@@ -7,7 +7,8 @@
         <th>Meter</th>
         <th>Username</th>
         <th>Password</th>
-        <th class="w-25">Actions</th>
+        <th>Last updated</th>
+        <th>Actions</th>
       </tr>
       <% rtone_variant_installations.each do |installation| %>
         <tr>
@@ -16,11 +17,20 @@
           <td><%= installation.meter.mpan_mprn %></td>
           <td><%= installation.username %></td>
           <td><%= installation.password %></td>
+          <td><%= nice_date_times(installation.updated_at) %></td>
           <td>
-            <p>
+            <div class="btn-group">
               <%= link_to 'Edit', edit_school_rtone_variant_installation_path(school, installation), class: 'btn' %>
-              <%= link_to 'Delete', school_rtone_variant_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
-            </p>
+              <%= link_to 'Delete', school_rtone_variant_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure? This will delete the meters' }, class: 'btn' %>
+
+              <%= link_to "#{fa_icon('circle-question')} Check API".html_safe, check_school_rtone_variant_installation_path(school, installation), id: "rtone-variant-#{installation.id}-test", method: :post, remote: true, class: 'btn check-button' %>
+
+              <%= form_tag submit_job_school_rtone_variant_installation_path(school, installation), method: :post do %>
+                <%= button_tag(type: 'submit', id: "rtone-variant-#{installation.id}-run-load", class: 'btn') do %>
+                  <%= fa_icon('upload') %> Run Loader
+                <% end %>
+              <% end %>
+            </div>
           </td>
         </tr>
       <% end %>

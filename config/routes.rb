@@ -302,8 +302,18 @@ Rails.application.routes.draw do
           post :submit_job
         end
       end
-      resources :low_carbon_hub_installations, only: [:new, :show, :create, :edit, :update, :destroy]
-      resources :rtone_variant_installations, only: [:new, :create, :edit, :update, :destroy]
+      resources :low_carbon_hub_installations, only: [:new, :show, :create, :edit, :update, :destroy] do
+        member do
+          post :check
+          post :submit_job
+        end
+      end
+      resources :rtone_variant_installations, only: [:new, :create, :edit, :update, :destroy] do
+        member do
+          post :check
+          post :submit_job
+        end
+      end
 
       resource :meter_readings_validation, only: [:create]
 

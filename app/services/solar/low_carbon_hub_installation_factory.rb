@@ -33,6 +33,19 @@ module Solar
       installation
     end
 
+    def self.check(installation)
+      username = installation.username || ENV['ENERGYSPARKSRBEEUSERNAME']
+      password = installation.password || ENV['ENERGYSPARKSRBEEPASSWORD']
+      begin
+        LowCarbonHubMeterReadings.new(username, password).full_installation_information(installation.is_a?(LowCarbonHubInstallation) ? installation.rbee_meter_id : installation.rtone_meter_id)
+        true
+      rescue => e
+        puts e.message
+        puts e.backtrace
+        false
+      end
+    end
+
     private
 
     def low_carbon_hub_api
