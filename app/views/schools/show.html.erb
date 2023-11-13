@@ -13,10 +13,6 @@
   </div>
 <% end %>
 
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= render('schools/prompt_to_complete_programme', programmes: @programmes_to_prompt) %>
-<% end %>
-
 <h3><%= t('schools.show.act_on_energy_usage') %></h3>
 
 <%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
@@ -28,6 +24,10 @@
 <% if @show_standard_prompts %>
   <%= render 'management/schools/dashboard_message', messageable: @school %>
   <%= render 'management/schools/dashboard_message', messageable: @school.try(:school_group) %>
+<% end %>
+
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <%= render('schools/prompt_to_complete_programme', programmes: @programmes_to_prompt) %>
 <% end %>
 
 <% if @suggest_estimates_for_fuel_types.present? && @suggest_estimates_for_fuel_types.any? %>

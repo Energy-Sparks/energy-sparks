@@ -347,6 +347,9 @@ en:
         summary_html:
           one: Complete the final activity now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
           other: Complete the final <strong>%{count}</strong> activities now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
+      recommendations:
+        button: Choose activity
+        message_html: Complete one of our recommended pupil or adult lead activities to start reducing your energy usage
     pupils:
       edit:
         title: Edit pupil account

@@ -1,13 +1,23 @@
-<%= component 'info_bar',
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <!-- assume this should only be shown if -->
+  <%= component 'info_bar',
     status: :neutral,
-    title: t('schools.show.complete_activities'),
-    icon: fa_icon('chalkboard-teacher fa-3x'),
-    buttons: { t('schools.show.record_pupil_activity') => activity_categories_path }
+    title: I18n.t('schools.prompts.recommendations.message_html'),
+    icon: fa_icon('tasks fa-3x'),
+    buttons: { I18n.t('schools.prompts.recommendations.button') => school_recommendations_path(@school) }
+  %>
+<% end %>
+
+<%= component 'info_bar',
+  status: :neutral,
+  title: t('schools.show.complete_activities'),
+  icon: fa_icon('chalkboard-teacher fa-3x'),
+  buttons: { t('schools.show.record_pupil_activity') => activity_categories_path }
 %>
 
 <%= component 'info_bar',
-    status: :neutral,
-    title: t('schools.show.complete_interventions'),
-    icon: fa_icon('school fa-3x'),
-    buttons: { t('schools.show.record_action') => intervention_type_groups_path }
+  status: :neutral,
+  title: t('schools.show.complete_interventions'),
+  icon: fa_icon('school fa-3x'),
+  buttons: { t('schools.show.record_action') => intervention_type_groups_path }
 %>

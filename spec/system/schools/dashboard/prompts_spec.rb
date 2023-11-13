@@ -26,6 +26,14 @@ shared_examples "a dashboard not showing complete programme prompt" do
   it { expect(page).not_to have_content("You have completed 0/3 of the activities") }
 end
 
+shared_examples "a dashboard showing recommendations prompt" do
+  it { expect(page).to have_content("Complete one of our recommended pupil or adult lead activities to start reducing your energy usage") }
+end
+
+shared_examples "a dashboard not showing recommendations prompt" do
+  it { expect(page).not_to have_content("Complete one of our recommended pupil or adult lead activities to start reducing your energy usage") }
+end
+
 shared_examples "a dashboard training prompt" do
   context "school is data enabled" do
     let(:data_enabled) { true }
@@ -95,6 +103,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a dashboard not showing dashboard messages"
       it_behaves_like "a dashboard not showing training prompt"
       it_behaves_like "a dashboard not showing complete programme prompt"
+      it_behaves_like "a dashboard not showing recommendations prompt"
     end
 
     context 'as user from another school' do
@@ -104,6 +113,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a dashboard not showing dashboard messages"
       it_behaves_like "a dashboard not showing training prompt"
       it_behaves_like "a dashboard not showing complete programme prompt"
+      it_behaves_like "a dashboard not showing recommendations prompt"
     end
 
     context 'as pupil' do
@@ -112,6 +122,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
+      it_behaves_like "a dashboard showing recommendations prompt"
     end
 
     context 'as staff' do
@@ -120,6 +131,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
+      it_behaves_like "a dashboard showing recommendations prompt"
     end
 
     context 'as school admin' do
@@ -128,6 +140,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
+      it_behaves_like "a dashboard showing recommendations prompt"
     end
 
     context 'as group admin' do
@@ -138,6 +151,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
+      it_behaves_like "a dashboard showing recommendations prompt"
     end
 
     context 'as admin' do
@@ -146,6 +160,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a dashboard showing dashboard messages"
       it_behaves_like "a dashboard showing training prompt"
       it_behaves_like "a dashboard showing complete programme prompt"
+      it_behaves_like "a dashboard showing recommendations prompt"
     end
   end
 
@@ -157,18 +172,21 @@ RSpec.describe "adult dashboard prompts", type: :system do
       let(:user) { create(:pupil, school: school, confirmed_at: confirmed_at) }
 
       it_behaves_like "a dashboard not showing complete programme prompt"
+      it_behaves_like "a dashboard not showing recommendations prompt"
     end
 
     context 'as staff' do
       let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
 
       it_behaves_like "a dashboard not showing complete programme prompt"
+      it_behaves_like "a dashboard not showing recommendations prompt"
     end
 
     context 'as school admin' do
       let(:user) { create(:school_admin, school: school, confirmed_at: confirmed_at) }
 
       it_behaves_like "a dashboard not showing complete programme prompt"
+      it_behaves_like "a dashboard not showing recommendations prompt"
     end
 
     context 'as group admin' do
@@ -177,12 +195,14 @@ RSpec.describe "adult dashboard prompts", type: :system do
       let(:user)          { create(:group_admin, school_group: school_group, school: school, confirmed_at: confirmed_at) }
 
       it_behaves_like "a dashboard not showing complete programme prompt"
+      it_behaves_like "a dashboard not showing recommendations prompt"
     end
 
     context 'as admin' do
       let(:user) { create(:admin, confirmed_at: confirmed_at) }
 
       it_behaves_like "a dashboard not showing complete programme prompt"
+      it_behaves_like "a dashboard not showing recommendations prompt"
     end
   end
 end

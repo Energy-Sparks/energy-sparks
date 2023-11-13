@@ -3,7 +3,7 @@
 <p><%= t('schools.recommendations.intro') %></p>
 
 <!-- we may move fetching the params for these into the controller later on -->
-<%= render('schools/prompt_to_complete_programme', programmes: @school.programmes.started.order(started_on: :desc)) %>
+<%= render('schools/prompt_to_complete_programme', programmes: @school.programmes.started.order(started_on: :desc), style: :compact) %>
 <%= render('schools/prompt_audit', audit: Audits::AuditService.new(@school).last_audit) %>
 
 <% display_options = { classes: 'pb-4', limit: 5, limit_lg: 3 } %>
