@@ -130,6 +130,7 @@ group :development, :test do
   gem 'webmock'
   gem 'foreman'
   gem 'guard-rspec', require: false
+  gem 'guard-rubocop', require: false
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
