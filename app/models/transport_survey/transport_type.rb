@@ -27,7 +27,7 @@ class TransportSurvey::TransportType < ApplicationRecord
 
   translates :name, type: :string, fallbacks: { cy: :en }
 
-  has_many :responses, class_name: 'TransportSurvey::Response', inverse_of: :transport_type
+  has_many :responses, inverse_of: :transport_type
 
   scope :by_position, -> { order(position: :asc) }
 
