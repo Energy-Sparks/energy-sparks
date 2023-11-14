@@ -175,6 +175,7 @@ describe Ability do
 
       it { is_expected.to be_able_to(:manage, school_group.energy_tariffs.build)}
       it { is_expected.to be_able_to(:manage, school.energy_tariffs.build)}
+
       it { is_expected.not_to be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
 
       context 'is onboarding' do
