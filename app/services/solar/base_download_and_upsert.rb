@@ -15,6 +15,13 @@ module Solar
       Rails.logger.error e.backtrace.join("\n")
     end
 
+    def import_log
+      @import_log ||= AmrDataFeedImportLog.create(
+        amr_data_feed_config: @installation.amr_data_feed_config,
+        file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
+        import_time: DateTime.now.utc)
+    end
+
     protected
 
     #implement this in the subclass
@@ -48,13 +55,6 @@ module Solar
 
     def end_date
       @requested_end_date.present? ? @requested_end_date : Date.yesterday
-    end
-
-    def import_log
-      @import_log ||= AmrDataFeedImportLog.create(
-        amr_data_feed_config: @installation.amr_data_feed_config,
-        file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
-        import_time: DateTime.now.utc)
     end
   end
 end

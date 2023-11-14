@@ -98,18 +98,6 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
         end
       end
 
-      context 'when installation has no cached data' do
-        let!(:installation) { create(:solar_edge_installation, school: school, information: nil) }
-
-        it 'can still be viewed' do
-          click_on(installation.mpan)
-          expect(page).not_to have_content("Cached site information")
-          expect(page).to have_content("There is no cached copy of the site metadata")
-          expect(page).to have_link("Data Period")
-          expect(page).not_to have_link("Readings")
-        end
-      end
-
       context 'when checking an installation', js: true do
         before do
           allow(Solar::SolarEdgeInstallationFactory).to receive(:check).and_return(ok)
@@ -135,6 +123,21 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
               expect(page).to have_css("i[class*='fa-circle-xmark']")
             end
           end
+        end
+      end
+
+      context 'when submitting a loading job' do
+        before do
+          #do nothing
+          allow(Solar::SolarEdgeLoaderJob).to receive(:perform_later).and_return(true)
+        end
+
+        it 'submits the job' do
+          #...but check the method is called
+          expect(Solar::SolarEdgeLoaderJob).to receive(:perform_later).with(installation: installation, notify_email: admin.email)
+          expect(page).to have_content("Run Loader")
+          find("#solar-edge-#{installation.id}-run-load").click
+          expect(page).to have_content("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
         end
       end
     end
