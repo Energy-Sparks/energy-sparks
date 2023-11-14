@@ -22,6 +22,14 @@ module Solar
 
     private
 
+    def upserter(_start_date, _end_date)
+      raise "Not implemented"
+    end
+
+    def solar_feed_type
+      raise "Not implemented"
+    end
+
     def send_notification(notify_email)
       SolarLoaderJobMailer.with(to: notify_email,
                        solar_feed_type: solar_feed_type,
