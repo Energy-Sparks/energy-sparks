@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :low_carbon_hub_installation do
     school
-    sequence(:rbee_meter_id, (100000..900000).cycle) { |n| n }
+    sequence(:rbee_meter_id) { |n| n }
     amr_data_feed_config
 
-    username { |n| "username_#{n}" }
-    password { |n| "password_#{n}" }
+    sequence(:username) { |n| "username_#{n}" }
+    sequence(:password) { |n| "password_#{n}" }
 
     trait :with_electricity_meter do
       after(:create) do |low_carbon_hub_installation, _evaluator|

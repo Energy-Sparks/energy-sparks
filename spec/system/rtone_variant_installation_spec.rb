@@ -16,10 +16,11 @@ RSpec.describe "Rtone variant installation management", :low_carbon_hub_installa
     before do
       sign_in(admin)
       visit school_meters_path(school)
-      click_on 'Manage Solar API feeds'
     end
 
     it 'I can add, edit and delete an rtone variant installation' do
+      click_on 'Manage Solar API feeds'
+
       expect(page).to have_content("This school has no Rtone Variant API feeds")
       click_on 'New Rtone Variant API feed'
 
@@ -52,6 +53,64 @@ RSpec.describe "Rtone variant installation management", :low_carbon_hub_installa
       expect { click_on 'Delete' }.to change { RtoneVariantInstallation.count }.by(-1)
 
       expect(page).to have_content("This school has no Rtone Variant API feeds")
+    end
+
+    context 'with existing installation' do
+      let!(:installation) { create(:rtone_variant_installation, school: school) }
+
+      before do
+        click_on 'Manage Solar API feeds'
+      end
+
+      it 'displays the check button with a question mark by default' do
+        within "#rtone-variant-#{installation.id}-test" do
+          expect(page).to have_content('Check')
+          expect(page).to have_css("i[class*='fa-circle-question']")
+        end
+      end
+
+      context 'when checking an installation', js: true do
+        before do
+          allow(Solar::LowCarbonHubInstallationFactory).to receive(:check).and_return(ok)
+        end
+
+        context 'when check returns true' do
+          let(:ok) { true }
+
+          it 'updates the button correctly' do
+            find("#rtone-variant-#{installation.id}-test").click
+            within "#rtone-variant-#{installation.id}-test" do
+              expect(page).to have_css("i[class*='fa-circle-check']")
+            end
+          end
+        end
+
+        context 'when check returns false' do
+          let(:ok) { false }
+
+          it 'updates the button correctly' do
+            find("#rtone-variant-#{installation.id}-test").click
+            within "#rtone-variant-#{installation.id}-test" do
+              expect(page).to have_css("i[class*='fa-circle-xmark']")
+            end
+          end
+        end
+      end
+
+      context 'when submitting a loading job' do
+        before do
+          #do nothing
+          allow(Solar::RtoneVariantLoaderJob).to receive(:perform_later).and_return(true)
+        end
+
+        it 'submits the job' do
+          #...but check the method is called
+          expect(Solar::RtoneVariantLoaderJob).to receive(:perform_later).with(installation: installation, notify_email: admin.email)
+          expect(page).to have_content("Run Loader")
+          find("#rtone-variant-#{installation.id}-run-load").click
+          expect(page).to have_content("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
+        end
+      end
     end
   end
 end

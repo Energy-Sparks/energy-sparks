@@ -30,6 +30,10 @@ class SolarEdgeInstallation < ApplicationRecord
 
   validates_presence_of :site_id, :mpan, :api_key
 
+  def display_name
+    site_id
+  end
+
   def school_number
     school.urn
   end
@@ -42,5 +46,14 @@ class SolarEdgeInstallation < ApplicationRecord
     if electricity_meter && electricity_meter.amr_data_feed_readings.any?
       Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
     end
+  end
+
+  def cached_api_information?
+    information.present?
+  end
+
+  def api_latest_data_date
+    return nil unless information['dates'].present?
+    return Date.parse(information['dates'].last)
   end
 end
