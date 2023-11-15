@@ -212,7 +212,7 @@ class User < ApplicationRecord
         'Staff Role',
         'Locked'
       ]
-      where.not(role: :pupil).where.not(role: :admin).order(:email).each do |user|
+      where.not(role: [:pupil, :admin]).order(:email).each do |user|
         school_group_name = if user.group_admin?
           user.school_group.name
                             elsif user.school && user.school.school_group
@@ -223,14 +223,14 @@ class User < ApplicationRecord
 
         csv << [
           school_group_name,
-          user.school&.name ? user.school.name : '',
-          user.school&.school_type ? user.school.school_type.humanize : '',
-          user.school&.funder ? user.school.funder.name : '',
-          user.school&.region ? user.school.region&.to_s&.titleize : '',
+          user.school&.name || '',
+          user.school&.school_type&.humanize || '',
+          user.school&.funder&.name || '',
+          user.school&.region&.to_s&.titleize || '',
           user.name,
           user.email,
           user.role.titleize,
-          user.staff_role ? user.staff_role&.title : '',
+          user.staff_role&.title || '',
           user.access_locked? ? 'Yes' : 'No'
         ]
       end
