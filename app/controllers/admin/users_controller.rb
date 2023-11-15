@@ -9,7 +9,7 @@ module Admin
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
       respond_to do |format|
         format.html { }
-        format.csv { send_data produce_user_csv, filename: 'users.csv' }
+        format.csv { send_data User.admin_user_export_csv, filename: 'users.csv' }
       end
     end
 
@@ -82,33 +82,6 @@ module Admin
         end
       end
       users
-    end
-
-    def produce_user_csv
-      CSV.generate do |csv|
-        csv << [
-          'School Group',
-          'School',
-          'School type',
-          'Name',
-          'Email',
-          'Role',
-          'Staff Role',
-          'Locked'
-        ]
-        User.where.not(role: :pupil).where.not(role: :admin).order(:email).each do |user|
-          csv << [
-            user.group_admin? ? user.school_group.name : user.school&.school_group&.name,
-            user.school.present? ? user.school.name : '',
-            user.school.present? ? user.school.school_type.humanize : '',
-            user.name,
-            user.email,
-            user.role.titleize,
-            user.staff_role&.title,
-            y_n(user.access_locked?)
-          ]
-        end
-      end
     end
   end
 end
