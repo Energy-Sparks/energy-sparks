@@ -198,6 +198,45 @@ class User < ApplicationRecord
     OnboardingMailer.with_user_locales(users: [self], school: school) { |mailer| mailer.welcome_email.deliver_now } if self.school.present?
   end
 
+  def self.admin_user_export_csv
+    CSV.generate do |csv|
+      csv << [
+        'School Group',
+        'School',
+        'School type',
+        'Funder',
+        'Region',
+        'Name',
+        'Email',
+        'Role',
+        'Staff Role',
+        'Locked'
+      ]
+      where.not(role: :pupil).where.not(role: :admin).order(:email).each do |user|
+        school_group_name = if user.group_admin?
+          user.school_group.name
+                            elsif user.school && user.school.school_group
+          user.school_group_name
+                            else
+          ''
+                            end
+
+        csv << [
+          school_group_name,
+          user.school&.name ? user.school.name : '',
+          user.school&.school_type ? user.school.school_type.humanize : '',
+          user.school&.funder ? user.school.funder.name : '',
+          user.school&.region ? user.school.region&.to_s&.titleize : '',
+          user.name,
+          user.email,
+          user.role.titleize,
+          user.staff_role ? user.staff_role&.title : '',
+          user.access_locked? ? 'Yes' : 'No'
+        ]
+      end
+    end
+  end
+
 protected
 
   def preferred_locale_presence_in_available_locales
