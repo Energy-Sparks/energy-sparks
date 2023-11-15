@@ -22,6 +22,14 @@ describe 'school energy tariffs', type: :system do
       it_behaves_like "a school tariff editor"
     end
 
+    context 'as a group_admin user for this schools group' do
+      let!(:school_group) { create(:school_group) }
+      let!(:school)       { create_active_school(school_group: school_group)}
+      let!(:current_user) { create(:group_admin, school_group: school_group) }
+
+      it_behaves_like "a school tariff editor"
+    end
+
     context 'as a group_admin user' do
       let!(:current_user) { create(:group_admin) }
 

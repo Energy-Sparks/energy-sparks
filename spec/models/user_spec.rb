@@ -204,4 +204,85 @@ describe User do
       expect(email.subject).to eq('Energy Sparks: confirm your account')
     end
   end
+
+  describe '#admin_user_export_csv' do
+    let!(:school_group) { create(:school_group) }
+    let!(:school)       { create(:school, school_group: school_group) }
+    let!(:user)         { create(:staff, school: school, confirmed_at: nil) }
+
+    let(:csv)           { User.admin_user_export_csv }
+    let(:parsed)        { CSV.parse(csv) }
+
+    context 'when exporting' do
+      it 'has the expected header' do
+        expect(parsed[0]).to eq(['School Group',
+                                 'School',
+                                 'School type',
+                                 'Funder',
+                                 'Region',
+                                 'Name',
+                                 'Email',
+                                 'Role',
+                                 'Staff Role',
+                                 'Locked'])
+      end
+
+      it 'includes the expected data' do
+        expect(parsed[1]).to eq([school_group.name,
+                                 school.name,
+                                 school.school_type.humanize,
+                                 '',
+                                 '',
+                                 user.name,
+                                 user.email,
+                                 user.role.humanize,
+                                 user.staff_role.title,
+                                 'No'])
+      end
+    end
+
+    context 'when exporting group admins' do
+      let!(:user) { create(:group_admin, school_group: school_group) }
+
+      it 'includes the expected data' do
+        expect(parsed[1]).to eq([school_group.name,
+                                 '',
+                                 '',
+                                 '',
+                                 '',
+                                 user.name,
+                                 user.email,
+                                 'Group Admin',
+                                 '',
+                                 'No'])
+      end
+    end
+
+    context 'when there are pupil and admin users' do
+      let!(:pupil)    { create(:pupil, school: school) }
+      let!(:admin)    { create(:admin) }
+
+      it 'does not include those' do
+        expect(parsed.length).to eq 2
+      end
+    end
+
+    context 'when the school has a funder and region' do
+      let!(:funder) { create(:funder) }
+      let!(:school) { create(:school, school_group: school_group, funder: funder, region: :east_of_england)}
+
+      it 'includes those fields' do
+        expect(parsed[1]).to eq([school_group.name,
+                                 school.name,
+                                 school.school_type.humanize,
+                                 funder.name,
+                                 'East Of England',
+                                 user.name,
+                                 user.email,
+                                 user.role.humanize,
+                                 user.staff_role.title,
+                                 'No'])
+      end
+    end
+  end
 end
