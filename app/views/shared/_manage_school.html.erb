@@ -8,10 +8,7 @@
     <%= link_to t('manage_school_menu.manage_users'), school_users_path(school), class: 'dropdown-item' if can? :manage_users, school %>
     <%= link_to t('manage_school_menu.manage_alert_contacts'), school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
     <%= link_to t('manage_school_menu.manage_meters'), school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
-
-    <% if can?(:manage, EnergyTariff) %>
-      <%= link_to t('manage_school_menu.manage_tariffs'), school_energy_tariffs_path(school), class: 'dropdown-item' %>
-    <% end %>
+    <%= link_to t('manage_school_menu.manage_tariffs'), school_energy_tariffs_path(school), class: 'dropdown-item' if can? :manage, EnergyTariff %>
 
     <%= link_to t('manage_school_menu.manage_usage_estimate'), school_estimated_annual_consumptions_path(school), class: 'dropdown-item' if school.latest_annual_estimate.present? || school.suggest_annual_estimate? %>
 
