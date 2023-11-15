@@ -6,9 +6,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
   let(:school)                          { create(:school, :with_school_group, data_enabled: data_enabled) }
   let!(:school_group_dashboard_message) { school.school_group.create_dashboard_message(message: "School group message") }
   let!(:school_dashboard_message)       { school.create_dashboard_message(message: "School message") }
-
-  let(:programme_type) { create(:programme_type_with_activity_types) }
-  let!(:programme) { create(:programme, programme_type: programme_type, started_on: '2020-01-01', school: school) }
+  let!(:programme)                      { }
 
   let(:activities_2023_feature) { false }
 
@@ -140,6 +138,55 @@ RSpec.describe "adult dashboard prompts", type: :system do
     let(:activities_2023_feature) { true }
     let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
 
-    it_behaves_like "a functional training prompt"
+    describe "training prompt" do
+      context "when school is data enabled" do
+        let(:data_enabled) { true }
+
+        context "when user confirmed in the last 30 days" do
+          let(:confirmed_at) { 2.days.ago }
+
+          it_behaves_like "a training prompt", displayed: true
+        end
+
+        context "when user confirmed more than 30 days ago" do
+          let(:confirmed_at) { 31.days.ago }
+
+          it_behaves_like "a training prompt", displayed: false
+        end
+      end
+
+      context "when school is not data enabled" do
+        let(:data_enabled) { false }
+
+        it_behaves_like "a training prompt", displayed: false
+
+        context "when user confirmed more than 30 days ago" do
+          let(:confirmed_at) { 31.days.ago }
+
+          it_behaves_like "a training prompt", displayed: false
+        end
+
+        context "when user confirmed in the last 30 days" do
+          let(:confirmed_at) { 2.days.ago }
+
+          it_behaves_like "a training prompt", displayed: false
+        end
+      end
+    end
+
+    describe "programme prompt" do
+      context "when there is a programme" do
+        let(:programme) { create(:programme, programme_type: create(:programme_type_with_activity_types), started_on: '2020-01-01', school: school) }
+        let(:message) { "You have completed 0/3" }
+
+        it_behaves_like "a standard prompt", displayed: true
+      end
+
+      context "when there isn't a programme" do
+        let(:message) { "It's time to choose a new programme of activities" }
+
+        it_behaves_like "a standard prompt", displayed: true
+      end
+    end
   end
 end
