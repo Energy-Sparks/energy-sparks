@@ -48,6 +48,16 @@ module Schools
       redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Low carbon hub deleted'
     end
 
+    def check
+      @api_ok = Solar::LowCarbonHubInstallationFactory.check(@low_carbon_hub_installation)
+      respond_to(&:js)
+    end
+
+    def submit_job
+      Solar::LowCarbonHubLoaderJob.perform_later(installation: @low_carbon_hub_installation, notify_email: current_user.email)
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Loading job has been submitted. An email will be sent to #{current_user.email} when complete."
+    end
+
   private
 
     def low_carbon_hub_installation_params

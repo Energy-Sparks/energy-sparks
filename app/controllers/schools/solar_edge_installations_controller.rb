@@ -2,6 +2,17 @@ module Schools
   class SolarEdgeInstallationsController < ApplicationController
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
+    before_action :set_breadcrumbs
+
+    def show
+      @api_params = { api_key: @solar_edge_installation.api_key, format: :json }
+
+      if @solar_edge_installation.cached_api_information?
+        start_time = @solar_edge_installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
+        end_time = @solar_edge_installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
+        @reading_params = @api_params.merge({ timeUnit: "QUARTER_OF_AN_HOUR", startTime: start_time, endTime: end_time })
+      end
+    end
 
     def new
     end
@@ -47,12 +58,28 @@ module Schools
       redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Solar Edge API feed deleted"
     end
 
+    def check
+      @api_ok = Solar::SolarEdgeInstallationFactory.check(@solar_edge_installation)
+      respond_to(&:js)
+    end
+
+    def submit_job
+      Solar::SolarEdgeLoaderJob.perform_later(installation: @solar_edge_installation, notify_email: current_user.email)
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Loading job has been submitted. An email will be sent to #{current_user.email} when complete."
+    end
+
     private
 
     def solar_edge_installation_params
       params.require(:solar_edge_installation).permit(
         :site_id, :amr_data_feed_config_id, :mpan, :api_key
       )
+    end
+
+    def set_breadcrumbs
+      @breadcrumbs = [
+        { name: "Solar API Feeds" },
+      ]
     end
   end
 end

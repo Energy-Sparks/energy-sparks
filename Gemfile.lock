@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 37fb1339283e917b935061f9f8a620a7e6656fc9
-  tag: 4.1.3
+  revision: cbbfad533ac9a0c1454f233fbf4c698f6e36318c
+  tag: 4.1.5
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -14,7 +14,7 @@ GIT
       interpolate (~> 0.3.0)
       pry-byebug
       require_all (~> 2.0.0)
-      roo (~> 2.7.1)
+      roo
       roo-xls (~> 1.2.0)
       rspec
       ruby-limiter (~> 1.1.0)
@@ -24,6 +24,15 @@ GIT
       statsample (~> 2.1.0)
       structured_warnings (~> 0.3.0)
       write_xlsx (>= 0.85.5, < 1.12.0)
+
+GIT
+  remote: https://github.com/Energy-Sparks/roo.git
+  revision: 058a8e3d1c711c04c59a686805bbe1962d2b2ed1
+  branch: bug-fix-branch
+  specs:
+    roo (2.10.0)
+      nokogiri (~> 1)
+      rubyzip (>= 1.3.0, < 3.0.0)
 
 GIT
   remote: https://github.com/Energy-Sparks/statsample
@@ -308,6 +317,9 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    guard-rubocop (1.5.0)
+      guard (~> 2.0)
+      rubocop (< 2.0)
     handlebars_assets (0.23.9)
       execjs (~> 2.0)
       sprockets (>= 2.0.0)
@@ -379,7 +391,7 @@ GEM
     mime-types-data (3.2021.1115)
     mini_magick (4.11.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.4)
+    mini_portile2 (2.8.5)
     minimization (0.2.5)
       text-table (~> 1.2)
     minitest (5.20.0)
@@ -454,7 +466,7 @@ GEM
     puma (6.4.0)
       nio4r (~> 2.0)
     raabro (1.4.0)
-    racc (1.7.1)
+    racc (1.7.3)
     rack (2.2.8)
     rack-attack (6.5.0)
       rack (>= 1.0, < 3)
@@ -528,9 +540,6 @@ GEM
     rgeo-geojson (2.1.1)
       rgeo (>= 1.0.0)
     rollbar (3.3.0)
-    roo (2.7.1)
-      nokogiri (~> 1)
-      rubyzip (~> 1.1, < 2.0.0)
     roo-xls (1.2.0)
       nokogiri
       roo (>= 2.0.0, < 3)
@@ -675,7 +684,7 @@ GEM
     timeout (0.4.0)
     trix-rails (2.3.0)
       rails (> 4.1, < 7.0)
-    twilio-ruby (6.6.0)
+    twilio-ruby (6.8.1)
       faraday (>= 0.9, < 3.0)
       jwt (>= 1.5, < 3.0)
       nokogiri (>= 1.6, < 2.0)
@@ -764,6 +773,7 @@ DEPENDENCIES
   good_job (~> 3.4.6)
   groupdate (= 6.2.1)
   guard-rspec
+  guard-rubocop
   handlebars_assets
   i18n-tasks (~> 1.0.10)
   image_processing (~> 1.12)
@@ -793,7 +803,7 @@ DEPENDENCIES
   rb-readline
   rgeo-geojson
   rollbar
-  roo
+  roo!
   roo-xls
   rspec-json_expectations
   rspec-rails (~> 5.1.2)

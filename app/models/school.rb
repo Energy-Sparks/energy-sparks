@@ -247,10 +247,6 @@ class School < ApplicationRecord
     end
   end
 
-  # Note that saved_change_to_activation_date? is a magic ActiveRecord method
-  # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
-  after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
-
   def deleted?
     not_active? and removal_date.present?
   end
@@ -685,13 +681,5 @@ class School < ApplicationRecord
     return unless latitude.blank? || longitude.blank? || country.blank?
 
     errors.add(:postcode, I18n.t('schools.school_details.geocode_not_found_message'))
-  end
-
-  def add_joining_observation
-    observations.create!(
-      observation_type: :event,
-      description: "#{name} became an active user of Energy Sparks!",
-      at: Time.zone.now
-    )
   end
 end

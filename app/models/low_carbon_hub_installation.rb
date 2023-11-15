@@ -31,6 +31,10 @@ class LowCarbonHubInstallation < ApplicationRecord
 
   validates_presence_of :rbee_meter_id
 
+  def display_name
+    rbee_meter_id
+  end
+
   def school_number
     school.urn
   end

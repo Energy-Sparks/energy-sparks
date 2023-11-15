@@ -34,6 +34,16 @@ module Schools
       redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'New Rtone Variant API feed deleted.'
     end
 
+    def check
+      @api_ok = Solar::LowCarbonHubInstallationFactory.check(@rtone_variant_installation)
+      respond_to(&:js)
+    end
+
+    def submit_job
+      Solar::RtoneVariantLoaderJob.perform_later(installation: @rtone_variant_installation, notify_email: current_user.email)
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Loading job has been submitted. An email will be sent to #{current_user.email} when complete."
+    end
+
     private
 
     def load_non_gas_meters
