@@ -49,7 +49,10 @@
   <% end %>
 <% end %>
 
-<%= render 'schools/prompt_recommendations', school: @school %>
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
+  <%= render 'schools/prompt_recommendations_scoreboard', school: @school %>
+<% end %>
 
 <%= render 'schools/dashboard/transport_surveys', school: @school %>
 

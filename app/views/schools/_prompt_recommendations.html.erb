@@ -1,30 +1,6 @@
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-
-  <% position = current_school_podium.try(:school_position) %>
-
-  <% unless position.try(:points) %>
-    <%= component 'info_bar',
-        status: :neutral,
-        title: I18n.t('schools.prompts.recommendations.no_points_message'),
-        icon: fa_icon('crown fa-3x'),
-        buttons: { I18n.t('schools.prompts.recommendations.button') => school_recommendations_path(@school) }
-    %>
-  <% else %>
-    <% if position.position == 1 %>
-      <%= component 'info_bar',
-        status: :positive,
-        title: I18n.t('schools.prompts.recommendations.top_message_html', points: position.points, position: position.ordinal).html_safe,
-        icon: fa_icon('crown fa-3x'),
-        buttons: { I18n.t('schools.prompts.recommendations.button') => school_recommendations_path(@school) }
-    %>
-    <% else %>
-      <%= component 'info_bar',
-        status: :positive,
-        title: I18n.t('schools.prompts.recommendations.not_top_message_html',
-          points: position.points, position: position.ordinal).html_safe,
-        icon: fa_icon('crown fa-3x'),
-        buttons: { I18n.t('schools.prompts.recommendations.button') => school_recommendations_path(@school) }
-      %>
-    <% end %>
-  <% end %>
-<% end %>
+<%= component 'info_bar',
+  status: :neutral,
+  title: I18n.t('schools.prompts.recommendations.message'),
+  icon: fa_icon('clipboard-list fa-3x'),
+  buttons: { I18n.t('common.labels.choose_activity') => school_recommendations_path(@school) }
+%>

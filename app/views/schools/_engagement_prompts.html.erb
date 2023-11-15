@@ -1,13 +1,3 @@
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <!-- assume this should only be shown if -->
-  <%= component 'info_bar',
-    status: :neutral,
-    title: I18n.t('schools.prompts.recommendations.message_html'),
-    icon: fa_icon('tasks fa-3x'),
-    buttons: { I18n.t('schools.prompts.recommendations.button') => school_recommendations_path(@school) }
-  %>
-<% end %>
-
 <%= component 'info_bar',
   status: :neutral,
   title: t('schools.show.complete_activities'),

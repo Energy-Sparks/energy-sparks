@@ -26,10 +26,6 @@
   <%= render 'management/schools/dashboard_message', messageable: @school.try(:school_group) %>
 <% end %>
 
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= render('schools/prompt_to_complete_programme', programmes: @programmes_to_prompt) %>
-<% end %>
-
 <% if @suggest_estimates_for_fuel_types.present? && @suggest_estimates_for_fuel_types.any? %>
   <%= render 'management/schools/prompt_for_estimate', school: @school, fuel_types: @suggest_estimates_for_fuel_types %>
 <% end %>
@@ -59,7 +55,12 @@
 <% end %>
 
 <% if @show_standard_prompts %>
-  <%= render 'schools/engagement_prompts', school: @school %>
+  <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+    <%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
+    <%= render 'schools/prompt_recommendations', school: @school %>
+  <% else %>
+    <%= render 'schools/engagement_prompts', school: @school %>
+  <% end %>
 <% end %>
 
 <% if @add_pupils %>

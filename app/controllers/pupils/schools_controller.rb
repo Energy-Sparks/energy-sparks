@@ -35,6 +35,7 @@ module Pupils
       @show_temperature_observations = show_temperature_observations?
       @observations = setup_timeline(@school.observations)
       @default_equivalences = default_equivalences
+      @programmes_to_prompt = @school.programmes.last_started
     end
 
     def setup_data_enabled_features

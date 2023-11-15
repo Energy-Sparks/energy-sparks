@@ -1,0 +1,15 @@
+<% position = current_school_podium.try(:school_position) %>
+<% unless position.try(:points) %>
+  <%= component 'info_bar',
+      status: :neutral,
+      title: I18n.t('schools.prompts.recommendations_scoreboard.no_points_message'),
+      icon: fa_icon('trophy fa-3x'),
+      buttons: { I18n.t('common.labels.choose_activity') => school_recommendations_path(@school) }
+  %>
+<% else %>
+  <%= component 'info_bar',
+    status: :positive,
+    title: I18n.t('schools.prompts.recommendations_scoreboard.message_html', points: position.points, count: position.ordinal).html_safe,
+    icon: fa_icon('trophy fa-3x'),
+    buttons: { I18n.t('common.labels.choose_activity') => school_recommendations_path(@school) } %>
+<% end %>
