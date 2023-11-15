@@ -47,8 +47,10 @@ class Observation < ApplicationRecord
   belongs_to :programme, optional: true
   belongs_to :audit, optional: true
   belongs_to :school_target, optional: true
+
   # If adding a new observation type remember to also add a timelime template in app/views/schools/observations/timeline
-  enum observation_type: [:temperature, :intervention, :activity, :event, :audit, :school_target, :programme, :audit_activities_completed]
+  # event: 3 was removed as its no longer used
+  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7 }
 
   validates_presence_of :at, :school
   validates_associated :temperature_recordings
