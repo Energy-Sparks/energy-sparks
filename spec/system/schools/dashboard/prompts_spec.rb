@@ -153,7 +153,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
     end
   end
 
-  ## Testing functionality rather than just if they appear or not
+  ## Testing functionality rather than just if prompts appear or not
   context "with working prompts" do
     let(:activities_2023_feature) { true }
     let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
