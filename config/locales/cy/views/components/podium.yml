@@ -1,0 +1,8 @@
+cy:
+  components:
+    podium:
+      points: pwyntiau
+      no_points_this_year: Nid yw dy ysgol wedi sgorio unrhyw bwyntiau eto y flwyddyn ysgol hon
+      complete_an_activity: Cwblha weithgaredd i sgorio pwyntiau ar Sbarcynni
+      points_needed_to_overtake:  Dim ond %{points} o bwyntiau sydd angen i chi eu sgorio i gael mwy nag yr ysgol nesaf!
+      position_html: Mae dy ysgol yn <strong>%{position_ordinal}</strong>

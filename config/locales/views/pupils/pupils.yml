@@ -61,18 +61,14 @@ en:
         activities_completed: You've completed %{count} activities
         admin_view: Admin view
         choose_another_activity: Choose another activity
-        complete_an_activity: Complete an activity to score points on Energy Sparks
         enter_temperatures: Enter temperatures
         find_how_much_energy_used: Find out how much energy has been used
         how_will_school_compare: How will your school compare? You'll soon be able to find out!
         look_at_the_energy_use: Let's look at the energy use data for your school
         measure_temperatures: Measure classroom temperatures to find out whether you should turn down the heating to save energy
         no_activities_completed: No activities completed, make a start!
-        no_points_this_year: Your school hasn't scored any points yet this school year
         points: points
-        points_needed_to_overtake: You only need to score %{points} points to overtake the next school!
         previous_temperatures: Previous temperatures
-        school_podium_position_html: Your school is in <strong>%{position_ordinal} place</strong>
         see_scoreboard: See the scoreboard
         setting_up: We're setting up this school's energy data and will update this page when it is ready to explore
         start_transport_survey: Start surveying
