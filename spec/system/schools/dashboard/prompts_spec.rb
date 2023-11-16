@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "adult dashboard prompts", type: :system do
+  before { SiteSettings.create!(audit_activities_bonus_points: 50) }
+
   let(:data_enabled)                    { true }
   let(:confirmed_at)                    { 1.day.ago }
   let(:school)                          { create(:school, :with_school_group, data_enabled: data_enabled) }
   let!(:school_group_dashboard_message) { school.school_group.create_dashboard_message(message: "School group message") }
   let!(:school_dashboard_message)       { school.create_dashboard_message(message: "School message") }
   let!(:programme)                      { }
+  let!(:audit)                          { create(:audit, :with_activity_and_intervention_types, school: school) }
 
   let(:activities_2023_feature) { false }
 
@@ -31,6 +34,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a training prompt", displayed: false
       it_behaves_like "a complete programme prompt", displayed: false
       it_behaves_like "a recommendations prompt", displayed: false
+      it_behaves_like "a rich audit prompt", displayed: false
     end
 
     context 'as user from another school' do
@@ -41,6 +45,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a training prompt", displayed: false
       it_behaves_like "a complete programme prompt", displayed: false
       it_behaves_like "a recommendations prompt", displayed: false
+      it_behaves_like "a rich audit prompt", displayed: false
     end
 
     context 'as pupil' do
@@ -50,6 +55,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a training prompt", displayed: true
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations prompt", displayed: true
+      it_behaves_like "a rich audit prompt", displayed: true
     end
 
     context 'as staff' do
@@ -59,6 +65,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a training prompt", displayed: true
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations prompt", displayed: true
+      it_behaves_like "a rich audit prompt", displayed: true
     end
 
     context 'as school admin' do
@@ -68,6 +75,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a training prompt", displayed: true
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations prompt", displayed: true
+      it_behaves_like "a rich audit prompt", displayed: true
     end
 
     context 'as group admin' do
@@ -79,6 +87,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a training prompt", displayed: true
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations prompt", displayed: true
+      it_behaves_like "a rich audit prompt", displayed: true
     end
 
     context 'as admin' do
@@ -88,6 +97,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
       it_behaves_like "a training prompt", displayed: true
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations prompt", displayed: true
+      it_behaves_like "a rich audit prompt", displayed: true
     end
   end
 
@@ -100,6 +110,8 @@ RSpec.describe "adult dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: false
       it_behaves_like "a recommendations prompt", displayed: false
+      it_behaves_like "a rich audit prompt", displayed: false
+      it_behaves_like "a basic audit prompt", displayed: true
     end
 
     context 'as staff' do
@@ -107,6 +119,8 @@ RSpec.describe "adult dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: false
       it_behaves_like "a recommendations prompt", displayed: false
+      it_behaves_like "a rich audit prompt", displayed: false
+      it_behaves_like "a basic audit prompt", displayed: true
     end
 
     context 'as school admin' do
@@ -114,6 +128,8 @@ RSpec.describe "adult dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: false
       it_behaves_like "a recommendations prompt", displayed: false
+      it_behaves_like "a rich audit prompt", displayed: false
+      it_behaves_like "a basic audit prompt", displayed: true
     end
 
     context 'as group admin' do
@@ -123,6 +139,8 @@ RSpec.describe "adult dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: false
       it_behaves_like "a recommendations prompt", displayed: false
+      it_behaves_like "a rich audit prompt", displayed: false
+      it_behaves_like "a basic audit prompt", displayed: true
     end
 
     context 'as admin' do
@@ -130,6 +148,8 @@ RSpec.describe "adult dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: false
       it_behaves_like "a recommendations prompt", displayed: false
+      it_behaves_like "a rich audit prompt", displayed: false
+      it_behaves_like "a basic audit prompt", displayed: true
     end
   end
 
