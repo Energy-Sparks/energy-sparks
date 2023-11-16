@@ -59,3 +59,9 @@ RSpec.shared_examples "a temperature measuring prompt" do |displayed:|
 
   include_examples "a standard prompt", displayed: displayed
 end
+
+RSpec.shared_examples "a recommended prompt" do |displayed: true|
+  let(:message) { "View our recommended activities and actions based on your school's programmes and our analysis of your energy data" }
+
+  include_examples "a standard prompt", displayed: displayed
+end
