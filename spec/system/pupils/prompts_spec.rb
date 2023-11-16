@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "pupil dashboard prompts", type: :system do
   let(:confirmed_at)                    { 1.day.ago }
-  let(:school)                          { create(:school, :with_school_group, data_enabled: true) }
+  let!(:scoreboard)                     { }
+  let(:school)                          { create(:school, :with_school_group, data_enabled: true, scoreboard: scoreboard) }
   let(:activities_2023_feature)         { false }
-
+  let!(:school_with_points)             { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 
   around do |example|
     ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: activities_2023_feature.to_s do
@@ -131,6 +132,36 @@ RSpec.describe "pupil dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: false
       it_behaves_like "a recommendations scoreboard prompt", displayed: false
+    end
+  end
+
+  ## Testing functionality rather than just if they appear or not
+  context "with working prompts" do
+    let(:activities_2023_feature) { true }
+    let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
+
+    describe "the recommendations scoreboard prompt" do
+      context "when there is no scoreboard" do
+        it_behaves_like "a recommendations scoreboard prompt", position: 0
+      end
+
+      context "when school is part of a scoreboard" do
+        let(:scoreboard) { create(:scoreboard) }
+
+        it_behaves_like "a recommendations scoreboard prompt", position: 0
+
+        context "when school has the most points" do
+          let(:school) { create :school, :with_points, score_points: 100, scoreboard: scoreboard }
+
+          it_behaves_like "a recommendations scoreboard prompt", position: 1, points: 100
+        end
+
+        context "when school is second" do
+          let(:school) { create :school, :with_points, score_points: 10, scoreboard: scoreboard }
+
+          it_behaves_like "a recommendations scoreboard prompt", position: 2, points: 10
+        end
+      end
     end
   end
 end
