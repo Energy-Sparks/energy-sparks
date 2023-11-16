@@ -26,7 +26,7 @@ describe Programmes::Progress, type: :service do
       context 'when the programme is completed outside of the academic year as started' do
         it 'returns the full notification text used on the school dashboard' do
           allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-          expect(service.notification).to eq("You have completed <strong>1/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme<br />Complete the final <strong>2</strong> activities now to score <span class=\"badge badge-success\">50</span> points and <span class=\"badge badge-success\">0</span> bonus points for completing the programme")
+          expect(service.notification).to eq("You have completed <strong>1/3</strong> of the activities in the <strong>#{programme_type.title}</strong> programme<br />Complete the final <strong>2</strong> activities now to score <span class=\"badge badge-success\">50</span> points")
         end
       end
     end
