@@ -150,6 +150,7 @@ private
 
   def setup_default_features
     @observations = setup_timeline(@school.observations)
+
     #Setup management dashboard features if users has permission
     #to do that
     @show_standard_prompts = show_standard_prompts?(@school)
@@ -158,14 +159,8 @@ private
       @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
       @prompt_training = @show_data_enabled_features && current_user.confirmed_at > 30.days.ago
       @prompt_for_bill = @school.bill_requested && can?(:index, ConsentDocument)
-      @programmes_to_prompt = select_programmes_to_prompt
+      @programmes_to_prompt = @school.programmes.last_started
     end
-  end
-
-  def select_programmes_to_prompt
-    # Initially just a single prompt for the programme that the school most recently started.
-    # We might revise this to show multiple programmes, or choose a random programme.
-    @school.programmes.started.order(started_on: :desc).limit(1)
   end
 
   def setup_data_enabled_features
