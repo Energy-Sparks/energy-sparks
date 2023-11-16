@@ -25,6 +25,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
       pending do
         it_behaves_like "a complete programme prompt", displayed: false
         it_behaves_like "a recommendations scoreboard prompt", displayed: false
+        it_behaves_like "a transport survey prompt", displayed: false
       end
     end
 
@@ -35,6 +36,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
       pending do
         it_behaves_like "a complete programme prompt", displayed: false
         it_behaves_like "a recommendations scoreboard prompt", displayed: false
+        it_behaves_like "a transport survey prompt", displayed: false
       end
     end
 
@@ -43,6 +45,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
+      it_behaves_like "a transport survey prompt", displayed: true
     end
 
     context 'when user is staff' do
@@ -50,6 +53,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
+      it_behaves_like "a transport survey prompt", displayed: true
     end
 
     context 'when user is a school admin' do
@@ -57,6 +61,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
+      it_behaves_like "a transport survey prompt", displayed: true
     end
 
     context 'when user is a group admin' do
@@ -66,6 +71,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
+      it_behaves_like "a transport survey prompt", displayed: true
     end
 
     context 'when user is an admin' do
@@ -73,6 +79,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
 
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
+      it_behaves_like "a transport survey prompt", displayed: true
     end
   end
 end

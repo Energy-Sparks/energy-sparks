@@ -37,3 +37,8 @@ RSpec.shared_examples "a recommendations scoreboard prompt" do |displayed:|
   let(:message) { "You haven't scored any points this year. Complete your next activity to get on the scoreboard!" }
   include_examples "a standard prompt", displayed: displayed
 end
+
+RSpec.shared_examples "a transport survey prompt" do |displayed:|
+  let(:message) { "Start a transport survey so that you can find out how much carbon your school community generates by travelling to school" }
+  include_examples "a standard prompt", displayed: displayed
+end
