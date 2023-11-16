@@ -24,7 +24,9 @@
 </div>
 
 <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= render 'schools/prompt_recommended', scope: :pupil %>
+  <div class="row">
+    <%= render 'schools/prompt_recommended', scope: :pupil %>
+  </div>
 <% else %>
   <% if !@suggested_activities.blank? %>
     <div class="row bg-light">

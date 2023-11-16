@@ -1,8 +1,6 @@
 <% if current_user_school %>
-  <div class="row">
-    <%= component 'info_bar',
-      title: I18n.t('schools.prompts.recommended_for_your_school.message'),
-      buttons: { I18n.t('schools.prompts.recommended_for_your_school.button') => school_recommendations_path(current_user.school, scope: local_assigns[:scope]) }
-    %>
-  </div>
+  <%= component 'info_bar',
+    title: I18n.t('schools.prompts.recommended_for_your_school.message'),
+    buttons: { I18n.t('schools.prompts.recommended_for_your_school.button') => school_recommendations_path(current_user.school, scope: local_assigns[:scope]) }
+  %>
 <% end %>
