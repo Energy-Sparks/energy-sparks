@@ -354,6 +354,9 @@ en:
           one: Well done, you have scored <span class="badge badge-success">%{points}</span> points and you're in <strong>%{position}</strong> position on the scoreboard! Keep up the good work to help you stay top!
           other: Well done, you have scored <span class="badge badge-success">%{points}</span> points so far and you're in <strong>%{position}</strong> position on the scoreboard. Complete your next activity to climb higher up the scoreboard!
         no_points_message: You haven't scored any points this year. Complete your next activity to get on the scoreboard!
+      recommended_for_your_school:
+        button: View all suggestions
+        message: View our recommended activities and actions based on your school's programmes and our analysis of your energy data
     pupils:
       edit:
         title: Edit pupil account

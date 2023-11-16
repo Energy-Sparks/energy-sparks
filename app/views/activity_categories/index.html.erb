@@ -23,19 +23,28 @@
   </div>
 </div>
 
-<% if !@suggested_activities.blank? %>
-  <div class="row bg-light">
-    <div class="col">
-      <div class="d-flex justify-content-between align-items-center">
-        <h4><strong><%= t('activity_categories.suggested.title') %></strong></h4>
-        <div>
-          <%= link_to t('activity_categories.suggested.view_all'), recommended_activity_categories_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <%= component 'info_bar',
+      icon: fa_icon('info-circle fa-3x'),
+      status: :neutral,
+      title: I18n.t('schools.prompts.recommended_for_your_school.message'),
+      buttons: { I18n.t('schools.prompts.recommended_for_your_school.button') => school_recommendations_path(current_user.school, scope: :pupil) }
+  %>
+<% else %>
+  <% if !@suggested_activities.blank? %>
+    <div class="row bg-light">
+      <div class="col">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4><strong><%= t('activity_categories.suggested.title') %></strong></h4>
+          <div>
+            <%= link_to t('activity_categories.suggested.view_all'), recommended_activity_categories_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+          </div>
         </div>
+        <p><%= t('activity_categories.suggested.introduction') %></p>
       </div>
-      <p><%= t('activity_categories.suggested.introduction') %></p>
     </div>
-  </div>
-  <%= render "activity_categories/cards", activity_types: @suggested_activities.first(4), card_deck_css: "bg-light" %>
+    <%= render "activity_categories/cards", activity_types: @suggested_activities.first(4), card_deck_css: "bg-light" %>
+  <% end %>
 <% end %>
 
 <% if !@pupil_categories.blank? %>
