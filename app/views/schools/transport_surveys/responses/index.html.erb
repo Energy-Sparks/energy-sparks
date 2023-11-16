@@ -12,7 +12,7 @@
           <th><%= t('schools.transport_surveys.common.pupils_and_staff_sharing') %></th>
           <th><%= t('schools.transport_surveys.common.carbon') %></th>
           <th><%= t('schools.transport_surveys.common.survey_time') %></th>
-          <% if can? :delete, TransportSurveyResponse %>
+          <% if can? :delete, TransportSurvey::Response %>
             <th><%= t('common.labels.actions') %></th>
           <% end %>
         </tr>

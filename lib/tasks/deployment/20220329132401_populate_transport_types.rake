@@ -21,11 +21,11 @@ namespace :after_party do
       { image: '🚲',   can_share: false, kg_co2e_per_km: 0,        speed_km_per_hour: 5,  name: 'Bike', note: '' }
     ]
 
-    rows.each_with_index do |val, i|
+    rows.each_with_index do |_val, i|
       rows[i].merge!({ created_at: DateTime.now, updated_at: DateTime.now })
     end
 
-    TransportType.upsert_all(rows, unique_by: :name )
+    TransportSurvey::TransportType.upsert_all(rows, unique_by: :name)
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
