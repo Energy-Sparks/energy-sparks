@@ -5,6 +5,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
   let(:school)                          { create(:school, :with_school_group, data_enabled: true) }
   let(:activities_2023_feature)         { false }
 
+
   around do |example|
     ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: activities_2023_feature.to_s do
       example.run
@@ -12,6 +13,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
   end
 
   before do
+    SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s), electricity_price: 1, solar_export_price: 1, gas_price: 1)
     sign_in(user) if user.present?
     visit pupils_school_path(school)
   end
@@ -22,10 +24,11 @@ RSpec.describe "pupil dashboard prompts", type: :system do
     context 'when user is a guest' do
       let(:user) { nil }
 
-      pending do
+      pending "a discussion on current behaviour" do
         it_behaves_like "a complete programme prompt", displayed: false
         it_behaves_like "a recommendations scoreboard prompt", displayed: false
         it_behaves_like "a transport survey prompt", displayed: false
+        it_behaves_like "a temperature measuring prompt", displayed: false
       end
     end
 
@@ -33,10 +36,11 @@ RSpec.describe "pupil dashboard prompts", type: :system do
       let(:school2) { create(:school) }
       let(:user)    { create(:staff, school: school2) }
 
-      pending do
+      pending "a discussion on current behaviour" do
         it_behaves_like "a complete programme prompt", displayed: false
         it_behaves_like "a recommendations scoreboard prompt", displayed: false
         it_behaves_like "a transport survey prompt", displayed: false
+        it_behaves_like "a temperature measuring prompt", displayed: false
       end
     end
 
@@ -46,6 +50,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
       it_behaves_like "a transport survey prompt", displayed: true
+      it_behaves_like "a temperature measuring prompt", displayed: true
     end
 
     context 'when user is staff' do
@@ -54,6 +59,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
       it_behaves_like "a transport survey prompt", displayed: true
+      it_behaves_like "a temperature measuring prompt", displayed: true
     end
 
     context 'when user is a school admin' do
@@ -62,6 +68,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
       it_behaves_like "a transport survey prompt", displayed: true
+      it_behaves_like "a temperature measuring prompt", displayed: true
     end
 
     context 'when user is a group admin' do
@@ -72,6 +79,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
       it_behaves_like "a transport survey prompt", displayed: true
+      it_behaves_like "a temperature measuring prompt", displayed: true
     end
 
     context 'when user is an admin' do
@@ -80,6 +88,49 @@ RSpec.describe "pupil dashboard prompts", type: :system do
       it_behaves_like "a complete programme prompt", displayed: true
       it_behaves_like "a recommendations scoreboard prompt", displayed: true
       it_behaves_like "a transport survey prompt", displayed: true
+      it_behaves_like "a temperature measuring prompt", displayed: true
+    end
+  end
+
+  ### context to be removed when activities_2023 feature tidied up ###
+  context "with activities_2023 feature flag switched off" do
+    let(:activities_2023_feature) { false }
+
+    context 'when user is a pupil' do
+      let(:user) { create(:pupil, school: school, confirmed_at: confirmed_at) }
+
+      it_behaves_like "a complete programme prompt", displayed: false
+      it_behaves_like "a recommendations scoreboard prompt", displayed: false
+    end
+
+    context 'when user is staff' do
+      let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
+
+      it_behaves_like "a complete programme prompt", displayed: false
+      it_behaves_like "a recommendations scoreboard prompt", displayed: false
+    end
+
+    context 'when user is a school admin' do
+      let(:user) { create(:school_admin, school: school, confirmed_at: confirmed_at) }
+
+      it_behaves_like "a complete programme prompt", displayed: false
+      it_behaves_like "a recommendations scoreboard prompt", displayed: false
+    end
+
+    context 'when user is a group admin' do
+      let(:school_group)  { create(:school_group) }
+      let(:school)        { create(:school, school_group: school_group, data_enabled: true) }
+      let(:user)          { create(:group_admin, school_group: school_group, school: school, confirmed_at: confirmed_at) }
+
+      it_behaves_like "a complete programme prompt", displayed: false
+      it_behaves_like "a recommendations scoreboard prompt", displayed: false
+    end
+
+    context 'when user is an admin' do
+      let(:user) { create(:admin, confirmed_at: confirmed_at) }
+
+      it_behaves_like "a complete programme prompt", displayed: false
+      it_behaves_like "a recommendations scoreboard prompt", displayed: false
     end
   end
 end

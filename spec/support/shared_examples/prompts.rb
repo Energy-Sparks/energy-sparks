@@ -42,3 +42,9 @@ RSpec.shared_examples "a transport survey prompt" do |displayed:|
   let(:message) { "Start a transport survey so that you can find out how much carbon your school community generates by travelling to school" }
   include_examples "a standard prompt", displayed: displayed
 end
+
+RSpec.shared_examples "a temperature measuring prompt" do |displayed:|
+  let(:message) { "Measure classroom temperatures to find out whether you should turn down the heating to save energy" }
+
+  include_examples "a standard prompt", displayed: displayed
+end
