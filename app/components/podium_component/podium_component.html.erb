@@ -1,4 +1,4 @@
-<div class="podium-component<= classes %>">
+<div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
   <% if podium.includes_school? %>
     <h4 class="text-center">
       <%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.

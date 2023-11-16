@@ -3,14 +3,19 @@
 class PodiumComponent < ViewComponent::Base
   include ApplicationHelper
 
-  attr_reader :podium
+  attr_reader :podium, :id
 
-  def initialize(podium:, classes: "")
+  def initialize(podium: nil, classes: nil, id: nil)
     @podium = podium
     @classes = classes
+    @id = id
   end
 
   def classes
     " #{@classes}"
+  end
+
+  def render?
+    podium
   end
 end

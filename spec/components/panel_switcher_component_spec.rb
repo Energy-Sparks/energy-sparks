@@ -28,7 +28,6 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
   context "with all params" do
     let(:params) { all_params }
 
-
     it { expect(html).to have_selector("h4 strong", text: "Title text") }
     it { expect(html).to have_selector("div.panel-switcher-component>p", text: "Description text") }
 
