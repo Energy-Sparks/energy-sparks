@@ -17,11 +17,7 @@
       <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
         <div class="card surrounding-schools">
           <div class="card-body">
-            <% if current_school_podium.includes_school? %>
-              <%= render 'pupils/schools/podium', podium: current_school_podium  %>
-            <% else %>
-              <%= render 'pupils/schools/no_points_podium', podium: current_school_podium  %>
-            <% end %>
+            <%= component 'podium', podium: current_school_podium %>
           </div>
         </div>
       <% end %>
