@@ -1,12 +1,14 @@
 <%= component 'notice', status: status, classes: classes, style: style do %>
   <div class="row align-items-center">
-    <div class="col-md-1 d-flex justify-content-center align-content-center">
-      <div class="d-flex align-content-center flex-wrap">
-        <%= icon %>
+    <% if icon.present? %>
+      <div class="col-md-1 d-flex justify-content-center align-content-center">
+        <div class="d-flex align-content-center flex-wrap">
+          <%= icon %>
+        </div>
       </div>
-    </div>
+    <% end %>
     <% if buttons.present? %>
-      <div class='<%= "col-md-#{11 - buttons.size * 2}" %>'>
+      <div class='<%= "col-md-#{base_columns - buttons.size * 2}" %>'>
         <%= title %>
       </div>
       <% buttons.each do |title, path| %>
@@ -15,7 +17,7 @@
         </div>
       <% end %>
     <% else %>
-      <div class="col-md-11">
+      <div class="col-md-<%= base_columns %>">
         <h5><%= title %></h5>
       </div>
     <% end %>

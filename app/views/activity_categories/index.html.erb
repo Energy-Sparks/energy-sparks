@@ -24,12 +24,7 @@
 </div>
 
 <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= component 'info_bar',
-      icon: fa_icon('info-circle fa-3x'),
-      status: :neutral,
-      title: I18n.t('schools.prompts.recommended_for_your_school.message'),
-      buttons: { I18n.t('schools.prompts.recommended_for_your_school.button') => school_recommendations_path(current_user.school, scope: :pupil) }
-  %>
+  <%= render 'schools/prompt_recommended', scope: :pupil %>
 <% else %>
   <% if !@suggested_activities.blank? %>
     <div class="row bg-light">

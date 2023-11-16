@@ -93,4 +93,28 @@ RSpec.describe InfoBarComponent, type: :component do
       end
     end
   end
+
+  context "without icon and button" do
+    let(:params) { all_params.except(:icon, :buttons) }
+
+    it "content has full width" do
+      expect(html).to have_css('div.col-md-12')
+    end
+  end
+
+  context "without icon but with button" do
+    let(:params) { all_params.except(:icon) }
+
+    it "content is 10 cols wide" do
+      expect(html).to have_css('div.col-md-10')
+    end
+  end
+
+  context "without button but with icon" do
+    let(:params) { all_params.except(:buttons) }
+
+    it "content is 11 cols wide" do
+      expect(html).to have_css('div.col-md-11')
+    end
+  end
 end
