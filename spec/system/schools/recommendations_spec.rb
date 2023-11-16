@@ -62,7 +62,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       let(:programme_type) { create(:programme_type_with_activity_types, bonus_score: 12) }
       let(:setup_data) { create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school) }
 
-      it_behaves_like "a complete programme prompt with programme"
+      it_behaves_like "a complete programme prompt", with_programme: true
     end
 
     context "audit prompt" do

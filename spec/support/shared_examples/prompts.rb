@@ -23,13 +23,11 @@ RSpec.shared_examples "a training prompt" do |displayed: true|
   include_examples "a standard prompt", displayed: displayed
 end
 
-RSpec.shared_examples "a complete programme prompt" do |displayed: true|
-  let(:message) { "Start a new programme" }
-  include_examples "a standard prompt", displayed: displayed
-end
+RSpec.shared_examples "a complete programme prompt" do |displayed: true, with_programme: false|
+  let(:message) do
+    with_programme ? "You have completed 0/3 of the activities in the #{programme_type.title} programmeComplete the final 3 activities now to score 75 points and 12 bonus points for completing the programme" : "Start a new programme"
+  end
 
-RSpec.shared_examples "a complete programme prompt with programme" do |displayed: true|
-  let(:message) { "You have completed 0/3 of the activities in the #{programme_type.title} programmeComplete the final 3 activities now to score 75 points and 12 bonus points for completing the programme" }
   include_examples "a standard prompt", displayed: displayed
 end
 
