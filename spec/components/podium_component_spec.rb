@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
   let(:scoreboard) { create :scoreboard }
   let!(:school) { create :school, scoreboard: scoreboard }
+  let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
   let!(:podium) { Podium.create(school: school, scoreboard: school.scoreboard) }
   let(:all_params) { { podium: podium, classes: 'my-class', id: 'my-id' } }
   let(:params) { all_params }
@@ -26,18 +27,26 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
   end
 
   context "when podium includes school" do
-    let(:school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+    context "when in first place" do
+      let(:school) { create :school, :with_points, score_points: 60, scoreboard: scoreboard }
 
-    ## MORE TESTS HERE ##
-    it { expect(html.to_s).to be_present }
+      it { expect(html.to_s).to have_content("Your school is in 1st place") }
+    end
+
+    context "when in second place" do
+      let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
+
+      it { expect(html.to_s).to have_content("Your school is in 2nd place") }
+    end
   end
 
   context "when podium doesn't include school" do
     let(:different_scoreboard) { create(:scoreboard) }
     let(:school) { create :school, scoreboard: different_scoreboard }
 
-    ## MORE TESTS HERE ##
-    it { expect(html.to_s).to be_present }
+    it "displays no points text" do
+      expect(html).to have_content("Your school hasn't scored any points yet this school year")
+    end
   end
 
   context "with no podium" do
