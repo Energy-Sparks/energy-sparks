@@ -1,3 +1,5 @@
+require 'fileutils'
+
 namespace :utility do
   desc 'Stop raises error if automated emails are not turned on'
   task :check_automated_emails_on do
@@ -59,6 +61,21 @@ namespace :utility do
       puts "Skipping save_aggregate_schools_to_s3 as not on production"
     end
     puts "#{DateTime.now.utc} save_aggregate_schools_to_s3 end"
+  end
+
+  desc 'Dump unvalidated data'
+  task dump_unvalidated_school_data: :environment do
+    puts "#{DateTime.now.utc} dump_unvalidated_school_data start"
+    FileUtils.mkdir_p("tmp/unvalidated-data")
+    School.data_enabled.order(:name).each do |school|
+      puts "Dumping unvalidated school data for #{school.name}"
+      data = Amr::AnalyticsMeterCollectionFactory.new(school).unvalidated_data
+      filename = "unvalidated-data-#{school.name.parameterize}.yaml"
+      File.open("tmp/unvalidated-data/#{filename}", "w") do |file|
+        YAML.dump(data, file)
+      end
+    end
+    puts "#{DateTime.now.utc} dump_unvalidated_school_data end"
   end
 
   desc 'Save unvalidated  schools to S3'
