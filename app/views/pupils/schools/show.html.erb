@@ -92,7 +92,7 @@
 
   <div class="col card-deck actions">
     <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
-      <div class="card surrounding-schools">
+      <div class="card">
         <div class="card-body">
           <%= component 'podium', podium: current_school_podium %>
         </div>
