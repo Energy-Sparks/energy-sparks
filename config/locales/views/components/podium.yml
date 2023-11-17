@@ -1,0 +1,9 @@
+---
+en:
+  components:
+    podium:
+      complete_an_activity: Complete an activity to score points on Energy Sparks
+      no_points_this_year: Your school hasn't scored any points yet this school year
+      points: points
+      points_needed_to_overtake: You only need to score %{points} points to overtake the next school!
+      position_html: Your school is in <strong>%{position_ordinal} place</strong>
