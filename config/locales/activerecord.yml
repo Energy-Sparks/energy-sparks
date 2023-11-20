@@ -44,7 +44,7 @@ en:
         serves_dinners: Our school serves school dinners on site
         urn: Unique Reference Number
         website: Website
-      transport_survey_response:
+      transport_survey/response:
         id: Id
         journey_minutes: Journey minutes
         passengers: Passengers
@@ -58,7 +58,7 @@ en:
           sun: Sun
         weather_image: Weather image
         weather_name: Weather
-      transport_type:
+      transport_survey/transport_type:
         category:
           car: Car
           one: Category

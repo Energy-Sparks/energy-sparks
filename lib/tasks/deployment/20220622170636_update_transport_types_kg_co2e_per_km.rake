@@ -39,7 +39,7 @@ namespace :after_party do
     ]
 
     data.each do |row|
-      type = TransportType.find_by(name: row[:name])
+      type = TransportSurvey::TransportType.find_by(name: row[:name])
       type.update(row.slice(:kg_co2e_per_km, :note, :can_share))
     end
 

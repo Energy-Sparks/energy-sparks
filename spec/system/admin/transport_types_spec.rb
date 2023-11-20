@@ -396,7 +396,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         context "when the transport type appears deletable but is not" do
           before do
             visit admin_transport_types_path
-            allow_any_instance_of(TransportType).to receive(:safe_destroy).and_raise(EnergySparks::SafeDestroyError, "Transport type has associated responses")
+            allow_any_instance_of(TransportSurvey::TransportType).to receive(:safe_destroy).and_raise(EnergySparks::SafeDestroyError, "Transport type has associated responses")
             click_link("Delete")
           end
 

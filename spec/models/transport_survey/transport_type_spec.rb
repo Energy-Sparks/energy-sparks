@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe TransportType do
+describe TransportSurvey::TransportType do
   describe 'validations' do
-    subject { build(:transport_type) }
+    subject(:transport_type) { build(:transport_type) }
 
     it { is_expected.to be_valid }
     it { is_expected.to validate_uniqueness_of(:name) }
@@ -17,36 +17,36 @@ describe TransportType do
   end
 
   describe "#safe_destroy" do
-    subject! { create :transport_type }
+    subject!(:transport_type) { create :transport_type }
 
     context "with associated transport survey response" do
       let!(:response) { create(:transport_survey_response, transport_type: subject)}
 
       it 'raises exception and does not destroy' do
-        expect { subject.safe_destroy }
+        expect { transport_type.safe_destroy }
         .to raise_error(EnergySparks::SafeDestroyError, 'Transport type has associated responses')
-        .and(not_change { TransportType.count })
+        .and(not_change { TransportSurvey::TransportType.count })
       end
     end
 
     context "without an associated transport survey response" do
       it 'does not raise' do
-        expect { subject.safe_destroy }.not_to raise_error
+        expect { transport_type.safe_destroy }.not_to raise_error
       end
 
       it "destroys transport type" do
-        expect { subject.safe_destroy }.to change { TransportType.count }.from(1).to(0)
+        expect { transport_type.safe_destroy }.to change(TransportSurvey::TransportType, :count).from(1).to(0)
       end
     end
   end
 
   describe "#categories_with_other" do
     it "adds 'other' to categories" do
-      expect(TransportType.categories_with_other.keys).to eql(TransportType.categories.keys + ['other'])
+      expect(TransportSurvey::TransportType.categories_with_other.keys).to eql(TransportSurvey::TransportType.categories.keys + ['other'])
     end
 
     it "sets other to nil" do
-      expect(TransportType.categories_with_other['other']).to be_nil
+      expect(TransportSurvey::TransportType.categories_with_other['other']).to be_nil
     end
   end
 end

@@ -21,7 +21,8 @@ module Programmes
     end
 
     def summary
-      I18n.t('schools.prompts.programme.summary_html',
+      key = programme_points_for_completion > 0 ? 'summary_bonus_html' : 'summary_html'
+      I18n.t("schools.prompts.programme.#{key}",
         count: activity_types_uncompleted_count,
         activity_types_uncompleted_scores: activity_types_uncompleted_scores,
         programme_points_for_completion: programme_points_for_completion)

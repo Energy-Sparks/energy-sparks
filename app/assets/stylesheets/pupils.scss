@@ -32,31 +32,6 @@
   }
 }
 
-.surrounding-schools {
-  .bar{
-    width: 95%;
-    margin-top: 10px;
-    margin-right: auto;
-    margin-bottom: 3px;
-    margin-left: auto;
-
-    &-body{
-      background-color: #fff9b2;
-    }
-
-    &-current {
-      .bar-body{
-        background-color: #ffde4d;
-      }
-    }
-
-  }
-}
-
-.grey {
-  border-color: $grey;
-}
-
 .activity-suggestion {
   border: 2px solid $grey;
   padding: 30px;

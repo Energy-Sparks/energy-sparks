@@ -30,7 +30,7 @@ describe 'TransportSurveys - App', type: :system do
               click_button('Launch survey app')
             end
 
-            let(:weather) { TransportSurveyResponse.weather_images[:rain] }
+            let(:weather) { TransportSurvey::Response.weather_images[:rain] }
 
             it { expect(page).to have_content('Please select today\'s weather') }
             it { expect(page).to have_link(weather) }
@@ -41,7 +41,7 @@ describe 'TransportSurveys - App', type: :system do
                 click_link weather
               end
 
-              let(:time) { TransportSurveyResponse.journey_minutes_options.last }
+              let(:time) { TransportSurvey::Response.journey_minutes_options.last }
 
               it { expect(page).to have_content('Time: How many minutes did your journey take in total?') }
               it { expect(page).to have_link(time.to_s) }
@@ -115,8 +115,8 @@ describe 'TransportSurveys - App', type: :system do
                     click_link transport_type.image
                   end
 
-                  let(:passengers_link) { TransportSurveyResponse.passenger_symbol * passengers }
-                  let(:passengers) { TransportSurveyResponse.passengers_options.last.to_i }
+                  let(:passengers_link) { TransportSurvey::Response.passenger_symbol * passengers }
+                  let(:passengers) { TransportSurvey::Response.passengers_options.last.to_i }
 
                   it { expect(page).to have_content("Sharing: How many pupils at this school shared your #{transport_type.image} #{transport_type.name} journey?") }
                   it { expect(page).to have_button('Finish & save results 0', disabled: true) }

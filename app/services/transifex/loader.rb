@@ -24,7 +24,7 @@ module Transifex
         log("Synchronising Case Studies")
         synchronise_resources(transifex_load, CaseStudy.tx_resources)
         log("Synchronising Transport Types")
-        synchronise_resources(transifex_load, TransportType.tx_resources)
+        synchronise_resources(transifex_load, TransportSurvey::TransportType.tx_resources)
         log("Synchronising Alert Type Rating Content Versions")
         synchronise_resources(transifex_load, AlertTypeRatingContentVersion.tx_resources)
         log("Synchronising Equivalence Type Content Versions")

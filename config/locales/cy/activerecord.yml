@@ -43,7 +43,7 @@ cy:
         serves_dinners: Mae ein hysgol yn gweini cinio ysgol ar y safle
         urn: Cyfeirnod Unigryw
         website: Gwefan
-      transport_survey_response:
+      transport_survey/response:
         id: Rhif adnabod
         journey_minutes: Munudau taith
         passengers: Teithwyr
@@ -57,7 +57,7 @@ cy:
           sun: Haul
         weather_image: Llun tywydd
         weather_name: Tywydd
-      transport_type:
+      transport_survey/transport_type:
         category:
           car: Car
           one: Categori

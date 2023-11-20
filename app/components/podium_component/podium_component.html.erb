@@ -1,0 +1,53 @@
+<div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
+  <% if podium.includes_school? %>
+    <h4 class="text-center">
+      <%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.
+    </h4>
+    <div class="row align-items-end border-bottom grey">
+      <% podium.low_to_high.each do |position| %>
+        <div class="col-4 text-center">
+          <h5>
+            <% if podium.current_school?(position) %>
+              <%= fa_icon('crown fa-2x') %>
+              <p class='h2'><%= position.ordinal %></p>
+            <% else %>
+              <p><%= position.ordinal %></p>
+              <% if (position.normalised_points * 149).to_i < 70 %>
+                <p class="mb-1"><strong><%= position.points %></strong></p>
+                <p class="text-uppercase"><%= t('components.podium.points') %></p>
+              <% end %>
+            <% end %>
+          </h5>
+
+          <div class="bar <%= 'bar-current' if podium.current_school?(position) %>">
+            <div class="bar-arrow"></div>
+            <div class="bar-body" style="height:<%= (position.normalised_points * 149).to_i + 1 %>px">
+              <% if (position.normalised_points * 149).to_i > 70 %>
+                <p class="pt-2 mb-0"><strong><%= position.points %></strong></p>
+                <p class="text-uppercase"><%= t('components.podium.points') %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="row border-top grey">
+      <% podium.low_to_high.each do |position| %>
+        <div class="col-4 text-center">
+          <h6>
+            <% if podium.current_school?(position) %>
+              <%= position.school.name %>
+            <% else %>
+              <%= link_to position.school.name, pupils_school_path(position.school) %>
+            <% end %>
+          </h6>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <h4><%= t('components.podium.no_points_this_year') %></h4>
+    <p><%= t('components.podium.complete_an_activity') %>.
+      <%= t('components.podium.points_needed_to_overtake', points: podium.low_to_high.first.points) if podium.low_to_high.any? %>
+    </p>
+  <% end %>
+</div>

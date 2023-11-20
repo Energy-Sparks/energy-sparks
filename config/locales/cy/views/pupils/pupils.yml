@@ -60,18 +60,14 @@ cy:
         activities_completed: Rwyt ti wedi cwblhau %{count} o weithgareddau
         admin_view: Gwedd weinyddol
         choose_another_activity: Dewisa weithgaredd arall
-        complete_an_activity: Cwblha weithgaredd i sgorio pwyntiau ar Sbarcynni
         enter_temperatures: Rho dymereddau
         find_how_much_energy_used: Darganfod faint o ynni a ddefnyddiwyd
         how_will_school_compare: Sut bydd dy ysgol yn cymharu? Byddi di'n gallu darganfod yn fuan!
         look_at_the_energy_use: Gad i ni edrych ar y data defnydd ynni ar gyfer dy ysgol
         measure_temperatures: Mesura dymhereddau ystafell ddosbarth i ddarganfod a ddylet ti droi'r gwres i lawr i arbed ynni
         no_activities_completed: Dim gweithgareddau wedi'u cwblhau, dechreua!
-        no_points_this_year: Nid yw dy ysgol wedi sgorio unrhyw bwyntiau eto y flwyddyn ysgol hon
         points: pwyntiau
-        points_needed_to_overtake: Dim ond %{points} o bwyntiau sydd angen i chi eu sgorio i gael mwy nag yr ysgol nesaf!
         previous_temperatures: Tymhereddau blaenorol
-        school_podium_position_html: Mae dy ysgol yn <strong>%{position_ordinal}</strong>
         see_scoreboard: Gweler y bwrdd sgorio
         setting_up: Rydym yn sefydlu data ynni'r ysgol hon a byddwn yn diweddaru'r dudalen hon pan fydd yn barod i'w harchwilio
         start_transport_survey: Dechrau arolygu

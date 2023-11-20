@@ -24,9 +24,9 @@
       </tr>
     </thead>
     <tbody>
-      <% TransportType.categories_with_other.each do |cat, value| %>
+      <% TransportSurvey::TransportType.categories_with_other.each do |cat, value| %>
         <tr>
-          <td class="col-md-4"><%= TransportType.human_enum_name(:category, cat) %></td>
+          <td class="col-md-4"><%= TransportSurvey::TransportType.human_enum_name(:category, cat) %></td>
           <td class="col-md-4"><%= @transport_survey.responses_per_category[cat] %></td>
           <td class="col-md-4"><%= @transport_survey.percentage_per_category[cat].round %>%</td>
         </tr>
