@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 5a1373bee6784c064f66a882481d384dc7745821
-  branch: 3896-new-school-comparison-benchmark-for-ovo-analysis
+  revision: 2f26e6858afd345b73d0f98a27abc719642fbb75
+  tag: 4.1.6
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
