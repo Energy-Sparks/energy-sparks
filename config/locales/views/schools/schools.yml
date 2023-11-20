@@ -380,7 +380,7 @@ en:
       recent_activity:
         description: These suggestions are based on your most recently recorded activity
         title: Based on your recent activity
-      title: Recommended activities & actions
+      title: Recommended activities and actions
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
