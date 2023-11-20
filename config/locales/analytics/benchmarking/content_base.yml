@@ -65,6 +65,7 @@ en:
         heating_in_warm_weather: Heating used in warm weather
         holiday_usage_last_year: Cost of energy used in upcoming holiday last year
         hot_water_efficiency: Hot Water Efficiency
+        jan_august_2022_2023_energy_comparison: Jan to August 2022 to 2023 energy use
         layer_up_powerdown_day_november_2022: Change in energy for layer up power down day 11 November 2022 (compared with 12 Nov 2021)
         recent_change_in_baseload: Recent change in baseload
         seasonal_baseload_variation: Seasonal baseload variation
@@ -388,6 +389,8 @@ en:
         benchmark_holidays_change_base:
           period_type: holiday
           period_types: holidays
+        benchmark_jan_august_2022_2023_gas_table:
+          introduction_text: 'The change columns are calculated using temperature adjusted values:'
         benchmark_sept_nov_2022_gas_table:
           introduction_text: 'The change columns are calculated using temperature adjusted values:'
         change_in_electricity_consumption_recent_school_weeks:
@@ -639,6 +642,15 @@ en:
           introduction_text_html: "<p>This benchmark shows the cost of electricity and gas used last year for the upcoming holidays. For example, if the next holidays are the Summer holidays 2023, the data shown will be for Summer 2022. This allows you to identify which schools in your group need to take the most action to cut holiday waste.</p>"
         hot_water_efficiency:
           introduction_text_html: "<p> This benchmark analyses the efficiency of schools' hot water systems and the potential savings from either improving the timing control of existing hot water systems or replacing it completely with point of use electric hot water systems. <p>"
+        jan_august_2023_2023_energy_comparison:
+          introduction_text_html: |-
+            <p>
+            This benchmark shows the change in energy consumption between January-August 2022 and 2023.
+            </p>
+            <p>
+            The first table provides an summary of overall change in energy usage, the other tables provide
+            more detail for electricity, gas and storage heaters.
+            </p>
         layer_up_powerdown_day_november_2022:
           introduction_text_html: |-
             <p>
