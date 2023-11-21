@@ -25,9 +25,9 @@ RSpec.describe DataSource, type: :model do
       let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
       let!(:meters) do
         [
-          create(:gas_meter, data_source: data_source, school: create(:school, active: true), admin_meter_status: admin_meter_status),
-          create(:gas_meter, data_source: data_source, school: create(:school, :with_school_group, active: true), admin_meter_status: admin_meter_status),
-          create(:gas_meter, data_source: data_source, school: create(:school, active: false), admin_meter_status: admin_meter_status)
+          create(:gas_meter, data_source: data_source, school: create(:school, active: true), admin_meter_status: admin_meter_status, created_at: 3.seconds.ago),
+          create(:gas_meter, data_source: data_source, school: create(:school, :with_school_group, active: true), admin_meter_status: admin_meter_status, created_at: 2.seconds.ago),
+          create(:gas_meter, data_source: data_source, school: create(:school, active: false), admin_meter_status: admin_meter_status, created_at: 1.second.ago)
         ]
       end
       let(:first_reading_date) { 1.year.ago.to_date + 2.days }

@@ -72,3 +72,9 @@ RSpec.shared_examples "a rich audit prompt" do |displayed: true|
   let(:message) { "You have completed 0/3 of the activities and 0/3 of the actions from your recent energy auditComplete the others to score 165 points and 50 bonus points for completing all audit tasks" }
   include_examples "a standard prompt", displayed: displayed
 end
+
+RSpec.shared_examples "a recommended prompt" do |displayed: true|
+  let(:message) { "View our recommended activities and actions based on your school's programmes and our analysis of your energy data" }
+
+  include_examples "a standard prompt", displayed: displayed
+end
