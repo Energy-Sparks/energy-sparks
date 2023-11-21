@@ -40,7 +40,8 @@ class NextActivitySuggesterWithFilter
   end
 
   def suggest_from_audits
-    suggestions = ActivityType.joins(:audit_activity_types, :audits).where(audits: { school: @school })
+    suggestions = ActivityType.joins({ audit_activity_types: { audit: :school } }).where(audits: { school_id: @school })
+
     academic_year = @school.academic_year_for(Time.zone.today)
     if academic_year
       completed_activities = @school.activities.between(academic_year.start_date, academic_year.end_date)
