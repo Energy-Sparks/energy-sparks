@@ -4,8 +4,10 @@ class InterventionTypeGroupsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    if current_user_school
-      @suggested_interventions = load_suggested_interventions(current_user_school)
+    unless EnergySparks::FeatureFlags.active?(:activities_2023)
+      if current_user_school
+        @suggested_interventions = load_suggested_interventions(current_user_school)
+      end
     end
     @intervention_type_groups = @intervention_type_groups.by_name
   end

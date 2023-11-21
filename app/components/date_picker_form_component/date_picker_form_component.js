@@ -1,6 +1,6 @@
 "use strict"
 
-window.onload = function() {
+window.addEventListener("load", (event) => {
   document.querySelectorAll(`[id^="datepickerformcomponent"]`).forEach(element => {
     $('#' + element.id).datetimepicker({
       format: 'DD/MM/YYYY',
@@ -8,4 +8,4 @@ window.onload = function() {
       locale: moment.locale()
     });
   });
-};
+});

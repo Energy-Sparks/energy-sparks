@@ -11,7 +11,7 @@ describe Audits::Progress, type: :service do
 
   context "with no actions or activities completed" do
     describe "#notification" do
-      it { expect(service.notification).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <span class=\"badge badge-success\">165</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
+      it { expect(service.notification).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>165</strong> points and <strong>50</strong> bonus points for completing all audit tasks") }
     end
 
     describe "#completed_activities_count" do
@@ -54,7 +54,7 @@ describe Audits::Progress, type: :service do
     before { ActivityCreator.new(activity).process }
 
     describe "#notification" do
-      it { expect(service.notification).to eq("You have completed <strong>1/3</strong> of the activities and <strong>1/3</strong> of the actions from your recent energy audit<br />Complete the others to score <span class=\"badge badge-success\">110</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
+      it { expect(service.notification).to eq("You have completed <strong>1/3</strong> of the activities and <strong>1/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>110</strong> points and <strong>50</strong> bonus points for completing all audit tasks") }
     end
   end
 
@@ -65,7 +65,7 @@ describe Audits::Progress, type: :service do
     before { ActivityCreator.new(activity).process }
 
     describe "#notification" do
-      it { expect(service.notification).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <span class=\"badge badge-success\">165</span> points and <span class=\"badge badge-success\">50</span> bonus points for completing all audit tasks") }
+      it { expect(service.notification).to eq("You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>165</strong> points and <strong>50</strong> bonus points for completing all audit tasks") }
     end
   end
 
@@ -78,7 +78,7 @@ describe Audits::Progress, type: :service do
     end
 
     describe "#notification" do
-      it { expect(service.notification).to eq("You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <span class=\"badge badge-success\">90</span> points and <span class=\"badge badge-success\">0</span> bonus points for completing all audit tasks") }
+      it { expect(service.notification).to eq("You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>90</strong> points and <strong>0</strong> bonus points for completing all audit tasks") }
     end
   end
 end

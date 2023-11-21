@@ -19,18 +19,22 @@
   </div>
 </div>
 
-<% if !@suggested_interventions.blank? %>
-  <div class="row mt-3">
-    <div class="col">
-      <div class="d-flex justify-content-between align-items-center">
-        <h4><strong><%= t('intervention_type_groups.index.recommended_for_your_school') %></strong></h4>
-        <div>
-          <%= link_to t('intervention_type_groups.index.view_all_suggestions'), recommended_intervention_type_groups_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <%= render 'schools/prompt_recommended', scope: :adult %>
+<% else %>
+  <% if !@suggested_interventions.blank? %>
+    <div class="row mt-3">
+      <div class="col">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4><strong><%= t('intervention_type_groups.index.recommended_for_your_school') %></strong></h4>
+          <div>
+            <%= link_to t('intervention_type_groups.index.view_all_suggestions'), recommended_intervention_type_groups_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <%= render "cards", intervention_types: @suggested_interventions.first(4), card_deck_css: "" %>
+    <%= render "cards", intervention_types: @suggested_interventions.first(4), card_deck_css: "" %>
+  <% end %>
 <% end %>
 
 <% @intervention_type_groups.each do |intervention_type_group| %>

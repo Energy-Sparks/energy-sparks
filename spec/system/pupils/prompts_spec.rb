@@ -22,27 +22,23 @@ RSpec.describe "pupil dashboard prompts", type: :system do
   context "with activities_2023 feature flag switched on" do
     let(:activities_2023_feature) { true }
 
-    context 'when user is a guest' do
+    context 'when user is a guest', pending: "a discussion on current behaviour" do
       let(:user) { nil }
 
-      pending "a discussion on current behaviour" do
-        it_behaves_like "a complete programme prompt", displayed: false
-        it_behaves_like "a recommendations scoreboard prompt", displayed: false
-        it_behaves_like "a transport survey prompt", displayed: false
-        it_behaves_like "a temperature measuring prompt", displayed: false
-      end
+      it_behaves_like "a complete programme prompt", displayed: false
+      it_behaves_like "a recommendations scoreboard prompt", displayed: false
+      it_behaves_like "a transport survey prompt", displayed: false
+      it_behaves_like "a temperature measuring prompt", displayed: false
     end
 
-    context 'when user is from another school' do
+    context 'when user is from another school', pending: "a discussion on current behaviour" do
       let(:school2) { create(:school) }
       let(:user)    { create(:staff, school: school2) }
 
-      pending "a discussion on current behaviour" do
-        it_behaves_like "a complete programme prompt", displayed: false
-        it_behaves_like "a recommendations scoreboard prompt", displayed: false
-        it_behaves_like "a transport survey prompt", displayed: false
-        it_behaves_like "a temperature measuring prompt", displayed: false
-      end
+      it_behaves_like "a complete programme prompt", displayed: false
+      it_behaves_like "a recommendations scoreboard prompt", displayed: false
+      it_behaves_like "a transport survey prompt", displayed: false
+      it_behaves_like "a temperature measuring prompt", displayed: false
     end
 
     context 'when user is a pupil' do

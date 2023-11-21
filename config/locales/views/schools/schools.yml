@@ -339,24 +339,27 @@ en:
     prompts:
       audit:
         message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your recent energy audit
-        summary_html: Complete the others to score <span class="badge badge-success">%{remaining_points}</span> points and <span class="badge badge-success">%{bonus_points}</span> bonus points for completing all audit tasks
+        summary_html: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
       programme:
         choose_a_new_programme_message: It's time to choose a new programme of activities. What challenge will you take on next?
         message_html: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme
         start_a_new_programme: Start a new programme
         summary_bonus_html:
-          one: Complete the final activity now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
-          other: Complete the final <strong>%{count}</strong> activities now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points and <span class="badge badge-success">%{programme_points_for_completion}</span> bonus points for completing the programme
+          one: Complete the final activity now to score <strong>%{activity_types_uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
+          other: Complete the final <strong>%{count}</strong> activities now to score <strong>%{activity_types_uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
         summary_html:
-          one: Complete the final activity now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points
-          other: Complete the final <strong>%{count}</strong> activities now to score <span class="badge badge-success">%{activity_types_uncompleted_scores}</span> points
+          one: Complete the final activity now to score <strong>%{activity_types_uncompleted_scores}</strong> points
+          other: Complete the final <strong>%{count}</strong> activities now to score <strong>%{activity_types_uncompleted_scores}</strong> points
       recommendations:
         message: Complete one of our recommended pupil or adult led activities to start reducing your energy usage
       recommendations_scoreboard:
         message_html:
-          one: Well done, you have scored <span class="badge badge-success">%{points}</span> points and you're in <strong>%{position}</strong> position on the scoreboard! Keep up the good work to help you stay top!
-          other: Well done, you have scored <span class="badge badge-success">%{points}</span> points so far and you're in <strong>%{position}</strong> position on the scoreboard. Complete your next activity to climb higher up the scoreboard!
+          one: Well done, you have scored <strong>%{points}</strong> points and you're in <strong>%{position}</strong> position on the scoreboard! Keep up the good work to help you stay top!
+          other: Well done, you have scored <strong>%{points}</strong> points so far and you're in <strong>%{position}</strong> position on the scoreboard. Complete your next activity to climb higher up the scoreboard!
         no_points_message: You haven't scored any points this year. Complete your next activity to get on the scoreboard!
+      recommended_for_your_school:
+        button: View all suggestions
+        message: View our recommended activities and actions based on your school's programmes and our analysis of your energy data
     pupils:
       edit:
         title: Edit pupil account
@@ -380,7 +383,7 @@ en:
       recent_activity:
         description: These suggestions are based on your most recently recorded activity
         title: Based on your recent activity
-      title: Recommended activities & actions
+      title: Recommended activities and actions
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
