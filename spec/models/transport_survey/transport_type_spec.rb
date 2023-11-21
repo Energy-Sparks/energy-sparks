@@ -16,6 +16,17 @@ describe TransportSurvey::TransportType do
     end
   end
 
+  describe "#name" do
+    subject!(:transport_type) { create(:transport_type) }
+
+    it "has a translatable_type of TransportSurvey::TransportType in the mobility_string_translations table" do
+      # This is here as a reminder that #name is a translated field and if the name of the class changes,
+      # that it's translatable_type in the database table: mobility_string_translations also needs to change!
+      # See: lib/tasks/deployment/20231120150555_fix_transport_type_names.rake
+      expect(transport_type.string_translations.first.translatable_type).to eql('TransportSurvey::TransportType')
+    end
+  end
+
   describe "#safe_destroy" do
     subject!(:transport_type) { create :transport_type }
 
