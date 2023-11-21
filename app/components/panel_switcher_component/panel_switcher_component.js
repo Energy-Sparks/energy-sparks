@@ -14,6 +14,6 @@ const panel_switcher = (function () {
   }
 })();
 
-window.onload = function() {
+window.addEventListener("load", (event) => {
   $('.panel-switcher-component').on('change', 'input', panel_switcher.updatePanel);
-};
+});
