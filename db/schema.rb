@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_27_093450) do
+ActiveRecord::Schema.define(version: 2023_11_21_141221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -915,13 +915,13 @@ ActiveRecord::Schema.define(version: 2023_10_27_093450) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "state"
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "key"
@@ -929,7 +929,7 @@ ActiveRecord::Schema.define(version: 2023_10_27_093450) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -1227,9 +1227,12 @@ ActiveRecord::Schema.define(version: 2023_10_27_093450) do
     t.bigint "school_target_id"
     t.bigint "programme_id"
     t.integer "pupil_count"
+    t.string "observable_type"
+    t.bigint "observable_id"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
+    t.index ["observable_type", "observable_id"], name: "index_observations_on_observable_type_and_observable_id"
     t.index ["programme_id"], name: "index_observations_on_programme_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
     t.index ["school_target_id"], name: "index_observations_on_school_target_id"

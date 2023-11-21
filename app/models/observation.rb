@@ -50,7 +50,12 @@ class Observation < ApplicationRecord
 
   # If adding a new observation type remember to also add a timelime template in app/views/schools/observations/timeline
   # event: 3 was removed as its no longer used
-  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7 }
+  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, observable: 8 }
+
+  # This is the first stage in moving this class over to being fully polymorphic
+  # The idea is to eventually move all observation_types (above) to this way of doing things
+  belongs_to :observable, polymorphic: true, optional: true
+  # delegated_type :observable, types: %w[TransportSurvey]
 
   validates_presence_of :at, :school
   validates_associated :temperature_recordings
@@ -74,12 +79,14 @@ class Observation < ApplicationRecord
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
   scope :recorded_since, ->(date) { where('created_at >= ?', date)}
 
-  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme]) }
+  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme, :observable]) }
 
   has_rich_text :description
 
   before_save :add_points_for_interventions, if: :intervention?
   before_save :add_bonus_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
+
+  before_validation :set_observable, if: :observable
 
   private
 
@@ -114,5 +121,12 @@ class Observation < ApplicationRecord
 
   def reject_temperature_recordings(attributes)
     attributes['centigrade'].blank?
+  end
+
+  def set_observable
+    self.observation_type = :observable
+
+    # Take the school from the related object
+    self.school = self.observable.school if self.observable.school
   end
 end

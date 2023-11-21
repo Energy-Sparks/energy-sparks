@@ -157,5 +157,19 @@ describe Observation do
         expect(observation.points).to eq(50)
       end
     end
+
+    context "when observable" do
+      let(:transport_survey) { create(:transport_survey, school: school) }
+
+      subject(:observation) { Observation.create(observable: transport_survey) }
+
+      it "sets observation_type" do
+        expect(observation.observation_type).to eq('observable')
+      end
+
+      it "sets school from related object" do
+        expect(observation.school).to eq(transport_survey.school)
+      end
+    end
   end
 end
