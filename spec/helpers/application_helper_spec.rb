@@ -180,13 +180,13 @@ describe ApplicationHelper do
 
   describe '#current_locale' do
     it 'handles symbols' do
-      expect(helper.current_locale?(:en)).to be_truthy
-      expect(helper.current_locale?(:cy)).to be_falsey
+      expect(helper).to be_current_locale(:en)
+      expect(helper).not_to be_current_locale(:cy)
     end
 
     it 'handles strings' do
-      expect(helper.current_locale?('en')).to be_truthy
-      expect(helper.current_locale?('cy')).to be_falsey
+      expect(helper).to be_current_locale('en')
+      expect(helper).not_to be_current_locale('cy')
     end
   end
 

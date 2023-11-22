@@ -17,7 +17,7 @@ describe 'help pages', type: :system do
 
       it 'serves me a 404' do
         visit help_path(help_page)
-        expect(page.status_code).to eql 404
+        expect(page.status_code).to be 404
       end
     end
   end

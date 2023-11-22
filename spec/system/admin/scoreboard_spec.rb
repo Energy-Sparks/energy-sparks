@@ -44,7 +44,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
       expect do
         click_on 'Delete'
-      end.to change {Scoreboard.count}.from(1).to(0)
+      end.to change(Scoreboard, :count).from(1).to(0)
 
       expect(page).to have_content('There are no Scoreboards')
     end

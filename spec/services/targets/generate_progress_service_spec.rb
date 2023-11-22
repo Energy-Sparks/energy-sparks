@@ -112,7 +112,7 @@ describe Targets::GenerateProgressService do
     end
 
     it 'returns the right value' do
-      expect(service.current_monthly_target(:electricity)).to eql 20
+      expect(service.current_monthly_target(:electricity)).to be 20
     end
 
     context 'and the data is lagging, only slightly' do
@@ -125,7 +125,7 @@ describe Targets::GenerateProgressService do
       end
 
       it 'returns the value' do
-        expect(service.current_monthly_target(:electricity)).to eql 20
+        expect(service.current_monthly_target(:electricity)).to be 20
       end
     end
   end
@@ -138,7 +138,7 @@ describe Targets::GenerateProgressService do
     end
 
     it 'returns the right value' do
-      expect(service.current_monthly_usage(:electricity)).to eql 15
+      expect(service.current_monthly_usage(:electricity)).to be 15
     end
 
     context 'and the data is lagging, only slightly' do
@@ -150,7 +150,7 @@ describe Targets::GenerateProgressService do
       end
 
       it 'returns the value' do
-        expect(service.current_monthly_usage(:electricity)).to eql 15
+        expect(service.current_monthly_usage(:electricity)).to be 15
       end
     end
   end
@@ -190,9 +190,9 @@ describe Targets::GenerateProgressService do
       end
 
       it 'reports the fuel progress' do
-        expect(target.electricity_progress["progress"]).to eql 0.99
-        expect(target.electricity_progress["usage"]).to eql 15
-        expect(target.electricity_progress["target"]).to eql 20
+        expect(target.electricity_progress["progress"]).to be 0.99
+        expect(target.electricity_progress["usage"]).to be 15
+        expect(target.electricity_progress["target"]).to be 20
       end
     end
 

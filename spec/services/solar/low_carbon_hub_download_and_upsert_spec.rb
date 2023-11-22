@@ -51,7 +51,7 @@ module Solar
     it "handles and log exceptions" do
       expect(api).to receive(:download).and_raise(StandardError)
       upserter.perform
-      expect(AmrDataFeedImportLog.count).to eql 1
+      expect(AmrDataFeedImportLog.count).to be 1
       expect(AmrDataFeedImportLog.first.error_messages).not_to be_blank
     end
 
@@ -69,9 +69,9 @@ module Solar
       end
 
       it "inserts data" do
-        expect(AmrDataFeedReading.count).to eql 0
+        expect(AmrDataFeedReading.count).to be 0
         upserter.perform
-        expect(AmrDataFeedReading.count).to eql 6
+        expect(AmrDataFeedReading.count).to be 6
       end
     end
 
@@ -106,9 +106,9 @@ module Solar
         end
 
         it "inserts data" do
-          expect(AmrDataFeedReading.count).to eql 1
+          expect(AmrDataFeedReading.count).to be 1
           upserter.perform
-          expect(AmrDataFeedReading.count).to eql 7
+          expect(AmrDataFeedReading.count).to be 7
         end
       end
     end

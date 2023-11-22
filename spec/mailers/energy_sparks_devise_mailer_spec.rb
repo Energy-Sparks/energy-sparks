@@ -15,7 +15,7 @@ RSpec.describe EnergySparksDeviseMailer do
     before do
       school.update(country: country)
       user.send_confirmation_instructions
-      expect(ActionMailer::Base.deliveries.count).to eql 1
+      expect(ActionMailer::Base.deliveries.count).to be 1
       @email = ActionMailer::Base.deliveries.last
     end
 

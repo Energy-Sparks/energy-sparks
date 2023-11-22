@@ -123,7 +123,7 @@ describe SchoolRemover, :schools, type: :service do
 
     it 'locks the user accounts' do
       remove
-      expect(school.users.all?(&:access_locked?)).to be_truthy
+      expect(school.users).to be_all(&:access_locked?)
     end
 
     it 'removes alert contacts' do
@@ -136,7 +136,7 @@ describe SchoolRemover, :schools, type: :service do
 
       it 'keeps the alert contacts' do
         remove
-        expect(school.users.all?(&:access_locked?)).to be_truthy
+        expect(school.users).to be_all(&:access_locked?)
         expect(Contact.count).to eq 1
       end
     end
@@ -151,7 +151,7 @@ describe SchoolRemover, :schools, type: :service do
 
       it 'does not lock user and switches them to the other school' do
         school_admin.reload
-        expect(school_admin.access_locked?).to be_falsey
+        expect(school_admin).not_to be_access_locked
         expect(school_admin.school).to eq(other_school)
       end
     end

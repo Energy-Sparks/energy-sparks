@@ -26,8 +26,8 @@ describe 'Audits', type: :system do
       attach_file("audit[file]", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
       click_on("Create")
       expect(page).to have_content("Audit created")
-      expect(Observation.count).to eql 1
-      expect(Observation.first.points).to eql 0
+      expect(Observation.count).to be 1
+      expect(Observation.first.points).to be 0
       expect(page).to have_content("New audit")
       click_on("Edit")
       fill_in_trix with: 'Summary of the audit'
@@ -37,8 +37,8 @@ describe 'Audits', type: :system do
       expect(page).to have_content("Summary of the audit")
       click_on("Remove")
       expect(page).to have_content("Audit was successfully deleted.")
-      expect(Audit.count).to eql 0
-      expect(Observation.count).to eql 0
+      expect(Audit.count).to be 0
+      expect(Observation.count).to be 0
     end
 
     context 'when adding activities and interventions', js: true do

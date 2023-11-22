@@ -20,16 +20,16 @@ module Amr
     let(:upserter) { Amr::N3rgyReadingsUpserter.new(meter: meter, config: config, readings: readings, import_log: import_log) }
 
     it "inserts new readings" do
-      expect(AmrDataFeedReading.count).to eql 0
+      expect(AmrDataFeedReading.count).to be 0
       upserter.perform
-      expect(AmrDataFeedReading.count).to eql 1
+      expect(AmrDataFeedReading.count).to be 1
     end
 
     it "handles empty reading for meter" do
-      expect(AmrDataFeedReading.count).to eql 0
+      expect(AmrDataFeedReading.count).to be 0
       readings[meter.meter_type][:readings] = {}
       upserter.perform
-      expect(AmrDataFeedReading.count).to eql 0
+      expect(AmrDataFeedReading.count).to be 0
     end
 
     it "logs counts of inserts and updates" do
@@ -50,7 +50,7 @@ module Amr
 
       it "does not create meters" do
         upserter.perform
-        expect(Meter.count).to eql 1
+        expect(Meter.count).to be 1
         expect(Meter.first.id).to eql meter.id
       end
     end

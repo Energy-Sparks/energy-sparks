@@ -10,7 +10,7 @@ module Amr
     let(:valid_reading_data)        { [reading_data_first, reading_data_second, reading_data_third] }
 
     it 'processes a valid amr reading data' do
-      expect { ProcessAmrReadingData.new(amr_data_feed_import_log).perform(valid_reading_data, [])}.to change { AmrDataFeedReading.count }.by(3)
+      expect { ProcessAmrReadingData.new(amr_data_feed_import_log).perform(valid_reading_data, [])}.to change(AmrDataFeedReading, :count).by(3)
       expect(amr_data_feed_import_log.error_messages).to be_blank
       expect(amr_data_feed_import_log.amr_reading_warnings).to be_empty
     end
@@ -19,7 +19,7 @@ module Amr
       it 'creates a warning if required' do
         school = create(:school)
         meter = create(:electricity_meter, school: school, mpan_mprn: 1234567890123)
-        expect { ProcessAmrReadingData.new(amr_data_feed_import_log).perform(valid_reading_data, [reading_data_warning])}.to change { AmrDataFeedReading.count }.by(3).and change { AmrReadingWarning.count }.by(1)
+        expect { ProcessAmrReadingData.new(amr_data_feed_import_log).perform(valid_reading_data, [reading_data_warning])}.to change(AmrDataFeedReading, :count).by(3).and change(AmrReadingWarning, :count).by(1)
 
         first_warning = AmrReadingWarning.first
 

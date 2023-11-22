@@ -176,13 +176,13 @@ RSpec.describe Issue, type: :model do
     end
 
     context "with meters with no data source" do
-      let(:meters) { [create(:gas_meter), create(:gas_meter)] }
+      let(:meters) { create_list(:gas_meter, 2) }
 
       it { expect(data_source_names).to be_nil }
     end
 
     context "with meters with same data source" do
-      let(:meters) { [create(:gas_meter, data_source: data_source), create(:gas_meter, data_source: data_source)] }
+      let(:meters) { 2.times.map { create(:gas_meter, data_source: data_source) } }
 
       it "displays unique data sources" do
         expect(data_source_names).to eq(data_source.name)

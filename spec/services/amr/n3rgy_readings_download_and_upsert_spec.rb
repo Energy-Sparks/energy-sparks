@@ -24,11 +24,11 @@ module Amr
 
     context "when downloading data" do
       it "handles and log exceptions" do
-        expect(AmrDataFeedImportLog.count).to eql 0
+        expect(AmrDataFeedImportLog.count).to be 0
         expect(n3rgy_api).to receive(:readings).and_raise(StandardError)
         upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date)
         upserter.perform
-        expect(AmrDataFeedImportLog.count).to eql 1
+        expect(AmrDataFeedImportLog.count).to be 1
         expect(AmrDataFeedImportLog.first.error_messages).not_to be_blank
       end
 
@@ -106,8 +106,8 @@ module Amr
         upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date)
         upserter.perform
 
-        expect(AmrDataFeedImportLog.count).to eql 1
-        expect(AmrDataFeedReading.count).to eql 1
+        expect(AmrDataFeedImportLog.count).to be 1
+        expect(AmrDataFeedReading.count).to be 1
       end
     end
   end

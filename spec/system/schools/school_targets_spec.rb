@@ -73,10 +73,10 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
 
         expect(page).to have_content('Target successfully created')
         expect(page).to have_content("We are calculating your progress")
-        expect(school.has_current_target?).to eql(true)
-        expect(school.current_target.electricity).to eql 15.0
-        expect(school.current_target.gas).to eql 15.0
-        expect(school.current_target.storage_heaters).to eql 25.0
+        expect(school.has_current_target?).to be(true)
+        expect(school.current_target.electricity).to be 15.0
+        expect(school.current_target.gas).to be 15.0
+        expect(school.current_target.storage_heaters).to be 25.0
       end
 
       it "allows just gas and electricity targets to be set" do
@@ -85,10 +85,10 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         click_on 'Set this target'
         expect(page).to have_content('Target successfully created')
         expect(page).to have_content("We are calculating your progress")
-        expect(school.has_current_target?).to eql(true)
-        expect(school.current_target.electricity).to eql 15.0
-        expect(school.current_target.gas).to eql 5.0
-        expect(school.current_target.storage_heaters).to eql nil
+        expect(school.has_current_target?).to be(true)
+        expect(school.current_target.electricity).to be 15.0
+        expect(school.current_target.gas).to be 5.0
+        expect(school.current_target.storage_heaters).to be nil
       end
 
       it 'allows start date to be specified' do
@@ -102,7 +102,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
       it 'adds observation for target' do
         click_on 'Set this target'
         school.reload
-        expect(school.current_target.observations.size).to eql 1
+        expect(school.current_target.observations.size).to be 1
       end
     end
 
@@ -124,10 +124,10 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         click_on 'Set this target'
         expect(page).to have_content('Target successfully created')
         expect(page).to have_content("We are calculating your progress")
-        expect(school.has_current_target?).to eql(true)
-        expect(school.current_target.electricity).to eql 15.0
-        expect(school.current_target.gas).to eql nil
-        expect(school.current_target.storage_heaters).to eql nil
+        expect(school.has_current_target?).to be(true)
+        expect(school.current_target.electricity).to be 15.0
+        expect(school.current_target.gas).to be nil
+        expect(school.current_target.storage_heaters).to be nil
       end
     end
   end
@@ -232,9 +232,9 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
           fill_in "Reducing storage heater usage by", with: 7
           click_on 'Update our target'
           expect(page).to have_content('Target successfully updated')
-          expect(test_school.current_target.electricity).to eql 7.0
-          expect(test_school.current_target.gas).to eql 7.0
-          expect(test_school.current_target.storage_heaters).to eql 7.0
+          expect(test_school.current_target.electricity).to be 7.0
+          expect(test_school.current_target.gas).to be 7.0
+          expect(test_school.current_target.storage_heaters).to be 7.0
         end
 
         it "does not show a delete button" do
@@ -305,7 +305,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
       context "where there is progress data" do
         it "links to progress pages" do
           #Extra check for debugging flickering test
-          expect(Schools::Configuration.count).to eql 1
+          expect(Schools::Configuration.count).to be 1
           expect(School.first.has_electricity?).to be true
           expect(page).to have_link("View monthly report", href: electricity_school_school_target_progress_index_path(test_school, target))
         end
@@ -460,7 +460,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         expect(find_field("Reducing electricity usage by").value).to eq target.electricity.to_s
         fill_in "Reducing electricity usage by", with: 15
         click_on 'Set this target'
-        expect(school.current_target.electricity).to eql 15.0
+        expect(school.current_target.electricity).to be 15.0
         expect(school.current_target.gas).to eql target.gas
         expect(school.current_target.storage_heaters).to eql target.storage_heaters
         expect(page).to have_content('Target successfully created')
@@ -583,7 +583,7 @@ RSpec.describe 'school targets', type: :system do
        it 'allows target to be deleted' do
          click_on "Delete"
          expect(page).to have_content("Target successfully removed")
-         expect(SchoolTarget.count).to eql 0
+         expect(SchoolTarget.count).to be 0
        end
     end
   end

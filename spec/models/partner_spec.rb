@@ -10,9 +10,9 @@ describe Partner do
     it "removes association" do
       school_group.partners << partner
       other_group.partners << partner
-      expect(SchoolGroupPartner.count).to eql(2)
+      expect(SchoolGroupPartner.count).to be(2)
       partner.destroy
-      expect(SchoolGroupPartner.count).to eql(0)
+      expect(SchoolGroupPartner.count).to be(0)
       expect(SchoolGroup.count).not_to eql(0)
     end
   end
@@ -24,9 +24,9 @@ describe Partner do
     it "removes association" do
       school.partners << partner
       other_school.partners << partner
-      expect(SchoolPartner.count).to eql(2)
+      expect(SchoolPartner.count).to be(2)
       partner.destroy
-      expect(SchoolPartner.count).to eql(0)
+      expect(SchoolPartner.count).to be(0)
       expect(School.count).not_to eql(0)
     end
   end

@@ -45,10 +45,10 @@ RSpec.describe 'Intervention Type Groups', type: :system do
 
       fill_in :intervention_type_group_name_en, with: ''
       fill_in :intervention_type_group_description_en, with: new_description
-      expect { click_on 'Create Intervention type group' }.to change { InterventionTypeGroup.count }.by(0)
+      expect { click_on 'Create Intervention type group' }.to change(InterventionTypeGroup, :count).by(0)
       expect(page).to have_content("can't be blank")
       fill_in :intervention_type_group_name_en, with: new_name
-      expect { click_on 'Create Intervention type group' }.to change { InterventionTypeGroup.count }.by(1)
+      expect { click_on 'Create Intervention type group' }.to change(InterventionTypeGroup, :count).by(1)
 
       expect(page).to have_content(new_name)
       expect(page).to have_content(new_description)

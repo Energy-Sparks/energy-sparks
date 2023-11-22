@@ -22,7 +22,7 @@ RSpec.describe MeterReviewService do
       it 'records the review' do
         expect do
           service.complete_review!([dcc_meter])
-        end.to change {MeterReview.count}.from(0).to(1)
+        end.to change(MeterReview, :count).from(0).to(1)
       end
 
       it 'captures current context' do

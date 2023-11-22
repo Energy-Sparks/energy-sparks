@@ -80,7 +80,7 @@ RSpec.describe 'Procurement route admin', :school_groups, type: :system, include
         let(:existing_procurement_route) { create(:procurement_route) }
         let(:setup_data) { existing_procurement_route }
 
-        it '' do
+        it do
           expect(ProcurementRoute.count).to eq(1)
           expect(page).to have_content(existing_procurement_route.organisation_name)
         end

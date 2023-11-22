@@ -675,6 +675,8 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is private' do
         let(:public) { false }
+
+        it_behaves_like "a public school group dashboard"
       end
 
       it_behaves_like "school group tabs showing the cluster column"

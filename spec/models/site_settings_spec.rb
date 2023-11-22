@@ -22,25 +22,25 @@ describe SiteSettings do
         site_setting = SiteSettings.new(electricity_price: 1, solar_export_price: 1, gas_price: 1)
 
         site_setting.electricity_price = 'not a float'
-        expect(site_setting.valid?).to be_falsy
+        expect(site_setting).not_to be_valid
         site_setting.electricity_price = nil
-        expect(site_setting.valid?).to be_falsy
+        expect(site_setting).not_to be_valid
         site_setting.electricity_price = 1.0
-        expect(site_setting.valid?).to be_truthy
+        expect(site_setting).to be_valid
 
         site_setting.solar_export_price = 'not a float'
-        expect(site_setting.valid?).to be_falsy
+        expect(site_setting).not_to be_valid
         site_setting.solar_export_price = nil
-        expect(site_setting.valid?).to be_falsy
+        expect(site_setting).not_to be_valid
         site_setting.solar_export_price = 1.0
-        expect(site_setting.valid?).to be_truthy
+        expect(site_setting).to be_valid
 
         site_setting.gas_price = 'not a float'
-        expect(site_setting.valid?).to be_falsy
+        expect(site_setting).not_to be_valid
         site_setting.gas_price = nil
-        expect(site_setting.valid?).to be_falsy
+        expect(site_setting).not_to be_valid
         site_setting.gas_price = 1.0
-        expect(site_setting.valid?).to be_truthy
+        expect(site_setting).to be_valid
       end
     end
   end

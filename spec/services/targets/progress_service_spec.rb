@@ -31,9 +31,9 @@ RSpec.describe Targets::ProgressService do
       end
 
       it 'reports the fuel progress' do
-        expect(progress_summary.electricity_progress.progress).to eql 0.99
-        expect(progress_summary.electricity_progress.usage).to eql 15
-        expect(progress_summary.electricity_progress.target).to eql 20
+        expect(progress_summary.electricity_progress.progress).to be 0.99
+        expect(progress_summary.electricity_progress.usage).to be 15
+        expect(progress_summary.electricity_progress.target).to be 20
       end
     end
   end

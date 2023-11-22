@@ -59,7 +59,7 @@ describe RollbarNotifierService do
         expect(reported_result[:results]).not_to be_nil
         expect(reported_result[:results][:rows]).to eql([])
         expect(reported_result[:results][:columns]).to eql([])
-        expect(reported_result[:results][:error]).to eql(true)
+        expect(reported_result[:results][:error]).to be(true)
       end
     end
   end

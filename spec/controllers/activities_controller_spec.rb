@@ -185,7 +185,7 @@ RSpec.describe ActivitiesController, type: :controller do
       end
 
       it "creates a new Activity" do
-        expect(Activity.count).to eql(1)
+        expect(Activity.count).to be(1)
       end
 
       it "assigns a newly created activity as @activity" do

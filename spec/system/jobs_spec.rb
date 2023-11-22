@@ -33,6 +33,6 @@ describe "Jobs", type: :system do
 
   it 'serves the file' do
     find("a[href='/jobs/#{job.id}/inline']").click
-    expect(page.status_code).to eql 200
+    expect(page.status_code).to be 200
   end
 end

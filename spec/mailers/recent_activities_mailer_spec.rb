@@ -14,7 +14,7 @@ RSpec.describe RecentActivitiesMailer do
   describe '#email' do
     it 'sends an email with activity and observation ids' do
       RecentActivitiesMailer.with(activity_ids: activity_ids, observation_ids: observation_ids).email.deliver_now
-      expect(ActionMailer::Base.deliveries.count).to eql 1
+      expect(ActionMailer::Base.deliveries.count).to be 1
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eql "Recently recorded activities"
       expect(email.body.to_s).to include('first activity')

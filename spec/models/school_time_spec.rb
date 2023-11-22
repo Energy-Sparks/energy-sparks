@@ -26,28 +26,28 @@ describe 'SchoolTime' do
 
     it 'serialises mornings correctly' do
       result = morning_time.to_analytics
-      expect(result[:usage_type]).to eql :community_use
-      expect(result[:day]).to eql :tuesday
+      expect(result[:usage_type]).to be :community_use
+      expect(result[:day]).to be :tuesday
       expect(result[:opening_time]).to eql TimeOfDay.new(7, 0)
       expect(result[:closing_time]).to eql TimeOfDay.new(8, 30)
-      expect(result[:calendar_period]).to eql :term_times
+      expect(result[:calendar_period]).to be :term_times
     end
 
     it 'serialises evening correctly' do
       result = evening_time.to_analytics
-      expect(result[:usage_type]).to eql :community_use
-      expect(result[:day]).to eql :monday
+      expect(result[:usage_type]).to be :community_use
+      expect(result[:day]).to be :monday
       expect(result[:opening_time]).to eql TimeOfDay.new(18, 0)
       expect(result[:closing_time]).to eql TimeOfDay.new(20, 30)
-      expect(result[:calendar_period]).to eql :term_times
+      expect(result[:calendar_period]).to be :term_times
     end
   end
 
   context 'with community usage' do
     it 'defaults to empty values' do
       time = school.school_times.build(usage_type: :school_day)
-      expect(time.opening_time).to eql 850
-      expect(time.closing_time).to eql 1520
+      expect(time.opening_time).to be 850
+      expect(time.closing_time).to be 1520
 
       time = school.school_times.build(usage_type: :community_use)
       time.community_use_defaults!
@@ -93,7 +93,7 @@ describe 'SchoolTime' do
         }
         school.attributes = params
         expect(school.save(context: :school_time_update)).to be false
-        expect(school.school_times.count).to eql 0
+        expect(school.school_times.count).to be 0
       end
     end
 

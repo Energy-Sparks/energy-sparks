@@ -92,7 +92,7 @@ describe Targets::AdminReportService, type: :service do
     let(:today)       { Time.zone.now.strftime("%Y-%m-%d") }
 
     it 'sends an email' do
-      expect(ActionMailer::Base.deliveries.count).to eql 1
+      expect(ActionMailer::Base.deliveries.count).to be 1
     end
 
     it 'has right recipient' do
