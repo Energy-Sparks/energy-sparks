@@ -17,7 +17,7 @@ describe 'TransportSurvey' do
 
       before { transport_survey.responses = [attributes] }
 
-      it { expect(transport_survey.responses.length).to eql 1 }
+      it { expect(transport_survey.responses.length).to be 1 }
 
       describe "adding another response" do
         let(:new_attributes) { attributes_for(:transport_survey_response, surveyed_at: new_surveyed_at, run_identifier: new_run_identifier) }
@@ -27,32 +27,32 @@ describe 'TransportSurvey' do
         context "with the same run_identifier" do
           let(:new_run_identifier) { run_identifier }
 
-          context "and the same surveyed_at time" do
+          context "with the same surveyed_at time" do
             let(:new_surveyed_at) { surveyed_at }
 
-            it { expect(transport_survey.responses.length).to eql 1 }
+            it { expect(transport_survey.responses.length).to be 1 }
           end
 
-          context "and different surveyed_at time" do
+          context "with a different surveyed_at time" do
             let(:new_surveyed_at) { DateTime.new(2022, 0o3, 18, 9, 0, 0) }
 
-            it { expect(transport_survey.responses.length).to eql 2 }
+            it { expect(transport_survey.responses.length).to be 2 }
           end
         end
 
         context "with a different run_identifier" do
           let(:new_run_identifier) { 9999 }
 
-          context "and the same surveyed_at time" do
+          context "with the same surveyed_at time" do
             let(:new_surveyed_at) { surveyed_at }
 
-            it { expect(transport_survey.responses.length).to eql 2 }
+            it { expect(transport_survey.responses.length).to be 2 }
           end
 
-          context "and a different surveyed_at time" do
+          context "with a different surveyed_at time" do
             let(:new_surveyed_at) { DateTime.new(2022, 0o3, 18, 9, 0, 0) }
 
-            it { expect(transport_survey.responses.length).to eql 2 }
+            it { expect(transport_survey.responses.length).to be 2 }
           end
         end
       end
@@ -63,7 +63,7 @@ describe 'TransportSurvey' do
     subject(:transport_survey) { create :transport_survey }
 
     context "with no responses" do
-      it { expect(transport_survey.total_responses).to eql 0 }
+      it { expect(transport_survey.total_responses).to be 0 }
     end
 
     context "with one response" do
@@ -71,7 +71,7 @@ describe 'TransportSurvey' do
         create :transport_survey_response, transport_survey: transport_survey, passengers: 2
       end
 
-      it { expect(transport_survey.total_responses).to eql 1 }
+      it { expect(transport_survey.total_responses).to be 1 }
     end
 
     context "with more than one response" do
@@ -80,7 +80,7 @@ describe 'TransportSurvey' do
         create :transport_survey_response, transport_survey: transport_survey, passengers: 3
       end
 
-      it { expect(transport_survey.total_responses).to eql 2 }
+      it { expect(transport_survey.total_responses).to be 2 }
     end
   end
 
@@ -88,13 +88,13 @@ describe 'TransportSurvey' do
     subject(:transport_survey) { create :transport_survey }
 
     context "with no responses" do
-      it { expect(transport_survey.total_carbon).to eql 0 }
+      it { expect(transport_survey.total_carbon).to be 0 }
     end
 
     context "with one response" do
       let!(:response) { create(:transport_survey_response, transport_survey: transport_survey, passengers: 2) }
 
-      it { expect(transport_survey.total_carbon).to eql response.carbon }
+      it { expect(transport_survey.total_carbon).to eq response.carbon }
     end
 
     context "with more than one response" do
@@ -137,7 +137,7 @@ describe 'TransportSurvey' do
           expect(transport_survey.responses_per_category).to eql({ "car" => 0, "walking_and_cycling" => 0, "public_transport" => 1, "park_and_stride" => 1, "other" => 1 })
         end
 
-        context "and categories have multiple responses" do
+        context "when categories have multiple responses" do
           before { create_responses(categories) }
 
           it "adds them up" do
@@ -169,7 +169,7 @@ describe 'TransportSurvey' do
           expect(transport_survey.percentage_per_category).to eql({ "car" => 0, "walking_and_cycling" => 50.0, "public_transport" => 50.0, "park_and_stride" => 0, "other" => 0 })
         end
 
-        context "and categories have multiple responses" do
+        context "when categories have multiple responses" do
           before { create_responses(categories) }
 
           it "adds them up" do
@@ -309,7 +309,7 @@ describe 'TransportSurvey' do
       end
     end
 
-    context "with responses" do
+    context "when there are responses" do
       subject(:transport_survey) { create :transport_survey, run_on: Time.zone.today }
 
       let(:attributes) { attributes_for(:transport_survey_response, surveyed_at: Time.zone.now, run_identifier: '2345') }
@@ -317,9 +317,9 @@ describe 'TransportSurvey' do
       before { transport_survey.responses = [attributes] }
 
       it 'adds an observation' do
-        expect(transport_survey.responses.length).to eql(1)
+        expect(transport_survey.responses.length).to be(1)
         expect(Observation.find_by(observable: transport_survey)).not_to be_nil
-        expect(transport_survey.reload.observations.length).to eql(1)
+        expect(transport_survey.reload.observations.length).to be(1)
       end
 
       context "when transport survey is removed" do
@@ -338,8 +338,8 @@ describe 'TransportSurvey' do
         before { transport_survey.responses = [new_attributes] }
 
         it "doesn't add another observation" do
-          expect(transport_survey.responses.length).to eql(2)
-          expect(transport_survey.reload.observations.length).to eql(1)
+          expect(transport_survey.responses.length).to be(2)
+          expect(transport_survey.reload.observations.length).to be(1)
         end
       end
     end
