@@ -7,12 +7,15 @@ RSpec.shared_examples "dashboard timeline" do
     create(:observation_with_temperature_recording_and_location, school: test_school)
     activity_type = create(:activity_type) # doesn't get saved if built with activity below
     create(:activity, school: test_school, activity_type: activity_type)
-    #will automatically add observation
+    # will automatically add observation
     create(:school_target, school: test_school, start_date: Time.zone.today)
+    transport_survey = create(:transport_survey, school: test_school, run_on: Time.zone.today)
+    transport_survey.responses = [attributes_for(:transport_survey_response)]
     visit school_path(test_school, switch: true)
   end
 
   it 'displays events in a timeline' do
+    expect(page).to have_content('Started a transport survey')
     expect(page).to have_content('Recorded temperatures in')
     expect(page).to have_content('Upgraded insulation')
     expect(page).to have_content('Completed an activity')
