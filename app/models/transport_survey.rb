@@ -113,8 +113,16 @@ class TransportSurvey < ApplicationRecord
 
   def add_observation
     return unless responses.any?
-    return if observations.any? # only one observation permitted per survey
+    return if observations.any? # only one observation permitted per survey day
 
     observations.create!(at: run_on) # do we want to add any points?
+  end
+
+  def self.timeline_icon
+    'car'
+  end
+
+  def timeline_text
+    I18n.t('schools.observations.timeline.transport_survey.message', count: responses.count)
   end
 end

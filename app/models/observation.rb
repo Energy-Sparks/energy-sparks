@@ -88,6 +88,10 @@ class Observation < ApplicationRecord
 
   before_validation :set_observable, if: :observable
 
+  def self.default_timeline_icon
+    'square-check'
+  end
+
   private
 
   def add_bonus_points_for_included_images
