@@ -286,13 +286,6 @@ RSpec/EmptyExampleGroup:
 RSpec/ExampleLength:
   Max: 104
 
-# Offense count: 1
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always_allow, single_line_only, disallow
-RSpec/ExampleWithoutDescription:
-  Exclude:
-    - 'spec/system/admin/procurement_routes_spec.rb'
-
 # Offense count: 168
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.
@@ -470,24 +463,6 @@ RSpec/OverwritingSetup:
   Exclude:
     - 'spec/services/alerts/fetch_content_spec.rb'
     - 'spec/system/schools/advice_pages/total_energy_use_spec.rb'
-
-# Offense count: 41
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Strict, EnforcedStyle, AllowedExplicitMatchers.
-# SupportedStyles: inflected, explicit
-RSpec/PredicateMatcher:
-  Exclude:
-    - 'spec/helpers/advice_page_helper_spec.rb'
-    - 'spec/helpers/application_helper_spec.rb'
-    - 'spec/lib/transifex/client_spec.rb'
-    - 'spec/models/concerns/transifex_serialisable_spec.rb'
-    - 'spec/models/programme_spec.rb'
-    - 'spec/models/site_settings_spec.rb'
-    - 'spec/services/onboarding/service_spec.rb'
-    - 'spec/services/school_creator_spec.rb'
-    - 'spec/services/school_remover_spec.rb'
-    - 'spec/services/transifex/service_spec.rb'
-    - 'spec/system/admin/users_spec.rb'
 
 # Offense count: 14
 RSpec/RepeatedDescription:

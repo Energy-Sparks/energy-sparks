@@ -74,14 +74,14 @@ describe TransifexSerialisable do
 
     it 'model shows no content present if no attributes set' do
       serialisable = @tx_serialisables.first.new
-      expect(serialisable.has_content?).to be_falsey
+      expect(serialisable).not_to have_content
     end
 
     it 'model shows content present if some attribute set' do
       clazz = @tx_serialisables.first
       attr = clazz.mobility_attributes.first
       serialisable = clazz.new(attr => 'something')
-      expect(serialisable.has_content?).to be_truthy
+      expect(serialisable).to have_content
     end
   end
 end

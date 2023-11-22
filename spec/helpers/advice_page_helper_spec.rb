@@ -33,15 +33,15 @@ describe AdvicePageHelper do
 
   describe '.advice_baseload_high?' do
     it 'returns true if value higher than 0.0' do
-      expect(helper.advice_baseload_high?(0.1)).to be_truthy
+      expect(helper).to be_advice_baseload_high(0.1)
     end
 
     it 'returns false if value less than 0.0' do
-      expect(helper.advice_baseload_high?(-0.1)).to be_falsey
+      expect(helper).not_to be_advice_baseload_high(-0.1)
     end
 
     it 'returns false if value equals 0.0' do
-      expect(helper.advice_baseload_high?(0.0)).to be_falsey
+      expect(helper).not_to be_advice_baseload_high(0.0)
     end
   end
 

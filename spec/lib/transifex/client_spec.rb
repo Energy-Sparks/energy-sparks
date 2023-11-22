@@ -222,7 +222,7 @@ module Transifex
           it 'requests url with path and returns data' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             ret = client.get_resource_strings_async_upload(upload_id)
-            expect(ret.completed?).to be_falsey
+            expect(ret).not_to be_completed
             expect(ret.data["attributes"]["status"]).to eq('pending')
           end
         end
@@ -233,7 +233,7 @@ module Transifex
           it 'requests url with path and returns data' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             ret = client.get_resource_strings_async_upload(upload_id)
-            expect(ret.completed?).to be_truthy
+            expect(ret).to be_completed
             expect(ret.data["attributes"]["status"]).to eq('succeeded')
             expect(ret.data["attributes"]["details"]["strings_created"]).to eq(1)
           end
@@ -286,7 +286,7 @@ module Transifex
           it 'returns file contents' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             result = client.get_resource_translations_async_download(download_id)
-            expect(result.completed?).to be_falsey
+            expect(result).not_to be_completed
             expect(result.data["attributes"]["status"]).to eq('pending')
           end
         end
@@ -298,7 +298,7 @@ module Transifex
           it 'returns file contents' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             result = client.get_resource_translations_async_download(download_id)
-            expect(result.completed?).to be_truthy
+            expect(result).to be_completed
             expect(result.content).to eq('some yaml')
           end
         end
