@@ -13,7 +13,7 @@ describe 'TransportSurveys - App', type: :system do
         sign_in(user)
       end
 
-      context "viewing the start page" do
+      context "when viewing the start page" do
         before do
           visit start_school_transport_surveys_path(school)
         end
@@ -25,7 +25,7 @@ describe 'TransportSurveys - App', type: :system do
         context "when javascript is enabled", js: true do
           it { expect(page).to have_button('Launch survey app') }
 
-          context "launching the app" do
+          context "when launching the app" do
             before do
               click_button('Launch survey app')
             end
@@ -36,7 +36,7 @@ describe 'TransportSurveys - App', type: :system do
             it { expect(page).to have_link(weather) }
             it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
-            context "selecting the weather" do
+            context "when selecting the weather" do
               before do
                 click_link weather
               end
@@ -48,7 +48,7 @@ describe 'TransportSurveys - App', type: :system do
               it { expect(page).not_to have_button('Back') }
               it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
-              context "selecting a time" do
+              context "when selecting a time" do
                 before do
                   click_link time.to_s
                 end
@@ -59,7 +59,7 @@ describe 'TransportSurveys - App', type: :system do
                 it { expect(page).to have_button('Back') }
                 it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
-                context "clicking back button" do
+                context "when clicking back button" do
                   before do
                     click_button("Back")
                   end
@@ -68,7 +68,7 @@ describe 'TransportSurveys - App', type: :system do
                   it { expect(page).to have_content('Time: How many minutes did your journey take in total?') }
                 end
 
-                context "selecting a transport type where carbon cannot be shared" do
+                context "when selecting a transport type where carbon cannot be shared" do
                   let(:transport_type) { transport_type_not_shareable }
 
                   before do
@@ -81,7 +81,7 @@ describe 'TransportSurveys - App', type: :system do
                   it { expect(page).to have_button('Back') }
                   it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
-                  context "clicking back button" do
+                  context "when clicking back button" do
                     before do
                       click_button("Back")
                     end
@@ -90,7 +90,7 @@ describe 'TransportSurveys - App', type: :system do
                     it { expect(page).to have_content('Transport: What mode of transport did you use to get to school?') }
                   end
 
-                  context "confirming selection" do
+                  context "when confirming selection" do
                     before do
                       click_button("Confirm")
                     end
@@ -108,7 +108,7 @@ describe 'TransportSurveys - App', type: :system do
                   end
                 end
 
-                context "selecting a transport type where carbon can be shared" do
+                context "when selecting a transport type where carbon can be shared" do
                   let(:transport_type) { transport_type_shareable }
 
                   before do
@@ -122,7 +122,7 @@ describe 'TransportSurveys - App', type: :system do
                   it { expect(page).to have_button('Finish & save results 0', disabled: true) }
                   it { expect(page).to have_button('Back') }
 
-                  context "clicking back button" do
+                  context "when clicking back button" do
                     before do
                       click_button("Back")
                     end
@@ -131,7 +131,7 @@ describe 'TransportSurveys - App', type: :system do
                   end
 
 
-                  context "selecting passengers" do
+                  context "when selecting passengers" do
                     before do
                       click_link(passengers_link)
                     end
@@ -148,7 +148,7 @@ describe 'TransportSurveys - App', type: :system do
                     it { expect(page).to have_button('Back') }
                     it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
-                    context "clicking back button" do
+                    context "when clicking back button" do
                       before do
                         click_button("Back")
                       end
@@ -157,7 +157,7 @@ describe 'TransportSurveys - App', type: :system do
                       it { expect(page).to have_content('Sharing: How many pupils') }
                     end
 
-                    context "confirming selection" do
+                    context "when confirming selection" do
                       before do
                         click_button("Confirm")
                       end
@@ -173,7 +173,7 @@ describe 'TransportSurveys - App', type: :system do
                       it { expect(page).to have_button('Finish & save results 1', disabled: false) }
                       it { expect(page).not_to have_button('Back') }
 
-                      context "next survey run" do
+                      context "with next survey run" do
                         before do
                           click_button("Next pupil")
                         end
@@ -182,7 +182,7 @@ describe 'TransportSurveys - App', type: :system do
                         it { expect(page).to have_button('Finish & save results 1', disabled: false) }
                       end
 
-                      context "Saving results" do
+                      context "when saving results" do
                         before do
                           click_button("Finish & save results 1")
                         end

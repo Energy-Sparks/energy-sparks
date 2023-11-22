@@ -20,6 +20,7 @@
 class TransportSurvey < ApplicationRecord
   belongs_to :school
   has_many :responses, inverse_of: :transport_survey
+  has_many :observations, as: :observable, dependent: :destroy
 
   validates :run_on, :school_id, presence: true
   validates :run_on, uniqueness: { scope: :school_id }
@@ -107,5 +108,21 @@ class TransportSurvey < ApplicationRecord
     responses_attributes.each do |response_attributes|
       responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))
     end
+    add_observation
+  end
+
+  def add_observation
+    return unless responses.any?
+    return if observations.any? # only one observation permitted per survey day
+
+    observations.create!(at: run_on) # do we want to add any points?
+  end
+
+  def self.timeline_icon
+    'car'
+  end
+
+  def timeline_text
+    I18n.t('schools.observations.timeline.transport_survey.message', count: responses.count)
   end
 end

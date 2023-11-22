@@ -106,8 +106,7 @@ cy:
       labels:
         bill_components:
           agreed_availability_charge: Tâl argaeledd y cytunwyd arno
-          climate_change_levy__2020_21: Ardoll newid hinsawdd (2020/21)
-          climate_change_levy__2021_22: Ardoll newid hinsawdd (2021/22)
+          climate_change_levy: Ardoll newid hinsawdd
           commodity_rate: Cyfradd nwyddau
           data_collection_dcda_agent_charge: Tâl asiant DC/DA
           day_night: "%{time_from} i %{time_to}"

@@ -50,7 +50,11 @@ class Observation < ApplicationRecord
 
   # If adding a new observation type remember to also add a timelime template in app/views/schools/observations/timeline
   # event: 3 was removed as its no longer used
-  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7 }
+  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, observable: 8 }
+
+  # This is the first stage in moving this class over to being fully polymorphic
+  # The idea is to eventually move all observation_types (above) to this way of doing things
+  belongs_to :observable, polymorphic: true, optional: true
 
   validates_presence_of :at, :school
   validates_associated :temperature_recordings
@@ -80,6 +84,12 @@ class Observation < ApplicationRecord
 
   before_save :add_points_for_interventions, if: :intervention?
   before_save :add_bonus_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
+
+  before_validation :set_observable, if: :observable
+
+  def self.default_timeline_icon
+    'square-check'
+  end
 
   private
 
@@ -114,5 +124,12 @@ class Observation < ApplicationRecord
 
   def reject_temperature_recordings(attributes)
     attributes['centigrade'].blank?
+  end
+
+  def set_observable
+    self.observation_type = :observable
+
+    # Take the school from the related object
+    self.school = self.observable.school if self.observable.school
   end
 end

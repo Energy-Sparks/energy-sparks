@@ -157,10 +157,10 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
     # pupil - as above except deleting Surveys and Transport Survey Responses
     # public user - read access only for everything (but not the start page)
 
-    MANAGING_USER_TYPES = [:admin, :group_admin, :school_admin, :staff].freeze
-    SURVEYING_USER_TYPES = MANAGING_USER_TYPES + [:pupil]
+    managing_user_types = [:admin, :group_admin, :school_admin, :staff]
+    surveying_user_types = managing_user_types + [:pupil]
 
-    SURVEYING_USER_TYPES.each do |user_type|
+    surveying_user_types.each do |user_type|
       describe "as a #{user_type} user who can carry out surveys" do
         let(:user) { create(user_type, school: school) }
 
@@ -168,7 +168,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           sign_in(user)
         end
 
-        context "viewing the start page" do
+        context "when viewing the start page" do
           before do
             visit start_school_transport_surveys_path(school)
           end
@@ -179,7 +179,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           it { expect(page).to have_link('View all transport surveys') }
           it { expect(page).not_to have_css('#survey_nav') }
 
-          context "and clicking the 'View all transport surveys' button" do
+          context "when clicking the 'View all transport surveys' button" do
             before do
               click_link 'View all transport surveys'
             end
@@ -190,7 +190,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
       end
     end
 
-    MANAGING_USER_TYPES.each do |user_type|
+    managing_user_types.each do |user_type|
       describe "as a #{user_type} user who can delete surveys and manage & delete responses" do
         let!(:user) { create(user_type, school: school) }
 
@@ -203,7 +203,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
         let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
 
 
-        context "viewing transport surveys index" do
+        context "when viewing transport surveys index" do
           before do
             visit school_transport_surveys_path(school)
           end
@@ -224,7 +224,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
             expect(page).to have_link('Delete')
           end
 
-          context "and managing responses" do
+          context "when managing responses" do
             before do
               within('table') do
                 click_link("Manage")
@@ -241,7 +241,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
               expect(page).to have_content(nice_date_times(transport_survey_response.surveyed_at, localtime: true))
             end
 
-            context "and deleting response" do
+            context "when deleting response" do
               before do
                 within('table') do
                   click_link('Delete')
@@ -259,7 +259,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
               expect(page).to have_link('Download responses')
             end
 
-            context "and downloading responses" do
+            context "when downloading responses" do
               before do
                 click_link('Download responses')
               end
@@ -278,7 +278,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
             end
           end
 
-          context "and deleting transport survey" do
+          context "when deleting transport survey" do
             before do
               within('table') do
                 click_link('Delete')
@@ -304,7 +304,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
         sign_in(pupil)
       end
 
-      context "viewing transport surveys index" do
+      context "when viewing transport surveys index" do
         before do
           visit school_transport_surveys_path(school)
         end
@@ -329,7 +329,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           expect(page).not_to have_link('Delete')
         end
 
-        context "and viewing results" do
+        context "when viewing results" do
           before do
             click_link("View results")
           end
@@ -355,7 +355,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
     end
 
     describe 'as a public user with read only access' do
-      context "viewing the start page" do
+      context "when viewing the start page" do
         before do
           visit start_school_transport_surveys_path(school)
         end
@@ -363,7 +363,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
         it { expect(page).not_to have_content('Travel to School Surveys') }
       end
 
-      context "viewing transport surveys index" do
+      context "when viewing transport surveys index" do
         let!(:transport_survey) { create(:transport_survey, school: school) }
         let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
 
@@ -392,7 +392,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           expect(page).not_to have_link('Manage')
         end
 
-        context "and viewing results" do
+        context "when viewing results" do
           before do
             click_link("View results")
           end

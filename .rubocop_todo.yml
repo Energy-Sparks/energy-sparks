@@ -24,7 +24,6 @@ FactoryBot/CreateList:
     - 'spec/models/issue_spec.rb'
     - 'spec/models/procurement_route_spec.rb'
     - 'spec/models/school_group_spec.rb'
-    - 'spec/models/transport_survey_response_spec.rb'
     - 'spec/services/onboarding/reminder_mailer_spec.rb'
 
 # Offense count: 14
@@ -36,7 +35,6 @@ Lint/ConstantDefinitionInBlock:
     - 'spec/models/concerns/transifex_serialisable_spec.rb'
     - 'spec/models/concerns/translatable_attachment_spec.rb'
     - 'spec/services/alerts/adapters/analytics_adapter_spec.rb'
-    - 'spec/system/schools/transport_surveys_spec.rb'
 
 # Offense count: 2
 # Configuration parameters: MinSize.
@@ -63,7 +61,6 @@ RSpec/BeEql:
     - 'spec/models/school_spec.rb'
     - 'spec/models/school_target_spec.rb'
     - 'spec/models/school_time_spec.rb'
-    - 'spec/models/transport_survey_spec.rb'
     - 'spec/models/user_spec.rb'
     - 'spec/models/weather_station_spec.rb'
     - 'spec/services/activity_creator_spec.rb'
@@ -168,8 +165,6 @@ RSpec/ContextWording:
     - 'spec/models/school_time_spec.rb'
     - 'spec/models/scoreboard_spec.rb'
     - 'spec/models/scored_schools_list_spec.rb'
-    - 'spec/models/transport_survey_response_spec.rb'
-    - 'spec/models/transport_survey_spec.rb'
     - 'spec/models/user_spec.rb'
     - 'spec/routing/energy_tariffs_spec.rb'
     - 'spec/services/activation_email_sender_spec.rb'
@@ -281,7 +276,6 @@ RSpec/ContextWording:
     - 'spec/system/admin/school_removal_spec.rb'
     - 'spec/system/admin/settings/energy_tariffs_spec.rb'
     - 'spec/system/admin/settings_spec.rb'
-    - 'spec/system/admin/transport_types_spec.rb'
     - 'spec/system/admin_mode_spec.rb'
     - 'spec/system/calendar_spec.rb'
     - 'spec/system/case_studies_spec.rb'
@@ -343,8 +337,6 @@ RSpec/ContextWording:
     - 'spec/system/schools/progress_spec.rb'
     - 'spec/system/schools/recommendations_spec.rb'
     - 'spec/system/schools/school_targets_spec.rb'
-    - 'spec/system/schools/transport_surveys_app_spec.rb'
-    - 'spec/system/schools/transport_surveys_spec.rb'
     - 'spec/system/scoreboard_spec.rb'
     - 'spec/system/sign_in_spec.rb'
     - 'spec/system/solar_edge_installation_spec.rb'
@@ -384,7 +376,6 @@ RSpec/ExpectChange:
     - 'spec/models/tariff_price_spec.rb'
     - 'spec/models/tariff_standing_charge_spec.rb'
     - 'spec/models/temperature_recording_spec.rb'
-    - 'spec/models/transport_type_spec.rb'
     - 'spec/services/activity_creator_spec.rb'
     - 'spec/services/alerts/generate_analysis_pages_spec.rb'
     - 'spec/services/alerts/generate_and_save_alerts_and_benchmarks_spec.rb'
@@ -503,7 +494,6 @@ RSpec/LeakyConstantDeclaration:
     - 'spec/models/concerns/transifex_serialisable_spec.rb'
     - 'spec/models/concerns/translatable_attachment_spec.rb'
     - 'spec/services/alerts/adapters/analytics_adapter_spec.rb'
-    - 'spec/system/schools/transport_surveys_spec.rb'
 
 # Offense count: 177
 # Configuration parameters: .
@@ -539,9 +529,6 @@ RSpec/NamedSubject:
     - 'spec/models/school_group_spec.rb'
     - 'spec/models/school_spec.rb'
     - 'spec/models/scoreboard_spec.rb'
-    - 'spec/models/transport_survey_response_spec.rb'
-    - 'spec/models/transport_survey_spec.rb'
-    - 'spec/models/transport_type_spec.rb'
     - 'spec/services/activity_type_filter_spec.rb'
     - 'spec/services/database/vacuum_service_spec.rb'
     - 'spec/services/next_activity_suggester_with_filter_spec.rb'
