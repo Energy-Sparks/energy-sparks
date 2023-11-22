@@ -56,14 +56,14 @@ module Alerts
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(AlertTypeRunResult.new(alert_type: alert_type, asof_date: asof_date))
 
         service = GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change { Alert.count }.by(0).and change { AlertError.count }.by(0)
+        expect { service.perform }.to change(Alert, :count).by(0).and change(AlertError, :count).by(0)
       end
 
       it 'handles just alert reports' do
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
 
         service = GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change { Alert.count }.by(2).and change { AlertError.count }.by(1)
+        expect { service.perform }.to change(Alert, :count).by(2).and change(AlertError, :count).by(1)
         expect(Alert.first.run_on).not_to be_nil
         expect(Alert.first.template_data).not_to be_nil
         expect(Alert.first.template_data_cy).not_to be_nil
@@ -73,7 +73,7 @@ module Alerts
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result_just_errors)
 
         service = GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change { Alert.count }.by(0).and change { AlertError.count }.by(1)
+        expect { service.perform }.to change(Alert, :count).by(0).and change(AlertError, :count).by(1)
       end
     end
   end

@@ -13,19 +13,6 @@ Capybara/CurrentPathExpectation:
     - 'spec/support/shared_examples/energy_tariffs.rb'
     - 'spec/system/schools/estimated_annual_consumptions_spec.rb'
 
-# Offense count: 9
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Include, EnforcedStyle, ExplicitOnly.
-# Include: **/*_spec.rb, **/spec/**/*, **/test/**/*, **/features/support/factories/**/*.rb
-# SupportedStyles: create_list, n_times
-FactoryBot/CreateList:
-  Exclude:
-    - 'spec/models/data_source_spec.rb'
-    - 'spec/models/issue_spec.rb'
-    - 'spec/models/procurement_route_spec.rb'
-    - 'spec/models/school_group_spec.rb'
-    - 'spec/services/onboarding/reminder_mailer_spec.rb'
-
 # Offense count: 14
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: enums
@@ -41,63 +28,6 @@ Lint/ConstantDefinitionInBlock:
 Performance/CollectionLiteralInLoop:
   Exclude:
     - 'spec/services/school_groups/recent_usage_csv_generator_spec.rb'
-
-# Offense count: 180
-# This cop supports unsafe autocorrection (--autocorrect-all).
-RSpec/BeEql:
-  Exclude:
-    - 'spec/controllers/activities_controller_spec.rb'
-    - 'spec/controllers/partner_controller_spec.rb'
-    - 'spec/lib/data_feeds/meteostat_loader_spec.rb'
-    - 'spec/lib/rollbar_api/rql_jobs_spec.rb'
-    - 'spec/mailers/alert_mailer_spec.rb'
-    - 'spec/mailers/dcc_mailer_spec.rb'
-    - 'spec/mailers/energy_sparks_devise_mailer_spec.rb'
-    - 'spec/mailers/recent_activities_mailer_spec.rb'
-    - 'spec/models/estimated_annual_consumption_spec.rb'
-    - 'spec/models/meter_spec.rb'
-    - 'spec/models/partner_spec.rb'
-    - 'spec/models/school_group_spec.rb'
-    - 'spec/models/school_spec.rb'
-    - 'spec/models/school_target_spec.rb'
-    - 'spec/models/school_time_spec.rb'
-    - 'spec/models/user_spec.rb'
-    - 'spec/models/weather_station_spec.rb'
-    - 'spec/services/activity_creator_spec.rb'
-    - 'spec/services/alerts/delete_benchmark_run_service_spec.rb'
-    - 'spec/services/amr/analytics_school_factory_spec.rb'
-    - 'spec/services/amr/n3rgy_readings_download_and_upsert_spec.rb'
-    - 'spec/services/amr/n3rgy_readings_upserter_spec.rb'
-    - 'spec/services/cads/realtime_power_consumption_service_spec.rb'
-    - 'spec/services/events/event_spec.rb'
-    - 'spec/services/events/list_events_spec.rb'
-    - 'spec/services/meter_management_spec.rb'
-    - 'spec/services/next_activity_suggester_with_filter_spec.rb'
-    - 'spec/services/programmes/creator_spec.rb'
-    - 'spec/services/programmes/enroller_spec.rb'
-    - 'spec/services/rollbar_notifier_service_spec.rb'
-    - 'spec/services/schedule_data_manager_service_spec.rb'
-    - 'spec/services/solar/low_carbon_hub_download_and_upsert_spec.rb'
-    - 'spec/services/solar/rtone_variant_download_and_upsert_spec.rb'
-    - 'spec/services/solar/rtone_variant_upserter_spec.rb'
-    - 'spec/services/solar/solar_edge_download_and_upsert_spec.rb'
-    - 'spec/services/targets/admin_report_service_spec.rb'
-    - 'spec/services/targets/generate_progress_service_spec.rb'
-    - 'spec/services/targets/progress_service_spec.rb'
-    - 'spec/services/targets/school_group_progress_reporting_service_spec.rb'
-    - 'spec/services/targets/target_mailer_service_spec.rb'
-    - 'spec/system/admin/school_groups_spec.rb'
-    - 'spec/system/admin/school_onboarding_spec.rb'
-    - 'spec/system/admin/school_partners_spec.rb'
-    - 'spec/system/help_pages_spec.rb'
-    - 'spec/system/jobs_spec.rb'
-    - 'spec/system/resources_spec.rb'
-    - 'spec/system/school_onboarding_spec.rb'
-    - 'spec/system/schools/audits_spec.rb'
-    - 'spec/system/schools/consent_documents_spec.rb'
-    - 'spec/system/schools/live_data_spec.rb'
-    - 'spec/system/schools/school_targets_spec.rb'
-    - 'spec/system/solar_edge_installation_spec.rb'
 
 # Offense count: 1
 RSpec/BeforeAfterAll:
@@ -349,65 +279,11 @@ RSpec/EmptyExampleGroup:
     - 'spec/controllers/admin/meters_controller_spec.rb'
     - 'spec/factories/help_pages.rb'
     - 'spec/models/admin_meter_status_spec.rb'
-    - 'spec/system/school_groups_spec.rb'
 
 # Offense count: 764
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:
   Max: 104
-
-# Offense count: 1
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always_allow, single_line_only, disallow
-RSpec/ExampleWithoutDescription:
-  Exclude:
-    - 'spec/system/admin/procurement_routes_spec.rb'
-
-# Offense count: 168
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: method_call, block
-RSpec/ExpectChange:
-  Exclude:
-    - 'spec/lib/data_feeds/meteostat_loader_spec.rb'
-    - 'spec/lib/data_feeds/solar_pv_tuos_loader_spec.rb'
-    - 'spec/models/school_group_spec.rb'
-    - 'spec/models/scoreboard_spec.rb'
-    - 'spec/models/tariff_price_spec.rb'
-    - 'spec/models/tariff_standing_charge_spec.rb'
-    - 'spec/models/temperature_recording_spec.rb'
-    - 'spec/services/activity_creator_spec.rb'
-    - 'spec/services/alerts/generate_analysis_pages_spec.rb'
-    - 'spec/services/alerts/generate_and_save_alerts_and_benchmarks_spec.rb'
-    - 'spec/services/alerts/generate_and_save_alerts_spec.rb'
-    - 'spec/services/alerts/generate_and_save_benchmarks_spec.rb'
-    - 'spec/services/alerts/generate_find_out_mores_spec.rb'
-    - 'spec/services/amr/process_amr_reading_data_spec.rb'
-    - 'spec/services/calendar_term_factory_spec.rb'
-    - 'spec/services/meter_management_spec.rb'
-    - 'spec/services/meter_review_service_spec.rb'
-    - 'spec/services/solar/low_carbon_hub_installation_factory_spec.rb'
-    - 'spec/services/solar/low_carbon_hub_upserter_spec.rb'
-    - 'spec/services/solar/solar_edge_upserter_spec.rb'
-    - 'spec/system/admin/activity_categories_spec.rb'
-    - 'spec/system/admin/alert_type_management_spec.rb'
-    - 'spec/system/admin/amr_uploaded_readings_spec.rb'
-    - 'spec/system/admin/dark_sky_areas_spec.rb'
-    - 'spec/system/admin/equivalence_management_spec.rb'
-    - 'spec/system/admin/intervention_type_groups_spec.rb'
-    - 'spec/system/admin/partners_spec.rb'
-    - 'spec/system/admin/school_groups_spec.rb'
-    - 'spec/system/admin/scoreboard_spec.rb'
-    - 'spec/system/admin/solar_pv_areas_spec.rb'
-    - 'spec/system/admin/weather_stations_spec.rb'
-    - 'spec/system/interventions_spec.rb'
-    - 'spec/system/low_carbon_hub_installation_spec.rb'
-    - 'spec/system/rtone_variant_installation_spec.rb'
-    - 'spec/system/school_admin/user_management_spec.rb'
-    - 'spec/system/school_contacts_spec.rb'
-    - 'spec/system/school_onboarding_spec.rb'
-    - 'spec/system/solar_edge_installation_spec.rb'
-    - 'spec/system/temperature_recordings_spec.rb'
 
 # Offense count: 96
 RSpec/ExpectInHook:
@@ -540,24 +416,6 @@ RSpec/OverwritingSetup:
   Exclude:
     - 'spec/services/alerts/fetch_content_spec.rb'
     - 'spec/system/schools/advice_pages/total_energy_use_spec.rb'
-
-# Offense count: 41
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Strict, EnforcedStyle, AllowedExplicitMatchers.
-# SupportedStyles: inflected, explicit
-RSpec/PredicateMatcher:
-  Exclude:
-    - 'spec/helpers/advice_page_helper_spec.rb'
-    - 'spec/helpers/application_helper_spec.rb'
-    - 'spec/lib/transifex/client_spec.rb'
-    - 'spec/models/concerns/transifex_serialisable_spec.rb'
-    - 'spec/models/programme_spec.rb'
-    - 'spec/models/site_settings_spec.rb'
-    - 'spec/services/onboarding/service_spec.rb'
-    - 'spec/services/school_creator_spec.rb'
-    - 'spec/services/school_remover_spec.rb'
-    - 'spec/services/transifex/service_spec.rb'
-    - 'spec/system/admin/users_spec.rb'
 
 # Offense count: 14
 RSpec/RepeatedDescription:

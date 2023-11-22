@@ -133,10 +133,10 @@ describe ScheduleDataManagerService do
       obs_2 = create(:weather_observation, weather_station: station, reading_date: '2020-02-01')
       temperatures = service.temperatures
       #all 4 dates with expected start/end
-      expect(temperatures.date_exists?(reading_1.reading_date)).to eql true
-      expect(temperatures.date_exists?(reading_2.reading_date)).to eql true
-      expect(temperatures.date_exists?(obs_1.reading_date)).to eql true
-      expect(temperatures.date_exists?(obs_2.reading_date)).to eql true
+      expect(temperatures.date_exists?(reading_1.reading_date)).to be true
+      expect(temperatures.date_exists?(reading_2.reading_date)).to be true
+      expect(temperatures.date_exists?(obs_1.reading_date)).to be true
+      expect(temperatures.date_exists?(obs_2.reading_date)).to be true
       expect(temperatures.start_date).to eql reading_1.reading_date
       expect(temperatures.end_date).to eql obs_2.reading_date
 

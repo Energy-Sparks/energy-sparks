@@ -100,7 +100,7 @@ RSpec.describe "school", type: :system do
         visit school_contacts_path(school)
         expect do
           click_on('Delete')
-        end.to change { Contact.count }.by(-1)
+        end.to change(Contact, :count).by(-1)
       end
     end
 
@@ -123,7 +123,7 @@ RSpec.describe "school", type: :system do
         visit school_contacts_path(school)
         expect do
           click_on('Disable alerts')
-        end.to change { Contact.count }.by(-1)
+        end.to change(Contact, :count).by(-1)
       end
     end
 
@@ -159,7 +159,7 @@ RSpec.describe "school", type: :system do
         visit school_contacts_path(school)
         expect do
           click_on('Delete')
-        end.to change { Contact.count }.by(-1)
+        end.to change(Contact, :count).by(-1)
       end
     end
   end

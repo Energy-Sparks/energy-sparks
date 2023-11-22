@@ -210,7 +210,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         click_on 'Save'
       end
 
-      it { expect(email_sent_events_count).to eql(1) }
+      it { expect(email_sent_events_count).to be(1) }
 
 
       context "to a blank email address" do
@@ -235,7 +235,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         end
 
         it "logs event" do
-          expect(email_sent_events_count).to eql(2)
+          expect(email_sent_events_count).to be(2)
         end
 
         it "updates onboarding record" do

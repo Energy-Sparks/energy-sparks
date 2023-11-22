@@ -10,7 +10,7 @@ RSpec.describe DccMailer do
   describe '#dcc_meter_status_email' do
     it 'sends an email with meter ids' do
       DccMailer.with(meter_ids: meter_ids).dcc_meter_status_email.deliver_now
-      expect(ActionMailer::Base.deliveries.count).to eql 1
+      expect(ActionMailer::Base.deliveries.count).to be 1
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eql "New smart meters found"
       expect(email.body.to_s).to include(meter_1.mpan_mprn.to_s)

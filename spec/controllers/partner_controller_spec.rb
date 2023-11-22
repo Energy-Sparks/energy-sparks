@@ -107,8 +107,8 @@ RSpec.describe Admin::PartnersController, type: :controller do
         expect do
           delete :destroy, params: { id: partner.to_param }
         end.to change(Partner, :count).by(-1)
-        expect(SchoolGroupPartner.count).to eql(0)
-        expect(SchoolGroup.count).to eql(1)
+        expect(SchoolGroupPartner.count).to be(0)
+        expect(SchoolGroup.count).to be(1)
       end
     end
   end

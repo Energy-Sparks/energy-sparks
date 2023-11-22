@@ -61,7 +61,7 @@ describe Transifex::Service, type: :service do
       end
 
       it 'returns true' do
-        expect(service.created_in_transifex?("slug")).to be_truthy
+        expect(service).to be_created_in_transifex("slug")
       end
     end
 
@@ -71,7 +71,7 @@ describe Transifex::Service, type: :service do
       end
 
       it 'returns false' do
-        expect(service.created_in_transifex?("slug")).to be_falsey
+        expect(service).not_to be_created_in_transifex("slug")
       end
     end
   end

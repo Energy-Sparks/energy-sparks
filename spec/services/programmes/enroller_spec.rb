@@ -43,9 +43,9 @@ describe Programmes::Enroller do
       end
 
       it "doesnt enrol again" do
-        expect(school.programmes.count).to eql 1
+        expect(school.programmes.count).to be 1
         service.enrol(school)
-        expect(school.programmes.count).to eql 1
+        expect(school.programmes.count).to be 1
       end
     end
 

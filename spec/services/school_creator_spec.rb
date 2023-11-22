@@ -125,7 +125,7 @@ describe SchoolCreator, :schools, type: :service do
 
     it 'records event' do
       service.make_data_enabled!
-      expect(school.has_school_onboarding_event?(:onboarding_data_enabled)).to be_truthy
+      expect(school).to have_school_onboarding_event(:onboarding_data_enabled)
     end
 
     it 'records activation date' do

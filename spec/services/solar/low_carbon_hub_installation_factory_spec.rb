@@ -12,7 +12,7 @@ module Solar
 
       factory = LowCarbonHubInstallationFactory.new(school: school, rbee_meter_id: rbee_meter_id, amr_data_feed_config: amr_data_feed_config,
         username: username, password: password)
-      expect { factory.perform }.to change { Meter.count }.by(3)
+      expect { factory.perform }.to change(Meter, :count).by(3)
       expect(school.meters.solar_pv.count).to be 1
       expect(school.meters.electricity.count).to be 1
       expect(school.meters.exported_solar_pv.count).to be 1

@@ -184,7 +184,7 @@ describe NextActivitySuggesterWithFilter do
     it 'doesnt suggest if completed' do
       create(:activity, activity_type: audit.audit_activity_types.first.activity_type, school: school)
       suggestions = subject.suggest_from_audits
-      expect(suggestions.count).to eql 2
+      expect(suggestions.count).to be 2
     end
   end
 end

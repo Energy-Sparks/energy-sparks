@@ -20,7 +20,7 @@ describe 'Partners', type: :system do
       fill_in 'Name', with: "Sheffield"
 
       attach_file("Image", Rails.root + "spec/fixtures/images/sheffield.png")
-      expect { click_on 'Create Partner' }.to change { Partner.count }.by(1)
+      expect { click_on 'Create Partner' }.to change(Partner, :count).by(1)
 
       expect(page).to have_xpath("//img[contains(@src,'sheffield.png')]")
       expect(page).to have_link(href: 'https://example.com')
@@ -55,7 +55,7 @@ describe 'Partners', type: :system do
       end
 
       it 'allows the user to delete a partner' do
-        expect { click_on 'Delete' }.to change { Partner.count }.by(-1)
+        expect { click_on 'Delete' }.to change(Partner, :count).by(-1)
         expect(page).to have_content('Partner was successfully destroyed.')
       end
     end

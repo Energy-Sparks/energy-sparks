@@ -59,10 +59,10 @@ module Alerts
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(AlertTypeRunResult.new(alert_type: alert_type, asof_date: asof_date))
 
         service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change { Alert.count }.by(0) &&
-                                      change { AlertError.count }.by(0) &&
-                                      change { BenchmarkResult.count }.by(0) &&
-                                      change { BenchmarkResultError.count }.by(0)
+        expect { service.perform }.to change(Alert, :count).by(0) &&
+                                      change(AlertError, :count).by(0) &&
+                                      change(BenchmarkResult, :count).by(0) &&
+                                      change(BenchmarkResultError, :count).by(0)
       end
 
       it 'handles just alert reports' do
@@ -70,10 +70,10 @@ module Alerts
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
 
         service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change { Alert.count }.by(2) &&
-                                      change { AlertError.count }.by(1) &&
-                                      change { BenchmarkResult.count }.by(0) &&
-                                      change { BenchmarkResultError.count }.by(0)
+        expect { service.perform }.to change(Alert, :count).by(2) &&
+                                      change(AlertError, :count).by(1) &&
+                                      change(BenchmarkResult, :count).by(0) &&
+                                      change(BenchmarkResultError, :count).by(0)
 
         expect(Alert.first.run_on).not_to be_nil
         expect(Alert.first.template_data).not_to be_nil
@@ -85,10 +85,10 @@ module Alerts
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result_just_errors)
 
         service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change { Alert.count }.by(0) &&
-                                      change { AlertError.count }.by(1) &&
-                                      change { BenchmarkResult.count }.by(0) &&
-                                      change { BenchmarkResultError.count }.by(0)
+        expect { service.perform }.to change(Alert, :count).by(0) &&
+                                      change(AlertError, :count).by(1) &&
+                                      change(BenchmarkResult, :count).by(0) &&
+                                      change(BenchmarkResultError, :count).by(0)
       end
 
       it 'handles alert and benchmark reports' do
@@ -96,10 +96,10 @@ module Alerts
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
 
         service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change { Alert.count }.by(2) &&
-                                      change { AlertError.count }.by(1) &&
-                                      change { BenchmarkResult.count }.by(2) &&
-                                      change { BenchmarkResultError.count }.by(1)
+        expect { service.perform }.to change(Alert, :count).by(2) &&
+                                      change(AlertError, :count).by(1) &&
+                                      change(BenchmarkResult, :count).by(2) &&
+                                      change(BenchmarkResultError, :count).by(1)
 
         expect(Alert.first.run_on).not_to be_nil
         expect(Alert.first.template_data).not_to be_nil
@@ -115,11 +115,11 @@ module Alerts
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result_just_errors)
 
         service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change { Alert.count }.by(0) &&
-                                      change { AlertError.count }.by(1) &&
-                                      change { BenchmarkResult.count }.by(0) &&
-                                      change { BenchmarkResultError.count }.by(2) &&
-                                      change { BenchmarkResultSchoolGenerationRun.count }.by(1)
+        expect { service.perform }.to change(Alert, :count).by(0) &&
+                                      change(AlertError, :count).by(1) &&
+                                      change(BenchmarkResult, :count).by(0) &&
+                                      change(BenchmarkResultError, :count).by(2) &&
+                                      change(BenchmarkResultSchoolGenerationRun, :count).by(1)
 
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_error_count).to be 1
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 0

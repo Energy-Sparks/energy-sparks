@@ -40,8 +40,8 @@ RSpec.describe 'School Partners', :schools, type: :system do
         click_on 'Manage partners'
 
         expect(school.partners).to match_array([partner_3, partner_2])
-        expect(school.school_partners.first.position).to eql 1
-        expect(school.school_partners.last.position).to eql 2
+        expect(school.school_partners.first.position).to be 1
+        expect(school.school_partners.last.position).to be 2
 
         fill_in partner_3.name, with: ""
 

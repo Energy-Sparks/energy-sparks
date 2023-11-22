@@ -5,17 +5,17 @@ RSpec.describe WeatherStation, type: :model do
   let!(:station_inactive) { create(:weather_station, active: false)}
 
   it 'applies active by type scope' do
-    expect(WeatherStation.count).to eql 2
+    expect(WeatherStation.count).to be 2
     expect(WeatherStation.by_provider("meteostat").to_a).to eql([station, station_inactive])
     expect(WeatherStation.active_by_provider("meteostat").to_a).to eql([station])
   end
 
   context "with observations" do
     it "counts correctly" do
-      expect(station.observation_count).to eql 0
+      expect(station.observation_count).to be 0
       create(:weather_observation, weather_station: station)
-      expect(WeatherObservation.count).to eql 1
-      expect(station.observation_count).to eql 1
+      expect(WeatherObservation.count).to be 1
+      expect(station.observation_count).to be 1
     end
 
     it "formats earliest" do

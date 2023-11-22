@@ -52,13 +52,13 @@ describe Alerts::DeleteBenchmarkRunService, type: :service do
     end
 
     it 'deletes all of the dependent objects' do
-      expect(BenchmarkResultSchoolGenerationRun.count).to eql 2
-      expect(BenchmarkResult.count).to eql 2
-      expect(BenchmarkResultError.count).to eql 1
+      expect(BenchmarkResultSchoolGenerationRun.count).to be 2
+      expect(BenchmarkResult.count).to be 2
+      expect(BenchmarkResultError.count).to be 1
       service.delete!
-      expect(BenchmarkResultSchoolGenerationRun.count).to eql 1
-      expect(BenchmarkResult.count).to eql 1
-      expect(BenchmarkResultError.count).to eql 0
+      expect(BenchmarkResultSchoolGenerationRun.count).to be 1
+      expect(BenchmarkResult.count).to be 1
+      expect(BenchmarkResultError.count).to be 0
     end
   end
 end

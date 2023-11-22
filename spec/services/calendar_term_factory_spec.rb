@@ -19,7 +19,7 @@ describe CalendarTermFactory do
       calendar = create(:regional_calendar, :with_academic_years)
       create(:academic_year, start_date: Date.parse('2018-09-01'), end_date: Date.parse('2019-08-30'), calendar: calendar)
 
-      expect { CalendarTermFactory.new(calendar, example_calendar_hash).create_terms }.to change { CalendarEvent.count }.by(holiday_count + term_count)
+      expect { CalendarTermFactory.new(calendar, example_calendar_hash).create_terms }.to change(CalendarEvent, :count).by(holiday_count + term_count)
 
       calendar.reload
 
