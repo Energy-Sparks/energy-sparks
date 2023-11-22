@@ -55,7 +55,6 @@ class Observation < ApplicationRecord
   # This is the first stage in moving this class over to being fully polymorphic
   # The idea is to eventually move all observation_types (above) to this way of doing things
   belongs_to :observable, polymorphic: true, optional: true
-  # delegated_type :observable, types: %w[TransportSurvey]
 
   validates_presence_of :at, :school
   validates_associated :temperature_recordings
@@ -79,7 +78,7 @@ class Observation < ApplicationRecord
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
   scope :recorded_since, ->(date) { where('created_at >= ?', date)}
 
-  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme, :observable]) }
+  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme]) }
 
   has_rich_text :description
 
