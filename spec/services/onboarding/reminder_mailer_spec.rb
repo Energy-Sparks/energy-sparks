@@ -94,8 +94,7 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
 
     context "two onboardings with the same contact email" do
       let(:onboardings) do
-        [create(:school_onboarding, events: [], contact_email: 'test@test.com'),
-         create(:school_onboarding, events: [], contact_email: 'test@test.com')]
+        create_list(:school_onboarding, 2, events: [], contact_email: 'test@test.com')
       end
 
       it "sends one email" do

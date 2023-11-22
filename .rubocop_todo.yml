@@ -13,19 +13,6 @@ Capybara/CurrentPathExpectation:
     - 'spec/support/shared_examples/energy_tariffs.rb'
     - 'spec/system/schools/estimated_annual_consumptions_spec.rb'
 
-# Offense count: 9
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Include, EnforcedStyle, ExplicitOnly.
-# Include: **/*_spec.rb, **/spec/**/*, **/test/**/*, **/features/support/factories/**/*.rb
-# SupportedStyles: create_list, n_times
-FactoryBot/CreateList:
-  Exclude:
-    - 'spec/models/data_source_spec.rb'
-    - 'spec/models/issue_spec.rb'
-    - 'spec/models/procurement_route_spec.rb'
-    - 'spec/models/school_group_spec.rb'
-    - 'spec/services/onboarding/reminder_mailer_spec.rb'
-
 # Offense count: 14
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: enums

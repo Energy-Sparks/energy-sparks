@@ -131,8 +131,8 @@ describe SchoolGroup, :school_groups, type: :model do
       let!(:school_in_school_group_issue) { create(:issue, updated_by: user, owned_by: user, issueable: school, fuel_type: nil) }
       let!(:school_group_issue) {           create(:issue, updated_by: user, issueable: school_group, fuel_type: :electricity) }
       let!(:different_school_in_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school, school_group: school_group), fuel_type: :gas) }
-      let!(:school_issue_with_meters) {     create(:issue, updated_by: user, issueable: school, meters: [create(:gas_meter), create(:gas_meter)]) }
-      let!(:school_issue_with_data_sources) { create(:issue, updated_by: user, issueable: school, meters: [create(:gas_meter, data_source: data_source), create(:gas_meter, data_source: data_source)]) }
+      let!(:school_issue_with_meters) {     create(:issue, updated_by: user, issueable: school, meters: create_list(:gas_meter, 2)) }
+      let!(:school_issue_with_data_sources) { create(:issue, updated_by: user, issueable: school, meters: 2.times.map { create(:gas_meter, data_source: data_source) }) }
       let!(:closed_school_group_issue) {    create(:issue, status: :closed, updated_by: user, issueable: school_group, fuel_type: :gas) }
       let!(:school_group_note) {            create(:issue, issue_type: :note, updated_by: user, issueable: school_group, fuel_type: :gas) }
       let!(:school_in_different_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school, school_group: create(:school_group)), fuel_type: :electricity) }
