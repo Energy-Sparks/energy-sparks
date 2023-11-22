@@ -188,8 +188,8 @@ describe User do
     let(:user) { create(:staff, school: school, confirmed_at: nil) }
 
     it 'sends welcome email after confirmation for school roles' do
-      expect(user.confirmed?).to eql(false)
-      expect(user.confirm).to eql(true)
+      expect(user.confirmed?).to be(false)
+      expect(user.confirm).to be(true)
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Welcome to Energy Sparks')
@@ -197,8 +197,8 @@ describe User do
 
     it 'does not send welcome email for other users' do
       other_user = create(:user, role: :guest, confirmed_at: nil)
-      expect(other_user.confirmed?).to eql(false)
-      expect(other_user.confirm).to eql(true)
+      expect(other_user.confirmed?).to be(false)
+      expect(other_user.confirm).to be(true)
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Energy Sparks: confirm your account')

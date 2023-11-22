@@ -168,14 +168,14 @@ RSpec.describe Targets::TargetMailerService do
 
     it 'sends an email' do
       service.invite_schools_to_set_first_target
-      expect(ActionMailer::Base.deliveries.count).to eql 1
+      expect(ActionMailer::Base.deliveries.count).to be 1
       expect(email.subject).to eql "Set your first energy saving target"
     end
 
     it 'doesnt send an email if one was sent already' do
       create(:school_target_event, school: school, event: :first_target_sent)
       service.invite_schools_to_set_first_target
-      expect(ActionMailer::Base.deliveries.count).to eql 0
+      expect(ActionMailer::Base.deliveries.count).to be 0
     end
 
     it 'sends email to all staff' do
@@ -199,7 +199,7 @@ RSpec.describe Targets::TargetMailerService do
 
       it 'uses preferred locale' do
         service.invite_schools_to_set_first_target
-        expect(ActionMailer::Base.deliveries.count).to eql 2
+        expect(ActionMailer::Base.deliveries.count).to be 2
         emails = ActionMailer::Base.deliveries.last(2)
 
         expected_subjects = [
@@ -235,14 +235,14 @@ RSpec.describe Targets::TargetMailerService do
 
     it 'sends an email' do
       service.invite_schools_to_review_target
-      expect(ActionMailer::Base.deliveries.count).to eql 1
+      expect(ActionMailer::Base.deliveries.count).to be 1
       expect(email.subject).to eql "Review your progress and set a new saving target"
     end
 
     it 'doesnt send an email if one was sent already' do
       create(:school_target_event, school: school, event: :review_target_sent)
       service.invite_schools_to_review_target
-      expect(ActionMailer::Base.deliveries.count).to eql 0
+      expect(ActionMailer::Base.deliveries.count).to be 0
     end
 
     it 'sends email to all staff' do
@@ -286,14 +286,14 @@ RSpec.describe Targets::TargetMailerService do
 
     it 'sends an email' do
       service.remind_schools_to_set_first_target
-      expect(ActionMailer::Base.deliveries.count).to eql 1
+      expect(ActionMailer::Base.deliveries.count).to be 1
       expect(email.subject).to eql "Reminder to set your first energy saving target"
     end
 
     it 'doesnt send an email if one was sent already' do
       create(:school_target_event, school: school, event: :first_target_reminder_sent)
       service.remind_schools_to_set_first_target
-      expect(ActionMailer::Base.deliveries.count).to eql 0
+      expect(ActionMailer::Base.deliveries.count).to be 0
     end
 
     it 'sends email to all staff' do

@@ -24,7 +24,7 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
 
     context 'schools with target disabled' do
       it 'includes the school' do
-        expect(report.size).to eql 1
+        expect(report.size).to be 1
         expect(report.first.school).to eq school
         expect(report.first.targets_enabled).to eq false
         expect(report.first.enough_data).to be_nil
@@ -37,7 +37,7 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
       let(:enough_data)         { false }
 
       it 'includes the school' do
-        expect(report.size).to eql 1
+        expect(report.size).to be 1
         expect(report.first.school).to eq school
         expect(report.first.targets_enabled).to eq true
         expect(report.first.enough_data).to eq false
@@ -49,7 +49,7 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
       let(:enough_data)         { true }
 
       it 'includes the school' do
-        expect(report.size).to eql 1
+        expect(report.size).to be 1
         expect(report.first.school).to eq school
         expect(report.first.targets_enabled).to eq true
         expect(report.first.enough_data).to eq true
@@ -67,7 +67,7 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
       end
 
       it 'includes the school' do
-        expect(report.size).to eql 1
+        expect(report.size).to be 1
         expect(report.first.school).to eq school
         expect(report.first.targets_enabled).to eq true
         expect(report.first.enough_data).to eq true

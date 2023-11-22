@@ -106,7 +106,7 @@ describe ActivityCreator do
       activity = build(:activity, activity_type: activity_type, school: school)
       ActivityCreator.new(activity).process
 
-      expect(programme.programme_activities.count).to eql 0
+      expect(programme.programme_activities.count).to be 0
     end
 
     it "adds activity even if previous programme activity existed" do

@@ -150,7 +150,7 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
       end
 
       it 'removes meters and readings on deletion' do
-        expect(AmrValidatedReading.count).to eql 3
+        expect(AmrValidatedReading.count).to be 3
         expect { click_on 'Delete' }.to change { Meter.count }.by(-3).and change { SolarEdgeInstallation.count }.by(-1).and change { AmrValidatedReading.count }.by(-3)
       end
     end

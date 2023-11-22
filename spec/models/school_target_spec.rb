@@ -90,19 +90,19 @@ RSpec.describe SchoolTarget, type: :model do
     it "generates aggregated electricity attribute" do
       attribute = MeterAttribute.to_analytics([target.meter_attribute_for_electricity_target])
       expect(attribute[:targeting_and_tracking][0][:start_date]).to eql(target.start_date)
-      expect(attribute[:targeting_and_tracking][0][:target]).to eql(0.9)
+      expect(attribute[:targeting_and_tracking][0][:target]).to be(0.9)
     end
 
     it "generates aggregated gas attribute" do
       attribute = MeterAttribute.to_analytics([target.meter_attribute_for_gas_target])
       expect(attribute[:targeting_and_tracking][0][:start_date]).to eql(target.start_date)
-      expect(attribute[:targeting_and_tracking][0][:target]).to eql(0.95)
+      expect(attribute[:targeting_and_tracking][0][:target]).to be(0.95)
     end
 
     it "generates aggregated storage attribute" do
       attribute = MeterAttribute.to_analytics([target.meter_attribute_for_storage_heaters_target])
       expect(attribute[:targeting_and_tracking][0][:start_date]).to eql(target.start_date)
-      expect(attribute[:targeting_and_tracking][0][:target]).to eql(0.93)
+      expect(attribute[:targeting_and_tracking][0][:target]).to be(0.93)
     end
 
     it "generates all attributes when provided" do

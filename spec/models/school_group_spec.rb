@@ -71,9 +71,9 @@ describe SchoolGroup, :school_groups, type: :model do
     let(:other_partner) { create(:partner) }
 
     it "can add a partner" do
-      expect(SchoolGroupPartner.count).to eql(0)
+      expect(SchoolGroupPartner.count).to be(0)
       school_group.partners << partner
-      expect(SchoolGroupPartner.count).to eql(1)
+      expect(SchoolGroupPartner.count).to be(1)
     end
 
     it "orders partners by position" do

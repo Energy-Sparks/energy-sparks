@@ -25,6 +25,6 @@ RSpec.describe "resources", type: :system do
   it 'serves the file' do
     visit resources_path
     find("a[href='/resources/#{@resource.id}/download']").click
-    expect(page.status_code).to eql 200
+    expect(page.status_code).to be 200
   end
 end

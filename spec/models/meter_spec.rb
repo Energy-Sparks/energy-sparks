@@ -377,7 +377,7 @@ describe 'Meter', :meters do
       describe '#gappy_validated_readings' do
         it "finds gap in ORIG readings" do
           gaps = meter.gappy_validated_readings(2)
-          expect(gaps.count).to eql(2)
+          expect(gaps.count).to be(2)
           gap = gaps.first
           expect(gap.first.reading_date).to eql(base_date + 1.day)
           expect(gap.last.reading_date).to eql(base_date + 2.days)

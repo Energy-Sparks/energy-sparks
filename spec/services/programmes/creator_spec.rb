@@ -16,7 +16,7 @@ describe Programmes::Creator do
       end
 
       it "creates school programme" do
-        expect(school.programmes.count).to eql 1
+        expect(school.programmes.count).to be 1
         expect(programme.programme_type).to eql programme_type
       end
 
@@ -38,14 +38,14 @@ describe Programmes::Creator do
 
       it "doesnt enrol twice" do
         service.create
-        expect(school.programmes.count).to eql 1
+        expect(school.programmes.count).to be 1
       end
 
       it "doesnt enrol twice when multiple programmes" do
         programme_type_other = create(:programme_type)
         school.programmes << create(:programme, programme_type: programme_type_other, started_on: Time.zone.now)
         service.create
-        expect(school.programmes.count).to eql 2
+        expect(school.programmes.count).to be 2
       end
     end
 

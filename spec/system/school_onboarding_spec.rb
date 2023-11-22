@@ -581,7 +581,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         expect(page).to have_content("Final step: review your answers")
         expect(page).to have_content("user+updated@example.org")
 
-        expect(onboarding.school.users.count).to eql 2
+        expect(onboarding.school.users.count).to be 2
         expect(onboarding.school.users.first).to be_confirmed
         expect(onboarding.school.users.last).not_to be_confirmed
       end

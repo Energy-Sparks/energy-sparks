@@ -15,7 +15,7 @@ RSpec.describe AlertMailer do
   describe '#alert_email' do
     it 'sends an email with mailgun tag in header' do
       AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
-      expect(ActionMailer::Base.deliveries.count).to eql 1
+      expect(ActionMailer::Base.deliveries.count).to be 1
       expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :en)
       expect(email.mailgun_headers['X-Mailgun-Tag']).to eql "alerts"
     end
@@ -35,7 +35,7 @@ RSpec.describe AlertMailer do
 
       it 'does not send an email' do
         AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
-        expect(ActionMailer::Base.deliveries.count).to eql 0
+        expect(ActionMailer::Base.deliveries.count).to be 0
       end
     end
   end

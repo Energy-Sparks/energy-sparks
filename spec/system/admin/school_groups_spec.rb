@@ -750,8 +750,8 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
         it "partners are ordered" do
           expect(school_group.partners).to match_array([partners.last, partners.second])
-          expect(school_group.school_group_partners.first.position).to eql 1
-          expect(school_group.school_group_partners.last.position).to eql 2
+          expect(school_group.school_group_partners.first.position).to be 1
+          expect(school_group.school_group_partners.last.position).to be 2
         end
 
         context "and then clearing one order position" do

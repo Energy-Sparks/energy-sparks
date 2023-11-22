@@ -342,9 +342,9 @@ describe School do
     let(:other_partner) { create(:partner) }
 
     it "can add a partner" do
-      expect(SchoolPartner.count).to eql(0)
+      expect(SchoolPartner.count).to be(0)
       subject.partners << partner
-      expect(SchoolPartner.count).to eql(1)
+      expect(SchoolPartner.count).to be(1)
     end
 
     it "orders partners by position" do
@@ -603,11 +603,11 @@ describe School do
 
       it "finds the target" do
         expect(subject.has_target?).to be true
-        expect(subject.has_current_target?).to eql true
+        expect(subject.has_current_target?).to be true
         expect(subject.current_target).to eql target
         expect(subject.most_recent_target).to eql target
         expect(subject.expired_target).to be_nil
-        expect(subject.has_expired_target?).to eql false
+        expect(subject.has_expired_target?).to be false
       end
 
       it "the target should add meter attributes" do
@@ -623,7 +623,7 @@ describe School do
           expect(subject.current_target).to eql target
           expect(subject.most_recent_target).to eql future_target
           expect(subject.expired_target).to be_nil
-          expect(subject.has_expired_target?).to eql false
+          expect(subject.has_expired_target?).to be false
         end
       end
 
@@ -635,10 +635,10 @@ describe School do
         it "finds the expired target" do
           expect(subject.has_target?).to be true
           expect(subject.has_current_target?).to be false
-          expect(subject.current_target).to eql nil
+          expect(subject.current_target).to be nil
           expect(subject.most_recent_target).to eql target
           expect(subject.expired_target).to eq target
-          expect(subject.has_expired_target?).to eql true
+          expect(subject.has_expired_target?).to be true
         end
 
         it "stills produce meter attributes" do
@@ -723,13 +723,13 @@ describe School do
     it 'serialises school day' do
       times = school.school_times_to_analytics
       expect(times.length).to eq 1
-      expect(times[0][:day]).to eql :tuesday
+      expect(times[0][:day]).to be :tuesday
     end
 
     it 'serialises community_use' do
       times = school.community_use_times_to_analytics
       expect(times.length).to eq 1
-      expect(times[0][:day]).to eql :monday
+      expect(times[0][:day]).to be :monday
     end
   end
 

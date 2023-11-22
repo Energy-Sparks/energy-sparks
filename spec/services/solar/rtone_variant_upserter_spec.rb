@@ -19,9 +19,9 @@ module Solar
     let(:upserter) { Solar::RtoneVariantUpserter.new(installation: installation, readings: readings, import_log: import_log) }
 
     it "inserts new readings" do
-      expect(AmrDataFeedReading.count).to eql 0
+      expect(AmrDataFeedReading.count).to be 0
       upserter.perform
-      expect(AmrDataFeedReading.count).to eql 1
+      expect(AmrDataFeedReading.count).to be 1
     end
   end
 end

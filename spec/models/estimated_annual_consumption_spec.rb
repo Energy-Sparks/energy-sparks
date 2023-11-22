@@ -22,21 +22,21 @@ describe EstimatedAnnualConsumption, type: :model do
       attribute = MeterAttribute.to_analytics([estimate.meter_attribute_for_electricity_estimate])
       expect(attribute[:estimated_period_consumption][0][:start_date]).to eql(Date.new(2021, 1, 1))
       expect(attribute[:estimated_period_consumption][0][:end_date]).to eql(Date.new(2021, 12, 31))
-      expect(attribute[:estimated_period_consumption][0][:kwh]).to eql(1000.0)
+      expect(attribute[:estimated_period_consumption][0][:kwh]).to be(1000.0)
     end
 
     it "generates aggregated gas attribute" do
       attribute = MeterAttribute.to_analytics([estimate.meter_attribute_for_gas_estimate])
       expect(attribute[:estimated_period_consumption][0][:start_date]).to eql(Date.new(2021, 1, 1))
       expect(attribute[:estimated_period_consumption][0][:end_date]).to eql(Date.new(2021, 12, 31))
-      expect(attribute[:estimated_period_consumption][0][:kwh]).to eql(1500.0)
+      expect(attribute[:estimated_period_consumption][0][:kwh]).to be(1500.0)
     end
 
     it "generates aggregated storage attribute" do
       attribute = MeterAttribute.to_analytics([estimate.meter_attribute_for_storage_heaters_estimate])
       expect(attribute[:estimated_period_consumption][0][:start_date]).to eql(Date.new(2021, 1, 1))
       expect(attribute[:estimated_period_consumption][0][:end_date]).to eql(Date.new(2021, 12, 31))
-      expect(attribute[:estimated_period_consumption][0][:kwh]).to eql(500.0)
+      expect(attribute[:estimated_period_consumption][0][:kwh]).to be(500.0)
     end
 
     it "generates all attributes when provided" do

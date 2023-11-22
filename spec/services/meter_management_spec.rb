@@ -106,16 +106,16 @@ describe MeterManagement do
     it "returns api status" do
       meter = create(:electricity_meter)
       expect(n3rgy_api).to receive(:status).with(meter.mpan_mprn).and_return(:available)
-      expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to eql(:available)
+      expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to be(:available)
 
       expect(n3rgy_api).to receive(:status).with(meter.mpan_mprn).and_return(:unknown)
-      expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to eql(:unknown)
+      expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to be(:unknown)
     end
 
     it "handles API errors" do
       meter = create(:electricity_meter)
       allow(n3rgy_api).to receive(:status).with(meter.mpan_mprn).and_raise(StandardError)
-      expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to eql(:api_error)
+      expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to be(:api_error)
     end
   end
 
