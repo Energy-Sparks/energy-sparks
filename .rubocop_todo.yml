@@ -279,7 +279,6 @@ RSpec/EmptyExampleGroup:
     - 'spec/controllers/admin/meters_controller_spec.rb'
     - 'spec/factories/help_pages.rb'
     - 'spec/models/admin_meter_status_spec.rb'
-    - 'spec/system/school_groups_spec.rb'
 
 # Offense count: 764
 # Configuration parameters: CountAsOne.
