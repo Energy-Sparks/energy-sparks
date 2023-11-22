@@ -21,6 +21,10 @@ module Schools
       render :edit
     end
 
+    def edit
+      redirect_to school_transport_survey_responses_url(@school, @transport_survey)
+    end
+
     def update
       if @transport_survey.update(transport_survey_params)
         render json: @transport_survey, status: :ok

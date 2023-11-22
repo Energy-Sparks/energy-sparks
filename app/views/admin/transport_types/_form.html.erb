@@ -1,9 +1,8 @@
-<%= simple_form_for([:admin, transport_type]) do |f| %>
-
+<%= simple_form_for(transport_type, as: :transport_type, url: transport_type.new_record? ? admin_transport_types_path : admin_transport_type_path(transport_type)) do |f| %>
   <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
-    <%= f.input t_field(:name, locale), label: TransportType.human_attribute_name(:name), as: :string %>
+    <%= f.input t_field(:name, locale), label: TransportSurvey::TransportType.human_attribute_name(:name), as: :string %>
   <% end %>
-  <%= f.input :category, collection: TransportType.categories.keys, label_method: lambda {|k| k.humanize} %>
+  <%= f.input :category, collection: TransportSurvey::TransportType.categories.keys, label_method: lambda {|k| k.humanize} %>
   <%= f.input :note %>
   <%= f.input :image %>
   <%= f.input :speed_km_per_hour, label: 'Speed (km/h)' %>

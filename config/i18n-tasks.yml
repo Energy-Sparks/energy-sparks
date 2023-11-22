@@ -156,6 +156,7 @@ ignore_unused:
   - 'schools.user_tariff_charges.index.introduction*'
   - 'schools.user_tariff_flat_prices.*.introduction*'
   - 'schools.user_tariff_differential_prices.index.introduction*'
+  - 'schools.prompts.programme.summary_*'
   - 'activity_types.errors.invalid_fuel_type.*'
   - 'intervention_types.errors.invalid_fuel_type.*'
   - 'onboarding_mailer.reminder_email.subject.*'

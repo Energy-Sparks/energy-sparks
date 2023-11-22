@@ -23,7 +23,7 @@
 #  fk_rails_...  (transport_survey_id => transport_surveys.id) ON DELETE => cascade
 #  fk_rails_...  (transport_type_id => transport_types.id)
 #
-class TransportSurveyResponse < ApplicationRecord
+class TransportSurvey::Response < ApplicationRecord
   extend ActiveModel::Translation
   include CsvExportable
 

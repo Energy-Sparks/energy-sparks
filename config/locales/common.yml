@@ -6,6 +6,7 @@ en:
     back_to_top: Back to top
     bar_charts: Bar charts
     confirm: Are you sure?
+    confirm_delete: Are you sure you want to delete %{observable}?
     data: data
     electricity: Electricity
     electricity_and_solar_pv: Electricity and Solar PV
@@ -21,6 +22,7 @@ en:
       attributes: Attributes
       back: Back
       cancel: Cancel
+      choose_activity: Choose activity
       close: Close
       continue: Continue
       create: Create

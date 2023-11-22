@@ -5,7 +5,7 @@ describe "admin transport type", type: :system, include_application_helper: true
   let!(:transport_type) { create(:transport_type, can_share: false, park_and_stride: false) }
 
   describe 'when not logged in' do
-    context "and viewing the index" do
+    context "when viewing the index" do
       before do
         visit admin_transport_types_path
       end
@@ -15,7 +15,7 @@ describe "admin transport type", type: :system, include_application_helper: true
       end
     end
 
-    context "and viewing a transport type" do
+    context "when viewing a transport type" do
       before do
         visit admin_transport_type_path(transport_type)
       end
@@ -80,7 +80,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
       end
 
-      context "and clicking the transport type link" do
+      context "when clicking the transport type link" do
         before do
           click_link(transport_type.name)
         end
@@ -95,7 +95,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         it { expect(page).to have_link('Delete') }
         it { expect(page).to have_link('New Transport type') }
 
-        context "and clicking the edit button" do
+        context "when clicking the edit button" do
           before do
             click_link("Edit")
           end
@@ -105,7 +105,7 @@ describe "admin transport type", type: :system, include_application_helper: true
           end
         end
 
-        context "and clicking the new button" do
+        context "when clicking the new button" do
           before do
             click_link("New Transport type")
           end
@@ -115,7 +115,7 @@ describe "admin transport type", type: :system, include_application_helper: true
           end
         end
 
-        context "and clicking on the delete button" do
+        context "when clicking on the delete button" do
           before do
             click_link('Delete')
           end
@@ -142,12 +142,12 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
       end
 
-      context "and some action buttons" do
+      context "with some action buttons" do
         it { expect(page).to have_link('Back') }
         it { expect(page).to have_link('Edit') }
         it { expect(page).to have_link('Delete') }
 
-        context "and clicking on the back button" do
+        context "when clicking on the back button" do
           before do
             click_link('Back')
           end
@@ -157,7 +157,7 @@ describe "admin transport type", type: :system, include_application_helper: true
           end
         end
 
-        context "and clicking on the edit button" do
+        context "when clicking on the edit button" do
           before do
             click_link('Edit')
           end
@@ -167,7 +167,7 @@ describe "admin transport type", type: :system, include_application_helper: true
           end
         end
 
-        context "and clicking on the delete button" do
+        context "when clicking on the delete button" do
           before do
             click_link('Delete')
           end
@@ -331,7 +331,7 @@ describe "admin transport type", type: :system, include_application_helper: true
     end
 
     describe "Deleting a transport type" do
-      context "from the index page" do
+      context "when on the index page" do
         context "when the transport type has associated responses" do
           before do
             create(:transport_survey_response, transport_type: transport_type)
@@ -352,7 +352,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
           it { expect(page).to have_selector(:table_row, display_attributes) }
 
-          context "and clicking delete and confirming" do
+          context "when clicking delete and confirming" do
             before do
               accept_confirm do
                 click_link("Delete")
@@ -374,7 +374,7 @@ describe "admin transport type", type: :system, include_application_helper: true
             end
           end
 
-          context "and clicking delete and dismissing" do
+          context "when clicking delete and dismissing" do
             before do
               dismiss_confirm do
                 click_link("Delete")
@@ -396,7 +396,7 @@ describe "admin transport type", type: :system, include_application_helper: true
         context "when the transport type appears deletable but is not" do
           before do
             visit admin_transport_types_path
-            allow_any_instance_of(TransportType).to receive(:safe_destroy).and_raise(EnergySparks::SafeDestroyError, "Transport type has associated responses")
+            allow_any_instance_of(TransportSurvey::TransportType).to receive(:safe_destroy).and_raise(EnergySparks::SafeDestroyError, "Transport type has associated responses")
             click_link("Delete")
           end
 

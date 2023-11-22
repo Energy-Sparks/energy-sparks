@@ -107,8 +107,7 @@ en:
       labels:
         bill_components:
           agreed_availability_charge: Agreed availability charge
-          climate_change_levy__2020_21: Climate change levy (2020/21)
-          climate_change_levy__2021_22: Climate change levy (2021/22)
+          climate_change_levy: Climate change levy
           commodity_rate: Commodity rate
           data_collection_dcda_agent_charge: DC/DA agent charge
           day_night: "%{time_from} to %{time_to}"

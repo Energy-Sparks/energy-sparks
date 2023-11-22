@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-md-6">
     <div class="col card-deck actions">
-      <div class="card surrounding-schools">
+      <div class="card">
         <div class="card-body">
           <%= render 'points', podium: current_school_podium, completed_actions: @completed_actions, points: @observation.points  %>
         </div>
@@ -15,13 +15,9 @@
   <div class="col-md-6">
     <div class="col card-deck actions">
       <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
-        <div class="card surrounding-schools">
+        <div class="card">
           <div class="card-body">
-            <% if current_school_podium.includes_school? %>
-              <%= render 'pupils/schools/podium', podium: current_school_podium  %>
-            <% else %>
-              <%= render 'pupils/schools/no_points_podium', podium: current_school_podium  %>
-            <% end %>
+            <%= component 'podium', podium: current_school_podium %>
           </div>
         </div>
       <% end %>
@@ -32,7 +28,7 @@
 <div class="row">
   <div class="col-md-6">
     <div class="col card-deck actions">
-      <div class="card surrounding-schools">
+      <div class="card">
         <div class="card-footer text-center">
           <%= link_to t('interventions.completed.view_action'), school_intervention_path(@school, @observation), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
         </div>
@@ -42,7 +38,7 @@
   <div class="col-md-6">
     <div class="col card-deck actions">
       <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
-        <div class="card surrounding-schools">
+        <div class="card">
           <div class="card-footer text-center">
             <%= link_to t('interventions.completed.see_scoreboard'), scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
           </div>

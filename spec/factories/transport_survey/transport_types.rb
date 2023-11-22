@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :transport_type do
+  factory :transport_type, class: 'TransportSurvey::TransportType' do
     sequence(:name) {|n| "name#{n}"}
     image { "🚗" }
     kg_co2e_per_km { "0.17137" }

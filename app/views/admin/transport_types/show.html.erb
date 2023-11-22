@@ -44,6 +44,6 @@
 <p>
   <div class="btn-group">
     <%= render partial: "buttons", locals: { transport_type: @transport_type } %>
-    <%= link_to 'Back', admin_transport_types_path, class: 'btn btn-secondary' if can? :index, TransportType %>
+    <%= link_to 'Back', admin_transport_types_path, class: 'btn btn-secondary' if can? :index, TransportSurvey::TransportType %>
   </div>
 </p>

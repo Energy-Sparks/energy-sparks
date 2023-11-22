@@ -40,6 +40,7 @@ describe AmrDataFeedReading do
 
     context 'with incorrectly loaded data' do
       FORMATS = {
+        '%d-%b-%y' => '2023-06-28',
         '%Y-%m-%d' => '28-Jun-23',
         '%d-%m-%Y' => '2023-06-28',
         '%e %b %Y %H:%M:%S' => '2023-06-28'

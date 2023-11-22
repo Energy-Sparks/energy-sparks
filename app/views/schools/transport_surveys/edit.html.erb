@@ -34,8 +34,8 @@
             <%= hidden_field_tag :weather, "", class: 'selected' %>
             <div class="container">
               <div class="row">
-                <% TransportSurveyResponse.weather_images.each do |label, symbol| %>
-                  <%= render 'option', { label: TransportSurveyResponse.human_enum_name(:weather, label), content: symbol, identifier: label, action: "start" } %>
+                <% TransportSurvey::Response.weather_images.each do |label, symbol| %>
+                  <%= render 'option', { label: TransportSurvey::Response.human_enum_name(:weather, label), content: symbol, identifier: label, action: "start" } %>
                 <% end %>
               </div>
             </div>
@@ -49,7 +49,7 @@
               <%= hidden_field_tag :journey_minutes, "", class: 'selected' %>
               <div class="container">
                 <div class="row">
-                  <% TransportSurveyResponse.journey_minutes_options.each do |time| %>
+                  <% TransportSurvey::Response.journey_minutes_options.each do |time| %>
                     <%= render 'option', { label: t('schools.transport_surveys.edit.labels.minutes'), content: time, identifier: time, action: "time" } %>
                   <% end %>
                 </div>
@@ -61,7 +61,7 @@
               <%= hidden_field_tag :transport_type_id, "", class: 'selected' %>
               <div class="container">
                 <div class="row">
-                  <% TransportType.all.by_position.each do |transport_type| %>
+                  <% TransportSurvey::TransportType.all.by_position.each do |transport_type| %>
                     <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "transport" } %>
                   <% end %>
                 </div>
@@ -75,8 +75,8 @@
               <h2><small class="pb-4"><%= t('schools.transport_surveys.edit.steps.sharing_note') %></small></h2>
               <div class="container">
                 <div class="row">
-                  <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: t('schools.transport_surveys.edit.pupils', count: passengers), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "sharing" } %>
+                  <% TransportSurvey::Response.passengers_options.each do |passengers| %>
+                    <%= render 'option', { label: t('schools.transport_surveys.edit.pupils', count: passengers), content: TransportSurvey::Response.passenger_symbol * passengers, identifier: passengers, action: "sharing" } %>
                   <% end %>
                 </div>
               </div>
