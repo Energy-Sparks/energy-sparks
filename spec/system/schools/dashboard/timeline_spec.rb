@@ -15,7 +15,7 @@ RSpec.shared_examples "dashboard timeline" do
   end
 
   it 'displays events in a timeline' do
-    expect(page).to have_content('Started a transport survey')
+    expect(page).to have_content('Recorded a transport survey response')
     expect(page).to have_content('Recorded temperatures in')
     expect(page).to have_content('Upgraded insulation')
     expect(page).to have_content('Completed an activity')

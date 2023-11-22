@@ -334,7 +334,7 @@ en:
           recorded_temperatures_in: Recorded temperatures in
         transport_survey:
           message:
-            one: Started a transport survey
+            one: Recorded a transport survey response
             other: Recorded %{count} transport survey responses
     private:
       access_disabled: This school has disabled public access to energy usage data and insights.
