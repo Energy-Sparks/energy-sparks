@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: b5a9279dbf7662bc01b2ab305bddc02b5add36bd
-  tag: 4.1.7
+  revision: 513c9174bc3fca9e52aa96e8bb0db84879a841c1
+  branch: 3924-climate-charge-levy-not-appearing-on-the-current-costs-table
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
