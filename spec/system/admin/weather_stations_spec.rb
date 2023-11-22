@@ -29,7 +29,7 @@ RSpec.describe 'Weather stations', type: :system do
       select 'Meteostat', from: 'Provider'
       check 'Load data?'
 
-      expect { click_on 'Create' }.to change { WeatherStation.count }.by(1)
+      expect { click_on 'Create' }.to change(WeatherStation, :count).by(1)
 
       expect(page).to have_content("New Weather Station created")
       expect(page).to have_content('Weather Stations')
@@ -45,14 +45,14 @@ RSpec.describe 'Weather stations', type: :system do
       fill_in 'Title', with: title
       fill_in 'Latitude', with: latitude
 
-      expect { click_on 'Create' }.to change { WeatherStation.count }.by(0)
+      expect { click_on 'Create' }.to change(WeatherStation, :count).by(0)
 
       expect(page).to have_content("can't be blank")
 
       fill_in 'Longitude', with: longitude
       select 'Meteostat', from: 'Provider'
       check 'Load data?'
-      expect { click_on 'Create' }.to change { WeatherStation.count }.by(1)
+      expect { click_on 'Create' }.to change(WeatherStation, :count).by(1)
 
       expect(page).to have_content('Weather Stations')
       expect(page).to have_content title

@@ -44,7 +44,7 @@ describe 'temperature recordings as school admin' do
           fill_in 'The Hall', with: 20
           fill_in 'Blue classroom', with: 13
 
-          expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(2)
+          expect { click_on('Create temperature recordings') }.to change(Observation, :count).by(1).and change(TemperatureRecording, :count).by(2)
         end
 
         it 'validates at and takes you back without losing data' do
@@ -52,15 +52,15 @@ describe 'temperature recordings as school admin' do
 
           fill_in 'The Hall', with: 20
           fill_in 'At', with: ''
-          expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
+          expect { click_on('Create temperature recordings') }.to change(Observation, :count).by(0).and change(TemperatureRecording, :count).by(0)
           fill_in 'At', with: Date.yesterday
-          expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1)
+          expect { click_on('Create temperature recordings') }.to change(Observation, :count).by(1).and change(TemperatureRecording, :count).by(1)
         end
 
         it 'keeps hold of any partially entered data which fails validation' do
           click_on 'Next'
           fill_in 'The Hall', match: :first, with: 2000
-          expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
+          expect { click_on('Create temperature recordings') }.to change(Observation, :count).by(0).and change(TemperatureRecording, :count).by(0)
           expect(page).to have_field('The Hall', with: 2000)
         end
       end
@@ -68,7 +68,7 @@ describe 'temperature recordings as school admin' do
       context 'manage locations' do
         it "allows a user to delete a location on it's own" do
           click_on 'Change room names'
-          expect { click_on 'Delete' }.to change { Location.count }.by(-1)
+          expect { click_on 'Delete' }.to change(Location, :count).by(-1)
         end
 
         it "allows a user to edit a location on it's own" do
@@ -88,7 +88,7 @@ describe 'temperature recordings as school admin' do
           end
           click_on 'Change room names'
           expect(page).to have_content(observation.locations.first.name)
-          expect { click_on 'Delete' }.to change { Location.count }.by(-1).and change { TemperatureRecording.count }.by(-1)
+          expect { click_on 'Delete' }.to change(Location, :count).by(-1).and change(TemperatureRecording, :count).by(-1)
         end
       end
     end
@@ -111,7 +111,7 @@ describe 'temperature recordings as school admin' do
     end
 
     it 'allows an observation to be deleted, which deletes temperature recordings, but not locations' do
-      expect { click_on('Delete') }.to change { Observation.count }.by(-1).and change { TemperatureRecording.count }.by(-1).and change { Location.count }.by(0)
+      expect { click_on('Delete') }.to change(Observation, :count).by(-1).and change(TemperatureRecording, :count).by(-1).and change(Location, :count).by(0)
     end
   end
 end

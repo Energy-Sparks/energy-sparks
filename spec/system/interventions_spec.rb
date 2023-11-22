@@ -340,7 +340,7 @@ describe 'viewing and recording action', type: :system do
 
         expect do
           click_on 'Delete'
-        end.to change {Observation.count}.from(1).to(0)
+        end.to change(Observation, :count).from(1).to(0)
       end
     end
   end

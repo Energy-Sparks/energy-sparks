@@ -28,7 +28,7 @@ RSpec.describe "Rtone variant installation management", :low_carbon_hub_installa
       fill_in(:rtone_variant_installation_username, with: username)
       fill_in(:rtone_variant_installation_password, with: password)
 
-      expect { click_on 'Submit' }.to change { RtoneVariantInstallation.count }.by(1)
+      expect { click_on 'Submit' }.to change(RtoneVariantInstallation, :count).by(1)
 
       expect(page).not_to have_content("This school has no Rtone Variant API feeds")
       expect(page).to have_content(rtone_meter_id)
@@ -50,7 +50,7 @@ RSpec.describe "Rtone variant installation management", :low_carbon_hub_installa
       expect(school.rtone_variant_installations.first.username).to eql "changed-user"
 
       expect(page).to have_content("Delete")
-      expect { click_on 'Delete' }.to change { RtoneVariantInstallation.count }.by(-1)
+      expect { click_on 'Delete' }.to change(RtoneVariantInstallation, :count).by(-1)
 
       expect(page).to have_content("This school has no Rtone Variant API feeds")
     end

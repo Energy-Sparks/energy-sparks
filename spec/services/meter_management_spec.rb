@@ -68,13 +68,13 @@ describe MeterManagement do
       end
 
       it 'deletes the meter' do
-        expect { MeterManagement.new(meter).delete_meter! }.to change { Meter.count }.from(1).to(0)
+        expect { MeterManagement.new(meter).delete_meter! }.to change(Meter, :count).from(1).to(0)
       end
     end
 
     context 'if a meter is to be deleted with no readings' do
       it 'deletes the meter' do
-        expect { MeterManagement.new(meter).delete_meter! }.to change { Meter.count }.from(1).to(0)
+        expect { MeterManagement.new(meter).delete_meter! }.to change(Meter, :count).from(1).to(0)
       end
     end
   end

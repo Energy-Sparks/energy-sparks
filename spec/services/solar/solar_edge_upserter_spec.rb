@@ -26,7 +26,7 @@ module Solar
       it 'creates new pseudo meters' do
         expect do
           SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
-        end.to change { Meter.count }.by(3)
+        end.to change(Meter, :count).by(3)
         expect(solar_edge_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
         expect(solar_edge_installation.meters.solar_pv.first.name).to eq("Solar pv")
         expect(solar_edge_installation.meters.electricity.last.mpan_mprn).to eq(expected_electricity_mpan)
@@ -38,7 +38,7 @@ module Solar
       it 'creates amr readings' do
         expect do
           SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
-        end.to change { AmrDataFeedReading.count }.by(6)
+        end.to change(AmrDataFeedReading, :count).by(6)
         amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
         expect(amr_reading.readings[0]).to eq('2.0')
         amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_electricity_mpan).amr_data_feed_readings.last
@@ -62,7 +62,7 @@ module Solar
         it 'creates new pseudo meters where required' do
           expect do
             SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
-          end.to change { Meter.count }.by(2)
+          end.to change(Meter, :count).by(2)
           expect(solar_edge_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
           expect(solar_edge_installation.meters.solar_pv.first.name).to eq("Solar pv")
           expect(solar_edge_installation.meters.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)
@@ -75,7 +75,7 @@ module Solar
         it 'creates all the amr readings' do
           expect do
             SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
-          end.to change { AmrDataFeedReading.count }.by(6)
+          end.to change(AmrDataFeedReading, :count).by(6)
           amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
           expect(amr_reading.readings[0]).to eq('2.0')
           amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_electricity_mpan).amr_data_feed_readings.last
@@ -91,7 +91,7 @@ module Solar
         it 'creates new pseudo meters where required' do
           expect do
             SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
-          end.to change { Meter.count }.by(2)
+          end.to change(Meter, :count).by(2)
           expect(solar_edge_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
           expect(solar_edge_installation.meters.solar_pv.first.name).to eq("Solar pv")
           expect(solar_edge_installation.meters.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)
@@ -106,7 +106,7 @@ module Solar
         it 'creates all the amr readings' do
           expect do
             SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
-          end.to change { AmrDataFeedReading.count }.by(6)
+          end.to change(AmrDataFeedReading, :count).by(6)
           amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
           expect(amr_reading.readings[0]).to eq('2.0')
           amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_electricity_mpan).amr_data_feed_readings.last

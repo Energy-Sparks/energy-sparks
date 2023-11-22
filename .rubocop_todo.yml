@@ -286,52 +286,6 @@ RSpec/EmptyExampleGroup:
 RSpec/ExampleLength:
   Max: 104
 
-# Offense count: 168
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: method_call, block
-RSpec/ExpectChange:
-  Exclude:
-    - 'spec/lib/data_feeds/meteostat_loader_spec.rb'
-    - 'spec/lib/data_feeds/solar_pv_tuos_loader_spec.rb'
-    - 'spec/models/school_group_spec.rb'
-    - 'spec/models/scoreboard_spec.rb'
-    - 'spec/models/tariff_price_spec.rb'
-    - 'spec/models/tariff_standing_charge_spec.rb'
-    - 'spec/models/temperature_recording_spec.rb'
-    - 'spec/services/activity_creator_spec.rb'
-    - 'spec/services/alerts/generate_analysis_pages_spec.rb'
-    - 'spec/services/alerts/generate_and_save_alerts_and_benchmarks_spec.rb'
-    - 'spec/services/alerts/generate_and_save_alerts_spec.rb'
-    - 'spec/services/alerts/generate_and_save_benchmarks_spec.rb'
-    - 'spec/services/alerts/generate_find_out_mores_spec.rb'
-    - 'spec/services/amr/process_amr_reading_data_spec.rb'
-    - 'spec/services/calendar_term_factory_spec.rb'
-    - 'spec/services/meter_management_spec.rb'
-    - 'spec/services/meter_review_service_spec.rb'
-    - 'spec/services/solar/low_carbon_hub_installation_factory_spec.rb'
-    - 'spec/services/solar/low_carbon_hub_upserter_spec.rb'
-    - 'spec/services/solar/solar_edge_upserter_spec.rb'
-    - 'spec/system/admin/activity_categories_spec.rb'
-    - 'spec/system/admin/alert_type_management_spec.rb'
-    - 'spec/system/admin/amr_uploaded_readings_spec.rb'
-    - 'spec/system/admin/dark_sky_areas_spec.rb'
-    - 'spec/system/admin/equivalence_management_spec.rb'
-    - 'spec/system/admin/intervention_type_groups_spec.rb'
-    - 'spec/system/admin/partners_spec.rb'
-    - 'spec/system/admin/school_groups_spec.rb'
-    - 'spec/system/admin/scoreboard_spec.rb'
-    - 'spec/system/admin/solar_pv_areas_spec.rb'
-    - 'spec/system/admin/weather_stations_spec.rb'
-    - 'spec/system/interventions_spec.rb'
-    - 'spec/system/low_carbon_hub_installation_spec.rb'
-    - 'spec/system/rtone_variant_installation_spec.rb'
-    - 'spec/system/school_admin/user_management_spec.rb'
-    - 'spec/system/school_contacts_spec.rb'
-    - 'spec/system/school_onboarding_spec.rb'
-    - 'spec/system/solar_edge_installation_spec.rb'
-    - 'spec/system/temperature_recordings_spec.rb'
-
 # Offense count: 96
 RSpec/ExpectInHook:
   Exclude:

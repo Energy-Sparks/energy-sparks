@@ -539,7 +539,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         it "removes school group" do
           expect do
             click_on 'Delete'
-          end.to change {SchoolGroup.count}.from(1).to(0)
+          end.to change(SchoolGroup, :count).from(1).to(0)
         end
 
         context "clicking 'Delete'" do

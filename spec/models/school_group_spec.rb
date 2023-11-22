@@ -19,7 +19,7 @@ describe SchoolGroup, :school_groups, type: :model do
     it 'lets you delete if there are no schools' do
       expect do
         subject.safe_destroy
-      end.to change {SchoolGroup.count}.from(1).to(0)
+      end.to change(SchoolGroup, :count).from(1).to(0)
     end
   end
 

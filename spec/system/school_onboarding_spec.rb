@@ -519,7 +519,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         fill_in 'Date', with: '2019-01-09'
         expect(page).to have_field('Date', with: '2019-01-09')
 
-        expect { click_on 'Add inset day' }.to change { CalendarEvent.count }.by(1)
+        expect { click_on 'Add inset day' }.to change(CalendarEvent, :count).by(1)
         expect(page).to have_content('2019-01-09')
       end
 

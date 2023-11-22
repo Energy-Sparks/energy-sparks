@@ -27,7 +27,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
         fill_in(:low_carbon_hub_installation_username, with: username)
         fill_in(:low_carbon_hub_installation_password, with: password)
 
-        expect { click_on 'Submit' }.to change { Meter.count }.by(3).and change { LowCarbonHubInstallation.count }.by(1).and change { AmrDataFeedReading.count }.by(6)
+        expect { click_on 'Submit' }.to change(Meter, :count).by(3).and change(LowCarbonHubInstallation, :count).by(1).and change(AmrDataFeedReading, :count).by(6)
 
         expect(page).not_to have_content("This school has no Rtone API feeds")
         expect(page).to have_content(rbee_meter_id)
@@ -41,7 +41,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
         click_on "All Solar API feeds for #{school.name}"
 
         expect(page).to have_content("Delete")
-        expect { click_on 'Delete' }.to change { Meter.count }.by(-3).and change { LowCarbonHubInstallation.count }.by(-1)
+        expect { click_on 'Delete' }.to change(Meter, :count).by(-3).and change(LowCarbonHubInstallation, :count).by(-1)
 
         expect(page).to have_content("This school has no Rtone API feeds")
       end
@@ -56,7 +56,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
         fill_in(:low_carbon_hub_installation_username, with: username)
         fill_in(:low_carbon_hub_installation_password, with: password)
 
-        expect { click_on 'Submit' }.to change { Meter.count }.by(3).and change { LowCarbonHubInstallation.count }.by(1).and change { AmrDataFeedReading.count }.by(6)
+        expect { click_on 'Submit' }.to change(Meter, :count).by(3).and change(LowCarbonHubInstallation, :count).by(1).and change(AmrDataFeedReading, :count).by(6)
 
         expect(page).to have_content(rbee_meter_id)
         click_on 'Edit'
@@ -88,7 +88,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       end
 
       it 'I delete a low carbon hub installation and meter readings get removed' do
-        expect { create(:low_carbon_hub_installation_with_meters_and_validated_readings, school: school) }.to change { Meter.count }.by(3).and change { AmrValidatedReading.count }.by(3)
+        expect { create(:low_carbon_hub_installation_with_meters_and_validated_readings, school: school) }.to change(Meter, :count).by(3).and change(AmrValidatedReading, :count).by(3)
 
         visit school_meters_path(school)
         click_on 'Manage Solar API feeds'
@@ -96,7 +96,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
         low_carbon_hub_installation = LowCarbonHubInstallation.first
 
         expect(page).to have_content low_carbon_hub_installation.rbee_meter_id
-        expect { click_on 'Delete' }.to change { Meter.count }.by(-3).and change { LowCarbonHubInstallation.count }.by(-1).and change { AmrValidatedReading.count }.by(-3)
+        expect { click_on 'Delete' }.to change(Meter, :count).by(-3).and change(LowCarbonHubInstallation, :count).by(-1).and change(AmrValidatedReading, :count).by(-3)
       end
     end
 

@@ -42,11 +42,11 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       check 'Featured'
       check 'Pupil'
       check 'Live data'
-      expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(0)
+      expect { click_on 'Create Activity category' }.to change(ActivityCategory, :count).by(0)
       expect(page).to have_content("can't be blank")
       fill_in :activity_category_name_en, with: new_name
       attach_file(:activity_category_image_en, Rails.root + "spec/fixtures/images/placeholder.png")
-      expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(1)
+      expect { click_on 'Create Activity category' }.to change(ActivityCategory, :count).by(1)
       expect(page).to have_content('Activity Categories')
       expect(page).to have_content(activity_category.name)
       expect(page).to have_content(new_description)
@@ -63,10 +63,10 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       click_on 'Activity Categories'
       click_on 'New activity category'
       fill_in :activity_category_name_en, with: "Wibble"
-      expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(0)
+      expect { click_on 'Create Activity category' }.to change(ActivityCategory, :count).by(0)
       expect(page).to have_content("has already been taken")
       fill_in :activity_category_name_en, with: "Wibble2"
-      expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(1)
+      expect { click_on 'Create Activity category' }.to change(ActivityCategory, :count).by(1)
     end
   end
 

@@ -112,7 +112,7 @@ describe AmrUploadedReading, type: :system do
       context "previewing a valid #{ext} file" do
         before do
           attach_file('amr_uploaded_reading[data_file]', "spec/fixtures/amr_upload_data_files/banes-example-file#{ext}")
-          expect { click_on 'Preview' }.to change { AmrUploadedReading.count }.by 1
+          expect { click_on 'Preview' }.to change(AmrUploadedReading, :count).by 1
         end
 
         it { expect(AmrUploadedReading.count).to be 1 }
@@ -125,7 +125,7 @@ describe AmrUploadedReading, type: :system do
 
         context "and uploading with the new loader" do
           before do
-            expect { click_on "Insert this data" }.to change { ManualDataLoadRun.count }.by(1)
+            expect { click_on "Insert this data" }.to change(ManualDataLoadRun, :count).by(1)
           end
 
           it { expect(page).to have_content("Processing") }
@@ -157,7 +157,7 @@ describe AmrUploadedReading, type: :system do
 
     it 'produces an error message when an invalid CSV file is uploaded' do
       attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/not_a_csv.csv')
-      expect { click_on 'Preview' }.not_to(change { AmrUploadedReading.count })
+      expect { click_on 'Preview' }.not_to(change(AmrUploadedReading, :count))
 
       expect(AmrUploadedReading.count).to be 0
 
@@ -166,7 +166,7 @@ describe AmrUploadedReading, type: :system do
 
     it 'produces an error message when an invalid xlsx file is uploaded' do
       attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/not_a_xlsx.xlsx')
-      expect { click_on 'Preview' }.not_to(change { AmrUploadedReading.count })
+      expect { click_on 'Preview' }.not_to(change(AmrUploadedReading, :count))
 
       expect(AmrUploadedReading.count).to be 0
 
@@ -286,7 +286,7 @@ describe AmrUploadedReading, type: :system do
 
     it 'handles a correct file format' do
       attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/example-highlands-file.csv')
-      expect { click_on 'Preview' }.to change { AmrUploadedReading.count }.by 1
+      expect { click_on 'Preview' }.to change(AmrUploadedReading, :count).by 1
 
       expect(AmrUploadedReading.count).to be 1
       expect(AmrUploadedReading.first.imported).to be false
@@ -295,7 +295,7 @@ describe AmrUploadedReading, type: :system do
       expect(page).to have_content('Data preview')
       expect(page).to have_content('1712423842469')
 
-      expect { click_on "Insert this data" }.to change { ManualDataLoadRun.count }.by(1)
+      expect { click_on "Insert this data" }.to change(ManualDataLoadRun, :count).by(1)
 
       expect(page).to have_content("Processing")
     end
