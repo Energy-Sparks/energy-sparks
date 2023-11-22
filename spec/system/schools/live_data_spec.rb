@@ -47,7 +47,7 @@ RSpec.describe 'live data', type: :system do
         expect(data['type']).to eq('electricity')
         expect(data['units']).to eq('watts')
         expect(data['value']).to eq(123)
-        expect(data['power']).to eql(150)
+        expect(data['power']).to be(150)
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe 'live data', type: :system do
         expect(data['type']).to eq('electricity')
         expect(data['units']).to eq('watts')
         expect(data['value']).to eq(123)
-        expect(data['power']).to eql(150)
+        expect(data['power']).to be(150)
       end
 
       it 'returns json error' do
@@ -127,7 +127,7 @@ RSpec.describe 'live data', type: :system do
 
         visit school_cad_live_data_path(school, school.cads.last, format: :json)
 
-        expect(page.status_code).to eql 500
+        expect(page.status_code).to be 500
         expect(page.body).to eql('api is broken')
       end
     end

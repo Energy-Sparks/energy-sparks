@@ -38,7 +38,7 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
         fill_in(:solar_edge_installation_site_id, with: site_id)
         fill_in(:solar_edge_installation_api_key, with: api_key)
 
-        expect { click_on 'Submit'}.to change { SolarEdgeInstallation.count }.by(1)
+        expect { click_on 'Submit'}.to change(SolarEdgeInstallation, :count).by(1)
         expect(page).to have_content("Solar Edge installation was successfully created")
 
         expect(page).to have_content(mpan)
@@ -81,7 +81,7 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
       end
 
       it 'allows deletion' do
-        expect { click_on 'Delete'}.to change { SolarEdgeInstallation.count }.by(-1)
+        expect { click_on 'Delete'}.to change(SolarEdgeInstallation, :count).by(-1)
       end
 
       it 'allows viewing' do
@@ -150,8 +150,8 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
       end
 
       it 'removes meters and readings on deletion' do
-        expect(AmrValidatedReading.count).to eql 3
-        expect { click_on 'Delete' }.to change { Meter.count }.by(-3).and change { SolarEdgeInstallation.count }.by(-1).and change { AmrValidatedReading.count }.by(-3)
+        expect(AmrValidatedReading.count).to be 3
+        expect { click_on 'Delete' }.to change(Meter, :count).by(-3).and change(SolarEdgeInstallation, :count).by(-1).and change(AmrValidatedReading, :count).by(-3)
       end
     end
   end

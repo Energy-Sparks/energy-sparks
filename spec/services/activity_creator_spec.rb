@@ -52,7 +52,7 @@ describe ActivityCreator do
       activity = build(:activity, activity_type: activity_type, school: school)
       expect do
         ActivityCreator.new(activity).process
-      end.to change { programme.programme_activities.count }.by(1).and change { Observation.count }.by(1).and change(activity, :updated_at)
+      end.to change { programme.programme_activities.count }.by(1).and change(Observation, :count).by(1).and change(activity, :updated_at)
       expect(programme.programme_activities.find_by(activity_type: activity_type).activity_id).to be activity.id
     end
 
@@ -62,7 +62,7 @@ describe ActivityCreator do
 
       expect do
         ActivityCreator.new(activity).process
-      end.to change { programme.programme_activities.count }.by(0).and change { Observation.count }.by(1).and change(activity, :updated_at)
+      end.to change { programme.programme_activities.count }.by(0).and change(Observation, :count).by(1).and change(activity, :updated_at)
     end
 
     it "a school is recording an activity that is in a programme, but not one they're part of" do
@@ -72,7 +72,7 @@ describe ActivityCreator do
       activity = build(:activity, activity_type: activity_type_2, school: school)
       expect do
         ActivityCreator.new(activity).process
-      end.to change { programme.programme_activities.count }.by(0).and change { Observation.count }.by(1).and change(activity, :updated_at)
+      end.to change { programme.programme_activities.count }.by(0).and change(Observation, :count).by(1).and change(activity, :updated_at)
     end
 
     it "completes the programme if all the activities are completed" do
@@ -106,7 +106,7 @@ describe ActivityCreator do
       activity = build(:activity, activity_type: activity_type, school: school)
       ActivityCreator.new(activity).process
 
-      expect(programme.programme_activities.count).to eql 0
+      expect(programme.programme_activities.count).to be 0
     end
 
     it "adds activity even if previous programme activity existed" do

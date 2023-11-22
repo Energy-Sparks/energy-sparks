@@ -41,7 +41,7 @@ describe 'alert type management', type: :system do
       reason_2 = 'Conditional editing'
       fill_in "school_reasons_#{school_2.id}", with: reason_2
 
-      expect { click_on "Create exclusions" }.to change { SchoolAlertTypeExclusion.count }.by(2)
+      expect { click_on "Create exclusions" }.to change(SchoolAlertTypeExclusion, :count).by(2)
       expect(page).not_to have_content('No school exclusions for this alert')
 
       within 'table' do
@@ -50,7 +50,7 @@ describe 'alert type management', type: :system do
       end
 
       within('tr', text: school.name) do
-        expect { click_on 'Delete', match: :first }.to change { SchoolAlertTypeExclusion.count }.by(-1)
+        expect { click_on 'Delete', match: :first }.to change(SchoolAlertTypeExclusion, :count).by(-1)
       end
 
       within 'table' do

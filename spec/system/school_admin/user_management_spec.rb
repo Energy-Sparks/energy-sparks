@@ -63,7 +63,7 @@ describe 'School admin user management' do
         end
 
         it 'can create staff' do
-          expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
+          expect { click_on 'Create account' }.to change(User, :count).by(1).and change(Contact, :count).by(0)
 
           staff = school.users.staff.first
           expect(staff.email).to eq('mrsjones@test.com')
@@ -106,14 +106,14 @@ describe 'School admin user management' do
         end
 
         uncheck "Subscribe to school alerts"
-        expect { click_on 'Update account' }.to change { Contact.count }.by(-1)
+        expect { click_on 'Update account' }.to change(Contact, :count).by(-1)
 
         within '.staff' do
           click_on 'Edit'
         end
         expect(page).not_to have_checked_field('contact_auto_create_alert_contact')
         check "Subscribe to school alerts"
-        expect { click_on 'Update account' }.to change { Contact.count }.by(1)
+        expect { click_on 'Update account' }.to change(Contact, :count).by(1)
       end
 
       it 'cannot edit alert contact if user is not yet confirmed' do
@@ -136,7 +136,7 @@ describe 'School admin user management' do
 
         fill_in 'Email', with: 'blah@test.com'
 
-        expect { click_on 'Update account' }.not_to(change { Contact.count })
+        expect { click_on 'Update account' }.not_to(change(Contact, :count))
 
         contact.reload
         expect(contact.email_address).to eq('blah@test.com')
@@ -150,7 +150,7 @@ describe 'School admin user management' do
           click_on 'Edit'
         end
 
-        expect { click_on 'Update account' }.not_to(change { Contact.count })
+        expect { click_on 'Update account' }.not_to(change(Contact, :count))
 
         contact.reload
         expect(contact.user).to eq(staff)
@@ -165,7 +165,7 @@ describe 'School admin user management' do
         end
 
         uncheck "Subscribe to school alerts"
-        expect { click_on 'Update account' }.to change { Contact.count }.by(-1)
+        expect { click_on 'Update account' }.to change(Contact, :count).by(-1)
         expect { contact.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
@@ -265,7 +265,7 @@ describe 'School admin user management' do
             end
           end
           uncheck "Subscribe to school alerts"
-          expect { click_on 'Update account' }.to change { Contact.count }.by(-1)
+          expect { click_on 'Update account' }.to change(Contact, :count).by(-1)
 
           within '.school_admin' do
             #this avoids problems with ambiguous matches in find/click_on
@@ -278,7 +278,7 @@ describe 'School admin user management' do
           end
           expect(page).not_to have_checked_field('contact_auto_create_alert_contact')
           check "Subscribe to school alerts"
-          expect { click_on 'Update account' }.to change { Contact.count }.by(1)
+          expect { click_on 'Update account' }.to change(Contact, :count).by(1)
         end
 
         context 'when deleting' do
@@ -331,14 +331,14 @@ describe 'School admin user management' do
         it 'adds the user as an alert contact, by default' do
           click_on "Add an existing Energy Sparks user as a school admin"
           fill_in "Email", with: other_school_admin.email
-          expect { click_on "Add user" }.to change { Contact.count }.by(1)
+          expect { click_on "Add user" }.to change(Contact, :count).by(1)
         end
 
         it 'doesnt add alert contact if requested' do
           click_on "Add an existing Energy Sparks user as a school admin"
           fill_in "Email", with: other_school_admin.email
           uncheck "Subscribe to school alerts"
-          expect { click_on "Add user" }.not_to(change { Contact.count })
+          expect { click_on "Add user" }.not_to(change(Contact, :count))
         end
       end
 

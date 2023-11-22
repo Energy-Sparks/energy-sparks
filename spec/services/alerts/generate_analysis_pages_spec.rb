@@ -39,7 +39,7 @@ describe Alerts::GenerateAnalysisPages do
 
       it 'does not create if there is an exception' do
         SchoolAlertTypeExclusion.create(school: school, alert_type: alert.alert_type)
-        expect { service.perform(school.latest_alerts_without_exclusions) }.to change { AnalysisPage.count }.by(0)
+        expect { service.perform(school.latest_alerts_without_exclusions) }.to change(AnalysisPage, :count).by(0)
       end
 
       context 'where the analysis pages are not active' do

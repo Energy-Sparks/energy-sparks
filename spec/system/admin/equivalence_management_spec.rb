@@ -79,7 +79,7 @@ RSpec.describe 'equivalence type management', type: :system do
     end
 
     it 'only' do
-      expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1)
+      expect { click_on 'Delete' }.to change(EquivalenceType, :count).by(-1).and change(EquivalenceTypeContentVersion, :count).by(-1)
     end
 
     it 'and equivalences too' do
@@ -105,8 +105,8 @@ RSpec.describe 'equivalence type management', type: :system do
         }
       )
 
-      expect { Equivalences::GenerateEquivalences.new(school: school, analytics_class: analytics, aggregate_school: aggregate_school).perform }.to change { Equivalence.count }.by(1)
-      expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1).and change { Equivalence.count }.by(-1)
+      expect { Equivalences::GenerateEquivalences.new(school: school, analytics_class: analytics, aggregate_school: aggregate_school).perform }.to change(Equivalence, :count).by(1)
+      expect { click_on 'Delete' }.to change(EquivalenceType, :count).by(-1).and change(EquivalenceTypeContentVersion, :count).by(-1).and change(Equivalence, :count).by(-1)
     end
   end
 end

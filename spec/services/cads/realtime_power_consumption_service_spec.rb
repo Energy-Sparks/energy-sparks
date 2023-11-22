@@ -47,7 +47,7 @@ module Cads
       it 'calls the service' do
         expect(Rails.cache).to receive(:fetch).with(cache_key).and_return(power_consumption_service)
         expect(power_consumption_service).to receive(:perform).and_return(99)
-        expect(RealtimePowerConsumptionService.read_consumption(cad)).to eql 99
+        expect(RealtimePowerConsumptionService.read_consumption(cad)).to be 99
       end
 
       context 'service not in cache' do

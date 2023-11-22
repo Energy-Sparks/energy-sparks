@@ -55,7 +55,7 @@ describe 'consent documents', type: :system do
 
     context 'when managing consent documents' do
       it 'can create and upload a bill' do
-        expect(school.bill_requested).to eql(true)
+        expect(school.bill_requested).to be(true)
         visit school_consent_documents_path(school)
         expect(page).to have_content("You have not yet provided us with any energy bills to demonstrate you have access to the meters installed at your school.")
 
@@ -68,13 +68,13 @@ describe 'consent documents', type: :system do
 
         click_on 'Upload'
         expect(page).to have_content "Uploaded Bills"
-        expect(school.consent_documents.count).to eql(1)
+        expect(school.consent_documents.count).to be(1)
         expect(page).to have_link 'Upload a new bill'
         expect(page).to have_content "Edit"
         expect(page).not_to have_content "Delete"
 
         school.reload
-        expect(school.bill_requested).to eql(false)
+        expect(school.bill_requested).to be(false)
       end
 
       it 'can update a bill' do
@@ -93,7 +93,7 @@ describe 'consent documents', type: :system do
         expect(page).to have_content "New description"
 
         school.reload
-        expect(school.bill_requested).to eql(false)
+        expect(school.bill_requested).to be(false)
       end
 
       it 'cannot delete a bill' do
@@ -118,7 +118,7 @@ describe 'consent documents', type: :system do
             click_on 'Upload a bill'
             attach_file("File", Rails.root + "spec/fixtures/documents/fake-bill.pdf")
             click_on 'Upload'
-            expect(school.consent_documents.count).to eql(1)
+            expect(school.consent_documents.count).to be(1)
           end
 
           it 'sends an email' do
@@ -174,7 +174,7 @@ describe 'consent documents', type: :system do
       it 'can download an attached file' do
         visit school_consent_documents_path(school)
         click_on "Download"
-        expect(page.status_code).to eql 200
+        expect(page.status_code).to be 200
       end
     end
   end

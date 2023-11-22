@@ -22,7 +22,7 @@ module DataFeeds
         expect(solar_pv_tuos_interface).not_to receive(:find_areas)
         expect(solar_pv_tuos_interface).not_to receive(:historic_solar_pv_data)
         spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
-        expect { spvtl.import }.not_to(change { SolarPvTuosReading.count })
+        expect { spvtl.import }.not_to(change(SolarPvTuosReading, :count))
       end
     end
 
@@ -39,7 +39,7 @@ module DataFeeds
           [{ start_date => good_generation_readings }, nil, nil]
         end
         spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
-        expect { spvtl.import }.to change { SolarPvTuosReading.count }.from(0).to(1)
+        expect { spvtl.import }.to change(SolarPvTuosReading, :count).from(0).to(1)
       end
     end
 
@@ -53,7 +53,7 @@ module DataFeeds
 
       it 'creates a record per day and updates if a record exists' do
         spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
-        expect { spvtl.import }.to change { SolarPvTuosReading.count }.from(0).to(1)
+        expect { spvtl.import }.to change(SolarPvTuosReading, :count).from(0).to(1)
         expect(SolarPvTuosReading.first.generation_mw_x48).to eq good_generation_readings
 
         allow(solar_pv_tuos_interface).to receive(:historic_solar_pv_data) do
@@ -61,7 +61,7 @@ module DataFeeds
         end
 
         spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
-        expect { spvtl.import }.not_to(change { SolarPvTuosReading.count })
+        expect { spvtl.import }.not_to(change(SolarPvTuosReading, :count))
         expect(SolarPvTuosReading.first.generation_mw_x48).to eq good_sunny_generation_readings
       end
     end
@@ -76,7 +76,7 @@ module DataFeeds
 
       it 'rejects duff data  record per day' do
         spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
-        expect { spvtl.import }.not_to(change { SolarPvTuosReading.count })
+        expect { spvtl.import }.not_to(change(SolarPvTuosReading, :count))
       end
     end
   end

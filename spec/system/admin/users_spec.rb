@@ -61,8 +61,8 @@ describe 'Users', type: :system do
         visit admin_users_path
         click_link "Delete", href: admin_user_path(user)
         expect(page).to have_content('User was successfully destroyed')
-        expect(User.exists?(user.id)).to be_falsey
-        expect(ConsentGrant.exists?(consent_grant.id)).to be_truthy
+        expect(User).not_to exist(user.id)
+        expect(ConsentGrant).to exist(consent_grant.id)
       end
     end
   end

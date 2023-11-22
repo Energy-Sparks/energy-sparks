@@ -63,7 +63,7 @@ describe Scoreboard, :scoreboards, type: :model do
     it 'lets you delete if there are no schools' do
       expect do
         subject.safe_destroy
-      end.to change {Scoreboard.count}.from(1).to(0)
+      end.to change(Scoreboard, :count).from(1).to(0)
     end
   end
 

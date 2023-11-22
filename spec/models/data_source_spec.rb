@@ -71,8 +71,7 @@ RSpec.describe DataSource, type: :model do
 
     context "with meters for other data source" do
       let!(:meters) do
-        [create(:gas_meter),
-         create(:gas_meter)]
+        create_list(:gas_meter, 2)
       end
 
       it { expect(subject.lines.count).to eq(1) }

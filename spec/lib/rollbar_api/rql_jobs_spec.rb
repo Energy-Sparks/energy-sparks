@@ -71,7 +71,7 @@ module RollbarApi
           ]
         end
 
-        expect(rql_jobs.submit_job(query)).to eql 95683968
+        expect(rql_jobs.submit_job(query)).to be 95683968
         stubs.verify_stubbed_calls
       end
 
@@ -112,7 +112,7 @@ module RollbarApi
           [200, {}, job_result.to_json]
         end
         result = rql_jobs.get_result(12345)
-        expect(result["result"]["result"]["rowcount"]).to eql(2)
+        expect(result["result"]["result"]["rowcount"]).to be(2)
         stubs.verify_stubbed_calls
       end
     end
@@ -132,7 +132,7 @@ module RollbarApi
           [200, {}, job_result.to_json]
         end
         result = rql_jobs.run_query(query)
-        expect(result["result"]["result"]["rowcount"]).to eql(2)
+        expect(result["result"]["result"]["rowcount"]).to be(2)
         stubs.verify_stubbed_calls
       end
 
