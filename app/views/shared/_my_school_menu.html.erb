@@ -1,6 +1,6 @@
 <li class="nav-item dropdown" id="my_school_menu">
   <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= t('my_school_menu.my_school') %></a>
-  <div class="dropdown-menu" aria-labelledby="my_school">
+  <div class="dropdown-menu scrollable" aria-labelledby="my_school">
     <!--School -->
     <%= link_to current_user.school.name, school_path(current_user.school), class: 'dropdown-item' %>
 
