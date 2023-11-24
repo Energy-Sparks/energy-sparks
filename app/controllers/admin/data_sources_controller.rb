@@ -1,6 +1,5 @@
 module Admin
   class DataSourcesController < AdminController
-    before_action :header_fix_enabled
     load_and_authorize_resource
 
     def show

@@ -6,7 +6,7 @@
   <body vocab="http://schema.org/" class="<%= 'sub-nav' if show_sub_nav?(@school || @tariff_holder, @hide_subnav) %>">
     <%= render 'shared/navigation' %>
 
-    <div class="application container<%= conditional_application_container_classes %>">
+    <div class="application container">
       <%= render 'shared/breadcrumbs' %>
       <%= render 'shared/alerts' if flash.any? %>
       <%= yield %>

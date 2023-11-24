@@ -54,31 +54,6 @@ module NavHelper
     school.present? && school.id && hide_subnav.nil?
   end
 
-  def header_fix_enabled?
-    @header_fix_enabled == true
-  end
-
-  def conditional_application_container_classes
-    classes = ''
-    classes += ' extra-padding' if add_extra_padding?
-    classes += ' header-fix' if header_fix_enabled?
-    classes += ' extra-padding-school-group' if add_school_group_extra_padding?
-    classes
-  end
-
-  def add_school_group_extra_padding?
-    return true if request.path.start_with?('/school_groups') && cannot?(:update_settings, @school_group)
-
-    false
-  end
-
-  def add_extra_padding?
-    return false if controller_path.split('/').first == 'school_groups'
-    return true unless show_sub_nav?(@school || @tariff_holder, @hide_subnav)
-
-    false
-  end
-
   def show_partner_footer?(school)
     school.present? && school.id && school.all_partners.any?
   end

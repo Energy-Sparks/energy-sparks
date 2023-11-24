@@ -10,7 +10,6 @@ module Schools
       skip_before_action :authenticate_user!
       before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
 
-      before_action :header_fix_enabled
       before_action :load_advice_pages
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
