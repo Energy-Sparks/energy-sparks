@@ -59,7 +59,6 @@ cy:
           comments_list_html: |-
             <ul>
               <li>Mae'r cyfrifiadau ar hyn o bryd yn rhagdybio y byddwch yn cael rhywfaint o incwm o unrhyw drydan a allforir. Ers diwedd y Tariff Cyflenwi Trydan ym mis Ebrill 2019 mae incwm awtomatig o allforio wedi’i ddisodli gan y cynllun Gwarant Allforio Clyfar (SEG) ond mae’r incwm hwn yn dibynnu ar gytundeb gyda’ch cyflenwr trydan.</li>
-              <li>Mae’r cyfrifiadau’n seiliedig ar bris trydan cyfredol o %{site_settings_electricity_price}/kWh, os bydd prisiau prif gyflenwad trydan yn cynyddu bydd budd economaidd uwch ac ad-daliad byrrach i’r gosodiad..</li>
               <li>Os bydd yr ysgol yn dod yn fwy effeithlon wrth ddefnyddio trydan ac yn lleihau ei defnydd o drydan bydd y budd hefyd yn lleihau.</li>
               <li>Mae'r costau cyfalaf yn y tabl uchod yn amcangyfrifon sy'n seiliedig ar gyfraddau cyfredol y farchnad; efallai y bydd y gost gosod yn eich ysgol ychydig yn wahanol - mae angen i chi gael dyfynbrisiau.</li>
               <li>Mae'r amcangyfrifon yn rhagdybio bod gennych ofod to a dyna ei fod yn wynebu'r de yn fras - gan fod hyn yn optimaidd ar gyfer ysgolion y mae eu galw brig yn ystod canol dydd pan fydd paneli sy'n wynebu'r de yn cynhyrchu'r mwyaf o drydan.</li>
