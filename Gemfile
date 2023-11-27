@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.7.6'
+# ruby '~> 2.7.6'
 
 # Rails/Core
 gem 'rails', '~> 6.0.4' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -22,13 +22,13 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.1.10'
-#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: '3924-climate-charge-levy-not-appearing-on-the-current-costs-table'
-#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.10'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20231123-faraday'
+# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
-gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: '2.1.1-energy-sparks', branch: 'update-gems-and-awesome-print'
+gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'update-gems-and-awesome-print'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
