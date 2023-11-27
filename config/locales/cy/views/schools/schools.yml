@@ -608,7 +608,7 @@ cy:
         introduction_message: Sylwch, er y byddwn yn cadw unrhyw newidiadau a wneir i oriau agor eich ysgol neu amserau defnydd cymunedol ar unwaith, dim ond dros nos y bydd unrhyw un o'n dadansoddiadau ynni sy'n dibynnu ar y cyfnodau amser hyn yn diweddaru.
         save_school_times: Cadw amseroedd yr ysgol
         title: Oriau agor yr ysgol
-      message_1: Rhowch yr amseroedd pan fydd disgyblion yn cyrraedd ac yn gadael yr ysgol. Gan gynnwys amseroedd unrhyw glybiau cyn neu ar ôl ysgol.
+      message_1: Rhowch yr amseroedd pan fydd disgyblion yn cyrraedd ac yn gadael yr ysgol.
       message_2: Dylid rhoi amseroedd mewn fformat 24 awr.
       opening_time: Amser Agor
       school_time_fields:
