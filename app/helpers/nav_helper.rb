@@ -7,7 +7,7 @@ module NavHelper
   end
 
   def locale_switcher_buttons
-    locale_links = ['<ul class="navbar-nav">']
+    locale_links = ['<ul class="navbar-nav navbar-expand">']
     (I18n.available_locales - [I18n.locale]).each do |locale|
       locale_links << '<li class="nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding">' + link_to_locale(locale) + '</li>'
     end

@@ -30,14 +30,13 @@ body {
 .f6 { font-size: $f6; }
 .f7 { font-size: $f7; }
 
-
-body.sub-nav div.application.container {
-  margin-top: 90px;
+div.application.container {
+  margin-top: 53px;
+  padding-bottom: 30px;
 }
 
-div.application.container {
-  margin-top: 55px;
-  padding-bottom: 30px;
+body.with-sub-nav div.application.container {
+  margin-top: 100px;
 }
 
 section.home.alerts {

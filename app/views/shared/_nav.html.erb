@@ -1,5 +1,5 @@
 <% navbar_expand_breakpoint = I18n.locale == 'en' ? 'lg' : 'xl' %>
-<nav class="navbar navbar-expand-<%= navbar_expand_breakpoint %> navbar-custom fixed-top">
+<nav class="navbar navbar-expand-<%= navbar_expand_breakpoint %> navbar-custom">
   <div class="container">
     <%= navbar_image_link %>
     <a class='nav-item pl-3' href="/"><%= "Test" if on_test? %></a>
@@ -10,7 +10,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav nowrap">
         <%= render 'shared/common_nav_bar_menus' %>
         <% if user_signed_in? %>
           <li class="nav-item">
