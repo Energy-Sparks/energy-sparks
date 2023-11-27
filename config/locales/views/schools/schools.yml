@@ -643,7 +643,7 @@ en:
         introduction_message: Please note that while we will immediately save any changes made to your school opening hours or community use times, any of our energy analysis that relies on these time periods will only update overnight.
         save_school_times: Save school times
         title: School opening hours
-      message_1: Enter the times when pupils are arriving and leaving the school.
+      message_1: Enter the times when the pupils are arriving and leaving the school.
       message_2: Times should be entered in 24 hour format.
       opening_time: Opening Time
       school_time_fields:
