@@ -65,7 +65,7 @@ describe TransportSurvey::TransportType do
     subject(:transport_type) { build(:transport_type) }
 
     it 'produces expected slug' do
-      expect(transport_type.tx_slug).to eq('transport_type_1')
+      expect(transport_type.tx_slug).to eq("transport_type_#{transport_type.id}")
     end
   end
 end
