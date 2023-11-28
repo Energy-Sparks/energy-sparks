@@ -8,7 +8,6 @@
     <div class="application container">
       <%= render 'shared/breadcrumbs' %>
       <%= render 'shared/alerts' if flash.any? %>
-
       <%= yield %>
     </div>
     <% if show_partner_footer?(@school) %>

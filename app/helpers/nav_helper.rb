@@ -6,13 +6,26 @@ module NavHelper
     end
   end
 
-  def locale_switcher_buttons
-    locale_links = ['<ul class="navbar-nav navbar-expand">']
-    (I18n.available_locales - [I18n.locale]).each do |locale|
-      locale_links << '<li class="nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding">' + link_to_locale(locale) + '</li>'
+  def on_test_link
+    if on_test?
+      link_to 'Test', "/", class: 'nav-item px-1'
     end
-    locale_links << '</ul>'
-    locale_links.join('').html_safe
+  end
+
+  def navbar_expand_class
+    size = I18n.locale.to_s == 'en' ? 'lg' : 'xl'
+    "navbar-expand-#{size}"
+  end
+
+  def other_locales
+    I18n.available_locales - [I18n.locale]
+  end
+
+  def locale_switcher_buttons
+    if EnergySparks::FeatureFlags.active?(:locale_switcher_buttons)
+      li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: "nav-item pl-3 pr-3 nav-lozenge my-3px") }
+      return tag.ul(safe_join(li_tags), class: 'navbar-nav navbar-expand')
+    end
   end
 
   def link_to_locale(locale)
