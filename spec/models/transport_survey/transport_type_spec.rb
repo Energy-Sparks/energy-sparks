@@ -60,4 +60,12 @@ describe TransportSurvey::TransportType do
       expect(TransportSurvey::TransportType.categories_with_other['other']).to be_nil
     end
   end
+
+  describe '#tx_slug' do
+    subject(:transport_type) { build(:transport_type) }
+
+    it 'produces expected slug' do
+      expect(transport_type.tx_slug).to eq('transport_type_1')
+    end
+  end
 end
