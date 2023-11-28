@@ -22,10 +22,9 @@ module NavHelper
   end
 
   def locale_switcher_buttons
-    if EnergySparks::FeatureFlags.active?(:locale_switcher_buttons)
-      li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: "nav-item pl-3 pr-3 nav-lozenge my-3px") }
-      return tag.ul(safe_join(li_tags), class: 'navbar-nav navbar-expand')
-    end
+    return "" unless EnergySparks::FeatureFlags.active?(:locale_switcher_buttons)
+    li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: "nav-item pl-3 pr-3 nav-lozenge my-3px") }
+    tag.ul(safe_join(li_tags), class: 'navbar-nav navbar-expand')
   end
 
   def link_to_locale(locale)

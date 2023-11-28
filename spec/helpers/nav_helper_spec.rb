@@ -1,15 +1,36 @@
 require 'rails_helper'
 
 describe NavHelper do
+  let(:locale_switcher_buttons_feature) { true }
+
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_LOCALE_SWITCHER_BUTTONS: locale_switcher_buttons_feature.to_s do
+      example.run
+    end
+  end
+
   describe '#locale_switcher_buttons' do
-    it 'returns buttons for all available locales except the current locale' do
-      I18n.locale = 'en'
-      allow(helper).to receive(:url_for).and_return('http://cy.energysparks.uk/')
-      expect(helper.locale_switcher_buttons).to eq('<ul class="navbar-nav navbar-expand"><li class="nav-item pl-3 pr-3 nav-lozenge my-3px"><a href="http://cy.energysparks.uk/">Cymraeg</a></li></ul>')
-      I18n.locale = 'cy'
-      allow(helper).to receive(:url_for).and_return('http://energysparks.uk/')
-      expect(helper.locale_switcher_buttons).to eq('<ul class="navbar-nav navbar-expand"><li class="nav-item pl-3 pr-3 nav-lozenge my-3px"><a href="http://energysparks.uk/">English</a></li></ul>')
-      I18n.locale = 'en'
+    context "with locale_switcher_buttons_feature switched on" do
+      let(:locale_switcher_buttons_feature) { true }
+
+      it 'returns buttons for all available locales except the current locale' do
+        I18n.locale = 'en'
+        allow(helper).to receive(:url_for).and_return('http://cy.energysparks.uk/')
+        expect(helper.locale_switcher_buttons).to eq('<ul class="navbar-nav navbar-expand"><li class="nav-item pl-3 pr-3 nav-lozenge my-3px"><a href="http://cy.energysparks.uk/">Cymraeg</a></li></ul>')
+        I18n.locale = 'cy'
+        allow(helper).to receive(:url_for).and_return('http://energysparks.uk/')
+        expect(helper.locale_switcher_buttons).to eq('<ul class="navbar-nav navbar-expand"><li class="nav-item pl-3 pr-3 nav-lozenge my-3px"><a href="http://energysparks.uk/">English</a></li></ul>')
+        I18n.locale = 'en'
+      end
+    end
+
+    context "with locale_switcher_buttons_feature switched off" do
+      let(:locale_switcher_buttons_feature) { false }
+
+      it "returns nothing" do
+        allow(helper).to receive(:url_for).and_return('http://energysparks.uk/')
+        expect(helper.locale_switcher_buttons).to eq("")
+      end
     end
   end
 
