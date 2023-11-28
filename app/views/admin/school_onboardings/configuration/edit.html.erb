@@ -10,14 +10,8 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :dark_sky_area_id, 'Dark Sky Data Feed Area' %>
-      <%= f.select :dark_sky_area_id, options_from_collection_for_select(DarkSkyArea.all, 'id', 'title', (@school_onboarding.dark_sky_area.id if @school_onboarding.dark_sky_area)),{include_blank: true}, { class: 'form-control' }%>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
       <%= f.label :weather_station_id, 'Weather Station' %>
-      <%= f.select :weather_station_id, options_from_collection_for_select(WeatherStation.order(:title), 'id', 'title', @school_onboarding.weather_station_id), {include_blank: true}, { class: 'form-control' } %>
+      <%= f.select :weather_station_id, options_from_collection_for_select(WeatherStation.by_title, 'id', 'title', @school_onboarding.weather_station_id), {}, { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
