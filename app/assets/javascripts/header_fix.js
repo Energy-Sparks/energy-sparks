@@ -8,7 +8,7 @@ $(document).ready(function() {
   // (e.g., padding-top on the <body>) to prevent overlap with other elements.
 
   // If we resize a page, sometimes the content of the nav bars can wrap to have more than one row.
-  // This means the heights of the navbars change, but unforunately the content below
+  // This means the heights of the navbars change, but unfortunately the content below
   // stays in the same place (see above comment of fixed position navbars being pulled from the normal flow of the dom).
   // This means the content can be hidden by the nav that is now bigger than when the page loaded
 
@@ -24,15 +24,15 @@ $(document).ready(function() {
   function setFixedPositions() {
     let height = getTotalNavHeight();
     if (height > 50) {
-      $('.application.container').css('margin-top', getTotalNavHeight());
+      $('.application.container.header-fix').css('margin-top', getTotalNavHeight());
     }
   }
 
   // position on page load
-  //setFixedPositions();
+  setFixedPositions();
 
   // position when the page is reloaded
   $(window).resize(function() {
-    //setFixedPositions();
+    setFixedPositions();
   });
 });

@@ -32,6 +32,16 @@ module NavHelper
     link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters) + secondary_presentation)
   end
 
+  def header_fix_enabled?
+    @header_fix_enabled == true
+  end
+
+  def conditional_application_container_classes
+    classes = ''
+    classes += ' header-fix' if header_fix_enabled?
+    classes
+  end
+
   def subdomain_for(locale)
     split_application_host = split_application_host_for(locale)
     return split_application_host.first if split_application_host&.size == 3
