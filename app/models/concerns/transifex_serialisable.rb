@@ -117,7 +117,7 @@ module TransifexSerialisable
   end
 
   def resource_key
-    "#{self.class.model_name.i18n_key}_#{self.id}"
+    "#{self.class.model_name.param_key}_#{self.id}"
   end
 
   def yaml_template_to_mustache(value)
