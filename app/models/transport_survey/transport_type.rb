@@ -54,4 +54,10 @@ class TransportSurvey::TransportType < ApplicationRecord
   def tx_name
     name
   end
+
+  # override default slug to use original name pre-moving to module
+  # keeps in sync with the data already in transifex
+  def tx_slug
+    "transport_type_#{self.id}"
+  end
 end
