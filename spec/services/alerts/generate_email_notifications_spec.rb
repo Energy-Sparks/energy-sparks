@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Alerts::GenerateEmailNotifications do
+  include Rails.application.routes.url_helpers
+
   let(:school)               { create(:school) }
   let(:alert_generation_run) { create(:alert_generation_run, school: school) }
   let(:alert_type)           { create(:alert_type, advice_page: create(:advice_page, key: :baseload))}
@@ -61,9 +63,17 @@ describe Alerts::GenerateEmailNotifications do
     end
 
     context 'when generating email body' do
-        let(:email) { ActionMailer::Base.deliveries.last }
-        let(:email_body) { email.body.to_s }
-        let(:matcher) { Capybara::Node::Simple.new(email_body.to_s) }
+        let(:email)       { ActionMailer::Base.deliveries.last }
+        let(:email_body)  { email.body.to_s }
+        let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
+
+        let(:params) do
+          {
+            "utm_source": "weekly-alert",
+            "utm_medium": "email",
+            "utm_campaign": "alerts"
+          }
+        end
 
         it 'includes all alert content' do
           expect(email_body).to include('You need to do something')
@@ -83,9 +93,9 @@ describe Alerts::GenerateEmailNotifications do
 
         it 'includes links to dashboard and analysis pages' do
           expect(email_body).to include("Stay up to date")
-          expect(matcher).to have_link("school dashboard")
-          expect(matcher).to have_link("detailed analysis")
-          expect(matcher).to have_link("View your school dashboard")
+          expect(matcher).to have_link("school dashboard", href: school_url(school, params: params, host: 'localhost'))
+          expect(matcher).to have_link("detailed analysis", href: school_advice_url(school, params: params, host: 'localhost'))
+          expect(matcher).to have_link("View your school dashboard", href: school_url(school, params: params, host: 'localhost'))
         end
     end
   end
