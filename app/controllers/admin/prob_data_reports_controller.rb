@@ -1,7 +1,5 @@
 module Admin
   class ProbDataReportsController < AdminController
-    before_action :header_fix_enabled
-
     def index
       @prob_data = find_prob_data
     end

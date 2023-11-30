@@ -28,7 +28,7 @@
 <% end %>
 
 <p>
-  <%= t('alert_mailer.alert_email.dashboard_and_analysis_message_html', school_url: school_url(@school, params: weekly_alert_utm_parameters), school_analysis_index_url: school_analysis_index_url(@school, params: weekly_alert_utm_parameters)) %>.
+  <%= t('alert_mailer.alert_email.dashboard_and_analysis_message_html', school_url: school_url(@school, params: weekly_alert_utm_parameters), school_analysis_index_url: school_advice_url(@school, params: weekly_alert_utm_parameters)) %>.
 </p>
 
 <%= link_to t('alert_mailer.alert_email.view_your_school_dashboard'), school_url(@school, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-3 mb-3 ax-right'%>

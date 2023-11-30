@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-custom fixed-top fixed-top-sub-nav sub-navbar" id='school-group-subnav'>
+<nav class="navbar navbar-expand-lg navbar-custom sub-navbar" id='school-group-subnav'>
   <div class="container">
     <div>
     </div>
@@ -8,7 +8,7 @@
       </button>
       <div class="collapse navbar-collapse" id="subnavbarNavDropdown">
         <ul class="navbar-nav">
-          <li class="nav-item dropdown mt-2">
+          <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="school-list-menu" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('school_groups.sub_nav.dashboards') %></a>
             <div class="dropdown-menu scrollable" aria-labelledby="school-list-menu" id="dropdown-school-list-menu">
               <% school_group.schools.visible.order(:name).each do |school| %>
@@ -16,7 +16,7 @@
               <% end %>
             </div>
           </li>
-          <li class="nav-item dropdown mt-2">
+          <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="manage-school-group" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('school_groups.sub_nav.manage_group') %></a>
             <div class="dropdown-menu scrollable" aria-labelledby="manage-school-group" id="dropdown-manage-school-group">
               <%= link_to t('school_groups.sub_nav.chart_settings'), school_group_chart_updates_path(school_group), class: 'dropdown-item' %>
