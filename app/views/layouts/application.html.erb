@@ -3,7 +3,7 @@
   <head>
     <%= render 'shared/head' %>
   </head>
-  <body vocab="http://schema.org/" class="<%= 'with-sub-nav' if show_sub_nav?(@school || @tariff_holder, @hide_subnav) || request.path.starts_with?('/school_groups') %>">
+  <body vocab="http://schema.org/" class="<%= 'with-sub-nav' if show_sub_nav?(@school || @tariff_holder, @hide_subnav) || (request.path.starts_with?('/school_groups') && can?(:update_settings, @school_group || @tariff_holder)) %>">
     <%= render 'shared/navigation' %>
     <div class="application container<%= conditional_application_container_classes %>">
       <%= render 'shared/breadcrumbs' %>
