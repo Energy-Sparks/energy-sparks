@@ -6,18 +6,40 @@ module NavHelper
     end
   end
 
-  def locale_switcher_buttons
-    locale_links = ['<ul class="navbar-nav">']
-    (I18n.available_locales - [I18n.locale]).each do |locale|
-      locale_links << '<li class="nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding">' + link_to_locale(locale) + '</li>'
+  def on_test_link
+    if on_test?
+      link_to 'Test', "/", class: 'nav-item px-1'
     end
-    locale_links << '</ul>'
-    locale_links.join('').html_safe
+  end
+
+  def navbar_expand_class
+    size = I18n.locale.to_s == 'en' ? 'lg' : 'xl'
+    "navbar-expand-#{size}"
+  end
+
+  def other_locales
+    I18n.available_locales - [I18n.locale]
+  end
+
+  def locale_switcher_buttons
+    return "" unless EnergySparks::FeatureFlags.active?(:locale_switcher_buttons)
+    li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: "nav-item pl-3 pr-3 nav-lozenge my-3px") }
+    tag.ul(safe_join(li_tags), class: 'navbar-nav navbar-expand')
   end
 
   def link_to_locale(locale)
     secondary_presentation = request.params['secondary_presentation'] ? "/#{request.params['secondary_presentation']}" : ''
     link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters) + secondary_presentation)
+  end
+
+  def header_fix_enabled?
+    @header_fix_enabled == true
+  end
+
+  def conditional_application_container_classes
+    classes = ''
+    classes += ' header-fix' if header_fix_enabled?
+    classes
   end
 
   def subdomain_for(locale)
@@ -52,31 +74,6 @@ module NavHelper
 
   def show_sub_nav?(school, hide_subnav)
     school.present? && school.id && hide_subnav.nil?
-  end
-
-  def header_fix_enabled?
-    @header_fix_enabled == true
-  end
-
-  def conditional_application_container_classes
-    classes = ''
-    classes += ' extra-padding' if add_extra_padding?
-    classes += ' header-fix' if header_fix_enabled?
-    classes += ' extra-padding-school-group' if add_school_group_extra_padding?
-    classes
-  end
-
-  def add_school_group_extra_padding?
-    return true if request.path.start_with?('/school_groups') && cannot?(:update_settings, @school_group)
-
-    false
-  end
-
-  def add_extra_padding?
-    return false if controller_path.split('/').first == 'school_groups'
-    return true unless show_sub_nav?(@school || @tariff_holder, @hide_subnav)
-
-    false
   end
 
   def show_partner_footer?(school)

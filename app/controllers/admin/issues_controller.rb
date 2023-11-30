@@ -1,8 +1,6 @@
 module Admin
   class IssuesController < AdminController
     include Pagy::Backend
-    before_action :header_fix_enabled
-
     load_and_authorize_resource :school, instance_name: 'issueable'
     load_and_authorize_resource :school_group, instance_name: 'issueable'
     load_and_authorize_resource :data_source, instance_name: 'issueable'

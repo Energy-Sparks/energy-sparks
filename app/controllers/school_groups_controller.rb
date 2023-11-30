@@ -10,7 +10,6 @@ class SchoolGroupsController < ApplicationController
   before_action :build_breadcrumbs
   before_action :find_school_group_fuel_types
   before_action :set_show_school_group_message
-  before_action :header_fix_enabled, if: -> { can?(:update_settings, @school_group) }
 
   skip_before_action :authenticate_user!
 
