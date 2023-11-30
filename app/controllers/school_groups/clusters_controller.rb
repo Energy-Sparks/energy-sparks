@@ -4,7 +4,6 @@ module SchoolGroups
     before_action :redirect_unless_authorised
     load_and_authorize_resource :cluster, class: 'SchoolGroupCluster', through: :school_group
 
-    before_action :header_fix_enabled
     before_action :set_breadcrumbs
 
     def index

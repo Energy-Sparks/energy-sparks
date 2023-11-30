@@ -4,18 +4,17 @@
     <%= render 'shared/head' %>
   </head>
   <body>
-    <% navbar_expand_breakpoint = I18n.locale == 'en' ? 'lg' : 'xl' %>
-    <nav class="navbar navbar-expand-<%= navbar_expand_breakpoint %> navbar-custom fixed-top">
-      <div class="container">
-        <%= navbar_image_link %>
-        <a class='nav-item pl-3' href="/"><%= "Test" if on_test? %></a>
-        <% if EnergySparks::FeatureFlags.active?(:locale_switcher_buttons) %>
+    <div class="fixed-top">
+      <nav class="navbar <%= navbar_expand_class %> navbar-custom">
+        <div class="container">
+          <%= navbar_image_link %>
+          <%= on_test_link %>
           <%= locale_switcher_buttons %>
-        <% end %>
-      </div>
-    </nav>
+        </div>
+      </nav>
+    </div>
     <div class="application container">
-      <div class="padded-row">
+      <div>
         <h1>Energy Sparks is currently down for maintenance</h1>
 
         <p>

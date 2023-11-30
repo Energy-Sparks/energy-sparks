@@ -4,7 +4,9 @@
     <%= render 'shared/head' %>
   </head>
   <body>
-    <%= render 'shared/nav' %>
+    <div class='fixed-top'>
+      <%= render 'shared/nav' %>
+    </div>
     <% if flash.any? %>
       <section class="home alerts">
         <%= render 'shared/alerts' %>

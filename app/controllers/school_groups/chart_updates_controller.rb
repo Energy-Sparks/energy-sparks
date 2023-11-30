@@ -1,6 +1,5 @@
 module SchoolGroups
   class ChartUpdatesController < ApplicationController
-    before_action :header_fix_enabled
     load_and_authorize_resource :school_group
 
     def index
