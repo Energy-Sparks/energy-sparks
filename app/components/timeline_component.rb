@@ -19,12 +19,14 @@ class TimelineComponent < ViewComponent::Base
     end
 
     def call
-      render("TimelineComponent::#{observation.observation_type.camelize}Component".constantize.new(observation: observation, show_actions: show_actions))
+      render("TimelineComponent::#{observation.observation_type.camelize}".constantize.new(observation: observation, show_actions: show_actions))
     end
   end
 
-  class ObservationBaseComponent < ViewComponent::Base
+  class ObservationBase < ViewComponent::Base
     attr_reader :observation, :show_actions
+
+    delegate :fa_icon, :nice_dates, to: :helpers
 
     def initialize(observation:, show_actions: false)
       @observation = observation
@@ -36,31 +38,31 @@ class TimelineComponent < ViewComponent::Base
     # end
   end
 
-  class ActivityComponent < ObservationBaseComponent
+  class Activity < ObservationBase
   end
 
-  class AuditComponent < ObservationBaseComponent
+  class Audit < ObservationBase
   end
 
-  class AuditActivitiesCompleteComponent < ObservationBaseComponent
+  class AuditActivitiesComplete < ObservationBase
   end
 
-  class InterventionComponent < ObservationBaseComponent
+  class Intervention < ObservationBase
   end
 
-  class ObservableComponent < ObservationBaseComponent
+  class Observable < ObservationBase
   end
 
-  class ProgrammeComponent < ObservationBaseComponent
+  class Programme < ObservationBase
   end
 
-  class SchoolTargetComponent < ObservationBaseComponent
+  class SchoolTarget < ObservationBase
   end
 
-  class TemperatureComponent < ObservationBaseComponent
+  class Temperature < ObservationBase
   end
 
-  class TransportSurveyComponent < ObservationBaseComponent
+  class TransportSurvey < ObservationBase
     attr_reader :observation
 
     def initialize(observation)
