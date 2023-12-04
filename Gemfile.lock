@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 344c44d8cbfb230aea383fb46a61899e33e16c1b
+  revision: f682993dd4c24dc6a8c0812c14955264b305152d
   branch: 20231123-faraday
   specs:
     energy-sparks_analytics (1.2.1)
@@ -763,6 +763,7 @@ DEPENDENCIES
   rails (~> 6.0.4)
   rails-controller-testing
   rb-readline
+  rexml
   rgeo-geojson
   rollbar
   roo!
