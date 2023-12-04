@@ -26,7 +26,7 @@ class TimelineComponent < ViewComponent::Base
   class ObservationBase < ViewComponent::Base
     attr_reader :observation, :show_actions
 
-    delegate :fa_icon, :nice_dates, to: :helpers
+    delegate :fa_icon, :nice_dates, :can?, to: :helpers
 
     def initialize(observation:, show_actions: false)
       @observation = observation
@@ -44,7 +44,7 @@ class TimelineComponent < ViewComponent::Base
   class Audit < ObservationBase
   end
 
-  class AuditActivitiesComplete < ObservationBase
+  class AuditActivitiesCompleted < ObservationBase
   end
 
   class Intervention < ObservationBase

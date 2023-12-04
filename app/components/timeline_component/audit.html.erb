@@ -3,7 +3,7 @@
 </td>
 <td>
   <% if can?(:show, observation.audit) && observation.audit.published? %>
-    <h3 class="pt-1"><strong><%= t('schools.observations.timeline.audit.received_an_audit') %>:</strong> <%= link_to observation.audit.title, school_audit_path(@school, observation.audit)%></h3>
+    <h3 class="pt-1"><strong><%= t('schools.observations.timeline.audit.received_an_audit') %>:</strong> <%= link_to observation.audit.title, school_audit_path(observation.school, observation.audit)%></h3>
   <% else %>
     <h3 class="pt-1"><strong><%= t('schools.observations.timeline.audit.received_an_audit') %></strong></h3>
   <% end %>
@@ -12,8 +12,8 @@
 <% if show_actions && can?(:manage, observation.audit) %>
   <td class="text-right">
     <div class="btn-group">
-      <%= link_to t('common.labels.edit'), edit_school_audit_path(@school, observation.audit), class: 'btn btn-warning' %>
-      <%= link_to t('common.labels.delete'), school_audit_path(@school, observation.audit), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+      <%= link_to t('common.labels.edit'), edit_school_audit_path(observation.school, observation.audit), class: 'btn btn-warning' %>
+      <%= link_to t('common.labels.delete'), school_audit_path(observation.school, observation.audit), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
     </div>
   </td>
 <% end %>
