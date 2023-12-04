@@ -1,4 +1,4 @@
-<nav class="navbar <%= navbar_expand_class %> navbar-custom<%= " navbar-mini" if local_assigns[:with_sub_nav] %>">
+<nav class="navbar <%= navbar_expand_class %> navbar-custom<%= " navbar-mini" if local_assigns[:mini_nav] %>">
   <div class="container">
     <%= navbar_image_link %>
     <%= on_test_link %>
@@ -14,7 +14,7 @@
             <%= link_to t('nav.sign_out'), destroy_user_session_path, method: :delete, class: 'nav-link' %>
           </li>
         <% else %>
-          <% if local_assigns[:with_sub_nav] %>
+          <% if local_assigns[:mini_nav] %>
             <li class="nav-item">
               <%= link_to t('nav.sign_in'), new_user_session_path, class: 'nav-link' %>
             </li>
