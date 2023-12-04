@@ -83,9 +83,9 @@ class SchoolTarget < ApplicationRecord
   def to_progress_summary
     Targets::ProgressSummary.new(
       school_target: self,
-      electricity: electricity_progress.any? ? Targets::FuelProgress.new(electricity_progress.symbolize_keys!) : nil,
-      gas: gas_progress.any? ? Targets::FuelProgress.new(gas_progress.symbolize_keys!) : nil,
-      storage_heater: storage_heaters_progress.any? ? Targets::FuelProgress.new(storage_heaters_progress.symbolize_keys!) : nil
+      electricity: electricity_progress.any? ? Targets::FuelProgress.new(**electricity_progress.symbolize_keys!) : nil,
+      gas: gas_progress.any? ? Targets::FuelProgress.new(**gas_progress.symbolize_keys!) : nil,
+      storage_heater: storage_heaters_progress.any? ? Targets::FuelProgress.new(**storage_heaters_progress.symbolize_keys!) : nil
     )
   end
 
@@ -94,7 +94,7 @@ class SchoolTarget < ApplicationRecord
     raise "Invalid fuel type" unless [:electricity, :gas, :storage_heaters].include?(fuel_type)
     report = self["#{fuel_type}_report".to_sym]
     return nil unless report&.any?
-    TargetsProgress.new(reformat_saved_report(report))
+    TargetsProgress.new(**reformat_saved_report(report))
   end
 
   private
