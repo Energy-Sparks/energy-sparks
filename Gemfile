@@ -65,7 +65,7 @@ gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'devise' # Use devise for authentication
-gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
+gem 'cancancan', '~> 3' # Use cancancan for authorization
 
 # Utils
 gem 'groupdate', '6.2.1' # Use groupdate to group usage stats
