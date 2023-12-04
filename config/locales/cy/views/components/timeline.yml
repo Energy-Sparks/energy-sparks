@@ -1,0 +1,17 @@
+cy:
+  components:
+    timeline:
+      action:
+        one: '%{count} weithred'
+        two: '%{count} weithred'
+        many: '%{count} o weithredoedd'
+        other: '%{count} o weithredoedd'
+      activity:
+        completed_an_activity: Cwblhawyd gweithgaredd
+      audit:
+        completed_audit_activities: Wedi cwblhau pob gweithgaredd archwilio
+        received_an_audit: Wedi cael archwiliad ynni
+      programme:
+        completed_a_programme: Wedi cwblhau'r rhaglen
+      temperatures:
+        recorded_temperatures_in: Tymheredd a gofnodwyd yn

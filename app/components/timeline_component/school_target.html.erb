@@ -2,7 +2,7 @@
   <%= fa_icon("tachometer-alt fa-2x") %>
 </td>
 <td>
-  <h3 class="pt-1"><strong><%= link_to "Started working towards an energy saving target", school_school_target_path(observation.school, observation.school_target)%></strong></h3>
+  <h3 class="pt-1"><strong><%= link_to t("components.timeline.school_target"), school_school_target_path(observation.school, observation.school_target)%></strong></h3>
   <span class="text-muted"><%= nice_dates(observation.at) %></span>
 </td>
 <% if show_actions && can?(:manage, observation) %>
