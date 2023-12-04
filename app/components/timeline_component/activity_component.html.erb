@@ -1,0 +1,15 @@
+<td class="p-3 text-center">
+  <%= fa_icon("clipboard-check fa-2x") %>
+</td>
+<td>
+  <h3 class="pt-1"><strong><%= t('schools.observations.timeline.activity.completed_an_activity') %>:</strong> <%= link_to observation.activity.display_name, school_activity_path(@school, observation.activity)%></h3>
+  <span class="text-muted"><%= nice_dates(observation.at) %></span>
+</td>
+<% if show_actions && can?(:manage, observation.activity) %>
+  <td class="text-right">
+    <div class="btn-group">
+      <%= link_to t('common.labels.edit'), edit_school_activity_path(@school, observation.activity), class: 'btn btn-warning' %>
+      <%= link_to t('common.labels.delete'), school_activity_path(@school, observation.activity), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+    </div>
+  </td>
+<% end %>
