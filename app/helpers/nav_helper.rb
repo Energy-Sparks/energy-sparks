@@ -36,8 +36,13 @@ module NavHelper
     @header_fix_enabled == true
   end
 
+  def sub_nav?
+    @sub_nav == true
+  end
+
   def conditional_application_container_classes
     classes = ''
+    classes += ' sub-nav' if sub_nav?
     classes += ' header-fix' if header_fix_enabled?
     classes
   end
