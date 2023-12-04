@@ -3,4 +3,4 @@
 app="$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppStagingDir)";
 cd "${app}";
 yarn install
-chown -R webapp:webapp node_modules
+chown webapp:webapp node_modules/.yarn-integrity
