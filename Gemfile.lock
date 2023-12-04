@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 344c44d8cbfb230aea383fb46a61899e33e16c1b
+  revision: f682993dd4c24dc6a8c0812c14955264b305152d
   branch: 20231123-faraday
   specs:
     energy-sparks_analytics (1.2.1)
@@ -249,8 +249,11 @@ GEM
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
     fakefs (1.4.0)
-    faraday (2.0.0)
+    faraday (2.7.12)
+      base64
+      faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
+    faraday-net_http (3.0.2)
     faraday-retry (2.2.0)
       faraday (~> 2.0)
     fasterer (0.9.0)
@@ -386,7 +389,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.15.4)
+    nokogiri (1.15.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     notiffany (0.1.3)
@@ -577,7 +580,7 @@ GEM
     ruby_parser (3.18.1)
       sexp_processor (~> 4.16)
     rubyvis (0.6.1)
-    rubyzip (1.3.0)
+    rubyzip (2.3.2)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
