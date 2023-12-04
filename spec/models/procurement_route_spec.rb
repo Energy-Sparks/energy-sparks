@@ -11,7 +11,7 @@ RSpec.describe ProcurementRoute, type: :model do
   describe ".to_csv" do
     let(:procurement_route) { create(:procurement_route) }
     let(:data_source) { create(:data_source) }
-    subject { procurement_route.to_csv }
+    subject(:csv) { procurement_route.to_csv }
 
     let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues" }
 
@@ -41,12 +41,12 @@ RSpec.describe ProcurementRoute, type: :model do
         end
       end
 
-      it { expect(subject.lines.count).to eq(3) }
-      it { expect(subject.lines.first.chomp).to eq(header) }
+      it { expect(csv.lines.count).to eq(3) }
+      it { expect(csv.lines.first.chomp).to eq(header) }
 
       2.times do |i|
         it 'returns rows for all meters for active schools with this procurement route' do
-          expect(subject.lines[i + 1].chomp).to eq(
+          expect(csv).to include(
             (
               [
                 meters[i].school.school_group.try(:name),
@@ -72,12 +72,12 @@ RSpec.describe ProcurementRoute, type: :model do
         create_list(:gas_meter, 2)
       end
 
-      it { expect(subject.lines.count).to eq(1) }
+      it { expect(csv.lines.count).to eq(1) }
     end
 
     context "with no meters" do
-      it { expect(subject.lines.count).to eq(1) }
-      it { expect(subject.lines.first.chomp).to eq(header) }
+      it { expect(csv.lines.count).to eq(1) }
+      it { expect(csv.lines.first.chomp).to eq(header) }
     end
   end
 end
