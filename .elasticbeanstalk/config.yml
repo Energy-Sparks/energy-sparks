@@ -4,6 +4,8 @@ branch-defaults:
   aws-eb-test:
     environment: test-3-4-9
     group_suffix: null
+  eb-ruby3-env:
+    environment: test-3-6-14
 global:
   application_name: energy-sparks
   branch: null
