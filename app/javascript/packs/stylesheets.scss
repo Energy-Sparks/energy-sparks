@@ -1,9 +1,7 @@
-@import '~awesomplete/awesomplete';
-@import '../src/stylesheets';
+div.awesomplete {
+  width: 100%;
+}
 
-$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
-
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
-@import '~@fortawesome/fontawesome-free/scss/brands';
+small.down-for-awesomplete {
+  margin-top: 1rem;
+}

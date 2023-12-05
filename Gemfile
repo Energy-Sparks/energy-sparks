@@ -36,6 +36,7 @@ gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'momentjs-rails'
+gem 'font-awesome-sass'
 
 # Pagination
 gem 'pagy'
