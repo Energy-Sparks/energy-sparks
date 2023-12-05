@@ -29,7 +29,11 @@ class TimelineComponent < ViewComponent::Base
     end
 
     def call
-      render("TimelineComponent::#{observation.observation_type.camelize}".constantize.new(observation: observation, show_actions: show_actions))
+      if observation.observable
+        render("TimelineComponent::#{observation.observable_type}".constantize.new(observation: observation, show_actions: show_actions))
+      else
+        render("TimelineComponent::#{observation.observation_type.camelize}".constantize.new(observation: observation, show_actions: show_actions))
+      end
     end
   end
 
@@ -43,9 +47,16 @@ class TimelineComponent < ViewComponent::Base
       @show_actions = show_actions
     end
 
-    # def message
-    #  raise "Implement me!"
-    # end
+    def icon
+      'square-check' # please override subclasses
+    end
+
+    def observable
+      observation.observable
+    end
+
+    def timeline_text
+    end
   end
 
   class Activity < ObservationBase
@@ -60,9 +71,6 @@ class TimelineComponent < ViewComponent::Base
   class Intervention < ObservationBase
   end
 
-  class Observable < ObservationBase
-  end
-
   class Programme < ObservationBase
   end
 
@@ -73,22 +81,12 @@ class TimelineComponent < ViewComponent::Base
   end
 
   class TransportSurvey < ObservationBase
-    attr_reader :observation
-
-    def initialize(observation)
-      @observation = observation
-    end
-
     def icon
+      'car'
     end
 
     def message
-      I18n.t('schools.observations.timeline.transport_survey.message', count: observation.observable.responses.count)
-    end
-
-    def compact_message
+      I18n.t('components.timeline.transport_survey.message', count: observation.observable.responses.count)
     end
   end
-
-  ####
 end
