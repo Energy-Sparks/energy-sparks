@@ -54,9 +54,17 @@ jobs:
           POSTGRES_DB: rails_test
           POSTGRES_USER: rails
           POSTGRES_PASSWORD: password
+    strategy:
+      matrix:
+        ci_node_total: [8]
+        ci_node_index: [0, 1, 2, 3, 4, 5, 6, 7]
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      # https://docs.knapsackpro.com/ruby/knapsack
+      CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
+      CI_NODE_INDEX: ${{ matrix.ci_node_index }}
+      KNAPSACK_TEST_FILE_PATTERN: spec/system/**/*_spec.rb 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -80,4 +88,4 @@ jobs:
         run: bundle exec i18n-tasks health
       # Add or replace test runners here
       - name: Run tests
-        run: bundle exec rspec spec/system
+        run: bundle exec rake knapsack:rspec
