@@ -283,6 +283,8 @@ GEM
       colorize (~> 0.7)
       ruby_parser (>= 3.14.1)
     ffi (1.16.3)
+    font-awesome-sass (6.5.1)
+      sassc (~> 2.0)
     foreman (0.87.2)
     formatador (0.3.0)
     friendly_id (5.4.2)
@@ -767,6 +769,7 @@ DEPENDENCIES
   factory_bot_rails
   fakefs
   fasterer
+  font-awesome-sass
   foreman
   friendly_id
   geocoder
