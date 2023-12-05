@@ -1,16 +1,18 @@
 class TimelineComponentPreview < ViewComponent::Preview
   def with_observations
-    # observations = School.find_by(slug: 'freshford-church-school').observations.order(created_at: :desc).limit(4)
+    programme = Programme.all.last
+    audit = Audit.all.last
+
     observations = [
       Observation.find_by(observation_type: 'activity'),
-      Observation.find_by(observation_type: 'audit'),
-      Observation.find_by(observation_type: 'audit_activities_completed'),
+      Observation.new(school: audit.school, observation_type: 'audit', audit: audit, at: Time.zone.yesterday),
+      Observation.new(school: audit.school, observation_type: 'audit_activities_completed', audit: audit, at: Time.zone.yesterday),
       Observation.find_by(observation_type: 'intervention'),
       Observation.find_by(observation_type: 'observable'),
-      Observation.find_by(observation_type: 'programme'),
+      Observation.new(school: programme.school, observation_type: 'programme', programme: programme, at: Time.zone.yesterday),
       Observation.find_by(observation_type: 'school_target'),
       Observation.find_by(observation_type: 'temperature'),
     ].compact
-    render(TimelineComponent.new(observations: observations, show_actions: false))
+    render(TimelineComponent.new(observations: observations, show_actions: true))
   end
 end
