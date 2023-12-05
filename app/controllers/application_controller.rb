@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     root_url(subdomain: subdomain).chomp('/') + session.fetch(:user_return_to, '/')
   end
 
-  def switch_locale(&action)
+  def switch_locale(*_args, &action)
     locale = LocaleFinder.new(params, request).locale
     I18n.with_locale(locale, &action)
   end

@@ -23,7 +23,7 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-# gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.1.9'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.10'
 gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20231123-faraday'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -67,7 +67,7 @@ gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'devise' # Use devise for authentication
-gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
+gem 'cancancan', '~> 3' # Use cancancan for authorization
 
 # Utils
 gem 'groupdate', '6.2.1' # Use groupdate to group usage stats
