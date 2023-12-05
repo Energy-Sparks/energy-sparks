@@ -340,6 +340,8 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.6.3)
     jwt (2.7.1)
+    knapsack (4.0.0)
+      rake
     language_server-protocol (3.17.0.3)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -747,6 +749,7 @@ DEPENDENCIES
   image_processing (~> 1.12)
   jbuilder (~> 2.5)
   jquery-rails
+  knapsack
   listen (~> 3.8.0)
   lograge
   mailgun_rails

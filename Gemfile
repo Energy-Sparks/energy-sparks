@@ -142,6 +142,7 @@ group :development, :test do
   gem 'rubocop-performance'
   gem 'rubocop-rspec'
   gem 'wisper-rspec', require: false
+  gem 'knapsack'
 end
 
 group :development do
