@@ -11,7 +11,7 @@
   <td class="text-right">
     <div class="btn-group">
       <%= link_to t('common.labels.edit'), edit_polymorphic_path([observable.school, observable]), class: 'btn btn-warning' %>
-      <%= link_to t('common.labels.delete'), polymorphic_path([observable.school, observable]), method: :delete, data: { confirm: t('common.confirm_delete', observable: observable.class.model_name.human) }, class: 'btn btn-danger' %>
+      <%= link_to t('common.labels.delete'), polymorphic_path([observable.school, observable]), method: :delete, data: { confirm: t('common.confirm' }, class: 'btn btn-danger' %>
     </div>
   </td>
 <% end %>
