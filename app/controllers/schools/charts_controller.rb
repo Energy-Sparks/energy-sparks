@@ -37,7 +37,7 @@ class Schools::ChartsController < ApplicationController
       chart_config,
       transformations: get_transformations,
       provide_advice: provide_advice,
-      reraise_exception: true
+      report_exception: report_exception?
     ).data
 
     if output
@@ -61,5 +61,13 @@ class Schools::ChartsController < ApplicationController
     params.fetch(:date_ranges) { {} }.values.map do |range|
       Date.parse(range['start'])..Date.parse(range['end'])
     end
+  end
+
+  #Always report exceptions in development and on the test server
+  #Otherwise supress exceptions from charts requested by admins
+  def report_exception?
+    return true unless Rails.env.production?
+    return true if ENV['ENVIRONMENT_IDENTIFIER'] != 'production'
+    !current_user_admin?
   end
 end

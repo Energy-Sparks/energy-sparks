@@ -43,7 +43,7 @@ module Schools
       # We therefore mark reraise exception false here (used by ChartManager#run_chart) as we don't want to log
       # errors unnecessarily.
       chart_config = { y_axis_units: :kwh }
-      ChartData.new(@school, @aggregated_meter_collection, chart_type, chart_config, reraise_exception: false)
+      ChartData.new(@school, @aggregated_meter_collection, chart_type, chart_config, report_exception: false)
     end
 
     def can_run_chart?(chart_type)
