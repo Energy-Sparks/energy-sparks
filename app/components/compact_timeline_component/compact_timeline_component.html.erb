@@ -1,0 +1,3 @@
+<% observations.each do |observation| %>
+  <%= render TimelineComponent::Observation.new(observation: observation, show_actions: show_actions, compact: true) %>
+<% end %>

@@ -6,15 +6,17 @@ en:
         one: "%{count} action"
         other: "%{count} actions"
       activity:
-        completed_an_activity: Completed an activity
+        message: Completed an activity
       audit:
-        completed_audit_activities: Completed all audit activities
-        received_an_audit: Received an energy audit
+        message: Received an energy audit
+      audit_activities_completed:
+        message: Completed all audit activities
       programme:
-        completed_a_programme: Completed a programme
-      school_target: Started working towards an energy saving target
-      temperatures:
-        recorded_temperatures_in: Recorded temperatures in
+        message: Completed a programme
+      school_target:
+        message: Started working towards an energy saving target
+      temperature:
+        message: Recorded temperatures in
       transport_survey:
         message:
           one: Recorded a transport survey response

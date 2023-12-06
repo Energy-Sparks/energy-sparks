@@ -1,21 +1,30 @@
-<td class="p-3 text-center">
-  <%= icon %>
-</td>
-<td>
-  <h3 class="pt-1">
-    <strong>
-      <%= prefix if prefix %>
-      <%= ": " if prefix && can_show? %>
-      <%= link_to message, show_path if can_show? %>
-    </strong>
-  </h3>
-  <span class="text-muted"><%= nice_dates(observation.at) %></span>
-</td>
-<% if show_actions? %>
-  <td class="text-right">
-    <div class="btn-group">
-      <%= link_to t('common.labels.edit'), edit_path, class: 'btn btn-warning' if can_edit? %>
-      <%= link_to t('common.labels.delete'), delete_path, method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
-    </div>
+<% if compact %>
+  <%= icon %> <%= link_to school.name, school_url(school) %> scored <%= observation.points || 0 %> points by <%= message %><br />
+<% else %>
+  <td class="p-3 text-center">
+    <%= icon %>
   </td>
+  <td>
+    <h3 class="pt-1">
+      <strong>
+        <% if target %>
+          <%= message %>
+          <% if can_show? %>
+          : <%= link_to target, show_path %>
+          <% end %>
+        <% else %>
+          <%= link_to message, show_path if can_show? %>
+        <% end %>
+      </strong>
+    </h3>
+    <span class="text-muted"><%= nice_dates(observation.at) %></span>
+  </td>
+  <% if show_actions? %>
+    <td class="text-right">
+      <div class="btn-group">
+        <%= link_to t('common.labels.edit'), edit_path, class: 'btn btn-warning' if can_edit? %>
+        <%= link_to t('common.labels.delete'), delete_path, method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+      </div>
+    </td>
+  <% end %>
 <% end %>

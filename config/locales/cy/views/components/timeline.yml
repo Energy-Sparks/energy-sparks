@@ -7,11 +7,12 @@ cy:
         many: '%{count} o weithredoedd'
         other: '%{count} o weithredoedd'
       activity:
-        completed_an_activity: Cwblhawyd gweithgaredd
+        message: Cwblhawyd gweithgaredd
+      audit_activities_completed:
+        message: Wedi cwblhau pob gweithgaredd archwilio
       audit:
-        completed_audit_activities: Wedi cwblhau pob gweithgaredd archwilio
-        received_an_audit: Wedi cael archwiliad ynni
+        message: Wedi cael archwiliad ynni
       programme:
-        completed_a_programme: Wedi cwblhau'r rhaglen
-      temperatures:
-        recorded_temperatures_in: Tymheredd a gofnodwyd yn
+        message: Wedi cwblhau'r rhaglen
+      temperature:
+        message: Tymheredd a gofnodwyd yn

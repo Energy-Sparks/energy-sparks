@@ -21,37 +21,41 @@ class TimelineComponent < ViewComponent::Base
   end
 
   class Observation < ViewComponent::Base
-    attr_reader :observation, :show_actions
+    attr_reader :observation, :show_actions, :compact
 
-    def initialize(observation:, show_actions: false)
+    def initialize(observation:, show_actions: false, compact: false)
       @observation = observation
       @show_actions = show_actions
+      @compact = compact
+    end
+
+    def klass
+      observation.observable_type || observation.observation_type.camelize
+    end
+
+    def component
+      "TimelineComponent::#{klass}".constantize.new(observation: observation, show_actions: show_actions, compact: compact)
     end
 
     def call
-      if observation.observable_type
-        render("TimelineComponent::#{observation.observable_type}".constantize.new(observation: observation, show_actions: show_actions))
-      else
-        render("TimelineComponent::#{observation.observation_type.camelize}".constantize.new(observation: observation, show_actions: show_actions))
-      end
+      render(component)
     end
   end
 
   class ObservationBase < ViewComponent::Base
-    attr_reader :observation, :show_actions
+    attr_reader :observation, :show_actions, :compact
 
     delegate :fa_icon, :nice_dates, :can?, to: :helpers
 
-    def initialize(observation:, show_actions: false)
+    def initialize(observation:, show_actions: false, compact: false)
       @observation = observation
       @show_actions = show_actions
+      @compact = compact
     end
 
     def icon
-      fa_icon("#{icon_name} fa-2x")
-    end
-
-    def prefix
+      size = compact ? 1 : 2
+      fa_icon("#{icon_name} fa-#{size}x")
     end
 
     def show_path
@@ -67,11 +71,15 @@ class TimelineComponent < ViewComponent::Base
     end
 
     def icon_name
-      'clipboard-check' # please override subclasses
+      'clipboard-check'
     end
 
     def observable
       observation.observable
+    end
+
+    def school
+      observation.school
     end
 
     def can_show?
@@ -85,6 +93,13 @@ class TimelineComponent < ViewComponent::Base
     def show_actions?
       show_actions && can?(:manage, observable)
     end
+
+    def target
+    end
+
+    def message
+      I18n.t("components.timeline.#{self.class.name.demodulize.underscore}.message")
+    end
   end
 
   class Activity < ObservationBase
@@ -93,11 +108,7 @@ class TimelineComponent < ViewComponent::Base
       observation.activity
     end
 
-    def prefix
-      I18n.t('schools.observations.timeline.activity.completed_an_activity')
-    end
-
-    def message
+    def target
       observation.activity.display_name
     end
   end
@@ -108,12 +119,8 @@ class TimelineComponent < ViewComponent::Base
       observation.audit
     end
 
-    def message
+    def target
       observation.audit.title
-    end
-
-    def prefix
-      I18n.t('components.timeline.audit.received_an_audit')
     end
 
     def can_show?
@@ -122,16 +129,11 @@ class TimelineComponent < ViewComponent::Base
   end
 
   class AuditActivitiesCompleted < ObservationBase
-    # icon_name - clipboard-check
     def observable
       observation.audit
     end
 
-    def prefix
-      I18n.t('components.timeline.audit.completed_audit_activities')
-    end
-
-    def message
+    def target
       observation.audit.title
     end
 
@@ -176,11 +178,7 @@ class TimelineComponent < ViewComponent::Base
       programme_type_path(observation.programme.programme_type)
     end
 
-    def prefix
-      I18n.t('components.timeline.programme.completed_a_programme')
-    end
-
-    def message
+    def target
       observation.programme.programme_type.title
     end
 
@@ -198,10 +196,6 @@ class TimelineComponent < ViewComponent::Base
       observation.school_target
     end
 
-    def message
-      I18n.t("components.timeline.school_target")
-    end
-
     def can_edit?
       !observation.school_target.expired?
     end
@@ -212,11 +206,7 @@ class TimelineComponent < ViewComponent::Base
       'temperature-high'
     end
 
-    def prefix
-      I18n.t('components.timeline.temperatures.recorded_temperatures_in')
-    end
-
-    def message
+    def target
       observation.locations.map(&:name).uniq.to_sentence
     end
 
