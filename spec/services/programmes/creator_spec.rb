@@ -64,9 +64,11 @@ describe Programmes::Creator do
     end
 
     context "when school has multiple activities" do
-      let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first)}
-      let!(:recent) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Date.yesterday)}
-      let!(:old_activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.today.last_year)}
+      let!(:activities) do
+        [1.hour.ago, 1.day.ago, 1.year.ago].map do |time|
+          create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: time)
+        end
+      end
 
       before do
         service.create
@@ -74,8 +76,7 @@ describe Programmes::Creator do
 
       it "recognises the most recent" do
         expect(programme.programme_activities.count).to be 1
-        expect(programme.activities.any?).to be true
-        expect(programme.activities.first).to eq activity
+        expect(programme.activities.first).to eq activities.first
       end
     end
 

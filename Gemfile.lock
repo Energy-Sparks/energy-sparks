@@ -1,14 +1,14 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 4a2b54f51db495d8dfb8664097eddf0213d58531
-  tag: 4.1.10
+  revision: 92356bd546f0030fce7fd64c9561722e92cd84b2
+  tag: 4.1.11
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
-      faraday (>= 1.0.1, < 2.8.0)
-      faraday_middleware (~> 1.0.0)
+      faraday (~> 2)
+      faraday-retry (~> 2)
       hashdiff (~> 1.0.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
@@ -254,35 +254,19 @@ GEM
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
     fakefs (1.4.0)
-    faraday (1.10.3)
-      faraday-em_http (~> 1.0)
-      faraday-em_synchrony (~> 1.0)
-      faraday-excon (~> 1.1)
-      faraday-httpclient (~> 1.0)
-      faraday-multipart (~> 1.0)
-      faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.0)
-      faraday-patron (~> 1.0)
-      faraday-rack (~> 1.0)
-      faraday-retry (~> 1.0)
+    faraday (2.7.12)
+      base64
+      faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
-    faraday-em_http (1.0.0)
-    faraday-em_synchrony (1.0.0)
-    faraday-excon (1.1.0)
-    faraday-httpclient (1.0.1)
-    faraday-multipart (1.0.4)
-      multipart-post (~> 2)
-    faraday-net_http (1.0.1)
-    faraday-net_http_persistent (1.2.0)
-    faraday-patron (1.0.0)
-    faraday-rack (1.0.0)
-    faraday-retry (1.0.3)
-    faraday_middleware (1.0.0)
-      faraday (~> 1.0)
+    faraday-net_http (3.0.2)
+    faraday-retry (2.2.0)
+      faraday (~> 2.0)
     fasterer (0.9.0)
       colorize (~> 0.7)
       ruby_parser (>= 3.14.1)
     ffi (1.16.3)
+    font-awesome-sass (6.5.1)
+      sassc (~> 2.0)
     foreman (0.87.2)
     formatador (0.3.0)
     friendly_id (5.4.2)
@@ -363,6 +347,8 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.6.3)
     jwt (2.7.1)
+    knapsack (4.0.0)
+      rake
     language_server-protocol (3.17.0.3)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -767,6 +753,7 @@ DEPENDENCIES
   factory_bot_rails
   fakefs
   fasterer
+  font-awesome-sass
   foreman
   friendly_id
   geocoder
@@ -779,6 +766,7 @@ DEPENDENCIES
   image_processing (~> 1.12)
   jbuilder (~> 2.5)
   jquery-rails
+  knapsack
   listen (~> 3.8.0)
   lograge
   mailgun_rails

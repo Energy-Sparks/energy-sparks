@@ -14,7 +14,7 @@ module PremailerOverrideHelper
   #
   #Overidding the method here avoids having to add this argument to all non-admin
   #mailers. It also ensures that our localised emails work correctly.
-  def make_bootstrap_mail(**kwargs, &block)
-    super(kwargs.merge({ skip_premailer: true }), &block)
+  def make_bootstrap_mail(headers, &block)
+    super(headers.merge({ skip_premailer: true }), &block)
   end
 end
