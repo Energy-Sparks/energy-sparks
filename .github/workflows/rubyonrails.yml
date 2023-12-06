@@ -16,44 +16,6 @@ jobs:
           POSTGRES_DB: rails_test
           POSTGRES_USER: rails
           POSTGRES_PASSWORD: password
-    env:
-      RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 10.*
-      - name: Checkout code
-        uses: actions/checkout@v3
-      # Add or replace dependency steps here
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      # Add or replace database setup steps here
-      - name: Set up database schema
-        run: bin/rails db:schema:load
-      # Precompile assets
-      - name: Precompile assets
-        run: bundle exec rake assets:precompile
-      # Fail early if we have issues with translation keys
-      - name: Run i18n-tasks
-        run: bundle exec i18n-tasks health
-      # Add or replace test runners here
-      - name: Run tests
-        run: bundle exec rspec --exclude-pattern "spec/system/**/*_spec.rb"
-  test-system:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:14
-        ports:
-          - "5432:5432"
-        env:
-          POSTGRES_DB: rails_test
-          POSTGRES_USER: rails
-          POSTGRES_PASSWORD: password
     strategy:
       fail-fast: false
       matrix:
@@ -62,31 +24,21 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-      # https://docs.knapsackpro.com/ruby/knapsack
       CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
       CI_NODE_INDEX: ${{ matrix.ci_node_index }}
-      KNAPSACK_TEST_FILE_PATTERN: spec/system/**/*_spec.rb 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 10.*
-      - name: Checkout code
-        uses: actions/checkout@v3
-      # Add or replace dependency steps here
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      # Add or replace database setup steps here
-      - name: Set up database schema
-        run: bin/rails db:schema:load
-      # Precompile assets
-      - name: Precompile assets
-        run: bundle exec rake assets:precompile
+      - run: bin/rails db:schema:load
+      - run: bundle exec rake assets:precompile
       # Fail early if we have issues with translation keys
-      - name: Run i18n-tasks
-        run: bundle exec i18n-tasks health
-      # Add or replace test runners here
-      - name: Run tests
-        run: bundle exec rake knapsack:rspec
+      - run: bundle exec i18n-tasks health
+      # https://docs.knapsackpro.com/ruby/knapsack
+      # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
+      - run: bundle exec rake knapsack:rspec

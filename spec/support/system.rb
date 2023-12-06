@@ -27,7 +27,7 @@ RSpec.configure do |config|
     #   we do not want max either, so this is a good compromise
 
     options = Selenium::WebDriver::Chrome::Options.new
-    options.add_argument('headless')
+    options.add_argument('headless=new')
     options.add_argument('no-sandbox')
     options.add_argument('disable-gpu')
     options.add_argument('disable-dev-shm-usage')
@@ -46,7 +46,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each, type: :system, js: true) do |example|
-    errors = page.driver.browser.logs.get(:browser)
+     errors = page.driver.browser.logs.get(:browser)
     if errors.present? && !example.metadata.key?(:errors_expected)
       aggregate_failures 'javascript errors' do
         errors.each do |error|
