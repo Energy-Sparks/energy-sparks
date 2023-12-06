@@ -58,16 +58,20 @@ class TimelineComponent < ViewComponent::Base
       fa_icon("#{icon_name} fa-#{size}x")
     end
 
+    def school
+      observation.school
+    end
+
     def show_path
-      polymorphic_path([observable.school, observable])
+      polymorphic_path([school, observable])
     end
 
     def edit_path
-      edit_polymorphic_path([observable.school, observable])
+      edit_polymorphic_path([school, observable])
     end
 
     def delete_path
-      polymorphic_path([observable.school, observable])
+      polymorphic_path([school, observable])
     end
 
     def icon_name
@@ -78,19 +82,15 @@ class TimelineComponent < ViewComponent::Base
       observation.observable
     end
 
-    def school
-      observation.school
-    end
-
-    def can_show?
+    def linkable?
       true
     end
 
-    def can_edit?
+    def editable?
       true
     end
 
-    def show_actions?
+    def show_buttons?
       show_actions && can?(:manage, observable)
     end
 
@@ -107,45 +107,35 @@ class TimelineComponent < ViewComponent::Base
   end
 
   class Activity < ObservationBase
-    # icon_name - clipboard-check
     def observable
       observation.activity
     end
 
     def target
-      observation.activity.display_name
+      observable.display_name
     end
 
     def compact_path
-      activity_type_path(observation.activity.activity_type)
+      activity_type_path(observable.activity_type)
     end
   end
 
   class Audit < ObservationBase
-    # icon_name - clipboard-check
     def observable
       observation.audit
     end
 
     def target
-      observation.audit.title
+      observable.title
     end
 
-    def can_show?
-      can?(:show, observation.audit) && observation.audit.published?
+    def linkable?
+      can?(:show, observable) && observable.published?
     end
   end
 
-  class AuditActivitiesCompleted < ObservationBase
-    def observable
-      observation.audit
-    end
-
-    def target
-      observation.audit.title
-    end
-
-    def show_actions?
+  class AuditActivitiesCompleted < Audit
+    def show_buttons?
       false
     end
   end
@@ -160,15 +150,15 @@ class TimelineComponent < ViewComponent::Base
     end
 
     def show_path
-      school_intervention_path(observation.school, observation)
+      school_intervention_path(school, observation)
     end
 
     def edit_path
-      edit_school_intervention_path(observation.school, observation)
+      edit_school_intervention_path(school, observation)
     end
 
     def delete_path
-      school_intervention_path(observation.school, observation)
+      school_intervention_path(school, observation)
     end
 
     def target
@@ -181,20 +171,19 @@ class TimelineComponent < ViewComponent::Base
   end
 
   class Programme < ObservationBase
-    # icon_name - clipboard-check
     def observable
       observation.programme
     end
 
     def show_path
-      programme_type_path(observation.programme.programme_type)
+      programme_type_path(observable.programme_type)
     end
 
     def target
-      observation.programme.programme_type.title
+      observable.programme_type.title
     end
 
-    def show_actions?
+    def show_buttons?
       false
     end
 
@@ -212,8 +201,8 @@ class TimelineComponent < ViewComponent::Base
       observation.school_target
     end
 
-    def can_edit?
-      !observation.school_target.expired?
+    def editable?
+      !observable.expired?
     end
   end
 
@@ -227,18 +216,18 @@ class TimelineComponent < ViewComponent::Base
     end
 
     def show_path
-      school_temperature_observations_path(observation.school)
+      school_temperature_observations_path(school)
     end
 
-    def can_edit?
+    def editable?
       false
     end
 
     def delete_path
-      school_temperature_observation_path(observation.school, observation)
+      school_temperature_observation_path(school, observation)
     end
 
-    def show_actions?
+    def show_buttons?
       show_actions && can?(:delete, observation)
     end
   end

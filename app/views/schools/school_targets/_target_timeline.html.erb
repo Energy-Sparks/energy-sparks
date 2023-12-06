@@ -18,7 +18,11 @@
   </div>
   <div class="row justify-content-md-center">
     <div class="col col-md-10">
-      <%= render 'schools/observations/timeline', observations: observations, show_actions: false%>
+      <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+        <%= component 'timeline', observations: observations, show_actions: false %>
+      <% else %>
+        <%= render 'schools/observations/timeline', observations: observations, show_actions: false %>
+      <% end %>
     </div>
   </div>
 <% end %>

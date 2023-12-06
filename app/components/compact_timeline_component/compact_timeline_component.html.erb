@@ -2,7 +2,7 @@
   <ul class="list-group list-group-flush">
     <% observations.each do |observation| %>
       <li class="list-group-item">
-        <%= render TimelineComponent::Observation.new(observation: observation, compact: true) %>
+        <%= component 'timeline/observation', observation: observation, compact: true %>
       </li>
     <% end %>
   </ul>

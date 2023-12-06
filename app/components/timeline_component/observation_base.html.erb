@@ -9,18 +9,18 @@
     <h3 class="pt-1">
       <strong>
         <% if target %>
-          <%= message %><%= ": #{link_to(target, show_path)}".html_safe if can_show? %>
+          <%= message %><%= ": #{link_to(target, show_path)}".html_safe if linkable? %>
         <% else %>
-          <%= link_to message, show_path if can_show? %>
+          <%= link_to message, show_path if linkable? %>
         <% end %>
       </strong>
     </h3>
     <span class="text-muted"><%= nice_dates(observation.at) %></span>
   </td>
-  <% if show_actions? %>
+  <% if show_buttons? %>
     <td class="text-right">
       <div class="btn-group">
-        <%= link_to t('common.labels.edit'), edit_path, class: 'btn btn-warning' if can_edit? %>
+        <%= link_to t('common.labels.edit'), edit_path, class: 'btn btn-warning' if editable? %>
         <%= link_to t('common.labels.delete'), delete_path, method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
       </div>
     </td>
