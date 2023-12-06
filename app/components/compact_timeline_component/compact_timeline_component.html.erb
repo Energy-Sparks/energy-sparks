@@ -1,5 +1,9 @@
 <div class="compact-timeline-component">
-  <% observations.each do |observation| %>
-    <%= render TimelineComponent::Observation.new(observation: observation, show_actions: show_actions, compact: true) %>
-  <% end %>
+  <ul class="list-group list-group-flush">
+    <% observations.each do |observation| %>
+      <li class="list-group-item">
+        <%= render TimelineComponent::Observation.new(observation: observation, compact: true) %>
+      </li>
+    <% end %>
+  </ul>
 </div>

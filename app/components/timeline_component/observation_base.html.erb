@@ -1,7 +1,6 @@
 <% if compact %>
   <%= icon %>
   <%= I18n.t("components.timeline.#{self.class.name.demodulize.underscore}.compact_message_html", school: school.name, school_path: school_path(school), target: target, count: observation.points || 0, compact_path: compact_path).html_safe %>
-  <br />
 <% else %>
   <td class="p-3 text-center">
     <%= icon %>
