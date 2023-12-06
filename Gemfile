@@ -24,7 +24,7 @@ gem 'pg_search'
 
 # Dashboard analytics
 # gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.10'
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20231123-faraday'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20231101-ruby3'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
