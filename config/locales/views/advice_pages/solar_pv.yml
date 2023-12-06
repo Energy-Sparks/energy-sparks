@@ -5,11 +5,13 @@ en:
       has_solar_pv:
         analysis:
           after_april_2019: After April 2019
-          after_april_2019_content_html: There will be an extra saving of about £79 from exported electricity under the <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/smart-export-guarantee-seg">SEG (Smart Export Guarantee)</a>
+          after_april_2019_content_html: |-
+            <p>The school might also gain between 1p and 15p per kWh of exported electricity under the <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/smart-export-guarantee-seg">SEG (Smart Export Guarantee)</a>. This rate will be agreed with your energy provider.</p>
+            <p>Using Energy Spark’s average SEG rate of %{export_price}p per kWh, we estimate that your school will have received  %{export_value} under the SEG in the last year.</p>
           before_april_2019: Before April 2019
           before_april_2019_content_html: |-
             <p>The school might also gain from the government subsidy called <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/feed-tariffs-fit">'feed-in-tariff'</a>.</p>
-            <p>The amount of the feed in tariff will depend on when the panels were installed and is typically in the range 5p/kWh to 40 p/kWh x the total 'Photovoltaic production' of 5,694 kWh, each year</p>
+            <p>The amount of the feed in tariff will depend on when the panels were installed and is typically in the range 5p/kWh to 40 p/kWh x the total 'Photovoltaic production' of %{solar_generation} kWh, each year</p>
           benefits_of_having_installed_solar_panels: Benefits of having installed solar panels
           if_the_panels_are_owned_by_a_third_party: If the panels are owned by a third-party
           if_the_panels_are_owned_by_the_school: If the panels are owned by the school
