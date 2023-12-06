@@ -5,24 +5,9 @@ require "rails_helper"
 RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
   let(:observation) { create(:observation, :activity) }
   let(:observations) { [observation] }
-
-  let(:observation_list) do
-    [
-      create(:observation, :activity),
-      create(:observation, :audit),
-      create(:observation, :audit_activities_completed),
-      create(:observation, :intervention),
-      create(:observation, :programme),
-      create(:observation, :school_target),
-      create(:observation, :temperature),
-      create(:observation, :transport_survey),
-    ]
-  end
-
   let(:show_actions) { true }
   let(:all_params) { { observations: observations, classes: 'my-class', id: 'my-id', show_actions: show_actions } }
   let(:params) { all_params }
-
   let(:current_user) { create(:admin) }
 
   before do
