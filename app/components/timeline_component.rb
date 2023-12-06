@@ -100,6 +100,10 @@ class TimelineComponent < ViewComponent::Base
     def message
       I18n.t("components.timeline.#{self.class.name.demodulize.underscore}.message")
     end
+
+    def compact_path
+      show_path
+    end
   end
 
   class Activity < ObservationBase
@@ -110,6 +114,10 @@ class TimelineComponent < ViewComponent::Base
 
     def target
       observation.activity.display_name
+    end
+
+    def compact_path
+      activity_type_path(observation.activity.activity_type)
     end
   end
 
@@ -163,8 +171,12 @@ class TimelineComponent < ViewComponent::Base
       school_intervention_path(observation.school, observation)
     end
 
-    def message
+    def target
       observation.intervention_type.name
+    end
+
+    def compact_path
+      intervention_type_path(observable)
     end
   end
 
@@ -184,6 +196,10 @@ class TimelineComponent < ViewComponent::Base
 
     def show_actions?
       false
+    end
+
+    def compact_path
+      show_path
     end
   end
 

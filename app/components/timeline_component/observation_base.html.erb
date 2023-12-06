@@ -1,5 +1,7 @@
 <% if compact %>
-  <%= icon %> <%= link_to school.name, school_url(school) %> scored <%= observation.points || 0 %> points by <%= message %><br />
+  <%= icon %>
+  <%= I18n.t("components.timeline.#{self.class.name.demodulize.underscore}.compact_message_html", school: school.name, school_path: school_path(school), target: target, count: observation.points || 0, compact_path: compact_path).html_safe %>
+  <br />
 <% else %>
   <td class="p-3 text-center">
     <%= icon %>
@@ -8,10 +10,7 @@
     <h3 class="pt-1">
       <strong>
         <% if target %>
-          <%= message %>
-          <% if can_show? %>
-          : <%= link_to target, show_path %>
-          <% end %>
+          <%= message %><%= ": #{link_to(target, show_path)}".html_safe if can_show? %>
         <% else %>
           <%= link_to message, show_path if can_show? %>
         <% end %>
