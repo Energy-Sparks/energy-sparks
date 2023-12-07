@@ -41,8 +41,7 @@ module Transifex
       end
 
       describe '#get_languages' do
-        let(:body)          { File.read('spec/fixtures/transifex/get_languages.json') }
-        let(:expected_path) { "projects/o:energy-sparks:p:#{project}/languages" }
+        let(:body) { File.read('spec/fixtures/transifex/get_languages.json') }
 
         it 'requests url with path and returns data' do
           stubs.get(get_languages_path) { [200, {}, body] }
