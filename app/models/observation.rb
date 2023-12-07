@@ -44,7 +44,6 @@ class Observation < ApplicationRecord
   has_many   :locations, through: :temperature_recordings
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
-  belongs_to :programme, optional: true
   belongs_to :audit, optional: true
   belongs_to :school_target, optional: true
 
@@ -61,7 +60,6 @@ class Observation < ApplicationRecord
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
   validates :activity_id, presence: true, if: :activity?
-  validates :programme_id, presence: true, if: :programme?
   validates :audit_id, presence: true, if: :audit?
   validates :school_target_id, presence: true, if: :school_target?
   validates :audit_id, presence: true, if: :audit_activities_completed?
