@@ -1,16 +1,16 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: f05d5366b0f5b5b991bc34fe724047da1244d53a
-  branch: 20231101-ruby3
+  revision: 92356bd546f0030fce7fd64c9561722e92cd84b2
+  tag: 4.1.11
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
-      benchmark-memory (~> 0)
-      chroma (~> 0)
+      benchmark-memory (~> 0.1.2)
+      chroma (~> 0.2.0)
       faraday (~> 2)
       faraday-retry (~> 2)
-      hashdiff (~> 1)
-      html-table (~> 1)
+      hashdiff (~> 1.0.0)
+      html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
       pry-byebug
       require_all (~> 2.0.0)
@@ -35,7 +35,7 @@ GIT
       rubyzip (>= 1.3.0, < 3.0.0)
 
 GIT
-  remote: https://github.com/Energy-Sparks/statsample
+  remote: https://github.com/Energy-Sparks/statsample.git
   revision: e3de8a332546ca0506938f49f8a9f92762aee737
   branch: update-gems-and-awesome-print
   specs:
@@ -833,4 +833,4 @@ RUBY VERSION
    ruby 2.7.6p219
 
 BUNDLED WITH
-   2.2.32
+   2.4.22
