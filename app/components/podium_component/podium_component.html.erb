@@ -1,7 +1,11 @@
 <div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
   <% if podium.includes_school? %>
     <h4 class="text-center">
-      <%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.
+      <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+        <%= t('components.podium.full_position_html', position_ordinal: podium.school_position.ordinal, scoreboard: podium.scoreboard.name, scoreboard_path: scoreboard_path(podium.scoreboard)) %>.
+      <% else %>
+        <%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.
+      <% end %>
     </h4>
     <div class="row align-items-end border-bottom grey">
       <% podium.low_to_high.each do |position| %>
