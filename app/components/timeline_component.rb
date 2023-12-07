@@ -167,10 +167,6 @@ class TimelineComponent < ViewComponent::Base
   end
 
   class Programme < ObservationBase
-    def observable
-      observation.programme
-    end
-
     def show_path
       programme_type_path(observable.programme_type)
     end
