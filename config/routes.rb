@@ -480,6 +480,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :chart_previews
+
     namespace :emails do
       resources :alert_mailers, only: :show
     end
