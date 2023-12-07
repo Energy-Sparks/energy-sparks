@@ -319,22 +319,6 @@ cy:
         title: "%{meter_name} (%{meter_mpan_mprn})"
         user_consented: Defnyddiwr wedi cydsynio
         withdraw_consent: Tynnu caniatâd
-    observations:
-      timeline:
-        action:
-          one: '%{count} weithred'
-          two: '%{count} weithred'
-          many: '%{count} o weithredoedd'
-          other: '%{count} o weithredoedd'
-        activity:
-          completed_an_activity: Cwblhawyd gweithgaredd
-        audit:
-          completed_audit_activities: Wedi cwblhau pob gweithgaredd archwilio
-          received_an_audit: Wedi cael archwiliad ynni
-        programme:
-          completed_a_programme: Wedi cwblhau'r rhaglen
-        temperatures:
-          recorded_temperatures_in: Tymheredd a gofnodwyd yn
     private:
       access_disabled: Mae gan yr ysgol hon fynediad cyhoeddus anabl i ddata defnydd ynni a mewnwelediadau.
       login_links_html: Defnyddiwch y dolenni isod i fewngofnodi fel aelod o staff neu ddisgybl o'r ysgol hon. Neu <a href='%{schools_path}'>archwilio ysgol arall</a>

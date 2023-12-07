@@ -2,6 +2,9 @@
 en:
   co2: CO2
   common:
+    action:
+      one: "%{count} action"
+      other: "%{count} actions"
     application: Energy Sparks
     back_to_top: Back to top
     bar_charts: Bar charts

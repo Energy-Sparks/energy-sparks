@@ -2,6 +2,11 @@ cy:
   co2: CO2
   common:
     application: Sbarcynni
+    action:
+      one: '%{count} weithred'
+      two: '%{count} weithred'
+      many: '%{count} o weithredoedd'
+      other: '%{count} o weithredoedd'
     back_to_top: Yn ôl i'r brig
     bar_charts: Siartiau bar
     confirm: Ydych chi'n siŵr?
