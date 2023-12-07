@@ -38,7 +38,6 @@ GIT
   remote: https://github.com/Energy-Sparks/statsample
   revision: e3de8a332546ca0506938f49f8a9f92762aee737
   branch: update-gems-and-awesome-print
-  tag: 2.1.1-energy-sparks
   specs:
     statsample (2.1.0)
       amazing_print (~> 1.2.1)
