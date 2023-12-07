@@ -38,4 +38,5 @@ jobs:
           KNAPSACK_GENERATE_REPORT: true
       - uses: actions/upload-artifact@v3
         with:
+          name: knapsack_rspec_report
           path: knapsack_rspec_report.json
