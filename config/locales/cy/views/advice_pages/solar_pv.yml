@@ -4,11 +4,11 @@ cy:
       has_solar_pv:
         analysis:
           after_april_2019: Ar ôl Ebrill 2019
-          after_april_2019_content_html: Bydd arbediad ychwanegol o tua £79 o drydan wedi'i allforio o dan y <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/smart-export-guarantee-seg">SEG (Gwarant Allforio Clyfar)</a>
+          after_april_2019_content_html: Bydd arbediad ychwanegol o tua %{export_value} o drydan wedi'i allforio o dan y <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/smart-export-guarantee-seg">SEG (Gwarant Allforio Clyfar)</a>
           before_april_2019: Cyn Ebrill 2019
           before_april_2019_content_html: |-
             <p>Gallai'r ysgol hefyd elwa o gymhorthdal y llywodraeth o'r enw <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/feed-tariffs-fit">'tariff cyflenwi trydan'</a>.</p>
-            <p>Bydd swm y tariff cyflenwi trydan yn dibynnu ar bryd y gosodwyd y paneli ac fel arfer mae o fewn yr ystod 5p/kWh i 40 p/kWh x cyfanswm y 'Cynhyrchiad Ffotofoltäig' o 5,693 kWh, bob blwyddyn</p>
+            <p>Bydd swm y tariff cyflenwi trydan yn dibynnu ar bryd y gosodwyd y paneli ac fel arfer mae o fewn yr ystod 5p/kWh i 40 p/kWh x cyfanswm y 'Cynhyrchiad Ffotofoltäig' o %{solar_generation} kWh, bob blwyddyn</p>
           benefits_of_having_installed_solar_panels: Manteision gosod paneli solar
           if_the_panels_are_owned_by_a_third_party: Os yw'r paneli yn eiddo i drydydd parti
           if_the_panels_are_owned_by_the_school: Os yw'r paneli yn eiddo i'r ysgol
