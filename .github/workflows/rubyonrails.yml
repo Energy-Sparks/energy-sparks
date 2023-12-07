@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ master, aws-eb-master ]
 jobs:
-  test-core:
+  rspec:
     runs-on: ubuntu-latest
     services:
       postgres:

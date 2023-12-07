@@ -4,8 +4,9 @@ on:
     branches: [ master, aws-eb-test, aws-eb-master ]
   pull_request:
     branches: [ master, aws-eb-master ]
+  workflow_dispatch:
 jobs:
-  test-core:
+  rspec:
     runs-on: ubuntu-latest
     services:
       postgres:
