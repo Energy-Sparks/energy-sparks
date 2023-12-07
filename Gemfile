@@ -22,13 +22,13 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.1.11'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.11'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'layer-down-day-nov-2023'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
-gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: '2.1.1-energy-sparks', branch: 'update-gems-and-awesome-print'
+gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'update-gems-and-awesome-print'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -178,3 +178,6 @@ end
 
 gem 'sprockets', '3.7.2'
 gem 'sass-rails', '5.1.0'
+
+gem 'faraday'
+gem 'faraday-follow_redirects'

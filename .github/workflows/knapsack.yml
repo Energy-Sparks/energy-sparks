@@ -1,9 +1,6 @@
-name: "Ruby on Rails CI"
+name: "Generate knapsack timings"
 on:
-  push:
-    branches: [ master, aws-eb-test, aws-eb-master ]
-  pull_request:
-    branches: [ master, aws-eb-master ]
+  workflow_dispatch:
 jobs:
   rspec:
     runs-on: ubuntu-latest
@@ -16,16 +13,9 @@ jobs:
           POSTGRES_DB: rails_test
           POSTGRES_USER: rails
           POSTGRES_PASSWORD: password
-    strategy:
-      fail-fast: false
-      matrix:
-        ci_node_total: [16]
-        ci_node_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-      CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
-      CI_NODE_INDEX: ${{ matrix.ci_node_index }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -39,6 +29,10 @@ jobs:
       - run: bundle exec rake assets:precompile
       # Fail early if we have issues with translation keys
       - run: bundle exec i18n-tasks health
-      # https://docs.knapsackpro.com/ruby/knapsack
-      # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
-      - run: bundle exec rake knapsack:rspec
+      - run: bundle exec rspec       
+        env:
+          KNAPSACK_GENERATE_REPORT: true
+      - uses: actions/upload-artifact@v3
+        with:
+          name: knapsack_rspec_report
+          path: knapsack_rspec_report.json
