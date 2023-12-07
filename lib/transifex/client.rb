@@ -1,3 +1,5 @@
+
+require 'faraday/follow_redirects'
 module Transifex
   class Client
     class ApiFailure < StandardError; end
@@ -12,10 +14,13 @@ module Transifex
     ORGANIZATION = 'energy-sparks'.freeze
     CONTENT_TYPE_JSON = 'application/vnd.api+json'.freeze
 
-    def initialize(api_key, project, connection = nil)
+    def initialize(api_key, project, stubs: nil)
       @api_key = api_key
       @project = project
-      @connection = connection
+      @connection = Faraday.new(BASE_URL, headers: headers) do |f|
+        f.adapter(:test, stubs) if stubs
+        f.response(:follow_redirects)
+      end
     end
 
     def get_languages
@@ -107,24 +112,20 @@ module Transifex
       "#{resource_id(slug)}:l:#{language}"
     end
 
-    def connection
-      @connection ||= Faraday.new(BASE_URL, headers: headers) { |f| f.use FaradayMiddleware::FollowRedirects }
-    end
-
     def get_data(url)
-      response = connection.get(url)
+      response = @connection.get(url)
       check_response_status(response)
       block_given? ? yield(response) : process_response(response)
     end
 
     def post_data(url, data)
-      response = connection.post(url, data.to_json)
+      response = @connection.post(url, data.to_json)
       check_response_status(response)
       process_response(response)
     end
 
     def del_data(url)
-      response = connection.delete(url)
+      response = @connection.delete(url)
       check_response_status(response)
     end
 

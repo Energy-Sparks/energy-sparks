@@ -22,8 +22,8 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.1.11'
-#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'layer-down-day-nov-2023'
+#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.1.11'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20231101-ruby3'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -178,3 +178,6 @@ end
 
 gem 'sprockets', '3.7.2'
 gem 'sass-rails', '5.1.0'
+
+gem 'faraday'
+gem 'faraday-follow_redirects'
