@@ -131,7 +131,7 @@
 
 <%= render 'your_thermostatic_control_notice' %>
 
-<%= component 'chart', chart_type: :storage_heater_thermostatic, school: @school do |c| %>
+<%= component 'chart', chart_type: :storage_heater_thermostatic, axis_controls: false, school: @school do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.storage_heater_thermostatic.title') %>
   <% end %>

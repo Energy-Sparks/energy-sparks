@@ -16,7 +16,7 @@ module AdvicePageHelper
   #our naming convention and page keys. Will only work on advice pages
   #content, e.g advice_pages.*
   def advice_t(key, **vars)
-    I18n.t(key, vars.merge(scope: [:advice_pages])).html_safe
+    I18n.t(key, **vars.merge(scope: [:advice_pages])).html_safe
   end
 
   def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2)

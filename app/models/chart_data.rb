@@ -3,14 +3,14 @@ require 'dashboard'
 class ChartData
   OPERATIONS = %i[move extend contract compare].freeze
 
-  def initialize(school, aggregated_school, original_chart_type, chart_config, transformations: [], provide_advice: false, reraise_exception: false)
+  def initialize(school, aggregated_school, original_chart_type, chart_config, transformations: [], provide_advice: false, report_exception: false)
     @school = school
     @aggregated_school = aggregated_school
     @original_chart_type = original_chart_type
     @chart_config_overrides = chart_config
     @transformations = transformations
     @provide_advice = provide_advice
-    @reraise_exception = reraise_exception
+    @report_exception = report_exception
   end
 
   def data
@@ -47,11 +47,11 @@ class ChartData
       transformed_chart_type,         # chart_param
       true,                           # resolve_inheritance
       nil,                            # override_config
-      @reraise_exception,             # reraise_exception
+      @report_exception,              # reraise_exception, in analytics
       provide_advice: @provide_advice # provide_advice
     )
   rescue => e
-    if @reraise_exception
+    if @report_exception
       Rollbar.error(
         e,
         school_name: @school.name,
