@@ -2,9 +2,6 @@ name: "Generate knapsack timings"
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
 permissions:
   contents: write
 jobs:
