@@ -1,5 +1,5 @@
-
 require 'faraday/follow_redirects'
+
 module Transifex
   class Client
     class ApiFailure < StandardError; end
