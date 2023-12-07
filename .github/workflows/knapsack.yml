@@ -1,9 +1,5 @@
 name: "Generate knapsack timings"
 on:
-  push:
-    branches: [ master, aws-eb-test, aws-eb-master ]
-  pull_request:
-    branches: [ master, aws-eb-master ]
   workflow_dispatch:
 jobs:
   rspec:
