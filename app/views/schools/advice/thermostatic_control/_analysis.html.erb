@@ -39,7 +39,7 @@
        ) %>
 </p>
 
-<%= component 'chart', chart_type: :thermostatic_up_to_1_year, school: @school do |c| %>
+<%= component 'chart', chart_type: :thermostatic_up_to_1_year, axis_controls: false, school: @school do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.title') %>
   <% end %>
@@ -68,7 +68,7 @@
 
 <%= t('advice_pages.thermostatic_control.analysis.an_alternative_way_of_looking_html') %>
 
-<%= component 'chart', chart_type: :thermostatic_control_large_diurnal_range, school: @school do |c| %>
+<%= component 'chart', chart_type: :thermostatic_control_large_diurnal_range, axis_controls: false, school: @school do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.thermostatic_control.analysis.thermostatic_control_large_diurnal_range.title') %>
   <% end %>
