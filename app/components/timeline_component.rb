@@ -114,10 +114,6 @@ class TimelineComponent < ViewComponent::Base
     def target
       observable.display_name
     end
-
-    def compact_path
-      activity_type_path(observable.activity_type)
-    end
   end
 
   class Audit < ObservationBase
@@ -142,7 +138,7 @@ class TimelineComponent < ViewComponent::Base
 
   class Intervention < ObservationBase
     def icon_name
-      observation.intervention_type.intervention_type_group.icon
+      observable.intervention_type_group.icon
     end
 
     def observable
@@ -162,11 +158,11 @@ class TimelineComponent < ViewComponent::Base
     end
 
     def target
-      observation.intervention_type.name
+      observable.name
     end
 
-    def compact_path
-      intervention_type_path(observable)
+    def show_buttons?
+      show_actions && can?(:manage, observation)
     end
   end
 
@@ -185,10 +181,6 @@ class TimelineComponent < ViewComponent::Base
 
     def show_buttons?
       false
-    end
-
-    def compact_path
-      show_path
     end
   end
 
