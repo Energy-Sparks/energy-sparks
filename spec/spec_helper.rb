@@ -102,4 +102,36 @@ end
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
 
+Knapsack.tracker.config({
+  enable_time_offset_warning: ENV.key?('CI_NODE_INDEX'),
+})
+
 Knapsack::Adapters::RSpecAdapter.bind
+
+# https://github.com/KnapsackPro/knapsack/issues/34
+# Monkey Patch Knapsack to merge reports instead of overwrite
+begin
+  class Knapsack::Report
+    alias_method :save_without_leading_existing_report, :save
+    def save
+      Knapsack::Presenter.existing_report = open
+      save_without_leading_existing_report
+    end
+  end
+
+  class << Knapsack::Presenter
+    attr_writer :existing_report
+
+    def report_hash
+      @existing_report.merge(Knapsack.tracker.test_files_with_time).sort.to_h
+    end
+
+    def report_yml
+      report_hash.to_yaml
+    end
+
+    def report_json
+      JSON.pretty_generate(report_hash)
+    end
+  end
+end
