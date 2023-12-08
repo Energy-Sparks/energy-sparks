@@ -6,11 +6,9 @@ module EnergyTariffs
 
     def create
       @energy_tariff_charges = make_charges(params[:energy_tariff_charges], @energy_tariff)
-      @energy_tariff_charges.map(&:valid?)
       if @energy_tariff_charges.all?(&:valid?)
         EnergyTariff.transaction do
           @energy_tariff.update(energy_tariff_params)
-          @energy_tariff.energy_tariff_charges.destroy_all
           @energy_tariff_charges.each(&:save!)
         end
         @energy_tariff.update!(updated_by: current_user)
