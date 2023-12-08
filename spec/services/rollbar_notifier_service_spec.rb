@@ -39,7 +39,7 @@ describe RollbarNotifierService do
         allow(rql_jobs).to receive(:run_query).and_return(job_result)
 
         results = RollbarNotifierService.new(rql_jobs).run_queries
-        results.each do |_key, reported_result|
+        results.each_value do |reported_result|
           expect(reported_result[:title]).not_to be_nil
           expect(reported_result[:rql_query]).not_to be_nil
           expect(reported_result[:results]).not_to be_nil
@@ -53,7 +53,7 @@ describe RollbarNotifierService do
       allow(rql_jobs).to receive(:run_query).and_raise(RuntimeError)
 
       results = RollbarNotifierService.new(rql_jobs).run_queries
-      results.each do |_key, reported_result|
+      results.each_value do |reported_result|
         expect(reported_result[:title]).not_to be_nil
         expect(reported_result[:rql_query]).not_to be_nil
         expect(reported_result[:results]).not_to be_nil
@@ -82,7 +82,7 @@ describe RollbarNotifierService do
       RollbarNotifierService.new(rql_jobs).perform
       email = ActionMailer::Base.deliveries.last
       email_body = email.body.to_s
-      RollbarNotifierService::REPORTS.each do |_key, report|
+      RollbarNotifierService::REPORTS.each_value do |report|
         expect(email_body).to include(report[:title])
       end
     end

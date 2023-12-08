@@ -40,7 +40,7 @@ private
     @errors = []
 
     page_groups.each do |heading_hash|
-      heading_hash[:benchmarks].each do |page, _title|
+      heading_hash[:benchmarks].each_key do |page|
         @content_hash[page] = filter_content(content_for_page(page, @errors))
       end
     end
