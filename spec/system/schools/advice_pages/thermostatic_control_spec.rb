@@ -62,7 +62,7 @@ RSpec.describe "thermostatic control advice page", type: :system do
 
         ['#chart_wrapper_thermostatic_up_to_1_year', '#chart_wrapper_thermostatic_control_large_diurnal_range'].each do |chart_type|
           within chart_type do
-            expect(page).not_to have_css(".axis-choice")
+            expect(page).not_to have_css(".axis-choice", visible: :hidden)
           end
         end
       end

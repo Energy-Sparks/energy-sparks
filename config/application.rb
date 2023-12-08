@@ -62,5 +62,10 @@ module EnergySparks
     config.i18n.enforce_available_locales = true
     config.i18n.fallbacks = true
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
+
+    config.view_component.show_previews = true
+    config.view_component.preview_paths << "#{Rails.root}/spec/components/previews"
+    config.view_component.preview_route = "/admin/components/previews"
+    config.view_component.preview_controller = "Admin::ComponentPreviewsController"
   end
 end
