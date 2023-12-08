@@ -42,3 +42,11 @@ jobs:
       # https://docs.knapsackpro.com/ruby/knapsack
       # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
       - run: bundle exec rake knapsack:rspec
+  overcommit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: bundle exec overcommit --run
