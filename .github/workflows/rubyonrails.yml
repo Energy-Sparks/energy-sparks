@@ -53,5 +53,5 @@ jobs:
           bundler-cache: true
       - run: bundle exec overcommit --sign && bundle exec overcommit --run
         env:
-          GIT_AUTHOR_NAME: ci
-          GIT_AUTHOR_EMAIL: ci@localhost
+          GIT_AUTHOR_NAME: Over Commit
+          GIT_AUTHOR_EMAIL: overcommit@localhost
