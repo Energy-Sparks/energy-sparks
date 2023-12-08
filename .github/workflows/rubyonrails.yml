@@ -55,3 +55,4 @@ jobs:
         env:
           GIT_AUTHOR_NAME: Over Commit
           GIT_AUTHOR_EMAIL: overcommit@localhost
+          SKIP: ForbiddenBranches # this fails when triggered by master push
