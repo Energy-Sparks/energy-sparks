@@ -1,10 +1,7 @@
-require_relative 'boot'
+require_relative "boot"
 
-require "rails"
 require "rails/all"
-require "active_storage/engine"
 require_relative "../lib/rack/x_robots_tag"
-
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -12,12 +9,16 @@ Bundler.require(*Rails.groups)
 
 module EnergySparks
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
+
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
 
     config.eager_load_paths << Rails.root.join('lib/')
     # Pull in folders without namespacing
@@ -50,7 +51,10 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
 
+    # Default good job execution mode configuration for test
+    # See https://github.com/bensheldon/good_job#configuration-options
     config.active_job.queue_adapter = :good_job
+    config.good_job.execution_mode = :async
     config.good_job.retry_on_unhandled_error = false
     config.good_job.max_threads = 5
     config.good_job.enable_cron = false

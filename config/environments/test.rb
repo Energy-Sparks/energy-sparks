@@ -1,13 +1,14 @@
+require "active_support/core_ext/integer/time"
+
+# The test environment is used exclusively to run your application's
+# test suite. You never need to work with it otherwise. Remember that
+# your test database is "scratch space" for the test suite and is wiped
+# and recreated between test runs. Don't rely on the data there!
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-
-  # The test environment is used exclusively to run your application's
-  # test suite. You never need to work with it otherwise. Remember that
-  # your test database is "scratch space" for the test suite and is wiped
-  # and recreated between test runs. Don't rely on the data there!
   config.cache_classes = true
-  config.cache_store = :null_store
 
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
@@ -23,6 +24,7 @@ Rails.application.configure do
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
+  config.cache_store = :null_store
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
@@ -30,7 +32,7 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
-  # Store uploaded files on the local file system in a temporary directory
+  # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
   config.action_mailer.perform_caching = false
@@ -39,27 +41,33 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
-  config.action_mailer.default_url_options = { host: 'localhost' }
-
-  # # Allows mailer previews to be viewed on production
-  # # See also: config/initializers/action_mailer.rb
-  config.action_mailer.show_previews = true
-  # # Rspec makes rails use spec/mailers/previews as the mail previews path
-  config.action_mailer.preview_path = Rails.root.join('spec', 'mailers', 'previews')
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  # Raises error for missing translations
-  config.action_view.raise_on_missing_translations = true
+  # Raise exceptions for disallowed deprecations.
+  config.active_support.disallowed_deprecation = :raise
 
+  # Tell Active Support which deprecation messages to disallow.
+  config.active_support.disallowed_deprecation_warnings = []
+
+  # Raises error for missing translations.
+  # config.i18n.raise_on_missing_translations = true
+
+  # Annotate rendered view with file names.
+  # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # Location customisations:
+  config.active_support.deprecation = :raise
+  config.i18n.raise_on_missing_translations = true
+  config.action_mailer.default_url_options = { host: 'localhost' }
+  # Allows mailer previews to be viewed on production
+  # See also: config/initializers/action_mailer.rb
+  config.action_mailer.show_previews = true
+  # Rspec makes rails use spec/mailers/previews as the mail previews path
+  config.action_mailer.preview_path = Rails.root.join('spec', 'mailers', 'previews')
+  require_relative '../../lib/mailchimp_marketing/mock_client'
   config.mailchimp_client = MailchimpMarketing::MockClient.new
-
-  # Default good job execution mode configuration for test
-  # See https://github.com/bensheldon/good_job#configuration-options
-  config.active_job.queue_adapter = :good_job
-  config.good_job.execution_mode = :async
-
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
 end
