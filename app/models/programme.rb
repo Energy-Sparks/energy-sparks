@@ -27,19 +27,13 @@ class Programme < ApplicationRecord
   belongs_to :school
   has_many :programme_activities
   has_many :activities, through: :programme_activities
+  has_many :observations, as: :observable
 
   enum status: { started: 0, completed: 1, abandoned: 2 } do
     event :complete do
       after do
         self.update(ended_on: Time.zone.now)
-
-        Observation.create!(
-          school: school,
-          observation_type: :programme,
-          at: Time.zone.now,
-          points: points_for_completion,
-          programme_id: id
-        )
+        self.observations.create!(points: points_for_completion)
       end
       transition :started => :completed
     end

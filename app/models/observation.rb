@@ -42,13 +42,16 @@ class Observation < ApplicationRecord
   belongs_to :school
   has_many   :temperature_recordings
   has_many   :locations, through: :temperature_recordings
+
+  belongs_to :programme, optional: true # will remove this later
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true
   belongs_to :school_target, optional: true
 
-  # If adding a new observation type remember to also add a timelime template in app/views/schools/observations/timeline
-  # event: 3 was removed as its no longer used
+  # If adding a new observation type remember to also modify the timeline component
+  # events: 3 has been removed
+  # events: 6 is to be removed when relationship is
   enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, observable: 8 }
 
   # This is the first stage in moving this class over to being fully polymorphic
@@ -63,6 +66,7 @@ class Observation < ApplicationRecord
   validates :audit_id, presence: true, if: :audit?
   validates :school_target_id, presence: true, if: :school_target?
   validates :audit_id, presence: true, if: :audit_activities_completed?
+  validates :observable_id, presence: true, if: :observable?
 
   validates :pupil_count, absence: true, unless: :intervention? # Only record pupil counts for interventions
 
@@ -83,11 +87,7 @@ class Observation < ApplicationRecord
   before_save :add_points_for_interventions, if: :intervention?
   before_save :add_bonus_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
 
-  before_validation :set_observable, if: :observable
-
-  def self.default_timeline_icon
-    'square-check'
-  end
+  before_validation :set_defaults, if: :observable, on: :create
 
   private
 
@@ -124,10 +124,9 @@ class Observation < ApplicationRecord
     attributes['centigrade'].blank?
   end
 
-  def set_observable
+  def set_defaults
     self.observation_type = :observable
-
-    # Take the school from the related object
-    self.school = self.observable.school if self.observable.school
+    self.school ||= self.observable.school if self.observable.school
+    self.at ||= Time.zone.now
   end
 end
