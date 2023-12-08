@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+gem 'rails', '~> 6.0.4'
+
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.12'
@@ -10,7 +12,6 @@ gem 'puma', '6.4.0' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
-gem 'rails', '~> 6.0.4' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'sprockets', '3.7.2'
 gem 'webpacker'
 
