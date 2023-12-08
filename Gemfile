@@ -23,8 +23,8 @@ gem 'pg'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.11'
-# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'layer-down-day-nov-2023'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.11'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20231101-ruby3'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -72,7 +72,7 @@ gem 'mustache', '~> 1.0'
 gem 'trix-rails', require: 'trix'
 
 # Auth & Users
-gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
+gem 'cancancan', '~> 3' # Use cancancan for authorization
 gem 'devise' # Use devise for authentication
 
 # Utils
