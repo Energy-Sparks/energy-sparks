@@ -4,41 +4,80 @@ describe 'Programme' do
   let(:school) { create :school }
   let(:programme_type) { create(:programme_type, bonus_score: 12) }
 
-  let(:programme) { Programme.create!(programme_type: programme_type, started_on: '2020-01-01', school: school) }
+  let(:programme) { create(:programme, programme_type: programme_type, started_on: '2020-01-01', school: school) }
+  let(:last_observation) { programme.observations.last }
 
-  before { Observation.delete_all }
+  it { expect(programme.observations.count).to eq(0) }
+  it { expect(programme).not_to be_completed }
+  it { expect(programme.ended_on).to be_nil }
+  it { expect(programme).not_to be_abandoned }
 
   describe '#complete' do
-    it 'completes a program and creates an observation as it is completed within the same academic year as they started it' do
-      allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-      expect(Observation.count).to eq(0)
-      expect(programme).not_to be_completed
-      expect(programme.ended_on).to be_nil
+    let(:current_year) { true }
+
+    before do
+      allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: current_year) }
       programme.complete!
-      expect(programme).to be_completed
-      expect(programme.ended_on).not_to be_nil
-      expect(Observation.count).to eq(1)
-      expect(Observation.last.points).to eq(12)
     end
 
-    it 'completes a program and creates an observation but does not add bonus points as it is completed outside of the academic year when they started it' do
-      allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-      expect(Observation.count).to eq(0)
-      expect(programme).not_to be_completed
-      expect(programme.ended_on).to be_nil
-      programme.complete!
-      expect(programme).to be_completed
-      expect(programme.ended_on).not_to be_nil
-      expect(Observation.count).to eq(1)
-      expect(Observation.last.points).to eq(0)
+    context "when programme is completed within the same academic year" do
+      let(:current_year) { true }
+
+      it "marks programme as complete" do
+        expect(programme).to be_completed
+      end
+
+      it "adds ended_on date to programme" do
+        expect(programme.ended_on).not_to be_nil
+      end
+
+      context "with observation" do
+        it { expect(programme.observations.count).to eq(1) }
+        it { expect(last_observation.at).not_to be_nil }
+        it { expect(last_observation.school).to eq(school) }
+        it { expect(last_observation.observation_type).to eq('observable') }
+
+        it "adds points" do
+          expect(last_observation.points).to eq(12)
+        end
+      end
+    end
+
+    context "when programme is completed outside of the academic year it was started" do
+      let(:current_year) { false }
+
+      it "marks programme as complete" do
+        expect(programme).to be_completed
+      end
+
+      it "adds ended_on date to programme" do
+        expect(programme.ended_on).not_to be_nil
+      end
+
+      context "with observation" do
+        it { expect(programme.observations.count).to eq(1) }
+        it { expect(last_observation.at).not_to be_nil }
+        it { expect(last_observation.school).to eq(school) }
+        it { expect(last_observation.observation_type).to eq('observable') }
+
+        it "doesn't add points" do
+          expect(last_observation.points).to eq(0)
+        end
+      end
     end
   end
 
-  it '#abandon' do
-    expect(programme).not_to be_abandoned
-    expect(programme.ended_on).to be_nil
-    programme.abandon!
-    expect(programme).to be_abandoned
-    expect(programme.ended_on).to be_nil
+  describe "#abandon" do
+    before do
+      programme.abandon!
+    end
+
+    it "sets status to abandoned" do
+      expect(programme).to be_abandoned
+    end
+
+    it "doesn't set ended_on" do
+      expect(programme.ended_on).to be_nil
+    end
   end
 end

@@ -27,6 +27,7 @@ class Programme < ApplicationRecord
   belongs_to :school
   has_many :programme_activities
   has_many :activities, through: :programme_activities
+  has_many :observations, as: :observable
 
   enum status: { started: 0, completed: 1, abandoned: 2 } do
     event :complete do
