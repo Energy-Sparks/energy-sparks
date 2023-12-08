@@ -103,7 +103,7 @@ end
 RSpec::Matchers.define_negated_matcher :not_change, :change
 
 Knapsack.tracker.config({
-  enable_time_offset_warning: ENV.key?('CI_NODE_INDEX'),
+  enable_time_offset_warning: ENV.key?('CI'),
 })
 
 Knapsack::Adapters::RSpecAdapter.bind
