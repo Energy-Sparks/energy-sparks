@@ -1,7 +1,0 @@
-<td class="p-3 text-center">
-  <%= fa_icon("clipboard-check fa-2x") %>
-</td>
-<td>
-  <h3 class="pt-1"><strong><%= t('schools.observations.timeline.audit.completed_audit_activities') %>:</strong> <%= link_to observation.audit.title, school_audit_path(observation.audit.school, observation.audit)%></h3>
-  <span class="text-muted"><%= nice_dates(observation.at) %></span>
-</td>

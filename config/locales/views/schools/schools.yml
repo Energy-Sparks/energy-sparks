@@ -318,24 +318,6 @@ en:
         title: "%{meter_name} (%{meter_mpan_mprn})"
         user_consented: User has consented
         withdraw_consent: Withdraw consent
-    observations:
-      timeline:
-        action:
-          one: "%{count} action"
-          other: "%{count} actions"
-        activity:
-          completed_an_activity: Completed an activity
-        audit:
-          completed_audit_activities: Completed all audit activities
-          received_an_audit: Received an energy audit
-        programme:
-          completed_a_programme: Completed a programme
-        temperatures:
-          recorded_temperatures_in: Recorded temperatures in
-        transport_survey:
-          message:
-            one: Recorded a transport survey response
-            other: Recorded %{count} transport survey responses
     private:
       access_disabled: This school has disabled public access to energy usage data and insights.
       login_links_html: Use the links below to log in as a member of staff or pupil from this school. Or <a href='%{schools_path}'>explore another school</a>
