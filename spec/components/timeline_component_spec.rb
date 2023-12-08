@@ -95,7 +95,6 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
     let(:observation) { create(:observation, :intervention) }
 
     it { expect(html).to have_css("i.fa-#{observation.intervention_type.intervention_type_group.icon}") }
-    it { expect(html).to have_content("Completed an action: ") } # I did change this to add this prefix!
     it { expect(html).to have_link(observation.intervention_type.name, href: school_intervention_path(observation.school, observation)) }
 
     context "when show_actions is true" do

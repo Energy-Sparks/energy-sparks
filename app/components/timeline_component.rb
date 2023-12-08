@@ -145,6 +145,10 @@ class TimelineComponent < ViewComponent::Base
       observation.intervention_type
     end
 
+    def message
+      observable.name
+    end
+
     def show_path
       school_intervention_path(school, observation)
     end
@@ -155,10 +159,6 @@ class TimelineComponent < ViewComponent::Base
 
     def delete_path
       school_intervention_path(school, observation)
-    end
-
-    def target
-      observable.name
     end
 
     def show_buttons?
