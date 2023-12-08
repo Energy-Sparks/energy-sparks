@@ -89,7 +89,7 @@ class AmrDataFeedReading < ApplicationRecord
   end
 
   def self.build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
-    amr_data_feed_config_ids = amr_data_feed_config_ids.reject { |id| (id.blank? || id.zero?) }
+    amr_data_feed_config_ids = amr_data_feed_config_ids.reject { |id| id.blank? || id.zero? }
     amr_data_feed_config_ids = AmrDataFeedConfig.all.pluck(:id) if amr_data_feed_config_ids.empty?
 
     list_of_mpans = mpans.map {|m| "'#{m}'"}.join(',')

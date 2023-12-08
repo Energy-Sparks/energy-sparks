@@ -11,7 +11,7 @@ module SchoolGroups
     def export
       CSV.generate(headers: true) do |csv|
         csv << headers
-        @total_savings.each do |alert_type_rating, _savings|
+        @total_savings.each_key do |alert_type_rating|
           next unless @alert_type_rating_ids.map(&:to_i).include?(alert_type_rating.id)
 
           @priority_actions[alert_type_rating].sort {|a, b| a.school.name <=> b.school.name }.each do |saving|
