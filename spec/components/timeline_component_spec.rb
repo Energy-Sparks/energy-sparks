@@ -112,7 +112,7 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
 
     it { expect(html).to have_css("i.fa-clipboard-check") }
     it { expect(html).to have_content("Completed a programme: ") }
-    it { expect(html).to have_link(observation.programme.programme_type.title, href: programme_type_path(observation.programme.programme_type)) }
+    it { expect(html).to have_link(observation.observable.programme_type.title, href: programme_type_path(observation.observable.programme_type)) }
 
     context "when show_actions is true" do
       let(:show_actions) { true }
