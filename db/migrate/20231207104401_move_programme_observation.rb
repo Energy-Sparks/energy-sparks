@@ -5,13 +5,9 @@ class MoveProgrammeObservation < ActiveRecord::Migration[6.0]
       observation.observation_type = :observable
       observation.save!
     end
-
-    remove_column :observations, :programme_id
   end
 
   def down
-    add_reference :observations, :programme, index: true
-
     Observation.where(observable_type: 'Programme').find_each do |observation|
       observation.programme = observation.observable
       observation.observable = nil
