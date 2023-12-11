@@ -42,3 +42,17 @@ jobs:
       # https://docs.knapsackpro.com/ruby/knapsack
       # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
       - run: bundle exec rake knapsack:rspec
+  overcommit:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: .overcommit_gems.rb
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: bundle exec overcommit --sign && bundle exec overcommit --run
+        env:
+          GIT_AUTHOR_NAME: Over Commit
+          GIT_AUTHOR_EMAIL: overcommit@localhost
+          SKIP: ForbiddenBranches # this fails when triggered by master push
