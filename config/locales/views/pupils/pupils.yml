@@ -69,6 +69,8 @@ en:
         no_activities_completed: No activities completed, make a start!
         points: points
         previous_temperatures: Previous temperatures
+        recent_activity: Recent activity across Energy Sparks
+        recent_scoreboard_activity: Recent activity on your scoreboard
         see_scoreboard: See the scoreboard
         setting_up: We're setting up this school's energy data and will update this page when it is ready to explore
         start_transport_survey: Start surveying

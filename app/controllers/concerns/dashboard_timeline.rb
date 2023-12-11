@@ -12,7 +12,10 @@ module DashboardTimeline
 
   def setup_compact_timeline(school)
     return unless school.scoreboard
-
-    school.scoreboard.observations.for_other_schools(school).limit(4)
+    if current_school_podium&.positions&.count&.> 1
+      school.scoreboard.observations.for_other_schools(school).by_date.limit(4)
+    else
+      Observation.for_other_schools(school).by_date.limit(4)
+    end
   end
 end
