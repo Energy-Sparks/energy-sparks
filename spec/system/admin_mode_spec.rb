@@ -26,8 +26,7 @@ describe 'Admin mode' do
 
     it 'serves expected page for admins' do
       ClimateControl.modify ADMIN_MODE: 'true' do
-        # supply host for rack-test so redirect after login keeps the same domain/cookie
-        visit "http://example.com#{new_user_session_path}"
+        visit new_user_session_path
         fill_in 'Email', with: admin.email
         fill_in 'Password', with: admin.password
         within '#staff' do
