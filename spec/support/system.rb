@@ -10,7 +10,7 @@ RSpec.configure do |config|
   # Capybara.default_host = 'http://example.com'
 
   Capybara.register_driver(:rack_test) do |app|
-    Capybara::RackTest::Driver.new(app, respect_data_method: true)
+    driver = Capybara::RackTest::Driver.new(app, respect_data_method: true)
     # driver = Capybara.drivers[:rack_test].call(app)
     driver.session_options.default_host = 'http://example.com'
     driver
