@@ -9,7 +9,7 @@ RSpec.describe "home", type: :system do
   it 'allows locale switch retaining extra parameters' do
     ClimateControl.modify FEATURE_FLAG_LOCALE_SWITCHER_BUTTONS: 'true' do
       visit root_path(foo: :bar)
-      expect(page).to have_link("Cymraeg", href: "http://127.0.0.1/?foo=bar")
+      expect(page).to have_link("Cymraeg", href: "http://cy.example.com/?foo=bar")
     end
   end
 
