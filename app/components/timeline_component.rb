@@ -149,6 +149,10 @@ class TimelineComponent < ViewComponent::Base
       observable.name
     end
 
+    def target
+      observable.name
+    end
+
     def show_path
       school_intervention_path(school, observation)
     end
