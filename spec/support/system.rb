@@ -14,12 +14,6 @@ RSpec.configure do |config|
   #   Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
   # end
 
-  Capybara.register_driver :rack_test do |app|
-    driver = Capybara::RackTest::Driver.new(app)
-    driver.session_options.default_host = 'http://example.com'
-    driver
-  end
-
   Capybara.register_driver :headless_chrome do |app|
     # options explained https://peter.sh/experiments/chromium-command-line-switches/
     # no-sandbox
