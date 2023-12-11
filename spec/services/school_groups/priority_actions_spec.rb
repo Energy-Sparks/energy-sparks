@@ -118,7 +118,7 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
     end
 
     it 'does not include ratings without priorities' do
-      priority_actions.each do |_k, v|
+      priority_actions.each_value do |v|
         expect(v).not_to be_empty
       end
     end

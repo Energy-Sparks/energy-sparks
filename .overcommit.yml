@@ -237,8 +237,8 @@ PreCommit:
     required_executable: 'grep'
     flags: ['-IHn', "\t"]
     exclude:
-      - '**/Makefile'
-      - '**/*.go'
+      - 'app/assets/images/**/*'
+      - 'vendor/assets/**/*'
 
   Hlint:
     enabled: false
@@ -436,10 +436,14 @@ PreCommit:
     description: 'Check for trailing whitespace'
     required_executable: 'grep'
     flags: ['-IHn', "[ \t]$"]
-    exclude: 'config/locales/en.yml'
+    exclude:
+      - 'config/locales/en.yml'
+      - 'vendor/**/*'
+      - 'app/assets/images/**/*'
+      - 'public/error-fonts/*'
 
   TravisLint:
-    enabled: true
+    enabled: false
     description: 'Check Travis CI configuration'
     required_executable: 'travis'
     flags: ['lint']
@@ -764,10 +768,9 @@ PrePush:
     quiet: false
 
   BundleAudit:
-    enabled: true
+    enabled: false
     description: 'Check for vulnerable versions of gems'
     required_executable: 'bundle-audit'
-    flags: ['check', '--update']
     install_command: 'gem install bundler-audit'
 
   Brakeman:

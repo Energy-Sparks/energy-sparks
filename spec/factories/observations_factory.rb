@@ -3,9 +3,19 @@ FactoryBot.define do
     school            { create(:school) }
     at                { Time.now.utc }
 
-    trait :temperature do
-      observation_type { :temperature }
-      to_create { |instance| TemperatureObservationCreator.new(instance).process }
+    trait :activity do
+      observation_type { :activity }
+      activity
+    end
+
+    trait :audit do
+      observation_type { :audit }
+      audit
+    end
+
+    trait :audit_activities_completed do
+      observation_type { :audit_activities_completed }
+      audit
     end
 
     trait :intervention do
@@ -13,9 +23,24 @@ FactoryBot.define do
       intervention_type
     end
 
-    trait :activity do
-      observation_type { :activity }
-      activity
+    trait :programme do
+      observation_type { :programme }
+      programme
+    end
+
+    trait :temperature do
+      observation_type { :temperature }
+      to_create { |instance| TemperatureObservationCreator.new(instance).process }
+    end
+
+    trait :transport_survey do
+      observation_type { :observable }
+      observable { create(:transport_survey) }
+    end
+
+    trait :school_target do
+      observation_type { :school_target }
+      school_target
     end
 
     factory :observation_with_temperature_recording_and_location do
