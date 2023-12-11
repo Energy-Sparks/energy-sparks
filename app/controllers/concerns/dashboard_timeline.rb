@@ -9,13 +9,4 @@ module DashboardTimeline
     school = school_target.school
     school.observations.where("at >= :start_date AND at <= :target_date AND visible = TRUE", start_date: school_target.start_date, target_date: school_target.target_date).where.not(observation_type: :school_target).order('at DESC')
   end
-
-  def setup_compact_timeline(school)
-    return unless school.scoreboard
-    if current_school_podium&.positions&.count&.> 1
-      school.scoreboard.observations.for_other_schools(school).by_date.limit(4)
-    else
-      Observation.for_other_schools(school).by_date.limit(4)
-    end
-  end
 end

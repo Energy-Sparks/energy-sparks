@@ -56,29 +56,7 @@
 <%= render 'schools/dashboard/transport_surveys', school: @school %>
 
 <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <div class="row">
-    <div class="col card-deck actions">
-      <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
-        <div class="card">
-          <div class="card-body">
-            <%= component 'podium', podium: current_school_podium %>
-          </div>
-          <div class="card-footer text-center">
-            <%= link_to t('pupils.schools.show.see_scoreboard'), scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="col card-deck actions">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="text-center"><%= t('pupils.schools.show.recent_scoreboard_activity') %></h4>
-          <%= component 'compact_timeline', observations: @scoreboard_observations %>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= component 'scoreboard_summary', podium: current_school_podium %>
 <% else %>
   <div class="row">
     <div class="col card-deck actions">

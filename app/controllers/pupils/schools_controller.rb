@@ -34,7 +34,6 @@ module Pupils
       @temperature_observations = @school.observations.temperature
       @show_temperature_observations = show_temperature_observations?
       @observations = setup_timeline(@school.observations)
-      @scoreboard_observations = setup_compact_timeline(@school)
       @default_equivalences = default_equivalences
       @programmes_to_prompt = @school.programmes.last_started
     end

@@ -1,0 +1,18 @@
+  <div class="row">
+    <div class="col card-deck actions">
+      <div class="card">
+        <div class="card-body">
+          <%= component 'podium', podium: podium %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col card-deck actions">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="text-center"><%= timeline_title %></h4>
+          <%= component 'compact_timeline', observations: observations %>
+        </div>
+      </div>
+    </div>
+  </div>

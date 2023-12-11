@@ -54,7 +54,7 @@ class Podium
     end
   end
 
-  attr_reader :scoreboard, :positions
+  attr_reader :scoreboard, :school, :positions
 
   def initialize(scoreboard:, school:, positions: [])
     @scoreboard = scoreboard
