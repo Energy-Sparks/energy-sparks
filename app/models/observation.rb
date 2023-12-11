@@ -79,7 +79,7 @@ class Observation < ApplicationRecord
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
   scope :recorded_since, ->(date) { where('observations.created_at >= ?', date)}
-  scope :recent_activity, ->(school) { where.not(school: school).recorded_since(school.current_academic_year.start_date) }
+  scope :for_other_schools, ->(school) { where.not(school: school).recorded_since(school.current_academic_year.start_date) }
 
   scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :observable]) }
 

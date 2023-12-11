@@ -17,7 +17,7 @@ class TimelineComponent < ViewComponent::Base
   end
 
   def render?
-    observations.any?
+    observations&.any?
   end
 
   class Observation < ViewComponent::Base
