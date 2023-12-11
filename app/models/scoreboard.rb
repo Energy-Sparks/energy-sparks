@@ -35,7 +35,7 @@ class Scoreboard < ApplicationRecord
 
   friendly_id :name_en, use: [:finders, :slugged, :history]
 
-  has_many :schools, -> { School.visible }
+  has_many :schools
   belongs_to :academic_year_calendar, class_name: 'Calendar', optional: true
 
   has_many :observations, through: :schools

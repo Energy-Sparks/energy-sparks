@@ -80,6 +80,7 @@ class Observation < ApplicationRecord
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
   scope :recorded_since, ->(date) { where('observations.created_at >= ?', date)}
   scope :not_including, ->(school) { where.not(school: school).recorded_since(school.current_academic_year.start_date) }
+  scope :from_visible_schools, -> { joins(:school).merge(School.visible) }
 
   scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :observable]) }
 

@@ -26,11 +26,8 @@ class ScoreboardSummaryComponent < ViewComponent::Base
   end
 
   def observations
-    if other_schools?
-      scoreboard.observations.not_including(school).by_date.limit(limit)
-    else
-      Observation.not_including(school).by_date.limit(limit)
-    end
+    scope = other_schools? ? scoreboard.observations : Observation
+    scope.from_visible_schools.not_including(school).by_date.limit(limit)
   end
 
   def timeline_title
