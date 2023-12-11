@@ -1,9 +1,5 @@
 <div class="compact-timeline-component">
-  <ul class="list-group list-group-flush">
-    <% observations.each do |observation| %>
-      <li class="list-group-item">
-        <%= component 'timeline/observation', observation: observation, compact: true %>
-      </li>
-    <% end %>
-  </ul>
+  <% observations.each do |observation| %>
+    <%= component 'timeline/observation', observation: observation, compact: true %>
+  <% end %>
 </div>
