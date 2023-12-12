@@ -64,8 +64,8 @@ class Programme < ApplicationRecord
   end
 
   def add_observation
-    Observation.where(school: school,
-      observation_type: :programme, programme_id: id
-    ).first_or_create(at: self.ended_on, points: points_for_completion)
+    return unless completed?
+
+    self.observations.first_or_create(at: self.ended_on, points: points_for_completion)
   end
 end

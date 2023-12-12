@@ -4,7 +4,8 @@ describe 'Programme' do
   let(:school) { create :school }
   let(:programme_type) { create(:programme_type, bonus_score: 12) }
 
-  let(:programme) { create(:programme, programme_type: programme_type, started_on: '2020-01-01', school: school) }
+  let(:status) { :started }
+  let(:programme) { create(:programme, programme_type: programme_type, started_on: '2020-01-01', school: school, status: status) }
   let(:last_observation) { programme.observations.last }
 
   it { expect(programme.observations.count).to eq(0) }
@@ -33,7 +34,7 @@ describe 'Programme' do
 
       context "with observation" do
         it { expect(programme.observations.count).to eq(1) }
-        it { expect(last_observation.at).not_to be_nil }
+        it { expect(last_observation.at).to eq(programme.ended_on) }
         it { expect(last_observation.school).to eq(school) }
         it { expect(last_observation.observation_type).to eq('observable') }
 
@@ -56,7 +57,7 @@ describe 'Programme' do
 
       context "with observation" do
         it { expect(programme.observations.count).to eq(1) }
-        it { expect(last_observation.at).not_to be_nil }
+        it { expect(last_observation.at).to eq(programme.ended_on) }
         it { expect(last_observation.school).to eq(school) }
         it { expect(last_observation.observation_type).to eq('observable') }
 
@@ -78,6 +79,33 @@ describe 'Programme' do
 
     it "doesn't set ended_on" do
       expect(programme.ended_on).to be_nil
+    end
+  end
+
+  describe "#add_observation" do
+    before do
+      programme.add_observation
+    end
+
+    context "when programme is not complete" do
+      let(:status) { :started }
+
+      it "doesn't add obervation" do
+        expect(programme.observations.count).to eq(0)
+      end
+    end
+
+    context "when programme is complete" do
+      let(:status) { :completed }
+
+      it "adds obervation" do
+        expect(programme.observations.count).to eq(1)
+      end
+
+      it "only adds one observation" do
+        programme.add_observation
+        expect(programme.observations.count).to eq(1)
+      end
     end
   end
 end
