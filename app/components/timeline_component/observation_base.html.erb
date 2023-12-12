@@ -1,0 +1,30 @@
+<% if compact %>
+  <div class="row">
+    <div class="col-1"><%= icon %></div>
+    <div class="col-11"><%= I18n.t("components.timeline.#{self.class.name.demodulize.underscore}.compact_message_html", school: school.name, school_path: school_path(school), target: target, count: observation.points || 0, compact_path: compact_path).html_safe %></div>
+  </div>
+<% else %>
+  <td class="p-3 text-center">
+    <%= icon %>
+  </td>
+  <td>
+    <h3 class="pt-1">
+      <strong>
+        <% if target %>
+          <%= message %><%= ": #{link_to(target, show_path)}".html_safe if linkable? %>
+        <% else %>
+          <%= link_to message, show_path if linkable? %>
+        <% end %>
+      </strong>
+    </h3>
+    <span class="text-muted"><%= nice_dates(observation.at) %></span>
+  </td>
+  <% if show_buttons? %>
+    <td class="text-right">
+      <div class="btn-group">
+        <%= link_to t('common.labels.edit'), edit_path, class: 'btn btn-warning' if editable? %>
+        <%= link_to t('common.labels.delete'), delete_path, method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+      </div>
+    </td>
+  <% end %>
+<% end %>

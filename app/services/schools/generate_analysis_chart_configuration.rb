@@ -55,7 +55,7 @@ module Schools
         @aggregated_meter_collection,
         chart_type,
         chart_config,
-        reraise_exception: false
+        report_exception: false
       ).has_chart_data?
     end
 

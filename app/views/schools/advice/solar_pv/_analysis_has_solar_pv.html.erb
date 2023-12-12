@@ -81,7 +81,7 @@
 
 <p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.there_may_be_extra_returns') %>.</p>
 
-<table class="table table-sm">
+<table class="table table-sm" id="investment-returns">
   <thead class="thead-dark">
     <tr>
       <th class="text-center" style="width: 50%">
@@ -94,8 +94,8 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.before_april_2019_content_html') %></td>
-      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.after_april_2019_content_html') %></td>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.before_april_2019_content_html', solar_generation: format_unit(@existing_benefits.annual_solar_pv_kwh, :kwh)) %></td>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.after_april_2019_content_html', export_price: BenchmarkMetrics.pricing.solar_export_price * 100, export_value: format_unit(@existing_benefits.export_£, :£)) %></td>
     </tr>
   </tbody>
 </table>

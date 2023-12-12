@@ -59,7 +59,6 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Next'
 
       expect(page).to have_select('Template calendar', selected: 'BANES calendar')
-      expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
       expect(page).to have_select('Weather Station', selected: 'BANES weather')
       expect(page).to have_select('Scoreboard', selected: 'BANES scoreboard')
       expect(page).to have_select('Country', selected: 'Wales')

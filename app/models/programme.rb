@@ -32,14 +32,7 @@ class Programme < ApplicationRecord
     event :complete do
       after do
         self.update(ended_on: Time.zone.now)
-
-        Observation.create!(
-          school: school,
-          observation_type: :programme,
-          at: Time.zone.now,
-          points: points_for_completion,
-          programme_id: id
-        )
+        self.add_observation
       end
       transition :started => :completed
     end
@@ -67,5 +60,11 @@ class Programme < ApplicationRecord
 
   def activity_of_type(activity_type)
     activities.where(activity_type: activity_type).last
+  end
+
+  def add_observation
+    Observation.where(school: school,
+      observation_type: :programme, programme_id: id
+    ).first_or_create(at: self.ended_on, points: points_for_completion)
   end
 end

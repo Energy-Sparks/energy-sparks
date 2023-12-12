@@ -59,6 +59,12 @@ RSpec.describe "thermostatic control advice page", type: :system do
         expect(page).to have_content("Your school's R² value is 0.67 which is about average")
         expect(page).to have_css('#chart_wrapper_thermostatic_up_to_1_year')
         expect(page).to have_css('#chart_wrapper_thermostatic_control_large_diurnal_range')
+
+        ['#chart_wrapper_thermostatic_up_to_1_year', '#chart_wrapper_thermostatic_control_large_diurnal_range'].each do |chart_type|
+          within chart_type do
+            expect(page).not_to have_css(".axis-choice", visible: :hidden)
+          end
+        end
       end
     end
 

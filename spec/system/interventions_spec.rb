@@ -336,8 +336,8 @@ describe 'viewing and recording action', type: :system do
 
       it 'can be deleted' do
         visit school_path(school)
-        click_on 'View all events'
 
+        click_on 'View all events'
         expect do
           click_on 'Delete'
         end.to change(Observation, :count).from(1).to(0)

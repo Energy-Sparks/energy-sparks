@@ -126,8 +126,13 @@ RSpec.describe "solar pv advice page", type: :system do
         expect(page).to have_content('Long term trends')
         expect(page).to have_content('Recent electricity consumption and solar production')
         expect(page).to have_content('Benefits of having installed solar panels')
-        expect(page).to have_content('Before April 2019')
-        expect(page).to have_content('After April 2019')
+        within('#investment-returns') do
+          expect(page).to have_content('Before April 2019')
+          expect(page).to have_content('14,000 kWh')
+          expect(page).to have_content('After April 2019')
+          expect(page).to have_content("#{BenchmarkMetrics.pricing.solar_export_price * 100}p per kWh")
+          expect(page).to have_content('£65')
+        end
         expect(page).to have_css('#chart_wrapper_solar_pv_group_by_month')
         expect(page).to have_css('#chart_wrapper_solar_pv_last_7_days_by_submeter')
       end
