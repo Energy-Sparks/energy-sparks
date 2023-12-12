@@ -4,11 +4,7 @@
     <div class="col-lg card-deck actions">
       <div class="card">
         <div class="card-body">
-          <% if podium.includes_school? %>
             <%= component 'podium', podium: podium %>
-          <% else %>
-            <%= component 'podium', podium: podium.from_last_position, school_focus: false %>
-          <% end %>
         </div>
       </div>
     </div>
