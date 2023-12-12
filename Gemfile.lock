@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 92356bd546f0030fce7fd64c9561722e92cd84b2
-  tag: 4.1.11
+  revision: aacf616e7877a13244a953eaf104c34948970ec7
+  branch: revise-optimum-start-time-calculation
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
