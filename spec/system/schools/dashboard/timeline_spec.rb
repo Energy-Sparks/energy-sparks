@@ -11,10 +11,12 @@ RSpec.shared_examples "dashboard timeline" do
     create(:school_target, school: test_school, start_date: Time.zone.today)
     transport_survey = create(:transport_survey, school: test_school, run_on: Time.zone.today)
     transport_survey.responses = [attributes_for(:transport_survey_response)]
+    create(:observation, :programme, school: test_school)
     visit school_path(test_school, switch: true)
   end
 
   it 'displays events in a timeline' do
+    expect(page).to have_content('Completed a programme')
     expect(page).to have_content('Recorded a transport survey response')
     expect(page).to have_content('Recorded temperatures in')
     expect(page).to have_content('Upgraded insulation')
