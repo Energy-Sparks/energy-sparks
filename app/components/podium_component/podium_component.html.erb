@@ -7,11 +7,11 @@
     <% end %>
   <% else %>
     <h4 class="text-center"><%= t('components.podium.no_points_this_year') %></h4>
-    <p><%= t('components.podium.complete_an_activity') %>.
+    <p class="text-center"><%= t('components.podium.complete_an_activity') %>.
       <%= t('components.podium.points_needed_to_overtake', points: podium.low_to_high.first.points) if podium.low_to_high.any? %>
     </p>
   <% end %>
-  <% if EnergySparks::FeatureFlags.active?(:activities_2023) || !EnergySparks::FeatureFlags.active?(:activities_2023) && podium.includes_school? %>
+  <% if (EnergySparks::FeatureFlags.active?(:activities_2023) || !EnergySparks::FeatureFlags.active?(:activities_2023) && podium.includes_school?) && podium.positions.count > 0 %>
     <div class="row align-items-end border-bottom grey">
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">
