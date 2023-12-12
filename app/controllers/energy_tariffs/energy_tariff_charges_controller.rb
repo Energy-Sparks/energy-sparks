@@ -6,8 +6,10 @@ module EnergyTariffs
 
     def create
       @energy_tariff_charges = make_charges(params[:energy_tariff_charges], @energy_tariff)
-      if @energy_tariff_charges.all?(&:valid?)
+      invalid_charges = @energy_tariff_charges.reject(&:valid?)
+      if invalid_charges.empty?
         EnergyTariff.transaction do
+          @energy_tariff.energy_tariff_charges.destroy_all
           @energy_tariff.update(energy_tariff_params)
           @energy_tariff_charges.each(&:save!)
         end
