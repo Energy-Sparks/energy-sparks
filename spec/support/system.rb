@@ -38,7 +38,7 @@ RSpec.configure do |config|
     #   we do not want max either, so this is a good compromise
 
     options = Selenium::WebDriver::Chrome::Options.new
-    # options.add_argument('headless=new')
+    options.add_argument('headless=new')
     options.add_argument('no-sandbox')
     options.add_argument('disable-gpu')
     options.add_argument('disable-dev-shm-usage')
