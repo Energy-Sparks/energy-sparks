@@ -39,6 +39,6 @@ class ScoreboardSummaryComponent < ViewComponent::Base
   end
 
   def render?
-    helpers.can?(:read, podium.scoreboard)
+    podium&.scoreboard && helpers.can?(:read, podium.scoreboard)
   end
 end
