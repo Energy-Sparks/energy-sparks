@@ -19,7 +19,7 @@ class Podium
   end
 
   def from_last_position
-    self.class.create(scoreboard: scoreboard, school: positions.last.school)
+    self.class.create(scoreboard: scoreboard, school: positions&.last&.school, recent_boundary: recent_boundary)
   end
 
   def self.create(scoreboard:, school:, recent_boundary: 1.month.ago)

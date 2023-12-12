@@ -40,6 +40,5 @@ class ScoreboardSummaryComponent < ViewComponent::Base
 
   def render?
     helpers.can?(:read, podium.scoreboard)
-    # podium&.includes_school? && helpers.can?(:read, podium.scoreboard)
   end
 end
