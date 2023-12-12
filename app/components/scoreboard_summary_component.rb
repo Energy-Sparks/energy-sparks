@@ -32,7 +32,7 @@ class ScoreboardSummaryComponent < ViewComponent::Base
 
   def timeline_title
     if other_schools?
-      I18n.t("components.scoreboard_summary.recent_scoreboard_activity")
+      I18n.t("components.scoreboard_summary.recent_scoreboard_activity_html", scoreboard_path: scoreboard_path(scoreboard)).html_safe
     else
       I18n.t("components.scoreboard_summary.recent_activity")
     end
