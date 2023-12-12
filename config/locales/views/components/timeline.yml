@@ -22,9 +22,9 @@ en:
         message: Completed all audit activities
       intervention:
         compact_message_html:
-          one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> after they recorded "<a href="%{compact_path}">%{target}</a>"
-          other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> after they recorded "<a href="%{compact_path}">%{target}</a>"
-          zero: <a href="%{school_path}">%{school}</a> recorded "<a href="%{compact_path}">%{target}</a>"
+          one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> after they recorded "<a href="%{compact_path}">%{message}</a>"
+          other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> after they recorded "<a href="%{compact_path}">%{message}</a>"
+          zero: <a href="%{school_path}">%{school}</a> recorded "<a href="%{compact_path}">%{message}</a>"
       programme:
         compact_message_html:
           one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> after they <a href="%{compact_path}">completed a programme</a>
