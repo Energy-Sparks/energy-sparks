@@ -1,17 +1,22 @@
 <div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
   <% if podium.includes_school? %>
-    <h4 class="text-center">
-      <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-        <%= t('components.podium.full_position_html', position_ordinal: podium.school_position.ordinal, scoreboard: podium.scoreboard.name, scoreboard_path: scoreboard_path(podium.scoreboard)) %>.
+    <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+      <% if school_focus %>
+        <h4 class="text-center"><%= t('components.podium.full_position_html', position_ordinal: podium.school_position.ordinal, scoreboard: podium.scoreboard.name, scoreboard_path: scoreboard_path(podium.scoreboard)) %>.</h4>
       <% else %>
-        <%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.
+        <h4 class="text-center"><%= t('components.podium.no_points_this_year') %></h4>
+        <p><%= t('components.podium.complete_an_activity') %>.
+          <%= t('components.podium.points_needed_to_overtake', points: podium.low_to_high.first.points) if podium.low_to_high.any? %>
+        </p>
       <% end %>
-    </h4>
+    <% else %>
+      <h4 class="text-center"><%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.</h4>
+    <% end %>
     <div class="row align-items-end border-bottom grey">
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">
           <h5>
-            <% if podium.current_school?(position) %>
+            <% if podium.current_school?(position) && school_focus %>
               <%= fa_icon('crown fa-2x') %>
               <p class='h2'><%= position.ordinal %></p>
             <% else %>
@@ -39,7 +44,7 @@
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">
           <h6>
-            <% if podium.current_school?(position) %>
+            <% if podium.current_school?(position) && school_focus %>
               <%= position.school.name %>
             <% else %>
               <%= link_to position.school.name, pupils_school_path(position.school) %>

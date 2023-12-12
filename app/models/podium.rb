@@ -18,6 +18,10 @@ class Podium
     end
   end
 
+  def from_last_position
+    self.class.create(scoreboard: scoreboard, school: positions.last.school)
+  end
+
   def self.create(scoreboard:, school:, recent_boundary: 1.month.ago)
     scored_schools = scoreboard.scored_schools(recent_boundary: recent_boundary)
     schools_with_points = scored_schools.with_points
