@@ -12,6 +12,7 @@ gem 'puma', '6.4.0' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
+gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets', '3.7.2'
 gem 'webpacker'
 
