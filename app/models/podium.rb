@@ -98,6 +98,16 @@ class Podium
     end
   end
 
+  def points_to_overtake
+    return unless low_to_high.any?
+
+    if EnergySparks::FeatureFlags.active?(:activities_2023)
+      low_to_high&.second&.points
+    else
+      low_to_high&.first&.points
+    end
+  end
+
   def current_school?(position)
     position.school == @school
   end

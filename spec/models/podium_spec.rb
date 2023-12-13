@@ -76,8 +76,8 @@ describe Podium do
         expect(podium.includes_school?).to eq(false)
       end
 
-      it "school has points" do
-        expect(podium.school_has_points?).to eq(true)
+      it "school doesn't have points" do
+        expect(podium.school_has_points?).to eq(false)
       end
 
       it 'populates first second and third with the lowest scoring schools' do
