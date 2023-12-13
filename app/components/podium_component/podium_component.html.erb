@@ -1,5 +1,5 @@
 <div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
-  <% if podium.includes_school? %>
+  <% if podium.includes_school? && podium.school_has_points? %>
     <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
       <h4 class="text-center"><%= t('components.podium.full_position_html', position_ordinal: podium.school_position.ordinal, scoreboard: podium.scoreboard.name, scoreboard_path: scoreboard_path(podium.scoreboard)) %>.</h4>
     <% else %>
@@ -8,7 +8,7 @@
   <% else %>
     <h4 class="text-center"><%= t('components.podium.no_points_this_year') %></h4>
     <p class="text-center"><%= t('components.podium.complete_an_activity') %>.
-      <%= t('components.podium.points_needed_to_overtake', points: podium.low_to_high.first.points) if podium.low_to_high.any? %>
+      <%= t('components.podium.points_needed_to_overtake', points: (EnergySparks::FeatureFlags.active?(:activities_2023) ? podium.low_to_high.second.points : podium.low_to_high.first.points)) if podium.low_to_high.any? %>
     </p>
   <% end %>
   <% if (EnergySparks::FeatureFlags.active?(:activities_2023) || !EnergySparks::FeatureFlags.active?(:activities_2023) && podium.includes_school?) && podium.positions.count > 0 %>

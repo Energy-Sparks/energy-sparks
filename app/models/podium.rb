@@ -1,6 +1,6 @@
 class Podium
   class Position
-    attr_reader :school, :points, :position, :normalised_points
+    attr_reader :school, :position, :normalised_points
     def initialize(school:, points:, position:, normalised_points:, recent_points:)
       @school = school
       @points = points
@@ -13,6 +13,10 @@ class Podium
       "#{@position}#{@position.ordinal}"
     end
 
+    def points
+      @points || 0
+    end
+
     def recent_points
       @recent_points || 0
     end
@@ -20,7 +24,7 @@ class Podium
 
   def self.create(scoreboard:, school:, recent_boundary: 1.month.ago)
     scored_schools = scoreboard.scored_schools(recent_boundary: recent_boundary)
-    schools_with_points = scored_schools.with_points
+    schools_with_points = scored_schools.with_points(always_include: (school if EnergySparks::FeatureFlags.active?(:activities_2023)))
     school_index = schools_with_points.index(school)
 
     final = if schools_with_points.size > 3
@@ -72,6 +76,10 @@ class Podium
 
   def includes_school?
     school_position.present?
+  end
+
+  def school_has_points?
+    (school_position.try(:points) || 0) > 0
   end
 
   def school_position
