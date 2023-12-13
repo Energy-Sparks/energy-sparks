@@ -79,7 +79,7 @@ class Podium
   end
 
   def school_has_points?
-    (school_position.try(:points) || 0) > 0
+    school_position.try(:points).to_i > 0
   end
 
   def school_position
