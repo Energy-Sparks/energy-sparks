@@ -3,6 +3,14 @@
 require "rails_helper"
 
 RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers: true do
+  let(:activities_2023_feature) { true }
+
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: activities_2023_feature.to_s do
+      example.run
+    end
+  end
+
   let(:scoreboard) { create :scoreboard }
   let(:school) { create :school, scoreboard: scoreboard }
   let(:podium) { Podium.create(school: school, scoreboard: school.scoreboard) }
