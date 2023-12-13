@@ -1,13 +1,29 @@
 class ScoreboardSummaryComponentPreview < ViewComponent::Preview
-  def with_points
-    school = School.find_by(slug: 'ashbrook-school')
+  # create a class so we can use the scorable concern
+  class AllScorableSchools
+    include Scorable
+
+    def initialize
+    end
+
+    def schools
+      School
+    end
+
+    def self.sanitize_sql_array(*params)
+      School.sanitize_sql_array(*params)
+    end
+  end
+
+  def school_with_points
+    school = AllScorableSchools.new.scored_schools(recent_boundary: 6.months.ago, academic_year: false).to_a.first
     podium = Podium.create(school: school, scoreboard: school.scoreboard)
 
     render(ScoreboardSummaryComponent.new(podium: podium))
   end
 
-  def without_points
-    school = School.find_by(slug: 'st-mary-and-st-giles-church-of-england-school-south-site')
+  def school_without_points
+    school = AllScorableSchools.new.scored_schools(recent_boundary: 6.months.ago, academic_year: false).to_a.last
     podium = Podium.create(school: school, scoreboard: school.scoreboard)
 
     render(ScoreboardSummaryComponent.new(podium: podium))
