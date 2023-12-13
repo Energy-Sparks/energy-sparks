@@ -19,8 +19,10 @@
         <div class="col-4 text-center">
           <h5>
             <% if podium.current_school?(position) %>
-              <%= fa_icon('crown fa-2x') %>
-              <p class='h2'><%= position.ordinal %></p>
+              <% if podium.school_has_points? %>
+                <%= fa_icon('crown fa-2x') %>
+                <p class='h2'><%= position.ordinal %></p>
+              <% end %>
             <% else %>
               <p><%= position.ordinal %></p>
               <% if (position.normalised_points * 149).to_i < 70 %>
