@@ -27,6 +27,26 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
     end
   end
 
+  shared_examples "a podium with placing" do |ordinal: ''|
+    it { expect(html).to have_css('i.fa-crown') }
+
+    it "shows ordinal" do
+      within "p.h2" do
+        expect(html.to_s).to have_content(ordinal)
+      end
+    end
+  end
+
+  shared_examples "a podium without placing" do |ordinal: ''|
+    it { expect(html).not_to have_css('i.fa-crown') }
+
+    it "doesn't show ordinal" do
+      within "p.h2" do
+        expect(html.to_s).not_to have_content(ordinal)
+      end
+    end
+  end
+
   shared_examples "a podium with no points message" do
     it "displays no points text" do
       expect(html).to have_content("Your school hasn't scored any points yet this school year")
@@ -71,6 +91,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
         it { expect(html.to_s).to have_content("You are in 1st place on the #{scoreboard.name} scoreboard") }
 
         it_behaves_like "a podium including school"
+        it_behaves_like "a podium with placing", ordinal: '1st'
       end
 
       context "when in second place" do
@@ -79,6 +100,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
         it { expect(html.to_s).to have_content("You are in 2nd place on the #{scoreboard.name} scoreboard") }
 
         it_behaves_like "a podium including school"
+        it_behaves_like "a podium with placing", ordinal: '2nd'
       end
 
       context "when school doesn't have any points" do
@@ -87,12 +109,14 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
         it_behaves_like "a podium including school"
         it_behaves_like "a podium with no points message"
         it_behaves_like "a podium with overtake message", points: 50
+        it_behaves_like "a podium without placing", ordinal: '2nd'
       end
     end
 
     context "when there isn't another school on the podium" do
       it_behaves_like "a podium not including school"
       it_behaves_like "a podium with no points message"
+      it_behaves_like "a podium without placing", ordinal: '1st'
     end
   end
 
@@ -108,6 +132,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
         it { expect(html.to_s).to have_content("Your school is in 1st place") }
 
         it_behaves_like "a podium including school"
+        it_behaves_like "a podium with placing", ordinal: '1st'
       end
 
       context "when in second place" do
@@ -116,6 +141,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
         it { expect(html.to_s).to have_content("Your school is in 2nd place") }
 
         it_behaves_like "a podium including school"
+        it_behaves_like "a podium with placing", ordinal: '2nd'
       end
 
       context "when school doesn't have any points" do
@@ -124,12 +150,14 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
         it_behaves_like "a podium not including school"
         it_behaves_like "a podium with no points message"
         it_behaves_like "a podium with overtake message", points: 50
+        it_behaves_like "a podium without placing", ordinal: '2nd'
       end
     end
 
     context "when there isn't another school on the podium" do
       it_behaves_like "a podium not including school"
       it_behaves_like "a podium with no points message"
+      it_behaves_like "a podium without placing", ordinal: '1st'
     end
   end
 
