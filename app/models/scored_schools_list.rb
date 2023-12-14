@@ -21,8 +21,8 @@ class ScoredSchoolsList
     with_points.schools_at(index: 0, length: 3)
   end
 
-  def with_points
-    self.class.new(positive_scored_schools)
+  def with_points(always_include: nil)
+    self.class.new(positive_scored_schools(always_include: always_include))
   end
 
   def without_points
@@ -47,7 +47,7 @@ class ScoredSchoolsList
 
   private
 
-  def positive_scored_schools
-    @scored_schools.select {|scored_school| scored_school.sum_points&.positive?}
+  def positive_scored_schools(always_include: nil)
+    @scored_schools.select {|scored_school| scored_school.sum_points&.positive? || scored_school == always_include}
   end
 end

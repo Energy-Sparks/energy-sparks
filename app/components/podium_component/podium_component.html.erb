@@ -1,15 +1,28 @@
 <div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
-  <% if podium.includes_school? %>
-    <h4 class="text-center">
-      <%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.
-    </h4>
+  <% if podium.includes_school? && podium.school_has_points? %>
+    <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+      <h4 class="text-center"><%= t('components.podium.full_position_html', position_ordinal: podium.school_position.ordinal, scoreboard: podium.scoreboard.name, scoreboard_path: scoreboard_path(podium.scoreboard)) %>.</h4>
+    <% else %>
+      <h4 class="text-center"><%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.</h4>
+    <% end %>
+  <% else %>
+    <h4 class="text-center"><%= t('components.podium.no_points_this_year') %></h4>
+
+    <p class="text-center"><%= t('components.podium.complete_an_activity_html', recommendations_path: (EnergySparks::FeatureFlags.active?(:activities_2023) ? school_recommendations_path(school) : activity_categories_path)) %>.
+      <%= t('components.podium.points_needed_to_overtake', points: podium.points_to_overtake) if podium.points_to_overtake %>
+    </p>
+  <% end %>
+  <% if (EnergySparks::FeatureFlags.active?(:activities_2023) && (podium.school_has_points? || podium.positions.count > 1)) ||
+       !EnergySparks::FeatureFlags.active?(:activities_2023) && podium.includes_school? %>
     <div class="row align-items-end border-bottom grey">
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">
           <h5>
             <% if podium.current_school?(position) %>
-              <%= fa_icon('crown fa-2x') %>
-              <p class='h2'><%= position.ordinal %></p>
+              <% if podium.school_has_points? %>
+                <%= fa_icon('crown fa-2x') %>
+                <p class='h2'><%= position.ordinal %></p>
+              <% end %>
             <% else %>
               <p><%= position.ordinal %></p>
               <% if (position.normalised_points * 149).to_i < 70 %>
@@ -44,10 +57,5 @@
         </div>
       <% end %>
     </div>
-  <% else %>
-    <h4><%= t('components.podium.no_points_this_year') %></h4>
-    <p><%= t('components.podium.complete_an_activity') %>.
-      <%= t('components.podium.points_needed_to_overtake', points: podium.low_to_high.first.points) if podium.low_to_high.any? %>
-    </p>
   <% end %>
 </div>
