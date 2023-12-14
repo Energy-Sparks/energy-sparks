@@ -16,7 +16,7 @@
         <ul class="navbar-nav align-items-center nowrap">
           <%= render 'shared/dashboards' if can?(:read_dashboard_menu, school) %>
           <%= render 'shared/manage_school', school: school if can? :update, school %>
-          <% if podium && podium.includes_school? && can?(:read, podium.scoreboard) %>
+          <% if podium && podium.school_has_points? && can?(:read, podium.scoreboard) %>
             <span class="nav-lozenge">
               <li class="nav-item">
                 <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link' do %>

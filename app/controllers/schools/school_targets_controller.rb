@@ -26,7 +26,7 @@ module Schools
       authorize! :show, @school_target
 
       unless @school_target.report_last_generated.nil?
-        @progress_summary = progress_service.progress_summary
+        @progress_summary = @school_target.to_progress_summary
         @overview_data = Schools::ManagementTableService.new(@school).management_data
       end
 

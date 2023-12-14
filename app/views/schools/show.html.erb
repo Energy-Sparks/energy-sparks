@@ -88,6 +88,10 @@
   </div>
 <% end %>
 
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <%= component 'scoreboard_summary', podium: current_school_podium %>
+<% end %>
+
 <% if @management_priorities && @management_priorities.any? %>
   <h3><%= t('schools.show.energy_saving_opportunities') %></h3>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>

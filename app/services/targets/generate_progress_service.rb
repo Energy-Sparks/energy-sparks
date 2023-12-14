@@ -117,6 +117,8 @@ module Targets
     def target_progress(fuel_type)
       begin
         @progress_by_fuel_type[fuel_type] ||= target_service(fuel_type).progress
+      rescue TargetDates::TargetDateBeforeFirstMeterStartDate
+        return nil
       rescue => e
         report_to_rollbar_once(e, fuel_type)
         return nil

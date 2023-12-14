@@ -38,6 +38,8 @@ class Scoreboard < ApplicationRecord
   has_many :schools
   belongs_to :academic_year_calendar, class_name: 'Calendar', optional: true
 
+  has_many :observations, through: :schools
+
   validates :name_en, :academic_year_calendar_id, presence: true
 
   def safe_destroy
