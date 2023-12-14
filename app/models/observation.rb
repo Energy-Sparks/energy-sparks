@@ -82,6 +82,7 @@ class Observation < ApplicationRecord
   scope :not_including, ->(school) { where.not(school: school).recorded_since(school.current_academic_year.start_date) }
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
   scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :observable]) }
+  scope :not_of_observable_type, ->(observable_type) { where.not(observable_type: observable_type).or(where(observable_type: nil)) }
 
   has_rich_text :description
 
