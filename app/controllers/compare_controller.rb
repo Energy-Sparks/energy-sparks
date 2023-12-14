@@ -80,8 +80,6 @@ class CompareController < ApplicationController
     content_manager.content(fetch_benchmark_data, benchmark, user_type: user_type_hash, online: true)
     # rubocop:disable Lint/RescueException
   rescue Exception => e
-    puts e
-    puts e.backtrace
     # rubocop:enable Lint/RescueException
     Rollbar.error(e, benchmark: benchmark)
     []
