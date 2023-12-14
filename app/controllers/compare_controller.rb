@@ -4,6 +4,8 @@ class CompareController < ApplicationController
 
   before_action :filter
   before_action :benchmark_groups, only: [:benchmarks]
+
+  before_action :set_included_schools
   helper_method :index_params
 
   # filters
@@ -14,13 +16,21 @@ class CompareController < ApplicationController
 
   # pick benchmark
   def benchmarks
+    if @included_schools.empty?
+      render :no_schools and return
+    end
   end
 
   # display results
   def show
-    benchmark = filter[:benchmark].to_sym
-    @content = BenchmarkContentFilter.new(content_for_benchmark(benchmark))
-    @content.title ||= extract_title_from_benchmark(benchmark)
+    #user wouldn't be able to get here, but adding in case crawlers/bots hit the page
+    if @included_schools.empty?
+      render :no_schools
+    else
+      benchmark = filter[:benchmark].to_sym
+      @content = BenchmarkContentFilter.new(content_for_benchmark(benchmark))
+      @content.title ||= extract_title_from_benchmark(benchmark)
+    end
   end
 
   private
@@ -48,6 +58,10 @@ class CompareController < ApplicationController
     @benchmark_groups ||= content_manager.structured_pages(user_type: user_type_hash)
   end
 
+  def set_included_schools
+    @included_schools = included_schools
+  end
+
   def included_schools
     # wonder if this can be replaced by a use of the scope accessible_by(current_ability)
     include_invisible = can? :show, :all_schools
@@ -59,13 +73,15 @@ class CompareController < ApplicationController
   end
 
   def fetch_benchmark_data
-    Alerts::CollateBenchmarkData.new(latest_benchmark_run).perform(included_schools)
+    Alerts::CollateBenchmarkData.new(latest_benchmark_run).perform(@included_schools)
   end
 
   def content_for_benchmark(benchmark)
     content_manager.content(fetch_benchmark_data, benchmark, user_type: user_type_hash, online: true)
     # rubocop:disable Lint/RescueException
   rescue Exception => e
+    puts e
+    puts e.backtrace
     # rubocop:enable Lint/RescueException
     Rollbar.error(e, benchmark: benchmark)
     []

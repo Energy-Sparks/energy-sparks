@@ -145,6 +145,10 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_link('Change options')}
   end
 
+  shared_examples "an empty filter notice" do
+    it { expect(page).to have_content('There are no schools to report using this filter') }
+  end
+
   ## contexts ##
 
   shared_context 'index page context' do
@@ -369,6 +373,19 @@ describe 'compare pages', :compare, type: :system do
 
           it_behaves_like "an index page", tab: 'Choose groups'
           it_behaves_like "a form filter", id: '#groups', school_groups: ["Group 1", "Group 2"], school_types_excluding: ['infant']
+        end
+
+        context "Filtering all schools" do
+          before do
+            click_on "Change options"
+            within '#groups' do
+              uncheck 'Primary'
+              click_on 'Compare schools'
+            end
+          end
+
+          it_behaves_like "a filter summary", school_types_excluding: ['infant'], school_groups: ["Group 1", "Group 2"]
+          it_behaves_like "an empty filter notice"
         end
 
         context "results page" do
