@@ -8,7 +8,7 @@
   <% else %>
     <h4 class="text-center"><%= t('components.podium.no_points_this_year') %></h4>
 
-    <p class="text-center"><%= t('components.podium.complete_an_activity') %>.
+    <p class="text-center"><%= t('components.podium.complete_an_activity_html', recommendations_path: (EnergySparks::FeatureFlags.active?(:activities_2023) ? school_recommendations_path(school) : activity_categories_path)) %>.
       <%= t('components.podium.points_needed_to_overtake', points: podium.points_to_overtake) if podium.points_to_overtake %>
     </p>
   <% end %>

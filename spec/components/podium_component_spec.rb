@@ -52,6 +52,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
       expect(html).to have_content("Your school hasn't scored any points yet this school year")
     end
 
+    it { expect(html.to_s).to have_link("Complete an activity") }
     it { expect(html.to_s).to have_content("Complete an activity to score points on Energy Sparks.") }
   end
 
