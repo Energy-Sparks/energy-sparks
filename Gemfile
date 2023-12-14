@@ -170,4 +170,5 @@ group :test do
   gem 'simplecov', require: false, group: :test
   gem 'test-prof'
   gem 'timecop'
+  gem 'webdrivers', '>= 5.3.0' #may not be required in Ruby 3
 end
