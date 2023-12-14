@@ -164,6 +164,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'database_cleaner'
+  gem "webdrivers", '>= 5.3.0'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'
