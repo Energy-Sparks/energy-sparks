@@ -227,7 +227,6 @@ module Schools
 
       def calculate_intraweek_variation(analytics_meter = aggregate_meter, date = asof_date, load_meter = false)
         intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(analytics_meter, date)
-        baseload_analysis = Baseload::BaseloadAnalysis.new(analytics_meter)
         meter = load_meter ? meter_for_mpan(analytics_meter.mpan_mprn) : nil
         return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: intraweek_baseload_service.data_available_from) unless enough_data_for_meter?(analytics_meter)
         variation = intraweek_baseload_service.intraweek_variation
