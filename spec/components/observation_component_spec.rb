@@ -156,13 +156,13 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
     let(:observation) { create(:observation, :school_target) }
 
     it { expect(html).to have_css('i.fa-tachometer-alt') }
-    it { expect(html).to have_link("Started working towards an energy saving target", href: school_school_target_path(observation.school, observation.school_target)) }
+    it { expect(html).to have_link("Started working towards an energy saving target", href: school_school_target_path(observation.school, observation.observable)) }
 
     context "when show_actions is true" do
       let(:show_actions) { true }
 
-      it { expect(html).to have_link("Edit", href: edit_school_school_target_path(observation.school, observation.school_target)) }
-      it { expect(html).to have_link("Delete", href: school_school_target_path(observation.school, observation.school_target)) }
+      it { expect(html).to have_link("Edit", href: edit_school_school_target_path(observation.school, observation.observable)) }
+      it { expect(html).to have_link("Delete", href: school_school_target_path(observation.school, observation.observable)) }
     end
 
     it_behaves_like "when show_actions is false"
