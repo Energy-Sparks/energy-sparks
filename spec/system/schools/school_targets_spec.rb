@@ -205,9 +205,9 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         it { expect(page).not_to have_link("View results") }
 
         context 'and there are progress reports for both targets' do
-          let!(:expired_electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
-          let!(:expired_gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
-          let!(:expired_last_generated)       { Date.yesterday }
+          let(:expired_electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+          let(:expired_gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
+          let(:expired_last_generated)       { Date.yesterday }
 
           let(:expired_target) do
             create(:school_target, school: test_school,
@@ -217,9 +217,9 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
               report_last_generated: expired_last_generated)
           end
 
-          let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.90, target: 15, usage: 15) }
-          let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.50, target: 7, usage: 17) }
-          let!(:last_generated)       { Time.zone.today }
+          let(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.90, target: 15, usage: 15) }
+          let(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.50, target: 7, usage: 17) }
+          let(:last_generated)       { Time.zone.today }
 
           let!(:target) do
               create(:school_target, school: test_school,
@@ -237,11 +237,11 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
 
           it 'shows progress summary' do
             within('#electricity-row') do
-              expect(page).to have_content("-2.0%") #target
+              expect(page).to have_content("-#{expired_target.electricity.to_f}%") #target
               expect(page).to have_content('99%') #progress
             end
             within('#gas-row') do
-              expect(page).to have_content('-4.0%') #target
+              expect(page).to have_content("-#{expired_target.gas.to_f}%") #target
               expect(page).to have_content('59%') #progress
             end
           end
