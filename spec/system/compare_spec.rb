@@ -192,14 +192,14 @@ describe 'compare pages', :compare, type: :system do
   end
 
   ## tests ##
-
   let(:user) {}
   let(:all_school_types) { School.school_types.keys }
   let!(:funder)          { create(:funder, name: "Grant Funder") }
   let!(:school_group)    { create(:school_group, name: "Group 1") }
-  let!(:school)          { create(:school, school_group: school_group, funder: funder)}
+  #the stubbed out geocoder stamps on the country if the postcode is defaulted
+  let!(:school)          { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group, funder: funder)}
   let!(:school_group_2)  { create(:school_group, name: "Group 2") }
-  let!(:school_2)        { create(:school, school_group: school_group_2)}
+  let!(:school_2)        { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group_2)}
 
   let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { a_benchmark_key: 'Benchmark name' } }] }
 

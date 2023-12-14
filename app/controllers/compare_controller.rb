@@ -5,7 +5,7 @@ class CompareController < ApplicationController
   before_action :filter
   before_action :benchmark_groups, only: [:benchmarks]
 
-  before_action :set_included_schools
+  before_action :set_included_schools, only: [:benchmarks, :show]
   helper_method :index_params
 
   # filters
