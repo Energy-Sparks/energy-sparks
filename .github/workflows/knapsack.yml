@@ -2,7 +2,7 @@ name: "Generate knapsack timings"
 on:
   workflow_dispatch:
   push:
-    branches: [ master, 20231213-knapsack-fix ]
+    branches: [ master ]
 jobs:
   rspec:
     runs-on: ubuntu-latest
