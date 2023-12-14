@@ -39,6 +39,10 @@ jobs:
       - run: bundle exec rake assets:precompile
       # Fail early if we have issues with translation keys
       - run: bundle exec i18n-tasks health
+      # https://github.com/actions/download-artifact/issues/3
+      - run: gh run download --name knapsack_rspec_report --dir ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ github.token }}
       # https://docs.knapsackpro.com/ruby/knapsack
       # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
       - run: bundle exec rake knapsack:rspec

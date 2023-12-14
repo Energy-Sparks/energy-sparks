@@ -1,0 +1,7 @@
+---
+en:
+  components:
+    scoreboard_summary:
+      recent_activity: Recent activity across Energy Sparks
+      recent_scoreboard_activity_html: Recent activity on <a href="%{scoreboard_path}">your scoreboard</a>
+      title: Scoreboard update

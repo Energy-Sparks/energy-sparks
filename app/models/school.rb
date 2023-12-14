@@ -308,6 +308,10 @@ class School < ApplicationRecord
     ]
   end
 
+  def current_academic_year
+    academic_year_for(Time.zone.today)
+  end
+
   def academic_year_for(date)
     return nil unless calendar.present?
     calendar.academic_year_for(date)

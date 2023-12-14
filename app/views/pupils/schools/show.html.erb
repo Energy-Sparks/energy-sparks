@@ -55,56 +55,59 @@
 <% end %>
 <%= render 'schools/dashboard/transport_surveys', school: @school %>
 
-<div class="row">
-  <div class="col card-deck actions">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="text-center">
-          <strong>
-            <% if @first %>
-              <%= t('pupils.schools.show.no_activities_completed') %>
-            <% else %>
-              <%= t('pupils.schools.show.activities_completed', count: @activities_count) %>
-            <% end %>
-          </strong>
-        </h4>
-        <% if @suggestion %>
-          <h5 class="text-center">
-            <%= @first ? t('pupils.schools.show.try_this_first') : t('pupils.schools.show.try_this_next') %>:
-          </h5>
-          <div class="activity-suggestion">
-            <p><%= link_to @suggestion.name, activity_type_path(@suggestion) %></p>
-            <span class="btn bg-neutral rounded-pill">
-              <strong class="text-uppercase">
-                <%= @suggestion.score %><span class="small"> <%= t('pupils.schools.show.points') %></span>
-              </strong>
-              /
-              <span class="key-stages"><%= @suggestion.key_stage_list %></span>
-            </span>
-          </div>
-        <% end %>
-      </div>
-      <div class="card-footer text-center">
-        <%= link_to t('pupils.schools.show.choose_another_activity'), activity_categories_path, class: 'btn btn-lg btn-light rounded-pill font-weight-bold' %>
-      </div>
-    </div>
-  </div>
-
-  <div class="col card-deck actions">
-    <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <%= component 'scoreboard_summary', podium: current_school_podium %>
+<% else %>
+  <div class="row">
+    <div class="col card-deck actions">
       <div class="card">
         <div class="card-body">
-          <%= component 'podium', podium: current_school_podium %>
+          <h4 class="text-center">
+            <strong>
+              <% if @first %>
+                <%= t('pupils.schools.show.no_activities_completed') %>
+              <% else %>
+                <%= t('pupils.schools.show.activities_completed', count: @activities_count) %>
+              <% end %>
+            </strong>
+          </h4>
+          <% if @suggestion %>
+            <h5 class="text-center">
+              <%= @first ? t('pupils.schools.show.try_this_first') : t('pupils.schools.show.try_this_next') %>:
+            </h5>
+            <div class="activity-suggestion">
+              <p><%= link_to @suggestion.name, activity_type_path(@suggestion) %></p>
+              <span class="btn bg-neutral rounded-pill">
+                <strong class="text-uppercase">
+                  <%= @suggestion.score %><span class="small"> <%= t('pupils.schools.show.points') %></span>
+                </strong>
+                /
+                <span class="key-stages"><%= @suggestion.key_stage_list %></span>
+              </span>
+            </div>
+          <% end %>
         </div>
         <div class="card-footer text-center">
-          <%= link_to t('pupils.schools.show.see_scoreboard'), scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+          <%= link_to t('pupils.schools.show.choose_another_activity'), activity_categories_path, class: 'btn btn-lg btn-light rounded-pill font-weight-bold' %>
         </div>
       </div>
-    <% end %>
-  </div>
-</div>
+    </div>
 
-<br/>
+    <div class="col card-deck actions">
+      <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
+        <div class="card">
+          <div class="card-body">
+            <%= component 'podium', podium: current_school_podium %>
+          </div>
+          <div class="card-footer text-center">
+            <%= link_to t('pupils.schools.show.see_scoreboard'), scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <br/>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>

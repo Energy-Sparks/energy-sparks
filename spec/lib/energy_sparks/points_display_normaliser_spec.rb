@@ -1,12 +1,30 @@
 require 'energy_sparks/points_display_normaliser'
 
 describe EnergySparks::PointsDisplayNormaliser do
-  it 'returns and empty array when no points are passed in' do
-    expect(EnergySparks::PointsDisplayNormaliser.normalise([])).to eq([])
+  let(:points) {}
+
+  subject(:normalised_points) { EnergySparks::PointsDisplayNormaliser.normalise(points) }
+
+  context "when points is empty" do
+    let(:points) { [] }
+
+    it "returns an empty array" do
+      expect(normalised_points).to be_empty
+    end
   end
 
-  it 'returns 0.5s if all the points are the same' do
-    expect(EnergySparks::PointsDisplayNormaliser.normalise([20, 20, 20])).to eq([0.5, 0.5, 0.5])
+  context "when all points are the same" do
+    let(:points) { [20, 20, 20] }
+
+    it "returns 0.5s" do
+      expect(normalised_points).to eq([0.5, 0.5, 0.5])
+    end
+  end
+
+  context "when there is a nil point" do
+    let(:points) { [0, 4, 10] }
+
+    it { expect(normalised_points).to eq([0, 0.4, 1]) }
   end
 
   it 'equally spaces values if the values are a distance apart proportinal to their size' do

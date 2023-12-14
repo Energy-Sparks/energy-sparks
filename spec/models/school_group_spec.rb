@@ -120,7 +120,6 @@ describe SchoolGroup, :school_groups, type: :model do
 
     let(:header) { "For,Name,Title,Description,Fuel type,Type,Status,Status summary,Meters,Meter status,Data sources,Owned by,Created by,Created at,Updated by,Updated at" }
     let(:user) { create(:admin) }
-    let(:school_group) { create(:school_group) }
     let(:data_source) { create(:data_source) }
 
     subject(:csv) { school_group.all_issues.to_csv }
