@@ -182,9 +182,9 @@ RSpec.describe "adult dashboard navigation", type: :system do
       expect(page).to have_link("Storage heater usage")
       expect(page).to have_link("Energy analysis")
       expect(page).to have_link("My alerts")
-      expect(page).to have_link("School programmes")
-      expect(page).to have_link("Complete pupil activities")
-      expect(page).to have_link("Energy saving actions")
+      expect(page).to have_link("School programmes", href: programme_types_path)
+      expect(page).to have_link("Complete pupil activities", href: activity_categories_path)
+      expect(page).to have_link("Energy saving actions", href: intervention_type_groups_path)
       expect(page).to have_link("Download our data")
     end
 
