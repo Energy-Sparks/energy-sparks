@@ -162,10 +162,6 @@ class ObservationComponent < ViewComponent::Base
       'tachometer-alt'
     end
 
-    def observable
-      observation.school_target
-    end
-
     def editable?
       !observable.expired?
     end
