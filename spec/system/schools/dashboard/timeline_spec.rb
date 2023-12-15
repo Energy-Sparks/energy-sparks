@@ -18,12 +18,12 @@ RSpec.shared_examples "dashboard timeline" do
   it 'displays events in a timeline' do
     expect(page).to have_content('Completed a programme')
     expect(page).to have_content('Recorded a transport survey response')
-    expect(page).to have_content('Recorded temperatures in')
+    expect(page).to have_content('Recorded indoor temperatures in')
     expect(page).to have_content('Upgraded insulation')
     expect(page).to have_content('Completed an activity')
     expect(page).to have_content('Started working towards an energy saving target')
     click_on 'View all events'
-    expect(page).to have_content('Recorded temperatures in')
+    expect(page).to have_content('Recorded indoor temperatures in')
     expect(page).to have_content('Upgraded insulation')
     expect(page).to have_content('Completed an activity')
     expect(page).to have_content('Started working towards an energy saving target')
