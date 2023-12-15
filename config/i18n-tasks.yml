@@ -161,7 +161,7 @@ ignore_unused:
   - 'intervention_types.errors.invalid_fuel_type.*'
   - 'onboarding_mailer.reminder_email.subject.*'
   - 'onboarding_mailer.reminder_email.paragraph_3.*'
-  - 'components.timeline.*.compact_message_html.*'
+  - 'components.observation.*.compact_message_html.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
