@@ -36,7 +36,7 @@ en:
           one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> by recording indoor temperatures in <a href="%{compact_path}">%{target}</a>
           other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> by recording indoor temperatures in <a href="%{compact_path}">%{target}</a>
           zero: <a href="%{school_path}">%{school}</a> recorded indoor temperatures in <a href="%{compact_path}">%{target}</a>
-        message: Recorded temperatures in
+        message: Recorded indoor temperatures in
       transport_survey:
         compact_message_html: <a href="%{school_path}">%{school}</a> started a <a href="%{compact_path}">transport survey</a>
         message:
