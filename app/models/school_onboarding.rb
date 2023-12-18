@@ -46,7 +46,6 @@
 
 class SchoolOnboarding < ApplicationRecord
   validates :school_name, :contact_email, presence: true
-  validates :weather_station, presence: true, unless: :dark_sky_area_id?
 
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
