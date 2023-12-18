@@ -824,8 +824,7 @@ describe School do
     end
   end
 
-  describe 'weather_station required if no dark_sky_area' do
+  describe 'weather_station required' do
     it { is_expected.to validate_presence_of(:weather_station) }
-    it { expect(create(:school, dark_sky_area: create(:dark_sky_area))).not_to validate_presence_of(:weather_station) }
   end
 end
