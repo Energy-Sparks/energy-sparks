@@ -22,20 +22,14 @@ module Audits
     end
 
     def update_points(audit)
-      observation = Observation.find_by(school: @school, audit: audit)
+      observation = audit.observations.default.first
       observation.update(points: points(audit))
     end
 
     private
 
     def create_observation(audit)
-      Observation.create!(
-        school: @school,
-        observation_type: :audit,
-        audit: audit,
-        at: audit.created_at,
-        points: points(audit)
-      )
+      audit.observations.create!(at: audit.created_at, points: points(audit))
     end
 
     def points(audit)
