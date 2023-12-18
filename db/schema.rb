@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_14_145756) do
+ActiveRecord::Schema.define(version: 2023_12_18_124014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1236,9 +1236,11 @@ ActiveRecord::Schema.define(version: 2023_12_14_145756) do
     t.integer "pupil_count"
     t.string "observable_type"
     t.bigint "observable_id"
+    t.integer "message_type", default: 0
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
+    t.index ["message_type"], name: "index_observations_on_message_type"
     t.index ["observable_type", "observable_id"], name: "index_observations_on_observable_type_and_observable_id"
     t.index ["programme_id"], name: "index_observations_on_programme_id"
     t.index ["school_id"], name: "index_observations_on_school_id"

@@ -55,6 +55,8 @@ class Observation < ApplicationRecord
   # events: 5 is to be removed when school_target relationship is removed
   enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, observable: 8 }
 
+  enum message_type: { default: 0, completed: 1 }
+
   # This is the first stage in moving this class over to being fully polymorphic
   # The idea is to eventually move all observation_types (above) to this way of doing things
   belongs_to :observable, polymorphic: true, optional: true
