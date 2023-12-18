@@ -64,67 +64,105 @@ describe Audit do
 
   describe '#activities_completed?' do
     let(:activity_category) { create(:activity_category, name: 'Zebras') }
+    let(:audit) { create(:audit, :with_activity_and_intervention_types) }
 
-    it 'returns true if the associated school has completed all activites that corresponds with the activity types listed in the audit and logged after the audit was created' do
-      audit = create(:audit, :with_activity_and_intervention_types)
-      expect(audit.activity_types.count).to eq(3)
-      expect(audit.activities_completed?).to eq(false)
-      audit.activity_types.each do |activity_type|
-        Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
-      end
-      expect(audit.school.activities.count).to eq(3)
-      expect(audit.activities_completed?).to eq(true)
+    context "when no activites are completed" do
+      it { expect(audit.activities_completed?).to be(false) }
     end
 
-    it 'returns false if the associated school has completed all activites that corresponds with the activity types listed in the audit but logged before the audit was created' do
-      audit = create(:audit, :with_activity_and_intervention_types)
-      expect(audit.activity_types.count).to eq(3)
-      expect(audit.school.activities.count).to eq(0)
-      expect(audit.activities_completed?).to eq(false)
-      audit.activity_types.each do |activity_type|
-        Activity.create!(happened_on: '2022-06-24', school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+    context "when all audit activities are completed" do
+      let(:completed_time) { audit.created_at }
+
+      before do
+        audit.activity_types.each do |activity_type|
+          Activity.create!(happened_on: completed_time, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+        end
       end
-      expect(audit.school.activities.count).to eq(3)
-      expect(audit.activities_completed?).to eq(false)
+
+      it { expect(audit.school.activities.count).to eq(3) }
+
+      context "when logged after audit was created" do
+        let(:completed_time) { audit.created_at }
+
+        it { expect(audit.activities_completed?).to eq(true) }
+      end
+
+      context "when logged before audit was created" do
+        let(:completed_time) { '2022-06-24' }
+
+        it { expect(audit.activities_completed?).to eq(false) }
+      end
     end
 
-    it 'returns false if the associated school has not completed all activites that corresponds with the activity types listed in the audit' do
-      audit = create(:audit, :with_activity_and_intervention_types)
-      expect(audit.activity_types.count).to eq(3)
-      expect(audit.school.activities.count).to eq(0)
-      expect(audit.activities_completed?).to eq(false)
-      audit.activity_types[0...-1].each do |activity_type|
-        Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+    context "when one activity is logged before the audit was created" do
+      before do
+        audit.activity_types.each_with_index do |activity_type, i|
+          completed_time = i == 0 ? '2022-06-24' : audit.created_at
+          Activity.create!(happened_on: completed_time, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+        end
       end
-      expect(audit.school.activities.count).to eq(2)
-      expect(audit.activities_completed?).to eq(false)
+
+      it { expect(audit.school.activities.count).to eq(3) }
+      it { expect(audit.activities_completed?).to eq(false) }
+    end
+
+    context "when not all activities are complete" do
+      before do
+        audit.activity_types[0...-1].each do |activity_type|
+          Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+        end
+      end
+
+      it { expect(audit.school.activities.count).to eq(2) }
+      it { expect(audit.activities_completed?).to eq(false) }
     end
   end
 
   describe 'create_activities_completed_observation!' do
     let(:activity_category) { create(:activity_category, name: 'Zebras') }
 
-    it 'creates *ONLY ONE* observation for the audit with the site setting points when all activities are completed' do
-      audit = create(:audit, :with_activity_and_intervention_types)
-      expect(audit.activity_types.count).to eq(3)
-      expect(audit.school.activities.count).to eq(0)
-      expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
-      audit.activity_types.each do |activity_type|
-        Activity.create!(happened_on: audit.created_at + 12.months, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
-      end
-      expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(1)
-      expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
-    end
+    context "with 3 activities, non complete" do
+      let(:audit) { create(:audit, :with_activity_and_intervention_types) }
 
-    it 'does not create an observation for the audit with the site setting points when all activities are completed but are outside of 12 months of the audit creation date' do
-      audit = create(:audit, :with_activity_and_intervention_types)
-      expect(audit.activity_types.count).to eq(3)
-      expect(audit.school.activities.count).to eq(0)
-      expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
-      audit.activity_types.each do |activity_type|
-        Activity.create!(happened_on: audit.created_at + 13.months, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+      it { expect(audit.activity_types.count).to eq(3) }
+
+      it "has no completed activities" do
+        expect(audit.school.activities.count).to eq(0)
       end
-      expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
+
+      it "doesn't add observation" do
+        expect { audit.create_activities_completed_observation! }.to change { audit.observations.completed.count }.by(0)
+      end
+
+      context "when all activities are completed" do
+        let(:completed_timeframe) { 12.months }
+
+        before do
+          audit.activity_types.each do |activity_type|
+            Activity.create!(happened_on: audit.created_at + completed_timeframe, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          end
+          audit.create_activities_completed_observation!
+        end
+
+        context "when activities are completed inside of 12 months of the audit creation date" do
+          it "adds observation" do
+            expect(audit.observations.completed.count).to be(1)
+          end
+
+          it "doesn't add a second observation" do
+            audit.create_activities_completed_observation!
+            expect(audit.observations.completed.count).to be(1)
+          end
+        end
+
+        context "when activities are completed outside of 12 months of the audit creation date" do
+          let(:completed_timeframe) { 13.months }
+
+          it "doesn't add observation" do
+            expect(audit.observations.completed.count).to be(0)
+          end
+        end
+      end
     end
   end
 end

@@ -36,7 +36,6 @@ RSpec.shared_examples "a recommendations prompt" do |displayed: true|
   include_examples "a standard prompt", displayed: displayed
 end
 
-
 RSpec.shared_examples "a recommendations scoreboard prompt" do |displayed: true, position: 0, points: 0|
   let(:no_position) { "You haven't scored any points this year. Complete your next activity to get on the scoreboard!" }
   let(:not_top) { "Well done, you have scored #{points} points so far and you're in #{position.ordinalize} position on the scoreboard. Complete your next activity to climb higher up the scoreboard!" }

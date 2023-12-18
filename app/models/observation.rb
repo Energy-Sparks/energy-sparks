@@ -46,16 +46,17 @@ class Observation < ApplicationRecord
   belongs_to :programme, optional: true # to be removed when column is removed
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
-  belongs_to :audit, optional: true
+  belongs_to :audit, optional: true # to be removed when column is removed
   belongs_to :school_target, optional: true # to be removed when column is removed
 
   # If adding a new observation type remember to also modify the timeline component
   # events: 3 has been removed
-  # events: 6 is to be removed when programme relationship is removed
+  # events: 4 & 7 are to be removed when audit relationship is removed
   # events: 5 is to be removed when school_target relationship is removed
+  # events: 6 is to be removed when programme relationship is removed
   enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, observable: 8 }
 
-  enum message_type: { default: 0, completed: 1 }
+  enum message_key: { default: 0, completed: 1 }
 
   # This is the first stage in moving this class over to being fully polymorphic
   # The idea is to eventually move all observation_types (above) to this way of doing things

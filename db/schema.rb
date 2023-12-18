@@ -922,13 +922,13 @@ ActiveRecord::Schema.define(version: 2023_12_18_124014) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "state"
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "key"
@@ -936,7 +936,7 @@ ActiveRecord::Schema.define(version: 2023_12_18_124014) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -1236,11 +1236,11 @@ ActiveRecord::Schema.define(version: 2023_12_18_124014) do
     t.integer "pupil_count"
     t.string "observable_type"
     t.bigint "observable_id"
-    t.integer "message_type", default: 0
+    t.integer "message_key", default: 0
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
-    t.index ["message_type"], name: "index_observations_on_message_type"
+    t.index ["message_key"], name: "index_observations_on_message_key"
     t.index ["observable_type", "observable_id"], name: "index_observations_on_observable_type_and_observable_id"
     t.index ["programme_id"], name: "index_observations_on_programme_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
