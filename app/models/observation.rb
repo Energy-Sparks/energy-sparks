@@ -56,8 +56,6 @@ class Observation < ApplicationRecord
   # events: 6 is to be removed when programme relationship is removed
   enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, observable: 8 }
 
-  enum message_key: { default: 0, completed: 1 }
-
   # This is the first stage in moving this class over to being fully polymorphic
   # The idea is to eventually move all observation_types (above) to this way of doing things
   belongs_to :observable, polymorphic: true, optional: true
@@ -86,6 +84,9 @@ class Observation < ApplicationRecord
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
   scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :observable]) }
   scope :not_of_observable_type, ->(observable_type) { where.not(observable_type: observable_type).or(where(observable_type: nil)) }
+
+  scope :for_variation, ->(variation) { where(observable_variation: variation) }
+  scope :for_observable, ->(observable_type, variation: '') { observable.for_variation(variation).where(observable_type: observable_type) }
 
   has_rich_text :description
 

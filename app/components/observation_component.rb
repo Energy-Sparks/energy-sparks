@@ -7,8 +7,12 @@ class ObservationComponent < ViewComponent::Base
     @compact = compact
   end
 
+  def observable_klass
+    "#{observation.observable_type}#{observation.observable_variation || ''}"
+  end
+
   def klass
-    observation.observable_type || observation.observation_type.camelize
+    observable_klass.presence || observation.observation_type.camelize
   end
 
   def component
@@ -74,8 +78,12 @@ class ObservationComponent < ViewComponent::Base
     def target
     end
 
+    def i18n_scope
+      [:components, :observation, self.class.name.demodulize.underscore]
+    end
+
     def message
-      I18n.t("components.observation.#{self.class.name.demodulize.underscore}.message")
+      I18n.t(:message, scope: i18n_scope)
     end
 
     def compact_path
@@ -94,10 +102,6 @@ class ObservationComponent < ViewComponent::Base
   end
 
   class Audit < ObservationBase
-    def observable
-      observation.audit
-    end
-
     def target
       observable.title
     end
@@ -199,7 +203,7 @@ class ObservationComponent < ViewComponent::Base
     end
 
     def message
-      I18n.t('components.observation.transport_survey.message', count: observation.observable.responses.count)
+      I18n.t('message', scope: i18n_scope, count: observation.observable.responses.count)
     end
   end
 end

@@ -9,13 +9,14 @@ FactoryBot.define do
     end
 
     trait :audit do
-      observation_type { :audit }
-      audit
+      observation_type { :observable }
+      association :observable, factory: :audit
     end
 
     trait :audit_activities_completed do
-      observation_type { :audit_activities_completed }
-      audit
+      observation_type { :observable }
+      observable_variation { 'ActivitiesCompleted' }
+      association :observable, factory: :audit
     end
 
     trait :intervention do
@@ -39,7 +40,7 @@ FactoryBot.define do
     end
 
     trait :school_target do
-      observation_type { :school_target }
+      observation_type { :observable }
       association :observable, factory: :school_target
     end
 
