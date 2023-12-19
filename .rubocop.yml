@@ -138,8 +138,6 @@ Metrics/PerceivedComplexity:
   Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
-Style/StringLiterals:
-  Enabled: false
 Naming/PredicateName:
   Enabled: false
 Metrics/ClassLength:
@@ -176,8 +174,6 @@ Style/RedundantBegin:
   Enabled: false
 Layout/HashAlignment:
   Enabled: false
-Layout/IndentationWidth:
-  Enabled: false
 Layout/FirstParameterIndentation:
   Enabled: false
 Style/HashSyntax:
@@ -185,8 +181,6 @@ Style/HashSyntax:
 Layout/DotPosition:
   Enabled: false
 Style/RaiseArgs:
-  Enabled: false
-Layout/LeadingCommentSpace:
   Enabled: false
 Style/TrailingCommaInArguments:
   Enabled: false
@@ -426,6 +420,7 @@ RSpec/MultipleExpectations:
 RSpec/AnyInstance:
   Enabled: false
 RSpec/LetSetup:
+  # often used in shared contexts allowing let to be overridden
   Enabled: false
 
 ### Things we're unlikely to fix: ###
