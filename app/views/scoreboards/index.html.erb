@@ -17,18 +17,34 @@
 
 <%= render 'prizes' if EnergySparks::FeatureFlags.active?(:scoreboard_prizes) %>
 
-<% if @scoreboards.any? %>
+<div id="scoreboards">
+  <%# partial with below? %>
+  <h2><%= t('scoreboards.all_title') %></h2>
+  <div class="card mt-4">
+    <div class="card-body">
+      <% @scoreboard_all.scored_schools.top(5).each do |s| %>
+        <h4><span class="badge badge-success"><%= s.sum_points %></span> <%= s.name %></h4>
+      <% end %>
+    </div>
+    <div class="card-footer text-right">
+      <%= link_to scoreboard_path(@scoreboard_all.slug) do %>
+        <%= t('scoreboards.view_all', count: @scoreboard_all.scored_schools.count) %>
+      <% end %>
+    </div>
+  </div>
+
+  <h2><%= t('scoreboards.regional_title') %></h2>
   <% @scoreboards.each_slice(2) do |row| %>
     <div class="row">
       <div class="col-lg-12">
-        <div class="card-deck" id="scoreboards">
+        <div class="card-deck">
           <% row.each do |scoreboard| %>
             <div class="card mt-4">
               <div class="card-body">
                 <h3><%= scoreboard.name %></h3>
-                  <% scoreboard.scored_schools.top_three.each do |s| %>
-                    <h4><span class="badge badge-success"><%= s.sum_points %></span> <%= s.name %></h4>
-                  <% end %>
+                <% scoreboard.scored_schools.top(3).each do |s| %>
+                  <h4><span class="badge badge-success"><%= s.sum_points %></span> <%= s.name %></h4>
+                <% end %>
               </div>
               <div class="card-footer text-right">
                 <%= link_to scoreboard_path(scoreboard) do %>
@@ -41,4 +57,4 @@
       </div>
     </div>
   <% end %>
-<% end %>
+</div>

@@ -14,8 +14,13 @@
 }
 
 #scoreboards {
-  h3 {
+  h2 {
+    font-size: $f2;
+    padding-top: 20px;
+  }
+  h2, h3 {
     font-weight: bolder;
+    padding-bottom: 0;
   }
   h4 {
     padding-top: 0px;
