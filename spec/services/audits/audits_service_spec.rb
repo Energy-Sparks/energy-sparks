@@ -53,7 +53,7 @@ describe Audits::AuditService, type: :service do
     let(:audit) { build(:audit, school: school) }
 
     it "has no observations" do
-      expect(audit.observations.default.count).to be(0)
+      expect(audit.observations.audit.count).to be(0)
     end
 
     context "calling the service" do
@@ -66,8 +66,8 @@ describe Audits::AuditService, type: :service do
       end
 
       it "creates observation" do
-        expect(audit.observations.default.count).to be(1)
-        expect(audit.observations.default.first.points).not_to be_nil
+        expect(audit.observations.audit.count).to be(1)
+        expect(audit.observations.audit.first.points).not_to be_nil
       end
 
       context "when audit isn't valid" do

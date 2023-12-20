@@ -158,17 +158,37 @@ describe Observation do
       end
     end
 
-    context "when associated object is of obserable type" do
-      let(:transport_survey) { create(:transport_survey, school: school) }
+    context "setting defaults" do
+      context "when the associated object is set using observable" do
+        let(:transport_survey) { create(:transport_survey, school: school) }
 
-      subject(:observation) { Observation.create(observable: transport_survey) }
+        subject(:observation) { Observation.create(observable: transport_survey) }
 
-      it "sets observation_type" do
-        expect(observation.observation_type).to eq('transport_survey')
+        it "sets observation_type" do
+          expect(observation.observation_type).to eq('transport_survey')
+        end
+
+        it "sets school from related object" do
+          expect(observation.school).to eq(transport_survey.school)
+        end
       end
 
-      it "sets school from related object" do
-        expect(observation.school).to eq(transport_survey.school)
+      context "when the associated object is not set with observable" do
+        let(:activity) { create(:activity) }
+
+        subject(:observation) { Observation.create(activity: activity) }
+
+        it "does not set observation_type" do
+          expect(observation.observation_type).to be_nil
+        end
+
+        it "does not set school" do
+          expect(observation.school).to be_nil
+        end
+
+        it "does not set at" do
+          expect(observation.at).to be_nil
+        end
       end
     end
   end

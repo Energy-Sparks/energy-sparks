@@ -194,10 +194,6 @@ class ObservationComponent < ViewComponent::Base
       'car'
     end
 
-    def show_buttons?
-      false
-    end
-
     def message
       I18n.t('message', scope: i18n_scope, count: observation.observable.responses.count)
     end

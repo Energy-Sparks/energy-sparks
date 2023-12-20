@@ -48,11 +48,12 @@ class Observation < ApplicationRecord
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true # to be removed when column is removed
   belongs_to :school_target, optional: true # to be removed when column is removed
-  belongs_to :observable, polymorphic: true, optional: true
 
   # If adding a new observation type remember to also modify the timeline component
   # events: 3 has been removed
   enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, transport_survey: 8 }
+
+  belongs_to :observable, polymorphic: true, optional: true
 
   validates_presence_of :at, :school
   validates_associated :temperature_recordings

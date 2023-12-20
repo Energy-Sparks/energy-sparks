@@ -131,7 +131,7 @@ describe Audit do
       end
 
       it "doesn't add observation" do
-        expect { audit.create_activities_completed_observation! }.to change { audit.observations.for_variation('ActivitiesCompleted').count }.by(0)
+        expect { audit.create_activities_completed_observation! }.to change { audit.observations.audit_activities_completed.count }.by(0)
       end
 
       context "when all activities are completed" do
@@ -146,12 +146,12 @@ describe Audit do
 
         context "when activities are completed inside of 12 months of the audit creation date" do
           it "adds observation" do
-            expect(audit.observations.for_variation('ActivitiesCompleted').count).to be(1)
+            expect(audit.observations.audit_activities_completed.count).to be(1)
           end
 
           it "doesn't add a second observation" do
             audit.create_activities_completed_observation!
-            expect(audit.observations.for_variation('ActivitiesCompleted').count).to be(1)
+            expect(audit.observations.audit_activities_completed.count).to be(1)
           end
         end
 
@@ -159,7 +159,7 @@ describe Audit do
           let(:completed_timeframe) { 13.months }
 
           it "doesn't add observation" do
-            expect(audit.observations.for_variation('ActivitiesCompleted').count).to be(0)
+            expect(audit.observations.audit_activities_completed.count).to be(0)
           end
         end
       end
