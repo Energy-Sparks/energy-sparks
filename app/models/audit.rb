@@ -65,8 +65,8 @@ class Audit < ApplicationRecord
   def create_activities_completed_observation!
     return unless SiteSettings.current.audit_activities_bonus_points
     return unless activities_completed?
-    return if observations.for_variation('ActivitiesCompleted').any? # Only one audit activities completed observation is permitted per audit
+    return if observations.audit_activities_completed.any? # Only one audit activities completed observation is permitted per audit
 
-    self.observations.create!(observable_variation: 'ActivitiesCompleted', points: SiteSettings.current.audit_activities_bonus_points)
+    self.observations.create!(observation_type: :audit_activities_completed, points: SiteSettings.current.audit_activities_bonus_points)
   end
 end

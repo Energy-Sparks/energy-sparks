@@ -7,16 +7,8 @@ class ObservationComponent < ViewComponent::Base
     @compact = compact
   end
 
-  def observable_klass
-    "#{observation.observable_type}#{observation.observable_variation || ''}"
-  end
-
-  def klass
-    observable_klass.presence || observation.observation_type.camelize
-  end
-
   def component
-    "ObservationComponent::#{klass}".constantize.new(observation: observation, show_actions: show_actions, compact: compact)
+    "ObservationComponent::#{observation.observation_type.camelize}".constantize.new(observation: observation, show_actions: show_actions, compact: compact)
   end
 
   def call

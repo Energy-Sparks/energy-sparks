@@ -158,13 +158,13 @@ describe Observation do
       end
     end
 
-    context "when observable" do
+    context "when associated object is of obserable type" do
       let(:transport_survey) { create(:transport_survey, school: school) }
 
       subject(:observation) { Observation.create(observable: transport_survey) }
 
       it "sets observation_type" do
-        expect(observation.observation_type).to eq('observable')
+        expect(observation.observation_type).to eq('transport_survey')
       end
 
       it "sets school from related object" do

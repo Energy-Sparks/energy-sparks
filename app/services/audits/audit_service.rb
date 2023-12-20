@@ -22,7 +22,7 @@ module Audits
     end
 
     def update_points(audit)
-      observation = audit.observations.default.first
+      observation = audit.observations.audit.first
       observation.update(points: points(audit))
     end
 
