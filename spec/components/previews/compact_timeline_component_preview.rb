@@ -3,14 +3,14 @@ class CompactTimelineComponentPreview < ViewComponent::Preview
     audit = Audit.last
 
     observations = [
-      Observation.find_by(observation_type: 'activity'),
-      Observation.find_by(observation_type: 'intervention'),
-      Observation.find_by(observation_type: 'temperature'),
-      Observation.new(school: audit.school, observable: audit, observable_variation: 'ActivitiesCompleted', at: Time.zone.yesterday, points: SiteSettings.current.audit_activities_bonus_points),
-      Observation.for_observable('Audit').last,
-      Observation.for_observable('TransportSurvey').last,
-      Observation.for_observable('Programme').last,
-      Observation.for_observable('SchoolTarget').last,
+      Observation.find_by(observation_type: :activity),
+      Observation.find_by(observation_type: :intervention),
+      Observation.find_by(observation_type: :temperature),
+      Observation.new(school: audit.school, observable: audit, observation_type: :audit_activities_completed, at: Time.zone.yesterday, points: SiteSettings.current.audit_activities_bonus_points),
+      Observation.find_by(observation_type: :audit),
+      Observation.find_by(observation_type: :transport_survey),
+      Observation.find_by(observation_type: :programme),
+      Observation.find_by(observation_type: :school_target),
     ].compact.sort_by(&:at).reverse
 
     render(CompactTimelineComponent.new(observations: observations))
