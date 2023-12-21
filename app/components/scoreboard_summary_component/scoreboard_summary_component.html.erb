@@ -1,5 +1,7 @@
 <div class="scoreboard-summary-component">
-  <h3><%= I18n.t("components.scoreboard_summary.title") %></h3>
+  <% if title.present? %>
+    <h3><%= title %></h3>
+  <% end %>
   <div class="row">
     <div class="col-lg card-deck actions">
       <div class="card">

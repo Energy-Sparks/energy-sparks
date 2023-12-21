@@ -1,3 +1,9 @@
+<% if EnergySparks::FeatureFlags.active?(:activities_2024) %>
+
+  <%= render 'shared/task_completed', task_type: :intervention, school: @school, points: @observation.points, task_path: school_intervention_path(@school, @observation), task: @observation %>
+
+<% else %>
+
 <% content_for :page_title, t('interventions.completed.page_title', school: @school.name) %>
 
 <h1 class="text-center"><%= t('interventions.completed.title') %></h1>
@@ -63,4 +69,5 @@
       <%= render "intervention_type_groups/cards", intervention_types: @suggested_actions, card_deck_css: "" %>
     </div>
   </div>
+<% end %>
 <% end %>

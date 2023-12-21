@@ -470,4 +470,8 @@ module ApplicationHelper
   def user_school_role(user)
     user.staff_role ? user.staff_role.title : user.role.humanize
   end
+
+  def recommendations_scope_for(task_type)
+    { 'intervention': :adult, 'activity': :pupil }[task_type]
+  end
 end

@@ -1,0 +1,16 @@
+<% content_for :page_title, t("tasks.completed.#{task_type}.page_title", school: school.name) %>
+
+<h1 class="text-center"><%= t('tasks.completed.title', points: points) %></h1>
+
+<%= component :notice, status: :positive do |c| %>
+  <% c.with_link { link_to(t("tasks.completed.#{task_type}.view_link"), polymorphic_path([school, task])) } %>
+  <%= t('tasks.completed.share') %>
+<% end %>
+
+<%= component 'scoreboard_summary', podium: current_school_podium , title: '' %>
+
+<h3><%= t('tasks.completed.what_next') %></h3>
+
+<%= render('schools/prompt_to_complete_programme', programmes: school.programmes.started.order(started_on: :desc), style: :compact) %>
+<%= render('schools/prompt_audit', audit: Audits::AuditService.new(school).last_audit, style: :compact) %>
+<%= render 'schools/prompt_recommended', scope: recommendations_scope_for(task_type), icon: true %>
