@@ -3,7 +3,7 @@
 <h1 class="text-center"><%= t('tasks.completed.title', points: points) %></h1>
 
 <%= component :notice, status: :positive do |c| %>
-  <% c.with_link { link_to(t("tasks.completed.#{task_type}.view_link"), polymorphic_path([school, task])) } %>
+  <% c.with_link { link_to(t("tasks.completed.#{task_type}.view_link"), task_path) } %>
   <%= t('tasks.completed.share') %>
 <% end %>
 
