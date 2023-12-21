@@ -16,7 +16,7 @@ class ScoreboardsController < ApplicationController
       @scoreboard = ScoreboardAll.new
     else
       @scoreboard = Scoreboard.find(params[:id])
-      authorize! :read, @scoreboard
+      authorize!(:read, @scoreboard)
     end
     setup_scores_and_years(@scoreboard)
   end

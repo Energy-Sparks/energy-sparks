@@ -17,7 +17,7 @@ class ScoreboardAll
   end
 
   def scored_schools(**kwargs)
-    super(**kwargs).with_points
+    @academic_year_calendar.nil? ? ScoredSchoolsList.new([]) : super(**kwargs).with_points
   end
 
   def name

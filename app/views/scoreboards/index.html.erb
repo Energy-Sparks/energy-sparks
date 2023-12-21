@@ -18,9 +18,8 @@
 <%= render 'prizes' if EnergySparks::FeatureFlags.active?(:scoreboard_prizes) %>
 
 <div id="scoreboards">
-  <%# partial with below? %>
   <h2><%= t('scoreboards.all_title') %></h2>
-  <div class="card mt-4">
+  <div class="card mt-4 mb-4">
     <div class="card-body">
       <% @scoreboard_all.scored_schools.top(5).each do |s| %>
         <h4><span class="badge badge-success"><%= s.sum_points %></span> <%= s.name %></h4>
