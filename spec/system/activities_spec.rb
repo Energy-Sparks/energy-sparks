@@ -14,6 +14,15 @@ describe 'viewing and recording activities', type: :system do
   let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven) }
 
   let(:school) { create_active_school(data_enabled: school_data_enabled) }
+  let(:prize_excerpt) { 'Our top scoring schools this year could win' }
+
+  let(:activities_2024_feature) { false }
+
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2024: activities_2024_feature.to_s do
+      example.run
+    end
+  end
 
   context 'as a public user' do
     before do
@@ -364,11 +373,16 @@ describe 'viewing and recording activities', type: :system do
 
   context "displaying prizes" do
     let!(:activity) { create(:activity, school: school, activity_type: activity_type) }
-    let(:feature_active) { false }
+    let(:scoreboard_prizes_feature) { false }
     let(:prize_excerpt) { 'Our top scoring schools this year could win' }
 
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_SCOREBOARD_PRIZES: scoreboard_prizes_feature.to_s do
+        example.run
+      end
+    end
+
     before do
-      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true) if feature_active
       sign_in(create(:admin))
     end
 
@@ -378,7 +392,7 @@ describe 'viewing and recording activities', type: :system do
       it { expect(page).not_to have_content(prize_excerpt) }
 
       context "feature is active" do
-        let(:feature_active) { true }
+        let(:scoreboard_prizes_feature) { true }
 
         it { expect(page).to have_content(prize_excerpt) }
         it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
