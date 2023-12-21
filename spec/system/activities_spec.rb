@@ -14,7 +14,6 @@ describe 'viewing and recording activities', type: :system do
   let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven) }
 
   let(:school) { create_active_school(data_enabled: school_data_enabled) }
-  let(:prize_excerpt) { 'Our top scoring schools this year could win' }
 
   let(:activities_2024_feature) { false }
 

@@ -1,6 +1,9 @@
 <% content_for :page_title, t("tasks.completed.#{task_type}.page_title", school: school.name) %>
 
-<h1 class="text-center"><%= t('tasks.completed.title', points: points) %></h1>
+<h1 class="text-center">
+  <%= t('tasks.completed.congratulations') %>
+  <%= points && points > 0 ? t("tasks.completed.points", points: points) : t("tasks.completed.#{task_type}.no_points") %>
+</h1>
 
 <%= component :notice, status: :positive do |c| %>
   <% c.with_link { link_to(t("tasks.completed.#{task_type}.view_link"), task_path) } %>

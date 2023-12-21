@@ -3,11 +3,14 @@ en:
   tasks:
     completed:
       activity:
+        no_points: We've recorded your activity
         page_title: "%{school} Activity"
         view_link: View your activity
+      congratulations: Congratulations!
       intervention:
+        no_points: We've recorded you action
         page_title: "%{school} Action"
         view_link: View your action
+      points: You’ve just scored %{points} points
       share: Share what you’ve done with others in the school community
-      title: Congratulations! You’ve just scored %{points} points
       what_next: What do you want to do next?
