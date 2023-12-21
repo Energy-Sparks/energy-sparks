@@ -13,7 +13,8 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven) }
 
-  let(:school) { create_active_school(data_enabled: school_data_enabled) }
+  let!(:scoreboard) { create :scoreboard }
+  let(:school) { create_active_school(data_enabled: school_data_enabled, scoreboard: scoreboard) }
 
   let(:activities_2024_feature) { false }
 
@@ -146,95 +147,105 @@ describe 'viewing and recording activities', type: :system do
       end
     end
 
-    context 'recording an activity' do
+    context 'when recording an activity' do
       let(:activity_description) { 'What we did' }
+      let(:today) { Time.zone.today }
 
-      it 'allows an activity to be created' do
+      before do
         visit activity_type_path(activity_type)
-
         click_on 'Record this activity'
-        fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
-
-        click_on 'Save activity'
-        expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
-        expect(page.has_content?("You've just scored #{activity_type.score} points")).to be true
-        click_on 'View your activity'
-        expect(page.has_content?(activity_type_name)).to be true
-        expect(page.has_content?(Time.zone.today.strftime("%A, %d %B %Y"))).to be true
       end
 
-      context 'which is custom' do
+      context "with non-custom activity" do
+        before do
+          fill_in :activity_happened_on, with: today.strftime("%d/%m/%Y")
+          click_on 'Save activity'
+        end
+
+        it 'allows an activity to be created' do
+          expect(page).to have_content("Congratulations! We've recorded your activity")
+          expect(page).to have_content("You've just scored #{activity_type.score} points")
+        end
+
+        context "when viewing the activity" do
+          before do
+            click_on 'View your activity'
+          end
+
+          it "shows activity page" do
+            expect(page).to have_content(activity_type_name)
+            expect(page).to have_content(today.strftime("%A, %d %B %Y"))
+          end
+        end
+      end
+
+      context 'with custom activity' do
         let(:custom_title) { 'Custom title' }
 
         let(:other_activity_type_name) { 'Exciting activity (please specify)' }
-        let!(:other_activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
+        let!(:activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
 
         before do
-          visit activity_type_path(other_activity_type)
-        end
-
-        it 'allows a title to be added' do
-          click_on 'Record this activity'
           fill_in :activity_title, with: custom_title
           fill_in_trix with: activity_description
-          fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
+          fill_in :activity_happened_on, with: today.strftime("%d/%m/%Y")
 
           click_on 'Save activity'
-          expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
+        end
 
-          click_on 'View your activity'
-          expect(page.has_content?(activity_description)).to be true
-          expect(page.has_content?(custom_title)).to be true
+        it "saves activity" do
+          expect(page).to have_content("Congratulations! We've recorded your activity")
+        end
+
+        context "when viewing the activity" do
+          before do
+            click_on 'View your activity'
+          end
+
+          it 'shows description' do
+            expect(page).to have_content(activity_description)
+          end
+
+          it 'shows title' do
+            expect(page).to have_content(custom_title)
+          end
         end
       end
 
       context 'on podium' do
+        let!(:other_school) { create :school, :with_points, score_points: 40, scoreboard: scoreboard }
+
+        before do
+           visit activity_type_path(activity_type)
+           click_on 'Record this activity'
+           fill_in :activity_happened_on, with: today.strftime("%d/%m/%Y")
+           click_on 'Save activity'
+        end
+
         context 'nil points' do
-          let!(:scoreboard) { create :scoreboard }
-
-          before do
-            school.update!(scoreboard: scoreboard)
-          end
-
           it 'records activity' do
-             visit activity_type_path(activity_type)
-             click_on 'Record this activity'
-             fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
-             click_on 'Save activity'
-             expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
+             expect(page).to have_content("Congratulations! We've recorded your activity")
           end
         end
 
-        context 'with points' do
-          let!(:scoreboard)   { create :scoreboard }
-          let(:points)        { 10 }
-          let(:school)        { create :school, :with_points, score_points: points, scoreboard: scoreboard }
+        context 'in first place' do
+          let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
 
-          context 'in first place' do
-            it 'records activity' do
-              visit activity_type_path(activity_type)
-              click_on 'Record this activity'
-              fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
-              click_on 'Save activity'
-              expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
-              expect(page.has_content?("You've just scored #{activity_type.score} points")).to be true
-              expect(page.has_content?("and your school is currently in 1st place")).to be true
-            end
+          it 'records activity' do
+            expect(page).to have_content("Congratulations! We've recorded your activity")
+            expect(page).to have_content("You've just scored #{activity_type.score} points")
+            expect(page).to have_content("and your school is currently in 1st place")
           end
+        end
 
-          context 'in second place' do
-            let!(:school_2) { create :school, :with_points, score_points: 1000, scoreboard: scoreboard }
+        context 'in second place' do
+          let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
 
-            it 'records activity' do
-              visit activity_type_path(activity_type)
-              click_on 'Record this activity'
-              fill_in :activity_happened_on, with: Time.zone.today.strftime("%d/%m/%Y")
-              click_on 'Save activity'
-              expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
-              expect(page.has_content?("You've just scored #{activity_type.score} points")).to be true
-              expect(page.has_content?("and your school is currently in 1st place")).not_to be true
-              expect(page.has_content?("to reach 1st place")).to be true
-            end
+          it 'records activity' do
+            expect(page).to have_content("Congratulations! We've recorded your activity")
+            expect(page).to have_content("You've just scored #{activity_type.score} points")
+            expect(page).not_to have_content("and your school is currently in 1st place")
+            expect(page).to have_content("to reach 1st place")
           end
         end
       end
