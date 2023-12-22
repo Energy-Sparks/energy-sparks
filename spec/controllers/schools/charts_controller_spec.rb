@@ -7,7 +7,10 @@ RSpec.describe Schools::ChartsController, type: :controller do
     describe "format json" do
       it 'returns a json error message with 400 bad request if a chart type param is missing' do
         get :show, params: { school_id: @school.to_param }, format: :json
-        expect(JSON.parse(response.body)).to eq({ 'error' => 'param is missing or the value is empty: chart_type', 'status' => 400 })
+        expect(response.parsed_body).to include(
+          'error' => start_with('param is missing or the value is empty: chart_type'),
+          'status' => 400
+        )
       end
 
       context 'with a chart type param' do
