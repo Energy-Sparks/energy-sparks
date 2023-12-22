@@ -162,7 +162,7 @@ describe 'viewing and recording activities', type: :system do
           click_on 'Save activity'
         end
 
-        it 'allows an activity to be created' do
+        it 'shows the completed page' do
           expect(page).to have_content("Congratulations! We've recorded your activity")
           expect(page).to have_content("You've just scored #{activity_type.score} points")
         end
@@ -193,7 +193,7 @@ describe 'viewing and recording activities', type: :system do
           click_on 'Save activity'
         end
 
-        it "saves activity" do
+        it 'shows the activity completed page' do
           expect(page).to have_content("Congratulations! We've recorded your activity")
         end
 
@@ -223,7 +223,7 @@ describe 'viewing and recording activities', type: :system do
         end
 
         context 'nil points' do
-          it 'records activity' do
+          it 'shows the activity completed page' do
              expect(page).to have_content("Congratulations! We've recorded your activity")
           end
         end
@@ -231,7 +231,7 @@ describe 'viewing and recording activities', type: :system do
         context 'in first place' do
           let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
 
-          it 'records activity' do
+          it 'shows the activity completed page' do
             expect(page).to have_content("Congratulations! We've recorded your activity")
             expect(page).to have_content("You've just scored #{activity_type.score} points")
             expect(page).to have_content("and your school is currently in 1st place")
@@ -241,7 +241,7 @@ describe 'viewing and recording activities', type: :system do
         context 'in second place' do
           let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
 
-          it 'records activity' do
+          it 'shows the activity completed page' do
             expect(page).to have_content("Congratulations! We've recorded your activity")
             expect(page).to have_content("You've just scored #{activity_type.score} points")
             expect(page).not_to have_content("and your school is currently in 1st place")
