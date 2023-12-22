@@ -1,6 +1,6 @@
 <% if EnergySparks::FeatureFlags.active?(:activities_2024) %>
 
-  <%= render 'shared/task_completed', task_type: :activity, school: @school, points: @activity.activity_type.score, task_path: school_activity_path(@school, @activity)  %>
+  <%= render 'shared/task_completed', task_type: :activity, school: @school, points: @activity.points, task_path: school_activity_path(@school, @activity)  %>
 
 <% else %>
 

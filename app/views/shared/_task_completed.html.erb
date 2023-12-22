@@ -2,7 +2,7 @@
 
 <h1 class="text-center">
   <%= t('tasks.completed.congratulations') %>
-  <%= points && points > 0 ? t("tasks.completed.points", points: points) : t("tasks.completed.#{task_type}.no_points") %>
+  <%= points.to_i > 0 ? t("tasks.completed.points", points: points) : t("tasks.completed.#{task_type}.no_points") %>
 </h1>
 
 <%= component :notice, status: :positive do |c| %>
