@@ -198,7 +198,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
 
     before do
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:seasonal_variation).and_return(seasonal_variation)
-      allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:enough_data?).and_return(enough_data)
+      allow_any_instance_of(Baseload::BaseloadAnalysis).to receive(:one_years_data?).and_return(enough_data)
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:data_available_from).and_return(data_available_from)
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:estimated_costs).and_return(savings)
     end
@@ -245,7 +245,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
 
     before do
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:intraweek_variation).and_return(intraweek_variation)
-      allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:enough_data?).and_return(enough_data)
+      allow_any_instance_of(Baseload::BaseloadAnalysis).to receive(:one_years_data?).and_return(enough_data)
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:data_available_from).and_return(data_available_from)
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:estimated_costs).and_return(savings)
     end

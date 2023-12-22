@@ -199,7 +199,7 @@ module Schools
         meter = load_meter ? meter_for_mpan(analytics_meter.mpan_mprn) : nil
         seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(analytics_meter, date)
         #return if there's not enough data, then return limited object
-        return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: seasonal_baseload_service.data_available_from) unless seasonal_baseload_service.enough_data?
+        return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: seasonal_baseload_service.data_available_from) unless enough_data_for_meter?(analytics_meter)
         variation = seasonal_baseload_service.seasonal_variation
         #we may have >1 year of data, but not enough to actually calculate a seasonal analysis
         #e.g. a meter for a swimming pool only used in the summer
@@ -228,7 +228,7 @@ module Schools
       def calculate_intraweek_variation(analytics_meter = aggregate_meter, date = asof_date, load_meter = false)
         intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(analytics_meter, date)
         meter = load_meter ? meter_for_mpan(analytics_meter.mpan_mprn) : nil
-        return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: intraweek_baseload_service.data_available_from) unless intraweek_baseload_service.enough_data?
+        return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: intraweek_baseload_service.data_available_from) unless enough_data_for_meter?(analytics_meter)
         variation = intraweek_baseload_service.intraweek_variation
         saving = intraweek_baseload_service.estimated_costs
         build_intraweek_variation(meter, variation, saving)
@@ -251,6 +251,10 @@ module Schools
 
       def intraweek_variation_rating(percentage)
         calculate_rating_from_range(0.1, 0.3, percentage)
+      end
+
+      def enough_data_for_meter?(analytics_meter)
+        Baseload::BaseloadAnalysis.new(analytics_meter).one_years_data?
       end
     end
   end

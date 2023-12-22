@@ -1,5 +1,6 @@
-require 'mustache'
 require 'closed_struct'
+require 'mobility/action_text'
+require 'mustache'
 
 class TemplateInterpolation
   def initialize(object, with_objects: {}, proxy: [], render_with: Mustache.new)
@@ -17,9 +18,8 @@ class TemplateInterpolation
     end
     templated = fields.inject(with_proxied_objects) do |collection, field|
       template = @object.send(field) || ""
-      collection[field] = if template.is_a?(ActionText::RichText)
-                            process_rich_text_template(template, with)
-                          elsif template.is_a?(Mobility::Backends::ActionText::RichTextTranslation)
+      collection[field] = case template
+                          when ActionText::RichText, Mobility::Backends::ActionText::RichTextTranslation
                             process_rich_text_template(template, with)
                           else
                             process_string_template(template, with)

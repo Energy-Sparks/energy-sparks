@@ -145,6 +145,10 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_link('Change options')}
   end
 
+  shared_examples "an empty filter notice" do
+    it { expect(page).to have_content('There are no schools to report using this filter') }
+  end
+
   ## contexts ##
 
   shared_context 'index page context' do
@@ -188,14 +192,14 @@ describe 'compare pages', :compare, type: :system do
   end
 
   ## tests ##
-
   let(:user) {}
   let(:all_school_types) { School.school_types.keys }
   let!(:funder)          { create(:funder, name: "Grant Funder") }
   let!(:school_group)    { create(:school_group, name: "Group 1") }
-  let!(:school)          { create(:school, school_group: school_group, funder: funder)}
+  #the stubbed out geocoder stamps on the country if the postcode is defaulted
+  let!(:school)          { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group, funder: funder)}
   let!(:school_group_2)  { create(:school_group, name: "Group 2") }
-  let!(:school_2)        { create(:school, school_group: school_group_2)}
+  let!(:school_2)        { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group_2)}
 
   let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { a_benchmark_key: 'Benchmark name' } }] }
 
@@ -369,6 +373,19 @@ describe 'compare pages', :compare, type: :system do
 
           it_behaves_like "an index page", tab: 'Choose groups'
           it_behaves_like "a form filter", id: '#groups', school_groups: ["Group 1", "Group 2"], school_types_excluding: ['infant']
+        end
+
+        context "Filtering all schools" do
+          before do
+            click_on "Change options"
+            within '#groups' do
+              uncheck 'Primary'
+              click_on 'Compare schools'
+            end
+          end
+
+          it_behaves_like "a filter summary", school_types_excluding: ['infant'], school_groups: ["Group 1", "Group 2"]
+          it_behaves_like "an empty filter notice"
         end
 
         context "results page" do

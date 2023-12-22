@@ -24,7 +24,7 @@ gem 'pg'
 gem 'pg_search'
 
 # Dashboard analytics
-# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.11'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.12'
 gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20231101-ruby3'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -171,4 +171,5 @@ group :test do
   gem 'simplecov', require: false, group: :test
   gem 'test-prof'
   gem 'timecop'
+  gem 'webdrivers', '>= 5.3.0' #may not be required in Ruby 3
 end

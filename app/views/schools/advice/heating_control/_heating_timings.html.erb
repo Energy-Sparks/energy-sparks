@@ -31,10 +31,14 @@
       <% last_week_start_times.days.each do |day| %>
         <tr>
           <td><%= day.date.to_s(:es_full) %></td>
-          <td><%= day.temperature %></td>
+          <td><%= day.temperature.round(0) %></td>
           <% if day.heating_start_time.present? %>
             <td><%= day.heating_start_time %></td>
-            <td><%= day.recommended_time %></td>
+            <% if day.heating_start_time < day.recommended_time %>
+              <td><%= day.recommended_time %></td>
+            <% else %>
+              <td>-</td>
+            <% end %>
             <td class="<%= heating_time_class(day.heating_start_time, day.recommended_time) %>">
               <%= heating_time_assessment(day.heating_start_time, day.recommended_time) %>
             </td>

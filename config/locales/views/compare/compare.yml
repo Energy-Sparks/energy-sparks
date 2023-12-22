@@ -11,6 +11,7 @@ en:
       change_benchmark: Change benchmark
       change_options: Change options
       country: 'Select country:'
+      no_schools: There are no schools to report using this filter
       school_groups: 'Select school groups:'
       school_type: 'Select school type:'
       school_types_html: 'Including: %{school_types}'

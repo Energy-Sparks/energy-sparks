@@ -211,24 +211,49 @@ describe Targets::GenerateProgressService do
       end
     end
 
-    context 'and there is an error in the progress report generation' do
+    context 'when there is an error in the progress report generation' do
       let(:target) { service.generate! }
 
       before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
-        error = StandardError.new('test requested')
         allow_any_instance_of(TargetsService).to receive(:progress).and_raise(error)
-        expect(Rollbar).to receive(:error).with(error, scope: :generate_progress, school_id: school.id, school: school.name, fuel_type: :electricity)
       end
 
-      it 'records when last run' do
-        expect(target.report_last_generated).not_to be_nil
+      context 'with a problem that should be logged' do
+        let(:error) { StandardError.new('test requested') }
+
+        it 'reports to rollbar' do
+          expect(Rollbar).to receive(:error).with(error, scope: :generate_progress, school_id: school.id, school: school.name, fuel_type: :electricity)
+          target
+        end
+
+        it 'records when last run' do
+          expect(target.report_last_generated).not_to be_nil
+        end
+
+        it 'sets values to nil' do
+          expect(target.electricity_progress).to eq({})
+          expect(target.electricity_report).to be_nil
+        end
       end
 
-      it 'sets values to nil' do
-        expect(target.electricity_progress).to eq({})
-        expect(target.electricity_report).to be_nil
+      context 'with a problem that is just a warning' do
+        let(:error) { TargetDates::TargetDateBeforeFirstMeterStartDate.new('can be ignored') }
+
+        it 'does not report to rollbar' do
+          expect(Rollbar).not_to receive(:error).with(error, scope: :generate_progress, school_id: school.id, school: school.name, fuel_type: :electricity)
+          target
+        end
+
+        it 'records when last run' do
+          expect(target.report_last_generated).not_to be_nil
+        end
+
+        it 'sets values to nil' do
+          expect(target.electricity_progress).to eq({})
+          expect(target.electricity_report).to be_nil
+        end
       end
     end
   end

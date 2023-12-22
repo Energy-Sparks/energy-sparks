@@ -33,6 +33,7 @@ module Schools
 
       def full_previous_week?
         return false unless full_last_week?
+        return false unless previous_week_date_range.any?
         return false unless aggregate_meter.amr_data.start_date <= previous_week_date_range.first
 
         (previous_week_date_range.first..previous_week_date_range.last).count == 7
@@ -104,16 +105,8 @@ module Schools
         )
       end
 
-      def asof_date
-        @asof_date ||= AggregateSchoolService.analysis_date(@meter_collection, @fuel_type)
-      end
-
       def aggregate_meter
         @meter_collection.aggregate_meter(@fuel_type)
-      end
-
-      def meter_data_checker
-        @meter_data_checker ||= Util::MeterDateRangeChecker.new(aggregate_meter, asof_date)
       end
     end
   end

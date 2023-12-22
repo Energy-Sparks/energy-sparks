@@ -16,7 +16,7 @@ RSpec.describe "heating control advice page", type: :system do
       date: date,
       heating_start_time: TimeOfDay.new(5, 0),
       recommended_time: TimeOfDay.new(6, 0),
-      temperature: 12,
+      temperature: 12.1,
       saving: CombinedUsageMetric.new(kwh: 100, £: 50, co2: 20)
     )
   end
@@ -95,10 +95,36 @@ RSpec.describe "heating control advice page", type: :system do
 
       it 'includes expected data in table' do
         expect(page).to have_css('#heating-start-times')
-        expect(page).to have_content(date.to_s(:es_short))
-        expect(page).to have_content("05:00")
-        expect(page).to have_content("06:00")
-        expect(page).to have_content("too early")
+        within('#heating-start-times') do
+          expect(page).to have_content(date.to_s(:es_full))
+          expect(page).to have_content('12')
+          expect(page).to have_content("05:00")
+          expect(page).to have_content("06:00")
+          expect(page).to have_content("too early")
+        end
+      end
+
+      context 'when heating start times are ok' do
+        let(:day) do
+          OpenStruct.new(
+            date: date,
+            heating_start_time: TimeOfDay.new(5, 0),
+            recommended_time: TimeOfDay.new(0, 0),
+            temperature: 3.8,
+            saving: CombinedUsageMetric.new(kwh: 100, £: 50, co2: 20)
+          )
+        end
+
+        it 'includes expected data in table' do
+          expect(page).to have_css('#heating-start-times')
+          within('#heating-start-times') do
+            expect(page).to have_content(date.to_s(:es_full))
+            expect(page).to have_content('4')
+            expect(page).to have_content("05:00")
+            expect(page).to have_content("-")
+            expect(page).to have_content("on time")
+          end
+        end
       end
 
       it 'includes expected data in seasonal analysis' do

@@ -24,8 +24,8 @@ FactoryBot.define do
     end
 
     trait :programme do
-      observation_type { :programme }
-      programme
+      observation_type { :observable }
+      association :observable, factory: :programme
     end
 
     trait :temperature do
@@ -35,12 +35,12 @@ FactoryBot.define do
 
     trait :transport_survey do
       observation_type { :observable }
-      observable { create(:transport_survey) }
+      association :observable, factory: :transport_survey
     end
 
     trait :school_target do
       observation_type { :school_target }
-      school_target
+      association :observable, factory: :school_target
     end
 
     factory :observation_with_temperature_recording_and_location do

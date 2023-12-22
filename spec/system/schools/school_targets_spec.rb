@@ -146,10 +146,13 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
       expect(page).to have_title("Your current energy saving targets")
     end
 
-    it 'links to help page if there is one' do
-      create(:help_page, title: "Targets", feature: :school_targets, published: true)
-      refresh
-      expect(page).to have_link("Help")
+    context 'when there is a help page of the right type' do
+      let!(:help_page) { create(:help_page, title: "Targets", feature: :school_targets, published: true) }
+
+      it 'links to it ' do
+        refresh
+        expect(page).to have_link("Help")
+      end
     end
 
     it 'includes table footer' do
@@ -200,6 +203,49 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         end
 
         it { expect(page).not_to have_link("View results") }
+
+        context 'and there are progress reports for both targets' do
+          let(:expired_electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+          let(:expired_gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
+          let(:expired_last_generated)       { Date.yesterday }
+
+          let(:expired_target) do
+            create(:school_target, school: test_school,
+              start_date: Date.yesterday.prev_year, target_date: Date.yesterday,
+              electricity: 2, gas: 4,
+              electricity_progress: expired_electricity_progress, gas_progress: expired_gas_progress,
+              report_last_generated: expired_last_generated)
+          end
+
+          let(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.90, target: 15, usage: 15) }
+          let(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.50, target: 7, usage: 17) }
+          let(:last_generated)       { Time.zone.today }
+
+          let!(:target) do
+              create(:school_target, school: test_school,
+                electricity: 10, gas: 10, storage_heaters: nil,
+                electricity_progress: electricity_progress, gas_progress: gas_progress,
+                report_last_generated: last_generated)
+          end
+
+          it "links to expired progress report" do
+            #Extra check for debugging flickering test
+            expect(Schools::Configuration.count).to be 1
+            expect(School.first.has_electricity?).to be true
+            expect(page).to have_link("View monthly report", href: electricity_school_school_target_progress_index_path(test_school, expired_target))
+          end
+
+          it 'shows progress summary' do
+            within('#electricity-row') do
+              expect(page).to have_content("-#{expired_target.electricity.to_f}%") #target
+              expect(page).to have_content('99%') #progress
+            end
+            within('#gas-row') do
+              expect(page).to have_content("-#{expired_target.gas.to_f}%") #target
+              expect(page).to have_content('59%') #progress
+            end
+          end
+        end
 
         context "more than one expired targets" do
           let(:older_expired_target) { create(:school_target, school: test_school, start_date: Date.yesterday.years_ago(2), target_date: Date.yesterday.years_ago(1)) }
@@ -258,7 +304,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
       end
     end
 
-    context "and the target progress report has been generated" do
+    context "with a target progress report generated" do
       let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
       let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
       let!(:last_generated)       { Time.zone.today }
@@ -272,7 +318,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         visit school_school_targets_path(test_school)
       end
 
-      context "but there not yet enough data" do
+      context "with not enough data for electricity" do
         let!(:electricity_progress) { {} }
         let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
         let!(:last_generated)       { Time.zone.today }
@@ -282,11 +328,13 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
           visit school_school_targets_path(test_school)
         end
 
-        it 'cannot show progress with no recent data' do
-          expect(page).not_to have_content("last week")
+        it 'cannot show any progress with no recent data at all' do
+          within('#electricity-row') do
+            expect(page).to have_content("N/A")
+          end
         end
 
-        context 'and some recent management data' do
+        context 'when there is recent management data' do
           let(:management_data) do
             Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :kwh => 100, :percent_change => -0.0923132131 } } })
           end
@@ -297,7 +345,19 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
           end
 
           it 'shows the same data as the management dashboard' do
-            expect(page).to have_content("last week")
+            within('#electricity-row') do
+              expect(page).to have_content("-#{target.electricity.to_f}%") #target
+              expect(page).to have_content('9.2%') #% change workweek
+              expect(page).to have_content("last week")
+            end
+          end
+
+          it 'still shows the full progress summary for gas' do
+            within('#gas-row') do
+              expect(page).to have_content("-#{target.gas.to_f}%") #target
+              expect(page).to have_content('59%') #% change workweek
+              expect(page).not_to have_content("last week")
+            end
           end
         end
       end
@@ -311,8 +371,16 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         end
 
         it 'shows detailed progress data' do
-          expect(page).to have_content("99%")
-          expect(page).not_to have_content("last week")
+          within('#electricity-row') do
+            expect(page).to have_content("-#{target.electricity.to_f}%") #target
+            expect(page).to have_content('99%') #progress
+            expect(page).not_to have_content("last week")
+          end
+          within('#gas-row') do
+            expect(page).to have_content("-#{target.gas.to_f}%") #target
+            expect(page).to have_content('59%') #progress
+            expect(page).not_to have_content("last week")
+          end
         end
 
         context "and fuel types are out of date" do
@@ -330,7 +398,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         end
       end
 
-      context "and fuel configuration has changed" do
+      context "when fuel configuration has changed" do
         let!(:target) do
           create(:school_target, storage_heaters: nil, school: test_school,
           electricity_progress: electricity_progress, gas_progress: gas_progress, revised_fuel_types: ["storage_heater"])
@@ -341,7 +409,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
           expect(page).to have_content("Your Storage heater configuration has changed")
         end
 
-        context "and storage heater was added" do
+        context "when a storage heater was added" do
           before do
             visit school_school_targets_path(test_school)
             click_on("Review your target")
@@ -365,7 +433,7 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         end
       end
 
-      context "and an estimate would be useful" do
+      context "when an estimate would be useful" do
         before do
           school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
           visit school_school_targets_path(test_school)
