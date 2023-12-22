@@ -6,7 +6,7 @@ RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: 
   end
 
   it 'has no points action text', if: task_type == :action && points == 0 do
-    expect(page).to have_content "We've recorded your activity"
+    expect(page).to have_content "We've recorded your action"
   end
 
   it 'has no points activity text', if: task_type == :activity && points == 0 do
@@ -18,7 +18,11 @@ RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: 
 
   it "has scoreboard summary component" do # not checking functionality here as this is done in the component
     within "div.podium-component" do
-      expect(page).to have_content("You are in #{ordinal} place")
+      if points > 0
+        expect(page).to have_content("You are in #{ordinal} place")
+      else
+        expect(page).to have_content("Your school hasn't scored any points yet this school year")
+      end
     end
     expect(page).to have_content("Recent activity")
   end

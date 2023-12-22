@@ -3,7 +3,7 @@ en:
   tasks:
     completed:
       action:
-        no_points: We've recorded you action
+        no_points: We've recorded your action
         page_title: "%{school} Action"
         view_link: View your action
       activity:

@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe 'viewing and recording action', type: :system do
+  before { SiteSettings.create!(audit_activities_bonus_points: 50) }
+
   let(:title)       { "Changed boiler" }
   let(:summary)     { 'Old boiler bad, new boiler good' }
   let(:description) { 'How to change your boiler' }
@@ -8,7 +10,7 @@ describe 'viewing and recording action', type: :system do
   let!(:intervention_type) { create :intervention_type, name: title, summary: summary, description: description }
   let(:scoreboard) { create :scoreboard }
   let(:school) { create_active_school(scoreboard: scoreboard) }
-
+  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
   let(:activities_2024_feature) { false }
 
   around do |example|
@@ -103,24 +105,28 @@ describe 'viewing and recording action', type: :system do
       end
     end
 
-    context 'recording an intervention' do
-      it 'associates intervention with correct school from group' do
-        select other_school.name, from: :school_id
-        click_on "Record this action"
-        fill_in :observation_at, with: Time.zone.today.strftime("%d/%m/%Y")
-        click_on 'Record action'
-        expect(page).to have_content("Congratulations! We've recorded your action")
-        expect(other_school.observations.count).to eq(1)
+    [true, false].each do |feature|
+      let(:activities_2024_feature) { feature }
+
+      context "recording an intervention with activities_2024 feature set to #{feature}" do
+        it 'associates intervention with correct school from group' do
+          select other_school.name, from: :school_id
+          click_on "Record this action"
+          fill_in :observation_at, with: Time.zone.today.strftime("%d/%m/%Y")
+          click_on 'Record action'
+          expect(page).to have_content("Congratulations!")
+          expect(other_school.observations.count).to eq(1)
+        end
       end
-    end
 
-    context 'when school is not in group' do
-      let(:school_not_in_group) { create(:school)}
+      context 'when school is not in group' do
+        let(:school_not_in_group) { create(:school)}
 
-      it 'does not allow recording an intervention' do
-        visit new_school_intervention_path(school_not_in_group, intervention_type_id: intervention_type.id)
-        expect(page).to have_content("You are not authorized to access this page")
-        expect(page).not_to have_button("Record action")
+        it 'does not allow recording an intervention' do
+          visit new_school_intervention_path(school_not_in_group, intervention_type_id: intervention_type.id)
+          expect(page).to have_content("You are not authorized to access this page")
+          expect(page).not_to have_button("Record action")
+        end
       end
     end
   end
@@ -186,7 +192,9 @@ describe 'viewing and recording action', type: :system do
       end
     end
 
-    context 'recording an action' do
+    context 'when recording an action' do
+      let(:today) { Time.zone.today }
+
       before do
         click_on 'Record this action'
       end
@@ -207,34 +215,61 @@ describe 'viewing and recording action', type: :system do
           click_on 'Record action'
         end
 
-        it "shows congratulations message" do
-          expect(page).to have_content("Congratulations! We've recorded your action")
-        end
-
-        it "doesn't show points message" do
-          expect(page).not_to have_content("You've just scored #{intervention_type.score} points")
-        end
-
         it "observation has 0 points" do
           observation = school.observations.intervention.first
           expect(observation.points).to be_nil
+        end
+
+        context "with activities_2024_feature switched off" do
+          let(:activities_2024_feature) { false }
+
+          it "shows congratulations message" do
+            expect(page).to have_content("Congratulations! We've recorded your action")
+          end
+
+          it "doesn't show points message" do
+            expect(page).not_to have_content("You've just scored #{intervention_type.score} points")
+          end
+        end
+
+        context "with activities_2024_feature switched on" do
+          let(:activities_2024_feature) { true }
+
+          it_behaves_like "a task completed page", points: 0, task_type: :action
         end
       end
 
       context "when time is this academic year" do
         before do
-          fill_in 'observation_at', with: Time.zone.today.strftime("%d/%m/%Y")
+          fill_in 'observation_at', with: today.strftime("%d/%m/%Y")
           fill_in_trix with: 'We changed to a more efficient boiler'
           fill_in 'How many pupils were involved in this activity?', with: 3
           click_on 'Record action'
         end
 
-        it "shows congratulations message" do
-          expect(page).to have_content("Congratulations! We've recorded your action")
+        it "creates observation" do
+          observation = school.observations.intervention.first
+          expect(observation.intervention_type).to eq(intervention_type)
+          expect(observation.points).to eq(intervention_type.score)
+          expect(observation.at.to_date).to eq(today)
         end
 
-        it "shows points message" do
-          expect(page).to have_content("You've just scored #{intervention_type.score} points")
+        context "with activities_2024_feature switched off" do
+          let(:activities_2024_feature) { false }
+
+          it "shows congratulations message" do
+            expect(page).to have_content("Congratulations! We've recorded your action")
+          end
+
+          it "shows points message" do
+            expect(page).to have_content("You've just scored #{intervention_type.score} points")
+          end
+        end
+
+        context "with activities_2024_feature switched on" do
+          let(:activities_2024_feature) { true }
+
+          it_behaves_like "a task completed page", points: 30, task_type: :action
         end
 
         context "when viewing action" do
@@ -245,13 +280,6 @@ describe 'viewing and recording action', type: :system do
           it "displays action" do
             expect(page).to have_content('We changed to a more efficient boiler')
           end
-        end
-
-        it "creates observation" do
-          observation = school.observations.intervention.first
-          expect(observation.intervention_type).to eq(intervention_type)
-          expect(observation.points).to eq(intervention_type.score)
-          expect(observation.at.to_date).to eq(Time.zone.today)
         end
       end
 
@@ -279,51 +307,51 @@ describe 'viewing and recording action', type: :system do
         let(:photo_bonus_points) { 5 }
 
         it "adds photo bonus" do
-          fill_in 'observation_at', with: Time.zone.today
+          fill_in 'observation_at', with: today
           fill_in_trix with: 'We changed to a more efficient boiler<figure></figure>'
           click_on 'Record action'
           expect(page).to have_content("You've just scored #{intervention_type.score + photo_bonus_points} points")
         end
       end
 
-      context 'on podium' do
-        let!(:other_school) { create :school, :with_points, score_points: 40, scoreboard: scoreboard }
+      [true, false].each do |feature|
+        context "on podium with activities_2024 feature set to #{feature}" do
+          let!(:other_school) { create :school, :with_points, score_points: 40, scoreboard: scoreboard }
+          let!(:time) { today }
 
-        before do
-          fill_in 'observation_at', with: Time.zone.today.strftime("%d/%m/%Y")
-          fill_in 'How many pupils were involved in this activity?', with: 3
-          fill_in_trix with: 'We changed to a more efficient boiler'
-          click_on 'Record action'
-        end
-
-        context 'nil points' do
-          it 'records action' do
-            expect(page).to have_content("Congratulations! We've recorded your action")
+          before do
+            fill_in 'observation_at', with: time.strftime("%d/%m/%Y")
+            fill_in 'How many pupils were involved in this activity?', with: 3
+            fill_in_trix with: 'We changed to a more efficient boiler'
+            click_on 'Record action'
           end
-        end
 
-        context 'in first place' do
-          let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
+          context '0 points' do
+            let(:time) { today - 2.years }
 
-          it 'records action' do
-            expect(page).to have_content("Congratulations! We've recorded your action")
-            expect(page).to have_content("You've just scored #{intervention_type.score} points")
-            #2 actions, because one created via :with_points above
-            expect(page).to have_content("You've recorded 2 actions so far this year")
-            expect(page).to have_content("and your school is currently in 1st place")
+            it 'records action' do
+              expect(page).to have_content("Congratulations! We've recorded your action")
+            end
           end
-        end
 
-        context 'in second place' do
-          let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
+          context 'in first place' do
+            let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
 
-          it 'records action' do
-            expect(page).to have_content("Congratulations! We've recorded your action")
-            expect(page).to have_content("You've just scored #{intervention_type.score} points")
-            #2 actions, because one created via :with_points above
-            expect(page).to have_content("You've recorded 2 actions so far this year")
-            expect(page).not_to have_content("and your school is currently in 1st place")
-            expect(page).to have_content("to reach 1st place")
+            it 'records action' do
+              expect(page).to have_content("Congratulations!")
+              expect(page).to have_content("You've just scored #{intervention_type.score} points")
+              expect(page).to have_content("You are in 1st place")
+            end
+          end
+
+          context 'in second place' do
+            let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
+
+            it 'records action' do
+              expect(page).to have_content("Congratulations! We've recorded your action")
+              expect(page).to have_content("You've just scored #{intervention_type.score} points")
+              expect(page).to have_content("You are in 2nd place")
+            end
           end
         end
       end

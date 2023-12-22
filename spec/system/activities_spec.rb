@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe 'viewing and recording activities', type: :system do
-  before { SiteSettings.create!(audit_activities_bonus_points: 50) }
-
   let!(:activity_category) { create(:activity_category)}
 
   let!(:subject)  { Subject.create(name: "Science and Technology") }
@@ -17,7 +15,10 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:scoreboard) { create :scoreboard }
   let(:school) { create_active_school(data_enabled: school_data_enabled, scoreboard: scoreboard) }
-  let!(:audit)                          { create(:audit, :with_activity_and_intervention_types, school: school) }
+
+  before { SiteSettings.create!(audit_activities_bonus_points: 50) }
+
+  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 
   let(:activities_2024_feature) { false }
 
