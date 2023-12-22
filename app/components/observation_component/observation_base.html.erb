@@ -1,5 +1,5 @@
 <% if compact %>
-  <div class="row">
+  <div class="row pb-1">
     <div class="col-1"><%= icon %></div>
     <div class="col-11"><%= I18n.t("components.observation.#{self.class.name.demodulize.underscore}.compact_message_html", school: school.name, school_path: school_path(school), target: target, message: message, count: observation.points || 0, compact_path: compact_path).html_safe %></div>
   </div>
