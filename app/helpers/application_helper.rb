@@ -472,6 +472,6 @@ module ApplicationHelper
   end
 
   def recommendations_scope_for(task_type)
-    { 'intervention': :adult, 'activity': :pupil }[task_type]
+    { 'action': :adult, 'activity': :pupil }[task_type]
   end
 end
