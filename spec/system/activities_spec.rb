@@ -23,7 +23,7 @@ describe 'viewing and recording activities', type: :system do
   let(:activities_2024_feature) { false }
 
   around do |example|
-    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2024: activities_2024_feature.to_s do
+    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true', FEATURE_FLAG_ACTIVITIES_2024: activities_2024_feature.to_s do
       example.run
     end
   end
