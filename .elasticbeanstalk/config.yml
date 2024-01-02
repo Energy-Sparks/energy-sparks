@@ -2,7 +2,7 @@ branch-defaults:
   aws-eb-master:
     environment: prod-3-4-9
   aws-eb-test:
-    environment: test-3-4-9
+    environment: test-3-6-15
     group_suffix: null
   eb-ruby3-env:
     environment: test-3-6-15
