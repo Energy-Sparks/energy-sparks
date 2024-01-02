@@ -22,7 +22,7 @@ class ScoreboardSummaryComponent < ViewComponent::Base
   end
 
   def limit
-    5
+    4
   end
 
   def observations
