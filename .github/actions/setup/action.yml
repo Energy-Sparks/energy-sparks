@@ -4,7 +4,6 @@ inputs:
     description: only setup ruby
     default: false
 runs:
-  using: "composite"
   steps:
     - if: ${{ ! inputs.ruby-only }}
       uses: actions/setup-node@v3
@@ -16,6 +15,8 @@ runs:
         bundler-cache: true
         ruby-version: "3.0"
     - if: ${{ ! inputs.ruby-only }}
-      run: bin/rails db:schema:load
+      run: bundle exec rails db:schema:load
+      shell: bash
     - if: ${{ ! inputs.ruby-only }}
       run: bundle exec rake assets:precompile
+      shell: bash
