@@ -81,11 +81,11 @@ describe 'Pupil dashboard' do
       end
 
       it 'displays interventions and temperature recordings in a timeline' do
-        expect(page).to have_content('Recorded temperatures in')
+        expect(page).to have_content('Recorded indoor temperatures in')
         expect(page).to have_content('Upgraded insulation')
         expect(page).to have_content('Completed an activity')
         click_on 'View all events'
-        expect(page).to have_content('Recorded temperatures in')
+        expect(page).to have_content('Recorded indoor temperatures in')
         expect(page).to have_content('Upgraded insulation')
         expect(page).to have_content('Completed an activity')
       end

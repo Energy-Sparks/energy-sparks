@@ -1,0 +1,14 @@
+---
+en:
+  components:
+    observation:
+      activity:
+        message: Cwblhawyd gweithgaredd
+      audit_activities_completed:
+        message: Wedi cwblhau pob gweithgaredd archwilio
+      audit:
+        message: Wedi cael archwiliad ynni
+      programme:
+        message: Wedi cwblhau'r rhaglen
+      temperature:
+        message: Tymheredd a gofnodwyd yn

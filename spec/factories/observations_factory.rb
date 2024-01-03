@@ -40,7 +40,7 @@ FactoryBot.define do
 
     trait :school_target do
       observation_type { :school_target }
-      school_target
+      association :observable, factory: :school_target
     end
 
     factory :observation_with_temperature_recording_and_location do

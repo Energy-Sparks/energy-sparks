@@ -30,15 +30,14 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 10.*
+          node-version: 16
           cache: yarn
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          ruby-version: "3.0"
       - run: bin/rails db:schema:load
       - run: bundle exec rake assets:precompile
-      # Fail early if we have issues with translation keys
-      - run: bundle exec i18n-tasks health
       # https://github.com/actions/download-artifact/issues/3
       - run: gh run download --name knapsack_rspec_report --dir ${{ github.workspace }}
         env:
@@ -55,6 +54,9 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          ruby-version: "3.0"
+      # Fail early if we have issues with translation keys
+      - run: bundle exec i18n-tasks health
       - run: bundle exec overcommit --sign && bundle exec overcommit --run
         env:
           GIT_AUTHOR_NAME: Over Commit

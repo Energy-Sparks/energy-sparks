@@ -38,7 +38,7 @@
     <%= link_to t('my_school_menu.complete_pupil_activities'), activity_categories_path, class: 'dropdown-item' %>
 
     <!-- Energy saving actions -->
-    <%= link_to t('my_school_menu.energy_saving_actions'), school_interventions_path(current_user.school), class: 'dropdown-item' if can? :index, Observation %>
+    <%= link_to t('my_school_menu.energy_saving_actions'), intervention_type_groups_path, class: 'dropdown-item' %>
 
     <!-- School programmes -->
     <%= link_to t('my_school_menu.school_programmes'), programme_types_path, class: 'dropdown-item' %>
