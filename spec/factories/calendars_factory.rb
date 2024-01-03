@@ -42,6 +42,24 @@ FactoryBot.define do
       end
     end
 
+    #Ensures there is a previous, current and upcoming AcademicYear
+    trait :with_previous_and_next_academic_years do
+      after(:create) do |calendar, _evaluator|
+        current_year = Time.zone.today.year
+        #At the end of the year, school academic year started in previous year
+        #But otherwise, the previous academic year started 2 years ago
+        if Time.zone.today >= Date.new(current_year, 9, 1)
+          start_year = current_year - 1
+        else
+          start_year = current_year - 2
+        end
+        end_year = current_year + 1
+        (start_year..end_year).each do |year|
+          create(:academic_year, calendar: calendar, start_date: Date.new(year, 9, 1), end_date: Date.new(year + 1, 8, 31))
+        end
+      end
+    end
+
     trait :with_terms do
       transient do
         term_count { 5 }
