@@ -205,27 +205,25 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
         it { expect(page).not_to have_link("View results") }
 
         context 'and there are progress reports for both targets' do
-          let(:expired_electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
-          let(:expired_gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
-          let(:expired_last_generated)       { Date.yesterday }
-
           let(:expired_target) do
-            create(:school_target, school: test_school,
-              start_date: Date.yesterday.prev_year, target_date: Date.yesterday,
+            yesterday = Date.yesterday
+            create(:school_target,
+                   school: test_school,
+                   start_date: yesterday.prev_year, target_date: yesterday,
               electricity: 2, gas: 4,
-              electricity_progress: expired_electricity_progress, gas_progress: expired_gas_progress,
-              report_last_generated: expired_last_generated)
+                   electricity_progress: build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20,
+                                                               usage: 15),
+                   gas_progress: build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17),
+                   report_last_generated: yesterday)
           end
 
-          let(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.90, target: 15, usage: 15) }
-          let(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.50, target: 7, usage: 17) }
-          let(:last_generated)       { Time.zone.today }
-
-          let!(:target) do
-              create(:school_target, school: test_school,
-                electricity: 10, gas: 10, storage_heaters: nil,
-                electricity_progress: electricity_progress, gas_progress: gas_progress,
-                report_last_generated: last_generated)
+          before do
+            create(:school_target,
+                   school: test_school, electricity: 10, gas: 10, storage_heaters: nil,
+                   electricity_progress: build(:fuel_progress, fuel_type: :electricity, progress: 0.90, target: 15,
+                                                               usage: 15),
+                   gas_progress: build(:fuel_progress, fuel_type: :gas, progress: 0.50, target: 7, usage: 17),
+                   report_last_generated: Time.zone.today)
           end
 
           it "links to expired progress report" do
@@ -236,14 +234,14 @@ RSpec.shared_examples "managing targets", include_application_helper: true do
           end
 
           it 'shows progress summary' do
-            within('#electricity-row') do
-              expect(page).to have_content("-#{expired_target.electricity.to_f}%") #target
-              expect(page).to have_content('99%') #progress
+            def expect_row_to_have_target_and_progress(id, target, progress)
+              expect(find(id)).to have_content("#{target.round(1)}%").and \
+                have_content("#{(progress['progress'] * 100).round(0)}%")
             end
-            within('#gas-row') do
-              expect(page).to have_content("-#{expired_target.gas.to_f}%") #target
-              expect(page).to have_content('59%') #progress
-            end
+
+            expect_row_to_have_target_and_progress('#electricity-row', expired_target.electricity,
+                                                   expired_target.electricity_progress)
+            expect_row_to_have_target_and_progress('#gas-row', expired_target.gas, expired_target.gas_progress)
           end
         end
 
