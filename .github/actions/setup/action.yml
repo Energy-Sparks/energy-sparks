@@ -1,13 +1,12 @@
 inputs:
-  node:
+  ruby-only:
     type: boolean
-    description: use node
-    default: true
+    description: only setup ruby
+    default: false
 runs:
   steps:
-    - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
-      if: ${{ inputs.node }}
+      if: ${{ ! inputs.ruby-only }}
       with:
         node-version: 16
         cache: yarn
@@ -15,3 +14,7 @@ runs:
       with:
         bundler-cache: true
         ruby-version: "3.0"
+    - run: bin/rails db:schema:load
+      if: ${{ ! inputs.ruby-only }}
+    - run: bundle exec rake assets:precompile
+      if: ${{ ! inputs.ruby-only }}
