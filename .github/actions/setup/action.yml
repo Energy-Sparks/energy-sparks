@@ -1,12 +1,11 @@
 inputs:
   ruby-only:
-    type: boolean
     description: only setup ruby
     default: false
 runs:
-  using: "composite"
+  using: composite
   steps:
-    - if: ${{ ! inputs.ruby-only }}
+    - if: ${{ inputs.ruby-only == 'true' }}
       uses: actions/setup-node@v3
       with:
         node-version: 16
@@ -15,9 +14,9 @@ runs:
       with:
         bundler-cache: true
         ruby-version: "3.0"
-    - if: ${{ ! inputs.ruby-only }}
+    - if: ${{ inputs.ruby-only == 'true' }}
       run: bundle exec rails db:schema:load
       shell: bash
-    - if: ${{ ! inputs.ruby-only }}
+    - if: ${{ inputs.ruby-only == 'true' }}
       run: bundle exec rake assets:precompile
       shell: bash
