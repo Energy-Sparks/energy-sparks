@@ -39,7 +39,7 @@ module Targets
         data = service.report
         data.each do |school, school_result|
           FUEL_TYPES.each do |fuel_type|
-            if school_result[fuel_type].present?
+            if school_result && school_result[fuel_type].present?
               csv << [
                 school_group.name,
                 school.name,

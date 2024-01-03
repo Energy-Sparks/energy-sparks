@@ -26,4 +26,13 @@ $(document).ready(function() {
   if ($("form .must-select").length > 0) {
     $("form .must-select").closest('form').find(':submit').prop('disabled', true);
   }
+
+  $(document).on('change','.must-select.disable-tooltip', function() {
+    if ($(this).val()) {
+      $(this).closest('form').find(':submit').tooltip('dispose');
+    } else {
+      $(this).closest('form').find(':submit').tooltip('enable');
+    }
+  });
+
 });

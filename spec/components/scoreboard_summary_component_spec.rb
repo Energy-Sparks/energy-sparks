@@ -39,7 +39,7 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
   end
 
   describe "#limit" do
-    it { expect(component.limit).to be(5) }
+    it { expect(component.limit).to be(4) }
   end
 
   describe "#school" do

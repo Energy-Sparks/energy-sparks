@@ -75,7 +75,7 @@ class ObservationComponent < ViewComponent::Base
     end
 
     def message
-      I18n.t("components.timeline.#{self.class.name.demodulize.underscore}.message")
+      I18n.t("components.observation.#{self.class.name.demodulize.underscore}.message")
     end
 
     def compact_path
@@ -162,10 +162,6 @@ class ObservationComponent < ViewComponent::Base
       'tachometer-alt'
     end
 
-    def observable
-      observation.school_target
-    end
-
     def editable?
       !observable.expired?
     end
@@ -203,7 +199,7 @@ class ObservationComponent < ViewComponent::Base
     end
 
     def message
-      I18n.t('components.timeline.transport_survey.message', count: observation.observable.responses.count)
+      I18n.t('components.observation.transport_survey.message', count: observation.observable.responses.count)
     end
   end
 end

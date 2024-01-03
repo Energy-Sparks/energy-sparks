@@ -27,10 +27,10 @@ module Meters
       19 => { times: [TimeOfDay.new(23, 30)..TimeOfDay.new(0, 30),
                       TimeOfDay.new(2, 30)..TimeOfDay.new(7, 30)], region: :south_east },
       20 => { times:  { gmt: TimeOfDay.new(23, 30)..TimeOfDay.new(6, 30),
-                        bst: TimeOfDay.new(0, 30)..TimeOfDay.new(7, 30) }, region: :southern },
+                       bst: TimeOfDay.new(0, 30)..TimeOfDay.new(7, 30) }, region: :southern },
       21 => { varies_between_meter: true, region: :south_wales },
       22 => { varies_between_meter: true, region: :south_west },
       24 => { times: TimeOfDay.new(0, 30)..TimeOfDay.new(7, 30), region: :yorkshire },
-      }.freeze
+    }.freeze
   end
 end
