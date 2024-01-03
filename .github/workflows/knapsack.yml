@@ -27,6 +27,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          ruby-version: "3.0"
       - run: bin/rails db:schema:load
       - run: bundle exec rake assets:precompile
       # Fail early if we have issues with translation keys
