@@ -393,6 +393,41 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-components-observation-yml]
+file_filter  = config/locales/<lang>/views/components/observation.yml
+source_file  = config/locales/views/components/observation.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-panel_switcher-yml]
+file_filter  = config/locales/<lang>/views/components/panel_switcher.yml
+source_file  = config/locales/views/components/panel_switcher.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-podium-yml]
+file_filter  = config/locales/<lang>/views/components/podium.yml
+source_file  = config/locales/views/components/podium.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-scoreboard_summary-yml]
+file_filter  = config/locales/<lang>/views/components/scoreboard_summary.yml
+source_file  = config/locales/views/components/scoreboard_summary.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-timeline-yml]
+file_filter  = config/locales/<lang>/views/components/timeline.yml
+source_file  = config/locales/views/components/timeline.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-consent_documents-consent_documents-yml]
 file_filter  = config/locales/<lang>/views/consent_documents/consent_documents.yml
 source_file  = config/locales/views/consent_documents/consent_documents.yml

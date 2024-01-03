@@ -14,7 +14,9 @@ gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets', '3.7.2'
+gem 'stateful_enum', '0.6.0' # extends ActiveRecord::Enum with state
 gem 'webpacker'
+gem 'wisper', '2.0.0' # publish subscribe for ruby objects
 
 # Database/Data
 gem 'after_party' # load data after deploy
@@ -61,6 +63,7 @@ gem 'bootstrap-email'
 
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
+gem 'cocoon' # nested forms
 gem 'simple_form'
 gem 'view_component'
 
@@ -93,10 +96,6 @@ gem 'lograge'
 # Exception handling
 gem 'oj'
 gem 'rollbar'
-
-gem 'cocoon'
-gem 'stateful_enum', '0.6.0'
-gem 'wisper', '2.0.0'
 
 # Internationalisation
 gem 'i18n-tasks', '~> 1.0.10'
