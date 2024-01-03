@@ -18,7 +18,7 @@ RSpec.describe "school alerts", type: :system do
     create(:alert, alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0, alert_generation_run: alert_run)
     click_on('Batch reports')
     click_on('Alert reports')
-    click_on 'View'
-    expect(page).to have_content('5.0')
+    click_on('View')
+    expect(page).to have_content('5/10')
   end
 end

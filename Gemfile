@@ -12,6 +12,7 @@ gem 'puma', '6.4.0' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
+gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets', '3.7.2'
 gem 'stateful_enum', '0.6.0' # extends ActiveRecord::Enum with state
 gem 'webpacker'
@@ -25,8 +26,8 @@ gem 'pg'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.12'
-# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'revise-optimum-start-time-calculation'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.12'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '5.0.0'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -75,7 +76,7 @@ gem 'mustache', '~> 1.0'
 gem 'trix-rails', require: 'trix'
 
 # Auth & Users
-gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
+gem 'cancancan', '~> 3' # Use cancancan for authorization
 gem 'devise' # Use devise for authentication
 
 # Utils
@@ -169,5 +170,4 @@ group :test do
   gem 'simplecov', require: false, group: :test
   gem 'test-prof'
   gem 'timecop'
-  gem 'webdrivers', '>= 5.3.0' #may not be required in Ruby 3
 end

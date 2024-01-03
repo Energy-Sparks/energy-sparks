@@ -32,9 +32,7 @@ RSpec.configure do |config|
     options.add_argument('disable-gpu')
     options.add_argument('disable-dev-shm-usage')
     options.add_argument('window-size=1400,10000')
-    #now needs to be true, to get a session id?
-    options.add_option('w3c', true)
-    Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: options)
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
   end
 
   config.before(:each, type: :system, js: true) do
