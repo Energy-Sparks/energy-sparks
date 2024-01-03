@@ -233,7 +233,7 @@ describe SchoolGroup, :school_groups, type: :model do
 
   context 'as a Scorable' do
     let!(:school_group)      { create :school_group, default_template_calendar: template_calendar }
-    let!(:template_calendar) { create :template_calendar }
+    let!(:template_calendar) { create :template_calendar, :with_previous_and_next_academic_years }
     let(:scoreboard)   { nil }
 
     it_behaves_like 'a scorable'
