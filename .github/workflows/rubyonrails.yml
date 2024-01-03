@@ -27,7 +27,7 @@ jobs:
       CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
       CI_NODE_INDEX: ${{ matrix.ci_node_index }}
     steps:
-      - uses: ../actions/setup
+      - uses: ./.github/actions/setup
       - run: bin/rails db:schema:load
       - run: bundle exec rake assets:precompile
       # https://github.com/actions/download-artifact/issues/3
@@ -42,7 +42,7 @@ jobs:
     env:
       BUNDLE_GEMFILE: .overcommit_gems.rb
     steps:
-      - uses: ../actions/setup
+      - uses: ./.github/actions/setup
         with:
           node: false
       # Fail early if we have issues with translation keys
