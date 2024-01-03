@@ -1,3 +1,4 @@
+name: 'Rails Test Setup'
 inputs:
   ruby-only:
     description: only setup ruby
@@ -5,7 +6,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - if: ${{ inputs.ruby-only == 'true' }}
+    - if: ${{ inputs.ruby-only == 'false' }}
       uses: actions/setup-node@v3
       with:
         node-version: 16
@@ -14,9 +15,9 @@ runs:
       with:
         bundler-cache: true
         ruby-version: "3.0"
-    - if: ${{ inputs.ruby-only == 'true' }}
+    - if: ${{ inputs.ruby-only == 'false' }}
       run: bundle exec rails db:schema:load
       shell: bash
-    - if: ${{ inputs.ruby-only == 'true' }}
+    - if: ${{ inputs.ruby-only == 'false' }}
       run: bundle exec rake assets:precompile
       shell: bash
