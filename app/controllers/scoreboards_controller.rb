@@ -1,7 +1,6 @@
 class ScoreboardsController < ApplicationController
   include Scoring
 
-  # load_resource
   skip_before_action :authenticate_user!
 
   # GET /scoreboards
@@ -11,7 +10,6 @@ class ScoreboardsController < ApplicationController
   end
 
   def show
-    # binding.pry
     if params[:id] == ScoreboardAll::SLUG
       @scoreboard = ScoreboardAll.new
     else
