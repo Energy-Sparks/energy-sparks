@@ -4,9 +4,10 @@ inputs:
     description: only setup ruby
     default: false
 runs:
+  using: "composite"
   steps:
-    - uses: actions/setup-node@v3
-      if: ${{ ! inputs.ruby-only }}
+    - if: ${{ ! inputs.ruby-only }}
+      uses: actions/setup-node@v3
       with:
         node-version: 16
         cache: yarn
@@ -14,7 +15,7 @@ runs:
       with:
         bundler-cache: true
         ruby-version: "3.0"
-    - run: bin/rails db:schema:load
-      if: ${{ ! inputs.ruby-only }}
-    - run: bundle exec rake assets:precompile
-      if: ${{ ! inputs.ruby-only }}
+    - if: ${{ ! inputs.ruby-only }}
+      run: bin/rails db:schema:load
+    - if: ${{ ! inputs.ruby-only }}
+      run: bundle exec rake assets:precompile
