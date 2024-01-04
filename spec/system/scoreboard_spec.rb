@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'scoreboards', :scoreboards do
-  let(:calendar) { create(:national_calendar, :with_academic_years, title: 'England and Wales') }
+  let(:calendar) { create(:national_calendar, :with_previous_and_next_academic_years, title: 'England and Wales') }
   let(:scoreboard) { create(:scoreboard, name: 'Super scoreboard', academic_year_calendar: calendar) }
   let!(:school) { create(:school, :with_school_group, scoreboard: scoreboard, name: 'No points', calendar: calendar) }
   let(:points) { 123 }
@@ -50,6 +50,9 @@ RSpec.describe 'scoreboards', :scoreboards do
       expect(page).to have_content('National Scoreboard')
       expect(page).to have_content(school_with_points.name)
       expect(page).to have_content(points)
+      expect(page).to have_link(
+        'last year', href: scoreboard_path('all', academic_year: calendar.academic_years.current.previous_year)
+      )
       expect(page).not_to have_content(school.name)
     end
   end

@@ -26,7 +26,7 @@
       <% end %>
     </div>
     <div class="card-footer text-right">
-      <%= link_to scoreboard_path(@scoreboard_all.slug) do %>
+      <%= link_to scoreboard_path(@scoreboard_all) do %>
         <%= t('scoreboards.view_all', count: @scoreboard_all.scored_schools.count) %>
       <% end %>
     </div>

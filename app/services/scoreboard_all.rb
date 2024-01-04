@@ -24,7 +24,7 @@ class ScoreboardAll
     I18n.t('scoreboards.all_title')
   end
 
-  def slug
+  def to_param
     SLUG
   end
 end
