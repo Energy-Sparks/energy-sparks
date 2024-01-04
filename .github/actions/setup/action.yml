@@ -1,3 +1,4 @@
+# using https://github.com/microsoft/action-python/blob/main/action.yml as an example
 name: 'Rails Test Setup'
 inputs:
   ruby-only:
