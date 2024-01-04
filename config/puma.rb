@@ -42,9 +42,9 @@ preload_app!
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
 
-#Taken from /opt/elasticbeanstalk/config/private/pumaconf.rb
 if ENV["RAILS_ENV"] == "production"
-  import '/opt/elasticbeanstalk/config/private/pumaconf.rb'
+  # import no longer works - https://github.com/puma/puma/issues/1632
+  _load_from '/opt/elasticbeanstalk/config/private/pumaconf.rb'
 else
   workers 2
   before_fork do
