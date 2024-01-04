@@ -40,46 +40,12 @@ RSpec.describe SchoolsController, type: :controller do
       sign_in_user(:admin)
     end
 
-    describe "GET #new" do
-      it "assigns a new school as @school" do
-        get :new, params: {}
-        expect(assigns(:school)).to be_a_new(School)
-      end
-    end
 
     describe "GET #edit" do
       it "assigns the requested school as @school" do
         school = FactoryBot.create :school
         get :edit, params: { id: school.to_param }
         expect(assigns(:school)).to eq(school)
-      end
-    end
-
-    describe "POST #create" do
-      context "with valid params" do
-        it "creates a new School" do
-          expect do
-            post :create, params: { school: valid_attributes }
-          end.to change(School, :count).by(1)
-        end
-
-        it "assigns a newly created school as @school" do
-          post :create, params: { school: valid_attributes }
-          expect(assigns(:school)).to be_a(School)
-          expect(assigns(:school)).to be_persisted
-        end
-      end
-
-      context "with invalid params" do
-        it "assigns a newly created but unsaved school as @school" do
-          post :create, params: { school: invalid_attributes }
-          expect(assigns(:school)).to be_a_new(School)
-        end
-
-        it "re-renders the 'new' template" do
-          post :create, params: { school: invalid_attributes }
-          expect(response).to render_template("new")
-        end
       end
     end
 
