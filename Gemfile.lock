@@ -654,7 +654,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    stateful_enum (0.6.0)
+    stateful_enum (0.7.0)
     structured_warnings (0.4.0)
     terminal-notifier (2.0.0)
     terminal-notifier-guard (1.7.0)
@@ -808,7 +808,7 @@ DEPENDENCIES
   simplecov
   sitemap_generator
   sprockets (= 3.7.2)
-  stateful_enum (= 0.6.0)
+  stateful_enum (= 0.7.0)
   statsample!
   terminal-notifier
   terminal-notifier-guard
