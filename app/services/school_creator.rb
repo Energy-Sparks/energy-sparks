@@ -70,7 +70,6 @@ private
     return if user.group_admin? || user.admin?
 
     user.add_cluster_school(school)
-    # binding.pry
     user.update!(school: school, role: :school_admin) unless user.school
   end
 
