@@ -14,6 +14,7 @@ FactoryBot.define do
     floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
     calendar        { create(:school_calendar) }
+    weather_station
 
     after(:build) do |school, _evaluator|
       build(:configuration, school: school)

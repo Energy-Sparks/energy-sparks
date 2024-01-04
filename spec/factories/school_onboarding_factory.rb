@@ -5,6 +5,7 @@ FactoryBot.define do
     sequence(:school_name)    { |n| "New School #{n}" }
     sequence(:contact_email)  { |n| "new_school_#{n}@test.com" }
     school_group
+    weather_station
 
     trait :with_events do
       transient do

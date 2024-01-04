@@ -823,4 +823,8 @@ describe School do
       end
     end
   end
+
+  describe 'weather_station required' do
+    it { is_expected.to validate_presence_of(:weather_station) }
+  end
 end

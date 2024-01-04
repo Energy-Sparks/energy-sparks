@@ -7,7 +7,7 @@ RSpec.describe Admin::PartnersController, type: :controller do
     {
       name: "BANES",
       position: 1,
-      image: fixture_file_upload('images/banes.png', 'image/png'),
+      image: fixture_file_upload('../images/banes.png', 'image/png'),
       url: "https://example.org"
     }
   end

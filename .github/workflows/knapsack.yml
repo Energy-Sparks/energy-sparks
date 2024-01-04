@@ -20,18 +20,7 @@ jobs:
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: yarn
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          ruby-version: "3.0"
-      - run: bin/rails db:schema:load
-      - run: bundle exec rake assets:precompile
-      # Fail early if we have issues with translation keys
-      - run: bundle exec i18n-tasks health
+      - uses: ./.github/actions/setup
       - run: bundle exec rspec
         env:
           KNAPSACK_GENERATE_REPORT: true

@@ -384,7 +384,6 @@ en:
       key_stage: Key stages
       key_stage_message: If you are in Scotland, KS1 covers P2 and P3, KS2 covers P4 to P7, KS3 covers S1 to S3, KS4 covers S4 and S5, KS5 is S6
       location: Location
-      new: New School
       percentage_free_school_meals_hint: If you don't know, please leave this field blank.
       school_features: School features
       stage_of_education: Stage of education

@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe TransifexSerialisable do
-  class Dummy
-    include TransifexSerialisable
-  end
-
   context 'when converting rich text' do
-    let(:test) { Dummy.new }
+    let(:test) do
+      test_class = Class.new
+      test_class.include(described_class)
+      test_class.new
+    end
 
     describe '#mustache_to_yaml' do
       it 'converts chart tags' do
