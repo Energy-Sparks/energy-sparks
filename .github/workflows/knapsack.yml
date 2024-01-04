@@ -21,8 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      # Fail early if we have issues with translation keys
-      - run: bundle exec i18n-tasks health
       - run: bundle exec rspec
         env:
           KNAPSACK_GENERATE_REPORT: true
