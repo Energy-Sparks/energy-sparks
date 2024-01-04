@@ -22,7 +22,7 @@ AllCops:
     - 'log/**/*'
     - 'storage/**/*'
     - 'tmp/**/*'
-    # exclude as these fails are updated/managed by rails app:upgrade
+    # exclude as these files are updated/managed by rails app:upgrade
     - bin/rails
     - bin/rake
     - bin/setup
