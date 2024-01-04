@@ -6,4 +6,4 @@ yum -y install yarn;
 
 # amazon-linux extras installed by default on AL2
 amazon-linux-extras enable postgresql14
-yum install -y postgresql-devel
+yum -y install postgresql-devel
