@@ -61,7 +61,7 @@ describe TransifexSerialisable do
     before do
       #we have to explicitly require the classes otherwise they're not loaded and
       #check for included modules fails
-      ActivityCategory # rubocop:disable Lint/Void - ensure is loaded
+      ActivityCategory # ensure is loaded
       @tx_serialisables = ApplicationRecord.descendants.select { |c| c.included_modules.include? TransifexSerialisable }
     end
 
