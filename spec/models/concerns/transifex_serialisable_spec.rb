@@ -61,7 +61,7 @@ describe TransifexSerialisable do
     before do
       #we have to explicitly require the classes otherwise they're not loaded and
       #check for included modules fails
-      Dir[Rails.root.join("app/models/**/*.rb")].sort.each { |f| require f }
+      ActivityCategory # ensure is loaded
       @tx_serialisables = ApplicationRecord.descendants.select { |c| c.included_modules.include? TransifexSerialisable }
     end
 
