@@ -22,10 +22,11 @@ runs:
     - if: ${{ inputs.ruby-only == 'false' }}
       uses: actions/cache@v3
       with:
-        path: public/assets
+        path: |
+          public/assets
+          public/packs-test
         key: rails-assets-${{ github.ref_name }}
         restore-keys: |
-          rails-assets-${{ github.ref_name }}
           rails-assets-master
     - if: ${{ inputs.ruby-only == 'false' }}
       run: bundle exec rake assets:precompile
