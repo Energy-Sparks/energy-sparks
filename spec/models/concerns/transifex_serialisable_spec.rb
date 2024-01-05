@@ -73,12 +73,12 @@ describe TransifexSerialisable do
     end
 
     it 'model shows no content present if no attributes set' do
-      serialisable = @tx_serialisables.first.new
+      serialisable = ActivityCategory.new #use this as an example of implementing class
       expect(serialisable).not_to have_content
     end
 
     it 'model shows content present if some attribute set' do
-      clazz = @tx_serialisables.first
+      clazz = ActivityCategory #use this as an example of implementing class
       attr = clazz.mobility_attributes.first
       serialisable = clazz.new(attr => 'something')
       expect(serialisable).to have_content
