@@ -13,8 +13,10 @@ cy:
     score: Sgôr
     score_tooltip: Ysgol wedi sgorio pwyntiau yn ystod y mis diwethaf
   scoreboards:
+    all_title: Byrddau sgorio Cenedlaethol
     intro_para_1: Mae ysgolion yn sgorio pwyntiau drwy gofnodi eu gweithgareddau i ymchwilio i'w defnydd o ynni, dysgu am ynni, a chymryd camau arbed ynni o amgylch eu hysgol.
     intro_para_2: Mae ein byrddau sgorio yn dangos pa ysgolion sydd fwyaf gweithgar ledled Cymru, Lloegr a’r Alban.
+    regional_title: Byrddau sgorio Rhanbarthol
     page_title: Byrddau sgorio
     prizes_link: darllen rhagor
     prizes_para_1: Diolch i'n harianwyr y flwyddyn ysgol hon byddwn yn gwobrwyo'r ysgolion sydd â'r sgorau uchaf â grantiau tuag at welliant arbed ynni o'ch dewis chi. Gallech fuddsoddi mewn goleuadau LED, peiriant golchi llestri neu oergell ynni effeithlon i gegin yr ysgol neu roi'r grant tuag at baneli solar. Chi sydd i benderfynu!
