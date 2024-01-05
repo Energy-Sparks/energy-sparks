@@ -25,6 +25,7 @@ runs:
         path: |
           public/assets
           public/packs-test
+          tmp/cache/webpacker
         key: rails-assets-${{ github.ref_name }}
         restore-keys: |
           rails-assets-master
