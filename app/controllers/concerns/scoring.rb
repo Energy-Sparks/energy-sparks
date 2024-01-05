@@ -1,8 +1,6 @@
 module Scoring
   extend ActiveSupport::Concern
 
-  private
-
   def setup_scores_and_years(scorable)
     @current_year = scorable.this_academic_year
     @previous_year = scorable.previous_academic_year

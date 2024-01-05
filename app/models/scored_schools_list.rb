@@ -17,8 +17,8 @@ class ScoredSchoolsList
     schools_with_positions.select {|_position, schools| schools.include?(school)}.first.first
   end
 
-  def top_three
-    with_points.schools_at(index: 0, length: 3)
+  def top(number)
+    with_points.schools_at(index: 0, length: number)
   end
 
   def with_points(always_include: nil)
