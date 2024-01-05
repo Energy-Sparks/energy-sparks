@@ -162,9 +162,9 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.17.0)
       msgpack (~> 1.2)
-    bootstrap (4.3.1)
+    bootstrap (4.6.2)
       autoprefixer-rails (>= 9.1.0)
-      popper_js (>= 1.14.3, < 2)
+      popper_js (>= 1.16.1, < 2)
       sassc-rails (>= 2.0.0)
     bootstrap-email (1.4.1)
       htmlbeautifier (~> 1.3)
@@ -178,7 +178,7 @@ GEM
     brakeman (6.1.1)
       racc
     builder (3.2.4)
-    bullet (7.1.4)
+    bullet (7.1.5)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.9.1)
@@ -233,9 +233,9 @@ GEM
     distribution (0.8.0)
     docile (1.4.0)
     domain_name (0.6.20231109)
-    dotenv (2.7.6)
-    dotenv-rails (2.7.6)
-      dotenv (= 2.7.6)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
       railties (>= 3.2)
     erubi (1.12.0)
     et-orbi (1.2.7)
@@ -275,16 +275,15 @@ GEM
     geocoder (1.8.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    good_job (3.4.8)
+    good_job (3.22.0)
       activejob (>= 6.0.0)
       activerecord (>= 6.0.0)
       concurrent-ruby (>= 1.0.2)
       fugit (>= 1.1)
       railties (>= 6.0.0)
       thor (>= 0.14.1)
-      webrick (>= 1.3)
-    groupdate (6.2.1)
-      activesupport (>= 5.2)
+    groupdate (6.4.0)
+      activesupport (>= 6.1)
     guard (2.18.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -457,7 +456,7 @@ GEM
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
     public_suffix (5.0.4)
-    puma (6.4.0)
+    puma (6.4.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.7.3)
@@ -602,17 +601,8 @@ GEM
       sexp_processor (~> 4.16)
     rubyvis (0.6.1)
     rubyzip (2.3.2)
-    sass (3.7.4)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.1.0)
-      railties (>= 5.2.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -648,9 +638,9 @@ GEM
     smart_properties (1.17.0)
     spreadsheet (1.3.0)
       ruby-ole
-    sprockets (3.7.2)
+    sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
-      rack (> 1, < 3)
+      rack (>= 2.2.4, < 4)
     sprockets-rails (3.4.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
@@ -699,12 +689,11 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    webrick (1.8.1)
     websocket (1.2.10)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    wisper (2.0.0)
+    wisper (2.0.1)
     wisper-rspec (1.1.0)
     write_xlsx (1.11.2)
       nkf
@@ -727,7 +716,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootsnap
-  bootstrap (~> 4.3.0)
+  bootstrap (~> 4)
   bootstrap-email
   bootstrap4-datetime-picker-rails
   brakeman
@@ -742,7 +731,7 @@ DEPENDENCIES
   cocoon
   database_cleaner
   devise
-  dotenv-rails (~> 2.7.4)
+  dotenv-rails
   energy-sparks_analytics!
   eventbrite_sdk
   factory_bot_rails
@@ -754,8 +743,8 @@ DEPENDENCIES
   foreman
   friendly_id
   geocoder
-  good_job (~> 3.4.6)
-  groupdate (= 6.2.1)
+  good_job
+  groupdate
   guard-rspec
   guard-rubocop
   handlebars_assets
@@ -779,7 +768,7 @@ DEPENDENCIES
   premailer-rails
   pry
   pry-byebug
-  puma (= 6.4.0)
+  puma
   rack
   rack-attack
   rack-canonical-host
@@ -797,7 +786,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
-  sass-rails (= 5.1.0)
+  sass-rails
   scout_apm
   selenium-webdriver
   shoulda-matchers
@@ -805,8 +794,8 @@ DEPENDENCIES
   simple_form
   simplecov
   sitemap_generator
-  sprockets (= 3.7.2)
-  stateful_enum (= 0.7.0)
+  sprockets
+  stateful_enum
   statsample!
   terminal-notifier
   terminal-notifier-guard
@@ -820,8 +809,8 @@ DEPENDENCIES
   web-console
   webmock
   webpacker
-  wisper (= 2.0.0)
+  wisper
   wisper-rspec
 
 BUNDLED WITH
-   2.5.3
+   2.5.4
