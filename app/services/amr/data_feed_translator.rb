@@ -30,11 +30,11 @@ module Amr
 
     def meter_details_from_row(row)
       if @config.lookup_by_serial_number
-        meter_serial_number = fetch_from_row(:meter_serial_number_index, row).strip
+        meter_serial_number = fetch_from_row(:meter_serial_number_index, row)&.strip
         meter = find_meter_by_serial_number(meter_serial_number)
         mpan_mprn = meter ? meter.mpan_mprn.to_s : nil
       else
-        mpan_mprn = fetch_from_row(:mpan_mprn_index, row).strip
+        mpan_mprn = fetch_from_row(:mpan_mprn_index, row)&.strip
         meter = find_meter_by_mpan_mprn(mpan_mprn)
         meter_serial_number = meter ? meter.meter_serial_number.to_s : nil
       end
