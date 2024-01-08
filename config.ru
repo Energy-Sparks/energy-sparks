@@ -1,5 +1,6 @@
-# frozen_string_literal: true
-require_relative 'config/environment'
+# This file is used by Rack-based servers to start the application.
+
+require_relative "config/environment"
 
 # Used to configure a redirects from www.energysparks.uk and www.test.energysparks.uk to
 # energysparks.uk and test.energysparks.uk.
@@ -9,3 +10,4 @@ if ENV['APPLICATION_HOST']
 end
 
 run Rails.application
+Rails.application.load_server

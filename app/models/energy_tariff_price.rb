@@ -85,8 +85,12 @@ class EnergyTariffPrice < ApplicationRecord
     return if energy_tariff&.flat_rate?
 
     energy_tariff&.energy_tariff_prices&.without(self)&.each do |other_price|
-      errors.add(:start_time, I18n.t('energy_tariff_price.errors.overlaps_with_another_time_range')) if other_price.time_range.include?(start_time)
-      errors.add(:end_time, I18n.t('energy_tariff_price.errors.overlaps_with_another_time_range')) if other_price.time_range.include?(end_time)
+      if other_price.time_range.cover?(start_time)
+        errors.add(:start_time, I18n.t('energy_tariff_price.errors.overlaps_with_another_time_range'))
+      end
+      if other_price.time_range.cover?(end_time)
+        errors.add(:end_time, I18n.t('energy_tariff_price.errors.overlaps_with_another_time_range'))
+      end
     end
   end
 

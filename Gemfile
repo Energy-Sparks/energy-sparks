@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.0.4'
+gem 'rails', '~> 6.1'
 
 # Rails/Core
 gem 'bootsnap'
@@ -14,7 +14,7 @@ gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets', '3.7.2'
-gem 'stateful_enum', '0.6.0' # extends ActiveRecord::Enum with state
+gem 'stateful_enum', '0.7.0' # extends ActiveRecord::Enum with state
 gem 'webpacker'
 gem 'wisper', '2.0.0' # publish subscribe for ruby objects
 
@@ -104,9 +104,6 @@ gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
 gem 'good_job', '~> 3.4.6'
-
-# Rails 6.1 functionality. Can be removed when we upgrade.
-gem 'delegated_type'
 
 # Spreadsheet parsing
 # Switch to custom branch that incorporates some necessary bug fixes

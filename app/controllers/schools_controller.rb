@@ -63,10 +63,6 @@ class SchoolsController < ApplicationController
     end
   end
 
-  # GET /schools/new
-  def new
-  end
-
   # GET /schools/1/edit
   def edit
   end
