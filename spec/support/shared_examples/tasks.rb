@@ -13,9 +13,6 @@ RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: 
     expect(page).to have_content "We've recorded your activity"
   end
 
-  it { expect(page).to have_content("Share what you’ve done with others in the school community") }
-  it { expect(page).to have_link("View your #{task_type}") }
-
   it "has scoreboard summary component" do # not checking functionality here as this is done in the component
     within "div.podium-component" do
       if points > 0
@@ -28,6 +25,9 @@ RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: 
   end
 
   it { expect(page).to have_content("What do you want to do next?") }
+
+  it { expect(page).to have_content("Share what you’ve done with others in the school community") }
+  it { expect(page).to have_link("View your #{task_type}") }
 
   it_behaves_like "a rich audit prompt"
   it_behaves_like "a complete programme prompt"
