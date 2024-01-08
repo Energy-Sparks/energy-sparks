@@ -59,7 +59,7 @@ gem 'mailgun_rails' # Email service
 gem 'twilio-ruby' # For SMS notifications
 
 # Assets for Emails
-gem 'bootstrap-email', '~> 1.2.0' # TODO: higher versions break tests
+gem 'bootstrap-email', '~> 1.4.1' # TODO: higher versions break tests
 
 # Frontend
 gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout
