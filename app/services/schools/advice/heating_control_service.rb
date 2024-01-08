@@ -98,7 +98,7 @@ module Schools
                                               <<-SQL.squish
                                                 input_data::text IN ('"kitchen_only"', '"hotwater_only"')
                                               SQL
-                                            ).pluck(:meter_id)
+                                            ).select(:meter_id)
               )
       end
 
