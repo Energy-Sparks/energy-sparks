@@ -9,6 +9,11 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
   let(:all_params) { { podium: podium, classes: 'my-class', id: 'my-id' } }
   let(:params) { all_params }
 
+  before do
+    # required for national scoreboard
+    create(:calendar, title: 'England and Wales', calendar_type: 'national')
+  end
+
   let(:html) do
     render_inline(PodiumComponent.new(**params))
   end
@@ -17,13 +22,13 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
 
   shared_examples "a podium including school" do
     it "shows school on podium" do
-      expect(html.to_s).to have_content(school.name)
+      expect(html).to have_content(school.name)
     end
   end
 
   shared_examples "a podium not including school" do
     it "doesn't show school on podium" do
-      expect(html.to_s).not_to have_content(school.name)
+      expect(html).not_to have_content(school.name)
     end
   end
 
@@ -31,9 +36,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
     it { expect(html).to have_css('i.fa-crown') }
 
     it "shows ordinal" do
-      within "p.h2" do
-        expect(html.to_s).to have_content(ordinal)
-      end
+      expect(html).to have_css('p.h2', text: ordinal)
     end
   end
 
@@ -41,9 +44,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
     it { expect(html).not_to have_css('i.fa-crown') }
 
     it "doesn't show ordinal" do
-      within "p.h2" do
-        expect(html.to_s).not_to have_content(ordinal)
-      end
+      expect(html).not_to have_css('p.h2', text: ordinal)
     end
   end
 
@@ -52,12 +53,12 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
       expect(html).to have_content("Your school hasn't scored any points yet this school year")
     end
 
-    it { expect(html.to_s).to have_link("Complete an activity") }
-    it { expect(html.to_s).to have_content("Complete an activity to score points on Energy Sparks.") }
+    it { expect(html).to have_link("Complete an activity") }
+    it { expect(html).to have_content("Complete an activity to score points on Energy Sparks.") }
   end
 
   shared_examples "a podium with overtake message" do |points: 50|
-    it { expect(html.to_s).to have_content("You only need to score #{points} points to overtake the next school!") }
+    it { expect(html).to have_content("You only need to score #{points} points to overtake the next school!") }
   end
 
   around do |example|
@@ -89,7 +90,8 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
       context "when school is in first place" do
         let(:school) { create :school, :with_points, score_points: 60, scoreboard: scoreboard }
 
-        it { expect(html.to_s).to have_content("You are in 1st place on the #{scoreboard.name} scoreboard") }
+        it { expect(html).to have_content("You are in 1st place on the #{scoreboard.name} scoreboard") }
+        it { expect(html).to have_content("and 1st place nationally") }
 
         it_behaves_like "a podium including school"
         it_behaves_like "a podium with placing", ordinal: '1st'
@@ -98,10 +100,23 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
       context "when in second place" do
         let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
 
-        it { expect(html.to_s).to have_content("You are in 2nd place on the #{scoreboard.name} scoreboard") }
+        it { expect(html).to have_content("You are in 2nd place on the #{scoreboard.name} scoreboard") }
+        it { expect(html).to have_content("and 2nd place nationally") }
 
         it_behaves_like "a podium including school"
         it_behaves_like "a podium with placing", ordinal: '2nd'
+      end
+
+      context "when in second place nationally" do
+        let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: create(:scoreboard) }
+
+        let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
+
+        it { expect(html).to have_content("You are in 1st place on the #{scoreboard.name} scoreboard") }
+        it { expect(html).to have_content("and 2nd place nationally") }
+
+        it_behaves_like "a podium including school"
+        it_behaves_like "a podium with placing", ordinal: '1st'
       end
 
       context "when school doesn't have any points" do
@@ -130,7 +145,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
       context "when school is in first place" do
         let(:school) { create :school, :with_points, score_points: 60, scoreboard: scoreboard }
 
-        it { expect(html.to_s).to have_content("Your school is in 1st place") }
+        it { expect(html).to have_content("Your school is in 1st place") }
 
         it_behaves_like "a podium including school"
         it_behaves_like "a podium with placing", ordinal: '1st'
@@ -139,7 +154,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
       context "when in second place" do
         let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
 
-        it { expect(html.to_s).to have_content("Your school is in 2nd place") }
+        it { expect(html).to have_content("Your school is in 2nd place") }
 
         it_behaves_like "a podium including school"
         it_behaves_like "a podium with placing", ordinal: '2nd'

@@ -19,6 +19,10 @@ class PodiumComponent < ViewComponent::Base
     podium.school
   end
 
+  def national_podium
+    podium.national_podium
+  end
+
   def render?
     podium
   end
