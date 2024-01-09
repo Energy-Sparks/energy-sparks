@@ -52,4 +52,4 @@ jobs:
           GIT_AUTHOR_NAME: Over Commit
           GIT_AUTHOR_EMAIL: overcommit@localhost
           SKIP: ForbiddenBranches # this fails when triggered by master push
-      - run: bundle exec brakeman . --no-exit-on-warn # TODO: fix the warnings
+      - run: bundle exec brakeman . --no-progress --no-exit-on-warn # TODO: fix the warnings
