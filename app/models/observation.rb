@@ -46,17 +46,13 @@ class Observation < ApplicationRecord
   belongs_to :programme, optional: true # to be removed when column is removed
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
-  belongs_to :audit, optional: true
+  belongs_to :audit, optional: true # to be removed when column is removed
   belongs_to :school_target, optional: true # to be removed when column is removed
 
   # If adding a new observation type remember to also modify the timeline component
   # events: 3 has been removed
-  # events: 6 is to be removed when programme relationship is removed
-  # events: 5 is to be removed when school_target relationship is removed
-  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, observable: 8 }
+  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, transport_survey: 8 }
 
-  # This is the first stage in moving this class over to being fully polymorphic
-  # The idea is to eventually move all observation_types (above) to this way of doing things
   belongs_to :observable, polymorphic: true, optional: true
 
   validates_presence_of :at, :school
@@ -64,10 +60,7 @@ class Observation < ApplicationRecord
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
   validates :activity_id, presence: true, if: :activity?
-  validates :audit_id, presence: true, if: :audit?
-  validates :audit_id, presence: true, if: :audit_activities_completed?
-  validates :observable_id, presence: true, if: :observable?
-
+  validates :observable_id, presence: true, unless: -> { temperature? || intervention? || activity? }
   validates :pupil_count, absence: true, unless: :intervention? # Only record pupil counts for interventions
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
@@ -81,15 +74,14 @@ class Observation < ApplicationRecord
   scope :recorded_since, ->(date) { where('observations.created_at >= ?', date)}
   scope :not_including, ->(school) { where.not(school: school).recorded_since(school.current_academic_year.start_date) }
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
-  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :observable]) }
-  scope :not_of_observable_type, ->(observable_type) { where.not(observable_type: observable_type).or(where(observable_type: nil)) }
+  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme, :transport_survey]) }
 
   has_rich_text :description
 
   before_save :add_points_for_interventions, if: :intervention?
   before_save :add_bonus_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
 
-  before_validation :set_defaults, if: :observable, on: :create
+  before_validation :set_defaults, if: -> { observable_id }, on: :create
 
   private
 
@@ -127,7 +119,8 @@ class Observation < ApplicationRecord
   end
 
   def set_defaults
-    self.observation_type = :observable
+    # set the observation type from the observable_type if not already set
+    self.observation_type ||= observable_type.underscore.to_sym
     self.school ||= self.observable.school if self.observable.school
     self.at ||= Time.zone.now
   end
