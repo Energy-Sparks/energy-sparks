@@ -115,7 +115,6 @@ gem 'premailer-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'brakeman'
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'byebug', platform: :mri
   gem 'climate_control'
@@ -144,6 +143,7 @@ group :development do
   gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'brakeman'
   gem 'bundler-audit'
   gem 'fasterer'
   gem 'listen' # listen for file changes - what's this used by?
