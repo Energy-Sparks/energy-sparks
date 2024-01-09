@@ -5,6 +5,7 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:subject)  { Subject.create(name: "Science and Technology") }
   let!(:ks1)      { KeyStage.create(name: 'KS1') }
+
   let(:activity_data_driven)    { true }
   let(:school_data_enabled)     { true }
 
@@ -16,7 +17,10 @@ describe 'viewing and recording activities', type: :system do
   let!(:scoreboard) { create :scoreboard }
   let(:school) { create_active_school(data_enabled: school_data_enabled, scoreboard: scoreboard) }
 
-  before { SiteSettings.create!(audit_activities_bonus_points: 50) }
+  before do
+    SiteSettings.create!(audit_activities_bonus_points: 50)
+    create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
+  end
 
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 

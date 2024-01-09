@@ -15,6 +15,7 @@ RSpec.describe "pupil dashboard prompts", type: :system do
 
   before do
     SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s), electricity_price: 1, solar_export_price: 1, gas_price: 1)
+    create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
     sign_in(user) if user.present?
     visit pupils_school_path(school)
   end

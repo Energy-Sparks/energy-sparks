@@ -10,8 +10,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
   let(:params) { all_params }
 
   before do
-    # required for national scoreboard
-    create(:calendar, title: 'England and Wales', calendar_type: 'national')
+    create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
   end
 
   let(:html) do

@@ -21,6 +21,7 @@ describe 'viewing and recording action', type: :system do
 
   before do
     SiteSettings.current.update(photo_bonus_points: photo_bonus_points)
+    create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
   end
 
   context 'as a public user' do
