@@ -130,12 +130,12 @@ class SchoolTarget < ApplicationRecord
   end
 
   def add_observation
-    return if observations.any?
+    return if observations.school_target.any?
 
-    self.observations.create!(at: start_date, points: 0)
+    self.observations.school_target.create!(at: start_date, points: 0)
   end
 
   def ensure_observation_date_is_correct
-    observations.update_all(at: start_date)
+    observations.school_target.update_all(at: start_date)
   end
 end

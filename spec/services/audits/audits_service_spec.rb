@@ -52,22 +52,29 @@ describe Audits::AuditService, type: :service do
   describe '#process' do
     let(:audit) { build(:audit, school: school) }
 
-    it 'saves audit' do
-      service.process(audit)
-      expect(audit).to be_persisted
+    it "has no observations" do
+      expect(audit.observations.audit.count).to be(0)
     end
 
-    it 'only create observation if valid' do
-      audit.school = nil
-      service.process(audit)
-      expect(audit).not_to be_persisted
-    end
+    context "calling the service" do
+      before do
+        service.process(audit)
+      end
 
-    it 'creates observation when saving audit' do
-      expect { service.process(audit) }.to change(Observation, :count).from(0).to(1)
-      expect(Observation.first.audit).to eql audit
-      expect(Observation.first.points).not_to be_nil
-      expect(Observation.first.audit?).to be true
+      it 'saves audit' do
+        expect(audit).to be_persisted
+      end
+
+      it "creates observation" do
+        expect(audit.observations.audit.count).to be(1)
+        expect(audit.observations.audit.first.points).not_to be_nil
+      end
+
+      context "when audit isn't valid" do
+        let(:audit) { build(:audit, school: nil) }
+
+        it { expect(audit).not_to be_persisted }
+      end
     end
   end
 end

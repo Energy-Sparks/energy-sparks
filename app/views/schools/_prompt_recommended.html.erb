@@ -1,6 +1,8 @@
-<% if current_user_school %>
+<% if @school || current_user_school %>
   <%= component 'info_bar',
     title: I18n.t('schools.prompts.recommended_for_your_school.message'),
-    buttons: { I18n.t('schools.prompts.recommended_for_your_school.button') => school_recommendations_path(current_user.school, scope: local_assigns[:scope]) }
+    icon: (fa_icon('clipboard-list fa-3x') if local_assigns[:icon]),
+    style: local_assigns[:style],
+    buttons: { I18n.t('schools.prompts.recommended_for_your_school.button') => school_recommendations_path(@school || current_user_school, scope: local_assigns[:scope]) }
   %>
 <% end %>
