@@ -20,6 +20,8 @@ class ActivitiesController < ApplicationController
   end
 
   def completed
+    return if EnergySparks::FeatureFlags.active?(:activities_2024)
+
     @suggested_activities = load_suggested_activities(@school)
     @completed_activities = load_completed_activities(@school)
   end
