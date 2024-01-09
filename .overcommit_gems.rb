@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
+gem 'brakeman'
 gem 'bundler-audit'
 gem 'fasterer'
 gem 'i18n-tasks', '~> 1.0.10'
