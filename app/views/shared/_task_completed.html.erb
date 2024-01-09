@@ -12,9 +12,10 @@
 <%= component 'info_bar',
     status: :positive,
     icon: fa_icon('share fa-3x'),
+    style: :compact,
     title: t('tasks.completed.share'),
     buttons: { t("tasks.completed.#{task_type}.view_link") => task_path } %>
 
 <%= render('schools/prompt_to_complete_programme', programmes: school.programmes.started.order(started_on: :desc), style: :compact) %>
 <%= render('schools/prompt_audit', audit: Audits::AuditService.new(school).last_audit, style: :compact) %>
-<%= render 'schools/prompt_recommended', scope: recommendations_scope_for(task_type), icon: true %>
+<%= render 'schools/prompt_recommended', scope: recommendations_scope_for(task_type), icon: true, style: :compact %>
