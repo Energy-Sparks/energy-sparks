@@ -53,4 +53,4 @@ jobs:
           GIT_AUTHOR_EMAIL: overcommit@localhost
           SKIP: ForbiddenBranches # this fails when triggered by master push
       - run: bundle exec brakeman . --no-progress --no-exit-on-warn -o /dev/stdout -o tmp/brakeman.txt
-      - run: grep 'Security Warnings: 20' tmp/brakeman.txt
+      - run: "grep 'Security Warnings: 20' tmp/brakeman.txt"
