@@ -10,12 +10,12 @@ FactoryBot.define do
 
     trait :audit do
       observation_type { :audit }
-      audit
+      association :observable, factory: :audit
     end
 
     trait :audit_activities_completed do
       observation_type { :audit_activities_completed }
-      audit
+      association :observable, factory: :audit
     end
 
     trait :intervention do
@@ -24,7 +24,7 @@ FactoryBot.define do
     end
 
     trait :programme do
-      observation_type { :observable }
+      observation_type { :programme }
       association :observable, factory: :programme
     end
 
@@ -34,7 +34,7 @@ FactoryBot.define do
     end
 
     trait :transport_survey do
-      observation_type { :observable }
+      observation_type { :transport_survey }
       association :observable, factory: :transport_survey
     end
 

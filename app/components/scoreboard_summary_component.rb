@@ -5,8 +5,13 @@ class ScoreboardSummaryComponent < ViewComponent::Base
 
   include ApplicationHelper
 
-  def initialize(podium:)
+  def initialize(podium:, title: nil)
     @podium = podium
+    @title = title
+  end
+
+  def title
+    @title || I18n.t("components.scoreboard_summary.title")
   end
 
   def other_schools?

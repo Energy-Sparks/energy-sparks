@@ -113,8 +113,8 @@ class TransportSurvey < ApplicationRecord
 
   def add_observation
     return unless responses.any?
-    return if observations.any? # only one observation permitted per survey day
+    return if observations.transport_survey.any? # only one observation permitted per survey day
 
-    observations.create!(at: run_on) # do we want to add any points?
+    observations.transport_survey.create!(at: run_on)
   end
 end

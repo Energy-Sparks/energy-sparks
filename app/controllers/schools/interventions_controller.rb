@@ -49,6 +49,8 @@ module Schools
     end
 
     def completed
+      return if EnergySparks::FeatureFlags.active?(:activities_2024)
+
       @suggested_actions = load_suggested_actions(@school)
       @completed_actions = load_completed_actions(@school)
     end

@@ -36,7 +36,7 @@ describe 'Programme' do
         it { expect(programme.observations.count).to eq(1) }
         it { expect(last_observation.at).to eq(programme.ended_on) }
         it { expect(last_observation.school).to eq(school) }
-        it { expect(last_observation.observation_type).to eq('observable') }
+        it { expect(last_observation.observation_type).to eq('programme') }
 
         it "adds points" do
           expect(last_observation.points).to eq(12)
@@ -59,7 +59,7 @@ describe 'Programme' do
         it { expect(programme.observations.count).to eq(1) }
         it { expect(last_observation.at).to eq(programme.ended_on) }
         it { expect(last_observation.school).to eq(school) }
-        it { expect(last_observation.observation_type).to eq('observable') }
+        it { expect(last_observation.observation_type).to eq('programme') }
 
         it "doesn't add points" do
           expect(last_observation.points).to eq(0)

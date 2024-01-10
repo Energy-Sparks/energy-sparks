@@ -53,5 +53,14 @@ FactoryBot.define do
         create(:activity, school: school, activity_type: activity_type, happened_on: evaluator.activities_happened_on)
       end
     end
+
+    trait :with_fuel_configuration do
+      after(:create) do |school|
+        fuel_configuration = Schools::FuelConfiguration.new(
+          has_electricity: true, has_gas: true, has_storage_heaters: true, has_solar_pv: true
+        )
+        school.configuration.update!(fuel_configuration: fuel_configuration)
+      end
+    end
   end
 end

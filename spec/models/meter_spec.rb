@@ -420,24 +420,15 @@ describe 'Meter', :meters do
       end
 
       it 'includes inherited tariffs with the parent filtered by the meters meter_system (non_half_hourly)' do
-        expect(all_meter_attributes.size).to eq 6
-        expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
-        expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'site_settings'
-        expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school_group'
-        expect(all_meter_attributes[3].input_data['tariff_holder']).to eq 'school_group'
-        expect(all_meter_attributes[4].input_data['tariff_holder']).to eq 'school'
-        expect(all_meter_attributes[5].input_data['tariff_holder']).to eq 'school'
-
-        expect(all_meter_attributes.map { |m| m.input_data['name'] }).to eq(
-          [
-            energy_tariff_site_wide_electricity_both.name,
-            energy_tariff_site_wide_electricity_non_half_hourly.name,
-            energy_tariff_group_level_electricity_both.name,
-            energy_tariff_group_level_electricity_non_half_hourly.name,
-            energy_tariff_school_electricity_both.name,
-            energy_tariff_school_electricity_non_half_hourly.name,
-          ]
-        )
+        expect(all_meter_attributes.map { |attributes| attributes.input_data.slice('name', 'tariff_holder') }).to \
+          contain_exactly(
+            { 'name' => energy_tariff_site_wide_electricity_both.name, 'tariff_holder' => 'site_settings' },
+            { 'name' => energy_tariff_site_wide_electricity_non_half_hourly.name, 'tariff_holder' => 'site_settings' },
+            { 'name' => energy_tariff_group_level_electricity_both.name, 'tariff_holder' => 'school_group' },
+            { 'name' => energy_tariff_group_level_electricity_non_half_hourly.name, 'tariff_holder' => 'school_group' },
+            { 'name' => energy_tariff_school_electricity_both.name, 'tariff_holder' => 'school' },
+            { 'name' => energy_tariff_school_electricity_non_half_hourly.name, 'tariff_holder' => 'school' }
+          )
       end
     end
   end

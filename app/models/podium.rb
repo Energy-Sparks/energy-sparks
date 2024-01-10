@@ -66,6 +66,10 @@ class Podium
     @school = school
   end
 
+  def national_podium
+    @national_podium ||= Podium.create(school: school, scoreboard: ScoreboardAll.new)
+  end
+
   def high_to_low
     @positions
   end

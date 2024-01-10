@@ -60,13 +60,13 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it { expect(html).to have_css('i.fa-clipboard-check') }
     it { expect(html).to have_content("Received an energy audit") }
-    it { expect(html).to have_link(observation.audit.title, href: school_audit_path(observation.school, observation.audit)) }
+    it { expect(html).to have_link(observation.observable.title, href: school_audit_path(observation.school, observation.observable)) }
 
     context "when show_actions is true" do
       let(:show_actions) { true }
 
-      it { expect(html).to have_link("Edit", href: edit_school_audit_path(observation.school, observation.audit)) }
-      it { expect(html).to have_link("Delete", href: school_audit_path(observation.school, observation.audit)) }
+      it { expect(html).to have_link("Edit", href: edit_school_audit_path(observation.school, observation.observable)) }
+      it { expect(html).to have_link("Delete", href: school_audit_path(observation.school, observation.observable)) }
     end
 
     it_behaves_like "when show_actions is false"
@@ -76,7 +76,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
       it { expect(html).to have_content("#{observation.school.name} ") }
-      it { expect(html).to have_link("received an energy audit", href: school_audit_path(observation.school, observation.audit)) }
+      it { expect(html).to have_link("received an energy audit", href: school_audit_path(observation.school, observation.observable)) }
     end
   end
 
@@ -85,7 +85,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it { expect(html).to have_css('i.fa-clipboard-check') }
     it { expect(html).to have_content("Completed all audit activities:") }
-    it { expect(html).to have_link(observation.audit.title, href: school_audit_path(observation.school, observation.audit)) }
+    it { expect(html).to have_link(observation.observable.title, href: school_audit_path(observation.school, observation.observable)) }
 
     context "when show_actions is true" do
       let(:show_actions) { true }
