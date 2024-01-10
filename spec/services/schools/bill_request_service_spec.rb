@@ -4,7 +4,7 @@ RSpec.describe Schools::BillRequestService do
   let!(:school)           { create(:school) }
   let!(:service)          { Schools::BillRequestService.new(school) }
   let(:email)             { ActionMailer::Base.deliveries.last }
-  let(:email_body)        { email.body.to_s }
+  let(:email_body)        { email.html_part.decoded }
 
   context 'listing users' do
     context 'with no users' do

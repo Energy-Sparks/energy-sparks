@@ -7,7 +7,7 @@ RSpec.describe OnboardingMailer do
   let(:country)           { 'wales' }
   let(:school_onboarding) { create(:school_onboarding, school_name: 'Test School', created_by: user, school: school, country: country) }
   let(:email)             { ActionMailer::Base.deliveries.last }
-  let(:body) { ActionController::Base.helpers.sanitize(email.body.to_s) }
+  let(:body) { ActionController::Base.helpers.sanitize(email.html_part.decoded) }
 
   around do |example|
     ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do

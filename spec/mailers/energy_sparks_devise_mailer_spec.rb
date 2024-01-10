@@ -25,8 +25,8 @@ RSpec.describe EnergySparksDeviseMailer do
       end
 
       it 'contains links to default site but not cy site' do
-        expect(@email.body.to_s).to include("http://localhost/users/confirmation?confirmation_token=")
-        expect(@email.body.to_s).not_to include("http://cy.localhost/users/confirmation?confirmation_token=")
+        expect(@email.html_part.decoded).to include("http://localhost/users/confirmation?confirmation_token=")
+        expect(@email.html_part.decoded).not_to include("http://cy.localhost/users/confirmation?confirmation_token=")
       end
     end
 
@@ -38,8 +38,8 @@ RSpec.describe EnergySparksDeviseMailer do
       end
 
       it 'contains links to default site and cy site' do
-        expect(@email.body.to_s).to include("http://localhost/users/confirmation?confirmation_token=")
-        expect(@email.body.to_s).to include("http://cy.localhost/users/confirmation?confirmation_token=")
+        expect(@email.html_part.decoded).to include("http://localhost/users/confirmation?confirmation_token=")
+        expect(@email.html_part.decoded).to include("http://cy.localhost/users/confirmation?confirmation_token=")
       end
     end
 

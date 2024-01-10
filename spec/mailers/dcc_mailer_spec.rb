@@ -13,10 +13,10 @@ RSpec.describe DccMailer do
       expect(ActionMailer::Base.deliveries.count).to be 1
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eql "New smart meters found"
-      expect(email.body.to_s).to include(meter_1.mpan_mprn.to_s)
-      expect(email.body.to_s).to include('Big School')
-      expect(email.body.to_s).to include(meter_2.mpan_mprn.to_s)
-      expect(email.body.to_s).to include('Little School')
+      expect(email.html_part.decoded).to include(meter_1.mpan_mprn.to_s)
+      expect(email.html_part.decoded).to include('Big School')
+      expect(email.html_part.decoded).to include(meter_2.mpan_mprn.to_s)
+      expect(email.html_part.decoded).to include('Little School')
     end
   end
 end
