@@ -1,5 +1,24 @@
 <% content_for :page_title, 'Funder allocation report' %>
 
+<h1>Funder school count</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Funder</th>
+      <th scope="col">Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for funder in @funders %>
+      <tr>
+        <td><%= funder.name.nil? ? 'No funder' : funder.name %></td>
+        <td><%= funder.school_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
+
 <h1>Funder allocation report</h1>
 
 <p>
