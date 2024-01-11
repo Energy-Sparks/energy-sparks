@@ -13,7 +13,7 @@ class ScoreboardAll
   end
 
   def schools
-    School.where(country: %i[england wales])
+    School.where(country: %i[england wales scotland])
   end
 
   def scored_schools(**kwargs)
