@@ -27,7 +27,7 @@ describe 'Engaged Schools Report', type: :system do
       click_on 'Engaged Schools'
       click_on 'Download as CSV'
       expect(lines.first.split(',')).to eq ['School Group', 'School', 'Funder', 'Country', 'Activities', 'Actions', 'Programmes', 'Target?', 'Transport survey?', 'Temperatures?', 'Audit?', 'Active users', 'Last visit']
-      expect(lines.second.split(',')).to eq [school.school_group.name, school.name, '', school.country.humanize, '1', '0', '0', 'N', 'N', 'N', '1', last_sign_in.iso8601]
+      expect(lines.second.split(',')).to eq [school.school_group.name, school.name, '', school.country.humanize, '1', '0', '0', 'N', 'N', 'N', 'N', '1', last_sign_in.iso8601]
 
       expect(lines.count).to eq 2
     end
