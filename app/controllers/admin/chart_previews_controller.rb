@@ -31,8 +31,8 @@ module Admin
     end
 
     def set_controls
-      @axis_controls = (chart_params[:axis_controls].nil? || chart_params[:axis_controls] == '1')
-      @analysis_controls = (chart_params[:analysis_controls].nil? || chart_params[:analysis_controls] == '1')
+      @axis_controls = chart_params[:axis_controls].nil? || chart_params[:axis_controls] == '1'
+      @analysis_controls = chart_params[:analysis_controls].nil? || chart_params[:analysis_controls] == '1'
     end
 
     def chart_params
