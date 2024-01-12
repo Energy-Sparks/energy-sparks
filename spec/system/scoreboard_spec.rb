@@ -25,7 +25,7 @@ RSpec.describe 'scoreboards', :scoreboards do
 
       it 'has a national scoreboard' do
         expect(page).to have_content('National Scoreboard')
-        expect(page).to have_link(href: scoreboard_path('all'))
+        expect(page).to have_link(href: scoreboard_path('national'))
       end
 
       it 'includes top ranking schools' do
