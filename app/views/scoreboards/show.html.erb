@@ -19,7 +19,7 @@
     </p>
     <p>
       <% if @academic_year == @current_year %>
-        <%= t('scoreboard.current_scores') %>. <%= link_to t('scoreboard.previous_scoreboard'), scoreboard_path(@scoreboard, previous_year: 'true') %>.
+        <%= t('scoreboard.current_scores') %>. <%= link_to t('scoreboard.previous_scoreboard'), scoreboard_path(@scoreboard, previous_year: true) %>.
       <% else %>
         <%= t('scoreboard.previous_scores') %>. <strong><%= link_to t('scoreboard.current_scoreboard'), scoreboard_path(@scoreboard) %></strong>
       <% end %>
