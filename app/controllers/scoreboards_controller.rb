@@ -5,7 +5,7 @@ class ScoreboardsController < ApplicationController
 
   # GET /scoreboards
   def index
-    @scoreboard_all = NationalScoreboard.new
+    @national_scoreboard = NationalScoreboard.new
     @scoreboards = ComparisonService.new(current_user).list_scoreboards
   end
 
