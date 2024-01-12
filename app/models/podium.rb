@@ -1,6 +1,7 @@
 class Podium
   class Position
     attr_reader :school, :position, :normalised_points
+
     def initialize(school:, points:, position:, normalised_points:, recent_points:)
       @school = school
       @points = points
@@ -67,7 +68,7 @@ class Podium
   end
 
   def national_podium
-    @national_podium ||= Podium.create(school: school, scoreboard: ScoreboardAll.new)
+    @national_podium ||= Podium.create(school: school, scoreboard: NationalScoreboard.new)
   end
 
   def high_to_low
