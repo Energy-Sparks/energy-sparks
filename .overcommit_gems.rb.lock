@@ -36,7 +36,9 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (3.1.4)
+    bigdecimal (3.1.5)
+    brakeman (6.1.1)
+      racc
     builder (3.2.4)
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
@@ -65,8 +67,8 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
     iniparse (1.5.0)
-    io-console (0.6.0)
-    irb (1.10.1)
+    io-console (0.7.1)
+    irb (1.11.0)
       rdoc
       reline (>= 0.3.8)
     json (2.7.1)
@@ -76,19 +78,21 @@ GEM
       nokogiri (>= 1.12.0)
     minitest (5.20.0)
     mutex_m (0.2.0)
-    nokogiri (1.15.5-x86_64-darwin)
+    nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.5-x86_64-linux)
+    nokogiri (1.16.0-x86_64-darwin)
       racc (~> 1.4)
-    overcommit (0.60.0)
+    nokogiri (1.16.0-x86_64-linux)
+      racc (~> 1.4)
+    overcommit (0.61.0)
       childprocess (>= 0.6.3, < 5)
       iniparse (~> 1.4)
       rexml (~> 3.2)
-    parallel (1.23.0)
+    parallel (1.24.0)
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
-    psych (5.1.1.1)
+    psych (5.1.2)
       stringio
     racc (1.7.3)
     rack (3.0.8)
@@ -119,13 +123,13 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.1.0)
-    rdoc (6.6.1)
+    rdoc (6.6.2)
       psych (>= 4.0.0)
     regexp_parser (2.8.3)
     reline (0.4.1)
       io-console (~> 0.5)
     rexml (3.2.6)
-    rubocop (1.58.0)
+    rubocop (1.59.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -138,19 +142,19 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.30.0)
       parser (>= 3.2.1.0)
-    rubocop-capybara (2.19.0)
+    rubocop-capybara (2.20.0)
       rubocop (~> 1.41)
-    rubocop-factory_bot (2.24.0)
+    rubocop-factory_bot (2.25.0)
       rubocop (~> 1.33)
-    rubocop-performance (1.19.1)
-      rubocop (>= 1.7.0, < 2.0)
-      rubocop-ast (>= 0.4.0)
-    rubocop-rails (2.22.2)
+    rubocop-performance (1.20.1)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
+    rubocop-rails (2.23.1)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.33.0, < 2.0)
       rubocop-ast (>= 1.30.0, < 2.0)
-    rubocop-rspec (2.25.0)
+    rubocop-rspec (2.26.0)
       rubocop (~> 1.40)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
@@ -171,10 +175,12 @@ GEM
     zeitwerk (2.6.12)
 
 PLATFORMS
+  arm64-darwin-23
   x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
+  brakeman
   bundler-audit
   fasterer
   i18n-tasks (~> 1.0.10)

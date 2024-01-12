@@ -28,17 +28,11 @@ jobs:
       CI_NODE_INDEX: ${{ matrix.ci_node_index }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 10.*
-          cache: yarn
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - run: bin/rails db:schema:load
-      - run: bundle exec rake assets:precompile
-      # Fail early if we have issues with translation keys
-      - run: bundle exec i18n-tasks health
+      - uses: ./.github/actions/setup
+      # https://github.com/actions/download-artifact/issues/3
+      - run: gh run download --name knapsack_rspec_report --dir ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ github.token }}
       # https://docs.knapsackpro.com/ruby/knapsack
       # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
       - run: bundle exec rake knapsack:rspec
@@ -48,11 +42,15 @@ jobs:
       BUNDLE_GEMFILE: .overcommit_gems.rb
     steps:
       - uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
+      - uses: ./.github/actions/setup
         with:
-          bundler-cache: true
+          ruby-only: true
+      # Fail early if we have issues with translation keys
+      - run: bundle exec i18n-tasks health
       - run: bundle exec overcommit --sign && bundle exec overcommit --run
         env:
           GIT_AUTHOR_NAME: Over Commit
           GIT_AUTHOR_EMAIL: overcommit@localhost
           SKIP: ForbiddenBranches # this fails when triggered by master push
+      - run: bundle exec brakeman . --no-progress --no-exit-on-warn -o /dev/stdout -o tmp/brakeman.txt
+      - run: "grep 'Security Warnings: 20' tmp/brakeman.txt"

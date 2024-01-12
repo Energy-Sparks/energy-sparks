@@ -15,6 +15,14 @@ class PodiumComponent < ViewComponent::Base
     " #{@classes}"
   end
 
+  def school
+    podium.school
+  end
+
+  def national_podium
+    podium.national_podium
+  end
+
   def render?
     podium
   end

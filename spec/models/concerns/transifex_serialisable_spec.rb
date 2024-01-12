@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe TransifexSerialisable do
-  class Dummy
-    include TransifexSerialisable
-  end
-
   context 'when converting rich text' do
-    let(:test) { Dummy.new }
+    let(:test) do
+      test_class = Class.new
+      test_class.include(described_class)
+      test_class.new
+    end
 
     describe '#mustache_to_yaml' do
       it 'converts chart tags' do
@@ -73,13 +73,13 @@ describe TransifexSerialisable do
     end
 
     it 'model shows no content present if no attributes set' do
-      serialisable = @tx_serialisables.first.new
-      expect(serialisable).not_to have_content
+      #use this as an example of implementing class
+      expect(ActivityCategory.new).not_to have_content
     end
 
     it 'model shows content present if some attribute set' do
-      clazz = @tx_serialisables.first
-      attr = clazz.mobility_attributes.first
+      clazz = ActivityCategory #use this as an example of implementing class
+      attr = ActivityCategory.mobility_attributes.first
       serialisable = clazz.new(attr => 'something')
       expect(serialisable).to have_content
     end

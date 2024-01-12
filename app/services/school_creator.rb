@@ -8,6 +8,9 @@ class SchoolCreator
   end
 
   def onboard_school!(onboarding)
+    @school.assign_attributes(
+      onboarding.slice(:school_group, :template_calendar, :dark_sky_area, :scoreboard, :weather_station)
+    )
     if @school.valid?
       @school.transaction do
         copy_onboarding_details_to_school(onboarding)
@@ -64,7 +67,7 @@ class SchoolCreator
 private
 
   def add_school(user, school)
-    return if user.group_admin?
+    return if user.group_admin? || user.admin?
 
     user.add_cluster_school(school)
     user.update!(school: school, role: :school_admin) unless user.school
@@ -72,11 +75,6 @@ private
 
   def copy_onboarding_details_to_school(onboarding)
       @school.update!(
-        school_group: onboarding.school_group,
-        template_calendar: onboarding.template_calendar,
-        dark_sky_area: onboarding.dark_sky_area,
-        scoreboard: onboarding.scoreboard,
-        weather_station: onboarding.weather_station,
         public: onboarding.school_will_be_public,
         chart_preference: onboarding.default_chart_preference
       )

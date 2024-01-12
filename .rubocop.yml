@@ -16,13 +16,30 @@ AllCops:
     - 'lib/data_feeds/solar_pv_tuos_loader.rb'
     - 'lib/data_feeds/dark_sky_temperature_loader.rb'
     - 'lib/data_feeds/solar_pv_tuos_v2_loader.rb'
-    - 'bin/**/*'
     - 'script/**/*'
     - 'node_modules/**/*'
     - 'node_modules/node-sass/src/libsass/script/spec'
     - 'log/**/*'
     - 'storage/**/*'
     - 'tmp/**/*'
+    # exclude as these files are updated/managed by rails app:upgrade
+    - bin/rails
+    - bin/rake
+    - bin/setup
+    - bin/yarn
+    - config/application.rb
+    - config/boot.rb
+    - config/environment.rb
+    - config/environments/development.rb
+    - config/environments/production.rb
+    - config/environments/test.rb
+    - config/initializers/backtrace_silencers.rb
+    - config/initializers/content_security_policy.rb
+    - config/initializers/filter_parameter_logging.rb
+    - config/initializers/new_framework_defaults_6_1.rb
+    - config/initializers/permissions_policy.rb
+    - config/puma.rb
+    - config/routes.rb
 require:
   - rubocop-rails
   - rubocop-performance

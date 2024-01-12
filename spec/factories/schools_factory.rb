@@ -14,6 +14,7 @@ FactoryBot.define do
     floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
     calendar        { create(:school_calendar) }
+    weather_station
 
     after(:build) do |school, _evaluator|
       build(:configuration, school: school)
@@ -50,6 +51,15 @@ FactoryBot.define do
       after(:create) do |school, evaluator|
         activity_type = create(:activity_type, score: evaluator.score_points)
         create(:activity, school: school, activity_type: activity_type, happened_on: evaluator.activities_happened_on)
+      end
+    end
+
+    trait :with_fuel_configuration do
+      after(:create) do |school|
+        fuel_configuration = Schools::FuelConfiguration.new(
+          has_electricity: true, has_gas: true, has_storage_heaters: true, has_solar_pv: true
+        )
+        school.configuration.update!(fuel_configuration: fuel_configuration)
       end
     end
   end

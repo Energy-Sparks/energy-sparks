@@ -2,18 +2,21 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.0.4'
+gem 'rails', '~> 6.1'
 
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.12'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'puma', '6.4.0' # Use Puma as the app server
+gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
-gem 'sprockets', '3.7.2'
+gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
+gem 'sprockets'
+gem 'stateful_enum' # extends ActiveRecord::Enum with state
 gem 'webpacker'
+gem 'wisper' # publish subscribe for ruby objects
 
 # Database/Data
 gem 'after_party' # load data after deploy
@@ -23,8 +26,8 @@ gem 'pg'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '4.1.11'
-# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'layer-down-day-nov-2023'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.0'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '5.0.0'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -36,7 +39,7 @@ gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'font-awesome-sass'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
-gem 'sass-rails', '5.1.0' # Use SCSS for stylesheets
+gem 'sass-rails' # Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 
 # Pagination
@@ -56,10 +59,11 @@ gem 'mailgun_rails' # Email service
 gem 'twilio-ruby' # For SMS notifications
 
 # Assets for Emails
-gem 'bootstrap-email'
+gem 'bootstrap-email', '~> 1.2.0' # TODO: higher versions break tests
 
 # Frontend
-gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout
+gem 'cocoon' # nested forms
 gem 'simple_form'
 gem 'view_component'
 
@@ -72,15 +76,15 @@ gem 'mustache', '~> 1.0'
 gem 'trix-rails', require: 'trix'
 
 # Auth & Users
-gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
+gem 'cancancan', '~> 3' # Use cancancan for authorization
 gem 'devise' # Use devise for authentication
 
 # Utils
-gem 'groupdate', '6.2.1' # Use groupdate to group usage stats
+gem 'groupdate' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby] # for Windows
 
 # Bundle update installs 0.7.0 for some weird reason!
-gem 'dotenv-rails', '~> 2.7.4' # Shim to load environment variables from .env into ENV in development.
+gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id'
 
 # Sitemap
@@ -93,20 +97,13 @@ gem 'lograge'
 gem 'oj'
 gem 'rollbar'
 
-gem 'cocoon'
-gem 'stateful_enum', '0.6.0'
-gem 'wisper', '2.0.0'
-
 # Internationalisation
 gem 'i18n-tasks', '~> 1.0.10'
 gem 'mobility', '~> 1.2.9'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
-gem 'good_job', '~> 3.4.6'
-
-# Rails 6.1 functionality. Can be removed when we upgrade.
-gem 'delegated_type'
+gem 'good_job'
 
 # Spreadsheet parsing
 # Switch to custom branch that incorporates some necessary bug fixes

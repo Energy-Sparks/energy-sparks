@@ -24,7 +24,7 @@ class Audit < ApplicationRecord
   has_one_attached :file
   has_rich_text :description
 
-  has_many :observations, dependent: :destroy
+  has_many :observations, as: :observable, dependent: :destroy
 
   validates_presence_of :school, :title, :file
 
@@ -65,14 +65,8 @@ class Audit < ApplicationRecord
   def create_activities_completed_observation!
     return unless SiteSettings.current.audit_activities_bonus_points
     return unless activities_completed?
-    return if observations&.audit_activities_completed.present? # Only one audit activities completed observation is permitted per audit
+    return if observations.audit_activities_completed.any? # Only one audit activities completed observation is permitted per audit
 
-    Observation.create!(
-      school: school,
-      observation_type: :audit_activities_completed,
-      audit: self,
-      at: Time.zone.now,
-      points: SiteSettings.current.audit_activities_bonus_points
-    )
+    self.observations.create!(observation_type: :audit_activities_completed, points: SiteSettings.current.audit_activities_bonus_points)
   end
 end

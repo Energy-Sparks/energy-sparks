@@ -347,7 +347,6 @@ cy:
       key_stage: Cyfnodau allweddol
       key_stage_message: Os ydych yn yr Alban, mae CA1 yn cwmpasu P2 a P3, mae CA2 yn cwmpasu P4 i P7, mae CA3 yn cwmpasu S1 i S3, mae CA4 yn cwmpasu S4 a S5, mae CA5 yn cwmpasu S6
       location: Lleoliad
-      new: Ysgol Newydd
       percentage_free_school_meals_hint: Os nad ydych yn gwybod, gadewch y maes hwn yn wag.
       school_features: Nodweddion yr ysgol
       stage_of_education: Cyfnod addysg

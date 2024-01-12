@@ -233,6 +233,8 @@ class School < ApplicationRecord
 
   validates :alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
 
+  validates :weather_station, presence: true
+
   accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
@@ -306,6 +308,10 @@ class School < ApplicationRecord
       [:postcode, :name],
       [:urn, :name]
     ]
+  end
+
+  def current_academic_year
+    academic_year_for(Time.zone.today)
   end
 
   def academic_year_for(date)

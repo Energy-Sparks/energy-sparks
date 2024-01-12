@@ -1,4 +1,4 @@
-<tr>
+<tr id="<%=fuel_type%>-row">
   <td class="icon"><span class="<%=fuel_type_class(fuel_type)%>"><%= fa_icon fuel_type_icon(fuel_type) %></span></td>
   <td><%= fuel_type.to_s.humanize %></td>
   <td class="text-right"><%= -school_target[fuel_type] %>%</td>

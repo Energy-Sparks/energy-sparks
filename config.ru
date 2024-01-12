@@ -1,9 +1,13 @@
-require_relative 'config/environment'
+# This file is used by Rack-based servers to start the application.
 
-#Used to configure a redirects from www.energysparks.uk and www-test.energysparks.uk to
-#energysparks.uk and test.energysparks.uk.
-#
-#We exclude the Welsh subdomains (cy. and test-cy.)
-use Rack::CanonicalHost, ENV['APPLICATION_HOST'], ignore: /.*cy\.energysparks\.uk/, cache_control: "max-age=#{1.hour.to_i}" if ENV['APPLICATION_HOST']
+require_relative "config/environment"
+
+# Used to configure a redirects from www.energysparks.uk and www.test.energysparks.uk to
+# energysparks.uk and test.energysparks.uk.
+# This shouldn't apply to the Welsh subdomains (cy. and test-cy.) or ELB healthchecks (using app host IP)
+if ENV['APPLICATION_HOST']
+  use Rack::CanonicalHost, ENV['APPLICATION_HOST'], if: /^www\./, cache_control: "max-age=#{1.hour.to_i}"
+end
 
 run Rails.application
+Rails.application.load_server

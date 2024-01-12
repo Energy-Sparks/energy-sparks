@@ -1,3 +1,9 @@
+<% if EnergySparks::FeatureFlags.active?(:activities_2024) %>
+
+  <%= render 'shared/task_completed', task_type: :activity, school: @school, points: @activity.points, task_path: school_activity_path(@school, @activity) %>
+
+<% else %>
+
 <% content_for :page_title, "#{@school.name} " + t('activities.completed.page_title') %>
 
 <h1 class="text-center"><%= t('activities.completed.congratulations') %>.</h1>
@@ -64,3 +70,5 @@
   </div>
   <%= render "activity_categories/cards", activity_types: @suggested_activities.first(4), card_deck_css: "bg-light" %>
 <% end %>
+<% end %>
+

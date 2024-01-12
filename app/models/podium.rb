@@ -1,6 +1,6 @@
 class Podium
   class Position
-    attr_reader :school, :points, :position, :normalised_points
+    attr_reader :school, :position, :normalised_points
     def initialize(school:, points:, position:, normalised_points:, recent_points:)
       @school = school
       @points = points
@@ -13,6 +13,10 @@ class Podium
       "#{@position}#{@position.ordinal}"
     end
 
+    def points
+      @points || 0
+    end
+
     def recent_points
       @recent_points || 0
     end
@@ -20,7 +24,7 @@ class Podium
 
   def self.create(scoreboard:, school:, recent_boundary: 1.month.ago)
     scored_schools = scoreboard.scored_schools(recent_boundary: recent_boundary)
-    schools_with_points = scored_schools.with_points
+    schools_with_points = scored_schools.with_points(always_include: (school if EnergySparks::FeatureFlags.active?(:activities_2023)))
     school_index = schools_with_points.index(school)
 
     final = if schools_with_points.size > 3
@@ -54,12 +58,16 @@ class Podium
     end
   end
 
-  attr_reader :scoreboard
+  attr_reader :scoreboard, :school, :positions
 
   def initialize(scoreboard:, school:, positions: [])
     @scoreboard = scoreboard
     @positions = positions
     @school = school
+  end
+
+  def national_podium
+    @national_podium ||= Podium.create(school: school, scoreboard: ScoreboardAll.new)
   end
 
   def high_to_low
@@ -72,6 +80,10 @@ class Podium
 
   def includes_school?
     school_position.present?
+  end
+
+  def school_has_points?
+    school_position.try(:points).to_i > 0
   end
 
   def school_position
@@ -87,6 +99,16 @@ class Podium
       nil
     else
       @positions[idx - 1]
+    end
+  end
+
+  def points_to_overtake
+    return unless low_to_high.any?
+
+    if EnergySparks::FeatureFlags.active?(:activities_2023)
+      low_to_high&.second&.points
+    else
+      low_to_high&.first&.points
     end
   end
 

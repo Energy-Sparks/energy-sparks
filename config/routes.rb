@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 
   get "/robots.txt" => "robots_txts#show", as: :robots
+  get 'up', to: 'health#show'
 
   get 'for-schools', to: 'home#for_schools'
   get 'for-teachers', to: redirect('/for-schools')
@@ -337,7 +339,7 @@ Rails.application.routes.draw do
       resources :content_reports, only: [:index, :show]
       resources :equivalence_reports, only: [:index, :show]
       get :chart, to: 'charts#show'
-      get :annotations, to: 'annotations#show'
+      get :annotations, to: 'annotations#show', defaults: {format: :json}
 
       get :timeline, to: 'timeline#show'
 

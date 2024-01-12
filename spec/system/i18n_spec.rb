@@ -24,8 +24,6 @@ RSpec.describe "i18n", type: :system do
   end
 
   context 'switches the site to the users preferred locale on log in' do
-    before { host! "http://energysparks.test" }
-
     let!(:activity_category) { create(:activity_category)}
     let!(:ks1) { KeyStage.create(name: 'KS1') }
     let(:activity_data_driven)    { true }
@@ -39,7 +37,7 @@ RSpec.describe "i18n", type: :system do
 
     it 'redirects back to activity page in english after login' do
       staff.update(preferred_locale: 'en')
-      visit activity_type_path(activity_type)
+      visit "http://energysparks.test#{activity_type_path(activity_type)}"
       click_on "Sign in to record activity"
       fill_in 'Email', with: staff.email
       fill_in 'Password', with: staff.password
@@ -53,7 +51,7 @@ RSpec.describe "i18n", type: :system do
 
     it 'redirects back to activity page in welsh after login' do
       staff.update(preferred_locale: 'cy')
-      visit activity_type_path(activity_type)
+      visit "http://energysparks.test#{activity_type_path(activity_type)}"
       click_on "Sign in to record activity"
       fill_in 'Email', with: staff.email
       fill_in 'Password', with: staff.password

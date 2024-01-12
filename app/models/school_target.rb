@@ -32,7 +32,7 @@ class SchoolTarget < ApplicationRecord
   belongs_to :school
 
   #for timeline entry
-  has_many :observations, dependent: :destroy
+  has_many :observations, as: :observable, dependent: :destroy
 
   validates_presence_of :school, :target_date, :start_date
   validate :must_have_one_target
@@ -130,18 +130,12 @@ class SchoolTarget < ApplicationRecord
   end
 
   def add_observation
-    unless observations.any?
-      Observation.create!(
-        school: school,
-        observation_type: :school_target,
-        school_target: self,
-        at: start_date,
-        points: 0
-      )
-    end
+    return if observations.school_target.any?
+
+    self.observations.school_target.create!(at: start_date, points: 0)
   end
 
   def ensure_observation_date_is_correct
-    observations.update_all(at: start_date)
+    observations.school_target.update_all(at: start_date)
   end
 end

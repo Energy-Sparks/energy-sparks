@@ -69,7 +69,7 @@ describe Scoreboard, :scoreboards, type: :model do
 
   context 'as a Scorable' do
     let!(:scoreboard) { create :scoreboard, academic_year_calendar: template_calendar }
-    let!(:template_calendar) { create :template_calendar }
+    let!(:template_calendar) { create :template_calendar, :with_previous_and_next_academic_years }
     let(:school_group) { nil }
 
     it_behaves_like 'a scorable'

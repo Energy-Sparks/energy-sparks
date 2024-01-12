@@ -10,6 +10,14 @@ describe Podium do
   let!(:school_4) { create :school, :with_points, score_points: 4, scoreboard: scoreboard }
   let!(:school_5) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
 
+  let(:activities_2023_feature) { false }
+
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: activities_2023_feature.to_s do
+      example.run
+    end
+  end
+
   it 'includes the calculated points' do
     podium = Podium.create(scoreboard: scoreboard, school: school_3)
     expect(podium.low_to_high.map(&:points)).to eq([2, 3, 4])
@@ -33,35 +41,67 @@ describe Podium do
     expect(podium.high_to_low.map(&:position)).to eq([1, 2, 3])
   end
 
-  describe 'when the school has no points' do
-    it 'does not have a position for the school' do
-      podium = Podium.create(scoreboard: scoreboard, school: school_0)
-      expect(podium.includes_school?).to eq(false)
+  context 'when the school has no points' do
+    let(:podium) { Podium.create(scoreboard: scoreboard, school: school_0) }
+
+    context "activities_2023 feature flag is on" do
+      let(:activities_2023_feature) { true }
+
+      it 'has a position for the school' do
+        expect(podium.includes_school?).to eq(true)
+      end
+
+      it "school doesn't have points" do
+        expect(podium.school_has_points?).to eq(false)
+      end
+
+      it "the first school is the school with no points" do
+        expect(podium.high_to_low[2].school).to eq(school_0)
+      end
+
+      it 'populates second and third with the lowest scoring schools' do
+        expect(podium.high_to_low[0].school).to eq(school_2)
+        expect(podium.high_to_low[1].school).to eq(school_1)
+      end
+
+      it 'gives lowest scoring school as next highest school' do
+        expect(podium.next_school_position.school).to eq(school_1)
+      end
     end
 
-    it 'populates first second and third with the lowest scoring schools' do
-      podium = Podium.create(scoreboard: scoreboard, school: school_0)
-      expect(podium.high_to_low[0].school).to eq(school_3)
-      expect(podium.high_to_low[1].school).to eq(school_2)
-      expect(podium.high_to_low[2].school).to eq(school_1)
-    end
+    context "activities_2023 feature flag is off" do
+      let(:activities_2023_feature) { false }
 
-    it 'gives lowest scoring school as next highest school' do
-      podium = Podium.create(scoreboard: scoreboard, school: school_0)
-      expect(podium.next_school_position.school).to eq(school_1)
+      it 'does not have a position for the school' do
+        expect(podium.includes_school?).to eq(false)
+      end
+
+      it "school doesn't have points" do
+        expect(podium.school_has_points?).to eq(false)
+      end
+
+      it 'populates first second and third with the lowest scoring schools' do
+        expect(podium.high_to_low[0].school).to eq(school_3)
+        expect(podium.high_to_low[1].school).to eq(school_2)
+        expect(podium.high_to_low[2].school).to eq(school_1)
+      end
+
+      it 'gives lowest scoring school as next highest school' do
+        expect(podium.next_school_position.school).to eq(school_1)
+      end
     end
   end
 
   context 'when the school scores in the middle of the scoreboard' do
+    let(:podium) { Podium.create(scoreboard: scoreboard, school: school_3) }
+
     it 'returns the schools either side if you fall within the table' do
-      podium = Podium.create(scoreboard: scoreboard, school: school_3)
       expect(podium.high_to_low[0].school).to eq(school_4)
       expect(podium.high_to_low[1].school).to eq(school_3)
       expect(podium.high_to_low[2].school).to eq(school_2)
     end
 
     it 'returns the next highest school' do
-      podium = Podium.create(scoreboard: scoreboard, school: school_3)
       expect(podium.next_school_position.school).to eq(school_4)
     end
   end

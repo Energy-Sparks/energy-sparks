@@ -189,7 +189,11 @@ describe 'TransportSurveys - App', type: :system do
 
                         it { expect(page).to have_css('#transport_surveys_pie') }
                         it { expect(page).to have_content("1 pupil or staff member") }
-                        it { expect(page).not_to have_link("Manage responses") }
+
+                        it do
+                          expect(page).to have_no_link('Manage responses')
+                          sleep 1 # test breaks for unknown reason without this
+                        end
                       end
                     end
                   end

@@ -17,6 +17,7 @@ RSpec.describe SchoolTarget, type: :model do
 
     it 'creates an observation' do
       expect(Observation.first.observation_type).to eq "school_target"
+      expect(Observation.first.observable).to eq SchoolTarget.first
       expect(Observation.first.school).to eq school
       expect(Observation.first.points).to eq 0
 
