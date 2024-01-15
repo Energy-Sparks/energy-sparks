@@ -21,6 +21,37 @@ describe AlertTypeRatingContentVersion do
     end
   end
 
+  describe 'validations' do
+    context 'with sms active' do
+      let(:alert_type_rating) { create(:alert_type_rating, sms_active: true) }
+      let(:alert_type_rating_content_version) { build(:alert_type_rating_content_version, alert_type_rating: alert_type_rating, sms_content: sms_content) }
+
+      context 'with no sms content' do
+        let(:sms_content) { nil }
+
+        it 'is not valid' do
+          expect(alert_type_rating_content_version).not_to be_valid
+        end
+      end
+
+      context 'with no sms content' do
+        let(:sms_content) { 'text message' }
+
+        it 'is valid' do
+          expect(alert_type_rating_content_version).to be_valid
+        end
+
+        context 'with find_out_more_active' do
+          let(:alert_type_rating) { create(:alert_type_rating, sms_active: true, find_out_more_active: true) }
+
+          it 'is valid' do
+            expect(alert_type_rating_content_version).to be_valid
+          end
+        end
+      end
+    end
+  end
+
   describe 'meets_timings?' do
     let(:start_date) { nil }
     let(:end_date) { nil }
