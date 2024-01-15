@@ -21,13 +21,13 @@
   <h2><%= t('scoreboards.all_title') %></h2>
   <div class="card mt-4 mb-4">
     <div class="card-body">
-      <% @scoreboard_all.scored_schools.top(5).each do |s| %>
+      <% @national_scoreboard.scored_schools.top(5).each do |s| %>
         <h4><span class="badge badge-success"><%= s.sum_points %></span> <%= s.name %></h4>
       <% end %>
     </div>
     <div class="card-footer text-right">
-      <%= link_to scoreboard_path(@scoreboard_all) do %>
-        <%= t('scoreboards.view_all', count: @scoreboard_all.scored_schools.count) %>
+      <%= link_to scoreboard_path(@national_scoreboard) do %>
+        <%= t('scoreboards.view_all', count: @national_scoreboard.scored_schools.count) %>
       <% end %>
     </div>
   </div>
