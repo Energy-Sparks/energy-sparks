@@ -162,9 +162,9 @@ RSpec.describe Targets::TargetMailerService do
     let(:enough_data) { true }
 
     let(:email)         { ActionMailer::Base.deliveries.last }
-    let(:email_body)    { email.body.to_s }
+    let(:email_body)    { email.html_part.decoded }
     let(:email_subject) { email.subject }
-    let(:matcher)       { Capybara::Node::Simple.new(email_body.to_s) }
+    let(:matcher)       { Capybara::Node::Simple.new(email_body) }
 
     it 'sends an email' do
       service.invite_schools_to_set_first_target
@@ -230,8 +230,8 @@ RSpec.describe Targets::TargetMailerService do
     let(:enough_data) { true }
 
     let(:email)       { ActionMailer::Base.deliveries.last }
-    let(:email_body)  { email.body.to_s }
-    let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
+    let(:email_body)  { email.html_part.decoded }
+    let(:matcher)     { Capybara::Node::Simple.new(email_body) }
 
     it 'sends an email' do
       service.invite_schools_to_review_target
@@ -281,7 +281,7 @@ RSpec.describe Targets::TargetMailerService do
     let(:enough_data) { true }
 
     let(:email)       { ActionMailer::Base.deliveries.last }
-    let(:email_body)  { email.body.to_s }
+    let(:email_body)  { email.html_part.decoded }
     let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
     it 'sends an email' do
