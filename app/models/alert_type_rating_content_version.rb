@@ -91,12 +91,9 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     [
       :pupil_dashboard_title,
       :management_dashboard_title,
-      :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
-      :find_out_more_chart_variable, :find_out_more_chart_title,
       :management_priorities_title,
-      :analysis_title, :analysis_subtitle,
-      :find_out_more_table_variable
+      :analysis_title, :analysis_subtitle
     ]
   end
 
@@ -146,10 +143,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   validates :pupil_dashboard_title,
     presence: true,
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active?},
-    on: :create
-  validates :find_out_more_title, :find_out_more_content,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.find_out_more_active?},
     on: :create
   validates :sms_content,
     presence: true,
