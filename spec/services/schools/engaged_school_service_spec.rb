@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Schools::EngagedSchoolService, type: :service do
-  let!(:academic_year) { create(:academic_year) }
+  subject(:service) { described_class.new(school) }
 
-  subject(:service) { Schools::EngagedSchoolService.new(school) }
+  let!(:school) { create(:school, :with_school_group) }
 
   describe '.list_engaged_schools' do
     let!(:inactive)  { create(:school, :with_school_group, :with_points, active: false) }
@@ -30,7 +30,6 @@ describe Schools::EngagedSchoolService, type: :service do
   end
 
   describe '#recent_action_count' do
-    let!(:school)               { create(:school, :with_school_group) }
     let!(:action)               { create(:observation, :intervention, school: school) }
     let(:recent_action_count)   { service.recent_action_count }
 
@@ -40,8 +39,7 @@ describe Schools::EngagedSchoolService, type: :service do
   end
 
   describe '#recently_enrolled_programme_count' do
-    let!(:school)               { create(:school, :with_school_group) }
-    let!(:programme)            { create(:programme, school: school) }
+    let!(:programme) { create(:programme, school: school) }
     let(:recently_enrolled_programme_count) { service.recently_enrolled_programme_count }
 
     it 'returns the expected count' do
@@ -50,8 +48,7 @@ describe Schools::EngagedSchoolService, type: :service do
   end
 
   describe '#active_target?' do
-    let!(:school)               { create(:school, :with_school_group) }
-    let(:target)                { service.active_target? }
+    let(:target) { service.active_target? }
 
     it 'returns the false' do
       expect(target).to be false
@@ -67,8 +64,7 @@ describe Schools::EngagedSchoolService, type: :service do
   end
 
   describe '#transport_survey?' do
-    let!(:school)               { create(:school, :with_school_group) }
-    let(:survey)                { service.transport_surveys? }
+    let(:survey) { service.transport_surveys? }
 
     it 'returns false' do
       expect(survey).to be false
@@ -84,8 +80,7 @@ describe Schools::EngagedSchoolService, type: :service do
   end
 
   describe '#temperature_recordings?' do
-    let!(:school)               { create(:school, :with_school_group) }
-    let(:temperatures)          { service.temperature_recordings? }
+    let(:temperatures) { service.temperature_recordings? }
 
     it 'returns false' do
       expect(temperatures).to be false
@@ -101,8 +96,7 @@ describe Schools::EngagedSchoolService, type: :service do
   end
 
   describe '#recently_logged_in_user_count' do
-    let!(:school)   { create(:school, :with_school_group) }
-    let(:count)     { service.recently_logged_in_user_count }
+    let(:count) { service.recently_logged_in_user_count }
 
     it 'returns zero when no recent users' do
       expect(count).to eq 0
@@ -114,6 +108,17 @@ describe Schools::EngagedSchoolService, type: :service do
       it 'returns count of recent users' do
         expect(count).to eq 1
       end
+    end
+  end
+
+  describe '#audits?' do
+    it 'returns false' do
+      expect(service.audits?).to be false
+    end
+
+    it 'returns true' do
+      create(:observation, :audit, school: school)
+      expect(service.audits?).to be true
     end
   end
 end

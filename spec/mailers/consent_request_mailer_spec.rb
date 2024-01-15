@@ -21,7 +21,7 @@ RSpec.describe ConsentRequestMailer do
 
       it 'sends an email with en strings' do
         expect(email.subject).to eql("We need permission to access your school's energy data")
-        expect(email.body.to_s).to include("Please provide permission for Energy Sparks to access data for Test School")
+        expect(email.html_part.decoded).to include("Please provide permission for Energy Sparks to access data for Test School")
       end
     end
 
@@ -30,7 +30,7 @@ RSpec.describe ConsentRequestMailer do
 
       it 'sends an email with cy strings' do
         expect(email.subject).to eql I18n.t('consent_request_mailer.request_consent.subject', locale: :cy)
-        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(I18n.t('consent_request_mailer.request_consent.description', school_name: 'Test School', locale: :cy))
+        expect(ActionController::Base.helpers.sanitize(email.html_part.decoded)).to include(I18n.t('consent_request_mailer.request_consent.description', school_name: 'Test School', locale: :cy))
       end
     end
   end

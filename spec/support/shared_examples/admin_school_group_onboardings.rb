@@ -76,7 +76,7 @@ RSpec.shared_examples "admin school group onboardings" do
           it "sends email" do
             email = ActionMailer::Base.deliveries.last
             expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
-            expect(email.body.to_s).to include(onboarding_path(onboarding))
+            expect(email.html_part.decoded).to include(onboarding_path(onboarding))
           end
         end
       end

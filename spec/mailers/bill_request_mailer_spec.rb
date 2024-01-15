@@ -25,8 +25,8 @@ RSpec.describe BillRequestMailer do
 
       it 'sends an email with en strings' do
         expect(@email.subject).to eql("Please upload a recent energy bill to Energy Sparks")
-        expect(@email.body.to_s).to include("Please upload an energy bill for Test School")
-        expect(@email.body.to_s).to include("http://localhost/schools/test-school/consent_documents")
+        expect(@email.html_part.decoded).to include("Please upload an energy bill for Test School")
+        expect(@email.html_part.decoded).to include("http://localhost/schools/test-school/consent_documents")
       end
     end
 
@@ -35,8 +35,8 @@ RSpec.describe BillRequestMailer do
 
       it 'sends an email with cy strings' do
         expect(@email.subject).to eql("Uwchlwythwch fil ynni diweddar i Sbarcynni")
-        expect(@email.body.to_s).to include("Uwchlwythwch fil ynni ar gyfer Test School")
-        expect(@email.body.to_s).to include("http://cy.localhost/schools/test-school/consent_documents")
+        expect(@email.html_part.decoded).to include("Uwchlwythwch fil ynni ar gyfer Test School")
+        expect(@email.html_part.decoded).to include("http://cy.localhost/schools/test-school/consent_documents")
       end
     end
   end

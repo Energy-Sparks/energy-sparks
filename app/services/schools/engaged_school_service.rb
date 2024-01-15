@@ -38,6 +38,10 @@ module Schools
       @temperature_recordings ||= @school.observations.temperature.where('created_at >= ?', since).any?
     end
 
+    def audits?
+      @audits ||= @school.observations.audit.where('created_at >= ?', since).any?
+    end
+
     def recently_logged_in_user_count
       recently_logged_in.count
     end

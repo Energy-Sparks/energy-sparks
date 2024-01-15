@@ -64,7 +64,7 @@ describe Alerts::GenerateEmailNotifications do
 
     context 'when generating email body' do
         let(:email)       { ActionMailer::Base.deliveries.last }
-        let(:email_body)  { email.body.to_s }
+        let(:email_body)  { email.html_part.decoded }
         let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
         let(:params) do
@@ -102,7 +102,7 @@ describe Alerts::GenerateEmailNotifications do
 
   context 'when adding targets section' do
     let(:email) { ActionMailer::Base.deliveries.last }
-    let(:email_body) { email.body.to_s }
+    let(:email_body) { email.html_part.decoded }
     let(:matcher) { Capybara::Node::Simple.new(email_body.to_s) }
 
     context 'and theres enough data' do
@@ -189,7 +189,7 @@ describe Alerts::GenerateEmailNotifications do
 
     it 'links to a find out more if there is one associated with the content' do
       email = ActionMailer::Base.deliveries.last
-      expect(email.body.to_s).to include('Find out more')
+      expect(email.html_part.decoded).to include('Find out more')
     end
   end
 end
