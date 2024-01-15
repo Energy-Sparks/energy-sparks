@@ -25,13 +25,13 @@ RSpec.describe 'scoreboards', :scoreboards do
 
       it 'has a national scoreboard' do
         expect(page).to have_content('National Scoreboard')
-        expect(page).to have_link(href: scoreboard_path('all'))
+        expect(page).to have_link(href: scoreboard_path('national'))
       end
 
       it 'includes top ranking schools' do
         expect(page).to have_content(school_with_points.name)
         expect(page).to have_content(points)
-        expect(page).not_to have_content(school.name)
+        expect(page).to have_no_content(school.name)
         expect(page).to have_link('View scores for 2 schools')
       end
     end
@@ -46,14 +46,17 @@ RSpec.describe 'scoreboards', :scoreboards do
     end
 
     it 'shows schools and points on the national scoreboard' do
-      visit scoreboard_path('all')
+      visit scoreboard_path('national')
       expect(page).to have_content('National Scoreboard')
       expect(page).to have_content(school_with_points.name)
       expect(page).to have_content(points)
-      expect(page).to have_link(
-        'last year', href: scoreboard_path('all', academic_year: calendar.academic_years.current.previous_year)
-      )
-      expect(page).not_to have_content(school.name)
+      expect(page).to have_link('last year', href: scoreboard_path('national', previous_year: true))
+      expect(page).to have_no_content(school.name)
+    end
+
+    it 'redirects all to national' do
+      visit scoreboard_path('all')
+      expect(page).to have_current_path(scoreboard_path('national'))
     end
   end
 
@@ -65,7 +68,7 @@ RSpec.describe 'scoreboards', :scoreboards do
       visit schools_path
       click_on 'Scoreboards'
       expect(page).to have_content('Super scoreboard')
-      expect(page).not_to have_content('Private scoreboard')
+      expect(page).to have_no_content('Private scoreboard')
     end
 
     it 'doesn\'t allow access to the private scoreboard' do
@@ -103,7 +106,7 @@ RSpec.describe 'scoreboards', :scoreboards do
     context 'on index page' do
       before { visit scoreboards_path }
 
-      it { expect(page).not_to have_content(prize_excerpt) }
+      it { expect(page).to have_no_content(prize_excerpt) }
 
       context 'feature is active' do
         let(:feature_active) { true }
@@ -116,7 +119,7 @@ RSpec.describe 'scoreboards', :scoreboards do
     context 'on scoreboard page' do
       before { visit scoreboards_path(scoreboard) }
 
-      it { expect(page).not_to have_content(prize_excerpt) }
+      it { expect(page).to have_no_content(prize_excerpt) }
 
       context 'feature is active' do
         let(:feature_active) { true }

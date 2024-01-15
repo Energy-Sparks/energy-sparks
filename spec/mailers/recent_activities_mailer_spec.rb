@@ -17,10 +17,10 @@ RSpec.describe RecentActivitiesMailer do
       expect(ActionMailer::Base.deliveries.count).to be 1
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eql "Recently recorded activities"
-      expect(email.body.to_s).to include('first activity')
-      expect(email.body.to_s).to include('second activity')
-      expect(email.body.to_s).to include('first action')
-      expect(email.body.to_s).to include('second action')
+      expect(email.html_part.decoded).to include('first activity')
+      expect(email.html_part.decoded).to include('second activity')
+      expect(email.html_part.decoded).to include('first action')
+      expect(email.html_part.decoded).to include('second action')
     end
   end
 end

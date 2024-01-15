@@ -26,7 +26,7 @@ gem 'pg'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.0'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.1'
 # gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '5.0.0'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -59,7 +59,7 @@ gem 'mailgun_rails' # Email service
 gem 'twilio-ruby' # For SMS notifications
 
 # Assets for Emails
-gem 'bootstrap-email', '~> 1.2.0' # TODO: higher versions break tests
+gem 'bootstrap-email'
 
 # Frontend
 gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout

@@ -105,7 +105,7 @@ describe 'consent documents', type: :system do
       context 'an energysparks admin is emailed' do
         let(:deliveries)  { ActionMailer::Base.deliveries.count }
         let(:email)       { ActionMailer::Base.deliveries.last }
-        let(:email_body)  { email.body.to_s }
+        let(:email_body)  { email.html_part.decoded }
         let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
         before do

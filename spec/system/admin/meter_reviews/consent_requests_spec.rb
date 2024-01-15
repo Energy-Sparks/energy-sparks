@@ -125,7 +125,7 @@ RSpec.describe 'consent_requests', type: :system do
           @email = ActionMailer::Base.deliveries.last
           expect(@email.to).to match_array([school_admin.email])
           expect(@email.subject).to eql("Your grant of consent to Energy Sparks")
-          email_body = @email.body.to_s
+          email_body = @email.html_part.decoded
           body = Capybara::Node::Simple.new(email_body)
           expect(body).to have_link('terms and conditions')
         end

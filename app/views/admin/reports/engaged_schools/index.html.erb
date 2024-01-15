@@ -41,6 +41,7 @@
       <th>Target?</th>
       <th>Transport survey?</th>
       <th>Temperatures?</th>
+      <th>Audit?</th>
       <th>Active users</th>
       <th>Last visit</th>
     </tr>
@@ -58,6 +59,7 @@
         <td data-order="<%= service.active_target? ? '1' : '0' %>"><%= checkmark(service.active_target?, off_class: 'text-muted') %></td>
         <td data-order="<%= service.transport_surveys? ? '1' : '0' %>"><%= checkmark(service.transport_surveys?, off_class: 'text-muted') %></td>
         <td data-order="<%= service.temperature_recordings? ? '1' : '0' %>"><%= checkmark(service.temperature_recordings?, off_class: 'text-muted') %></td>
+        <td data-order="<%= service.audits? ? '1' : '0' %>"><%= checkmark(service.audits?, off_class: 'text-muted') %></td>
         <td><%= link_to service.recently_logged_in_user_count, admin_school_group_users_path(service.school_group) %></td>
         <td data-order="<%= service.most_recent_login.present? ? service.most_recent_login.iso8601 : '' %>"><%= nice_date_times(service.most_recent_login) %></td>
       </tr>

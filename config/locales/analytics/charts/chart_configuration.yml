@@ -256,15 +256,6 @@ en:
     electricity_by_day_of_week:
       title:
       - Electricity Use By Day of the Week
-    electricity_by_day_of_week_actual_for_simulator_comparison:
-      title:
-      - Electricity Use By Day of the Week (Actual Usage over last year)
-    electricity_by_day_of_week_simulator:
-      title:
-      - Electricity Use By Day of the Week (Simulator Usage over last year)
-    electricity_by_day_of_week_simulator_ict:
-      title:
-      - 'Annual: Usage by Day of Week: Electricity Simulator (ICT Servers, Desktops, Laptops)'
     electricity_by_day_of_week_tolerant:
       title:
       - Electricity Use By Day of the Week
@@ -343,12 +334,6 @@ en:
     electricity_longterm_trend_kwh_with_carbon_unmodified:
       title:
       - Your schools electricity consumption over the last few years
-    electricity_simulator_pie:
-      title:
-      - Electricity Simulator (Simulated Usage Breakdown Over the Last Year)
-    electricity_simulator_pie_detail_page:
-      title:
-      - Electricity Simulator (Simulated Usage Breakdown Over the Last Year)
     frost:
       title:
       - 'Frost Protection: cold weekend'
@@ -439,51 +424,15 @@ en:
     group_by_week_electricity:
       title:
       - 'By Week: Electricity'
-    group_by_week_electricity_actual_for_simulator_comparison:
-      title:
-      - 'By Week: Electricity (Actual Usage)'
-    group_by_week_electricity_air_conditioning:
-      title:
-      - 'By Week: Electricity Simulator (Air Conditioning)'
     group_by_week_electricity_dd:
       title:
       - 'By Week: Electricity'
-    group_by_week_electricity_flood_lighting:
-      title:
-      - 'By Week: Electricity Simulator (Flood Lighting)'
-    group_by_week_electricity_kitchen:
-      title:
-      - 'By Week: Electricity Simulator (Kitchen)'
     group_by_week_electricity_meter_breakdown:
       title:
       - 'By Week: Electricity (Meter Breakdown)'
     group_by_week_electricity_meter_breakdown_one_year:
       title:
       - 'By Week: Electricity (Meter Breakdown)'
-    group_by_week_electricity_simulator:
-      title:
-      - 'By Week: Electricity (Simulator)'
-    group_by_week_electricity_simulator_appliance:
-      title:
-      - 'By Week: Electricity Simulator'
-    group_by_week_electricity_simulator_boiler_pump:
-      title:
-      - 'By Week: Electricity Simulator (Boiler Pumps)'
-    group_by_week_electricity_simulator_electrical_heating:
-      title:
-      - 'By Week: Electricity Simulator (Heating using Electricity)'
-    group_by_week_electricity_simulator_ict:
-      title:
-      - 'By Week: Electricity Simulator (ICT Servers, Desktops, Laptops)'
-    group_by_week_electricity_simulator_lighting:
-      title:
-      - 'By Week: Electricity Simulator (Lighting)'
-    group_by_week_electricity_simulator_security_lighting:
-      title:
-      - 'By Week: Electricity Simulator (Security Lighting)'
-    group_by_week_electricity_simulator_solar_pv:
-      title:
-      - 'By Month: Electricity Simulator (Solar PV)'
     group_by_week_electricity_unlimited:
       title:
       - 'By Week: Electricity (multi-year)'
@@ -571,39 +520,6 @@ en:
     hotwater_alert:
       title:
       - Hot Water Analysis
-    intraday_electricity_simulator_actual_for_comparison:
-      title:
-      - 'Annual: School Day by Time of Day (Actual)'
-    intraday_electricity_simulator_air_conditioning_kwh:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (Air Conditioning)'
-    intraday_electricity_simulator_boiler_pump_kwh:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (Boiler Pumps)'
-    intraday_electricity_simulator_flood_lighting_kwh:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (Flood Lighting)'
-    intraday_electricity_simulator_ict:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (ICT Servers, Desktops, Laptops)'
-    intraday_electricity_simulator_kitchen_kwh:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (Kitchen)'
-    intraday_electricity_simulator_lighting_kw:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (Lighting)'
-    intraday_electricity_simulator_lighting_kwh:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (Lighting)'
-    intraday_electricity_simulator_security_lighting_kwh:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (Security Lighting)'
-    intraday_electricity_simulator_simulator_for_comparison:
-      title:
-      - 'Annual: School Day by Time of Day (Simulator)'
-    intraday_electricity_simulator_solar_pv_kwh:
-      title:
-      - 'Annual: School Day by Time of Day: Electricity Simulator (Solar PV)'
     intraday_line_holidays:
       title:
       - Intraday (holidays)
@@ -611,15 +527,6 @@ en:
       title:
       - Intraday (school days) - comparison of last 2 years
     intraday_line_school_days_6months:
-      title:
-      - Intraday (Comparison 6 months apart)
-    intraday_line_school_days_6months_simulator:
-      title:
-      - Intraday (Comparison 6 months apart) Simulator
-    intraday_line_school_days_6months_simulator_submeters:
-      title:
-      - Intraday (Comparison 6 months apart) Simulator
-    intraday_line_school_days_6months_test_delete:
       title:
       - Intraday (Comparison 6 months apart)
     intraday_line_school_days_gas_reduced_data_versus_benchmarks:

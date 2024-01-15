@@ -39,17 +39,18 @@ describe AmrDataFeedReading do
     end
 
     context 'with incorrectly loaded data' do
-      FORMATS = {
-        '%d-%b-%y' => '2023-06-28',
-        '%Y-%m-%d' => '28-Jun-23',
-        '%d-%m-%Y' => '2023-06-28',
-        '%e %b %Y %H:%M:%S' => '2023-06-28'
-      }.freeze
+      FORMATS = [
+        ['%d-%b-%y', '2023-06-28'],
+        ['%Y-%m-%d', '28-Jun-23'],
+        ['%Y-%m-%d', '28/06/2023'],
+        ['%d-%m-%Y', '2023-06-28'],
+        ['%e %b %Y %H:%M:%S', '2023-06-28'],
+      ].freeze
 
-      FORMATS.each do |format, read_date|
-        context "it parses #{read_date} despite format being #{format}" do
-          let(:date_format)   { format }
-          let(:reading_date)  { read_date }
+      FORMATS.each do |format|
+        context "it parses #{format[1]} despite format being #{format[0]}" do
+          let(:date_format)   { format[0] }
+          let(:reading_date)  { format[1] }
 
           it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28).iso8601 }
         end

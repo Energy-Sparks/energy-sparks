@@ -22,7 +22,7 @@ RSpec.describe ConsentGrantMailer do
 
       it 'sends an email with en strings' do
         expect(@email.subject).to eql("Your grant of consent to Energy Sparks")
-        expect(@email.body.to_s).to include("Thank you for granting permission for Energy Sparks to access data for Test School")
+        expect(@email.html_part.decoded).to include("Thank you for granting permission for Energy Sparks to access data for Test School")
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe ConsentGrantMailer do
 
       it 'sends an email with cy strings' do
         expect(@email.subject).to eql("Eich caniatâd i Sbarcynni")
-        expect(ActionController::Base.helpers.sanitize(@email.body.to_s)).to include("Diolch am roi caniatâd i Sbarcynni gael mynediad at ddata ar gyfer Test School")
+        expect(ActionController::Base.helpers.sanitize(@email.html_part.decoded)).to include("Diolch am roi caniatâd i Sbarcynni gael mynediad at ddata ar gyfer Test School")
       end
     end
   end
