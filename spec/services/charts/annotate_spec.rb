@@ -45,6 +45,11 @@ describe Charts::Annotate do
       ]
     end
 
+    context 'with missing series' do
+      it { expect(subject_electricity.annotate_weekly([])).to be_nil}
+      it { expect(subject_electricity.annotate_weekly(nil)).to be_nil}
+    end
+
     context 'with no intervention or activity observations' do
       it 'returns no annotations' do
         expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to be_empty
