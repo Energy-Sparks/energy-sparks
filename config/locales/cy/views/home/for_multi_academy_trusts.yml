@@ -1,10 +1,11 @@
+---
 cy:
   for_multi_academy_trusts:
     enrol_our_mat: Cofrestru ein Hymddiriedolaeth Aml-Academi
     intro: Mae Sbarcynni yn darparu offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Gall Sbarcynni helpu Ymddiriedolaethau Aml-Academi i gyrraedd eu targedau arbed carbon, democrateiddio mynediad at ddata ynni ysgolion a grymuso staff a myfyrwyr ysgol i gymryd camau rhad ac am ddim i leihau ôl troed carbon eu hysgol.
     quote_1:
       job_title: Pennaeth
-      text_html: '“Mae gwefan Sbarcynni yn hawdd iawn i’w defnyddio, ac mae’r plant wedi ei chael yn ddiddorol i fesur sut mae ynni’n cael ei ddefnyddio’n wahanol mewn gwahanol rannau o’r ysgol… Mae’r plant yn cael eu hysgogi gan yr elfen gystadleuol yn ogystal â’r awydd i arbed arian ac ynni …"'
+      text_html: “Mae gwefan Sbarcynni yn hawdd iawn i’w defnyddio, ac mae’r plant wedi ei chael yn ddiddorol i fesur sut mae ynni’n cael ei ddefnyddio’n wahanol mewn gwahanol rannau o’r ysgol… Mae’r plant yn cael eu hysgogi gan yr elfen gystadleuol yn ogystal â’r awydd i arbed arian ac ynni …"
     section_1_html: |-
       <strong>Mae Sbarcynni yn darparu</strong>
       <ul>

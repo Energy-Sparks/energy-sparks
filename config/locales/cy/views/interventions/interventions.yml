@@ -1,15 +1,16 @@
+---
 cy:
   interventions:
     completed:
       actions_completed:
-        one: Rydych wedi recordio 1 weithred hyd yn hyn eleni
-        two: Rydych wedi recordio %{count} o weithredoedd hyd yn hyn eleni
         many: Rydych wedi recordio %{count} o weithredoedd hyd yn hyn eleni
+        one: Rydych wedi recordio 1 weithred hyd yn hyn eleni
         other: Rydych wedi recordio %{count} o weithredoedd hyd yn hyn eleni
+        two: Rydych wedi recordio %{count} o weithredoedd hyd yn hyn eleni
       choose_next_action: Dewiswch eich gweithred nesaf o'r awgrymiadau isod.
       current_school_position: ac mae eich ysgol yn %{position} lle ar hyn o bryd.
       our_suggestions: Mae ein hawgrymiadau yn seiliedig ar eich rhybuddion defnydd ynni ac unrhyw archwiliad ynni a gwblhawyd yn eich ysgol
-      page_title: "Gweithred %{school} "
+      page_title: 'Gweithred %{school} '
       points_scored: Rydych chi newydd sgorio %{points} o bwyntiau!
       points_to_change_position: ac angen sgorio %{points} pwynt i gyrraedd %{position} lle.
       see_scoreboard: Gweld y bwrdd sgorio
@@ -24,10 +25,10 @@ cy:
       adding_a_photo_to_document_your_action_will_score_you: Bydd ychwanegu llun i ddogfennu eich gweithred yn eich sgorio
       adding_some_background_detail_label: Gall ychwanegu rhai manylion cefndir eich helpu i olrhain a monitro gwelliannau
       bonus_points:
-        one: pwynt bonws
-        two: pwyntiau bonws
         many: pwyntiau bonws
+        one: pwynt bonws
         other: pwyntiau bonws
+        two: pwyntiau bonws
       record_action: Cofnodi gweithred
       tell_us_more: Dywedwch ragor wrthym am yr hyn a wnaethoch
       update_action: Diweddaru'r weithred

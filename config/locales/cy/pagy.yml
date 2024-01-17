@@ -1,3 +1,4 @@
+---
 cy:
   pagy:
     combo_nav_js: "<label>Tudalen %{page_input} o %{pages}</label>"
@@ -6,10 +7,10 @@ cy:
       no_items: Heb ganfod %{item_name}
       single_page: Wrthi'n arddangos <b>%{count}</b> %{item_name}
     item_name:
-      one: eitem
-      two: eitemau
       many: eitemau
+      one: eitem
       other: eitemau
+      two: eitemau
     items_selector_js: "<label>Dangos %{items_input} %{item_name} fesul tudalen</label>"
     nav:
       gap: "&hellip;"

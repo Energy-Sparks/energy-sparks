@@ -1,3 +1,4 @@
+---
 cy:
   about_menu:
     about_us: Amdanom ni
@@ -15,15 +16,15 @@ cy:
   activities:
     previous_records:
       completed_most_recently_on: yn fwyaf diweddar ar
-      completed_on: 'ar'
+      completed_on: ar
       previously_completed: "%{label} wedi'i gwblhau o'r blaen"
     prompt_login_to_record:
       are_you_an_energy_sparks_user: Ydych chi'n ddefnyddiwr Sbarcynni
       sign_in_html:
-        one: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>1</strong> pwynt i'ch ysgol!
-        two: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> bwynt i'ch ysgol!
         many: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+        one: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>1</strong> pwynt i'ch ysgol!
         other: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+        two: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> bwynt i'ch ysgol!
       sign_in_to_record_html: Mewngofnodwch i gofnodi %{label}
   analysis_controls:
     back_one: Yn ôl 1

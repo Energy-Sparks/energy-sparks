@@ -1,3 +1,4 @@
+---
 cy:
   charts:
     dashboard:
@@ -33,7 +34,7 @@ cy:
           split_meter:
             daily_html: Cymharwch ddefnydd dyddiol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion
             weekly_html: Cymharwch ddefnydd wythnosol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion
-        data_available: "Mae data %{supply} ar gael o %{from_date} i %{to_date}"
+        data_available: Mae data %{supply} ar gael o %{from_date} i %{to_date}
         explore_data: Archwilio data
       titles:
         electricity:
@@ -97,10 +98,10 @@ cy:
         completing_all_of_these_activities_will_award_you: Bydd cwblhau'r holl weithgareddau hyn yn rhoi
         download_report: Lawrlwytho adroddiad
         points:
-          one: un pwynt i chi
-          two: dau bwynt i chi
           many: o bwyntiau i chi
+          one: un pwynt i chi
           other: o bwyntiau i chi
+          two: dau bwynt i chi
         recommended_energy_saving_actions: Gweithrediadau arbed ynni a argymhellir
         recommended_pupil_lead_activities: Gweithgareddau dan arweiniad disgyblion a argymhellir
         title: "%{school_name} Archwiliadau - %{audit_title}"
@@ -164,7 +165,7 @@ cy:
         solar_pv_data: Data Solar Ffotofoltaig
         solar_pv_data_csv_for_your_area: Data Solar Ffotofoltaig CSV ar gyfer eich ardal, %{solar_pv_tuos_area_title}
         temperature_carbon_intensity_and_solar_pv_message: Efallai y bydd data tymheredd, dwyster Carbon a solar ffotofoltaig ar gael ar gais yn dibynnu ar y defnydd terfynol
-        title: "Lawrlwythiadau %{school_name}"
+        title: Lawrlwythiadau %{school_name}
         unvalidated_meter_data: Data mesurydd sydd heb eu dilysu
         unvalidated_meter_data_as_csv: Data mesurydd sydd heb eu dilysu fel CSV
         validated_meter_data: Data mesurydd sydd wedi'u dilysu
@@ -322,7 +323,7 @@ cy:
     private:
       access_disabled: Mae gan yr ysgol hon fynediad cyhoeddus anabl i ddata defnydd ynni a mewnwelediadau.
       login_links_html: Defnyddiwch y dolenni isod i fewngofnodi fel aelod o staff neu ddisgybl o'r ysgol hon. Neu <a href='%{schools_path}'>archwilio ysgol arall</a>
-      page_title: "Nid oes gan %{school} unrhyw ddata cyhoeddus"
+      page_title: Nid oes gan %{school} unrhyw ddata cyhoeddus
     pupils:
       edit:
         title: Golygu cyfrif disgybl
@@ -339,7 +340,7 @@ cy:
       admin_options: Opsiynau gweinyddol
       analysis_preferences: Dewisiadau Dadansoddiad
       basic_details: Manylion sylfaenol
-      created: "Crëwyd %{school_name} ar %{created_at}"
+      created: Crëwyd %{school_name} ar %{created_at}
       editing: Ysgol Olygu
       floor_area_hint: Os nad ydych yn gwybod hyn, gadewch ef yn wag a byddwn yn ceisio cael y wybodaeth hon gan eich Awdurdod Lleol neu MAT
       geocode_message: Gadewch y rhain yn wag i gael eu gosod o'r cod post
@@ -445,7 +446,7 @@ cy:
           month_by_month_progress: Cynnydd o fis i fis
           overall_change_since_last_year: Newid cyffredinol ers y llynedd
           overall_performance_since_last_year: Perfformiad cyffredinol ers y llynedd
-          please_review_your_estimate_and_our_guidance_html: <a href='%{estimated_annual_consumptions_path}'>Adolygwch eich amcangyfrif ac ein arweiniad</a> i weld a yw'n gywir
+          please_review_your_estimate_and_our_guidance_html: "<a href='%{estimated_annual_consumptions_path}'>Adolygwch eich amcangyfrif ac ein arweiniad</a> i weld a yw'n gywir"
           problem: Problem
           progress_charts: Siartiau cynnydd
           review_targets: Adolygu targedau
@@ -488,10 +489,10 @@ cy:
       prompt_to_add_estimate:
         add_an_estimate: Ychwanegu amcangyfrif
         if_you_can_supply_an_estimate:
-          one: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targed %{fuel_types}
-          two: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
           many: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
+          one: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targed %{fuel_types}
           other: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
+          two: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
       prompt_to_review_target:
         review_your_target: Adolygu eich targed
         your_fuel_types_configuration_has_changed: Mae eich ffurfweddiad %{fuel_types_changed} wedi newid, sy'n golygu efallai y byddwch am adolygu'ch targedau ar gyfer eleni
@@ -525,10 +526,10 @@ cy:
         we_are_calculating_your_progress: Rydym yn cyfrifo'ch cynnydd
       warn_recent_data:
         we_have_not_received_data:
-          one: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
-          two: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
           many: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
+          one: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
           other: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
+          two: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
     schools:
       compare_schools: Cymharu ysgolion
       review_energy_analysis: Adolygu dadansoddiad ynni

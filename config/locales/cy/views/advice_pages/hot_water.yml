@@ -1,3 +1,4 @@
+---
 cy:
   advice_pages:
     hot_water:
@@ -101,9 +102,9 @@ cy:
           <p>Mae dŵr poeth mewn ysgolion yn cael ei ddarparu fel arfer gan foeler nwy canolog sydd wedyn yn cylchredeg y dŵr poeth mewn dolen yn barhaus o gwmpas yr ysgol. Weithiau caiff y systemau hyn sy'n seiliedig ar nwy eu hategu gan dwymwyr tanddwr neu bwynt defnyddio mwy lleol sy'n cael eu pweru gan drydan.</p>
         table:
           columns:
-            annual_gbp: £ blynyddol
+            annual_gbp: "£ blynyddol"
             annual_kwh: kWh blynyddol
-            daily_gbp: £ dyddiol
+            daily_gbp: "£ dyddiol"
             daily_kwh: kWh dyddiol
           rows:
             holidays: Gwyliau

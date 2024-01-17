@@ -1,12 +1,13 @@
+---
 cy:
   school_groups:
     chart_updates:
       bulk_update_charts:
         notice:
-          one: Llwyddwyd i ddiweddaru'r dewis siart diofyn ar gyfer %{school_group_name} ac 1 ysgol yn y grŵp hwn.
-          two: Llwyddwyd i ddiweddaru'r dewis siart diofyn ar gyfer %{school_group_name} a %{count} ysgol yn y grŵp hwn.
           many: Llwyddwyd i ddiweddaru'r dewis siart diofyn ar gyfer %{school_group_name} a %{count} o ysgolion yn y grŵp hwn.
+          one: Llwyddwyd i ddiweddaru'r dewis siart diofyn ar gyfer %{school_group_name} ac 1 ysgol yn y grŵp hwn.
           other: Llwyddwyd i ddiweddaru'r dewis siart diofyn ar gyfer %{school_group_name} a %{count} o ysgolion yn y grŵp hwn.
+          two: Llwyddwyd i ddiweddaru'r dewis siart diofyn ar gyfer %{school_group_name} a %{count} ysgol yn y grŵp hwn.
       index:
         default_chart_preference:
           carbon: Arddangos data siart mewn kg CO2, lle bo ar gael
@@ -26,7 +27,7 @@ cy:
         multi_academy_trust: Ymddiriedolaeth Aml-Academi
       index:
         all_schools: Mae pob ysgol mewn clwstwr
-        cluster: "Clwstwr %{cluster}"
+        cluster: Clwstwr %{cluster}
         create_new: Creu clwstwr newydd
         move: Symud
         move_selected: Symud yr hyn a ddewiswyd i glwstwr
@@ -42,26 +43,26 @@ cy:
         new: Newydd
       messages:
         assigned:
-          one: Mae %{count} ysgol wedi'i haseinio i %{cluster}
-          two: Mae %{count} ysgol wedi'u haseinio i %{cluster}
           many: Mae %{count} o ysgolion wedi'u haseinio i %{cluster}
+          one: Mae %{count} ysgol wedi'i haseinio i %{cluster}
           other: Mae %{count} o ysgolion wedi'u haseinio i %{cluster}
+          two: Mae %{count} ysgol wedi'u haseinio i %{cluster}
         created: Clwstwr wedi'i greu
         deleted: Clwstwr wedi'i ddileu
         select_cluster: Dewiswch glwstwr
         unassigned:
-          one: Mae %{count} ysgol wedi'u dad-aseinio o %{cluster}
-          two: Mae %{count} ysgol wedi'u dad-aseinio o %{cluster}
           many: Mae %{count} o ysgolion wedi'u dad-aseinio o %{cluster}
+          one: Mae %{count} ysgol wedi'u dad-aseinio o %{cluster}
           other: Mae %{count} o ysgolion wedi'u dad-aseinio o %{cluster}
+          two: Mae %{count} ysgol wedi'u dad-aseinio o %{cluster}
         updated: Clwstwr wedi'i ddiweddaru
       new:
         title: Creu clwstwr
       schools:
+        many: "%{count} ysgol"
         one: 1 ysgol
-        two: '%{count} ysgol'
-        many: '%{count} ysgol'
-        other: '%{count} ysgol'
+        other: "%{count} ysgol"
+        two: "%{count} ysgol"
     comparisons:
       category: Categori
       how_does_it_compare:
@@ -193,15 +194,15 @@ cy:
     show:
       change_units: Newid unedau
       currently_works_with_from:
+        many: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
         one: Mae Energy Sparks yn gweithio gydag %{count} ysgol ar hyn o bryd
-        two: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
-        many: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
         other: Ar hyn o bryd mae Sbarcynni yn gweithio gyda %{count} ysgol o
+        two: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
       currently_works_with_schools_from:
-        one: Mae Energy Sparks yn gweithio gydag 1 ysgol ar hyn o bryd
-        two: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
         many: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
+        one: Mae Energy Sparks yn gweithio gydag 1 ysgol ar hyn o bryd
         other: Ar hyn o bryd mae Sbarcynni yn gweithio gyda %{count} ysgol o
+        two: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
       if_you_would_like_support_enrol_here_html: Os hoffech i Sbarcynni gefnogi eich ysgol i leihau ei hallyriadau carbon, cofrestrwch <a href='%{enrol_path}'>yma</a>
       in_partnership_with: mewn partneriaeth â
       metric:
@@ -217,37 +218,37 @@ cy:
       we_are_working_with:
         general:
           in_partnership_with_html:
-            one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
-            two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
             many: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn mewn partneriaeth â %{partners}
+            one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
             other: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn mewn partneriaeth â %{partners}
+            two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
           no_partnership:
-            one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn
-            two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn
             many: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn
+            one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn
             other: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn
+            two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn
         local_authority:
           in_partnership_with_html:
-            one: Rydym yn gweithio gydag 1 ysgol yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
-            two: Rydym yn gweithio gyda %{count} ysgol yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
             many: Rydym yn gweithio gyda %{count} o ysgolion yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
+            one: Rydym yn gweithio gydag 1 ysgol yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
             other: Rydym yn gweithio gyda %{count} o ysgolion yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
+            two: Rydym yn gweithio gyda %{count} ysgol yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
           no_partnership:
-            one: Rydym yn gweithio gydag 1 ysgol yn yr awdurdod lleol hwn
-            two: Rydym yn gweithio gyda %{count} ysgol yn yr awdurdod lleol hwn
             many: Rydym yn gweithio gyda %{count} o ysgolion yn yr awdurdod lleol hwn
+            one: Rydym yn gweithio gydag 1 ysgol yn yr awdurdod lleol hwn
             other: Rydym yn gweithio gyda %{count} o ysgolion yn yr awdurdod lleol hwn
+            two: Rydym yn gweithio gyda %{count} ysgol yn yr awdurdod lleol hwn
         multi_academy_trust:
           in_partnership_with_html:
-            one: Rydym yn gweithio gydag 1 ysgol yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
-            two: Rydym yn gweithio gyda %{count} ysgol yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
             many: Rydym yn gweithio gyda %{count} o ysgolion yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
+            one: Rydym yn gweithio gydag 1 ysgol yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
             other: Rydym yn gweithio gyda %{count} o ysgolion yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
+            two: Rydym yn gweithio gyda %{count} ysgol yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
           no_partnership:
-            one: Rydym yn gweithio gydag 1 ysgol yn yr ymddiriedolaeth aml-academi hon
-            two: Rydym yn gweithio gyda %{count} ysgol yn yr ymddiriedolaeth aml-academi hon
             many: Rydym yn gweithio gyda %{count} o ysgolion yn yr ymddiriedolaeth aml-academi hon
+            one: Rydym yn gweithio gydag 1 ysgol yn yr ymddiriedolaeth aml-academi hon
             other: Rydym yn gweithio gyda %{count} o ysgolion yn yr ymddiriedolaeth aml-academi hon
+            two: Rydym yn gweithio gyda %{count} ysgol yn yr ymddiriedolaeth aml-academi hon
     sub_nav:
       chart_settings: Gosodiadau siart
       clusters: Rheoli clystyrau

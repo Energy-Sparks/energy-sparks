@@ -1,3 +1,4 @@
+---
 cy:
   advice_pages:
     alerts:
@@ -153,7 +154,7 @@ cy:
           data_collection_dcda_agent_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
           day_night: Dyma'r tâl am drydan a ddefnyddir rhwng %{time_from} a %{time_to} fesul kWh
           duos: 'Tâl defnyddio system wedi''i ddosbarthu: - tâl fesul kWh o ddefnydd yn ystod yr amseroedd hyn: %{charge_times}. I leihau, lleihau defnydd ysgolion yn ystod yr amseroedd hyn'
-          excess_availability_charge: '''Dirwy'' am fynd dros eich ''Terfyn Argaeledd Cytûn'' mewn mis. Os ydych yn cael eich ‘dirwyo’ am fwy nag ychydig fisoedd y flwyddyn mae’n rhatach ar y cyfan i ofyn i’ch cyflenwr ynni gynyddu eich ‘Terfyn Argaeledd a Gytunwyd’.'
+          excess_availability_charge: "'Dirwy' am fynd dros eich 'Terfyn Argaeledd Cytûn' mewn mis. Os ydych yn cael eich ‘dirwyo’ am fwy nag ychydig fisoedd y flwyddyn mae’n rhatach ar y cyfan i ofyn i’ch cyflenwr ynni gynyddu eich ‘Terfyn Argaeledd a Gytunwyd’."
           feed_in_tariff_levy: Ffi i dalu costau cefnogi ynni adnewyddadwy ar y rhwydwaith trydan. Gallwch leihau hyn drwy leihau eich defnydd o ynni
           fixed_charge: Ffi sefydlog ar gyfer eich cyflenwad ynni
           flat_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan

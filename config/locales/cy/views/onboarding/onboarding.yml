@@ -1,3 +1,4 @@
+---
 cy:
   onboarding:
     account:
@@ -87,8 +88,8 @@ cy:
         other_schools_html: "<a href='%{schools_path}'>mae ysgolion eraill</a> yn defnyddio Sbarcynni"
         review_user_guide_or_training_videos_message_html: Adolygwch ein <a href="%{user_guide_path}">canllaw defnyddiwr</a> neu gwyliwch ein <a href="%{user_guide_videos_path}">fideos hyfforddiant</a>
         school_active_notice: Mae eich ysgol bellach yn weithredol!
-        school_successfully_set_up: "Mae %{school_name} wedi'i sefydlu'n llwyddiannus ar Sbarcynni. Diolch"
-        schools_in_your_area_html: "Mae <a href='%{schools_path}'>ysgolion yn eich ardal</a> yn defnyddio Sbarcynni"
+        school_successfully_set_up: Mae %{school_name} wedi'i sefydlu'n llwyddiannus ar Sbarcynni. Diolch
+        schools_in_your_area_html: Mae <a href='%{schools_path}'>ysgolion yn eich ardal</a> yn defnyddio Sbarcynni
         this_normally_takes_24_hours_message: Mae hyn fel arfer yn cymryd tua 24 awr. Byddwn yn anfon e-bost atoch pan fyddwn wedi cwblhau ein gwiriadau terfynol
         title: Wedi cwblhau gosod
         webinar_training_session_message_html: Cofrestrwch ar gyfer un o'n <a href='%{training_path}'>sesiynau hyfforddi gweminar byw</a>

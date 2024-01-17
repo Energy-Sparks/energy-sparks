@@ -1,12 +1,13 @@
+---
 cy:
   co2: CO2
   common:
-    application: Sbarcynni
     action:
-      one: '%{count} weithred'
-      two: '%{count} weithred'
-      many: '%{count} o weithredoedd'
-      other: '%{count} o weithredoedd'
+      many: "%{count} o weithredoedd"
+      one: "%{count} weithred"
+      other: "%{count} o weithredoedd"
+      two: "%{count} weithred"
+    application: Sbarcynni
     back_to_top: Yn ôl i'r brig
     bar_charts: Siartiau bar
     confirm: Ydych chi'n siŵr?
@@ -43,7 +44,7 @@ cy:
       last_year: Y llynedd
       manage: Rheoli
       next: Nesaf
-      no_label: 'Na'
+      no_label: Na
       not_applicable: Amh
       not_set: Heb ei osod
       previous: Blaenorol
@@ -58,7 +59,7 @@ cy:
       upload: Uwchlwytho
       view: Gweld
       view_results: Gweld canlyniadau
-      yes_label: 'Ie'
+      yes_label: Ie
     line_graphs: Graffiau llinell
     pie_charts: Siartiau cylch
     privacy_policy: polisi preifatrwydd
@@ -83,9 +84,9 @@ cy:
     terms_and_conditions: telerau ac amodau
     units:
       minutes:
-        one: '%{count} funud'
-        two: '%{count} funud'
-        many: '%{count} o funudau'
-        other: '%{count} o funudau'
+        many: "%{count} o funudau"
+        one: "%{count} funud"
+        other: "%{count} o funudau"
+        two: "%{count} funud"
   kwh: kWh
-  £: "£"
+  "£": "£"

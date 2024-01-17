@@ -1,3 +1,4 @@
+---
 cy:
   about_energy_sparks: Mae Sbarcynni yn elusen gofrestredig sy'n gweithio er budd y cyhoedd i ddatblygu a hyrwyddo offer, gwasanaethau a rhaglenni i leihau'r defnydd o ynni ac adnoddau ac allyriadau carbon. Nod Sbarcynni yw addysgu'r cyhoedd, yn enwedig pobl ifanc, am achosion ac effeithiau newid yn yr hinsawdd, a phwysigrwydd arbed ynni a lleihau allyriadau carbon.
   case_studies:
@@ -41,10 +42,10 @@ cy:
   newsletters:
     title: Cylchlythyrau
   school_count:
+    many: "%{count} ysgol"
     one: 1 ysgol
-    two: '%{count} ysgol'
-    many: '%{count} ysgol'
-    other: '%{count} ysgol'
+    other: "%{count} ysgol"
+    two: "%{count} ysgol"
   training:
     intro: Mae'r dudalen hon yn rhestru ein holl sesiynau hyfforddi sydd i ddod. Dilynwch y dolenni i’n tudalen Eventbrite i archebu eich tocynnau.
     sold_out: Wedi gwerthu allan

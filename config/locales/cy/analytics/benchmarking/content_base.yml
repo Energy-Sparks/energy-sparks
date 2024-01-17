@@ -1,3 +1,4 @@
+---
 cy:
   analytics:
     benchmarking:
@@ -107,7 +108,7 @@ cy:
           last_year_definition_html: "<p>Cymariaethau mewn ysgolion &apos;y llynedd&apos; yn cael ei ddiffinio fel eleni hyd yn hyn.</p>"
           last_year_previous_year_definition_html: "<p>Cymariaethau mewn ysgolion &apos;y llynedd&apos; yn cael ei ddiffinio fel y flwyddyn hon hyd yma, &apos;y flwyddyn flaenorol&apos; yn cael ei ddiffinio fel y flwyddyn cyn.</p>"
         column_headings:
-          annualised_£_value_of_summer_holiday_reduction: £ gwerth blynyddol o ostyngiad gwyliau haf
+          annualised_£_value_of_summer_holiday_reduction: "£ gwerth blynyddol o ostyngiad gwyliau haf"
           average_baseload_kw: Llwyth sylfaenol cyfartalog kW
           average_baseload_last_week_kw: Llwyth sylfaenol cyfartalog yr wythnos ddiwethaf (kW)
           average_baseload_last_year_kw: Llwyth sylfaenol cyfartalog y llynedd (kW)
@@ -147,7 +148,7 @@ cy:
           day_of_week_with_minimum_baseload: Diwrnod o'r wythnos gydag isafswm llwyth sylfaenol
           efficiency_of_system: Effeithlonrwydd y system
           electricity: Trydan
-          electricity_co2_last_year: ' CO2  Trydan (y llynedd)'
+          electricity_co2_last_year: " CO2  Trydan (y llynedd)"
           electricity_co2_previous_year: CO2 Trydan (blwyddyn flaenorol)
           electricity_cost_ct: Cost trydan (tariff presennol)
           electricity_cost_ht: Cost trydan (tariff hanesyddol)
@@ -193,7 +194,7 @@ cy:
           last_year_gas_£: Y llynedd Nwy £
           last_year_heating_costs_per_floor_area: Costau gwresogi y llynedd  fesul arwynebedd llawr
           last_year_kwh_consumption: Defnydd kWh y llynedd
-          last_year_out_of_hours_co2: ' Co2 y tu allan i oriau y llynedd'
+          last_year_out_of_hours_co2: " Co2 y tu allan i oriau y llynedd"
           last_year_out_of_hours_cost: Cost y tu allan i oriau y llynedd
           last_year_out_of_hours_cost_ct: Cost y tu allan i oriau y llynedd ar y tariff cyfredol
           last_year_out_of_hours_kwh: Kwh y tu allan i oriau y llynedd

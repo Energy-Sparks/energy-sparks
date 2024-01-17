@@ -1,3 +1,4 @@
+---
 cy:
   devise:
     confirmations:
@@ -91,9 +92,9 @@ cy:
       not_found: heb ei ganfod
       not_locked: heb ei gloi
       not_saved:
-        one: 'Roedd 1 gwall yn gwahardd y %{resource} hwn rhag cael ei gadw:'
-        two: 'Roedd %{count} wall yn gwahardd y %{resource} hwn rhag cael ei gadw:'
         many: 'Roedd %{count} o wallau yn gwahardd y %{resource} hwn rhag cael ei gadw:'
+        one: 'Roedd 1 gwall yn gwahardd y %{resource} hwn rhag cael ei gadw:'
         other: 'Roedd %{count} o wallau yn gwahardd y %{resource} hwn rhag cael ei gadw:'
+        two: 'Roedd %{count} wall yn gwahardd y %{resource} hwn rhag cael ei gadw:'
       reset_password_token_is_invalid: Mae tocyn ailosod cyfrinair yn annilys
       select_a_school: Dewiswch ysgol

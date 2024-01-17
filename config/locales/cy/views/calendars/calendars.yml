@@ -1,3 +1,4 @@
+---
 cy:
   calendars:
     calendar_actions:
@@ -51,5 +52,5 @@ cy:
       calendar_view: Gwedd calendr
       confirm_message: Bydd hyn yn copïo'r holl ddigwyddiadau sydd wedi'u golygu yn y 7 diwrnod i galendrau plant. Ydych chi'n siŵr?
       current_events: Digwyddiadau presennol
-      title: "Calendr %{calendar_title}"
+      title: Calendr %{calendar_title}
       update_dependent_schools: Diweddaru ysgolion dibynnol

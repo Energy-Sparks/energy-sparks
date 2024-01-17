@@ -1,12 +1,13 @@
+---
 cy:
   activity_types:
     activity: Gweithgaredd
     errors:
       invalid_fuel_type:
-        one: 'math o danwydd annilys:'
-        two: 'mathau o danwydd annilys:'
         many: 'mathau o danwydd annilys:'
+        one: 'math o danwydd annilys:'
         other: 'mathau o danwydd annilys:'
+        two: 'mathau o danwydd annilys:'
     impacts: Effeithiau
     key_stages: Cyfnodau Allweddol
     recommended:
@@ -22,30 +23,30 @@ cy:
       limit_results_shown: Cyfyngu ar y canlyniadau a ddangosir
       no_results_found: Heb ganfod unrhyw ganlyniadau
       results_found:
-        one: Wedi canfod 1 canlyniad
-        two: Wedi canfod %{count} ganlyniad
         many: Wedi canfod %{count} o ganlyniadau
+        one: Wedi canfod 1 canlyniad
         other: Wedi canfod %{count} o ganlyniadau
+        two: Wedi canfod %{count} ganlyniad
       title: Dod o hyd i weithgareddau disgyblion
     show:
       complete_this_activity_for_group_html:
-        one: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>1</strong> pwynt!
-        two: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
         many: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        one: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>1</strong> pwynt!
         other: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        two: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
       complete_this_activity_html:
-        one: Cwblhewch y gweithgaredd hwn i sgorio <strong>1</strong> pwynt!
-        two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
         many: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+        one: Cwblhewch y gweithgaredd hwn i sgorio <strong>1</strong> pwynt!
         other: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+        two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
       download_resources: Lawrlwytho adnoddau
       record_this_activity: Cofnodi'r gweithgaredd hwn
       select_school: Dewiswch ysgol...
       view_related_activities:
-        one: Gweld 1 gweithgaredd cysylltiedig
-        two: Gweld %{count} weithgaredd cysylltiedig
         many: Gweld %{count} o weithgareddau cysylltiedig
+        one: Gweld 1 gweithgaredd cysylltiedig
         other: Gweld %{count} o weithgareddau cysylltiedig
+        two: Gweld %{count} weithgaredd cysylltiedig
     subjects: Pynciau
     timings: Amseroedd
     topics: Testunau

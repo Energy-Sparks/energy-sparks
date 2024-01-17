@@ -1,1004 +1,1005 @@
+---
 cy:
   chart_configuration:
     acc1:
       title:
-        - Costau Ynni
+      - Costau Ynni
     acc2:
       title:
-        - Costau Ynni
+      - Costau Ynni
     acc3:
       title:
-        - Dadansoddiad cyfrifo costau trydan fesul wythnos ar gyfer y llynedd
+      - Dadansoddiad cyfrifo costau trydan fesul wythnos ar gyfer y llynedd
     acc4:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
     accounting_cost_daytype_breakdown_gas:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
     activities_14_days_daytype_electricity_cost:
       title:
-        - Costau trydan y 14 diwrnod diwethaf
+      - Costau trydan y 14 diwrnod diwethaf
     activities_14_days_daytype_gas_cost:
       title:
-        - Costau nwy y 14 diwrnod diwethaf
+      - Costau nwy y 14 diwrnod diwethaf
     activities_2_weeks_daytype_electricity_cost:
       title:
-        - Costau trydan y 2 wythnos ddiwethaf
+      - Costau trydan y 2 wythnos ddiwethaf
     activities_2_weeks_daytype_gas_cost:
       title:
-        - Costau nwy y 2 wythnos ddiwethaf
+      - Costau nwy y 2 wythnos ddiwethaf
     activities_school_day_electricity_cost:
       title:
-        - Cost trydan diwrnod ysgol
+      - Cost trydan diwrnod ysgol
     activities_school_day_gas_cost:
       title:
-        - Cost nwy diwrnod ysgol
+      - Cost nwy diwrnod ysgol
     activities_weekend_day_electricity_cost:
       title:
-        - Cost trydan diwrnod penwythnos
+      - Cost trydan diwrnod penwythnos
     activities_weekend_day_gas_cost:
       title:
-        - Cost nwy diwrnod penwythnos
+      - Cost nwy diwrnod penwythnos
     adhoc_test_chart:
       title:
-        - Prawf siart ad hoc
+      - Prawf siart ad hoc
     adult_dashboard_drilldown_last_2_weeks_electricity_comparison:
       title:
-        - Cymhariaeth o ddefnydd trydan y 2 wythnos ysgol ddiwethaf
+      - Cymhariaeth o ddefnydd trydan y 2 wythnos ysgol ddiwethaf
     alert_1_year_baseload:
       title:
-        - Llwyth sylfaenol kW - y llynedd
+      - Llwyth sylfaenol kW - y llynedd
     alert_daytype_breakdown_electricity:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
     alert_daytype_breakdown_gas:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
     alert_daytype_breakdown_storage_heater:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Stôr-wresogyddion'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Stôr-wresogyddion'
     alert_gas_heating_season_intraday:
       title:
-        - Defnydd Nwy o Fewn Dydd (yn ystod y tymor gwresogi)
+      - Defnydd Nwy o Fewn Dydd (yn ystod y tymor gwresogi)
     alert_group_by_week_electricity:
       title:
-        - 'Yn ôl Wythnos: Trydan'
+      - 'Yn ôl Wythnos: Trydan'
     alert_group_by_week_electricity_14_months:
       title:
-        - 'Yn ôl Wythnos: Trydan'
+      - 'Yn ôl Wythnos: Trydan'
     alert_group_by_week_electricity_4_months:
       title:
-        - 'Yn ôl Wythnos: Trydan'
+      - 'Yn ôl Wythnos: Trydan'
     alert_group_by_week_gas:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     alert_group_by_week_gas_14_months:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     alert_group_by_week_gas_4_months:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     alert_group_by_week_storage_heaters:
       title:
-        - 'Yn ôl Wythnos: Stôr-wresogyddion'
+      - 'Yn ôl Wythnos: Stôr-wresogyddion'
     alert_intraday_line_school_days_last5weeks:
       title:
-        - O fewn diwrnod (cymhariaeth y 5 wythnos ddiwethaf - diwrnod ysgol)
+      - O fewn diwrnod (cymhariaeth y 5 wythnos ddiwethaf - diwrnod ysgol)
     alert_intraday_line_school_last7days:
       title:
-        - O fewn diwrnod (cymhariaeth y 5 wythnos ddiwethaf - diwrnod ysgol)
+      - O fewn diwrnod (cymhariaeth y 5 wythnos ddiwethaf - diwrnod ysgol)
     alert_last_2_weeks_gas_comparison_temperature_compensated:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
     alert_last_7_days_intraday_gas_heating_on_too_early:
       title:
-        - Nwy o fewn diwrnod (7 diwrnod diwethaf)
+      - Nwy o fewn diwrnod (7 diwrnod diwethaf)
     alert_week_on_week_electricity_daily_electricity_comparison_chart:
       title:
-        - Cymhariaeth o ddefnydd trydan y 2 wythnos ddiwethaf
+      - Cymhariaeth o ddefnydd trydan y 2 wythnos ddiwethaf
     alert_weekend_last_week_gas_datetime_kw:
       title:
-        - Defnydd nwy bob hanner awr yr wythnos ddiwethaf (kW)
+      - Defnydd nwy bob hanner awr yr wythnos ddiwethaf (kW)
     alert_weekend_last_week_gas_datetime_kwh:
       title:
-        - Defnydd nwy bob hanner awr yr wythnos ddiwethaf (kWh)
+      - Defnydd nwy bob hanner awr yr wythnos ddiwethaf (kWh)
     baseload:
       title:
-        - Llwyth sylfaenol kW
+      - Llwyth sylfaenol kW
     baseload_lastyear:
       title:
-        - Llwyth sylfaenol kW - y llynedd
+      - Llwyth sylfaenol kW - y llynedd
     baseload_versus_benchmarks:
       title:
-        - Llwyth sylfaenol kW
+      - Llwyth sylfaenol kW
     benchmark:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
+      - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_co2:
       title:
-        - Allyriadau Carbon Ysgol o Ddefnydd Trydan a Nwy
+      - Allyriadau Carbon Ysgol o Ddefnydd Trydan a Nwy
     benchmark_electric:
       title:
-        - Cymhariaeth Meincnod (Defnydd Trydan Blynyddol)
+      - Cymhariaeth Meincnod (Defnydd Trydan Blynyddol)
     benchmark_electric_only_£:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
+      - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_gas_only_£:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
+      - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_kwh:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
+      - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_kwh_electric_only:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
+      - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_storage_heater_only_£:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
+      - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     boiler_start_time:
       title:
-        - Amser cychwyn boeler
+      - Amser cychwyn boeler
     boiler_start_time_up_to_one_year:
       title:
-        - 'Amser cychwyn boeler: yn y flwyddyn ddiwethaf'
+      - 'Amser cychwyn boeler: yn y flwyddyn ddiwethaf'
     boiler_start_time_up_to_one_year_no_frost:
       title:
-        - Amser cychwyn boeleri ar foreau nad ydynt yn rhewllyd
+      - Amser cychwyn boeleri ar foreau nad ydynt yn rhewllyd
     calendar_picker_electricity_day_chart:
       title:
-        - Siart diwrnod trydan dewisydd calendr
+      - Siart diwrnod trydan dewisydd calendr
     calendar_picker_electricity_day_example_comparison_chart:
       title:
-        - Siart cymhariaeth diwrnod enghreifftiol o ran trydan dewisydd calendr
+      - Siart cymhariaeth diwrnod enghreifftiol o ran trydan dewisydd calendr
     calendar_picker_electricity_day_example_meter_breakdown_chart:
       title:
-        - Siart dadansoddiad mesurydd trydan enghreifftiol dewisydd calendr
+      - Siart dadansoddiad mesurydd trydan enghreifftiol dewisydd calendr
     calendar_picker_electricity_day_example_meter_breakdown_comparison_chart:
       title:
-        - Siart dadansoddiad mesurydd trydan enghreifftiol dewisydd calendr
+      - Siart dadansoddiad mesurydd trydan enghreifftiol dewisydd calendr
     calendar_picker_electricity_week_chart:
       title:
-        - Siart wythnos trydan dewisydd calendr
+      - Siart wythnos trydan dewisydd calendr
     calendar_picker_electricity_week_example_comparison_chart:
       title:
-        - Siart cymhariaeth wythnos enghreifftiol o ran trydan dewisydd calendr
+      - Siart cymhariaeth wythnos enghreifftiol o ran trydan dewisydd calendr
     calendar_picker_gas_day_chart:
       title:
-        - Siart diwrnod nwy dewisydd calendr
+      - Siart diwrnod nwy dewisydd calendr
     calendar_picker_gas_day_example_comparison_chart:
       title:
-        - Siart cymharu diwrnod nwy enghreifftiol dewisydd calendr
+      - Siart cymharu diwrnod nwy enghreifftiol dewisydd calendr
     calendar_picker_gas_week_chart:
       title:
-        - Siart wythnos nwy dewisydd calendr
+      - Siart wythnos nwy dewisydd calendr
     calendar_picker_gas_week_example_comparison_chart:
       title:
-        - Siart cymharu wythnos nwy enghreifftiol dewisydd calendr
+      - Siart cymharu wythnos nwy enghreifftiol dewisydd calendr
     calendar_picker_storage_heater_day_chart:
       title:
-        - Siart diwrnod stôr-wresogydd dewisydd calendr
+      - Siart diwrnod stôr-wresogydd dewisydd calendr
     calendar_picker_storage_heaters_week_chart:
       title:
-        - Siart wythnos stôr-wresogyddion dewisydd calendr
+      - Siart wythnos stôr-wresogyddion dewisydd calendr
     community_use_test_electricity:
       title:
-        - Siart prawf trydan defnydd cymunedol
+      - Siart prawf trydan defnydd cymunedol
     community_use_test_electricity_community_use_only:
       title:
-        - Siart prawf trydan defnydd cymunedol defnydd cymunedol yn unig
+      - Siart prawf trydan defnydd cymunedol defnydd cymunedol yn unig
     community_use_test_electricity_community_use_only_aggregated:
       title:
-        - Siart prawf trydan defnydd cymunedol defnydd cymunedol yn unig wedi'i agregu - enw'r gyfres = cymuned
+      - Siart prawf trydan defnydd cymunedol defnydd cymunedol yn unig wedi'i agregu - enw'r gyfres = cymuned
     community_use_test_electricity_school_use_only:
       title:
-        - Siart prawf trydan defnydd cymunedol defnydd ysgol yn unig
+      - Siart prawf trydan defnydd cymunedol defnydd ysgol yn unig
     community_use_test_gas:
       title:
-        - Siart prawf nwy defnydd cymunedol
+      - Siart prawf nwy defnydd cymunedol
     cusum:
       title:
-        - CWSUM Wythnosol - dargyfeirio oddi wrth y defnydd o nwy wedi'i fodelu
+      - CWSUM Wythnosol - dargyfeirio oddi wrth y defnydd o nwy wedi'i fodelu
     cusum_simple:
       title:
-        - 'CUSUM: model syml'
+      - 'CUSUM: model syml'
     cusum_thermal_mass:
       title:
-        - 'CUSUM: model model màs thermol'
+      - 'CUSUM: model model màs thermol'
     cusum_weekly:
       title:
-        - CWSUM Wythnosol - dargyfeirio oddi wrth y defnydd o nwy wedi'i fodelu
+      - CWSUM Wythnosol - dargyfeirio oddi wrth y defnydd o nwy wedi'i fodelu
     cusum_weekly_best_model:
       title:
-        - CWSUM Wythnosol - dargyfeirio oddi wrth y defnydd o nwy wedi'i fodelu
+      - CWSUM Wythnosol - dargyfeirio oddi wrth y defnydd o nwy wedi'i fodelu
     daytype_breakdown_combined_fuels:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
     daytype_breakdown_electricity:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
     daytype_breakdown_electricity_tolerant:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
     daytype_breakdown_gas:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
     daytype_breakdown_gas_tolerant:
       title:
-        - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
+      - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Nwy'
     electricity_1_year_intraday_accounting_breakdown:
       title:
-        - Costau trydan ar gyfer y flwyddyn ddiwethaf yn ôl amser o’r dydd (costau cyfrifyddu)
+      - Costau trydan ar gyfer y flwyddyn ddiwethaf yn ôl amser o’r dydd (costau cyfrifyddu)
     electricity_1_year_intraday_kwh_breakdown:
       title:
-        - Defnydd o drydan kWh yn ystod y flwyddyn ddiwethaf er mwyn cymharu â'r fersiwn cyfrifo uchod
+      - Defnydd o drydan kWh yn ystod y flwyddyn ddiwethaf er mwyn cymharu â'r fersiwn cyfrifo uchod
     electricity_2_week_accounting_breakdown:
       title:
-        - Dadansoddiad cost cyfrifo trydan fesul diwrnod am y 2 wythnos diwethaf
+      - Dadansoddiad cost cyfrifo trydan fesul diwrnod am y 2 wythnos diwethaf
     electricity_baseload_by_day_of_week:
       title:
-        - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
+      - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
     electricity_by_datetime:
       title:
-        - 'Yn ôl Amser: Trydan'
+      - 'Yn ôl Amser: Trydan'
     electricity_by_datetime_line_kw:
       title:
-        - 'Yn ôl Amser: Trydan'
+      - 'Yn ôl Amser: Trydan'
     electricity_by_day:
       title:
-        - 'Yn ôl Diwrnod: Trydan'
+      - 'Yn ôl Diwrnod: Trydan'
     electricity_by_day_of_week:
       title:
-        - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
+      - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
     electricity_by_day_of_week_actual_for_simulator_comparison:
       title:
-        - Defnydd Trydan Yn ôl Diwrnod yr Wythnos (Defnydd Gwirioneddol dros y llynedd)
+      - Defnydd Trydan Yn ôl Diwrnod yr Wythnos (Defnydd Gwirioneddol dros y llynedd)
     electricity_by_day_of_week_simulator:
       title:
-        - Defnydd Trydan Yn ôl Diwrnod yr Wythnos (Defnydd Efelychydd dros y llynedd)
+      - Defnydd Trydan Yn ôl Diwrnod yr Wythnos (Defnydd Efelychydd dros y llynedd)
     electricity_by_day_of_week_simulator_ict:
       title:
-        - 'Blynyddol: Defnydd yn ôl Diwrnod o''r Wythnos: Efelychydd Trydan (Gweinyddion TGCh, Penbyrddau, Gliniaduron)'
+      - 'Blynyddol: Defnydd yn ôl Diwrnod o''r Wythnos: Efelychydd Trydan (Gweinyddion TGCh, Penbyrddau, Gliniaduron)'
     electricity_by_day_of_week_tolerant:
       title:
-        - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
+      - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
     electricity_by_day_of_week_tolerant_versus_benchmarks:
       title:
-        - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
+      - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
     electricity_by_month_acyear_0_1:
       title:
-        - Defnydd Trydan Yn ôl Mis (2 flynedd academaidd flaenorol)
+      - Defnydd Trydan Yn ôl Mis (2 flynedd academaidd flaenorol)
     electricity_by_month_year_0_1:
       title:
-        - Defnydd Trydan Yn ôl Mis (2 flynedd diwethaf)
+      - Defnydd Trydan Yn ôl Mis (2 flynedd diwethaf)
     electricity_by_month_year_0_1_finance_advice:
       title:
-        - Costau Ynni
+      - Costau Ynni
     electricity_co2_last_7_days_with_co2_intensity:
       title:
-        - Amrywiad yn allyriadau carbon trydan eich ysgol dros yr wythnos ddiwethaf
+      - Amrywiad yn allyriadau carbon trydan eich ysgol dros yr wythnos ddiwethaf
     electricity_co2_last_7_days_with_co2_intensity_unmodified:
       title:
-        - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
+      - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
     electricity_co2_last_year_weekly_with_co2_intensity:
       title:
-        - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
+      - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
     electricity_co2_last_year_weekly_with_co2_intensity_co2_only:
       title:
-        - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
+      - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
     electricity_co2_last_year_weekly_with_co2_intensity_unmodified:
       title:
-        - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
+      - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
     electricity_cost_1_year_accounting_breakdown:
       title:
-        - Costau Ynni
+      - Costau Ynni
     electricity_cost_comparison_1_year_accounting_breakdown_by_week:
       title:
-        - Dadansoddiad cyfrifo costau trydan fesul wythnos ar gyfer y flwyddyn ddiwethaf
+      - Dadansoddiad cyfrifo costau trydan fesul wythnos ar gyfer y flwyddyn ddiwethaf
     electricity_cost_comparison_last_2_years:
       title:
-        - Defnydd Trydan Yn ôl Mis (2 flynedd diwethaf)
+      - Defnydd Trydan Yn ôl Mis (2 flynedd diwethaf)
     electricity_cost_comparison_last_2_years_accounting_breakdown:
       title:
-        - Costau Ynni
+      - Costau Ynni
     electricity_intraday_line_school_last7days_carbon:
       title:
-        - O fewn diwrnod (7 diwrnod diwethaf)
+      - O fewn diwrnod (7 diwrnod diwethaf)
     electricity_intraday_line_school_last7days_co2_commentary:
       title:
-        - O fewn diwrnod (7 diwrnod diwethaf)
+      - O fewn diwrnod (7 diwrnod diwethaf)
     electricity_kwh_last_7_days_with_co2_intensity:
       title:
-        - Amrywiad yn allyriadau carbon trydan eich ysgol dros yr wythnos ddiwethaf
+      - Amrywiad yn allyriadau carbon trydan eich ysgol dros yr wythnos ddiwethaf
     electricity_longterm_trend:
       title:
-        - 'Trydan: tueddiadau hirdymor'
+      - 'Trydan: tueddiadau hirdymor'
     electricity_longterm_trend_carbon:
       title:
-        - 'Trydan: tueddiadau hirdymor'
+      - 'Trydan: tueddiadau hirdymor'
     electricity_longterm_trend_carbon_unmodified:
       title:
-        - 'Trydan: tueddiadau hirdymor'
+      - 'Trydan: tueddiadau hirdymor'
     electricity_longterm_trend_kwh_with_carbon:
       title:
-        - Defnydd o drydan eich ysgol dros yr ychydig flynyddoedd diwethaf
+      - Defnydd o drydan eich ysgol dros yr ychydig flynyddoedd diwethaf
     electricity_longterm_trend_kwh_with_carbon_unmodified:
       title:
-        - Defnydd o drydan eich ysgol dros yr ychydig flynyddoedd diwethaf
+      - Defnydd o drydan eich ysgol dros yr ychydig flynyddoedd diwethaf
     electricity_simulator_pie:
       title:
-        - Efelychydd Trydan (Dadansoddiad Defnydd a Efelychwyd Dros y Flwyddyn Ddiwethaf)
+      - Efelychydd Trydan (Dadansoddiad Defnydd a Efelychwyd Dros y Flwyddyn Ddiwethaf)
     electricity_simulator_pie_detail_page:
       title:
-        - Efelychydd Trydan (Dadansoddiad Defnydd a Efelychwyd Dros y Flwyddyn Ddiwethaf)
+      - Efelychydd Trydan (Dadansoddiad Defnydd a Efelychwyd Dros y Flwyddyn Ddiwethaf)
     frost:
       title:
-        - 'Amddiffyn rhag Rhew: penwythnos oer'
+      - 'Amddiffyn rhag Rhew: penwythnos oer'
     frost_1:
       title:
-        - Amddiffyn rhag Rhew Dydd Sul Enghreifftiol 1
+      - Amddiffyn rhag Rhew Dydd Sul Enghreifftiol 1
     frost_2:
       title:
-        - Amddiffyn rhag Rhew Dydd Sul Enghreifftiol 2
+      - Amddiffyn rhag Rhew Dydd Sul Enghreifftiol 2
     frost_3:
       title:
-        - Amddiffyn rhag Rhew Dydd Sul Enghreifftiol 3
+      - Amddiffyn rhag Rhew Dydd Sul Enghreifftiol 3
     gas_1_year_intraday_accounting_breakdown:
       title:
-        - Costau nwy ar gyfer y flwyddyn ddiwethaf yn ôl amser o'r dydd (costau cyfrifo)
+      - Costau nwy ar gyfer y flwyddyn ddiwethaf yn ôl amser o'r dydd (costau cyfrifo)
     gas_1_year_intraday_economic_breakdown:
       title:
-        - Costau nwy ar gyfer y flwyddyn ddiwethaf yn ôl amser o'r dydd (costau economaidd)
+      - Costau nwy ar gyfer y flwyddyn ddiwethaf yn ôl amser o'r dydd (costau economaidd)
     gas_1_year_intraday_kwh_breakdown:
       title:
-        - Defnydd o nwy kWh o fewn diwrnod yn ystod y flwyddyn ddiwethaf er mwyn cymharu â'r fersiwn cyfrifo uchod
+      - Defnydd o nwy kWh o fewn diwrnod yn ystod y flwyddyn ddiwethaf er mwyn cymharu â'r fersiwn cyfrifo uchod
     gas_by_day_of_week:
       title:
-        - Defnydd Nwy Yn ôl Diwrnod yr Wythnos
+      - Defnydd Nwy Yn ôl Diwrnod yr Wythnos
     gas_by_day_of_week_model_fitting:
       title:
-        - Defnydd Nwy Yn ôl Diwrnod yr Wythnos
+      - Defnydd Nwy Yn ôl Diwrnod yr Wythnos
     gas_by_day_of_week_tolerant:
       title:
-        - Defnydd Nwy Yn ôl Diwrnod yr Wythnos
+      - Defnydd Nwy Yn ôl Diwrnod yr Wythnos
     gas_by_month_year_0_1:
       title:
-        - Defnydd Nwy Yn ôl Mis (2 flynedd diwethaf)
+      - Defnydd Nwy Yn ôl Mis (2 flynedd diwethaf)
     gas_by_month_year_0_1_finance_advice:
       title:
-        - Costau Nwy
+      - Costau Nwy
     gas_cost_comparison_1_year_accounting_breakdown_by_week:
       title:
-        - Dadansoddiad cyfrifo costau nwy fesul wythnos ar gyfer y flwyddyn ddiwethaf
+      - Dadansoddiad cyfrifo costau nwy fesul wythnos ar gyfer y flwyddyn ddiwethaf
     gas_cost_comparison_1_year_economic_breakdown_by_week:
       title:
-        - Dadansoddiad cost economaidd nwy fesul wythnos ar gyfer y flwyddyn ddiwethaf
+      - Dadansoddiad cost economaidd nwy fesul wythnos ar gyfer y flwyddyn ddiwethaf
     gas_cost_comparison_last_2_years_accounting_breakdown:
       title:
-        - Cost cyfrifo nwy fesul mis ar gyfer y flwyddyn ddiwethaf
+      - Cost cyfrifo nwy fesul mis ar gyfer y flwyddyn ddiwethaf
     gas_heating_season_intraday:
       title:
-        - Defnydd Nwy o Fewn Dydd (yn ystod y tymor gwresogi)
+      - Defnydd Nwy o Fewn Dydd (yn ystod y tymor gwresogi)
     gas_heating_season_intraday_up_to_1_year:
       title:
-        - Defnydd Nwy o Fewn Dydd (yn ystod y tymor gwresogi)
+      - Defnydd Nwy o Fewn Dydd (yn ystod y tymor gwresogi)
     gas_heating_season_intraday_£:
       title:
-        - Defnydd Nwy o Fewn Dydd (yn ystod y tymor gwresogi)
+      - Defnydd Nwy o Fewn Dydd (yn ystod y tymor gwresogi)
     gas_intraday_schoolday_last_year:
       title:
-        - Proffil defnydd o nwy o fewn dydd ysgol
+      - Proffil defnydd o nwy o fewn dydd ysgol
     gas_latest_academic_years:
       title:
-        - Defnydd Nwy Dros yr Ychydig Flynyddoedd Academaidd Diwethaf
+      - Defnydd Nwy Dros yr Ychydig Flynyddoedd Academaidd Diwethaf
     gas_latest_years:
       title:
-        - Defnydd Nwy Dros yr Ychydig Flynyddoedd Diwethaf (hyd yma)
+      - Defnydd Nwy Dros yr Ychydig Flynyddoedd Diwethaf (hyd yma)
     gas_longterm_trend:
       title:
-        - 'Nwy: tueddiadau hirdymor'
+      - 'Nwy: tueddiadau hirdymor'
     gas_longterm_trend_carbon:
       title:
-        - 'Nwy: tueddiadau hirdymor'
+      - 'Nwy: tueddiadau hirdymor'
     gas_longterm_trend_kwh_with_carbon:
       title:
-        - Allyriadau Carbon Nwy eich Ysgol dros yr ychydig flynyddoedd diwethaf
+      - Allyriadau Carbon Nwy eich Ysgol dros yr ychydig flynyddoedd diwethaf
     gas_longterm_trend_model_fitting:
       title:
-        - 'Nwy: tueddiadau hirdymor'
+      - 'Nwy: tueddiadau hirdymor'
     gridcarbon_test:
       title:
-        - Gwiriad echel Grid Carbon Y2
+      - Gwiriad echel Grid Carbon Y2
     group_by_week_carbon:
       title:
-        - Cyfrifo cyfanswm allyriadau carbon eich ysgol, gan gynnwys trafnidiaeth a bwyd
+      - Cyfrifo cyfanswm allyriadau carbon eich ysgol, gan gynnwys trafnidiaeth a bwyd
     group_by_week_electricity:
       title:
-        - 'Yn ôl Wythnos: Trydan'
+      - 'Yn ôl Wythnos: Trydan'
     group_by_week_electricity_actual_for_simulator_comparison:
       title:
-        - 'Yn ôl Wythnos: Trydan (Defnydd Gwirioneddol)'
+      - 'Yn ôl Wythnos: Trydan (Defnydd Gwirioneddol)'
     group_by_week_electricity_air_conditioning:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Aerdymheru)'
+      - 'Yn ôl Wythnos: Efelychydd Trydan (Aerdymheru)'
     group_by_week_electricity_dd:
       title:
-        - 'Yn ôl Wythnos: Trydan'
+      - 'Yn ôl Wythnos: Trydan'
     group_by_week_electricity_flood_lighting:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Llifogydd Goleuadau)'
+      - 'Yn ôl Wythnos: Efelychydd Trydan (Llifogydd Goleuadau)'
     group_by_week_electricity_kitchen:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Cegin)'
+      - 'Yn ôl Wythnos: Efelychydd Trydan (Cegin)'
     group_by_week_electricity_meter_breakdown:
       title:
-        - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
+      - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
     group_by_week_electricity_meter_breakdown_one_year:
       title:
-        - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
+      - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
     group_by_week_electricity_simulator:
       title:
-        - 'Yn ôl Wythnos: Trydan (Efelychydd)'
+      - 'Yn ôl Wythnos: Trydan (Efelychydd)'
     group_by_week_electricity_simulator_appliance:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan'
+      - 'Yn ôl Wythnos: Efelychydd Trydan'
     group_by_week_electricity_simulator_boiler_pump:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Pympiau Boeler)'
+      - 'Yn ôl Wythnos: Efelychydd Trydan (Pympiau Boeler)'
     group_by_week_electricity_simulator_electrical_heating:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Gwresogi gan Ddefnyddio Trydan)'
+      - 'Yn ôl Wythnos: Efelychydd Trydan (Gwresogi gan Ddefnyddio Trydan)'
     group_by_week_electricity_simulator_ict:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Gweinyddion TGCh, Cyfrifiaduron, Gliniaduron)'
+      - 'Yn ôl Wythnos: Efelychydd Trydan (Gweinyddion TGCh, Cyfrifiaduron, Gliniaduron)'
     group_by_week_electricity_simulator_lighting:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Goleuadau)'
+      - 'Yn ôl Wythnos: Efelychydd Trydan (Goleuadau)'
     group_by_week_electricity_simulator_security_lighting:
       title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Goleuadau Diogelwch)'
+      - 'Yn ôl Wythnos: Efelychydd Trydan (Goleuadau Diogelwch)'
     group_by_week_electricity_simulator_solar_pv:
       title:
-        - 'Yn ôl Mis: Efelychydd Trydan (Solar Ffotofoltaig)'
+      - 'Yn ôl Mis: Efelychydd Trydan (Solar Ffotofoltaig)'
     group_by_week_electricity_unlimited:
       title:
-        - 'Yn ôl Wythnos: Trydan (aml-flwyddyn)'
+      - 'Yn ôl Wythnos: Trydan (aml-flwyddyn)'
     group_by_week_electricity_versus_benchmark:
       title:
-        - 'Yn ôl Wythnos: Trydan - o''i gymharu â meincnod'
+      - 'Yn ôl Wythnos: Trydan - o''i gymharu â meincnod'
     group_by_week_electricity_versus_benchmark_line:
       title:
-        - 'Yn ôl Wythnos: Trydan - o''i gymharu â meincnod'
+      - 'Yn ôl Wythnos: Trydan - o''i gymharu â meincnod'
     group_by_week_electricity_versus_benchmark_line_on_y2:
       title:
-        - 'Yn ôl Wythnos: Trydan - o''i gymharu â meincnod'
+      - 'Yn ôl Wythnos: Trydan - o''i gymharu â meincnod'
     group_by_week_gas:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     group_by_week_gas_co2_floor_area:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     group_by_week_gas_kw:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     group_by_week_gas_kwh:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     group_by_week_gas_kwh_pupil:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     group_by_week_gas_library_books:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     group_by_week_gas_meter_breakdown:
       title:
-        - 'Yn ôl Wythnos: Nwy (Dadansoddiad Mesuryddion)'
+      - 'Yn ôl Wythnos: Nwy (Dadansoddiad Mesuryddion)'
     group_by_week_gas_meter_breakdown_one_year:
       title:
-        - 'Yn ôl Wythnos: Nwy (Dadansoddiad Mesuryddion)'
+      - 'Yn ôl Wythnos: Nwy (Dadansoddiad Mesuryddion)'
     group_by_week_gas_model_fitting_one_year:
       title:
-        - 'Yn ôl Wythnos: Nwy (1 flwyddyn)'
+      - 'Yn ôl Wythnos: Nwy (1 flwyddyn)'
     group_by_week_gas_model_fitting_unlimited:
       title:
-        - 'Yn ôl Wythnos: Nwy (holl ddata)'
+      - 'Yn ôl Wythnos: Nwy (holl ddata)'
     group_by_week_gas_unlimited:
       title:
-        - 'Yn ôl Wythnos: Nwy (aml-flwyddyn)'
+      - 'Yn ôl Wythnos: Nwy (aml-flwyddyn)'
     group_by_week_gas_versus_benchmark:
       title:
-        - 'Yn ôl Wythnos: Nwy - o''i gymharu â meincnod'
+      - 'Yn ôl Wythnos: Nwy - o''i gymharu â meincnod'
     group_by_year_gas_unlimited_meter_breakdown_heating_model_fitter:
       title:
-        - Dadansoddiad mesurydd nwy fesul blwyddyn
+      - Dadansoddiad mesurydd nwy fesul blwyddyn
     heating_on_by_week_with_breakdown:
       title:
-        - Dadansoddiad tymor gwresogi
+      - Dadansoddiad tymor gwresogi
     heating_on_by_week_with_breakdown_school_day_only:
       title:
-        - Dadansoddiad tymor gwresogi
+      - Dadansoddiad tymor gwresogi
     heating_on_by_week_with_breakdown_storage_heaters:
       title:
-        - Dadansoddiad tymor gwresogi
+      - Dadansoddiad tymor gwresogi
     heating_on_off_by_week:
       title:
-        - Dadansoddiad tymor gwresogi
+      - Dadansoddiad tymor gwresogi
     heating_on_off_by_week_heating_school_days_and_holidays_only:
       title:
-        - Dadansoddiad tymor gwresogi
+      - Dadansoddiad tymor gwresogi
     heating_on_off_by_week_heating_school_non_school_days_only:
       title:
-        - Dadansoddiad tymor gwresogi
+      - Dadansoddiad tymor gwresogi
     heating_on_off_by_week_storage_heater:
       title:
-        - Sawl diwrnod mae'r gwres ymlaen yn ystod y flwyddyn
+      - Sawl diwrnod mae'r gwres ymlaen yn ystod y flwyddyn
     heating_on_off_by_week_with_breakdown_all:
       title:
-        - Dadansoddiad tymor gwresogi
+      - Dadansoddiad tymor gwresogi
     heating_on_off_pie_chart:
       title:
-        - Defnydd nwy ar ddiwrnod gyda gwers yn erbyn heb wres
+      - Defnydd nwy ar ddiwrnod gyda gwers yn erbyn heb wres
     hot_water_kitchen_on_off_by_week_with_breakdown:
       title:
-        - Dadansoddiad tymor gwresogi
+      - Dadansoddiad tymor gwresogi
     hotwater:
       title:
-        - Dadansoddiad Dŵr Poeth
+      - Dadansoddiad Dŵr Poeth
     hotwater_alert:
       title:
-        - Dadansoddiad Dŵr Poeth
+      - Dadansoddiad Dŵr Poeth
     intraday_electricity_simulator_actual_for_comparison:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd (Gwirioneddol)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd (Gwirioneddol)'
     intraday_electricity_simulator_air_conditioning_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Aerdymheru)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Aerdymheru)'
     intraday_electricity_simulator_boiler_pump_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Pympiau Boeler)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Pympiau Boeler)'
     intraday_electricity_simulator_flood_lighting_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau Llifogydd)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau Llifogydd)'
     intraday_electricity_simulator_ict:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: (Gweinyddion TGCh, Cyfrifiaduron, Gliniaduron)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: (Gweinyddion TGCh, Cyfrifiaduron, Gliniaduron)'
     intraday_electricity_simulator_kitchen_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Cegin)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Cegin)'
     intraday_electricity_simulator_lighting_kw:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau)'
     intraday_electricity_simulator_lighting_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau)'
     intraday_electricity_simulator_security_lighting_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau Diogelwch)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau Diogelwch)'
     intraday_electricity_simulator_simulator_for_comparison:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd (Efelychydd)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd (Efelychydd)'
     intraday_electricity_simulator_solar_pv_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Solar  Ffotofoltaig)'
+      - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Solar  Ffotofoltaig)'
     intraday_line_holidays:
       title:
-        - O fewn diwrnod (gwyliau)
+      - O fewn diwrnod (gwyliau)
     intraday_line_school_days:
       title:
-        - O fewn diwrnod (diwrnodau ysgol) - cymhariaeth o'r 2 flynedd ddiwethaf
+      - O fewn diwrnod (diwrnodau ysgol) - cymhariaeth o'r 2 flynedd ddiwethaf
     intraday_line_school_days_6months:
       title:
-        - O fewn diwrnod (Cymharu 6 mis ar wahân)
+      - O fewn diwrnod (Cymharu 6 mis ar wahân)
     intraday_line_school_days_6months_simulator:
       title:
-        - O fewn diwrnod (Cymharu 6 mis ar wahân) Efelychydd
+      - O fewn diwrnod (Cymharu 6 mis ar wahân) Efelychydd
     intraday_line_school_days_6months_simulator_submeters:
       title:
-        - O fewn diwrnod (Cymharu 6 mis ar wahân) Efelychydd
+      - O fewn diwrnod (Cymharu 6 mis ar wahân) Efelychydd
     intraday_line_school_days_6months_test_delete:
       title:
-        - O fewn diwrnod (Cymharu 6 mis ar wahân)
+      - O fewn diwrnod (Cymharu 6 mis ar wahân)
     intraday_line_school_days_gas_reduced_data_versus_benchmarks:
       title:
-        - 'Yn ôl Wythnos: Nwy - o''i gymharu â meincnod - o fewn dydd'
+      - 'Yn ôl Wythnos: Nwy - o''i gymharu â meincnod - o fewn dydd'
     intraday_line_school_days_last5weeks:
       title:
-        - Yn ystod y dydd (cymhariaeth y 5 wythnos diwethaf - diwrnod ysgol)
+      - Yn ystod y dydd (cymhariaeth y 5 wythnos diwethaf - diwrnod ysgol)
     intraday_line_school_days_reduced_data:
       title:
-        - O fewn diwrnod (diwrnodau ysgol) - cymhariaeth o'r 2 flynedd ddiwethaf
+      - O fewn diwrnod (diwrnodau ysgol) - cymhariaeth o'r 2 flynedd ddiwethaf
     intraday_line_school_days_reduced_data_versus_benchmarks:
       title:
-        - Cymharu defnydd o fewn diwrnod â meincnodau
+      - Cymharu defnydd o fewn diwrnod â meincnodau
     intraday_line_school_last7days:
       title:
-        - O fewn diwrnod (7 diwrnod diwethaf)
+      - O fewn diwrnod (7 diwrnod diwethaf)
     intraday_line_school_last7days_storage_heaters:
       title:
-        - Defnydd pŵer stôr-wresogydd am y 7 diwrnod diwethaf
+      - Defnydd pŵer stôr-wresogydd am y 7 diwrnod diwethaf
     intraday_line_weekends:
       title:
-        - O fewn diwrnod (penwythnosau)
+      - O fewn diwrnod (penwythnosau)
     irradiance_test:
       title:
-        - Gwirio Echel Y2 Arbelydru Solar
+      - Gwirio Echel Y2 Arbelydru Solar
     last_2_school_weeks_electricity_comparison_alert:
       title:
-        - Cymhariaeth o ddefnydd trydan y 2 wythnos ysgol ddiwethaf
+      - Cymhariaeth o ddefnydd trydan y 2 wythnos ysgol ddiwethaf
     last_2_weeks_carbon_emissions:
       title:
-        - Allyriadau carbon yn eich ysgol o drydan a nwy am y 2 wythnos diwethaf
+      - Allyriadau carbon yn eich ysgol o drydan a nwy am y 2 wythnos diwethaf
     last_2_weeks_gas:
       title:
-        - Defnydd nwy am y 2 wythnos ddiwethaf (gyda thymheredd)
+      - Defnydd nwy am y 2 wythnos ddiwethaf (gyda thymheredd)
     last_2_weeks_gas_comparison:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf
     last_2_weeks_gas_comparison_temperature_compensated:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
     last_2_weeks_gas_degreedays:
       title:
-        - Defnydd nwy am y 2 wythnos ddiwethaf (gyda diwrnodau gradd)
+      - Defnydd nwy am y 2 wythnos ddiwethaf (gyda diwrnodau gradd)
     last_4_weeks_gas_temperature_compensated:
       title:
-        - Defnydd nwy am y 4 wythnos ddiwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
+      - Defnydd nwy am y 4 wythnos ddiwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
     last_7_days_intraday_gas:
       title:
-        - Nwy o fewn diwrnod (7 diwrnod diwethaf)
+      - Nwy o fewn diwrnod (7 diwrnod diwethaf)
     management_dashboard_group_by_month_solar_pv:
       title:
-        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
+      - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     management_dashboard_group_by_month_solar_pv_unlimited:
       title:
-        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
+      - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     management_dashboard_group_by_week_electricity:
       title:
-        - 'Yn ôl Wythnos: Trydan'
+      - 'Yn ôl Wythnos: Trydan'
     management_dashboard_group_by_week_gas:
       title:
-        - 'Yn ôl Wythnos: Nwy'
+      - 'Yn ôl Wythnos: Nwy'
     management_dashboard_group_by_week_storage_heater:
       title:
-        - Gwybodaeth am ddefnydd o stôr-wresogyddion trydan eich ysgol
+      - Gwybodaeth am ddefnydd o stôr-wresogyddion trydan eich ysgol
     meter_breakdown_pie_1_year:
       title:
-        - 'Dadansoddiad yn ôl mesurydd (eleni): Nwy'
+      - 'Dadansoddiad yn ôl mesurydd (eleni): Nwy'
     optimum_start:
       title:
-        - Gwiriad Rheoli Cychwyn Gorau Posibl
+      - Gwiriad Rheoli Cychwyn Gorau Posibl
     peak_kw:
       title:
-        - Defnydd pŵer dyddiol uchaf (kW)
+      - Defnydd pŵer dyddiol uchaf (kW)
     pupil_dashboard_baseload_lastyear:
       title:
-        - Llwyth sylfaenol trydan eich ysgol. Dyma bŵer a ddefnyddir pan fo’r ysgol yn wag (kW)
-        - Defnydd pŵer trydan ar eich diwrnod dewisol (mewn kW)
+      - Llwyth sylfaenol trydan eich ysgol. Dyma bŵer a ddefnyddir pan fo’r ysgol yn wag (kW)
+      - Defnydd pŵer trydan ar eich diwrnod dewisol (mewn kW)
     pupil_dashboard_daytype_breakdown_electricity:
       title:
-        - Pan ddefnyddiodd eich ysgol drydan dros y flwyddyn ddiwethaf. Diwrnod ysgol ar gau yw'r trydan a ddefnyddir gyda'r nos ac yn gynnar yn y boreau yn ystod y tymor.
+      - Pan ddefnyddiodd eich ysgol drydan dros y flwyddyn ddiwethaf. Diwrnod ysgol ar gau yw'r trydan a ddefnyddir gyda'r nos ac yn gynnar yn y boreau yn ystod y tymor.
     pupil_dashboard_daytype_breakdown_gas:
       title:
-        - Pan ddefnyddiodd eich ysgol nwy dros y flwyddyn ddiwethaf. Diwrnod ysgol ar gau yw'r nwy a ddefnyddir gyda'r nos ac yn gynnar yn y bore yn ystod y tymor.
+      - Pan ddefnyddiodd eich ysgol nwy dros y flwyddyn ddiwethaf. Diwrnod ysgol ar gau yw'r nwy a ddefnyddir gyda'r nos ac yn gynnar yn y bore yn ystod y tymor.
     pupil_dashboard_daytype_breakdown_storage_heaters:
       title:
-        - Pan ddefnyddiodd eich ysgol stôr-wresogyddion dros y flwyddyn ddiwethaf. Diwrnod ysgol ar gau yw'r gwresogyddion storio a ddefnyddir gyda'r nos ac yn gynnar yn y bore yn ystod y tymor.
+      - Pan ddefnyddiodd eich ysgol stôr-wresogyddion dros y flwyddyn ddiwethaf. Diwrnod ysgol ar gau yw'r gwresogyddion storio a ddefnyddir gyda'r nos ac yn gynnar yn y bore yn ystod y tymor.
     pupil_dashboard_electricity_benchmark:
       title:
-        - Faint mae fy ysgol yn ei wario ar drydan o gymharu ag ysgolion eraill (£)
+      - Faint mae fy ysgol yn ei wario ar drydan o gymharu ag ysgolion eraill (£)
     pupil_dashboard_electricity_longterm_trend_£:
       title:
-        - Costau trydan tymor hir eich ysgol (£). Mae pob bar yn dangos costau blwyddyn.
-        - Costau trydan eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
-        - Costau trydan yn eich wythnos a ddewisir (mewn £)
-        - Costau trydan ar eich diwrnod a ddewisir (mewn £)
+      - Costau trydan tymor hir eich ysgol (£). Mae pob bar yn dangos costau blwyddyn.
+      - Costau trydan eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
+      - Costau trydan yn eich wythnos a ddewisir (mewn £)
+      - Costau trydan ar eich diwrnod a ddewisir (mewn £)
     pupil_dashboard_gas_benchmark:
       title:
-        - Faint mae fy ysgol yn ei wario ar nwy o gymharu ag ysgolion eraill (£)
+      - Faint mae fy ysgol yn ei wario ar nwy o gymharu ag ysgolion eraill (£)
     pupil_dashboard_gas_longterm_trend_£:
       title:
-        - Costau nwy tymor hir eich ysgol (£). Mae pob bar yn dangos costau blwyddyn.
-        - Costau nwy eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
-        - Costau nwy yn eich wythnos a ddewisir (mewn £)
-        - Costau nwy ar eich diwrnod a ddewisir (mewn £)
+      - Costau nwy tymor hir eich ysgol (£). Mae pob bar yn dangos costau blwyddyn.
+      - Costau nwy eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
+      - Costau nwy yn eich wythnos a ddewisir (mewn £)
+      - Costau nwy ar eich diwrnod a ddewisir (mewn £)
     pupil_dashboard_group_by_week_electricity_co2:
       title:
-        - Allyriadau carbon eich ysgol o ddefnydd trydan dros flwyddyn (mewn kg CO2). Mae pob bar yn dangos allyriadau wythnos.
-        - Allyriadau carbon trydan yn eich wythnos a ddewisir (mewn kg CO2)
-        - Allyriadau carbon trydan ar eich diwrnod a ddewisir (mewn kg CO2)
+      - Allyriadau carbon eich ysgol o ddefnydd trydan dros flwyddyn (mewn kg CO2). Mae pob bar yn dangos allyriadau wythnos.
+      - Allyriadau carbon trydan yn eich wythnos a ddewisir (mewn kg CO2)
+      - Allyriadau carbon trydan ar eich diwrnod a ddewisir (mewn kg CO2)
     pupil_dashboard_group_by_week_electricity_kwh:
       title:
-        - Defnydd trydan eich ysgol dros flwyddyn (mewn kWh). Mae pob bar yn dangos wythnos o ddefnydd
-        - Costau trydan yn eich wythnos a ddewisir (mewn £)
-        - Costau trydan ar eich diwrnod a ddewisir (mewn £)
+      - Defnydd trydan eich ysgol dros flwyddyn (mewn kWh). Mae pob bar yn dangos wythnos o ddefnydd
+      - Costau trydan yn eich wythnos a ddewisir (mewn £)
+      - Costau trydan ar eich diwrnod a ddewisir (mewn £)
     pupil_dashboard_group_by_week_electricity_£:
       title:
-        - Costau trydan eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
-        - Costau trydan yn eich wythnos a ddewisir (mewn £)
-        - Costau trydan ar eich diwrnod a ddewisir (mewn £)
+      - Costau trydan eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
+      - Costau trydan yn eich wythnos a ddewisir (mewn £)
+      - Costau trydan ar eich diwrnod a ddewisir (mewn £)
     pupil_dashboard_group_by_week_gas_co2:
       title:
-        - Allyriadau carbon eich ysgol o ddefnydd nwy dros flwyddyn (mewn kg CO2). Mae pob bar yn dangos allyriadau wythnos.
-        - Allyriadau carbon nwy yn eich wythnos a ddewisir (mewn kg CO2)
-        - Allyriadau carbon nwy ar eich diwrnod a ddewisir (mewn kg CO2)
+      - Allyriadau carbon eich ysgol o ddefnydd nwy dros flwyddyn (mewn kg CO2). Mae pob bar yn dangos allyriadau wythnos.
+      - Allyriadau carbon nwy yn eich wythnos a ddewisir (mewn kg CO2)
+      - Allyriadau carbon nwy ar eich diwrnod a ddewisir (mewn kg CO2)
     pupil_dashboard_group_by_week_gas_kwh:
       title:
-        - Defnydd nwy eich ysgol dros flwyddyn (mewn kWh). Mae pob bar yn dangos wythnos o ddefnydd.
-        - Defnydd nwy yn eich wythnos a ddewisir (mewn kWh)
-        - Defnydd nwy ar eich diwrnod a ddewisir (mewn kWh)
+      - Defnydd nwy eich ysgol dros flwyddyn (mewn kWh). Mae pob bar yn dangos wythnos o ddefnydd.
+      - Defnydd nwy yn eich wythnos a ddewisir (mewn kWh)
+      - Defnydd nwy ar eich diwrnod a ddewisir (mewn kWh)
     pupil_dashboard_group_by_week_gas_£:
       title:
-        - Costau nwy eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
-        - Costau nwy yn eich wythnos a ddewisir (mewn £)
-        - Costau nwy ar eich diwrnod a ddewisir (mewn £)
+      - Costau nwy eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
+      - Costau nwy yn eich wythnos a ddewisir (mewn £)
+      - Costau nwy ar eich diwrnod a ddewisir (mewn £)
     pupil_dashboard_group_by_week_storage_heaters_co2:
       title:
-        - Allyriadau carbon eich ysgol o ddefnyddio stôr-wresogyddion dros flwyddyn (mewn kg CO2). Mae pob bar yn dangos allyriadau wythnos.
-        - Allyriadau carbon stôr-wresogyddion yn eich wythnos a ddewisir (mewn kg CO2)
-        - Allyriadau carbon stôr-wresogyddion ar eich diwrnod a ddewisir (mewn kg CO2)
+      - Allyriadau carbon eich ysgol o ddefnyddio stôr-wresogyddion dros flwyddyn (mewn kg CO2). Mae pob bar yn dangos allyriadau wythnos.
+      - Allyriadau carbon stôr-wresogyddion yn eich wythnos a ddewisir (mewn kg CO2)
+      - Allyriadau carbon stôr-wresogyddion ar eich diwrnod a ddewisir (mewn kg CO2)
     pupil_dashboard_group_by_week_storage_heaters_kwh:
       title:
-        - Defnydd stôr-wresogyddion eich ysgol dros flwyddyn (mewn kWh). Mae pob bar yn dangos defnydd wythnos.
-        - Defnydd stôr-wresogyddion yn eich wythnos a ddewisir (mewn kWh)
-        - Defnydd stôr-wresogyddion ar eich diwrnod a ddewisir (mewn kWh)
+      - Defnydd stôr-wresogyddion eich ysgol dros flwyddyn (mewn kWh). Mae pob bar yn dangos defnydd wythnos.
+      - Defnydd stôr-wresogyddion yn eich wythnos a ddewisir (mewn kWh)
+      - Defnydd stôr-wresogyddion ar eich diwrnod a ddewisir (mewn kWh)
     pupil_dashboard_group_by_week_storage_heaters_£:
       title:
-        - Costau stôr-wresogyddion eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
-        - Costau stôr-wresogyddion yn eich wythnos a ddewisir (mewn £)
-        - Costau stôr-wresogyddion ar eich diwrnod a ddewisir (mewn £)
+      - Costau stôr-wresogyddion eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
+      - Costau stôr-wresogyddion yn eich wythnos a ddewisir (mewn £)
+      - Costau stôr-wresogyddion ar eich diwrnod a ddewisir (mewn £)
     pupil_dashboard_intraday_line_electricity_last7days:
       title:
-        - Defnydd trydan eich ysgol dros 7 diwrnod (kW)
+      - Defnydd trydan eich ysgol dros 7 diwrnod (kW)
     pupil_dashboard_intraday_line_gas_last7days:
       title:
-        - Defnydd nwy eich ysgol dros 7 diwrnod (kW)
+      - Defnydd nwy eich ysgol dros 7 diwrnod (kW)
     pupil_dashboard_intraday_line_storage_heaters_last7days:
       title:
-        - Defnydd stôr-wresogyddion eich ysgol dros 7 diwrnod (kW)
+      - Defnydd stôr-wresogyddion eich ysgol dros 7 diwrnod (kW)
     pupil_dashboard_solar_pv_benchmark:
       title:
-        - Faint mae fy ysgol yn ei wario ar drydan o gymharu ag ysgolion eraill (£)
+      - Faint mae fy ysgol yn ei wario ar drydan o gymharu ag ysgolion eraill (£)
     pupil_dashboard_solar_pv_monthly:
       title:
-        - Sut mae paneli solar ffotofoltaig fy ysgol yn lleihau defnydd fy ysgol o drydan o'r prif gyflenwad (kWh)
-        - Effaith Solar ffotofoltaig yn eich mis a ddewisir (mewn kWh)
-        - Effaith Solar ffotofoltaig ar eich diwrnod a ddewisir (mewn kWh)
+      - Sut mae paneli solar ffotofoltaig fy ysgol yn lleihau defnydd fy ysgol o drydan o'r prif gyflenwad (kWh)
+      - Effaith Solar ffotofoltaig yn eich mis a ddewisir (mewn kWh)
+      - Effaith Solar ffotofoltaig ar eich diwrnod a ddewisir (mewn kWh)
     pupil_dashboard_solar_pv_one_week_by_day:
       title:
-        - Solar ffotofoltaig ar gyfer yr wythnos ddiwethaf
+      - Solar ffotofoltaig ar gyfer yr wythnos ddiwethaf
     pupil_dashboard_solar_pv_one_week_by_day_previous_week:
       title:
-        - Solar ffotofoltaig ar gyfer yr wythnos flaenorol
+      - Solar ffotofoltaig ar gyfer yr wythnos flaenorol
     pupil_dashboard_storage_heaters_benchmark:
       title:
-        - Faint mae fy ysgol yn ei wario ar stôr-wresogyddion o gymharu ag ysgolion eraill (£)
+      - Faint mae fy ysgol yn ei wario ar stôr-wresogyddion o gymharu ag ysgolion eraill (£)
     pupil_dashboard_storage_heaters_longterm_trend_£:
       title:
-        - Costau stôr-wresogyddion hirdymor eich ysgol (£). Mae pob bar yn dangos costau blwyddyn.
-        - Costau stôr-wresogyddion eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
-        - Costau stôr-wresogyddion yn eich wythnos a ddewisir (mewn £)
-        - Costau stôr-wresogyddion ar eich diwrnod a ddewisir (mewn £)
+      - Costau stôr-wresogyddion hirdymor eich ysgol (£). Mae pob bar yn dangos costau blwyddyn.
+      - Costau stôr-wresogyddion eich ysgol dros flwyddyn (mewn £). Mae pob bar yn dangos costau wythnos.
+      - Costau stôr-wresogyddion yn eich wythnos a ddewisir (mewn £)
+      - Costau stôr-wresogyddion ar eich diwrnod a ddewisir (mewn £)
     recent_holiday_electricity_comparison_alert:
       title:
-        - Cymhariaeth defnydd o drydan ar gyfer gwyliau diweddar
+      - Cymhariaeth defnydd o drydan ar gyfer gwyliau diweddar
     schoolweek_alert_2_previous_holiday_comparison_gas_adjusted:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd wedi'i addasu i'r tymheredd
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd wedi'i addasu i'r tymheredd
     schoolweek_alert_2_week_comparison_for_internal_calculation_gas_adjusted:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd wedi'i addasu i'r tymheredd
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd wedi'i addasu i'r tymheredd
     schoolweek_alert_2_week_comparison_for_internal_calculation_gas_adjusted_community_only:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd wedi'i addasu gan dymheredd, defnydd cymunedol yn unig
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd wedi'i addasu gan dymheredd, defnydd cymunedol yn unig
     schoolweek_alert_2_week_comparison_for_internal_calculation_gas_unadjusted:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd heb ei addasu
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd heb ei addasu
     schoolweek_alert_2_week_comparison_for_internal_calculation_gas_unadjusted_community_only:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd heb ei addasu gan dymheredd, defnydd cymunedol yn unig
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos ddiwethaf - cyfrifiad rhybudd heb ei addasu gan dymheredd, defnydd cymunedol yn unig
     seasonal_simple_school_day_non_heating_non_regression:
       title:
-        - Thermostatig (Diwrnod Ysgol) - gwresogi -  heb atchweliad gwahanu di-wres
+      - Thermostatig (Diwrnod Ysgol) - gwresogi -  heb atchweliad gwahanu di-wres
     seasonal_simple_school_day_non_heating_regression:
       title:
-        - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres
+      - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres
     seasonal_simple_school_day_non_heating_regression_covid_tolerant:
       title:
-        - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres, yn ystyried covid
+      - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres, yn ystyried covid
     solar_pv_group_by_month:
       title:
-        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
+      - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     solar_pv_group_by_month_dashboard_overview:
       title:
-        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
+      - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     solar_pv_group_by_week:
       title:
-        - Solar ffotofoltaig yn ôl wythnos o'r flwyddyn
+      - Solar ffotofoltaig yn ôl wythnos o'r flwyddyn
     solar_pv_group_by_week_by_submeter:
       title:
-        - Solar ffotofoltaig yn ôl wythnos o'r flwyddyn
+      - Solar ffotofoltaig yn ôl wythnos o'r flwyddyn
     solar_pv_last_7_days_by_submeter:
       title:
-        - Defnydd trydan eich ysgol yn y 7 diwrnod diwethaf
+      - Defnydd trydan eich ysgol yn y 7 diwrnod diwethaf
     solar_pv_single_day_adhoc_test:
       title:
-        - Siart prawf solar ffotofoltaig undydd ad hoc
+      - Siart prawf solar ffotofoltaig undydd ad hoc
     storage_heater_by_day_of_week:
       title:
-        - Defnydd stôr-wresogyddion yn ôl diwrnod yr wythnos
+      - Defnydd stôr-wresogyddion yn ôl diwrnod yr wythnos
     storage_heater_by_day_of_week_tolerant:
       title:
-        - Defnydd stôr-wresogyddion yn ôl diwrnod yr wythnos
+      - Defnydd stôr-wresogyddion yn ôl diwrnod yr wythnos
     storage_heater_group_by_week:
       title:
-        - Gwybodaeth am y defnydd o drydan stôr-wresogyddion eich ysgol
+      - Gwybodaeth am y defnydd o drydan stôr-wresogyddion eich ysgol
     storage_heater_group_by_week_long_term:
       title:
-        - Defnydd trydan stôr-wresogyddion dros gyfnod hwy o amser
+      - Defnydd trydan stôr-wresogyddion dros gyfnod hwy o amser
     storage_heater_intraday_current_year:
       title:
-        - Defnydd pŵer stôr-wresogyddion
+      - Defnydd pŵer stôr-wresogyddion
     storage_heater_intraday_current_year_kw:
       title:
-        - Proffil o fewn dydd stôr-wresogyddion (kw) am y flwyddyn hyd yma
+      - Proffil o fewn dydd stôr-wresogyddion (kw) am y flwyddyn hyd yma
     storage_heater_thermostatic:
       title:
-        - Rheolaeth thermostatig
+      - Rheolaeth thermostatig
     targeting_and_tracking_standard_group_by_week_electricity:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
     targeting_and_tracking_standard_group_by_week_gas:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
     targeting_and_tracking_standard_group_by_week_storage_heater:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
     targeting_and_tracking_synthetic_target_group_by_week_electricity:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
     targeting_and_tracking_synthetic_target_group_by_week_gas:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
     targeting_and_tracking_synthetic_target_group_by_week_storage_heater:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
     targeting_and_tracking_target_only_group_by_week_electricity:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
     targeting_and_tracking_target_only_group_by_week_gas:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
     targeting_and_tracking_target_only_group_by_week_storage_heater:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
     targeting_and_tracking_unscaled_target_group_by_week_electricity:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
     targeting_and_tracking_unscaled_target_group_by_week_gas:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
     targeting_and_tracking_unscaled_target_group_by_week_storage_heater:
       title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
+      - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
     targeting_and_tracking_weekly_electricity_one_year_cumulative_line:
       title:
-        - Cynnydd wythnosol yn erbyn y targed hyd yma
+      - Cynnydd wythnosol yn erbyn y targed hyd yma
     targeting_and_tracking_weekly_electricity_one_year_line:
       title:
-        - Cynnydd wythnosol yn erbyn y targed hyd yma
+      - Cynnydd wythnosol yn erbyn y targed hyd yma
     targeting_and_tracking_weekly_electricity_to_date_cumulative_line:
       title:
-        - Cynnydd cronnus yn erbyn targed
+      - Cynnydd cronnus yn erbyn targed
     targeting_and_tracking_weekly_electricity_to_date_line:
       title:
-        - Cynnydd wythnosol yn erbyn targed
+      - Cynnydd wythnosol yn erbyn targed
     targeting_and_tracking_weekly_gas_one_year_line:
       title:
-        - Cynnydd wythnosol yn erbyn y targed hyd yma
+      - Cynnydd wythnosol yn erbyn y targed hyd yma
     targeting_and_tracking_weekly_gas_to_date_cumulative_line:
       title:
-        - Cynnydd cronnus yn erbyn targed
+      - Cynnydd cronnus yn erbyn targed
     targeting_and_tracking_weekly_gas_to_date_line:
       title:
-        - Cynnydd wythnosol yn erbyn targed
+      - Cynnydd wythnosol yn erbyn targed
     targeting_and_tracking_weekly_storage_heater_one_year_line:
       title:
-        - Cynnydd wythnosol yn erbyn y targed hyd yma
+      - Cynnydd wythnosol yn erbyn y targed hyd yma
     targeting_and_tracking_weekly_storage_heater_to_date_cumulative_line:
       title:
-        - Cynnydd cronnus yn erbyn targed
+      - Cynnydd cronnus yn erbyn targed
     targeting_and_tracking_weekly_storage_heater_to_date_line:
       title:
-        - Cynnydd wythnosol yn erbyn targed
+      - Cynnydd wythnosol yn erbyn targed
     teachers_landing_page_electricity:
       title:
-        - Cymhariaeth o ddefnydd trydan y 2 wythnos diwethaf
+      - Cymhariaeth o ddefnydd trydan y 2 wythnos diwethaf
     teachers_landing_page_gas:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos diwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos diwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
     teachers_landing_page_gas_simple:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos diwethaf
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos diwethaf
     teachers_landing_page_storage_heaters:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos diwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos diwethaf - wedi'i addasu ar gyfer tymheredd y tu allan
     teachers_landing_page_storage_heaters_simple:
       title:
-        - Cymhariaeth o ddefnydd nwy y 2 wythnos diwethaf
+      - Cymhariaeth o ddefnydd nwy y 2 wythnos diwethaf
     temp_test:
       title:
-        - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
+      - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
     temp_test2:
       title:
-        - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
+      - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
     thermostatic:
       title:
-        - Thermostatig (Tymheredd yn erbyn Defnydd Dyddiol - y flwyddyn gyfredol)
+      - Thermostatig (Tymheredd yn erbyn Defnydd Dyddiol - y flwyddyn gyfredol)
     thermostatic_control_large_diurnal_range:
       title:
-        - Rheolaeth Thermostatig Asesiad Amrediad Dyddiol Mawr
+      - Rheolaeth Thermostatig Asesiad Amrediad Dyddiol Mawr
     thermostatic_control_large_diurnal_range_1:
       title:
-        - Rheolaeth Thermostatig Asesiad Amrediad Dyddiol Mawr 1
+      - Rheolaeth Thermostatig Asesiad Amrediad Dyddiol Mawr 1
     thermostatic_control_large_diurnal_range_2:
       title:
-        - Rheolaeth Thermostatig Asesiad Amrediad Dyddiol Mawr 2
+      - Rheolaeth Thermostatig Asesiad Amrediad Dyddiol Mawr 2
     thermostatic_control_large_diurnal_range_3:
       title:
-        - Rheolaeth Thermostatig Asesiad Amrediad Dyddiol Mawr 3
+      - Rheolaeth Thermostatig Asesiad Amrediad Dyddiol Mawr 3
     thermostatic_control_medium_diurnal_range:
       title:
-        - Asesiad Ystod Dyddiol Canolig Rheolaeth Thermostatig
+      - Asesiad Ystod Dyddiol Canolig Rheolaeth Thermostatig
     thermostatic_model_by_week:
       title:
-        - Math model thermostatig yn ôl wythnos
+      - Math model thermostatig yn ôl wythnos
     thermostatic_model_categories_pie_chart:
       title:
-        - Defnydd wedi'i gategoreiddio yn ôl model
+      - Defnydd wedi'i gategoreiddio yn ôl model
     thermostatic_non_best:
       title:
-        - Thermostatig (Dyddiau o ddefnydd lleiaf posib)
+      - Thermostatig (Dyddiau o ddefnydd lleiaf posib)
     thermostatic_non_heating_deprecated:
       title:
-        - Thermostatig (Tymor Di-wres, Diwrnod Ysgol)
+      - Thermostatig (Tymor Di-wres, Diwrnod Ysgol)
     thermostatic_regression:
       title:
-        - Thermostatig (Atchweliad_Profi Model)
+      - Thermostatig (Atchweliad_Profi Model)
     thermostatic_regression_simple_all:
       title:
-        - Thermostatig (Pob Categori) - model syml
+      - Thermostatig (Pob Categori) - model syml
     thermostatic_regression_simple_school_day:
       title:
-        - Thermostatig (Diwrnod Ysgol) - model syml
+      - Thermostatig (Diwrnod Ysgol) - model syml
     thermostatic_regression_simple_school_day_non_heating_non_regression:
       title:
-        - Thermostatig (Diwrnod Ysgol) - gwresogi - gwahanu di-wres heb atchweliad
+      - Thermostatig (Diwrnod Ysgol) - gwresogi - gwahanu di-wres heb atchweliad
     thermostatic_regression_simple_school_day_non_heating_regression:
       title:
-        - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres
+      - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres
     thermostatic_regression_simple_school_day_non_heating_regression_covid_tolerant:
       title:
-        - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres, yn ystyried covid
+      - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres, yn ystyried covid
     thermostatic_regression_thermally_massive_all:
       title:
-        - Thermostatig (Pob Categori) - model thermol enfawr
+      - Thermostatig (Pob Categori) - model thermol enfawr
     thermostatic_regression_thermally_massive_school_day:
       title:
-        - Thermostatig (Diwrnod Ysgol) - model thermol enfawr
+      - Thermostatig (Diwrnod Ysgol) - model thermol enfawr
     thermostatic_summer_school_day_holiday_best:
       title:
-        - Thermostatig (Penwythnos yr Haf a Gwyliau)
+      - Thermostatig (Penwythnos yr Haf a Gwyliau)
     thermostatic_summer_weekend_best:
       title:
-        - Thermostatig (Penwythnos yr Haf a Gwyliau)
+      - Thermostatig (Penwythnos yr Haf a Gwyliau)
     thermostatic_up_to_1_year:
       title:
-        - Thermostatig (Tymheredd yn erbyn Defnydd Dyddiol)
+      - Thermostatig (Tymheredd yn erbyn Defnydd Dyddiol)
     thermostatic_winter_holiday_best:
       title:
-        - Thermostatig (Gwyliau'r Gaeaf)
+      - Thermostatig (Gwyliau'r Gaeaf)
     thermostatic_winter_weekend_best:
       title:
-        - Thermostatig (Penwythnos y Gaeaf)
+      - Thermostatig (Penwythnos y Gaeaf)
     y_axis_label_name:
       co2: kg CO2
       days: dyddiau
@@ -1011,5 +1012,5 @@ cy:
       relative_percent_0dp: canran
       timeofday: Amser o'r dydd
       w: W
-      £: "£"
-      £_0dp: "£"
+      "£": "£"
+      "£_0dp": "£"

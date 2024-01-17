@@ -1,3 +1,4 @@
+---
 cy:
   activities:
     actions:
@@ -23,17 +24,17 @@ cy:
     form:
       adding_a_photo_to_document_your_activity_will_score_you: Bydd ychwanegu llun i ddogfennu eich gweithgaredd yn eich sgorio
       bonus_points:
-        one: pwynt bonws
-        two: pwyntiau bonws
         many: pwyntiau bonws
+        one: pwynt bonws
         other: pwyntiau bonws
+        two: pwyntiau bonws
       build_a_record_message: Gallwch gofnodi gweithgaredd diweddar a gweithgareddau hŷn i adeiladu cofnod o'r holl weithgareddau arbed ynni rydych wedi'u cyflawni fel ysgol
       cancel: Canslo
       completing_this_activity:
-        one: Bydd cwblhau'r gweithgaredd hwn yn ennill 1 pwynt i ti
-        two: Bydd cwblhau'r gweithgaredd hwn yn ennill %{count} bwynt i ti
         many: Bydd cwblhau'r gweithgaredd hwn yn ennill %{count} o bwyntiau i ti
+        one: Bydd cwblhau'r gweithgaredd hwn yn ennill 1 pwynt i ti
         other: Bydd cwblhau'r gweithgaredd hwn yn ennill %{count} o bwyntiau i chi
+        two: Bydd cwblhau'r gweithgaredd hwn yn ennill %{count} bwynt i ti
       how_many_pupils_were_involved_in_this_activity: Faint o ddisgyblion a gymerodd ran yn y gweithgaredd hwn?
       how_would_you_describe_this_activity: Sut byddech chi'n disgrifio'r gweithgaredd hwn
       not_a_standard_activity_message: Gan nad ydych chi'n recordio un o'n gweithgareddau safonol, mae angen i chi ddarparu teitl. Dewiswch deitl clir a fydd yn annog eraill i ddarllen am eich gweithgaredd
@@ -54,24 +55,24 @@ cy:
     page_title: Pob Gweithgaredd
     points:
       and_need_to_score:
-        one: ac angen sgorio %{count} pwynt i gyrraedd safle %{place_to_reach}
-        two: ac angen sgorio %{count} bwynt i gyrraedd safle %{place_to_reach}
         many: ac angen sgorio %{count} o bwyntiau i gyrraedd safle %{place_to_reach}
+        one: ac angen sgorio %{count} pwynt i gyrraedd safle %{place_to_reach}
         other: ac angen sgorio %{count} o bwyntiau i gyrraedd safle %{place_to_reach}
+        two: ac angen sgorio %{count} bwynt i gyrraedd safle %{place_to_reach}
       choose_your_next_activity: Dewiswch eich gweithgaredd nesaf o'r awgrymiadau isod.
       prizes: Gallai ein hysgolion â'r sgorau uchaf eleni ennill hyd at £1250 tuag at welliant arbed ynni o'ch dewis chi
       prizes_link: darllen rhagor
       recorded_this_year:
-        one: Rwyt ti wedi recordio 1 gweithgaredd hyd yn hyn eleni
-        two: Rwyt ti wedi recordio %{count} weithgaredd hyd yn hyn eleni
         many: Rwyt ti wedi recordio %{count} o weithgareddau hyd yn hyn eleni
+        one: Rwyt ti wedi recordio 1 gweithgaredd hyd yn hyn eleni
         other: Rydych wedi recordio %{count} o weithgareddau hyd yn hyn eleni
+        two: Rwyt ti wedi recordio %{count} weithgaredd hyd yn hyn eleni
       school_position: ac mae eich ysgol yn safle %{ordinal_place} ar hyn o bryd.
       you_just_scored:
-        one: Rwyt ti newydd sgorio 1 pwynt!
-        two: Rwyt ti newydd sgorio %{count} bwynt!
         many: Rwyt ti newydd sgorio %{count} o bwyntiau!
+        one: Rwyt ti newydd sgorio 1 pwynt!
         other: Rydych newydd sgorio %{count} o bwyntiau!
+        two: Rwyt ti newydd sgorio %{count} bwynt!
     show:
       activity_description: Disgrifiad o'r gweithgaredd
       all_activities: Pob gweithgaredd

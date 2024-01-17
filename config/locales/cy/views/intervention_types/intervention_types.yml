@@ -1,40 +1,41 @@
+---
 cy:
   intervention_types:
     errors:
       invalid_fuel_type:
-        one: 'math o danwydd annilys:'
-        two: 'mathau o danwydd annilys:'
         many: 'mathau o danwydd annilys:'
+        one: 'math o danwydd annilys:'
         other: 'mathau o danwydd annilys:'
+        two: 'mathau o danwydd annilys:'
     intervention_type_points:
       points_for_this_action:
-        one: pwynt ar gyfer y weithred hon
-        two: o bwyntiau ar gyfer y weithred hon
         many: o bwyntiau ar gyfer y weithred hon
+        one: pwynt ar gyfer y weithred hon
         other: o bwyntiau ar gyfer y weithred hon
+        two: o bwyntiau ar gyfer y weithred hon
     previous_records:
       action: Gweithred
     prompt_score:
       complete_this_action_for_group_html:
-        one: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
-        two: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
         many: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        one: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
         other: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        two: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
       complete_this_action_html:
-        one: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> pwynt i'th ysgol!
-        two: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> bwynt i'th ysgol!
         many: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> o bwyntiau i'th ysgol!
+        one: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> pwynt i'th ysgol!
         other: Cwblhewch y weithred hon i sgorio <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+        two: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> bwynt i'th ysgol!
       record_this_action: Cofnodi'r weithred hon
     search:
       all_actions: Pob gweithred
       no_results_found: Heb ganfod unrhyw ganlyniadau
       pupil_activities: Gweithgareddau disgyblion
       results_found:
-        one: Wedi canfod 1 canlyniad
-        two: Wedi canfod %{count} ganlyniad
         many: Wedi canfod %{count} o ganlyniadau
+        one: Wedi canfod 1 canlyniad
         other: Wedi canfod %{count} o ganlyniadau
+        two: Wedi canfod %{count} ganlyniad
       search: Chwilio
       search_for_actions_by_keyword: Chwilio am gamau gweithredu yn ôl allweddair
       title: Dod o hyd i gamau gweithredu
@@ -43,7 +44,7 @@ cy:
       edit: Golygu
       overview: Trosolwg
       view_related_actions:
-        one: Gweld %{count} weithred gysylltiedig
-        two: Gweld %{count} weithred gysylltiedig
         many: Gweld %{count} o weithredoedd cysylltiedig
+        one: Gweld %{count} weithred gysylltiedig
         other: Gweld %{count} o weithredoedd cysylltiedig
+        two: Gweld %{count} weithred gysylltiedig
