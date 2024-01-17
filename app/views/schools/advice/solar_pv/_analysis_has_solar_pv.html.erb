@@ -30,7 +30,7 @@
   <% c.with_subtitle do %>
     <%= t(
       'advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.subtitle_html',
-      start_date: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+      start_date: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
       end_date: short_dates(@analysis_dates.end_date)
     )
     %>

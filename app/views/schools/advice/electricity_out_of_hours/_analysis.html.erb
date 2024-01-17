@@ -24,7 +24,7 @@
     <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.title') %>
   <% end %>
 
-  <% c.with_subtitle { t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
+  <% c.with_subtitle { t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
 <% end %>
 
 <p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.table_introduction') %></p>
@@ -36,7 +36,7 @@
   <% c.with_title do %>
     <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.title') %>
   <% end %>
-  <% c.with_subtitle { t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
+  <% c.with_subtitle { t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
   <% c.with_footer do %>
     <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.footer') %>
   <% end %>

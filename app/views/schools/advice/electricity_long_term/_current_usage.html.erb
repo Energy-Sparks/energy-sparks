@@ -5,14 +5,19 @@
 <table class="table table-sm advice-table">
   <thead class="thead-dark">
     <th><%= t('advice_pages.tables.columns.period') %></th>
-    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.annual_usage_kwh') %></th>
-    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.annual_usage_co2') %></th>
-    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.annual_usage_gbp') %></th>
+    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_kwh') %></th>
+    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_co2') %></th>
+    <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_gbp') %></th>
     <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.annual_change') %></th>
   </thead>
   <tbody>
     <tr>
-      <td><%= t('advice_pages.electricity_long_term.insights.current_usage.last_year') %></td>
+      <td>
+        <% if analysis_dates.one_years_data? %>
+          <%= t('advice_pages.electricity_long_term.insights.current_usage.last_year') %>
+        <% else %>
+          <%= format_date_range([analysis_dates.start_date, analysis_dates.end_date]) %>
+        <% end %>
       <td class="text-right"><%= format_unit(annual_usage.kwh, :kwh) %></td>
       <td class="text-right"><%= format_unit(annual_usage.co2, :co2) %></td>
       <td class="text-right"><%= format_unit(annual_usage.£, :£) %></td>

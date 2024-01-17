@@ -10,20 +10,13 @@ module Schools
       end
 
       def enough_data?
-        annual_usage_calculator.enough_data?
+        annual_usage_calculator.at_least_x_days_data?(90)
       end
 
-      def data_available_from
-        annual_usage_calculator.data_available_from
-      end
-
-      def annual_usage
-        annual_usage_calculator.annual_usage
-      end
-
-      def annual_usage_change_since_last_year
-        annual_usage_calculator.annual_usage_change_since_last_year
-      end
+      delegate :data_available_from, to: :annual_usage_calculator
+      delegate :date_when_one_years_data, to: :annual_usage_calculator
+      delegate :annual_usage, to: :annual_usage_calculator
+      delegate :annual_usage_change_since_last_year, to: :annual_usage_calculator
 
       def annual_usage_kwh(compare: :benchmark_school)
         annual_usage_benchmark.annual_usage_kwh(compare: compare)
@@ -53,7 +46,6 @@ module Schools
           unit: :kwh
         )
       end
-
 
       private
 
