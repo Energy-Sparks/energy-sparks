@@ -64,6 +64,8 @@ en:
         comparison:
           callout_footer: annual electricity use
           how_do_you_compare: How does your electricity use for the last 12 months compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
+          less_than_a_year: As we have less than a years worth of data for your school we are not yet able to benchmark your electricity consumption against other schools. This comparison will become available on %{available_date}.
+          less_than_a_year_well_managed: A well managed school with the same number of pupils will use %{usage}kWh of electricity in a year.
           more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
           title: How do you compare?
         current_usage:
@@ -76,13 +78,13 @@ en:
       tables:
         columns:
           annual_change: Change since previous year
-          annual_usage_co2: Annual co2 (kg/CO2)
-          annual_usage_gbp: Annual cost (£)
-          annual_usage_kwh: Annual usage (kWh)
           estimated_savings_gbp: Estimated saving (£)
           meter: Meter
           name: Name
           percent: Percent of total use
+          usage_co2: CO2 (kg/CO2)
+          usage_gbp: Cost (£)
+          usage_kwh: Usage (kWh)
         labels:
           all_meters: All meters
       what_is_long_term_use:
