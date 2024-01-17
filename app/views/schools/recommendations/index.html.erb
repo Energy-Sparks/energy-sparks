@@ -2,7 +2,7 @@
 
 <p><%= t('schools.recommendations.intro') %></p>
 
-<%= render 'schools/prompt_to_complete_programme', programmes: @school.programmes.active.started.order(started_on: :desc), style: :compact %>
+<%= render 'schools/prompt_to_complete_programme', programmes: @school.programmes.started.order(started_on: :desc), style: :compact %>
 <%= render 'schools/prompt_join_programme', school: @school, style: :compact %>
 <%= render 'schools/prompt_audit', audit: Audits::AuditService.new(@school).last_audit, style: :compact %>
 

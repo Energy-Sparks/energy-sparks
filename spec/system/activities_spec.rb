@@ -10,8 +10,8 @@ describe 'viewing and recording activities', type: :system do
 
   let(:activity_type_name) { 'Exciting activity' }
   let(:activity_description) { "It's An #{activity_type_name}" }
-
   let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven, score: 25) }
+  let!(:programme) { }
 
   let!(:scoreboard) { create :scoreboard }
   let(:school) { create_active_school(data_enabled: school_data_enabled, scoreboard: scoreboard) }
@@ -178,6 +178,7 @@ describe 'viewing and recording activities', type: :system do
           let(:activities_2024_feature) { true }
 
           it_behaves_like "a task completed page", points: 25, task_type: :activity
+          it_behaves_like "a task completed page with programme complete message"
         end
 
         context "when viewing the activity" do
@@ -196,7 +197,7 @@ describe 'viewing and recording activities', type: :system do
         let(:custom_title) { 'Custom title' }
 
         let(:other_activity_type_name) { 'Exciting activity (please specify)' }
-        let!(:activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
+        let(:activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
 
         before do
           fill_in :activity_title, with: custom_title
@@ -218,6 +219,7 @@ describe 'viewing and recording activities', type: :system do
           let(:activities_2024_feature) { true }
 
           it_behaves_like "a task completed page", points: 25, task_type: :activity
+          it_behaves_like "a task completed page with programme complete message"
         end
 
         context "when viewing the activity" do

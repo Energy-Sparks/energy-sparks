@@ -48,7 +48,8 @@ class Programme < ApplicationRecord
   scope :in_reverse_start_order, -> { started.order(started_on: :desc) }
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
   scope :last_started, -> { in_reverse_start_order.limit(1) }
-  delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
+  scope :recently_ended, ->(date: 1.day.ago) { where('ended_on >= ?', date) }
+  delegate :title, :description, :short_description, :document_link, :image, :bonus_score, to: :programme_type
 
   def points_for_completion
     # Only apply the bonus points if the programme is completed in the same academic year

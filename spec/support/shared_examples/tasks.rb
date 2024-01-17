@@ -33,3 +33,42 @@ RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: 
   it_behaves_like "a complete programme prompt"
   it_behaves_like "a recommended prompt"
 end
+
+RSpec.shared_examples "a task completed page with programme complete message" do
+  context "when there is a programme that contains activity" do
+    let(:activity_types) { [] }
+    let(:programme_type) { create(:programme_type, title: "Super programme!", activity_types: activity_types, bonus_score: 30) }
+    let(:programme) { create(:programme, school: school, programme_type: programme_type) }
+
+    context "when programme is completed" do
+      let(:activity_types) { [activity_type] }
+
+      context "when recently ended" do
+        it 'has programme completed message' do
+          expect(page).to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+        end
+
+        it { expect(page).to have_link("View programme") }
+      end
+    end
+
+    context "when ended over a day ago" do
+      before do
+        programme.update(ended_on: 3.days.ago)
+        refresh
+      end
+
+      it 'does not show programme completed message' do
+        expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+      end
+    end
+
+    context "when programme isn't complete" do
+      let(:activity_types) { [create(:activity_type), activity_type] }
+
+      it 'does not show programme completed message' do
+        expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+      end
+    end
+  end
+end
