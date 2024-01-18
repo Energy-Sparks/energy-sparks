@@ -1,79 +1,95 @@
 require 'rails_helper'
 
-RSpec.describe "electricity long term advice page", type: :system do
-  let(:key) { 'electricity_long_term' }
-  let(:expected_page_title) { "Long term changes in electricity consumption" }
-  include_context "electricity advice page"
+RSpec.describe 'electricity long term advice page' do
+  let(:reading_start_date) { 1.year.ago }
+  let!(:school) do
+    school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
+    create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+    create(:electricity_meter_with_validated_reading_dates,
+           school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
+    school
+  end
 
-  let(:enough_data)  { true }
-  let(:annual_usage) { CombinedUsageMetric.new(kwh: 1000, £: 500, co2: 1500) }
-  let(:annual_usage_vs_benchmark) { CombinedUsageMetric.new(kwh: 800, £: 400, co2: 1300) }
-  let(:annual_usage_vs_exemplar) { CombinedUsageMetric.new(kwh: 500, £: 300, co2: 1000) }
+  before { create(:advice_page, key: :electricity_long_term) }
 
-  let(:savings_vs_benchmark) { CombinedUsageMetric.new(kwh: 200, £: 100, co2: 200) }
-  let(:savings_vs_exemplar) { CombinedUsageMetric.new(kwh: 500, £: 200, co2: 500) }
+  shared_examples 'electricity long term advice page tab' do |tab:|
+    let(:key) { :electricity_long_term }
+    let(:advice_page) { AdvicePage.find_by(key: key) }
+    let(:expected_page_title) { 'Long term changes in electricity consumption' }
+
+    it_behaves_like 'an advice page tab', tab: tab
+  end
 
   context 'as school admin' do
-    let(:user) { create(:school_admin, school: school) }
-
     before do
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive_messages(
-        enough_data?: enough_data,
-        annual_usage: annual_usage
-      )
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_vs_benchmark).with(compare: :benchmark_school).and_return(annual_usage_vs_benchmark)
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_vs_benchmark).with(compare: :exemplar_school).and_return(annual_usage_vs_exemplar)
-
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:estimated_savings).with(versus: :benchmark_school).and_return(annual_usage_vs_benchmark)
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:estimated_savings).with(versus: :exemplar_school).and_return(annual_usage_vs_exemplar)
-
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_kwh).with(compare: :benchmark_school).and_return(annual_usage_vs_benchmark.kwh)
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_kwh).with(compare: :exemplar_school).and_return(annual_usage_vs_exemplar.kwh)
-
-      sign_in(user)
+      sign_in(create(:school_admin, school: school))
       visit school_advice_electricity_long_term_path(school)
     end
 
-    it_behaves_like "an advice page tab", tab: "Insights"
+    context 'with the default tab' do
+      it_behaves_like 'electricity long term advice page tab', tab: 'Insights'
+    end
 
-    context "clicking the 'Insights' tab" do
+    context "when on the 'Insights' tab" do
       before do
         click_on 'Insights'
       end
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      context 'with more than 90 days of meter data' do
+        let(:reading_start_date) { 90.days.ago }
 
-      it 'includes expected sections' do
-        expect(page).to have_content("Tracking long term trends")
-        expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.current_usage.title'))
-        expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.comparison.title'))
+        it_behaves_like 'electricity long term advice page tab', tab: 'Insights'
+
+        it 'includes expected sections' do
+          expect(page).to have_content('Tracking long term trends')
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.current_usage.title'))
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.comparison.title'))
+        end
+
+        it 'includes expected data' do
+          expect(page).to have_content('2,200') # kWh
+          expect(page).to have_content('£220')
+          expect(page).to have_content('360') # CO2
+          expect(page).to have_content('220kWh')
+        end
+
+        it 'excludes the comparison' do
+          expect(page).to have_no_css('#electricity-comparison')
+        end
       end
 
-      it 'includes expected data' do
-        expect(page).to have_content("1,000")
-        expect(page).to have_content("£500")
-        expect(page).to have_content("1,500")
+      context 'with more than a years meter data' do
+        it_behaves_like 'electricity long term advice page tab', tab: 'Insights'
 
-        expect(page).to have_content("500")
-        expect(page).to have_content("800")
-      end
+        it 'includes expected sections' do
+          expect(page).to have_content('Tracking long term trends')
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.current_usage.title'))
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.comparison.title'))
+        end
 
-      it 'includes the comparison' do
-        expect(page).to have_css('#electricity-comparison')
+        it 'includes expected data' do
+          expect(page).to have_content('8,700') # kWh
+          expect(page).to have_content('£870')
+          expect(page).to have_content('1,400') # CO2
+          expect(page).to have_content("Exemplar\n<190 kWh")
+          expect(page).to have_content("Well managed\n<220 kWh")
+        end
+
+        it 'includes the comparison' do
+          expect(page).to have_css('#electricity-comparison')
+        end
       end
     end
 
-    context "clicking the 'Analysis' tab" do
-      before do
-        click_on 'Analysis'
-      end
+    context "when on the 'Analysis' tab" do
+      before { click_on 'Analysis' }
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'electricity long term advice page tab', tab: 'Analysis'
 
       it 'includes expected sections' do
         expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.recent_trend.title'))
         expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.title'))
-        expect(page).not_to have_content(I18n.t('advice_pages.electricity_long_term.analysis.meter_breakdown.title'))
+        expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.meter_breakdown.title'))
       end
 
       it 'says usage is high' do
@@ -85,16 +101,16 @@ RSpec.describe "electricity long term advice page", type: :system do
         expect(page).to have_css('#chart_wrapper_group_by_week_electricity_versus_benchmark')
         expect(page).to have_css('#chart_wrapper_group_by_week_electricity_unlimited')
 
-        #not enough data for these
-        expect(page).not_to have_css('#chart_wrapper_electricity_by_month_year_0_1')
-        expect(page).not_to have_css('#chart_wrapper_electricity_longterm_trend')
+        # not enough data for these
+        expect(page).to have_no_css('#chart_wrapper_electricity_by_month_year_0_1')
+        expect(page).to have_no_css('#chart_wrapper_electricity_longterm_trend')
       end
     end
 
-    context "clicking the 'Learn More' tab" do
+    context "when on the 'Learn More' tab" do
       before { click_on 'Learn More' }
 
-      it_behaves_like "an advice page tab", tab: "Learn More"
+      it_behaves_like 'electricity long term advice page tab', tab: 'Learn More'
     end
   end
 end

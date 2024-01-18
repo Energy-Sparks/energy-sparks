@@ -14,7 +14,6 @@ module Schools
       end
 
       delegate :data_available_from, to: :annual_usage_calculator
-      delegate :date_when_one_years_data, to: :annual_usage_calculator
       delegate :annual_usage, to: :annual_usage_calculator
       delegate :annual_usage_change_since_last_year, to: :annual_usage_calculator
 

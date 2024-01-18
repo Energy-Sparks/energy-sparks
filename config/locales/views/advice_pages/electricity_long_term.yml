@@ -78,6 +78,9 @@ en:
       tables:
         columns:
           annual_change: Change since previous year
+          annual_usage_co2: Annual co2 (kg/CO2)
+          annual_usage_gbp: Annual cost (£)
+          annual_usage_kwh: Annual usage (kWh)
           estimated_savings_gbp: Estimated saving (£)
           meter: Meter
           name: Name

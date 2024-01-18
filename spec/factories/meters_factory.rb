@@ -98,11 +98,12 @@ FactoryBot.define do
       transient do
         start_date { Date.parse('01/06/2019') }
         end_date   { Date.parse('02/06/2019') }
+        reading    { nil }
       end
 
       after(:create) do |meter, evaluator|
         (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
-          create(:amr_validated_reading, meter: meter, reading_date: this_date)
+          create(:amr_validated_reading, meter: meter, reading_date: this_date, reading: evaluator.reading)
         end
       end
     end
