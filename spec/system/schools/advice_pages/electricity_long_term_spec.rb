@@ -95,8 +95,8 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
           expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.meter_breakdown.title'))
         end
 
-        it 'says usage is high' do
-          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.title'))
+        it 'has notice saying usage is high' do
+          expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.title'))
         end
 
         it 'includes expected charts' do
