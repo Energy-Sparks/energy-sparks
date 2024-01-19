@@ -327,7 +327,6 @@ en:
         message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your recent energy audit
         summary_html: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
       completed_programme:
-        button: View programme
         message_html:
           one: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{count}</strong> bonus point!
           other: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{count}</strong> bonus points!
@@ -336,7 +335,6 @@ en:
         message_html:
           one: You’ve recently completed an activity that is part of the <strong>%{title}</strong> programme. Do you want to enroll in the programme?
           other: You’ve recently completed %{count} activities that are part of the <strong>%{title}</strong> programme. Do you want to enroll in the programme?
-        start: Start
       no_active_programmes:
         choose_programme: Choose programme
         message: Congratulations you’ve completed all your energy saving programmes! Time to choose your next programme
