@@ -36,6 +36,16 @@ class ProgrammeType < ApplicationRecord
   scope :default_first, -> { order(default: :desc) }
   scope :featured, -> { active.default_first.by_title }
 
+  scope :with_school_activity_count, ->(school) {
+    joins(activity_types: :activities)
+    .where(activity_types: { activities: { school: school } })
+    .select("programme_types.*, COUNT(activities.id) activity_count")
+    .group("programme_types.id").order(activity_count: :desc)
+  }
+
+  scope :not_in, ->(programme_types) { where.not(id: programme_types) }
+  scope :suggested_for_school, ->(school) { active.with_school_activity_count(school).merge(school.activities.in_academic_year(school.current_academic_year)).not_in(school.programme_types) }
+
   validates_presence_of :title
   validates :bonus_score, numericality: { greater_than_or_equal_to: 0 }
   validates_uniqueness_of :default, if: :default

@@ -1,9 +1,11 @@
-<% if school && school.programmes.active.started.none? %>
-  <%= component 'info_bar',
-      status: :neutral,
-      style: local_assigns[:style],
-      title: t("schools.prompts.join_programme.no_active_programmes_message"),
-      icon: fa_icon('tasks fa-3x'),
-      buttons: current_page?(programme_types_path) ? {} : { t("schools.prompts.join_programme.choose_programme") => programme_types_path }
-  %>
+<% if school %>
+  <% if programme_type = school.suggested_programme_types.first %>
+    <%= component 'info_bar',
+        status: :neutral,
+        style: local_assigns[:style],
+        title: t("schools.prompts.join_programme.message_html", count: programme_type.activity_count, title: programme_type.title),
+        icon: fa_icon('tasks fa-3x'),
+        buttons: { t("schools.prompts.join_programme.start") => programme_type_path(programme_type) }
+    %>
+  <% end %>
 <% end %>

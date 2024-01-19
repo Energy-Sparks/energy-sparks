@@ -103,6 +103,7 @@ class School < ApplicationRecord
   has_many :cads,                 inverse_of: :school
   has_many :school_times,         inverse_of: :school
   has_many :activities,           inverse_of: :school
+  has_many :activity_types, through: :activities
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
   has_many :transport_surveys,    inverse_of: :school
@@ -115,6 +116,7 @@ class School < ApplicationRecord
   has_many :audits,               inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
+  has_many :programme_types, through: :programmes
   has_many :programme_activity_types, through: :programmes, source: :activity_types
 
   has_many :alerts,                                   inverse_of: :school
@@ -324,6 +326,10 @@ class School < ApplicationRecord
       return activities.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
+  end
+
+  def suggested_programme_types
+    ProgrammeType.active.with_school_activity_count(self).merge(activities.in_academic_year(current_academic_year)).not_in(programme_types)
   end
 
   def observations_in_academic_year(date)
