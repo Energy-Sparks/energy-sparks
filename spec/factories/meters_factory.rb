@@ -41,7 +41,8 @@ FactoryBot.define do
         start_date      { Date.parse('01/06/2019') }
         end_date        { Date.parse('02/06/2019') }
         status          { 'ORIG' }
-        kwh_data_x48    { Array.new(48, rand) }
+        reading         { nil }
+        kwh_data_x48    { Array.new(48, reading || rand) }
         one_day_kwh     { 139.0 }
         upload_datetime { Time.zone.today }
         substitute_date { nil }

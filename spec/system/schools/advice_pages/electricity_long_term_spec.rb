@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'electricity long term advice page' do
+RSpec.describe 'electricity long term advice page', :aggregate_failures do
   let(:reading_start_date) { 1.year.ago }
   let(:school) do
     school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
@@ -48,7 +50,7 @@ RSpec.describe 'electricity long term advice page' do
           expect(page).to have_content('2,200') # kWh
           expect(page).to have_content('£220')
           expect(page).to have_content('360') # CO2
-          expect(page).to have_content('220kWh')
+          expect(page).to have_content('220kWh of electricity')
         end
 
         it 'excludes the comparison' do
