@@ -37,7 +37,8 @@ end
 RSpec.shared_examples "a task completed page with programme complete message" do
   context "when there is a programme that contains activity" do
     let(:activity_types) { [] }
-    let(:programme_type) { create(:programme_type, title: "Super programme!", activity_types: activity_types, bonus_score: 30) }
+    let(:bonus_score) { 30 }
+    let(:programme_type) { create(:programme_type, title: "Super programme!", activity_types: activity_types, bonus_score: bonus_score) }
     let(:programme) { create(:programme, school: school, programme_type: programme_type) }
 
     context "when programme is completed" do
@@ -50,16 +51,28 @@ RSpec.shared_examples "a task completed page with programme complete message" do
 
         it { expect(page).to have_link("View programme") }
       end
-    end
 
-    context "when ended over a day ago" do
-      before do
-        programme.update(ended_on: 3.days.ago)
-        refresh
+      context "when ended over a day ago" do
+        before do
+          programme.update(ended_on: 3.days.ago)
+          refresh
+        end
+
+        it 'does not show programme completed message' do
+          expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+        end
       end
 
-      it 'does not show programme completed message' do
-        expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+      context "when bonus was zero" do
+        let(:bonus_score) { 0 }
+
+        it 'shows the programme complete message' do
+          expect(page).to have_content("Well done, you've just completed the Super programme! programme!")
+        end
+
+        it 'does not show bonus points message' do
+          expect(page).not_to have_content "and have earned 30 bonus points!"
+        end
       end
     end
 

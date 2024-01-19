@@ -9,7 +9,7 @@
   <% activity.programmes.completed.recently_ended.each do |programme| %>
     <%= component 'info_bar',
       status: :neutral,
-      title: t("schools.prompts.completed_programme.message_html", title: programme.title, bonus_points: programme.bonus_score),
+      title: t("schools.prompts.completed_programme.message_html", title: programme.title, count: programme.points_for_completion),
       icon: image_tag(programme.programme_type.t_attached_or_default(:image, placeholder: "placeholder300x200.png"), class: "img-fluid"),
       icon_cols: 2,
       buttons: { t("schools.prompts.completed_programme.button") => programme_type_path(programme.programme_type) }

@@ -328,7 +328,10 @@ en:
         summary_html: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
       completed_programme:
         button: View programme
-        message_html: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{bonus_points}</strong> bonus points!
+        message_html:
+          one: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{count}</strong> bonus point!
+          other: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{count}</strong> bonus points!
+          zero: Well done, you've just completed the <strong>%{title}</strong> programme!
       join_programme:
         message_html:
           one: You’ve recently completed an activity that is part of the <strong>%{title}</strong> programme. Do you want to enroll in the programme?
