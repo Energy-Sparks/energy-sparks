@@ -44,7 +44,6 @@ class ProgrammeType < ApplicationRecord
   }
 
   scope :not_in, ->(programme_types) { where.not(id: programme_types) }
-  scope :suggested_for_school, ->(school) { active.with_school_activity_count(school).merge(school.activities.in_academic_year(school.current_academic_year)).not_in(school.programme_types) }
 
   validates_presence_of :title
   validates :bonus_score, numericality: { greater_than_or_equal_to: 0 }

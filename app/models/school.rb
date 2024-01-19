@@ -329,7 +329,9 @@ class School < ApplicationRecord
   end
 
   def suggested_programme_types
-    ProgrammeType.active.with_school_activity_count(self).merge(activities.in_academic_year(current_academic_year)).not_in(programme_types)
+    ProgrammeType.active.with_school_activity_count(self)
+      .merge(activities.in_academic_year(current_academic_year))
+      .not_in(programme_types)
   end
 
   def observations_in_academic_year(date)
