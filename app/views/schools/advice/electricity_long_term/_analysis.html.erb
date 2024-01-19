@@ -13,9 +13,10 @@
 </ul>
 
 <%= render 'recent_trend', school: @school, analysis_dates: @analysis_dates, annual_usage: @annual_usage, vs_exemplar: @vs_exemplar, estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar %>
-<%= render 'analysis_comparison', school: @school, analysis_dates: @analysis_dates, annual_usage: @annual_usage, vs_benchmark: @vs_benchmark, vs_exemplar: @vs_exemplar, estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar, estimated_savings_vs_benchmark: @estimated_savings_vs_benchmark %>
-<%= render 'long_term_trend', school: @school, analysis_dates: @analysis_dates %>
-
+<% if @analysis_dates.one_years_data? %>
+  <%= render 'analysis_comparison', school: @school, analysis_dates: @analysis_dates, annual_usage: @annual_usage, vs_benchmark: @vs_benchmark, vs_exemplar: @vs_exemplar, estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar, estimated_savings_vs_benchmark: @estimated_savings_vs_benchmark %>
+  <%= render 'long_term_trend', school: @school, analysis_dates: @analysis_dates %>
+<% end %>
 <% if @multiple_meters %>
   <%= render 'meter_breakdown', school: @school, analysis_dates: @analysis_dates, meters_for_breakdown: @meters_for_breakdown, annual_usage_meter_breakdown: @annual_usage_meter_breakdown %>
 <% end %>

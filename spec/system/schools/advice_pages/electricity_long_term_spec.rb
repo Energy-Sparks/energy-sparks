@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'electricity long term advice page' do
   let(:reading_start_date) { 1.year.ago }
-  let!(:school) do
+  let(:school) do
     school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
     create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
     create(:electricity_meter_with_validated_reading_dates,
@@ -12,33 +12,31 @@ RSpec.describe 'electricity long term advice page' do
 
   before { create(:advice_page, key: :electricity_long_term) }
 
-  shared_examples 'electricity long term advice page tab' do |tab:|
-    let(:key) { :electricity_long_term }
-    let(:advice_page) { AdvicePage.find_by(key: key) }
-    let(:expected_page_title) { 'Long term changes in electricity consumption' }
-
-    it_behaves_like 'an advice page tab', tab: tab
+  shared_examples 'an electricity long term advice page tab' do |tab:|
+    it_behaves_like 'an advice page tab', tab: tab do
+      let(:key) { :electricity_long_term }
+      let(:advice_page) { AdvicePage.find_by(key: key) }
+      let(:expected_page_title) { 'Long term changes in electricity consumption' }
+    end
   end
 
-  context 'as school admin' do
+  context 'when a school admin' do
     before do
       sign_in(create(:school_admin, school: school))
       visit school_advice_electricity_long_term_path(school)
     end
 
     context 'with the default tab' do
-      it_behaves_like 'electricity long term advice page tab', tab: 'Insights'
+      it_behaves_like 'an electricity long term advice page tab', tab: 'Insights'
     end
 
     context "when on the 'Insights' tab" do
-      before do
-        click_on 'Insights'
-      end
+      before { click_on 'Insights' }
 
       context 'with more than 90 days of meter data' do
         let(:reading_start_date) { 90.days.ago }
 
-        it_behaves_like 'electricity long term advice page tab', tab: 'Insights'
+        it_behaves_like 'an electricity long term advice page tab', tab: 'Insights'
 
         it 'includes expected sections' do
           expect(page).to have_content('Tracking long term trends')
@@ -59,7 +57,7 @@ RSpec.describe 'electricity long term advice page' do
       end
 
       context 'with more than a years meter data' do
-        it_behaves_like 'electricity long term advice page tab', tab: 'Insights'
+        it_behaves_like 'an electricity long term advice page tab', tab: 'Insights'
 
         it 'includes expected sections' do
           expect(page).to have_content('Tracking long term trends')
@@ -84,33 +82,58 @@ RSpec.describe 'electricity long term advice page' do
     context "when on the 'Analysis' tab" do
       before { click_on 'Analysis' }
 
-      it_behaves_like 'electricity long term advice page tab', tab: 'Analysis'
+      context 'with more than 90 days of meter data' do
+        let(:reading_start_date) { 90.days.ago }
 
-      it 'includes expected sections' do
-        expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.recent_trend.title'))
-        expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.title'))
-        expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.meter_breakdown.title'))
+        it_behaves_like 'an electricity long term advice page tab', tab: 'Analysis'
+
+        it 'includes expected sections' do
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.recent_trend.title'))
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.title'))
+          expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.meter_breakdown.title'))
+        end
+
+        it 'says usage is high' do
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.title'))
+        end
+
+        it 'includes expected charts' do
+          expect(page).to have_css('#chart_management_dashboard_group_by_week_electricity')
+          expect(page).to have_css('#chart_wrapper_electricity_by_month_year_0_1')
+          expect(page).to have_no_css('#chart_wrapper_group_by_week_electricity_versus_benchmark')
+          expect(page).to have_no_css('#chart_wrapper_group_by_week_electricity_unlimited')
+          expect(page).to have_no_css('#chart_wrapper_electricity_longterm_trend')
+        end
       end
 
-      it 'says usage is high' do
-        expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.title'))
-      end
+      context 'with more than a years meter data' do
+        it_behaves_like 'an electricity long term advice page tab', tab: 'Analysis'
 
-      it 'includes expected charts' do
-        expect(page).to have_css('#chart_wrapper_group_by_week_electricity')
-        expect(page).to have_css('#chart_wrapper_group_by_week_electricity_versus_benchmark')
-        expect(page).to have_css('#chart_wrapper_group_by_week_electricity_unlimited')
+        it 'includes expected sections' do
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.recent_trend.title'))
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.title'))
+          expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.meter_breakdown.title'))
+        end
 
-        # not enough data for these
-        expect(page).to have_no_css('#chart_wrapper_electricity_by_month_year_0_1')
-        expect(page).to have_no_css('#chart_wrapper_electricity_longterm_trend')
+        it 'says usage is high' do
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.title'))
+        end
+
+        it 'includes expected charts' do
+          expect(page).to have_css('#chart_wrapper_group_by_week_electricity')
+          expect(page).to have_css('#chart_wrapper_group_by_week_electricity_versus_benchmark')
+          expect(page).to have_css('#chart_wrapper_group_by_week_electricity_unlimited')
+          expect(page).to have_css('#chart_wrapper_electricity_by_month_year_0_1')
+          # not enough data for this
+          expect(page).to have_no_css('#chart_wrapper_electricity_longterm_trend')
+        end
       end
     end
 
     context "when on the 'Learn More' tab" do
       before { click_on 'Learn More' }
 
-      it_behaves_like 'electricity long term advice page tab', tab: 'Learn More'
+      it_behaves_like 'an electricity long term advice page tab', tab: 'Learn More'
     end
   end
 end
