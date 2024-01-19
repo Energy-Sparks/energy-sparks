@@ -49,18 +49,7 @@ RSpec.shared_examples "a task completed page with programme complete message" do
           expect(page).to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
         end
 
-        it { expect(page).to have_link("View programme") }
-      end
-
-      context "when ended over a day ago" do
-        before do
-          programme.update(ended_on: 3.days.ago)
-          refresh
-        end
-
-        it 'does not show programme completed message' do
-          expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
-        end
+        it { expect(page).to have_link("View") }
       end
 
       context "when bonus was zero" do
@@ -72,6 +61,19 @@ RSpec.shared_examples "a task completed page with programme complete message" do
 
         it 'does not show bonus points message' do
           expect(page).not_to have_content "and have earned 30 bonus points!"
+        end
+
+        it { expect(page).to have_link("View") }
+      end
+
+      context "when ended over a day ago" do
+        before do
+          programme.update(ended_on: 3.days.ago)
+          refresh
+        end
+
+        it 'does not show programme completed message' do
+          expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
         end
       end
     end
