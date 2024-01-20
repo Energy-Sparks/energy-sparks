@@ -19,6 +19,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
       let(:key) { :electricity_long_term }
       let(:advice_page) { AdvicePage.find_by(key: key) }
       let(:expected_page_title) { 'Long term changes in electricity consumption' }
+      # also uses "school"
     end
   end
 
@@ -95,7 +96,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
           expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.meter_breakdown.title'))
         end
 
-        it 'has notice saying usage is high' do
+        it "doesn't notice saying usage is high" do
           expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.title'))
         end
 

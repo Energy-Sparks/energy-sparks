@@ -19,6 +19,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
       let(:key) { :gas_long_term }
       let(:advice_page) { AdvicePage.find_by(key: key) }
       let(:expected_page_title) { 'Long term changes in gas consumption' }
+      # also uses "school"
     end
   end
 
@@ -84,6 +85,29 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
     context "when on the 'Analysis' tab" do
       before { click_on 'Analysis' }
 
+      context 'with more than 90 days of meter data' do
+        let(:reading_start_date) { 90.days.ago }
+
+        it_behaves_like 'a gas long term advice page tab', tab: 'Analysis'
+
+        it 'includes expected sections' do
+          expect(page).to have_content(I18n.t('advice_pages.gas_long_term.analysis.recent_trend.title'))
+          expect(page).to have_content(I18n.t('advice_pages.gas_long_term.analysis.comparison.title'))
+          expect(page).to have_no_content(I18n.t('advice_pages.gas_long_term.analysis.meter_breakdown.title'))
+        end
+
+        it "doesn't says usage is high" do
+          expect(page).to have_no_content(I18n.t('advice_pages.gas_long_term.analysis.comparison.assessment.high.title'))
+        end
+
+        it 'includes expected charts' do
+          expect(page).to have_css('#chart_management_dashboard_group_by_week_gas')
+          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
+          expect(page).to have_no_css('#chart_wrapper_group_by_week_gas_unlimited')
+          expect(page).to have_no_css('#chart_wrapper_gas_longterm_trend')
+        end
+      end
+
       context 'with more than a years meter data' do
         it_behaves_like 'a gas long term advice page tab', tab: 'Analysis'
 
@@ -100,9 +124,8 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         it 'includes expected charts' do
           expect(page).to have_css('#chart_wrapper_group_by_week_gas')
           expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
-
+          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
           # not enough data for these
-          expect(page).to have_no_css('#chart_wrapper_gas_by_month_year_0_1')
           expect(page).to have_no_css('#chart_wrapper_gas_longterm_trend')
         end
       end
