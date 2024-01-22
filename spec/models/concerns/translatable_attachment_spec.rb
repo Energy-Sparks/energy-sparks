@@ -109,6 +109,10 @@ describe TranslatableAttachment do
         it { expect(test.t_attached_or_default(:file)).to be_nil }
         it { expect(test.t_attached_or_default(:file, :cy)).to be_nil }
         it { expect(test.t_attached_or_default(:file, :en)).to be_nil }
+
+        context "when placeholder is provided" do
+          it { expect(test.t_attached_or_default(:file, placeholder: 'placeholder')).to eq("placeholder") }
+        end
       end
     end
   end
