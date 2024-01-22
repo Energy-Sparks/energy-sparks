@@ -15,6 +15,7 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:scoreboard) { create :scoreboard }
   let(:school) { create_active_school(data_enabled: school_data_enabled, scoreboard: scoreboard) }
+  let!(:setup_data) { }
 
   before { SiteSettings.create!(audit_activities_bonus_points: 50) }
 

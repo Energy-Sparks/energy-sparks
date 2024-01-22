@@ -10,6 +10,8 @@ describe 'viewing and recording action', type: :system do
   let!(:intervention_type) { create :intervention_type, name: title, summary: summary, description: description }
   let(:scoreboard) { create :scoreboard }
   let(:school) { create_active_school(scoreboard: scoreboard) }
+  let!(:setup_data) { }
+
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
   let(:activities_2024_feature) { false }
 

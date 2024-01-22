@@ -31,7 +31,15 @@ RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: 
 
   it_behaves_like "a rich audit prompt"
   it_behaves_like "a complete programme prompt"
-  it_behaves_like "a join programme prompt"
+
+  it_behaves_like "a join programme prompt", programme: "Other programme!", activity_count: 1 do
+    let(:setup_data) do
+      activity_type = create(:programme_type_with_activity_types, title: "Other programme!").activity_types.first
+      # programme type created, but school not yet subscribed to programme (need to create programme record for this)
+      school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+    end
+  end
+
   it_behaves_like "a recommended prompt"
 end
 
