@@ -31,6 +31,7 @@ RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: 
 
   it_behaves_like "a rich audit prompt"
   it_behaves_like "a complete programme prompt"
+  it_behaves_like "a join programme prompt"
   it_behaves_like "a recommended prompt"
 end
 
