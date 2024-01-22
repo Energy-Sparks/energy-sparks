@@ -36,7 +36,17 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
     context "when on the 'Insights' tab" do
       before { click_on 'Insights' }
 
-      context 'with more than 90 days of meter data' do
+      context 'with 30 days of meter data' do
+        let(:reading_start_date) { 30.days.ago }
+
+        it 'includes expected sections' do
+          data_available_from = reading_start_date + 89.days # TODO: not sure why this isn't 90 days
+          expect(page).to have_content('Assuming we continue to regularly receive data we expect this analysis to be ' \
+                                       "available after #{data_available_from.to_s(:es_short)}")
+        end
+      end
+
+      context 'with 90 days of meter data' do
         let(:reading_start_date) { 90.days.ago }
 
         it_behaves_like 'an electricity long term advice page tab', tab: 'Insights'

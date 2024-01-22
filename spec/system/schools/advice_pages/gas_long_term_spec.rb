@@ -85,7 +85,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
     context "when on the 'Analysis' tab" do
       before { click_on 'Analysis' }
 
-      context 'with more than 90 days of meter data' do
+      context 'with 90 days of meter data' do
         let(:reading_start_date) { 90.days.ago }
 
         it_behaves_like 'a gas long term advice page tab', tab: 'Analysis'
