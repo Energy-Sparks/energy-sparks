@@ -66,8 +66,6 @@ en:
           more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
           title: How do you compare?
         current_usage:
-          last_year: Last year
-          review_our_analysis: Review our detailed analysis
           title: Your long term gas use
         next_steps: To fully determine the causes of the changes in your gas consumption you should review how consumption has changed month by month. To ensure that you are saving as much gas as possible, you should review your heating timings and set temperatures.
         title: What do we mean by long term gas use?
