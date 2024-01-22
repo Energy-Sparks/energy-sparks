@@ -328,12 +328,6 @@ class School < ApplicationRecord
     []
   end
 
-  def suggested_programme_types
-    ProgrammeType.active.with_school_activity_count(self)
-      .merge(activities.in_academic_year(current_academic_year))
-      .not_in(programme_types)
-  end
-
   def observations_in_academic_year(date)
     if (academic_year = academic_year_for(date))
       return observations.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
@@ -350,6 +344,12 @@ class School < ApplicationRecord
 
   def intervention_types_by_date
     observations.by_date.map(&:intervention_type).compact
+  end
+
+  def suggested_programme_types
+    ProgrammeType.active.with_school_activity_count(self)
+      .merge(activities.in_academic_year(current_academic_year))
+      .not_in(programme_types)
   end
 
   def national_calendar
@@ -503,7 +503,7 @@ class School < ApplicationRecord
   end
 
   def current_target
-    school_targets.by_start_date.select(&:current?).first
+    school_targets.by_start_date.detect(&:current?)
   end
 
   def most_recent_target
