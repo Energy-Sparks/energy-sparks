@@ -4,7 +4,7 @@
         status: :neutral,
         style: local_assigns[:style],
         title: Programmes::Progress.new(programme).notification,
-        icon: image_tag(programme.programme_type.t_attached_or_default(:image, placeholder: "placeholder300x200.png"), class: "img-fluid"),
+        icon: fa_icon('tasks fa-3x'),
         buttons: { I18n.t('common.labels.view_now') => programme_type_path(programme.programme_type) }
     %>
   <% end %>

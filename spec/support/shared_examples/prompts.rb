@@ -38,7 +38,7 @@ RSpec.shared_examples "a join programme prompt" do |displayed: true, programme:,
 end
 
 RSpec.shared_examples "a no active programmes prompt" do |displayed: true|
-  let(:message) { "Congratulations you’ve completed all your energy saving programmes! Time to choose your next programme" }
+  let(:message) { "Congratulations you've completed all your energy saving programmes! Time to choose your next programme" }
 
   include_examples "a standard prompt", displayed: displayed
 end
