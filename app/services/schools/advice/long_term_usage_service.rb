@@ -13,7 +13,10 @@ module Schools
         annual_usage_calculator.at_least_x_days_data?(90)
       end
 
-      delegate :data_available_from, to: :annual_usage_calculator
+      def data_available_from
+        annual_usage_calculator.date_when_enough_data_available(90)
+      end
+
       delegate :annual_usage, to: :annual_usage_calculator
       delegate :annual_usage_change_since_last_year, to: :annual_usage_calculator
 
