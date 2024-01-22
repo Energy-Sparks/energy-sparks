@@ -42,7 +42,7 @@ module Schools
 
       def analysis_dates
         dates = super
-        dates.data_available_from = usage_service.data_available_from
+        dates.date_when_one_years_data = usage_service.date_when_one_years_data
         dates
       end
 
