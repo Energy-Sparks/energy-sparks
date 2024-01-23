@@ -44,6 +44,7 @@ class Observation < ApplicationRecord
   has_many   :locations, through: :temperature_recordings
 
   belongs_to :programme, optional: true # to be removed when column is removed
+
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true # to be removed when column is removed

@@ -106,6 +106,7 @@ class School < ApplicationRecord
   has_many :activity_types, through: :activities
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
+  has_many :intervention_types, through: :observations
   has_many :transport_surveys,    inverse_of: :school
   has_many :consent_documents,    inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'

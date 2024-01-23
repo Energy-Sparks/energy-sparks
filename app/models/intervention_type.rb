@@ -66,6 +66,8 @@ class InterventionType < ApplicationRecord
   scope :between,               ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
   scope :not_including,         ->(records = []) { where.not(id: records.pluck(:id)) }
 
+  scope :by_observation_date, ->(order: :desc) { joins(:observations).order('activities.at': order) }
+
   before_save :copy_searchable_attributes
 
   def actions_for_school(school)

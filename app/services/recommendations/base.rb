@@ -9,15 +9,22 @@ module Recommendations
     def from_recent_activity(limit = NUMBER_OF_SUGGESTIONS)
       suggestions = []
 
+      # get tasks completed, most recent first
       completed = completed_ever
 
-      # For each one, get the suggested intervention types and add them to the list until we have enough
+      # For each one, get the suggested types and add them to the list until we have enough
       while (task = completed.shift) && suggestions.length < limit
         count_remaining = limit - suggestions.length
         suggestions += suggested_for(task, excluding: completed_this_year + suggestions).take(count_remaining)
       end
 
       suggestions + suggest_random(limit, suggestions: suggestions)
+    end
+
+    def suggest_random(limit, suggestions: [])
+      return [] if suggestions.length >= limit
+
+      all_tasks(excluding: completed_this_year + suggestions).sample(limit - suggestions.count)
     end
 
     def completed_ever
@@ -34,12 +41,17 @@ module Recommendations
   end
 
   class Activity < Base
-    #last_activity_type = @school.activities.order(:created_at).last.activity_type
+    def completed_ever
+      @school.activity_types.by_activity_date # newest first
+    end
+
+    def compeleted_this_year
+    end
   end
 
   class Action < Base
     def completed_ever
-      @school.intervention_types_by_date
+      @school.intervention_types.by_observation_date # newest first
     end
 
     def completed_this_year
@@ -50,10 +62,8 @@ module Recommendations
       task.suggested_types.not_including(excluding)
     end
 
-    def suggest_random(limit, suggestions: [])
-      return [] if suggestions.length >= limit
-
-      InterventionType.not_custom.not_including(already_done + suggestions).sample(limit - suggestions.count)
+    def all_tasks(excluding: [])
+      InterventionType.not_custom.not_including(excluding)
     end
   end
 end
