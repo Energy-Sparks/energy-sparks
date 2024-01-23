@@ -48,9 +48,13 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         end
 
         it 'includes expected data' do
-          expect(page).to have_content('44,000') # kWh
-          expect(page).to have_content('£4,400')
-          expect(page).to have_content('9,200') # CO2
+          expect(find('table.advice-table')).to have_content(
+            ["#{reading_start_date.to_s(:es_short)} - #{Time.zone.today.to_s(:es_short)}",
+             '44,000',
+             '9,200',
+             '£4,400',
+             '-'].join(' ')
+          )
           expect(page).to have_content('170,000kWh of gas')
         end
 
@@ -69,9 +73,8 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         end
 
         it 'includes expected data' do
-          expect(page).to have_content('170,000') # kWh
-          expect(page).to have_content('£17,000')
-          expect(page).to have_content('37,000') # CO2
+          expect(find('table.advice-table')).to \
+            have_content(['Last year', '170,000', '37,000', '£17,000', '-'].join(' '))
           expect(page).to have_content("Exemplar\n<160,000 kWh")
           expect(page).to have_content("Well managed\n<170,000 kWh")
         end
