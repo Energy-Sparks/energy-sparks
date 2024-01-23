@@ -27,7 +27,7 @@
         <td><%= t('advice_pages.baseload.current_baseload.last_year') %></td>
         <td class="text-right"><%= format_unit(current_baseload.average_baseload_kw_last_year, :kw) %></td>
         <td class="text-right">
-          <% if analysis_dates.one_years_data %>
+          <% if analysis_dates.one_years_data? %>
             <%= up_downify( format_unit(current_baseload.percentage_change_year, :relative_percent)) %>
           <% else %>
             -
