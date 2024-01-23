@@ -21,11 +21,13 @@ module TranslatableAttachment
     send("#{name}_#{locale}")
   end
 
-  def t_attached_or_default(name, locale = I18n.locale)
+  def t_attached_or_default(name, locale = I18n.locale, placeholder: nil)
     if locale != I18n.default_locale && t_attached(name, locale).present?
       t_attached(name, locale)
     elsif t_attached(name, I18n.default_locale).present?
       t_attached(name, I18n.default_locale)
+    else
+      placeholder
     end
   end
 end

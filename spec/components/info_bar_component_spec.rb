@@ -117,4 +117,16 @@ RSpec.describe InfoBarComponent, type: :component do
       expect(html).to have_css('div.col-md-11')
     end
   end
+
+  context "with icon_cols greater than 1" do
+    let(:params) { all_params.except(:buttons).merge({ icon_cols: 2 }) }
+
+    it "icon is 2 cols wide" do
+      expect(html).to have_css('div.col-md-2')
+    end
+
+    it "content is 10 cols wide" do
+      expect(html).to have_css('div.col-md-10')
+    end
+  end
 end

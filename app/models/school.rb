@@ -103,6 +103,7 @@ class School < ApplicationRecord
   has_many :cads,                 inverse_of: :school
   has_many :school_times,         inverse_of: :school
   has_many :activities,           inverse_of: :school
+  has_many :activity_types, through: :activities
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
   has_many :transport_surveys,    inverse_of: :school
@@ -115,6 +116,7 @@ class School < ApplicationRecord
   has_many :audits,               inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
+  has_many :programme_types, through: :programmes
   has_many :programme_activity_types, through: :programmes, source: :activity_types
 
   has_many :alerts,                                   inverse_of: :school
@@ -344,6 +346,12 @@ class School < ApplicationRecord
     observations.by_date.map(&:intervention_type).compact
   end
 
+  def suggested_programme_types
+    ProgrammeType.active.with_school_activity_count(self)
+      .merge(activities.in_academic_year(current_academic_year))
+      .not_in(programme_types)
+  end
+
   def national_calendar
     calendar.based_on.based_on
   end
@@ -495,7 +503,7 @@ class School < ApplicationRecord
   end
 
   def current_target
-    school_targets.by_start_date.select(&:current?).first
+    school_targets.by_start_date.detect(&:current?)
   end
 
   def most_recent_target

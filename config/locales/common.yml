@@ -53,6 +53,7 @@ en:
       report: Report
       restart: Restart
       save: Save
+      start: Start
       status: Status
       submit: Submit
       type: Type
