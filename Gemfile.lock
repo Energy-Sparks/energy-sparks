@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 54fe66eaa6b325e9bb6d185a6fdce4f29ddfd901
-  branch: 3993-allow-long-term-changes-pages-to-work-with-limited-data
+  revision: 5018b9e6f4c7f3f0fbf9631c3a3041d411ef1e2e
+  branch: master
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
