@@ -73,13 +73,13 @@ cy:
       tables:
         columns:
           annual_change: Newidiadau ers y flwyddyn flaenorol
-          annual_usage_co2: Co2 flynyddol (kg/CO2)
-          annual_usage_gbp: Cost blynyddol (£)
-          annual_usage_kwh: Defnydd blynyddol (kWh)
           estimated_savings_gbp: Arbediad amcangyfrifedig (£)
           meter: Mesurydd
           name: Enw
           percent: Canran o gyfanswm y defnydd
+          usage_co2: Co2 (kg/CO2)
+          usage_gbp: Cost (£)
+          usage_kwh: Defnydd (kWh)
         labels:
           all_meters: Pob mesurydd
       what_is_long_term_use:

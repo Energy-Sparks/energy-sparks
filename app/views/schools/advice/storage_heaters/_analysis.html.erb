@@ -43,7 +43,7 @@
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.subtitle_html',
-           start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
            end_month_year: short_dates(@analysis_dates.end_date
           )) %>
   <% end %>
@@ -60,7 +60,7 @@
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.subtitle_html',
-          start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+          start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
           end_month_year: short_dates(@analysis_dates.end_date
         )) %>
   <% end %>
@@ -75,7 +75,7 @@
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.subtitle_html',
-          start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+          start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
           end_month_year: short_dates(@analysis_dates.end_date
          )) %>
   <% end %>
@@ -93,7 +93,7 @@
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.recent_usage.intraday_line_school_last7days_storage_heaters.subtitle_html',
-          start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.week : @analysis_dates.start_date),
+          start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.week : @analysis_dates.start_date),
           end_month_year: short_dates(@analysis_dates.end_date)
     ) %>
   <% end %>
@@ -119,7 +119,7 @@
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.seasonal_control.heating_on_off_by_week_storage_heater.subtitle_html',
-           start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
            end_month_year: short_dates(@analysis_dates.end_date)
            ) %>
   <% end %>
@@ -137,7 +137,7 @@
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.storage_heater_thermostatic.subtitle_html',
-           start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
            end_month_year: short_dates(@analysis_dates.end_date)
     ) %>
   <% end %>
