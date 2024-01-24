@@ -1,6 +1,9 @@
-<%= render 'schools/advice/section_title', section_id: 'current', section_title: t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title") %>
+<%= render 'schools/advice/section_title',
+           section_id: 'current',
+           section_title: t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title") %>
 
-<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(alert_class), show_links: false, show_icons: false %>
+<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts,
+                        alert_types: alert_types_for_class(alert_class), show_links: false, show_icons: false %>
 
 <table class="table table-sm advice-table">
   <thead class="thead-dark">
@@ -24,7 +27,7 @@
       <td class="text-right"><%= format_unit(annual_usage.£, :£) %></td>
       <td class="text-right">
         <% if annual_usage_change_since_last_year.present? %>
-          <%= up_downify( format_unit(annual_usage_change_since_last_year.percent, :relative_percent, false) ) %>
+          <%= up_downify(format_unit(annual_usage_change_since_last_year.percent, :relative_percent, false)) %>
         <% else %>
           -
         <% end %>
@@ -32,5 +35,7 @@
     </tr>
   </tbody>
 </table>
-<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
-<p><a href="<%= polymorphic_path([:analysis_school_advice, fuel_type, :long_term]) %>"><%= t('advice_pages.electricity_long_term.insights.current_usage.review_our_analysis') %></a></p>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes' %>
+<p><a href="<%= polymorphic_path([:analysis_school_advice, fuel_type, :long_term]) %>">
+<%= t('advice_pages.electricity_long_term.insights.current_usage.review_our_analysis') %></a></p>

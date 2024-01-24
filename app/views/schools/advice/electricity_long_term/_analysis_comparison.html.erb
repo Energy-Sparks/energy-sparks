@@ -1,17 +1,32 @@
-<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.electricity_long_term.analysis.comparison.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t('advice_pages.electricity_long_term.analysis.comparison.title') %>
 
 <%= component 'chart', chart_type: :benchmark_electric_only_one_year_kwh, school: school do |c| %>
   <% c.with_title { t('advice_pages.electricity_long_term.charts.benchmark.title') } %>
-  <% c.with_subtitle { t('advice_pages.electricity_long_term.charts.benchmark.subtitle', start_date: analysis_dates.one_year_before_end.to_s(:es_short), end_date: analysis_dates.end_date.to_s(:es_short)) } %>
+  <% c.with_subtitle do
+       t('advice_pages.electricity_long_term.charts.benchmark.subtitle',
+         start_date: analysis_dates.one_year_before_end.to_s(:es_short),
+         end_date: analysis_dates.end_date.to_s(:es_short))
+     end %>
 <% end %>
 
 <p>
-  <%= t('advice_pages.electricity_long_term.analysis.comparison.table_explanation', school_type: t('common.school_types.' + school.school_type)) %>
+  <%= t('advice_pages.electricity_long_term.analysis.comparison.table_explanation',
+        school_type: t("common.school_types.#{school.school_type}")) %>
 </p>
 
-<%= render 'comparison_with_benchmark_table', annual_usage: annual_usage, vs_exemplar: vs_exemplar, vs_benchmark: vs_benchmark, estimated_savings_vs_exemplar: estimated_savings_vs_exemplar, estimated_savings_vs_benchmark: estimated_savings_vs_benchmark %>
+<%= render 'comparison_with_benchmark_table', annual_usage: annual_usage,
+                                              vs_exemplar: vs_exemplar,
+                                              vs_benchmark: vs_benchmark,
+                                              estimated_savings_vs_exemplar: estimated_savings_vs_exemplar,
+                                              estimated_savings_vs_benchmark: estimated_savings_vs_benchmark %>
 
 <%= component 'chart', chart_type: :group_by_week_electricity_versus_benchmark, school: school do |c| %>
   <% c.with_title { t('advice_pages.electricity_long_term.charts.group_by_week_electricity_versus_benchmark.title') } %>
-  <% c.with_subtitle { t('advice_pages.electricity_long_term.charts.group_by_week_electricity_versus_benchmark.subtitle_html', start_date: analysis_dates.last_full_week_start_date.to_s(:es_short), end_date: analysis_dates.last_full_week_end_date.to_s(:es_short)) } %>
+  <% c.with_subtitle do
+       t('advice_pages.electricity_long_term.charts.group_by_week_electricity_versus_benchmark.subtitle_html',
+         start_date: analysis_dates.last_full_week_start_date.to_s(:es_short),
+         end_date: analysis_dates.last_full_week_end_date.to_s(:es_short))
+     end %>
 <% end %>

@@ -4,5 +4,15 @@ linters:
   Rubocop:
     enabled: true
     rubocop_config:
-      inherit_from:
-        - .rubocop.yml
+      require:
+        - rubocop-rails
+      Layout/InitialIndentation:
+        Enabled: false
+      Layout/TrailingEmptyLines:
+        Enabled: false
+      Naming/AsciiIdentifiers:
+        Enabled: false
+      Style/FrozenStringLiteralComment:
+        Enabled: false
+      Lint/UselessAssignment:
+        Enabled: false
