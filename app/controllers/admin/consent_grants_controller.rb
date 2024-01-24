@@ -14,14 +14,14 @@ module Admin
     def find_consent_grants
       if params[:search].present?
         search = params[:search]
-        if search["school"].present?
-          return ConsentGrant.joins(:school).where("schools.name ILIKE ?", "%#{search['school']}%").by_date
+        if search['school'].present?
+          return ConsentGrant.joins(:school).where('schools.name ILIKE ?', "%#{search['school']}%").by_date
         end
-        if search["reference"].present?
-          return ConsentGrant.where(guid: search["reference"]).by_date
+        if search['reference'].present?
+          return ConsentGrant.where(guid: search['reference']).by_date
         end
-        if search["mpxn"].present?
-          meter = Meter.find_by_mpan_mprn(search["mpxn"])
+        if search['mpxn'].present?
+          meter = Meter.find_by_mpan_mprn(search['mpxn'])
           if meter.present?
             return ConsentGrant.where(school: meter.school).by_date
           else

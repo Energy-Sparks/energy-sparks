@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "i18n", type: :system do
+RSpec.describe 'i18n', type: :system do
   it 'applies locale to homepage' do
     visit root_path
     expect(page).to have_content(I18n.t('footer.more_information', locale: 'en'))
@@ -15,12 +15,12 @@ RSpec.describe "i18n", type: :system do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
 
     visit root_path
-    expect(page).to have_content("Cymraeg")
+    expect(page).to have_content('Cymraeg')
     expect(page).not_to have_content('English')
 
     visit root_path(locale: 'cy')
     expect(page).to have_content('English')
-    expect(page).not_to have_content("Cymraeg")
+    expect(page).not_to have_content('Cymraeg')
   end
 
   context 'switches the site to the users preferred locale on log in' do
@@ -28,7 +28,7 @@ RSpec.describe "i18n", type: :system do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
     let(:activity_data_driven)    { true }
     let(:school_data_enabled)     { true }
-    let!(:subject) { Subject.create(name: "Science and Technology") }
+    let!(:subject) { Subject.create(name: 'Science and Technology') }
     let(:school) { create_active_school(data_enabled: school_data_enabled) }
     let(:activity_type_name_en)           { 'Find out why food waste is bad for the planet' }
     let(:activity_type_name_cy)           { 'Darganfydda pam mae gwastraff bwyd yn ddrwg ir blaned' }
@@ -38,7 +38,7 @@ RSpec.describe "i18n", type: :system do
     it 'redirects back to activity page in english after login' do
       staff.update(preferred_locale: 'en')
       visit "http://energysparks.test#{activity_type_path(activity_type)}"
-      click_on "Sign in to record activity"
+      click_on 'Sign in to record activity'
       fill_in 'Email', with: staff.email
       fill_in 'Password', with: staff.password
       within '#staff' do
@@ -52,7 +52,7 @@ RSpec.describe "i18n", type: :system do
     it 'redirects back to activity page in welsh after login' do
       staff.update(preferred_locale: 'cy')
       visit "http://energysparks.test#{activity_type_path(activity_type)}"
-      click_on "Sign in to record activity"
+      click_on 'Sign in to record activity'
       fill_in 'Email', with: staff.email
       fill_in 'Password', with: staff.password
       within '#staff' do

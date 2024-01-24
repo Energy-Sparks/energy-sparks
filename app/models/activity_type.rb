@@ -93,11 +93,11 @@ class ActivityType < ApplicationRecord
   before_save :copy_searchable_attributes
 
   def suggested_from
-    ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.suggested_type_id = ?", id)
+    ActivityType.joins(:activity_type_suggestions).where('activity_type_suggestions.suggested_type_id = ?', id)
   end
 
   def referenced_from_find_out_mores
-    AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", id)
+    AlertTypeRating.joins(:alert_type_rating_activity_types).where('alert_type_rating_activity_types.activity_type_id = ?', id)
   end
 
   def key_stage_list
@@ -124,7 +124,7 @@ class ActivityType < ApplicationRecord
     activities.select(:school_id).distinct.count
   end
 
-  #override default name for this resource in transifex
+  # override default name for this resource in transifex
   def tx_name
     name
   end

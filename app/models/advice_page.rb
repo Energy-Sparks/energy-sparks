@@ -66,9 +66,9 @@ class AdvicePage < ApplicationRecord
     end
   end
 
-  #Check whether school has the fuel type for this advice page
-  #Defaults to treating unknown/nil fuel type as applicable to
-  #all schools
+  # Check whether school has the fuel type for this advice page
+  # Defaults to treating unknown/nil fuel type as applicable to
+  # all schools
   def school_has_fuel_type?(school, default_value: true)
     case fuel_type&.to_sym
     when :gas

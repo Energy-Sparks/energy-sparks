@@ -4,7 +4,7 @@ module Amr
   describe N3rgyReadingsDownloadAndUpsert do
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
-    let(:earliest)          { DateTime.parse("2019-01-01T00:00") }
+    let(:earliest)          { DateTime.parse('2019-01-01T00:00') }
     let(:thirteen_months_ago) { DateTime.now - 13.months }
     let(:meter)             { create(:electricity_meter, earliest_available_data: earliest) }
     let(:config)            { create(:amr_data_feed_config)}
@@ -22,8 +22,8 @@ module Amr
       }
     end
 
-    context "when downloading data" do
-      it "handles and log exceptions" do
+    context 'when downloading data' do
+      it 'handles and log exceptions' do
         expect(AmrDataFeedImportLog.count).to be 0
         expect(n3rgy_api).to receive(:readings).and_raise(StandardError)
         upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date)
@@ -32,13 +32,13 @@ module Amr
         expect(AmrDataFeedImportLog.first.error_messages).not_to be_blank
       end
 
-      it "uses provided date window" do
+      it 'uses provided date window' do
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, start_date, end_date).and_return(readings)
         upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date)
         upserter.perform
       end
 
-      it "uses earliest available data if no date window" do
+      it 'uses earliest available data if no date window' do
         available_range = (earliest..yesterday)
         expect(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(available_range)
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, earliest, yesterday).and_return(readings)
@@ -46,7 +46,7 @@ module Amr
         upserter.perform
       end
 
-      it "requests 12 months if no earliest data is unknown and no readings" do
+      it 'requests 12 months if no earliest data is unknown and no readings' do
         expect(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(nil)
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, thirteen_months_ago, yesterday).and_return(readings)
 
@@ -58,7 +58,7 @@ module Amr
         upserter.perform
       end
 
-      context "when there are readings" do
+      context 'when there are readings' do
         # Note: this is a Date object as the reading date needs to be stored in the database in ISO 8601 format e.g. 2023-06-29
         let(:last_week) { Time.zone.today - 7 }
 
@@ -68,7 +68,7 @@ module Amr
           create(:amr_data_feed_reading, meter: meter, reading_date: last_week + 2)
         end
 
-        it "requests data from first available date if that was earlier than current first reading" do
+        it 'requests data from first available date if that was earlier than current first reading' do
           available_range = (last_week - 1..yesterday)
           expect(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(available_range)
           expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week - 1, yesterday).and_return(readings)
@@ -81,7 +81,7 @@ module Amr
           upserter.perform
         end
 
-        it "requests data from current last reading if first available date is equal to current first reading" do
+        it 'requests data from current last reading if first available date is equal to current first reading' do
           available_range = (last_week..yesterday)
           expect(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(available_range)
           expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week + 2, yesterday).and_return(readings)
@@ -90,7 +90,7 @@ module Amr
           upserter.perform
         end
 
-        it "requests data from 13 months ago if no available date range" do
+        it 'requests data from 13 months ago if no available date range' do
           expect(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(nil)
           expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, thirteen_months_ago, yesterday).and_return(readings)
 
@@ -100,8 +100,8 @@ module Amr
       end
     end
 
-    context "when upserting data" do
-      it "results in new readings" do
+    context 'when upserting data' do
+      it 'results in new readings' do
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, start_date, end_date).and_return(readings)
         upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date)
         upserter.perform

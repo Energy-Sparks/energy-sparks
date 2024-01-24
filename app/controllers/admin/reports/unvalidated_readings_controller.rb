@@ -16,8 +16,8 @@ module Admin
       def run_report
         if params[:mpans].present?
           param = params[:mpans]
-          if param["list"].present?
-            mpans = tidy(param["list"])
+          if param['list'].present?
+            mpans = tidy(param['list'])
             amr_data_feed_config_id = param['amr_data_feed_config_id'].to_i
             return AmrDataFeedReading.unvalidated_data_report_for_mpans(mpans, [amr_data_feed_config_id])
           else

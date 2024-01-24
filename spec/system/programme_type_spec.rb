@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "programme types", type: :system, include_application_helper: true do
+RSpec.describe 'programme types', type: :system, include_application_helper: true do
   let!(:school) { create(:school)}
   let!(:school_admin) { create(:school_admin, school: school)}
   let!(:pupil) { create(:pupil, school: school)}
@@ -9,18 +9,18 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
   let!(:programme_type_2) { create(:programme_type, active: false)}
   let!(:programme_type_3) { create(:programme_type)}
 
-  shared_examples "a user enrolling in a programme" do
+  shared_examples 'a user enrolling in a programme' do
     before do
       click_on programme_type_1.title
     end
 
     it 'prompts to start' do
-      expect(page).to have_content("You can enrol your school in this programme")
+      expect(page).to have_content('You can enrol your school in this programme')
     end
 
     it 'does not prompt to login' do
-      expect(page).not_to have_content("Are you an Energy Sparks user?")
-      expect(page).not_to have_link("Sign in now")
+      expect(page).not_to have_content('Are you an Energy Sparks user?')
+      expect(page).not_to have_link('Sign in now')
     end
 
     it 'successfully enrols the school' do
@@ -32,12 +32,12 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
     end
   end
 
-  shared_examples "a user that is enrolled in a programme" do
+  shared_examples 'a user that is enrolled in a programme' do
     let(:activity_type) { programme_type_1.activity_types.first }
     let(:activity)      { create(:activity, school: school, activity_type: activity_type, happened_on: Date.yesterday)}
 
     before do
-      #this is because the Enroller relies on this currently
+      # this is because the Enroller relies on this currently
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
       Programmes::Enroller.new(programme_type_1).enrol(school)
       ActivityCreator.new(activity).process
@@ -45,17 +45,17 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
     end
 
     it 'says I have started' do
-      expect(page).to have_content("You started this programme")
-      expect(page).to have_content("Current Progress")
+      expect(page).to have_content('You started this programme')
+      expect(page).to have_content('Current Progress')
       expect(page).to have_content(nice_dates(school.programmes.first.started_on))
     end
 
     it 'indicates I have not completed some activities' do
-      expect(page).to have_css("i.fa-circle.text-muted")
+      expect(page).to have_css('i.fa-circle.text-muted')
     end
 
     it 'indicates I have completed an activity' do
-      expect(page).to have_css("i.fa-check-circle.text-success")
+      expect(page).to have_css('i.fa-check-circle.text-success')
       expect(page).to have_content(nice_dates(activity.happened_on))
     end
 
@@ -65,18 +65,18 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last))
     end
 
-    context "when viewing the programme types index page" do
+    context 'when viewing the programme types index page' do
       before do
-        click_on("View all programmes")
+        click_on('View all programmes')
       end
 
       it 'indicates I am enrolled on list of programmes' do
-        expect(page).to have_content("You have already started this programme")
-        expect(page).to have_link("Continue", href: programme_type_path(programme_type_1))
-        expect(page).to have_link("View", href: programme_type_path(programme_type_3))
+        expect(page).to have_content('You have already started this programme')
+        expect(page).to have_link('Continue', href: programme_type_path(programme_type_1))
+        expect(page).to have_link('View', href: programme_type_path(programme_type_3))
       end
 
-      it_behaves_like "a no active programmes prompt", displayed: false
+      it_behaves_like 'a no active programmes prompt', displayed: false
     end
 
     context 'after completing the programme' do
@@ -84,19 +84,19 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
         programme_type_1.programme_for_school(school).complete!
       end
 
-      context "when viewing the programme types index page" do
+      context 'when viewing the programme types index page' do
         before do
-          click_on("View all programmes")
+          click_on('View all programmes')
         end
 
         it 'shows a completion message' do
-          expect(page).to have_content("You have already completed this programme")
-          expect(page).to have_link("View", href: programme_type_path(programme_type_1))
+          expect(page).to have_content('You have already completed this programme')
+          expect(page).to have_link('View', href: programme_type_path(programme_type_1))
           visit programme_type_path(programme_type_1)
-          expect(page).to have_content("You completed this programme on")
+          expect(page).to have_content('You completed this programme on')
         end
 
-        it_behaves_like "a no active programmes prompt", displayed: true
+        it_behaves_like 'a no active programmes prompt', displayed: true
       end
     end
   end
@@ -138,31 +138,31 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       end
 
       it 'does not have checklist' do
-        expect(page).not_to have_css("i.fa-circle.text-muted")
-        expect(page).not_to have_css("i.fa-circle.text-success")
+        expect(page).not_to have_css('i.fa-circle.text-muted')
+        expect(page).not_to have_css('i.fa-circle.text-success')
       end
 
       it 'doesnt prompt to start' do
-        expect(page).not_to have_content("You can enrol your school in this programme")
+        expect(page).not_to have_content('You can enrol your school in this programme')
       end
 
       it 'prompts to login' do
-        expect(page).to have_content("Are you an Energy Sparks user?")
-        expect(page).to have_link("Sign in now")
+        expect(page).to have_content('Are you an Energy Sparks user?')
+        expect(page).to have_link('Sign in now')
       end
 
       context 'when logging in to enrol' do
         let!(:staff) { create(:staff, school: school)}
 
         it 'redirects back to programme after login' do
-          click_on "Sign in now"
+          click_on 'Sign in now'
           fill_in 'Email', with: staff.email
           fill_in 'Password', with: staff.password
           within '#staff' do
             click_on 'Sign in'
           end
           expect(page).to have_content(programme_type_1.title)
-          expect(page).to have_content("You can enrol your school in this programme")
+          expect(page).to have_content('You can enrol your school in this programme')
         end
       end
     end
@@ -174,9 +174,9 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       visit programme_types_path
     end
 
-    it_behaves_like "a no active programmes prompt"
-    it_behaves_like "a user enrolling in a programme"
-    it_behaves_like "a user that is enrolled in a programme"
+    it_behaves_like 'a no active programmes prompt'
+    it_behaves_like 'a user enrolling in a programme'
+    it_behaves_like 'a user that is enrolled in a programme'
   end
 
   context 'as a pupil' do
@@ -185,8 +185,8 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       visit programme_types_path
     end
 
-    it_behaves_like "a no active programmes prompt"
-    it_behaves_like "a user enrolling in a programme"
-    it_behaves_like "a user that is enrolled in a programme"
+    it_behaves_like 'a no active programmes prompt'
+    it_behaves_like 'a user enrolling in a programme'
+    it_behaves_like 'a user that is enrolled in a programme'
   end
 end

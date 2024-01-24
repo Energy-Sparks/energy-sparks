@@ -19,7 +19,7 @@ RSpec.describe 'meter_reviews', type: :system do
 
     it 'lists only meters pending reviews' do
       click_on 'Meter Reviews'
-      expect(page).to have_title "Meter Reviews"
+      expect(page).to have_title 'Meter Reviews'
       expect(page).to have_content school.name
       expect(page).not_to have_content reviewed_school.name
       expect(page).not_to have_content other_school
@@ -27,12 +27,12 @@ RSpec.describe 'meter_reviews', type: :system do
 
     it 'has link to school consent documents' do
       click_on 'Meter Reviews'
-      expect(page).to have_link("View", href: school_consent_documents_path(school))
+      expect(page).to have_link('View', href: school_consent_documents_path(school))
     end
 
     it 'has link to school consent grants' do
       click_on 'Meter Reviews'
-      expect(page).to have_link("View", href: school_consent_grants_path(school))
+      expect(page).to have_link('View', href: school_consent_grants_path(school))
     end
 
     context 'with current consent' do
@@ -99,7 +99,7 @@ RSpec.describe 'meter_reviews', type: :system do
     context 'when viewing meters for school' do
       it 'displays a link to perform a review' do
         visit school_meters_path(school)
-        expect(page).to have_link("Pending DCC meter reviews", href: new_admin_school_meter_review_path(school))
+        expect(page).to have_link('Pending DCC meter reviews', href: new_admin_school_meter_review_path(school))
       end
     end
   end
@@ -115,7 +115,7 @@ RSpec.describe 'meter_reviews', type: :system do
     context 'and consent is not current' do
       it 'does not allow completion' do
         click_on 'Meter Reviews'
-        expect(page).not_to have_link("Complete review")
+        expect(page).not_to have_link('Complete review')
       end
     end
 
@@ -130,7 +130,7 @@ RSpec.describe 'meter_reviews', type: :system do
       it 'lists the meters' do
         click_on 'Perform review'
         expect(page.has_unchecked_field?(dcc_meter.mpan_mprn.to_s)).to be true
-        expect(page.has_link?("View meters")).to be true
+        expect(page.has_link?('View meters')).to be true
       end
 
       it 'links to the consent grant' do
@@ -141,7 +141,7 @@ RSpec.describe 'meter_reviews', type: :system do
       it 'requires meters to be added' do
         click_on 'Perform review'
         click_on 'Complete review'
-        expect(page.has_text?("You must select at least one meter")).to be true
+        expect(page.has_text?('You must select at least one meter')).to be true
         expect(MeterReview.count).to be 0
       end
 
@@ -150,7 +150,7 @@ RSpec.describe 'meter_reviews', type: :system do
         click_on 'Perform review'
         check dcc_meter.mpan_mprn.to_s
         click_on 'Complete review'
-        expect(page).to have_content("Review was successfully recorded")
+        expect(page).to have_content('Review was successfully recorded')
         expect(MeterReview.count).to be 1
         expect(MeterReview.first.user).to eql(admin)
         expect(MeterReview.first.meters).to match([dcc_meter])
@@ -158,7 +158,7 @@ RSpec.describe 'meter_reviews', type: :system do
       end
 
       context 'and documents are available' do
-        let!(:consent_document) { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
+        let!(:consent_document) { create(:consent_document, school: school, description: 'Proof!', title: 'Our Energy Bill') }
 
         before do
           click_on 'Perform review'
@@ -166,11 +166,11 @@ RSpec.describe 'meter_reviews', type: :system do
 
         it 'provides list of documents' do
           expect(page.has_unchecked_field?(consent_document.title)).to be true
-          expect(page.has_link?("View documents")).to be true
+          expect(page.has_link?('View documents')).to be true
         end
 
         it 'allows a new bill to be requested' do
-          expect(page.has_link?("Request bill")).to be true
+          expect(page.has_link?('Request bill')).to be true
         end
 
         it 'allows documents to be attached' do
@@ -185,7 +185,7 @@ RSpec.describe 'meter_reviews', type: :system do
 
   context 'when showing a review' do
     let!(:meter_review)           { create(:meter_review, school: school, user: admin) }
-    let!(:consent_document) { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
+    let!(:consent_document) { create(:consent_document, school: school, description: 'Proof!', title: 'Our Energy Bill') }
 
     before do
       meter_review.meters << dcc_meter
@@ -214,7 +214,7 @@ RSpec.describe 'meter_reviews', type: :system do
 
       it 'provides a link to meter reviews' do
         visit school_meters_path(school)
-        expect(page).to have_link("Completed DCC meter reviews", href: admin_school_meter_reviews_path(school))
+        expect(page).to have_link('Completed DCC meter reviews', href: admin_school_meter_reviews_path(school))
       end
     end
   end

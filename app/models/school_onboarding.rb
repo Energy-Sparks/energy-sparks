@@ -120,7 +120,7 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def ready_for_review?
-    #adding pupil password is trigger for last step
+    # adding pupil password is trigger for last step
     pupil_account_created?
   end
 

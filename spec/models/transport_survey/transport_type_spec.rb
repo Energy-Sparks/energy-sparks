@@ -16,10 +16,10 @@ describe TransportSurvey::TransportType do
     end
   end
 
-  describe "#name" do
+  describe '#name' do
     subject!(:transport_type) { create(:transport_type) }
 
-    it "has a translatable_type of TransportSurvey::TransportType in the mobility_string_translations table" do
+    it 'has a translatable_type of TransportSurvey::TransportType in the mobility_string_translations table' do
       # This is here as a reminder that #name is a translated field and if the name of the class changes,
       # that it's translatable_type in the database table: mobility_string_translations also needs to change!
       # See: lib/tasks/deployment/20231120150555_fix_transport_type_names.rake
@@ -27,10 +27,10 @@ describe TransportSurvey::TransportType do
     end
   end
 
-  describe "#safe_destroy" do
+  describe '#safe_destroy' do
     subject!(:transport_type) { create :transport_type }
 
-    context "with associated transport survey response" do
+    context 'with associated transport survey response' do
       let!(:response) { create(:transport_survey_response, transport_type: subject)}
 
       it 'raises exception and does not destroy' do
@@ -40,23 +40,23 @@ describe TransportSurvey::TransportType do
       end
     end
 
-    context "without an associated transport survey response" do
+    context 'without an associated transport survey response' do
       it 'does not raise' do
         expect { transport_type.safe_destroy }.not_to raise_error
       end
 
-      it "destroys transport type" do
+      it 'destroys transport type' do
         expect { transport_type.safe_destroy }.to change(TransportSurvey::TransportType, :count).from(1).to(0)
       end
     end
   end
 
-  describe "#categories_with_other" do
+  describe '#categories_with_other' do
     it "adds 'other' to categories" do
       expect(TransportSurvey::TransportType.categories_with_other.keys).to eql(TransportSurvey::TransportType.categories.keys + ['other'])
     end
 
-    it "sets other to nil" do
+    it 'sets other to nil' do
       expect(TransportSurvey::TransportType.categories_with_other['other']).to be_nil
     end
   end

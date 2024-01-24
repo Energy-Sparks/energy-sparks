@@ -14,9 +14,9 @@ module Schools
         if user.save
           create_or_update_alert_contact(@school, user) if auto_create_alert_contact?
         end
-        redirect_to school_users_path(@school), notice: "User added as school admin"
+        redirect_to school_users_path(@school), notice: 'User added as school admin'
       else
-        flash[:alert] = "User not found"
+        flash[:alert] = 'User not found'
         render :new
       end
     end

@@ -27,7 +27,7 @@ class AdminMailer < ApplicationMailer
     @all_meters = meter_report.all_meters
 
     title = "Meter report for #{@school_group.name}"
-    title += @all_meters ? " - all meters" : " - active meters"
+    title += @all_meters ? ' - all meters' : ' - active meters'
     attachments[meter_report.csv_filename] = { mime_type: 'text/csv', content: meter_report.csv }
 
     mail(to: to, subject: subject(title))

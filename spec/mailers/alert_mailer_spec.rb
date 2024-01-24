@@ -17,7 +17,7 @@ RSpec.describe AlertMailer do
       AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
       expect(ActionMailer::Base.deliveries.count).to be 1
       expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :en)
-      expect(email.mailgun_headers['X-Mailgun-Tag']).to eql "alerts"
+      expect(email.mailgun_headers['X-Mailgun-Tag']).to eql 'alerts'
     end
 
     it 'uses locale if specified' do
@@ -30,7 +30,7 @@ RSpec.describe AlertMailer do
       expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :en)
     end
 
-    context "SEND_AUTOMATED_EMAILS env var is false" do
+    context 'SEND_AUTOMATED_EMAILS env var is false' do
       let(:send_automated_emails) { 'false' }
 
       it 'does not send an email' do

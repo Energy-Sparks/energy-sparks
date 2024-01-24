@@ -16,7 +16,7 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
     it 'displays confirmation if the school is not visible' do
       school.update!(visible: false)
       get :show, params: { onboarding_id: onboarding.to_param }
-      expect(response).to render_template("show")
+      expect(response).to render_template('show')
     end
 
     it 'redirects to the school if it is active' do
@@ -28,7 +28,7 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
   describe '#new' do
     it 'renders the new template' do
       get :new, params: { onboarding_id: onboarding.to_param }
-      expect(response).to render_template("new")
+      expect(response).to render_template('new')
     end
 
     context 'when the onboarding is complete' do

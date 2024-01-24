@@ -8,7 +8,7 @@ class PageNavComponent < ViewComponent::Base
 
   attr_reader :name, :icon, :classes, :href, :options
 
-  def initialize(name: "Menu", icon: 'home', href:, classes: nil, options: {})
+  def initialize(name: 'Menu', icon: 'home', href:, classes: nil, options: {})
     @name = name
     @icon = icon
     @classes = classes
@@ -76,7 +76,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: "nav-link border-bottom item small" }
+      args = { class: 'nav-link border-bottom item small' }
       args[:class] += " #{classes}" if classes
       args[:class] += ' current' if current_item?(href)
       link_to(name, href, args)

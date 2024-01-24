@@ -5,7 +5,7 @@ describe Schools::SchoolRegenerationService, type: :service do
 
   let(:logger)            { double(Rails.logger) }
 
-  #this will create an empty meter collection as the school has no data
+  # this will create an empty meter collection as the school has no data
   let(:meter_collection)  { Amr::AnalyticsMeterCollectionFactory.new(school).validated }
 
   subject(:service)       { Schools::SchoolRegenerationService.new(school: school, logger: logger) }

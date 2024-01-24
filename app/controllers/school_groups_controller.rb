@@ -30,7 +30,7 @@ class SchoolGroupsController < ApplicationController
       format.csv do
         head :bad_request and return unless params['advice_page_keys']
 
-        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
         send_data SchoolGroups::ComparisonsCsvGenerator.new(school_group: @school_group, advice_page_keys: params['advice_page_keys'], include_cluster: include_cluster).export,
         filename: filename
       end
@@ -65,7 +65,7 @@ class SchoolGroupsController < ApplicationController
 
   def csv_filename_for(action)
     title = I18n.t("school_groups.titles.#{action}")
-    "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+    "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
   end
 
   def priority_actions_csv

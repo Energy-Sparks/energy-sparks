@@ -9,7 +9,7 @@ module Scorable
     scorable_calendar.academic_year_for(today).previous_year
   end
 
-  #Calendar to be used for finding academic years. Overridden by groups
+  # Calendar to be used for finding academic years. Overridden by groups
   def scorable_calendar
     academic_year_calendar
   end

@@ -20,7 +20,7 @@
 #  index_transport_types_on_name  (name) UNIQUE
 #
 class TransportSurvey::TransportType < ApplicationRecord
-  self.table_name = "transport_types"
+  self.table_name = 'transport_types'
 
   extend Mobility
   include TransifexSerialisable

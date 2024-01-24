@@ -1,15 +1,15 @@
 require 'rails_helper'
-require "cancan/matchers"
+require 'cancan/matchers'
 
 describe User do
   it 'generates display name' do
-    user = create(:user, name: "Name")
+    user = create(:user, name: 'Name')
     expect(user.display_name).to eql user.name
 
     user = create(:user, name: nil)
     expect(user.display_name).to eql user.email
 
-    user = create(:user, name: "")
+    user = create(:user, name: '')
     expect(user.display_name).to eql user.email
   end
 
@@ -22,14 +22,14 @@ describe User do
     expect(user.school_name).to eq('Big School')
   end
 
-  describe "#default_school_group" do
+  describe '#default_school_group' do
     let(:school) { }
     let(:school_group) { }
     let(:user) { create(:user, school_group: school_group, school: school) }
 
     subject(:default_school_group) { user.default_school_group }
 
-    context "User has school with a school group" do
+    context 'User has school with a school group' do
       let(:school) { create(:school, :with_school_group) }
 
       it { expect(default_school_group).to eq(school.school_group) }
@@ -41,20 +41,20 @@ describe User do
       it { expect(default_school_group).to eq(school_group) }
     end
 
-    context "User has school with no school group but has group" do
+    context 'User has school with no school group but has group' do
       let(:school) { create(:school) }
       let(:school_group) { create(:school_group) }
 
       it { expect(default_school_group).to eq(school_group) }
     end
 
-    context "User has school with no school group and no group" do
+    context 'User has school with no school group and no group' do
       let(:school) { create(:school) }
 
       it { expect(default_school_group).to be_nil }
     end
 
-    context "User has no school or school group" do
+    context 'User has no school or school group' do
       it { expect(default_school_group).to be_nil }
     end
   end

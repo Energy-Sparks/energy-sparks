@@ -19,12 +19,12 @@ module Amr
     def process_dashboard_meters(dashboard_meters)
       return if dashboard_meters.empty?
       dashboard_meters.map do |dashboard_meter|
-        #skip if there are no amr data feed reading for this meter id
-        #external_meter_id == the active record id
-        #but where would this happen?
+        # skip if there are no amr data feed reading for this meter id
+        # external_meter_id == the active record id
+        # but where would this happen?
         next if AmrDataFeedReading.where(meter_id: dashboard_meter.external_meter_id).empty?
 
-        #single insert for all data
+        # single insert for all data
         upserted_dashboard_meter = UpsertValidatedReadingsForAMeter.new(dashboard_meter).perform
 
         CheckingValidatedReadingsForAMeter.new(upserted_dashboard_meter).perform

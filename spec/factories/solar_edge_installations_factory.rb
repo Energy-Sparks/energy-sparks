@@ -6,7 +6,7 @@ FactoryBot.define do
     sequence(:mpan) { |n| n }
     sequence(:api_key) { |n| "api_key_#{n}" }
     information do
-      { site_detail: "", dates: %w(2023-01-01 2023-10-01) }
+      { site_detail: '', dates: %w(2023-01-01 2023-10-01) }
     end
 
     trait :with_electricity_meter do

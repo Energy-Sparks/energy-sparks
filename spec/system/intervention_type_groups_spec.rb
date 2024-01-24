@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "intervention type groups", type: :system do
+RSpec.describe 'intervention type groups', type: :system do
   let!(:intervention_type_1) { create(:intervention_type) }
   let!(:intervention_type_2) { create(:intervention_type) }
 
@@ -12,7 +12,7 @@ RSpec.describe "intervention type groups", type: :system do
     end
   end
 
-  context "with activities_2023 feature flag switched on" do
+  context 'with activities_2023 feature flag switched on' do
     let(:activities_2023_feature) { true }
     let(:user) { }
 
@@ -21,28 +21,28 @@ RSpec.describe "intervention type groups", type: :system do
       visit intervention_type_groups_path
     end
 
-    context "when user is not logged in" do
-      it_behaves_like "a recommended prompt", displayed: false
+    context 'when user is not logged in' do
+      it_behaves_like 'a recommended prompt', displayed: false
     end
 
-    context "when user is logged in" do
-      context "without a school" do
+    context 'when user is logged in' do
+      context 'without a school' do
         let(:school) { }
         let(:user) { create :admin, school: school }
 
-        it_behaves_like "a recommended prompt", displayed: false
+        it_behaves_like 'a recommended prompt', displayed: false
       end
 
-      context "with a school" do
+      context 'with a school' do
         let(:school) { create :school }
         let(:user) { create :pupil, school: school }
 
-        it_behaves_like "a recommended prompt"
+        it_behaves_like 'a recommended prompt'
       end
     end
   end
 
-  context "with activities_2023 feature flag switched off" do
+  context 'with activities_2023 feature flag switched off' do
     let(:activities_2023_feature) { false }
 
     context 'as not logged in user' do

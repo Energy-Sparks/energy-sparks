@@ -40,7 +40,7 @@ module Alerts
       Adapters::Report.new(**invalid_alert_report_attributes)
     end
 
-    let(:error_messages) { ["Broken"] }
+    let(:error_messages) { ['Broken'] }
 
     let(:alert_type_run_result) do
       AlertTypeRunResult.new(alert_type: alert_type, reports: [example_alert_report, example_benchmark_alert_report, example_invalid_report], asof_date: asof_date)
@@ -107,7 +107,7 @@ module Alerts
 
         expect(BenchmarkResult.last.results).not_to eq({})
         expect(BenchmarkResult.last.results_cy).not_to eq({})
-        expect(BenchmarkResult.last.results["var"]).to eq ".inf"
+        expect(BenchmarkResult.last.results['var']).to eq '.inf'
       end
 
       it 'handles alert and benchmark errors' do

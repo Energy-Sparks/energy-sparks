@@ -8,7 +8,7 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_group_class
-    "tempus-dominus-date".freeze
+    'tempus-dominus-date'.freeze
   end
 
   def input_html_options
@@ -20,7 +20,7 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_value_format
-    "%d/%m/%Y".freeze
+    '%d/%m/%Y'.freeze
   end
 
   def input_value

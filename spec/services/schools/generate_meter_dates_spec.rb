@@ -50,14 +50,14 @@ describe Schools::GenerateMeterDates, type: :service do
 
       it 'generates expected values' do
         dates = service.generate
-        expect(dates[:electricity][:start_date]).to eql("2020-01-01")
-        expect(dates[:electricity][:end_date]).to eql("2020-12-31")
+        expect(dates[:electricity][:start_date]).to eql('2020-01-01')
+        expect(dates[:electricity][:end_date]).to eql('2020-12-31')
 
-        expect(dates[:gas][:start_date]).to eql("2019-01-01")
-        expect(dates[:gas][:end_date]).to eql("2019-12-01")
+        expect(dates[:gas][:start_date]).to eql('2019-01-01')
+        expect(dates[:gas][:end_date]).to eql('2019-12-01')
 
-        expect(dates[:storage_heater][:start_date]).to eql("2020-02-01")
-        expect(dates[:storage_heater][:end_date]).to eql("2020-12-01")
+        expect(dates[:storage_heater][:start_date]).to eql('2020-02-01')
+        expect(dates[:storage_heater][:end_date]).to eql('2020-12-01')
       end
     end
 
@@ -70,8 +70,8 @@ describe Schools::GenerateMeterDates, type: :service do
 
       it 'generates expected values' do
         dates = service.generate
-        expect(dates[:electricity][:start_date]).to eql("2020-01-01")
-        expect(dates[:electricity][:end_date]).to eql("2020-12-31")
+        expect(dates[:electricity][:start_date]).to eql('2020-01-01')
+        expect(dates[:electricity][:end_date]).to eql('2020-12-31')
         expect(dates[:gas]).to be_nil
         expect(dates[:storage_heater]).to be_nil
       end

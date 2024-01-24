@@ -14,7 +14,7 @@ class SchoolGroupComparisonComponent < ViewComponent::Base
   end
 
   def modal_title_for(category)
-    t("advice_pages.#{@advice_page_key}.page_title") + " > " + t("advice_pages.benchmarks.#{category}")
+    t("advice_pages.#{@advice_page_key}.page_title") + ' > ' + t("advice_pages.benchmarks.#{category}")
   end
 
   def modal_id_for(category)

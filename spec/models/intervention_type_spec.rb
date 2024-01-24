@@ -58,7 +58,7 @@ describe 'InterventionType' do
       intervention_type_1 = create(:intervention_type, name: 'time')
       intervention_type_2 = create(:intervention_type, name: 'timing')
 
-      #use match array here as the ordering isn't guaranteed?
+      # use match array here as the ordering isn't guaranteed?
       expect(InterventionType.search(query: 'timing', locale: 'en')).to match_array([intervention_type_2, intervention_type_1])
     end
 
@@ -89,28 +89,28 @@ describe 'InterventionType' do
   end
 
   context 'finding resources for transifex' do
-    let!(:intervention_type_1) { create(:intervention_type, name: "one", active: true)}
-    let!(:intervention_type_2) { create(:intervention_type, name: "two", active: false)}
+    let!(:intervention_type_1) { create(:intervention_type, name: 'one', active: true)}
+    let!(:intervention_type_2) { create(:intervention_type, name: 'two', active: false)}
 
-    it "#tx_resources" do
+    it '#tx_resources' do
       expect(InterventionType.tx_resources).to match_array([intervention_type_1])
     end
   end
 
   context 'serialising for transifex' do
     context 'when mapping fields' do
-      let!(:intervention_type) { create(:intervention_type, name: "My intervention", description: "description", summary: "summary")}
+      let!(:intervention_type) { create(:intervention_type, name: 'My intervention', description: 'description', summary: 'summary')}
 
       it 'produces the expected key names' do
-        expect(intervention_type.tx_attribute_key("name")).to eq "name"
-        expect(intervention_type.tx_attribute_key("summary")).to eq "summary"
-        expect(intervention_type.tx_attribute_key("description")).to eq "description_html"
-        expect(intervention_type.tx_attribute_key("download_links")).to eq "download_links_html"
+        expect(intervention_type.tx_attribute_key('name')).to eq 'name'
+        expect(intervention_type.tx_attribute_key('summary')).to eq 'summary'
+        expect(intervention_type.tx_attribute_key('description')).to eq 'description_html'
+        expect(intervention_type.tx_attribute_key('download_links')).to eq 'download_links_html'
       end
 
       it 'produces the expected tx values, removing trix content wrapper' do
-        expect(intervention_type.tx_value("name")).to eql intervention_type.name
-        expect(intervention_type.tx_value("description")).to eql("description")
+        expect(intervention_type.tx_value('name')).to eql intervention_type.name
+        expect(intervention_type.tx_value('description')).to eql('description')
       end
 
       it 'produces the expected resource key' do
@@ -119,18 +119,18 @@ describe 'InterventionType' do
 
       it 'maps all translated fields' do
         data = intervention_type.tx_serialise
-        expect(data["en"]).not_to be nil
+        expect(data['en']).not_to be nil
         key = "intervention_type_#{intervention_type.id}"
-        expect(data["en"][key]).not_to be nil
-        expect(data["en"][key].keys).to match_array(%w[name summary description_html download_links_html])
+        expect(data['en'][key]).not_to be nil
+        expect(data['en'][key].keys).to match_array(%w[name summary description_html download_links_html])
       end
 
       it 'created categories' do
-        expect(intervention_type.tx_categories).to match_array(["intervention_type"])
+        expect(intervention_type.tx_categories).to match_array(['intervention_type'])
       end
 
       it 'overrides default name' do
-        expect(intervention_type.tx_name).to eq("My intervention")
+        expect(intervention_type.tx_name).to eq('My intervention')
       end
 
       it 'fetches status' do
@@ -150,12 +150,12 @@ describe 'InterventionType' do
     let(:download_links) { subject.download_links }
     let(:data) do
       {
-      "cy" => {
+      'cy' => {
         resource_key => {
-          "name" => "Welsh name",
-          "summary" => "The Welsh summary",
-          "description_html" => "The Welsh description",
-          "download_links_html" => "Links for Welsh <a href=\"google.com\">Google</a>"
+          'name' => 'Welsh name',
+          'summary' => 'The Welsh summary',
+          'description_html' => 'The Welsh description',
+          'download_links_html' => 'Links for Welsh <a href="google.com">Google</a>'
         }
       }
     }
@@ -168,8 +168,8 @@ describe 'InterventionType' do
 
     it 'updates simple fields' do
       expect(subject.name).to eq name
-      expect(subject.name_cy).to eq "Welsh name"
-      expect(subject.summary_cy).to eq "The Welsh summary"
+      expect(subject.name_cy).to eq 'Welsh name'
+      expect(subject.summary_cy).to eq 'The Welsh summary'
     end
 
     it 'updates HTML fields' do

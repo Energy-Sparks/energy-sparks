@@ -15,8 +15,8 @@ describe EquivalenceTypeContentVersion do
     context 'when serialising fields' do
       it 'includes equivalance' do
         data = content_version.tx_serialise
-        key = data["en"].keys.first
-        expect(data["en"][key].keys).to match_array(["equivalence_html"])
+        key = data['en'].keys.first
+        expect(data['en'][key].keys).to match_array(['equivalence_html'])
       end
     end
 
@@ -26,15 +26,15 @@ describe EquivalenceTypeContentVersion do
       end
 
       it 'produces the expected key names' do
-        expect(content_version.tx_attribute_key("equivalence")).to eq "equivalence_html"
+        expect(content_version.tx_attribute_key('equivalence')).to eq 'equivalence_html'
       end
 
       it 'produces the expected tx values, removing trix content wrapper' do
-        expect(content_version.tx_value("equivalence")).to eql "some content with %{tx_var_position}"
+        expect(content_version.tx_value('equivalence')).to eql 'some content with %{tx_var_position}'
       end
 
       it 'created categories' do
-        expect(content_version.tx_categories).to match_array(["equivalence_type"])
+        expect(content_version.tx_categories).to match_array(['equivalence_type'])
       end
 
       it 'overrides default name' do

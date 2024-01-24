@@ -15,7 +15,7 @@ class AggregateSchoolService
     end
   end
 
-  #overwrite whatever we have cached
+  # overwrite whatever we have cached
   def cache(meter_collection)
     Rails.cache.write(cache_key, meter_collection)
   end

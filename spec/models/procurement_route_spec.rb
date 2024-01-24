@@ -8,18 +8,18 @@ RSpec.describe ProcurementRoute, type: :model do
     it { is_expected.to validate_presence_of(:organisation_name) }
   end
 
-  describe ".to_csv" do
+  describe '.to_csv' do
     let(:procurement_route) { create(:procurement_route) }
     let(:data_source) { create(:data_source) }
     subject(:csv) { procurement_route.to_csv }
 
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues" }
+    let(:header) { 'School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues' }
 
     before { Timecop.freeze }
     after { Timecop.return }
 
-    context "with meters" do
-      let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
+    context 'with meters' do
+      let(:admin_meter_status) { AdminMeterStatus.create(label: 'On Data Feed') }
       let!(:meters) do
         [
           create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, active: true), admin_meter_status: admin_meter_status),
@@ -67,7 +67,7 @@ RSpec.describe ProcurementRoute, type: :model do
       end
     end
 
-    context "with meters for other data source" do
+    context 'with meters for other data source' do
       let!(:meters) do
         create_list(:gas_meter, 2)
       end
@@ -75,7 +75,7 @@ RSpec.describe ProcurementRoute, type: :model do
       it { expect(csv.lines.count).to eq(1) }
     end
 
-    context "with no meters" do
+    context 'with no meters' do
       it { expect(csv.lines.count).to eq(1) }
       it { expect(csv.lines.first.chomp).to eq(header) }
     end

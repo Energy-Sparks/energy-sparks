@@ -7,7 +7,7 @@ module Solar
     end
 
     def solar_feed_type
-      "Rtone"
+      'Rtone'
     end
   end
 end

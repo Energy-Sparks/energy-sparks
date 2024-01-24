@@ -2,19 +2,19 @@ module TransifexSerialisable
   # rubocop:disable Style/RegexpLiteral
   extend ActiveSupport::Concern
 
-  TRIX_DIV = "<div class=\"trix-content\">".freeze
-  CLOSE_DIV = "</div>".freeze
+  TRIX_DIV = '<div class="trix-content">'.freeze
+  CLOSE_DIV = '</div>'.freeze
 
   def self.included(base)
     base.include ClassMethods
   end
 
-  #Convert object to a hash structure suitable for dumping to
-  #a Rails style YAML file for sending to TX
+  # Convert object to a hash structure suitable for dumping to
+  # a Rails style YAML file for sending to TX
   #
-  #To customise the mapping, add a TX_ATTRIBUTE_MAPPING const to the
-  #including class. This should be a hash of the attribute names to
-  #a hash of options.
+  # To customise the mapping, add a TX_ATTRIBUTE_MAPPING const to the
+  # including class. This should be a hash of the attribute names to
+  # a hash of options.
   #
   # templated will control whether the value has Mustache templates converted
   # to YAML templates
@@ -22,7 +22,7 @@ module TransifexSerialisable
   # html is used to indicate that an otherwise simple attribute on the model
   # should be given a key name with an "_html" suffix.
   #
-  #E.g.
+  # E.g.
   # { attribute_name: {templated: true, html: true} }
   def tx_serialise
     attribs = {}
@@ -33,7 +33,7 @@ module TransifexSerialisable
       end
     end
     data = { resource_key => attribs }
-    return { "en" => data }
+    return { 'en' => data }
   end
 
   # overide in classes to check instance-specific fields
@@ -41,24 +41,24 @@ module TransifexSerialisable
     true
   end
 
-  #Update the model using data from transifex
+  # Update the model using data from transifex
   def tx_update(data, locale)
-    raise "Unexpected locale" unless I18n.available_locales.include?(locale)
-    raise "Unexpected i18n format" unless data[locale.to_s].present? && !data[locale.to_s][resource_key].nil?
+    raise 'Unexpected locale' unless I18n.available_locales.include?(locale)
+    raise 'Unexpected i18n format' unless data[locale.to_s].present? && !data[locale.to_s][resource_key].nil?
 
     translated_attributes = self.class.mobility_attributes.map { |attr| tx_attribute_key(attr) }
     to_update = {}
     tx_attributes = data[locale.to_s][resource_key]
     tx_attributes.each_key do |attr|
-      #ignore any attributes that aren't translated
+      # ignore any attributes that aren't translated
       if translated_attributes.include?(attr)
-        #map translation key to translated attribute name
+        # map translation key to translated attribute name
         name = tx_key_to_attribute_name(attr, locale)
-        #get value, converting template formats if required
+        # get value, converting template formats if required
         value = tx_to_attribute_value(attr, tx_attributes)
-        #rewrite links
+        # rewrite links
         value = rewrite_links_in_value(value) if self.class.tx_rewrite_links?(name.to_sym)
-        #add to hash for updating
+        # add to hash for updating
         to_update[name] = value
       end
     end
@@ -102,7 +102,7 @@ module TransifexSerialisable
   end
 
   def tx_value(attr)
-    #TODO is there a better way to access the HTML?
+    # TODO is there a better way to access the HTML?
     if self.class.tx_rich_text_field?(attr)
       value = send(attr).to_s
       value = remove_newlines(value)
@@ -128,8 +128,8 @@ module TransifexSerialisable
     value
   end
 
-  #we only have a single custom Mustache tag, see SchoolTemplate
-  #we will need to do something more sophisticated if we add more
+  # we only have a single custom Mustache tag, see SchoolTemplate
+  # we will need to do something more sophisticated if we add more
   def mustache_to_yaml(value)
     value = value.gsub(/{{#chart}}([a-z0-9_|£]+){{\/chart}}/, '%{tx_chart_\1}')
     value = value.gsub(/{{([a-z0-9_|£]+)}}/, '%{tx_var_\1}')
@@ -155,7 +155,7 @@ module TransifexSerialisable
   end
 
   def has_content?
-    tx_serialise["en"][resource_key].values.any?(&:present?)
+    tx_serialise['en'][resource_key].values.any?(&:present?)
   end
 
   private
@@ -197,7 +197,7 @@ module TransifexSerialisable
       return mapping.key?(:templated) && mapping[:templated]
     end
 
-    #borrowed from: https://github.com/rails/rails/blob/3872bc0e54d32e8bf3a6299b0bfe173d94b072fc/actiontext/lib/action_text/attribute.rb#L61
+    # borrowed from: https://github.com/rails/rails/blob/3872bc0e54d32e8bf3a6299b0bfe173d94b072fc/actiontext/lib/action_text/attribute.rb#L61
     def tx_rich_text_field?(name)
       reflect_on_all_associations(:has_one).collect(&:name).include?("rich_text_#{name}".to_sym)
     end

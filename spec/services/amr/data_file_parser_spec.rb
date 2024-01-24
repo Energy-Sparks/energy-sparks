@@ -3,7 +3,7 @@ require 'fileutils'
 
 describe Amr::DataFileParser, type: :service do
   let!(:config) { create(:amr_data_feed_config) }
-  let(:path_and_file_name) { "spec/fixtures/amr_upload_data_files/" + file_name }
+  let(:path_and_file_name) { 'spec/fixtures/amr_upload_data_files/' + file_name }
 
   let(:parser) { Amr::DataFileParser.new(config, path_and_file_name)}
   let(:parsed_lines) { parser.perform }
@@ -54,7 +54,7 @@ describe Amr::DataFileParser, type: :service do
   context 'xlsx conversion to csv' do
     let(:file_name) { 'date-test.xlsx' }
 
-    it "exports dates and datetimes to ISO 8601 format" do
+    it 'exports dates and datetimes to ISO 8601 format' do
       parsed_lines[1..].each do |row|
         expect(row[2]).to eql(row[3])
       end

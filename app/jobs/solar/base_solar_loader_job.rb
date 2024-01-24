@@ -1,5 +1,5 @@
 module Solar
-  #Base class for all the jobs that load solar data
+  # Base class for all the jobs that load solar data
   class BaseSolarLoaderJob < ApplicationJob
     include Rails.application.routes.url_helpers
 
@@ -23,11 +23,11 @@ module Solar
     private
 
     def upserter(_start_date, _end_date)
-      raise "Not implemented"
+      raise 'Not implemented'
     end
 
     def solar_feed_type
-      raise "Not implemented"
+      raise 'Not implemented'
     end
 
     def send_notification(notify_email)

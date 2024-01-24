@@ -61,7 +61,7 @@ describe ActivationEmailSender, :schools, type: :service do
           end
 
           context 'but no created user' do
-            #can happen when admin completes process for a school
+            # can happen when admin completes process for a school
             let(:school_onboarding) do
               create :school_onboarding,
                 created_user: nil
@@ -88,21 +88,21 @@ describe ActivationEmailSender, :schools, type: :service do
 
           it 'links to activities' do
             service.send
-            expect(matcher).to have_link("activities and educational resources")
-            expect(matcher).to have_link("energy saving actions")
+            expect(matcher).to have_link('activities and educational resources')
+            expect(matcher).to have_link('energy saving actions')
           end
 
           it 'link to school dashboard' do
             service.send
-            expect(matcher).to have_link("school dashboard")
+            expect(matcher).to have_link('school dashboard')
           end
 
           it 'links to help content and contact' do
             service.send
-            expect(matcher).to have_link("User Guide")
-            expect(matcher).to have_link("Training Videos")
-            expect(matcher).to have_link("Join a webinar")
-            expect(matcher).to have_link("Get in touch")
+            expect(matcher).to have_link('User Guide')
+            expect(matcher).to have_link('Training Videos')
+            expect(matcher).to have_link('Join a webinar')
+            expect(matcher).to have_link('Get in touch')
           end
         end
       end

@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "adult dashboard prompts", type: :system do
+RSpec.describe 'adult dashboard prompts', type: :system do
   before { SiteSettings.create!(audit_activities_bonus_points: 50) }
 
   let(:data_enabled)                    { true }
   let(:confirmed_at)                    { 1.day.ago }
   let(:school)                          { create(:school, :with_school_group, data_enabled: data_enabled) }
-  let!(:school_group_dashboard_message) { school.school_group.create_dashboard_message(message: "School group message") }
-  let!(:school_dashboard_message)       { school.create_dashboard_message(message: "School message") }
+  let!(:school_group_dashboard_message) { school.school_group.create_dashboard_message(message: 'School group message') }
+  let!(:school_dashboard_message)       { school.create_dashboard_message(message: 'School message') }
   let!(:programme)                      { }
   let!(:audit)                          { create(:audit, :with_activity_and_intervention_types, school: school) }
 
@@ -24,58 +24,58 @@ RSpec.describe "adult dashboard prompts", type: :system do
     visit school_path(school, switch: true) # don't redirect pupils to pupil dashboard
   end
 
-  context "with activities_2023 feature flag switched on" do
+  context 'with activities_2023 feature flag switched on' do
     let(:activities_2023_feature) { true }
 
     context 'as guest' do
       let(:user) { nil }
 
-      it_behaves_like "dashboard message prompts", displayed: false
-      it_behaves_like "a training prompt", displayed: false
-      it_behaves_like "a complete programme prompt", displayed: false
-      it_behaves_like "a recommendations prompt", displayed: false
-      it_behaves_like "a rich audit prompt", displayed: false
+      it_behaves_like 'dashboard message prompts', displayed: false
+      it_behaves_like 'a training prompt', displayed: false
+      it_behaves_like 'a complete programme prompt', displayed: false
+      it_behaves_like 'a recommendations prompt', displayed: false
+      it_behaves_like 'a rich audit prompt', displayed: false
     end
 
     context 'as user from another school' do
       let(:school2) { create(:school) }
       let(:user)    { create(:staff, school: school2) }
 
-      it_behaves_like "dashboard message prompts", displayed: false
-      it_behaves_like "a training prompt", displayed: false
-      it_behaves_like "a complete programme prompt", displayed: false
-      it_behaves_like "a recommendations prompt", displayed: false
-      it_behaves_like "a rich audit prompt", displayed: false
+      it_behaves_like 'dashboard message prompts', displayed: false
+      it_behaves_like 'a training prompt', displayed: false
+      it_behaves_like 'a complete programme prompt', displayed: false
+      it_behaves_like 'a recommendations prompt', displayed: false
+      it_behaves_like 'a rich audit prompt', displayed: false
     end
 
     context 'as pupil' do
       let(:user) { create(:pupil, school: school, confirmed_at: confirmed_at) }
 
-      it_behaves_like "dashboard message prompts", displayed: true
-      it_behaves_like "a training prompt", displayed: true
-      it_behaves_like "a complete programme prompt", displayed: true
-      it_behaves_like "a recommendations prompt", displayed: true
-      it_behaves_like "a rich audit prompt", displayed: true
+      it_behaves_like 'dashboard message prompts', displayed: true
+      it_behaves_like 'a training prompt', displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: true
+      it_behaves_like 'a recommendations prompt', displayed: true
+      it_behaves_like 'a rich audit prompt', displayed: true
     end
 
     context 'as staff' do
       let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
 
-      it_behaves_like "dashboard message prompts", displayed: true
-      it_behaves_like "a training prompt", displayed: true
-      it_behaves_like "a complete programme prompt", displayed: true
-      it_behaves_like "a recommendations prompt", displayed: true
-      it_behaves_like "a rich audit prompt", displayed: true
+      it_behaves_like 'dashboard message prompts', displayed: true
+      it_behaves_like 'a training prompt', displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: true
+      it_behaves_like 'a recommendations prompt', displayed: true
+      it_behaves_like 'a rich audit prompt', displayed: true
     end
 
     context 'as school admin' do
       let(:user) { create(:school_admin, school: school, confirmed_at: confirmed_at) }
 
-      it_behaves_like "dashboard message prompts", displayed: true
-      it_behaves_like "a training prompt", displayed: true
-      it_behaves_like "a complete programme prompt", displayed: true
-      it_behaves_like "a recommendations prompt", displayed: true
-      it_behaves_like "a rich audit prompt", displayed: true
+      it_behaves_like 'dashboard message prompts', displayed: true
+      it_behaves_like 'a training prompt', displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: true
+      it_behaves_like 'a recommendations prompt', displayed: true
+      it_behaves_like 'a rich audit prompt', displayed: true
     end
 
     context 'as group admin' do
@@ -83,53 +83,53 @@ RSpec.describe "adult dashboard prompts", type: :system do
       let(:school)        { create(:school, school_group: school_group, data_enabled: data_enabled) }
       let(:user)          { create(:group_admin, school_group: school_group, school: school, confirmed_at: confirmed_at) }
 
-      it_behaves_like "dashboard message prompts", displayed: true
-      it_behaves_like "a training prompt", displayed: true
-      it_behaves_like "a complete programme prompt", displayed: true
-      it_behaves_like "a recommendations prompt", displayed: true
-      it_behaves_like "a rich audit prompt", displayed: true
+      it_behaves_like 'dashboard message prompts', displayed: true
+      it_behaves_like 'a training prompt', displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: true
+      it_behaves_like 'a recommendations prompt', displayed: true
+      it_behaves_like 'a rich audit prompt', displayed: true
     end
 
     context 'as admin' do
       let(:user) { create(:admin, confirmed_at: confirmed_at) }
 
-      it_behaves_like "dashboard message prompts", displayed: true
-      it_behaves_like "a training prompt", displayed: true
-      it_behaves_like "a complete programme prompt", displayed: true
-      it_behaves_like "a recommendations prompt", displayed: true
-      it_behaves_like "a rich audit prompt", displayed: true
+      it_behaves_like 'dashboard message prompts', displayed: true
+      it_behaves_like 'a training prompt', displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: true
+      it_behaves_like 'a recommendations prompt', displayed: true
+      it_behaves_like 'a rich audit prompt', displayed: true
     end
   end
 
   ### context to be removed when activities_2023 feature tidied up ###
-  context "with activities_2023 feature flag switched off" do
+  context 'with activities_2023 feature flag switched off' do
     let(:activities_2023_feature) { false }
 
     context 'as pupil' do
       let(:user) { create(:pupil, school: school, confirmed_at: confirmed_at) }
 
-      it_behaves_like "a complete programme prompt", displayed: false
-      it_behaves_like "a recommendations prompt", displayed: false
-      it_behaves_like "a rich audit prompt", displayed: false
-      it_behaves_like "a basic audit prompt", displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: false
+      it_behaves_like 'a recommendations prompt', displayed: false
+      it_behaves_like 'a rich audit prompt', displayed: false
+      it_behaves_like 'a basic audit prompt', displayed: true
     end
 
     context 'as staff' do
       let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
 
-      it_behaves_like "a complete programme prompt", displayed: false
-      it_behaves_like "a recommendations prompt", displayed: false
-      it_behaves_like "a rich audit prompt", displayed: false
-      it_behaves_like "a basic audit prompt", displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: false
+      it_behaves_like 'a recommendations prompt', displayed: false
+      it_behaves_like 'a rich audit prompt', displayed: false
+      it_behaves_like 'a basic audit prompt', displayed: true
     end
 
     context 'as school admin' do
       let(:user) { create(:school_admin, school: school, confirmed_at: confirmed_at) }
 
-      it_behaves_like "a complete programme prompt", displayed: false
-      it_behaves_like "a recommendations prompt", displayed: false
-      it_behaves_like "a rich audit prompt", displayed: false
-      it_behaves_like "a basic audit prompt", displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: false
+      it_behaves_like 'a recommendations prompt', displayed: false
+      it_behaves_like 'a rich audit prompt', displayed: false
+      it_behaves_like 'a basic audit prompt', displayed: true
     end
 
     context 'as group admin' do
@@ -137,75 +137,75 @@ RSpec.describe "adult dashboard prompts", type: :system do
       let(:school)        { create(:school, school_group: school_group, data_enabled: data_enabled) }
       let(:user)          { create(:group_admin, school_group: school_group, school: school, confirmed_at: confirmed_at) }
 
-      it_behaves_like "a complete programme prompt", displayed: false
-      it_behaves_like "a recommendations prompt", displayed: false
-      it_behaves_like "a rich audit prompt", displayed: false
-      it_behaves_like "a basic audit prompt", displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: false
+      it_behaves_like 'a recommendations prompt', displayed: false
+      it_behaves_like 'a rich audit prompt', displayed: false
+      it_behaves_like 'a basic audit prompt', displayed: true
     end
 
     context 'as admin' do
       let(:user) { create(:admin, confirmed_at: confirmed_at) }
 
-      it_behaves_like "a complete programme prompt", displayed: false
-      it_behaves_like "a recommendations prompt", displayed: false
-      it_behaves_like "a rich audit prompt", displayed: false
-      it_behaves_like "a basic audit prompt", displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: false
+      it_behaves_like 'a recommendations prompt', displayed: false
+      it_behaves_like 'a rich audit prompt', displayed: false
+      it_behaves_like 'a basic audit prompt', displayed: true
     end
   end
 
   ## Testing functionality rather than just if prompts appear or not
-  context "with working prompts" do
+  context 'with working prompts' do
     let(:activities_2023_feature) { true }
     let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
 
-    describe "training prompt" do
-      context "when school is data enabled" do
+    describe 'training prompt' do
+      context 'when school is data enabled' do
         let(:data_enabled) { true }
 
-        context "when user confirmed in the last 30 days" do
+        context 'when user confirmed in the last 30 days' do
           let(:confirmed_at) { 2.days.ago }
 
-          it_behaves_like "a training prompt", displayed: true
+          it_behaves_like 'a training prompt', displayed: true
         end
 
-        context "when user confirmed more than 30 days ago" do
+        context 'when user confirmed more than 30 days ago' do
           let(:confirmed_at) { 31.days.ago }
 
-          it_behaves_like "a training prompt", displayed: false
+          it_behaves_like 'a training prompt', displayed: false
         end
       end
 
-      context "when school is not data enabled" do
+      context 'when school is not data enabled' do
         let(:data_enabled) { false }
 
-        it_behaves_like "a training prompt", displayed: false
+        it_behaves_like 'a training prompt', displayed: false
 
-        context "when user confirmed more than 30 days ago" do
+        context 'when user confirmed more than 30 days ago' do
           let(:confirmed_at) { 31.days.ago }
 
-          it_behaves_like "a training prompt", displayed: false
+          it_behaves_like 'a training prompt', displayed: false
         end
 
-        context "when user confirmed in the last 30 days" do
+        context 'when user confirmed in the last 30 days' do
           let(:confirmed_at) { 2.days.ago }
 
-          it_behaves_like "a training prompt", displayed: false
+          it_behaves_like 'a training prompt', displayed: false
         end
       end
     end
 
-    describe "programme prompt" do
-      context "when there is a programme" do
+    describe 'programme prompt' do
+      context 'when there is a programme' do
         let(:programme) { create(:programme, programme_type: create(:programme_type_with_activity_types), started_on: '2020-01-01', school: school) }
-        let(:message) { "You have completed 0/3" }
+        let(:message) { 'You have completed 0/3' }
 
-        it_behaves_like "a standard prompt", displayed: true
+        it_behaves_like 'a standard prompt', displayed: true
       end
 
       context "when there isn't a programme" do
         let(:message) { "It's time to choose a new programme of activities" }
 
-        it_behaves_like "a standard prompt", displayed: true
+        it_behaves_like 'a standard prompt', displayed: true
       end
     end
   end
