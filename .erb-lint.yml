@@ -7,12 +7,12 @@ linters:
       require:
         - rubocop-rails
       Layout/InitialIndentation:
-        Enabled: false
+        Enabled: false # erb-lint recommended
       Layout/TrailingEmptyLines:
-        Enabled: false
+        Enabled: false # erb-lint recommended
       Naming/AsciiIdentifiers:
-        Enabled: false
+        Enabled: false # because of £ usage
       Style/FrozenStringLiteralComment:
-        Enabled: false
+        Enabled: false # erb-lint recommended
       Lint/UselessAssignment:
-        Enabled: false
+        Enabled: false # erb-lint recommended
