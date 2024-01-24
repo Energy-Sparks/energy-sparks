@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 48327c951306133b229c23cf2a2f577a85989c84
-  tag: 5.0.2
+  revision: 5018b9e6f4c7f3f0fbf9631c3a3041d411ef1e2e
+  tag: 5.0.3
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -141,7 +141,6 @@ GEM
     aws-sigv4 (1.8.0)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.24.1)
-    base64 (0.2.0)
     bcrypt (3.1.20)
     benchmark-memory (0.2.0)
       memory_profiler (~> 1)
@@ -251,13 +250,12 @@ GEM
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
     fakefs (2.5.0)
-    faraday (2.8.1)
-      base64
-      faraday-net_http (>= 2.0, < 3.1)
-      ruby2_keywords (>= 0.0.4)
+    faraday (2.9.0)
+      faraday-net_http (>= 2.0, < 3.2)
     faraday-follow_redirects (0.3.0)
       faraday (>= 1, < 3)
-    faraday-net_http (3.0.2)
+    faraday-net_http (3.1.0)
+      net-http
     faraday-retry (2.2.0)
       faraday (~> 2.0)
     fasterer (0.11.0)
@@ -392,6 +390,8 @@ GEM
     msgpack (1.7.2)
     mustache (1.1.1)
     nenv (0.3.0)
+    net-http (0.4.1)
+      uri
     net-imap (0.4.9.1)
       date
       net-protocol
@@ -403,7 +403,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.0)
-    nkf (0.1.3)
+    nkf (0.2.0)
     nokogiri (1.16.0)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -422,9 +422,9 @@ GEM
       iniparse (~> 1.4)
       rexml (~> 3.2)
     packable (1.3.18)
-    pagy (6.2.0)
+    pagy (6.4.3)
     parallel (1.24.0)
-    parser (3.3.0.3)
+    parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
@@ -561,7 +561,7 @@ GEM
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
     rspec-support (3.12.1)
-    rubocop (1.60.0)
+    rubocop (1.60.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -576,8 +576,8 @@ GEM
       parser (>= 3.2.1.0)
     rubocop-capybara (2.20.0)
       rubocop (~> 1.41)
-    rubocop-factory_bot (2.25.0)
-      rubocop (~> 1.33)
+    rubocop-factory_bot (2.25.1)
+      rubocop (~> 1.41)
     rubocop-performance (1.20.2)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.30.0, < 2.0)
@@ -586,7 +586,7 @@ GEM
       rack (>= 1.1)
       rubocop (>= 1.33.0, < 2.0)
       rubocop-ast (>= 1.30.0, < 2.0)
-    rubocop-rspec (2.26.0)
+    rubocop-rspec (2.26.1)
       rubocop (~> 1.40)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
@@ -596,7 +596,6 @@ GEM
     ruby-sun-times (0.1.5)
     ruby-vips (2.2.0)
       ffi (~> 1.12)
-    ruby2_keywords (0.0.5)
     ruby_parser (3.20.3)
       sexp_processor (~> 4.16)
     rubyvis (0.6.1)
@@ -669,6 +668,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
+    uri (0.13.0)
     view_component (3.10.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)

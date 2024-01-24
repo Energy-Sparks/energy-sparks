@@ -41,18 +41,9 @@ module Schools
       end
 
       def analysis_dates
-        start_date = aggregate_meter.amr_data.start_date
-        end_date = aggregate_meter.amr_data.end_date
-        OpenStruct.new(
-          start_date: start_date,
-          end_date: end_date,
-          one_year_before_end: end_date - 1.year,
-          last_full_week_start_date: last_full_week_start_date(end_date),
-          last_full_week_end_date: last_full_week_end_date(end_date),
-          one_years_data: one_years_data?(start_date, end_date),
-          months_of_data: months_between(start_date, end_date),
-          recent_data: recent_data?(end_date)
-        )
+        dates = super
+        dates.date_when_one_years_data = usage_service.date_when_one_years_data
+        dates
       end
 
       def usage_service

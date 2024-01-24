@@ -48,6 +48,7 @@ class Programme < ApplicationRecord
   scope :in_reverse_start_order, -> { started.order(started_on: :desc) }
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
   scope :last_started, -> { in_reverse_start_order.limit(1) }
+  scope :recently_ended, ->(date: 1.day.ago) { where('ended_on >= ?', date) }
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
 
   def points_for_completion

@@ -31,8 +31,21 @@ RSpec.shared_examples "a complete programme prompt" do |displayed: true, with_pr
   include_examples "a standard prompt", displayed: displayed
 end
 
+RSpec.shared_examples "a join programme prompt" do |displayed: true, programme:, activity_count:|
+  let(:message) { "You've recently completed #{activity_count == 1 ? 'an activity that is' : "#{activity_count} activities that are"} part of the #{programme} programme. Do you want to enroll in the programme?" }
+
+  include_examples "a standard prompt", displayed: displayed
+end
+
+RSpec.shared_examples "a no active programmes prompt" do |displayed: true|
+  let(:message) { "Congratulations you've completed all your energy saving programmes! Time to choose your next programme" }
+
+  include_examples "a standard prompt", displayed: displayed
+end
+
 RSpec.shared_examples "a recommendations prompt" do |displayed: true|
   let(:message) { "Complete one of our recommended pupil or adult led activities to start reducing your energy usage" }
+
   include_examples "a standard prompt", displayed: displayed
 end
 

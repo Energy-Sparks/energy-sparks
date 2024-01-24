@@ -24,7 +24,7 @@
     <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.title') %>
   <% end %>
 
-  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
+  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
 <% end %>
 
 <p><%= t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.table_introduction') %></p>
@@ -39,7 +39,7 @@
   <% c.with_title do %>
     <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
   <% end %>
-  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
+  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
   <% c.with_footer do %>
     <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html',
         savings_kwh: format_unit((@annual_usage_breakdown.total.kwh - @annual_usage_breakdown.out_of_hours.kwh), :kwh),
@@ -57,7 +57,7 @@
     <%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
   <% end %>
 
-  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
+  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
   <% c.with_footer do %>
     <%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.footer_html',
     insights_school_advice_heating_control_path: insights_school_advice_heating_control_path(@school)) %>

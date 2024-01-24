@@ -108,4 +108,24 @@ describe 'Programme' do
       end
     end
   end
+
+  describe ".recently_ended" do
+    before { Timecop.freeze }
+    after { Timecop.return }
+
+    let!(:ended_today) { create(:programme, ended_on: Time.zone.today) }
+    let!(:ended_yesterday) { create(:programme, ended_on: 1.day.ago) }
+    let!(:ended_older) { create(:programme, ended_on: 2.days.ago) }
+
+    subject(:programmes) { Programme.recently_ended }
+
+    it "includes programmes ended today or yesterday" do
+      expect(programmes).to include(ended_today)
+      expect(programmes).to include(ended_yesterday)
+    end
+
+    it "doesn't include older programmes" do
+      expect(programmes).not_to include(ended_older)
+    end
+  end
 end

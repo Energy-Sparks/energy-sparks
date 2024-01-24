@@ -62,8 +62,6 @@ cy:
           more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
           title: Sut ydych chi'n cymharu?
         current_usage:
-          last_year: Y llynedd
-          review_our_analysis: Adolygwch ein dadansoddiad manwl
           title: Eich defnydd o nwy hirdymor
         next_steps: Er mwyn pennu achosion y newidiadau yn eich defnydd o nwy yn llawn, dylech adolygu sut mae defnydd wedi newid o fis i fis. Er mwyn sicrhau eich bod yn arbed cymaint o nwy â phosibl, dylech adolygu eich amseriadau gwresogi a gosod tymheredd.
         title: Beth a olygwn wrth ddefnydd nwy hirdymor?

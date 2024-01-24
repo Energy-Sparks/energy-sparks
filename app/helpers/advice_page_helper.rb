@@ -209,5 +209,9 @@ module AdvicePageHelper
   def formatted_unit_to_num(value)
     value.gsub(/(,|kWh|kg CO2)/, '').to_i
   end
+
+  def format_date_range(date_range)
+    date_range.map { |d| d.to_s(:es_short) }.join(' - ')
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers
