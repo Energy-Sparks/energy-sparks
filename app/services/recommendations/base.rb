@@ -2,6 +2,8 @@ module Recommendations
   class Base
     NUMBER_OF_SUGGESTIONS = 4
 
+    attr_reader :school
+
     def initialize(school)
       @school = school
     end
@@ -24,46 +26,25 @@ module Recommendations
     def suggest_random(limit, suggestions: [])
       return [] if suggestions.length >= limit
 
-      all_tasks(excluding: completed_this_year + suggestions).sample(limit - suggestions.count)
+      all(excluding: completed_this_year + suggestions).sample(limit - suggestions.count)
     end
 
-    def completed_ever
-      raise "Implement in subclass!"
-    end
-
-    def completed_this_year
-      raise "Implement in subclass!"
-    end
-
-    def suggested_for(_task, _excluding: [])
-      raise "Implement in subclass!"
-    end
-  end
-
-  class Activity < Base
-    def completed_ever
-      @school.activity_types.by_activity_date # newest first
-    end
-
-    def compeleted_this_year
-    end
-  end
-
-  class Action < Base
-    def completed_ever
-      @school.intervention_types.by_observation_date # newest first
-    end
-
-    def completed_this_year
-      @completed_this_year ||= @school.intervention_types_in_academic_year(Time.zone.now)
-    end
+    private
 
     def suggested_for(task, excluding: [])
       task.suggested_types.not_including(excluding)
     end
 
-    def all_tasks(excluding: [])
-      InterventionType.not_custom.not_including(excluding)
+    def completed_ever
+      raise "Implement in subclass!"
+    end
+
+    def completed_this_year
+      raise "Implement in subclass!"
+    end
+
+    def all(_excluding: [])
+      raise "Implement in subclass!"
     end
   end
 end

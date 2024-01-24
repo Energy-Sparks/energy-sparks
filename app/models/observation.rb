@@ -67,9 +67,10 @@ class Observation < ApplicationRecord
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 
   scope :visible, -> { where(visible: true) }
-  scope :by_date, -> { order(at: :desc) }
+  scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
+  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
   scope :recorded_since, ->(date) { where('observations.created_at >= ?', date)}

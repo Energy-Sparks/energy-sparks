@@ -56,17 +56,16 @@ class InterventionType < ApplicationRecord
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :all_fuel_types_are_in_valid_fuel_types_list
 
-  scope :by_name,               -> { order(name: :asc) }
-  scope :by_id,                 -> { order(id: :asc) }
-  scope :active,                -> { where(active: true) }
-  scope :display_order,         -> { order(:custom, :name) }
-  scope :not_custom,            -> { where(custom: false) }
+  scope :by_name, -> { order(name: :asc) }
+  scope :by_id, -> { order(id: :asc) }
+  scope :active, -> { where(active: true) }
+  scope :display_order, -> { order(:custom, :name) }
+  scope :not_custom, -> { where(custom: false) }
   scope :active_and_not_custom, -> { active.not_custom }
-  scope :custom_last,           -> { order(:custom) }
-  scope :between,               ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
-  scope :not_including,         ->(records = []) { where.not(id: records.pluck(:id)) }
-
-  scope :by_observation_date, ->(order: :desc) { joins(:observations).order('activities.at': order) }
+  scope :custom_last, -> { order(:custom) }
+  # not sure this would work as there is no at on this model. Perhaps used when joining. Commenting out for now until found.
+  # scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
+  scope :not_including, ->(records = []) { where.not(id: records) }
 
   before_save :copy_searchable_attributes
 

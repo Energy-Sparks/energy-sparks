@@ -107,6 +107,7 @@ class School < ApplicationRecord
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
   has_many :intervention_types, through: :observations
+
   has_many :transport_surveys,    inverse_of: :school
   has_many :consent_documents,    inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
@@ -336,13 +337,23 @@ class School < ApplicationRecord
     []
   end
 
-  def intervention_types_in_academic_year(date)
-    if (observations = observations_in_academic_year(date))
-      return observations.map(&:intervention_type).compact
-    end
-    []
+  def intervention_types_in_academic_year(date = Time.zone.now)
+    academic_year = academic_year_for(date)
+    return [] unless academic_year
+
+    intervention_types
+      .merge(observations.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
+  def activity_types_in_academic_year(date = Time.zone.now)
+    academic_year = academic_year_for(date)
+    return [] unless academic_year
+
+    activity_types
+      .merge(activities.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
+  end
+
+  # for removal
   def intervention_types_by_date
     observations.by_date.map(&:intervention_type).compact
   end
