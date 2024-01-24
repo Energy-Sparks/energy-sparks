@@ -16,34 +16,18 @@ module Schools
 
       private
 
-      def create_analysable
-        annual_usage_breakdown_service
+      def aggregate_meter
+        aggregate_school.aggregate_meter(advice_page_fuel_type)
       end
 
-      def analysis_dates
-        start_date = aggregate_meter.amr_data.start_date
-        end_date = aggregate_meter.amr_data.end_date
-        OpenStruct.new(
-          start_date: start_date,
-          end_date: end_date,
-          one_years_data: one_years_data?(start_date, end_date),
-          recent_data: recent_data?(end_date),
-          months_of_data: months_between(start_date, end_date),
-          last_full_week_start_date: last_full_week_start_date(end_date),
-          last_full_week_end_date: last_full_week_end_date(end_date),
-        )
+      def create_analysable
+        annual_usage_breakdown_service
       end
 
       #for charts that use the last full week
       #beginning of the week is Sunday
       def last_full_week_start_date(end_date)
         (end_date - 13.months).beginning_of_week - 1
-      end
-
-      #for charts that use the last full week
-      #end of the week is Saturday
-      def last_full_week_end_date(end_date)
-        end_date.prev_week.end_of_week - 1
       end
 
       def benchmark_school(annual_usage_breakdown)
@@ -56,7 +40,7 @@ module Schools
       end
 
       def annual_usage_breakdown_service
-        ::Usage::AnnualUsageBreakdownService.new(
+        ::Usage::UsageBreakdownService.new(
           meter_collection: aggregate_school,
           fuel_type: fuel_type
         )
@@ -70,6 +54,7 @@ module Schools
       end
 
       def set_usage_categories
+        #@usage_categories = aggregate_school.open_close_times.time_types
         @usage_categories = [:holiday, :weekend, :school_day_open, :school_day_closed]
         @usage_categories += [:community] if @school.school_times.community_use.any?
         @usage_categories

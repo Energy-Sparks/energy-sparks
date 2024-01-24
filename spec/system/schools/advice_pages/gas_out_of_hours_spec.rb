@@ -30,8 +30,8 @@ RSpec.describe "gas out of hours advice page", type: :system do
         percent: 0.4
       )
 
-      allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:usage_breakdown) do
-        Usage::AnnualUsageCategoryBreakdown.new(
+      allow_any_instance_of(Usage::UsageBreakdownService).to receive(:usage_breakdown) do
+        Usage::UsageBreakdown.new(
           holiday: combined_usage_metric,
           school_day_closed: combined_usage_metric,
           school_day_open: combined_usage_metric,
@@ -41,8 +41,8 @@ RSpec.describe "gas out of hours advice page", type: :system do
           fuel_type: :gas
         )
       end
-      allow_any_instance_of(Usage::AnnualUsageCategoryBreakdown).to receive(:total) { combined_usage_metric }
-      allow_any_instance_of(Usage::AnnualUsageCategoryBreakdown).to receive(:potential_savings) { combined_usage_metric }
+      allow_any_instance_of(Usage::UsageBreakdown).to receive(:total) { combined_usage_metric }
+      #allow_any_instance_of(Usage::UsageBreakdown).to receive(:potential_savings) { combined_usage_metric }
 
       allow(meter_collection).to receive(:holidays).and_return(nil)
 
