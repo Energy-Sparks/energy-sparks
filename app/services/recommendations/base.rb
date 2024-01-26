@@ -45,6 +45,8 @@ module Recommendations
       suggestions + suggest_from_audits(limit - suggestions.length, excluding: suggestions + completed_this_year)
     end
 
+    private
+
     def fuel_types
       fuel_types = []
       # couldn't find how to get a list of school fuel types cleanly?!
@@ -58,12 +60,6 @@ module Recommendations
     def alerts_for_fuel_type(fuel_type)
       school.latest_alerts_without_exclusions.by_rating.by_fuel_type(fuel_type)
     end
-
-    def tasks_for_fuel_type(_fuel_type)
-      raise "Implement in subclass!"
-    end
-
-    private
 
     def tasks_by_fuel_type(limit)
       alerts = {}

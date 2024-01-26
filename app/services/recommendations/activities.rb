@@ -1,10 +1,10 @@
 module Recommendations
   class Activities < Base
+    private
+
     def tasks_for_alert(alert, excluding: [])
       alert.activity_types.active.not_including(excluding)
     end
-
-    private
 
     def suggest_from_audits(count, excluding: [])
       school.audit_activity_types.active.not_including(excluding).limit(count)
