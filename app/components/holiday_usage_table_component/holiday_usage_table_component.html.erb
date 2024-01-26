@@ -70,7 +70,7 @@
       </tr>
       <% if can_compare_holiday_usage?(holiday) %>
         <tr class="table-active holiday-comparison">
-          <% comparison_row(holiday) do |label, period, holiday_usage, previous_holiday_usage, previous_holiday_period| %>
+          <% comparison_row(holiday) do |label, period, holiday_usage, previous_holiday_period, previous_holiday_usage| %>
             <td><%= label %></td>
             <td><%= advice_t('baseload.tables.columns.percentage_difference')%></td>
             <td class="text-right">

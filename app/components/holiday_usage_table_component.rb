@@ -36,7 +36,7 @@ class HolidayUsageTableComponent < ViewComponent::Base
   def can_compare_holiday_usage?(holiday)
     return false unless holiday_usage(holiday).present?
     return false unless previous_holiday_usage(holiday).present?
-    Time.zone.today > holiday.end_date
+    @analysis_dates.end_date >= holiday.end_date
   end
 
   def within_school_period?(school_period)
@@ -45,7 +45,7 @@ class HolidayUsageTableComponent < ViewComponent::Base
 
   # Return the average daily usage in kWh for a SchoolPeriod
   def average_daily_usage(usage, school_period)
-    return usage.kwh / (school_period.end_date - school_period.start_date)
+    return usage.kwh / school_period.days
   end
 
   def format_value(value, unit = :kwh)
@@ -72,10 +72,11 @@ class HolidayUsageTableComponent < ViewComponent::Base
   end
 
   def comparison_row(holiday)
-    return unless can_compare_holiday_usage?(holiday)
+    return false unless can_compare_holiday_usage?(holiday)
     holiday_usage = holiday_usage(holiday)
     previous_holiday_usage = previous_holiday_usage(holiday)
     previous_holiday_period = previous_holiday_period(holiday)
-    yield "", holiday, holiday_usage, previous_holiday_usage, previous_holiday_period
+    yield "", holiday, holiday_usage, previous_holiday_period, previous_holiday_usage if block_given?
+    true
   end
 end
