@@ -152,6 +152,6 @@
 
 <p><%= advice_t('storage_heaters.analysis.holiday_usage.table_intro') %></p>
 
-<%= render 'holiday_usage_table', holiday_usage: @holiday_usage %>
+<%= component 'holiday_usage_table', holiday_usage: @holiday_usage, analysis_dates: @analysis_dates %>
 
 <p><%= advice_t('storage_heaters.analysis.holiday_usage.table_footer') %></p>
