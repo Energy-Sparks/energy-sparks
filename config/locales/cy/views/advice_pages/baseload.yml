@@ -12,6 +12,7 @@ cy:
           baseload_chart_explanation: Mae pob pwynt yn y siart hwn yn cynrychioli'r llwyth sylfaenol cyfartalog dros yr oriau y mae ysgol ar gau ar y diwrnod hwnnw. Gallwch glicio ar bwynt yn y siart a bydd yn drilio i lawr i ddangos y defnydd llawn o drydan i chi ar y diwrnod hwnnw.
           baseload_chart_subtitle_html: Mae'r siart hwn yn dangos llwyth sylfaenol trydan eich ysgol rhwng<span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>.
           baseload_chart_title:
+            one: Llwyth sylfaenol trydan ar gyfer y mis diwethaf
             other: Llwyth sylfaenol trydan ar gyfer y %{count} mis diwethaf
             zero: Llwyth sylfaenol trydan ar gyfer y mis diwethaf
           long_term_baseload_chart_explanation: Gallwch glicio ar y siart i drilio i lawr i ddiwrnodau unigol a gweithio allan ar ba adegau o'r dydd a'r flwyddyn y mae eich ysgol yn ei wneud naill ai'n well neu'n waeth na'r ysgolion hyn.

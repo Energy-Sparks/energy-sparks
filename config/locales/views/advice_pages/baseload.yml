@@ -13,6 +13,7 @@ en:
           baseload_chart_explanation: Each point on this chart represents the average baseload over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the full electricity usage on that day.
           baseload_chart_subtitle_html: This chart shows the electricity baseload for your school between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>.
           baseload_chart_title:
+            one: Electricity baseload for the last month
             other: Electricity baseload for the last %{count} months
             zero: Electricity baseload for the last month
           long_term_baseload_chart_explanation: You can click on the chart to drill down to individual days and work out at what times of day and year your school is doing either better or worse than these schools.
