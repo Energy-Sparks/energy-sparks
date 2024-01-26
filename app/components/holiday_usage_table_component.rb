@@ -19,7 +19,7 @@ class HolidayUsageTableComponent < ViewComponent::Base
 
   #sort an array of SchoolPeriod objects
   def sort_school_periods(periods)
-    periods.sort { |a, b| a.start_date <=> b.start_date }
+    periods.sort_by(&:start_date)
   end
 
   def can_compare_holiday_usage?(holiday, holiday_usage)
