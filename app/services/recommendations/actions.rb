@@ -7,7 +7,7 @@ module Recommendations
     end
 
     def suggest_from_audits(count, excluding: [])
-      school.audit_intervention_types.active.not_including(excluding).limit(count)
+      count > 0 ? school.audit_intervention_types.active.not_including(excluding).limit(count) : []
     end
 
     def completed_ever
