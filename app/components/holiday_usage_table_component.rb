@@ -9,17 +9,22 @@ class HolidayUsageTableComponent < ViewComponent::Base
     @analysis_dates = analysis_dates
   end
 
+  # Return usage summary for a specific holiday period
+  # {usage: CombinedUsageMetric,
+  #  previous_holiday_usage: CombinedUsageMetric,
+  #  previous_holiday: SchoolPeriod}
   def usage(holiday)
     @holiday_usage[holiday]
   end
 
-  def school_periods
-    sort_school_periods(@holiday_usage.keys)
+  # Return period for previous holiday
+  def previous_holiday_usage(holiday)
+    usage(holiday).previous_holiday
   end
 
-  #sort an array of SchoolPeriod objects
-  def sort_school_periods(periods)
-    periods.sort_by(&:start_date)
+  #Return the holidays (SchoolPeriod) in date order
+  def school_periods
+    @holiday_usage.keys.sort_by(&:start_date)
   end
 
   def can_compare_holiday_usage?(holiday, holiday_usage)
@@ -28,14 +33,16 @@ class HolidayUsageTableComponent < ViewComponent::Base
     Time.zone.today > holiday.end_date
   end
 
-  def last_period
-    school_periods.last
-  end
-
   def within_school_period?(school_period)
     @analysis_dates.end_date > school_period.start_date && @analysis_dates.end_date < school_period.end_date
   end
 
+  # Return the average daily usage in the previous holiday period
+  def average_daily_usage_previous_holiday(holiday)
+    average_daily_usage(usage(holiday).previous_holiday_usage, holiday)
+  end
+
+  # Return the average daily usage in kWh for a SchoolPeriod
   def average_daily_usage(usage, school_period)
     return usage.kwh / (school_period.end_date - school_period.start_date)
   end

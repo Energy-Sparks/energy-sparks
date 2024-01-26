@@ -1,3 +1,5 @@
+<p><%= advice_t('gas_out_of_hours.analysis.holiday_usage.table_intro') %></p>
+
 <table id="<%= @id %>" class="table advice-table">
   <thead>
     <tr>
@@ -11,26 +13,25 @@
   </thead>
   <tbody>
     <% school_periods.each do |holiday| %>
-
-      <tr>
+      <tr class='previous-holiday'>
         <td><%= I18nHelper.holiday(holiday.type) %></td>
         <td>
-          <% if usage(holiday).previous_holiday.present? %>
-            <%= t('analytics.from_and_to', from_date: usage(holiday).previous_holiday.start_date.to_s(:es_short), to_date: usage(holiday).previous_holiday.end_date.to_s(:es_short)) %>
+          <% if previous_holiday_usage(holiday).present? %>
+            <%= t('analytics.from_and_to', from_date: previous_holiday_usage(holiday).start_date.to_s(:es_short), to_date: previous_holiday_usage(holiday).end_date.to_s(:es_short)) %>
           <% end %>
         </td>
-        <% if usage(holiday).previous_holiday_usage.present? %>
+        <% if previous_holiday_usage(holiday).present? %>
           <td class="text-right">
-            <%= format_value(usage(holiday).previous_holiday_usage.kwh, :kwh) %>
+            <%= format_value(previous_holiday_usage(holiday).kwh, :kwh) %>
           </td>
           <td class="text-right">
-            <%= format_value(average_daily_usage(usage(holiday).previous_holiday_usage, holiday), :kwh) %>
+            <%= format_value(average_daily_usage_previous_holiday(holiday), :kwh) %>
           </td>
           <td class="text-right">
-            <%= format_value(usage(holiday).previous_holiday_usage.£, :£) %>
+            <%= format_value(previous_holiday_usage(holiday).£, :£) %>
           </td>
           <td class="text-right">
-            <%= format_value(usage(holiday).previous_holiday_usage.co2, :co2) %>
+            <%= format_value(previous_holiday_usage(holiday).co2, :co2) %>
           </td>
         <% else %>
           <td colspan="4" class="text-center old-data">
@@ -39,7 +40,7 @@
         <% end %>
       </tr>
 
-      <tr>
+      <tr class='current-holiday'>
         <td></td>
         <td>
           <%= t('analytics.from_and_to', from_date: holiday.start_date.to_s(:es_short), to_date: holiday.end_date.to_s(:es_short)) %>
@@ -66,8 +67,9 @@
           </td>
         <% end %>
       </tr>
+
       <% if can_compare_holiday_usage?(holiday, usage(holiday)) %>
-        <tr class="table-active">
+        <tr class="table-active holiday-comparison">
           <td></td>
           <td><%= advice_t('baseload.tables.columns.percentage_difference')%></td>
           <td class="text-right">
@@ -92,7 +94,7 @@
     <% end %>
   </tbody>
 </table>
-<% if within_school_period?(last_period) %>
+<% if within_school_period?(school_periods.last) %>
   <div class="text-right advice-table-caption">
     <sup>*</sup> <%= t('advice_pages.tables.notice.partial_holiday') %>
   </div>
