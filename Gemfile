@@ -123,6 +123,7 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'knapsack'
+  gem 'pry-rails'
   gem 'rails-controller-testing'
   gem 'rb-readline', require: false
   gem 'rspec-json_expectations'

@@ -104,6 +104,7 @@ class School < ApplicationRecord
   has_many :school_times,         inverse_of: :school
   has_many :activities,           inverse_of: :school
   has_many :activity_types, through: :activities
+
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
   has_many :intervention_types, through: :observations
@@ -116,6 +117,9 @@ class School < ApplicationRecord
   has_many :school_targets,       inverse_of: :school
   has_many :school_target_events, inverse_of: :school
   has_many :audits,               inverse_of: :school
+
+  has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
+  has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_types, through: :programmes
@@ -341,16 +345,14 @@ class School < ApplicationRecord
     academic_year = academic_year_for(date)
     return [] unless academic_year
 
-    intervention_types
-      .merge(observations.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
+    intervention_types.merge(observations.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
   def activity_types_in_academic_year(date = Time.zone.now)
     academic_year = academic_year_for(date)
     return [] unless academic_year
 
-    activity_types
-      .merge(activities.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
+    activity_types.merge(activities.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
   # for removal

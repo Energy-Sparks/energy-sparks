@@ -39,7 +39,7 @@ module Schools
       to: :fuel_configuration
 
     def fuel_configuration
-      FuelConfiguration.new(**super.symbolize_keys)
+      Schools::FuelConfiguration.new(**super.symbolize_keys)
     end
 
     def enough_data_to_set_target?
