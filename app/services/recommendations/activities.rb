@@ -2,7 +2,7 @@ module Recommendations
   class Activities < Base
     private
 
-    def tasks_for_alert(alert, excluding: [])
+    def suggest_from_alert(alert, excluding: [])
       alert.activity_types.active.not_including(excluding)
     end
 

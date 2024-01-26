@@ -74,7 +74,7 @@ module Recommendations
         # get "limit" amount of tasks for each fuel type as at this point we don't know
         # if other fuel types have any alerts / tasks available
         while (alert = alerts[fuel_type].shift) && tasks[fuel_type].length < limit
-          tasks[fuel_type] += tasks_for_alert(alert, excluding: completed_this_year)
+          tasks[fuel_type] += suggest_from_alert(alert, excluding: completed_this_year)
         end
       end
       tasks
