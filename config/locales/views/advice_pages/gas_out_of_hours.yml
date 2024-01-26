@@ -58,6 +58,8 @@ en:
         comparison:
           callout_footer: annual usage
           how_do_you_compare: How does your gas usage out of school hours compare to other %{school_type} schools on Energy Sparks, with a similar floor area?
+          less_than_a_year_html: "<p>As we have less than a years worth of data for your school we are not yet able to benchmark your out of hours gas consumption against other schools.</p><p>This comparison will become available on %{date}.</p>"
+          less_than_a_year_indicator_html: Over a year, a well managed school will use less than %{well_managed_percent} of its gas out of hours.
           more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
           title: How do you compare?
         next_steps: Make sure that your heating is set to only heat the school when it needs to be warm. Heating and hot water can be switched off for evenings, weekends and holidays and heating should not come on too early in the mornings. Use a checklist of energy saving tasks to be completed before holidays.
@@ -74,5 +76,6 @@ en:
           </p>
         what_is_out_of_hours_usage_link: Learn more
         your_out_of_hours_usage_html: Over the last year %{out_of_hours_percent} of your gas was used when the school was closed. This has cost you %{out_of_hours_gbp} and led to emissions of %{out_of_hours_co2}kg CO2.
+        your_out_of_hours_usage_since_date_html: Since %{date}, %{out_of_hours_percent} of your gas was used when the school was closed. This has cost you %{out_of_hours_gbp} and led to emissions of %{out_of_hours_co2}kg CO2.
         your_out_of_hours_usage_title: Out of school hours gas use
       page_title: Out of school hours gas use

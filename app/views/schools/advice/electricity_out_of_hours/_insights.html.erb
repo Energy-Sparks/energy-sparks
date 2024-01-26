@@ -7,28 +7,44 @@
 
 <%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertOutOfHoursElectricityUsage), show_links: false, show_icons: false %>
 
-<%= t(
-      'advice_pages.electricity_out_of_hours.insights.your_out_of_hours_usage_html',
-      out_of_hours_percent: format_unit(@annual_usage_breakdown&.out_of_hours&.percent, :percent),
-      out_of_hours_gbp: format_unit(@annual_usage_breakdown&.out_of_hours&.£, :£),
-      out_of_hours_co2: format_unit(@annual_usage_breakdown&.out_of_hours&.co2, :co2)
-    )
-  %>
+<% if @analysis_dates.one_years_data? %>
+  <%= t(
+        'advice_pages.electricity_out_of_hours.insights.your_out_of_hours_usage_html',
+        out_of_hours_percent: format_unit(@annual_usage_breakdown&.out_of_hours&.percent, :percent),
+        out_of_hours_gbp: format_unit(@annual_usage_breakdown&.out_of_hours&.£, :£),
+        out_of_hours_co2: format_unit(@annual_usage_breakdown&.out_of_hours&.co2, :co2)
+      )
+    %>
+<% else %>
+  <%= t(
+        'advice_pages.electricity_out_of_hours.insights.your_out_of_hours_usage_since_date_html',
+        date: short_dates(@analysis_dates.start_date),
+        out_of_hours_percent: format_unit(@annual_usage_breakdown&.out_of_hours&.percent, :percent),
+        out_of_hours_gbp: format_unit(@annual_usage_breakdown&.out_of_hours&.£, :£),
+        out_of_hours_co2: format_unit(@annual_usage_breakdown&.out_of_hours&.co2, :co2)
+      )
+    %>
+<% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.electricity_out_of_hours.insights.comparison.title') %>
 
-<p>
-  <%= t('advice_pages.electricity_out_of_hours.insights.comparison.how_do_you_compare', school_type: t('common.school_types.' + @school.school_type).downcase) %>
-</p>
-
-<div class="col">
-  <%= component 'school_comparison', id: 'comparison-electricity-out-of-hours', comparison: @benchmarked_usage do |c| %>
-    <% c.with_footer { advice_t('electricity_out_of_hours.insights.comparison.callout_footer') } %>
-  <% end %>
-</div>
-
-<% if @school.school_group.present? %>
+<% if @analysis_dates.one_years_data? %>
   <p>
-    <%= t('advice_pages.electricity_out_of_hours.insights.comparison.more_detail_html', link: compare_for_school_group_path(:annual_electricity_out_of_hours_use, @school)) %>
+    <%= t('advice_pages.electricity_out_of_hours.insights.comparison.how_do_you_compare', school_type: t('common.school_types.' + @school.school_type).downcase) %>
   </p>
+  <div class="col">
+    <%= component 'school_comparison', id: 'comparison-electricity-out-of-hours', comparison: @benchmarked_usage do |c| %>
+      <% c.with_footer { advice_t('electricity_out_of_hours.insights.comparison.callout_footer') } %>
+    <% end %>
+  </div>
+  <% if @school.school_group.present? %>
+    <p>
+      <%= t('advice_pages.electricity_out_of_hours.insights.comparison.more_detail_html', link: compare_for_school_group_path(:annual_electricity_out_of_hours_use, @school)) %>
+    </p>
+  <% end %>
+<% else %>
+   <%= t('advice_pages.electricity_out_of_hours.insights.comparison.less_than_a_year_html', date: short_dates(@analysis_dates.date_when_one_years_data)) %>
+   <p>
+     <%= t('advice_pages.electricity_out_of_hours.insights.comparison.less_than_a_year_indicator_html', well_managed_percent: format_unit(@well_managed_percent, :percent)) %>
+   </p>
 <% end %>
