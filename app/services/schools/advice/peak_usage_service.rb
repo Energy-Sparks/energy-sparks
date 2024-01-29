@@ -8,14 +8,12 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      # Not yet implemented in underlying services
       def enough_data?
-        meter_data_checker.one_years_data?
+        meter_data_checker.at_least_x_days_data?(AlertElectricityPeakKWVersusBenchmark::DAYS_REQUIRED)
       end
 
-      # Not yet implemented in underlying services
       def data_available_from
-        meter_data_checker.date_when_enough_data_available(365)
+        meter_data_checker.date_when_enough_data_available(AlertElectricityPeakKWVersusBenchmark::DAYS_REQUIRED)
       end
 
       def average_peak_kw
