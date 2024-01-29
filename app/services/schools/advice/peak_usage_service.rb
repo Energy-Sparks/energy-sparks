@@ -16,9 +16,8 @@ module Schools
         meter_data_checker.date_when_enough_data_available(AlertElectricityPeakKWVersusBenchmark::DAYS_REQUIRED)
       end
 
-      def average_peak_kw
-        peak_usage_calculation_service.average_peak_kw
-      end
+      delegate :average_peak_kw, to: :peak_usage_calculation_service
+      delegate :date_range, to: :peak_usage_calculation_service
 
       def previous_year_peak_kw
         previous_years_peak_usage_calculation_service = peak_usage_calculation_service(previous_years_asof_date)
