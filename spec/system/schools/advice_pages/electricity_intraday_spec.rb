@@ -28,7 +28,7 @@ RSpec.describe 'electricity intraday advice page', type: :system do
 
       it 'shows all expected content' do
         expect(page).to have_content('Your current peak electricity use')
-        expect(page).not_to have_content('Data on peak kw usage available from')
+        expect(page).to have_no_content('Data on peak kw usage available from')
         expect(page).to have_content('How did we calculate these figures?')
         expect(page).to have_content('How do you compare?')
         expect(page).to have_content('How does your peak electricity use compare to other primary schools on Energy Sparks with a similar number of pupils')
@@ -37,16 +37,16 @@ RSpec.describe 'electricity intraday advice page', type: :system do
       end
 
       context 'when not enough data' do
-        let(:start_date) { end_date - 11.months}
+        let(:start_date) { end_date - 58.days }
 
         it 'shows only relevent content' do
           expect(page).to have_content('Your current peak electricity use')
-          expect(page).to have_content('Data on peak kw usage available from')
-          expect(page).not_to have_content('How did we calculate these figures?')
-          expect(page).not_to have_content('How do you compare?')
-          expect(page).not_to have_content('How does your peak electricity use compare to other primary schools on Energy Sparks with a similar number of pupils')
-          expect(page).not_to have_content('For more detail, compare with other schools in your group')
-          expect(page).not_to have_content('10,000,000')
+          expect(page).to have_content("Data on peak kw usage available from #{(end_date + 1).to_s(:es_short)}")
+          expect(page).to have_no_content('How did we calculate these figures?')
+          expect(page).to have_no_content('How do you compare?')
+          expect(page).to have_no_content('How does your peak electricity use compare to other primary schools on Energy Sparks with a similar number of pupils')
+          expect(page).to have_no_content('For more detail, compare with other schools in your group')
+          expect(page).to have_no_content('10,000,000')
         end
       end
     end
@@ -71,7 +71,7 @@ RSpec.describe 'electricity intraday advice page', type: :system do
       end
 
       context 'when not enough data' do
-        let(:start_date) { end_date - 11.months}
+        let(:start_date) { end_date - 11.months }
 
         it 'shows all of the expected charts' do
           expect(page).to have_css('#chart_wrapper_intraday_line_school_days_reduced_data_versus_benchmarks')
