@@ -33,8 +33,10 @@ en:
           title: Annual electricity use comparison with other schools
         electricity_by_month_year:
           explanation: This chart can be a quick way to spot whether energy saving behaviour and lighting and equipment updates are having an impact on your electricity consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
-          subtitle_html: This chart shows the difference in electricity consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
-          title: Monthly electricity consumption comparison over the last two years
+          subtitle_html: This chart shows the monthly %{fuel_type} consumption from %{start_date} to <span class='end-date'>%{end_date}</span>
+          subtitle_two_years_html: This chart shows the difference in %{fuel_type} consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
+          title: Monthly %{fuel_type} consumption comparison
+          title_two_years: Monthly %{fuel_type} consumption comparison over the last two years
         electricity_longterm_trend:
           explanation: Unless the school has had additional buildings added, if you are managing your electricity consumption well this should show a downward trend; more modern ICT equipment, LED lighting and behaviour change all contribute to reducing electricity usage.
           subtitle: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each full year of data we have for your school

@@ -32,8 +32,10 @@ cy:
           title: Cymhariaeth defnydd trydan blynyddol ag ysgolion eraill
         electricity_by_month_year:
           explanation: Gall y siart hwn fod yn ffordd gyflym o weld a yw ymddygiad arbed ynni a diweddariadau goleuo ac offer yn cael effaith ar eich defnydd o drydan. Mae angen bod yn ofalus wrth gymharu misoedd â gwyliau, yn enwedig y Pasg, sef rhai blynyddoedd ym mis Mawrth ac adegau eraill ym mis Ebrill.
-          subtitle_html: Mae'r siart hwn yn dangos y gwahaniaeth yn y defnydd o drydan ar gyfer y 12 mis yn diweddu ar <span class='end-date'>%{end_date}</span> a'r 12 mis blaenorol
-          title: Cymhariaeth defnydd trydan misol dros y ddwy flynedd ddiwethaf
+          subtitle_html: Mae'r siart hwn yn dangos y gwahaniaeth yn y defnydd o %{fuel_type} o %{start_date} i <span class='end-date'>%{end_date}</span>
+          subtitle_two_years_html: Mae'r siart hwn yn dangos y gwahaniaeth yn y defnydd o %{fuel_type} ar gyfer y 12 mis yn diweddu ar <span class='end-date'>%{end_date}</span> a'r 12 mis blaenorol
+          title: Cymhariaeth defnydd %{fuel_type} misol
+          title_two_years: Cymhariaeth defnydd %{fuel_type} misol dros y ddwy flynedd ddiwethaf
         electricity_longterm_trend:
           explanation: Oni bai bod adeiladau ychwanegol wedi'u hychwanegu at yr ysgol, os ydych yn rheoli eich defnydd o drydan yn dda, dylai hyn ddangos tuedd ar i lawr; mae offer TGCh mwy modern, goleuadau LED a newid ymddygiad i gyd yn cyfrannu at leihau'r defnydd o drydan.
           subtitle: Mae’r siart hwn, a’r tabl isod yn rhoi dadansoddiad o’r defnydd o drydan rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob blwyddyn lawn o ddata sydd gennym ar gyfer eich ysgol
