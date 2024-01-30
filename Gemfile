@@ -26,7 +26,7 @@ gem 'pg'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.3'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.4'
 # gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'master'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
