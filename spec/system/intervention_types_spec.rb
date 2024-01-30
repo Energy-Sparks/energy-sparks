@@ -45,21 +45,19 @@ describe 'intervention types', type: :system do
     end
 
     it 'paginates search results' do
-      Pagy::DEFAULT[:items] = 1
-      visit search_intervention_types_path
-      fill_in 'query', with: 'intervention'
-      click_on 'Search'
+      run_with_temporary_pagy_default(items: 1) do
+        visit search_intervention_types_path
+        fill_in 'query', with: 'intervention'
+        click_on 'Search'
 
-      expect(page).to have_content(intervention_type_1.name)
-      expect(page).not_to have_content(intervention_type_2.name)
+        expect(page).to have_content(intervention_type_1.name)
+        expect(page).not_to have_content(intervention_type_2.name)
 
-      click_on 'Next'
+        click_on 'Next'
 
-      expect(page).not_to have_content(intervention_type_1.name)
-      expect(page).to have_content(intervention_type_2.name)
-
-      # reset this to prevent problems with other tests..
-      Pagy::DEFAULT[:items] = 20
+        expect(page).not_to have_content(intervention_type_1.name)
+        expect(page).to have_content(intervention_type_2.name)
+      end
     end
 
     it 'shows no results' do

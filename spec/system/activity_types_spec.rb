@@ -46,13 +46,11 @@ describe 'activity types', type: :system do
     end
 
     context 'when paginating' do
-      before do
-        Pagy::DEFAULT[:items] = 1
-        visit search_activity_types_path
-      end
-
-      after do
-        Pagy::DEFAULT[:items] = 20
+      around do |ex|
+        run_with_temporary_pagy_default(items: 1) do
+          visit search_activity_types_path
+          ex.run
+        end
       end
 
       it 'limits the search results' do
@@ -81,12 +79,7 @@ describe 'activity types', type: :system do
 
       context 'visiting the search page' do
         before do
-          Pagy::DEFAULT[:items] = 20
           visit search_activity_types_path
-        end
-
-        after do
-          Pagy::DEFAULT[:items] = 20
         end
 
         it 'finds all with no filter' do
