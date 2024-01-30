@@ -63,40 +63,40 @@ describe Alerts::GenerateEmailNotifications do
     end
 
     context 'when generating email body' do
-        let(:email)       { ActionMailer::Base.deliveries.last }
-        let(:email_body)  { email.html_part.decoded }
-        let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
+      let(:email) { ActionMailer::Base.deliveries.last }
+      let(:email_body)  { email.html_part.decoded }
+      let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
-        let(:params) do
-          {
-            "utm_source": "weekly-alert",
-            "utm_medium": "email",
-            "utm_campaign": "alerts"
-          }
-        end
+      let(:params) do
+        {
+          "utm_source": 'weekly-alert',
+          "utm_medium": 'email',
+          "utm_campaign": 'alerts'
+        }
+      end
 
-        it 'includes all alert content' do
-          expect(email_body).to include('You need to do something')
-          expect(email_body).to include('You need to fix something')
-          expect(email_body).not_to include('Find out more')
-        end
+      it 'includes all alert content' do
+        expect(email_body).to include('You need to do something')
+        expect(email_body).to include('You need to fix something')
+        expect(email_body).not_to include('Find out more')
+      end
 
-        it 'includes unsubscription links' do
-          expect(email_body).to include("Don't show me alerts like this")
-          expect(email_body).to include(alert_subscription_event_1.unsubscription_uuid)
-        end
+      it 'includes unsubscription links' do
+        expect(email_body).to include("Don't show me alerts like this")
+        expect(email_body).to include(alert_subscription_event_1.unsubscription_uuid)
+      end
 
-        it 'include unsubscription section' do
-          expect(email_body).to include("Why am I receiving these emails?")
-          expect(email_body).to include(school_admin.email)
-        end
+      it 'include unsubscription section' do
+        expect(email_body).to include('Why am I receiving these emails?')
+        expect(email_body).to include(school_admin.email)
+      end
 
-        it 'includes links to dashboard and analysis pages' do
-          expect(email_body).to include("Stay up to date")
-          expect(matcher).to have_link("school dashboard", href: school_url(school, params: params, host: 'localhost'))
-          expect(matcher).to have_link("detailed analysis", href: school_advice_url(school, params: params, host: 'localhost'))
-          expect(matcher).to have_link("View your school dashboard", href: school_url(school, params: params, host: 'localhost'))
-        end
+      it 'includes links to dashboard and analysis pages' do
+        expect(email_body).to include('Stay up to date')
+        expect(matcher).to have_link('school dashboard', href: school_url(school, params: params, host: 'localhost'))
+        expect(matcher).to have_link('detailed analysis', href: school_advice_url(school, params: params, host: 'localhost'))
+        expect(matcher).to have_link('View your school dashboard', href: school_url(school, params: params, host: 'localhost'))
+      end
     end
   end
 
@@ -117,7 +117,7 @@ describe Alerts::GenerateEmailNotifications do
       end
 
       it 'prompts for first target if not set' do
-        expect(matcher).to have_link("Set your first target")
+        expect(matcher).to have_link('Set your first target')
       end
     end
 
@@ -135,8 +135,8 @@ describe Alerts::GenerateEmailNotifications do
 
       it 'links to progress report' do
         expect(school.has_current_target?).to be true
-        expect(matcher).not_to have_link("Set your first target")
-        expect(matcher).to have_link("View your progress report")
+        expect(matcher).not_to have_link('Set your first target')
+        expect(matcher).to have_link('View your progress report')
       end
     end
 
@@ -153,9 +153,9 @@ describe Alerts::GenerateEmailNotifications do
       end
 
       it 'the link isnt included' do
-        expect(matcher).not_to have_link("View your progress report")
-        expect(matcher).not_to have_link("Set a new target")
-        expect(matcher).not_to have_link("Set your first target")
+        expect(matcher).not_to have_link('View your progress report')
+        expect(matcher).not_to have_link('Set a new target')
+        expect(matcher).not_to have_link('Set your first target')
       end
     end
 
@@ -171,8 +171,8 @@ describe Alerts::GenerateEmailNotifications do
       end
 
       it 'prompts to set new target' do
-        expect(matcher).not_to have_link("Set your first target")
-        expect(matcher).to have_link("Set a new target")
+        expect(matcher).not_to have_link('Set your first target')
+        expect(matcher).to have_link('Set a new target')
       end
     end
   end

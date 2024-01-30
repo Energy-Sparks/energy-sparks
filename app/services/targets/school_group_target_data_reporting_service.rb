@@ -4,7 +4,7 @@ module Targets
       @school_group = school_group
     end
 
-    #returns Hash of School => Struct(school:, electricity: , gas:, storage_heater:)
+    # returns Hash of School => Struct(school:, electricity: , gas:, storage_heater:)
     def report
       report = {}
       schools.each do |school|
@@ -31,7 +31,7 @@ module Targets
       ::TargetsService.new(aggregate_school, fuel_type)
     end
 
-    #OpenStruct to group them
+    # OpenStruct to group them
     def report_for_school(school, aggregate_school)
       result = OpenStruct.new(school: school)
       result.electricity = report_for_school_and_fuel_type(school, aggregate_school, :electricity) if school.has_electricity?
@@ -40,7 +40,7 @@ module Targets
       result
     end
 
-    #OpenStruct, move to target service?
+    # OpenStruct, move to target service?
     def report_for_school_and_fuel_type(school, aggregate_school, fuel_type)
       service = target_service(aggregate_school, fuel_type)
       OpenStruct.new(

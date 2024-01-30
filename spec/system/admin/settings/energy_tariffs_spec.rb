@@ -12,7 +12,7 @@ describe 'site settings energy tariffs', type: :system do
 
     before { sign_in(current_user) }
 
-    it_behaves_like "the site settings energy tariff editor"
+    it_behaves_like 'the site settings energy tariff editor'
   end
 
   context 'as a group_admin user' do
@@ -21,7 +21,7 @@ describe 'site settings energy tariffs', type: :system do
 
     before              { sign_in(current_user) }
 
-    it_behaves_like "the user does not have access to the tariff editor"
+    it_behaves_like 'the user does not have access to the tariff editor'
   end
 
   context 'as a guest user' do
@@ -30,7 +30,7 @@ describe 'site settings energy tariffs', type: :system do
 
     before              { sign_in(current_user) }
 
-    it_behaves_like "the user does not have access to the tariff editor"
+    it_behaves_like 'the user does not have access to the tariff editor'
   end
 
   context 'as a pupil user' do
@@ -39,7 +39,7 @@ describe 'site settings energy tariffs', type: :system do
 
     before              { sign_in(current_user) }
 
-    it_behaves_like "the user does not have access to the tariff editor"
+    it_behaves_like 'the user does not have access to the tariff editor'
   end
 
   context 'as a school admin user' do
@@ -48,7 +48,7 @@ describe 'site settings energy tariffs', type: :system do
 
     before              { sign_in(current_user) }
 
-    it_behaves_like "the user does not have access to the tariff editor"
+    it_behaves_like 'the user does not have access to the tariff editor'
   end
 
   context 'as a school_onboarding user' do
@@ -57,7 +57,7 @@ describe 'site settings energy tariffs', type: :system do
 
     before              { sign_in(current_user) }
 
-    it_behaves_like "the user does not have access to the tariff editor"
+    it_behaves_like 'the user does not have access to the tariff editor'
   end
 
   context 'as a staff user' do
@@ -66,7 +66,7 @@ describe 'site settings energy tariffs', type: :system do
 
     before              { sign_in(current_user) }
 
-    it_behaves_like "the user does not have access to the tariff editor"
+    it_behaves_like 'the user does not have access to the tariff editor'
   end
 
   context 'as a volunteer user' do
@@ -75,13 +75,13 @@ describe 'site settings energy tariffs', type: :system do
 
     before              { sign_in(current_user) }
 
-    it_behaves_like "the user does not have access to the tariff editor"
+    it_behaves_like 'the user does not have access to the tariff editor'
   end
 
   context 'with no signed in user' do
     let!(:current_user) { nil }
     let(:path)          { admin_settings_energy_tariffs_path }
 
-    it_behaves_like "the user does not have access to the tariff editor"
+    it_behaves_like 'the user does not have access to the tariff editor'
   end
 end

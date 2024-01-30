@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :contact do
-    description { "Here is a contact" }
+    description { 'Here is a contact' }
     school
 
     trait :with_name do
-      name { "Eleanor Rigby" }
+      name { 'Eleanor Rigby' }
     end
 
     trait :with_email_address do

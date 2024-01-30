@@ -27,32 +27,32 @@ describe TransportSurvey::Response do
     end
   end
 
-  describe "#carbon" do
+  describe '#carbon' do
     let(:transport_type) { create :transport_type, can_share: can_share, park_and_stride: park_and_stride }
     let(:carbon_calc) { ((transport_type.speed_km_per_hour * response.journey_minutes) / 60) * transport_type.kg_co2e_per_km }
 
-    context "when transport type is not park and stride" do
+    context 'when transport type is not park and stride' do
       let(:park_and_stride) { false }
       let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: 15 }
 
-      context "when carbon can be shared across group" do
+      context 'when carbon can be shared across group' do
         let(:can_share) { true }
 
-        it "divides the carbon between the passengers" do
+        it 'divides the carbon between the passengers' do
           expect(response.carbon).to eq(carbon_calc / response.passengers)
         end
       end
 
-      context "when carbon cannot be shared" do
+      context 'when carbon cannot be shared' do
         let(:can_share) { false }
 
-        it "returns the full amount per passenger" do
+        it 'returns the full amount per passenger' do
           expect(response.carbon).to eq(carbon_calc)
         end
       end
     end
 
-    context "when transport type uses park and stride" do
+    context 'when transport type uses park and stride' do
       let(:park_and_stride) { true }
       let(:can_share) { false }
       let(:carbon_calc_ps) { ((transport_type.speed_km_per_hour * (response.journey_minutes - TransportSurvey::Response.park_and_stride_mins)) / 60) * transport_type.kg_co2e_per_km }
@@ -73,13 +73,13 @@ describe TransportSurvey::Response do
     end
   end
 
-  describe ".to_csv" do
+  describe '.to_csv' do
     let(:transport_survey) { create(:transport_survey) }
     subject(:csv) { transport_survey.responses.to_csv }
 
     let(:header) { 'Id,Run identifier,Weather,Journey minutes,Transport type name,Passengers,Carbon kg co2,Surveyed at' }
 
-    context "with responses" do
+    context 'with responses' do
       let!(:responses) { create_list(:transport_survey_response, 2, transport_survey: transport_survey) }
 
       it { expect(csv.lines.count).to eq(3) }
@@ -90,13 +90,13 @@ describe TransportSurvey::Response do
       end
     end
 
-    context "with responses for other schools" do
+    context 'with responses for other schools' do
       let!(:responses) { create_list(:transport_survey_response, 2) }
 
       it { expect(csv.lines.count).to eq(1) }
     end
 
-    context "with no responses" do
+    context 'with no responses' do
       it { expect(csv.lines.count).to eq(1) }
       it { expect(csv.lines.first.chomp).to eq(header) }
     end

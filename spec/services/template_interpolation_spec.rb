@@ -8,19 +8,19 @@ describe TemplateInterpolation do
   let(:object) do
     Class.new do
       def template_1
-        "Your energy usage is quite {{usage}}"
+        'Your energy usage is quite {{usage}}'
       end
 
       def template_2
-        "Your school is {{position}} in the leaderboard"
+        'Your school is {{position}} in the leaderboard'
       end
 
       def template_3
-        "Your school is {{position}} in the scoreboard"
+        'Your school is {{position}} in the scoreboard'
       end
 
       def template_4
-        "Your school spent {{gbp}}"
+        'Your school spent {{gbp}}'
       end
 
       def template_5
@@ -28,7 +28,7 @@ describe TemplateInterpolation do
       end
 
       def template_rich_text
-        ActionText::RichText.new(body: ActionText::Content.new("<div>Your school is {{position}} in the scoreboard</div>"))
+        ActionText::RichText.new(body: ActionText::Content.new('<div>Your school is {{position}} in the scoreboard</div>'))
       end
     end
   end
@@ -93,18 +93,18 @@ describe TemplateInterpolation do
     it 'proxies to existing objects' do
       instance = object.new
       view_object = TemplateInterpolation.new(instance, proxy: [:template_2]).interpolate(:template_1, with: {})
-      expect(view_object.template_2).to eq("Your school is {{position}} in the leaderboard")
+      expect(view_object.template_2).to eq('Your school is {{position}} in the leaderboard')
     end
 
     it 'handles nil templates' do
       instance = object.new
       view_object = TemplateInterpolation.new(instance).interpolate(:template_5, with: {})
-      expect(view_object.template_5).to eq("")
+      expect(view_object.template_5).to eq('')
     end
 
     it 'handles rich text' do
       view_object = TemplateInterpolation.new(object.new).interpolate(:template_rich_text, with: { position: 3 })
-      expect(view_object.template_rich_text.body).to eq(ActionText::Content.new("<div>Your school is 3 in the scoreboard</div>"))
+      expect(view_object.template_rich_text.body).to eq(ActionText::Content.new('<div>Your school is 3 in the scoreboard</div>'))
     end
   end
 end

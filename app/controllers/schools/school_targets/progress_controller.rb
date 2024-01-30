@@ -14,17 +14,17 @@ module Schools
       skip_before_action :authenticate_user!
 
       def electricity
-        #find school target, redirect
+        # find school target, redirect
         progress_service.display_progress_for_fuel_type?(:electricity) ? index_for(:electricity) : missing(:electricity)
       end
 
       def gas
-        #find school target, redirect
+        # find school target, redirect
         progress_service.display_progress_for_fuel_type?(:gas) ? index_for(:gas) : missing(:gas)
       end
 
       def storage_heater
-        #find school target, redirect
+        # find school target, redirect
         progress_service.display_progress_for_fuel_type?(:storage_heaters) ? index_for(:storage_heaters) : missing(:storage_heaters)
       end
 
@@ -37,7 +37,7 @@ module Schools
         ]
       end
 
-      #extract into helper?
+      # extract into helper?
       def index_for(fuel_type)
         @fuel_type = fuel_type
         authorize! :show, @school_target
@@ -56,8 +56,8 @@ module Schools
           @recent_data = service.recent_data?
           @progress = service.progress
           @latest_progress = latest_progress
-          #the analytics can return a report with >12 months
-          #but we only want to report on a year at a time
+          # the analytics can return a report with >12 months
+          # but we only want to report on a year at a time
           @reporting_months = @progress.months[0..11]
           @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
           @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
@@ -80,14 +80,14 @@ module Schools
       def render_school_target_expired
         @progress = @school_target.saved_progress_report_for(@fuel_type)
         @latest_progress = latest_progress
-        #the analytics can return a report with >12 months
-        #but we only want to report on a year at a time
+        # the analytics can return a report with >12 months
+        # but we only want to report on a year at a time
         @reporting_months = @progress.months[0..11]
         render :expired
       end
 
-      #if target is expired, then use the final month, otherwise report on
-      #latest current progress
+      # if target is expired, then use the final month, otherwise report on
+      # latest current progress
       def latest_progress
         if @school_target.expired?
           final_month = @school_target.target_date.prev_month.beginning_of_month

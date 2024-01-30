@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "school adult dashboard", type: :system do
+RSpec.describe 'school adult dashboard', type: :system do
   let(:school_name)         { 'Oldfield Park Infants' }
   let!(:school_group)       { create(:school_group, name: 'School Group')}
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
@@ -13,7 +13,7 @@ RSpec.describe "school adult dashboard", type: :system do
           allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
         end
 
-        #non-javascript version of test to check that right template is delivered
+        # non-javascript version of test to check that right template is delivered
         context 'displays the holding page template' do
           it 'renders a loading page' do
             visit school_path(school)
@@ -63,7 +63,7 @@ RSpec.describe "school adult dashboard", type: :system do
         it 'and redirects to pupil dashboard' do
           visit school_path(school)
           expect(page).not_to have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
-          expect(page).to have_content("No activities completed, make a start!")
+          expect(page).to have_content('No activities completed, make a start!')
         end
       end
     end
@@ -72,7 +72,7 @@ RSpec.describe "school adult dashboard", type: :system do
   context 'with invisible school' do
     let!(:school_invisible)       { create(:school, name: 'Invisible School', visible: false, school_group: school_group)}
 
-    context "as guest user" do
+    context 'as guest user' do
       it 'does not show invisible school or the group' do
         visit root_path
         click_on('View schools')
@@ -113,7 +113,7 @@ RSpec.describe "school adult dashboard", type: :system do
 
       it 'shows school' do
         visit school_path(school_invisible)
-        expect(page.has_link?("Pupil dashboard")).to be true
+        expect(page.has_link?('Pupil dashboard')).to be true
         expect(page.has_content?(school_invisible.name)).to be true
       end
     end
@@ -147,13 +147,13 @@ RSpec.describe "school adult dashboard", type: :system do
       it 'displays the school page' do
         visit school_path(non_public_school)
         expect(page).to have_content(non_public_school.name)
-        expect(page).to have_link("Compare schools")
+        expect(page).to have_link('Compare schools')
       end
 
       it 'redirects away user from the /private page' do
         visit school_private_path(non_public_school)
         expect(page).to have_content(non_public_school.name)
-        expect(page).to have_link("Compare schools")
+        expect(page).to have_link('Compare schools')
       end
     end
 
@@ -168,7 +168,7 @@ RSpec.describe "school adult dashboard", type: :system do
       it 'displays the school page' do
         visit school_path(non_public_school)
         expect(page).to have_content(non_public_school.name)
-        expect(page).to have_link("Compare schools")
+        expect(page).to have_link('Compare schools')
       end
     end
 

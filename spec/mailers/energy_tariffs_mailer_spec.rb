@@ -11,7 +11,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
     let!(:school_group) { create(:school_group, group_type: :multi_academy_trust) }
     let!(:school_group_admin) { create(:group_admin, school_group: school_group) }
 
-    context "preferred locale is cy" do
+    context 'preferred locale is cy' do
       it 'sends group admins a review group tariffs reminder email' do
         school_group_admin.update(preferred_locale: :cy)
 
@@ -20,8 +20,8 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.subject', school_group_name: school_group.name, locale: :cy))
         expect(email.to).to eq([school_group_admin.email])
-        #encountered some character encoding issues â and ŵ being escape to &#xxxx; and unclear how to force that encoding when checking against YAML
-        #So instead check for text explicitly
+        # encountered some character encoding issues â and ŵ being escape to &#xxxx; and unclear how to force that encoding when checking against YAML
+        # So instead check for text explicitly
         expect(email.html_part.decoded).to include('Ymddiriedolaeth Aml-Academi')
         expect(email.html_part.decoded).to include("http://cy.localhost/school_groups/#{school_group.slug}/energy_tariffs")
         expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.mail_body.you_can_set', locale: :cy))
@@ -30,7 +30,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
       end
     end
 
-    context "preferred locale is en" do
+    context 'preferred locale is en' do
       it 'sends group admins a review group tariffs reminder email' do
         school_group_admin.update(preferred_locale: :en)
 
@@ -54,7 +54,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
     let!(:staff) { create(:staff, school: school) }
     let!(:pupil) { create(:pupil, school: school) }
 
-    context "preferred locale is en" do
+    context 'preferred locale is en' do
       it 'sends school admins a review school tariffs reminder email' do
         school_admin.update(preferred_locale: :en)
 
@@ -70,7 +70,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
       end
     end
 
-    context "preferred locale is cy" do
+    context 'preferred locale is cy' do
       it 'sends school admins a review school tariffs reminder email' do
         school_admin.update(preferred_locale: :cy)
 

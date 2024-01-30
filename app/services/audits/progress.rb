@@ -23,7 +23,7 @@ module Audits
     end
 
     def notification
-      (message + "<br />" + summary).html_safe
+      (message + '<br />' + summary).html_safe
     end
 
     def completed_activities_count

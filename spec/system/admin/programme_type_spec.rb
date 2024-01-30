@@ -20,12 +20,12 @@ describe 'programme type management', type: :system do
       click_on 'New Programme Type'
       fill_in :programme_type_title_en, with: old_title
       fill_in_trix '#programme_type_description_en', with: description
-      attach_file(:programme_type_image_en, Rails.root + "spec/fixtures/images/placeholder.png")
+      attach_file(:programme_type_image_en, Rails.root + 'spec/fixtures/images/placeholder.png')
 
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(old_title)
-      expect(page).to have_css(".text-danger")
+      expect(page).to have_css('.text-danger')
       expect(page).to have_content('No')
 
       expect(ProgrammeType.last.image_en.filename).to eq('placeholder.png')
@@ -33,13 +33,13 @@ describe 'programme type management', type: :system do
       click_on 'Edit'
       fill_in :programme_type_title_en, with: new_title
       fill_in :programme_type_bonus_score, with: bonus_score
-      check("Active", allow_label_click: true)
-      check("Default", allow_label_click: true)
+      check('Active', allow_label_click: true)
+      check('Default', allow_label_click: true)
 
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(new_title)
-      expect(page).to have_css(".text-success")
+      expect(page).to have_css('.text-success')
       expect(page).to have_content('Yes')
 
       click_on new_title

@@ -1,6 +1,6 @@
 module IssuesHelper
   def issue_type_icon(issue_type, count = 0)
-    colour = count > 0 ? Issue.issue_type_classes[issue_type.to_sym] : "secondary"
+    colour = count > 0 ? Issue.issue_type_classes[issue_type.to_sym] : 'secondary'
     fa_icon("#{Issue.issue_type_image(issue_type)} text-#{colour}")
   end
 
@@ -15,7 +15,7 @@ module IssuesHelper
       end
     end
     if icons.any?
-      content_tag(:span, title: counts.join(" & "), data: { toggle: "tooltip" }) do
+      content_tag(:span, title: counts.join(' & '), data: { toggle: 'tooltip' }) do
         icons.prepend(label) if label
         icons.join(' ').html_safe
       end

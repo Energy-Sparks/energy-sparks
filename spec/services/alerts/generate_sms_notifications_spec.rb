@@ -18,9 +18,9 @@ describe Alerts::GenerateSmsNotifications do
     send_sms_class = double('send_sms_service')
     send_sms_service = instance_double('send_sms_service')
 
-    expect(send_sms_class).to receive(:new).with("EnergySparks alert: You need to do something!", sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
+    expect(send_sms_class).to receive(:new).with('EnergySparks alert: You need to do something!', sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
     expect(send_sms_service).to receive(:send).ordered
-    expect(send_sms_class).to receive(:new).with("EnergySparks alert: You need to fix something!", sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
+    expect(send_sms_class).to receive(:new).with('EnergySparks alert: You need to fix something!', sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
     expect(send_sms_service).to receive(:send).ordered
 
     Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
@@ -35,7 +35,7 @@ describe Alerts::GenerateSmsNotifications do
     send_sms_class = double('send_sms_service')
     send_sms_service = instance_double('send_sms_service')
 
-    expect(send_sms_class).to receive(:new).with("EnergySparks alert: You need to do something!", sms_contact.mobile_phone_number).and_return(send_sms_service)
+    expect(send_sms_class).to receive(:new).with('EnergySparks alert: You need to do something!', sms_contact.mobile_phone_number).and_return(send_sms_service)
     expect(send_sms_service).to receive(:send)
 
     Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1])

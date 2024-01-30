@@ -37,7 +37,7 @@ module Alerts
       Adapters::Report.new(**invalid_alert_report_attributes)
     end
 
-    let(:error_messages) { ["Broken"] }
+    let(:error_messages) { ['Broken'] }
 
     let(:alert_type_run_result) do
       AlertTypeRunResult.new(alert_type: alert_type, reports: [example_alert_report, example_benchmark_alert_report, example_invalid_report], asof_date: asof_date)

@@ -23,7 +23,7 @@ describe 'Videos', type: :system do
       fill_in 'Title', with: title
       click_on 'Create Video'
       expect(page).to have_content('blank')
-      fill_in 'Youtube', with: "12345"
+      fill_in 'Youtube', with: '12345'
 
       click_on 'Create Video'
       expect(page).to have_content title

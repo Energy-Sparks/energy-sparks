@@ -37,7 +37,7 @@ describe Targets::GenerateFuelTypes do
       end
 
       it 'lists just the right types' do
-        expect(service.fuel_types_with_enough_data).to match_array(["gas"])
+        expect(service.fuel_types_with_enough_data).to match_array(['gas'])
       end
     end
 
@@ -67,7 +67,7 @@ describe Targets::GenerateFuelTypes do
       end
 
       context 'when the error should be reported' do
-        let(:error) { StandardError.new("test error") }
+        let(:error) { StandardError.new('test error') }
 
         it 'returns some result' do
           expect(Rollbar).to receive(:error).with(error, scope: :fuel_types_with_enough_data, school_id: school.id, school: school.name)
@@ -113,7 +113,7 @@ describe Targets::GenerateFuelTypes do
       end
 
       it 'lists just the right types' do
-        expect(service.suggest_estimates_for_fuel_types).to match_array(["gas"])
+        expect(service.suggest_estimates_for_fuel_types).to match_array(['gas'])
       end
     end
 
@@ -139,7 +139,7 @@ describe Targets::GenerateFuelTypes do
       end
 
       before do
-        allow_any_instance_of(::TargetsService).to receive(:suggest_use_of_estimate?).and_raise("error")
+        allow_any_instance_of(::TargetsService).to receive(:suggest_use_of_estimate?).and_raise('error')
       end
 
       it 'returns some result' do

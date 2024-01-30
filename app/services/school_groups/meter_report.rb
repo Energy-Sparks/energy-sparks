@@ -32,7 +32,7 @@ module SchoolGroups
 
     def csv_filename
       filename = "#{school_group.name}-meter-report-#{Time.zone.now.iso8601}"
-      filename += "-all-meters" if all_meters
+      filename += '-all-meters' if all_meters
       filename.parameterize + '.csv'
     end
 
@@ -72,7 +72,7 @@ module SchoolGroups
         .joins(:school_group)
         .where(schools: { school_group: school_group, active: true })
         .with_zero_reading_days_and_dates
-        .order("schools.name", :mpan_mprn)
+        .order('schools.name', :mpan_mprn)
       scope = all_meters ? scope : scope.active
       scope
     end

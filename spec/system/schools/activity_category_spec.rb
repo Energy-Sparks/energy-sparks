@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "activity type", type: :system do
+RSpec.describe 'activity type', type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:staff, school: school)}
 

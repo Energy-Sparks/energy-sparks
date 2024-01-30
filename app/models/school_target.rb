@@ -31,7 +31,7 @@
 class SchoolTarget < ApplicationRecord
   belongs_to :school
 
-  #for timeline entry
+  # for timeline entry
   has_many :observations, as: :observable, dependent: :destroy
 
   validates_presence_of :school, :target_date, :start_date
@@ -41,7 +41,7 @@ class SchoolTarget < ApplicationRecord
 
   scope :by_date, -> { order(created_at: :desc) }
   scope :by_start_date, -> { order(start_date: :desc) }
-  scope :expired, -> { where(":now >= start_date and :now >= target_date", now: Time.zone.today) }
+  scope :expired, -> { where(':now >= start_date and :now >= target_date', now: Time.zone.today) }
   scope :currently_active, -> { where('start_date <= :now and :now <= target_date', now: Time.zone.today) }
 
   before_save :adjust_target_date
@@ -91,7 +91,7 @@ class SchoolTarget < ApplicationRecord
 
   def saved_progress_report_for(fuel_type)
     fuel_type = :storage_heaters if fuel_type == :storage_heater
-    raise "Invalid fuel type" unless [:electricity, :gas, :storage_heaters].include?(fuel_type)
+    raise 'Invalid fuel type' unless [:electricity, :gas, :storage_heaters].include?(fuel_type)
     report = self["#{fuel_type}_report".to_sym]
     return nil unless report&.any?
     TargetsProgress.new(**reformat_saved_report(report))
@@ -99,11 +99,11 @@ class SchoolTarget < ApplicationRecord
 
   private
 
-  #ensure TargetsProgress is round-tripped properly
+  # ensure TargetsProgress is round-tripped properly
   def reformat_saved_report(report)
     report.symbolize_keys!
     report[:fuel_type] = report[:fuel_type].to_sym
-    #reparse to Dates from yyyy-mm-dd format
+    # reparse to Dates from yyyy-mm-dd format
     report[:months].map! {|m| Date.strptime(m, '%Y-%m-%d')}
     report
   end
@@ -121,7 +121,7 @@ class SchoolTarget < ApplicationRecord
 
   def must_have_one_target
     if electricity.blank? && gas.blank? && storage_heaters.blank?
-      errors.add :base, "At least one target must be provided"
+      errors.add :base, 'At least one target must be provided'
     end
   end
 

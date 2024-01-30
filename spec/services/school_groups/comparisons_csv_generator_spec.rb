@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe SchoolGroups::ComparisonsCsvGenerator do
   let(:school_group) { create(:school_group) }
 
-  include_context "school group comparisons"
+  include_context 'school group comparisons'
 
-  context "with school group data" do
+  context 'with school group data' do
     it 'returns school comparisons data as a csv for a school group for all advice page keys' do
       csv = SchoolGroups::ComparisonsCsvGenerator.new(school_group: school_group).export
       expect(csv.lines.count).to eq(25)

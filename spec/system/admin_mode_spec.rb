@@ -8,7 +8,7 @@ describe 'Admin mode' do
     it 'allows form to be viewed' do
       ClimateControl.modify ADMIN_MODE: 'true' do
         visit new_user_session_path
-        expect(page).to have_content("Sign in to Energy Sparks")
+        expect(page).to have_content('Sign in to Energy Sparks')
       end
     end
 
@@ -20,7 +20,7 @@ describe 'Admin mode' do
         within '#staff' do
           click_on 'Sign in'
         end
-        expect(page).to have_content("Energy Sparks is currently down for maintenance")
+        expect(page).to have_content('Energy Sparks is currently down for maintenance')
       end
     end
 
@@ -32,7 +32,7 @@ describe 'Admin mode' do
         within '#staff' do
           click_on 'Sign in'
         end
-        expect(page).to have_content("Energy Sparks schools across the UK")
+        expect(page).to have_content('Energy Sparks schools across the UK')
       end
     end
   end
@@ -43,7 +43,7 @@ describe 'Admin mode' do
         ClimateControl.modify ADMIN_MODE: 'true' do
           sign_in(admin)
           visit root_path
-          expect(page).to have_content("Energy Sparks schools across the UK")
+          expect(page).to have_content('Energy Sparks schools across the UK')
         end
       end
     end
@@ -53,7 +53,7 @@ describe 'Admin mode' do
         ClimateControl.modify ADMIN_MODE: 'true' do
           sign_in(staff)
           visit root_path
-          expect(page).to have_content("Energy Sparks is currently down for maintenance")
+          expect(page).to have_content('Energy Sparks is currently down for maintenance')
         end
       end
     end
@@ -63,7 +63,7 @@ describe 'Admin mode' do
     it 'serves maintenance page for non-admins' do
       ClimateControl.modify ADMIN_MODE: 'true' do
         visit root_path
-        expect(page).to have_content("Energy Sparks is currently down for maintenance")
+        expect(page).to have_content('Energy Sparks is currently down for maintenance')
       end
     end
   end

@@ -95,7 +95,7 @@ describe MailchimpApi do
     end
 
     it 'handles errors' do
-      response_body = "{\"type\":\"http://developer.mailchimp.com/documentation/mailchimp/guides/error-glossary/\",\"title\":\"Invalid Resource\",\"status\":400,\"detail\":\"jules@example.com looks fake or invalid, please enter a real email address.\",\"instance\":\"5156bd8f-569c-49d7-8ed6-a825dd42c932\"}"
+      response_body = '{"type":"http://developer.mailchimp.com/documentation/mailchimp/guides/error-glossary/","title":"Invalid Resource","status":400,"detail":"jules@example.com looks fake or invalid, please enter a real email address.","instance":"5156bd8f-569c-49d7-8ed6-a825dd42c932"}'
       mailchimp_marketing_api_error = MailchimpMarketing::ApiError.new(:status => 400, :response_body => response_body)
       expect(lists_api).to receive(:add_list_member).and_raise(mailchimp_marketing_api_error)
       expect do

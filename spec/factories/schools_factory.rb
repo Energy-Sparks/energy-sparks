@@ -11,7 +11,7 @@ FactoryBot.define do
     address         { '1 Station Road' }
     postcode        { 'AB1 2CD' }
     country         { :england }
-    floor_area      { BigDecimal("1234.567")}
+    floor_area      { BigDecimal('1234.567')}
     website         { "http://#{name.camelize}.test" }
     calendar        { create(:school_calendar) }
     weather_station
@@ -21,7 +21,7 @@ FactoryBot.define do
     end
 
     factory :school_with_same_name do
-      name { "test school"}
+      name { 'test school'}
     end
 
     trait :with_school_group do

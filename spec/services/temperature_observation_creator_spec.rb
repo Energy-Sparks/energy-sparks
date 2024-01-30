@@ -10,7 +10,7 @@ describe TemperatureObservationCreator do
   it 'sets the observation type to :temperature' do
     observation = build(:observation, observation_type: nil)
     TemperatureObservationCreator.new(observation).process
-    expect(observation.observation_type).to eq("temperature")
+    expect(observation.observation_type).to eq('temperature')
   end
 
   it 'creates an observation with 5 points' do

@@ -23,7 +23,7 @@ class CompareController < ApplicationController
 
   # display results
   def show
-    #user wouldn't be able to get here, but adding in case crawlers/bots hit the page
+    # user wouldn't be able to get here, but adding in case crawlers/bots hit the page
     if @included_schools.empty?
       render :no_schools
     else

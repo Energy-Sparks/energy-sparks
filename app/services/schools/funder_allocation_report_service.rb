@@ -9,17 +9,17 @@ module Schools
           'Archived?',
           'Data visible?',
           'Onboarding date',
-          'Date enabled date', #(see “Recently onboarded” report)
+          'Date enabled date', # (see “Recently onboarded” report)
           'Funder',
           'Funding status',
           'Postcode',
           'Country',
           'Pupils',
           '% FSM',
-          'Local Authority Name', #(LAD22NM code)
-          'Region name', #(RGN22NM)
-          'Activities this year', #Number of activities recorded this academic year
-          'Actions this year', #Number of actions recorded this academic year
+          'Local Authority Name', # (LAD22NM code)
+          'Region name', # (RGN22NM)
+          'Activities this year', # Number of activities recorded this academic year
+          'Actions this year', # Number of actions recorded this academic year
           'Electricity Data Source 1',
           'Electricity Data Source 2',
           'Electricity Data Source 3',

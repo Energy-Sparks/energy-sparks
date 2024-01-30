@@ -1,5 +1,5 @@
-RSpec.shared_examples_for "a displayed issue" do
-  it "displays issue" do
+RSpec.shared_examples_for 'a displayed issue' do
+  it 'displays issue' do
     expect(page).to have_content issue.issue_type.capitalize
     expect(page).to have_content issue.title
     expect(page).to have_content issue.description.to_plain_text
@@ -15,8 +15,8 @@ RSpec.shared_examples_for "a displayed issue" do
   end
 end
 
-RSpec.shared_examples_for "a displayed list issue" do
-  it "displays issue" do
+RSpec.shared_examples_for 'a displayed list issue' do
+  it 'displays issue' do
     expect(page).to have_content issue.title
     expect(page).to have_content issue.issueable.name
     expect(page).to have_content issue.fuel_type.capitalize
@@ -24,7 +24,7 @@ RSpec.shared_examples_for "a displayed list issue" do
       expect(page).to have_link meter.mpan_mprn, href: school_meter_path(meter.school, meter)
     end
     expect(page).to have_content nice_date_times_today(issue.updated_at)
-    expect(page).to have_link("View", href: polymorphic_path([:admin, issue.issueable, issue]))
+    expect(page).to have_link('View', href: polymorphic_path([:admin, issue.issueable, issue]))
     expect(page).to have_css("i[class*='fa-thumbtack']") if issue.pinned?
   end
 end

@@ -7,8 +7,8 @@ RSpec.describe 'School Partners', :schools, type: :system do
   let!(:admin)        { create(:admin)}
 
 
-  context "as admin" do
-    context "when managing partners" do
+  context 'as admin' do
+    context 'when managing partners' do
       let!(:partner_1)         { create(:partner) }
       let!(:partner_2)         { create(:partner) }
       let!(:partner_3)         { create(:partner) }
@@ -43,7 +43,7 @@ RSpec.describe 'School Partners', :schools, type: :system do
         expect(school.school_partners.first.position).to be 1
         expect(school.school_partners.last.position).to be 2
 
-        fill_in partner_3.name, with: ""
+        fill_in partner_3.name, with: ''
 
         click_on 'Update associated partners', match: :first
         click_on 'Manage partners'

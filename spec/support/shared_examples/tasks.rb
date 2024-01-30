@@ -1,7 +1,7 @@
-RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: '1st'|
-  it { expect(page).to have_content "Congratulations!" }
+RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: '1st'|
+  it { expect(page).to have_content 'Congratulations!' }
 
-  it "displays points score", if: points > 0 do
+  it 'displays points score', if: points > 0 do
     expect(page).to have_content "You've just scored #{points} points"
   end
 
@@ -13,55 +13,55 @@ RSpec.shared_examples "a task completed page" do |points:, task_type:, ordinal: 
     expect(page).to have_content "We've recorded your activity"
   end
 
-  it "has scoreboard summary component" do # not checking functionality here as this is done in the component
-    within "div.podium-component" do
+  it 'has scoreboard summary component' do # not checking functionality here as this is done in the component
+    within 'div.podium-component' do
       if points > 0
         expect(page).to have_content("You are in #{ordinal} place")
       else
         expect(page).to have_content("Your school hasn't scored any points yet this school year")
       end
     end
-    expect(page).to have_content("Recent activity")
+    expect(page).to have_content('Recent activity')
   end
 
-  it { expect(page).to have_content("What do you want to do next?") }
+  it { expect(page).to have_content('What do you want to do next?') }
 
-  it { expect(page).to have_content("Share what you’ve done with others in the school community") }
+  it { expect(page).to have_content('Share what you’ve done with others in the school community') }
   it { expect(page).to have_link("View your #{task_type}") }
 
-  it_behaves_like "a rich audit prompt"
-  it_behaves_like "a complete programme prompt"
+  it_behaves_like 'a rich audit prompt'
+  it_behaves_like 'a complete programme prompt'
 
-  it_behaves_like "a join programme prompt", programme: "Other programme!", activity_count: 1 do
+  it_behaves_like 'a join programme prompt', programme: 'Other programme!', activity_count: 1 do
     let(:setup_data) do
-      activity_type = create(:programme_type_with_activity_types, title: "Other programme!").activity_types.first
+      activity_type = create(:programme_type_with_activity_types, title: 'Other programme!').activity_types.first
       # programme type created, but school not yet subscribed to programme (need to create programme record for this)
       school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
     end
   end
 
-  it_behaves_like "a recommended prompt"
+  it_behaves_like 'a recommended prompt'
 end
 
-RSpec.shared_examples "a task completed page with programme complete message" do
-  context "when there is a programme that contains activity" do
+RSpec.shared_examples 'a task completed page with programme complete message' do
+  context 'when there is a programme that contains activity' do
     let(:activity_types) { [] }
     let(:bonus_score) { 30 }
-    let(:programme_type) { create(:programme_type, title: "Super programme!", activity_types: activity_types, bonus_score: bonus_score) }
+    let(:programme_type) { create(:programme_type, title: 'Super programme!', activity_types: activity_types, bonus_score: bonus_score) }
     let(:programme) { create(:programme, school: school, programme_type: programme_type) }
 
-    context "when programme is completed" do
+    context 'when programme is completed' do
       let(:activity_types) { [activity_type] }
 
-      context "when recently ended" do
+      context 'when recently ended' do
         it 'has programme completed message' do
           expect(page).to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
         end
 
-        it { expect(page).to have_link("View") }
+        it { expect(page).to have_link('View') }
       end
 
-      context "when bonus was zero" do
+      context 'when bonus was zero' do
         let(:bonus_score) { 0 }
 
         it 'shows the programme complete message' do
@@ -69,13 +69,13 @@ RSpec.shared_examples "a task completed page with programme complete message" do
         end
 
         it 'does not show bonus points message' do
-          expect(page).not_to have_content "and have earned 30 bonus points!"
+          expect(page).not_to have_content 'and have earned 30 bonus points!'
         end
 
-        it { expect(page).to have_link("View") }
+        it { expect(page).to have_link('View') }
       end
 
-      context "when ended over a day ago" do
+      context 'when ended over a day ago' do
         before do
           programme.update(ended_on: 3.days.ago)
           refresh

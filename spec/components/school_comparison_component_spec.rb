@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe SchoolComparisonComponent, type: :component do
   let(:comparison) do
@@ -35,7 +35,7 @@ RSpec.describe SchoolComparisonComponent, type: :component do
       expect(component.other_value).to eq '10 kW'
     end
 
-    it "classifies the school as other_school" do
+    it 'classifies the school as other_school' do
       expect(component.category).to eq 'other_school'
       within '.school-comparison-component-callout-box .body' do
         expect(html).to have_content('>15 kW')
@@ -74,23 +74,23 @@ RSpec.describe SchoolComparisonComponent, type: :component do
       render_inline(SchoolComparisonComponent.new(**params))
     end
 
-    it "has the right id" do
+    it 'has the right id' do
       expect(html).to have_css('#spec-id')
     end
 
-    it "includes the values" do
+    it 'includes the values' do
       expect(html).to have_content('10 kW')
       expect(html).to have_content('15 kW')
       expect(html).to have_content('20 kW')
     end
 
-    it "classifies the school" do
+    it 'classifies the school' do
       within '.school-comparison-component-callout-box .body' do
         expect(html).to have_content('15 kW')
       end
     end
 
-    it "adds responsive classes to other categories" do
+    it 'adds responsive classes to other categories' do
       expect(html).to have_css('div.exemplar_school.d-none')
       expect(html).not_to have_css('div.benchmark_school.d-none')
       expect(html).to have_css('div.other_school.d-none')
@@ -110,13 +110,13 @@ RSpec.describe SchoolComparisonComponent, type: :component do
       render_inline(SchoolComparisonComponent.new(**params))
     end
 
-    it "classifies the school" do
+    it 'classifies the school' do
       within '.school-comparison-component-callout-box .body' do
         expect(html).to have_content('150 kW')
       end
     end
 
-    it "adds responsive classes to other categories" do
+    it 'adds responsive classes to other categories' do
       expect(html).to have_css('div.exemplar_school.d-none')
       expect(html).to have_css('div.benchmark_school.d-none')
       expect(html).not_to have_css('div.other_school.d-none')
@@ -126,13 +126,13 @@ RSpec.describe SchoolComparisonComponent, type: :component do
   context 'with callout footer' do
     let(:html) do
       render_inline(SchoolComparisonComponent.new(**params)) do |c|
-        c.with_footer { "Custom footer" }
+        c.with_footer { 'Custom footer' }
       end
     end
 
-    it "adds the callout footer" do
+    it 'adds the callout footer' do
       within '.school-comparison-component-callout-box .footer' do
-        expect(html).to have_content("Custom footer")
+        expect(html).to have_content('Custom footer')
       end
     end
   end

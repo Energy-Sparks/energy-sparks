@@ -20,8 +20,8 @@ describe SchoolsLoader, type: :service do
     context 'with specified list' do
       let(:filepath) do
         Tempfile.new.tap do |f|
-                         f << data.to_yaml
-                         f.close
+          f << data.to_yaml
+          f.close
         end
       end
 
@@ -59,8 +59,8 @@ describe SchoolsLoader, type: :service do
       context 'with specified list as well as groups' do
         let(:filepath) do
           Tempfile.new.tap do |f|
-                           f << data.to_yaml
-                           f.close
+            f << data.to_yaml
+            f.close
           end
         end
 

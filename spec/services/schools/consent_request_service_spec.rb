@@ -61,7 +61,7 @@ RSpec.describe Schools::ConsentRequestService do
         let!(:preferred_locale) { :cy }
 
         it 'has the expected subject line' do
-          expect(@email.subject).to eql("Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol")
+          expect(@email.subject).to eql('Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol')
         end
       end
     end
@@ -84,7 +84,7 @@ RSpec.describe Schools::ConsentRequestService do
         it 'email should have en and cy subject line' do
           emails = ActionMailer::Base.deliveries.last(2)
           expected_subjects = [
-            "Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol",
+            'Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol',
             "We need permission to access your school's energy data"
           ]
           expect(emails.map(&:subject)).to match_array(expected_subjects)

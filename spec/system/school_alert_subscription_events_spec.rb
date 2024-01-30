@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "school alert subscription events", type: :system do
+RSpec.describe 'school alert subscription events', type: :system do
   let!(:school)              { create(:school) }
   let!(:user)                { create(:admin) }
   let!(:alert)               { create(:alert, :with_run, school: school) }

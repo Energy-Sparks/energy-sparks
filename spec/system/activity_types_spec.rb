@@ -59,9 +59,9 @@ describe 'activity types', type: :system do
         fill_in 'query', with: 'activity'
         click_on 'Search'
 
-        #possibly flickering as ordering might be different?
-        #test could instead assert whether there is expect number of
-        #result rows, check for navigation, etc.
+        # possibly flickering as ordering might be different?
+        # test could instead assert whether there is expect number of
+        # result rows, check for navigation, etc.
         expect(page).to have_content(activity_type_1.name)
         expect(page).not_to have_content(activity_type_2.name)
 
@@ -72,14 +72,14 @@ describe 'activity types', type: :system do
     end
 
     context 'when filtering' do
-      let!(:key_stage_1) { create(:key_stage, name: "KS1") }
-      let!(:key_stage_2) { create(:key_stage, name: "KS2") }
-      let!(:subject_1) { create(:subject, name: "Citizenship") }
-      let!(:subject_2) { create(:subject, name: "Science and Technology") }
+      let!(:key_stage_1) { create(:key_stage, name: 'KS1') }
+      let!(:key_stage_2) { create(:key_stage, name: 'KS2') }
+      let!(:subject_1) { create(:subject, name: 'Citizenship') }
+      let!(:subject_2) { create(:subject, name: 'Science and Technology') }
       let!(:activity_type_1) { create(:activity_type, name: 'baz one', key_stages: [key_stage_1], subjects: [subject_1]) }
       let!(:activity_type_2) { create(:activity_type, name: 'baz two', key_stages: [key_stage_2], subjects: [subject_2]) }
 
-      context "visiting the search page" do
+      context 'visiting the search page' do
         before do
           Pagy::DEFAULT[:items] = 20
           visit search_activity_types_path
@@ -92,7 +92,7 @@ describe 'activity types', type: :system do
         it 'finds all with no filter' do
           fill_in 'query', with: 'baz'
           click_on 'Search'
-          #flickering?
+          # flickering?
           expect(page).to have_content('baz one')
           expect(page).to have_content('baz two')
         end

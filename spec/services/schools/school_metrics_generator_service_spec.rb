@@ -4,7 +4,7 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
   let!(:benchmark_run)    { BenchmarkResultGenerationRun.create! }
 
   let(:school)            { create(:school) }
-  #this will create an empty meter collection as the school has no data
+  # this will create an empty meter collection as the school has no data
   let(:meter_collection)  { Amr::AnalyticsMeterCollectionFactory.new(school).validated }
 
   subject(:service)       { Schools::SchoolMetricsGeneratorService.new(school: school, meter_collection: meter_collection)}

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "school alerts", type: :system do
+RSpec.describe 'school alerts', type: :system do
   let!(:school) { create(:school) }
   let!(:user) { create(:admin) }
   let(:gas_fuel_alert_type_description) { 'all about this alert type' }

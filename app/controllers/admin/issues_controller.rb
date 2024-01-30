@@ -54,9 +54,9 @@ module Admin
     end
 
     def resolve
-      notice = "was successfully resolved"
+      notice = 'was successfully resolved'
       unless @issue.resolve!(updated_by: current_user)
-        notice = "Can only resolve issues (and not notes)."
+        notice = 'Can only resolve issues (and not notes).'
       end
       redirect_back_or_index notice: notice
     end
@@ -81,7 +81,7 @@ module Admin
     end
 
     def issueable_notice(notice)
-      [@issue.issueable.try(:model_name).try(:human), @issue.issue_type, notice].compact.join(" ").capitalize
+      [@issue.issueable.try(:model_name).try(:human), @issue.issue_type, notice].compact.join(' ').capitalize
     end
 
     def issue_params

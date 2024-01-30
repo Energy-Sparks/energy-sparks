@@ -72,7 +72,7 @@ class InterventionType < ApplicationRecord
     observations.for_school(school)
   end
 
-  #override default name for this resource in transifex
+  # override default name for this resource in transifex
   def tx_name
     name
   end

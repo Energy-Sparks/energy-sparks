@@ -55,7 +55,7 @@ module Alerts
       end
 
       def self.front_end_template_variables
-        { "Dummy alert" => TEMPLATE_VARIABLES, "Common" => {} }
+        { 'Dummy alert' => TEMPLATE_VARIABLES, 'Common' => {} }
       end
 
       TEMPLATE_VARIABLES = {

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "dashboard priorities" do
+RSpec.shared_examples 'dashboard priorities' do
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
   let!(:alert_type_rating) do
     create(
@@ -47,7 +47,7 @@ RSpec.shared_examples "dashboard priorities" do
   end
 end
 
-RSpec.describe "adult dashboard priorities", type: :system do
+RSpec.describe 'adult dashboard priorities', type: :system do
   let(:school) { create(:school) }
 
   before do
@@ -57,7 +57,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
   context 'as guest' do
     let(:user) { nil }
 
-    it_behaves_like "dashboard priorities" do
+    it_behaves_like 'dashboard priorities' do
       let(:test_school) { school }
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
   context 'as pupil' do
     let(:user) { create(:pupil, school: school) }
 
-    it_behaves_like "dashboard priorities" do
+    it_behaves_like 'dashboard priorities' do
       let(:test_school) { school }
     end
   end
@@ -73,7 +73,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 
-    it_behaves_like "dashboard priorities" do
+    it_behaves_like 'dashboard priorities' do
       let(:test_school) { school }
     end
   end
@@ -81,7 +81,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
-    it_behaves_like "dashboard priorities" do
+    it_behaves_like 'dashboard priorities' do
       let(:test_school) { school }
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe "adult dashboard priorities", type: :system do
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
 
-    it_behaves_like "dashboard priorities" do
+    it_behaves_like 'dashboard priorities' do
       let(:test_school) { school }
     end
   end

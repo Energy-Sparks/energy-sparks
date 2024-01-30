@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-describe "Jobs", type: :system do
-  let!(:job)         { create(:job, closing_date: Time.zone.today, title: "Closes today") }
-  let!(:old_job)     { create(:job, closing_date: "2010-01-01", title: "Old job")}
-  let!(:voluntary)   { create(:job, voluntary: true, title: "Voluntary") }
-  let!(:open_role)   { create(:job, closing_date: nil, title: "Open role") }
+describe 'Jobs', type: :system do
+  let!(:job)         { create(:job, closing_date: Time.zone.today, title: 'Closes today') }
+  let!(:old_job)     { create(:job, closing_date: '2010-01-01', title: 'Old job')}
+  let!(:voluntary)   { create(:job, voluntary: true, title: 'Voluntary') }
+  let!(:open_role)   { create(:job, closing_date: nil, title: 'Open role') }
 
   before do
     visit jobs_path
   end
 
   it 'shows me the jobs page' do
-    expect(page).to have_content("Jobs")
+    expect(page).to have_content('Jobs')
   end
 
   it 'shows me current jobs' do
@@ -28,7 +28,7 @@ describe "Jobs", type: :system do
   end
 
   it 'shows expected download links' do
-    expect(page.has_link?("More information", href: "/jobs/#{job.id}/inline")).to be true
+    expect(page.has_link?('More information', href: "/jobs/#{job.id}/inline")).to be true
   end
 
   it 'serves the file' do

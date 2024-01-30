@@ -61,8 +61,8 @@ describe Amr::N3rgyEnergyTariffInserter do
     end
 
     context 'with differential tariff data from n3rgy' do
-      #00:00-06:30, 07:00-23:30
-      #which when converted to display is 00:00-07:00, 07:00-00:00
+      # 00:00-06:30, 07:00-23:30
+      # which when converted to display is 00:00-07:00, 07:00-00:00
       let(:raw_prices) { Array.new(14, price) + Array.new(34, price * 2)}
 
       it 'creates a new tariff' do
@@ -73,13 +73,13 @@ describe Amr::N3rgyEnergyTariffInserter do
         expect(prices.count).to eq 2
         first = prices.order(start_time: :asc).first
         expect(first.value).to eq price
-        expect(first.start_time.strftime('%H:%M')).to eq "00:00"
-        expect(first.end_time.strftime('%H:%M')).to eq "07:00"
+        expect(first.start_time.strftime('%H:%M')).to eq '00:00'
+        expect(first.end_time.strftime('%H:%M')).to eq '07:00'
 
         last = prices.order(start_time: :asc).last
         expect(last.value).to eq price * 2
-        expect(last.start_time.strftime('%H:%M')).to eq "07:00"
-        expect(last.end_time.strftime('%H:%M')).to eq "00:00"
+        expect(last.start_time.strftime('%H:%M')).to eq '07:00'
+        expect(last.end_time.strftime('%H:%M')).to eq '00:00'
       end
 
       it 'creates the charges' do
@@ -91,7 +91,7 @@ describe Amr::N3rgyEnergyTariffInserter do
   end
 
   context 'when there is an unexpected format' do
-    #fake up a tiered tariff
+    # fake up a tiered tariff
     let(:raw_prices) { [{ :tariffs => { 1 => 0.485, 2 => 0.16774 }, :thresholds => { 1 => 1000 }, :type => :tiered }] + Array.new(15, price) + Array.new(32, price * 2)}
 
     it 'throws an exception' do
@@ -167,7 +167,7 @@ describe Amr::N3rgyEnergyTariffInserter do
     end
 
     context 'because the tariff type has changed' do
-      #00:00-06:30, 07:00-23:30
+      # 00:00-06:30, 07:00-23:30
       let(:raw_prices) { Array.new(14, price) + Array.new(34, price * 2)}
 
       it 'updates end date of previous tariff' do
@@ -196,17 +196,17 @@ describe Amr::N3rgyEnergyTariffInserter do
 
     context 'because price in the differential periods has changed' do
       let!(:old_price) { 0.22 }
-      #00:00-05:30, 05:30-23:30
+      # 00:00-05:30, 05:30-23:30
       let(:raw_prices) { Array.new(12, old_price) + Array.new(36, old_price * 2)}
 
       let!(:existing_energy_tariff) do
         create(:energy_tariff, tariff_type: :differential, source: :dcc, school: school, meters: [meter], end_date: nil)
       end
       let!(:existing_period_1) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "00:00", end_time: "07:00")
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: '00:00', end_time: '07:00')
       end
       let!(:existing_period_2) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "07:00", end_time: "00:00")
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: '07:00', end_time: '00:00')
       end
 
       it 'updates end date of previous tariff' do
@@ -220,17 +220,17 @@ describe Amr::N3rgyEnergyTariffInserter do
     end
 
     context 'because the differential periods have changed' do
-      #00:00-04:30, 05:00-23:30
+      # 00:00-04:30, 05:00-23:30
       let(:raw_prices) { Array.new(10, price) + Array.new(38, price * 2)}
 
       let!(:existing_energy_tariff) do
         create(:energy_tariff, tariff_type: :differential, source: :dcc, school: school, meters: [meter], end_date: nil)
       end
       let!(:existing_period_1) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "00:00", end_time: "07:00")
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: '00:00', end_time: '07:00')
       end
       let!(:existing_period_2) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "07:00", end_time: "00:00")
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: '07:00', end_time: '00:00')
       end
 
       it 'updates end date of previous tariff' do
