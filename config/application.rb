@@ -20,6 +20,7 @@ module EnergySparks
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # Local customisations:
     config.eager_load_paths << Rails.root.join('lib/')
     # Pull in folders without namespacing
     config.eager_load_paths << Rails.root.join('app', 'models', 'areas')
