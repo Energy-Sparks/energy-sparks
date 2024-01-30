@@ -8,7 +8,7 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      delegate :enough_date?, to: :peak_usage_calculation_service
+      delegate :enough_data?, to: :peak_usage_calculation_service
       delegate :data_available_from, to: :peak_usage_calculation_service
       delegate :average_peak_kw, to: :peak_usage_calculation_service
       delegate :date_range, to: :peak_usage_calculation_service
@@ -51,10 +51,6 @@ module Schools
 
       def aggregate_meter
         @meter_collection.aggregated_electricity_meters
-      end
-
-      def meter_data_checker
-        @meter_data_checker ||= Util::MeterDateRangeChecker.new(aggregate_meter, asof_date)
       end
 
       def peak_usage_benchmarking_service
