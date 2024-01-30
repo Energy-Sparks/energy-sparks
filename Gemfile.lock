@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: ff3b8bebf05fa2c9051151d94e3b28aaa417725f
-  branch: 3997-allow-baseload-page-to-work-with-two-weeks-of-data
+  revision: d90c84c1ec626c563c52fdea492b04b7bb6046f4
+  branch: master
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
