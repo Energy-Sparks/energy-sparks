@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe HolidayUsageTableComponent, type: :component do
   let(:final_holiday_end) { Date.new(2023, 10, 22) }
@@ -23,25 +23,25 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
     previous_holiday_4 = build(:school_date_period, start_date: Date.new(2022, 10, 8), end_date: Date.new(2022, 10, 23))
 
     {
-      #no data for holidays
+      # no data for holidays
       holiday_1 => OpenStruct.new(
         usage: nil,
         previous_holiday_usage: nil,
         previous_holiday: previous_holiday_1
       ),
-      #full data for holiday but not previous
+      # full data for holiday but not previous
       holiday_2 => OpenStruct.new(
         usage: CombinedUsageMetric.new(kwh: 10.0, £: 10.0, co2: 10.0),
         previous_holiday_usage: nil,
         previous_holiday: previous_holiday_2
       ),
-      #full data for holiday and previous holiday
+      # full data for holiday and previous holiday
       holiday_3 => OpenStruct.new(
         usage: CombinedUsageMetric.new(kwh: 20.0, £: 20.0, co2: 20.0),
         previous_holiday_usage: CombinedUsageMetric.new(kwh: 40.0, £: 40.0, co2: 40.0),
         previous_holiday: previous_holiday_3
       ),
-      #data for both holidays, tests adjust date ranges/times
+      # data for both holidays, tests adjust date ranges/times
       holiday_4 => OpenStruct.new(
         usage: CombinedUsageMetric.new(kwh: 20.0, £: 20.0, co2: 20.0),
         previous_holiday_usage: CombinedUsageMetric.new(kwh: 40.0, £: 40.0, co2: 40.0),
@@ -129,7 +129,7 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
   describe '.current_holiday_row' do
     it 'yields expected values' do
       component.current_holiday_row(holiday_4) do |label, holiday, usage, average_daily_usage|
-        expect(label).to eq("")
+        expect(label).to eq('')
         expect(holiday).to eq(holiday_4)
         expect(usage).to eq(holiday_usage[holiday_4].usage)
         expect(average_daily_usage).to eq(holiday_usage[holiday_4].usage.kwh / holiday_4.days)
@@ -152,7 +152,7 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
     context 'when comparison can be made' do
       it 'yields expected values' do
         component.comparison_row(holiday_3) do |label, holiday, usage, previous_holiday, previous_holiday_usage|
-          expect(label).to eq("")
+          expect(label).to eq('')
           expect(holiday).to eq(holiday_3)
           expect(usage).to eq(holiday_usage[holiday_3].usage)
           expect(previous_holiday_usage).to eq(holiday_usage[holiday_3].previous_holiday_usage)

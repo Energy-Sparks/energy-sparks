@@ -28,7 +28,7 @@ class HolidayUsageTableComponent < ViewComponent::Base
     @holiday_usage[holiday].previous_holiday
   end
 
-  #Return the holidays (SchoolPeriod) in date order
+  # Return the holidays (SchoolPeriod) in date order
   def school_periods
     @holiday_usage.keys.sort_by(&:start_date)
   end
@@ -58,7 +58,7 @@ class HolidayUsageTableComponent < ViewComponent::Base
     unless period.nil? || usage.nil?
       average_daily_usage = average_daily_usage(usage, period)
     end
-    yield "", holiday, usage, average_daily_usage
+    yield '', holiday, usage, average_daily_usage
   end
 
   def previous_holiday_row(holiday)
@@ -76,7 +76,7 @@ class HolidayUsageTableComponent < ViewComponent::Base
     holiday_usage = holiday_usage(holiday)
     previous_holiday_usage = previous_holiday_usage(holiday)
     previous_holiday_period = previous_holiday_period(holiday)
-    yield "", holiday, holiday_usage, previous_holiday_period, previous_holiday_usage if block_given?
+    yield '', holiday, holiday_usage, previous_holiday_period, previous_holiday_usage if block_given?
     true
   end
 end
