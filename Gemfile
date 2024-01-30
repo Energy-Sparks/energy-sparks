@@ -7,6 +7,7 @@ gem 'rails', '~> 7.0'
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.12'
+gem 'importmap-rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
@@ -15,7 +16,6 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
-gem 'webpacker'
 gem 'wisper' # publish subscribe for ruby objects
 
 # Database/Data
@@ -39,7 +39,7 @@ gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'font-awesome-sass'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
-gem 'sass-rails' # Use SCSS for stylesheets
+gem 'sassc-rails' # Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 
 # Pagination

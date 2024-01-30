@@ -69,8 +69,6 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # Local customisations:
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = true
   # Store uploaded files on the local file system (see config/storage.yml for options)
   # To use amazon locally, set ACTIVE_STORAGE_SERVICE = amazon in your .env file
   # and ensure you have the AWS credentials set up in your .env file

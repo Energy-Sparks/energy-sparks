@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
-
+ActiveRecord::Schema[7.0].define(version: 2024_01_30_191502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -28,8 +27,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "body"
     t.string "record_type", null: false
     t.bigint "record_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "locale", default: "en", null: false
     t.index ["record_type", "record_id", "name", "locale"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
@@ -39,7 +38,7 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -50,8 +49,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.string "checksum"
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -68,8 +67,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "title"
     t.text "deprecated_description"
     t.date "happened_on"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "activity_category_id"
     t.integer "pupil_count"
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
@@ -79,8 +78,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
 
   create_table "activity_categories", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "description"
     t.boolean "featured", default: false
     t.boolean "pupil", default: false
@@ -91,8 +90,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "activity_timings", force: :cascade do |t|
     t.string "name", null: false
     t.integer "position", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "include_lower", default: false
   end
 
@@ -120,8 +119,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "activity_type_suggestions", force: :cascade do |t|
     t.bigint "activity_type_id"
     t.bigint "suggested_type_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["activity_type_id"], name: "index_activity_type_suggestions_on_activity_type_id"
     t.index ["suggested_type_id"], name: "index_activity_type_suggestions_on_suggested_type_id"
   end
@@ -144,8 +143,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "name"
     t.text "deprecated_description"
     t.boolean "active", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "activity_category_id", null: false
     t.integer "score"
     t.boolean "data_driven", default: false
@@ -159,8 +158,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
 
   create_table "admin_meter_statuses", force: :cascade do |t|
     t.string "label"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "advice_page_activity_types", force: :cascade do |t|
@@ -183,8 +182,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "school_id", null: false
     t.bigint "advice_page_id", null: false
     t.integer "benchmarked_as", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["advice_page_id"], name: "index_advice_page_school_benchmarks_on_advice_page_id"
     t.index ["school_id"], name: "index_advice_page_school_benchmarks_on_school_id"
   end
@@ -192,8 +191,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "advice_pages", force: :cascade do |t|
     t.string "key", null: false
     t.boolean "restricted", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "fuel_type"
     t.index ["key"], name: "index_advice_pages_on_key", unique: true
   end
@@ -203,16 +202,16 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "alert_type_id", null: false
     t.date "asof_date", null: false
     t.text "information"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_generation_run_id"], name: "index_alert_errors_on_alert_generation_run_id"
     t.index ["alert_type_id"], name: "index_alert_errors_on_alert_type_id"
   end
 
   create_table "alert_generation_runs", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_alert_generation_runs_on_school_id"
   end
 
@@ -222,8 +221,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.integer "status", default: 0, null: false
     t.integer "communication_type", default: 0, null: false
     t.text "message"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "email_id"
     t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "find_out_more_id"
@@ -249,8 +248,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "alert_type_rating_id", null: false
     t.string "find_out_more_title"
     t.integer "replaced_by_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "colour", default: 0, null: false
     t.string "sms_content"
     t.string "email_title"
@@ -290,8 +289,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "intervention_type_id", null: false
     t.bigint "alert_type_rating_id", null: false
     t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_type_rating_id"], name: "idx_alert_type_rating_intervention_types_on_alrt_type_id"
     t.index ["intervention_type_id"], name: "idx_alert_type_rating_intervention_types_on_int_type_id"
   end
@@ -304,8 +303,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "reason"
     t.integer "unsubscription_period", null: false
     t.date "effective_until"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_subscription_event_id"], name: "altunsub_event"
     t.index ["alert_type_rating_id"], name: "index_alert_type_rating_unsubscriptions_on_alert_type_rating_id"
     t.index ["contact_id"], name: "index_alert_type_rating_unsubscriptions_on_contact_id"
@@ -316,8 +315,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.decimal "rating_from", null: false
     t.decimal "rating_to", null: false
     t.string "description", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "sms_active", default: false
     t.boolean "email_active", default: false
     t.boolean "find_out_more_active", default: false
@@ -353,8 +352,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "school_id", null: false
     t.bigint "alert_type_id", null: false
     t.date "run_on"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.json "template_data", default: {}
     t.json "table_data", default: {}
     t.json "chart_data", default: {}
@@ -388,8 +387,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "postcode_field"
     t.text "units_field"
     t.text "header_example"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "handle_off_by_one", default: false
     t.boolean "row_per_reading", default: false, null: false
     t.integer "number_of_header_rows", default: 0, null: false
@@ -411,10 +410,10 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
     t.bigint "amr_data_feed_config_id", null: false
     t.text "file_name"
-    t.datetime "import_time"
+    t.datetime "import_time", precision: nil
     t.integer "records_imported"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "records_updated", default: 0, null: false
     t.text "error_messages"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_import_logs_on_amr_data_feed_config_id"
@@ -435,8 +434,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "meter_serial_number"
     t.text "provider_record_id"
     t.text "type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "reading_time"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
@@ -453,8 +452,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "reading_date"
     t.text "mpan_mprn"
     t.text "readings", array: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "warning_types", array: true
     t.integer "school_id"
     t.string "fuel_type"
@@ -466,8 +465,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.boolean "imported", default: false, null: false
     t.text "file_name", default: "f", null: false
     t.json "reading_data", default: {}, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_amr_uploaded_readings_on_amr_data_feed_config_id"
   end
 
@@ -478,7 +477,7 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.date "reading_date", null: false
     t.text "status", null: false
     t.date "substitute_date"
-    t.datetime "upload_datetime"
+    t.datetime "upload_datetime", precision: nil
     t.index ["meter_id", "one_day_kwh"], name: "index_amr_validated_readings_on_meter_id_and_one_day_kwh"
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
@@ -488,8 +487,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "content_generation_run_id"
     t.bigint "alert_type_rating_content_version_id"
     t.bigint "alert_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "category"
     t.decimal "priority", default: "0.0"
     t.index ["alert_id"], name: "index_analysis_pages_on_alert_id"
@@ -530,8 +529,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "title", null: false
     t.date "completed_on"
     t.boolean "published", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "involved_pupils", default: false, null: false
     t.index ["school_id"], name: "index_audits_on_school_id"
   end
@@ -541,21 +540,21 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "alert_type_id", null: false
     t.date "asof_date"
     t.text "information"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_type_id"], name: "index_benchmark_result_errors_on_alert_type_id"
     t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_errors_index"
   end
 
   create_table "benchmark_result_generation_runs", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "benchmark_result_school_generation_runs", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "benchmark_result_generation_run_id"
     t.integer "benchmark_result_error_count", default: 0
     t.integer "benchmark_result_count", default: 0
@@ -566,8 +565,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "benchmark_results", force: :cascade do |t|
     t.bigint "alert_type_id", null: false
     t.date "asof", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "benchmark_result_school_generation_run_id", null: false
     t.json "results", default: {}
     t.json "results_cy", default: {}
@@ -580,8 +579,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "name", null: false
     t.string "device_identifier", null: false
     t.boolean "active", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "test_mode", default: false
     t.float "max_power", default: 3.0
     t.integer "refresh_interval", default: 5
@@ -611,8 +610,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.date "start_date", null: false
     t.date "end_date", null: false
     t.bigint "based_on_id"
-    t.datetime "created_at", precision: 6, default: -> { "(CURRENT_TIMESTAMP - 'P1M'::interval)" }, null: false
-    t.datetime "updated_at", precision: 6, default: -> { "(CURRENT_TIMESTAMP - 'P1M'::interval)" }, null: false
+    t.datetime "created_at", default: -> { "(CURRENT_TIMESTAMP - 'P1M'::interval)" }, null: false
+    t.datetime "updated_at", default: -> { "(CURRENT_TIMESTAMP - 'P1M'::interval)" }, null: false
     t.index ["academic_year_id"], name: "index_calendar_events_on_academic_year_id"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
@@ -620,8 +619,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
 
   create_table "calendars", force: :cascade do |t|
     t.string "title", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "based_on_id"
     t.integer "calendar_type"
     t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
@@ -630,23 +629,23 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "carbon_intensity_readings", force: :cascade do |t|
     t.date "reading_date", null: false
     t.decimal "carbon_intensity_x48", null: false, array: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["reading_date"], name: "index_carbon_intensity_readings_on_reading_date", unique: true
   end
 
   create_table "case_studies", force: :cascade do |t|
     t.string "title"
     t.integer "position", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "cluster_schools_users", id: false, force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "school_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_cluster_schools_users_on_school_id"
     t.index ["user_id", "school_id"], name: "index_cluster_schools_users_on_user_id_and_school_id"
     t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
@@ -655,8 +654,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "configurations", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.json "analysis_charts", default: {}, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.json "pupil_analysis_charts", default: {}, null: false
     t.json "fuel_configuration", default: {}
     t.string "school_target_fuel_types", default: [], null: false, array: true
@@ -670,8 +669,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "consent_documents", force: :cascade do |t|
     t.bigint "school_id"
     t.text "title", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_consent_documents_on_school_id"
   end
 
@@ -691,8 +690,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "school_name"
     t.text "ip_address"
     t.text "guid"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["consent_statement_id"], name: "index_consent_grants_on_consent_statement_id"
     t.index ["school_id"], name: "index_consent_grants_on_school_id"
     t.index ["user_id"], name: "index_consent_grants_on_user_id"
@@ -701,8 +700,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "consent_statements", force: :cascade do |t|
     t.text "title", null: false
     t.boolean "current", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -720,8 +719,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
 
   create_table "content_generation_runs", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["school_id"], name: "index_content_generation_runs_on_school_id"
   end
 
@@ -729,8 +728,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "area_id", null: false
     t.date "reading_date", null: false
     t.decimal "temperature_celsius_x48", null: false, array: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["area_id", "reading_date"], name: "index_dark_sky_temperature_readings_on_area_id_and_reading_date", unique: true
     t.index ["area_id"], name: "index_dark_sky_temperature_readings_on_area_id"
   end
@@ -741,8 +740,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "alert_id", null: false
     t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "find_out_more_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.decimal "priority", default: "0.0", null: false
     t.index ["alert_id"], name: "index_dashboard_alerts_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "index_dashboard_alerts_on_alert_type_rating_content_version_id"
@@ -754,8 +753,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "message"
     t.string "messageable_type"
     t.bigint "messageable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["messageable_type", "messageable_id"], name: "index_dashboard_messages_on_messageable_type_and_messageable_id", unique: true
   end
 
@@ -773,16 +772,16 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "historic_data"
     t.text "loa_expiry_procedure"
     t.text "comments"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "import_warning_days"
   end
 
   create_table "emails", force: :cascade do |t|
     t.bigint "contact_id", null: false
-    t.datetime "sent_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "sent_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["contact_id"], name: "index_emails_on_contact_id"
   end
 
@@ -791,8 +790,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "charge_type", null: false
     t.decimal "value", null: false
     t.text "units"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["energy_tariff_id"], name: "index_energy_tariff_charges_on_energy_tariff_id"
   end
 
@@ -803,8 +802,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.decimal "value"
     t.text "units"
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["energy_tariff_id"], name: "index_energy_tariff_prices_on_energy_tariff_id"
   end
 
@@ -823,8 +822,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.integer "vat_rate"
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "applies_to", default: 0
     t.index ["created_by_id"], name: "index_energy_tariffs_on_created_by_id"
     t.index ["tariff_holder_type", "tariff_holder_id"], name: "index_energy_tariffs_on_tariff_holder_type_and_tariff_holder_id"
@@ -841,8 +840,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "equivalence_type_content_versions", force: :cascade do |t|
     t.bigint "equivalence_type_id", null: false
     t.bigint "replaced_by_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["equivalence_type_id"], name: "index_equivalence_type_content_versions_on_equivalence_type_id"
     t.index ["replaced_by_id"], name: "eqtcv_eqtcv_repl"
   end
@@ -850,8 +849,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "equivalence_types", force: :cascade do |t|
     t.integer "meter_type", null: false
     t.integer "time_period", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "image_name", default: 0, null: false
   end
 
@@ -859,8 +858,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "equivalence_type_content_version_id", null: false
     t.bigint "school_id", null: false
     t.json "data", default: {}
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "relevant", default: true
     t.date "from_date"
     t.date "to_date"
@@ -875,8 +874,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.float "storage_heaters"
     t.float "gas"
     t.bigint "school_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_estimated_annual_consumptions_on_school_id"
   end
 
@@ -884,8 +883,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "alert_id", null: false
     t.bigint "content_generation_run_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["alert_id"], name: "index_find_out_mores_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "fom_fom_content_v_id"
     t.index ["content_generation_run_id"], name: "index_find_out_mores_on_content_generation_run_id"
@@ -896,7 +895,7 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
     t.string "scope"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
@@ -911,8 +910,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "attribute_type", null: false
     t.json "input_data"
     t.text "reason"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "replaced_by_id"
     t.bigint "deleted_by_id"
     t.bigint "created_by_id"
@@ -923,8 +922,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "description"
     t.jsonb "serialized_properties"
     t.text "on_finish"
@@ -932,34 +931,34 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "on_discard"
     t.text "callback_queue_name"
     t.integer "callback_priority"
-    t.datetime "enqueued_at"
-    t.datetime "discarded_at"
-    t.datetime "finished_at"
+    t.datetime "enqueued_at", precision: nil
+    t.datetime "discarded_at", precision: nil
+    t.datetime "finished_at", precision: nil
   end
 
   create_table "good_job_executions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "active_job_id", null: false
     t.text "job_class"
     t.text "queue_name"
     t.jsonb "serialized_params"
-    t.datetime "scheduled_at"
-    t.datetime "finished_at"
+    t.datetime "scheduled_at", precision: nil
+    t.datetime "finished_at", precision: nil
     t.text "error"
     t.integer "error_event", limit: 2
     t.index ["active_job_id", "created_at"], name: "index_good_job_executions_on_active_job_id_and_created_at"
   end
 
   create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "state"
   end
 
   create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "key"
     t.jsonb "value"
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
@@ -969,17 +968,17 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
-    t.datetime "scheduled_at"
-    t.datetime "performed_at"
-    t.datetime "finished_at"
+    t.datetime "scheduled_at", precision: nil
+    t.datetime "performed_at", precision: nil
+    t.datetime "finished_at", precision: nil
     t.text "error"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "active_job_id"
     t.text "concurrency_key"
     t.text "cron_key"
     t.uuid "retried_good_job_id"
-    t.datetime "cron_at"
+    t.datetime "cron_at", precision: nil
     t.uuid "batch_id"
     t.uuid "batch_callback_id"
     t.boolean "is_discrete"
@@ -1005,21 +1004,21 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.integer "feature", null: false
     t.boolean "published", default: false, null: false
     t.string "slug", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_help_pages_on_slug", unique: true
   end
 
   create_table "impacts", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "intervention_type_groups", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "icon", default: "question-circle"
     t.string "description"
     t.boolean "active", default: true
@@ -1028,8 +1027,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "intervention_type_suggestions", force: :cascade do |t|
     t.bigint "intervention_type_id"
     t.integer "suggested_type_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["intervention_type_id"], name: "index_intervention_type_suggestions_on_intervention_type_id"
     t.index ["suggested_type_id"], name: "index_intervention_type_suggestions_on_suggested_type_id"
   end
@@ -1041,8 +1040,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.integer "score"
     t.boolean "active", default: true
     t.string "summary"
-    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
-    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.boolean "show_on_charts", default: true
     t.string "fuel_type", default: [], array: true
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
@@ -1051,8 +1050,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "issue_meters", force: :cascade do |t|
     t.bigint "issue_id"
     t.bigint "meter_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["issue_id"], name: "index_issue_meters_on_issue_id"
     t.index ["meter_id"], name: "index_issue_meters_on_meter_id"
   end
@@ -1064,8 +1063,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.integer "status", default: 0, null: false
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "owned_by_id"
     t.boolean "pinned", default: false
     t.string "issueable_type"
@@ -1080,8 +1079,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "title", null: false
     t.boolean "voluntary", default: false
     t.date "closing_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "key_stages", force: :cascade do |t|
@@ -1094,23 +1093,23 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "target"
     t.string "rewriteable_type"
     t.bigint "rewriteable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["rewriteable_type", "rewriteable_id"], name: "index_link_rewrites_on_rewriteable_type_and_rewriteable_id"
   end
 
   create_table "local_authority_areas", force: :cascade do |t|
     t.string "code"
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "locations", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.text "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_locations_on_school_id"
   end
 
@@ -1119,8 +1118,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "amr_data_feed_config_id", null: false
     t.text "rbee_meter_id"
     t.json "information", default: {}
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "username"
     t.string "password"
     t.index ["amr_data_feed_config_id"], name: "index_low_carbon_hub_installations_on_amr_data_feed_config_id"
@@ -1131,8 +1130,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "content_generation_run_id"
     t.bigint "alert_id"
     t.bigint "alert_type_rating_content_version_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_id"], name: "index_management_dashboard_tables_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "man_dash_alert_content_version_index"
     t.index ["content_generation_run_id"], name: "index_management_dashboard_tables_on_content_generation_run_id"
@@ -1143,8 +1142,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "alert_id", null: false
     t.bigint "find_out_more_id"
     t.bigint "alert_type_rating_content_version_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.decimal "priority", default: "0.0", null: false
     t.index ["alert_id"], name: "index_management_priorities_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "mp_altrcv"
@@ -1155,16 +1154,16 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "manual_data_load_run_log_entries", force: :cascade do |t|
     t.bigint "manual_data_load_run_id", null: false
     t.string "message"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["manual_data_load_run_id"], name: "manual_data_load_run_log_idx"
   end
 
   create_table "manual_data_load_runs", force: :cascade do |t|
     t.bigint "amr_uploaded_reading_id", null: false
     t.integer "status", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["amr_uploaded_reading_id"], name: "index_manual_data_load_runs_on_amr_uploaded_reading_id"
   end
 
@@ -1172,8 +1171,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "meter_id", null: false
     t.string "attribute_type", null: false
     t.json "input_data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "reason"
     t.bigint "replaced_by_id"
     t.bigint "deleted_by_id"
@@ -1185,8 +1184,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "school_id", null: false
     t.bigint "user_id", null: false
     t.bigint "consent_grant_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["consent_grant_id"], name: "index_meter_reviews_on_consent_grant_id"
     t.index ["school_id"], name: "index_meter_reviews_on_school_id"
     t.index ["user_id"], name: "index_meter_reviews_on_user_id"
@@ -1195,8 +1194,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.integer "meter_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "active", default: true
     t.string "name"
     t.bigint "mpan_mprn"
@@ -1209,7 +1208,7 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.date "earliest_available_data"
     t.boolean "sandbox", default: false
     t.bigint "meter_review_id"
-    t.datetime "dcc_checked_at"
+    t.datetime "dcc_checked_at", precision: nil
     t.bigint "data_source_id"
     t.bigint "admin_meter_statuses_id"
     t.bigint "procurement_route_id"
@@ -1230,8 +1229,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "value"
     t.string "translatable_type"
     t.bigint "translatable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translations_on_translatable_attribute"
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_string_translations_on_keys", unique: true
     t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translations_on_query_keys"
@@ -1243,8 +1242,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "value"
     t.string "translatable_type"
     t.bigint "translatable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_text_translations_on_translatable_attribute"
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
   end
@@ -1253,16 +1252,16 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "title", null: false
     t.text "url", null: false
     t.date "published_on", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "observations", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.datetime "at", null: false
+    t.datetime "at", precision: nil, null: false
     t.text "_description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "observation_type", null: false
     t.bigint "intervention_type_id"
     t.bigint "activity_id"
@@ -1287,8 +1286,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "partners", force: :cascade do |t|
     t.integer "position", default: 0, null: false
     t.text "url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name"
   end
 
@@ -1303,8 +1302,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "data_issues_contact_details"
     t.text "loa_expiry_procedure"
     t.text "comments"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "programme_activities", force: :cascade do |t|
@@ -1329,8 +1328,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "short_description"
     t.string "document_link"
     t.boolean "default", default: false
-    t.datetime "created_at", precision: 6, default: "2022-07-06 12:00:00", null: false
-    t.datetime "updated_at", precision: 6, default: "2022-07-06 12:00:00", null: false
+    t.datetime "created_at", default: "2022-07-06 12:00:00", null: false
+    t.datetime "updated_at", default: "2022-07-06 12:00:00", null: false
     t.integer "bonus_score", default: 0
   end
 
@@ -1340,8 +1339,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.integer "status", default: 0, null: false
     t.date "started_on", null: false
     t.date "ended_on"
-    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
-    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
     t.index ["school_id"], name: "index_programmes_on_school_id"
   end
@@ -1349,14 +1348,14 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "resource_file_types", force: :cascade do |t|
     t.string "title", null: false
     t.integer "position", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "resource_files", force: :cascade do |t|
     t.string "title", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "resource_file_type_id"
     t.index ["resource_file_type_id"], name: "index_resource_files_on_resource_file_type_id"
   end
@@ -1370,8 +1369,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "school_id", null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.bigint "meter_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_rtone_variant_installations_on_amr_data_feed_config_id"
     t.index ["meter_id"], name: "index_rtone_variant_installations_on_meter_id"
     t.index ["school_id"], name: "index_rtone_variant_installations_on_school_id"
@@ -1381,8 +1380,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "alert_type_id"
     t.bigint "school_id"
     t.text "reason"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_type_id"], name: "index_school_alert_type_exclusions_on_alert_type_id"
     t.index ["school_id"], name: "index_school_alert_type_exclusions_on_school_id"
   end
@@ -1390,24 +1389,24 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "school_batch_run_log_entries", force: :cascade do |t|
     t.bigint "school_batch_run_id"
     t.string "message"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_batch_run_id"], name: "index_school_batch_run_log_entries_on_school_batch_run_id"
   end
 
   create_table "school_batch_runs", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "status", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_school_batch_runs_on_school_id"
   end
 
   create_table "school_group_clusters", force: :cascade do |t|
     t.string "name"
     t.bigint "school_group_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_group_id"], name: "index_school_group_clusters_on_school_group_id"
   end
 
@@ -1416,8 +1415,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "attribute_type", null: false
     t.json "input_data"
     t.text "reason"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "replaced_by_id"
     t.bigint "deleted_by_id"
     t.bigint "created_by_id"
@@ -1429,8 +1428,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "school_group_id"
     t.bigint "partner_id"
     t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["partner_id"], name: "index_school_group_partners_on_partner_id"
     t.index ["school_group_id"], name: "index_school_group_partners_on_school_group_id"
   end
@@ -1440,8 +1439,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "description"
     t.string "slug", null: false
     t.bigint "default_scoreboard_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "default_solar_pv_tuos_area_id"
     t.bigint "default_dark_sky_area_id"
     t.bigint "default_template_calendar_id"
@@ -1479,8 +1478,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "attribute_type", null: false
     t.json "input_data"
     t.text "reason"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "replaced_by_id"
     t.bigint "deleted_by_id"
     t.bigint "created_by_id"
@@ -1491,8 +1490,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "school_onboarding_events", force: :cascade do |t|
     t.bigint "school_onboarding_id", null: false
     t.integer "event", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["school_onboarding_id"], name: "index_school_onboarding_events_on_school_onboarding_id"
   end
 
@@ -1506,8 +1505,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "created_by_id"
     t.bigint "school_group_id"
     t.bigint "solar_pv_tuos_area_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "dark_sky_area_id"
     t.bigint "template_calendar_id"
     t.bigint "scoreboard_id"
@@ -1529,8 +1528,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "school_id"
     t.bigint "partner_id"
     t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["partner_id"], name: "index_school_partners_on_partner_id"
     t.index ["school_id"], name: "index_school_partners_on_school_id"
   end
@@ -1538,8 +1537,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "school_target_events", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.integer "event", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_school_target_events_on_school_id"
   end
 
@@ -1550,10 +1549,10 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.float "electricity"
     t.float "gas"
     t.float "storage_heaters"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "revised_fuel_types", default: [], null: false, array: true
-    t.datetime "report_last_generated"
+    t.datetime "report_last_generated", precision: nil
     t.json "electricity_progress", default: {}
     t.json "gas_progress", default: {}
     t.json "storage_heaters_progress", default: {}
@@ -1579,8 +1578,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "address"
     t.string "postcode"
     t.string "website"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "urn", null: false
     t.integer "level", default: 0
     t.bigint "calendar_id"
@@ -1632,7 +1631,7 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "alternative_heating_district_heating_notes"
     t.integer "region"
     t.bigint "local_authority_area_id"
-    t.datetime "bill_requested_at"
+    t.datetime "bill_requested_at", precision: nil
     t.bigint "school_group_cluster_id"
     t.bigint "funder_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
@@ -1648,8 +1647,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "name", null: false
     t.string "description"
     t.string "slug", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "academic_year_calendar_id"
     t.boolean "public", default: true
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
@@ -1657,8 +1656,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
 
   create_table "site_settings", force: :cascade do |t|
     t.boolean "message_for_no_contacts", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "management_priorities_dashboard_limit", default: 5
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
@@ -1672,8 +1671,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "sms_records", force: :cascade do |t|
     t.bigint "alert_subscription_event_id"
     t.text "mobile_phone_number"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_subscription_event_id"], name: "index_sms_records_on_alert_subscription_event_id"
   end
 
@@ -1684,8 +1683,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "api_key"
     t.text "mpan"
     t.json "information", default: {}
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_solar_edge_installations_on_amr_data_feed_config_id"
     t.index ["school_id"], name: "index_solar_edge_installations_on_school_id"
   end
@@ -1699,28 +1698,28 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.decimal "distance_km"
     t.date "reading_date", null: false
     t.decimal "generation_mw_x48", null: false, array: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["area_id", "reading_date"], name: "index_solar_pv_tuos_readings_on_area_id_and_reading_date", unique: true
     t.index ["area_id"], name: "index_solar_pv_tuos_readings_on_area_id"
   end
 
   create_table "staff_roles", force: :cascade do |t|
     t.string "title", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "subjects", force: :cascade do |t|
-    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "subjects", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+  end
+
   create_table "subscription_generation_runs", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_subscription_generation_runs_on_school_id"
   end
 
@@ -1730,13 +1729,13 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "error_messages"
     t.date "start_date"
     t.date "end_date"
-    t.datetime "import_time"
+    t.datetime "import_time", precision: nil
     t.integer "prices_imported", default: 0, null: false
     t.integer "prices_updated", default: 0, null: false
     t.integer "standing_charges_imported", default: 0, null: false
     t.integer "standing_charges_updated", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "task_records", id: false, force: :cascade do |t|
@@ -1747,8 +1746,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "title", null: false
     t.text "description"
     t.integer "position", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "role", default: 0, null: false
   end
 
@@ -1756,16 +1755,16 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "observation_id", null: false
     t.bigint "location_id", null: false
     t.decimal "centigrade", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_temperature_recordings_on_location_id"
     t.index ["observation_id"], name: "index_temperature_recordings_on_observation_id"
   end
 
   create_table "topics", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "transifex_load_errors", force: :cascade do |t|
@@ -1773,26 +1772,26 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "record_id"
     t.string "error"
     t.bigint "transifex_load_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["transifex_load_id"], name: "transifex_load_error_run_idx"
   end
 
   create_table "transifex_loads", force: :cascade do |t|
     t.integer "pushed", default: 0, null: false
     t.integer "pulled", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "status", default: 0, null: false
   end
 
   create_table "transifex_statuses", force: :cascade do |t|
     t.string "record_type", null: false
     t.bigint "record_id", null: false
-    t.datetime "tx_last_push"
-    t.datetime "tx_last_pull"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "tx_last_push", precision: nil
+    t.datetime "tx_last_pull", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["record_type", "record_id"], name: "index_transifex_statuses_uniqueness", unique: true
   end
 
@@ -1801,11 +1800,11 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.bigint "transport_type_id", null: false
     t.integer "passengers", default: 1, null: false
     t.string "run_identifier", null: false
-    t.datetime "surveyed_at", null: false
+    t.datetime "surveyed_at", precision: nil, null: false
     t.integer "journey_minutes", default: 0, null: false
     t.integer "weather", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["transport_survey_id"], name: "index_transport_survey_responses_on_transport_survey_id"
     t.index ["transport_type_id"], name: "index_transport_survey_responses_on_transport_type_id"
   end
@@ -1813,8 +1812,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
   create_table "transport_surveys", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.date "run_on", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id", "run_on"], name: "index_transport_surveys_on_school_id_and_run_on", unique: true
     t.index ["school_id"], name: "index_transport_surveys_on_school_id"
   end
@@ -1826,8 +1825,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.decimal "speed_km_per_hour", default: "0.0", null: false
     t.string "note"
     t.boolean "can_share", default: false, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "park_and_stride", default: false, null: false
     t.integer "category"
     t.integer "position", default: 0, null: false
@@ -1840,23 +1839,23 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.string "encrypted_password", default: "", null: false
     t.integer "role", default: 0, null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.integer "failed_attempts", default: 0, null: false
-    t.datetime "locked_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "locked_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name"
     t.string "pupil_password"
     t.bigint "staff_role_id"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.bigint "school_group_id"
     t.string "unlock_token"
     t.string "preferred_locale", default: "en", null: false
@@ -1875,16 +1874,16 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.text "description"
     t.boolean "featured", default: true, null: false
     t.integer "position", default: 1, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "weather_observations", force: :cascade do |t|
     t.bigint "weather_station_id", null: false
     t.date "reading_date", null: false
     t.decimal "temperature_celsius_x48", null: false, array: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["weather_station_id", "reading_date"], name: "index_weather_obs_on_weather_station_id_and_reading_date", unique: true
     t.index ["weather_station_id"], name: "index_weather_observations_on_weather_station_id"
   end
@@ -1896,8 +1895,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_01_09_140245) do
     t.boolean "active", default: true
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "back_fill_years", default: 4
   end
 

@@ -12,7 +12,7 @@
   <% case_studies.in_groups_of(3, false).each do |group| %>
     <div class="card-deck mb-4">
       <% group.each do |case_study| %>
-        <%= render './case_studies/case_study_card', case_study: case_study %>
+        <%= render 'case_studies/case_study_card', case_study: case_study %>
       <% end %>
     </div>
   <% end %>

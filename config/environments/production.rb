@@ -99,8 +99,6 @@ Rails.application.configure do
   config.action_mailer.show_previews = true
   # Rspec makes rails use spec/mailers/previews as the mail previews path
   config.action_mailer.preview_path = Rails.root.join('spec', 'mailers', 'previews')
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = false
   # Attempt to read encrypted secrets from `config/secrets.yml.enc`.
   # Requires an encryption key in `ENV["RAILS_MASTER_KEY"]` or
   # `config/secrets.yml.key`.
