@@ -191,6 +191,17 @@ RSpec.describe 'Baseload advice page', type: :system do
         it_behaves_like 'an advice page showing electricity data warning'
       end
 
+      context 'with less than a years data' do
+        let(:start_date) { Time.zone.today - 14.days }
+
+        it 'shows different message' do
+          visit insights_school_advice_baseload_path(school)
+          within '#current-baseload' do
+            expect(page).to have_content("#{start_date.to_s(:es_short)} - #{end_date.to_s(:es_short)}")
+          end
+        end
+      end
+
       it 'shows the comparison section' do
         expect(page).to have_content('How do you compare?')
         within '.school-comparison-component-footer-row' do
