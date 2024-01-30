@@ -49,7 +49,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
 
         it 'includes expected data' do
           expect(find('table.advice-table')).to have_content(
-            ["#{reading_start_date.to_s(:es_short)} - #{Time.zone.today.to_s(:es_short)}",
+            ["#{reading_start_date.to_fs(:es_short)} - #{Time.zone.today.to_fs(:es_short)}",
              '44,000',
              '9,200',
              '£4,400',

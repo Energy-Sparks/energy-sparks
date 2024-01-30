@@ -41,7 +41,7 @@ RSpec.describe 'electricity intraday advice page', type: :system do
 
         it 'shows only relevent content' do
           expect(page).to have_content('Your current peak electricity use')
-          expect(page).to have_content("Data on peak kw usage available from #{(end_date + 1).to_s(:es_short)}")
+          expect(page).to have_content("Data on peak kw usage available from #{(end_date + 1).to_fs(:es_short)}")
           expect(page).to have_no_content('How did we calculate these figures?')
           expect(page).to have_no_content('How do you compare?')
           expect(page).to have_no_content('How does your peak electricity use compare to other primary schools on Energy Sparks with a similar number of pupils')

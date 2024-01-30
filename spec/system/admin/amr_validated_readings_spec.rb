@@ -51,7 +51,7 @@ RSpec.describe 'meter reports', :amr_validated_readings, type: :system do
       expect(page).to have_content 'Modified readings (last 2 years)'
 
       within '.gappy-dates' do
-        expect(page).to have_content "15 days (#{(base_date + 1.day).to_s(:es_short)} to #{(base_date + 15.days).to_s(:es_short)})"
+        expect(page).to have_content "15 days (#{(base_date + 1.day).to_fs(:es_short)} to #{(base_date + 15.days).to_fs(:es_short)})"
       end
 
       within '.modified-dates' do

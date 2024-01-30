@@ -207,7 +207,7 @@ class ChartDataValues
   end
 
   def format_subtitle_date(date)
-    date.to_s(:es_short)
+    date.to_fs(:es_short)
   end
 
   def translate_bill_component_series(series_key_as_string)

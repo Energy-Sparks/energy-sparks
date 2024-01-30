@@ -211,7 +211,7 @@ module AdvicePageHelper
   end
 
   def format_date_range(date_range)
-    date_range.map { |d| d.to_s(:es_short) }.join(' - ')
+    date_range.map { |d| d.to_fs(:es_short) }.join(' - ')
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers

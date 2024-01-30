@@ -36,7 +36,7 @@
           <% else %>
             <td colspan="6" class="text-center old-data">
               <% if variation.data_available_from.present? %>
-                <%= t('advice_pages.not_enough_data.table_row_data_available_from', date: variation.data_available_from.to_s(:es_short)) %>
+                <%= t('advice_pages.not_enough_data.table_row_data_available_from', date: variation.data_available_from.to_fs(:es_short)) %>
               <% else %>
                 <%= t('advice_pages.not_enough_data.table_row_not_enough') %>
               <% end %>

@@ -49,8 +49,8 @@ RSpec.describe 'electricity recent changes advice page', type: :system do
       end
 
       it 'shows start and end dates' do
-        expected_start_date = start_date.to_s(:es_full)
-        expected_end_date = end_date.to_s(:es_full)
+        expected_start_date = start_date.to_fs(:es_full)
+        expected_end_date = end_date.to_fs(:es_full)
         expect(page).to have_content("Electricity data is available from #{expected_start_date} to #{expected_end_date}")
       end
 
