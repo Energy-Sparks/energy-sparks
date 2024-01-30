@@ -71,10 +71,7 @@ module Schools
       end
 
       def peak_usage_calculation_service(date = asof_date)
-        ::Usage::PeakUsageCalculationService.new(
-          meter_collection: @meter_collection,
-          asof_date: date
-        )
+        Usage::PeakUsageCalculationService.new(meter_collection: @meter_collection, asof_date: date)
       end
     end
   end
