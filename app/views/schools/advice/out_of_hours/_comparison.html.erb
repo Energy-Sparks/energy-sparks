@@ -5,6 +5,8 @@
     <%= t("advice_pages.#{fuel_type}_out_of_hours.insights.comparison.how_do_you_compare", school_type: t('common.school_types.' + school.school_type).downcase) %>
   </p>
   <div class="col">
+    <%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.insights.comparison.callout_footer") %>
+    <%# i18n-tasks-use t("advice_pages.gas_out_of_hours.insights.comparison.callout_footer") %>
     <%= component 'school_comparison', id: "comparison-#{fuel_type}-out-of-hours", comparison: benchmarked_usage do |c| %>
       <% c.with_footer { advice_t("#{fuel_type}_out_of_hours.insights.comparison.callout_footer") } %>
     <% end %>
@@ -15,8 +17,12 @@
     </p>
   <% end %>
 <% else %>
+   <%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.insights.comparison.less_than_a_year_html") %>
+   <%# i18n-tasks-use t("advice_pages.gas_out_of_hours.insights.comparison.less_than_a_year_html") %>
    <%= t("advice_pages.#{fuel_type}_out_of_hours.insights.comparison.less_than_a_year_html", date: short_dates(analysis_dates.date_when_one_years_data)) %>
    <p>
-     <%= t('advice_pages.electricity_out_of_hours.insights.comparison.less_than_a_year_indicator_html', well_managed_percent: format_unit(well_managed_percent, :percent)) %>
+     <%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.insights.comparison.less_than_a_year_indicator_html") %>
+     <%# i18n-tasks-use t("advice_pages.gas_out_of_hours.insights.comparison.less_than_a_year_indicator_html") %>
+     <%= t("advice_pages.#{fuel_type}_out_of_hours.insights.comparison.less_than_a_year_indicator_html", well_managed_percent: format_unit(well_managed_percent, :percent)) %>
    </p>
 <% end %>
