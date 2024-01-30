@@ -1,0 +1,22 @@
+<%= render 'schools/advice/section_title', section_id: 'current', section_title: t("advice_pages.#{fuel_type}_out_of_hours.insights.comparison.title") %>
+
+<% if analysis_dates.one_years_data? %>
+  <p>
+    <%= t("advice_pages.#{fuel_type}_out_of_hours.insights.comparison.how_do_you_compare", school_type: t('common.school_types.' + school.school_type).downcase) %>
+  </p>
+  <div class="col">
+    <%= component 'school_comparison', id: "comparison-#{fuel_type}-out-of-hours", comparison: benchmarked_usage do |c| %>
+      <% c.with_footer { advice_t("#{fuel_type}_out_of_hours.insights.comparison.callout_footer") } %>
+    <% end %>
+  </div>
+  <% if school.school_group.present? %>
+    <p>
+      <%= t("advice_pages.#{fuel_type}_out_of_hours.insights.comparison.more_detail_html", link: compare_for_school_group_path("annual_#{fuel_type}_out_of_hours_use", school)) %>
+    </p>
+  <% end %>
+<% else %>
+   <%= t("advice_pages.#{fuel_type}_out_of_hours.insights.comparison.less_than_a_year_html", date: short_dates(analysis_dates.date_when_one_years_data)) %>
+   <p>
+     <%= t('advice_pages.electricity_out_of_hours.insights.comparison.less_than_a_year_indicator_html', well_managed_percent: format_unit(well_managed_percent, :percent)) %>
+   </p>
+<% end %>

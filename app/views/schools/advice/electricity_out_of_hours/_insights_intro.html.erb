@@ -1,0 +1,4 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.electricity_out_of_hours.insights.what_is_out_of_hours_usage_link'), learn_more_school_advice_electricity_out_of_hours_path(@school) } %>
+  <%= t('advice_pages.electricity_out_of_hours.insights.what_is_out_of_hours_usage_html') %>
+<% end %>
