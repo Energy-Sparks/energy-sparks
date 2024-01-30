@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :calendar do
-    title { "Test Calendar" }
+    title { 'Test Calendar' }
     calendar_type { :school }
 
     factory :template_calendar do
@@ -42,12 +42,12 @@ FactoryBot.define do
       end
     end
 
-    #Ensures there is a previous, current and upcoming AcademicYear
+    # Ensures there is a previous, current and upcoming AcademicYear
     trait :with_previous_and_next_academic_years do
       after(:create) do |calendar, _evaluator|
         today = Time.zone.today
-        #At the end of the year, school academic year started in previous year
-        #But otherwise, the previous academic year started 2 years ago
+        # At the end of the year, school academic year started in previous year
+        # But otherwise, the previous academic year started 2 years ago
         start_year = today.year - (today.month < 9 ? 2 : 1)
         end_year = today.year + 1
         (start_year..end_year).each do |year|

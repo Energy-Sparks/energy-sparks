@@ -4,7 +4,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @intervention_types = @intervention_types.includes(:intervention_type_group).order("intervention_types.name", :name)
+      @intervention_types = @intervention_types.includes(:intervention_type_group).order('intervention_types.name', :name)
     end
 
     def new
@@ -38,7 +38,7 @@ module Admin
 
     def update
       if @intervention_type.update(intervention_type_params)
-        #Rewrite links in Welsh text
+        # Rewrite links in Welsh text
         rewritten = @intervention_type.update(@intervention_type.rewrite_all)
         notice = rewritten ? 'Intervention type was successfully updated.' : 'Intervention type was saved, but failed to rewrite links.'
         redirect_to admin_intervention_types_path, notice: notice

@@ -6,12 +6,12 @@ module Targets
       @school_group = school_group
     end
 
-    #returns hash school => hash(fuel_type => results)
+    # returns hash school => hash(fuel_type => results)
     def report
       report = {}
       fuel_type_report = {
         enough_data: false,
-        recent_data: "N/A",
+        recent_data: 'N/A',
         success: false,
         progress: nil,
         error: nil
@@ -24,32 +24,32 @@ module Targets
         }
         begin
           school_target_service = Targets::SchoolTargetService.new(school)
-          #only test schools where we believe feature should work
+          # only test schools where we believe feature should work
           next unless school_target_service.enough_data?
 
-          #generate a default target unless we have one
+          # generate a default target unless we have one
           unless school.has_target?
             target = school_target_service.build_target
             target.save!
           end
 
-          #Create meter collection without hitting the application cache
+          # Create meter collection without hitting the application cache
           aggregate_school = Amr::AnalyticsMeterCollectionFactory.new(school).validated
           AggregateDataService.new(aggregate_school).aggregate_heat_and_electricity_meters
 
-          #Loop through each fuel type
+          # Loop through each fuel type
           # rubocop:disable Performance/CollectionLiteralInLoop
           [:electricity, :gas, :storage_heaters].each do |fuel_type|
             target_service = ::TargetsService.new(aggregate_school, fuel_type)
             begin
-              #If school has that fuel type and there's enough data
+              # If school has that fuel type and there's enough data
               if school.send("has_#{fuel_type}?".to_sym) && target_service.meter_present? && target_service.enough_data_to_set_target?
-                #record we have enough data
+                # record we have enough data
                 report[school][fuel_type][:enough_data] = true
                 report[school][fuel_type][:recent_data] = target_service.recent_data?
-                #request the latest cumulative performance
+                # request the latest cumulative performance
                 progress = target_service.progress.current_cumulative_performance
-                #record success and figure
+                # record success and figure
                 report[school][fuel_type].merge!(success: true, progress: progress)
               end
             rescue => e

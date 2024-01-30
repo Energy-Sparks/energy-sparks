@@ -98,9 +98,9 @@ class Observation < ApplicationRecord
 
   def description_includes_images?
     if intervention?
-      description&.body&.to_trix_html&.include?("figure")
+      description&.body&.to_trix_html&.include?('figure')
     elsif activity?
-      description&.body&.to_trix_html&.include?("figure") || activity.description_includes_images?
+      description&.body&.to_trix_html&.include?('figure') || activity.description_includes_images?
     end
   end
 

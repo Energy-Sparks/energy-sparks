@@ -1,7 +1,7 @@
 Geocoder.configure(lookup: :test, ip_lookup: :test)
 
 Geocoder::Lookup::Test.add_stub(
-  "EH99 1SP", [
+  'EH99 1SP', [
     {
       'coordinates'  => [55.952221, -3.174625],
       'country'      => 'scotland',
@@ -13,7 +13,7 @@ Geocoder::Lookup::Test.add_stub(
 )
 
 Geocoder::Lookup::Test.add_stub(
-  "AB1 2CD", [
+  'AB1 2CD', [
     {
       'coordinates'  => [55.952221, -3.174625],
       'country'      => 'england',
@@ -25,7 +25,7 @@ Geocoder::Lookup::Test.add_stub(
 )
 
 Geocoder::Lookup::Test.add_stub(
-  "OL84JZ", [
+  'OL84JZ', [
     {
       'coordinates'  => [55.952221, -3.174625],
       'country'      => 'england',
@@ -37,7 +37,7 @@ Geocoder::Lookup::Test.add_stub(
 )
 
 Geocoder::Lookup::Test.add_stub(
-  "OL8 4JZ", [
+  'OL8 4JZ', [
     {
       'coordinates'  => [55.952221, -3.174625],
       'country'      => 'england',

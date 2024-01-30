@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "DCC consents", type: :system do
+RSpec.describe 'DCC consents', type: :system do
   let(:school_name) { 'Oldfield Park Infants'}
   let!(:school_group) { create(:school_group)}
   let!(:school)       { create(:school, name: school_name, school_group: school_group)}

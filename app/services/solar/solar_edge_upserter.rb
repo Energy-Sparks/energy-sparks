@@ -34,8 +34,8 @@ module Solar
 
     private
 
-    #manually created meters may not be associated with the installation, update
-    #if not
+    # manually created meters may not be associated with the installation, update
+    # if not
     def update_existing_meter_if_needed(meter)
       if !meter.pseudo? || meter.solar_edge_installation.nil?
         meter.update!(

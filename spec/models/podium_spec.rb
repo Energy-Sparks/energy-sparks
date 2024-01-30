@@ -44,7 +44,7 @@ describe Podium do
   context 'when the school has no points' do
     let(:podium) { Podium.create(scoreboard: scoreboard, school: school_0) }
 
-    context "activities_2023 feature flag is on" do
+    context 'activities_2023 feature flag is on' do
       let(:activities_2023_feature) { true }
 
       it 'has a position for the school' do
@@ -55,7 +55,7 @@ describe Podium do
         expect(podium.school_has_points?).to eq(false)
       end
 
-      it "the first school is the school with no points" do
+      it 'the first school is the school with no points' do
         expect(podium.high_to_low[2].school).to eq(school_0)
       end
 
@@ -69,7 +69,7 @@ describe Podium do
       end
     end
 
-    context "activities_2023 feature flag is off" do
+    context 'activities_2023 feature flag is off' do
       let(:activities_2023_feature) { false }
 
       it 'does not have a position for the school' do

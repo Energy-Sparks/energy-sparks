@@ -12,17 +12,17 @@ RSpec.describe DataSource, type: :model do
     it { is_expected.to define_enum_for(:organisation_type).with_values([:energy_supplier, :procurement_organisation, :meter_operator, :council, :solar_monitoring_provider]) }
   end
 
-  describe ".to_csv" do
+  describe '.to_csv' do
     let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
 
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues" }
+    let(:header) { 'School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
 
     before { Timecop.freeze }
     after { Timecop.return }
 
-    context "with meters" do
-      let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
+    context 'with meters' do
+      let(:admin_meter_status) { AdminMeterStatus.create(label: 'On Data Feed') }
       let!(:meters) do
         [
           create(:gas_meter, data_source: data_source, school: create(:school, active: true), admin_meter_status: admin_meter_status, created_at: 3.seconds.ago),
@@ -69,7 +69,7 @@ RSpec.describe DataSource, type: :model do
       end
     end
 
-    context "with meters for other data source" do
+    context 'with meters for other data source' do
       let!(:meters) do
         create_list(:gas_meter, 2)
       end
@@ -77,7 +77,7 @@ RSpec.describe DataSource, type: :model do
       it { expect(subject.lines.count).to eq(1) }
     end
 
-    context "with no meters" do
+    context 'with no meters' do
       it { expect(subject.lines.count).to eq(1) }
       it { expect(subject.lines.first.chomp).to eq(header) }
     end

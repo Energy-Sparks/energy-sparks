@@ -1,15 +1,15 @@
 require 'rails_helper'
 require 'dashboard'
 
-RSpec.describe "Solar edge installation management", :solar_edge_installations, type: :system do
+RSpec.describe 'Solar edge installation management', :solar_edge_installations, type: :system do
   let!(:admin)  { create(:admin) }
   let!(:school) { create(:school) }
 
   let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :solar_edge_api) }
 
-  let!(:mpan) { "123456789" }
-  let!(:site_id) { "9999" }
-  let!(:api_key) { "api_key" }
+  let!(:mpan) { '123456789' }
+  let!(:site_id) { '9999' }
+  let!(:api_key) { 'api_key' }
 
   context 'as an admin' do
     before do
@@ -27,19 +27,19 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
       end
 
       it 'has no installation by default' do
-        expect(page).to have_content("This school has no Solar Edge sites")
+        expect(page).to have_content('This school has no Solar Edge sites')
       end
 
       it 'allows an installation to be added' do
         click_on 'New Solar Edge API feed'
-        expect(page).to have_content("Add a new Solar Edge Site")
+        expect(page).to have_content('Add a new Solar Edge Site')
 
         fill_in(:solar_edge_installation_mpan, with: mpan)
         fill_in(:solar_edge_installation_site_id, with: site_id)
         fill_in(:solar_edge_installation_api_key, with: api_key)
 
         expect { click_on 'Submit'}.to change(SolarEdgeInstallation, :count).by(1)
-        expect(page).to have_content("Solar Edge installation was successfully created")
+        expect(page).to have_content('Solar Edge installation was successfully created')
 
         expect(page).to have_content(mpan)
         expect(page).to have_content(site_id)
@@ -61,13 +61,13 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
       end
 
       it 'displays the feed config' do
-        expect(page).not_to have_content("This school has no Solar Edge sites")
+        expect(page).not_to have_content('This school has no Solar Edge sites')
         expect(page).to have_content(installation.site_id)
       end
 
       it 'allows editing' do
         click_on 'Edit'
-        expect(page).to have_content("Update SolarEdge Site")
+        expect(page).to have_content('Update SolarEdge Site')
 
         expect(find('#solar_edge_installation_mpan').disabled?).to be true
         expect(find('#solar_edge_installation_site_id').disabled?).to be true
@@ -75,7 +75,7 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
         fill_in(:solar_edge_installation_api_key, with: new_api_key)
         click_on 'Submit'
 
-        expect(page).to have_content("Solar Edge API feed was updated")
+        expect(page).to have_content('Solar Edge API feed was updated')
         expect(page).to have_content(new_api_key)
         expect(SolarEdgeInstallation.first.api_key).to eql new_api_key
       end
@@ -86,9 +86,9 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
 
       it 'allows viewing' do
         click_on(installation.mpan)
-        expect(page).to have_content("site_details")
-        expect(page).to have_content("dates")
-        expect(page).to have_link("Data Period")
+        expect(page).to have_content('site_details')
+        expect(page).to have_content('dates')
+        expect(page).to have_link('Data Period')
       end
 
       it 'displays the check button with a question mark by default' do
@@ -128,14 +128,14 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
 
       context 'when submitting a loading job' do
         before do
-          #do nothing
+          # do nothing
           allow(Solar::SolarEdgeLoaderJob).to receive(:perform_later).and_return(true)
         end
 
         it 'submits the job' do
-          #...but check the method is called
+          # ...but check the method is called
           expect(Solar::SolarEdgeLoaderJob).to receive(:perform_later).with(installation: installation, notify_email: admin.email)
-          expect(page).to have_content("Run Loader")
+          expect(page).to have_content('Run Loader')
           find("#solar-edge-#{installation.id}-run-load").click
           expect(page).to have_content("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
         end

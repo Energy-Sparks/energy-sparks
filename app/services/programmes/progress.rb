@@ -29,7 +29,7 @@ module Programmes
     end
 
     def notification
-      (message + "<br />" + summary).html_safe
+      (message + '<br />' + summary).html_safe
     end
 
     def activity_types_total_scores

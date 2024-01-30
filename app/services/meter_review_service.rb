@@ -28,7 +28,7 @@ class MeterReviewService
   private
 
   def check_meters!(meters)
-    raise MeterReviewError.new("You must select at least one meter") if meters.empty?
+    raise MeterReviewError.new('You must select at least one meter') if meters.empty?
     meters.each do |meter|
       raise MeterReviewError.new("#{meter.mpan_mprn} is not a DCC meter") unless meter.dcc_meter?
       raise MeterReviewError.new("#{meter.mpan_mprn} not found in DCC api") unless is_meter_known_to_n3rgy?(meter)

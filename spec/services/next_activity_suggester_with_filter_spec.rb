@@ -12,8 +12,8 @@ describe NextActivitySuggesterWithFilter do
 
   let!(:maths) { Subject.create(name: 'Maths') }
 
-  #school key stages should be ignored now, filtering will only look at any
-  #existing activities
+  # school key stages should be ignored now, filtering will only look at any
+  # existing activities
   let!(:school) { create :school, key_stages: [ks1, ks3], calendar: calendar }
 
   let(:activity_type_filter) { ActivityTypeFilter.new(school: school)}
@@ -21,28 +21,28 @@ describe NextActivitySuggesterWithFilter do
   subject { NextActivitySuggesterWithFilter.new(school, activity_type_filter) }
 
   describe '.suggest_from_activity_history' do
-    context "school has no activities and there are no initial suggestions rely on top up" do
+    context 'school has no activities and there are no initial suggestions rely on top up' do
       let!(:activity_types_for_ks1_ks2) { create_list(:activity_type, 3, key_stages: [ks1, ks2])}
       let!(:activity_types_for_ks2)     { create_list(:activity_type, 3, key_stages: [ks2])}
 
       let(:no_activity_types_set_or_initial_expected) { activity_types_for_ks1_ks2 + activity_types_for_ks2 }
 
-      it "suggests a random sample" do
-        #suggestions are just the 6 activities in the system, as there are no activities recorded
-        #for this school, or any "initial" activities in the database
+      it 'suggests a random sample' do
+        # suggestions are just the 6 activities in the system, as there are no activities recorded
+        # for this school, or any "initial" activities in the database
         expect(subject.suggest_from_activity_history).to match_array(no_activity_types_set_or_initial_expected)
       end
     end
 
-    context "school has no activities and there are initial suggestions" do
+    context 'school has no activities and there are initial suggestions' do
       let!(:activity_types_with_suggestions_for_ks1_ks2) { create_list(:activity_type, 3, :as_initial_suggestions, key_stages: [ks1, ks2])}
       let!(:activity_types_with_suggestions_for_ks2)     { create_list(:activity_type, 3, :as_initial_suggestions, key_stages: [ks2])}
       let!(:activity_types_with_suggestions_for_ks3)     { create_list(:activity_type, 2, :as_initial_suggestions, key_stages: [ks3], subjects: [maths])}
 
       let(:activity_types_with_suggestions) { activity_types_with_suggestions_for_ks1_ks2 + activity_types_with_suggestions_for_ks2 + activity_types_with_suggestions_for_ks3 }
 
-      it "suggests the initial suggestions, ignoring school key stages" do
-       expect(subject.suggest_from_activity_history).to match_array(activity_types_with_suggestions)
+      it 'suggests the initial suggestions, ignoring school key stages' do
+        expect(subject.suggest_from_activity_history).to match_array(activity_types_with_suggestions)
       end
 
       context 'where the filter restricts the available activities' do
@@ -54,16 +54,16 @@ describe NextActivitySuggesterWithFilter do
       end
     end
 
-    context "with suggestions based on last activity type" do
+    context 'with suggestions based on last activity type' do
       let!(:activity_type_with_further_suggestions) { create :activity_type, :with_further_suggestions, number_of_suggestions: 6, key_stages: [ks1, ks3]}
       let!(:last_activity) { create :activity, school: school, activity_type: activity_type_with_further_suggestions }
 
-      it "suggests the six follow ons from original" do
+      it 'suggests the six follow ons from original' do
         expect(subject.suggest_from_activity_history).to match_array(activity_type_with_further_suggestions.suggested_types)
       end
     end
 
-    context "with suggestions based on last activity type" do
+    context 'with suggestions based on last activity type' do
       # ensure there are enough suggestions that we don't need to pick random extras, once we've excluded activities done this year..
       let!(:number_of_suggestions) { NextActivitySuggesterWithFilter::NUMBER_OF_SUGGESTIONS + 1 }
       let!(:activity_type_with_further_suggestions) { create :activity_type, :with_further_suggestions, number_of_suggestions: number_of_suggestions, key_stages: [ks1, ks3]}
@@ -155,7 +155,7 @@ describe NextActivitySuggesterWithFilter do
   end
 
   describe '.suggest_for_school_targets' do
-    #3 in programme
+    # 3 in programme
     let!(:programme_type) { create :programme_type_with_activity_types }
     let!(:programme)      { Programmes::Creator.new(school, programme_type).create }
     let(:activity_types)  { programme_type.activity_types }
@@ -174,7 +174,7 @@ describe NextActivitySuggesterWithFilter do
   end
 
   describe '.suggest_from_audits' do
-    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: 'Our audit', description: 'Description of the audit', school: school) }
 
     it 'suggests from an audit' do
       suggestions = subject.suggest_from_audits

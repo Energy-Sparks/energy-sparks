@@ -35,7 +35,7 @@
 class EnergyTariff < ApplicationRecord
   belongs_to :tariff_holder, polymorphic: true
 
-  #Declaring associations allows us to use .joins(:school) or .joins(:school_group)
+  # Declaring associations allows us to use .joins(:school) or .joins(:school_group)
   belongs_to :school, -> { where(energy_tariffs: { tariff_holder_type: 'School' }) }, foreign_key: 'tariff_holder_id', optional: true
   belongs_to :school_group, -> { where(energy_tariffs: { tariff_holder_type: 'SchoolGroup' }) }, foreign_key: 'tariff_holder_id', optional: true
 
@@ -44,7 +44,7 @@ class EnergyTariff < ApplicationRecord
   has_many :energy_tariff_prices, inverse_of: :energy_tariff, dependent: :destroy
   has_many :energy_tariff_charges, inverse_of: :energy_tariff, dependent: :destroy
 
-  #only populated if tariff_holder is school
+  # only populated if tariff_holder is school
   has_and_belongs_to_many :meters, inverse_of: :energy_tariffs
 
   belongs_to :created_by, optional: true, class_name: 'User'
@@ -74,9 +74,9 @@ class EnergyTariff < ApplicationRecord
   scope :by_name,       -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
 
-  #Sorts with null start date first, then start date, then end date
+  # Sorts with null start date first, then start date, then end date
   scope :by_start_and_end, -> {
-    order(Arel.sql("(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) ASC, start_date asc, end_date asc"))
+    order(Arel.sql('(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) ASC, start_date asc, end_date asc'))
   }
 
   scope :count_by_school_group, -> { enabled.joins(:school_group).group(:slug).count(:id) }
@@ -144,8 +144,8 @@ class EnergyTariff < ApplicationRecord
     tariff_holder.site_settings? || tariff_holder.school_group? || meters.empty?
   end
 
-  #Used to the show page to decide whether there's content for the standing
-  #charge section which groups these together
+  # Used to the show page to decide whether there's content for the standing
+  # charge section which groups these together
   def has_any_standing_charges?
     energy_tariff_charges.any? || tnuos? || vat_rate.present? || ccl?
   end
@@ -204,7 +204,7 @@ class EnergyTariff < ApplicationRecord
     energy_tariff_charges.select { |c| c.units.present? }.each do |charge|
       charge_value = { rate: charge.value.to_s, per: charge.units.to_s }
       charge_type = charge.charge_type.to_sym
-      #only add these charges if we also have an asc limit
+      # only add these charges if we also have an asc limit
       if charge.is_type?([:agreed_availability_charge, :excess_availability_charge])
         attrs[charge_type] = charge_value if value_for_charge(:asc_limit_kw).present?
       else

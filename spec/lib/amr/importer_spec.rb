@@ -13,7 +13,7 @@ describe Amr::Importer do
 
   let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
 
-  #responses from AWS API to stub out network calls in client
+  # responses from AWS API to stub out network calls in client
   let(:list_of_objects) { { contents: [{ key: key, size: 100 }, { key: thing_prefix.to_s, size: 0 }] } }
   let(:object_data) { { key => { body: 'meter-readings!' } } }
 

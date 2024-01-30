@@ -2,13 +2,13 @@ module NavHelper
   def navbar_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image_tag("nav-brand-transparent-#{I18n.locale}.png", class: "d-inline-block align-top")
+      image_tag("nav-brand-transparent-#{I18n.locale}.png", class: 'd-inline-block align-top')
     end
   end
 
   def on_test_link
     if on_test?
-      link_to 'Test', "/", class: 'nav-item px-1'
+      link_to 'Test', '/', class: 'nav-item px-1'
     end
   end
 
@@ -22,8 +22,8 @@ module NavHelper
   end
 
   def locale_switcher_buttons
-    return "" unless EnergySparks::FeatureFlags.active?(:locale_switcher_buttons)
-    li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: "nav-item pl-3 pr-3 nav-lozenge my-3px") }
+    return '' unless EnergySparks::FeatureFlags.active?(:locale_switcher_buttons)
+    li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: 'nav-item pl-3 pr-3 nav-lozenge my-3px') }
     tag.ul(safe_join(li_tags), class: 'navbar-nav navbar-expand')
   end
 

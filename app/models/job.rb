@@ -14,33 +14,33 @@ class Job < ApplicationRecord
   has_rich_text :description
   validates :title, :file, presence: true
 
-  scope :current_jobs, -> { where(closing_date: nil).or(where("closing_date >= ?", Time.zone.today)) }
+  scope :current_jobs, -> { where(closing_date: nil).or(where('closing_date >= ?', Time.zone.today)) }
   scope :by_created_date, -> { order(created_at: :asc) }
 
   def to_job_posting
     {
-      "@context" => "https://schema.org/",
-      "@type" => "JobPosting",
-      "title" => title,
-      "description" => description.to_s,
+      '@context' => 'https://schema.org/',
+      '@type' => 'JobPosting',
+      'title' => title,
+      'description' => description.to_s,
       "identifier": {
-        "@type" => "PropertyValue",
-        "name" => "Energy Sparks",
-        "value" => id
+        '@type' => 'PropertyValue',
+        'name' => 'Energy Sparks',
+        'value' => id
       },
-      "datePosted" => created_at.strftime("%Y-%m-%d"),
-      "validThrough" => closing_date.present? ? closing_date.strftime("%Y-%m-%d") : "",
-      "hiringOrganization" => {
-        "@type" => "Organization",
-        "name" => "Energy Sparks",
-        "sameAs" => "https://energysparks.uk",
+      'datePosted' => created_at.strftime('%Y-%m-%d'),
+      'validThrough' => closing_date.present? ? closing_date.strftime('%Y-%m-%d') : '',
+      'hiringOrganization' => {
+        '@type' => 'Organization',
+        'name' => 'Energy Sparks',
+        'sameAs' => 'https://energysparks.uk',
       },
-      "applicantLocationRequirements" => {
-        "@type" => "Country",
-        "name" => "UK"
+      'applicantLocationRequirements' => {
+        '@type' => 'Country',
+        'name' => 'UK'
       },
-      "jobLocationType" => "TELECOMMUTE",
-      "employmentType" => voluntary ? "VOLUNTEER" : "OTHER"
+      'jobLocationType' => 'TELECOMMUTE',
+      'employmentType' => voluntary ? 'VOLUNTEER' : 'OTHER'
     }
   end
 end

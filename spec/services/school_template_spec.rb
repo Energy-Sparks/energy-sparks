@@ -5,7 +5,7 @@ describe SchoolTemplate do
     school = double :school, to_param: 'school-slug'
 
     template = SchoolTemplate.new(school)
-    rendered = template.render("{{#chart}}daily_electricity_breakdown{{/chart}}", {})
+    rendered = template.render('{{#chart}}daily_electricity_breakdown{{/chart}}', {})
     expect(rendered).to include('id="chart_daily_electricity_breakdown"')
   end
 
@@ -13,7 +13,7 @@ describe SchoolTemplate do
     school = double :school, to_param: 'school-slug'
 
     template = SchoolTemplate.new(school)
-    rendered = template.render("{{#chart}}daily_electricity_breakdown{{/chart}}", {})
+    rendered = template.render('{{#chart}}daily_electricity_breakdown{{/chart}}', {})
     expect(rendered).to include('&quot;£&quot;')
   end
 
@@ -21,7 +21,7 @@ describe SchoolTemplate do
     school = double :school, to_param: 'school-slug'
 
     template = SchoolTemplate.new(school)
-    rendered = template.render("{{#chart}}daily_electricity_breakdown|kwh{{/chart}}", {})
+    rendered = template.render('{{#chart}}daily_electricity_breakdown|kwh{{/chart}}', {})
     expect(rendered).to include('&quot;kwh&quot;')
     expect(rendered).not_to include('&quot;£&quot;')
   end
@@ -30,7 +30,7 @@ describe SchoolTemplate do
     school = double :school, to_param: 'school-slug'
 
     template = SchoolTemplate.new(school)
-    rendered = template.render("{{#chart}}daily_electricity_breakdown|kwh{{/chart}}", {})
+    rendered = template.render('{{#chart}}daily_electricity_breakdown|kwh{{/chart}}', {})
     expect(rendered).to include('Change units')
     expect(rendered).to include('Explore')
   end

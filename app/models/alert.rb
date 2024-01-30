@@ -60,7 +60,7 @@ class Alert < ApplicationRecord
 
   scope :by_type, -> { joins(:alert_type).order('alert_types.title') }
 
-  scope :rating_between, ->(from, to) { where("rating BETWEEN ? AND ?", from, to) }
+  scope :rating_between, ->(from, to) { where('rating BETWEEN ? AND ?', from, to) }
 
   enum enough_data: [:enough, :not_enough, :minimum_might_not_be_accurate], _prefix: :data
   enum relevance: [:relevant, :not_relevant, :never_relevant], _prefix: :relevance

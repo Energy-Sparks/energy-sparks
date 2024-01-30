@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "electricity costs advice page", type: :system do
+RSpec.describe 'electricity costs advice page', type: :system do
   let(:key) { 'electricity_costs' }
-  let(:expected_page_title) { "Electricity cost analysis" }
+  let(:expected_page_title) { 'Electricity cost analysis' }
 
-  include_context "electricity advice page"
+  include_context 'electricity advice page'
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
@@ -29,7 +29,7 @@ RSpec.describe "electricity costs advice page", type: :system do
     end
 
     before do
-      allow(electricity_aggregate_meter).to receive(:mpan_mprn).and_return("999999")
+      allow(electricity_aggregate_meter).to receive(:mpan_mprn).and_return('999999')
       allow(electricity_aggregate_meter).to receive(:original_meter).and_return(electricity_aggregate_meter)
 
       allow_any_instance_of(Schools::Advice::CostsService).to receive_messages(
@@ -45,19 +45,19 @@ RSpec.describe "electricity costs advice page", type: :system do
       visit school_advice_electricity_costs_path(school)
     end
 
-    it_behaves_like "an advice page tab", tab: "Insights"
+    it_behaves_like 'an advice page tab', tab: 'Insights'
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'has the intro' do
-        expect(page).to have_content("Your electricity bill is broken down into a variety of different charges")
+        expect(page).to have_content('Your electricity bill is broken down into a variety of different charges')
       end
 
       it 'displays a brief summary of total cost' do
-        expect(page).to have_content("We estimate your total electricity cost over the last 12 months to be £1,000")
+        expect(page).to have_content('We estimate your total electricity cost over the last 12 months to be £1,000')
       end
 
       context 'and incomplete tariffs' do
@@ -71,7 +71,7 @@ RSpec.describe "electricity costs advice page", type: :system do
 
         it 'does not display warning about incomplete tariffs' do
           expect(page).not_to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
-          expect(page).to have_content("The information below provides a good estimate of your annual costs")
+          expect(page).to have_content('The information below provides a good estimate of your annual costs')
         end
       end
     end
@@ -79,12 +79,12 @@ RSpec.describe "electricity costs advice page", type: :system do
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       context 'with single meter' do
         it 'displays a brief summary of total cost' do
           expect(page).not_to have_content(I18n.t('advice_pages.electricity_costs.analysis.cost_breakdown_by_meter.title'))
-          expect(page).to have_content("We estimate your total electricity cost over the last 12 months to be £1,000")
+          expect(page).to have_content('We estimate your total electricity cost over the last 12 months to be £1,000')
         end
 
         context 'and incomplete tariffs' do
@@ -98,7 +98,7 @@ RSpec.describe "electricity costs advice page", type: :system do
 
           it 'does not display warning about incomplete tariffs' do
             expect(page).not_to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
-            expect(page).to have_content("The information below provides a good estimate of your annual costs")
+            expect(page).to have_content('The information below provides a good estimate of your annual costs')
           end
         end
 
@@ -118,11 +118,11 @@ RSpec.describe "electricity costs advice page", type: :system do
         end
 
         it 'does not display a brief summary of total cost' do
-          expect(page).not_to have_content("We estimate your total electricity cost over the last 12 months to be £1,000")
+          expect(page).not_to have_content('We estimate your total electricity cost over the last 12 months to be £1,000')
         end
 
         it 'displays table' do
-          expect(page).to have_content("Total cost for the last 12 months")
+          expect(page).to have_content('Total cost for the last 12 months')
           expect(page).to have_content('Whole school')
         end
       end
@@ -131,7 +131,7 @@ RSpec.describe "electricity costs advice page", type: :system do
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
 
-      it_behaves_like "an advice page tab", tab: "Learn More"
+      it_behaves_like 'an advice page tab', tab: 'Learn More'
     end
   end
 end

@@ -12,22 +12,22 @@ RSpec.describe SchoolsController, type: :controller do
     { name: nil }
   end
 
-  describe "GET #index" do
-    it "assigns schools that are visible but not grouped as @ungrouped_visible_schools" do
+  describe 'GET #index' do
+    it 'assigns schools that are visible but not grouped as @ungrouped_visible_schools' do
       school = FactoryBot.create :school, visible: true
       get :index, params: {}
       expect(assigns(:ungrouped_visible_schools)).to eq([school])
     end
 
-    it "assigns not visible schools as @schools_not_visible" do
+    it 'assigns not visible schools as @schools_not_visible' do
       school = FactoryBot.create :school, visible: false
       get :index, params: {}
       expect(assigns(:schools_not_visible)).to eq([school])
     end
   end
 
-  describe "GET #show" do
-    it "shows the adult dashboard" do
+  describe 'GET #show' do
+    it 'shows the adult dashboard' do
       school = FactoryBot.create :school
       get :show, params: { id: school.to_param }
       expect(assigns(:school)).to eq(school)
@@ -35,40 +35,40 @@ RSpec.describe SchoolsController, type: :controller do
     end
   end
 
-  context "As an admin user" do
+  context 'As an admin user' do
     before do
       sign_in_user(:admin)
     end
 
 
-    describe "GET #edit" do
-      it "assigns the requested school as @school" do
+    describe 'GET #edit' do
+      it 'assigns the requested school as @school' do
         school = FactoryBot.create :school
         get :edit, params: { id: school.to_param }
         expect(assigns(:school)).to eq(school)
       end
     end
 
-    describe "PUT #update" do
-      context "with valid params" do
+    describe 'PUT #update' do
+      context 'with valid params' do
         let(:new_attributes) do
           { name: 'new name' }
         end
 
-        it "updates the requested school" do
+        it 'updates the requested school' do
           school = FactoryBot.create :school
           put :update, params: { id: school.to_param, school: new_attributes }
           school.reload
           expect(school.name).to eq new_attributes[:name]
         end
 
-        it "assigns the requested school as @school" do
+        it 'assigns the requested school as @school' do
           school = FactoryBot.create :school
           put :update, params: { id: school.to_param, school: valid_attributes }
           expect(assigns(:school)).to eq(school)
         end
 
-        it "redirects to the school" do
+        it 'redirects to the school' do
           school = create(:school_with_same_name)
           put :update, params: { id: school.to_param, school: valid_attributes }
           school.reload
@@ -76,8 +76,8 @@ RSpec.describe SchoolsController, type: :controller do
         end
       end
 
-      context "with invalid params" do
-        it "assigns the school as @school" do
+      context 'with invalid params' do
+        it 'assigns the school as @school' do
           school = FactoryBot.create :school
           put :update, params: { id: school.to_param, school: invalid_attributes }
           expect(assigns(:school)).to eq(school)
@@ -86,20 +86,20 @@ RSpec.describe SchoolsController, type: :controller do
         it "re-renders the 'edit' template" do
           school = FactoryBot.create :school
           put :update, params: { id: school.to_param, school: invalid_attributes }
-          expect(response).to render_template("edit")
+          expect(response).to render_template('edit')
         end
       end
     end
 
-    describe "DELETE #destroy" do
-      it "destroys the requested school" do
+    describe 'DELETE #destroy' do
+      it 'destroys the requested school' do
         school = FactoryBot.create :school
         expect do
           delete :destroy, params: { id: school.to_param }
         end.to change(School, :count).by(-1)
       end
 
-      it "redirects to the schools list" do
+      it 'redirects to the schools list' do
         school = FactoryBot.create :school
         delete :destroy, params: { id: school.to_param }
         expect(response).to redirect_to(schools_url)

@@ -23,7 +23,7 @@ describe 'Newsletter managment', type: :system do
       click_on 'Create Newsletter'
       expect(page).to have_content('blank')
       fill_in 'Url', with: url
-      attach_file("Image", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
+      attach_file('Image', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
       click_on 'Create Newsletter'
       expect(page).to have_content url
 

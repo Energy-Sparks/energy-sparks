@@ -45,6 +45,6 @@ class ProcurementRoute < ApplicationRecord
   private
 
   def csv_headers
-    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "Half-Hourly", "First validated meter reading", "Last validated meter reading", "Admin Meter Status", "Data Source", "Open issues count", "Open issues"]
+    ['School group', 'School', 'MPAN/MPRN', 'Meter type', 'Active', 'Half-Hourly', 'First validated meter reading', 'Last validated meter reading', 'Admin Meter Status', 'Data Source', 'Open issues count', 'Open issues']
   end
 end

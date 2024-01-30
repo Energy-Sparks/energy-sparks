@@ -113,9 +113,9 @@ module Schools
         true
       end
 
-      #Checks that the analysis can be run.
-      #Enforces check that school has the necessary fuel type
-      #and provides hook for controllers to plug in custom checks
+      # Checks that the analysis can be run.
+      # Enforces check that school has the necessary fuel type
+      # and provides hook for controllers to plug in custom checks
       def check_can_run_analysis
         @analysable = create_analysable
         if @analysable.present? && !@analysable.enough_data?
@@ -146,13 +146,13 @@ module Schools
         aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.end_date
       end
 
-      #for charts that use the last full week
+      # for charts that use the last full week
       def last_full_week_start_date(end_date)
         end_date.prev_year.end_of_week
       end
 
-      #for charts that use the last full week
-      #end of the week is Saturday
+      # for charts that use the last full week
+      # end of the week is Saturday
       def last_full_week_end_date(end_date)
         end_date.end_of_week - 1
       end
@@ -174,10 +174,10 @@ module Schools
         )
       end
 
-      #Should return an object that conforms to interface described
-      #by the AnalysableMixin. Will be used to determine whether
-      #there's enough data and, optionally, identify when we think there
-      #will be enough data.
+      # Should return an object that conforms to interface described
+      # by the AnalysableMixin. Will be used to determine whether
+      # there's enough data and, optionally, identify when we think there
+      # will be enough data.
       def create_analysable
         nil
       end

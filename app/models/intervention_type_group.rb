@@ -24,7 +24,7 @@ class InterventionTypeGroup < ApplicationRecord
   scope :by_name, -> { i18n.order(name: :asc) }
   scope :active,  -> { where(active: true) }
 
-  #override default name for this resource in transifex
+  # override default name for this resource in transifex
   def tx_name
     name
   end

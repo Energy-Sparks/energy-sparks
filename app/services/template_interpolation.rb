@@ -17,7 +17,7 @@ class TemplateInterpolation
       collection
     end
     templated = fields.inject(with_proxied_objects) do |collection, field|
-      template = @object.send(field) || ""
+      template = @object.send(field) || ''
       collection[field] = case template
                           when ActionText::RichText, Mobility::Backends::ActionText::RichTextTranslation
                             process_rich_text_template(template, with)

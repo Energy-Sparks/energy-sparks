@@ -24,12 +24,12 @@ module Solar
 
     protected
 
-    #implement this in the subclass
+    # implement this in the subclass
     def download_and_upsert
       nil
     end
 
-    #provide a more meaningful job name for logging in subclass
+    # provide a more meaningful job name for logging in subclass
     def job
       :solar_download
     end

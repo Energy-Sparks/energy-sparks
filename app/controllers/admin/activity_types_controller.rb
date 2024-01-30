@@ -8,7 +8,7 @@ module Admin
 
     def index
       @activity_categories = ActivityCategory.by_name
-      @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
+      @activity_types = @activity_types.includes(:activity_category).order('activity_categories.name', :name)
     end
 
     def show
@@ -47,7 +47,7 @@ module Admin
 
     def update
       if @activity_type.update(activity_type_params)
-        #Rewrite links in Welsh text
+        # Rewrite links in Welsh text
         rewritten = @activity_type.update(@activity_type.rewrite_all)
         notice = rewritten ? 'Activity type was successfully updated.' : 'Activity type was saved, but failed to rewrite links.'
         redirect_to admin_activity_types_path, notice: notice

@@ -70,11 +70,11 @@ module Pupils
 
     def default_equivalences
       [
-        { measure: I18n.t("pupils.default_equivalences.equivalence_1.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_1.equivalence"), image_name: "kettle" },
-        { measure: I18n.t("pupils.default_equivalences.equivalence_2.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_2.equivalence"), image_name: "onshore_wind_turbine" },
-        { measure: I18n.t("pupils.default_equivalences.equivalence_3.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_3.equivalence"), image_name: "tree" },
-        { measure: I18n.t("pupils.default_equivalences.equivalence_4.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_4.equivalence"), image_name: "meal" },
-        { measure: I18n.t("pupils.default_equivalences.equivalence_5.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_5.equivalence"), image_name: "house" }
+        { measure: I18n.t('pupils.default_equivalences.equivalence_1.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_1.equivalence'), image_name: 'kettle' },
+        { measure: I18n.t('pupils.default_equivalences.equivalence_2.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_2.equivalence'), image_name: 'onshore_wind_turbine' },
+        { measure: I18n.t('pupils.default_equivalences.equivalence_3.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_3.equivalence'), image_name: 'tree' },
+        { measure: I18n.t('pupils.default_equivalences.equivalence_4.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_4.equivalence'), image_name: 'meal' },
+        { measure: I18n.t('pupils.default_equivalences.equivalence_5.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_5.equivalence'), image_name: 'house' }
       ]
     end
   end

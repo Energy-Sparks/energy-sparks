@@ -57,7 +57,7 @@ class EstimatedAnnualConsumption < ApplicationRecord
 
   def must_have_one_estimate
     if electricity.blank? && gas.blank? && storage_heaters.blank?
-      errors.add :base, "At least one estimate must be provided"
+      errors.add :base, 'At least one estimate must be provided'
     end
   end
 end

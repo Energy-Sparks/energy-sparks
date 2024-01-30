@@ -49,7 +49,7 @@ describe 'Pupil dashboard' do
     it 'redirects to pupil dashboard' do
       visit root_path
       expect(page).to have_content(school.name.to_s)
-      expect(page).to have_title("Pupil dashboard")
+      expect(page).to have_title('Pupil dashboard')
     end
 
     it 'shows equivalences' do
@@ -63,11 +63,11 @@ describe 'Pupil dashboard' do
 
     it 'has navigation to adult dashboard' do
       expect(page).to have_content(school.name.to_s)
-      expect(page).to have_link("Adult dashboard", href: school_path(school, switch: true))
+      expect(page).to have_link('Adult dashboard', href: school_path(school, switch: true))
       click_on 'Adult dashboard'
-      expect(page).to have_title("Adult dashboard")
+      expect(page).to have_title('Adult dashboard')
       click_on 'Pupil dashboard'
-      expect(page).to have_title("Pupil dashboard")
+      expect(page).to have_title('Pupil dashboard')
     end
 
     context 'with observations' do

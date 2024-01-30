@@ -12,7 +12,7 @@ describe 'Management dashboard' do
   describe 'when not logged in' do
     it 'prompts for login' do
       visit management_school_path(school)
-      expect(page).to have_content("Sign in to Energy Sparks")
+      expect(page).to have_content('Sign in to Energy Sparks')
     end
   end
 

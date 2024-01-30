@@ -12,17 +12,17 @@ module Amr
 
       meter_collection = AnalyticsMeterCollectionFactory.new(@active_record_school).unvalidated
 
-      @logger.info("Created meter collection from unvalidated data")
+      @logger.info('Created meter collection from unvalidated data')
 
       AggregateDataService.new(meter_collection).validate_meter_data
 
-      @logger.info("Validated meter data")
+      @logger.info('Validated meter data')
 
       UpsertValidatedReadings.new(meter_collection).perform
 
-      @logger.info("Completed database updates for validated readings")
+      @logger.info('Completed database updates for validated readings')
 
-      #this will cause a cache miss when requesting the meter collection
+      # this will cause a cache miss when requesting the meter collection
       @active_record_school.invalidate_cache_key
 
       meter_collection

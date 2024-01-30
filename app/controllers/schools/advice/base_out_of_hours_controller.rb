@@ -28,8 +28,8 @@ module Schools
         annual_usage_breakdown_service
       end
 
-      #for charts that use the last full week
-      #beginning of the week is Sunday
+      # for charts that use the last full week
+      # beginning of the week is Sunday
       def last_full_week_start_date(end_date)
         (end_date - 13.months).beginning_of_week - 1
       end
@@ -73,7 +73,7 @@ module Schools
       end
 
       def set_usage_categories
-        #@usage_categories = aggregate_school.open_close_times.time_types
+        # @usage_categories = aggregate_school.open_close_times.time_types
         @usage_categories = [:holiday, :weekend, :school_day_open, :school_day_closed]
         @usage_categories += [:community] if @school.school_times.community_use.any?
         @usage_categories

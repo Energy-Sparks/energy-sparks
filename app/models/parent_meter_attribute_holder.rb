@@ -2,7 +2,7 @@ module ParentMeterAttributeHolder
   extend ActiveSupport::Concern
 
   def meter_attributes_for(meter)
-      meter_attributes.where('meter_types ? :meter_type', meter_type: meter.meter_type).active
+    meter_attributes.where('meter_types ? :meter_type', meter_type: meter.meter_type).active
   end
 
   def pseudo_meter_attributes

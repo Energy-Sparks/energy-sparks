@@ -47,7 +47,7 @@ describe MeterAttribute do
   end
 
   describe '.solar_panels' do
-    let(:config) { { start_date: "2022-01-01", kwp: "10", end_date: "2023-01-01", orientation: '0', tilt: '30', shading: '6', fit_£_per_kwh: '0.3' } }
+    let(:config) { { start_date: '2022-01-01', kwp: '10', end_date: '2023-01-01', orientation: '0', tilt: '30', shading: '6', fit_£_per_kwh: '0.3' } }
     let!(:solar_attribute) { create(:meter_attribute, attribute_type: :solar_pv, input_data: config)}
     let!(:other_attribute) { create(:meter_attribute, attribute_type: :targeting_and_tracking_profiles_maximum_retries, input_data: { number_of_retries: 1 })}
     let(:solar_panels)  { MeterAttribute.solar_panels }

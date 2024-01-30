@@ -11,7 +11,7 @@ describe TariffImportLog, type: :system, include_application_helper: true do
   end
 
   it 'shows import logs' do
-    error_messages = "Oh no!"
+    error_messages = 'Oh no!'
     log_1 = create(:tariff_import_log, description: 'import one', error_messages: error_messages, import_time: 2.days.ago)
     log_2 = create(:tariff_import_log, description: 'import two', standing_charges_imported: 111, standing_charges_updated: 222, prices_imported: 333, prices_updated: 444, import_time: 1.day.ago)
 
