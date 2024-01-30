@@ -73,7 +73,6 @@ module Schools
       end
 
       def set_usage_categories
-        # @usage_categories = aggregate_school.open_close_times.time_types
         @usage_categories = [:holiday, :weekend, :school_day_open, :school_day_closed]
         @usage_categories += [:community] if @school.school_times.community_use.any?
         @usage_categories
