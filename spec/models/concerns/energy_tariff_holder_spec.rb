@@ -59,9 +59,9 @@ describe EnergyTariffHolder do
       end
 
       context 'when filtering tariffs' do
-        let!(:energy_tariff_electricity_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "electricity", applies_to: "half_hourly", name: 'Electricity Tariff half_hourly') }
-        let!(:energy_tariff_electricity_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "electricity", applies_to: "non_half_hourly", name: 'Electricity Tariff non_half_hourly') }
-        let!(:energy_tariff_gas_both) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "gas", applies_to: "both", name: 'Gas Tariff both') }
+        let!(:energy_tariff_electricity_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: 'electricity', applies_to: 'half_hourly', name: 'Electricity Tariff half_hourly') }
+        let!(:energy_tariff_electricity_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: 'electricity', applies_to: 'non_half_hourly', name: 'Electricity Tariff non_half_hourly') }
+        let!(:energy_tariff_gas_both) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: 'gas', applies_to: 'both', name: 'Gas Tariff both') }
 
         it 'defaults and returns both when no meter system is specified' do
           expect(tariff_holder.energy_tariff_meter_attributes.map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_both.name, energy_tariff_gas_both.name])

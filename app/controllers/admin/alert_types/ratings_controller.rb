@@ -91,12 +91,12 @@ module Admin
 
       def set_available_charts
         @available_charts = @alert_type.available_charts
-        @available_charts << ["None", :none]
+        @available_charts << ['None', :none]
       end
 
       def set_available_tables
         @available_tables = @alert_type.available_tables
-        @available_tables << ["None", :none]
+        @available_tables << ['None', :none]
       end
 
       def load_example_variables(rating)

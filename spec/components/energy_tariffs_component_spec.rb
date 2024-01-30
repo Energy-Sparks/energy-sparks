@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe EnergyTariffsComponent, type: :component do
   let(:tariff_holder)        { SiteSettings.current }
@@ -79,7 +79,7 @@ RSpec.describe EnergyTariffsComponent, type: :component do
         end
 
         it 'returns the usable and enabled site settings tariff for this meter type' do
-          energy_tariff = EnergyTariff.create!(tariff_holder: SiteSettings.current, meter_type: "gas", name: 'A site settings gas tariff', enabled: true)
+          energy_tariff = EnergyTariff.create!(tariff_holder: SiteSettings.current, meter_type: 'gas', name: 'A site settings gas tariff', enabled: true)
           allow(EnergyTariff).to receive(:usable) { [energy_tariff] }
           expect(html).to have_content('A site settings gas tariff')
         end
@@ -89,16 +89,16 @@ RSpec.describe EnergyTariffsComponent, type: :component do
 
   context 'when rendering controls' do
     it 'has button to add tariffs' do
-      expect(html).to have_link(I18n.t("schools.user_tariffs.index.electricity.add_label"))
-      expect(html).to have_link(I18n.t("schools.user_tariffs.index.gas.add_label"))
+      expect(html).to have_link(I18n.t('schools.user_tariffs.index.electricity.add_label'))
+      expect(html).to have_link(I18n.t('schools.user_tariffs.index.gas.add_label'))
     end
 
     context 'when adding new tariffs is disabled' do
       let(:show_add_button) { false }
 
       it 'does not have the buttons' do
-        expect(html).not_to have_link(I18n.t("schools.user_tariffs.index.electricity.add_label"))
-        expect(html).not_to have_link(I18n.t("schools.user_tariffs.index.gas.add_label"))
+        expect(html).not_to have_link(I18n.t('schools.user_tariffs.index.electricity.add_label'))
+        expect(html).not_to have_link(I18n.t('schools.user_tariffs.index.gas.add_label'))
       end
     end
   end
@@ -112,7 +112,7 @@ RSpec.describe EnergyTariffsComponent, type: :component do
       end
     end
 
-    it { expect(html).to have_selector("strong", text: "I'm a header") }
-    it { expect(html).to have_selector("small", text: "I'm a footer") }
+    it { expect(html).to have_selector('strong', text: "I'm a header") }
+    it { expect(html).to have_selector('small', text: "I'm a footer") }
   end
 end

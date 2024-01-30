@@ -8,19 +8,10 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      #Not yet implemented in underlying services
-      def enough_data?
-        meter_data_checker.one_years_data?
-      end
-
-      #Not yet implemented in underlying services
-      def data_available_from
-        meter_data_checker.date_when_enough_data_available(365)
-      end
-
-      def average_peak_kw
-        peak_usage_calculation_service.average_peak_kw
-      end
+      delegate :enough_data?, to: :peak_usage_calculation_service
+      delegate :data_available_from, to: :peak_usage_calculation_service
+      delegate :average_peak_kw, to: :peak_usage_calculation_service
+      delegate :date_range, to: :peak_usage_calculation_service
 
       def previous_year_peak_kw
         previous_years_peak_usage_calculation_service = peak_usage_calculation_service(previous_years_asof_date)
@@ -62,10 +53,6 @@ module Schools
         @meter_collection.aggregated_electricity_meters
       end
 
-      def meter_data_checker
-        @meter_data_checker ||= Util::MeterDateRangeChecker.new(aggregate_meter, asof_date)
-      end
-
       def peak_usage_benchmarking_service
         @peak_usage_benchmarking_service ||= ::Usage::PeakUsageBenchmarkingService.new(
           meter_collection: @meter_collection,
@@ -74,10 +61,7 @@ module Schools
       end
 
       def peak_usage_calculation_service(date = asof_date)
-        ::Usage::PeakUsageCalculationService.new(
-          meter_collection: @meter_collection,
-          asof_date: date
-        )
+        Usage::PeakUsageCalculationService.new(meter_collection: @meter_collection, asof_date: date)
       end
     end
   end

@@ -145,28 +145,28 @@ describe 'ActivityType' do
 
   context 'serialising for transifex' do
     context 'finding resources for transifex' do
-      let!(:activity_type_1) { create(:activity_type, name: "activity", active: true)}
-      let!(:activity_type_2) { create(:activity_type, name: "activity", active: false)}
+      let!(:activity_type_1) { create(:activity_type, name: 'activity', active: true)}
+      let!(:activity_type_2) { create(:activity_type, name: 'activity', active: false)}
 
-      it "#tx_resources" do
+      it '#tx_resources' do
         expect(ActivityType.tx_resources).to match_array([activity_type_1])
       end
     end
 
     context 'when mapping fields' do
-      let!(:activity_type) { create(:activity_type, name: "My activity", description: "description", school_specific_description: "Description {{#chart}}chart_name{{/chart}} {{#chart}}chart_name2|£{{/chart}}")}
+      let!(:activity_type) { create(:activity_type, name: 'My activity', description: 'description', school_specific_description: 'Description {{#chart}}chart_name{{/chart}} {{#chart}}chart_name2|£{{/chart}}')}
 
       it 'produces the expected key names' do
-        expect(activity_type.tx_attribute_key("name")).to eq "name"
-        expect(activity_type.tx_attribute_key("description")).to eq "description_html"
-        expect(activity_type.tx_attribute_key("school_specific_description")).to eq "school_specific_description_html"
-        expect(activity_type.tx_attribute_key("download_links")).to eq "download_links_html"
+        expect(activity_type.tx_attribute_key('name')).to eq 'name'
+        expect(activity_type.tx_attribute_key('description')).to eq 'description_html'
+        expect(activity_type.tx_attribute_key('school_specific_description')).to eq 'school_specific_description_html'
+        expect(activity_type.tx_attribute_key('download_links')).to eq 'download_links_html'
       end
 
       it 'produces the expected tx values, removing trix content wrapper' do
-        expect(activity_type.tx_value("name")).to eql activity_type.name
-        expect(activity_type.tx_value("description")).to eql("description")
-        expect(activity_type.tx_value("school_specific_description")).to eql("Description %{tx_chart_chart_name} %{tx_chart_chart_name2|£}")
+        expect(activity_type.tx_value('name')).to eql activity_type.name
+        expect(activity_type.tx_value('description')).to eql('description')
+        expect(activity_type.tx_value('school_specific_description')).to eql('Description %{tx_chart_chart_name} %{tx_chart_chart_name2|£}')
       end
 
       it 'produces the expected resource key' do
@@ -175,18 +175,18 @@ describe 'ActivityType' do
 
       it 'maps all translated fields' do
         data = activity_type.tx_serialise
-        expect(data["en"]).not_to be nil
+        expect(data['en']).not_to be nil
         key = "activity_type_#{activity_type.id}"
-        expect(data["en"][key]).not_to be nil
-        expect(data["en"][key].keys).to match_array(%w[name description_html school_specific_description_html download_links_html summary])
+        expect(data['en'][key]).not_to be nil
+        expect(data['en'][key].keys).to match_array(%w[name description_html school_specific_description_html download_links_html summary])
       end
 
       it 'created categories' do
-        expect(activity_type.tx_categories).to match_array(["activity_type"])
+        expect(activity_type.tx_categories).to match_array(['activity_type'])
       end
 
       it 'overrides default name' do
-        expect(activity_type.tx_name).to eq("My activity")
+        expect(activity_type.tx_name).to eq('My activity')
       end
 
       it 'fetches status' do
@@ -205,11 +205,11 @@ describe 'ActivityType' do
     let(:school_specific_description) { subject.school_specific_description}
     let(:data) do
       {
-      "cy" => {
+      'cy' => {
          resource_key => {
-           "name" => "Welsh name",
-           "description_html" => "The Welsh description",
-           "school_specific_description_html" => "Instructions for schools. %{chart_name|£}"
+           'name' => 'Welsh name',
+           'description_html' => 'The Welsh description',
+           'school_specific_description_html' => 'Instructions for schools. %{chart_name|£}'
          }
        }
      }
@@ -223,7 +223,7 @@ describe 'ActivityType' do
 
       it 'updates simple fields' do
         expect(subject.name).to eq name
-        expect(subject.name_cy).to eq "Welsh name"
+        expect(subject.name_cy).to eq 'Welsh name'
       end
 
       it 'updates HTML fields' do
@@ -238,8 +238,8 @@ describe 'ActivityType' do
     end
 
     context 'when there are rewriteable links' do
-      let(:source)    { "http://old.example.org" }
-      let(:target)    { "http://new.example.org" }
+      let(:source)    { 'http://old.example.org' }
+      let(:target)    { 'http://new.example.org' }
 
       before do
         subject.link_rewrites.create(source: source, target: target)
@@ -252,11 +252,11 @@ describe 'ActivityType' do
       context 'when updating from transifex' do
         let(:data) do
           {
-          "cy" => {
+          'cy' => {
              resource_key => {
-               "name" => "Welsh name",
-               "description_html" => "The Welsh description <a href=\"http://old.example.org\">Link</a>",
-               "school_specific_description_html" => "Instructions for schools. %{chart_name|£}. <a href=\"http://old.example.org\">Link</a>"
+               'name' => 'Welsh name',
+               'description_html' => 'The Welsh description <a href="http://old.example.org">Link</a>',
+               'school_specific_description_html' => 'Instructions for schools. %{chart_name|£}. <a href="http://old.example.org">Link</a>'
              }
            }
          }
@@ -268,15 +268,15 @@ describe 'ActivityType' do
         end
 
         context 'and source link is escaped' do
-          let(:source) { "http://old.example.org?param1=x&param2=y" }
+          let(:source) { 'http://old.example.org?param1=x&param2=y' }
 
           let(:data) do
             {
-            "cy" => {
+            'cy' => {
                resource_key => {
-                 "name" => "Welsh name",
-                 "description_html" => "The Welsh description <a href=\"http://old.example.org?param1=x&amp;param2=y\">Link</a>",
-                 "school_specific_description_html" => "Instructions for schools. %{chart_name|£}. <a href=\"http://old.example.org\">Link</a>"
+                 'name' => 'Welsh name',
+                 'description_html' => 'The Welsh description <a href="http://old.example.org?param1=x&amp;param2=y">Link</a>',
+                 'school_specific_description_html' => 'Instructions for schools. %{chart_name|£}. <a href="http://old.example.org">Link</a>'
                }
              }
            }
@@ -297,8 +297,8 @@ describe 'ActivityType' do
 
           rewritten = subject.rewrite_all
 
-          expect(rewritten[:description_cy].to_s).to eq "  The Welsh description <a href=\"http://new.example.org\">Link</a>"
-          expect(rewritten[:school_specific_description_cy].to_s).to eq "  <a href=\"http://new.example.org\">Link</a><a href=\"http://example.com\">Link2</a>"
+          expect(rewritten[:description_cy].to_s).to eq '  The Welsh description <a href="http://new.example.org">Link</a>'
+          expect(rewritten[:school_specific_description_cy].to_s).to eq '  <a href="http://new.example.org">Link</a><a href="http://example.com">Link2</a>'
         end
       end
     end

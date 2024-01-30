@@ -19,7 +19,7 @@ module Solar
 
     def perform
       installation = LowCarbonHubInstallation.where(school_id: @school.id, rbee_meter_id: @rbee_meter_id, amr_data_feed_config: @amr_data_feed_config).first_or_create!
-      #save credentials to avoid api error meaning they're not saved
+      # save credentials to avoid api error meaning they're not saved
       installation.update(username: username, password: password)
       installation.update(information: information)
 

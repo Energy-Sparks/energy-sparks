@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "dashboard alerts", type: :system do
+RSpec.describe 'dashboard alerts', type: :system do
   let!(:school) { create(:school) }
   let!(:user) { create(:staff, staff_role: create(:staff_role, :teacher), school: school)}
   let(:description) { 'all about this alert type' }

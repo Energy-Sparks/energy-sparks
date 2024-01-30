@@ -285,7 +285,7 @@ PreCommit:
       - '**/*.exs'
 
   ErbLint:
-    enabled: false
+    enabled: true
     description: 'Analyze with ERB Lint'
     required_executable: 'erblint'
     install_command: 'bundle install erb_lint'

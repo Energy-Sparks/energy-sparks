@@ -55,17 +55,17 @@ module Schools
       it 'handles nested sub_pages' do
         configuration = Configuration.create(school: school, analysis_charts: page_config)
 
-        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Nonsense", :blah)).to eq(false)
+        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, 'Nonsense', :blah)).to eq(false)
 
-        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Gas", :gas_dash)).to eq(true)
-        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Gas", :blah)).to eq(false)
+        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, 'Gas', :gas_dash)).to eq(true)
+        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, 'Gas', :blah)).to eq(false)
 
-        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Electricity", "Solar", :electric_solar)).to eq(true)
-        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Electricity", "Solar", :electric_storage)).to eq(false)
+        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, 'Electricity', 'Solar', :electric_solar)).to eq(true)
+        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, 'Electricity', 'Solar', :electric_storage)).to eq(false)
 
-        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Electricity", "Storage", :electric_storage)).to eq(true)
+        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, 'Electricity', 'Storage', :electric_storage)).to eq(true)
 
-        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, "Electricity", "Lemons", :electric_storage)).to eq(false)
+        expect(configuration.can_show_analysis_chart?(:analysis_charts, :pupil_analysis_page, 'Electricity', 'Lemons', :electric_storage)).to eq(false)
       end
     end
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "manage school configuration", type: :system do
+RSpec.describe 'manage school configuration', type: :system do
   let!(:admin)              { create(:admin)}
 
   let!(:ks1)                { KeyStage.create(name: 'KS1') }
@@ -15,7 +15,7 @@ RSpec.describe "manage school configuration", type: :system do
     visit root_path
     expect(page.has_content?('Sign Out')).to be true
     click_on('View schools')
-    expect(page.has_content?("Energy Sparks schools across the UK")).to be true
+    expect(page.has_content?('Energy Sparks schools across the UK')).to be true
   end
 
   it 'I can set up a school for KS1' do
@@ -57,7 +57,7 @@ RSpec.describe "manage school configuration", type: :system do
     click_on('Update School')
     school.reload
 
-    expect(school.chart_preference).to eq "carbon"
+    expect(school.chart_preference).to eq 'carbon'
   end
 
   it 'can see when the school was created on Energy Sparks' do
@@ -89,7 +89,7 @@ RSpec.describe "manage school configuration", type: :system do
     expect(page).to have_field('Activation date')
     activation_date = Date.parse('01/01/2020')
 
-    fill_in 'Activation date', with: activation_date.strftime("%d/%m/%Y")
+    fill_in 'Activation date', with: activation_date.strftime('%d/%m/%Y')
     click_on('Update School')
 
     school.reload
@@ -113,8 +113,8 @@ RSpec.describe "manage school configuration", type: :system do
     expect(school.enable_targets_feature?).to be false
   end
 
-  context "can update storage heaters" do
-    it "and changes are saved" do
+  context 'can update storage heaters' do
+    it 'and changes are saved' do
       click_on(school_name)
       click_on('Edit school details')
       check 'Our school has night storage heaters'
@@ -134,6 +134,6 @@ RSpec.describe "manage school configuration", type: :system do
     click_on('Update School')
 
     school.reload
-    expect(school.chart_preference).to eq "cost"
+    expect(school.chart_preference).to eq 'cost'
   end
 end

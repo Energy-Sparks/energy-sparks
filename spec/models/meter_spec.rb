@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "a meter with a non half hourly meter system" do |meter_type, meter_systems|
+RSpec.shared_examples 'a meter with a non half hourly meter system' do |meter_type, meter_systems|
   meter_systems.each do |meter_system|
     it 'includes all energy tariffs that are enabled irrespective of applies to value but with the parent filtered by the meters meter_system (non_half_hourly)' do
       meter.update(meter_system: meter_system, meter_type: meter_type)
@@ -32,7 +32,7 @@ RSpec.shared_examples "a meter with a non half hourly meter system" do |meter_ty
   end
 end
 
-RSpec.shared_examples "a meter with a half hourly meter system" do |meter_type, meter_systems|
+RSpec.shared_examples 'a meter with a half hourly meter system' do |meter_type, meter_systems|
   meter_systems.each do |meter_system|
     it 'includes all energy tariffs that are enabled irrespective of applies to value but with the parent filtered by the meters meter_system (non_half_hourly)' do
       meter.update(meter_system: meter_system, meter_type: meter_type)
@@ -196,7 +196,7 @@ describe 'Meter', :meters do
           meter.save!
           meter.meter_type = 'solar_pv'
           meter.valid?
-          expect(meter.errors[:meter_type]).to eq(["Change of meter type is not allowed for pseudo meters"])
+          expect(meter.errors[:meter_type]).to eq(['Change of meter type is not allowed for pseudo meters'])
           meter.pseudo = 'false'
           meter.meter_type = 'solar_pv'
           meter.valid?
@@ -210,7 +210,7 @@ describe 'Meter', :meters do
           meter.save!
           meter.mpan_mprn = 91_000_000_000_037
           meter.valid?
-          expect(meter.errors[:mpan_mprn]).to eq(["Change of mpan mprn is not allowed for pseudo meters"])
+          expect(meter.errors[:mpan_mprn]).to eq(['Change of mpan mprn is not allowed for pseudo meters'])
           meter.pseudo = 'false'
           meter.mpan_mprn = 91_000_000_000_037
           meter.valid?
@@ -340,13 +340,13 @@ describe 'Meter', :meters do
       end
 
       describe '#last_validated_reading' do
-        it "finds latest reading" do
+        it 'finds latest reading' do
           expect(meter.last_validated_reading).to eql(base_date + 4.days)
         end
       end
 
       describe '#first_validated_reading' do
-        it "finds first reading" do
+        it 'finds first reading' do
           expect(meter.first_validated_reading).to eql(base_date)
         end
       end
@@ -369,13 +369,13 @@ describe 'Meter', :meters do
       end
 
       describe '#modified_validated_readings' do
-        it "finds only non-ORIG readings in last 2 years" do
+        it 'finds only non-ORIG readings in last 2 years' do
           expect(meter.modified_validated_readings.count).to eq(5)
         end
       end
 
       describe '#gappy_validated_readings' do
-        it "finds gap in ORIG readings" do
+        it 'finds gap in ORIG readings' do
           gaps = meter.gappy_validated_readings(2)
           expect(gaps.count).to be(2)
           gap = gaps.first

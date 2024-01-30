@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe "advice pages", type: :system do
-  include_context "electricity advice page"
+RSpec.describe 'advice pages', type: :system do
+  include_context 'electricity advice page'
 
   let(:key) { 'total_energy_use' }
   let(:learn_more) { 'here is some more explanation' }
-  let(:expected_page_title) { "Energy usage summary" }
+  let(:expected_page_title) { 'Energy usage summary' }
 
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: learn_more, fuel_type: nil) }
 
@@ -14,9 +14,9 @@ RSpec.describe "advice pages", type: :system do
       allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:learn_more).and_raise(StandardError.new('testing..'))
     end
 
-    context "in production" do
+    context 'in production' do
       before do
-        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("production"))
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
       end
 
       it 'shows the error page' do
@@ -26,9 +26,9 @@ RSpec.describe "advice pages", type: :system do
       end
     end
 
-    context "in test" do
+    context 'in test' do
       before do
-        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("test"))
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('test'))
       end
 
       it 'throws error' do
@@ -107,7 +107,7 @@ RSpec.describe "advice pages", type: :system do
           click_on 'Energy use summary'
         end
         expect(page).to have_content('Energy efficiency advice')
-        expect(page).to have_content("Only an admin or staff user for this school can access this content")
+        expect(page).to have_content('Only an admin or staff user for this school can access this content')
       end
     end
   end
@@ -138,7 +138,7 @@ RSpec.describe "advice pages", type: :system do
 
       it 'shows the nav bar' do
         within '.advice-page-nav' do
-          expect(page).to have_content("Advice")
+          expect(page).to have_content('Advice')
         end
       end
 

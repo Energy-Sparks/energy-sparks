@@ -58,7 +58,7 @@ class MailchimpApi
     @client ||= Rails.configuration.mailchimp_client
   end
 
-  def format_body(email, tags, interests, merge_fields, status = "subscribed")
+  def format_body(email, tags, interests, merge_fields, status = 'subscribed')
     {
       "email_address": email,
       "status": status,

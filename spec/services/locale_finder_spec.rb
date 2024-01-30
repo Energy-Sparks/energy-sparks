@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe LocaleFinder do
   describe '.find_locale' do
@@ -6,8 +6,8 @@ describe LocaleFinder do
       let(:params) { { locale: 'ab' } }
       let(:request) { double(subdomains: ['test-cy']) }
 
-      it "returns locale from params" do
-        expect(LocaleFinder.new(params, request).locale).to match("ab")
+      it 'returns locale from params' do
+        expect(LocaleFinder.new(params, request).locale).to match('ab')
       end
     end
 
@@ -15,8 +15,8 @@ describe LocaleFinder do
       let(:params) { {} }
       let(:request) { double(subdomains: ['test-cy']) }
 
-      it "returns locale from params" do
-        expect(LocaleFinder.new(params, request).locale).to match("cy")
+      it 'returns locale from params' do
+        expect(LocaleFinder.new(params, request).locale).to match('cy')
       end
     end
 
@@ -24,8 +24,8 @@ describe LocaleFinder do
       let(:params) { {} }
       let(:request) { double(subdomains: ['test-xx']) }
 
-      it "returns default locale" do
-        expect(LocaleFinder.new(params, request).locale).to match("en")
+      it 'returns default locale' do
+        expect(LocaleFinder.new(params, request).locale).to match('en')
       end
     end
 
@@ -33,8 +33,8 @@ describe LocaleFinder do
       let(:params) { {} }
       let(:request) { double(subdomains: []) }
 
-      it "returns default locale" do
-        expect(LocaleFinder.new(params, request).locale).to match("en")
+      it 'returns default locale' do
+        expect(LocaleFinder.new(params, request).locale).to match('en')
       end
     end
   end

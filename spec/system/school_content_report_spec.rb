@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "school content report", type: :system do
+RSpec.describe 'school content report', type: :system do
   let!(:school) { create(:school) }
   let!(:user) { create(:admin)}
   let(:description) { 'all about this alert type' }

@@ -37,7 +37,7 @@ describe Targets::GenerateEstimatedUsage, type: :service do
 
       context 'and estimates suggested for gas only' do
         before do
-          school.configuration.update!(suggest_estimates_fuel_types: ["gas"])
+          school.configuration.update!(suggest_estimates_fuel_types: ['gas'])
         end
 
         it 'produces an estimate for gas only' do
@@ -62,7 +62,7 @@ describe Targets::GenerateEstimatedUsage, type: :service do
 
       context 'and estimates are required' do
         before do
-          school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
+          school.configuration.update!(suggest_estimates_fuel_types: ['electricity'])
         end
 
         it 'produces estimate for electricity' do

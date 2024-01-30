@@ -18,7 +18,7 @@ RSpec.describe 'Solar pv areas', type: :system do
     end
 
     it 'can create a new area' do
-      expect(page).to have_content("There are no Solar PV Areas")
+      expect(page).to have_content('There are no Solar PV Areas')
 
       click_on 'New Solar PV Area'
 
@@ -30,7 +30,7 @@ RSpec.describe 'Solar pv areas', type: :system do
 
       expect { click_on 'Create' }.to change(SolarPvTuosArea, :count).by(1)
 
-      expect(page).to have_content("New Solar PV Area created")
+      expect(page).to have_content('New Solar PV Area created')
       expect(page).to have_content('Solar PV Areas')
       expect(page).to have_content title
       expect(page).to have_content latitude
@@ -92,7 +92,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         fill_in 'Gsp name', with: gsp_name
         click_on 'Update'
 
-        expect(page).to have_content("Solar PV Area was updated")
+        expect(page).to have_content('Solar PV Area was updated')
 
         expect(page).to have_content('Solar PV Areas')
         expect(page).to have_content title
@@ -120,7 +120,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         fill_in 'Gsp name', with: gsp_name
 
         click_on 'Update'
-        expect(page).to have_content("Solar PV Area was updated")
+        expect(page).to have_content('Solar PV Area was updated')
 
         expect(page).to have_content('Solar PV Areas')
         expect(page).to have_content title

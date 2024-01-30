@@ -43,10 +43,10 @@ RSpec.describe ActivityTypeFilter, type: :service do
   end
 
   describe '#list_school_groups' do
-    let(:school_group)  { create(:school_group, name: "Group", public: true)}
+    let(:school_group)  { create(:school_group, name: 'Group', public: true)}
     let!(:school)       { create(:school, school_group: school_group) }
 
-    let(:private_school_group)  { create(:school_group, name: "Private", public: false)}
+    let(:private_school_group)  { create(:school_group, name: 'Private', public: false)}
     let!(:other_school)         { create(:school, school_group: private_school_group) }
 
     context 'as an admin' do

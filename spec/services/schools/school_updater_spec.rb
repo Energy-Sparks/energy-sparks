@@ -5,7 +5,7 @@ describe Schools::SchoolUpdater do
   let(:service) { Schools::SchoolUpdater.new(school) }
 
   describe '#after_update!' do
-    it "invalidates the cache" do
+    it 'invalidates the cache' do
       expect_any_instance_of(AggregateSchoolService).to receive(:invalidate_cache).at_least(:once)
       service.after_update!
     end

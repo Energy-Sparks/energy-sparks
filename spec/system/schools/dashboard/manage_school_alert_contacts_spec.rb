@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "manage school alert contacts", type: :system do
+RSpec.describe 'manage school alert contacts', type: :system do
   let(:school) { create(:school) }
   let(:school2) { create(:school) }
 

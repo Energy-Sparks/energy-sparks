@@ -9,9 +9,9 @@ module Loader
     let!(:academic_year)      { create :academic_year, start_date: Date.parse('01/01/2016'), end_date: Date.parse('01/12/2016'), calendar: national_calendar }
 
     it 'parses the json file and create a bank holiday for the top level calendar' do
-       BankHolidays.load!(sample_file)
-       expect(national_calendar.bank_holidays.count).to be 1
-       expect(national_calendar.bank_holidays.first.start_date).to eq Date.parse("2016-08-16")
+      BankHolidays.load!(sample_file)
+      expect(national_calendar.bank_holidays.count).to be 1
+      expect(national_calendar.bank_holidays.first.start_date).to eq Date.parse('2016-08-16')
     end
 
     it 'does not cascade to child calendars' do

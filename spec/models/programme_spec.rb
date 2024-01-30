@@ -21,41 +21,41 @@ describe 'Programme' do
       programme.complete!
     end
 
-    context "when programme is completed within the same academic year" do
+    context 'when programme is completed within the same academic year' do
       let(:current_year) { true }
 
-      it "marks programme as complete" do
+      it 'marks programme as complete' do
         expect(programme).to be_completed
       end
 
-      it "adds ended_on date to programme" do
+      it 'adds ended_on date to programme' do
         expect(programme.ended_on).not_to be_nil
       end
 
-      context "with observation" do
+      context 'with observation' do
         it { expect(programme.observations.count).to eq(1) }
         it { expect(last_observation.at).to eq(programme.ended_on) }
         it { expect(last_observation.school).to eq(school) }
         it { expect(last_observation.observation_type).to eq('programme') }
 
-        it "adds points" do
+        it 'adds points' do
           expect(last_observation.points).to eq(12)
         end
       end
     end
 
-    context "when programme is completed outside of the academic year it was started" do
+    context 'when programme is completed outside of the academic year it was started' do
       let(:current_year) { false }
 
-      it "marks programme as complete" do
+      it 'marks programme as complete' do
         expect(programme).to be_completed
       end
 
-      it "adds ended_on date to programme" do
+      it 'adds ended_on date to programme' do
         expect(programme.ended_on).not_to be_nil
       end
 
-      context "with observation" do
+      context 'with observation' do
         it { expect(programme.observations.count).to eq(1) }
         it { expect(last_observation.at).to eq(programme.ended_on) }
         it { expect(last_observation.school).to eq(school) }
@@ -68,12 +68,12 @@ describe 'Programme' do
     end
   end
 
-  describe "#abandon" do
+  describe '#abandon' do
     before do
       programme.abandon!
     end
 
-    it "sets status to abandoned" do
+    it 'sets status to abandoned' do
       expect(programme).to be_abandoned
     end
 
@@ -82,12 +82,12 @@ describe 'Programme' do
     end
   end
 
-  describe "#add_observation" do
+  describe '#add_observation' do
     before do
       programme.add_observation
     end
 
-    context "when programme is not complete" do
+    context 'when programme is not complete' do
       let(:status) { :started }
 
       it "doesn't add obervation" do
@@ -95,21 +95,21 @@ describe 'Programme' do
       end
     end
 
-    context "when programme is complete" do
+    context 'when programme is complete' do
       let(:status) { :completed }
 
-      it "adds obervation" do
+      it 'adds obervation' do
         expect(programme.observations.count).to eq(1)
       end
 
-      it "only adds one observation" do
+      it 'only adds one observation' do
         programme.add_observation
         expect(programme.observations.count).to eq(1)
       end
     end
   end
 
-  describe ".recently_ended" do
+  describe '.recently_ended' do
     before { Timecop.freeze }
     after { Timecop.return }
 
@@ -119,7 +119,7 @@ describe 'Programme' do
 
     subject(:programmes) { Programme.recently_ended }
 
-    it "includes programmes ended today or yesterday" do
+    it 'includes programmes ended today or yesterday' do
       expect(programmes).to include(ended_today)
       expect(programmes).to include(ended_yesterday)
     end

@@ -1,10 +1,11 @@
-<%= render 'schools/advice/section_title', section_id: 'comparison',
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
            section_title: t("advice_pages.#{fuel_type}_long_term.insights.comparison.title") %>
 
 <% if analysis_dates.one_years_data? %>
   <p>
     <%= t("advice_pages.#{fuel_type}_long_term.insights.comparison.how_do_you_compare",
-          school_type: t('common.school_types.' + school.school_type)) %>
+          school_type: t("common.school_types.#{school.school_type}")) %>
   </p>
 
   <div class="col">

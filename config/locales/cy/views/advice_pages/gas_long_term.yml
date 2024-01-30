@@ -33,8 +33,6 @@ cy:
           title: Cymhariaeth defnydd nwy blynyddol ag ysgolion eraill
         gas_by_month_year:
           explanation: Gall y siart hwn fod yn ffordd gyflym o weld a yw newidiadau i reolaeth gwresogi a dŵr poeth yn cael effaith ar eich defnydd o nwy. Mae angen bod yn ofalus wrth gymharu misoedd â gwyliau, yn enwedig y Pasg, sef rhai blynyddoedd ym mis Mawrth ac adegau eraill ym mis Ebrill.
-          subtitle_html: Mae'r siart hwn yn dangos y gwahaniaeth yn y defnydd o nwy ar gyfer y 12 mis yn diweddu ar <span class='end-date'>%{end_date}</span> a'r 12 mis blaenorol
-          title: Cymhariaeth defnydd nwy misol dros y ddwy flynedd ddiwethaf
         gas_longterm_trend:
           explanation: Gellir lleihau'r defnydd o nwy trwy droi thermostat eich ysgol i lawr, lleihau'r defnydd y tu allan i oriau, inswleiddio'ch adeiladau neu osod boeler nwy newydd mwy effeithlon.
           subtitle: Mae’r siart hwn, a’r tabl isod yn rhoi dadansoddiad o’r defnydd o nwy rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob blwyddyn lawn o ddata sydd gennym ar gyfer eich ysgol.

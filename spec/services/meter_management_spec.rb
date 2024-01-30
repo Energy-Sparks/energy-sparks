@@ -83,7 +83,7 @@ describe MeterManagement do
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
 
-    it "returns api status" do
+    it 'returns api status' do
       meter = create(:electricity_meter)
       expect(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_return(true)
       expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).is_meter_known_to_n3rgy?).to be true
@@ -92,7 +92,7 @@ describe MeterManagement do
       expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).is_meter_known_to_n3rgy?).to be false
     end
 
-    it "handles API errors" do
+    it 'handles API errors' do
       meter = create(:electricity_meter)
       allow(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_raise(StandardError)
       expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).is_meter_known_to_n3rgy?).to be false
@@ -103,7 +103,7 @@ describe MeterManagement do
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
 
-    it "returns api status" do
+    it 'returns api status' do
       meter = create(:electricity_meter)
       expect(n3rgy_api).to receive(:status).with(meter.mpan_mprn).and_return(:available)
       expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to be(:available)
@@ -112,7 +112,7 @@ describe MeterManagement do
       expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to be(:unknown)
     end
 
-    it "handles API errors" do
+    it 'handles API errors' do
       meter = create(:electricity_meter)
       allow(n3rgy_api).to receive(:status).with(meter.mpan_mprn).and_raise(StandardError)
       expect(MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status).to be(:api_error)
@@ -123,13 +123,13 @@ describe MeterManagement do
     context 'for non-DCC meter' do
       let(:meter) { create(:electricity_meter) }
 
-      it "sets meter active" do
+      it 'sets meter active' do
         meter.update(active: false)
         MeterManagement.new(meter).activate_meter!
         expect(meter.active).to be_truthy
       end
 
-      it "sets meter inactive" do
+      it 'sets meter inactive' do
         meter.update(active: true)
         MeterManagement.new(meter).deactivate_meter!
         expect(meter.active).to be_falsey
@@ -149,7 +149,7 @@ describe MeterManagement do
     context 'for DCC meter' do
       let!(:meter) { create(:electricity_meter_with_reading, dcc_meter: true) }
 
-      it "sets meter active and consents" do
+      it 'sets meter active and consents' do
         expect_any_instance_of(Meters::DccGrantTrustedConsents).to receive(:perform).and_return(true)
         meter.update(active: true, consent_granted: false, meter_review: create(:meter_review))
         MeterManagement.new(meter).activate_meter!
@@ -157,7 +157,7 @@ describe MeterManagement do
         expect(meter.active).to be_truthy
       end
 
-      it "sets meter inactive and unconsents" do
+      it 'sets meter inactive and unconsents' do
         expect_any_instance_of(Meters::DccWithdrawTrustedConsents).to receive(:perform).and_return(true)
         meter.update(active: true, consent_granted: true)
         MeterManagement.new(meter).deactivate_meter!
@@ -165,7 +165,7 @@ describe MeterManagement do
         expect(meter.active).to be_falsey
       end
 
-      it "removes amr data feed readings" do
+      it 'removes amr data feed readings' do
         MeterManagement.new(meter).remove_data!
         expect(meter.amr_data_feed_readings.count).to eq 0
       end
@@ -173,7 +173,7 @@ describe MeterManagement do
       context 'when meter has validated readings' do
         let!(:meter) { create(:electricity_meter_with_validated_reading, dcc_meter: true) }
 
-        it "removes validated readings" do
+        it 'removes validated readings' do
           MeterManagement.new(meter).remove_data!
           expect(meter.amr_validated_readings.count).to eq 0
         end

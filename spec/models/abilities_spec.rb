@@ -1,5 +1,5 @@
 require 'rails_helper'
-require "cancan/matchers"
+require 'cancan/matchers'
 
 describe Ability do
   describe 'abilities' do
@@ -7,7 +7,7 @@ describe Ability do
 
     let(:user)        { nil }
 
-    context "when is an admin" do
+    context 'when is an admin' do
       let(:user) { create(:admin) }
 
       %w(Activity ActivityType ActivityCategory Calendar CalendarEvent School User SchoolTarget).each do |thing|
@@ -26,7 +26,7 @@ describe Ability do
       it { is_expected.to be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
     end
 
-    context "as a school admin" do
+    context 'as a school admin' do
       let(:mygroup) { create(:school_group) }
       let(:school) { create(:school, school_group: mygroup) }
       let(:another_school) { create(:school) }
@@ -53,15 +53,15 @@ describe Ability do
       it { is_expected.to be_able_to(:show, ActivityType.new) }
       it { is_expected.not_to be_able_to(:update_settings, mygroup)}
 
-      it "can manage another school admin for this school" do
+      it 'can manage another school admin for this school' do
         expect(subject).to be_able_to(:manage, other_admin)
       end
 
-      it "cannot manage another school admin" do
+      it 'cannot manage another school admin' do
         expect(subject).not_to be_able_to(:manage, create(:school_admin, school: another_school))
       end
 
-      it "can manage cluster admin for this school" do
+      it 'can manage cluster admin for this school' do
         expect(subject).to be_able_to(:manage, cluster_admin)
       end
 
@@ -77,7 +77,7 @@ describe Ability do
       it { is_expected.not_to be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
     end
 
-    context "when is a school user" do
+    context 'when is a school user' do
       let(:mygroup) { create(:school_group) }
       let(:school) { create(:school, school_group: mygroup) }
       let(:another_school) { create(:school) }
@@ -112,7 +112,7 @@ describe Ability do
       it { is_expected.not_to be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
     end
 
-    context "when is a guest" do
+    context 'when is a guest' do
       let(:mygroup) { create(:school_group) }
       let(:school) { create(:school, school_group: mygroup) }
       let(:user) { create(:user, role: :guest) }
@@ -139,7 +139,7 @@ describe Ability do
       it { is_expected.not_to be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
     end
 
-    context "when a group admin" do
+    context 'when a group admin' do
       let(:public)              { true }
       let(:school_group)        { create(:school_group, public: public) }
       let(:school)              { create(:school, school_group: school_group) }

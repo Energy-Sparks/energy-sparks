@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "onboarding", :schools, type: :system do
+RSpec.describe 'onboarding', :schools, type: :system do
   let(:admin) { create(:admin) }
   let(:school_name)               { 'Oldfield Park Infants'}
 
@@ -39,8 +39,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Admin'
     end
 
-    context "selectable actions" do
-      it_behaves_like "admin school group onboardings" do
+    context 'selectable actions' do
+      it_behaves_like 'admin school group onboardings' do
         def after_setup_data
           click_on 'Manage school onboarding'
         end
@@ -66,13 +66,13 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Next'
 
       expect(page).to have_content(school_name)
-      expect(page).to have_content("oldfield@test.com")
+      expect(page).to have_content('oldfield@test.com')
 
-      click_on "Send setup email"
+      click_on 'Send setup email'
 
       onboarding = SchoolOnboarding.first
       expect(onboarding.school_will_be_public).to be_falsey
-      expect(onboarding.default_chart_preference).to eq "carbon"
+      expect(onboarding.default_chart_preference).to eq 'carbon'
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Set up your school on Energy Sparks')
@@ -105,14 +105,14 @@ RSpec.describe "onboarding", :schools, type: :system do
       onboarding.reload
       expect(onboarding.school_name).to eq('A new name')
       expect(onboarding.template_calendar).to eq(other_template_calendar)
-      expect(onboarding.default_chart_preference).to eq "cost"
-      expect(onboarding.country).to eq "scotland"
+      expect(onboarding.default_chart_preference).to eq 'cost'
+      expect(onboarding.country).to eq 'scotland'
     end
 
     context 'when completing onboarding as admin without consents' do
       it 'doesnt allow school to be made visible' do
         click_on 'Manage school onboarding'
-        expect(page).not_to have_selector(:link_or_button, "Make visible")
+        expect(page).not_to have_selector(:link_or_button, 'Make visible')
       end
     end
 
@@ -137,7 +137,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         click_on 'Manage school onboarding'
         click_on 'Make visible'
 
-        expect(page).to have_content("School onboardings")
+        expect(page).to have_content('School onboardings')
 
         school_onboarding.reload
         expect(school_onboarding).to be_complete
@@ -197,7 +197,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(page.source).to have_content 'Manual school'
     end
 
-    context "amending the contact email address when user has not responded" do
+    context 'amending the contact email address when user has not responded' do
       let!(:onboarding) { create :school_onboarding, :with_events, event_names: [:email_sent] }
       let(:email_address) { }
       let(:email_sent_events_count) { onboarding.events.where(event: :email_sent).count }
@@ -212,7 +212,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       it { expect(email_sent_events_count).to be(1) }
 
 
-      context "to a blank email address" do
+      context 'to a blank email address' do
         let(:email_address) { '' }
 
         it "doesn't save" do
@@ -221,23 +221,23 @@ RSpec.describe "onboarding", :schools, type: :system do
         end
       end
 
-      context "to a different email address" do
+      context 'to a different email address' do
         let(:email_address) { 'different_address@email.com' }
 
-        it "saves" do
+        it 'saves' do
           expect(page).to have_content('School onboardings in progress')
           expect(page).to have_content(email_address)
         end
 
-        it "sends email" do
+        it 'sends email' do
           expect(last_email.to).to include(email_address)
         end
 
-        it "logs event" do
+        it 'logs event' do
           expect(email_sent_events_count).to be(2)
         end
 
-        it "updates onboarding record" do
+        it 'updates onboarding record' do
           expect(onboarding.reload.contact_email).to eq email_address
         end
 

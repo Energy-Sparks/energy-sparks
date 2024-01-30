@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "dashboard timeline" do
+RSpec.shared_examples 'dashboard timeline' do
   before do
     intervention_type = create(:intervention_type, name: 'Upgraded insulation')
     create(:observation, :intervention, school: test_school, intervention_type: intervention_type)
@@ -30,7 +30,7 @@ RSpec.shared_examples "dashboard timeline" do
   end
 end
 
-RSpec.describe "adult dashboard timeline", type: :system do
+RSpec.describe 'adult dashboard timeline', type: :system do
   let(:regional_calendar)  { create(:regional_calendar) }
   let(:calendar)           { create(:school_calendar, based_on: regional_calendar) }
   let(:school)             { create(:school, calendar: calendar) }
@@ -42,7 +42,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
   context 'as guest' do
     let(:user) { nil }
 
-    it_behaves_like "dashboard timeline" do
+    it_behaves_like 'dashboard timeline' do
       let(:test_school) { school }
     end
   end
@@ -50,7 +50,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
   context 'as pupil' do
     let(:user) { create(:pupil, school: school) }
 
-    it_behaves_like "dashboard timeline" do
+    it_behaves_like 'dashboard timeline' do
       let(:test_school) { school }
     end
   end
@@ -58,7 +58,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 
-    it_behaves_like "dashboard timeline" do
+    it_behaves_like 'dashboard timeline' do
       let(:test_school) { school }
     end
   end
@@ -66,7 +66,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
-    it_behaves_like "dashboard timeline" do
+    it_behaves_like 'dashboard timeline' do
       let(:test_school) { school }
     end
   end
@@ -76,7 +76,7 @@ RSpec.describe "adult dashboard timeline", type: :system do
     let(:school)        { create(:school, school_group: school_group, calendar: calendar) }
     let(:user)          { create(:group_admin, school_group: school_group) }
 
-    it_behaves_like "dashboard timeline" do
+    it_behaves_like 'dashboard timeline' do
       let(:test_school) { school }
     end
   end

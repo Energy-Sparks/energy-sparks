@@ -49,7 +49,7 @@ class ScheduleDataManagerService
   end
 
   def find_uk_grid_carbon_intensity
-    cache_key = "co2-feed"
+    cache_key = 'co2-feed'
     Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRY) do
       uk_grid_carbon_intensity_data = GridCarbonIntensity.new
       DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
@@ -96,8 +96,8 @@ class ScheduleDataManagerService
     "#{@weather_station_id}-#{@dark_sky_area_id}-dark-sky-temperatures"
   end
 
-  #Load Meteostat readings if there are any
-  #returns earliest date encountered
+  # Load Meteostat readings if there are any
+  # returns earliest date encountered
   def load_meteostat_readings(temperatures)
     earliest = nil
     WeatherObservation.where(weather_station_id: @weather_station_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
@@ -111,12 +111,12 @@ class ScheduleDataManagerService
     earliest
   end
 
-  #Load Dark Sky readings if there's any associated with schools
-  #Optionally only loading those from before a specified date
+  # Load Dark Sky readings if there's any associated with schools
+  # Optionally only loading those from before a specified date
   def load_dark_sky_readings(temperatures, earliest = nil)
     if @dark_sky_area_id.present?
       if earliest.present?
-        DataFeeds::DarkSkyTemperatureReading.where("area_id = ? AND reading_date < ?", @dark_sky_area_id, earliest).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
+        DataFeeds::DarkSkyTemperatureReading.where('area_id = ? AND reading_date < ?', @dark_sky_area_id, earliest).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
           temperatures.add(date, values.map(&:to_f))
         end
       else

@@ -3,7 +3,7 @@
 class PanelSwitcherComponent < ViewComponent::Base
   attr_reader :title, :description, :classes, :id, :name
 
-  renders_many :panels, "PanelComponent"
+  renders_many :panels, 'PanelComponent'
 
   def initialize(title: nil, description: nil, selected: nil, classes: '', id: nil)
     @title = title

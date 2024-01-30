@@ -14,21 +14,21 @@ describe 'activity type reports', type: :system do
 
   context 'the activity type management report' do
     before do
-      click_on "Activity type management report"
+      click_on 'Activity type management report'
     end
 
     it 'displays the report' do
-      expect(page).to have_content("Activity Type Management Report")
+      expect(page).to have_content('Activity Type Management Report')
       expect(page).to have_content(activity_type.name)
       expect(page).to have_link(activity_type.name, href: admin_reports_activity_type_path(activity_type))
-      expect(page).to have_link("Report", href: admin_reports_activity_type_path(activity_type))
+      expect(page).to have_link('Report', href: admin_reports_activity_type_path(activity_type))
     end
   end
 
   context 'the activity type report' do
     before do
       visit admin_reports_path
-      click_on "Activity type management report"
+      click_on 'Activity type management report'
     end
 
     it 'displays the report' do
@@ -44,7 +44,7 @@ describe 'activity type reports', type: :system do
 
       it 'includes a summary' do
         click_on activity_type.name
-        expect(page).to have_content("This activity has been recorded multiple times by some schools")
+        expect(page).to have_content('This activity has been recorded multiple times by some schools')
       end
     end
   end
