@@ -1,0 +1,13 @@
+<%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.title") %>
+
+<%= component 'chart', chart_type: chart, school: school do |c| %>
+  <% c.with_title do %>
+    <%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.title") %>
+  <% end %>
+
+  <% c.with_subtitle { t("advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html", start_month_year: short_dates(analysis_dates.one_years_data? ? analysis_dates.end_date - 1.year : analysis_dates.start_date), end_month_year: short_dates(analysis_dates.end_date)) } %>
+<% end %>
+
+<p><%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.table_introduction") %></p>
+
+<%= render 'schools/advice/out_of_hours/analysis_table', fuel_type: fuel_type, usage_categories: usage_categories, annual_usage_breakdown: annual_usage_breakdown %>

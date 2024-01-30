@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 19da702771a5d17332d051a12716477c617d4f7a
+  revision: 8b07fc5002be624f413ecf6c402f7823cb84a56d
   branch: 3994-allow-out-of-hours-usage-pages-to-work-with-limited-data
   specs:
     energy-sparks_analytics (1.2.1)

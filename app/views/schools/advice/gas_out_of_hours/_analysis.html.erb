@@ -17,90 +17,28 @@
   </li>
 </ul>
 
-<%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title') %>
+<%= render 'schools/advice/out_of_hours/last_year',
+    school: @school,
+    analysis_dates: @analysis_dates,
+    usage_categories: @usage_categories,
+    annual_usage_breakdown: @annual_usage_breakdown,
+    fuel_type: :gas,
+    chart: :daytype_breakdown_gas_tolerant
+ %>
 
-<%= component 'chart', chart_type: :daytype_breakdown_gas_tolerant, school: @school do |c| %>
-  <% c.with_title do %>
-    <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.title') %>
-  <% end %>
+<%= render 'by_day',
+  school: @school,
+  analysis_dates: @analysis_dates,
+  annual_usage_breakdown: @annual_usage_breakdown
+%>
 
-  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
-<% end %>
-
-<p><%= t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.table_introduction') %></p>
-
-<%= render 'analysis_table' %>
-
-<%= render 'schools/advice/section_title', section_id: 'usage_by_day_of_week', section_title: t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title') %>
-
-<p><%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.subtitle') %></p>
-
-<%= component 'chart', chart_type: :gas_by_day_of_week_tolerant, school: @school do |c| %>
-  <% c.with_title do %>
-    <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
-  <% end %>
-  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
-  <% c.with_footer do %>
-    <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html',
-        savings_kwh: format_unit((@annual_usage_breakdown.total.kwh - @annual_usage_breakdown.out_of_hours.kwh), :kwh),
-        savings_gbp: format_unit((@annual_usage_breakdown.total.£ - @annual_usage_breakdown.out_of_hours.£), :£)
-        ) %>
-  <% end %>
-<% end %>
-
-<%= render 'schools/advice/section_title', section_id: 'usage_through_the_school_day', section_title: t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.title') %>
-
-<%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.subtitle') %>
-
-<%= component 'chart', chart_type: :gas_heating_season_intraday_up_to_1_year, school: @school do |c| %>
-  <% c.with_title do %>
-    <%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
-  <% end %>
-
-  <% c.with_subtitle { t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
-  <% c.with_footer do %>
-    <%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.footer_html',
-    insights_school_advice_heating_control_path: insights_school_advice_heating_control_path(@school)) %>
-  <% end %>
-<% end %>
-
-<%= render 'schools/advice/section_title', section_id: 'holiday-usage', section_title: t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title') %>
-
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertGasHeatingHotWaterOnDuringHoliday), show_links: false, show_icons: false %>
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousHolidayComparisonGas), show_links: false, show_icons: false %>
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousYearHolidayComparisonGas), show_links: false, show_icons: false %>
-
-
-<% if @analysis_dates.months_of_data >= 14 %>
-  <% chart_type = :alert_group_by_week_gas_14_months %>
-  <% chart_title = 'gas_out_of_hours.analysis.holiday_usage.alert_group_by_week_gas_14_months.title' %>
-  <% chart_config = {} %>
-<% else %>
-  <% chart_type = :management_dashboard_group_by_week_gas %>
-  <% chart_title = 'gas_out_of_hours.analysis.holiday_usage.management_dashboard_group_by_week_gas.title' %>
-  <% chart_config = { y_axis_units: select_y_axis(@school, chart_type, :£) } %>
-<% end %>
-
-<%= component 'chart', chart_type: chart_type, school: @school, chart_config: chart_config do |c| %>
-  <% c.with_title do %>
-    <%= advice_t(chart_title) %>
-  <% end %>
-  <% c.with_subtitle do %>
-    <%= advice_t('gas_out_of_hours.analysis.holiday_usage.alert_group_by_week_gas_14_months.subtitle_html',
-      start_date: @analysis_dates.last_full_week_start_date.to_s(:es_short),
-      end_date: @analysis_dates.last_full_week_end_date.to_s(:es_short))
-     %>
-  <% end %>
-  <% c.with_header do %>
-    <p>
-      <%= advice_t('gas_out_of_hours.analysis.holiday_usage.alert_group_by_week_gas_14_months.header') %>
-    </p>
-  <% end %>
-<% end %>
-
-<p><%= advice_t('gas_out_of_hours.analysis.holiday_usage.table_intro') %></p>
-
-<%= component 'holiday_usage_table', holiday_usage: @holiday_usage, analysis_dates: @analysis_dates %>
-
-<p><%= advice_t('gas_out_of_hours.analysis.holiday_usage.table_alert_note') %></p>
-<p><%= advice_t('gas_out_of_hours.analysis.holiday_usage.table_footer') %></p>
+<%= render 'schools/advice/out_of_hours/holidays',
+    school: @school,
+    analysis_dates: @analysis_dates,
+    fuel_type: :gas,
+    dashboard_alerts: @dashboard_alerts,
+    alert_classes: [AlertGasHeatingHotWaterOnDuringHoliday, AlertPreviousHolidayComparisonGas, AlertPreviousYearHolidayComparisonGas],
+    full_chart: :alert_group_by_week_gas_14_months,
+    limited_chart: :management_dashboard_group_by_week_gas,
+    holiday_usage: @holiday_usage
+ %>
