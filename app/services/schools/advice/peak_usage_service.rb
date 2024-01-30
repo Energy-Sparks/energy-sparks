@@ -8,14 +8,8 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      def enough_data?
-        meter_data_checker.at_least_x_days_data?(AlertElectricityPeakKWVersusBenchmark::DAYS_REQUIRED)
-      end
-
-      def data_available_from
-        meter_data_checker.date_when_enough_data_available(AlertElectricityPeakKWVersusBenchmark::DAYS_REQUIRED)
-      end
-
+      delegate :enough_date?, to: :peak_usage_calculation_service
+      delegate :data_available_from, to: :peak_usage_calculation_service
       delegate :average_peak_kw, to: :peak_usage_calculation_service
       delegate :date_range, to: :peak_usage_calculation_service
 
