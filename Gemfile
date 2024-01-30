@@ -145,6 +145,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'brakeman'
   gem 'bundler-audit'
+  gem 'erb_lint', require: false
   gem 'fasterer'
   gem 'listen' # listen for file changes - what's this used by?
   gem 'overcommit'

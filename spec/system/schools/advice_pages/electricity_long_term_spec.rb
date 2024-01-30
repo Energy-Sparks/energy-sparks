@@ -101,7 +101,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
 
         it 'includes expected sections' do
           expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.recent_trend.title'))
-          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.title'))
+          expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.title'))
           expect(page).to have_no_content(I18n.t('advice_pages.electricity_long_term.analysis.meter_breakdown.title'))
         end
 
