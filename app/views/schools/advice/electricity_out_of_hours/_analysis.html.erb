@@ -18,26 +18,24 @@
 </ul>
 
 <%= render 'schools/advice/out_of_hours/last_year',
-    school: @school,
-    analysis_dates: @analysis_dates,
-    usage_categories: @usage_categories,
-    annual_usage_breakdown: @annual_usage_breakdown,
-    fuel_type: :electricity,
-    chart: :daytype_breakdown_electricity_tolerant
- %>
+           school: @school,
+           analysis_dates: @analysis_dates,
+           usage_categories: @usage_categories,
+           annual_usage_breakdown: @annual_usage_breakdown,
+           fuel_type: :electricity,
+           chart: :daytype_breakdown_electricity_tolerant %>
 
 <%= render 'by_day',
-    school: @school,
-    analysis_dates: @analysis_dates
-%>
+           school: @school,
+           analysis_dates: @analysis_dates %>
 
 <%= render 'schools/advice/out_of_hours/holidays',
-    school: @school,
-    analysis_dates: @analysis_dates,
-    fuel_type: :electricity,
-    dashboard_alerts: @dashboard_alerts,
-    alert_classes: [AlertElectricityUsageDuringCurrentHoliday, AlertPreviousHolidayComparisonElectricity, AlertPreviousYearHolidayComparisonElectricity],
-    full_chart: :alert_group_by_week_electricity_14_months,
-    limited_chart: :management_dashboard_group_by_week_electricity,
-    holiday_usage: @holiday_usage
- %>
+           school: @school,
+           analysis_dates: @analysis_dates,
+           fuel_type: :electricity,
+           dashboard_alerts: @dashboard_alerts,
+           alert_classes: [AlertElectricityUsageDuringCurrentHoliday, AlertPreviousHolidayComparisonElectricity,
+                           AlertPreviousYearHolidayComparisonElectricity],
+           full_chart: :alert_group_by_week_electricity_14_months,
+           limited_chart: :management_dashboard_group_by_week_electricity,
+           holiday_usage: @holiday_usage %>
