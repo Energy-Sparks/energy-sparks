@@ -99,6 +99,9 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
   context 'based on your energy usage section' do
     let(:section) { find(:css, '#energy-usage') }
 
+    # create audit activity and intervention types to make section appear
+    let(:setup_data) { create(:audit, :with_activity_and_intervention_types, school: school) }
+
     it 'has a title' do
       expect(section).to have_content('Based on your energy usage')
     end
@@ -112,6 +115,12 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
   context 'based on your recent activity section' do
     let(:section) { find(:css, '#recent-activity') }
+
+    # create activity and intervention type to be suggested
+    let(:setup_data) do
+      create(:activity_type)
+      create(:intervention_type)
+    end
 
     it 'has a title' do
       expect(section).to have_content('Based on your recent activity')
