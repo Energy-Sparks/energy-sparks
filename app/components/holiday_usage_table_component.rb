@@ -13,6 +13,10 @@ class HolidayUsageTableComponent < ViewComponent::Base
     @analysis_dates = analysis_dates
   end
 
+  def render?
+    !@holiday_usage.empty?
+  end
+
   # Return usage metrics for a specific holiday period
   def holiday_usage(holiday)
     @holiday_usage[holiday].usage

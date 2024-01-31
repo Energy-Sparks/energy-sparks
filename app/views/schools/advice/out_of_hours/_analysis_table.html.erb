@@ -1,4 +1,4 @@
-<table class="table table-sm table-with-totals">
+<table class="table table-sm table-with-totals" id="<%= fuel_type %>-out-of-hours-table">
   <thead class="thead-dark">
     <tr>
       <th class="text-left-">
@@ -43,18 +43,19 @@
         <%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.table.total") %>
       </td>
       <td class="text-right">
-        <%=  format_unit(annual_usage_breakdown_totals_for(annual_usage_breakdown, :kwh), :kwh) %>
+        <%= format_unit(annual_usage_breakdown_totals_for(annual_usage_breakdown, :kwh), :kwh) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(annual_usage_breakdown_totals_for(annual_usage_breakdown, :£), :£) %>
+        <%= format_unit(annual_usage_breakdown_totals_for(annual_usage_breakdown, :£), :£) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(annual_usage_breakdown_totals_for(annual_usage_breakdown, :co2), :co2) %>
+        <%= format_unit(annual_usage_breakdown_totals_for(annual_usage_breakdown, :co2), :co2) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(annual_usage_breakdown_totals_for(annual_usage_breakdown, :percent), :percent) %>
+        <%= format_unit(annual_usage_breakdown_totals_for(annual_usage_breakdown, :percent), :percent) %>
       </td>
     </tr>
   </tbody>
 </table>
-<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes' %>
