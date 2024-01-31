@@ -10,11 +10,13 @@
       <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.title') %>
     </a>
   </li>
-  <li>
-    <a href='#holiday-usage'>
-      <%= t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title') %>
-    </a>
-  </li>
+  <% if show_holiday_usage_section?(@holiday_usage) %>
+    <li>
+      <a href='#holiday-usage'>
+        <%= t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title') %>
+      </a>
+    </li>
+  <% end %>
 </ul>
 
 <%= render 'schools/advice/out_of_hours/last_year',
@@ -29,13 +31,15 @@
            school: @school,
            analysis_dates: @analysis_dates %>
 
-<%= render 'schools/advice/out_of_hours/holidays',
-           school: @school,
-           analysis_dates: @analysis_dates,
-           fuel_type: :electricity,
-           dashboard_alerts: @dashboard_alerts,
-           alert_classes: [AlertElectricityUsageDuringCurrentHoliday, AlertPreviousHolidayComparisonElectricity,
-                           AlertPreviousYearHolidayComparisonElectricity],
-           full_chart: :alert_group_by_week_electricity_14_months,
-           limited_chart: :management_dashboard_group_by_week_electricity,
-           holiday_usage: @holiday_usage %>
+<% if show_holiday_usage_section?(@holiday_usage) %>
+  <%= render 'schools/advice/out_of_hours/holidays',
+             school: @school,
+             analysis_dates: @analysis_dates,
+             fuel_type: :electricity,
+             dashboard_alerts: @dashboard_alerts,
+             alert_classes: [AlertElectricityUsageDuringCurrentHoliday, AlertPreviousHolidayComparisonElectricity,
+                             AlertPreviousYearHolidayComparisonElectricity],
+             full_chart: :alert_group_by_week_electricity_14_months,
+             limited_chart: :management_dashboard_group_by_week_electricity,
+             holiday_usage: @holiday_usage %>
+<% end %>

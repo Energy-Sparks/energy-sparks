@@ -125,29 +125,49 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
           expect(page).to have_css('#chart_wrapper_electricity_by_day_of_week_tolerant')
         end
 
-        it 'has holiday usage section' do
-          expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
-          expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
+        it 'does not have a holiday usage section' do
+          expect(page).not_to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
+          expect(page).not_to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
           expect(page).not_to have_css('#holiday-usage-table')
         end
 
-        context 'with holidays defined' do
-          let(:school) do
-            # create a number of holidays outside usage period
-            calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago)
-            # but ensure there's one holiday within the period to confirm table displays
-            create(:holiday, calendar: calendar, start_date: reading_start_date + 1.day, end_date: reading_start_date + 7.days)
-            school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1, calendar: calendar)
-            create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
-            create(:electricity_meter_with_validated_reading_dates,
-                   school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
-            school
+        context 'with school holidays defined' do
+          context 'but none in period of meter data' do
+            let(:school) do
+              # create a number of holidays outside usage period
+              calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago)
+              school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1, calendar: calendar)
+              create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+              create(:electricity_meter_with_validated_reading_dates,
+                     school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
+              school
+            end
+
+            it 'does not have holiday usage section' do
+              expect(page).not_to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
+              expect(page).not_to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
+              expect(page).not_to have_css('#holiday-usage-table')
+            end
           end
 
-          it 'has holiday usage section' do
-            expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
-            expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
-            expect(page).to have_css('#holiday-usage-table')
+          context 'with one holiday in period of meter data' do
+            let(:school) do
+              # create a number of holidays outside usage period
+              calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago)
+              # but ensure there's one holiday within the period to confirm table displays
+              create(:holiday, calendar: calendar, start_date: reading_start_date + 1.day, end_date: reading_start_date + 7.days)
+              school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1, calendar: calendar)
+              create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+              create(:electricity_meter_with_validated_reading_dates,
+                     school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
+              school
+            end
+
+            it 'has holiday usage section' do
+              expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
+              expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
+              expect(page).to have_css('#holiday-usage-table')
+            end
           end
         end
       end
@@ -166,12 +186,6 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
           expect(page).to have_css('#chart_wrapper_electricity_by_day_of_week_tolerant')
         end
 
-        it 'has holiday usage section' do
-          expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
-          expect(page).to have_css('#chart_wrapper_alert_group_by_week_electricity_14_months')
-          expect(page).not_to have_css('#holiday-usage-table')
-        end
-
         context 'with holidays defined' do
           let(:school) do
             calendar = create(:school_calendar, :with_terms_and_holidays)
@@ -182,7 +196,7 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
             school
           end
 
-          it 'has holiday usage section' do
+          it 'has a holiday usage section' do
             expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
             expect(page).to have_css('#chart_wrapper_alert_group_by_week_electricity_14_months')
             expect(page).to have_css('#holiday-usage-table')
