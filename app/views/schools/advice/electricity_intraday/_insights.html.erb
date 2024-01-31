@@ -21,6 +21,7 @@
 
 <% if @not_enough_data_data_available_from %>
   <p>
+    <%# i18n-tasks-use t('advice_pages.electricity_intraday.insights.your_current_peak_electricity_use.data_on_peak_kw_usage_available_from') %>
     <%= t('advice_pages.electricity_intraday.insights.your_current_peak_electricity_use' \
           '.data_on_peak_kw_usage_available_from',
           data_available_from: short_dates(@not_enough_data_data_available_from)) %>
