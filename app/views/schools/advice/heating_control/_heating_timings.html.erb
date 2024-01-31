@@ -30,7 +30,7 @@
     <tbody>
       <% last_week_start_times.days.each do |day| %>
         <tr>
-          <td><%= day.date.to_s(:es_full) %></td>
+          <td><%= day.date.to_fs(:es_full) %></td>
           <td><%= day.temperature.round(0) %></td>
           <% if day.heating_start_time.present? %>
             <td><%= day.heating_start_time %></td>

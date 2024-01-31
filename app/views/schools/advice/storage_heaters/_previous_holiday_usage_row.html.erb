@@ -2,7 +2,7 @@
   <td><%= I18nHelper.holiday(holiday.type) %></td>
   <td>
     <% if holiday_usage[holiday].previous_holiday.present? %>
-      <%= t('analytics.from_and_to', from_date: holiday_usage[holiday].previous_holiday.start_date.to_s(:es_short), to_date: holiday_usage[holiday].previous_holiday.end_date.to_s(:es_short)) %>
+      <%= t('analytics.from_and_to', from_date: holiday_usage[holiday].previous_holiday.start_date.to_fs(:es_short), to_date: holiday_usage[holiday].previous_holiday.end_date.to_fs(:es_short)) %>
     <% end %>
   </td>
   <% if holiday_usage[holiday].previous_holiday_usage.present? %>

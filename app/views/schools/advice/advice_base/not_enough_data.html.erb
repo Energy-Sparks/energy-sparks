@@ -8,7 +8,7 @@
     </p>
     <% if @analysable.data_available_from.present? %>
       <p>
-        <%= t('advice_pages.not_enough_data.available_from', available_from: @analysable.data_available_from.to_s(:es_short)) %>
+        <%= t('advice_pages.not_enough_data.available_from', available_from: @analysable.data_available_from.to_fs(:es_short)) %>
       </p>
     <% end %>
     <p>

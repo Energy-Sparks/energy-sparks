@@ -72,8 +72,8 @@ RSpec.shared_examples 'a tariff editor index' do
 
     it 'displays the gas tariff' do
       within '#gas-tariffs-table' do
-        expect(page).to have_content(gas_tariff.start_date.to_s(:es_compact))
-        expect(page).to have_content(gas_tariff.end_date.to_s(:es_compact))
+        expect(page).to have_content(gas_tariff.start_date.to_fs(:es_compact))
+        expect(page).to have_content(gas_tariff.end_date.to_fs(:es_compact))
         expect(page).to have_link(gas_tariff.name)
         expect(page).to have_link('Edit')
         expect(page).to have_link('Delete') unless tariff_holder.site_settings?
@@ -82,8 +82,8 @@ RSpec.shared_examples 'a tariff editor index' do
 
     it 'displays the electricity tariff' do
       within '#electricity-tariffs-table' do
-        expect(page).to have_content(electricity_tariff.start_date.to_s(:es_compact))
-        expect(page).to have_content(electricity_tariff.end_date.to_s(:es_compact))
+        expect(page).to have_content(electricity_tariff.start_date.to_fs(:es_compact))
+        expect(page).to have_content(electricity_tariff.end_date.to_fs(:es_compact))
         expect(page).to have_link(electricity_tariff.name)
         expect(page).to have_link('Edit')
         expect(page).to have_link('Delete') unless tariff_holder.site_settings?

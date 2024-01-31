@@ -99,7 +99,7 @@ RSpec.describe 'storage heaters advice page', type: :system do
           expect(page).not_to have_css('.axis-choice')
         end
         expect(page).to have_content('Storage heater use during holidays')
-        expect(page).to have_content(Date.new(2021, 12, 18).to_s(:es_short))
+        expect(page).to have_content(Date.new(2021, 12, 18).to_fs(:es_short))
       end
     end
 

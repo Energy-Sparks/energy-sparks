@@ -9,7 +9,7 @@ module Schools
           @average_peak_kw = average_peak_kw
           @peak_kw_usage_percentage_change = percentage_change_in_peak_kw
           @benchmarked_usage = benchmark_peak_usage
-          @peak_usage_service_date_range = peak_usage_service_date_range
+          @peak_usage_service_date_range = peak_usage_service.date_range
         else
           @not_enough_data_data_available_from = peak_usage_service.data_available_from
         end
@@ -29,10 +29,6 @@ module Schools
         OpenStruct.new(
           enough_data?: true
         )
-      end
-
-      def peak_usage_service_date_range
-        [asof_date - Usage::PeakUsageCalculationService::DATE_RANGE_DAYS_AGO, asof_date]
       end
 
       def asof_date

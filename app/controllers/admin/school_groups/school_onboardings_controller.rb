@@ -56,7 +56,7 @@ module Admin
           school_onboarding.contact_email,
           school_onboarding.notes,
           last_event.event.to_s.humanize,
-          last_event.created_at.to_s(:es_short),
+          last_event.created_at.to_fs(:es_short),
           school_onboarding.school ? helpers.y_n(school_onboarding.school.public) : '',
           school_onboarding.school ? helpers.y_n(school_onboarding.school.visible) : '',
           school_onboarding.school ? helpers.y_n(school_onboarding.school.active) : ''

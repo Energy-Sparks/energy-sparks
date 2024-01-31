@@ -13,7 +13,7 @@
   <%= component 'chart', chart_type: @benchmark_chart, analysis_controls: false, school: @school do |c| %>
     <% c.with_title { advice_t('total_energy_use.charts.benchmark_one_year.title') } %>
     <% c.with_subtitle do %>
-      <%= advice_t('total_energy_use.charts.benchmark_one_year.subtitle', start_date: @analysis_dates.one_year_before_end.to_s(:es_short), end_date: @analysis_dates.end_date.to_s(:es_short)) %>
+      <%= advice_t('total_energy_use.charts.benchmark_one_year.subtitle', start_date: @analysis_dates.one_year_before_end.to_fs(:es_short), end_date: @analysis_dates.end_date.to_fs(:es_short)) %>
     <% end %>
     <% c.with_footer do %>
       <%= advice_t('total_energy_use.charts.benchmark_one_year.footer') %>

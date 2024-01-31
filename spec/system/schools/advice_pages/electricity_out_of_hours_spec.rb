@@ -86,7 +86,7 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
         expect(page).to have_css('#chart_wrapper_daytype_breakdown_electricity_tolerant')
         expect(page).to have_css('#chart_wrapper_electricity_by_day_of_week_tolerant')
         expect(page).to have_content('Holiday usage')
-        expect(page).to have_content(Date.new(2021, 12, 18).to_s(:es_short))
+        expect(page).to have_content(Date.new(2021, 12, 18).to_fs(:es_short))
       end
     end
 

@@ -55,8 +55,8 @@
     <% end %>
     <% c.with_subtitle do %>
       <%= advice_t('electricity_out_of_hours.analysis.holiday_usage.alert_group_by_week_electricity_14_months.subtitle_html',
-        start_date: @analysis_dates.last_full_week_start_date.to_s(:es_short),
-        end_date: @analysis_dates.last_full_week_end_date.to_s(:es_short))
+        start_date: @analysis_dates.last_full_week_start_date.to_fs(:es_short),
+        end_date: @analysis_dates.last_full_week_end_date.to_fs(:es_short))
        %>
     <% end %>
     <% c.with_header do %>
