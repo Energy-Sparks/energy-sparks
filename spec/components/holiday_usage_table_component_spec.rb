@@ -50,10 +50,13 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
     }
   end
 
+  let(:filter_empty_holidays) { false }
+
   let(:params) do
     {
       holiday_usage: holiday_usage,
-      analysis_dates: analysis_dates
+      analysis_dates: analysis_dates,
+      filter_empty_holidays: filter_empty_holidays
     }
   end
 
@@ -63,9 +66,31 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
     render_inline(component)
   end
 
+  describe '.render?' do
+    it 'returns true with data' do
+      expect(component.render?).to be true
+    end
+
+    context 'when there is no data' do
+      let(:holiday_usage) { {} }
+
+      it 'doesnt render' do
+        expect(component.render?).to be false
+      end
+    end
+  end
+
   describe '.school_periods' do
     it 'returns in date order' do
       expect(component.school_periods).to eq([holiday_1, holiday_2, holiday_3, holiday_4])
+    end
+
+    context 'when filtering empty periods' do
+      let(:filter_empty_holidays) { true }
+
+      it 'returns only periods with usage in both holidays' do
+        expect(component.school_periods).to eq([holiday_2, holiday_3, holiday_4])
+      end
     end
   end
 

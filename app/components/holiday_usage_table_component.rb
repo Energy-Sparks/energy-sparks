@@ -7,10 +7,11 @@ class HolidayUsageTableComponent < ViewComponent::Base
   #   previous_holiday: SchoolPeriod
   # }
   # as returned by HolidayUsageCalculationService.school_holiday_calendar_comparison
-  def initialize(id: 'holiday-usage-table', holiday_usage:, analysis_dates:)
+  def initialize(id: 'holiday-usage-table', holiday_usage:, analysis_dates:, filter_empty_holidays: true)
     @id = id
     @holiday_usage = holiday_usage
     @analysis_dates = analysis_dates
+    @filter_empty_holidays = filter_empty_holidays
   end
 
   def render?
@@ -34,7 +35,11 @@ class HolidayUsageTableComponent < ViewComponent::Base
 
   # Return the holidays (SchoolPeriod) in date order
   def school_periods
-    @holiday_usage.keys.sort_by(&:start_date)
+    if @filter_empty_holidays
+      @holiday_usage.reject {|_holiday, usage| usage.usage.nil? && usage.previous_holiday_usage.nil? }.keys.sort_by(&:start_date)
+    else
+      @holiday_usage.keys.sort_by(&:start_date)
+    end
   end
 
   def can_compare_holiday_usage?(holiday)
