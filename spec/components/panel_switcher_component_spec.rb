@@ -68,7 +68,7 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
     end
   end
 
-  context "when one panel is empty" do
+  context 'when one panel is empty' do
     let(:params) { all_params }
 
     let(:html) do
@@ -78,20 +78,20 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
       end
     end
 
-    it "displays the panel with content" do
+    it 'displays the panel with content' do
       expect(html).to have_selector('.panel.name_1', visible: :visible)
     end
 
-    it "selects the radio button for the panel with content" do
-      expect(html).to have_checked_field("Label 1")
+    it 'selects the radio button for the panel with content' do
+      expect(html).to have_checked_field('Label 1')
     end
 
-    it "does not display the empty panel" do
+    it 'does not display the empty panel' do
       expect(html).not_to have_selector('.panel.name_2', visible: :visible)
     end
 
-    it "does not display radio button for the empty panel" do
-      expect(html).not_to have_field("Label 2")
+    it 'does not display radio button for the empty panel' do
+      expect(html).not_to have_field('Label 2')
     end
   end
 
