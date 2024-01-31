@@ -435,9 +435,6 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
-    pg_search (2.3.6)
-      activerecord (>= 5.2)
-      activesupport (>= 5.2)
     popper_js (1.16.1)
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
@@ -772,7 +769,6 @@ DEPENDENCIES
   overcommit
   pagy
   pg
-  pg_search
   premailer-rails
   pry
   pry-byebug
@@ -821,4 +817,4 @@ DEPENDENCIES
   wisper-rspec
 
 BUNDLED WITH
-   2.5.4
+   2.5.5
