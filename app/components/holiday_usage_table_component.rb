@@ -15,7 +15,7 @@ class HolidayUsageTableComponent < ViewComponent::Base
   end
 
   def render?
-    !@holiday_usage.empty?
+    !school_periods.empty?
   end
 
   # Return usage metrics for a specific holiday period

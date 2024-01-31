@@ -111,7 +111,7 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
         end
       end
 
-      context 'with more than a week of meter data' do
+      context 'with less than a year of meter data' do
         let(:reading_start_date) { 30.days.ago }
 
         it 'has last year section' do
@@ -133,7 +133,10 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
 
         context 'with holidays defined' do
           let(:school) do
-            calendar = create(:school_calendar, :with_terms_and_holidays)
+            # create a number of holidays outside usage period
+            calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago)
+            # but ensure there's one holiday within the period to confirm table displays
+            create(:holiday, calendar: calendar, start_date: reading_start_date + 1.day, end_date: reading_start_date + 7.days)
             school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1, calendar: calendar)
             create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
             create(:electricity_meter_with_validated_reading_dates,
