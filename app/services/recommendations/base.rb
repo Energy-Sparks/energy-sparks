@@ -11,16 +11,14 @@ module Recommendations
     def based_on_recent_activity(limit = NUMBER_OF_SUGGESTIONS)
       suggestions = []
 
-      # get tasks completed, most recent first
       completed = completed_ever
 
       # For each one, get the suggested types and add them to the list until we have enough
       while (task = completed.shift) && suggestions.length < limit
-        count_remaining = limit - suggestions.length
-        suggestions += suggested_for(task, excluding: completed_this_year + suggestions).take(count_remaining)
+        suggestions += suggested_for(task, limit, suggestions: suggestions)
       end
 
-      suggestions + suggest_random(limit - suggestions.length, excluding: completed_this_year + suggestions)
+      suggestions.take(limit) + suggest_random(limit, suggestions: suggestions)
     end
 
     def based_on_energy_use(limit = NUMBER_OF_SUGGESTIONS)
@@ -42,33 +40,26 @@ module Recommendations
           end
         end
       end
-      suggestions + suggest_from_audits(limit - suggestions.length, excluding: suggestions + completed_this_year)
+
+      suggestions.take(limit) + suggest_from_audits(limit, suggestions: suggestions)
     end
 
     private
 
-    def fuel_types
-      fuel_types = []
-      # couldn't find how to get a list of school fuel types cleanly?!
-      fuel_types << :electricity if school.has_electricity?
-      fuel_types << :gas if school.has_gas?
-      fuel_types << :storage_heater if school.has_storage_heaters?
-      fuel_types << :solar_pv if school.has_solar_pv?
-      fuel_types
+    def suggest_from_alert(alert, excluding: [])
+      alert_tasks(alert).active.not_including(excluding)
     end
 
-    def alerts_for_fuel_type(fuel_type)
-      school.latest_alerts_without_exclusions.by_rating.by_fuel_type(fuel_type)
+    def alerts_by_fuel_type
+      school.latest_alerts_without_exclusions.by_rating.with_fuel_type.group_by { |a| AlertType.fuel_types.key(a.fuel_type)&.to_sym || :no_fuel }
     end
 
     def tasks_by_fuel_type(limit)
-      alerts = {}
+      alerts = alerts_by_fuel_type
       tasks = {}
 
-      # fetch limit tasks for each fuel type
-      fuel_types.each do |fuel_type|
-        # fetch list of alerts for each fuel type
-        alerts[fuel_type] = alerts_for_fuel_type(fuel_type).to_a
+      # fetch tasks for alerts
+      alerts.each_key do |fuel_type|
         tasks[fuel_type] = []
 
         # get "limit" amount of tasks for each fuel type as at this point we don't know
@@ -80,28 +71,52 @@ module Recommendations
       tasks
     end
 
-    def suggested_for(task, excluding: [])
-      task.suggested_types.not_including(excluding)
+    def suggest_from_audits(limit, suggestions: [])
+      count = limit - suggestions.length
+
+      count > 0 ? audit_tasks.active.not_including(completed_this_year + excluding).limit(count) : []
     end
 
-    def suggest_random(count, excluding: [])
-      count > 0 ? all(excluding: excluding).sample(count) : []
+    def suggested_for(task, limit, suggestions: [])
+      count_remaining = limit - suggestions.length
+
+      count_remaining > 0 ? task.suggested_types.not_including(completed_this_year + suggestions).limit(count_remaining) : []
     end
 
-    def suggest_from_audits
-      raise "Implement in subclass!"
+    def suggest_random(limit, suggestions: [])
+      count_remaining = limit - suggestions.length
+
+      count_remaining > 0 ? all(excluding: completed_this_year + suggestions).sample(count_remaining) : []
+    end
+
+    def all(excluding: [])
+      all_tasks.not_including(excluding).active
+    end
+
+    ## interfaces - for overriding in subclasses
+
+    def alert_tasks
+      must_override!
+    end
+
+    def audit_tasks
+      must_override!
     end
 
     def completed_ever
-      raise "Implement in subclass!"
+      must_override!
     end
 
     def completed_this_year
-      raise "Implement in subclass!"
+      must_override!
     end
 
-    def all(_excluding: [])
-      raise "Implement in subclass!"
+    def all_tasks
+      must_override!
+    end
+
+    def must_override!
+      raise NotImplementedError, "Implement in subclass!"
     end
   end
 end

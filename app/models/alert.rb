@@ -54,8 +54,7 @@ class Alert < ApplicationRecord
 
   scope :electricity,         -> { joins(:alert_type).merge(AlertType.electricity_fuel_type) }
   scope :gas,                 -> { joins(:alert_type).merge(AlertType.gas_fuel_type) }
-  scope :by_fuel_type,        ->(fuel_type) { joins(:alert_type).merge(AlertType.where(fuel_type: fuel_type)) }
-
+  scope :with_fuel_type,      -> { joins(:alert_type).select('alert_types.fuel_type, alerts.*') }
   scope :no_fuel,             -> { joins(:alert_type).merge(AlertType.no_fuel) }
   scope :termly,              -> { joins(:alert_type).merge(AlertType.termly) }
   scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }

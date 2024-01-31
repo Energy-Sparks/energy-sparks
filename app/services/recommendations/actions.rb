@@ -2,12 +2,12 @@ module Recommendations
   class Actions < Base
     private
 
-    def suggest_from_alert(alert, excluding: [])
-      alert.intervention_types.active.not_including(excluding)
+    def alert_tasks(alert)
+      alert.intervention_types
     end
 
-    def suggest_from_audits(count, excluding: [])
-      count > 0 ? school.audit_intervention_types.active.not_including(excluding).limit(count) : []
+    def audit_tasks
+      school.audit_intervention_types
     end
 
     def completed_ever
@@ -18,8 +18,8 @@ module Recommendations
       @completed_this_year ||= school.intervention_types_in_academic_year
     end
 
-    def all(excluding: [])
-      InterventionType.not_custom.not_including(excluding).active
+    def all_tasks
+      InterventionType.not_custom
     end
   end
 end
