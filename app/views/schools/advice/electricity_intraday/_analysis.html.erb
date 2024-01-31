@@ -11,45 +11,75 @@
 </ul>
 
 <!--  SCHOOL COMPARISON -->
-<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.electricity_intraday.analysis.comparison.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t('advice_pages.electricity_intraday.analysis.comparison.title') %>
 
-<%= component 'chart', chart_type: :intraday_line_school_days_reduced_data_versus_benchmarks, school: @school do |c| %>
-  <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_title') } %>
-  <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
+<%= component 'chart',
+              chart_type: :intraday_line_school_days_reduced_data_versus_benchmarks,
+              school: @school do |c| %>
+  <% c.with_title do
+       t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_title',
+         count: @analysis_dates.one_years_data? ? 12 : 1)
+     end %>
+  <% c.with_subtitle do
+       t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_subtitle_html',
+         start_month_year: short_dates(
+           @analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date
+         ),
+         end_month_year: short_dates(@analysis_dates.end_date))
+     end %>
   <% c.with_footer do %>
-    <p><%= t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_explanation_html', school_type: t('common.school_types.' + @school.school_type).downcase) %></p>
+    <p><%= t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_explanation_html',
+             school_type: t("common.school_types.#{@school.school_type}").downcase) %></p>
   <% end %>
 <% end %>
 
+<% key_suffix = @analysis_dates.one_years_data? ? 'two_years' : 'since' %>
+
 <!--  SCHOOL DAYS -->
-<%= render 'schools/advice/section_title', section_id: 'schooldays', section_title: t('advice_pages.electricity_intraday.analysis.schooldays.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'schooldays',
+           section_title: t('advice_pages.electricity_intraday.analysis.schooldays.title') %>
 
 <%= component 'chart', chart_type: :intraday_line_school_days_reduced_data, school: @school do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.schooldays_chart_title') } %>
-  <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle') } %>
+  <% c.with_subtitle do
+       t("advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle.#{key_suffix}",
+         date: @analysis_dates.start_date.to_s(:es_short))
+     end %>
   <% c.with_footer do %>
     <p><%= t('advice_pages.electricity_intraday.analysis.charts.schooldays_chart_explanation_html') %></p>
   <% end %>
 <% end %>
 
 <!--  HOLIDAYS -->
-<%= render 'schools/advice/section_title', section_id: 'holidays', section_title: t('advice_pages.electricity_intraday.analysis.holidays.title') %>
+<%= render 'schools/advice/section_title', section_id: 'holidays',
+                                           section_title: t('advice_pages.electricity_intraday.analysis.holidays.title') %>
 
 <%= component 'chart', chart_type: :intraday_line_holidays, school: @school do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.holidays_chart_title') } %>
-  <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle') } %>
+  <% c.with_subtitle do
+       t("advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle.#{key_suffix}",
+         date: @analysis_dates.start_date.to_s(:es_short))
+     end %>
 <% end %>
 
 <!--  WEEKENDS -->
-<%= render 'schools/advice/section_title', section_id: 'weekends', section_title: t('advice_pages.electricity_intraday.analysis.weekends.title') %>
+<%= render 'schools/advice/section_title', section_id: 'weekends',
+                                           section_title: t('advice_pages.electricity_intraday.analysis.weekends.title') %>
 
 <%= component 'chart', chart_type: :intraday_line_weekends, school: @school do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.weekends_chart_title') } %>
-  <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle') } %>
+  <% c.with_subtitle do
+       t("advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle.#{key_suffix}",
+         date: @analysis_dates.start_date.to_s(:es_short))
+     end %>
 <% end %>
 
 <!--  RECENT TRENDS -->
-<%= render 'schools/advice/section_title', section_id: 'trends', section_title: t('advice_pages.electricity_intraday.analysis.trends.title') %>
+<%= render 'schools/advice/section_title', section_id: 'trends',
+                                           section_title: t('advice_pages.electricity_intraday.analysis.trends.title') %>
 
 <%= component 'chart', chart_type: :intraday_line_school_last7days, school: @school do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.trends_chart_title') } %>

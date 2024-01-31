@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 23f96fc23fa85766f62519a12c72af2c3efe9786
+  revision: 4f77ffbacde6b87ba97b2804da59589e609f7248
   branch: 3996-allow-peak-usage-calculations-and-benchmarks-to-work-with-limited-data
   specs:
     energy-sparks_analytics (1.2.1)

@@ -37,7 +37,7 @@ RSpec.describe 'electricity intraday advice page', type: :system do
       end
 
       context 'when not enough data' do
-        let(:start_date) { end_date - 58.days }
+        let(:start_date) { end_date - 12.days }
 
         it 'shows only relevent content' do
           expect(page).to have_content('Your current peak electricity use')

@@ -15,8 +15,12 @@ en:
               If your school has high consumption overnight, compared to the benchmark schools, this could indicate that you need to reduce your baseload. If consumption is mainly high during the middle of the day, this indicates you need to reduce your peak electricity use.
             </p>
           comparison_chart_subtitle_html: The chart below provides a comparison of your school's average consumption during school days between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'benchmark' and 'exemplar' schools.
-          comparison_chart_title: Your school day electricity consumption over the last 12 months
-          holidays_chart_subtitle: The graph compares the average electricity consumption for your school during the school holidays over the last 2 years
+          comparison_chart_title:
+            one: Your recent school day electricity consumption
+            other: Your school day electricity consumption over the last %{count} months
+          holidays_chart_subtitle:
+            since: The graph compares the average electricity consumption for your school during the school holidays since %{date}
+            two_years: The graph compares the average electricity consumption for your school during the school holidays over the last 2 years
           holidays_chart_title: Daily variation in electricity use during school holidays
           schooldays_chart_explanation_html: |-
             <p>
@@ -25,12 +29,16 @@ en:
             <p>
               It is useful in diagnosing what changes have happened over the last year which may have changed electricity consumption.
             </p>
-          schooldays_chart_subtitle: The chart shows the average electricity consumption for your school during the school day over the last 2 years
+          schooldays_chart_subtitle:
+            since: The chart shows the average electricity consumption for your school during the school day since %{date}
+            two_years: The chart shows the average electricity consumption for your school during the school day over the last 2 years
           schooldays_chart_title: Daily variation in electricity use during school days
           trends_chart_explanation: You can use this type of graph to understand how the schools electricity usage changes over time. You can click on the legend to add or remove lines from the graph to make it clearer.
           trends_chart_subtitle: The graph shows how the electricity consumption for your school varies during the day over the last week
           trends_chart_title: Daily variation in electricity use over the last 7 days
-          weekends_chart_subtitle: The graph compares the average electricity consumption for your school during the weekend over the last 2 years
+          weekends_chart_subtitle:
+            since: The graph compares the average electricity consumption for your school during the weekend since %{date}
+            two_years: The graph compares the average electricity consumption for your school during the weekend over the last 2 years
           weekends_chart_title: Daily variation in electricity use over the weekends
         comparison:
           title: How does your school compare?
