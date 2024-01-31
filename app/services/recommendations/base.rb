@@ -31,11 +31,9 @@ module Recommendations
           break if suggestions.length >= limit
 
           if tasks[fuel_type].empty?
-            # puts "Run out of tasks for #{fuel_type}"
             tasks.delete(fuel_type)
           else
             # add if not already present
-            # puts "Adding task for #{fuel_type}"
             suggestions |= [tasks[fuel_type].shift]
           end
         end
