@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe 'Recommendations Page', type: :system, include_application_helper: true do
-  let!(:school) { create :school, name: 'School Name' }
+  let(:key_stage_1) { create :key_stage, name: 'KS1'}
+  let!(:school) { create :school, name: 'School Name', key_stages: [key_stage_1] }
   let!(:setup_data) {}
   let(:user) {}
 
@@ -115,10 +116,11 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
   context 'based on your recent activity section' do
     let(:section) { find(:css, '#recent-activity') }
+    let(:school) { create :school, key_stages: create_list(:key_stage, 1) }
 
     # create activity and intervention type to be suggested
     let(:setup_data) do
-      create(:activity_type)
+      create(:activity_type, key_stages: school.key_stages)
       create(:intervention_type)
     end
 
