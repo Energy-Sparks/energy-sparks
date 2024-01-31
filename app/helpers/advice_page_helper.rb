@@ -198,7 +198,7 @@ module AdvicePageHelper
   # holiday usage is a Hash of school_period => OpenStruct
   # confirms that at least one period has usage
   def show_holiday_usage_section?(holiday_usage)
-    holiday_usage.values.any? {|usage| usage(&:usage) }
+    holiday_usage.values.any? {|holiday_usage| holiday_usage.usage.present? }
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers
