@@ -18,6 +18,10 @@ module Recommendations
       @completed_this_year ||= school.intervention_types_in_academic_year
     end
 
+    def suggested_tasks_for(task)
+      task.suggested_types
+    end
+
     def all_tasks
       InterventionType.not_custom
     end

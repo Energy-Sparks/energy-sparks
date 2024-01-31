@@ -80,7 +80,7 @@ module Recommendations
     def suggested_for(task, limit, suggestions: [])
       count_remaining = limit - suggestions.length
 
-      count_remaining > 0 ? task.suggested_types.not_including(completed_this_year + suggestions).limit(count_remaining) : []
+      count_remaining > 0 ? suggested_tasks_for(task).not_including(completed_this_year + suggestions).limit(count_remaining) : []
     end
 
     def suggest_random(limit, suggestions: [])
@@ -108,6 +108,10 @@ module Recommendations
     end
 
     def completed_this_year
+      must_override!
+    end
+
+    def suggested_tasks_for
       must_override!
     end
 

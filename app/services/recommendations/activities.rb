@@ -3,7 +3,7 @@ module Recommendations
     private
 
     def alert_tasks(alert)
-      alert.activity_types
+      alert.activity_types.for_key_stages(school.key_stages)
     end
 
     def audit_tasks
@@ -18,8 +18,12 @@ module Recommendations
       @completed_this_year ||= school.activity_types_in_academic_year
     end
 
+    def suggested_tasks_for(task)
+      task.suggested_types.for_key_stages(school.key_stages)
+    end
+
     def all_tasks
-      ActivityType.all
+      ActivityType.for_key_stages(school.key_stages)
     end
   end
 end
