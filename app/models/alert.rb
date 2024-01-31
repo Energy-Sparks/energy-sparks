@@ -43,7 +43,6 @@ class Alert < ApplicationRecord
   has_many :find_out_mores,         inverse_of: :alert
   has_many :alert_subscription_events
 
-  # Don't forget alerts scope column?
   has_many :alert_type_ratings, ->(alert) { alert.rating.present? ? for_rating(alert.rating.to_f.round(1)) : none }, primary_key: 'alert_type_id', foreign_key: 'alert_type_id'
   has_many :intervention_types, through: :alert_type_ratings
   has_many :activity_types, through: :alert_type_ratings
@@ -66,7 +65,7 @@ class Alert < ApplicationRecord
 
   scope :by_type, -> { joins(:alert_type).order('alert_types.title') }
 
-  scope :rating_between, ->(from, to) { where("rating BETWEEN ? AND ?", from, to) }
+  scope :rating_between, ->(from, to) { where('rating BETWEEN ? AND ?', from, to) }
   scope :by_rating, ->(order: :asc) { order(rating: order) }
 
   enum enough_data: [:enough, :not_enough, :minimum_might_not_be_accurate], _prefix: :data

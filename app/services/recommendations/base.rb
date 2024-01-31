@@ -74,7 +74,7 @@ module Recommendations
     def suggest_from_audits(limit, suggestions: [])
       count = limit - suggestions.length
 
-      count > 0 ? audit_tasks.active.not_including(completed_this_year + excluding).limit(count) : []
+      count > 0 ? audit_tasks.active.not_including(completed_this_year + suggestions).limit(count) : []
     end
 
     def suggested_for(task, limit, suggestions: [])
@@ -116,7 +116,7 @@ module Recommendations
     end
 
     def must_override!
-      raise NotImplementedError, "Implement in subclass!"
+      raise NotImplementedError, 'Implement in subclass!'
     end
   end
 end
