@@ -121,6 +121,14 @@ RSpec.shared_examples 'a service making recommendations based on energy use' do
     end
   end
 
+  context 'when alert rating is nil' do
+    let(:alert_rating_elec) { nil }
+
+    it 'does not include intervention types for alert rating' do
+      expect(energy_use).not_to include(*elec)
+    end
+  end
+
   context 'when there is an alert with higher rating' do
     let!(:one_gas) { [create(task_type, name: 'another gas')] }
     let!(:another_alert_type_gas) { create(:alert_type, fuel_type: :gas)}
