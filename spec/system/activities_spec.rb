@@ -25,12 +25,6 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-      example.run
-    end
-  end
-
   context 'as a public user' do
     before do
       visit activity_type_path(activity_type)
