@@ -30,8 +30,8 @@ RSpec.describe 'storage heaters advice page', type: :system do
         percent: 0.4
       )
 
-      allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:usage_breakdown) do
-        Usage::AnnualUsageCategoryBreakdown.new(
+      allow_any_instance_of(Usage::UsageBreakdownService).to receive(:usage_breakdown) do
+        Usage::UsageBreakdown.new(
           holiday: combined_usage_metric,
           school_day_closed: combined_usage_metric,
           school_day_open: combined_usage_metric,
@@ -41,8 +41,7 @@ RSpec.describe 'storage heaters advice page', type: :system do
           fuel_type: :storage_heater
         )
       end
-      allow_any_instance_of(Usage::AnnualUsageCategoryBreakdown).to receive(:total) { combined_usage_metric }
-      allow_any_instance_of(Usage::AnnualUsageCategoryBreakdown).to receive(:potential_savings) { combined_usage_metric }
+      allow_any_instance_of(Usage::UsageBreakdown).to receive(:total) { combined_usage_metric }
       allow_any_instance_of(Heating::SeasonalControlAnalysisService).to receive(:seasonal_analysis) {
         OpenStruct.new(
           estimated_savings: combined_usage_metric,
