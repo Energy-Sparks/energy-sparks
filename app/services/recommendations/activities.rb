@@ -2,12 +2,16 @@ module Recommendations
   class Activities < Base
     private
 
+    def with_key_stage(scope)
+      school.key_stages.any? ? scope.for_key_stages(school.key_stages) : scope
+    end
+
     def alert_tasks(alert)
-      alert.activity_types.for_key_stages(school.key_stages)
+      with_key_stage(alert.activity_types)
     end
 
     def audit_tasks
-      school.audit_activity_types
+      with_key_stage(school.audit_activity_types)
     end
 
     def completed_ever
@@ -19,11 +23,11 @@ module Recommendations
     end
 
     def suggested_tasks_for(task)
-      task.suggested_types.for_key_stages(school.key_stages)
+      with_key_stage(task.suggested_types)
     end
 
     def all_tasks
-      ActivityType.for_key_stages(school.key_stages)
+      with_key_stage(ActivityType.all)
     end
   end
 end
