@@ -8,16 +8,19 @@
 <% start_date = analysis_dates.one_years_data? ? analysis_dates.end_date - 1.year : analysis_dates.start_date %>
 
 <%= component 'chart', chart_type: :gas_by_day_of_week_tolerant, school: school do |c| %>
+  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
   <% c.with_title do %>
     <%= t('advice_pages.gas_out_of_hours.'\
           'analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
   <% end %>
+  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html' %>
   <% c.with_subtitle do
        t('advice_pages.gas_out_of_hours.'\
          'analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html',
          start_month_year: short_dates(start_date),
          end_month_year: short_dates(analysis_dates.end_date))
      end %>
+  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html') %>
   <% c.with_footer do %>
     <%= t('advice_pages.gas_out_of_hours.'\
           'analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html',
@@ -33,17 +36,19 @@
 <%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.subtitle') %>
 
 <%= component 'chart', chart_type: :gas_heating_season_intraday_up_to_1_year, school: school do |c| %>
+  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
   <% c.with_title do %>
     <%= t('advice_pages.gas_out_of_hours.'\
           'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
   <% end %>
-
+  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html') %>
   <% c.with_subtitle do
        t('advice_pages.gas_out_of_hours.'\
          'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html',
          start_month_year: short_dates(start_date),
          end_month_year: short_dates(analysis_dates.end_date))
      end %>
+  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.footer_html') %>
   <% c.with_footer do %>
     <%= t('advice_pages.gas_out_of_hours.'\
           'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.footer_html',
