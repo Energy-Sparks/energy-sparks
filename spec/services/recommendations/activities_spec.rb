@@ -65,5 +65,37 @@ describe Recommendations::Activities, type: :service do
 
       it_behaves_like 'a service making recommendations based on energy use'
     end
+
+    context 'when school has key stages' do
+      let(:key_stages) { [ks1] }
+
+      let!(:activity_type_ks1) { create(:activity_type, key_stages: [ks1]) }
+      let!(:activity_type_ks_other) { create(:activity_type, key_stages: [create(:key_stage)]) }
+
+      let!(:alert_generation_run) { create(:alert_generation_run, school: school)}
+      let!(:alert_type) { create(:alert_type)}
+
+      let!(:ks_one) { create(task_type, name: 'ks 1', key_stages: [ks1]) }
+      let!(:ks_other) { create(task_type, name: 'ks other', key_stages: [create(:key_stage)]) }
+
+      let!(:alert_type_rating) { create(:alert_type_rating, rating_from: 1.0, rating_to: 10.0, alert_type: alert_type, activity_types: [ks_one, ks_other]) }
+
+      let!(:alert) do
+        create(:alert,
+          alert_generation_run: alert_generation_run,
+          alert_type: alert_type,
+          school: school,
+          rating: 5
+        )
+      end
+
+      it 'returns suggestions from the same key stage' do
+        expect(energy_use).to include(ks_one)
+      end
+
+      it 'does not return recommendations from different key stages' do
+        expect(energy_use).not_to include(ks_other)
+      end
+    end
   end
 end

@@ -69,8 +69,6 @@ RSpec.shared_examples 'a service making recommendations based on recent activity
 end
 
 RSpec.shared_examples 'a service making recommendations based on energy use' do
-  subject(:energy_yse) { service.based_on_energy_use(limit) }
-
   let!(:alert_generation_run) { create(:alert_generation_run, school: school)}
   let!(:alert_type_elec) { create(:alert_type, fuel_type: :electricity)}
   let!(:alert_type_gas) { create(:alert_type, fuel_type: :gas)}
