@@ -2,6 +2,7 @@ module Schools
   module Advice
     class PeakUsageService
       include AnalysableMixin
+      # matches the required days for base load advice pages - see BaseloadService and Baseload::BaseService it uses
       REQUIRED_DAYS = 14
 
       def initialize(school, meter_collection)
@@ -21,9 +22,10 @@ module Schools
       delegate :date_range, to: :peak_usage_calculation_service
 
       def previous_year_peak_kw
-        return unless meter_data_checker.one_years_data?
-
         previous_years_asof_date = asof_date - 1.year
+        previous_years_checker = Util::MeterDateRangeChecker.new(aggregate_meter, previous_years_asof_date)
+        return unless previous_years_checker.at_least_x_days_data?(REQUIRED_DAYS)
+
         previous_years_peak_usage_calculation_service = peak_usage_calculation_service(previous_years_asof_date)
         previous_years_peak_usage_calculation_service.average_peak_kw
       end
