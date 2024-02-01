@@ -5,13 +5,13 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
 
   let(:school) do
     school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
-    create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+    create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil, meter_type: :electricity)
     create(:electricity_meter_with_validated_reading_dates,
            school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
     school
   end
 
-  before { create(:advice_page, key: :electricity_out_of_hours) }
+  before { create(:advice_page, key: :electricity_out_of_hours, fuel_type: :electricity) }
 
   shared_examples 'an electricity out of hours advice page tab' do |tab:|
     it_behaves_like 'an advice page tab', tab: tab do
