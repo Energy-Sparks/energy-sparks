@@ -328,31 +328,19 @@ class School < ApplicationRecord
   end
 
   def activities_in_academic_year(date)
-    if (academic_year = academic_year_for(date))
-      return activities.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
-    end
-    []
-  end
-
-  def observations_in_academic_year(date)
-    if (academic_year = academic_year_for(date))
-      return observations.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
-    end
-    []
-  end
-
-  def intervention_types_in_academic_year(date = Time.zone.now)
-    academic_year = academic_year_for(date)
-    return [] unless academic_year
-
-    intervention_types.merge(observations.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
+    activities.in_academic_year_for(self, date).order(created_at: :asc)
   end
 
   def activity_types_in_academic_year(date = Time.zone.now)
-    academic_year = academic_year_for(date)
-    return [] unless academic_year
+    activity_types.merge(activities.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
+  end
 
-    activity_types.merge(activities.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
+  def observations_in_academic_year(date)
+    observations.in_academic_year_for(self, date).order(created_at: :asc)
+  end
+
+  def intervention_types_in_academic_year(date = Time.zone.now)
+    intervention_types.merge(observations.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
   # for removal when Interventions::SuggestAction is removed
