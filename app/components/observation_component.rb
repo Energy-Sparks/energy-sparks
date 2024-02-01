@@ -168,10 +168,6 @@ class ObservationComponent < ViewComponent::Base
       'temperature-high'
     end
 
-    def target
-      observation.locations.map(&:name).uniq.to_sentence
-    end
-
     def show_path
       school_temperature_observations_path(school)
     end

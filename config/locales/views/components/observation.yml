@@ -33,10 +33,10 @@ en:
         message: Started working towards an energy saving target
       temperature:
         compact_message_html:
-          one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> by recording indoor temperatures in <a href="%{compact_path}">%{target}</a>
-          other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> by recording indoor temperatures in <a href="%{compact_path}">%{target}</a>
-          zero: <a href="%{school_path}">%{school}</a> recorded indoor temperatures in <a href="%{compact_path}">%{target}</a>
-        message: Recorded indoor temperatures in
+          one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> by <a href="%{compact_path}">recording indoor temperatures</a>
+          other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> by <a href="%{compact_path}">recording indoor temperatures</a>
+          zero: <a href="%{school_path}">%{school}</a> <a href="%{compact_path}">recorded indoor temperatures</a>
+        message: Recorded indoor temperatures
       transport_survey:
         compact_message_html: <a href="%{school_path}">%{school}</a> started a <a href="%{compact_path}">transport survey</a>
         message:

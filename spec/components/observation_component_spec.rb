@@ -179,7 +179,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
     let(:observation) { create(:observation, :temperature) }
 
     it { expect(html).to have_css('i.fa-temperature-high') }
-    it { expect(html).to have_content('Recorded indoor temperatures in: ') }
+    it { expect(html).to have_content('Recorded indoor temperatures') }
     it { expect(html).to have_link('', href: school_temperature_observations_path(observation.school)) }
 
     context 'when show_actions is true' do
@@ -195,7 +195,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:compact) { true }
 
       it { expect(html).to have_css('i.fa-temperature-high') }
-      it { expect(html).to have_content("#{observation.school.name} scored 5 points by recording indoor temperatures in") }
+      it { expect(html).to have_content("#{observation.school.name} scored 5 points by recording indoor temperatures") }
     end
   end
 
