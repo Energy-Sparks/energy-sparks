@@ -99,7 +99,7 @@ module Recommendations
 
     ## interfaces - for overriding in subclasses
 
-    def alert_tasks
+    def alert_tasks(_alert)
       must_override!
     end
 
@@ -107,7 +107,7 @@ module Recommendations
       must_override!
     end
 
-    def task_tasks
+    def task_tasks(_task)
       must_override!
     end
 
