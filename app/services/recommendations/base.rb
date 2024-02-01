@@ -63,7 +63,7 @@ module Recommendations
         # get "limit" amount of tasks for each fuel type as at this point we don't know
         # if other fuel types have any alerts / tasks available
         while (alert = alerts[fuel_type].shift) && tasks[fuel_type].length < limit
-          tasks[fuel_type] += suggest_from_alert(alert, excluding: completed_this_year)
+          tasks[fuel_type] += suggest_from_alert(alert, excluding: completed_this_year) # completed tasks removed later
         end
       end
       tasks
@@ -78,13 +78,13 @@ module Recommendations
     def suggested_for(task, limit, suggestions: [])
       count_remaining = limit - suggestions.length
 
-      count_remaining > 0 ? suggested_tasks_for(task).not_including(completed_this_year + suggestions).limit(count_remaining) : []
+      count_remaining > 0 ? suggested_tasks_for(task).active.not_including(completed_this_year + suggestions).limit(count_remaining) : []
     end
 
     def suggest_random(limit, suggestions: [])
       count_remaining = limit - suggestions.length
 
-      count_remaining > 0 ? all(excluding: completed_this_year + suggestions).sample(count_remaining) : []
+      count_remaining > 0 ? all(excluding: completed_this_year + suggestions).active.sample(count_remaining) : []
     end
 
     def all(excluding: [])

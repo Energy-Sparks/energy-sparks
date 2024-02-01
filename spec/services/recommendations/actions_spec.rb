@@ -15,7 +15,6 @@ describe Recommendations::Actions, type: :service do
     let!(:intervention_type_3) { create(:intervention_type, suggested_types: [intervention_type_1]) }
     let!(:intervention_type_4) { create(:intervention_type) }
 
-
     let(:limit) { 5 }
 
     subject(:recent_activity) { service.based_on_recent_activity(limit) }
@@ -93,13 +92,13 @@ describe Recommendations::Actions, type: :service do
     let!(:alert_type_elec) { create(:alert_type, fuel_type: :electricity)}
     let!(:alert_type_gas) { create(:alert_type, fuel_type: :gas)}
 
-    let!(:intervention_types_elec) { 3.times.collect {|i| create(:intervention_type, name: "elec #{i}") } }
-    let!(:intervention_types_gas) { 3.times.collect {|i| create(:intervention_type, name: "gas #{i}") } }
+    let!(:elec) { 3.times.collect {|i| create(:intervention_type, name: "elec #{i}") } }
+    let!(:gas) { 3.times.collect {|i| create(:intervention_type, name: "gas #{i}") } }
 
-    let!(:alert_type_rating_elec) { create(:alert_type_rating, rating_from: 2.0, rating_to: 6.0, alert_type: alert_type_elec, intervention_types: intervention_types_elec) }
-    let!(:alert_type_rating_gas) { create(:alert_type_rating, rating_from: 2.0, rating_to: 6.0, alert_type: alert_type_gas, intervention_types: intervention_types_gas) }
+    let!(:alert_type_rating_elec) { create(:alert_type_rating, rating_from: 2.0, rating_to: 6.0, alert_type: alert_type_elec, intervention_types: elec) }
+    let!(:alert_type_rating_gas) { create(:alert_type_rating, rating_from: 2.0, rating_to: 6.0, alert_type: alert_type_gas, intervention_types: gas) }
 
-    let(:alert_rating_elec) { 5.0 }
+    let(:alert_rating_elec) { 4.0 }
 
     let!(:alert_elec) do
       create(:alert,
@@ -120,16 +119,16 @@ describe Recommendations::Actions, type: :service do
     end
 
     it 'includes ratings suggestions alternating by fuel type' do
-      expect(recent_activity).to eq([intervention_types_elec[0], intervention_types_gas[0], intervention_types_elec[1], intervention_types_gas[1], intervention_types_elec[2]])
+      expect(recent_activity).to eq([elec[0], gas[0], elec[1], gas[1], elec[2]])
     end
 
     context 'when an alert activity has been completed this year' do
       before do
-        create(:observation, :intervention, school: school, at: this_academic_year, intervention_type: intervention_types_elec[0])
+        create(:observation, :intervention, school: school, at: this_academic_year, intervention_type: elec[0])
       end
 
       it 'does not include activities completed this year' do
-        expect(recent_activity).not_to include(intervention_types_elec[0])
+        expect(recent_activity).not_to include(elec[0])
       end
     end
 
@@ -137,14 +136,14 @@ describe Recommendations::Actions, type: :service do
       let(:alert_rating_elec) { 1.0 }
 
       it 'does not include intervention types for alert rating' do
-        expect(recent_activity).not_to include(*intervention_types_elec)
+        expect(recent_activity).not_to include(*elec)
       end
     end
 
     context 'when there is an alert with higher rating' do
-      let!(:more_intervention_types_gas) { 3.times.collect {|i| create(:intervention_type, name: "another gas #{i}") } }
+      let!(:one_gas) { [create(:intervention_type, name: 'another gas')] }
       let!(:another_alert_type_gas) { create(:alert_type, fuel_type: :gas)}
-      let!(:another_alert_type_rating_gas) { create(:alert_type_rating, rating_from: 1.0, rating_to: 10.0, alert_type: another_alert_type_gas, intervention_types: more_intervention_types_gas) }
+      let!(:another_alert_type_rating_gas) { create(:alert_type_rating, rating_from: 1.0, rating_to: 10.0, alert_type: another_alert_type_gas, intervention_types: one_gas) }
       let!(:another_alert_gas) do
         create(:alert,
           alert_generation_run: alert_generation_run,
@@ -155,11 +154,38 @@ describe Recommendations::Actions, type: :service do
       end
 
       it 'picks from alert with higher rating' do
-        expect(recent_activity).to include(*more_intervention_types_gas)
+        expect(recent_activity).to include(*one_gas)
       end
 
       it 'includes ratings suggestions alternating by fuel type' do
-        expect(recent_activity).to eq([more_intervention_types_gas[0], intervention_types_elec[0], more_intervention_types_gas[1], intervention_types_elec[1], more_intervention_types_gas[2]])
+        expect(recent_activity).to eq([one_gas[0], elec[0], gas[0], elec[1], gas[1]])
+      end
+    end
+
+    context 'when the alert type has no fuel' do
+      let!(:no_fuel) { 3.times.collect {|i| create(:intervention_type, name: "no fuel #{i}") } }
+      let!(:alert_type_no_fuel) { create(:alert_type, fuel_type: nil)}
+      let!(:alert_type_rating_no_fuel) { create(:alert_type_rating, rating_from: 1.0, rating_to: 10.0, alert_type: alert_type_no_fuel, intervention_types: no_fuel) }
+
+      let!(:alert_no_fuel) do
+        create(:alert,
+          alert_generation_run: alert_generation_run,
+          alert_type: alert_type_no_fuel,
+          school: school,
+          rating: 2.0
+        )
+      end
+
+      it 'includes ratings suggestions alternating by fuel type' do
+        expect(recent_activity).to eq([no_fuel[0], elec[0], gas[0], no_fuel[1], elec[1]])
+      end
+    end
+
+    context 'when alert types have same suggestions' do
+      let!(:gas) { elec }
+
+      it 'includes them once' do
+        expect(recent_activity).to eq([elec[0], elec[1], elec[2]])
       end
     end
 
