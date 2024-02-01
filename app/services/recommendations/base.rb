@@ -15,10 +15,10 @@ module Recommendations
 
       # For each one, get the suggested types and add them to the list until we have enough
       while (task = completed.shift) && suggestions.length < limit
-        suggestions += suggested_for(task, limit, suggestions: suggestions)
+        suggestions += task_suggestions(task, limit, suggestions: suggestions)
       end
 
-      suggestions.take(limit) + suggest_random(limit, suggestions: suggestions)
+      suggestions.take(limit) + random_suggestions(limit, suggestions: suggestions)
     end
 
     def based_on_energy_use(limit = NUMBER_OF_SUGGESTIONS)
@@ -39,17 +39,19 @@ module Recommendations
         end
       end
 
-      suggestions.take(limit) + suggest_from_audits(limit, suggestions: suggestions)
+      suggestions.take(limit) + audit_suggestions(limit, suggestions: suggestions)
     end
 
     private
 
-    def suggest_from_alert(alert, excluding: [])
+    def alert_suggestions(alert, excluding: [])
       alert_tasks(alert).active.not_including(excluding)
     end
 
     def alerts_by_fuel_type
-      school.latest_alerts_without_exclusions.by_rating.with_fuel_type.group_by { |a| AlertType.fuel_types.key(a.fuel_type)&.to_sym || :no_fuel }
+      school.latest_alerts_without_exclusions.by_rating.with_fuel_type.group_by do |alert|
+        AlertType.fuel_types.key(alert.fuel_type)&.to_sym || :no_fuel
+      end
     end
 
     def tasks_by_fuel_type(limit)
@@ -63,25 +65,25 @@ module Recommendations
         # get "limit" amount of tasks for each fuel type as at this point we don't know
         # if other fuel types have any alerts / tasks available
         while (alert = alerts[fuel_type].shift) && tasks[fuel_type].length < limit
-          tasks[fuel_type] += suggest_from_alert(alert, excluding: completed_this_year) # completed tasks removed later
+          tasks[fuel_type] += alert_suggestions(alert, excluding: completed_this_year) # completed tasks removed later
         end
       end
       tasks
     end
 
-    def suggest_from_audits(limit, suggestions: [])
+    def audit_suggestions(limit, suggestions: [])
       count = limit - suggestions.length
 
       count > 0 ? audit_tasks.active.not_including(completed_this_year + suggestions).limit(count) : []
     end
 
-    def suggested_for(task, limit, suggestions: [])
+    def task_suggestions(task, limit, suggestions: [])
       count_remaining = limit - suggestions.length
 
-      count_remaining > 0 ? suggested_tasks_for(task).active.not_including(completed_this_year + suggestions).limit(count_remaining) : []
+      count_remaining > 0 ? task_tasks(task).active.not_including(completed_this_year + suggestions).limit(count_remaining) : []
     end
 
-    def suggest_random(limit, suggestions: [])
+    def random_suggestions(limit, suggestions: [])
       count_remaining = limit - suggestions.length
 
       count_remaining > 0 ? all(excluding: completed_this_year + suggestions).active.sample(count_remaining) : []
@@ -89,6 +91,10 @@ module Recommendations
 
     def all(excluding: [])
       all_tasks.not_including(excluding).active
+    end
+
+    def must_override!
+      raise NotImplementedError, 'Implement in subclass!'
     end
 
     ## interfaces - for overriding in subclasses
@@ -101,6 +107,10 @@ module Recommendations
       must_override!
     end
 
+    def task_tasks
+      must_override!
+    end
+
     def completed_ever
       must_override!
     end
@@ -109,16 +119,8 @@ module Recommendations
       must_override!
     end
 
-    def suggested_tasks_for
-      must_override!
-    end
-
     def all_tasks
       must_override!
-    end
-
-    def must_override!
-      raise NotImplementedError, 'Implement in subclass!'
     end
   end
 end

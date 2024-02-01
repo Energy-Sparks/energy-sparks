@@ -14,16 +14,16 @@ module Recommendations
       with_key_stage(school.audit_activity_types)
     end
 
+    def task_tasks(task)
+      with_key_stage(task.suggested_types)
+    end
+
     def completed_ever
       @completed_ever ||= school.activity_types.merge(school.activities.by_date(:desc)).uniq # newest first
     end
 
     def completed_this_year
       @completed_this_year ||= school.activity_types_in_academic_year
-    end
-
-    def suggested_tasks_for(task)
-      with_key_stage(task.suggested_types)
     end
 
     def all_tasks
