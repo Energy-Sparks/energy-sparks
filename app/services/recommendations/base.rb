@@ -22,19 +22,28 @@ module Recommendations
     end
 
     def based_on_energy_use(limit = NUMBER_OF_SUGGESTIONS)
-      tasks = tasks_by_fuel_type(limit)
-      suggestions = []
+      alerts = alerts_by_fuel_type
+      fuel_types = alerts.keys
 
-      # keep taking a task from each fuel type until we have enough
-      while suggestions.length < limit && !tasks.empty?
-        tasks.each_key do |fuel_type|
+      suggestions = []
+      tasks = {}
+
+      while suggestions.length < limit && !fuel_types.empty?
+        fuel_types.each do |fuel_type|
           break if suggestions.length >= limit
 
-          if tasks[fuel_type].empty?
-            tasks.delete(fuel_type)
+          tasks[fuel_type] ||= []
+          while tasks[fuel_type].empty? && alerts[fuel_type].any?
+            # get next alert for fuel type
+            alert = alerts[fuel_type].shift
+            # get it's tasks
+            tasks[fuel_type] += alert_suggestions(alert, excluding: completed_this_year + suggestions + tasks.values.flatten)
+          end
+          if (task = tasks[fuel_type].shift)
+            suggestions << task
           else
-            # add if not already present
-            suggestions |= [tasks[fuel_type].shift]
+            # nothing left for fuel type
+            fuel_types.delete(fuel_type)
           end
         end
       end
@@ -44,31 +53,15 @@ module Recommendations
 
     private
 
-    def alert_suggestions(alert, excluding: [])
-      alert_tasks(alert).active.not_including(excluding)
-    end
-
     def alerts_by_fuel_type
+      # can we get alerts out that only have suggestions?
       school.latest_alerts_without_exclusions.by_rating.with_fuel_type.group_by do |alert|
         AlertType.fuel_types.key(alert.fuel_type)&.to_sym || :no_fuel
       end
     end
 
-    def tasks_by_fuel_type(limit)
-      alerts = alerts_by_fuel_type
-      tasks = {}
-
-      # fetch tasks for alerts
-      alerts.each_key do |fuel_type|
-        tasks[fuel_type] = []
-
-        # get "limit" amount of tasks for each fuel type as at this point we don't know
-        # if other fuel types have any alerts / tasks available
-        while (alert = alerts[fuel_type].shift) && tasks[fuel_type].length < limit
-          tasks[fuel_type] += alert_suggestions(alert, excluding: completed_this_year) # completed tasks removed later
-        end
-      end
-      tasks
+    def alert_suggestions(alert, excluding: [])
+      alert_tasks(alert).active.not_including(excluding)
     end
 
     def audit_suggestions(limit, suggestions: [])

@@ -173,7 +173,7 @@ RSpec.shared_examples 'a service making recommendations based on energy use' do
   context 'when alert types have same suggestions' do
     let!(:gas) { elec }
 
-    it 'includes them once' do
+    it 'includes them once only' do
       expect(energy_use).to eq([elec[0], elec[1], elec[2]])
     end
   end
