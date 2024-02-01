@@ -8,7 +8,7 @@ module Schools
         @benchmarked_usage = benchmark_school(@annual_usage_breakdown)
         @analysis_dates = analysis_dates
         unless @analysis_dates.one_years_data?
-          @well_managed_percent = well_managed_percent
+          @well_managed_percent = benchmark_value(:benchmark_school)
         end
       end
 
@@ -43,8 +43,8 @@ module Schools
       def benchmark_school(annual_usage_breakdown)
         Schools::Comparison.new(
           school_value: annual_usage_breakdown.out_of_hours.kwh,
-          benchmark_value: (annual_usage_breakdown.total.kwh * BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
-          exemplar_value: (annual_usage_breakdown.total.kwh * BenchmarkMetrics::EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
+          benchmark_value: (annual_usage_breakdown.total.kwh * benchmark_value(:benchmark_school)),
+          exemplar_value: (annual_usage_breakdown.total.kwh * benchmark_value(:exemplar_school)),
           unit: :kwh
         )
       end
@@ -63,13 +63,8 @@ module Schools
         )
       end
 
-      def well_managed_percent
-        case fuel_type
-        when :electricity
-          BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY
-        when :gas
-          BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_GAS
-        end
+      def benchmark_value(comparison)
+        Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator.benchmark(compare: comparison, fuel_type: fuel_type)
       end
 
       def set_usage_categories
