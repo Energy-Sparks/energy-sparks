@@ -355,7 +355,7 @@ class School < ApplicationRecord
     activity_types.merge(activities.in_academic_year(academic_year).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
-  # for removal
+  # for removal when Interventions::SuggestAction is removed
   def intervention_types_by_date
     observations.by_date.map(&:intervention_type).compact
   end
