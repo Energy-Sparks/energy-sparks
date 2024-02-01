@@ -68,7 +68,6 @@ cy:
         summary_link: Dysgu rhagor
         title: Beth yw defnydd o fewn diwrnod?
         your_current_peak_electricity_use:
-          data_on_peak_kw_usage_available_from: Data ar ddefnydd kw brig ar gael o %{data_available_from}
           table:
             average_peak_kw: Brig cyfartalog kW
             percent_change: "% newid"

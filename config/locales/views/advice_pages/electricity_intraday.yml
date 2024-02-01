@@ -69,7 +69,6 @@ en:
         summary_link: Learn more
         title: What is intraday use?
         your_current_peak_electricity_use:
-          data_on_peak_kw_usage_available_from: Data on peak kw usage available from %{data_available_from}
           table:
             average_peak_kw: Average peak kW
             percent_change: "% change"
