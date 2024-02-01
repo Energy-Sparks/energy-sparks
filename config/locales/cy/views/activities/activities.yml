@@ -8,14 +8,6 @@ cy:
       title: Camau
     activity_title: Teitl gweithgaredd
     choose_next_activity: Dewiswch y Gweithgaredd Nesaf
-    completed:
-      congratulations: Llongyfarchiadau! Rydym wedi cofnodi'ch gweithgaredd
-      our_suggestions: Ein hawgrymiadau yn seiliedig ar eich rhaglenni ysgol a dadansoddiad o'ch data ynni
-      page_title: Gweithgaredd
-      recommended_for_your_school: Argymhellir ar gyfer eich ysgol
-      see_the_scoreboard: Gweld y bwrdd sgorio
-      view_all_suggestions: Gweld yr holl awgrymiadau
-      view_your_activity: Gweld eich gweithgarwch
     completed_on: Cwblhawyd ar
     edit:
       page_title: Diweddaru gweithgaredd
@@ -52,26 +44,6 @@ cy:
       record_a_new_activity: Cofnodi gweithgaredd arbed ynni newydd ar gyfer eich ysgol
     no_activities_completed: Dim gweithgareddau wedi'u cwblhau
     page_title: Pob Gweithgaredd
-    points:
-      and_need_to_score:
-        one: ac angen sgorio %{count} pwynt i gyrraedd safle %{place_to_reach}
-        two: ac angen sgorio %{count} bwynt i gyrraedd safle %{place_to_reach}
-        many: ac angen sgorio %{count} o bwyntiau i gyrraedd safle %{place_to_reach}
-        other: ac angen sgorio %{count} o bwyntiau i gyrraedd safle %{place_to_reach}
-      choose_your_next_activity: Dewiswch eich gweithgaredd nesaf o'r awgrymiadau isod.
-      prizes: Gallai ein hysgolion â'r sgorau uchaf eleni ennill hyd at £1250 tuag at welliant arbed ynni o'ch dewis chi
-      prizes_link: darllen rhagor
-      recorded_this_year:
-        one: Rwyt ti wedi recordio 1 gweithgaredd hyd yn hyn eleni
-        two: Rwyt ti wedi recordio %{count} weithgaredd hyd yn hyn eleni
-        many: Rwyt ti wedi recordio %{count} o weithgareddau hyd yn hyn eleni
-        other: Rydych wedi recordio %{count} o weithgareddau hyd yn hyn eleni
-      school_position: ac mae eich ysgol yn safle %{ordinal_place} ar hyn o bryd.
-      you_just_scored:
-        one: Rwyt ti newydd sgorio 1 pwynt!
-        two: Rwyt ti newydd sgorio %{count} bwynt!
-        many: Rwyt ti newydd sgorio %{count} o bwyntiau!
-        other: Rydych newydd sgorio %{count} o bwyntiau!
     show:
       activity_description: Disgrifiad o'r gweithgaredd
       all_activities: Pob gweithgaredd

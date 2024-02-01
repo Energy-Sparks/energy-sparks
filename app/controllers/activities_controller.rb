@@ -20,10 +20,6 @@ class ActivitiesController < ApplicationController
   end
 
   def completed
-    return if EnergySparks::FeatureFlags.active?(:activities_2024)
-
-    @suggested_activities = load_suggested_activities(@school)
-    @completed_activities = load_completed_activities(@school)
   end
 
   def new
@@ -76,13 +72,5 @@ private
 
   def activity_params
     params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content, :pupil_count)
-  end
-
-  def load_suggested_activities(school)
-    NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest_for_school_targets(5)
-  end
-
-  def load_completed_activities(school)
-    school.activities_in_academic_year(Time.zone.today)
   end
 end
