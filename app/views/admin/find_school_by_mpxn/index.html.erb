@@ -5,8 +5,7 @@ Use this form to find the school based on an MPAN or MPRN. You can include a par
 </p>
 
 <%= simple_form_for admin_schools_search_find_school_by_mpxn_index_path, method: :get, html: { class: 'form' } do |f| %>
-  <%= f.input :mpxn, label: 'MPAN/MPRN', autofocus: true,
-                     input_html: { name: :query, value: params[:query] } %>
+  <%= f.input :mpxn, label: 'MPAN/MPRN', autofocus: true, input_html: { name: :query, value: params[:query] } %>
   <%= f.submit :Search, class: 'btn btn-primary' %>
 <% end %>
 
@@ -36,7 +35,7 @@ Use this form to find the school based on an MPAN or MPRN. You can include a par
       </tbody>
     </table>
 <% else %>
-  <% if params[:search].present? %>
+  <% if params[:query].present? %>
     <p>No meters were found using this mpxn</p>
   <% end %>
 <% end %>

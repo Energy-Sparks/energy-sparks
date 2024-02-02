@@ -5,8 +5,7 @@ Use this form to find the school based on a URN. You can include a partial URN t
 </p>
 
 <%= simple_form_for admin_schools_search_find_school_by_urn_index_path, method: :get, html: { class: 'form' } do |f| %>
-  <%= f.input :urn, label: 'URN', autofocus: true,
-                    input_html: { name: :query, value: params[:query] } %>
+  <%= f.input :urn, label: 'URN', autofocus: true, input_html: { name: :query, value: params[:query] } %>
   <%= f.submit :Search, class: 'btn btn-primary' %>
 <% end %>
 
@@ -28,7 +27,7 @@ Use this form to find the school based on a URN. You can include a partial URN t
     </tbody>
   </table>
 <% else %>
-  <% if params[:search].present? %>
+  <% if params[:query].present? %>
     <p>No schools were found using this URN</p>
   <% end %>
 <% end %>
