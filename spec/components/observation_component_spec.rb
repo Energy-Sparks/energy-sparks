@@ -195,7 +195,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:compact) { true }
 
       it { expect(html).to have_css('i.fa-temperature-high') }
-      it { expect(html).to have_content("#{observation.school.name} scored 5 points by recording indoor temperatures in") }
+      it { expect(html).to have_content("#{observation.school.name} scored 5 points by recording indoor temperatures") }
     end
   end
 

@@ -23,7 +23,6 @@ gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 gem 'pg'
-gem 'pg_search'
 
 # Dashboard analytics
 # gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.3'
@@ -124,6 +123,7 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'knapsack'
+  gem 'pry-rails'
   gem 'rails-controller-testing'
   gem 'rb-readline', require: false
   gem 'rspec-json_expectations'

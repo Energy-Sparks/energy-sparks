@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe 'Recommendations Page', type: :system, include_application_helper: true do
-  let!(:school) { create :school, name: 'School Name' }
+  let(:key_stage_1) { create :key_stage, name: 'KS1'}
+  let!(:school) { create :school, name: 'School Name', key_stages: [key_stage_1] }
   let!(:setup_data) {}
   let(:user) {}
 
@@ -98,6 +99,10 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
   context 'based on your energy usage section' do
     let(:section) { find(:css, '#energy-usage') }
+    let(:setup_data) do
+      allow_any_instance_of(Recommendations::Actions).to receive(:based_on_energy_use).and_return(create_list(:intervention_type, 1))
+      allow_any_instance_of(Recommendations::Activities).to receive(:based_on_energy_use).and_return(create_list(:activity_type, 1))
+    end
 
     it 'has a title' do
       expect(section).to have_content('Based on your energy usage')
@@ -112,6 +117,10 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
   context 'based on your recent activity section' do
     let(:section) { find(:css, '#recent-activity') }
+    let(:setup_data) do
+      allow_any_instance_of(Recommendations::Actions).to receive(:based_on_recent_activity).and_return(create_list(:intervention_type, 1))
+      allow_any_instance_of(Recommendations::Activities).to receive(:based_on_recent_activity).and_return(create_list(:activity_type, 1))
+    end
 
     it 'has a title' do
       expect(section).to have_content('Based on your recent activity')
