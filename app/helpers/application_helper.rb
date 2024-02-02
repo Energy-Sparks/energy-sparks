@@ -474,4 +474,8 @@ module ApplicationHelper
   def recommendations_scope_for(task_type)
     { 'action': :adult, 'activity': :pupil }[task_type]
   end
+
+  def live_data_path
+    ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path
+  end
 end

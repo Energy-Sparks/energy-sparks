@@ -14,6 +14,13 @@ class PanelSwitcherComponent < ViewComponent::Base
     @name = title.try(:parameterize) || SecureRandom.uuid
   end
 
+  def before_render
+    # remove empty panels
+    panels.delete_if do |panel|
+      panel.to_s.blank? # need to_s to flush component output buffer early
+    end
+  end
+
   def selected
     @selected.blank? || !selected_panel_exists? ? panels.first.name : @selected
   end
@@ -29,7 +36,7 @@ class PanelSwitcherComponent < ViewComponent::Base
   end
 
   class PanelComponent < ViewComponent::Base
-    attr_accessor :label, :name
+    attr_reader :label, :name
 
     def initialize(label:, name:)
       @name = name

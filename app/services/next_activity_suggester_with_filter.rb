@@ -6,6 +6,7 @@ class NextActivitySuggesterWithFilter
     @filter = filter || ActivityTypeFilter.new(school: @school)
   end
 
+  ## RECOMMENDATIONS: Based on your recent activity
   def suggest_from_activity_history
     suggestions = []
     if @school.activities.empty?
@@ -28,6 +29,7 @@ class NextActivitySuggesterWithFilter
     activity_type_filter.activity_types
   end
 
+  ## RECOMMENDATIONS: Based on your energy usage
   def suggest_from_find_out_mores
     content = @school.latest_content
     if content

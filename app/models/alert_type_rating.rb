@@ -38,7 +38,6 @@ class AlertTypeRating < ApplicationRecord
   has_many :intervention_types, through: :alert_type_rating_intervention_types
 
   scope :for_rating, ->(rating) { where('rating_from <= ? AND rating_to >= ?', rating, rating) }
-
   scope :pupil_dashboard_alert, -> { where(pupil_dashboard_alert_active: true) }
   scope :management_dashboard_alert, -> { where(management_dashboard_alert_active: true) }
   scope :management_priorities_title, -> { where(management_priorities_active: true) }
