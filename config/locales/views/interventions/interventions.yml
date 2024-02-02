@@ -1,21 +1,6 @@
 ---
 en:
   interventions:
-    completed:
-      actions_completed:
-        one: You've recorded 1 action so far this year
-        other: You've recorded %{count} actions so far this year
-      choose_next_action: Choose your next action from the suggestions below.
-      current_school_position: and your school is currently in %{position} place.
-      our_suggestions: Our suggestions based on your energy use alerts and any energy audit completed at your school
-      page_title: "%{school} Action"
-      points_scored: You've just scored %{points} points!
-      points_to_change_position: and need to score %{points} points to reach %{position} place.
-      see_scoreboard: See the scoreboard
-      suggested_actions: Suggested actions for your school
-      title: Congratulations! We've recorded your action.
-      view_action: View your action
-      view_all_actions: View all actions
     edit:
       page_title: Update energy saving action
       title: Update your energy saving action
