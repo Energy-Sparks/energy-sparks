@@ -14,12 +14,6 @@ describe 'viewing and recording action', type: :system do
 
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-      example.run
-    end
-  end
-
   before do
     SiteSettings.current.update(photo_bonus_points: photo_bonus_points)
     create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
