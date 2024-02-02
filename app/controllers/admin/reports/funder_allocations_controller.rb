@@ -4,8 +4,7 @@ module Admin
   module Reports
     class FunderAllocationsController < AdminController
       def show
-        @funders = School.visible.left_joins(:funder).group('funders.id')
-                         .select('funders.*, COUNT(schools.id) as school_count').order('funders.name')
+        @funders = Funder.school_counts
       end
 
       def deliver
