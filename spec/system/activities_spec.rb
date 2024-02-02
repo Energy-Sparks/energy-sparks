@@ -25,6 +25,12 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+      example.run
+    end
+  end
+
   context 'as a public user' do
     before do
       visit activity_type_path(activity_type)
@@ -225,8 +231,7 @@ describe 'viewing and recording activities', type: :system do
           let(:time) { today - 2.years }
 
           it 'shows the activity completed page' do
-            expect(page).to have_content('Congratulations!')
-            expect(page).to have_content("We've recorded your activity")
+            expect(page).to have_content("Congratulations! We've recorded your activity")
           end
         end
 
@@ -234,8 +239,7 @@ describe 'viewing and recording activities', type: :system do
           let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
 
           it 'shows the activity completed page' do
-            expect(page).to have_content('Congratulations!')
-            expect(page).to have_content("You've just scored #{activity_type.score} points")
+            expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
             expect(page).to have_content('You are in 1st place')
           end
         end
@@ -244,8 +248,7 @@ describe 'viewing and recording activities', type: :system do
           let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
 
           it 'shows the activity completed page' do
-            expect(page).to have_content('Congratulations!')
-            expect(page).to have_content("You've just scored #{activity_type.score} points")
+            expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
             expect(page).to have_content('You are in 2nd place')
           end
         end

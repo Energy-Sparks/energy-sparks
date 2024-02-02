@@ -14,6 +14,12 @@ describe 'viewing and recording action', type: :system do
 
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+      example.run
+    end
+  end
+
   before do
     SiteSettings.current.update(photo_bonus_points: photo_bonus_points)
     create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
@@ -297,8 +303,7 @@ describe 'viewing and recording action', type: :system do
           let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
 
           it 'records action' do
-            expect(page).to have_content('Congratulations!')
-            expect(page).to have_content("You've just scored #{intervention_type.score} points")
+            expect(page).to have_content("Congratulations! You've just scored #{intervention_type.score} points")
             expect(page).to have_content('You are in 1st place')
           end
         end
@@ -307,8 +312,7 @@ describe 'viewing and recording action', type: :system do
           let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
 
           it 'records action' do
-            expect(page).to have_content("Congratulations! We've recorded your action")
-            expect(page).to have_content("You've just scored #{intervention_type.score} points")
+            expect(page).to have_content("Congratulations! You've just scored #{intervention_type.score} points")
             expect(page).to have_content('You are in 2nd place')
           end
         end
