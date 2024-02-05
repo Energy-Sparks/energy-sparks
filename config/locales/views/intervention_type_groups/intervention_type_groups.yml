@@ -5,12 +5,10 @@ en:
       explore_energy_saving_actions: Explore energy saving actions
       introduction: Recording energy saving actions will earn Energy Sparks points and allow you to see selected charts annotated with your actions. This will help you to identify whether your actions have saved energy
       page_title: Actions
-      recommended_for_your_school: Recommended for your school
       search: Search
       view_all_actions:
         one: View 1 action
         other: View all %{count} actions
-      view_all_suggestions: View all suggestions
     recommended:
       all_actions: All actions
       introduction_html:

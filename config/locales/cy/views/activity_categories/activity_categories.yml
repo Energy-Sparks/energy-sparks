@@ -24,10 +24,6 @@ cy:
         two: Casgliad o <strong>%{count}</strong> o weithgareddau perthnasol i ystod o bynciau a chyfnodau allweddol
         many: Casgliad o <strong>%{count}</strong> o weithgareddau perthnasol i ystod o bynciau a chyfnodau allweddol
         other: Casgliad o <strong>%{count}</strong> o weithgareddau perthnasol i ystod o bynciau a chyfnodau allweddol
-    suggested:
-      introduction: Ein hawgrymiadau yn seiliedig ar eich rhaglenni ysgol a dadansoddiad o'ch data ynni
-      title: Argymhellir ar gyfer eich ysgol
-      view_all: Gweld yr holl awgrymiadau
     title: Archwilio gweithgareddau arbed ynni
     view_all:
       one: Gweld 1 gweithgaredd
