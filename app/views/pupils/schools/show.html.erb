@@ -5,110 +5,59 @@
 <% end %>
 
 <% if @show_data_enabled_features %>
-  <%= render 'equivalences', equivalences_content: @equivalences_content, school: @school if @equivalences_content.present? %>
+  <% if @equivalences_content.present? %>
+    <%= render 'equivalences', equivalences_content: @equivalences_content, school: @school %>
+  <% end %>
 
   <h2 class="mt-2"><%= t('pupils.schools.show.look_at_the_energy_use') %>:</h2>
   <%= render 'pupils/analysis/top_level', school: @school %>
 <% else %>
-  <%= render 'default_equivalences', equivalences: @default_equivalences, chool: @school %>
+  <%= render 'default_equivalences', equivalences: @default_equivalences, school: @school %>
   <%= component 'info_bar',
-      status: :neutral,
-      title: t('pupils.schools.show.setting_up'),
-      icon: fa_icon('info-circle fa-3x'),
-      buttons: {}
-  %>
+                status: :neutral,
+                title: t('pupils.schools.show.setting_up'),
+                icon: fa_icon('info-circle fa-3x'),
+                buttons: {} %>
 <% end %>
 
 <h2 class="mt-2"><%= t('pupils.schools.show.things_to_do') %></h2>
 <% if @dashboard_alerts && @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
     <%= component 'info_bar',
-        status: content.colour,
-        title: content&.pupil_dashboard_title,
-        icon: fa_icon(alert_icon(content&.alert, 'fa-3x')),
-        buttons: dashboard_alert_buttons(@school, content)
-    %>
+                  status: content.colour,
+                  title: content&.pupil_dashboard_title,
+                  icon: fa_icon(alert_icon(content&.alert, 'fa-3x')),
+                  buttons: dashboard_alert_buttons(@school, content) %>
   <% end %>
 <% end %>
 
 <% if @show_temperature_observations %>
   <% if @temperature_observations.empty? %>
     <%= component 'info_bar',
-        status: :neutral,
-        title: t('pupils.schools.show.measure_temperatures'),
-        icon: fa_icon('temperature-high fa-3x'),
-        buttons: { t('pupils.schools.show.enter_temperatures') => new_school_temperature_observation_path(@school, introduction: true) }
-    %>
+                  status: :neutral,
+                  title: t('pupils.schools.show.measure_temperatures'),
+                  icon: fa_icon('temperature-high fa-3x'),
+                  buttons: { t('pupils.schools.show.enter_temperatures') =>
+                              new_school_temperature_observation_path(@school, introduction: true) } %>
   <% else %>
     <%= component 'info_bar',
-        status: :neutral,
-        title: t('pupils.schools.show.updating_temperatures'),
-        icon: fa_icon('temperature-high fa-3x'),
-        buttons: { t('pupils.schools.show.previous_temperatures') => school_temperature_observations_path(@school), t('pupils.schools.show.update_temperatures') => new_school_temperature_observation_path(@school, introduction: true) }
-    %>
+                  status: :neutral,
+                  title: t('pupils.schools.show.updating_temperatures'),
+                  icon: fa_icon('temperature-high fa-3x'),
+                  buttons: { t('pupils.schools.show.previous_temperatures') =>
+                              school_temperature_observations_path(@school),
+                             t('pupils.schools.show.update_temperatures') =>
+                              new_school_temperature_observation_path(@school, introduction: true) } %>
   <% end %>
 <% end %>
 
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
-  <%= render 'schools/prompt_recommendations_scoreboard', school: @school %>
-<% end %>
+<%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
+<%= render 'schools/prompt_recommendations_scoreboard', school: @school %>
 <%= render 'schools/dashboard/transport_surveys', school: @school %>
 
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= component 'scoreboard_summary', podium: current_school_podium %>
-<% else %>
-  <div class="row">
-    <div class="col card-deck actions">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="text-center">
-            <strong>
-              <% if @first %>
-                <%= t('pupils.schools.show.no_activities_completed') %>
-              <% else %>
-                <%= t('pupils.schools.show.activities_completed', count: @activities_count) %>
-              <% end %>
-            </strong>
-          </h4>
-          <% if @suggestion %>
-            <h5 class="text-center">
-              <%= @first ? t('pupils.schools.show.try_this_first') : t('pupils.schools.show.try_this_next') %>:
-            </h5>
-            <div class="activity-suggestion">
-              <p><%= link_to @suggestion.name, activity_type_path(@suggestion) %></p>
-              <span class="btn bg-neutral rounded-pill">
-                <strong class="text-uppercase">
-                  <%= @suggestion.score %><span class="small"> <%= t('pupils.schools.show.points') %></span>
-                </strong>
-                /
-                <span class="key-stages"><%= @suggestion.key_stage_list %></span>
-              </span>
-            </div>
-          <% end %>
-        </div>
-        <div class="card-footer text-center">
-          <%= link_to t('pupils.schools.show.choose_another_activity'), activity_categories_path, class: 'btn btn-lg btn-light rounded-pill font-weight-bold' %>
-        </div>
-      </div>
-    </div>
+<%= component 'scoreboard_summary', podium: current_school_podium %>
 
-    <div class="col card-deck actions">
-      <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
-        <div class="card">
-          <div class="card-body">
-            <%= component 'podium', podium: current_school_podium %>
-          </div>
-          <div class="card-footer text-center">
-            <%= link_to t('pupils.schools.show.see_scoreboard'), scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
-<% end %>
-
-<br/>
+<br>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
 

@@ -38,11 +38,7 @@
 <% end %>
 
 <% if @recent_audit %>
-  <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-    <%= render 'schools/prompt_audit', audit: @recent_audit %>
-  <% else %>
-    <%= render 'management/schools/prompt_recent_audit' %>
-  <% end %>
+  <%= render 'schools/prompt_audit', audit: @recent_audit %>
 <% end %>
 
 <% if @add_targets %>
@@ -58,12 +54,8 @@
 <% end %>
 
 <% if @show_standard_prompts %>
-  <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-    <%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
-    <%= render 'schools/prompt_recommendations', school: @school %>
-  <% else %>
-    <%= render 'schools/engagement_prompts', school: @school %>
-  <% end %>
+  <%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
+  <%= render 'schools/prompt_recommendations', school: @school %>
 <% end %>
 
 <% if @add_pupils %>
@@ -87,14 +79,13 @@
   </div>
 <% end %>
 
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= component 'scoreboard_summary', podium: current_school_podium %>
-<% end %>
+<%= component 'scoreboard_summary', podium: current_school_podium %>
 
 <% if @management_priorities && @management_priorities.any? %>
   <h3><%= t('schools.show.energy_saving_opportunities') %></h3>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities,
-                                                      school: @school, show_more: @show_more_management_priorities %>
+                                                      school: @school,
+                                                      show_more: @show_more_management_priorities %>
 <% end %>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>

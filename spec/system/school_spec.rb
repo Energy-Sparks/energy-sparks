@@ -63,7 +63,7 @@ RSpec.describe 'school adult dashboard', type: :system do
         it 'and redirects to pupil dashboard' do
           visit school_path(school)
           expect(page).not_to have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
-          expect(page).to have_content('No activities completed, make a start!')
+          expect(page).to have_content("We're setting up this school's energy data and will update this page when it is ready to explore")
         end
       end
     end
