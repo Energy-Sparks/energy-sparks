@@ -4,11 +4,9 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
   let(:reading_start_date) { 1.year.ago }
 
   let(:school) do
-    school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
-    create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil, meter_type: :electricity)
-    create(:electricity_meter_with_validated_reading_dates,
-           school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
-    school
+    create(:school, :with_basic_configuration_single_meter_and_tariffs,
+      reading_start_date: reading_start_date,
+      calendar: nil) # dont create a calendar initially, see nested tests
   end
 
   before { create(:advice_page, key: :electricity_out_of_hours, fuel_type: :electricity) }
@@ -133,14 +131,11 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
 
         context 'with school holidays defined' do
           context 'but none in period of meter data' do
+            # create a number of holidays outside usage period
             let(:school) do
-              # create a number of holidays outside usage period
-              calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago)
-              school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1, calendar: calendar)
-              create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
-              create(:electricity_meter_with_validated_reading_dates,
-                     school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
-              school
+              create(:school, :with_basic_configuration_single_meter_and_tariffs,
+                reading_start_date: reading_start_date,
+                calendar: create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago))
             end
 
             it 'does not have holiday usage section' do
@@ -151,16 +146,13 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
           end
 
           context 'with one holiday in period of meter data' do
+            # ensure there's one holiday within the period to confirm table displays
             let(:school) do
-              # create a number of holidays outside usage period
               calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago)
-              # but ensure there's one holiday within the period to confirm table displays
               create(:holiday, calendar: calendar, start_date: reading_start_date + 1.day, end_date: reading_start_date + 7.days)
-              school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1, calendar: calendar)
-              create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
-              create(:electricity_meter_with_validated_reading_dates,
-                     school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
-              school
+              create(:school, :with_basic_configuration_single_meter_and_tariffs,
+                reading_start_date: reading_start_date,
+                calendar: calendar)
             end
 
             it 'has holiday usage section' do
@@ -188,12 +180,7 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
 
         context 'with holidays defined' do
           let(:school) do
-            calendar = create(:school_calendar, :with_terms_and_holidays)
-            school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1, calendar: calendar)
-            create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
-            create(:electricity_meter_with_validated_reading_dates,
-                   school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
-            school
+            create(:school, :with_basic_configuration_single_meter_and_tariffs, reading_start_date: reading_start_date)
           end
 
           it 'has a holiday usage section' do

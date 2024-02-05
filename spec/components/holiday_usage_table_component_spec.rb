@@ -60,7 +60,7 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
     }
   end
 
-  subject(:component) { HolidayUsageTableComponent.new(**params) }
+  subject(:component) { described_class.new(**params) }
 
   let(:html) do
     render_inline(component)
