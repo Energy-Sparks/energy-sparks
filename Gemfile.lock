@@ -538,7 +538,7 @@ GEM
     rgeo (3.0.1)
     rgeo-geojson (2.1.1)
       rgeo (>= 1.0.0)
-    rollbar (3.5.0)
+    rollbar (3.5.1)
     roo-xls (1.2.0)
       nokogiri
       roo (>= 2.0.0, < 3)
