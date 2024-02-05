@@ -439,13 +439,11 @@ cy:
           cumulative_progress: Cynnydd cronnus
           debug: Dadfygio
           error: Gwall
-          error_bad_estimate_html: Mae'r <a href='%{estimated_annual_consumptions_path}'>amcangyfrif blynyddol</a> o'ch defnydd %{fuel_type} a ddarparwyd ar gyfer eich ysgol yn rhy isel
           error_message: Yn anffodus oherwydd gwall ni allwn arddangos eich adroddiad cynnydd manwl ar hyn o bryd
           month: Mis
           month_by_month_progress: Cynnydd o fis i fis
           overall_change_since_last_year: Newid cyffredinol ers y llynedd
           overall_performance_since_last_year: Perfformiad cyffredinol ers y llynedd
-          please_review_your_estimate_and_our_guidance_html: <a href='%{estimated_annual_consumptions_path}'>Adolygwch eich amcangyfrif ac ein arweiniad</a> i weld a yw'n gywir
           problem: Problem
           progress_charts: Siartiau cynnydd
           review_targets: Adolygu targedau
@@ -454,7 +452,6 @@ cy:
           unfortunately_as_much_as_last_year: Yn anffodus rydych chi'n defnyddio cymaint o %{fuel_type} ag y llynedd
           unfortunately_more_than_last_year: 'Yn anffodus rydych chi''n defnyddio %{relative_percent} yn fwy o %{fuel_type}na''r llynedd '
           view_last_years_target_report: Gweld adroddiad targed y llynedd
-          we_have_been_notified_about_this_error_1: Yn y cyfamser, rydym wedi cael gwybod am y gwall hwn ac byddwn yn ymchwilio iddo
           we_have_been_notified_about_this_error_2: Rydym wedi cael gwybod am y gwall hwn ac byddwn yn ymchwilio iddo
           we_have_not_received_data: Nid ydym wedi derbyn eich data am eich defnydd %{fuel_type} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
           well_done_less_than_last_year: Da iawn, rydych chi'n defnyddio %{relative_percent} yn llai o %{fuel_type} na'r llynedd
@@ -538,8 +535,6 @@ cy:
       add_consumption_estimate: Ychwanegwch amcangyfrif o'ch defnydd %{fuels} blynyddol fel y gallwn ddarparu adroddiad cynnydd manylach i'ch helpu i gyrraedd eich targedau
       add_estimate: Ychwanegu amcangyfrif
       coming_soon: Dod yn fuan
-      complete_activities: Dysgwch ddisgyblion am ynni a newid hinsawdd o fewn cyd-destun eich ysgol eich hun drwy gwblhau ein gweithgareddau sydd ar gael am ddim
-      complete_interventions: Cofnodi camau arbed ynni a wneir gan staff ysgol a rheolwyr cyfleusterau i helpu i olrhain a yw eich ymyriadau wedi arbed ynni.
       configuring_data_access: Rydym yn ffurfweddu mynediad at eich data ynni a byddwn yn eich hysbysu pan fydd yn barod i'w archwilio
       create_pupil_account: Creu cyfrif disgybl
       dashboard_title: Dangosfwrdd oedolion ar gyfer %{school_name}
@@ -555,11 +550,7 @@ cy:
       percentage_change: "% Newid"
       potential_savings: Arbedion posib
       print_view: Gwedd argraffu
-      recent_energy_audit: Mae'r tîm Sbarcynni wedi cwblhau archwiliad ynni ar gyfer yr ysgol hon yn ddiweddar
       recent_energy_usage: Defnydd diweddar o ynni
-      record_action: Cofnodi gweithred
-      record_pupil_activity: Cofnodi gweithgaredd disgybl
-      review_audit: Adolygu archwiliad
       review_progress: Adolygu cynnydd
       review_target: Adolygu eich targed
       revisit_targets: Mae ffurfweddiad eich ysgol wedi newid, efallai y bydd angen i chi ailedrych ar eich targedau ar gyfer eleni.

@@ -21,10 +21,6 @@ en:
       introduction_html:
         one: 1 activity relevant to a range of subjects and key stages
         other: A collection of <strong>%{count}</strong> activities relevant to a range of subjects and key stages
-    suggested:
-      introduction: Our suggestions based on your school programmes and analysis of your energy data
-      title: Recommended for your school
-      view_all: View all suggestions
     title: Explore energy saving activities
     view_all:
       one: View 1 activity

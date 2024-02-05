@@ -25,14 +25,6 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 
-  let(:activities_2024_feature) { false }
-
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true', FEATURE_FLAG_ACTIVITIES_2024: activities_2024_feature.to_s do
-      example.run
-    end
-  end
-
   context 'as a public user' do
     before do
       visit activity_type_path(activity_type)
@@ -171,20 +163,8 @@ describe 'viewing and recording activities', type: :system do
           click_on 'Save activity'
         end
 
-        context 'with activities_2024_feature switched off' do
-          let(:activities_2024_feature) { false }
-
-          it 'shows the completed page' do
-            expect(page).to have_content("Congratulations! We've recorded your activity")
-          end
-        end
-
-        context 'with activities_2024_feature switched on' do
-          let(:activities_2024_feature) { true }
-
-          it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          it_behaves_like 'a task completed page with programme complete message'
-        end
+        it_behaves_like 'a task completed page', points: 25, task_type: :activity
+        it_behaves_like 'a task completed page with programme complete message'
 
         context 'when viewing the activity' do
           before do
@@ -212,20 +192,8 @@ describe 'viewing and recording activities', type: :system do
           click_on 'Save activity'
         end
 
-        context 'with activities_2024_feature switched off' do
-          let(:activities_2024_feature) { false }
-
-          it 'shows the completed page' do
-            expect(page).to have_content("Congratulations! We've recorded your activity")
-          end
-        end
-
-        context 'with activities_2024_feature switched on' do
-          let(:activities_2024_feature) { true }
-
-          it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          it_behaves_like 'a task completed page with programme complete message'
-        end
+        it_behaves_like 'a task completed page', points: 25, task_type: :activity
+        it_behaves_like 'a task completed page with programme complete message'
 
         context 'when viewing the activity' do
           before do
@@ -242,46 +210,40 @@ describe 'viewing and recording activities', type: :system do
         end
       end
 
-      [true, false].each do |feature|
-        context "on podium with activities_2024 feature set to #{feature}" do
-          let(:activities_2024_feature) { feature }
-          let!(:other_school) { create :school, :with_points, score_points: 40, scoreboard: scoreboard }
-          let!(:time) { today }
+      context 'on the podium' do
+        let!(:other_school) { create :school, :with_points, score_points: 40, scoreboard: scoreboard }
+        let!(:time) { today }
 
-          before do
-            visit activity_type_path(activity_type)
-            click_on 'Record this activity'
-            fill_in :activity_happened_on, with: time.strftime('%d/%m/%Y')
-            click_on 'Save activity'
+        before do
+          visit activity_type_path(activity_type)
+          click_on 'Record this activity'
+          fill_in :activity_happened_on, with: time.strftime('%d/%m/%Y')
+          click_on 'Save activity'
+        end
+
+        context '0 points' do
+          let(:time) { today - 2.years }
+
+          it 'shows the activity completed page' do
+            expect(page).to have_content("Congratulations! We've recorded your activity")
           end
+        end
 
-          context '0 points' do
-            let(:time) { today - 2.years }
+        context 'in first place' do
+          let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
 
-            it 'shows the activity completed page' do
-              expect(page).to have_content('Congratulations!')
-              expect(page).to have_content("We've recorded your activity")
-            end
+          it 'shows the activity completed page' do
+            expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
+            expect(page).to have_content('You are in 1st place')
           end
+        end
 
-          context 'in first place' do
-            let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
+        context 'in second place' do
+          let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
 
-            it 'shows the activity completed page' do
-              expect(page).to have_content('Congratulations!')
-              expect(page).to have_content("You've just scored #{activity_type.score} points")
-              expect(page).to have_content('You are in 1st place')
-            end
-          end
-
-          context 'in second place' do
-            let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
-
-            it 'shows the activity completed page' do
-              expect(page).to have_content('Congratulations!')
-              expect(page).to have_content("You've just scored #{activity_type.score} points")
-              expect(page).to have_content('You are in 2nd place')
-            end
+          it 'shows the activity completed page' do
+            expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
+            expect(page).to have_content('You are in 2nd place')
           end
         end
       end
@@ -318,28 +280,24 @@ describe 'viewing and recording activities', type: :system do
       end
     end
 
-    [true, false].each do |feature|
-      let(:activities_2024_feature) { feature }
-
-      context "recording an activity with activities_2024 feature set to #{feature}" do
-        it 'associates activity with correct school from group' do
-          select other_school.name, from: :school_id
-          click_on 'Record this activity'
-          fill_in :activity_happened_on, with: Time.zone.today.strftime('%d/%m/%Y')
-          click_on 'Save activity'
-          expect(page).to have_content('Congratulations!')
-          expect(other_school.activities.count).to eq(1)
-        end
+    context 'recording an activity' do
+      it 'associates activity with correct school from group' do
+        select other_school.name, from: :school_id
+        click_on 'Record this activity'
+        fill_in :activity_happened_on, with: Time.zone.today.strftime('%d/%m/%Y')
+        click_on 'Save activity'
+        expect(page).to have_content('Congratulations!')
+        expect(other_school.activities.count).to eq(1)
       end
+    end
 
-      context 'when school is not in group' do
-        let(:school_not_in_group) { create(:school)}
+    context 'when school is not in group' do
+      let(:school_not_in_group) { create(:school)}
 
-        it 'does not allow recording an activity' do
-          visit new_school_activity_path(school_not_in_group, activity_type_id: activity_type.id)
-          expect(page).to have_content('You are not authorized to access this page')
-          expect(page).not_to have_button('Save activity')
-        end
+      it 'does not allow recording an activity' do
+        visit new_school_activity_path(school_not_in_group, activity_type_id: activity_type.id)
+        expect(page).to have_content('You are not authorized to access this page')
+        expect(page).not_to have_button('Save activity')
       end
     end
   end
@@ -417,35 +375,6 @@ describe 'viewing and recording activities', type: :system do
             expect(page).not_to have_content(activity_type.description.to_plain_text)
           end
         end
-      end
-    end
-  end
-
-  context 'displaying prizes' do
-    let!(:activity) { create(:activity, school: school, activity_type: activity_type) }
-    let(:scoreboard_prizes_feature) { false }
-    let(:prize_excerpt) { 'Our top scoring schools this year could win' }
-
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_SCOREBOARD_PRIZES: scoreboard_prizes_feature.to_s do
-        example.run
-      end
-    end
-
-    before do
-      sign_in(create(:admin))
-    end
-
-    context 'when activity is complete' do
-      before { visit completed_school_activity_path(school, activity) }
-
-      it { expect(page).not_to have_content(prize_excerpt) }
-
-      context 'feature is active' do
-        let(:scoreboard_prizes_feature) { true }
-
-        it { expect(page).to have_content(prize_excerpt) }
-        it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
       end
     end
   end

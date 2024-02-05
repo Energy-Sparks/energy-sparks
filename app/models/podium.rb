@@ -25,7 +25,7 @@ class Podium
 
   def self.create(scoreboard:, school:, recent_boundary: 1.month.ago)
     scored_schools = scoreboard.scored_schools(recent_boundary: recent_boundary)
-    schools_with_points = scored_schools.with_points(always_include: (school if EnergySparks::FeatureFlags.active?(:activities_2023)))
+    schools_with_points = scored_schools.with_points(always_include: school)
     school_index = schools_with_points.index(school)
 
     final = if schools_with_points.size > 3
@@ -106,11 +106,7 @@ class Podium
   def points_to_overtake
     return unless low_to_high.any?
 
-    if EnergySparks::FeatureFlags.active?(:activities_2023)
-      low_to_high&.second&.points
-    else
-      low_to_high&.first&.points
-    end
+    low_to_high&.second&.points
   end
 
   def current_school?(position)

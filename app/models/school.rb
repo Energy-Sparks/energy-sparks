@@ -224,6 +224,9 @@ class School < ApplicationRecord
   # combination of other scopes to define an engaged school
   scope :engaged, -> { active.with_recent_engagement.or(with_recently_logged_in_users).or(with_transport_survey).or(joined_programme) }
 
+  # schools that are not linked to a funder either directly or via their school group
+  scope :unfunded, -> { joins(:school_group).where('schools.funder_id is null AND school_groups.funder_id is null')}
+
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
@@ -570,7 +573,7 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes

@@ -1,7 +1,6 @@
 module Pupils
   class SchoolsController < ApplicationController
     include ActionView::Helpers::NumberHelper
-    include ActivityTypeFilterable
     include SchoolAggregation
     include DashboardAlerts
     include DashboardTimeline
@@ -30,7 +29,6 @@ module Pupils
     end
 
     def setup_default_features
-      activity_setup(@school)
       @temperature_observations = @school.observations.temperature
       @show_temperature_observations = show_temperature_observations?
       @observations = setup_timeline(@school.observations)
@@ -41,13 +39,6 @@ module Pupils
     def setup_data_enabled_features
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.pupil_dashboard, :pupil_dashboard_title, limit: 2)
       equivalence_setup(@school)
-    end
-
-    def activity_setup(school)
-      @activities_count = school.activities.count
-      @first = school.activities.empty?
-      activity_suggester = NextActivitySuggesterWithFilter.new(school, activity_type_filter)
-      @suggestion = (activity_suggester.suggest_from_programmes + activity_suggester.suggest_from_activity_history + activity_suggester.suggest_from_find_out_mores).first
     end
 
     def equivalence_setup(school)
