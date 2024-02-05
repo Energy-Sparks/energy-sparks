@@ -437,13 +437,13 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
           visit school_school_targets_path(test_school)
         end
 
-        it 'shows prompt to add estimate' do
-          expect(page).to have_content('If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your electricity')
+        it 'no longer prompts to add estimate' do
+          expect(page).not_to have_content('If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your electricity')
         end
 
-        it 'shows the prompt on school dashboard' do
+        it 'no longer shows the prompt on school dashboard' do
           visit school_path(test_school)
-          expect(page).to have_content('Add an estimate of your annual electricity consumption')
+          expect(page).not_to have_content('Add an estimate of your annual electricity consumption')
         end
       end
     end

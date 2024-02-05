@@ -1,7 +1,8 @@
 <%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
 <%= render 'shared/dashboard_title', school: @school do %>
-  <%= render 'adult_dashboard_buttons', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
+  <%= render 'adult_dashboard_buttons', school: @school, co2_pages: @co2_pages, public: true,
+                                        show_data_enabled_features: @show_data_enabled_features %>
 <% end %>
 
 <% if @overview_data %>
@@ -9,7 +10,8 @@
   <%= render 'management/schools/overview_data', overview_data: @overview_data %>
   <div class="text-right management-overview-caption">
     <%= @overview_data.date_ranges %>
-    <%= link_to_help_for_feature :management_summary_overview, title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
+    <%= link_to_help_for_feature :management_summary_overview,
+                                 title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
   </div>
 <% end %>
 
@@ -18,16 +20,13 @@
 <%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
 
 <% if @dashboard_alerts %>
-  <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
+  <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school,
+                                        content_field: :management_dashboard_title %>
 <% end %>
 
 <% if @show_standard_prompts %>
   <%= render 'management/schools/dashboard_message', messageable: @school %>
   <%= render 'management/schools/dashboard_message', messageable: @school.try(:school_group) %>
-<% end %>
-
-<% if @suggest_estimates_for_fuel_types.present? && @suggest_estimates_for_fuel_types.any? %>
-  <%= render 'management/schools/prompt_for_estimate', school: @school, fuel_types: @suggest_estimates_for_fuel_types %>
 <% end %>
 
 <% if @prompt_for_bill %>
@@ -94,7 +93,8 @@
 
 <% if @management_priorities && @management_priorities.any? %>
   <h3><%= t('schools.show.energy_saving_opportunities') %></h3>
-  <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
+  <%= render 'management/management_priorities/list', management_priorities: @management_priorities,
+                                                      school: @school, show_more: @show_more_management_priorities %>
 <% end %>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
@@ -110,7 +110,10 @@
           <%= fa_icon('file-alt') %>
           <%= t('schools.show.print_view') %>
         <% end %>
-        <%= link_to t('schools.show.download_data'), school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:download_school_data, @school) %>
+        <%= if can?(:download_school_data, @school)
+              link_to t('schools.show.download_data'), school_downloads_path(@school),
+                      class: 'btn btn-outline-dark rounded-pill font-weight-bold'
+            end %>
     </div>
   </div>
 <% end %>

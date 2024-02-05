@@ -488,13 +488,11 @@ en:
           cumulative_progress: Cumulative progress
           debug: Debug
           error: Error
-          error_bad_estimate_html: The <a href='%{estimated_annual_consumptions_path}'>annual estimate</a> of your %{fuel_type} usage that has been provided for your school is too low
           error_message: Unfortunately due to an error we are currently unable to display your detailed progress report
           month: Month
           month_by_month_progress: Month by month progress
           overall_change_since_last_year: Overall change since last year
           overall_performance_since_last_year: Overall performance since last year
-          please_review_your_estimate_and_our_guidance_html: Please <a href='%{estimated_annual_consumptions_path}'>review your estimate and our guidance</a> to see if it is correct
           problem: Problem
           progress_charts: Progress charts
           review_targets: Review targets
@@ -503,7 +501,6 @@ en:
           unfortunately_as_much_as_last_year: Unfortunately you are using as much %{fuel_type} as you did last year
           unfortunately_more_than_last_year: Unfortunately you are using %{relative_percent} more %{fuel_type} than last year
           view_last_years_target_report: View last year’s target report
-          we_have_been_notified_about_this_error_1: In the meantime, we have been notified about this error and will investigate
           we_have_been_notified_about_this_error_2: We have been notified about this error and will investigate
           we_have_not_received_data: We have not received data for your %{fuel_type} usage for over thirty days. As a result your progress report will be out of date
           well_done_less_than_last_year: Well done, you are using %{relative_percent} less %{fuel_type} than last year
