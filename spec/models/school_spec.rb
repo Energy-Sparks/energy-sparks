@@ -742,8 +742,12 @@ describe School do
     let!(:activity_1) { create :activity, happened_on: date_1, school: school }
     let!(:activity_2) { create :activity, happened_on: date_2, school: school }
 
-    it 'finds activities from the academic year' do
-      expect(school.activities_in_academic_year(academic_year.start_date + 2.months)).to eq([activity_1])
+    it 'finds activity_types from the academic year' do
+      expect(school.activity_types_in_academic_year(academic_year.start_date + 2.months)).to eq([activity_1.activity_type])
+    end
+
+    it 'handles missing academic year' do
+      expect(school.activity_types_in_academic_year(Date.parse('01-01-1900'))).to eq([])
     end
   end
 
@@ -758,14 +762,6 @@ describe School do
     let!(:observation_1) { create :observation, :intervention, at: date_1, school: school, intervention_type: intervention_type_1 }
     let!(:observation_2) { create :observation, :intervention, at: date_2, school: school, intervention_type: intervention_type_2 }
     let!(:observation_without_intervention_type) { create(:observation, :temperature, at: date_1 + 1.day, school: school) }
-
-    it 'finds observations from the academic year' do
-      expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1, observation_without_intervention_type])
-    end
-
-    it 'handles missing academic year' do
-      expect(school.observations_in_academic_year(Date.parse('01-01-1900'))).to eq([])
-    end
 
     it 'finds intervention types from the academic year' do
       expect(school.intervention_types_in_academic_year(academic_year.start_date + 2.months)).to eq([intervention_type_1])
@@ -784,14 +780,6 @@ describe School do
       it 'returns the subscription frequency for a school if there is not a holiday approaching' do
         allow(school).to receive(:holiday_approaching?).and_return(false)
         expect(school.subscription_frequency).to eq([:weekly])
-      end
-    end
-
-    context 'when finding intervention types by date' do
-      let!(:recent_observation) { create(:observation, :intervention, at: date_1 + 1.day, school: school, intervention_type: intervention_type_2) }
-
-      it 'finds intervention types by date, including duplicates, excluding non-intervention observations' do
-        expect(school.intervention_types_by_date).to eq([intervention_type_2, intervention_type_1, intervention_type_2])
       end
     end
   end
