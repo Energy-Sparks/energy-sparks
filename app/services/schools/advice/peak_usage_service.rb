@@ -2,20 +2,32 @@ module Schools
   module Advice
     class PeakUsageService
       include AnalysableMixin
+      # matches the required days for base load advice pages - see BaseloadService and Baseload::BaseService it uses
+      REQUIRED_DAYS = 14
 
       def initialize(school, meter_collection)
         @school = school
         @meter_collection = meter_collection
       end
 
-      delegate :enough_data?, to: :peak_usage_calculation_service
-      delegate :data_available_from, to: :peak_usage_calculation_service
+      def enough_data?
+        meter_data_checker.at_least_x_days_data?(REQUIRED_DAYS)
+      end
+
+      def data_available_from
+        meter_data_checker.date_when_enough_data_available(REQUIRED_DAYS)
+      end
+
       delegate :average_peak_kw, to: :peak_usage_calculation_service
       delegate :date_range, to: :peak_usage_calculation_service
 
       def previous_year_peak_kw
+        previous_years_asof_date = asof_date - 1.year
+        previous_years_checker = Util::MeterDateRangeChecker.new(aggregate_meter, previous_years_asof_date)
+        return unless previous_years_checker.at_least_x_days_data?(REQUIRED_DAYS)
+
         previous_years_peak_usage_calculation_service = peak_usage_calculation_service(previous_years_asof_date)
-        previous_years_peak_usage_calculation_service.enough_data? ? previous_years_peak_usage_calculation_service.average_peak_kw : nil
+        previous_years_peak_usage_calculation_service.average_peak_kw
       end
 
       def percentage_change_in_peak_kw
@@ -37,16 +49,16 @@ module Schools
 
       private
 
+      def meter_data_checker
+        @meter_data_checker ||= Util::MeterDateRangeChecker.new(aggregate_meter, @asof_date)
+      end
+
       # Copied from ContentBase
       def percent_change(old_value, new_value)
         return nil if old_value.nil? || new_value.nil?
         return 0.0 if !old_value.nan? && old_value == new_value # both 0.0 case
 
         (new_value - old_value) / old_value
-      end
-
-      def previous_years_asof_date
-        @previous_years_asof_date ||= asof_date - 1.year
       end
 
       def aggregate_meter

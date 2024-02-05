@@ -152,6 +152,7 @@ module Schools
       end
 
       # for charts that use the last full week
+      # end of the week is Saturday
       def last_full_week_end_date(end_date)
         end_date.end_of_week - 1
       end

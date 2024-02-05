@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'electricity intraday advice page', type: :system do
+RSpec.describe 'electricity intraday advice page', :aggregate_failures do
   let(:key) { 'electricity_intraday' }
   let(:expected_page_title) { 'Electricity intraday usage analysis' }
 
@@ -33,20 +33,22 @@ RSpec.describe 'electricity intraday advice page', type: :system do
         expect(page).to have_content('How do you compare?')
         expect(page).to have_content('How does your peak electricity use compare to other primary schools on Energy Sparks with a similar number of pupils')
         expect(page).to have_content('For more detail, compare with other schools in your group')
-        expect(page).to have_content('10,000,000')
+        expect(find('.advice-table')).to have_content('Average peak kW 10,000,000')
       end
 
       context 'when not enough data' do
-        let(:start_date) { end_date - 58.days }
+        let(:start_date) { end_date - 12.days }
 
-        it 'shows only relevent content' do
-          expect(page).to have_content('Your current peak electricity use')
-          expect(page).to have_content("Data on peak kw usage available from #{(end_date + 1).to_s(:es_short)}")
-          expect(page).to have_no_content('How did we calculate these figures?')
-          expect(page).to have_no_content('How do you compare?')
-          expect(page).to have_no_content('How does your peak electricity use compare to other primary schools on Energy Sparks with a similar number of pupils')
-          expect(page).to have_no_content('For more detail, compare with other schools in your group')
-          expect(page).to have_no_content('10,000,000')
+        it 'says when available' do
+          expect(page).to have_content("available after #{(end_date + 1).to_s(:es_short)}")
+        end
+      end
+
+      context 'when enough data for last year' do
+        let(:start_date) { end_date - 1.year - 13.days }
+
+        it 'shows percentage change' do
+          expect(find('.advice-table')).to have_content('Average peak kW % change 10,000,000 0%')
         end
       end
     end

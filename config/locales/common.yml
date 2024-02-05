@@ -81,6 +81,7 @@ en:
     storage_heaters: Storage heaters
     table:
       columns:
+        average_daily_usage: Average daily usage (kWh)
         co2_kg: CO2 (kg)
         cost_gbp: Cost (£)
         use_kwh: Use (kWh)

@@ -56,6 +56,27 @@ FactoryBot.define do
       end
     end
 
+    trait :with_terms_and_holidays do
+      transient do
+        term_start_date { 1.year.ago }
+        term_count { 5 }
+        term_length { 6 } # length of each term in weeks
+        holiday_length { 2 } # length of each holiday in weeks
+      end
+
+      after(:create) do |calendar, evaluator|
+        term_start = evaluator.term_start_date
+        evaluator.term_count.times do |_i|
+          term_end = term_start + evaluator.term_length.weeks
+          holiday_start = term_end + 1
+          holiday_end = holiday_start + evaluator.holiday_length.weeks
+          create(:term, calendar: calendar, start_date: term_start, end_date: term_end)
+          create(:holiday, calendar: calendar, start_date: holiday_start, end_date: holiday_end)
+          term_start = holiday_end + 1
+        end
+      end
+    end
+
     trait :with_terms do
       transient do
         term_count { 5 }

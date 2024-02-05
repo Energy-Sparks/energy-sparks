@@ -21,9 +21,6 @@ cy:
           table_introduction: Mae'r tabl isod yn dangos faint o nwy a ddefnyddiwyd pan mae'r ysgol ar agor neu ar gau ar ddiwrnod ysgol yn ogystal ag ar benwythnosau a gwyliau.
           title: 12 mis diwethaf
         summary: Mae'r adran hon yn rhoi dadansoddiad manylach o ddefnydd nwy eich ysgol y tu allan i oriau ysgol a rhai pethau i gadw llygad amdanynt. Er mwyn rheoli ynni'n dda, rydych am i'r rhan fwyaf o'ch defnydd ynni fod pan fydd yr ysgol ar agor.
-        tables:
-          columns:
-            average_daily_usage: Defnydd dyddiol ar gyfartaledd (kWh)
         title: Dadansoddiad
         usage_by_day_of_week:
           daytype_breakdown_gas_tolerant_chart:

@@ -183,25 +183,6 @@ module AdvicePageHelper
     I18n.t('date.day_names')[week_day]
   end
 
-  # sort an array of SchoolPeriod objects
-  def sort_school_periods(periods)
-    periods.sort { |a, b| a.start_date <=> b.start_date }
-  end
-
-  def can_compare_holiday_usage?(holiday, holiday_usage)
-    return false unless holiday_usage.usage.present?
-    return false unless holiday_usage.previous_holiday_usage.present?
-    Time.zone.today > holiday.end_date
-  end
-
-  def within_school_period?(school_period)
-    @analysis_dates.end_date > school_period.start_date && @analysis_dates.end_date < school_period.end_date
-  end
-
-  def average_daily_usage(usage, school_period)
-    return usage.kwh / (school_period.end_date - school_period.start_date)
-  end
-
   def icon_tooltip(text = '')
     tag.span(fa_icon('info-circle'), data: { toggle: 'tooltip', placement: 'top', title: text }, class: 'text-muted') if text.present?
   end
@@ -212,6 +193,12 @@ module AdvicePageHelper
 
   def format_date_range(date_range)
     date_range.map { |d| d.to_s(:es_short) }.join(' - ')
+  end
+
+  # holiday usage is a Hash of school_period => OpenStruct
+  # confirms that at least one period has usage
+  def show_holiday_usage_section?(holiday_usage)
+    holiday_usage.values.any? { |usage| usage.usage.present? }
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers
