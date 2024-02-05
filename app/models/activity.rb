@@ -39,9 +39,10 @@ class Activity < ApplicationRecord
   scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
   scope :for_school, ->(school) { where(school: school) }
   scope :most_recent, -> { order(created_at: :desc) }
-  scope :by_date, -> { order(happened_on: :asc) }
+  scope :by_date, ->(order = :asc) { order(happened_on: order) }
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
+  scope :in_academic_year_for, ->(school, date) { (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none }
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
 
@@ -58,6 +59,6 @@ class Activity < ApplicationRecord
   end
 
   def description_includes_images?
-    description&.body&.to_trix_html&.include?("figure")
+    description&.body&.to_trix_html&.include?('figure')
   end
 end

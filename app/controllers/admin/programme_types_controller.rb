@@ -31,7 +31,7 @@ module Admin
 
     def destroy
       @programme_type.destroy
-      redirect_to admin_programme_types_path, notice: "Programme type was successfully deleted."
+      redirect_to admin_programme_types_path, notice: 'Programme type was successfully deleted.'
     end
 
   private

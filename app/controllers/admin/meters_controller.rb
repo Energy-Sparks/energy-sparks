@@ -9,8 +9,8 @@ module Admin
     def find_by_mpxn
       if params[:search].present?
         search = params[:search]
-        if search["mpxn"].present?
-          return Meter.where("mpan_mprn::text like ?", "#{search['mpxn']}%").limit(20)
+        if search['mpxn'].present?
+          return Meter.where('mpan_mprn::text like ?', "#{search['mpxn']}%").limit(20)
         else
           return []
         end

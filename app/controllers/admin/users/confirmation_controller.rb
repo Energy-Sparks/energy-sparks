@@ -8,9 +8,9 @@ module Admin
           @user.send_confirmation_instructions
         end
         if params[:school] && @user.school.present?
-          redirect_to school_users_path(@user.school), notice: "Confirmation email sent"
+          redirect_to school_users_path(@user.school), notice: 'Confirmation email sent'
         else
-          redirect_to admin_users_path, notice: "Confirmation email sent"
+          redirect_to admin_users_path, notice: 'Confirmation email sent'
         end
       end
     end

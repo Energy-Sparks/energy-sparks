@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "summary table" do
+RSpec.shared_examples 'summary table' do
   let(:management_data) do
     Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
   end
@@ -15,7 +15,7 @@ RSpec.shared_examples "summary table" do
     end
 
     it 'displays summary of recent usage' do
-      expect(page).to have_content("Summary of recent energy usage")
+      expect(page).to have_content('Summary of recent energy usage')
     end
   end
 
@@ -26,12 +26,12 @@ RSpec.shared_examples "summary table" do
     end
 
     it 'does not display summary of recent usage' do
-      expect(page).not_to have_content("Summary of recent energy usage")
+      expect(page).not_to have_content('Summary of recent energy usage')
     end
   end
 end
 
-RSpec.describe "adult dashboard summary table", type: :system do
+RSpec.describe 'adult dashboard summary table', type: :system do
   let(:school) { create(:school) }
 
   before do
@@ -41,7 +41,7 @@ RSpec.describe "adult dashboard summary table", type: :system do
   context 'as guest' do
     let(:user) { nil }
 
-    it_behaves_like "summary table" do
+    it_behaves_like 'summary table' do
       let(:test_school) { school }
     end
   end
@@ -49,7 +49,7 @@ RSpec.describe "adult dashboard summary table", type: :system do
   context 'as pupil' do
     let(:user) { create(:pupil, school: school) }
 
-    it_behaves_like "summary table" do
+    it_behaves_like 'summary table' do
       let(:test_school) { school }
     end
   end
@@ -57,7 +57,7 @@ RSpec.describe "adult dashboard summary table", type: :system do
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 
-    it_behaves_like "summary table" do
+    it_behaves_like 'summary table' do
       let(:test_school) { school }
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe "adult dashboard summary table", type: :system do
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
-    it_behaves_like "summary table" do
+    it_behaves_like 'summary table' do
       let(:test_school) { school }
     end
   end
@@ -75,7 +75,7 @@ RSpec.describe "adult dashboard summary table", type: :system do
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
 
-    it_behaves_like "summary table" do
+    it_behaves_like 'summary table' do
       let(:test_school) { school }
     end
   end
@@ -98,7 +98,7 @@ RSpec.describe "adult dashboard summary table", type: :system do
       end
 
       it 'overrides flag and shows data-enabled features' do
-        expect(page).to have_content("Summary of recent energy usage")
+        expect(page).to have_content('Summary of recent energy usage')
       end
     end
   end

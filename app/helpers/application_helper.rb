@@ -9,16 +9,16 @@ module ApplicationHelper
   end
 
   def nice_times_only(datetime)
-    return "" if datetime.nil?
+    return '' if datetime.nil?
     datetime.strftime('%H:%M')
   end
 
   def nice_dates(date)
-    date ? date.to_s(:es_full) : ""
+    date ? date.to_s(:es_full) : ''
   end
 
   def short_dates(date)
-    date ? date.to_s(:es_short) : ""
+    date ? date.to_s(:es_short) : ''
   end
 
   def nice_date_times_today(datetime)
@@ -39,7 +39,7 @@ module ApplicationHelper
   end
 
   def nice_dates_from_timestamp(timestamp)
-    return "" if timestamp.nil?
+    return '' if timestamp.nil?
     datetime = DateTime.strptime(timestamp.to_s, '%s')
     nice_dates(datetime)
   end
@@ -75,13 +75,13 @@ module ApplicationHelper
 
   def class_for_last_date(last_date)
     if last_date.nil?
-      "table-light"
+      'table-light'
     elsif last_date < Time.zone.now - 30.days
-      "table-danger"
+      'table-danger'
     elsif last_date < Time.zone.now - 5.days
-      "table-warning"
+      'table-warning'
     else
-      "table-success"
+      'table-success'
     end
   end
 
@@ -142,7 +142,7 @@ module ApplicationHelper
   end
 
   def spinner_icon
-    content_class = "fa fa-spinner fa-spin"
+    content_class = 'fa fa-spinner fa-spin'
     content_tag(:i, nil, class: content_class)
   end
 
@@ -294,7 +294,7 @@ module ApplicationHelper
   end
 
   def up_downify(text)
-    return if text.nil? || text == "-"
+    return if text.nil? || text == '-'
     icon = if text.match?(/^\+/)
              fa_icon('arrow-circle-up')
            elsif text.match?(/increased/)
@@ -360,17 +360,17 @@ module ApplicationHelper
   end
 
   def weekly_alert_utm_parameters
-    email_utm_parameters(source: "weekly-alert", campaign: "alerts")
+    email_utm_parameters(source: 'weekly-alert', campaign: 'alerts')
   end
 
-  def targets_utm_parameters(source: "weekly-alert")
-    email_utm_parameters(source: source, campaign: "targets")
+  def targets_utm_parameters(source: 'weekly-alert')
+    email_utm_parameters(source: source, campaign: 'targets')
   end
 
   def email_utm_parameters(source:, campaign:)
     {
       utm_source: source,
-      utm_medium: "email",
+      utm_medium: 'email',
       utm_campaign: campaign
     }
   end
@@ -389,7 +389,7 @@ module ApplicationHelper
   end
 
   def activity_types_badge_class(list, item, color = 'info')
-    list && list.include?(item) ? "badge badge-#{color}" : "badge badge-light outline"
+    list && list.include?(item) ? "badge badge-#{color}" : 'badge badge-light outline'
   end
 
   def file_type_icon(type)
@@ -438,8 +438,8 @@ module ApplicationHelper
 
   def dashboard_message_icon(messageable)
     if messageable.dashboard_message
-      title = "Dashboard message is shown for "
-      title += messageable.is_a?(SchoolGroup) ? "schools in this group" : "school"
+      title = 'Dashboard message is shown for '
+      title += messageable.is_a?(SchoolGroup) ? 'schools in this group' : 'school'
       tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
         fa_icon(:info)
       end
@@ -447,7 +447,7 @@ module ApplicationHelper
   end
 
   def toggler
-    (fa_icon("chevron-down") + fa_icon("chevron-right")).html_safe
+    (fa_icon('chevron-down') + fa_icon('chevron-right')).html_safe
   end
 
   def text_with_icon(text, icon)
@@ -473,5 +473,9 @@ module ApplicationHelper
 
   def recommendations_scope_for(task_type)
     { 'action': :adult, 'activity': :pupil }[task_type]
+  end
+
+  def live_data_path
+    ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path
   end
 end

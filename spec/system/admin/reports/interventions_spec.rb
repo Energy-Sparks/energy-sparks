@@ -13,8 +13,8 @@ describe 'Interventions report', type: :system do
     end
 
     it 'allows me to see recent interventions' do
-      click_on "Recently recorded interventions"
-      expect(page).to have_content("Recently recorded interventions")
+      click_on 'Recently recorded interventions'
+      expect(page).to have_content('Recently recorded interventions')
       expect(page).to have_content(intervention.school.name)
       expect(page).to have_content(intervention.intervention_type.name)
     end

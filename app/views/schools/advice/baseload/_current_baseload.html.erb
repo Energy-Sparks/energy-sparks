@@ -1,6 +1,11 @@
-<%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.baseload.current_baseload.title') %>
+<%= render 'schools/advice/section_title', section_id: 'current',
+                                           section_title: t('advice_pages.baseload.current_baseload.title') %>
 
-<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(AlertChangeInElectricityBaseloadShortTerm), show_links: false, show_icons: false %>
+<%= component 'alerts', school: school,
+                        dashboard_alerts: dashboard_alerts,
+                        alert_types: alert_types_for_class(AlertChangeInElectricityBaseloadShortTerm),
+                        show_links: false,
+                        show_icons: false %>
 
 <table class="mt-2 table table-sm advice-table" id="current-baseload">
     <thead>
@@ -14,7 +19,7 @@
         <% if analysis_dates.recent_data %>
           <td class="text-right"><%= format_unit(current_baseload.average_baseload_kw_last_week, :kw) %></td>
           <td class="text-right">
-            <%= up_downify( format_unit(current_baseload.percentage_change_week, :relative_percent)) %>
+            <%= up_downify(format_unit(current_baseload.percentage_change_week, :relative_percent)) %>
           </td>
         <% else %>
           <td class="text-right old-data">
@@ -24,11 +29,17 @@
         <% end %>
       </tr>
       <tr>
-        <td><%= t('advice_pages.baseload.current_baseload.last_year') %></td>
+        <td>
+          <% if analysis_dates.one_years_data? %>
+            <%= t('advice_pages.baseload.current_baseload.last_year') %>
+          <% else %>
+            <%= format_date_range([analysis_dates.start_date, analysis_dates.end_date]) %>
+          <% end %>
+        </td>
         <td class="text-right"><%= format_unit(current_baseload.average_baseload_kw_last_year, :kw) %></td>
         <td class="text-right">
           <% if analysis_dates.one_years_data? %>
-            <%= up_downify( format_unit(current_baseload.percentage_change_year, :relative_percent)) %>
+            <%= up_downify(format_unit(current_baseload.percentage_change_year, :relative_percent)) %>
           <% else %>
             -
           <% end %>
@@ -36,4 +47,5 @@
       </tr>
     </tbody>
 </table>
-<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes' %>

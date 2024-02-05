@@ -104,8 +104,11 @@ class School < ApplicationRecord
   has_many :school_times,         inverse_of: :school
   has_many :activities,           inverse_of: :school
   has_many :activity_types, through: :activities
+
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
+  has_many :intervention_types, through: :observations
+
   has_many :transport_surveys,    inverse_of: :school
   has_many :consent_documents,    inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
@@ -114,6 +117,9 @@ class School < ApplicationRecord
   has_many :school_targets,       inverse_of: :school
   has_many :school_target_events, inverse_of: :school
   has_many :audits,               inverse_of: :school
+
+  has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
+  has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_types, through: :programmes
@@ -167,7 +173,7 @@ class School < ApplicationRecord
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
 
-  has_and_belongs_to_many :cluster_users, class_name: "User", join_table: :cluster_schools_users
+  has_and_belongs_to_many :cluster_users, class_name: 'User', join_table: :cluster_schools_users
 
   has_many :school_partners, -> { order(position: :asc) }
   has_many :partners, through: :school_partners
@@ -180,8 +186,8 @@ class School < ApplicationRecord
   enum funding_status: [:state_school, :private_school]
   enum region: [:north_east, :north_west, :yorkshire_and_the_humber, :east_midlands, :west_midlands, :east_of_england, :london, :south_east, :south_west]
 
-  #active flag is a soft-delete, those with a removal date are deleted, others
-  #are archived, with chance of returning if we receive funding
+  # active flag is a soft-delete, those with a removal date are deleted, others
+  # are archived, with chance of returning if we receive funding
   scope :active,              -> { where(active: true) }
   scope :inactive,            -> { where(active: false) }
   scope :deleted,             -> { inactive.where.not(removal_date: nil) }
@@ -192,7 +198,7 @@ class School < ApplicationRecord
   scope :data_enabled,        -> { active.where(data_enabled: true) }
   scope :without_group,       -> { active.where(school_group_id: nil) }
   scope :without_scoreboard,  -> { active.where(scoreboard_id: nil) }
-  scope :awaiting_activation, -> { active.where("visible = ? or data_enabled = ?", false, false) }
+  scope :awaiting_activation, -> { active.where('visible = ? or data_enabled = ?', false, false) }
   scope :data_visible,        -> { data_enabled.visible }
 
   scope :with_config, -> { joins(:configuration) }
@@ -203,20 +209,23 @@ class School < ApplicationRecord
   scope :with_energy_tariffs, -> { joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'").group('schools.id').order('schools.name') }
   scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id))}
 
-  #includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
+  # includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
   scope :with_recent_engagement, -> { where(id: Observation.engagement.recorded_since(AcademicYear.current.start_date).select(:school_id)) }
 
-  #have recently run a transport survey
+  # have recently run a transport survey
   scope :with_transport_survey, -> { where(id: TransportSurvey.recently_added(AcademicYear.current.start_date).select(:school_id))}
 
-  #have recently started a programme that isn't the default programme
+  # have recently started a programme that isn't the default programme
   scope :joined_programme, -> { where(id: Programme.recently_started_non_default(AcademicYear.current.start_date).select(:school_id))}
 
-  #TODO: cluster users, not just those directly linked
+  # TODO: cluster users, not just those directly linked
   scope :with_recently_logged_in_users, -> { where(id: User.recently_logged_in(AcademicYear.current.start_date).select(:school_id))}
 
-  #combination of other scopes to define an engaged school
+  # combination of other scopes to define an engaged school
   scope :engaged, -> { active.with_recent_engagement.or(with_recently_logged_in_users).or(with_transport_survey).or(joined_programme) }
+
+  # schools that are not linked to a funder either directly or via their school group
+  scope :unfunded, -> { joins(:school_group).where('schools.funder_id is null AND school_groups.funder_id is null')}
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
@@ -226,8 +235,8 @@ class School < ApplicationRecord
   validates :funding_status, inclusion: { in: funding_statuses }
 
   validates :percentage_free_school_meals, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
-  #simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
-  #adjusted to use \A and \z
+  # simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
+  # adjusted to use \A and \z
   validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
   validate :valid_uk_postcode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
@@ -322,26 +331,22 @@ class School < ApplicationRecord
   end
 
   def activities_in_academic_year(date)
-    if (academic_year = academic_year_for(date))
-      return activities.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
-    end
-    []
+    activities.in_academic_year_for(self, date).order(created_at: :asc)
+  end
+
+  def activity_types_in_academic_year(date = Time.zone.now)
+    activity_types.merge(activities.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
   def observations_in_academic_year(date)
-    if (academic_year = academic_year_for(date))
-      return observations.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
-    end
-    []
+    observations.in_academic_year_for(self, date).order(created_at: :asc)
   end
 
-  def intervention_types_in_academic_year(date)
-    if (observations = observations_in_academic_year(date))
-      return observations.map(&:intervention_type).compact
-    end
-    []
+  def intervention_types_in_academic_year(date = Time.zone.now)
+    intervention_types.merge(observations.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
+  # for removal when Interventions::SuggestAction is removed
   def intervention_types_by_date
     observations.by_date.map(&:intervention_type).compact
   end
@@ -433,7 +438,7 @@ class School < ApplicationRecord
     if school_onboarding && school_onboarding.created_user.present?
       users << school_onboarding.created_user
     end
-    #also email admin, staff and group users
+    # also email admin, staff and group users
     users += all_adult_school_users.to_a
     users.uniq
   end
@@ -540,8 +545,8 @@ class School < ApplicationRecord
   end
 
   def school_target_attributes
-    #use the current target if we have one, otherwise the most current target
-    #based on start date. So if target as expired, then progress pages still work
+    # use the current target if we have one, otherwise the most current target
+    # based on start date. So if target as expired, then progress pages still work
     if has_current_target?
       current_target.meter_attributes_by_meter_type
     elsif most_recent_target.present?
@@ -568,7 +573,7 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes
@@ -662,11 +667,11 @@ class School < ApplicationRecord
   end
 
   def all_data_sources(meter_type)
-    meters.active.where(meter_type: meter_type).data_source_known.joins(:data_source).order("data_sources.name ASC").distinct.pluck("data_sources.name")
+    meters.active.where(meter_type: meter_type).data_source_known.joins(:data_source).order('data_sources.name ASC').distinct.pluck('data_sources.name')
   end
 
   def all_procurement_routes(meter_type)
-    meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order("procurement_routes.organisation_name ASC").distinct.pluck("procurement_routes.organisation_name")
+    meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order('procurement_routes.organisation_name ASC').distinct.pluck('procurement_routes.organisation_name')
   end
 
   def school_group_cluster_name

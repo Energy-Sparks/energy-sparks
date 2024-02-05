@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe EnergyTariffTableComponent, type: :component do
   let(:current_user)      { create(:admin) }
@@ -162,16 +162,16 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       end
 
       it 'styles the row' do
-        expect(page).to have_css("tr.table-secondary")
+        expect(page).to have_css('tr.table-secondary')
       end
     end
 
     context 'with unusable tariff' do
-      #no prices
+      # no prices
       let(:energy_tariffs) { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
 
       it 'styles the row' do
-        expect(page).to have_css("tr.table-danger")
+        expect(page).to have_css('tr.table-danger')
       end
     end
 
@@ -195,7 +195,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
         end
 
         it 'styles the row' do
-          expect(page).to have_css("tr.table-secondary")
+          expect(page).to have_css('tr.table-secondary')
         end
       end
     end

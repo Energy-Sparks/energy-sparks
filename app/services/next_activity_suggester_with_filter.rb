@@ -6,6 +6,7 @@ class NextActivitySuggesterWithFilter
     @filter = filter || ActivityTypeFilter.new(school: @school)
   end
 
+  ## RECOMMENDATIONS: Based on your recent activity
   def suggest_from_activity_history
     suggestions = []
     if @school.activities.empty?
@@ -14,7 +15,7 @@ class NextActivitySuggesterWithFilter
       get_suggestions_based_on_last_activity(suggestions)
     end
 
-    #ensure minimum of five suggestions
+    # ensure minimum of five suggestions
     top_up_if_not_enough_suggestions(suggestions) if suggestions.length < NUMBER_OF_SUGGESTIONS
 
     suggestions
@@ -28,6 +29,7 @@ class NextActivitySuggesterWithFilter
     activity_type_filter.activity_types
   end
 
+  ## RECOMMENDATIONS: Based on your energy usage
   def suggest_from_find_out_mores
     content = @school.latest_content
     if content
@@ -50,8 +52,8 @@ class NextActivitySuggesterWithFilter
     suggestions.to_a
   end
 
-  #For school targets page. Selecting activities based on an order of preference
-  #filtering based on key stages, with a fallback to other activities
+  # For school targets page. Selecting activities based on an order of preference
+  # filtering based on key stages, with a fallback to other activities
   def suggest_for_school_targets(limit = 5)
     suggestions = suggest_from_audits
     return suggestions.take(limit) unless suggestions.length < limit
@@ -68,8 +70,8 @@ class NextActivitySuggesterWithFilter
 
 private
 
-  #Find the "initial" activity type suggestions, these are entries in ActivityTypeSuggestion
-  #where activity_type == nil.
+  # Find the "initial" activity type suggestions, these are entries in ActivityTypeSuggestion
+  # where activity_type == nil.
   def get_initial_suggestions(suggestions)
     ActivityTypeSuggestion.initial.order(:id).each do |ats|
       suggestions << ats.suggested_type if suggestion_can_be_added?(ats.suggested_type, suggestions)

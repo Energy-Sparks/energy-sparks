@@ -13,9 +13,9 @@ module LocaleHelper
 
   def t_params(fields, locales = I18n.available_locales)
     locales.map do |locale|
-       fields.map do |field|
-         t_field(field, locale)
-       end
+      fields.map do |field|
+        t_field(field, locale)
+      end
     end.flatten
   end
 
@@ -23,7 +23,7 @@ module LocaleHelper
     fuels.map { |fuel| I18n.t('common.' + fuel.to_s).downcase }.to_sentence
   end
 
-  def t_attached_links(obj, field, char = " | ", locales = I18n.available_locales)
+  def t_attached_links(obj, field, char = ' | ', locales = I18n.available_locales)
     output = locales.collect do |locale|
       link_to_if(obj.send("#{field}_#{locale}").attached?, I18n.t("languages.#{locale}"), obj.send("#{field}_#{locale}")).html_safe
     end

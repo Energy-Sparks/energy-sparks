@@ -27,7 +27,7 @@ describe Transifex::Synchroniser, type: :service do
     end
 
     context 'and was pushed' do
-      let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id)}
+      let!(:status) { create(:transifex_status, record_type: 'ActivityType', record_id: activity_type.id)}
 
       it 'returns the date' do
         expect(service.last_pushed).to eq status.tx_last_push
@@ -51,7 +51,7 @@ describe Transifex::Synchroniser, type: :service do
     end
 
     context 'and was pushed' do
-      let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id)}
+      let!(:status) { create(:transifex_status, record_type: 'ActivityType', record_id: activity_type.id)}
 
       it 'returns the date' do
         expect(service.last_pulled).to eq status.tx_last_push
@@ -82,7 +82,7 @@ describe Transifex::Synchroniser, type: :service do
   end
 
   describe '#updated_since_last_pushed?' do
-    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_last_push: last_push)}
+    let!(:status) { create(:transifex_status, record_type: 'ActivityType', record_id: activity_type.id, tx_last_push: last_push)}
 
     before do
       activity_type.update!(updated_at: Time.zone.today - 1)
@@ -107,7 +107,7 @@ describe Transifex::Synchroniser, type: :service do
 
   describe '#translations_updated_since_last_pull?' do
     let(:last_pull) { Time.zone.today - 1 }
-    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_last_pull: last_pull)}
+    let!(:status) { create(:transifex_status, record_type: 'ActivityType', record_id: activity_type.id, tx_last_pull: last_pull)}
 
     before do
       allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(last_reviewed)
@@ -152,7 +152,7 @@ describe Transifex::Synchroniser, type: :service do
 
   describe '#pull' do
     let(:tx_last_pulled) { nil }
-    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_last_pull: tx_last_pulled)}
+    let!(:status) { create(:transifex_status, record_type: 'ActivityType', record_id: activity_type.id, tx_last_pull: tx_last_pulled)}
 
     context 'when not created' do
       before do
@@ -179,9 +179,9 @@ describe Transifex::Synchroniser, type: :service do
       let(:resource_key) { activity_type.resource_key }
       let(:translations) do
         {
-          "cy" => {
+          'cy' => {
             resource_key => {
-              "name" => "Welsh name"
+              'name' => 'Welsh name'
             }
            }
          }
@@ -203,7 +203,7 @@ describe Transifex::Synchroniser, type: :service do
       it 'updates the record' do
         expect(service.pull).to be true
         activity_type.reload
-        expect(activity_type.name_cy).to eql("Welsh name")
+        expect(activity_type.name_cy).to eql('Welsh name')
       end
     end
 
@@ -226,8 +226,8 @@ describe Transifex::Synchroniser, type: :service do
       let(:tx_last_pulled) { yesterday }
       let(:translations) do
         {
-          "cy" => {
-            resource_key => { "name": "Updated" }
+          'cy' => {
+            resource_key => { "name": 'Updated' }
            }
          }
       end
@@ -255,7 +255,7 @@ describe Transifex::Synchroniser, type: :service do
 
   describe '#push' do
     let(:tx_last_pushed) { nil }
-    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_last_push: tx_last_pushed)}
+    let!(:status) { create(:transifex_status, record_type: 'ActivityType', record_id: activity_type.id, tx_last_push: tx_last_pushed)}
 
     context 'when not created' do
       before do
@@ -281,8 +281,8 @@ describe Transifex::Synchroniser, type: :service do
       end
 
       it 'pushes the data' do
-        #activity type updated_at will be Time.zone.now
-        #so should push as tx dates are yesterday
+        # activity type updated_at will be Time.zone.now
+        # so should push as tx dates are yesterday
         expect(service.push).to be true
         status.reload
         expect(status.tx_last_push).not_to eq yesterday

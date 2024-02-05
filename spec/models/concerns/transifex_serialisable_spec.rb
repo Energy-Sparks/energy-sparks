@@ -59,26 +59,26 @@ describe TransifexSerialisable do
 
   context 'with real classes' do
     before do
-      #we have to explicitly require the classes otherwise they're not loaded and
-      #check for included modules fails
-      Dir[Rails.root.join("app/models/**/*.rb")].sort.each { |f| require f }
+      # we have to explicitly require the classes otherwise they're not loaded and
+      # check for included modules fails
+      Dir[Rails.root.join('app/models/**/*.rb')].sort.each { |f| require f }
       @tx_serialisables = ApplicationRecord.descendants.select { |c| c.included_modules.include? TransifexSerialisable }
     end
 
     it 'all including models have timestamps and include Mobility' do
       @tx_serialisables.each do |clazz|
-        expect(clazz.column_names).to include("created_at", "updated_at"), "expected #{clazz.name} to have timestamps"
+        expect(clazz.column_names).to include('created_at', 'updated_at'), "expected #{clazz.name} to have timestamps"
         expect(clazz.singleton_class.ancestors).to include(Mobility), "expected #{clazz.name} to extend Mobility"
       end
     end
 
     it 'model shows no content present if no attributes set' do
-      #use this as an example of implementing class
+      # use this as an example of implementing class
       expect(ActivityCategory.new).not_to have_content
     end
 
     it 'model shows content present if some attribute set' do
-      clazz = ActivityCategory #use this as an example of implementing class
+      clazz = ActivityCategory # use this as an example of implementing class
       attr = ActivityCategory.mobility_attributes.first
       serialisable = clazz.new(attr => 'something')
       expect(serialisable).to have_content

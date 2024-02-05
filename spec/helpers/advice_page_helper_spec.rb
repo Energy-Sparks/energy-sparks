@@ -18,16 +18,16 @@ describe AdvicePageHelper do
 
   describe '.format_unit' do
     it 'formats a value accourding to its energy unit and the unit symbol as an html character reference' do
-      expect(helper.format_unit(1234567, :co2)).to eq("1,234,567")
-      expect(helper.format_unit(-4.736951571734001e-15, :co2)).to eq("0")
-      expect(helper.format_unit(1234567, :kwh)).to eq("1,234,567")
-      expect(helper.format_unit(-4.736951571734001e-15, :kwh)).to eq("0")
-      expect(helper.format_unit(1234567, :£)).to eq("&pound;1,234,567")
-      expect(helper.format_unit(0, :£)).to eq("0p")
-      expect(helper.format_unit(-4.736951571734001e-15, :£)).to eq("0p")
-      expect(helper.format_unit(1234567, :percent)).to eq("120,000,000&percnt;")
-      expect(helper.format_unit(-4.736951571734001e-15, :percent)).to eq("0&percnt;")
-      expect(helper.format_unit(0, :percent)).to eq("0&percnt;")
+      expect(helper.format_unit(1234567, :co2)).to eq('1,234,567')
+      expect(helper.format_unit(-4.736951571734001e-15, :co2)).to eq('0')
+      expect(helper.format_unit(1234567, :kwh)).to eq('1,234,567')
+      expect(helper.format_unit(-4.736951571734001e-15, :kwh)).to eq('0')
+      expect(helper.format_unit(1234567, :£)).to eq('&pound;1,234,567')
+      expect(helper.format_unit(0, :£)).to eq('0p')
+      expect(helper.format_unit(-4.736951571734001e-15, :£)).to eq('0p')
+      expect(helper.format_unit(1234567, :percent)).to eq('120,000,000&percnt;')
+      expect(helper.format_unit(-4.736951571734001e-15, :percent)).to eq('0&percnt;')
+      expect(helper.format_unit(0, :percent)).to eq('0&percnt;')
     end
   end
 
@@ -92,8 +92,8 @@ describe AdvicePageHelper do
 
   describe '.sort_by_label' do
     before do
-      I18n.backend.store_translations("en", { advice_pages: { nav: { pages: { one: "ZZZ", two: "AAA" } } } })
-      I18n.backend.store_translations("cy", { advice_pages: { nav: { pages: { one: "AAA", two: "ZZZ" } } } })
+      I18n.backend.store_translations('en', { advice_pages: { nav: { pages: { one: 'ZZZ', two: 'AAA' } } } })
+      I18n.backend.store_translations('cy', { advice_pages: { nav: { pages: { one: 'AAA', two: 'ZZZ' } } } })
     end
 
     let(:advice_page_1) { create(:advice_page, key: 'one') }

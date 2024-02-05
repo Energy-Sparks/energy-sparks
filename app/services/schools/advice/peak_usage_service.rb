@@ -8,12 +8,12 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      #Not yet implemented in underlying services
+      # Not yet implemented in underlying services
       def enough_data?
         meter_data_checker.one_years_data?
       end
 
-      #Not yet implemented in underlying services
+      # Not yet implemented in underlying services
       def data_available_from
         meter_data_checker.date_when_enough_data_available(365)
       end

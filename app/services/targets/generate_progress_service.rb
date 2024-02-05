@@ -44,8 +44,8 @@ module Targets
         cumulative_progress = cumulative_progress(fuel_type)
         current_monthly_usage = current_monthly_usage(fuel_type)
         current_monthly_target = current_monthly_target(fuel_type)
-        #if we encounted errors, the above values may be nil
-        #in that case we can't produce a progress report for the fuel
+        # if we encounted errors, the above values may be nil
+        # in that case we can't produce a progress report for the fuel
         return {} unless cumulative_progress.present?
 
         Targets::FuelProgress.new(
@@ -91,17 +91,17 @@ module Targets
     end
 
     def fetch_latest_figures(hash_of_months_to_values)
-      #sometimes the schools meter data may be lagging only a few days or a week
-      #behind. this means that the progress report does not have data for this month,
-      #it only has data for the previous month. So if there's no entry for the reporting
-      #month, look for earlier data. This typically only happens around the beginning of
-      #month when we're running a little behind on data
+      # sometimes the schools meter data may be lagging only a few days or a week
+      # behind. this means that the progress report does not have data for this month,
+      # it only has data for the previous month. So if there's no entry for the reporting
+      # month, look for earlier data. This typically only happens around the beginning of
+      # month when we're running a little behind on data
       hash_of_months_to_values[reporting_month] || hash_of_months_to_values[reporting_month.prev_month]
     end
 
     def reporting_month
-      #if target is expired, then use the final month, otherwise report on
-      #current progress
+      # if target is expired, then use the final month, otherwise report on
+      # current progress
       if target.expired?
         target.target_date.prev_month.beginning_of_month
       else
@@ -143,7 +143,7 @@ module Targets
       TargetsService.new(@aggregated_school, fuel_type)
     end
 
-    #Report errors only once for each fuel type
+    # Report errors only once for each fuel type
     def report_to_rollbar_once(error, fuel_type)
       unless @reported_errors[fuel_type]
         Rollbar.error(error, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)

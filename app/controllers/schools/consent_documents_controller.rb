@@ -29,7 +29,7 @@ module Schools
       if @consent_document.update(consent_document_params)
         BillRequestMailer.with(school: @school, consent_document: @consent_document, updated: true).notify_admin.deliver_now
         @school.update!(bill_requested: false)
-        redirect_to school_consent_documents_path, notice: "The bill was successfully updated."
+        redirect_to school_consent_documents_path, notice: 'The bill was successfully updated.'
       else
         render :edit
       end
@@ -37,7 +37,7 @@ module Schools
 
     def destroy
       @consent_document.delete
-      redirect_to school_consent_documents_path, notice: "The bill was successfully deleted."
+      redirect_to school_consent_documents_path, notice: 'The bill was successfully deleted.'
     end
 
     private

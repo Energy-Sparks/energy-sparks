@@ -44,6 +44,7 @@ module Interventions
       end
     end
 
+    ## RECOMMENDATIONS: Based on your recent activity
     ## For prototyping. Actual algorithm to be defined ##
     def suggest_from_recent_activity(limit = NUMBER_OF_SUGGESTIONS)
       suggestions = []
@@ -59,6 +60,7 @@ module Interventions
       suggestions + suggest_random(limit, suggestions: suggestions)
     end
 
+    ## RECOMMENDATIONS: Based on your energy usage
     def suggest_from_energy_usage(limit = NUMBER_OF_SUGGESTIONS)
       suggestions = suggest_from_alerts.take(limit)
 

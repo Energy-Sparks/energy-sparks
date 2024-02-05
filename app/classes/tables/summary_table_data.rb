@@ -82,12 +82,12 @@ module Tables
     end
 
     def no_recent_data?(fuel_type, period)
-      #Originally analytics was providing a string "no recent data" for :recent, but only if it wasn't recent
-      #now it is a recent true/false flag.
-      #so: check for boolean, nil
+      # Originally analytics was providing a string "no recent data" for :recent, but only if it wasn't recent
+      # now it is a recent true/false flag.
+      # so: check for boolean, nil
       value = fetch(fuel_type, period, :recent)
       return !value if value.in? [true, false]
-      #otherwise its old structure
+      # otherwise its old structure
       value.present? && value == I18n.t('classes.tables.summary_table_data.no_recent_data')
     end
 
@@ -96,7 +96,7 @@ module Tables
       return format_availability_message(message) if message.present?
       value = fetch(fuel_type, period, :recent)
       return I18n.t('classes.tables.summary_table_data.no_recent_data') if value == false
-      #otherwise its old structure
+      # otherwise its old structure
       return value if value.present?
     end
 
@@ -104,14 +104,14 @@ module Tables
       value = fetch(fuel_type, period, :recent)
       return '' if value == true
       return 'old-data' if value == false
-      #otherwise its old structure
+      # otherwise its old structure
       return 'old-data' if value.present?
     end
 
     def format_availability_message(message)
-      #old style
-      return message if message.start_with?("Data available")
-      #now a date
+      # old style
+      return message if message.start_with?('Data available')
+      # now a date
       return I18n.t('classes.tables.summary_table_data.data_available_from', date: format_future_date(Date.parse(message)))
     end
 

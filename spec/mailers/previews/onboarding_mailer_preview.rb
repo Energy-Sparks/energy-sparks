@@ -30,6 +30,6 @@ class OnboardingMailerPreview < ActionMailer::Preview
   private
 
   def locale
-    @params["locale"].present? ? @params["locale"] : "en"
+    @params['locale'].present? ? @params['locale'] : 'en'
   end
 end

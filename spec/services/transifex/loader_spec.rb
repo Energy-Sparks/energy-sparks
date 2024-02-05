@@ -36,25 +36,25 @@ describe Transifex::Loader, type: :service do
     let!(:activity_type)      { create(:activity_type, active: true, activity_category: activity_category) }
 
     before do
-      allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_raise("Sync error")
+      allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_raise('Sync error')
     end
 
     it 'logs errors in the database' do
       expect { service.perform }.to change(TransifexLoadError, :count).by(2)
-      expect(TransifexLoadError.first.record_type).to eq("ActivityType")
+      expect(TransifexLoadError.first.record_type).to eq('ActivityType')
       expect(TransifexLoadError.first.record_id).to eq activity_type.id
-      expect(TransifexLoadError.first.error).to eq("Sync error")
+      expect(TransifexLoadError.first.error).to eq('Sync error')
     end
 
     it 'logs errors in Rollbar' do
-      expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load, record_type: "ActivityType", record_id: activity_type.id)
-      expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load, record_type: "ActivityCategory", record_id: activity_category.id)
+      expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load, record_type: 'ActivityType', record_id: activity_type.id)
+      expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load, record_type: 'ActivityCategory', record_id: activity_category.id)
       service.perform
     end
   end
 
   context 'when there are no errors' do
-    let!(:advice_page_text)         { "advice page learn more" }
+    let!(:advice_page_text)         { 'advice page learn more' }
     let!(:activity_category)        { create(:activity_category) }
     let!(:intervention_type_group)  { create(:intervention_type_group) }
     let!(:activity_type)            { create(:activity_type, active: true, activity_category: activity_category) }
@@ -99,7 +99,7 @@ describe Transifex::Loader, type: :service do
       end
 
       context 'when a record has no contents' do
-        let!(:advice_page_text) { "" }
+        let!(:advice_page_text) { '' }
 
         it 'skips the pull' do
           expect(TransifexLoad.first.pulled).to eq 9

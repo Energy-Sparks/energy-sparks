@@ -39,8 +39,8 @@ class ProgrammeType < ApplicationRecord
   scope :with_school_activity_count, ->(school) {
     joins(activity_types: :activities)
     .where(activity_types: { activities: { school: school } })
-    .select("programme_types.*, COUNT(activities.id) activity_count")
-    .group("programme_types.id").order(activity_count: :desc)
+    .select('programme_types.*, COUNT(activities.id) activity_count')
+    .group('programme_types.id').order(activity_count: :desc)
   }
 
   scope :not_in, ->(programme_types) { where.not(id: programme_types) }

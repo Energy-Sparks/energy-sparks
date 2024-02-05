@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Robots", type: :system do
+RSpec.describe 'Robots', type: :system do
   it 'only disallows admin if crawling allowed' do
     ClimateControl.modify ALLOW_CRAWLING: 'true' do
       visit robots_path

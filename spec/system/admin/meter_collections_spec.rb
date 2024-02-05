@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "meter collections", type: :system do
+describe 'meter collections', type: :system do
   let(:school_name)   { 'Oldfield Park Infants'}
   let!(:school)       { create(:school, :with_school_group, name: school_name)}
   let!(:admin)        { create(:admin)}

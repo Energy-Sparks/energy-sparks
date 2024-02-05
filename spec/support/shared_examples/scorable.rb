@@ -1,4 +1,4 @@
-RSpec.shared_examples "a scorable" do
+RSpec.shared_examples 'a scorable' do
   describe '#scored_schools' do
     let!(:schools) { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, scoreboard: scoreboard, school_group: school_group, activities_happened_on: 6.months.ago, template_calendar: subject.scorable_calendar}}
 

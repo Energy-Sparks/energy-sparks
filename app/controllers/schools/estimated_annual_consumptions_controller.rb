@@ -11,7 +11,7 @@ module Schools
       elsif @school.suggest_annual_estimate?
         redirect_to new_school_estimated_annual_consumption_path(@school)
       else
-        #no estimate and no need, then redirect
+        # no estimate and no need, then redirect
         redirect_to school_path(@school)
       end
     end
@@ -59,7 +59,7 @@ module Schools
     end
 
     def estimated_annual_consumption_params
-        params.require(:estimated_annual_consumption).permit(:electricity, :gas, :storage_heaters, :year, :school_id)
+      params.require(:estimated_annual_consumption).permit(:electricity, :gas, :storage_heaters, :year, :school_id)
     end
   end
 end

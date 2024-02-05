@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "activity type", type: :system do
+RSpec.describe 'activity type', type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:staff, school: school)}
 
@@ -26,8 +26,7 @@ RSpec.describe "activity type", type: :system do
         sign_in(admin)
       end
 
-      it 'shows categories with 4 activity types, plus Recommended section' do
-        expect_any_instance_of(NextActivitySuggesterWithFilter).to receive(:suggest_for_school_targets).and_return([activity_type_3_1])
+      it 'shows categories with 4 activity types, plus prompt to view recommendations' do
         visit activity_categories_path
 
         expect(page).to have_content(activity_category_1.name)
@@ -37,12 +36,10 @@ RSpec.describe "activity type", type: :system do
         expect(page).not_to have_content(activity_category_2.name)
         expect(page).not_to have_content(activity_type_2_1.name)
 
-        expect(page).to have_content('Recommended')
-        expect(page).to have_content(activity_type_3_1.name)
+        expect(page).to have_content("View our recommended activities and actions based on your school's programmes and our analysis of your energy data")
       end
 
       it 'links to category page, activity page and back' do
-        allow_any_instance_of(NextActivitySuggesterWithFilter).to receive(:suggest_for_school_targets).and_return([])
         visit activity_categories_path
 
         click_link 'View all 4 activities'

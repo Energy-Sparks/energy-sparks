@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "School Batch Reports", type: :system do
+describe 'School Batch Reports', type: :system do
   let!(:school) { create(:school) }
 
   let!(:admin) { create(:admin) }
@@ -25,12 +25,12 @@ describe "School Batch Reports", type: :system do
       end
 
       it 'shows equivalence' do
-        expect(page).to have_content("1 equivalence generated")
+        expect(page).to have_content('1 equivalence generated')
         expect(page).to have_content(equivalence_type.meter_type.humanize)
         expect(page).to have_content(equivalence_type.time_period.humanize)
         click_on 'View'
-        expect(page).to have_content("formatted_equivalence")
-        expect(page).to have_content("dydd Sadwrn")
+        expect(page).to have_content('formatted_equivalence')
+        expect(page).to have_content('dydd Sadwrn')
       end
     end
   end

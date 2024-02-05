@@ -8,7 +8,7 @@ module Alerts
     end
 
     def delete!
-      BenchmarkResultGenerationRun.where("created_at <= ?", @older_than).destroy_all
+      BenchmarkResultGenerationRun.where('created_at <= ?', @older_than).destroy_all
     end
   end
 end

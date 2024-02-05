@@ -23,9 +23,9 @@ describe 'site-wide settings' do
         uncheck 'Message for no contacts'
         uncheck 'October'
         check 'May'
-        fill_in "Electricity price", with: 0.99
-        fill_in "Solar export price", with: 0.98
-        fill_in "Gas price", with: 0.97
+        fill_in 'Electricity price', with: 0.99
+        fill_in 'Solar export price', with: 0.98
+        fill_in 'Gas price', with: 0.97
         expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
         click_on 'Update settings'
         expect(SiteSettings.count).to eq 1
@@ -47,9 +47,9 @@ describe 'site-wide settings' do
       it 'updates price' do
         click_on 'Site Settings'
         check 'Message for no contacts'
-        fill_in "Electricity price", with: 0.99
-        fill_in "Solar export price", with: 0.98
-        fill_in "Gas price", with: 0.97
+        fill_in 'Electricity price', with: 0.99
+        fill_in 'Solar export price', with: 0.98
+        fill_in 'Gas price', with: 0.97
         click_on 'Update settings'
         expect(SiteSettings.count).to eq 1
         expect(SiteSettings.current.electricity_price).to eq(0.99)
@@ -64,7 +64,7 @@ describe 'site-wide settings' do
 
         it 'updates price' do
           click_on 'Site Settings'
-          fill_in "Electricity price", with: 0.99
+          fill_in 'Electricity price', with: 0.99
           click_on 'Update settings'
           expect(SiteSettings.count).to eq 1
           expect(SiteSettings.current.electricity_price).to eq(0.99)

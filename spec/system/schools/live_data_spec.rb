@@ -21,7 +21,7 @@ RSpec.describe 'live data', type: :system do
       within '.dashboard-school-title' do
         expect(page).to have_content(school.name)
       end
-      expect(page).not_to have_content("live data")
+      expect(page).not_to have_content('live data')
     end
   end
 
@@ -59,36 +59,36 @@ RSpec.describe 'live data', type: :system do
       end
 
       it 'lets me view live data' do
-        expect(page).to have_content("Your live electricity data")
-        expect(page).to have_content("Understanding your energy consumption")
+        expect(page).to have_content('Your live electricity data')
+        expect(page).to have_content('Understanding your energy consumption')
       end
 
       it 'has help page' do
-        create(:help_page, title: "Live data", feature: :live_data, published: true)
+        create(:help_page, title: 'Live data', feature: :live_data, published: true)
         refresh
-        expect(page).to have_link("Help")
+        expect(page).to have_link('Help')
       end
 
       it 'has links to suggestions actions etc' do
-        expect(page).to have_content("Work with the pupils")
-        expect(page).to have_content("Take action around the school")
-        expect(page).to have_content("Explore your data")
-        expect(page).to have_link("Choose another activity", href: activity_category_path(activity_category))
-        expect(page).to have_link("Record an energy saving action")
-        expect(page).to have_link("View pupil dashboard")
+        expect(page).to have_content('Work with the pupils')
+        expect(page).to have_content('Take action around the school')
+        expect(page).to have_content('Explore your data')
+        expect(page).to have_link('Choose another activity', href: activity_category_path(activity_category))
+        expect(page).to have_link('Record an energy saving action')
+        expect(page).to have_link('View pupil dashboard')
       end
 
       it 'has links to suggestions from live data category' do
-        expect(page).to have_link("save gas")
+        expect(page).to have_link('save gas')
       end
 
       it 'links from pupil analysis page' do
         visit pupils_school_analysis_path(school)
         within '.live-data-card' do
-          expect(page).to have_content("Live energy data")
-          click_link "Live energy data"
+          expect(page).to have_content('Live energy data')
+          click_link 'Live energy data'
         end
-        expect(page).to have_content("Your live electricity data")
+        expect(page).to have_content('Your live electricity data')
       end
 
       it 'returns html with reading' do

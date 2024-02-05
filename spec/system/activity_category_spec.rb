@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "activity category", type: :system do
+RSpec.describe 'activity category', type: :system do
   let!(:ks1) { KeyStage.create(name: 'KS1') }
   let!(:ks2) { KeyStage.create(name: 'KS2') }
   let!(:ks3) { KeyStage.create(name: 'KS3') }
@@ -27,59 +27,30 @@ RSpec.describe "activity category", type: :system do
 
   let!(:programme_type) { create(:programme_type, title: 'prog1')}
 
-  let(:activities_2023_feature) { false }
+  let(:user) { }
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: activities_2023_feature.to_s do
-      example.run
-    end
+  before do
+    sign_in(user) if user.present?
+    visit activity_categories_path
   end
 
-  context "with activities_2023 feature flag switched on" do
-    let(:activities_2023_feature) { true }
-    let(:user) { }
-
-    before do
-      sign_in(user) if user.present?
-      visit activity_categories_path
-    end
-
-    context "when user is not logged in" do
-      it_behaves_like "a recommended prompt", displayed: false
-    end
-
-    context "when user is logged in" do
-      context "without a school" do
-        let(:school) { }
-        let(:user) { create :admin, school: school }
-
-        it_behaves_like "a recommended prompt", displayed: false
-      end
-
-      context "with a school" do
-        let(:school) { create :school }
-        let(:user) { create :pupil, school: school }
-
-        it_behaves_like "a recommended prompt"
-      end
-    end
+  context 'when user is not logged in' do
+    it_behaves_like 'a recommended prompt', displayed: false
   end
 
-  context "with activities_2023 feature flag switched off" do
-    let(:activities_2023_feature) { false }
+  context 'when user is logged in' do
+    context 'without a school' do
+      let(:school) { }
+      let(:user) { create :admin, school: school }
 
-    context "when user is logged in with a school" do
-      let(:user) { create :pupil, school: create(:school) }
+      it_behaves_like 'a recommended prompt', displayed: false
+    end
 
-      before do
-        sign_in(user) if user.present?
-        visit activity_categories_path
-      end
+    context 'with a school' do
+      let(:school) { create :school }
+      let(:user) { create :pupil, school: school }
 
-      it_behaves_like "a recommended prompt", displayed: false
-      it "displays suggestions block" do
-        expect(page).to have_content("Recommended for your school")
-      end
+      it_behaves_like 'a recommended prompt'
     end
   end
 
@@ -130,7 +101,7 @@ RSpec.describe "activity category", type: :system do
 
       it 'links to programme type page' do
         within '#programme-types' do
-          first(".card-img-top").click
+          first('.card-img-top').click
         end
         expect(page).to have_content(programme_type.title)
       end

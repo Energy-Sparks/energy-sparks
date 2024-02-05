@@ -15,7 +15,7 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating_from: 0,
       rating_to: 4,
       management_priorities_active: true,
-      description: "low"
+      description: 'low'
     )
   end
   let!(:alert_type_rating_content_version_low) do
@@ -32,7 +32,7 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating_from: 4.1,
       rating_to: 6,
       management_priorities_active: true,
-      description: "medium"
+      description: 'medium'
     )
   end
   let!(:alert_type_rating_content_version_medium) do
@@ -49,7 +49,7 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating_from: 6.1,
       rating_to: 10,
       management_priorities_active: true,
-      description: "high"
+      description: 'high'
     )
   end
   let!(:alert_type_rating_content_version_high) do
@@ -102,7 +102,7 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
   let(:service) { SchoolGroups::PriorityActions.new(school_group) }
 
   before do
-    #just run the services to set up rest of test data
+    # just run the services to set up rest of test data
     Alerts::GenerateContent.new(school_1).perform
     Alerts::GenerateContent.new(school_2).perform
     Alerts::GenerateContent.new(school_3).perform

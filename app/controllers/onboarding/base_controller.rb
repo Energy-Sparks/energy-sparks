@@ -30,7 +30,7 @@ module Onboarding
 
     def message(school_onboarding, exception)
       if current_user.nil? && school_onboarding.created_user.present?
-        "You must sign in to resume the onboarding process"
+        'You must sign in to resume the onboarding process'
       else
         exception.message
       end
