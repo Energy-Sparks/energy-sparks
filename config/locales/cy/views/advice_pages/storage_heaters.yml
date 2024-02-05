@@ -52,9 +52,6 @@ cy:
           notice_html: "<p>Y llynedd roedd gwres eich ysgol ymlaen am %{heating_on_in_warm_weather_days} diwrnod yn ystod tywydd cynnes. Dyma %{assessment}.</p>"
           title: Rheolaeth dymhorol
           you_should_ensure: Dylech sicrhau bod stôr-wresogyddion yn cael eu diffodd yn ystod penwythnosau a gwyliau, a byrhau'r cyfnod pan gânt eu defnyddio yn ystod y flwyddyn.
-        tables:
-          columns:
-            average_daily_usage: Defnydd dyddiol ar gyfartaledd (kWh)
         thermostatic_control:
           storage_heater_thermostatic:
             content_html: |-
