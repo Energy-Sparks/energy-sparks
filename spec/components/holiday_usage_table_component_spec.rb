@@ -204,6 +204,11 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
       expect(html).to have_css('#holiday-usage-table')
     end
 
+    it 'generates expected number of rows' do
+      # two rows per holiday, plus 2 comparison rows for holiday_3 and holiday_4
+      expect(html).to have_css('table.holiday-usage-table tbody tr', count: 10)
+    end
+
     context 'with an id' do
       let(:params) do
         {
