@@ -43,12 +43,17 @@ class Alert < ApplicationRecord
   has_many :find_out_mores,         inverse_of: :alert
   has_many :alert_subscription_events
 
+  has_many :alert_type_ratings, ->(alert) { alert.rating.present? ? for_rating(alert.rating.to_f.round(1)) : none }, primary_key: 'alert_type_id', foreign_key: 'alert_type_id'
+  has_many :intervention_types, through: :alert_type_ratings
+  has_many :activity_types, through: :alert_type_ratings
+
   delegate :title, to: :alert_type
   delegate :description, to: :alert_type
   delegate :display_fuel_type, to: :alert_type
 
   scope :electricity,         -> { joins(:alert_type).merge(AlertType.electricity_fuel_type) }
   scope :gas,                 -> { joins(:alert_type).merge(AlertType.gas_fuel_type) }
+  scope :with_fuel_type,      -> { joins(:alert_type).select('alert_types.fuel_type, alerts.*') }
   scope :no_fuel,             -> { joins(:alert_type).merge(AlertType.no_fuel) }
   scope :termly,              -> { joins(:alert_type).merge(AlertType.termly) }
   scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }
@@ -61,6 +66,7 @@ class Alert < ApplicationRecord
   scope :by_type, -> { joins(:alert_type).order('alert_types.title') }
 
   scope :rating_between, ->(from, to) { where('rating BETWEEN ? AND ?', from, to) }
+  scope :by_rating, ->(order: :asc) { order(rating: order) }
 
   enum enough_data: [:enough, :not_enough, :minimum_might_not_be_accurate], _prefix: :data
   enum relevance: [:relevant, :not_relevant, :never_relevant], _prefix: :relevance

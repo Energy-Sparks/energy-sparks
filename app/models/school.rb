@@ -104,8 +104,11 @@ class School < ApplicationRecord
   has_many :school_times,         inverse_of: :school
   has_many :activities,           inverse_of: :school
   has_many :activity_types, through: :activities
+
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
+  has_many :intervention_types, through: :observations
+
   has_many :transport_surveys,    inverse_of: :school
   has_many :consent_documents,    inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
@@ -114,6 +117,9 @@ class School < ApplicationRecord
   has_many :school_targets,       inverse_of: :school
   has_many :school_target_events, inverse_of: :school
   has_many :audits,               inverse_of: :school
+
+  has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
+  has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_types, through: :programmes
@@ -322,26 +328,22 @@ class School < ApplicationRecord
   end
 
   def activities_in_academic_year(date)
-    if (academic_year = academic_year_for(date))
-      return activities.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
-    end
-    []
+    activities.in_academic_year_for(self, date).order(created_at: :asc)
+  end
+
+  def activity_types_in_academic_year(date = Time.zone.now)
+    activity_types.merge(activities.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
   def observations_in_academic_year(date)
-    if (academic_year = academic_year_for(date))
-      return observations.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
-    end
-    []
+    observations.in_academic_year_for(self, date).order(created_at: :asc)
   end
 
-  def intervention_types_in_academic_year(date)
-    if (observations = observations_in_academic_year(date))
-      return observations.map(&:intervention_type).compact
-    end
-    []
+  def intervention_types_in_academic_year(date = Time.zone.now)
+    intervention_types.merge(observations.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
+  # for removal when Interventions::SuggestAction is removed
   def intervention_types_by_date
     observations.by_date.map(&:intervention_type).compact
   end

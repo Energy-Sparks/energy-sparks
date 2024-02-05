@@ -133,12 +133,14 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
   end
 
   context 'viewing a current target' do
-    let!(:target)              { create(:school_target, school: test_school) }
-    let!(:activity_type)       { create(:activity_type) }
-    let!(:intervention_type)   { create(:intervention_type) }
-    let!(:expired_targets)     { }
+    let!(:target)             { create(:school_target, school: test_school) }
+    let(:activity_type)       { create(:activity_type) }
+    let(:intervention_type)   { create(:intervention_type) }
+    let!(:expired_targets)    { }
 
     before do
+      allow_any_instance_of(Recommendations::Actions).to receive(:based_on_energy_use).and_return([intervention_type])
+      allow_any_instance_of(Recommendations::Activities).to receive(:based_on_energy_use).and_return([activity_type])
       visit school_school_targets_path(test_school)
     end
 

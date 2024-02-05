@@ -10,7 +10,7 @@
       <h4 class="card-title"><%= t('schools.school_targets.achieving_your_targets.work_with_the_pupils') %></h4>
       <p><%= t('schools.school_targets.achieving_your_targets.here_are_some_suggested_activities') %></p>
         <ul>
-          <% suggestions.each do |activity_type| %>
+          <% activities.each do |activity_type| %>
            <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
           <% end %>
         </ul>
@@ -45,20 +45,25 @@
       <p><%= t('schools.school_targets.achieving_your_targets.we_analyse_your_data') %></p>
       <ul>
         <li>
-          <%= link_to t('schools.school_targets.achieving_your_targets.review_your_energy_analysis'), school_advice_path(school) %>
+          <%= link_to t('schools.school_targets.achieving_your_targets.review_your_energy_analysis'),
+                      school_advice_path(school) %>
         </li>
         <li>
-          <%= link_to t('schools.school_targets.achieving_your_targets.explore_your_data'), pupils_school_analysis_path(school) %>
+          <%= link_to t('schools.school_targets.achieving_your_targets.explore_your_data'),
+                      pupils_school_analysis_path(school) %>
         </li>
         <li>
-          <%= link_to t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities'), management_school_management_priorities_path(school)  %>
+          <%= link_to t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities'),
+                      management_school_management_priorities_path(school) %>
         </li>
         <li>
-          <%= link_to t('schools.school_targets.achieving_your_targets.view_recent_alerts'), school_path(school, anchor: "dashboard-alerts") %>
+          <%= link_to t('schools.school_targets.achieving_your_targets.view_recent_alerts'),
+                      school_path(school, anchor: 'dashboard-alerts') %>
         </li>
         <% if school.school_group && can?(:compare, school.school_group) %>
           <li>
-            <%= link_to t('schools.school_targets.achieving_your_targets.compare_usage_with_schools_in_your_group'), compare_index_path(school_group_ids: [school.school_group.id])  + '#groups' %>
+            <%= link_to t('schools.school_targets.achieving_your_targets.compare_usage_with_schools_in_your_group'),
+                        "#{compare_index_path(school_group_ids: [school.school_group.id])}#groups" %>
           </li>
         <% end %>
         <% if daily_variation_url %>
@@ -80,16 +85,19 @@
   <div class="card-deck actions">
     <% if can?(:manage, Activity) %>
       <div class="card mb-2 text-center">
-        <%= link_to t('schools.school_targets.achieving_your_targets.choose_another_activity'), activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to t('schools.school_targets.achieving_your_targets.choose_another_activity'),
+                    activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     <% end %>
     <% if can?(:create, Observation) %>
       <div class="card mb-2">
-        <%= link_to t('schools.school_targets.achieving_your_targets.record_an_energy_saving_action'), intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to t('schools.school_targets.achieving_your_targets.record_an_energy_saving_action'),
+                    intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     <% end %>
       <div class="card mb-2">
-        <%= link_to t('schools.school_targets.achieving_your_targets.view_dashboard'), school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to t('schools.school_targets.achieving_your_targets.view_dashboard'), school_path(@school),
+                    class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
   </div>
 <% end %>

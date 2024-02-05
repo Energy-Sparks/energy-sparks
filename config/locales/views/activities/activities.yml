@@ -9,14 +9,6 @@ en:
       title: Actions
     activity_title: Activity title
     choose_next_activity: Choose Next Activity
-    completed:
-      congratulations: Congratulations! We've recorded your activity
-      our_suggestions: Our suggestions based on your school programmes and analysis of your energy data
-      page_title: Activity
-      recommended_for_your_school: Recommended for your school
-      see_the_scoreboard: See the scoreboard
-      view_all_suggestions: View all suggestions
-      view_your_activity: View your activity
     completed_on: Completed on
     edit:
       page_title: Update activity
@@ -49,20 +41,6 @@ en:
       record_a_new_activity: Record a new energy saving activity for your school
     no_activities_completed: No activities completed
     page_title: All Activities
-    points:
-      and_need_to_score:
-        one: and need to score %{count} point to reach %{place_to_reach} place
-        other: and need to score %{count} points to reach %{place_to_reach} place
-      choose_your_next_activity: Choose your next activity from the suggestions below.
-      prizes: Our top scoring schools this year could win up to £1250 towards an energy saving improvement of your choice
-      prizes_link: read more
-      recorded_this_year:
-        one: You've recorded 1 activity so far this year
-        other: You've recorded %{count} activities so far this year
-      school_position: and your school is currently in %{ordinal_place} place.
-      you_just_scored:
-        one: You've just scored 1 point!
-        other: You've just scored %{count} points!
     show:
       activity_description: Activity description
       all_activities: All activities

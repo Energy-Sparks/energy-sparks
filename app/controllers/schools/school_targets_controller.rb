@@ -5,7 +5,6 @@ module Schools
 
     include SchoolAggregation
     include SchoolProgress
-    include ActivityTypeFilterable
     include DashboardTimeline
 
     skip_before_action :authenticate_user!, only: [:index, :show]
@@ -31,8 +30,8 @@ module Schools
       end
 
       if @school_target.current?
-        setup_activity_suggestions
-        @actions = Interventions::SuggestAction.new(@school).suggest
+        @activities = Recommendations::Activities.new(@school).based_on_energy_use
+        @actions = Recommendations::Actions.new(@school).based_on_energy_use
         # list of fuel types to suggest estimates
         @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
         @prompt_to_review_target = prompt_to_review_target?
@@ -105,11 +104,6 @@ module Schools
 
     def school_target_params
       params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
-    end
-
-    def setup_activity_suggestions
-      suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
-      @suggestions = suggester.suggest_for_school_targets
     end
   end
 end
