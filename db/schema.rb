@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_09_140245) do
+ActiveRecord::Schema.define(version: 2024_02_05_164040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1222,6 +1222,16 @@ ActiveRecord::Schema.define(version: 2024_01_09_140245) do
     t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
+  end
+
+  create_table "metric_types", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "label"
+    t.string "description"
+    t.integer "type"
+    t.integer "fuel_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "mobility_string_translations", force: :cascade do |t|
