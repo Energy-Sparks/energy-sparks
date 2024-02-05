@@ -4,14 +4,12 @@ cy:
       explore_energy_saving_actions: Archwilio camau arbed ynni
       introduction: Bydd cofnodi camau arbed ynni yn ennill pwyntiau Sbarcynni ac yn caniatáu i chi weld siartiau dethol wedi'u hanodi â'ch gweithredoedd. Bydd hyn yn eich helpu i nodi a yw eich gweithredoedd wedi arbed ynni
       page_title: Gweithredoedd
-      recommended_for_your_school: Argymhellir ar gyfer eich ysgol
       search: Chwilio
       view_all_actions:
         one: Gweld 1 weithred
         two: Gweld pob un o'r %{count} weithred
         many: Gweld pob un o'r %{count} o weithredoedd
         other: Gweld pob un o'r %{count} o weithredoedd
-      view_all_suggestions: Gweld yr holl awgrymiadau
     recommended:
       all_actions: Pob gweithred
       introduction_html:

@@ -1,0 +1,103 @@
+<table id="<%= @id %>" class="table advice-table holiday-usage-table">
+  <thead>
+    <tr>
+      <th><%= t('calendar_event_type.holiday.title') %></th>
+      <th><%= t('advice_pages.tables.columns.period') %></th>
+      <th class="text-right"><%= t('common.table.columns.use_kwh') %></th>
+      <th class="text-right"><%= t("common.table.columns.average_daily_usage") %></th>
+      <th class="text-right"><%= t('common.table.columns.cost_gbp') %></th>
+      <th class="text-right"><%= t('common.table.columns.co2_kg') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% school_periods.each do |holiday| %>
+      <tr class='previous-holiday'>
+        <% previous_holiday_row(holiday) do |label, period, usage, average_daily_usage| %>
+          <td><%= label %></td>
+          <td>
+            <% if period.present? %>
+              <%= t('analytics.from_and_to', from_date: period.start_date.to_s(:es_short), to_date: period.end_date.to_s(:es_short)) %>
+            <% end %>
+          </td>
+          <% if usage.present? %>
+            <td class="text-right">
+              <%= format_value(usage.kwh, :kwh) %>
+            </td>
+            <td class="text-right">
+              <%= format_value(average_daily_usage, :kwh) %>
+            </td>
+            <td class="text-right">
+              <%= format_value(usage.£, :£) %>
+            </td>
+            <td class="text-right">
+              <%= format_value(usage.co2, :co2) %>
+            </td>
+          <% else %>
+            <td colspan="4" class="text-center old-data">
+              <%= t('advice_pages.not_enough_data.table_row_not_enough') %>
+            </td>
+          <% end %>
+        <% end %>
+      </tr>
+      <tr class='current-holiday'>
+        <% current_holiday_row(holiday) do |label, period, usage, average_daily_usage| %>
+          <td><%= label %></td>
+          <td>
+            <%= t('analytics.from_and_to', from_date: period.start_date.to_s(:es_short), to_date: period.end_date.to_s(:es_short)) %>
+            <% if within_school_period?(period) %>
+              <sup>*</sup>
+            <% end %>
+          </td>
+          <% if usage.present? %>
+            <td class="text-right">
+              <%= format_value(usage.kwh, :kwh) %>
+            </td>
+            <td class="text-right">
+              <%= format_value(average_daily_usage, :kwh) %>
+            </td>
+            <td class="text-right">
+              <%= format_value(usage.£, :£) %>
+            </td>
+            <td class="text-right">
+              <%= format_value(usage.co2, :co2) %>
+            </td>
+          <% else %>
+            <td colspan="4" class="text-center old-data">
+              <%= t('advice_pages.not_enough_data.table_row_not_enough') %>
+            </td>
+          <% end %>
+        <% end %>
+      </tr>
+      <% if can_compare_holiday_usage?(holiday) %>
+        <tr class="table-active holiday-comparison">
+          <% comparison_row(holiday) do |label, period, holiday_usage, previous_holiday_period, previous_holiday_usage| %>
+            <td><%= label %></td>
+            <td><%= advice_t('baseload.tables.columns.percentage_difference')%></td>
+            <td class="text-right">
+              <%= format_unit(
+                relative_percent(previous_holiday_usage.kwh, holiday_usage.kwh), :relative_percent) %>
+            </td>
+            <td class="text-right">
+              <%= format_unit(
+              relative_percent(average_daily_usage(previous_holiday_usage, previous_holiday_period),
+                  average_daily_usage(holiday_usage, period)), :relative_percent) %>
+            </td>
+            <td class="text-right">
+              <%= format_unit(
+                relative_percent(previous_holiday_usage.£, holiday_usage.£), :relative_percent) %>
+            </td>
+            <td class="text-right">
+              <%= format_unit(
+                relative_percent(previous_holiday_usage.co2, holiday_usage.co2), :relative_percent) %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+<% if within_school_period?(school_periods.last) %>
+  <div class="text-right advice-table-caption">
+    <sup>*</sup> <%= t('advice_pages.tables.notice.partial_holiday') %>
+  </div>
+<% end %>

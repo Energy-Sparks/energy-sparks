@@ -6,6 +6,10 @@ module Schools
       def insights
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
         @benchmarked_usage = benchmark_school(@annual_usage_breakdown)
+        @analysis_dates = analysis_dates
+        unless @analysis_dates.one_years_data?
+          @well_managed_percent = benchmark_value(:benchmark_school)
+        end
       end
 
       def analysis
@@ -16,22 +20,12 @@ module Schools
 
       private
 
-      def create_analysable
-        annual_usage_breakdown_service
+      def aggregate_meter
+        aggregate_school.aggregate_meter(advice_page_fuel_type)
       end
 
-      def analysis_dates
-        start_date = aggregate_meter.amr_data.start_date
-        end_date = aggregate_meter.amr_data.end_date
-        OpenStruct.new(
-          start_date: start_date,
-          end_date: end_date,
-          one_years_data: one_years_data?(start_date, end_date),
-          recent_data: recent_data?(end_date),
-          months_of_data: months_between(start_date, end_date),
-          last_full_week_start_date: last_full_week_start_date(end_date),
-          last_full_week_end_date: last_full_week_end_date(end_date),
-        )
+      def create_analysable
+        annual_usage_breakdown_service
       end
 
       # for charts that use the last full week
@@ -40,23 +34,23 @@ module Schools
         (end_date - 13.months).beginning_of_week - 1
       end
 
-      # for charts that use the last full week
-      # end of the week is Saturday
-      def last_full_week_end_date(end_date)
-        end_date.prev_week.end_of_week - 1
+      def analysis_dates
+        dates = super
+        dates.date_when_one_years_data = Util::MeterDateRangeChecker.new(aggregate_meter).date_when_one_years_data
+        dates
       end
 
       def benchmark_school(annual_usage_breakdown)
         Schools::Comparison.new(
           school_value: annual_usage_breakdown.out_of_hours.kwh,
-          benchmark_value: (annual_usage_breakdown.total.kwh * BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
-          exemplar_value: (annual_usage_breakdown.total.kwh * BenchmarkMetrics::EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
+          benchmark_value: (annual_usage_breakdown.total.kwh * benchmark_value(:benchmark_school)),
+          exemplar_value: (annual_usage_breakdown.total.kwh * benchmark_value(:exemplar_school)),
           unit: :kwh
         )
       end
 
       def annual_usage_breakdown_service
-        ::Usage::AnnualUsageBreakdownService.new(
+        ::Usage::UsageBreakdownService.new(
           meter_collection: aggregate_school,
           fuel_type: fuel_type
         )
@@ -67,6 +61,10 @@ module Schools
           aggregate_meter,
           aggregate_school.holidays
         )
+      end
+
+      def benchmark_value(comparison)
+        Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator.benchmark(compare: comparison, fuel_type: fuel_type)
       end
 
       def set_usage_categories

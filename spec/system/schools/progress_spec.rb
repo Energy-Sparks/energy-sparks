@@ -230,8 +230,8 @@ describe 'target progress report', type: :system do
             expect(page).to have_content("We only have data on your electricity consumption from #{Date.parse(start_date).strftime('%b %Y')}")
           end
 
-          it 'shows prompt to add estimate' do
-            expect(page).to have_content('If you can supply an estimate of your annual consumption then we can generate a more detailed progress report')
+          it 'no longer shows prompt to add estimate' do
+            expect(page).not_to have_content('If you can supply an estimate of your annual consumption then we can generate a more detailed progress report')
           end
 
           it 'doesnt show prompt if different fuel type' do

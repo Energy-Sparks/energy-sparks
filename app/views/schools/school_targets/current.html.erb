@@ -14,10 +14,6 @@
 
 <%= render 'prompt_to_review_target' if @prompt_to_review_target %>
 
-<% if @suggest_estimates_for_fuel_types.any? %>
-  <%= render 'prompt_to_add_estimate', school: @school, fuel_types: @suggest_estimates_for_fuel_types %>
-<% end %>
-
 <%= render 'previous_target', previous_target: @school.expired_target %>
 
 <%= render 'schools/school_targets/achieving_your_targets', activities: @activities, actions: @actions,

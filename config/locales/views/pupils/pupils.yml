@@ -58,25 +58,18 @@ en:
         measure_html: Last year the average school used 320,000 kWh of <strong>gas</strong>.
     schools:
       show:
-        activities_completed: You've completed %{count} activities
         admin_view: Admin view
-        choose_another_activity: Choose another activity
         enter_temperatures: Enter temperatures
         find_how_much_energy_used: Find out how much energy has been used
         how_will_school_compare: How will your school compare? You'll soon be able to find out!
         look_at_the_energy_use: Let's look at the energy use data for your school
         measure_temperatures: Measure classroom temperatures to find out whether you should turn down the heating to save energy
-        no_activities_completed: No activities completed, make a start!
-        points: points
         previous_temperatures: Previous temperatures
-        see_scoreboard: See the scoreboard
         setting_up: We're setting up this school's energy data and will update this page when it is ready to explore
         start_transport_survey: Start surveying
         things_to_do: Things to do
         title: Pupil dashboard for %{school_name}
         transport_surveys: Start a transport survey so that you can find out how much carbon your school community generates by travelling to school
-        try_this_first: Try this one first
-        try_this_next: Try this one next
         update_temperatures: Update temperatures
         updating_temperatures: Update your classroom temperatures to see if you are saving energy
         user_view: User view

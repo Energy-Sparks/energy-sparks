@@ -27,43 +27,8 @@ RSpec.describe 'estimated annual consumption', type: :system do
     context 'and estimates needed' do
       let(:suggest_estimates) { %w[gas electricity storage_heater] }
 
-      it 'shows a link' do
-        expect(page).to have_content('Manage usage estimate')
-      end
-
-      it 'redirects to form' do
-        click_on('Manage usage estimate')
-        expect(current_path).to eql(new_school_estimated_annual_consumption_path(school))
-      end
-
-      it 'prompts to add estimates' do
-        click_on('Manage usage estimate')
-        expect(page).to have_content('Annual electricity consumption')
-        expect(page).to have_content('Annual gas consumption')
-        expect(page).to have_content('Annual storage heater electricity consumption')
-      end
-
-      it 'captures all fuel types' do
-        click_on('Manage usage estimate')
-        fill_in 'Which year is your estimate based on?', with: 2021
-        fill_in 'Annual electricity consumption', with: 1000
-        fill_in 'Annual gas consumption', with: 2000
-        fill_in 'Annual storage heater electricity consumption', with: 3000
-        click_on 'Save'
-        expect(page).to have_content('Estimate was successfully updated')
-        latest_estimate = school.latest_annual_estimate
-        expect(latest_estimate.year).to eq 2021
-        expect(latest_estimate.electricity).to eq 1000.0
-        expect(latest_estimate.gas).to eq 2000.0
-        expect(latest_estimate.storage_heaters).to eq 3000.0
-      end
-
-      it 'displays our estimate' do
-        school.configuration.update!(estimated_consumption: { "electricity": 1515.0, "gas": 2515.0, "storage_heater": 3515.0 })
-        click_on('Manage usage estimate')
-        expect(page).to have_content('Based on the available data we estimate your gas usage')
-        expect(page).to have_content('Based on the available data we estimate your electricity usage')
-        expect(page).to have_content('Based on the available data we estimate your storage heater electricity usage')
+      it 'no longer shows a link' do
+        expect(page).not_to have_content('Manage usage estimate')
       end
     end
 
@@ -74,27 +39,8 @@ RSpec.describe 'estimated annual consumption', type: :system do
         refresh
       end
 
-      it 'redirects from the index' do
-        click_on('Manage usage estimate')
-        expect(current_path).to eql(edit_school_estimated_annual_consumption_path(school, estimate))
-      end
-
-      it 'indicates this is an update' do
-        click_on('Manage usage estimate')
-        expect(page).to have_content('Update your estimated annual energy consumption')
-      end
-
-      it 'allows me to edit it' do
-        click_on('Manage usage estimate')
-        fill_in 'Annual electricity consumption', with: 6000
-        click_on 'Update'
-        expect(page).to have_content('Estimate was successfully updated')
-        latest_estimate = school.latest_annual_estimate
-        expect(latest_estimate.electricity).to eq 6000.0
-      end
-
-      it 'does not show delete link' do
-        expect(page).not_to have_link('Delete')
+      it 'no longer shows a link' do
+        expect(page).not_to have_content('Manage usage estimate')
       end
     end
 
@@ -108,8 +54,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
 
       it 'still lets me access the estimate' do
         visit school_path(school)
-        click_on('Manage usage estimate')
-        expect(page).to have_content('Annual electricity consumption')
+        expect(page).not_to have_content('Manage usage estimate')
       end
     end
   end
@@ -145,11 +90,8 @@ RSpec.describe 'estimated annual consumption', type: :system do
       visit school_path(school)
     end
 
-    it 'allows me to delete the estimate' do
-      click_on('Manage usage estimate')
-      click_on('Delete')
-      expect(page).to have_content('Estimate successfully removed')
-      expect(EstimatedAnnualConsumption.count).to eq 0
+    it 'no longer shows a link' do
+      expect(page).not_to have_content('Manage usage estimate')
     end
   end
 end

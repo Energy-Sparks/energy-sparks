@@ -62,5 +62,51 @@ FactoryBot.define do
         school.configuration.update!(fuel_configuration: fuel_configuration)
       end
     end
+
+    # Creates a school with a school group, calendar, fuel configuration, single meter
+    # and tariffs for that meter. Should be sufficient for passing to the analytics for
+    # most analysis.
+    #
+    trait :with_basic_configuration_single_meter_and_tariffs do
+      transient do
+        fuel_type { :electricity }
+        reading_start_date { 1.year.ago }
+        reading_end_date { Time.zone.today }
+        reading { 0.5 }
+        tariff_start_date { nil }
+        tariff_end_date { nil }
+        calendar { nil }
+      end
+      with_school_group
+      with_fuel_configuration
+      after(:create) do |school, evaluator|
+        if evaluator.calendar
+          school.update(calendar: evaluator.calendar)
+        else
+          calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago)
+          school.update(calendar: calendar)
+        end
+        create(:energy_tariff,
+               :with_flat_price,
+               tariff_holder: school,
+               start_date: evaluator.tariff_start_date,
+               end_date: evaluator.tariff_end_date,
+               meter_type: evaluator.fuel_type)
+        if evaluator.fuel_type == :electricity
+          create(:electricity_meter_with_validated_reading_dates,
+                 school: school,
+                 start_date: evaluator.reading_start_date,
+                 end_date: evaluator.reading_end_date,
+                 reading: evaluator.reading)
+        else
+          create(:gas_meter_with_validated_reading_dates,
+                 school: school,
+                 start_date: evaluator.reading_start_date,
+                 end_date: evaluator.reading_end_date,
+                 reading: evaluator.reading)
+        end
+        school
+      end
+    end
   end
 end

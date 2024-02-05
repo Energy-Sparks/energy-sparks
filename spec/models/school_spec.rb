@@ -577,8 +577,8 @@ describe School do
         subject.reload
       end
 
-      it 'the target should add meter attributes' do
-        expect(subject.all_pseudo_meter_attributes[:aggregated_electricity]).not_to be_empty
+      it 'they are not passed to the analytics' do
+        expect(subject.all_pseudo_meter_attributes).to eql({ :aggregated_electricity => [], :aggregated_gas => [], :solar_pv_consumed_sub_meter => [], :solar_pv_exported_sub_meter => [] })
       end
     end
   end
@@ -810,11 +810,10 @@ describe School do
       let!(:estimate)  { create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
 
       it 'maps them to the pseudo meters, targets, and estimates' do
-        expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 5
+        expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 4
         expect(all_pseudo_meter_attributes[:aggregated_electricity].map(&:attribute_type)).to match_array(
           %w[
             targeting_and_tracking
-            estimated_period_consumption
             accounting_tariff_generic
             accounting_tariff_generic
             accounting_tariff_generic

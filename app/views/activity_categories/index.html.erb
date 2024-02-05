@@ -4,14 +4,16 @@
   <div class="col">
     <div class="d-flex justify-content-between align-items-center">
       <p class="display-3"><strong><%= t('activity_categories.title') %></strong></p>
-      <%= link_to t('activity_categories.search'), search_activity_types_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+      <%= link_to t('activity_categories.search'), search_activity_types_path,
+                  class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-sm-6">
-    <p><%= t('activity_categories.introduction_1_html', for_teachers_path: for_teachers_path, for_pupils_path: for_pupils_path) %></p>
+    <p><%= t('activity_categories.introduction_1_html', for_teachers_path: for_teachers_path,
+                                                        for_pupils_path: for_pupils_path) %></p>
     <p><%= t('activity_categories.introduction_2_html', count: @activity_count) %></p>
   </div>
   <div class="col-sm-6">
@@ -23,26 +25,7 @@
   </div>
 </div>
 
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= render 'schools/prompt_recommended', scope: :pupil %>
-<% else %>
-  <% if !@suggested_activities.blank? %>
-    <div class="container">
-      <div class="row bg-light">
-        <div class="col">
-          <div class="d-flex justify-content-between align-items-center">
-            <h4><strong><%= t('activity_categories.suggested.title') %></strong></h4>
-            <div>
-              <%= link_to t('activity_categories.suggested.view_all'), recommended_activity_categories_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
-            </div>
-          </div>
-          <p><%= t('activity_categories.suggested.introduction') %></p>
-        </div>
-      </div>
-      <%= render "activity_categories/cards", activity_types: @suggested_activities.first(4), card_deck_css: "bg-light" %>
-    </div>
-  <% end %>
-<% end %>
+<%= render 'schools/prompt_recommended', scope: :pupil %>
 
 <div class="container">
   <% if !@pupil_categories.blank? %>
@@ -54,7 +37,7 @@
         <p><%= t('activity_categories.pupil.introduction') %></p>
       </div>
     </div>
-    <%= render "pupil_categories", activity_categories: @pupil_categories.first(4) %>
+    <%= render 'pupil_categories', activity_categories: @pupil_categories.first(4) %>
   <% end %>
 
   <% if !@programme_types.blank? %>
@@ -63,13 +46,14 @@
         <div class="d-flex justify-content-between align-items-center">
           <h4><strong><%= t('activity_categories.our_programmes.title') %></strong></h4>
           <div>
-            <%= link_to t('activity_categories.view_all_programmes'), programme_types_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+            <%= link_to t('activity_categories.view_all_programmes'), programme_types_path,
+                        class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
           </div>
         </div>
         <p><%= t('activity_categories.our_programmes.introduction') %></p>
       </div>
     </div>
-    <%= render "programme_types", programme_types: @programme_types.first(4) %>
+    <%= render 'programme_types', programme_types: @programme_types.first(4) %>
   <% end %>
 
   <% @activity_categories.each do |activity_category| %>
@@ -78,11 +62,15 @@
         <div class="d-flex justify-content-between align-items-center">
           <h4><strong><%= activity_category.name %></strong></h4>
           <div>
-            <%= link_to t('activity_categories.view_all', count: activity_category.activity_types.active.count), activity_category_path(activity_category), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+            <%= link_to t('activity_categories.view_all',
+                          count: activity_category.activity_types.active.count),
+                        activity_category_path(activity_category),
+                        class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
           </div>
         </div>
       </div>
     </div>
-    <%= render "cards", activity_types: activity_category.activity_types.active_and_not_custom.sample(4), card_deck_css: "" %>
+    <%= render 'cards', activity_types: activity_category.activity_types.active_and_not_custom.sample(4),
+                        card_deck_css: '' %>
   <% end %>
 </div>

@@ -5,11 +5,6 @@ class ActivityCategoriesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    unless EnergySparks::FeatureFlags.active?(:activities_2023)
-      if current_user_school
-        @suggested_activities = load_suggested_activities(current_user_school)
-      end
-    end
     @pupil_categories = ActivityCategory.pupil.by_name
     @activity_categories = ActivityCategory.featured.by_name.select { |activity_category| activity_category.activity_types.active.count >= 4 }
     @activity_count = ActivityType.active_and_not_custom.count

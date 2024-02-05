@@ -17,8 +17,6 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
     render_inline(PodiumComponent.new(**params))
   end
 
-  let(:activities_2023_feature) { false }
-
   shared_examples 'a podium including school' do
     it 'shows school on podium' do
       expect(html).to have_content(school.name)
@@ -60,12 +58,6 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
     it { expect(html).to have_content("You only need to score #{points} points to overtake the next school!") }
   end
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: activities_2023_feature.to_s do
-      example.run
-    end
-  end
-
   context 'with all params' do
     let(:school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 
@@ -80,100 +72,55 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
     end
   end
 
-  context 'with activities_2023 feature flag switched on' do
-    let(:activities_2023_feature) { true }
+  context 'when there is another school on the podium' do
+    let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 
-    context 'when there is another school on the podium' do
-      let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+    context 'when school is in first place' do
+      let(:school) { create :school, :with_points, score_points: 60, scoreboard: scoreboard }
 
-      context 'when school is in first place' do
-        let(:school) { create :school, :with_points, score_points: 60, scoreboard: scoreboard }
+      it { expect(html).to have_content("You are in 1st place on the #{scoreboard.name} scoreboard") }
+      it { expect(html).to have_content('and 1st place nationally') }
 
-        it { expect(html).to have_content("You are in 1st place on the #{scoreboard.name} scoreboard") }
-        it { expect(html).to have_content('and 1st place nationally') }
-
-        it_behaves_like 'a podium including school'
-        it_behaves_like 'a podium with placing', ordinal: '1st'
-      end
-
-      context 'when in second place' do
-        let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
-
-        it { expect(html).to have_content("You are in 2nd place on the #{scoreboard.name} scoreboard") }
-        it { expect(html).to have_content('and 2nd place nationally') }
-
-        it_behaves_like 'a podium including school'
-        it_behaves_like 'a podium with placing', ordinal: '2nd'
-      end
-
-      context 'when in second place nationally' do
-        let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: create(:scoreboard) }
-
-        let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
-
-        it { expect(html).to have_content("You are in 1st place on the #{scoreboard.name} scoreboard") }
-        it { expect(html).to have_content('and 2nd place nationally') }
-
-        it_behaves_like 'a podium including school'
-        it_behaves_like 'a podium with placing', ordinal: '1st'
-      end
-
-      context "when school doesn't have any points" do
-        let(:school) { create :school, scoreboard: scoreboard }
-
-        it_behaves_like 'a podium including school'
-        it_behaves_like 'a podium with no points message'
-        it_behaves_like 'a podium with overtake message', points: 50
-        it_behaves_like 'a podium without placing', ordinal: '2nd'
-      end
+      it_behaves_like 'a podium including school'
+      it_behaves_like 'a podium with placing', ordinal: '1st'
     end
 
-    context "when there isn't another school on the podium" do
-      it_behaves_like 'a podium not including school'
+    context 'when in second place' do
+      let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
+
+      it { expect(html).to have_content("You are in 2nd place on the #{scoreboard.name} scoreboard") }
+      it { expect(html).to have_content('and 2nd place nationally') }
+
+      it_behaves_like 'a podium including school'
+      it_behaves_like 'a podium with placing', ordinal: '2nd'
+    end
+
+    context 'when in second place nationally' do
+      let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: create(:scoreboard) }
+
+      let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
+
+      it { expect(html).to have_content("You are in 1st place on the #{scoreboard.name} scoreboard") }
+      it { expect(html).to have_content('and 2nd place nationally') }
+
+      it_behaves_like 'a podium including school'
+      it_behaves_like 'a podium with placing', ordinal: '1st'
+    end
+
+    context "when school doesn't have any points" do
+      let(:school) { create :school, scoreboard: scoreboard }
+
+      it_behaves_like 'a podium including school'
       it_behaves_like 'a podium with no points message'
-      it_behaves_like 'a podium without placing', ordinal: '1st'
+      it_behaves_like 'a podium with overtake message', points: 50
+      it_behaves_like 'a podium without placing', ordinal: '2nd'
     end
   end
 
-  context 'with activities_2023 feature flag switched off' do
-    let(:activities_2023_feature) { false }
-
-    context 'when there is another school on the podium' do
-      let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
-
-      context 'when school is in first place' do
-        let(:school) { create :school, :with_points, score_points: 60, scoreboard: scoreboard }
-
-        it { expect(html).to have_content('Your school is in 1st place') }
-
-        it_behaves_like 'a podium including school'
-        it_behaves_like 'a podium with placing', ordinal: '1st'
-      end
-
-      context 'when in second place' do
-        let(:school) { create :school, :with_points, score_points: 30, scoreboard: scoreboard }
-
-        it { expect(html).to have_content('Your school is in 2nd place') }
-
-        it_behaves_like 'a podium including school'
-        it_behaves_like 'a podium with placing', ordinal: '2nd'
-      end
-
-      context "when school doesn't have any points" do
-        let(:school) { create :school, scoreboard: scoreboard }
-
-        it_behaves_like 'a podium not including school'
-        it_behaves_like 'a podium with no points message'
-        it_behaves_like 'a podium with overtake message', points: 50
-        it_behaves_like 'a podium without placing', ordinal: '2nd'
-      end
-    end
-
-    context "when there isn't another school on the podium" do
-      it_behaves_like 'a podium not including school'
-      it_behaves_like 'a podium with no points message'
-      it_behaves_like 'a podium without placing', ordinal: '1st'
-    end
+  context "when there isn't another school on the podium" do
+    it_behaves_like 'a podium not including school'
+    it_behaves_like 'a podium with no points message'
+    it_behaves_like 'a podium without placing', ordinal: '1st'
   end
 
   context 'with no podium' do
