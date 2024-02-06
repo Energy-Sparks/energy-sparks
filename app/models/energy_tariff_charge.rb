@@ -82,11 +82,11 @@ class EnergyTariffCharge < ApplicationRecord
         name: I18n.t('user_tariff_charge.fixed_charge')
       },
       nhh_metering_agent_charge: {
-        units: [:kwh, :day, :month, :quarter],
+        units: [:day, :month, :quarter],
         name: I18n.t('user_tariff_charge.nhh_metering_agent_charge')
       },
       nhh_automatic_meter_reading_charge: {
-        units: [:kwh, :day, :month, :quarter],
+        units: [:day, :month, :quarter],
         name: I18n.t('user_tariff_charge.nhh_automatic_meter_reading_charge')
       },
       meter_asset_provider_charge: {
