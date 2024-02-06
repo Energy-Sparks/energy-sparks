@@ -330,25 +330,12 @@ class School < ApplicationRecord
     calendar.academic_year_for(date)
   end
 
-  def activities_in_academic_year(date)
-    activities.in_academic_year_for(self, date).order(created_at: :asc)
-  end
-
   def activity_types_in_academic_year(date = Time.zone.now)
     activity_types.merge(activities.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
-  def observations_in_academic_year(date)
-    observations.in_academic_year_for(self, date).order(created_at: :asc)
-  end
-
   def intervention_types_in_academic_year(date = Time.zone.now)
     intervention_types.merge(observations.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
-  end
-
-  # for removal when Interventions::SuggestAction is removed
-  def intervention_types_by_date
-    observations.by_date.map(&:intervention_type).compact
   end
 
   def suggested_programme_types

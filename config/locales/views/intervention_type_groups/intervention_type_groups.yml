@@ -9,12 +9,6 @@ en:
       view_all_actions:
         one: View 1 action
         other: View all %{count} actions
-    recommended:
-      all_actions: All actions
-      introduction_html:
-        one: "<strong>1</strong> action that is suggested for your school, based on your previous actions and your targets"
-        other: A collection of <strong>%{count}</strong> actions that are suggested for your school, based on your previous actions and your targets
-      title: Recommended for your school
     show:
       all_actions: All actions
       introduction_html:
