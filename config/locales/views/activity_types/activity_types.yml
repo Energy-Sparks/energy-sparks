@@ -8,10 +8,6 @@ en:
         other: 'invalid fuel types: '
     impacts: Impacts
     key_stages: Key Stages
-    recommended:
-      all_activities: All activities
-      introduction: These are activities that are suggested for your school, based on your previous activity and your targets
-      title: Recommended for your school
     score_for_this_activity: Score for this activity
     search:
       adult_actions: Adult actions
