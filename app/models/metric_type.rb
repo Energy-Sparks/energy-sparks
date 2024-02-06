@@ -1,11 +1,31 @@
+# == Schema Information
+#
+# Table name: metric_types
+#
+#  created_at  :datetime         not null
+#  description :string
+#  fuel_type   :integer
+#  id          :bigint(8)        not null, primary key
+#  key         :string           not null
+#  label       :string
+#  units       :integer
+#  updated_at  :datetime         not null
+#
 class MetricType < ApplicationRecord
+  extend Mobility
+
+  validates :key, presence: true, uniqueness: true
+  validates :label, :units, :fuel_type, presence: true
+
   translates :label, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }
 
-  # We may be asking for trouble calling this column 'type'. We shall see!
-  # Could be units ?
-  enum type: [:float, :date, :percent, :relative_percent]
-  # are there more? [:£, :co2, :kwh, :time, :string, :kw, :boolean]
+  # Originally called 'type', but this is usually used for STI in rails so not a good idea
+  # Assume this really is so we know which unit to present along with the value?
+  # i.e. :percent would be #{metric.value}%
+  enum units: [:float, :date, :percent, :relative_percent]
+  # are there more? [:£, :co2, :kwh, :time, :string, :kw]
+  # do we ever present a float to anything other than 1dp?
 
   # wonder if we ought to have a fuel_types table at some point?
   enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]

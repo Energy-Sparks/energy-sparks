@@ -1228,7 +1228,7 @@ ActiveRecord::Schema.define(version: 2024_02_05_164040) do
     t.string "key", null: false
     t.string "label"
     t.string "description"
-    t.integer "type"
+    t.integer "units"
     t.integer "fuel_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
