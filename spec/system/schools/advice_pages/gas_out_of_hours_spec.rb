@@ -111,7 +111,8 @@ RSpec.describe 'gas out of hours advice page', type: :system do
       end
 
       context 'with less than a year of meter data' do
-        let(:reading_start_date) { 30.days.ago }
+        let(:reading_start_date) { Date.new(2024, 1, 1) }
+        let(:reading_end_date)   { Date.new(2024, 1, 31) }
 
         it 'has last year section' do
           expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title'))
@@ -136,7 +137,9 @@ RSpec.describe 'gas out of hours advice page', type: :system do
             let(:school) do
               create(:school, :with_basic_configuration_single_meter_and_tariffs,
                 fuel_type: :gas,
-                reading_start_date: reading_start_date)
+                reading_start_date: reading_start_date, reading_end_date: reading_end_date,
+                calendar: create(:school_calendar, :with_terms_and_holidays, term_start_date: Date.new(2022, 1, 1))
+              )
             end
 
             it 'does not have holiday usage section' do
@@ -149,12 +152,14 @@ RSpec.describe 'gas out of hours advice page', type: :system do
           context 'with one holiday in period of meter data' do
             let(:school) do
               # create a number of holidays outside usage period
-              calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: 1.year.ago)
+              calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: Date.new(2022, 1, 1))
               # but ensure there's one holiday within the period to confirm table displays
-              create(:holiday, calendar: calendar, start_date: reading_start_date + 1.day, end_date: reading_start_date + 7.days)
+              create(:holiday, calendar: calendar, start_date: Date.new(2024, 1, 6), end_date: Date.new(2024, 1, 13))
               create(:school, :with_basic_configuration_single_meter_and_tariffs,
                 fuel_type: :gas,
-                reading_start_date: reading_start_date, calendar: calendar)
+                reading_start_date: reading_start_date,
+                reading_end_date: reading_end_date,
+                calendar: calendar)
             end
 
             it 'has holiday usage section' do
