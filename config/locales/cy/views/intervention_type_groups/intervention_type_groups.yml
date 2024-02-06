@@ -10,14 +10,6 @@ cy:
         two: Gweld pob un o'r %{count} weithred
         many: Gweld pob un o'r %{count} o weithredoedd
         other: Gweld pob un o'r %{count} o weithredoedd
-    recommended:
-      all_actions: Pob gweithred
-      introduction_html:
-        one: <strong>1</strong> a awgrymir ar gyfer dy ysgol, yn seiliedig ar dy weithredoedd blaenorol a'ch targedau
-        two: Casgliad o <strong>%{count}</strong> weithred a awgrymir ar gyfer dy ysgol, yn seiliedig ar dy weithredoedd blaenorol a'ch targedau
-        many: Casgliad o <strong>%{count}</strong> o weithredoedd a awgrymir ar gyfer dy ysgol, yn seiliedig ar dy weithredoedd blaenorol a'ch targedau
-        other: Casgliad o <strong>%{count}</strong> o weithredoedd a awgrymir ar gyfer eich ysgol, yn seiliedig ar eich gweithredoedd blaenorol a'ch targedau
-      title: Argymhellir ar gyfer eich ysgol
     show:
       all_actions: Pob gweithred
       introduction_html:

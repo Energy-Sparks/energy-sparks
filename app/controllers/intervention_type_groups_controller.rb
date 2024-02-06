@@ -11,12 +11,11 @@ class InterventionTypeGroupsController < ApplicationController
   end
 
   def recommended
-    @suggested_interventions = load_suggested_interventions(current_user.school)
-  end
-
-  private
-
-  def load_suggested_interventions(school)
-    Interventions::SuggestAction.new(school).suggest(20)
+    # redirect to new page
+    if current_user.try(:school)
+      redirect_to school_recommendations_path(current_user.school, scope: :adult)
+    else
+      redirect_to intervention_type_groups_path
+    end
   end
 end
