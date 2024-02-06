@@ -423,7 +423,8 @@ Rails.application.routes.draw do
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
     post 'dcc_consents/:mpxn/grant', to: 'dcc_consents#grant', as: :grant_dcc_consent
     resources :consent_grants, only: [:index, :show]
-    resources :meters, only: [:index]
+    resources :find_school_by_mpxn, only: :index
+    resources :find_school_by_urn, only: :index
     get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues'
 
     resources :consent_statements
@@ -601,6 +602,10 @@ Rails.application.routes.draw do
     namespace :schools do
       resources :meter_collections, only: :index
       resources :removals, only: :index
+      namespace :search do
+        resources :find_school_by_mpxn, only: :index
+        resources :find_school_by_urn, only: :index
+      end
     end
 
     resources :schools, only: [:show] do
