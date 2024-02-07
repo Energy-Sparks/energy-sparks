@@ -1,8 +1,8 @@
 FactoryBot.define do
-  factory :metric_type do
+  factory :comparison_metric_type do
     key { 'activationyear_electricity_kwh_relative_percent' }
-    label { 'activationyear electricity in kwh' }
-    description { 'Activation year electricity in kwh' }
+    label { 'Activation year electricity in kWh' }
+    description { 'Activation year electricity in kWh' }
     units { :relative_percent }
     fuel_type { :electricity }
   end

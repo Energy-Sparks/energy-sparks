@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_05_164040) do
+ActiveRecord::Schema.define(version: 2024_02_06_150348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -652,6 +652,74 @@ ActiveRecord::Schema.define(version: 2024_02_05_164040) do
     t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
   end
 
+  create_table "comparison_metric_types", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "label", null: false
+    t.string "description"
+    t.integer "units", null: false
+    t.integer "fuel_type", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "comparison_metrics", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "comparison_metric_type_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.string "value"
+    t.bigint "current_period_id", null: false
+    t.bigint "previous_period_id"
+    t.boolean "enough_data", null: false
+    t.boolean "whole_period", null: false
+    t.boolean "recent_data", null: false
+    t.date "asof_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_type_id"], name: "index_comparison_metrics_on_alert_type_id"
+    t.index ["comparison_metric_type_id"], name: "index_comparison_metrics_on_comparison_metric_type_id"
+    t.index ["current_period_id"], name: "index_comparison_metrics_on_current_period_id"
+    t.index ["previous_period_id"], name: "index_comparison_metrics_on_previous_period_id"
+    t.index ["school_id"], name: "index_comparison_metrics_on_school_id"
+  end
+
+  create_table "comparison_periods", force: :cascade do |t|
+    t.string "label", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "comparison_reports", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "title", null: false
+    t.boolean "public", default: false
+    t.integer "reporting_period"
+    t.bigint "custom_current_period_id", null: false
+    t.bigint "custom_previous_period_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["custom_current_period_id"], name: "index_comparison_reports_on_custom_current_period_id"
+    t.index ["custom_previous_period_id"], name: "index_comparison_reports_on_custom_previous_period_id"
+  end
+
+  create_table "comparison_run", force: :cascade do |t|
+    t.date "run_on"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "comparison_run_report_metrics", force: :cascade do |t|
+    t.bigint "comparison_run_id", null: false
+    t.bigint "comparison_report_id", null: false
+    t.bigint "comparison_metric_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["comparison_metric_id"], name: "index_comparison_run_report_metrics_on_comparison_metric_id"
+    t.index ["comparison_report_id"], name: "index_comparison_run_report_metrics_on_comparison_report_id"
+    t.index ["comparison_run_id"], name: "index_comparison_run_report_metrics_on_comparison_run_id"
+  end
+
   create_table "configurations", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.json "analysis_charts", default: {}, null: false
@@ -1222,16 +1290,6 @@ ActiveRecord::Schema.define(version: 2024_02_05_164040) do
     t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
-  end
-
-  create_table "metric_types", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "label"
-    t.string "description"
-    t.integer "units"
-    t.integer "fuel_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "mobility_string_translations", force: :cascade do |t|
@@ -1975,6 +2033,12 @@ ActiveRecord::Schema.define(version: 2024_02_05_164040) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
+  add_foreign_key "comparison_metrics", "comparison_metric_types", on_delete: :cascade
+  add_foreign_key "comparison_metrics", "comparison_periods", column: "current_period_id", on_delete: :cascade
+  add_foreign_key "comparison_metrics", "comparison_periods", column: "previous_period_id", on_delete: :cascade
+  add_foreign_key "comparison_metrics", "schools", on_delete: :cascade
+  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_current_period_id", on_delete: :cascade
+  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_previous_period_id", on_delete: :cascade
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"

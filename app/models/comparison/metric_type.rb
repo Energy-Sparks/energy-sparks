@@ -1,17 +1,4 @@
-# == Schema Information
-#
-# Table name: metric_types
-#
-#  created_at  :datetime         not null
-#  description :string
-#  fuel_type   :integer
-#  id          :bigint(8)        not null, primary key
-#  key         :string           not null
-#  label       :string
-#  units       :integer
-#  updated_at  :datetime         not null
-#
-class MetricType < ApplicationRecord
+class Comparison::MetricType < ApplicationRecord
   extend Mobility
 
   validates :key, presence: true, uniqueness: true

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'TransportSurvey' do
+describe 'TransportSurvey', type: :model do
   context 'with valid attributes' do
     subject(:transport_survey) { create :transport_survey }
 
