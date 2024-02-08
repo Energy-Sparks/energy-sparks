@@ -666,7 +666,7 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.bigint "alert_type_id", null: false
     t.string "value"
     t.integer "reporting_period"
-    t.bigint "custom_current_period_id"
+    t.bigint "custom_period_id"
     t.bigint "custom_previous_period_id"
     t.boolean "enough_data", null: false
     t.boolean "whole_period", null: false
@@ -675,7 +675,7 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["alert_type_id"], name: "index_comparison_metrics_on_alert_type_id"
-    t.index ["custom_current_period_id"], name: "index_comparison_metrics_on_custom_current_period_id"
+    t.index ["custom_period_id"], name: "index_comparison_metrics_on_custom_period_id"
     t.index ["custom_previous_period_id"], name: "index_comparison_metrics_on_custom_previous_period_id"
     t.index ["metric_type_id"], name: "index_comparison_metrics_on_metric_type_id"
     t.index ["school_id"], name: "index_comparison_metrics_on_school_id"
@@ -693,11 +693,11 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.string "key", null: false
     t.boolean "public", default: false
     t.integer "reporting_period"
-    t.bigint "custom_current_period_id", null: false
+    t.bigint "custom_period_id", null: false
     t.bigint "custom_previous_period_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["custom_current_period_id"], name: "index_comparison_reports_on_custom_current_period_id"
+    t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
     t.index ["custom_previous_period_id"], name: "index_comparison_reports_on_custom_previous_period_id"
   end
 
@@ -2015,10 +2015,10 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "comparison_metrics", "comparison_metrics", column: "metric_type_id", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "comparison_periods", column: "custom_current_period_id", on_delete: :cascade
+  add_foreign_key "comparison_metrics", "comparison_periods", column: "custom_period_id", on_delete: :cascade
   add_foreign_key "comparison_metrics", "comparison_periods", column: "custom_previous_period_id", on_delete: :cascade
   add_foreign_key "comparison_metrics", "schools", on_delete: :cascade
-  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_current_period_id", on_delete: :cascade
+  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_period_id", on_delete: :cascade
   add_foreign_key "comparison_reports", "comparison_periods", column: "custom_previous_period_id", on_delete: :cascade
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"

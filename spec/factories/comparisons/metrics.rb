@@ -4,7 +4,7 @@ FactoryBot.define do
     alert_type { create(:alert_type) }
     association :metric_type, factory: :metric_type
     value { 2 }
-    association :custom_current_period, factory: :period
+    association :custom_period, factory: :period
     association :custom_previous_period, factory: :period
     enough_data { true }
     whole_period { true }

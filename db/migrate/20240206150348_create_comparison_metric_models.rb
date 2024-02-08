@@ -16,10 +16,12 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       t.string :value # type can vary, how do we do this?????
 
       t.integer :reporting_period # enum
-      # thought this would allow for more flexibility?
-      # however we need to check that this info is actually needed for every metric if it's tied
-      # to a report - is this enough?
-      t.references :custom_current_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
+      # thought splitting the periods in to two might provide more flexibility. I might be wrong but is
+      # it true that we're not always comparing to a previous period? and that a metric can just be relevant to
+      # just a single period?
+      # is there the option to store exact date information for every metric rather than just for custom ones?
+      # This could be then provide the user with richer information of the exact period the figure is relevant to
+      t.references :custom_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
       t.references :custom_previous_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
 
       t.boolean :enough_data, null: false
@@ -52,7 +54,7 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       t.boolean :public, default: false
       t.integer :reporting_period # enum
       # for custom reports
-      t.references :custom_current_period, null: false, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
+      t.references :custom_period, null: false, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
       t.references :custom_previous_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
       t.timestamps
     end
