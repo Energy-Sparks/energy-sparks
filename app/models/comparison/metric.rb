@@ -35,13 +35,13 @@
 class Comparison::Metric < ApplicationRecord
   self.table_name = 'comparison_metrics'
 
+  # Add reporting periods as required?
+  # [:last_12_months, :financial_year, :academic_year]
+  enum reporting_period: { custom: 0 }
+
   belongs_to :school, inverse_of: :metrics
   belongs_to :metric_type, class_name: 'Comparison::MetricType'
   belongs_to :alert_type
-
-  # These need deciding on. Add as needed?
-  # [:last_12_months, :financial_year, :academic_year]
-  enum reporting_period: { custom: 0 }
 
   belongs_to :custom_current_period, class_name: 'Comparison::Period'
   belongs_to :custom_previous_period, class_name: 'Comparison::Period'

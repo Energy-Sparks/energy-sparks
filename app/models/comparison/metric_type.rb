@@ -12,6 +12,7 @@
 class Comparison::MetricType < ApplicationRecord
   self.table_name = 'comparison_metric_types'
 
+  include EnumFuelTypeable
   extend Mobility
 
   translates :label, type: :string, fallbacks: { cy: :en }
@@ -25,7 +26,4 @@ class Comparison::MetricType < ApplicationRecord
   # i.e. :percent would be #{metric.value}%
   enum units: [:float, :date, :percent, :relative_percent]
   # are there more? [:£, :co2, :kwh, :time, :string, :kw]
-
-  # wonder if we ought to have a fuel_types table at some point?
-  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]
 end
