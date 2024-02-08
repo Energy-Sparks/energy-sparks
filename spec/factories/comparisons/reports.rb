@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :report, class: 'Comparison::Report' do
-    reporting_period { :last_12_months }
+    reporting_period { :custom }
     association :custom_period, factory: :period
     sequence(:key) {|n| "key#{n}"}
     sequence(:title) {|n| "Title #{n}"}

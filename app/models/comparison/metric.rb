@@ -6,15 +6,15 @@
 #  asof_date        :date
 #  created_at       :datetime         not null
 #  custom_period_id :bigint(8)
-#  enough_data      :boolean          not null
+#  enough_data      :boolean          default(FALSE)
 #  id               :bigint(8)        not null, primary key
 #  metric_type_id   :bigint(8)        not null
-#  recent_data      :boolean          not null
+#  recent_data      :boolean          default(FALSE)
 #  reporting_period :integer
 #  school_id        :bigint(8)        not null
 #  updated_at       :datetime         not null
 #  value            :string
-#  whole_period     :boolean          not null
+#  whole_period     :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -41,5 +41,4 @@ class Comparison::Metric < ApplicationRecord
 
   validates :school, :alert_type, :metric_type, :value, presence: true
   validates :custom_period, presence: true, if: :custom?
-  validates :recent_data, :whole_period, :enough_data, presence: true
 end

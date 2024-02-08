@@ -668,9 +668,9 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.string "value"
     t.integer "reporting_period"
     t.bigint "custom_period_id"
-    t.boolean "enough_data", null: false
-    t.boolean "whole_period", null: false
-    t.boolean "recent_data", null: false
+    t.boolean "enough_data", default: false
+    t.boolean "whole_period", default: false
+    t.boolean "recent_data", default: false
     t.date "asof_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

@@ -18,9 +18,9 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       t.integer :reporting_period # enum
       t.references :custom_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
 
-      t.boolean :enough_data, null: false
-      t.boolean :whole_period, null: false
-      t.boolean :recent_data, null: false
+      t.boolean :enough_data, default: false
+      t.boolean :whole_period, default: false
+      t.boolean :recent_data, default: false
       t.date :asof_date
 
       t.timestamps
