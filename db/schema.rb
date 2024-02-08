@@ -654,8 +654,6 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
 
   create_table "comparison_metric_types", force: :cascade do |t|
     t.string "key", null: false
-    t.string "label", null: false
-    t.string "description"
     t.integer "units", null: false
     t.integer "fuel_type", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -688,36 +686,6 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.date "end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "comparison_reports", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "title", null: false
-    t.boolean "public", default: false
-    t.integer "reporting_period"
-    t.bigint "custom_current_period_id", null: false
-    t.bigint "custom_previous_period_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["custom_current_period_id"], name: "index_comparison_reports_on_custom_current_period_id"
-    t.index ["custom_previous_period_id"], name: "index_comparison_reports_on_custom_previous_period_id"
-  end
-
-  create_table "comparison_run", force: :cascade do |t|
-    t.date "run_on"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "comparison_run_report_metrics", force: :cascade do |t|
-    t.bigint "comparison_run_id", null: false
-    t.bigint "comparison_report_id", null: false
-    t.bigint "comparison_metric_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["comparison_metric_id"], name: "index_comparison_run_report_metrics_on_comparison_metric_id"
-    t.index ["comparison_report_id"], name: "index_comparison_run_report_metrics_on_comparison_report_id"
-    t.index ["comparison_run_id"], name: "index_comparison_run_report_metrics_on_comparison_run_id"
   end
 
   create_table "configurations", force: :cascade do |t|
@@ -2037,8 +2005,6 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
   add_foreign_key "comparison_metrics", "comparison_periods", column: "current_period_id", on_delete: :cascade
   add_foreign_key "comparison_metrics", "comparison_periods", column: "previous_period_id", on_delete: :cascade
   add_foreign_key "comparison_metrics", "schools", on_delete: :cascade
-  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_current_period_id", on_delete: :cascade
-  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_previous_period_id", on_delete: :cascade
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"

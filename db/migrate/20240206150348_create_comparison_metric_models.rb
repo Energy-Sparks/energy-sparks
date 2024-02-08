@@ -1,7 +1,7 @@
 class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
   def change
     create_table :comparison_periods do |t|
-      t.string :label, null: false
+      t.string :label, null: false # we might want to translate this?
       t.date :start_date, null: false
       t.date :end_date, null: false
 
@@ -17,7 +17,7 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
 
       # t.integer :reporting_period # enum
       # thought this would allow for more flexibility? It would allow us to present
-      # exactly what is meant by last_12_months, financial_year, academic_year
+      # exactly what is meant for this value by last_12_months, financial_year, academic_year
       t.references :current_period, null: false, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
 
       # if we had a reporting period table as used above, this could mean the comparison period below,
@@ -33,19 +33,23 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
+    # This was the table suggested in the design - see above for alternative suggestion
     # create_table :comparison_periods do |t|
     #   t.current_period_start_date :date
-    #    t.current_period_end_date :date
-    #    t.previous_period_start_date :date
-    #    t.previous_period_end_date :date
-    #    t.current_period_label :string
-    #    t.previous_period_label :string
-    #    t.timestamps
-    #  end
+    #   t.current_period_end_date :date
+    #   t.previous_period_start_date :date
+    #   t.previous_period_end_date :date
+    #   t.current_period_label :string
+    #   t.previous_period_label :string
+    #   t.timestamps
+    # end
 
+# Jumped a bit ahead here, so commenting out and will put in another PR soon
+
+=begin
     create_table :comparison_reports do |t|
       t.string :key, null: false, unique: true
-      t.string :title, null: false
+      ## t.string :title, null: false # translated
       ## rich text: introduction
       ## rich text: notes
 
@@ -72,5 +76,6 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       t.date :run_on # do we only need one run a day?
       t.timestamps
     end
+=end
   end
 end
