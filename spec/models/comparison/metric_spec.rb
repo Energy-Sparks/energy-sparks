@@ -10,6 +10,10 @@ RSpec.describe Comparison::Metric, type: :model do
       it { expect(metric).to validate_presence_of(:alert_type) }
       it { expect(metric).to validate_presence_of(:metric_type) }
       it { expect(metric).to validate_presence_of(:value) }
+
+      it { expect(metric).to validate_presence_of(:recent_data) }
+      it { expect(metric).to validate_presence_of(:whole_period) }
+      it { expect(metric).to validate_presence_of(:enough_data) }
     end
 
     it_behaves_like 'an enum reporting period', model: :metric

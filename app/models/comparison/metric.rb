@@ -41,4 +41,5 @@ class Comparison::Metric < ApplicationRecord
 
   validates :school, :alert_type, :metric_type, :value, presence: true
   validates :custom_period, presence: true, if: :custom?
+  validates :recent_data, :whole_period, :enough_data, presence: true
 end
