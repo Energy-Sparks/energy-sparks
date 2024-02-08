@@ -16,6 +16,7 @@
 class AdvicePage < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include EnumFuelTypeable
 
   translates :learn_more, backend: :action_text
 
@@ -32,8 +33,6 @@ class AdvicePage < ApplicationRecord
   accepts_nested_attributes_for :advice_page_intervention_types, reject_if: proc {|attributes| attributes['position'].blank? }
 
   scope :by_key, -> { order(key: :asc) }
-
-  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]
 
   def label
     key.humanize
