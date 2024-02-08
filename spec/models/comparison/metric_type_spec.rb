@@ -5,7 +5,7 @@ RSpec.describe Comparison::MetricType, type: :model do
     subject(:metric_type) { create :metric_type }
 
     it { expect(metric_type).to be_valid }
-    it { expect(metric_type).to validate_uniqueness_of(:key) }
+    it { expect(metric_type).to validate_uniqueness_of(:key).scoped_to(:fuel_type) }
     it { expect(metric_type).to validate_presence_of(:key) }
     it { expect(metric_type).to validate_presence_of(:label) }
     it { expect(metric_type).to validate_presence_of(:units) }

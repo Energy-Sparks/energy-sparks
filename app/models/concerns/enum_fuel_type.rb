@@ -1,4 +1,4 @@
-module EnumFuelTypeable
+module EnumFuelType
   extend ActiveSupport::Concern
 
   ENUM_FUEL_TYPES = {

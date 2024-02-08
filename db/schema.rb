@@ -658,6 +658,7 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.integer "fuel_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["key", "fuel_type"], name: "index_comparison_metric_types_on_key_and_fuel_type", unique: true
   end
 
   create_table "comparison_metrics", force: :cascade do |t|
@@ -667,7 +668,6 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.string "value"
     t.integer "reporting_period"
     t.bigint "custom_period_id"
-    t.bigint "custom_previous_period_id"
     t.boolean "enough_data", null: false
     t.boolean "whole_period", null: false
     t.boolean "recent_data", null: false
@@ -676,15 +676,17 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["alert_type_id"], name: "index_comparison_metrics_on_alert_type_id"
     t.index ["custom_period_id"], name: "index_comparison_metrics_on_custom_period_id"
-    t.index ["custom_previous_period_id"], name: "index_comparison_metrics_on_custom_previous_period_id"
     t.index ["metric_type_id"], name: "index_comparison_metrics_on_metric_type_id"
     t.index ["school_id"], name: "index_comparison_metrics_on_school_id"
   end
 
   create_table "comparison_periods", force: :cascade do |t|
-    t.string "label", null: false
-    t.date "start_date", null: false
-    t.date "end_date", null: false
+    t.string "current_label", null: false
+    t.date "current_start_date", null: false
+    t.date "current_end_date", null: false
+    t.string "previous_label", null: false
+    t.date "previous_start_date", null: false
+    t.date "previous_end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -693,12 +695,10 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.string "key", null: false
     t.boolean "public", default: false
     t.integer "reporting_period"
-    t.bigint "custom_period_id", null: false
-    t.bigint "custom_previous_period_id"
+    t.bigint "custom_period_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
-    t.index ["custom_previous_period_id"], name: "index_comparison_reports_on_custom_previous_period_id"
   end
 
   create_table "configurations", force: :cascade do |t|
@@ -2016,10 +2016,8 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "comparison_metrics", "comparison_metrics", column: "metric_type_id", on_delete: :cascade
   add_foreign_key "comparison_metrics", "comparison_periods", column: "custom_period_id", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "comparison_periods", column: "custom_previous_period_id", on_delete: :cascade
   add_foreign_key "comparison_metrics", "schools", on_delete: :cascade
   add_foreign_key "comparison_reports", "comparison_periods", column: "custom_period_id", on_delete: :cascade
-  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_previous_period_id", on_delete: :cascade
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"

@@ -1,10 +1,12 @@
 class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
   def change
     create_table :comparison_periods do |t|
-      t.string :label, null: false # we might want to translate this?
-      t.date :start_date, null: false
-      t.date :end_date, null: false
-
+      t.string :current_label, null: false
+      t.date :current_start_date, null: false
+      t.date :current_end_date, null: false
+      t.string :previous_label, null: false
+      t.date :previous_start_date, null: false
+      t.date :previous_end_date, null: false
       t.timestamps
     end
 
@@ -12,17 +14,9 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       t.references :school, null: false, foreign_key: { on_delete: :cascade }
       t.references :metric_type, null: false, foreign_key: { to_table: 'comparison_metrics', on_delete: :cascade }
       t.references :alert_type, null: false
-
-      t.string :value # type can vary, how do we do this?????
-
+      t.string :value
       t.integer :reporting_period # enum
-      # thought splitting the periods in to two might provide more flexibility. I might be wrong but is
-      # it true that we're not always comparing to a previous period? and that a metric can just be relevant to
-      # just a single period?
-      # is there the option to store exact date information for every metric rather than just for custom ones?
-      # This could be then provide the user with richer information of the exact period the figure is relevant to
       t.references :custom_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
-      t.references :custom_previous_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
 
       t.boolean :enough_data, null: false
       t.boolean :whole_period, null: false
@@ -32,18 +26,7 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
-    # This was the table suggested in the design - see above for alternative suggestion
-    # create_table :comparison_periods do |t|
-    #   t.current_period_start_date :date
-    #   t.current_period_end_date :date
-    #   t.previous_period_start_date :date
-    #   t.previous_period_end_date :date
-    #   t.current_period_label :string
-    #   t.previous_period_label :string
-    #   t.timestamps
-    # end
-
-# Jumped a bit ahead here
+    # Jumped a bit ahead here
 
     create_table :comparison_reports do |t|
       t.string :key, null: false, unique: true
@@ -53,28 +36,8 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
 
       t.boolean :public, default: false
       t.integer :reporting_period # enum
-      # for custom reports
-      t.references :custom_period, null: false, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
-      t.references :custom_previous_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
+      t.references :custom_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
       t.timestamps
     end
-
-=begin
-    # How do we tie metrics to reports?
-    # This model assumes generated metrics can be shared across multiple reports
-    create_table :comparison_run_report_metrics do |t|
-      t.references :comparison_run, null: false
-      t.references :comparison_report, null: false
-      t.references :comparison_metric, null: false
-
-      t.timestamps
-    end
-
-    # do we need something to tie things together?
-    create_table :comparison_run do |t|
-      t.date :run_on # do we only need one run a day?
-      t.timestamps
-    end
-=end
   end
 end

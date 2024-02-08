@@ -1,7 +1,10 @@
 FactoryBot.define do
   factory :period, class: 'Comparison::Period' do
-    sequence(:label) {|n| "Period #{n}"}
-    start_date { 1.week.ago }
-    end_date { Time.zone.today }
+    sequence(:current_label) {|n| "Period current #{n}"}
+    current_start_date { 1.year.ago }
+    current_end_date { Time.zone.today }
+    sequence(:previous_label) {|n| "Period previous #{n}"}
+    previous_start_date { 2.years.ago }
+    previous_end_date { 1.year.ago }
   end
 end
