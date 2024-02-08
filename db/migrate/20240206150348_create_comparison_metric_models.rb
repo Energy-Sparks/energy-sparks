@@ -10,7 +10,7 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
 
     create_table :comparison_metrics do |t|
       t.references :school, null: false, foreign_key: { on_delete: :cascade }
-      t.references :comparison_metric_type, null: false, foreign_key: { on_delete: :cascade }
+      t.references :metric_type, null: false, foreign_key: { to_table: 'comparison_metrics', on_delete: :cascade }
       t.references :alert_type, null: false
 
       t.string :value # type can vary, how do we do this?????
@@ -19,7 +19,7 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       # thought this would allow for more flexibility?
       # however we need to check that this info is actually needed for every metric if it's tied
       # to a report - is this enough?
-      t.references :custom_current_period, null: false, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
+      t.references :custom_current_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
       t.references :custom_previous_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
 
       t.boolean :enough_data, null: false

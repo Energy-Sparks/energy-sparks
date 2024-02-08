@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Comparison::MetricType, type: :model do
   context 'with valid attributes' do
-    subject(:metric_type) { build :metric_type }
+    subject(:metric_type) { create :metric_type }
 
     it { expect(metric_type).to be_valid }
     it { expect(metric_type).to validate_uniqueness_of(:key) }

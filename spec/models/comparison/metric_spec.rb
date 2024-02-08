@@ -1,5 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Comparison::Metric, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'with valid attributes' do
+    subject(:metric) { create :metric }
+
+    it { expect(metric).to be_valid }
+    it { expect(metric).to validate_presence_of(:value) }
+  end
 end
