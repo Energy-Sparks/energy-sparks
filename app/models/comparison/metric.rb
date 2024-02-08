@@ -42,8 +42,8 @@ class Comparison::Metric < ApplicationRecord
   belongs_to :school
   belongs_to :metric_type, class_name: 'Comparison::MetricType'
   belongs_to :alert_type
-  belongs_to :custom_current_period, class_name: 'Comparison::Period'
-  belongs_to :custom_previous_period, class_name: 'Comparison::Period'
+  belongs_to :custom_current_period, class_name: 'Comparison::Period', optional: true
+  belongs_to :custom_previous_period, class_name: 'Comparison::Period', optional: true
 
   validates :value, presence: true
 end

@@ -34,8 +34,8 @@ class Comparison::Report < ApplicationRecord
   # [:last_12_months, :financial_year, :academic_year]
   enum reporting_period: { custom: 0 }
 
-  belongs_to :custom_current_period, class_name: 'Comparison::Period'
-  belongs_to :custom_previous_period, class_name: 'Comparison::Period'
+  belongs_to :custom_current_period, class_name: 'Comparison::Period', optional: true
+  belongs_to :custom_previous_period, class_name: 'Comparison::Period', optional: true
 
   validates :key, presence: true, uniqueness: true
   validates :title, :fuel_type, presence: true
