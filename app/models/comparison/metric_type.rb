@@ -16,15 +16,15 @@
 class Comparison::MetricType < ApplicationRecord
   self.table_name = 'comparison_metric_types'
 
-  include EnumFuelType
   extend Mobility
+  include EnumFuelType
+
+  enum units: [:float, :date, :percent, :relative_percent]
+  # are there more? [:£, :co2, :kwh, :time, :string, :kw]
 
   translates :label, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }
 
   validates :key, presence: true, uniqueness: { scope: :fuel_type }
   validates :label, :units, :fuel_type, presence: true
-
-  enum units: [:float, :date, :percent, :relative_percent]
-  # are there more? [:£, :co2, :kwh, :time, :string, :kw]
 end
