@@ -1,10 +1,11 @@
 FactoryBot.define do
-  factory :reports, class: 'Comparison::Report' do
+  factory :report, class: 'Comparison::Report' do
     reporting_period { :last_12_months }
     association :custom_period, factory: :period
-    enough_data { true }
-    whole_period { true }
-    recent_data { true}
-    asof_date { Time.zone.today }
+    sequence(:key) {|n| "key#{n}"}
+    sequence(:title) {|n| "Title #{n}"}
+    sequence(:introduction) {|n| "Introduction #{n}"}
+    sequence(:notes) {|n| "Notes #{n}"}
+    public { true }
   end
 end

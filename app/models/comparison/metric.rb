@@ -32,12 +32,13 @@
 class Comparison::Metric < ApplicationRecord
   self.table_name = 'comparison_metrics'
 
-  include enum_reporting_period
+  include EnumReportingPeriod
 
   belongs_to :school
   belongs_to :alert_type
   belongs_to :metric_type, class_name: 'Comparison::MetricType'
   belongs_to :custom_period, class_name: 'Comparison::Period', optional: true
 
-  validates :value, presence: true
+  validates :school, :alert_type, :metric_type, :value, presence: true
+  validates :custom_period, presence: true, if: :custom?
 end

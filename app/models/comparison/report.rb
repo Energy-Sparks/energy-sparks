@@ -30,4 +30,5 @@ class Comparison::Report < ApplicationRecord
   belongs_to :custom_period, class_name: 'Comparison::Period', optional: true
 
   validates :key, :title, :reporting_period, presence: true
+  validates :custom_period, presence: true, if: :custom?
 end

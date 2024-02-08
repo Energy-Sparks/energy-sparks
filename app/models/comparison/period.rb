@@ -15,5 +15,6 @@
 class Comparison::Period < ApplicationRecord
   self.table_name = 'comparison_periods'
 
-  validates :label, :start_date, :end_date, presence: true
+  validates :current_label, :current_start_date, :current_end_date, presence: true
+  validates :previous_label, :previous_start_date, :previous_end_date, presence: true
 end
