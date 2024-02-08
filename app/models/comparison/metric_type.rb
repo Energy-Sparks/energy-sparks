@@ -1,7 +1,18 @@
+# == Schema Information
+#
+# Table name: comparison_metric_types
+#
+#  created_at :datetime         not null
+#  fuel_type  :integer          not null
+#  id         :bigint(8)        not null, primary key
+#  key        :string           not null
+#  units      :integer          not null
+#  updated_at :datetime         not null
+#
 class Comparison::MetricType < ApplicationRecord
-  extend Mobility
-
   self.table_name = 'comparison_metric_types'
+
+  extend Mobility
 
   translates :label, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }

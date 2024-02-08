@@ -9,7 +9,6 @@
 #  key                       :string           not null
 #  public                    :boolean          default(FALSE)
 #  reporting_period          :integer
-#  title                     :string           not null
 #  updated_at                :datetime         not null
 #
 # Indexes

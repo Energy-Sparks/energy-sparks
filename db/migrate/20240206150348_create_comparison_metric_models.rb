@@ -15,15 +15,12 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
 
       t.string :value # type can vary, how do we do this?????
 
-      # t.integer :reporting_period # enum
-      # thought this would allow for more flexibility? It would allow us to present
-      # exactly what is meant for this value by last_12_months, financial_year, academic_year
-      t.references :current_period, null: false, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
-
-      # if we had a reporting period table as used above, this could mean the comparison period below,
-      # could be a reference to another reporting period. Could also be called 'previous_period'
-      t.references :previous_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
-      ### does this reporting period information need to be stored for every metric? If it is stored for every report?
+      t.integer :reporting_period # enum
+      # thought this would allow for more flexibility?
+      # however we need to check that this info is actually needed for every metric if it's tied
+      # to a report - is this enough?
+      t.references :custom_current_period, null: false, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
+      t.references :custom_previous_period, foreign_key: { to_table: 'comparison_periods', on_delete: :cascade }
 
       t.boolean :enough_data, null: false
       t.boolean :whole_period, null: false
@@ -44,12 +41,11 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
     #   t.timestamps
     # end
 
-# Jumped a bit ahead here, so commenting out and will put in another PR soon
+# Jumped a bit ahead here
 
-=begin
     create_table :comparison_reports do |t|
       t.string :key, null: false, unique: true
-      ## t.string :title, null: false # translated
+      ## translated: title, null: false
       ## rich text: introduction
       ## rich text: notes
 
@@ -61,6 +57,7 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
+=begin
     # How do we tie metrics to reports?
     # This model assumes generated metrics can be shared across multiple reports
     create_table :comparison_run_report_metrics do |t|
