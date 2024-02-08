@@ -105,8 +105,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
 
         it 'includes expected charts' do
           expect(page).to have_css('#chart_management_dashboard_group_by_week_gas')
-          # TEMPORARY
-          expect(page).not_to have_css('#chart_wrapper_gas_by_month_year_0_1')
+          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
           expect(page).to have_no_css('#chart_wrapper_group_by_week_gas_unlimited')
           expect(page).to have_no_css('#chart_wrapper_gas_longterm_trend')
         end
@@ -128,15 +127,14 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         it 'includes expected charts' do
           expect(page).to have_css('#chart_wrapper_group_by_week_gas')
           expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
-          # TEMPORARY
-          expect(page).not_to have_css('#chart_wrapper_gas_by_month_year_0_1')
+          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
           # not enough data for these
           expect(page).to have_no_css('#chart_wrapper_gas_longterm_trend')
         end
       end
 
-      context 'with more than 800 days of meter data' do
-        let(:reading_start_date) { 800.days.ago }
+      context 'with more than two years of meter data' do
+        let(:reading_start_date) { 730.days.ago }
 
         it_behaves_like 'a gas long term advice page tab', tab: 'Analysis'
 
