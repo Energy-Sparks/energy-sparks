@@ -24,7 +24,6 @@ en:
           title: Change in energy consumption for last few years
       insights:
         comparison:
-          how_do_you_compare: How does your energy use for the last 12 months compare to other %{school_type} schools on Energy Sparks with a similar number of pupils?
           more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
           title: How do you compare?
         energy_use:
