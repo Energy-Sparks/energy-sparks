@@ -10,6 +10,8 @@
 #  id                   :bigint(8)        not null, primary key
 #  intervention_type_id :bigint(8)
 #  involved_pupils      :boolean          default(FALSE), not null
+#  observable_id        :bigint(8)
+#  observable_type      :string
 #  observation_type     :integer          not null
 #  points               :integer
 #  programme_id         :bigint(8)
@@ -21,12 +23,13 @@
 #
 # Indexes
 #
-#  index_observations_on_activity_id           (activity_id)
-#  index_observations_on_audit_id              (audit_id)
-#  index_observations_on_intervention_type_id  (intervention_type_id)
-#  index_observations_on_programme_id          (programme_id)
-#  index_observations_on_school_id             (school_id)
-#  index_observations_on_school_target_id      (school_target_id)
+#  index_observations_on_activity_id                        (activity_id)
+#  index_observations_on_audit_id                           (audit_id)
+#  index_observations_on_intervention_type_id               (intervention_type_id)
+#  index_observations_on_observable_type_and_observable_id  (observable_type,observable_id)
+#  index_observations_on_programme_id                       (programme_id)
+#  index_observations_on_school_id                          (school_id)
+#  index_observations_on_school_target_id                   (school_target_id)
 #
 # Foreign Keys
 #
