@@ -13,6 +13,7 @@
 # Indexes
 #
 #  index_comparison_reports_on_custom_period_id  (custom_period_id)
+#  index_comparison_reports_on_key               (key) UNIQUE
 #
 # Foreign Keys
 #

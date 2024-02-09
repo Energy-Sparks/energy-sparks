@@ -699,6 +699,7 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
+    t.index ["key"], name: "index_comparison_reports_on_key", unique: true
   end
 
   create_table "configurations", force: :cascade do |t|

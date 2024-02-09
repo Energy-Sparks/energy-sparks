@@ -29,7 +29,8 @@ class CreateComparisonMetricModels < ActiveRecord::Migration[6.1]
     # Jumped a bit ahead here
 
     create_table :comparison_reports do |t|
-      t.string :key, null: false, unique: true
+      t.string :key, null: false, index: { unique: true }
+
       ## translated: title, null: false
       ## rich text: introduction
       ## rich text: notes
