@@ -138,13 +138,13 @@ Rails.application.configure do
     config.public_file_server.headers = { 'Access-Control-Allow-Origin' => "https://#{ENV['APPLICATION_HOST']}" }
   end
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new(harmony: true)
+  # config.assets.js_compressor = Uglifier.new(harmony: true)
   config.action_controller.asset_host = ENV['ASSET_HOST'] if ENV['ASSET_HOST'].present?
   config.action_mailer.asset_host = ENV.fetch('ASSET_HOST'){ "https://#{ENV['APPLICATION_HOST']}" }
   config.active_storage.service = :amazon
   # session cookie has configurable name so that live and test logins are separated
   config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME') { '_energy-sparks_session' }, domain: '.energysparks.uk'
-  config.cache_store = :file_store, "#{root}/tmp/cache/rails_cache_store"
+  config.cache_store = :file_store, "/tmp/cache/rails_cache_store"
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
   config.good_job.execution_mode = :external
