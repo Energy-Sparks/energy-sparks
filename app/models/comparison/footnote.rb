@@ -20,4 +20,6 @@ class Comparison::Footnote < ApplicationRecord
 
   validates :key, presence: true, uniqueness: true
   validates :description, presence: true
+
+  scope :by_key, ->(order = :asc) { order(key: order) }
 end

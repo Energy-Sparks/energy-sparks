@@ -5,6 +5,7 @@ module Admin::Comparisons
     load_and_authorize_resource :footnote, class: 'Comparison::Footnote'
 
     def index
+      @footnotes = @footnotes.by_key
     end
 
     def create
