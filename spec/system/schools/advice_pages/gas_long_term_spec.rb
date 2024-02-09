@@ -99,11 +99,12 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
           expect(page).to have_no_content(I18n.t('advice_pages.gas_long_term.analysis.meter_breakdown.title'))
         end
 
-        it "doesn't says usage is high" do
+        it "doesn't say usage is high" do
           expect(page).to have_no_content(I18n.t('advice_pages.gas_long_term.analysis.comparison.assessment.high.title'))
         end
 
         it 'includes expected charts' do
+          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.management_dashboard_group_by_week_gas.title'))
           expect(page).to have_css('#chart_management_dashboard_group_by_week_gas')
           expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
           expect(page).to have_no_css('#chart_wrapper_group_by_week_gas_unlimited')
