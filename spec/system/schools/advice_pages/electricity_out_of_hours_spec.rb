@@ -114,7 +114,8 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
         let(:reading_end_date)   { Date.new(2024, 1, 31) }
 
         it 'has last year section' do
-          expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title'))
+          expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.recent_trend.title'))
+          expect(page).not_to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title'))
           expect(page).to have_css('#chart_wrapper_daytype_breakdown_electricity_tolerant')
           expect(page).to have_css('#electricity-out-of-hours-table')
         end
@@ -172,6 +173,7 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
         let(:reading_start_date) { 500.days.ago }
 
         it 'has last year section' do
+          expect(page).not_to have_content(I18n.t('advice_pages.electricity_long_term.analysis.recent_trend.title'))
           expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title'))
           expect(page).to have_css('#chart_wrapper_daytype_breakdown_electricity_tolerant')
           expect(page).to have_css('#electricity-out-of-hours-table')

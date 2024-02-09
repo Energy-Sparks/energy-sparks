@@ -110,12 +110,24 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         end
       end
 
+      context 'with less than a month of data' do
+        let(:reading_start_date) { 20.days.ago }
+
+        it 'has by day section' do
+          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
+          expect(page).to have_css('#chart_wrapper_gas_by_day_of_week_tolerant')
+          # not enough data for this
+          expect(page).not_to have_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
+        end
+      end
+
       context 'with less than a year of meter data' do
         let(:reading_start_date) { Date.new(2024, 1, 1) }
         let(:reading_end_date)   { Date.new(2024, 1, 31) }
 
         it 'has last year section' do
-          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title'))
+          expect(page).to have_content(I18n.t('advice_pages.gas_long_term.analysis.recent_trend.title'))
+          expect(page).not_to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title'))
           expect(page).to have_css('#chart_wrapper_daytype_breakdown_gas_tolerant')
           expect(page).to have_css('#gas-out-of-hours-table')
         end
@@ -123,6 +135,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         it 'has by day section' do
           expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
           expect(page).to have_css('#chart_wrapper_gas_by_day_of_week_tolerant')
+          expect(page).to have_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
         end
 
         it 'does not have a holiday usage section' do
@@ -175,6 +188,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         let(:reading_start_date) { 500.days.ago }
 
         it 'has last year section' do
+          expect(page).not_to have_content(I18n.t('advice_pages.gas_long_term.analysis.recent_trend.title'))
           expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title'))
           expect(page).to have_css('#chart_wrapper_daytype_breakdown_gas_tolerant')
           expect(page).to have_css('#gas-out-of-hours-table')
