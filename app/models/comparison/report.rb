@@ -30,6 +30,7 @@ class Comparison::Report < ApplicationRecord
   translates :notes, backend: :action_text
   belongs_to :custom_period, class_name: 'Comparison::Period', optional: true
 
-  validates :key, :title, :reporting_period, presence: true
+  validates :title, :reporting_period, presence: true
+  validates :key, presence: true, uniqueness: true
   validates :custom_period, presence: true, if: :custom?
 end

@@ -7,6 +7,7 @@ RSpec.describe Comparison::Report, type: :model do
 
       it { expect(report).to be_valid }
       it { expect(report).to validate_presence_of(:key) }
+      it { expect(report).to validate_uniqueness_of(:key) }
       it { expect(report).to validate_presence_of(:title) }
       it { expect(report).not_to validate_presence_of(:introduction) }
       it { expect(report).not_to validate_presence_of(:notes) }
