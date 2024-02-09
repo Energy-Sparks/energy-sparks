@@ -25,8 +25,8 @@ gem 'closed_struct'
 gem 'pg'
 
 # Dashboard analytics
-# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.6'
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'monthly-charts-with-up-to-a-year'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.7'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'monthly-charts-with-up-to-a-year'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined

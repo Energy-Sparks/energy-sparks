@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: feb77f32acc38c556f6a1353f12a2b7b693198db
-  branch: monthly-charts-with-up-to-a-year
+  revision: a41628c53e418395a15300deb1d19273fc7e5aa8
+  tag: 5.0.7
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
