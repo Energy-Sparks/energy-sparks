@@ -27,6 +27,14 @@ module Schools
 
       private
 
+      def last_full_week_start_date(end_date)
+        if one_years_data?(analysis_start_date, analysis_end_date)
+          end_date.prev_year.end_of_week
+        else
+          analysis_start_date.end_of_week
+        end
+      end
+
       def multiple_meters?
         @school.meters.active.where(meter_type: fuel_type).count > 1
       end

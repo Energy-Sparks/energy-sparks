@@ -1,7 +1,11 @@
+<% if analysis_dates.one_years_data? %>
+  <% section_title = t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.title") %>
+<% else %>
+  <% section_title = t("advice_pages.#{fuel_type}_long_term.analysis.recent_trend.title") %>
+<% end %>
 <%= render 'schools/advice/section_title',
            section_id: 'last_twelve_months',
-           section_title:
-          t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.title") %>
+           section_title: section_title %>
 
 <%= component 'chart', chart_type: chart, school: school do |c| %>
   <% c.with_title do %>

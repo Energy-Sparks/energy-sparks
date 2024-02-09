@@ -34,7 +34,17 @@
 <% else %>
   <% chart_type = :"management_dashboard_group_by_week_#{fuel_type}" %>
   <%= component 'chart', chart_type: chart_type, school: school,
-                         chart_config: { y_axis_units: select_y_axis(school, chart_type, :£) } %>
+                         chart_config: { y_axis_units: select_y_axis(school, chart_type, :£) } do |c| %>
+      <% c.with_title { t("advice_pages.#{fuel_type}_out_of_hours.analysis.holiday_usage.#{chart_type}.title") } %>
+      <% c.with_subtitle do
+           t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}.subtitle_html",
+             start_date: analysis_dates.last_full_week_start_date.to_s(:es_short),
+             end_date: analysis_dates.last_full_week_end_date.to_s(:es_short))
+         end %>
+      <% c.with_footer do %>
+        <p><%= t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}.explanation_html") %></p>
+      <% end %>
+  <% end %>
 <% end %>
 
 <%= component 'chart', chart_type: :"#{fuel_type}_by_month_year_0_1", school: school do |c| %>
