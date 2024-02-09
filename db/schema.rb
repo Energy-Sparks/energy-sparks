@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_06_150348) do
+ActiveRecord::Schema.define(version: 2024_02_09_094457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -650,6 +650,13 @@ ActiveRecord::Schema.define(version: 2024_02_06_150348) do
     t.index ["school_id"], name: "index_cluster_schools_users_on_school_id"
     t.index ["user_id", "school_id"], name: "index_cluster_schools_users_on_user_id_and_school_id"
     t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
+  end
+
+  create_table "comparison_footnotes", force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
   end
 
   create_table "comparison_metric_types", force: :cascade do |t|
