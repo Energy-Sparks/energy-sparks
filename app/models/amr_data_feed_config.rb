@@ -27,6 +27,7 @@
 #  provider_id_field       :text
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
+#  reading_time_field      :text
 #  row_per_reading         :boolean          default(FALSE), not null
 #  source_type             :integer          default("email"), not null
 #  total_field             :text

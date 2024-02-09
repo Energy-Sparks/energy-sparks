@@ -13,6 +13,7 @@
 #  postcode                    :text
 #  provider_record_id          :text
 #  reading_date                :text             not null
+#  reading_time                :text
 #  readings                    :text             not null, is an Array
 #  school                      :text
 #  total                       :text
