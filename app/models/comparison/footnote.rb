@@ -7,6 +7,10 @@
 #  key        :string           not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_comparison_footnotes_on_key  (key) UNIQUE
+#
 class Comparison::Footnote < ApplicationRecord
   self.table_name = 'comparison_footnotes'
 
@@ -14,6 +18,6 @@ class Comparison::Footnote < ApplicationRecord
 
   translates :description, type: :string, fallbacks: { cy: :en }
 
-  validates :key, presence: true, unique: true
+  validates :key, presence: true, uniqueness: true
   validates :description, presence: true
 end

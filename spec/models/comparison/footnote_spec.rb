@@ -5,10 +5,10 @@ RSpec.describe Comparison::Footnote, type: :model do
     context 'with valid attributes' do
       subject(:footnote) { create :footnote }
 
-      it { expect(metric).to be_valid }
-      it { expect(metric).to validate_presence_of(:key) }
-      it { expect(metric).to validate_uniqueness_of(:key) }
-      it { expect(metric).to validate_presence_of(:description) }
+      it { expect(footnote).to be_valid }
+      it { expect(footnote).to validate_presence_of(:key) }
+      it { expect(footnote).to validate_uniqueness_of(:key) }
+      it { expect(footnote).to validate_presence_of(:description) }
     end
   end
 end
