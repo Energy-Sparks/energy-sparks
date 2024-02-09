@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "serverless-ruby-layer": "^1.7.0"
+  }
+}
