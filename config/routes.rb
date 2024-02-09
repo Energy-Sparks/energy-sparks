@@ -419,6 +419,7 @@ Rails.application.routes.draw do
 
     namespace :comparisons do
       resources :footnotes
+      resources :reports
     end
 
     resources :case_studies

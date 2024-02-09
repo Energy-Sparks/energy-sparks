@@ -17,4 +17,8 @@ class Comparison::Period < ApplicationRecord
 
   validates :current_label, :current_start_date, :current_end_date, presence: true
   validates :previous_label, :previous_start_date, :previous_end_date, presence: true
+
+  def to_s
+    "From #{previous_label} to #{current_label}"
+  end
 end

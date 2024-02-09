@@ -29,8 +29,11 @@ class Comparison::Report < ApplicationRecord
   translates :introduction, backend: :action_text
   translates :notes, backend: :action_text
   belongs_to :custom_period, class_name: 'Comparison::Period', optional: true
+  accepts_nested_attributes_for :custom_period
 
   validates :title, :reporting_period, presence: true
   validates :key, presence: true, uniqueness: true
   validates :custom_period, presence: true, if: :custom?
+
+  scope :by_key, ->(order = :asc) { order(key: order) }
 end

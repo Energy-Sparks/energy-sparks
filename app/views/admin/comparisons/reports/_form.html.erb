@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col">
+    <% url = report.new_record? ? admin_comparisons_reports_path : admin_comparisons_report_path(report) %>
+    <%= simple_form_for(report, as: :report, url: url) do |f| %>
+      <%= f.input :key %>
+      <%= f.input :reporting_period,
+                  collection: Comparison::Report.reporting_periods.keys,
+                  label_method: ->(k) { k.humanize } %>
+      <div class="custom_period">
+        <%= f.association :custom_period, label_method: :to_s %>
+        <div>
+          <%= f.simple_fields_for :custom_period do |custom_period| %>
+            <%= render 'custom_period_fields', f: custom_period %>
+          <% end %>
+        </div>
+        <div class="links pb-3">
+          <%= link_to_add_association 'Add custom period', f, :custom_period, class: 'btn' %>
+        </div>
+      </div>
+      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+        <%= f.input t_field(:title, locale), as: :string %>
+      <% end %>
+      <%= render 'admin/shared/locale_tabs', f: f, field: :introduction do |locale| %>
+        <%= f.label "Introduction #{locale}" %>
+        <%= f.rich_text_area t_field(:introduction, locale), label: 'Introduction', as: :string %>
+      <% end %>
+      <%= render 'admin/shared/locale_tabs', f: f, field: :notes do |locale| %>
+        <%= f.label "Notes #{locale}" %>
+        <%= f.rich_text_area t_field(:notes, locale), as: :string %>
+      <% end %>
+      <%= f.input :public %>
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>
