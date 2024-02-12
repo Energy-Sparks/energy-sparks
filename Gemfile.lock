@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: a41628c53e418395a15300deb1d19273fc7e5aa8
-  tag: 5.0.7
+  revision: 6e78c5b6144bfe2a0867d8d4cb58be978c669159
+  branch: 4001-baseload-page-error-with-lagging-data
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
