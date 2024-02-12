@@ -8,11 +8,9 @@ ARG FUNCTION_DIR="/function"
 
 # Install ruby, bundler and the Runtime Interface Client
 # https://docs.aws.amazon.com/linux/al2023/release-notes/all-packages-AL2023.3.html
-RUN dnf install -y ruby ruby-devel ruby3.2-rubygem-bundler libpq-devel git make gcc && dnf clean all \
+RUN dnf install -y ruby ruby-devel ruby3.2-rubygem-bundler libpq-devel git make gcc g++ \
+  && dnf clean all \
   && gem install aws_lambda_ric
-
-# RUN dnf repoquery ruby
-RUN dnf install -y g++
 
 # Set working directory
 WORKDIR ${FUNCTION_DIR}

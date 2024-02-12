@@ -1,38 +1,15 @@
-# For full config options, check the docs:
-#    docs.serverless.com
-
 service: analytics-pipeline
 frameworkVersion: '3'
 useDotenv: true
 configValidationMode: error
 
-# plugins:
-#   - serverless-ruby-layer
-
-# custom:
-#   rubyLayer:
-#     use_docker: true
-#     docker_file: Dockerfile
-#     native_libs:
-#       - /lib64/libpq.so.5
-#       - /lib64/libldap_r-2.4.so.2
-#       - /lib64/liblber-2.4.so.2
-#       - /lib64/libsasl2.so.3
-#       - /lib64/libssl3.so
-#       - /lib64/libsmime3.so
-#       - /lib64/libnss3.so
-#       - /lib64/libnssutil3.so
-
 provider:
   name: aws
-  timeout: 120
   # runtime: ruby3.2
   # architecture: arm64
   region: eu-west-2
   stage: ${opt:stage, 'development'}
   environment:
-    IN_BUCKET: es-${self:provider.stage}-analytics-in
-    OUT_BUCKET: es-${self:provider.stage}-analytics-out
     ROLLBAR_ACCESS_TOKEN: ${env:ROLLBAR_ACCESS_TOKEN}
     RDS_DB_NAME: ${env:RDS_DB_NAME}
     RDS_HOSTNAME: ${env:RDS_HOSTNAME}
@@ -41,60 +18,38 @@ provider:
     RDS_USERNAME: ${env:RDS_USERNAME}
     SECRET_KEY_BASE: ${env:SECRET_KEY_BASE}
     ENCRYPTED_FIELD_SALT: ${env:ENCRYPTED_FIELD_SALT}
-    # this allows bundler to pick up git gems in /opt/ruby/3.2.0/bundler from the ruby layer
-    # BUNDLE_PATH: /opt
-    # BUNDLE_WITHOUT: test:development:web
     RAILS_ENV: production
     AWS_S3_ACTIVE_STORAGE_BUCKET: dontuse
     RAILS_LOG_TO_STDOUT: 1
-    # LD_LIBRARY_PATH: /var/lang/lib:/var/lang/lib:/opt/lib:/lib64:/usr/lib64:/var/runtime:/var/runtime/lib:/var/task:/var/task/lib
-    #                  /var/lang/lib:/var/lang/lib:/lib64:/usr/lib64:/var/runtime:/var/runtime/lib:/var/task:/var/task/lib:/opt/lib
-  iam:
-    role:
-      statements:
-        - Effect: "Allow"
-          Action:
-            - "s3:*"
-          Resource:
-            - { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ]]}
-            - "arn:aws:s3:::${self:provider.environment.IN_BUCKET}/*"
-            - "arn:aws:s3:::${self:provider.environment.OUT_BUCKET}/*"
+    QUEUE_URL: ${construct:my-queue.queueUrl}
   ecr:
    images:
     appimage:
       path: ..
       file: serverless/Dockerfile
 
-# package:
-#   patterns:
-#     - '!**'
-#     - 'handler.rb'
-#     - '../lib/**'
-#     - '../app/**'
-#     - '../config/**'
-#     - 'Gemfile'
-#     - '../Gemfile.lock'
+plugins:
+  - serverless-lift
 
-functions:
-  process:
-    # handler: handler.run
-    image:
-      name: appimage
-      command: handler.run
-    events:
-      - s3: ${self:provider.environment.IN_BUCKET}
-    reservedConcurrency: 2
-    vpc:
-      securityGroupIds:
-        - sg-9474a8ff
-      subnetIds:
-        - subnet-851614c8
-        - subnet-c12f90a8
-        - subnet-13a15d69
-
-resources:
-  Resources:
-    S3BucketOut:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:provider.environment.OUT_BUCKET}
+constructs:
+  my-queue:
+    type: queue
+    maxRetries: 1
+    maxConcurrency: 50
+    extensions:
+      queue:
+        Properties:
+          VisibilityTimeout: 120 # by default this is * 6 the timeout which seems too high since we don't retry
+    worker:
+      image:
+        name: appimage
+        command:
+          - handler.run
+      timeout: 120
+      vpc:
+        securityGroupIds:
+          - sg-9474a8ff
+        subnetIds:
+          - subnet-851614c8
+          - subnet-c12f90a8
+          - subnet-13a15d69
