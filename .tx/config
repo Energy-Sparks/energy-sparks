@@ -694,6 +694,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-tasks-tasks-yml]
+file_filter  = config/locales/<lang>/views/tasks/tasks.yml
+source_file  = config/locales/views/tasks/tasks.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-terms_and_conditions-terms_and_conditions-yml]
 file_filter  = config/locales/<lang>/views/terms_and_conditions/terms_and_conditions.yml
 source_file  = config/locales/views/terms_and_conditions/terms_and_conditions.yml
