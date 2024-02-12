@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col">
+    <% url = footnote.new_record? ? admin_comparisons_footnotes_path : admin_comparisons_footnote_path(footnote) %>
+    <%= simple_form_for(footnote, as: :footnote, url: url) do |f| %>
+      <%= f.input :key %>
+      <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+        <%= f.input t_field(:description, locale), as: :string %>
+      <% end %>
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

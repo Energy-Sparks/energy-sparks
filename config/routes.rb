@@ -412,6 +412,11 @@ Rails.application.routes.draw do
         resource :intervention_types, only: [:show, :update]
       end
     end
+
+    namespace :comparisons do
+      resources :footnotes
+    end
+
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent

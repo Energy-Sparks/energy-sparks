@@ -29,29 +29,32 @@
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title',
-           section_id: 'usage_through_the_school_day',
-           section_title: t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.title') %>
+<% if analysis_dates.months_of_data >= 1 %>
 
-<%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.subtitle') %>
+  <%= render 'schools/advice/section_title',
+             section_id: 'usage_through_the_school_day',
+             section_title: t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.title') %>
 
-<%= component 'chart', chart_type: :gas_heating_season_intraday_up_to_1_year, school: school do |c| %>
-  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
-  <% c.with_title do %>
-    <%= t('advice_pages.gas_out_of_hours.'\
-          'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
-  <% end %>
-  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html') %>
-  <% c.with_subtitle do
-       t('advice_pages.gas_out_of_hours.'\
-         'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html',
-         start_month_year: short_dates(start_date),
-         end_month_year: short_dates(analysis_dates.end_date))
-     end %>
-  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.footer_html') %>
-  <% c.with_footer do %>
-    <%= t('advice_pages.gas_out_of_hours.'\
-          'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.footer_html',
-          insights_school_advice_heating_control_path: insights_school_advice_heating_control_path(school)) %>
+  <%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.subtitle') %>
+
+  <%= component 'chart', chart_type: :gas_heating_season_intraday_up_to_1_year, school: school do |c| %>
+    <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
+    <% c.with_title do %>
+      <%= t('advice_pages.gas_out_of_hours.'\
+            'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
+    <% end %>
+    <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html') %>
+    <% c.with_subtitle do
+         t('advice_pages.gas_out_of_hours.'\
+           'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.subtitle_html',
+           start_month_year: short_dates(start_date),
+           end_month_year: short_dates(analysis_dates.end_date))
+       end %>
+    <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.footer_html') %>
+    <% c.with_footer do %>
+      <%= t('advice_pages.gas_out_of_hours.'\
+            'analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.footer_html',
+            insights_school_advice_heating_control_path: insights_school_advice_heating_control_path(school)) %>
+    <% end %>
   <% end %>
 <% end %>
