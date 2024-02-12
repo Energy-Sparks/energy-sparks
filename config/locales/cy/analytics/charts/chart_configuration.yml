@@ -249,15 +249,6 @@ cy:
     electricity_by_day_of_week:
       title:
         - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
-    electricity_by_day_of_week_actual_for_simulator_comparison:
-      title:
-        - Defnydd Trydan Yn ôl Diwrnod yr Wythnos (Defnydd Gwirioneddol dros y llynedd)
-    electricity_by_day_of_week_simulator:
-      title:
-        - Defnydd Trydan Yn ôl Diwrnod yr Wythnos (Defnydd Efelychydd dros y llynedd)
-    electricity_by_day_of_week_simulator_ict:
-      title:
-        - 'Blynyddol: Defnydd yn ôl Diwrnod o''r Wythnos: Efelychydd Trydan (Gweinyddion TGCh, Penbyrddau, Gliniaduron)'
     electricity_by_day_of_week_tolerant:
       title:
         - Defnydd Trydan Yn ôl Diwrnod yr Wythnos
@@ -324,12 +315,6 @@ cy:
     electricity_longterm_trend_kwh_with_carbon_unmodified:
       title:
         - Defnydd o drydan eich ysgol dros yr ychydig flynyddoedd diwethaf
-    electricity_simulator_pie:
-      title:
-        - Efelychydd Trydan (Dadansoddiad Defnydd a Efelychwyd Dros y Flwyddyn Ddiwethaf)
-    electricity_simulator_pie_detail_page:
-      title:
-        - Efelychydd Trydan (Dadansoddiad Defnydd a Efelychwyd Dros y Flwyddyn Ddiwethaf)
     frost:
       title:
         - 'Amddiffyn rhag Rhew: penwythnos oer'
@@ -414,51 +399,15 @@ cy:
     group_by_week_electricity:
       title:
         - 'Yn ôl Wythnos: Trydan'
-    group_by_week_electricity_actual_for_simulator_comparison:
-      title:
-        - 'Yn ôl Wythnos: Trydan (Defnydd Gwirioneddol)'
-    group_by_week_electricity_air_conditioning:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Aerdymheru)'
     group_by_week_electricity_dd:
       title:
         - 'Yn ôl Wythnos: Trydan'
-    group_by_week_electricity_flood_lighting:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Llifogydd Goleuadau)'
-    group_by_week_electricity_kitchen:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Cegin)'
     group_by_week_electricity_meter_breakdown:
       title:
         - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
     group_by_week_electricity_meter_breakdown_one_year:
       title:
         - 'Yn ôl Wythnos: Trydan (Dadansoddiad Mesuryddion)'
-    group_by_week_electricity_simulator:
-      title:
-        - 'Yn ôl Wythnos: Trydan (Efelychydd)'
-    group_by_week_electricity_simulator_appliance:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan'
-    group_by_week_electricity_simulator_boiler_pump:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Pympiau Boeler)'
-    group_by_week_electricity_simulator_electrical_heating:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Gwresogi gan Ddefnyddio Trydan)'
-    group_by_week_electricity_simulator_ict:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Gweinyddion TGCh, Cyfrifiaduron, Gliniaduron)'
-    group_by_week_electricity_simulator_lighting:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Goleuadau)'
-    group_by_week_electricity_simulator_security_lighting:
-      title:
-        - 'Yn ôl Wythnos: Efelychydd Trydan (Goleuadau Diogelwch)'
-    group_by_week_electricity_simulator_solar_pv:
-      title:
-        - 'Yn ôl Mis: Efelychydd Trydan (Solar Ffotofoltaig)'
     group_by_week_electricity_unlimited:
       title:
         - 'Yn ôl Wythnos: Trydan (aml-flwyddyn)'
@@ -546,39 +495,6 @@ cy:
     hotwater_alert:
       title:
         - Dadansoddiad Dŵr Poeth
-    intraday_electricity_simulator_actual_for_comparison:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd (Gwirioneddol)'
-    intraday_electricity_simulator_air_conditioning_kwh:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Aerdymheru)'
-    intraday_electricity_simulator_boiler_pump_kwh:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Pympiau Boeler)'
-    intraday_electricity_simulator_flood_lighting_kwh:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau Llifogydd)'
-    intraday_electricity_simulator_ict:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: (Gweinyddion TGCh, Cyfrifiaduron, Gliniaduron)'
-    intraday_electricity_simulator_kitchen_kwh:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Cegin)'
-    intraday_electricity_simulator_lighting_kw:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau)'
-    intraday_electricity_simulator_lighting_kwh:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau)'
-    intraday_electricity_simulator_security_lighting_kwh:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Goleuadau Diogelwch)'
-    intraday_electricity_simulator_simulator_for_comparison:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd (Efelychydd)'
-    intraday_electricity_simulator_solar_pv_kwh:
-      title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Solar  Ffotofoltaig)'
     intraday_line_holidays:
       title:
         - O fewn diwrnod (gwyliau)
@@ -586,15 +502,6 @@ cy:
       title:
         - O fewn diwrnod (diwrnodau ysgol) - cymhariaeth o'r 2 flynedd ddiwethaf
     intraday_line_school_days_6months:
-      title:
-        - O fewn diwrnod (Cymharu 6 mis ar wahân)
-    intraday_line_school_days_6months_simulator:
-      title:
-        - O fewn diwrnod (Cymharu 6 mis ar wahân) Efelychydd
-    intraday_line_school_days_6months_simulator_submeters:
-      title:
-        - O fewn diwrnod (Cymharu 6 mis ar wahân) Efelychydd
-    intraday_line_school_days_6months_test_delete:
       title:
         - O fewn diwrnod (Cymharu 6 mis ar wahân)
     intraday_line_school_days_gas_reduced_data_versus_benchmarks:
@@ -1006,7 +913,6 @@ cy:
       kwh: kWh
       percent: canran
       percent_0dp: canran
-      r2: ''
       relative_percent: canran
       relative_percent_0dp: canran
       timeofday: Amser o'r dydd
