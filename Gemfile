@@ -25,7 +25,7 @@ gem 'closed_struct'
 gem 'pg'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.8'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.9'
 # gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '4001-baseload-page-error-with-lagging-data'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
