@@ -141,6 +141,7 @@ GEM
     aws-sigv4 (1.8.0)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.24.1)
+    base64 (0.2.0)
     bcrypt (3.1.20)
     benchmark-memory (0.2.0)
       memory_profiler (~> 1)
@@ -618,7 +619,8 @@ GEM
       tilt
     scout_apm (5.3.5)
       parser
-    selenium-webdriver (4.16.0)
+    selenium-webdriver (4.17.0)
+      base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
