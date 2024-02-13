@@ -26,4 +26,5 @@ class BenchmarkResultSchoolGenerationRun < ApplicationRecord
   belongs_to :benchmark_result_generation_run
   has_many :benchmark_results
   has_many :benchmark_result_errors
+  has_many :metrics, class_name: 'Comparison::Metric'
 end
