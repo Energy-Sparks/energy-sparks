@@ -44,7 +44,8 @@ module Alerts
           valid:       true,
           rating:      analysis_object.rating,
           enough_data: analysis_object.enough_data,
-          relevance:   analysis_object.relevance
+          relevance:   analysis_object.relevance,
+          analysis_object: analysis_object
         }.merge(variables))
       end
 

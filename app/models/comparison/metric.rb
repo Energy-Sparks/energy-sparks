@@ -42,6 +42,6 @@ class Comparison::Metric < ApplicationRecord
   belongs_to :custom_period, class_name: 'Comparison::Period', optional: true
   belongs_to :benchmark_result_school_generation_run
 
-  validates :school, :alert_type, :metric_type, :value, presence: true
+  validates :school, :alert_type, :metric_type, presence: true
   validates :custom_period, presence: true, if: :custom?
 end
