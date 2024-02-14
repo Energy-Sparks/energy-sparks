@@ -78,7 +78,8 @@ module Alerts
           valid:       false,
           rating:      nil,
           enough_data: nil,
-          relevance:   analysis_object.relevance
+          relevance:   analysis_object.relevance,
+          analysis_object: analysis_object
         )
       end
     end
