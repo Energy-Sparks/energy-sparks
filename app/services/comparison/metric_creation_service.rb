@@ -38,7 +38,7 @@ module Comparison
           reporting_period: reporting_period(key, definition),
           enough_data: enough_data?,
           asof_date: @asof_date,
-          whole_period: true, # TODO how to determine?
+          whole_period: true, # TODO will need revisiting when we add arbitrary period metrics
           recent_data: @analysis_object.meter_readings_up_to_date_enough?,
           value: value
         )
