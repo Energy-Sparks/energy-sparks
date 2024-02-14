@@ -28,7 +28,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (custom_period_id => comparison_periods.id) ON DELETE => cascade
-#  fk_rails_...  (metric_type_id => comparison_metrics.id) ON DELETE => cascade
+#  fk_rails_...  (metric_type_id => comparison_metric_types.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
