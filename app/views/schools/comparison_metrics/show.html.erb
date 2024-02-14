@@ -1,0 +1,36 @@
+<h2>Comparison Metrics</h2>
+
+<%= link_to 'View benchmark run', school_benchmark_report_path(@run.school, @run) %>
+
+<div class="row">
+  <div class="col" style="font-size: 16px;">
+    <table class="table table-sm table-sorted">
+      <thead>
+        <th>Alert Class</th>
+        <th>Fuel Type</th>
+        <th>Key</th>
+        <th>Value</th>
+        <th>Units</th>
+        <th>Reporting Period</th>
+        <th>Enough Data?</th>
+        <th>Recent Data?</th>
+        <th>Whole Period?</th>
+      </thead>
+      <tbody>
+        <% @metrics.each do |metric| %>
+          <tr>
+            <td><%= link_to metric.alert_type.class_name, admin_alert_type_path(metric.alert_type.class_name) %></td>
+            <td><%= metric.metric_type.fuel_type %></td>
+            <td><pre><%= metric.metric_type.key %></pre></td>
+            <td><code><%= metric.value %></code></td>
+            <td><%= metric.metric_type.units %></td>
+            <td><%= metric.reporting_period.humanize %></td>
+            <td><%= checkmark(metric.enough_data) %></td>
+            <td><%= checkmark(metric.recent_data) %></td>
+            <td><%= checkmark(metric.whole_period) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 <h2>Benchmarks</h2>
 
-<%= link_to "View all runs", school_benchmark_reports_path(@school) %>
+<%= link_to 'View all runs', school_benchmark_reports_path(@school) %>
 
 <h3>Success</h3>
 
@@ -11,15 +11,17 @@
       <th>Alert Class</th>
       <th>Using data up to</th>
       <th>Run on</th>
+      <th>Metrics</th>
     </tr>
   </thead>
   <tbody>
       <% @run.benchmark_results.each do |benchmark_result| %>
         <tr>
           <td><%= link_to benchmark_result.alert_type.title, school_benchmark_result_path(@school, benchmark_result) %></td>
-          <td><%= benchmark_result.alert_type.class_name %></td>
+          <td><%= link_to benchmark_result.alert_type.class_name, admin_alert_type_path(benchmark_result.alert_type) %></td>
           <td><%= nice_dates(benchmark_result.asof) %></td>
           <td><%= nice_date_times(benchmark_result.created_at) %></td>
+          <td><%= link_to 'Metrics', school_comparison_metric_path(@school, @run) %></td>
         </tr>
       <% end %>
   </tbody>
