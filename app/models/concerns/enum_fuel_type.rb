@@ -5,7 +5,8 @@ module EnumFuelType
     electricity: 0,
     gas: 1,
     storage_heater: 2,
-    solar_pv: 3
+    solar_pv: 3,
+    multiple: 4 # e.g. for metrics that are for total usage
   }.freeze
 
   included do
