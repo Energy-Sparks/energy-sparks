@@ -69,6 +69,14 @@ module Alerts
     end
 
     def process_alert_benchmark_report(alert_type, alert_report, asof_date)
+      if EnergySparks::FeatureFlags.active?(:new_school_comparisons)
+        Comparison::MetricCreationService.new(
+          benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
+          alert_type: alert_type,
+          alert_report: alert_report,
+          asof_date: asof_date
+        ).perform
+      end
       if alert_report.valid
         if alert_report.benchmark_data.present?
           BenchmarkResult.create!(

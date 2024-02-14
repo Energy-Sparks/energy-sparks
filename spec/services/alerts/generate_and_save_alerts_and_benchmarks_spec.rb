@@ -124,6 +124,29 @@ module Alerts
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_error_count).to be 1
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 0
       end
+
+      context 'with new school comparisons feature active' do
+        subject(:service) do
+          alert_type.update!(benchmark: true)
+          expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
+
+          GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
+        end
+
+        around do |example|
+          ClimateControl.modify FEATURE_FLAG_NEW_SCHOOL_COMPARISONS: 'true' do
+            example.run
+          end
+        end
+
+        it 'calls the MetricCreationService' do
+          mock = instance_double(Comparison::MetricCreationService)
+          allow(Comparison::MetricCreationService).to receive(:new).and_return(mock)
+          # the test sets up 3 different alert reports
+          expect(mock).to receive(:perform).exactly(3).times
+          service.perform
+        end
+      end
     end
   end
 end
