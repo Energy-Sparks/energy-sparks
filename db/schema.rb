@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_13_115026) do
+ActiveRecord::Schema.define(version: 2024_02_14_144459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2024,7 +2024,7 @@ ActiveRecord::Schema.define(version: 2024_02_13_115026) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "comparison_metrics", column: "metric_type_id", on_delete: :cascade
+  add_foreign_key "comparison_metrics", "comparison_metric_types", column: "metric_type_id", on_delete: :cascade
   add_foreign_key "comparison_metrics", "comparison_periods", column: "custom_period_id", on_delete: :cascade
   add_foreign_key "comparison_metrics", "schools", on_delete: :cascade
   add_foreign_key "comparison_reports", "comparison_periods", column: "custom_period_id", on_delete: :cascade
