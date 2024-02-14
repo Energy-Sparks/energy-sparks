@@ -16,41 +16,32 @@ module Comparison
       @alert_type.class_from_name.benchmark_template_variables.each do |key, definition|
         next if ignore_metric?(key)
         next unless metric_type(key, definition).present?
-        # valid_content? && meter_readings_up_to_date_enough? && we want to store
-        # this metric
-        #
-        # We could check for a value for this variable, rather than
-        # whether there's any benchmark data available
+
         if @alert_report.valid && @alert_report.benchmark_data.present?
-          Metric.create!(
-            school: @school,
-            benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
-            alert_type: @alert_type,
-            metric_type: metric_type(key, definition),
-            reporting_period: reporting_period(key, definition),
-            enough_data: enough_data?,
-            asof_date: @asof_date,
-            whole_period: true, # TODO
-            recent_data: @analysis_object.meter_readings_up_to_date_enough?,
-            value: @analysis_object.send(key)
-          )
+          # valid_content? && meter_readings_up_to_date_enough? && we want to store
+          # this metric
+          #
+          # We could check for a value for this variable, rather than
+          # whether there's any benchmark data available
+          value = @analysis_object.send(key)
         else
           # Reach here if we ran the alert but we didn't have enough data, the data was
           # stale, or there was an error. Storing empty metric so we can more
           # clearly identify which schools are missing which data in reports.
-          Metric.create!(
-            school: @school,
-            benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
-            alert_type: @alert_type,
-            metric_type: metric_type(key, definition),
-            reporting_period: reporting_period(key, definition),
-            enough_data: enough_data?,
-            asof_date: @asof_date,
-            whole_period: true, # TODO how to determine?
-            recent_data: @analysis_object.meter_readings_up_to_date_enough?,
-            value: nil
-          )
+          value = nil
         end
+        Metric.create!(
+          school: @school,
+          benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
+          alert_type: @alert_type,
+          metric_type: metric_type(key, definition),
+          reporting_period: reporting_period(key, definition),
+          enough_data: enough_data?,
+          asof_date: @asof_date,
+          whole_period: true, # TODO how to determine?
+          recent_data: @analysis_object.meter_readings_up_to_date_enough?,
+          value: value
+        )
       end
       true
     rescue => e
