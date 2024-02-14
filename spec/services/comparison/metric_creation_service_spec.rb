@@ -155,8 +155,7 @@ describe Comparison::MetricCreationService, :aggregate_failures do
           metric = Comparison::Metric.find_by(
             metric_type: Comparison::MetricType.find_by(key: :benchmark_per_pupil)
           )
-          # TODO
-          expect(metric.value).to eq('0.5')
+          expect(metric.value).to eq(0.5)
         end
       end
     end
