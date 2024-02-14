@@ -90,6 +90,11 @@ module Comparison
     end
 
     def ignore_metric?(key)
+      # This alert has dynamically defined accessors, but tracks what's missing, so need to check
+      # if there's actually data
+      if @alert_type.class_name = 'AlertEnergyAnnualVersusBenchmark'
+        return @analysis_object.instance_variable_get(:@missing_variables).include?(key)
+      end
       [:activation_date, :floor_area, :pupils, :school_name, :school_area, :school_type, :school_type_name, :urn, :degree_days_15_5C_domestic].include?(key)
     end
   end
