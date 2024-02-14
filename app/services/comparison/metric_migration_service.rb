@@ -43,16 +43,16 @@ module Comparison
       # the fuel type in the name
       case key.to_s
       when /electricity/
-        return :electricity
+        :electricity
       when /gas/
-        return :gas
+        :gas
       when /storage_heater/
-        return :storage_heater
+        :storage_heater
       when /solar/
-        return :solar_pv
+        :solar_pv
+      else
+        :multiple
       end
-
-      return :multiple
     end
 
     private
