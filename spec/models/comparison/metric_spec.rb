@@ -59,6 +59,14 @@ RSpec.describe Comparison::Metric, type: :model do
       end
     end
 
+    context 'with analytics types' do
+      context 'with TimeOfDay' do
+        let(:value) { TimeOfDay.new(10, 30) }
+
+        it_behaves_like 'a correctly round-tripped metric'
+      end
+    end
+
     context 'with Nan/Infinite values' do
       context 'with Nan' do
         let(:value) { Float::NAN }

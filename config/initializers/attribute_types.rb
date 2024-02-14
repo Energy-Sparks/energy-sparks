@@ -13,6 +13,7 @@
 # serialising ruby types to and from JSON.
 class DynamicType < ActiveModel::Type::Value
   ISO_DATE = /\A(\d{4})-(\d\d)-(\d\d)\z/
+  TIME_OF_DAY = /\A(\d{2}):(\d{2})\Z/
 
   def type
     :dynamic_type
@@ -25,6 +26,9 @@ class DynamicType < ActiveModel::Type::Value
     return '.nan' if needs_conversion?(value) && value.nan?
     return '.inf' if needs_conversion?(value) && value.infinite? == 1
     return '-.Inf' if needs_conversion?(value) && value.infinite? == -1
+
+    return value.to_s if value.is_a?(TimeOfDay)
+
     # Dates, booleans, etc will use AR serialisation, e.g
     # boolean becomes 't'/'f', Dates are ISO 8601 serialised
     return value unless value.is_a?(::String)
@@ -44,6 +48,9 @@ class DynamicType < ActiveModel::Type::Value
     # faster than Date.parse
     if value =~ ISO_DATE
       return Date.new($1.to_i, $2.to_i, $3.to_i)
+    end
+    if value =~ TIME_OF_DAY
+      return TimeOfDay.new($1.to_i, $2.to_i)
     end
     case value
     when 't'
