@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :metric, class: 'Comparison::Metric' do
     school { create(:school) }
     alert_type { create(:alert_type) }
+    association :benchmark_result_school_generation_run, factory: :benchmark_result_school_generation_run
     association :metric_type, factory: :metric_type
     value { 2 }
     reporting_period { :custom }

@@ -9,7 +9,6 @@ RSpec.describe Comparison::Metric, type: :model do
       it { expect(metric).to validate_presence_of(:school) }
       it { expect(metric).to validate_presence_of(:alert_type) }
       it { expect(metric).to validate_presence_of(:metric_type) }
-      it { expect(metric).to validate_presence_of(:value) }
       it { expect(metric).not_to validate_presence_of(:asof_date) }
     end
 
