@@ -74,6 +74,18 @@ describe Comparison::MetricCreationService, :aggregate_failures do
   end
 
   describe '#perform' do
+    context 'when there is an exception' do
+      before do
+        allow(analysis_object).to receive(:valid_content?).and_raise
+      end
+
+      it 'logs to rollbar' do
+        expect(Rollbar).to receive(:error).with(anything, job: :metric_creation,
+          school_id: run.school.id, school: run.school.name, alert_type: anything)
+        service.perform
+      end
+    end
+
     context 'when alert type should be ignored' do
       let!(:alert_type) do
         create(:alert_type, enabled: true,
@@ -179,12 +191,76 @@ describe Comparison::MetricCreationService, :aggregate_failures do
   end
 
   describe '#reporting_period' do
-    it 'identifies period correctly' do
-      expect(service.send(:reporting_period, :unknown, {})).to eq(:last_12_months)
+    subject(:period) do
+      service.send(:reporting_period, key, definition)
     end
 
-    context 'with other alert types' do
-      it 'identifies report correctly'
+    let(:key) { :unknown }
+    let(:definition) { {} }
+
+    let!(:alert_type) do
+      create(:alert_type, enabled: true,
+        fuel_type: :electricity, class_name: class_name)
+    end
+
+    context 'with AlertSchoolWeekComparisonElectricity' do
+      let(:class_name) { 'AlertSchoolWeekComparisonElectricity' }
+
+      it { expect(period).to eq(:last_2_school_weeks) }
+    end
+
+    context 'with AlertSchoolWeekComparisonGas' do
+      let(:class_name) { 'AlertSchoolWeekComparisonGas' }
+
+      it { expect(period).to eq(:last_2_school_weeks) }
+    end
+
+    context 'with AlertPreviousHolidayComparisonElectricity' do
+      let(:class_name) { 'AlertPreviousHolidayComparisonElectricity' }
+
+      it { expect(period).to eq(:last_2_holidays) }
+    end
+
+    context 'with AlertPreviousHolidayComparisonGas' do
+      let(:class_name) { 'AlertPreviousHolidayComparisonGas' }
+
+      it { expect(period).to eq(:last_2_holidays) }
+    end
+
+    context 'with AlertPreviousYearHolidayComparisonElectricity' do
+      let(:class_name) { 'AlertPreviousYearHolidayComparisonElectricity' }
+
+      it { expect(period).to eq(:last_holiday_and_previous_year) }
+    end
+
+    context 'with AlertPreviousYearHolidayComparisonGas' do
+      let(:class_name) { 'AlertPreviousYearHolidayComparisonGas' }
+
+      it { expect(period).to eq(:last_holiday_and_previous_year) }
+    end
+
+    context 'with AlertElectricityUsageDuringCurrentHoliday' do
+      let(:class_name) { 'AlertElectricityUsageDuringCurrentHoliday' }
+
+      it { expect(period).to eq(:current_holiday) }
+    end
+
+    context 'with AlertGasHeatingHotWaterOnDuringHoliday' do
+      let(:class_name) { 'AlertGasHeatingHotWaterOnDuringHoliday' }
+
+      it { expect(period).to eq(:current_holiday) }
+    end
+
+    context 'with AlertImpendingHoliday' do
+      let(:class_name) { 'AlertImpendingHoliday' }
+
+      it { expect(period).to eq(:last_12_months) }
+    end
+
+    context 'with other periods' do
+      let(:class_name) { 'TestAlert' }
+
+      it { expect(period).to eq(:last_12_months) }
     end
   end
 end

@@ -2,6 +2,7 @@ module Comparison
   class MetricCreationService
     def initialize(benchmark_result_school_generation_run:, alert_type:, alert_report:, asof_date:)
       @benchmark_result_school_generation_run = benchmark_result_school_generation_run
+      @school = @benchmark_result_school_generation_run.school
       @alert_type = alert_type
       @alert_report = alert_report
       @asof_date = asof_date
@@ -22,7 +23,7 @@ module Comparison
         # whether there's any benchmark data available
         if @alert_report.valid && @alert_report.benchmark_data.present?
           Metric.create!(
-            school: @benchmark_result_school_generation_run.school,
+            school: @school,
             benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
             alert_type: @alert_type,
             metric_type: metric_type(key, definition),
@@ -31,14 +32,14 @@ module Comparison
             asof_date: @asof_date,
             whole_period: true, # TODO
             recent_data: @analysis_object.meter_readings_up_to_date_enough?,
-            value: value(key, definition)
+            value: @analysis_object.send(key)
           )
         else
           # Reach here if we ran the alert but we didn't have enough data, the data was
           # stale, or there was an error. Storing empty metric so we can more
           # clearly identify which schools are missing which data in reports.
           Metric.create!(
-            school: @benchmark_result_school_generation_run.school,
+            school: @school,
             benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
             alert_type: @alert_type,
             metric_type: metric_type(key, definition),
@@ -53,21 +54,30 @@ module Comparison
       end
       true
     rescue => e
-      puts e
-      puts e.backtrace
+      Rails.logger.error e
+      Rails.logger.error e.backtrace.join("\n")
+      Rollbar.error(e, job: :metric_creation, school_id: @school.id, school: @school.name, alert_type: @alert_type.class_name)
       false
     end
 
     private
 
-    # TODO formatting mappings, or handle in Metric?
-    def value(key, _definition)
-      @analysis_object.send(key)
-    end
-
-    # TODO other periods
     def reporting_period(_key, _definition)
-      :last_12_months
+      # alternative approach would be to add class methods in analytics, but this
+      # keeps the mappings in the application and provides a useful overview
+      case @alert_type.class_name
+      when 'AlertSchoolWeekComparisonElectricity', 'AlertSchoolWeekComparisonGas'
+        :last_2_school_weeks
+      when 'AlertPreviousHolidayComparisonElectricity', 'AlertPreviousHolidayComparisonGas'
+        :last_2_holidays
+      when 'AlertPreviousYearHolidayComparisonElectricity', 'AlertPreviousYearHolidayComparisonGas'
+        :last_holiday_and_previous_year
+      when 'AlertElectricityUsageDuringCurrentHoliday', 'AlertGasHeatingHotWaterOnDuringHoliday'
+        :current_holiday
+      else
+        # all others are for last 12 months, including AlertImpendingHoliday
+        :last_12_months
+      end
     end
 
     def enough_data?
