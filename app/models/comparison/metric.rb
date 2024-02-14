@@ -31,10 +31,14 @@
 #  fk_rails_...  (metric_type_id => comparison_metrics.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
+
+
 class Comparison::Metric < ApplicationRecord
   self.table_name = 'comparison_metrics'
 
   include EnumReportingPeriod
+
+  attribute :value, :dynamic_type
 
   belongs_to :school
   belongs_to :alert_type
