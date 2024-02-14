@@ -18,7 +18,7 @@ module Comparison
         # valid_content? && meter_readings_up_to_date_enough? && we want to store
         # this metric
         #
-        # TODO: we could check for a value for this variable, rather than
+        # We could check for a value for this variable, rather than
         # whether there's any benchmark data available
         if @alert_report.valid && @alert_report.benchmark_data.present?
           Metric.create!(
@@ -34,9 +34,9 @@ module Comparison
             value: value(key, definition)
           )
         else
-          # only here if we ran the alert but we didn't have enough data or data was
-          # stale. Or there was an error. Storing empty metric so we can more
-          # clearly identify which schools are missing in reports
+          # Reach here if we ran the alert but we didn't have enough data, the data was
+          # stale, or there was an error. Storing empty metric so we can more
+          # clearly identify which schools are missing which data in reports.
           Metric.create!(
             school: @benchmark_result_school_generation_run.school,
             benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
@@ -70,9 +70,8 @@ module Comparison
       :last_12_months
     end
 
-    # TODO check minimum?
     def enough_data?
-      [:enough, :minimum_might_not_be_accurate].include?(@analysis_object.enough_data)
+      @analysis_object.enough_data == :enough
     end
 
     def metric_type(key, definition)
