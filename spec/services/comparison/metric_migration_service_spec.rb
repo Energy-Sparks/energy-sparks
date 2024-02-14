@@ -75,8 +75,7 @@ describe Comparison::MetricMigrationService do
     end
 
     context 'with an test alert' do
-      # rubocop:disable RSpec/LeakyConstantDeclaration
-      # rubocop:disable Lint/ConstantDefinitionInBlock
+      # rubocop:disable RSpec/LeakyConstantDeclaration, Lint/ConstantDefinitionInBlock
       class TestAlert < AlertAnalysisBase
         VARIABLES = {
           benchmark_per_pupil: {
@@ -95,8 +94,7 @@ describe Comparison::MetricMigrationService do
           { 'Test Vars' => VARIABLES }.merge(self.superclass.template_variables)
         end
       end
-      # rubocop:enable RSpec/LeakyConstantDeclaration
-      # rubocop:enable Lint/ConstantDefinitionInBlock
+      # rubocop:enable RSpec/LeakyConstantDeclaration, Lint/ConstantDefinitionInBlock
 
       let!(:alert_type) do
         create(:alert_type, enabled: true,
