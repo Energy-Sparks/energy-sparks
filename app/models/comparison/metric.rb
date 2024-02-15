@@ -48,4 +48,33 @@ class Comparison::Metric < ApplicationRecord
 
   validates :school, :alert_type, :metric_type, presence: true
   validates :custom_period, presence: true, if: :custom?
+
+  scope :with_metric_type, -> { joins(:metric_type) }
+  scope :with_run, -> { joins(:benchmark_result_school_generation_run) }
+
+  scope :for_metric_type, ->(metric_type) { where(metric_type: metric_type) }
+  scope :for_schools, ->(schools) { where(school: schools) }
+  scope :has_value, -> { where.not(value: nil) }
+
+  # Returns only those metrics associated with the latest benchmark run for each school
+  scope :for_latest_benchmark_runs, -> { with_run.merge(BenchmarkResultSchoolGenerationRun.most_recent) }
+
+  # Applies a custom sort order
+  # First ranks the schools by a specific metric type (asc or desc) and then
+  # uses that ranking to order the returned list of metrics.
+  #
+  # So, for example we can select a variety of baseload metrics for each school, ordering
+  # the overall list of metrics that are returned so that the school with the lowest
+  # average annual baseload will be first in the results
+  #
+  # Note: this wont work if a metric has mixed values, e.g. integers/floats
+  #
+  # TODO: handle sorting of negative infinity, currently Float::NAN, Float::INFINITY, -Float::INFINITY are all
+  # considered "high" values as the underlying sort is on the strings. May need to add a custom cast
+  #
+  # TODO: can we turn this into a single query?
+  scope :order_by_school_metric_value, ->(metric_type, order = :desc) do
+    school_ids = Comparison::Metric.for_latest_benchmark_runs.for_metric_type(metric_type).has_value.order(value: order).pluck(:school_id)
+    order(Arel.sql("array_position(array#{school_ids}, comparison_metrics.school_id)"))
+  end
 end

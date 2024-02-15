@@ -27,4 +27,20 @@ class BenchmarkResultSchoolGenerationRun < ApplicationRecord
   has_many :benchmark_results
   has_many :benchmark_result_errors
   has_many :metrics, class_name: 'Comparison::Metric'
+
+  # Uses the Postgres DISTINCT ON operator to only return the latest run for each school
+  #
+  # We specify the school id as the distinct column, then order by created at DESC to select
+  # the most recent benchmark run for a school.
+  #
+  # The INNER JOIN is required to allows us to `.merge` this scope with others (e.g. in MetricType)
+  scope :most_recent, -> {
+    joins(<<~SQL.squish)
+      INNER JOIN
+        (SELECT DISTINCT ON (school_id) * FROM benchmark_result_school_generation_runs
+         ORDER BY school_id, created_at DESC
+        ) latest_runs
+        ON latest_runs.id = benchmark_result_school_generation_runs.id
+    SQL
+  }
 end
