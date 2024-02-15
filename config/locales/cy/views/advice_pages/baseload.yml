@@ -45,7 +45,7 @@ cy:
         title: Dadansoddiad Llwyth Sylfaenol
         usage_last_month:
           one: Roedd eich llwyth sylfaenol dros y mis diwethaf yn %{baseload_usage} kW.
-          other: Roedd eich llwyth sylfaenol dros y %{months_analysed} mis diwethaf yn %{baseload_usage} kW.
+          other: Roedd eich llwyth sylfaenol dros y %{count} mis diwethaf yn %{baseload_usage} kW.
           zero: Roedd eich llwyth sylfaenol dros y mis diwethaf yn %{baseload_usage} kW.
         usage_other: Mae gan ysgolion eraill sydd â nifer tebyg o ddisgyblion lwyth sylfaenol o %{benchmark_usage} kW.
         usage_percent_html: Mae eich llwyth sylfaenol yn cynrychioli %{percent} o'ch defnydd blynyddol.
