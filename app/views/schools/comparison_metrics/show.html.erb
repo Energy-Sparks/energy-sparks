@@ -1,9 +1,18 @@
 <h2>Comparison Metrics</h2>
 
-<%= link_to 'View benchmark run', school_benchmark_report_path(@run.school, @run) %>
+<p>
+  <%= link_to 'View benchmark run', school_benchmark_report_path(@run.school, @run) %>
+</p>
+
+<p>
+  This table lists all the comparison metrics generated from all alerts that were executed as part of
+  this benchmark run. If a metric has no value then it wasn't successfully produced, the additional
+  metadata may indicate why.
+</p>
 
 <div class="row">
   <div class="col" style="font-size: 16px;">
+
     <table class="table table-sm table-sorted">
       <thead>
         <th>Alert Class</th>

@@ -1,5 +1,26 @@
 require 'rails_helper'
 
+# rubocop:disable RSpec/LeakyConstantDeclaration, Lint/ConstantDefinitionInBlock
+class TestAlert < AlertAnalysisBase
+  VARIABLES = {
+    benchmark_per_pupil: {
+      description: 'benchmark_per_pupil description',
+      units: :kwh,
+      benchmark_code: 'abc'
+    },
+    school_name: {
+      description: 'should be ignored',
+      units: String,
+      benchmark_code: 'xyz'
+    }
+  }.freeze
+
+  def self.template_variables
+    { 'Test Vars' => VARIABLES }.merge(self.superclass.template_variables)
+  end
+end
+# rubocop:enable RSpec/LeakyConstantDeclaration, Lint/ConstantDefinitionInBlock
+
 describe Comparison::MetricMigrationService do
   subject(:service) do
     described_class.new
@@ -59,6 +80,19 @@ describe Comparison::MetricMigrationService do
     end
   end
 
+  describe '#key_for_metric' do
+    context 'with a rating' do
+      let!(:alert_type) do
+        create(:alert_type, enabled: true, class_name: 'AlertElectricityBaseloadVersusBenchmark')
+      end
+
+      it 'adds the analytics prefix' do
+        expect(service.key_for_metric(alert_type, :rating)).to eq(:alertelectricitybaseloadversusbenchmark_rating)
+        expect(service.key_for_metric(alert_type, :other)).to eq(:other)
+      end
+    end
+  end
+
   describe '#migrate' do
     context 'with an alert type without benchmark variables' do
       let!(:alert_type) do
@@ -75,27 +109,6 @@ describe Comparison::MetricMigrationService do
     end
 
     context 'with an test alert' do
-      # rubocop:disable RSpec/LeakyConstantDeclaration, Lint/ConstantDefinitionInBlock
-      class TestAlert < AlertAnalysisBase
-        VARIABLES = {
-          benchmark_per_pupil: {
-            description: 'benchmark_per_pupil description',
-            units: :kwh,
-            benchmark_code: 'abc'
-          },
-          school_name: {
-            description: 'should be ignored',
-            units: String,
-            benchmark_code: 'xyz'
-          }
-        }.freeze
-
-        def self.template_variables
-          { 'Test Vars' => VARIABLES }.merge(self.superclass.template_variables)
-        end
-      end
-      # rubocop:enable RSpec/LeakyConstantDeclaration, Lint/ConstantDefinitionInBlock
-
       let!(:alert_type) do
         create(:alert_type, enabled: true,
           fuel_type: :electricity, class_name: 'TestAlert')
@@ -110,7 +123,8 @@ describe Comparison::MetricMigrationService do
 
         # from base class
         metric = Comparison::MetricType.order(:key).last
-        expect(metric.key.to_sym).to eq(:rating)
+        # renamed from :rating
+        expect(metric.key.to_sym).to eq(:testalert_rating)
         expect(metric.label).to eq('Rating out of 10')
         expect(metric.units.to_sym).to eq :float
       end

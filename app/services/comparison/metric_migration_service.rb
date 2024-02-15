@@ -12,6 +12,14 @@ module Comparison
       false
     end
 
+    def key_for_metric(alert_type, key)
+      if key.to_sym == :rating
+        "#{alert_type.class_name.downcase}_rating".to_sym
+      else
+        key.to_sym
+      end
+    end
+
     # Maps the units defined by the alert classes to what we will be storing
     # in the database
     def units_for_metric_type(unit)
@@ -61,7 +69,7 @@ module Comparison
       alert_type.class_from_name.benchmark_template_variables.each do |key, definition|
         next if ignore?(key)
         MetricType.find_or_create_by!(
-          key: key.to_sym,
+          key: key_for_metric(alert_type, key),
           fuel_type: fuel_type_for_metric_type(key, definition, alert_type)
         ) do |new_record|
           new_record.units = units_for_metric_type(definition[:units])

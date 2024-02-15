@@ -76,7 +76,7 @@ module Comparison
     end
 
     def metric_type(key, definition)
-      MetricType.find_by(key: key, fuel_type: metric_fuel_type(key, definition))
+      MetricType.find_by(key: key_for_metric_type(key), fuel_type: metric_fuel_type(key, definition))
     end
 
     def metric_fuel_type(key, definition)
@@ -87,6 +87,10 @@ module Comparison
       # Skip these until we have support for them
       return true if @alert_type.class_from_name.ancestors.include?(AlertArbitraryPeriodComparisonBase)
       false
+    end
+
+    def key_for_metric_type(key)
+      MetricMigrationService.new.key_for_metric(@alert_type, key)
     end
 
     def ignore_metric?(key)
