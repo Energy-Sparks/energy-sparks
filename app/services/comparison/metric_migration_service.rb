@@ -16,7 +16,7 @@ module Comparison
       if key.to_sym == :rating
         "#{alert_type.class_name.downcase}_rating".to_sym
       else
-        key.to_sym
+        key.to_s.gsub('_£', '_gbp').to_sym
       end
     end
 

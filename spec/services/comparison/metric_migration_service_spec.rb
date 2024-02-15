@@ -81,16 +81,13 @@ describe Comparison::MetricMigrationService do
   end
 
   describe '#key_for_metric' do
-    context 'with a rating' do
-      let!(:alert_type) do
-        create(:alert_type, enabled: true, class_name: 'AlertElectricityBaseloadVersusBenchmark')
-      end
-
-      it 'adds the analytics prefix' do
-        expect(service.key_for_metric(alert_type, :rating)).to eq(:alertelectricitybaseloadversusbenchmark_rating)
-        expect(service.key_for_metric(alert_type, :other)).to eq(:other)
-      end
+    let!(:alert_type) do
+      create(:alert_type, enabled: true, class_name: 'AlertElectricityBaseloadVersusBenchmark')
     end
+
+    it { expect(service.key_for_metric(alert_type, :rating)).to eq(:alertelectricitybaseloadversusbenchmark_rating) }
+    it { expect(service.key_for_metric(alert_type, :other)).to eq(:other) }
+    it { expect(service.key_for_metric(alert_type, :annual_baseload_£)).to eq(:annual_baseload_gbp) }
   end
 
   describe '#migrate' do
