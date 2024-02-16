@@ -5,10 +5,19 @@ module Comparisons
 
     before_action :filter
 
-    before_action :set_included_schools
+    before_action :set_schools
     helper_method :index_params
 
+    def index
+      @result = Comparison::ReportService.new(definition: definition).perform
+    end
+
     private
+
+    # Implement in sub-class to return Comparison::ReportDefinition
+    def definition
+      nil
+    end
 
     def filter
       @filter ||=
@@ -21,8 +30,8 @@ module Comparisons
       filter.merge(anchor: filter[:search])
     end
 
-    def set_included_schools
-      @included_schools = included_schools
+    def set_schools
+      @schools = included_schools
     end
 
     def included_schools

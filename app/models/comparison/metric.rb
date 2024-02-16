@@ -49,7 +49,9 @@ class Comparison::Metric < ApplicationRecord
   validates :school, :alert_type, :metric_type, presence: true
   validates :custom_period, presence: true, if: :custom?
 
-  scope :with_metric_type, -> { joins(:metric_type) }
+  scope :with_metric_type, -> { includes(:metric_type) }
+  scope :with_school, -> { includes(:school) }
+
   scope :with_run, -> { joins(:benchmark_result_school_generation_run) }
 
   scope :for_metric_type, ->(metric_type) { where(metric_type: metric_type) }
@@ -77,4 +79,6 @@ class Comparison::Metric < ApplicationRecord
     school_ids = Comparison::Metric.for_latest_benchmark_runs.for_metric_type(metric_type).has_value.order(value: order).pluck(:school_id)
     order(Arel.sql("array_position(array#{school_ids}, comparison_metrics.school_id)"))
   end
+
+  delegate :units, to: :metric_type
 end
