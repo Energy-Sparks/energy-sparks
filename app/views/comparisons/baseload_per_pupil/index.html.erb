@@ -23,7 +23,7 @@
   <div class="tab-pane fade show active" id="tables" role="tabpanel" aria-labelledby="tables-tab">
     <div class="row">
       <div class="col-sm-12">
-        <table class="table advice-table table-sorted">
+        <table id="comparison-table" class="table advice-table table-sorted">
           <thead>
             <tr>
               <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
@@ -49,7 +49,7 @@
               <tr>
                 <td>
                   <%= link_to school.name, advice_page_path(school, @result.definition.advice_page, :insights) %>
-                  <% if @result.metric(school, :electricity_economic_tariff_changed_this_year).value == true %>
+                  <% if @result.metric(school, :electricity_economic_tariff_changed_this_year)&.value == true %>
                     <a href="#electricity_economic_tariff_changed_this_year">[t]</a>
                   <% end %>
                 </td>
@@ -69,7 +69,7 @@
                 </td>
                 <td class="text-right">
                   <% @result.with_metric(school, :one_year_saving_versus_exemplar_gbp) do |metric| %>
-                    <%= @result.format([0.0, metric.value].max, metric.units.to_sym) %>
+                    <%= @result.format([0.0, metric.value].max, metric.units.to_sym) if metric.present? %>
                   <% end %>
                 </td>
               </tr>
@@ -92,5 +92,6 @@
     </div>
   </div>
   <div class="tab-pane fade show" id="charts" role="tabpanel" aria-labelledby="charts-tab">
+    <%= benchmark_chart_tag(@chart[:config_name], @chart) %>
   </div>
 </div>

@@ -10,12 +10,18 @@ module Comparisons
 
     def index
       @result = Comparison::ReportService.new(definition: definition).perform
+      @chart = chart_configuration(result) unless result.schools.empty?
     end
 
     private
 
     # Implement in sub-class to return Comparison::ReportDefinition
     def definition
+      nil
+    end
+
+    # Implement in sub-class to return Chart Configuration Hash
+    def chart_configuration(result)
       nil
     end
 
