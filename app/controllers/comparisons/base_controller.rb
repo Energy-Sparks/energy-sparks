@@ -21,7 +21,7 @@ module Comparisons
     end
 
     # Implement in sub-class to return Chart Configuration Hash
-    def chart_configuration(result)
+    def chart_configuration(_result)
       nil
     end
 
