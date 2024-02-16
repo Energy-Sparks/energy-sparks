@@ -51,6 +51,7 @@ class Comparison::Metric < ApplicationRecord
 
   scope :with_metric_type, -> { includes(:metric_type) }
   scope :with_school, -> { includes(:school) }
+  scope :with_school_and_metric_type, -> { with_school.with_metric_type }
 
   scope :with_run, -> { joins(:benchmark_result_school_generation_run) }
 
