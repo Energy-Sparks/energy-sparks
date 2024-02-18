@@ -618,6 +618,9 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    scenic (1.7.0)
+      activerecord (>= 4.0.0)
+      railties (>= 4.0.0)
     scout_apm (5.3.5)
       parser
     selenium-webdriver (4.17.0)
@@ -798,6 +801,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   sass-rails
+  scenic
   scout_apm
   selenium-webdriver
   shoulda-matchers
