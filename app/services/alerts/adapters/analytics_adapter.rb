@@ -56,10 +56,12 @@ module Alerts
           chart_data:    analysis_object.front_end_template_chart_data,
           table_data:    analysis_object.front_end_template_table_data,
           priority_data: analysis_object.priority_template_data,
+          variables:     rename_variables(analysis_object.raw_template_variables)
         }
 
         I18n.with_locale(:cy) do
           variable_data[:template_data_cy] = analysis_object.front_end_template_data
+          variable_data[:variables] = rename_variables(analysis_object.raw_template_variables)
         end
 
         if benchmark
@@ -79,6 +81,33 @@ module Alerts
           enough_data: nil,
           relevance:   analysis_object.relevance
         )
+      end
+
+      def rename_variables(variables)
+        variables.deep_transform_keys do |key|
+          :"#{key.to_s.gsub('£', 'gbp')}"
+        end
+      end
+
+      def handle_infinities(variables)
+        variables.transform_values { |v| for_storage(v) }
+      end
+
+      private_class_method def self.for_storage(val)
+        return val if val.nil? || !needs_conversion?(val)
+        if val.infinite? == 1
+          'Infinity'
+        elsif val.infinite? == -1
+          '-Infinity'
+        elsif val.nan?
+          'NaN'
+        else
+          val
+        end
+      end
+
+      private_class_method def self.needs_conversion?(val)
+        val.is_a?(Float) || val.is_a?(BigDecimal)
       end
     end
   end

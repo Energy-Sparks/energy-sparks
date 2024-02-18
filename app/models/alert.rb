@@ -19,6 +19,8 @@
 #  template_data           :json
 #  template_data_cy        :json
 #  updated_at              :datetime         not null
+#  variables               :json
+#  variables_cy            :json
 #
 # Indexes
 #
@@ -89,6 +91,14 @@ class Alert < ApplicationRecord
   def template_variables(locale = I18n.locale)
     template_data_for_locale(locale).deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
+    end
+  end
+
+  def raw_variables(locale = I18n.locale)
+    if locale == :cy
+      variables_cy&.any? ? variables_cy : variables
+    else
+      variables
     end
   end
 

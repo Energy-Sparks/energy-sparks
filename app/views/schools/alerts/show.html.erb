@@ -15,6 +15,11 @@
         <h5>Template variables (Welsh)</h5>
         <%= sanitize ap(@alert.template_variables(:cy), index: false, plain: true)%>
 
+        <h5>Raw variables (English)</h5>
+        <%= sanitize ap(@alert.raw_variables(:en), index: false, plain: true)%>
+        <h5>Raw variables (Welsh)</h5>
+        <%= sanitize ap(@alert.raw_variables(:cy), index: false, plain: true)%>
+
         <h5>Chart data</h5>
         <%= sanitize ap(@alert.chart_data, index: false, plain: true)%>
         <h5>Table data</h5>
