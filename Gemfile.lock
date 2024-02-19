@@ -628,7 +628,7 @@ GEM
     semantic_range (3.0.0)
     sexp_processor (4.17.0)
     shellany (0.0.1)
-    shoulda-matchers (6.0.0)
+    shoulda-matchers (6.1.0)
       activesupport (>= 5.2.0)
     show_me_the_cookies (6.0.0)
       capybara (>= 2, < 4)
