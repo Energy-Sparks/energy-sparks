@@ -29,7 +29,7 @@
   <% end %>
 <% end %>
 
-<% if analysis_dates.months_of_data >= 1 %>
+<% if analysis_dates.months_of_data >= 1 && @heating_model_available %>
 
   <%= render 'schools/advice/section_title',
              section_id: 'usage_through_the_school_day',
