@@ -77,4 +77,4 @@ class Rack::Attack
   #    {},   # headers
   #    ['']] # body
   # end
-end if Rails.env.production?
+end if Rails.env.production? && !ENV.key?('AWS_LAMBDA_FUNCTION_NAME')

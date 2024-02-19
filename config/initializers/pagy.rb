@@ -117,7 +117,7 @@
 
 # Bootstrap extra: Add nav, nav_js and combo_nav_js helpers and templates for Bootstrap pagination
 # See https://ddnexus.github.io/pagy/extras/bootstrap
-require 'pagy/extras/bootstrap'
+# require 'pagy/extras/bootstrap'
 
 # Bulma extra: Add nav, nav_js and combo_nav_js helpers and templates for Bulma pagination
 # See https://ddnexus.github.io/pagy/extras/bulma
@@ -225,9 +225,9 @@ require 'pagy/extras/bootstrap'
 #                   filepath: 'path/to/pagy-xyz.yml',
 #                   pluralize: lambda{ |count| ... } )
 
-Pagy::I18n.load(
-    { locale: 'en', filepath: 'config/locales/pagy.yml' },
-    { locale: 'cy', filepath: 'config/locales/cy/pagy.yml' } )
+# Pagy::I18n.load(
+#     { locale: 'en', filepath: 'config/locales/pagy.yml' },
+#     { locale: 'cy', filepath: 'config/locales/cy/pagy.yml' } )
 
 # I18n extra: uses the standard i18n gem which is ~18x slower using ~10x more memory
 # than the default pagy internal i18n (see above)

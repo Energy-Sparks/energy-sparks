@@ -7,6 +7,7 @@ provider:
   name: aws
   # runtime: ruby3.2
   # architecture: arm64
+  memorySize: 512
   region: eu-west-2
   stage: ${opt:stage, 'development'}
   environment:
@@ -22,11 +23,21 @@ provider:
     AWS_S3_ACTIVE_STORAGE_BUCKET: dontuse
     RAILS_LOG_TO_STDOUT: 1
     QUEUE_URL: ${construct:my-queue.queueUrl}
+    CACHE_BUCKET: es-${self:provider.stage}-cache
   ecr:
    images:
     appimage:
       path: ..
       file: serverless/Dockerfile
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:*"
+          Resource:
+            - "arn:aws:s3:::${self:provider.environment.CACHE_BUCKET}"
+            - "arn:aws:s3:::${self:provider.environment.CACHE_BUCKET}/*"
 
 plugins:
   - serverless-lift
@@ -35,21 +46,32 @@ constructs:
   my-queue:
     type: queue
     maxRetries: 1
-    maxConcurrency: 50
+    maxConcurrency: 25
     extensions:
       queue:
         Properties:
-          VisibilityTimeout: 120 # by default this is * 6 the timeout which seems too high since we don't retry
+          VisibilityTimeout: 185 # by default this is * 6 the timeout which seems too high since we don't retry
     worker:
       image:
         name: appimage
         command:
           - handler.run
-      timeout: 120
+      timeout: 180
       vpc:
         securityGroupIds:
           - sg-9474a8ff
         subnetIds:
-          - subnet-851614c8
-          - subnet-c12f90a8
-          - subnet-13a15d69
+          - subnet-022f18d4059646b56
+
+resources:
+  Resources:
+    Cache:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.CACHE_BUCKET}
+        LifecycleConfiguration:
+          Rules:
+            - Id: Delete
+              Status: Enabled
+              ExpirationInDays: 30
+              NoncurrentVersionExpirationInDays: 30

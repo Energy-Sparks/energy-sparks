@@ -95,3 +95,7 @@ public/sitemap.xml
 public/sitemap.xml.gz
 
 data-pipeline/.env*
+
+serverless/.serverless
+serverless/node_modules
+serverless/.env*

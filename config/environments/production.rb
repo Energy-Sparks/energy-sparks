@@ -10,7 +10,7 @@ Rails.application.configure do
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
-  config.eager_load = true
+  config.eager_load = true # !ENV.key?('AWS_LAMBDA_FUNCTION_NAME')
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
@@ -126,7 +126,7 @@ Rails.application.configure do
   # Rspec makes rails use spec/mailers/previews as the mail previews path
   config.action_mailer.preview_path = Rails.root.join('spec', 'mailers', 'previews')
   # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = false
+  # config.webpacker.check_yarn_integrity = false
   # Attempt to read encrypted secrets from `config/secrets.yml.enc`.
   # Requires an encryption key in `ENV["RAILS_MASTER_KEY"]` or
   # `config/secrets.yml.key`.
@@ -144,11 +144,15 @@ Rails.application.configure do
   config.active_storage.service = :amazon
   # session cookie has configurable name so that live and test logins are separated
   config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME') { '_energy-sparks_session' }, domain: '.energysparks.uk'
+
   config.cache_store = :file_store, "/tmp/cache/rails_cache_store"
+  config.active_record.cache_versioning = false
+  config.cache_store = :s3_cache_store, { bucket: ENV['CACHE_BUCKET'] }
+
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
-  config.good_job.execution_mode = :external
+  # config.good_job.execution_mode = :external
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = { api_key: ENV['MG_API_KEY'], domain: ENV['MG_DOMAIN'] }
-  config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
+  # config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
 end

@@ -4,7 +4,7 @@ Rollbar.configure do |config|
 
   config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
 
-  unless Rails.env.production?
+  unless Rails.env.production? || !ENV['ROLLBAR_ACCESS_TOKEN']
     config.enabled = false
   end
 

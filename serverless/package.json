@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "serverless-lift": "^1.28.1",
     "serverless-ruby-layer": "^1.7.0"
   }
 }

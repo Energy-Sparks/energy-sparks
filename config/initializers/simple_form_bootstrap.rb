@@ -436,4 +436,4 @@ SimpleForm.setup do |config|
   #   range:         :custom_range,
   #   time:          :custom_multi_select
   # }
-end
+end if false
