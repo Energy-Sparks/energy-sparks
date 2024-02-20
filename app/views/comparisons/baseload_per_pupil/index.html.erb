@@ -50,7 +50,7 @@
                 <td>
                   <%= link_to baseload_per_pupil.school.name,
                               advice_page_path(baseload_per_pupil.school, @advice_page, :insights) %>
-                  <% if baseload_per_pupil.electricity_economic_tariff_changed_this_year == true %>
+                  <% if baseload_per_pupil.electricity_economic_tariff_changed_this_year %>
                     <a href="#electricity_economic_tariff_changed_this_year">[t]</a>
                   <% end %>
                 </td>
