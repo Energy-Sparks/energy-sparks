@@ -4,18 +4,33 @@ module Comparisons
     skip_before_action :authenticate_user!
 
     before_action :filter
-
     before_action :set_schools
     helper_method :index_params
     before_action :set_advice_page
 
+    def index
+      @results = load_data
+      @chart = create_chart(@results)
+    end
+
     private
 
     def set_advice_page
-      @advice_page = load_advice_page
+      @advice_page = AdvicePage.find_by_key(advice_page_key)
     end
 
-    def load_advice_page
+    # Key for the AdvicePage used to link to school analysis
+    def advice_page_key
+      nil
+    end
+
+    # Load the results from the view
+    def load_data
+      nil
+    end
+
+    # Create the chart configuration used to display chart
+    def create_chart(_results)
       nil
     end
 
@@ -42,6 +57,23 @@ module Comparisons
       schools = SchoolFilter.new(**school_params).filter
       schools.select {|s| can?(:show, s) } unless include_invisible
       schools
+    end
+
+    # TODO need to improve chart display so it has a proper title and subtitle like our other charts,
+    # that will be handled in a new chart component or view
+    #
+    # Other improvements: disable legend clicking, ensuring colour coding matches what we use elsewhere?
+    def create_chart_configuration(config_name:, title: nil, chart_data: {}, series_name: nil, y_axis_label: nil)
+      {
+        title: title,
+        x_axis: chart_data.keys.map(&:name),
+        x_axis_ranges: nil,
+        x_data: { series_name => chart_data.values },
+        y_axis_label: y_axis_label,
+        chart1_type: :bar,
+        chart1_subtype: :stacked,
+        config_name: config_name
+      }
     end
   end
 end

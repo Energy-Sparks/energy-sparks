@@ -59,7 +59,6 @@ Rails.application.routes.draw do
     end
   end
 
-
   namespace :comparisons do
     resources :baseload_per_pupil, only: [:index]
   end
