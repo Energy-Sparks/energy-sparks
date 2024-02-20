@@ -30,8 +30,8 @@ module Alerts
         { template: 'variables' }
       end
 
-      def raw_template_variables
-        { template: 'variables' }
+      def variables_for_reporting
+        { variables: 'variables' }
       end
 
       def front_end_template_chart_data
