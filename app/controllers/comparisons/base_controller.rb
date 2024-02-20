@@ -17,15 +17,15 @@ module Comparisons
     private
 
     def set_title
-      @title = I18n.t(title_key)
+      @title = I18n.t(title_key) if title_key
     end
 
     def title_key
-      'analytics.benchmarking.chart_table_config.baseload_per_pupil'
+      nil
     end
 
     def set_advice_page
-      @advice_page = AdvicePage.find_by_key(advice_page_key)
+      @advice_page = AdvicePage.find_by_key(advice_page_key) if advice_page_key
     end
 
     # Key for the AdvicePage used to link to school analysis
