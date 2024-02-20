@@ -18,6 +18,8 @@ gem 'stateful_enum' # extends ActiveRecord::Enum with state
 gem 'webpacker'
 gem 'wisper' # publish subscribe for ruby objects
 
+gem 's3_cache_store', github: 'tbhi/s3_cache_store', branch: 'fix-wrong-number-of-arguments'
+
 # Database/Data
 gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'

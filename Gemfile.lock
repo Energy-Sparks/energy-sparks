@@ -47,6 +47,15 @@ GIT
       rubyvis (~> 0.6.1)
       spreadsheet (~> 1.1)
 
+GIT
+  remote: https://github.com/tbhi/s3_cache_store.git
+  revision: aac2733bee5f9ba4a5a2826f712d6844e0de5a95
+  branch: fix-wrong-number-of-arguments
+  specs:
+    s3_cache_store (0.1.0)
+      activesupport (>= 6)
+      aws-sdk-s3 (~> 1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -797,6 +806,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
+  s3_cache_store!
   sass-rails
   scout_apm
   selenium-webdriver
