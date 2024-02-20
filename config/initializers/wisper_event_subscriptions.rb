@@ -4,4 +4,4 @@ Rails.application.reloader.to_prepare do
   Wisper.subscribe(Onboarding::OnboardingDataEnabledListener.new)
   #Invalidate cached calendars when they are edited
   Wisper.subscribe(CalendarEventListener.new)
-end
+end if false

@@ -76,7 +76,7 @@ Rails.application.configure do
 
   # Local customisations:
   # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = true
+  # config.webpacker.check_yarn_integrity = true
   # Store uploaded files on the local file system (see config/storage.yml for options)
   # To use amazon locally, set ACTIVE_STORAGE_SERVICE = amazon in your .env file
   # and ensure you have the AWS credentials set up in your .env file
@@ -92,7 +92,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
   config.action_mailer.asset_host = ENV['ASSET_HOST'] && ENV['APPLICATION_HOST'] ? ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" } : 'localhost:3000'
-  config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
+  # config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
   # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any
@@ -105,5 +105,5 @@ Rails.application.configure do
   config.hosts << "cy.energysparks.development"
   config.hosts << "mirror.energysparks.development"
   # View components - Always place view in a sidecar directory when using the generator
-  config.view_component.generate.sidecar = true
+  # config.view_component.generate.sidecar = true
 end
