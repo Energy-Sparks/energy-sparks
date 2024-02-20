@@ -19,8 +19,24 @@ class Comparison::MetricType < ApplicationRecord
   extend Mobility
   include EnumFuelType
 
-  enum units: [:float, :date, :percent, :relative_percent]
-  # are there more? [:£, :co2, :kwh, :time, :string, :kw]
+  UNIT_TYPES = {
+    float: 0,
+    integer: 1,
+    boolean: 2,
+    string: 3,
+    date: 4,
+    kwh: 5,
+    £: 6,
+    £current: 7,
+    co2: 8,
+    kw: 9,
+    percent: 10,
+    relative_percent: 11,
+    £_per_kw: 12,
+    £_per_kwh: 13
+  }.freeze
+
+  enum units: UNIT_TYPES
 
   translates :label, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }

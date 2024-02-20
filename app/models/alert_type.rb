@@ -45,6 +45,7 @@ class AlertType < ApplicationRecord
   scope :electricity,   -> { where(fuel_type: :electricity) }
   scope :gas,           -> { where(fuel_type: :gas) }
   scope :no_fuel,       -> { where(fuel_type: nil) }
+  scope :with_benchmarks, -> { where(benchmark: true) }
 
   scope :editable, -> { where.not(background: true) }
 
@@ -68,19 +69,27 @@ class AlertType < ApplicationRecord
     end
   end
 
+  def class_from_name
+    class_name.constantize
+  end
+
   def cleaned_template_variables
     # TODO: make the analytics code remove the £ sign
-    class_name.constantize.front_end_template_variables.deep_transform_keys do |key|
+    class_from_name.front_end_template_variables.deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
   end
 
   def available_charts
-    class_name.constantize.front_end_template_charts.map { |variable_name, values| [values[:description], variable_name] }
+    class_from_name.front_end_template_charts.map { |variable_name, values| [values[:description], variable_name] }
   end
 
   def available_tables
-    class_name.constantize.front_end_template_tables.map { |variable_name, values| [values[:description], variable_name] }
+    class_from_name.front_end_template_tables.map { |variable_name, values| [values[:description], variable_name] }
+  end
+
+  def benchmark_variables
+    class_from_name.benchmark_template_variables
   end
 
   def worst_management_priority_rating

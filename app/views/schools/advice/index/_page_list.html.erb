@@ -1,20 +1,20 @@
-<% AdvicePage.fuel_types.keys.each_with_index do |fuel_type, idx| %>
+<% AdvicePage.display_fuel_types.keys.each_with_index do |fuel_type, idx| %>
   <div class="col">
     <% if display_advice_page?(school, fuel_type) %>
       <div class="row mt-4">
         <div class="col-3">
           <h4>
             <span class="<%= fuel_type_class(fuel_type) %>">
-              <%= fa_icon( fuel_type_icon(fuel_type) ) %>
+              <%= fa_icon(fuel_type_icon(fuel_type)) %>
             </span>
             <%= t("advice_pages.nav.sections.#{fuel_type}") %>
           </h4>
         </div>
         <div class="col-7"></div>
-        <div class="col-2 <%= idx == 0 ? 'bg-light' : ''%>">
+        <div class="col-2 <%= idx.zero? ? 'bg-light' : '' %>">
           <% if idx == 0 %>
             <div class="advice-page-benchmark-label">
-              <strong><%= t("advice_pages.index.show.how_do_you_compare") %></strong>
+              <strong><%= t('advice_pages.index.show.how_do_you_compare') %></strong>
             </div>
           <% end %>
         </div>
@@ -38,13 +38,18 @@
               <% if school_benchmark.present? %>
                 <div class="col-2 bg-<%= school_benchmark.benchmarked_as %>">
                   <div class="advice-page-benchmark-colored-label">
-                    <%= link_to t("advice_pages.benchmarks.#{school_benchmark.benchmarked_as}"), advice_page_path(school, ap) %>
+                    <%= link_to t("advice_pages.benchmarks.#{school_benchmark.benchmarked_as}"),
+                                advice_page_path(school, ap) %>
                   </div>
                 </div>
               <% else %>
                 <div class="col-2 bg-light">
                   <div class="advice-page-benchmark-muted-label">
-                    <%= can_benchmark?(advice_page: ap) ? t("advice_pages.index.show.not_available") : t("advice_pages.index.show.not_applicable") %>
+                    <% if can_benchmark?(advice_page: ap) %>
+                      <%= t('advice_pages.index.show.not_available') %>
+                    <% else %>
+                      <%= t('advice_pages.index.show.not_applicable') %>
+                    <% end %>
                   </div>
                 </div>
               <% end %>
