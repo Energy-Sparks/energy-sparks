@@ -56,12 +56,11 @@ module Alerts
           chart_data:    analysis_object.front_end_template_chart_data,
           table_data:    analysis_object.front_end_template_table_data,
           priority_data: analysis_object.priority_template_data,
-          variables:     rename_variables(analysis_object.raw_template_variables)
+          variables:     rename_variables(convert_for_storage(analysis_object.variables_for_reporting))
         }
 
         I18n.with_locale(:cy) do
           variable_data[:template_data_cy] = analysis_object.front_end_template_data
-          variable_data[:variables] = rename_variables(analysis_object.raw_template_variables)
         end
 
         if benchmark
@@ -83,19 +82,25 @@ module Alerts
         )
       end
 
+      # Rename variables that include "£"" as the encoding can cause issues, e.g. in the rails dbconsole
       def rename_variables(variables)
         variables.deep_transform_keys do |key|
           :"#{key.to_s.gsub('£', 'gbp')}"
         end
       end
 
-      def handle_infinities(variables)
-        variables.transform_values { |v| for_storage(v) }
+      def convert_for_storage(variables)
+        variables.transform_values { |v| convert(v) }
       end
 
-      private_class_method def self.for_storage(val)
+      # Converts variables with specific types of values for storing
+      # in Postgres. Floating point and boolean values are converted to
+      # strings that Postgres can cast back into the appropriate type
+      def convert(val)
         return val if val.nil? || !needs_conversion?(val)
-        if val.infinite? == 1
+        if [true, false].include? val
+          val.to_s
+        elsif val.infinite? == 1
           'Infinity'
         elsif val.infinite? == -1
           '-Infinity'
@@ -106,8 +111,8 @@ module Alerts
         end
       end
 
-      private_class_method def self.needs_conversion?(val)
-        val.is_a?(Float) || val.is_a?(BigDecimal)
+      def needs_conversion?(val)
+        val.is_a?(Float) || val.is_a?(BigDecimal) || [true, false].include?(val)
       end
     end
   end
