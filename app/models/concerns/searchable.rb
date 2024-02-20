@@ -6,7 +6,17 @@ module Searchable
       query = query.gsub("'", '\"')
 
       ids = select("DISTINCT #{name.underscore.pluralize}.id, search_type_results.rank").joins(sanitized_sql_for(locale, query)).pluck(:id)
-      where(id: ids)
+      in_order_of(:id, ids)
+    end
+
+    def in_order_of(column, values)
+      # included in rails 7
+      # based on https://github.com/rails/rails/pull/42061
+      node = Arel::Nodes::Case.new(arel_table[column])
+      values.each.with_index(1) do |value, order|
+        node.when(value).then(order)
+      end
+      where(arel_table[column].in(values)).order(Arel::Nodes::Ascending.new(node.else(values.length + 1)))
     end
 
     def sanitized_sql_for(locale, query)
