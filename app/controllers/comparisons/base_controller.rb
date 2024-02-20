@@ -7,6 +7,7 @@ module Comparisons
     before_action :set_schools
     helper_method :index_params
     before_action :set_advice_page
+    before_action :set_title
 
     def index
       @results = load_data
@@ -14,6 +15,14 @@ module Comparisons
     end
 
     private
+
+    def set_title
+      @title = I18n.t(title_key)
+    end
+
+    def title_key
+      'analytics.benchmarking.chart_table_config.baseload_per_pupil'
+    end
 
     def set_advice_page
       @advice_page = AdvicePage.find_by_key(advice_page_key)
