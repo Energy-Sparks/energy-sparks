@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 601a877901b347987557f8f9733a926daec66a55
-  tag: 5.0.9
+  revision: 275e7c44d348c63e243e0693dd9f2ede71470cbc
+  branch: alert-interface-change
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
