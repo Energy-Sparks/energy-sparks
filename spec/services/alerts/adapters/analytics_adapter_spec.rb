@@ -163,6 +163,24 @@ module Alerts
       end
     end
 
+    class DummyAlertWithVariables < DummyAnalyticsAlertClass
+      def variables_for_reporting
+        {
+          'a_integer': 10,
+          'a_float': 15.2,
+          'a_boolean': true,
+          'positive_infinity': Float::INFINITY,
+          'negative_infinity': -Float::INFINITY,
+          'nan': Float::NAN
+        }
+      end
+
+      def self.alert_type
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAlertWithVariables',
+          source: :analytics
+      end
+    end
 
     let(:school) { build(:school) }
     let(:aggregate_school) { double :aggregate_school }
@@ -177,6 +195,7 @@ module Alerts
       expect(normalised_report.template_data).to eq({ template: 'variables' })
       expect(normalised_report.chart_data).to eq({ chart: 'variables' })
       expect(normalised_report.table_data).to eq({ table: 'variables' })
+      expect(normalised_report.variables).to eq({ variables: 'variables' })
       expect(normalised_report.priority_data).to eq({ priority: 'variables' })
       expect(normalised_report.benchmark_data).to eq({ benchmark: 'data' })
     end
@@ -195,6 +214,7 @@ module Alerts
       expect(normalised_report.template_data).to eq({ template: 'variables' })
       expect(normalised_report.chart_data).to eq({ chart: 'variables' })
       expect(normalised_report.table_data).to eq({ table: 'variables' })
+      expect(normalised_report.variables).to eq({ variables: 'variables' })
       expect(normalised_report.priority_data).to eq({ priority: 'variables' })
       expect(normalised_report.benchmark_data).to eq({})
     end
@@ -206,6 +226,7 @@ module Alerts
         expect(normalised_report.chart_data).to eq({})
         expect(normalised_report.table_data).to eq({})
         expect(normalised_report.benchmark_data).to eq({})
+        expect(normalised_report.variables).to eq({})
       end
     end
 
@@ -216,6 +237,7 @@ module Alerts
         expect(normalised_report.chart_data).to eq({})
         expect(normalised_report.table_data).to eq({})
         expect(normalised_report.benchmark_data).to eq({})
+        expect(normalised_report.variables).to eq({})
       end
     end
 
@@ -238,7 +260,27 @@ module Alerts
         expect(normalised_report.chart_data).to eq({ chart: 'variables' })
         expect(normalised_report.table_data).to eq({ table: 'variables' })
         expect(normalised_report.priority_data).to eq({ priority: 'variables' })
+        expect(normalised_report.variables).to eq({ variables: 'variables' })
         expect(normalised_report.benchmark_data).to eq({ benchmark: 'data' })
+      end
+    end
+
+    context 'when storing variables from the analytics' do
+      subject(:report) do
+        Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAlertWithVariables.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
+      end
+
+      it 'converts the values for storing in Postgres' do
+        expect(report.variables).to eq(
+          {
+            'a_integer': 10,
+            'a_float': 15.2,
+            'a_boolean': 'true',
+            'positive_infinity': 'Infinity',
+            'negative_infinity': '-Infinity',
+            'nan': 'NaN'
+          }
+        )
       end
     end
   end
