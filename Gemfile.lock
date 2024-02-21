@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 601a877901b347987557f8f9733a926daec66a55
-  tag: 5.0.9
+  revision: 5678da3a421c2dd75c84ff9df00c17b2709ae10e
+  tag: 5.1.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -618,6 +618,9 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    scenic (1.7.0)
+      activerecord (>= 4.0.0)
+      railties (>= 4.0.0)
     scout_apm (5.3.7)
       parser
     selenium-webdriver (4.17.0)
@@ -798,6 +801,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   sass-rails
+  scenic
   scout_apm
   selenium-webdriver
   shoulda-matchers

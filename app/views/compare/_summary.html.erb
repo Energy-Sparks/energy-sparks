@@ -13,7 +13,7 @@
         <%= t('compare.filter.schools_in_school_groups_html', school_groups: @filter[:school_group_ids].present? ? SchoolGroup.find(@filter[:school_group_ids]).map {|school_group| tag.span(school_group.name, class: 'badge badge-info')}.join(' ').html_safe : tag.span(t('compare.filter.all_groups'), class: 'badge badge-info')) %>
       <% end %>
     </p>
-    <%= render 'school_type_summary' %>
-    <%= render 'funder_summary' %>
+    <%= render 'compare/school_type_summary' %>
+    <%= render 'compare/funder_summary' %>
   <% end %>
 </div>
