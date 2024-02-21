@@ -18,17 +18,17 @@ Write tests.
 ## Internationalisation
 
 The application is translated into Welsh.  This is done via Transifex.  They store the master copy of the Welsh
-translation which is used to update the files in config/locales/cy (so changes there will be lost).
+translation which is used to update the files in `config/locales/cy` (so changes there will be lost).
 
 The workflow is
 
 - update English files in config/locales
-- `rake i18n:copy_analytics_yaml` - what does this copy from? "currently installed"
-- `rake i18n:generate_tx_config`
-- `tx push`
-- wait
+- `rake i18n:copy_analytics_yaml` - copies from the analytics gem specified in the Gemfile?
+- `rake i18n:generate_tx_config` to create/update the tx config
+- `tx push` (from https://github.com/transifex/cli/releases)
+- wait - typical time?
 - `tx pull --mode onlyreviewed --all`
 
-Content in the database is also translated .... (this is handled separately?)
-
-
+Content in the database is also translated .... 
+handled separately?
+TransifexSerialisable concern...
