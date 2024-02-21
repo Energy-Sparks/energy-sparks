@@ -11,7 +11,7 @@ module Comparisons
 
     def index
       @results = load_data
-      @chart = create_chart(@results)
+      @charts = create_charts(@results)
     end
 
     private
@@ -39,7 +39,7 @@ module Comparisons
     end
 
     # Create the chart configuration used to display chart
-    def create_chart(_results)
+    def create_charts(_results)
       nil
     end
 
@@ -66,23 +66,6 @@ module Comparisons
       schools = SchoolFilter.new(**school_params).filter
       schools.select {|s| can?(:show, s) } unless include_invisible
       schools
-    end
-
-    # TODO need to improve chart display so it has a proper title and subtitle like our other charts,
-    # that will be handled in a new chart component or view
-    #
-    # Other improvements: disable legend clicking, ensuring colour coding matches what we use elsewhere?
-    def create_chart_configuration(config_name:, title: nil, chart_data: {}, series_name: nil, y_axis_label: nil)
-      {
-        title: title,
-        x_axis: chart_data.keys.map(&:name),
-        x_axis_ranges: nil,
-        x_data: { series_name => chart_data.values },
-        y_axis_label: y_axis_label,
-        chart1_type: :bar,
-        chart1_subtype: :stacked,
-        config_name: config_name
-      }
     end
   end
 end

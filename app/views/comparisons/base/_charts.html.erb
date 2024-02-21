@@ -1,1 +1,3 @@
-<%= benchmark_chart_tag(chart[:config_name], chart) %>
+<% @charts.each do |chart| %>
+  <%= component 'comparison_chart', **chart %>
+<% end %>
