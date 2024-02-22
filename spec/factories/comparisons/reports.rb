@@ -10,7 +10,7 @@ FactoryBot.define do
 
   trait :with_custom_period do
     after(:create) do |report, _evaluator|
-      report.update(reporting_period: :custom, custom_period: create(:period))
+      report.update(reporting_period: :custom, custom_period: create(:custom_period))
     end
   end
 end

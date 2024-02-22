@@ -419,7 +419,7 @@ Rails.application.routes.draw do
 
     namespace :comparisons do
       resources :footnotes, except: [:show]
-      resources :reports
+      resources :reports, except: [:show]
     end
 
     resources :case_studies
