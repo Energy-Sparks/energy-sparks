@@ -21,9 +21,10 @@ class Comparison::CustomPeriod < ApplicationRecord
   validates :previous_label, :previous_start_date, :previous_end_date, presence: true
 
   # Rails 7 comparison validations (imported to: app/validators/comparison_validator.rb)
-  validates :previous_end_date, comparison: { greater_than: :previous_start_date }
-  validates :current_start_date, comparison: { greater_than_or_equal_to: :previous_end_date }
-  validates :current_end_date, comparison: { greater_than: :current_start_date }
+  # Basic rules. They could be more complex than this!
+  validates :previous_end_date, comparison: { greater_than: :previous_start_date, message: 'must be greater than previous start date' }
+  validates :current_start_date, comparison: { greater_than_or_equal_to: :previous_end_date, message: 'must be greater or equal to previous end date' }
+  validates :current_end_date, comparison: { greater_than: :current_start_date, message: 'must be greater than current start date' }
 
   def to_s
     "From #{previous_label} to #{current_label}"
