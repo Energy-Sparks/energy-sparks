@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: comparison_periods
+# Table name: comparison_custom_periods
 #
 #  created_at          :datetime         not null
 #  current_end_date    :date             not null
@@ -12,13 +12,18 @@
 #  previous_start_date :date             not null
 #  updated_at          :datetime         not null
 #
-class Comparison::Period < ApplicationRecord
-  self.table_name = 'comparison_periods'
+class Comparison::CustomPeriod < ApplicationRecord
+  self.table_name = 'comparison_custom_periods'
 
   has_one :report, class_name: 'Comparison::Report', foreign_key: 'custom_period_id', inverse_of: :custom_period, dependent: :nullify
 
   validates :current_label, :current_start_date, :current_end_date, presence: true
   validates :previous_label, :previous_start_date, :previous_end_date, presence: true
+
+  # Rails 7 comparison validations (imported to: app/validators/comparison_validator.rb)
+  validates :previous_end_date, comparison: { greater_than: :previous_start_date }
+  validates :current_start_date, comparison: { greater_than_or_equal_to: :previous_end_date }
+  validates :current_end_date, comparison: { greater_than: :current_start_date }
 
   def to_s
     "From #{previous_label} to #{current_label}"

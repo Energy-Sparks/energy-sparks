@@ -17,7 +17,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (custom_period_id => comparison_periods.id)
+#  fk_rails_...  (custom_period_id => comparison_custom_periods.id)
 #
 class Comparison::Report < ApplicationRecord
   self.table_name = 'comparison_reports'
@@ -29,7 +29,7 @@ class Comparison::Report < ApplicationRecord
   translates :introduction, backend: :action_text
   translates :notes, backend: :action_text
 
-  belongs_to :custom_period, class_name: 'Comparison::Period', optional: true, autosave: true, dependent: :destroy
+  belongs_to :custom_period, class_name: 'Comparison::CustomPeriod', optional: true, autosave: true, dependent: :destroy
   accepts_nested_attributes_for :custom_period, update_only: true, reject_if: :not_custom?
 
   before_validation -> { custom_period.try(:mark_for_destruction) if not_custom? }

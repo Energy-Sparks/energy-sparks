@@ -1,0 +1,18 @@
+require 'rails_helper'
+
+RSpec.describe Comparison::CustomPeriod, type: :model do
+  context 'with valid attributes' do
+    subject(:custom_period) { create :custom_period }
+
+    it { expect(custom_period).to be_valid }
+    it { expect(custom_period).to validate_presence_of(:current_label) }
+    it { expect(custom_period).to validate_presence_of(:current_start_date) }
+    it { expect(custom_period).to validate_presence_of(:current_end_date) }
+    it { expect(custom_period).to validate_presence_of(:previous_label) }
+    it { expect(custom_period).to validate_presence_of(:previous_start_date) }
+    it { expect(custom_period).to validate_presence_of(:previous_end_date) }
+    it { expect(custom_period).to validate_comparison_of(:previous_end_date).is_greater_than(custom_period.previous_start_date) }
+    it { expect(custom_period).to validate_comparison_of(:current_start_date).is_greater_than_or_equal_to(custom_period.previous_end_date) }
+    it { expect(custom_period).to validate_comparison_of(:current_end_date).is_greater_than(custom_period.current_start_date) }
+  end
+end

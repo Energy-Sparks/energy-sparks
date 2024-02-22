@@ -15,7 +15,10 @@
       <tr>
         <td><%= report.key %></td>
         <td><%= report.title %></td>
-        <td><%= report.reporting_period.humanize %></td>
+        <td>
+          <%= report.reporting_period.humanize %>
+          <%= "(#{report.custom_period})" if report.custom_period %>
+        </td>
         <td>
           <div class="btn-group">
             <%= link_to 'Edit', edit_admin_comparisons_report_path(report),
