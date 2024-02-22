@@ -418,7 +418,7 @@ Rails.application.routes.draw do
     end
 
     namespace :comparisons do
-      resources :footnotes
+      resources :footnotes, except: [:show]
       resources :reports
     end
 

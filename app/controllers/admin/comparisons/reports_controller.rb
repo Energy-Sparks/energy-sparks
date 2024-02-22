@@ -4,6 +4,8 @@ module Admin::Comparisons
 
     load_and_authorize_resource :report, class: 'Comparison::Report'
 
+    before_action :build_custom_period, only: [:new, :create, :edit, :update]
+
     def index
       @reports = @reports.by_key
     end
@@ -30,6 +32,10 @@ module Admin::Comparisons
     end
 
     private
+
+    def build_custom_period
+      @report.custom_period || @report.build_custom_period
+    end
 
     def report_params
       translated_params = t_params(Comparison::Report.mobility_attributes)

@@ -4,8 +4,8 @@
   <thead>
     <tr>
       <th>Key</th>
-      <th>Reporting period</th>
       <th>Title</th>
+      <th>Reporting period</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -14,8 +14,8 @@
     <% @reports.each do |report| %>
       <tr>
         <td><%= report.key %></td>
-        <td><%= report.reporting_period %></td>
         <td><%= report.title %></td>
+        <td><%= report.reporting_period.humanize %></td>
         <td>
           <div class="btn-group">
             <%= link_to 'Edit', edit_admin_comparisons_report_path(report),

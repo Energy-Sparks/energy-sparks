@@ -15,6 +15,8 @@
 class Comparison::Period < ApplicationRecord
   self.table_name = 'comparison_periods'
 
+  has_one :report, class_name: 'Comparison::Report', foreign_key: 'custom_period_id', inverse_of: :custom_period, dependent: :nullify
+
   validates :current_label, :current_start_date, :current_end_date, presence: true
   validates :previous_label, :previous_start_date, :previous_end_date, presence: true
 
