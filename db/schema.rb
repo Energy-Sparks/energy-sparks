@@ -1996,7 +1996,7 @@ ActiveRecord::Schema.define(version: 2024_02_22_163429) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
-  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_period_id"
+  add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"
