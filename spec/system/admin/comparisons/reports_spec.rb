@@ -20,7 +20,7 @@ shared_examples 'a report page with valid attributes' do |action:|
   end
 
   it { expect(page).to have_content("Report was successfully #{action}") }
-  it { expect(page).to have_selector(:table_row, { 'Key' => 'New key', 'Title' => 'New title', 'Reporting period' => 'Custom' }) }
+  it { expect(page).to have_selector(:table_row, { 'Key' => 'New key', 'Title' => 'New title', 'Reporting period' => 'Custom (comparing Current label to Previous label' }) }
 end
 
 shared_examples 'a report page with invalid attributes' do

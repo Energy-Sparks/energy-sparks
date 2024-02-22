@@ -27,6 +27,6 @@ class Comparison::CustomPeriod < ApplicationRecord
   validates :current_end_date, comparison: { greater_than: :current_start_date, message: 'must be greater than current start date' }
 
   def to_s
-    "From #{previous_label} to #{current_label}"
+    "comparing #{current_label} to #{previous_label}"
   end
 end
