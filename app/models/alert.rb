@@ -13,12 +13,14 @@
 #  priority_data           :json
 #  rating                  :decimal(, )
 #  relevance               :integer          default("relevant")
+#  report_period           :integer
 #  run_on                  :date
 #  school_id               :bigint(8)        not null
 #  table_data              :json
 #  template_data           :json
 #  template_data_cy        :json
 #  updated_at              :datetime         not null
+#  variables               :jsonb
 #
 # Indexes
 #
@@ -36,6 +38,8 @@
 #
 
 class Alert < ApplicationRecord
+  include EnumReportingPeriod
+
   belongs_to :school,               inverse_of: :alerts
   belongs_to :alert_type,           inverse_of: :alerts
   belongs_to :alert_generation_run, optional: true

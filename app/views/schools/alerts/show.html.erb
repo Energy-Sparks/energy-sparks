@@ -11,16 +11,19 @@
       </div>
       <div class="card-body">
         <h5>Template variables (English)</h5>
-        <%= sanitize ap(@alert.template_variables(:en), index: false, plain: true)%>
+        <%= sanitize ap(@alert.template_variables(:en), index: false, plain: true, sort_keys: true) %>
         <h5>Template variables (Welsh)</h5>
-        <%= sanitize ap(@alert.template_variables(:cy), index: false, plain: true)%>
+        <%= sanitize ap(@alert.template_variables(:cy), index: false, plain: true, sort_keys: true) %>
+
+        <h5>Raw variables (English)</h5>
+        <%= sanitize ap(@alert.variables, index: false, plain: true, sort_keys: true) %>
 
         <h5>Chart data</h5>
-        <%= sanitize ap(@alert.chart_data, index: false, plain: true)%>
+        <%= sanitize ap(@alert.chart_data, index: false, plain: true, sort_keys: true) %>
         <h5>Table data</h5>
-        <%= sanitize ap(@alert.table_data, index: false, plain: true)%>
+        <%= sanitize ap(@alert.table_data, index: false, plain: true, sort_keys: true) %>
         <h5>Priority data</h5>
-        <%= sanitize ap(@alert.priority_data, index: false, plain: true)%>
+        <%= sanitize ap(@alert.priority_data, index: false, plain: true, sort_keys: true) %>
       </div>
       <div class="card-footer text-muted">
         <p class="card-text"><b>Rating</b>: <%= @alert.rating %></p>

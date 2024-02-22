@@ -2116,4 +2116,37 @@ ActiveRecord::Schema.define(version: 2024_02_21_095546) do
   add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict
   add_foreign_key "weather_observations", "weather_stations", on_delete: :cascade
+
+  create_view "baseload_per_pupils", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      additional.school_id,
+      baseload.alert_generation_run_id,
+      baseload.average_baseload_last_year_kw,
+      baseload.average_baseload_last_year_gbp,
+      baseload.one_year_baseload_per_pupil_kw,
+      baseload.annual_baseload_percent,
+      baseload.one_year_saving_versus_exemplar_gbp,
+      additional.electricity_economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              data.average_baseload_last_year_kw,
+              data.average_baseload_last_year_gbp,
+              data.one_year_baseload_per_pupil_kw,
+              data.annual_baseload_percent,
+              data.one_year_saving_versus_exemplar_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(average_baseload_last_year_kw double precision, average_baseload_last_year_gbp double precision, one_year_baseload_per_pupil_kw double precision, annual_baseload_percent double precision, one_year_saving_versus_exemplar_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityBaseloadVersusBenchmark'::text))) baseload,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((baseload.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
 end
