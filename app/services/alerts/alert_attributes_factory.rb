@@ -24,6 +24,7 @@ module Alerts
         chart_data:               @alert_report.chart_data,
         table_data:               @alert_report.table_data,
         priority_data:            @alert_report.priority_data,
+        variables:                @alert_report.variables
       }
     end
   end

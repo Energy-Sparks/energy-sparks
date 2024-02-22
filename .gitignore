@@ -30,7 +30,6 @@ coverage
 profiles
 .env
 *.txt
-*.sql
 *.DS_Store
 *csv
 !etc/**/*csv

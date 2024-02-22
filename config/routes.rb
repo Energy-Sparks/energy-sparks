@@ -59,6 +59,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :comparisons do
+    resources :baseload_per_pupil, only: [:index]
+  end
+
   # redirect old benchmark URLs
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
