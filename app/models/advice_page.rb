@@ -34,6 +34,12 @@ class AdvicePage < ApplicationRecord
 
   scope :by_key, -> { order(key: :asc) }
 
+  # Required as multiple is not yet supported in advice page list
+  # Could be used for the total energy use page.
+  def self.display_fuel_types
+    fuel_types.reject {|k, _v| k.to_sym == :multiple}
+  end
+
   def label
     key.humanize
   end

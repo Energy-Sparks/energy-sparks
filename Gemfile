@@ -23,10 +23,11 @@ gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 gem 'pg'
+gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.9'
-# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '4001-baseload-page-error-with-lagging-data'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.1.1'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'alert-interface-change'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined

@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 601a877901b347987557f8f9733a926daec66a55
-  tag: 5.0.9
+  revision: 8a524c7d9dcca5f32937d11f80e668313a98c7f6
+  tag: 5.1.1
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -141,6 +141,7 @@ GEM
     aws-sigv4 (1.8.0)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.24.1)
+    base64 (0.2.0)
     bcrypt (3.1.20)
     benchmark-memory (0.2.0)
       memory_profiler (~> 1)
@@ -205,7 +206,8 @@ GEM
     cocoon (1.2.15)
     coderay (1.1.3)
     concurrent-ruby (1.2.3)
-    crack (0.4.5)
+    crack (1.0.0)
+      bigdecimal
       rexml
     crass (1.0.6)
     css_parser (1.16.0)
@@ -232,10 +234,10 @@ GEM
     distribution (0.8.0)
     docile (1.4.0)
     domain_name (0.6.20231109)
-    dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
+    dotenv (3.0.2)
+    dotenv-rails (3.0.2)
+      dotenv (= 3.0.2)
+      railties (>= 6.1)
     erb_lint (0.5.0)
       activesupport
       better_html (>= 2.0.1)
@@ -280,7 +282,7 @@ GEM
     geocoder (1.8.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    good_job (3.23.0)
+    good_job (3.24.0)
       activejob (>= 6.0.0)
       activerecord (>= 6.0.0)
       concurrent-ruby (>= 1.0.2)
@@ -383,7 +385,7 @@ GEM
     mini_portile2 (2.8.5)
     minimization (0.2.5)
       text-table (~> 1.2)
-    minitest (5.21.2)
+    minitest (5.22.2)
     mobility (1.2.9)
       i18n (>= 0.6.10, < 2)
       request_store (~> 1.0)
@@ -434,7 +436,7 @@ GEM
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
-    pg (1.5.4)
+    pg (1.5.5)
     popper_js (1.16.1)
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
@@ -616,16 +618,20 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scout_apm (5.3.5)
+    scenic (1.7.0)
+      activerecord (>= 4.0.0)
+      railties (>= 4.0.0)
+    scout_apm (5.3.7)
       parser
-    selenium-webdriver (4.16.0)
+    selenium-webdriver (4.17.0)
+      base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
     sexp_processor (4.17.0)
     shellany (0.0.1)
-    shoulda-matchers (6.0.0)
+    shoulda-matchers (6.1.0)
       activesupport (>= 5.2.0)
     show_me_the_cookies (6.0.0)
       capybara (>= 2, < 4)
@@ -665,7 +671,7 @@ GEM
     timeout (0.4.1)
     trix-rails (2.4.0)
       rails (> 4.1)
-    twilio-ruby (6.9.1)
+    twilio-ruby (6.11.0)
       faraday (>= 0.9, < 3.0)
       jwt (>= 1.5, < 3.0)
       nokogiri (>= 1.6, < 2.0)
@@ -687,7 +693,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webmock (3.19.1)
+    webmock (3.20.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -707,7 +713,7 @@ GEM
       rubyzip (>= 1.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.12)
+    zeitwerk (2.6.13)
 
 PLATFORMS
   aarch64-linux
@@ -795,6 +801,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   sass-rails
+  scenic
   scout_apm
   selenium-webdriver
   shoulda-matchers

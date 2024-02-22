@@ -1,0 +1,18 @@
+<div id="chart_wrapper_<%= id %>" class="chart-wrapper">
+
+  <% if title %>
+    <h4 id="chart-section-<%= id %>" class="chart-title"><%= title %></h4>
+  <% end %>
+
+  <% if subtitle %>
+    <h5 class="chart-subtitle"><%= subtitle %></h5>
+  <% end %>
+
+  <div id='chart_<%= id %>'
+       class='analysis-chart tabbed'
+       style='height:<%= height %>px;'
+       data-autoload-chart="true"
+       data-chart-config='<%= chart_json %>'>
+  </div>
+
+</div>
