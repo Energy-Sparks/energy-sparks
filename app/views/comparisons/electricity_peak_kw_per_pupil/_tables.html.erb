@@ -17,30 +17,25 @@
     </tr>
   </thead>
   <tbody>
-    <% results.each do |baseload_per_pupil| %>
+    <% results.each do |result| %>
       <tr>
         <td>
-          <%= link_to baseload_per_pupil.school.name,
-                      advice_page_path(baseload_per_pupil.school, advice_page, :insights) %>
-          <% if baseload_per_pupil.electricity_economic_tariff_changed_this_year %>
+          <%= link_to result.school.name, advice_page_path(result.school, advice_page, :insights) %>
+          <% if result.electricity_economic_tariff_changed_this_year %>
             <a href="#electricity_economic_tariff_changed_this_year">[t]</a>
           <% end %>
         </td>
         <td class="text-right">
-          <%= format_unit(baseload_per_pupil.one_year_baseload_per_pupil_kw * 1000.0, :kw, true, :benchmark) %>
+          <%= format_unit(result.average_school_day_last_year_kw_per_floor_area * 1000.0, :kw, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <%= format_unit(baseload_per_pupil.average_baseload_last_year_gbp, :£, true, :benchmark) %>
+          <%= format_unit(result.average_school_day_last_year_kw, :kw, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <%= format_unit(baseload_per_pupil.average_baseload_last_year_kw, :kw, true, :benchmark) %>
+          <%= format_unit(result.exemplar_kw, :kw, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <%= format_unit(baseload_per_pupil.annual_baseload_percent, :percent, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit([0.0, baseload_per_pupil.one_year_saving_versus_exemplar_gbp].max, :£, true,
-                          :benchmark) %>
+          <%= format_unit([0.0, result.saving_if_match_exemplar_gbp].max, :£, true, :benchmark) %>
         </td>
       </tr>
     <% end %>

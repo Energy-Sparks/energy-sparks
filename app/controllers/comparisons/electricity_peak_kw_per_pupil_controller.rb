@@ -1,5 +1,5 @@
 module Comparisons
-  class BaseloadPerPupilController < BaseController
+  class ElectricityPeakKwPerPupilController < BaseController
     private
 
     def title_key
@@ -23,21 +23,21 @@ module Comparisons
       #
       # This could be done by clipping values to 100.0 if the metric has a
       # unit of percentage/relative_percent
-      results.each do |baseload_per_pupil|
-        metric = baseload_per_pupil.one_year_baseload_per_pupil_kw
+      results.each do |result|
+        metric = result.average_school_day_last_year_kw_per_floor_area
         next if metric.nil? || metric.nan? || metric.infinite?
         # for a percentage metric we'd multiply * 100.0
         # here we're converting from kW to W
-        chart_data[baseload_per_pupil.school] = metric * 1000.0
+        chart_data[result.school] = metric * 1000.0
       end
 
       series_name = I18n.t('analytics.benchmarking.configuration.column_headings.baseload_per_pupil_w')
 
       [{
-        id: :baseload_per_pupil,
+        id: :electricity_peak_kw_per_pupil,
         x_axis: chart_data.keys.map(&:name),
         x_data: { series_name => chart_data.values },
-        y_axis_label: I18n.t('chart_configuration.y_axis_label_name.kw')
+        y_axis_label: I18n.t('chart_configuration.y_axis_label_name.w')
       }]
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_21_154525) do
+ActiveRecord::Schema.define(version: 2024_02_21_155522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2024_02_21_154525) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
+    t.string "checksum"
     t.datetime "created_at", null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
@@ -2207,5 +2207,35 @@ ActiveRecord::Schema.define(version: 2024_02_21_154525) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (enba.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "electricity_peak_kw_per_pupils", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.average_school_day_last_year_kw_per_floor_area,
+      data.average_school_day_last_year_kw,
+      data.exemplar_kw,
+      data.saving_if_match_exemplar_gbp,
+      additional.electricity_economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.average_school_day_last_year_kw_per_floor_area,
+              data_1.average_school_day_last_year_kw,
+              data_1.exemplar_kw,
+              data_1.saving_if_match_exemplar_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(average_school_day_last_year_kw_per_floor_area double precision, average_school_day_last_year_kw double precision, exemplar_kw double precision, saving_if_match_exemplar_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityPeakKWVersusBenchmark'::text))) data,
+      ( SELECT alerts.alert_generation_run_id,
+              data_1.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
 end
