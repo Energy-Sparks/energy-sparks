@@ -36,10 +36,10 @@ describe 'electricity_peak_kw_per_pupil' do
 
     it 'displays the expected data' do
       expect(page).to have_css('#comparison-table tr', count: 3)
-      expect(all('#comparison-table tr')[..-1].map { |tr| tr.all('th,td').map(&:text) }).to eq(
+      expect(all('#comparison-table tr')[..-2].map { |tr| tr.all('th,td').map(&:text) }).to eq(
         [['School', 'Watt/floor area', 'Average peak kw', 'Exemplar peak kw',
           'Saving if match exemplar (£ at latest tariff)'],
-         ['test 2 school [t]', '1,000', '2', '3', '£4']]
+         ["#{school.name} [t]", '1,000', '2', '3', '£4']]
       )
     end
   end
