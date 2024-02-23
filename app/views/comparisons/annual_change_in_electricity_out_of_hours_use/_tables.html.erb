@@ -1,0 +1,97 @@
+<table id="comparison-table" class="table advice-table table-sorted">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="3" class="text-center"><%= t('analytics.benchmarking.configuration.column_groups.kwh') %></th>
+      <th colspan="3" class="text-center"><%= t('analytics.benchmarking.configuration.column_groups.co2_kg') %></th>
+      <th colspan="3" class="text-center"><%= t('analytics.benchmarking.configuration.column_groups.cost') %></th>
+    </tr>
+    <tr>
+      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.previous_year_out_of_hours_kwh') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.last_year_out_of_hours_kwh') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.change_pct') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.previous_year_out_of_hours_co2') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.last_year_out_of_hours_co2') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.change_pct') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.previous_year_out_of_hours_cost_ct') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.last_year_out_of_hours_cost_ct') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.change_pct') %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% results.each do |result| %>
+      <tr>
+        <td>
+          <%= link_to result.school.name, advice_page_path(result.school, advice_page, :insights) %>
+          <% if result.electricity_economic_tariff_changed_this_year %>
+            <a href="#electricity_economic_tariff_changed_this_year">[t]</a>
+          <% end %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.previous_out_of_hours_kwh, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.out_of_hours_kwh, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <% percent_change = percent_change(result.previous_out_of_hours_kwh,
+                                             result.out_of_hours_kwh) %>
+          <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
+        </td>
+
+        <td class="text-right">
+          <%= format_unit(result.previous_out_of_hours_co2, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.out_of_hours_co2, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <% percent_change = percent_change(result.previous_out_of_hours_co2,
+                                             reuslt.out_of_hours_co2) %>
+          <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
+        </td>
+
+        <td class="text-right">
+          <%= format_unit(result.previous_out_of_hours_gbpcurrent, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.current_year_electricity_gbp, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <% percent_change = percent_change(result.previous_out_of_hours_gbpcurrent,
+                                             result.out_of_hours_gbpcurrent) %>
+          <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="6">
+        <p>
+          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
+        </p>
+        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+      </td>
+    </tr>
+  </tfoot>
+</table>

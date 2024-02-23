@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_22_163429) do
+ActiveRecord::Schema.define(version: 2024_02_23_160406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2024_02_22_163429) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum"
+    t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
@@ -2237,5 +2237,45 @@ ActiveRecord::Schema.define(version: 2024_02_22_163429) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
+  create_view "annual_change_in_electricity_out_of_hours_uses", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      usage.alert_generation_run_id,
+      usage.school_id,
+      usage.out_of_hours_kwh,
+      usage.out_of_hours_co2,
+      usage.out_of_hours_gbpcurrent,
+      usage_previous_year.previous_out_of_hours_kwh,
+      usage_previous_year.previous_out_of_hours_co2,
+      usage_previous_year.previous_out_of_hours_gbpcurrent,
+      additional.electricity_economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.out_of_hours_kwh,
+              data.out_of_hours_co2,
+              data.out_of_hours_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursElectricityUsage'::text))) usage,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.out_of_hours_kwh AS previous_out_of_hours_kwh,
+              data.out_of_hours_co2 AS previous_out_of_hours_co2,
+              data.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursElectricityUsagePreviousYear'::text))) usage_previous_year,
+      ( SELECT alerts.alert_generation_run_id,
+              data.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((usage.alert_generation_run_id = latest_runs.id) AND (usage_previous_year.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
 end

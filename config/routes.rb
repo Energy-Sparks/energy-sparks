@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_since_last_year, only: [:index]
     resources :electricity_peak_kw_per_pupil, only: [:index]
+    resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
   end
 
   # redirect old benchmark URLs
