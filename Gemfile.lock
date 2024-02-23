@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 5678da3a421c2dd75c84ff9df00c17b2709ae10e
-  tag: 5.1.0
+  revision: 96ad66c650a5c1f9d465c4a5481ad4bf95eb291f
+  branch: 4110-peak-school-day-electricity-use
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
