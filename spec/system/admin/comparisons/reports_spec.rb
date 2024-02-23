@@ -20,7 +20,8 @@ shared_examples 'a report page with valid attributes' do |action:|
   end
 
   it { expect(page).to have_content("Report was successfully #{action}") }
-  it { expect(page).to have_selector(:table_row, { 'Key' => 'New key', 'Title' => 'New title', 'Reporting period' => 'Custom (comparing Current label to Previous label' }) }
+  it { expect(page).to have_selector(:table_row, { 'Key' => 'New key', 'Title' => 'New title', 'Reporting period' => 'Custom (comparing Current label to Previous label', 'Public' => '' }) }
+  it { expect(page).to have_css("i[class*='fa-check-circle']") }
 end
 
 shared_examples 'a report page with invalid attributes' do
@@ -82,8 +83,9 @@ describe 'admin comparisons reports', type: :system, include_application_helper:
 
       it 'lists report' do
         within('table') do
-          expect(page).to have_selector(:table_row, { 'Key' => report.key, 'Reporting period' => report.reporting_period.humanize, 'Title' => report.title })
+          expect(page).to have_selector(:table_row, { 'Key' => report.key, 'Reporting period' => report.reporting_period.humanize, 'Title' => report.title, 'Public' => '' })
         end
+        expect(page).to have_css("i[class*='fa-check-circle']")
       end
 
       it { expect(page).to have_link('Edit') }

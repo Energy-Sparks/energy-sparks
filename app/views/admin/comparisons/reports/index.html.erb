@@ -6,6 +6,7 @@
       <th>Key</th>
       <th>Title</th>
       <th>Reporting period</th>
+      <th>Public</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -13,20 +14,22 @@
   <tbody>
     <% @reports.each do |report| %>
       <tr>
-        <td><%= report.key %></td>
+        <td><span class="badge badge-secondary"><%= report.key %></span></td>
         <td><%= report.title %></td>
         <td>
-          <%= report.reporting_period.humanize %>
+          <%= report.reporting_period.try(:humanize) %>
           <%= "(#{report.custom_period})" if report.custom_period %>
+        </td>
+        <td><%= checkmark(report.public?) %>
         </td>
         <td>
           <div class="btn-group">
             <%= link_to 'Edit', edit_admin_comparisons_report_path(report),
-                        class: 'btn btn-info' %>
+                        class: 'btn btn-info btn-sm' %>
             <%= link_to 'Delete', admin_comparisons_report_path(report),
                         method: :delete,
                         data: { confirm: 'Are you sure?' },
-                        class: 'btn btn-info' %>
+                        class: 'btn btn-info btn-sm' %>
           </div>
         </td>
       </tr>
