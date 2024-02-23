@@ -112,8 +112,7 @@ class Alert < ApplicationRecord
     available_names = Object.const_get(alert_type.class_name)::TEMPLATE_VARIABLES.keys.map do |key|
       key.to_s.gsub('£', 'gbp').to_sym
     end
-    # binding.pry
-    variables.each_key do |name|
+    variables&.each_key do |name|
       errors.add(:variables, "Invalid variable #{name}") unless available_names.include?(name.to_sym)
     end
   end
