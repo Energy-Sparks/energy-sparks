@@ -13,7 +13,7 @@ module DataFeeds
       READING_TYPE_TARIFF = 'tariff'.freeze
 
       def initialize(api_key: ENV['N3RGY_SANDBOX_API_KEY'],
-                     base_url: ENV['N3RGY_SANDBOX_CONSENT_URL_V2'],
+                     base_url: ENV['N3RGY_SANDBOX_DATA_URL_V2'],
                      connection: nil)
         @api_key = api_key
         @base_url = base_url
