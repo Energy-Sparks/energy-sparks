@@ -8,7 +8,7 @@ FROM
       average_school_day_last_year_kw_per_floor_area float,
       average_school_day_last_year_kw float,
       exemplar_kw float,
-      saving_if_match_exemplar_gbp float
+      one_year_saving_versus_exemplar_gbp float
     )
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertElectricityPeakKWVersusBenchmark'
   ) AS data,

@@ -2215,17 +2215,17 @@ ActiveRecord::Schema.define(version: 2024_02_21_155522) do
       data.average_school_day_last_year_kw_per_floor_area,
       data.average_school_day_last_year_kw,
       data.exemplar_kw,
-      data.saving_if_match_exemplar_gbp,
+      data.one_year_saving_versus_exemplar_gbp,
       additional.electricity_economic_tariff_changed_this_year
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.average_school_day_last_year_kw_per_floor_area,
               data_1.average_school_day_last_year_kw,
               data_1.exemplar_kw,
-              data_1.saving_if_match_exemplar_gbp
+              data_1.one_year_saving_versus_exemplar_gbp
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(average_school_day_last_year_kw_per_floor_area double precision, average_school_day_last_year_kw double precision, exemplar_kw double precision, saving_if_match_exemplar_gbp double precision)
+              LATERAL jsonb_to_record(alerts.variables) data_1(average_school_day_last_year_kw_per_floor_area double precision, average_school_day_last_year_kw double precision, exemplar_kw double precision, one_year_saving_versus_exemplar_gbp double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityPeakKWVersusBenchmark'::text))) data,
       ( SELECT alerts.alert_generation_run_id,
               data_1.electricity_economic_tariff_changed_this_year

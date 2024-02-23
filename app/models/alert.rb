@@ -78,6 +78,8 @@ class Alert < ApplicationRecord
   scope :without_exclusions, -> { joins(:alert_type).joins('LEFT OUTER JOIN school_alert_type_exclusions ON school_alert_type_exclusions.school_id = alerts.school_id AND school_alert_type_exclusions.alert_type_id = alert_types.id').where(school_alert_type_exclusions: { school_id: nil }) }
   scope :displayable, -> { where(displayable: true) }
 
+  validate :validate_variables, on: :create
+
   def advice_page
     alert_type.advice_page
   end
@@ -103,6 +105,16 @@ class Alert < ApplicationRecord
       template_data_cy&.any? ? template_data_cy : template_data
     else
       template_data
+    end
+  end
+
+  def validate_variables
+    available_names = Object.const_get(alert_type.class_name)::TEMPLATE_VARIABLES.keys.map do |key|
+      key.to_s.gsub('£', 'gbp').to_sym
+    end
+    # binding.pry
+    variables.each_key do |name|
+      errors.add(:variables, "Invalid variable #{name}") unless available_names.include?(name.to_sym)
     end
   end
 end

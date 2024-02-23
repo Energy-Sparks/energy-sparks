@@ -16,7 +16,7 @@ describe 'electricity_peak_kw_per_pupil' do
                      average_school_day_last_year_kw_per_floor_area: 1,
                      average_school_day_last_year_kw: 2,
                      exemplar_kw: 3,
-                     saving_if_match_exemplar_gbp: 4
+                     one_year_saving_versus_exemplar_gbp: 4
                    })
 
     additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')

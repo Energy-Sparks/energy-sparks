@@ -35,7 +35,7 @@
           <%= format_unit(result.exemplar_kw, :kw, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <%= format_unit([0.0, result.saving_if_match_exemplar_gbp].max, :£, true, :benchmark) %>
+          <%= format_unit([0.0, result.one_year_saving_versus_exemplar_gbp].max, :£, true, :benchmark) %>
         </td>
       </tr>
     <% end %>
