@@ -48,16 +48,6 @@ class MeterManagement
     return :api_error
   end
 
-  def elements
-    return nil unless @meter.dcc_meter?
-    @n3rgy_api_factory.data_api(@meter).elements(@meter.mpan_mprn, @meter.meter_type)
-  rescue => e
-    Rails.logger.warn "Exception: checking elements of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
-    Rails.logger.warn e.backtrace.join("\n")
-    Rollbar.warning(e)
-    return :api_error
-  end
-
   def process_creation!
     assign_amr_data_feed_readings
     DccCheckerJob.perform_later(@meter) if Meter.main_meter.exists?(@meter.id)
