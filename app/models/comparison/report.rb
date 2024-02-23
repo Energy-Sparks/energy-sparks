@@ -35,7 +35,10 @@ class Comparison::Report < ApplicationRecord
   before_validation -> { custom_period.try(:mark_for_destruction) if not_custom? }
 
   validates :custom_period, presence: true, if: :custom?
-  validates :title, :reporting_period, presence: true
+  validates :title, presence: true
+
+  # Don't require this for now
+  # validates :reporting_period, presence: true
   validates :key, presence: true, uniqueness: true
 
   scope :by_key, ->(order = :asc) { order(key: order) }
