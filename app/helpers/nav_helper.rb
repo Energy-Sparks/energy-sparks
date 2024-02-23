@@ -44,6 +44,7 @@ module NavHelper
     classes = ''
     classes += ' sub-nav' if sub_nav?
     classes += ' header-fix' if header_fix_enabled?
+    classes += " #{content_for(:container_classes)}" if content_for?(:container_classes)
     classes
   end
 

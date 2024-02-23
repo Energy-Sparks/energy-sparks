@@ -1,9 +1,9 @@
-<% content_for :page_title, @title %>
+<% content_for :page_title, @report.title %>
+<% content_for :container_classes, 'comparisons' %>
 
-<h1><%= @title %></h1>
+<h1><%= @report.title %></h1>
 
 <%= render 'compare/summary' %>
-
 <%= render 'introduction' %>
 
 <ul class="nav nav-tabs locales url-aware" id="compare-results-tabs" role="tablist">
