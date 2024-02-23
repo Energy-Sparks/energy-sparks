@@ -3,9 +3,6 @@ namespace :after_party do
   task migrate_benchmark_content_to_reports: :environment do
     puts "Running deploy task 'migrate_benchmark_content_to_reports'"
 
-#    benchmarks = Benchmarking::BenchmarkManager.available_pages # returns 68, think this includes the sub-benchmarks though
-#    benchmarks = I18n.t("analytics.benchmarking.content").keys # returns 56, also includes footnotes etc
-
     # get all benchmarks for all user types
     # we aren't making use of the benchmark group information here, might we need this at some point?
     benchmark_groups = Benchmarking::BenchmarkManager.structured_pages(user_role: :admin)
