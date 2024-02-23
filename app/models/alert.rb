@@ -109,7 +109,7 @@ class Alert < ApplicationRecord
   end
 
   def validate_variables
-    available_names = Object.const_get(alert_type.class_name)::TEMPLATE_VARIABLES.keys.map do |key|
+    available_names = Object.const_get(alert_type.class_name).template_variables.values.map(&:keys).flatten.map do |key|
       key.to_s.gsub('£', 'gbp').to_sym
     end
     variables.each_key do |name|
