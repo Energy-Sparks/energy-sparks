@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_21_095546) do
+ActiveRecord::Schema.define(version: 2024_02_22_163429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -654,14 +654,7 @@ ActiveRecord::Schema.define(version: 2024_02_21_095546) do
     t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
   end
 
-  create_table "comparison_footnotes", force: :cascade do |t|
-    t.string "key", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
-  end
-
-  create_table "comparison_periods", force: :cascade do |t|
+  create_table "comparison_custom_periods", force: :cascade do |t|
     t.string "current_label", null: false
     t.date "current_start_date", null: false
     t.date "current_end_date", null: false
@@ -670,6 +663,13 @@ ActiveRecord::Schema.define(version: 2024_02_21_095546) do
     t.date "previous_end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "comparison_footnotes", force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
   end
 
   create_table "comparison_reports", force: :cascade do |t|
@@ -1996,7 +1996,7 @@ ActiveRecord::Schema.define(version: 2024_02_21_095546) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
-  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_period_id", on_delete: :cascade
+  add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"
