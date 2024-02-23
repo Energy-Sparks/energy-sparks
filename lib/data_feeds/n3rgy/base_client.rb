@@ -6,7 +6,8 @@ module DataFeeds
       def headers
         {
           'x-api-key': @api_key,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       end
 

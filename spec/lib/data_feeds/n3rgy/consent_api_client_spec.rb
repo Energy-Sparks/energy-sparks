@@ -19,12 +19,11 @@ describe DataFeeds::N3rgy::ConsentApiClient do
     Faraday.default_connection = nil
   end
 
-  shared_examples 'a stubbed call that errors' do
-    it 'handles the error' do
+  shared_examples 'a successfully handled error' do
+    it 'by throwing the expected exception' do
       expect do
         client.send(method, *params)
-      end.to raise_error(error,
-        message)
+      end.to raise_error(DataFeeds::N3rgy::ConsentFailure, message)
       stubs.verify_stubbed_calls
     end
   end
@@ -66,16 +65,16 @@ describe DataFeeds::N3rgy::ConsentApiClient do
         }
       end
 
-      before do
-        stubs.post('/consents/add-trusted-consent') do |_env|
-          [400, {}, response.to_json]
+      it_behaves_like 'a successfully handled error' do
+        let(:stubs) do
+          Faraday::Adapter::Test::Stubs.new do |stubs|
+            stubs.post('/consents/add-trusted-consent') do |_env|
+              [400, {}, response.to_json]
+            end
+          end
         end
-      end
-
-      it_behaves_like 'a stubbed call that errors' do
         let(:method) { :add_trusted_consent }
         let(:params) { [mpxn, ref] }
-        let(:error)  { DataFeeds::N3rgy::ConsentFailure }
         let(:message) { 'Unsuccessful trusted consent to property' }
       end
     end
@@ -87,16 +86,16 @@ describe DataFeeds::N3rgy::ConsentApiClient do
         }
       end
 
-      before do
-        stubs.post('/consents/add-trusted-consent') do |_env|
-          [403, {}, response.to_json]
+      it_behaves_like 'a successfully handled error' do
+        let(:stubs) do
+          Faraday::Adapter::Test::Stubs.new do |stubs|
+            stubs.post('/consents/add-trusted-consent') do |_env|
+              [403, {}, response.to_json]
+            end
+          end
         end
-      end
-
-      it_behaves_like 'a stubbed call that errors' do
         let(:method) { :add_trusted_consent }
         let(:params) { [mpxn, ref] }
-        let(:error)  { DataFeeds::N3rgy::ConsentFailure }
         let(:message) { 'User is not authorized to access this resource with an explicit deny.' }
       end
     end
@@ -136,16 +135,16 @@ describe DataFeeds::N3rgy::ConsentApiClient do
         }
       end
 
-      before do
-        stubs.delete('/consents/withdraw-consent/1234567891000') do |_env|
-          [400, {}, response.to_json]
+      it_behaves_like 'a successfully handled error' do
+        let(:stubs) do
+          Faraday::Adapter::Test::Stubs.new do |stubs|
+            stubs.delete('/consents/withdraw-consent/1234567891000') do |_env|
+              [400, {}, response.to_json]
+            end
+          end
         end
-      end
-
-      it_behaves_like 'a stubbed call that errors' do
         let(:method) { :withdraw_consent }
         let(:params) { [mpxn] }
-        let(:error)  { DataFeeds::N3rgy::ConsentFailure }
         let(:message) { 'message' }
       end
     end
@@ -157,16 +156,16 @@ describe DataFeeds::N3rgy::ConsentApiClient do
         }
       end
 
-      before do
-        stubs.delete('/consents/withdraw-consent/1234567891000') do |_env|
-          [403, {}, response.to_json]
+      it_behaves_like 'a successfully handled error' do
+        let(:stubs) do
+          Faraday::Adapter::Test::Stubs.new do |stubs|
+            stubs.delete('/consents/withdraw-consent/1234567891000') do |_env|
+              [403, {}, response.to_json]
+            end
+          end
         end
-      end
-
-      it_behaves_like 'a stubbed call that errors' do
         let(:method) { :withdraw_consent }
         let(:params) { [mpxn] }
-        let(:error)  { DataFeeds::N3rgy::ConsentFailure }
         let(:message) { 'User is not authorized to access this resource with an explicit deny.' }
       end
     end
