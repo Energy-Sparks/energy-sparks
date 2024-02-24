@@ -53,8 +53,7 @@
           <%= format_unit(result.out_of_hours_kwh, :kwh, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <% percent_change = percent_change(result.previous_out_of_hours_kwh,
-                                             result.out_of_hours_kwh) %>
+          <% percent_change = percent_change(result.previous_out_of_hours_kwh, result.out_of_hours_kwh) %>
           <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
         </td>
 
@@ -65,8 +64,7 @@
           <%= format_unit(result.out_of_hours_co2, :kwh, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <% percent_change = percent_change(result.previous_out_of_hours_co2,
-                                             reuslt.out_of_hours_co2) %>
+          <% percent_change = percent_change(result.previous_out_of_hours_co2, result.out_of_hours_co2) %>
           <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
         </td>
 
@@ -74,11 +72,10 @@
           <%= format_unit(result.previous_out_of_hours_gbpcurrent, :kwh, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <%= format_unit(result.current_year_electricity_gbp, :kwh, true, :benchmark) %>
+          <%= format_unit(result.out_of_hours_gbpcurrent, :kwh, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <% percent_change = percent_change(result.previous_out_of_hours_gbpcurrent,
-                                             result.out_of_hours_gbpcurrent) %>
+          <% percent_change = percent_change(result.previous_out_of_hours_gbpcurrent, result.out_of_hours_gbpcurrent) %>
           <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
         </td>
       </tr>

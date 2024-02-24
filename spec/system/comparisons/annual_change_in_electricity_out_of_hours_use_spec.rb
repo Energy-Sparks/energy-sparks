@@ -32,7 +32,6 @@ describe 'electricity_peak_kw_per_pupil' do
 
     it_behaves_like 'a school comparison report' do
       let(:title) { I18n.t('analytics.benchmarking.chart_table_config.annual_change_in_electricity_out_of_hours_use') }
-      let(:chart) { '#chart_annual_change_in_electricity_out_of_hours_use' }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_electricity_out_of_hours_path(expected_school) }
     end

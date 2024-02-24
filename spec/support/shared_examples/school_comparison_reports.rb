@@ -1,11 +1,13 @@
-RSpec.shared_examples 'a school comparison report' do
+RSpec.shared_examples 'a school comparison report' do |chart: false|
   it 'has the expected page title' do
     expect(page).to have_content(title)
   end
 
-  it 'includes a chart' do
-    within '#charts' do
-      expect(page).to have_css('#chart_comparison')
+  if chart
+    it 'includes a chart' do
+      within '#charts' do
+        expect(page).to have_css('#chart_comparison')
+      end
     end
   end
 

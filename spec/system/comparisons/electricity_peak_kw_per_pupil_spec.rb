@@ -24,7 +24,7 @@ describe 'electricity_peak_kw_per_pupil' do
   context 'when viewing report' do
     before { visit comparisons_electricity_peak_kw_per_pupil_index_path }
 
-    it_behaves_like 'a school comparison report' do
+    it_behaves_like 'a school comparison report', chart: '#chart_electricity_peak_kw_per_pupil' do
       let(:title) { I18n.t('analytics.benchmarking.chart_table_config.electricity_peak_kw_per_pupil') }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_electricity_intraday_path(expected_school) }
