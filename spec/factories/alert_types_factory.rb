@@ -58,6 +58,10 @@ module Alerts
         { 'Dummy alert' => TEMPLATE_VARIABLES, 'Common' => {} }
       end
 
+      def self.template_variables
+        TEMPLATE_VARIABLES
+      end
+
       TEMPLATE_VARIABLES = {
         chart_a: {
           description: 'chart description A',
