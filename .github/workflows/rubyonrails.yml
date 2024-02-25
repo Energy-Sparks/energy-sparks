@@ -2,6 +2,7 @@ name: "Ruby on Rails CI"
 on:
   push:
     branches: [ master, aws-eb-test, aws-eb-master ]
+  pull_request:
 jobs:
   rspec:
     runs-on: ubuntu-latest
