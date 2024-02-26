@@ -20,8 +20,7 @@
             <h2 class="nowrap">
               <%= link_to school.sum_points,
                           school_timeline_path(
-                            school, (
-                              { academic_year: @academic_year } unless @scoreboard.national?)
+                            school, ({ academic_year: @academic_year } unless @scoreboard.national?)
                           ),
                           class: 'badge badge-success' %>
               &nbsp;
