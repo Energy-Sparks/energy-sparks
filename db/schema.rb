@@ -672,6 +672,15 @@ ActiveRecord::Schema.define(version: 2024_02_26_111347) do
     t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
   end
 
+  create_table "comparison_metric_types", force: :cascade do |t|
+    t.string "key", null: false
+    t.integer "units", null: false
+    t.integer "fuel_type", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key", "fuel_type"], name: "index_comparison_metric_types_on_key_and_fuel_type", unique: true
+  end
+
   create_table "comparison_metrics", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.bigint "metric_type_id", null: false
