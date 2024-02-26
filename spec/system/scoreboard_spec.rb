@@ -101,8 +101,10 @@ RSpec.describe 'scoreboards', :scoreboards do
     let(:feature_active) { false }
     let(:prize_excerpt) { 'We are also offering a special prize' }
 
-    before do
-      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true) if feature_active
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_SCOREBOARD_PRIZES: feature_active.to_s do
+        example.run
+      end
     end
 
     context 'on index page' do
