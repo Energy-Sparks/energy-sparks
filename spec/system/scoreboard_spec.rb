@@ -40,6 +40,7 @@ RSpec.describe 'scoreboards', :scoreboards do
       visit scoreboard_path(scoreboard)
       expect(page).to have_content('Super scoreboard')
       expect(page).to have_content(school_with_points.name)
+      expect(page).to have_link(points.to_s, href: school_timeline_path(school_with_points, academic_year: scoreboard.this_academic_year))
       expect(page).to have_content(points)
       expect(page).to have_content(school.name)
       expect(page).to have_content('0')
@@ -50,6 +51,7 @@ RSpec.describe 'scoreboards', :scoreboards do
       expect(page).to have_content('National Scoreboard')
       expect(page).to have_content(school_with_points.name)
       expect(page).to have_content(points)
+      expect(page).to have_link(points.to_s, href: school_timeline_path(school_with_points))
       expect(page).to have_link('last year', href: scoreboard_path('national', previous_year: true))
       expect(page).to have_no_content(school.name)
     end

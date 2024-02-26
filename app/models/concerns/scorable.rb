@@ -1,6 +1,10 @@
 module Scorable
   extend ActiveSupport::Concern
 
+  def national?
+    is_a? NationalScoreboard
+  end
+
   def this_academic_year(today: Time.zone.today)
     scorable_calendar.academic_year_for(today)
   end
