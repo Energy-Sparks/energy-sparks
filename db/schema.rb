@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_23_160406) do
+ActiveRecord::Schema.define(version: 2024_02_26_111347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -654,42 +654,7 @@ ActiveRecord::Schema.define(version: 2024_02_23_160406) do
     t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
   end
 
-  create_table "comparison_footnotes", force: :cascade do |t|
-    t.string "key", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
-  end
-
-  create_table "comparison_metric_types", force: :cascade do |t|
-    t.string "key", null: false
-    t.integer "units", null: false
-    t.integer "fuel_type", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["key", "fuel_type"], name: "index_comparison_metric_types_on_key_and_fuel_type", unique: true
-  end
-
-  create_table "comparison_metrics", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.bigint "metric_type_id", null: false
-    t.bigint "alert_type_id", null: false
-    t.string "value"
-    t.integer "reporting_period"
-    t.bigint "custom_period_id"
-    t.boolean "enough_data", default: false
-    t.boolean "whole_period", default: false
-    t.boolean "recent_data", default: false
-    t.date "asof_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["alert_type_id"], name: "index_comparison_metrics_on_alert_type_id"
-    t.index ["custom_period_id"], name: "index_comparison_metrics_on_custom_period_id"
-    t.index ["metric_type_id"], name: "index_comparison_metrics_on_metric_type_id"
-    t.index ["school_id"], name: "index_comparison_metrics_on_school_id"
-  end
-
-  create_table "comparison_periods", force: :cascade do |t|
+  create_table "comparison_custom_periods", force: :cascade do |t|
     t.string "current_label", null: false
     t.date "current_start_date", null: false
     t.date "current_end_date", null: false
@@ -698,6 +663,13 @@ ActiveRecord::Schema.define(version: 2024_02_23_160406) do
     t.date "previous_end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "comparison_footnotes", force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
   end
 
   create_table "comparison_reports", force: :cascade do |t|
@@ -2024,10 +1996,7 @@ ActiveRecord::Schema.define(version: 2024_02_23_160406) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "comparison_metrics", column: "metric_type_id", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "comparison_periods", column: "custom_period_id", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "schools", on_delete: :cascade
-  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_period_id", on_delete: :cascade
+  add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"
@@ -2180,34 +2149,6 @@ ActiveRecord::Schema.define(version: 2024_02_23_160406) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((baseload.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
-  create_view "change_in_electricity_since_last_years", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      enba.school_id,
-      enba.previous_year_electricity_kwh,
-      enba.current_year_electricity_kwh,
-      enba.previous_year_electricity_co2,
-      enba.current_year_electricity_co2,
-      enba.previous_year_electricity_gbp,
-      enba.current_year_electricity_gbp,
-      enba.solar_type
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data.previous_year_electricity_kwh,
-              data.current_year_electricity_kwh,
-              data.previous_year_electricity_co2,
-              data.current_year_electricity_co2,
-              data.previous_year_electricity_gbp,
-              data.current_year_electricity_gbp,
-              data.solar_type
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) enba,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (enba.alert_generation_run_id = latest_runs.id);
-  SQL
   create_view "electricity_peak_kw_per_pupils", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -2277,5 +2218,54 @@ ActiveRecord::Schema.define(version: 2024_02_23_160406) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((usage.alert_generation_run_id = latest_runs.id) AND (usage_previous_year.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
+  create_view "change_in_electricity_since_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      enba.school_id,
+      enba.previous_year_electricity_kwh,
+      enba.current_year_electricity_kwh,
+      enba.previous_year_electricity_co2,
+      enba.current_year_electricity_co2,
+      enba.previous_year_electricity_gbp,
+      enba.current_year_electricity_gbp,
+      enba.solar_type
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.previous_year_electricity_kwh,
+              data.current_year_electricity_kwh,
+              data.previous_year_electricity_co2,
+              data.current_year_electricity_co2,
+              data.previous_year_electricity_gbp,
+              data.current_year_electricity_gbp,
+              data.solar_type
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) enba,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (enba.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "electricity_consumption_during_holidays", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.holiday_projected_usage_gbp,
+      data.holiday_usage_to_date_gbp,
+      data.holiday_name
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.holiday_projected_usage_gbp,
+              data_1.holiday_usage_to_date_gbp,
+              data_1.holiday_name
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_name text)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityUsageDuringCurrentHoliday'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
 end

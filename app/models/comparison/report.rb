@@ -17,7 +17,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (custom_period_id => comparison_periods.id) ON DELETE => cascade
+#  fk_rails_...  (custom_period_id => comparison_custom_periods.id)
 #
 class Comparison::Report < ApplicationRecord
   self.table_name = 'comparison_reports'
