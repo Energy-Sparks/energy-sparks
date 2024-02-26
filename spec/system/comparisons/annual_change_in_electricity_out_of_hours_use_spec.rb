@@ -50,7 +50,7 @@ describe 'electricity_peak_kw_per_pupil' do
           'Previous year out of hours cost at current tariff',
           'Last year out of hours cost at current tariff',
           'Change %'],
-         ['test 1 school [t]', '1', '2', '+100%', '3', '4', '+33%', '5', '6', '+20%'],
+         ["#{school.name} [t]", '1', '2', '+100%', '3', '4', '+33%', '5', '6', '+20%'],
          ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
       )
     end
