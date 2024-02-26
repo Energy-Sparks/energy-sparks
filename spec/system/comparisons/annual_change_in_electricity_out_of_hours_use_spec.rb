@@ -9,17 +9,17 @@ describe 'electricity_peak_kw_per_pupil' do
     create(:advice_page, key: :electricity_out_of_hours)
     alert_run = create(:alert_generation_run, school: school)
     create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertOutOfHoursElectricityUsage'),
-                   variables: {
-                     out_of_hours_kwh: 1,
-                     out_of_hours_co2: 2,
-                     out_of_hours_gbpcurrent: 3
-                   })
-    create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertOutOfHoursElectricityUsagePreviousYear'),
                    variables: {
-                     out_of_hours_kwh: 4,
-                     out_of_hours_co2: 5,
+                     out_of_hours_kwh: 1,
+                     out_of_hours_co2: 3,
+                     out_of_hours_gbpcurrent: 5
+                   })
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertOutOfHoursElectricityUsage'),
+                   variables: {
+                     out_of_hours_kwh: 2,
+                     out_of_hours_co2: 4,
                      out_of_hours_gbpcurrent: 6
                    })
     create(:alert, school: school, alert_generation_run: alert_run,
@@ -37,11 +37,21 @@ describe 'electricity_peak_kw_per_pupil' do
     end
 
     it 'displays the expected data' do
-      expect(page).to have_css('#comparison-table tr', count: 3)
-      expect(all('#comparison-table tr')[..-2].map { |tr| tr.all('th,td').map(&:text) }).to eq(
-        [['School', 'Watt/floor area', 'Average peak kw', 'Exemplar peak kw',
-          'Saving if match exemplar (£ at latest tariff)'],
-         ["#{school.name} [t]", '1,000', '2', '3', '£4']]
+      expect(page).to have_css('#comparison-table tr', count: 4)
+      expect(all('#comparison-table tr').map { |tr| tr.all('th,td').map(&:text) }).to eq(
+        [['', 'kWh', 'CO2 (kg)', 'Cost'],
+         ['School',
+          'Previous year out of hours kwh',
+          'Last year out of hours kwh',
+          'Change %',
+          'Previous year out of hours co2',
+          'Last year out of hours co2',
+          'Change %',
+          'Previous year out of hours cost at current tariff',
+          'Last year out of hours cost at current tariff',
+          'Change %'],
+         ['test 1 school [t]', '1', '2', '+100%', '3', '4', '+33%', '5', '6', '+20%'],
+         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
       )
     end
   end
