@@ -40,7 +40,6 @@ describe 'baseload_per_pupil', type: :system do
 
     it_behaves_like 'a school comparison report' do
       let(:title) { I18n.t('analytics.benchmarking.chart_table_config.baseload_per_pupil') }
-      let(:chart) { '#chart_baseload_per_pupil' }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }
     end

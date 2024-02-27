@@ -8,6 +8,16 @@ FactoryBot.define do
       { 'time_of_year_relevance' => 5.0 }
     end
 
+    initialize_with do
+      available_names = Object.const_get(alert_type.class_name).template_variables.values.map(&:keys).flatten.map do |key|
+        key.to_s.gsub('£', 'gbp').to_sym
+      end
+      variables.each_key do |name|
+        raise ArgumentError, "Variable #{name} not in #{available_names}" unless available_names.include?(name.to_sym)
+      end
+      new(**attributes)
+    end
+
     trait :with_run do
       alert_generation_run { FactoryBot.build(:alert_generation_run, school: school) }
     end

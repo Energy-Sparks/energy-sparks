@@ -5,7 +5,7 @@ RSpec.shared_examples 'a school comparison report' do
 
   it 'includes a chart' do
     within '#charts' do
-      expect(page).to have_css(chart)
+      expect(page).to have_css('#chart_comparison')
     end
   end
 
