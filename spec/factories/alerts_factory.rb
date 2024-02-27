@@ -9,11 +9,14 @@ FactoryBot.define do
     end
 
     initialize_with do
-      available_names = Object.const_get(alert_type.class_name).template_variables.values.map(&:keys).flatten.map do |key|
-        key.to_s.gsub('£', 'gbp').to_sym
-      end
-      variables.each_key do |name|
-        raise ArgumentError, "Variable #{name} not in #{available_names}" unless available_names.include?(name.to_sym)
+      type_class = Object.const_get(alert_type.class_name)
+      if type_class.respond_to?(:template_variables)
+        available_names = type_class.template_variables.values.map(&:keys).flatten.map do |key|
+          key.to_s.gsub('£', 'gbp').to_sym
+        end
+        variables.each_key do |name|
+          raise ArgumentError, "Variable #{name} not in #{available_names}" unless available_names.include?(name.to_sym)
+        end
       end
       new(**attributes)
     end
