@@ -56,7 +56,7 @@ module Meters
       return [DateTime.parse(response['availableCacheRange']['start']), DateTime.parse(response['availableCacheRange']['end'])]
     rescue => e
       Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
-      return []
+      return [:api_error]
     end
 
     def inventory
