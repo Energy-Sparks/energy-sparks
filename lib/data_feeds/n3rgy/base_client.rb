@@ -11,8 +11,8 @@ module DataFeeds
         }
       end
 
-      def http_connection
-        @http_connection ||= Faraday.new(@base_url, headers: headers)
+      def http_connection(connection)
+        connection ||= Faraday.new(@base_url, headers: headers)
       end
 
       # The n3rgy API returns errors in two ways. Either

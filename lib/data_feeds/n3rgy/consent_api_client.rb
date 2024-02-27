@@ -8,7 +8,7 @@ module DataFeeds
                      connection: nil)
         @api_key = api_key
         @base_url = base_url
-        @connection = connection
+        @connection = http_connection(connection)
       end
 
       def self.production_client
@@ -22,7 +22,7 @@ module DataFeeds
           'evidence'    => reference,
           'moveInDate'  => move_in_date
         }
-        response = connection.post(url) do |req|
+        response = @connection.post(url) do |req|
           req.body = config.to_json
         end
         raise ConsentFailure, error_message(response) unless response.success?
@@ -32,7 +32,7 @@ module DataFeeds
       def withdraw_consent(mpxn)
         url = "consents/withdraw-consent/#{mpxn}"
 
-        response = http_connection.delete(url)
+        response = @connection.delete(url)
         raise ConsentFailure.new(error_message(response)) unless response.success?
         true
       end
