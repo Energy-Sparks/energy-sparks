@@ -77,17 +77,17 @@ module Amr
     def extract_readings(response)
       return [] unless response.dig('devices', 0, 'values').present?
 
-      puts "#{@meter.mpan_mprn}: #{response['devices'].map { |d| d['deviceId'] }}"
-
-      # v2 returns an array of readings for each 'device' Unclear what these
-      # map to in realiy. In practice all meters we are using have a single
-      # device.
+      # v2 returns an array of readings for each 'device'. It is technically possible
+      # within the SMETS standard for there to be up to 5 devices of the same type,
+      # e.g. 5 electricity meters. But this is an edge case and in practice they
+      # would all have MPANs.
       #
       # The responses may also contain a secondaryValue which we are also ignoring
-      # for the moment.
+      # for the moment. These are for Twin Element Electricity Meters which monitor
+      # two circuits.
       #
-      # Individual values can also include an additionalInformation key which we
-      # are not using either.
+      # Individual values can also include an additionalInformation key, to indicate
+      # why data is missing which we are not currently using either.
       response['devices'][0]['values'].map do |half_hourly_reading|
         value = case response['unit']
                 when 'm3'
