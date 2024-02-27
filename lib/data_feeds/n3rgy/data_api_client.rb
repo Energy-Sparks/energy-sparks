@@ -111,7 +111,7 @@ module DataFeeds
       end
 
       def get_data(url, params = {})
-        response = connection.get(url, params)
+        response = @connection.get(url, params)
         raise NotAuthorised.new(error_message(response)) if response.status == 401
         raise NotAllowed.new(error_message(response)) if response.status == 403
         raise NotFound.new(error_message(response)) if response.status == 404
