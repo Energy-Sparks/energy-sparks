@@ -32,7 +32,7 @@ module DataFeeds
       def withdraw_consent(mpxn)
         url = "consents/withdraw-consent/#{mpxn}"
 
-        response = @connection.delete(url)
+        response = http_connection.delete(url)
         raise ConsentFailure.new(error_message(response)) unless response.success?
         true
       end

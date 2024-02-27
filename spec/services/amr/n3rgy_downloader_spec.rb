@@ -68,7 +68,7 @@ module Amr
           it 'returns empty results' do
             allow(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
             readings = service.readings
-            expect(readings[meter.fuel_type][:readings]).to be_empty
+            expect(readings[meter.meter_type][:readings]).to be_empty
           end
         end
 
@@ -90,7 +90,7 @@ module Amr
           end
 
           it 'extracts the readings' do
-            readings_by_day = readings[meter.fuel_type][:readings]
+            readings_by_day = readings[meter.meter_type][:readings]
             # Match readings from fixture
             expect(readings_by_day[start_date].kwh_data_x48).to eq(fixture_readings)
           end
@@ -104,7 +104,7 @@ module Amr
 
             it 'converts to kWh' do
               adjusted = fixture_readings.map { |r| r.nil? ? nil : r * Amr::N3rgyDownloader::KWH_PER_M3_GAS}
-              readings_by_day = readings[meter.fuel_type][:readings]
+              readings_by_day = readings[meter.meter_type][:readings]
               expect(readings_by_day[start_date].kwh_data_x48).to eq(adjusted)
             end
           end

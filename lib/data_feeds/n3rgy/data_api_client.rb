@@ -80,7 +80,7 @@ module DataFeeds
       def read_inventory(device_type, mpxns: nil, uprns: nil, device_ids: nil)
         raise if mpxns.nil? && uprns.nil? && device_ids.nil?
         body = create_inventory_body(mpxns: mpxns, uprns: uprns, device_ids: device_ids)
-        response = connection.post('/read-inventory', { 'deviceType': device_type }) do |req|
+        response = http_connection.post('/read-inventory', { 'deviceType': device_type }) do |req|
           req.body = body.to_json
         end
         JSON.parse(response.body)
@@ -111,7 +111,7 @@ module DataFeeds
       end
 
       def get_data(url, params = {})
-        response = @connection.get(url, params)
+        response = http_connection.get(url, params)
         raise NotAuthorised.new(error_message(response)) if response.status == 401
         raise NotAllowed.new(error_message(response)) if response.status == 403
         raise NotFound.new(error_message(response)) if response.status == 404

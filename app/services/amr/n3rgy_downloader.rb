@@ -36,7 +36,7 @@ module Amr
       # This return format matches the existing v1 code. This can be simplified as there is no
       # need to create the one day readings to then just throw them away in the next step
       {
-        @meter.fuel_type =>
+        @meter.meter_type =>
           {
             mpan_mprn:        @meter.mpan_mprn,
             readings:         make_one_day_readings(meter_readings[:readings], @meter.mpan_mprn),
@@ -77,14 +77,17 @@ module Amr
     def extract_readings(response)
       return [] unless response.dig('devices', 0, 'values').present?
 
-      # TODO
+      puts "#{@meter.mpan_mprn}: #{response['devices'].map { |d| d['deviceId'] }}"
+
       # v2 returns an array of readings for each 'device' Unclear what these
-      # map to in practice. Needs further testing.
+      # map to in realiy. In practice all meters we are using have a single
+      # device.
       #
       # The responses may also contain a secondaryValue which we are also ignoring
+      # for the moment.
       #
       # Individual values can also include an additionalInformation key which we
-      # are not using
+      # are not using either.
       response['devices'][0]['values'].map do |half_hourly_reading|
         value = case response['unit']
                 when 'm3'
