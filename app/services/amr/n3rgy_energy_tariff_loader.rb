@@ -19,7 +19,7 @@ module Amr
           start_date: start_date,
           tariff: todays_tariff,
           import_log: import_log).perform
-        end
+      end
     rescue => e
       msg = "Exception: downloading N3rgy tariffs for #{@meter.mpan_mprn} from #{start_date} to #{end_date} : #{e.class} #{e.message}"
       import_log.update!(error_messages: msg) if import_log
