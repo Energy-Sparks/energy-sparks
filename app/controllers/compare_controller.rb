@@ -11,7 +11,11 @@ class CompareController < ApplicationController
   # filters
   def index
     # Count is of all available benchmarks for guest users only
-    @benchmark_count = Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
+    if EnergySparks::FeatureFlags.active?(:comparison_reports)
+      @benchmark_count = Comparison::Report.where(public: true).count
+    else
+      @benchmark_count = Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
+    end
   end
 
   # pick benchmark
