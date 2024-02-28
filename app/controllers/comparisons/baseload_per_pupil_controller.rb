@@ -17,7 +17,7 @@ module Comparisons
     end
 
     def create_charts(results)
-      create_single_number_chart(results, :one_year_baseload_per_pupil_kw, 'baseload_per_pupil_w', 'w')
+      create_single_number_chart(results, :one_year_baseload_per_pupil_kw, 1000.0, 'baseload_per_pupil_w', 'w')
     end
   end
 end

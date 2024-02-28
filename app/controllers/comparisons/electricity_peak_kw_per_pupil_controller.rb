@@ -18,7 +18,7 @@ module Comparisons
     end
 
     def create_charts(results)
-      create_single_number_chart(results, :average_school_day_last_year_kw_per_floor_area, 'w_floor_area', 'w')
+      create_single_number_chart(results, :average_school_day_last_year_kw_per_floor_area, 1000.0, 'w_floor_area', 'w')
     end
   end
 end

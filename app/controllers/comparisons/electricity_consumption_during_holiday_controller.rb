@@ -13,7 +13,7 @@ module Comparisons
     end
 
     def create_charts(results)
-      create_single_number_chart(results, :holiday_projected_usage_gbp, 'projected_usage_by_end_of_holiday', '£')
+      create_single_number_chart(results, :holiday_projected_usage_gbp, nil, 'projected_usage_by_end_of_holiday', '£')
     end
   end
 end
