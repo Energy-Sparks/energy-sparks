@@ -1,6 +1,6 @@
-module Comparisons
-  # frozen_string_literal: true
+# frozen_string_literal: true
 
+module Comparisons
   class BaseloadPerPupilController < BaseController
     private
 
