@@ -30,7 +30,7 @@ describe 'electricity_peak_kw_per_pupil' do
   context 'when viewing report' do
     before { visit comparisons_annual_change_in_electricity_out_of_hours_use_index_path }
 
-    it_behaves_like 'a school comparison report' do
+    it_behaves_like 'a school comparison report', chart: false do
       let(:title) { I18n.t('analytics.benchmarking.chart_table_config.annual_change_in_electricity_out_of_hours_use') }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_electricity_out_of_hours_path(expected_school) }
@@ -38,20 +38,21 @@ describe 'electricity_peak_kw_per_pupil' do
 
     it 'displays the expected data' do
       expect(page).to have_css('#comparison-table tr', count: 4)
-      expect(all('#comparison-table thead tr, #comparison-table tbody tr').map { |tr| tr.all('th,td').map(&:text) }).to eq(
-        [['', 'kWh', 'CO2 (kg)', 'Cost'],
-         ['School',
-          'Previous year out of hours kwh',
-          'Last year out of hours kwh',
-          'Change %',
-          'Previous year out of hours co2',
-          'Last year out of hours co2',
-          'Change %',
-          'Previous year out of hours cost at current tariff',
-          'Last year out of hours cost at current tariff',
-          'Change %'],
-         ["#{school.name} (*5)", '1', '2', '+100%', '3', '4', '+33%', '5', '6', '+20%']]
-      )
+      expect(all('#comparison-table thead tr, #comparison-table tbody tr').map { |tr| tr.all('th,td').map(&:text) })
+        .to eq(
+          [['', 'kWh', 'CO2 (kg)', 'Cost'],
+           ['School',
+            'Previous year out of hours kwh',
+            'Last year out of hours kwh',
+            'Change %',
+            'Previous year out of hours co2',
+            'Last year out of hours co2',
+            'Change %',
+            'Previous year out of hours cost at current tariff',
+            'Last year out of hours cost at current tariff',
+            'Change %'],
+           ["#{school.name} (*5)", '1', '2', '+100%', '3', '4', '+33%', '5', '6', '+20%']]
+        )
     end
   end
 end

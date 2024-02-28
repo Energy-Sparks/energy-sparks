@@ -1,4 +1,6 @@
-RSpec.shared_examples 'a school comparison report' do |chart: false|
+# frozen_string_literal: true
+
+RSpec.shared_examples 'a school comparison report' do |chart: true|
   it 'has the expected page title' do
     expect(page).to have_content(title)
   end
