@@ -20,9 +20,7 @@ describe 'electricity_consumption_during_holiday' do
   context 'when viewing report' do
     before { visit comparisons_electricity_consumption_during_holiday_index_path }
 
-    it_behaves_like 'a school comparison report',
-                    chart: '#chart_electricity_consumption_during_holiday',
-                    advice_page: false do
+    it_behaves_like 'a school comparison report', advice_page: false do
       let(:title) { I18n.t('analytics.benchmarking.chart_table_config.electricity_consumption_during_holiday') }
       let(:expected_school) { school }
     end
