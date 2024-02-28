@@ -213,8 +213,7 @@ describe 'compare pages', :compare, type: :system do
             })
       end
     else
-      let(:description) { 'all about this alert type' }
-      let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
+      let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, frequency: :weekly) }
       let(:example_content) do
         [
           { type: :title, content: 'Baseload per pupil' },
