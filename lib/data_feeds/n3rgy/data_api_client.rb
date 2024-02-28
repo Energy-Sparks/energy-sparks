@@ -59,6 +59,11 @@ module DataFeeds
         readings(mpxn, fuel_type, READING_TYPE_PRODUCTION, start_date, end_date)
       end
 
+      # Read the tariff for the fuel type
+      def tariff(mpxn, fuel_type)
+        readings(mpxn, fuel_type, READING_TYPE_TARIFF)
+      end
+
       # Fetch readings for a given MPxn, fuel type and reading type for a specified
       # date range
       #
