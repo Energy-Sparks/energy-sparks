@@ -6,7 +6,6 @@ describe 'electricity_consumption_during_holiday' do
   let(:school) { create(:school) }
 
   before do
-    # create(:advice_page, key: :electricity_intraday)
     alert_run = create(:alert_generation_run, school: school)
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertElectricityUsageDuringCurrentHoliday'),
