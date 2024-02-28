@@ -38,7 +38,7 @@ describe 'electricity_peak_kw_per_pupil' do
 
     it 'displays the expected data' do
       expect(page).to have_css('#comparison-table tr', count: 4)
-      expect(all('#comparison-table tr').map { |tr| tr.all('th,td').map(&:text) }).to eq(
+      expect(all('#comparison-table thead tr, #comparison-table tbody tr').map { |tr| tr.all('th,td').map(&:text) }).to eq(
         [['', 'kWh', 'CO2 (kg)', 'Cost'],
          ['School',
           'Previous year out of hours kwh',
@@ -50,8 +50,7 @@ describe 'electricity_peak_kw_per_pupil' do
           'Previous year out of hours cost at current tariff',
           'Last year out of hours cost at current tariff',
           'Change %'],
-         ["#{school.name} [t]", '1', '2', '+100%', '3', '4', '+33%', '5', '6', '+20%'],
-         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
+         ["#{school.name} (*5)", '1', '2', '+100%', '3', '4', '+33%', '5', '6', '+20%']]
       )
     end
   end
