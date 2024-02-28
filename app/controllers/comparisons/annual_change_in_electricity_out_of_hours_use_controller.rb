@@ -14,6 +14,7 @@ module Comparisons
 
     def load_data
       Comparison::AnnualChangeInElectricityOutOfHoursUse.where(school: @schools)
+                                                        .where.not(previous_out_of_hours_kwh: nil)
                                                         .order(previous_out_of_hours_kwh: :desc)
     end
   end
