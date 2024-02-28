@@ -3,7 +3,7 @@ en:
   analytics:
     benchmarking:
       caveat_text:
-        comparison_with_previous_period_infinite: "<p>An infinite or incalculable value indicates the consumption in the first period was zero.</p>"
+        comparison_with_previous_period_infinite_html: "<p>An infinite or incalculable value indicates the consumption in the first period was zero.</p>"
         covid_lockdown: ''
         es_data_not_in_sync_html: |-
           <p>
@@ -620,15 +620,15 @@ en:
           introduction_text_html: "<p>This benchmark shows how a school is progressing against the target it has set for this year.</p>"
         footnotes:
           electricity:
-            change_rows_text: "<li>(*1) the comparison has been adjusted because the number of pupils have changed between the two %{period_type_string} for %{schools_to_sentence}.</li>"
+            change_rows_text_html: "<li>(*1) the comparison has been adjusted because the number of pupils have changed between the two %{period_type_string}.</li>"
             infinite_decrease_school_names_text: "<li>(*3) schools where percentage change is -Infinity is caused by the electricity consumption in the current %{period_type_string} being zero but in the previous %{period_type_string} it was more than zero</li>"
             infinite_increase_school_names_text: "<li>(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the previous %{period_type_string} being more than zero but in the current %{period_type_string} zero</li>"
           gas:
-            change_rows_text: "<li>(*1) the comparison has been adjusted because the floor area has changed between the two %{period_type_string} for %{schools_to_sentence}.</li>"
+            change_rows_text_html: "<li>(*1) the comparison has been adjusted because the floor area has changed between the two %{period_type_string} for %{schools_to_sentence}.</li>"
             infinite_decrease_school_names_text: "<li>(*3) schools where percentage change is -Infinity is caused by the gas consumption in the current %{period_type_string} being zero but in the previous %{period_type_string} it was more than zero</li>"
             infinite_increase_school_names_text: "<li>(*2) schools where percentage change is +Infinity is caused by the gas consumption in the previous %{period_type_string} being more than zero but in the current %{period_type_string} zero</li>"
           notes: Notes
-          rate_changed_in_period: "<li>(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the &apos;%{change_gbp_current_header}&apos; column as it is calculated using the most recent tariff.</li>"
+          rate_changed_in_period_html: "<li>(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the &apos;%{change_gbp_current_header}&apos; column as it is calculated using the most recent tariff.</li>"
         gas_consumption_during_holiday:
           introduction_text_html: |-
             <p>

@@ -2,16 +2,19 @@
 
 # == Schema Information
 #
-# Table name: electricity_peak_kw_per_pupils
+# Table name: change_in_electricity_holiday_consumption_previous_years_holidays
 #
-#  alert_generation_run_id                        :bigint(8)
-#  average_school_day_last_year_kw                :float
-#  average_school_day_last_year_kw_per_floor_area :float
-#  electricity_economic_tariff_changed_this_year  :boolean
-#  exemplar_kw                                    :float
-#  id                                             :bigint(8)
-#  one_year_saving_versus_exemplar_gbp            :float
-#  school_id                                      :bigint(8)
+#  alert_generation_run_id  :bigint(8)
+#  difference_gbpcurrent    :float
+#  difference_kwh           :float
+#  difference_percent       :float
+#  id                       :bigint(8)
+#  name_of_current_period   :text
+#  name_of_previous_period  :text
+#  pupils_changed           :boolean
+#  school_id                :bigint(8)
+#  tariff_has_changed       :boolean
+#  truncated_current_period :boolean
 #
 module Comparison
   class ChangeInElectricityHolidayConsumptionPreviousYearsHoliday < Comparison::View

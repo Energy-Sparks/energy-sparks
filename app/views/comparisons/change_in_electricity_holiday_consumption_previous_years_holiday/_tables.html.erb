@@ -9,6 +9,9 @@
         <%= t('analytics.benchmarking.configuration.column_headings.change_£current') %>
       </th>
       <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.change_kwh') %>
+      </th>
+      <th class="text-right">
         <%= t('analytics.benchmarking.configuration.column_headings.most_recent_holiday') %>
       </th>
       <th class="text-right">
@@ -17,22 +20,35 @@
     </tr>
   </thead>
   <tbody>
+    <% pupils_changed_footnote = false %>
+    <% tariff_has_changed_footnote = false %>
     <% results.each do |result| %>
       <tr>
         <td>
           <%= result.school.name %>
+          <% if result.pupils_changed %>
+            <% pupils_changed_footnote = true %>
+            <a href="#footnotes">(*1)</a>
+          <% end %>
+          <% if result.tariff_has_changed %>
+            <% tariff_has_changed_footnote = true %>
+            <a href="#footnotes">(*6)</a>
+          <% end %>
         </td>
         <td class="text-right">
-          <%= format_unit(result.difference_percent, :percent, true, :benchmark) %>
+          <%= up_downify(format_unit(result.difference_percent, :relative_percent_0dp, true, :benchmark)) %>
         </td>
         <td class="text-right">
-          <%= format_unit(result.difference_gbpcurrent, :£, true, :benchmark) %>
+          <%= up_downify(format_unit(result.difference_gbpcurrent, :£_0dp, true, :benchmark)) %>
         </td>
         <td class="text-right">
-          <%= format_unit(result.difference_kwh, :kw, true, :benchmark) %>
+          <%= up_downify(format_unit(result.difference_kwh, :kw, true, :benchmark)) %>
         </td>
         <td class="text-right">
           <%= result.name_of_current_period %>
+          <% if result.truncated_current_period %>
+            <%= t('advice_pages.tables.labels.partial') %>
+          <% end %>
         </td>
         <td class="text-right">
           <%= result.name_of_previous_period %>
@@ -40,18 +56,25 @@
       </tr>
     <% end %>
   </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="6">
-        <p>
-          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
-        </p>
-        <a name="electricity_economic_tariff_changed_this_year">[t]</a>
-        <%= t('analytics.benchmarking.content.footnotes.electricity.change_rows_text',
-              period_type_string: ''
-              schools_to_sentence: '') %>
-        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-      </td>
-    </tr>
-  </tfoot>
+  <% if pupils_changed_footnote || tariff_has_changed_footnote %>
+    <tfoot>
+      <tr>
+        <td colspan="6">
+          <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
+          <ul>
+            <% if pupils_changed_footnote %>
+              <%= t('analytics.benchmarking.content.footnotes.electricity.change_rows_text_html',
+                    period_type_string:
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')) %>
+            <% end %>
+            <% if tariff_has_changed_footnote %>
+              <%= t('analytics.benchmarking.content.footnotes.rate_changed_in_period_html',
+                    change_gbp_current_header:
+                      t('analytics.benchmarking.configuration.column_headings.change_£current')) %>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+    </tfoot>
+  <% end %>
 </table>

@@ -8,12 +8,9 @@ FROM
       difference_gbpcurrent float,
       difference_kwh float,
       name_of_current_period text,
-      truncated_current_period text,
+      truncated_current_period boolean,
       name_of_previous_period text,
       pupils_changed boolean,
-      current_period_pupils integer,
-      previous_period_pupils integer,
-      rating integer,
       tariff_has_changed boolean
     )
     WHERE alerts.alert_type_id = alert_types.id and
