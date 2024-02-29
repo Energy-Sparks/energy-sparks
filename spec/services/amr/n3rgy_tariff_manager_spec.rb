@@ -21,6 +21,19 @@ describe Amr::N3rgyTariffManager do
       service.perform
     end
 
+    context 'with an invalid tariff' do
+      let(:n3rgy_tariff) do
+        {
+          standing_charge: -7.152,
+          flat_rate: 0.05
+        }
+      end
+
+      it 'does not create a tariff' do
+        expect(energy_tariff).to be_nil
+      end
+    end
+
     context 'with a flat_rate tariff from n3rgy' do
       let(:n3rgy_tariff) do
         {

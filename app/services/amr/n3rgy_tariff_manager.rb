@@ -13,7 +13,7 @@ module Amr
       # parsing response.
       #
       # In this case consider any existing tariff to have ended
-      if @current_n3rgy_tariff.nil?
+      if @current_n3rgy_tariff.nil? || invalid_n3rgy_tariff?
         expire_existing_tariff
         return
       end
@@ -25,6 +25,13 @@ module Amr
     end
 
     private
+
+    # Some meters seem to end up with a negative standing charge. We can't use these
+    # even if the rest of the tariff might be ok (and we have no way of knowing)
+    # so treat as invalid
+    def invalid_n3rgy_tariff?
+      @current_n3rgy_tariff[:standing_charge] < 0.0
+    end
 
     def latest_energy_tariff
       @meter.energy_tariffs.dcc.where(end_date: nil).order(created_at: :desc).first
