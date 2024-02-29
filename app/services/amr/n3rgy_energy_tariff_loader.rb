@@ -7,12 +7,16 @@ module Amr
 
     def perform
       if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
-        todays_tariff = N3rgyTariffDownloader(meter: @meter).current_tariff
+        todays_tariff = N3rgyTariffDownloader.new(meter: @meter).current_tariff
 
-        N3rgyTariffManager.new(meter: @meter, current_n3rgy_tariff: todays_tariff,
-        import_log: import_log).perform
+        N3rgyTariffManager.new(meter: @meter,
+          current_n3rgy_tariff: todays_tariff,
+          import_log: import_log).perform
       else
-        todays_tariff = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).tariffs
+        todays_tariff = N3rgyDownloader.new(meter: @meter,
+          start_date: start_date,
+          end_date: end_date,
+          n3rgy_api: n3rgy_api).tariffs
 
         N3rgyEnergyTariffInserter.new(
           meter: @meter,

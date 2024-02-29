@@ -13,7 +13,10 @@ module Amr
       # parsing response.
       #
       # In this case consider any existing tariff to have ended
-      expire_existing_tariff && return if @current_n3rgy_tariff.nil?
+      if @current_n3rgy_tariff.nil?
+        expire_existing_tariff
+        return
+      end
 
       if @energy_tariff.nil? || tariff_changed?
         create_new_tariff

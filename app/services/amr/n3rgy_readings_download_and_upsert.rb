@@ -46,7 +46,11 @@ module Amr
     end
 
     def n3rgy_api
-      @n3rgy_api ||= @n3rgy_api_factory.data_api(@meter)
+      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+        nil
+      else
+        @n3rgy_api ||= @n3rgy_api_factory.data_api(@meter)
+      end
     end
 
     def create_import_log
