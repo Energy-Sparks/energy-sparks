@@ -1,0 +1,15 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+    displayCustomPeriod(this);
+
+    $('.report_reporting_period').change(function() {
+      displayCustomPeriod(this);
+    })
+  })
+
+  function displayCustomPeriod(selector) {
+    let selected = $(selector).find(":selected").val();
+    let display = (selected == 'custom') ? 'block' : 'none';
+    $('.custom_period').css('display', display);
+  }
+</script>

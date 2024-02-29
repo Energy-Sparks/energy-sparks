@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :period, class: 'Comparison::Period' do
+  factory :custom_period, class: 'Comparison::CustomPeriod' do
     sequence(:current_label) {|n| "Period current #{n}"}
     current_start_date { 1.year.ago }
     current_end_date { Time.zone.today }

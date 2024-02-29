@@ -12,7 +12,11 @@ module Meters
       @meters.each do |meter|
         begin
           meter.update(consent_granted: false)
-          @n3rgy_api_factory.consent_api(meter).withdraw_trusted_consent(meter.mpan_mprn)
+          if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+            DataFeeds::N3rgy::ConsentApiClient.production_client.withdraw_consent(meter.mpan_mprn)
+          else
+            @n3rgy_api_factory.consent_api(meter).withdraw_trusted_consent(meter.mpan_mprn)
+          end
         rescue => e
           @errors << e
           Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}, school #{meter.school.name}")

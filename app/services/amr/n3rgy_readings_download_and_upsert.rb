@@ -16,7 +16,7 @@ module Amr
 
     def perform
       unless @start_date && @end_date
-        available_dates = n3rgy_api.readings_available_date_range(@meter.mpan_mprn, @meter.fuel_type)
+        available_dates = fetch_cached_dates
         current_dates = readings_current_date_range(@meter)
       end
 
@@ -37,8 +37,20 @@ module Amr
 
     private
 
+    def fetch_cached_dates
+      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+        Meters::N3rgyMeteringService.new(@meter).available_data
+      else
+        n3rgy_api.readings_available_date_range(@meter.mpan_mprn, @meter.fuel_type)
+      end
+    end
+
     def n3rgy_api
-      @n3rgy_api ||= @n3rgy_api_factory.data_api(@meter)
+      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+        nil
+      else
+        @n3rgy_api ||= @n3rgy_api_factory.data_api(@meter)
+      end
     end
 
     def create_import_log

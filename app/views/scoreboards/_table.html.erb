@@ -8,7 +8,7 @@
   </thead>
   <tbody>
     <% schools.with_points.schools_with_positions.each do |position, schools| %>
-      <% schools.each do |school|%>
+      <% schools.each do |school| %>
         <tr>
           <td scope="row">
             <h2><span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span></h2>
@@ -18,7 +18,11 @@
           </td>
           <td>
             <h2 class="nowrap">
-              <%= link_to school.sum_points, school_timeline_path(school, academic_year: @academic_year), class: 'badge badge-success' %>
+              <%= link_to school.sum_points,
+                          school_timeline_path(
+                            school, ({ academic_year: @academic_year } unless @scoreboard.national?)
+                          ),
+                          class: 'badge badge-success' %>
               &nbsp;
               <% if school.recent_points&.positive? %>
                 <i class="fa fa-arrow-up" data-toggle="tooltip" title="<%= t('scoreboard.score_tooltip') %>"></i>
