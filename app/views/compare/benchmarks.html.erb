@@ -22,12 +22,15 @@
                 <% else %>
                   <%= Comparison::Report.find_by(key: key).try(:title) %>
                 <% end %>
+                <% if EnergySparks::FeatureFlags.active?(:comparison_reports_link_to_old) %>
+                  [<%= link_to 'current', compare_path(key, @filter) %>]
+                <% end %>
             </li>
           <% end %>
         <% else %>
-          <% benchmark_group[:benchmarks].each do |benchmark, title| %>
+          <% benchmark_group[:benchmarks].each do |key, title| %>
             <li class="pt-1"><i class="fa-li fas fa-check"></i>
-              <%= link_to title, compare_path(benchmark, @filter) %>
+              <%= link_to title, compare_path(key, @filter) %>
             </li>
           <% end %>
         <% end %>
