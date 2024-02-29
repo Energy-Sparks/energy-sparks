@@ -64,6 +64,9 @@ class MeterManagement
   def delete_meter!
     @meter.transaction do
       AggregateSchoolService.new(@meter.school).invalidate_cache
+      if @meter.can_withdraw_consent?
+        Meters::DccWithdrawTrustedConsents.new([@meter]).perform
+      end
       @meter.destroy
     end
   end
