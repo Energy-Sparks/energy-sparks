@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 035af1e71be53673fd128ca946c03063b79df3cb
-  branch: 4118-change-in-electricity-use-between-this-holiday-and-the-same-holiday-last-year
+  revision: 96ad66c650a5c1f9d465c4a5481ad4bf95eb291f
+  branch: 4110-peak-school-day-electricity-use
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -828,4 +828,4 @@ DEPENDENCIES
   wisper-rspec
 
 BUNDLED WITH
-   2.5.6
+   2.5.4
