@@ -6,9 +6,9 @@ describe 'TariffsReport', type: :system, include_application_helper: true do
   let(:school)                  { create(:school, school_group: school_group) }
   let(:school_without_group)    { create(:school) }
 
-  let!(:meter)                  { create(:electricity_meter, dcc_meter: true, school: school) }
+  let!(:meter)                  { create(:electricity_meter, dcc_meter: true, consent_granted: true, school: school) }
 
-  let!(:meter_without_group)    { create(:electricity_meter, dcc_meter: true, school: school_without_group) }
+  let!(:meter_without_group)    { create(:electricity_meter, dcc_meter: true, consent_granted: true, school: school_without_group) }
 
   # let!(:standing_charge_1) { create(:tariff_standing_charge, meter: meter, value: 1.23, start_date: Date.parse('2020-01-01')) }
   # let!(:standing_charge_2) { create(:tariff_standing_charge, meter: meter, value: 1.23, start_date: Date.parse('2020-01-02')) }

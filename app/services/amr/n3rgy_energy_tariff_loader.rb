@@ -6,11 +6,24 @@ module Amr
     end
 
     def perform
-      N3rgyEnergyTariffInserter.new(
-        meter: @meter,
-        start_date: start_date,
-        tariff: download_todays_tariff,
-        import_log: import_log).perform
+      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+        todays_tariff = N3rgyTariffDownloader.new(meter: @meter).current_tariff
+
+        N3rgyTariffManager.new(meter: @meter,
+          current_n3rgy_tariff: todays_tariff,
+          import_log: import_log).perform
+      else
+        todays_tariff = N3rgyDownloader.new(meter: @meter,
+          start_date: start_date,
+          end_date: end_date,
+          n3rgy_api: n3rgy_api).tariffs
+
+        N3rgyEnergyTariffInserter.new(
+          meter: @meter,
+          start_date: start_date,
+          tariff: todays_tariff,
+          import_log: import_log).perform
+      end
     rescue => e
       msg = "Exception: downloading N3rgy tariffs for #{@meter.mpan_mprn} from #{start_date} to #{end_date} : #{e.class} #{e.message}"
       import_log.update!(error_messages: msg) if import_log
@@ -27,10 +40,6 @@ module Amr
 
     def end_date
       @end_date ||= DateTime.now.yesterday.end_of_day
-    end
-
-    def download_todays_tariff
-      N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).tariffs
     end
 
     def n3rgy_api
