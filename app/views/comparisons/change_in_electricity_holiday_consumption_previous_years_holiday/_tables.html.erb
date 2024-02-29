@@ -73,24 +73,24 @@
           <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
           <ul>
             <% if pupils_changed_footnote %>
-              <%= t('analytics.benchmarking.content.footnotes.electricity.change_rows_text_html',
+              <%= t('analytics.benchmarking.content.footnotes.electricity.change_rows_text',
                     period_type_string:
-                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')) %>
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')).html_safe %>
             <% end %>
             <% if infinite_increase_footnote %>
-              <%= t('analytics.benchmarking.content.footnotes.electricity.infinite_increase_school_names_text_html',
+              <%= t('analytics.benchmarking.content.footnotes.electricity.infinite_increase_school_names_text',
                     period_type_string:
-                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')) %>
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')).html_safe %>
             <% end %>
             <% if infinite_decrease_footnote %>
-              <%= t('analytics.benchmarking.content.footnotes.electricity.infinite_decrease_school_names_text_html',
+              <%= t('analytics.benchmarking.content.footnotes.electricity.infinite_decrease_school_names_text',
                     period_type_string:
-                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')) %>
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')).html_safe %>
             <% end %>
             <% if tariff_has_changed_footnote %>
-              <%= t('analytics.benchmarking.content.footnotes.rate_changed_in_period_html',
+              <%= t('analytics.benchmarking.content.footnotes.rate_changed_in_period',
                     change_gbp_current_header:
-                      t('analytics.benchmarking.configuration.column_headings.change_£current')) %>
+                      t('analytics.benchmarking.configuration.column_headings.change_£current')).html_safe %>
             <% end %>
           </ul>
         </td>
