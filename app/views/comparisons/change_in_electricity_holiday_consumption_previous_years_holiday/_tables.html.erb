@@ -22,6 +22,8 @@
   <tbody>
     <% pupils_changed_footnote = false %>
     <% tariff_has_changed_footnote = false %>
+    <% infinite_increase_footnote = false %>
+    <% infinite_decrease_footnote = false %>
     <% results.each do |result| %>
       <tr>
         <td>
@@ -29,6 +31,14 @@
           <% if result.pupils_changed %>
             <% pupils_changed_footnote = true %>
             <a href="#footnotes">(*1)</a>
+          <% end %>
+          <% if result.difference_percent.infinite? == 1 %>
+            <% infinite_increase_footnote = true %>
+            <a href="#footnotes">(*2)</a>
+          <% end %>
+          <% if result.difference_percent.infinite? == -1 %>
+            <% infinite_decrease_footnote = true %>
+            <a href="#footnotes">(*3)</a>
           <% end %>
           <% if result.tariff_has_changed %>
             <% tariff_has_changed_footnote = true %>
@@ -64,6 +74,16 @@
           <ul>
             <% if pupils_changed_footnote %>
               <%= t('analytics.benchmarking.content.footnotes.electricity.change_rows_text_html',
+                    period_type_string:
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')) %>
+            <% end %>
+            <% if infinite_increase_footnote %>
+              <%= t('analytics.benchmarking.content.footnotes.electricity.infinite_increase_school_names_text_html',
+                    period_type_string:
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')) %>
+            <% end %>
+            <% if infinite_decrease_footnote %>
+              <%= t('analytics.benchmarking.content.footnotes.electricity.infinite_decrease_school_names_text_html',
                     period_type_string:
                       t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')) %>
             <% end %>
