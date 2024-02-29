@@ -12,7 +12,7 @@ module DataFeeds
       end
 
       def self.production_client
-        ConsentApiClient.new(api_key: ENV['N3RGY_API_KEY'], base_url: ENV['N3RGY_DATA_URL_V2'])
+        ConsentApiClient.new(api_key: ENV['N3RGY_API_KEY'], base_url: ENV['N3RGY_CONSENT_URL_V2'])
       end
 
       def add_trusted_consent(mpxn, reference, move_in_date = '2012-01-01')
