@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'electricity_peak_kw_per_pupil' do
+describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
   let(:schools) { create_list(:school, 3) }
 
   before do
