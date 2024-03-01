@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'editing school details', type: :system do
+RSpec.describe 'editing school configuration', type: :system do
   let!(:admin)              { create(:admin)}
   let!(:school)             { create(:school)}
 
