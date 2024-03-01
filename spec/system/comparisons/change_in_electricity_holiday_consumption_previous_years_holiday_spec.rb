@@ -56,11 +56,7 @@ describe 'electricity_peak_kw_per_pupil' do
                '.change_in_electricity_holiday_consumption_previous_years_holiday')
       end
       let(:expected_school) { schools[0] }
-    end
-
-    it 'displays the expected data' do
-      expect(page).to have_css('#comparison-table tr', count: 5)
-      expect(all('#comparison-table tr').map { |tr| tr.all('th,td').map(&:text) }).to eq(
+      let(:expected_table) do
         [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday'],
          ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'current', 'previous'],
          ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'current (partial)', 'previous'],
@@ -73,7 +69,7 @@ describe 'electricity_peak_kw_per_pupil' do
           'holidays being zero but in the previous holidays it was more than zero ' \
           '(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
           "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
-      )
+      end
     end
   end
 end
