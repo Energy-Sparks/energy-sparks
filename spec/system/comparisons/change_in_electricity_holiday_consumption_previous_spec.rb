@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
+describe 'change_in_electricity_holiday_consumption_previous_*' do
   let(:schools) { create_list(:school, 3) }
   let(:expected_table) do
     [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday'],
