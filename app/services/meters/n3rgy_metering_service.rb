@@ -53,10 +53,14 @@ module Meters
     def available_data
       return [] unless @meter.dcc_meter?
       response = api_client.consumption(@meter.mpan_mprn, @meter.fuel_type)
-      return [DateTime.parse(response['availableCacheRange']['start']), DateTime.parse(response['availableCacheRange']['end'])]
+      return [] if response.dig('availableCacheRange', 'start').blank? &&
+                   response.dig('availableCacheRange', 'end').blank?
+      start_range = DateTime.parse(response['availableCacheRange']['start'])
+      end_range = DateTime.parse(response['availableCacheRange']['end'])
+      return [start_range, end_range]
     rescue => e
       Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
-      return [:api_error]
+      return []
     end
 
     def inventory
