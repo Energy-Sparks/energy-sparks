@@ -94,9 +94,7 @@ class MeterManagement
 
   def remove_data!(archive: false)
     result = true
-    if @meter.can_withdraw_consent?
-      Meters::DccWithdrawTrustedConsents.new([@meter]).perform
-    end
+    Meters::DccWithdrawTrustedConsents.new([@meter]).perform if @meter.can_withdraw_consent?
     @meter.transaction do
       @meter.amr_data_feed_readings.delete_all unless archive
       @meter.amr_validated_readings.delete_all
