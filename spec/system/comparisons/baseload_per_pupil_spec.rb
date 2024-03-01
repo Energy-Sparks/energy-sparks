@@ -26,11 +26,11 @@ describe 'baseload_per_pupil', type: :system do
 
     baseload_alert = create(:alert_type, class_name: 'AlertElectricityBaseloadVersusBenchmark')
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: baseload_alert,
-      variables: baseload_variables)
+                   variables: baseload_variables)
 
     additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert,
-      variables: additional_data_variables)
+                   variables: additional_data_variables)
   end
 
   context 'when viewing report' do
@@ -42,17 +42,14 @@ describe 'baseload_per_pupil', type: :system do
       let(:title) { I18n.t('analytics.benchmarking.chart_table_config.baseload_per_pupil') }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }
-    end
-
-    it 'displays the expected data' do
-      within('#tables') do
-        within('#comparison-table') do
-          expect(page).to have_content('2') # baseload per pupil
-          expect(page).to have_content('£1,000') # cost
-          expect(page).to have_content('20') # average
-          expect(page).to have_content('10&percnt;') # %
-          expect(page).to have_content('£200') # savings
-        end
+      let(:expected_table) do
+        [['School', 'Baseload per pupil (W)', 'Last year cost of baseload', 'Average baseload kW',
+          'Baseload as a percent of total usage', 'Saving if matched exemplar school (using latest tariff)'],
+         ["#{school.name} [t]", '2', '£1,000', '20', '10&percnt;', '£200'],
+         ["Notes\n[t]\n" \
+          '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+          "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
+          "'last year' is defined as this year to date."]]
       end
     end
   end

@@ -28,15 +28,14 @@ describe 'electricity_peak_kw_per_pupil' do
       let(:title) { I18n.t('analytics.benchmarking.chart_table_config.electricity_peak_kw_per_pupil') }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_electricity_intraday_path(expected_school) }
-    end
-
-    it 'displays the expected data' do
-      expect(page).to have_css('#comparison-table tr', count: 3)
-      expect(all('#comparison-table tr')[..-2].map { |tr| tr.all('th,td').map(&:text) }).to eq(
+      let(:expected_table) do
         [['School', 'Watt/floor area', 'Average peak kw', 'Exemplar peak kw',
           'Saving if match exemplar (£ at latest tariff)'],
-         ["#{school.name} (*5)", '1,000', '2', '3', '£4']]
-      )
+         ["#{school.name} (*5)", '1,000', '2', '3', '£4'],
+         ["Notes\n" \
+          '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+          'tariff but other £ values are calculated using the relevant tariff at the time']]
+      end
     end
   end
 end

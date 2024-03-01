@@ -16,4 +16,8 @@ RSpec.shared_examples 'a school comparison report' do
       end
     end
   end
+
+  it 'displays the expected table' do
+    expect(all('#comparison-table tr').map { |tr| tr.all('th,td').map(&:text) }).to eq(expected_table)
+  end
 end
