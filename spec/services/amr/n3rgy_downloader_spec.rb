@@ -107,6 +107,25 @@ describe Amr::N3rgyDownloader do
             expect(readings_by_day[start_date].kwh_data_x48).to eq(adjusted)
           end
         end
+
+        context 'when there are multiple devices' do
+          let(:response) do
+            original = JSON.parse(File.read('spec/fixtures/n3rgy/get-reading-type-consumption.json'))
+            original['devices'] << original['devices'][0] # duplicate the entries
+            original
+          end
+
+          it 'still extract readings from first device' do
+            readings_by_day = readings[meter.meter_type][:readings]
+            # Match readings from fixture
+            expect(readings_by_day[start_date].kwh_data_x48).to eq(fixture_readings)
+          end
+
+          it 'logs to Rollbar' do
+            expect(Rollbar).to receive(:warning).with(anything, meter: meter.mpan_mprn, school: meter.school.name)
+            readings
+          end
+        end
       end
     end
   end
