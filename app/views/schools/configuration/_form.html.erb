@@ -87,7 +87,7 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :dark_sky_area_id, 'Dark Sky Data Feed Area' %>
+      <%= f.label :dark_sky_area_id, 'Dark Sky Area' %>
       <%= f.select :dark_sky_area_id,
                    options_from_collection_for_select(
                      DarkSkyArea.order(:title), 'id', 'title', @school&.dark_sky_area&.id
