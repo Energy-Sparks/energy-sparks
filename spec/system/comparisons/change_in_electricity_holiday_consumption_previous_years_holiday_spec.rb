@@ -4,11 +4,25 @@ require 'rails_helper'
 
 describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
   let(:schools) { create_list(:school, 3) }
+  let(:expected_table) do
+    [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday'],
+     ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'current', 'previous'],
+     ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'current (partial)', 'previous'],
+     ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7', 'current', 'previous'],
+     ["Notes\n" \
+      '(*1) the comparison has been adjusted because the number of pupils have changed between the two holidays. ' \
+      '(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the ' \
+      'previous holidays being more than zero but in the current holidays zero ' \
+      '(*3) schools where percentage change is -Infinity is caused by the electricity consumption in the current ' \
+      'holidays being zero but in the previous holidays it was more than zero ' \
+      '(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
+      "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
+  end
 
   before do
     create(:alert, school: schools[0],
                    alert_generation_run: create(:alert_generation_run, school: schools[0]),
-                   alert_type: create(:alert_type, class_name: 'AlertPreviousYearHolidayComparisonElectricity'),
+                   alert_type: create(:alert_type, class_name: alert_class_name),
                    variables: {
                      difference_percent: 1,
                      difference_gbpcurrent: 2,
@@ -21,7 +35,7 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
                    })
     create(:alert, school: schools[1],
                    alert_generation_run: create(:alert_generation_run, school: schools[1]),
-                   alert_type: create(:alert_type, class_name: 'AlertPreviousYearHolidayComparisonElectricity'),
+                   alert_type: create(:alert_type, class_name: alert_class_name),
                    variables: {
                      difference_percent: 'Infinity',
                      difference_gbpcurrent: 4,
@@ -34,7 +48,7 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
                    })
     create(:alert, school: schools[2],
                    alert_generation_run: create(:alert_generation_run, school: schools[2]),
-                   alert_type: create(:alert_type, class_name: 'AlertPreviousYearHolidayComparisonElectricity'),
+                   alert_type: create(:alert_type, class_name: alert_class_name),
                    variables: {
                      difference_percent: '-Infinity',
                      difference_gbpcurrent: 6,
@@ -47,7 +61,9 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
                    })
   end
 
-  context 'when viewing report' do
+  describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
+    let(:alert_class_name) { 'AlertPreviousYearHolidayComparisonElectricity' }
+
     before { visit comparisons_change_in_electricity_holiday_consumption_previous_years_holiday_index_path }
 
     it_behaves_like 'a school comparison report', advice_page: false do
@@ -56,20 +72,19 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
                '.change_in_electricity_holiday_consumption_previous_years_holiday')
       end
       let(:expected_school) { schools[0] }
-      let(:expected_table) do
-        [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday'],
-         ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'current', 'previous'],
-         ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'current (partial)', 'previous'],
-         ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7', 'current', 'previous'],
-         ["Notes\n" \
-          '(*1) the comparison has been adjusted because the number of pupils have changed between the two holidays. ' \
-          '(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the ' \
-          'previous holidays being more than zero but in the current holidays zero ' \
-          '(*3) schools where percentage change is -Infinity is caused by the electricity consumption in the current ' \
-          'holidays being zero but in the previous holidays it was more than zero ' \
-          '(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
-          "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
+    end
+  end
+
+  describe 'change_in_electricity_holiday_consumption_previous_holiday' do
+    let(:alert_class_name) { 'AlertPreviousHolidayComparisonElectricity' }
+
+    before { visit comparisons_change_in_electricity_holiday_consumption_previous_holiday_index_path }
+
+    it_behaves_like 'a school comparison report', advice_page: false do
+      let(:title) do
+        I18n.t('analytics.benchmarking.chart_table_config.change_in_electricity_holiday_consumption_previous_holiday')
       end
+      let(:expected_school) { schools[0] }
     end
   end
 end
