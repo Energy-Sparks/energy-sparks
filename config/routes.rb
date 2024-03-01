@@ -67,6 +67,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :electricity_consumption_during_holiday, only: [:index]
     resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index]
     resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index]
+    resources :change_in_electricity_consumption_recent_school_weeks, only: [:index]
   end
 
   # redirect old benchmark URLs
