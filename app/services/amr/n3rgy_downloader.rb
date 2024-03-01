@@ -81,6 +81,7 @@ module Amr
       # within the SMETS standard for there to be up to 5 devices of the same type,
       # e.g. 5 electricity meters. But this is an edge case and in practice they
       # would all have MPANs.
+      warn_if_multiple_devices(response)
       #
       # The responses may also contain a secondaryValue which we are also ignoring
       # for the moment. These are for Twin Element Electricity Meters which monitor
@@ -105,6 +106,15 @@ module Amr
 
     def api_client
       DataFeeds::N3rgy::DataApiClient.production_client
+    end
+
+    def warn_if_multiple_devices(response)
+      if response['devices'].length > 1
+        Rollbar.warning("Multiple devices (#{response['devices'].length}) present in n3rgy readings API",
+                      meter: @meter.mpan_mprn,
+                      school: @meter.school.name
+                    )
+      end
     end
   end
 end

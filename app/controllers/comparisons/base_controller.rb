@@ -41,7 +41,7 @@ module Comparisons
 
     # Create the chart configuration used to display chart
     def create_charts(_results)
-      nil
+      []
     end
 
     def filter

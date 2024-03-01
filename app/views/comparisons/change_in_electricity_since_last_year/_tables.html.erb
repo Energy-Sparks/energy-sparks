@@ -1,0 +1,109 @@
+<table id="comparison-table" class="table advice-table table-sorted">
+  <thead class="sticky-heading">
+    <tr>
+      <th></th>
+      <th colspan="3" class="text-center"><%= t('analytics.benchmarking.configuration.column_groups.kwh') %></th>
+      <th colspan="3" class="text-center"><%= t('analytics.benchmarking.configuration.column_groups.co2_kg') %></th>
+      <th colspan="3" class="text-center"><%= t('analytics.benchmarking.configuration.column_groups.gbp') %></th>
+      <th class="text-center">
+        <%= t('analytics.benchmarking.configuration.column_groups.solar_self_consumption') %>
+      </th>
+    </tr>
+    <tr>
+      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.previous_year') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.last_year') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.change_pct') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.previous_year') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.last_year') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.change_pct') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.previous_year') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.last_year') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.change_pct') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.estimated') %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% results.each do |change_in_electricity_since_last_year| %>
+      <tr>
+        <td>
+          <%= link_to change_in_electricity_since_last_year.school.name,
+                      advice_page_path(change_in_electricity_since_last_year.school, advice_page, :insights) %>
+        </td>
+
+        <td class="text-right">
+          <%= format_unit(change_in_electricity_since_last_year.previous_year_electricity_kwh, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(change_in_electricity_since_last_year.current_year_electricity_kwh, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <% percent_change = percent_change(change_in_electricity_since_last_year.previous_year_electricity_kwh,
+                                             change_in_electricity_since_last_year.current_year_electricity_kwh) %>
+          <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
+        </td>
+
+        <td class="text-right">
+          <%= format_unit(change_in_electricity_since_last_year.previous_year_electricity_co2, :co2, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(change_in_electricity_since_last_year.current_year_electricity_co2, :co2, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <% percent_change = percent_change(change_in_electricity_since_last_year.previous_year_electricity_co2,
+                                             change_in_electricity_since_last_year.current_year_electricity_co2) %>
+          <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
+        </td>
+
+        <td class="text-right">
+          <%= format_unit(change_in_electricity_since_last_year.previous_year_electricity_gbp, :£, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(change_in_electricity_since_last_year.current_year_electricity_gbp, :£, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <% percent_change = percent_change(change_in_electricity_since_last_year.previous_year_electricity_gbp,
+                                             change_in_electricity_since_last_year.current_year_electricity_gbp) %>
+          <%= up_downify(format_unit(percent_change, :relative_percent_0dp, true, :benchmark)) %>
+        </td>
+        <td class="text-right">
+          <% if change_in_electricity_since_last_year.solar_type == 'synthetic' %>
+            <%= t('common.labels.yes_label') %>
+          <% else %>
+            <%= t('common.labels.no_label') %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="6">
+        <p>
+          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
+        </p>
+        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+      </td>
+    </tr>
+  </tfoot>
+</table>
