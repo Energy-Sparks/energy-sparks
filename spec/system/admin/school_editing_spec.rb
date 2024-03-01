@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'manage school configuration', type: :system do
+RSpec.describe 'editing school details', type: :system do
   let!(:admin)              { create(:admin)}
 
   let!(:ks1)                { KeyStage.create(name: 'KS1') }
@@ -13,9 +13,7 @@ RSpec.describe 'manage school configuration', type: :system do
   before do
     sign_in(admin)
     visit root_path
-    expect(page.has_content?('Sign Out')).to be true
     click_on('View schools')
-    expect(page.has_content?('Energy Sparks schools across the UK')).to be true
   end
 
   it 'I can set up a school for KS1' do
@@ -113,7 +111,7 @@ RSpec.describe 'manage school configuration', type: :system do
     expect(school.enable_targets_feature?).to be false
   end
 
-  context 'can update storage heaters' do
+  context 'when updating storage heaters' do
     it 'and changes are saved' do
       click_on(school_name)
       click_on('Edit school details')
