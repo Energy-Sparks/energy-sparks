@@ -16,14 +16,14 @@
           <% benchmark_group[:benchmarks].each do |key, title| %>
             <li class="pt-1">
               <i class="fa-li fas fa-check"></i>
-                <% if comparison_exists?(key) %>
+                <% if comparison_page_exists?(key) %>
                   <%= link_to Comparison::Report.find_by(key: key).try(:title),
-                              polymorphic_path([:comparisons, key, :index], @filter) %>
+                              url_for({ controller: "/comparisons/#{key}" }.merge(@filter)) %>
                 <% else %>
                   <%= Comparison::Report.find_by(key: key).try(:title) %>
                 <% end %>
                 <% if EnergySparks::FeatureFlags.active?(:comparison_reports_link_to_old) %>
-                  [<%= link_to 'current', compare_path(key, @filter) %>]
+                  <%= link_to 'current', compare_path(key, @filter), class: 'badge badge-light' %>
                 <% end %>
             </li>
           <% end %>
