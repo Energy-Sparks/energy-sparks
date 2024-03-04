@@ -96,6 +96,7 @@ module Comparisons
       schools
     end
 
+    # borrowed from Tristan's code that's not yet merged yet :-)
     def create_single_number_chart(results, name, multiplier, series_name, y_axis_label)
       chart_data = {}
 
