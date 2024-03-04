@@ -226,7 +226,7 @@ require 'pagy/extras/bootstrap'
 #                   pluralize: lambda{ |count| ... } )
 
 Pagy::I18n.load(
-    { locale: 'en', filepath: 'config/locales/pagy.yml' },
+    { locale: 'en', filepath: 'config/locales/en/pagy.yml' },
     { locale: 'cy', filepath: 'config/locales/cy/pagy.yml' } )
 
 # I18n extra: uses the standard i18n gem which is ~18x slower using ~10x more memory
