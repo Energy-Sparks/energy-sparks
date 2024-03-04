@@ -3,19 +3,37 @@
 require 'rails_helper'
 
 describe 'electricity_peak_kw_per_pupil' do
-  let(:school) { create(:school) }
+  let(:schools) { create_list(:school, 3) }
 
   before do
-    create(:alert, school: school,
-                   alert_generation_run: create(:alert_generation_run, school: school),
-                   alert_type: create(:alert_type, class_name: 'AlertSchoolWeekComparisonElectricity'),
-                   variables: {
-                     difference_percent: 1,
-                     difference_gbpcurrent: 2,
-                     difference_kwh: 3,
-                     pupils_changed: true,
-                     tariff_has_changed: true
-                   })
+    alert_type = create(:alert_type, class_name: 'AlertSchoolWeekComparisonElectricity')
+    create(:alert, :with_run, school: schools[0],
+                              alert_type: alert_type,
+                              variables: {
+                                difference_percent: 1,
+                                difference_gbpcurrent: 2,
+                                difference_kwh: 3,
+                                pupils_changed: true,
+                                tariff_has_changed: true
+                              })
+    create(:alert, :with_run, school: schools[1],
+                              alert_type: alert_type,
+                              variables: {
+                                difference_percent: 'Infinity',
+                                difference_gbpcurrent: 4,
+                                difference_kwh: 5,
+                                pupils_changed: false,
+                                tariff_has_changed: false
+                              })
+    create(:alert, :with_run, school: schools[2],
+                              alert_type: alert_type,
+                              variables: {
+                                difference_percent: '-Infinity',
+                                difference_gbpcurrent: 6,
+                                difference_kwh: 7,
+                                pupils_changed: false,
+                                tariff_has_changed: false
+                              })
   end
 
   context 'when viewing report' do
@@ -25,11 +43,20 @@ describe 'electricity_peak_kw_per_pupil' do
       let(:title) do
         I18n.t('analytics.benchmarking.chart_table_config.change_in_electricity_consumption_recent_school_weeks')
       end
-      let(:expected_school) { school }
+      let(:expected_school) { schools[0] }
       let(:expected_table) do
-        [['School', 'Watt/floor area', 'Average peak kw', 'Exemplar peak kw',
-          'Saving if match exemplar (£ at latest tariff)'],
-         ["#{school.name} (*5)", '1,000', '2', '3', '£4']]
+        [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh'],
+         ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5'],
+         ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3'],
+         ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7'],
+         ["Notes\n" \
+          '(*1) the comparison has been adjusted because the number of pupils have changed between the two holidays. ' \
+          '(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the ' \
+          'previous holidays being more than zero but in the current holidays zero ' \
+          '(*3) schools where percentage change is -Infinity is caused by the electricity consumption in the current ' \
+          'holidays being zero but in the previous holidays it was more than zero ' \
+          '(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
+          "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
       end
     end
   end
