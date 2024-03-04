@@ -157,12 +157,13 @@ describe MeterManagement do
         expect(meter.active).to be_truthy
       end
 
-      it 'sets meter inactive and unconsents' do
-        expect_any_instance_of(Meters::DccWithdrawTrustedConsents).to receive(:perform).and_return(true)
+      it 'sets meter inactive' do
+        expect_any_instance_of(Meters::DccGrantTrustedConsents).not_to receive(:perform)
         meter.update(active: true, consent_granted: true)
         MeterManagement.new(meter).deactivate_meter!
         meter.reload
         expect(meter.active).to be_falsey
+        expect(meter.consent_granted).to be_truthy
       end
 
       it 'removes amr data feed readings' do
@@ -171,9 +172,10 @@ describe MeterManagement do
       end
 
       context 'when meter has validated readings' do
-        let!(:meter) { create(:electricity_meter_with_validated_reading, dcc_meter: true) }
+        let!(:meter) { create(:electricity_meter_with_validated_reading, dcc_meter: true, consent_granted: true) }
 
         it 'removes validated readings' do
+          expect_any_instance_of(Meters::DccWithdrawTrustedConsents).to receive(:perform).and_return(true)
           MeterManagement.new(meter).remove_data!
           expect(meter.amr_validated_readings.count).to eq 0
         end

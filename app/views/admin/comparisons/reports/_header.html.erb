@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1><%= "Comparison reports#{": #{title}" if title.present?}" %></h1>
+  <div>
+    <%= unless current_page?(action: :index)
+          link_to 'Reports', admin_comparisons_reports_path,
+                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
+        end %>
+    <%= unless current_page?(action: :new)
+          link_to 'New report', new_admin_comparisons_report_path,
+                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
+        end %>
+  </div>
+</div>

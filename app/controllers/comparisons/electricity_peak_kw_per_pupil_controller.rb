@@ -4,8 +4,8 @@ module Comparisons
   class ElectricityPeakKwPerPupilController < BaseController
     private
 
-    def title_key
-      'analytics.benchmarking.chart_table_config.electricity_peak_kw_per_pupil'
+    def key
+      :electricity_peak_kw_per_pupil
     end
 
     def advice_page_key
@@ -14,6 +14,7 @@ module Comparisons
 
     def load_data
       Comparison::ElectricityPeakKwPerPupil.where(school: @schools)
+                                           .where.not(average_school_day_last_year_kw_per_floor_area: nil)
                                            .order(average_school_day_last_year_kw_per_floor_area: :desc)
     end
 

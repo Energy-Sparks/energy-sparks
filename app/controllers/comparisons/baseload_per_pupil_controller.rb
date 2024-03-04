@@ -4,8 +4,8 @@ module Comparisons
   class BaseloadPerPupilController < BaseController
     private
 
-    def title_key
-      'analytics.benchmarking.chart_table_config.baseload_per_pupil'
+    def key
+      :baseload_per_pupil
     end
 
     def advice_page_key
