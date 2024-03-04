@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'electricity_consumption_during_holiday' do
   let(:school) { create(:school) }
+  let!(:report) { create(:report, key: :electricity_consumption_during_holiday) }
 
   before do
     alert_run = create(:alert_generation_run, school: school)
@@ -19,8 +20,8 @@ describe 'electricity_consumption_during_holiday' do
   context 'when viewing report' do
     before { visit comparisons_electricity_consumption_during_holiday_index_path }
 
-    it_behaves_like 'a school comparison report', advice_page: false do
-      let(:title) { I18n.t('analytics.benchmarking.chart_table_config.electricity_consumption_during_holiday') }
+    it_behaves_like 'a school comparison report' do
+      let(:title) { report.title }
       let(:expected_school) { school }
       let(:expected_table) do
         [['School', 'Projected usage by end of holiday', 'Holiday usage to date', 'Holiday'],
