@@ -18,7 +18,7 @@
               <i class="fa-li fas fa-check"></i>
                 <% if comparison_page_exists?(key) %>
                   <%= link_to Comparison::Report.find_by(key: key).try(:title),
-                              url_for({ controller: "/comparisons/#{key}" }.merge(@filter)) %>
+                              { controller: "/comparisons/#{key}" }.merge(@filter) %>
                 <% else %>
                   <%= Comparison::Report.find_by(key: key).try(:title) %>
                 <% end %>
