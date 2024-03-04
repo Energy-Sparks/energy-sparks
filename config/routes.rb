@@ -61,6 +61,7 @@ Rails.application.routes.draw do
 
   namespace :comparisons do
     resources :baseload_per_pupil, only: [:index]
+    resources :change_in_electricity_since_last_year, only: [:index]
   end
 
   # redirect old benchmark URLs
@@ -418,7 +419,8 @@ Rails.application.routes.draw do
     end
 
     namespace :comparisons do
-      resources :footnotes
+      resources :footnotes, except: [:show]
+      resources :reports, except: [:show]
     end
 
     resources :case_studies

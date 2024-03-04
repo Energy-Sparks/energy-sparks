@@ -1,16 +1,46 @@
 <div class="p-3 mb-3 bg-light rounded border clearfix">
-  <%= link_to t('compare.filter.change_benchmark'), benchmarks_compare_index_path(index_params.except(:benchmark)), class: 'btn btn-sm float-right ml-2' if action_name == 'show' %>
+  <%= if action_name != 'benchmarks'
+        link_to t('compare.filter.change_benchmark'), benchmarks_compare_index_path(index_params.except(:benchmark)),
+                class: 'btn btn-sm float-right ml-2'
+      end %>
   <%= link_to t('compare.filter.change_options'), compare_index_path(index_params), class: 'btn btn-sm float-right' %>
   <% if @filter[:search] == 'type' %>
-    <p><%= t('compare.filter.schools_with_type_html', school_type: tag.span(@filter[:school_type].present? ? t("common.school_types.#{@filter[:school_type]}") : t('compare.filter.all_school_types'), class: 'badge badge-info')) %></p>
+    <p><%= t('compare.filter.schools_with_type_html',
+             school_type: tag.span(
+               if @filter[:school_type].present?
+                 t("common.school_types.#{@filter[:school_type]}")
+               else
+                 t('compare.filter.all_school_types')
+               end,
+               class: 'badge badge-info'
+             )) %>
+    </p>
   <% else %>
     <p>
       <% if @filter[:search] == 'group' %>
-        <%= t('compare.filter.schools_in_school_group_html', school_group: tag.span(current_school_group.name, class: 'badge badge-info')) %>
+        <%= t('compare.filter.schools_in_school_group_html',
+              school_group: tag.span(current_school_group.name, class: 'badge badge-info')) %>
       <% elsif @filter[:search] == 'country' %>
-        <%= t('compare.filter.schools_with_country_html', country: tag.span(@filter[:country].present? ? t("school_statistics.#{@filter[:country]}") : t('compare.filter.all_countries'), class: 'badge badge-info')) %>
+        <%= t('compare.filter.schools_with_country_html',
+              country: tag.span(
+                if @filter[:country].present?
+                  t("school_statistics.#{@filter[:country]}")
+                else
+                  t('compare.filter.all_countries')
+                end,
+                class: 'badge badge-info'
+              )) %>
       <% elsif @filter[:search] == 'groups' %>
-        <%= t('compare.filter.schools_in_school_groups_html', school_groups: @filter[:school_group_ids].present? ? SchoolGroup.find(@filter[:school_group_ids]).map {|school_group| tag.span(school_group.name, class: 'badge badge-info')}.join(' ').html_safe : tag.span(t('compare.filter.all_groups'), class: 'badge badge-info')) %>
+        <%= t('compare.filter.schools_in_school_groups_html',
+              school_groups: if @filter[:school_group_ids].present?
+                               safe_join(
+                                 SchoolGroup.find(@filter[:school_group_ids]).map do |school_group|
+                                   tag.span(school_group.name, class: 'badge badge-info')
+                                 end, ' '
+                               )
+                             else
+                               tag.span(t('compare.filter.all_groups'), class: 'badge badge-info')
+                             end) %>
       <% end %>
     </p>
     <%= render 'compare/school_type_summary' %>

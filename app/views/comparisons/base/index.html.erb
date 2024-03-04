@@ -1,9 +1,9 @@
-<% content_for :page_title, @title %>
+<% content_for :page_title, @report.title %>
+<% content_for :container_classes, 'comparisons' %>
 
-<h1><%= @title %></h1>
+<h1><%= @report.title %></h1>
 
 <%= render 'compare/summary' %>
-
 <%= render 'introduction' %>
 
 <ul class="nav nav-tabs locales url-aware" id="compare-results-tabs" role="tablist">
@@ -11,10 +11,12 @@
       <a class="nav-link active" id="tables-tab" data-toggle="tab" href="#tables"
         role="tab" aria-controls="tables-content"><%= t('compare.show.tables') %></a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts"
-        role="tab" aria-controls="charts-content"><%= t('compare.show.charts') %></a>
-    </li>
+    <% if @charts.any? %>
+      <li class="nav-item">
+        <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts"
+          role="tab" aria-controls="charts-content"><%= t('compare.show.charts') %></a>
+      </li>
+    <% end %>
 </ul>
 
 <div class="tab-content" id="compare-results-content">
@@ -25,7 +27,9 @@
       </div>
     </div>
   </div>
-  <div class="tab-pane fade show" id="charts" role="tabpanel" aria-labelledby="charts-tab">
-    <%= render 'charts', chart: @chart %>
-  </div>
+  <% if @charts.any? %>
+    <div class="tab-pane fade show" id="charts" role="tabpanel" aria-labelledby="charts-tab">
+      <%= render 'charts', chart: @chart %>
+    </div>
+  <% end %>
 </div>

@@ -9,7 +9,7 @@ class MeterReviewService
   end
 
   def self.find_schools_needing_review
-    Meter.unreviewed_dcc_meter.map(&:school).sort_by(&:name).uniq
+    Meter.unreviewed_dcc_meter.from_active_schools.map(&:school).sort_by(&:name).uniq
   end
 
   def complete_review!(meters, consent_documents = [])

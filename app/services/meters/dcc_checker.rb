@@ -10,7 +10,11 @@ module Meters
       @meters.each do |meter|
         begin
           fields = { dcc_checked_at: DateTime.now }
-          status = @n3rgy_api_factory.data_api(meter).find(meter.mpan_mprn)
+          if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+            status = Meters::N3rgyMeteringService.new(meter).available?
+          else
+            status = @n3rgy_api_factory.data_api(meter).find(meter.mpan_mprn)
+          end
           fields[:dcc_meter] = status
           meter.update!(fields)
           updated_meters << meter if meter.saved_change_to_dcc_meter?

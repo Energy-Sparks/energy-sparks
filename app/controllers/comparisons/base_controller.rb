@@ -7,7 +7,7 @@ module Comparisons
     before_action :set_schools
     helper_method :index_params
     before_action :set_advice_page
-    before_action :set_title
+    before_action :set_report
 
     def index
       @results = load_data
@@ -16,16 +16,17 @@ module Comparisons
 
     private
 
-    def set_title
-      @title = I18n.t(title_key) if title_key
-    end
-
-    def title_key
-      nil
+    def set_report
+      @report = Comparison::Report.find_by_key(key) if key
     end
 
     def set_advice_page
       @advice_page = AdvicePage.find_by_key(advice_page_key) if advice_page_key
+    end
+
+    # Key for the Comparison::Report
+    def key
+      nil
     end
 
     # Key for the AdvicePage used to link to school analysis
@@ -40,7 +41,7 @@ module Comparisons
 
     # Create the chart configuration used to display chart
     def create_charts(_results)
-      nil
+      []
     end
 
     def filter

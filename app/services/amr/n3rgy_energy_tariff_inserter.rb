@@ -187,7 +187,8 @@ module Amr
       [
         EnergyTariffCharge.new(
           charge_type: :standing_charge,
-          value: standing_charge
+          value: standing_charge,
+          units: :day
         )
       ]
     end
