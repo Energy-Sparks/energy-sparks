@@ -11,7 +11,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::ElectricityTargets.where(school: @schools).with_data.default_sort
+      Comparison::ElectricityTargets.where(school: @schools).with_data.sort_default
     end
 
     def create_charts(results)

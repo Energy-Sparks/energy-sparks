@@ -8,11 +8,11 @@
     </tr>
   </thead>
   <tbody>
-    <%% results.each do |<%= file_name %>| %>
+    <%% results.each do |row| %>
       <tr>
         <td>
-          <%%= link_to <%= file_name %>.school.name,
-                      advice_page_path(<%= file_name %>.school, advice_page, :insights) %>
+          <%%= link_to row.school.name,
+                      advice_page_path(row.school, advice_page, :insights) %>
         </td>
         <td class="text-right">
           More data like this

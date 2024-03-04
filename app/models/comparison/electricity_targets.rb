@@ -14,5 +14,5 @@
 #
 class Comparison::ElectricityTargets < Comparison::View
   scope :with_data, -> { where.not(current_year_kwh: nil, current_year_target_kwh: nil) }
-  scope :default_sort, -> { order(current_year_percent_of_target_relative: :desc) }
+  scope :sort_default, -> { order(current_year_percent_of_target_relative: :desc) }
 end
