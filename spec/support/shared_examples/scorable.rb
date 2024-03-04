@@ -1,17 +1,29 @@
 RSpec.shared_examples 'a scorable' do
   describe '#scored_schools' do
-    let!(:schools) { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, scoreboard: scoreboard, school_group: school_group, activities_happened_on: 6.months.ago, template_calendar: subject.scorable_calendar}}
+    let(:activity_date) { subject.this_academic_year.end_date }
+    let!(:schools) do
+      (1..5).collect do |n|
+        create(:school, :with_points, score_points: 6 - n, scoreboard: scoreboard, school_group: school_group,
+                                      activities_happened_on: activity_date,
+                                      template_calendar: subject.scorable_calendar)
+      end
+    end
 
     it 'returns schools in points order' do
-      travel_to subject.previous_academic_year.start_date do
+      travel_to activity_date do
         expect(subject.scored_schools.map(&:sum_points)).to eq([5, 4, 3, 2, 1])
         expect(subject.scored_schools.map(&:id)).to eq(schools.map(&:id))
       end
     end
 
     context 'with academic years' do
-      let(:this_academic_year) { create(:academic_year, start_date: 12.months.ago, end_date: Time.zone.today, calendar: template_calendar) }
-      let(:last_academic_year) { create(:academic_year, start_date: 24.months.ago, end_date: 12.months.ago, calendar: template_calendar) }
+      let(:activity_date) { Time.zone.today }
+      let(:this_academic_year) do
+        create(:academic_year, start_date: 12.months.ago, end_date: Time.zone.today, calendar: template_calendar)
+      end
+      let(:last_academic_year) do
+        create(:academic_year, start_date: 24.months.ago, end_date: 12.months.ago, calendar: template_calendar)
+      end
 
       it 'accepts an academic year and restricts' do
         expect(subject.scored_schools(academic_year: this_academic_year).map(&:sum_points).any?(&:zero?)).to eq(false)

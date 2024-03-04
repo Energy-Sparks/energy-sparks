@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'a school comparison report' do |chart: true|
+RSpec.shared_examples 'a school comparison report' do
   it 'has the expected page title' do
     expect(page).to have_content(title)
   end
 
-  if chart
-    it 'includes a chart' do
+  it 'includes a chart' do
+    if defined?(chart)
       within '#charts' do
         expect(page).to have_css('#chart_comparison')
       end

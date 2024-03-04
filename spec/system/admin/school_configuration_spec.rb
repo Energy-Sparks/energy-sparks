@@ -1,139 +1,103 @@
 require 'rails_helper'
 
-RSpec.describe 'manage school configuration', type: :system do
+RSpec.describe 'editing school configuration', type: :system do
   let!(:admin)              { create(:admin)}
-
-  let!(:ks1)                { KeyStage.create(name: 'KS1') }
-  let!(:ks2)                { KeyStage.create(name: 'KS2') }
-  let!(:ks3)                { KeyStage.create(name: 'KS3') }
-
-  let(:school_name)         { 'Oldfield Park Infants' }
-  let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
+  let!(:school)             { create(:school)}
 
   before do
     sign_in(admin)
-    visit root_path
-    expect(page.has_content?('Sign Out')).to be true
-    click_on('View schools')
-    expect(page.has_content?('Energy Sparks schools across the UK')).to be true
+    visit school_path(school)
   end
 
-  it 'I can set up a school for KS1' do
-    click_on(school_name)
-    click_on('Edit school details')
-    expect(school.key_stages).not_to include(ks1)
-    expect(school.key_stages).not_to include(ks2)
-    expect(school.key_stages).not_to include(ks3)
+  context 'when editing basic configuration' do
+    let!(:school_group) { create(:school_group) }
+    let!(:scoreboard) { create(:scoreboard) }
+    let!(:funder) { create(:funder) }
 
-    check('KS1')
-    click_on('Update School')
-    school.reload
-    expect(school.key_stages).to include(ks1)
-    expect(school.key_stages).not_to include(ks2)
-    expect(school.key_stages).not_to include(ks3)
-  end
+    before do
+      click_on('School configuration')
+    end
 
-  it 'I can set up a school for KS1 and KS2' do
-    click_on(school_name)
-    click_on('Edit school details')
-    expect(school.key_stages).not_to include(ks1)
-    expect(school.key_stages).not_to include(ks2)
-    expect(school.key_stages).not_to include(ks3)
-
-    check('KS1')
-    check('KS2')
-    click_on('Update School')
-    school.reload
-    expect(school.key_stages).to include(ks1)
-    expect(school.key_stages).to include(ks2)
-    expect(school.key_stages).not_to include(ks3)
-  end
-
-  it 'can set climate impact reporting preference' do
-    click_on(school_name)
-    click_on('Edit school details')
-
-    choose('Prefer the display of chart data in kg CO2, where available')
-    click_on('Update School')
-    school.reload
-
-    expect(school.chart_preference).to eq 'carbon'
-  end
-
-  it 'can see when the school was created on Energy Sparks' do
-    click_on(school_name)
-    click_on('Edit school details')
-    date = school.created_at
-    expect(page).to have_content "#{school.name} was created on #{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')}"
-  end
-
-  it 'can edit lat/lng' do
-    click_on(school_name)
-    click_on('Edit school details')
-
-    fill_in 'Latitude', with: '52.123'
-    fill_in 'Longitude', with: '-1.123'
-    click_on('Update School')
-
-    school.reload
-    expect(school.latitude.to_s).to eq('52.123')
-    expect(school.longitude.to_s).to eq('-1.123')
-  end
-
-  it 'can create an active date' do
-    click_on(school_name)
-    click_on('Edit school details')
-
-    expect(school.observations).to be_empty
-
-    expect(page).to have_field('Activation date')
-    activation_date = Date.parse('01/01/2020')
-
-    fill_in 'Activation date', with: activation_date.strftime('%d/%m/%Y')
-    click_on('Update School')
-
-    school.reload
-    expect(school.activation_date).to eq activation_date
-
-    click_on('Edit school details')
-    fill_in 'Activation date', with: ''
-    click_on('Update School')
-
-    school.reload
-    expect(school.activation_date).to eq nil
-  end
-
-  it 'can change target feature flag' do
-    expect(school.enable_targets_feature?).to be true
-    click_on(school_name)
-    click_on('Edit school details')
-    uncheck 'Enable targets feature'
-    click_on('Update School')
-    school.reload
-    expect(school.enable_targets_feature?).to be false
-  end
-
-  context 'can update storage heaters' do
-    it 'and changes are saved' do
-      click_on(school_name)
-      click_on('Edit school details')
-      check 'Our school has night storage heaters'
-
-      click_on('Update School')
-
+    it 'allows school group to be updated' do
+      select school_group.name, from: 'School group'
+      click_on('Update configuration')
       school.reload
-      expect(school.indicated_has_storage_heaters).to be true
+      expect(school.school_group).to eq school_group
+    end
+
+    it 'allows scoreboard to be updated' do
+      select scoreboard.name, from: 'Scoreboard'
+      click_on('Update configuration')
+      school.reload
+      expect(school.scoreboard).to eq scoreboard
+    end
+
+    it 'allows funder to be updated' do
+      select funder.name, from: 'Funder'
+      click_on('Update configuration')
+      school.reload
+      expect(school.funder).to eq funder
     end
   end
 
-  it 'can change climate reporting preference' do
-    school.update!(chart_preference: :usage)
-    click_on(school_name)
-    click_on('Edit school details')
-    choose('Prefer the display of chart data in £, where available')
-    click_on('Update School')
+  context 'when editing data feeds' do
+    let!(:weather_station) { create(:weather_station) }
+    let!(:solar_pv_tuos_area) { create(:solar_pv_tuos_area) }
+    let!(:dark_sky_area) { create(:dark_sky_area) }
 
-    school.reload
-    expect(school.chart_preference).to eq 'cost'
+    before do
+      click_on('School configuration')
+    end
+
+    it 'allows weather station to be updated' do
+      select weather_station.title, from: 'Weather Station'
+      click_on('Update configuration')
+      school.reload
+      expect(school.weather_station).to eq weather_station
+    end
+
+    it 'allows dark sky area to be updated' do
+      select dark_sky_area.title, from: 'Dark Sky Area'
+      click_on('Update configuration')
+      school.reload
+      expect(school.dark_sky_area).to eq dark_sky_area
+    end
+
+    it 'allows solar area to be updated' do
+      select solar_pv_tuos_area.title, from: 'The University of Sheffield Solar Data Feed Area'
+      click_on('Update configuration')
+      school.reload
+      expect(school.solar_pv_tuos_area).to eq solar_pv_tuos_area
+    end
+  end
+
+  context 'when editing geographic areas' do
+    let!(:local_authority_area) { create(:local_authority_area) }
+
+    before do
+      click_on('School configuration')
+    end
+
+    it 'allows region to be updated' do
+      select 'London', from: 'Region'
+      click_on('Update configuration')
+      school.reload
+      expect(school.region).to eq('london')
+    end
+
+    it 'allows local authority area to be updated' do
+      select local_authority_area.name, from: 'Local Authority Area'
+      click_on('Update configuration')
+      school.reload
+      expect(school.local_authority_area).to eq(local_authority_area)
+    end
+
+    it 'allows country to be updated' do
+      expect(school.country).to eq('england')
+      select 'Wales', from: 'Country'
+      click_on('Update configuration')
+      school.reload
+      expect(school.country).to eq('wales')
+    end
   end
 end

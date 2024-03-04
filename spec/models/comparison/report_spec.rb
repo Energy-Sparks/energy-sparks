@@ -11,7 +11,7 @@ RSpec.describe Comparison::Report, type: :model do
       it { expect(report).to validate_presence_of(:title) }
       it { expect(report).not_to validate_presence_of(:introduction) }
       it { expect(report).not_to validate_presence_of(:notes) }
-      it { expect(report).to validate_presence_of(:reporting_period) }
+      it { expect(report).not_to validate_presence_of(:reporting_period) }
     end
   end
 

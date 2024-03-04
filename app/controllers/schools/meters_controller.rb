@@ -55,7 +55,11 @@ module Schools
     end
 
     def inventory
-      @inventory = Amr::N3rgyApiFactory.new.data_api(@meter).inventory(@meter.mpan_mprn)
+      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+        @inventory = Meters::N3rgyMeteringService.new(@meter).inventory
+      else
+        @inventory = Amr::N3rgyApiFactory.new.data_api(@meter).inventory(@meter.mpan_mprn)
+      end
       render :inventory
     rescue => e
       flash[:error] = e
@@ -81,12 +85,22 @@ module Schools
 
     def set_n3rgy_status
       return unless can?(:view_dcc_data, @school)
-      manager = MeterManagement.new(@meter)
-      @known_to_n3rgy = manager.is_meter_known_to_n3rgy?
-      if @known_to_n3rgy && @meter.dcc_meter
-        @n3rgy_status = manager.check_n3rgy_status
-        @n3rgy_consent_confirmed = manager.n3rgy_consented?
-        @available_cache_range = manager.available_cache_range if @n3rgy_status == :available
+      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+        service = Meters::N3rgyMeteringService.new(@meter)
+        @known_to_n3rgy = service.available?
+        if @known_to_n3rgy && @meter.dcc_meter
+          @n3rgy_status = service.status
+          @n3rgy_consent_confirmed = service.consented?
+          @available_cache_range = service.available_data if @n3rgy_consent_confirmed
+        end
+      else
+        manager = MeterManagement.new(@meter)
+        @known_to_n3rgy = manager.is_meter_known_to_n3rgy?
+        if @known_to_n3rgy && @meter.dcc_meter
+          @n3rgy_status = manager.check_n3rgy_status
+          @n3rgy_consent_confirmed = manager.n3rgy_consented?
+          @available_cache_range = manager.available_cache_range if @n3rgy_status == :available
+        end
       end
     end
 

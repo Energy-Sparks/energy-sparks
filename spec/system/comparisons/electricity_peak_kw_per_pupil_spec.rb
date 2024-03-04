@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'electricity_peak_kw_per_pupil' do
   let(:school) { create(:school) }
+  let!(:report) { create(:report, key: :electricity_peak_kw_per_pupil) }
 
   before do
     create(:advice_page, key: :electricity_intraday)
@@ -24,12 +25,14 @@ describe 'electricity_peak_kw_per_pupil' do
   context 'when viewing report' do
     before { visit comparisons_electricity_peak_kw_per_pupil_index_path }
 
-    it_behaves_like 'a school comparison report', chart: '#chart_electricity_peak_kw_per_pupil' do
+    it_behaves_like 'a school comparison report' do
       let(:title) { I18n.t('analytics.benchmarking.chart_table_config.electricity_peak_kw_per_pupil') }
+      let(:title) { report.title }
       let(:expected_school) { school }
+      let(:chart) { true }
       let(:advice_page_path) { insights_school_advice_electricity_intraday_path(expected_school) }
       let(:expected_table) do
-        [['School', 'Watt/floor area', 'Average peak kw', 'Exemplar peak kw',
+        [['School', 'W/floor area', 'Average peak kw', 'Exemplar peak kw',
           'Saving if match exemplar (£ at latest tariff)'],
          ["#{school.name} (*5)", '1,000', '2', '3', '£4'],
          ["Notes\n" \
