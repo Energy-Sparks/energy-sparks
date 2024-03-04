@@ -7,6 +7,8 @@ describe '<%= file_name %>' do
 
   before do
     alert_run = create(:alert_generation_run, school: school)
+
+    ## change to your alert details ##
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertElectricityUsageDuringCurrentHoliday'),
                    variables: {

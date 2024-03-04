@@ -16,9 +16,7 @@ FROM
   ) AS baseload,
   (
     SELECT alert_generation_run_id, school_id, data.*
-    FROM alerts, alert_types, jsonb_to_record(variables) AS data(
-      electricity_economic_tariff_changed_this_year boolean
-    )
+    FROM alerts, alert_types, jsonb_to_record(variables) AS data(electricity_economic_tariff_changed_this_year boolean)
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertAdditionalPrioritisationData'
   ) AS additional,
   (

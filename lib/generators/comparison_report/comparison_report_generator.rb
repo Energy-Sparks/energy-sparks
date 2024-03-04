@@ -14,6 +14,7 @@ class ComparisonReportGenerator < Rails::Generators::NamedBase
   end
 
   def create_controller
+    # Benchmarking::BenchmarkManager.chart_table_config(file_name)
     template 'controller.rb.tt', "app/controllers/comparisons/#{file_path}_controller.rb"
   end
 
