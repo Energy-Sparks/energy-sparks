@@ -654,42 +654,7 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
     t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
   end
 
-  create_table "comparison_footnotes", force: :cascade do |t|
-    t.string "key", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
-  end
-
-  create_table "comparison_metric_types", force: :cascade do |t|
-    t.string "key", null: false
-    t.integer "units", null: false
-    t.integer "fuel_type", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["key", "fuel_type"], name: "index_comparison_metric_types_on_key_and_fuel_type", unique: true
-  end
-
-  create_table "comparison_metrics", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.bigint "metric_type_id", null: false
-    t.bigint "alert_type_id", null: false
-    t.string "value"
-    t.integer "reporting_period"
-    t.bigint "custom_period_id"
-    t.boolean "enough_data", default: false
-    t.boolean "whole_period", default: false
-    t.boolean "recent_data", default: false
-    t.date "asof_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["alert_type_id"], name: "index_comparison_metrics_on_alert_type_id"
-    t.index ["custom_period_id"], name: "index_comparison_metrics_on_custom_period_id"
-    t.index ["metric_type_id"], name: "index_comparison_metrics_on_metric_type_id"
-    t.index ["school_id"], name: "index_comparison_metrics_on_school_id"
-  end
-
-  create_table "comparison_periods", force: :cascade do |t|
+  create_table "comparison_custom_periods", force: :cascade do |t|
     t.string "current_label", null: false
     t.date "current_start_date", null: false
     t.date "current_end_date", null: false
@@ -698,6 +663,13 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
     t.date "previous_end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "comparison_footnotes", force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
   end
 
   create_table "comparison_reports", force: :cascade do |t|
@@ -2024,10 +1996,7 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "comparison_metrics", column: "metric_type_id", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "comparison_periods", column: "custom_period_id", on_delete: :cascade
-  add_foreign_key "comparison_metrics", "schools", on_delete: :cascade
-  add_foreign_key "comparison_reports", "comparison_periods", column: "custom_period_id", on_delete: :cascade
+  add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"

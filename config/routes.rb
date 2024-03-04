@@ -425,7 +425,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
 
     namespace :comparisons do
-      resources :footnotes
+      resources :footnotes, except: [:show]
+      resources :reports, except: [:show]
     end
 
     resources :case_studies
