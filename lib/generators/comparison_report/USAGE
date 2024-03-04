@@ -1,5 +1,5 @@
 Description:
-    Explain the generator
+    Generator to create all the files required for a benchmark
 
 Example:
     bin/rails generate comparison_report benchmark_key
