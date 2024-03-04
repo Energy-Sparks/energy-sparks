@@ -4,8 +4,8 @@ module Comparisons
   class AnnualChangeInElectricityOutOfHoursUseController < BaseController
     private
 
-    def title_key
-      'analytics.benchmarking.chart_table_config.annual_change_in_electricity_out_of_hours_use'
+    def key
+      :annual_change_in_electricity_out_of_hours_use
     end
 
     def advice_page_key

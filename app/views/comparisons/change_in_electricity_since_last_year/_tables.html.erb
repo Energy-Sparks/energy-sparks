@@ -1,5 +1,5 @@
 <table id="comparison-table" class="table advice-table table-sorted">
-  <thead>
+  <thead class="sticky-heading">
     <tr>
       <th></th>
       <th colspan="3" class="text-center"><%= t('analytics.benchmarking.configuration.column_groups.kwh') %></th>
@@ -64,10 +64,10 @@
         </td>
 
         <td class="text-right">
-          <%= format_unit(change_in_electricity_since_last_year.previous_year_electricity_co2, :kwh, true, :benchmark) %>
+          <%= format_unit(change_in_electricity_since_last_year.previous_year_electricity_co2, :co2, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <%= format_unit(change_in_electricity_since_last_year.current_year_electricity_co2, :kwh, true, :benchmark) %>
+          <%= format_unit(change_in_electricity_since_last_year.current_year_electricity_co2, :co2, true, :benchmark) %>
         </td>
         <td class="text-right">
           <% percent_change = percent_change(change_in_electricity_since_last_year.previous_year_electricity_co2,
@@ -76,10 +76,10 @@
         </td>
 
         <td class="text-right">
-          <%= format_unit(change_in_electricity_since_last_year.previous_year_electricity_gbp, :kwh, true, :benchmark) %>
+          <%= format_unit(change_in_electricity_since_last_year.previous_year_electricity_gbp, :£, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <%= format_unit(change_in_electricity_since_last_year.current_year_electricity_gbp, :kwh, true, :benchmark) %>
+          <%= format_unit(change_in_electricity_since_last_year.current_year_electricity_gbp, :£, true, :benchmark) %>
         </td>
         <td class="text-right">
           <% percent_change = percent_change(change_in_electricity_since_last_year.previous_year_electricity_gbp,

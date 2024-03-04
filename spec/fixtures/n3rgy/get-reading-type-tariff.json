@@ -1,0 +1,60 @@
+{
+  "resource": "/mpxn/1234567891000/utility/electricity/readingtype/tariff?outputFormat=json&start=202402270000&granularity=halfhour&end=202402272359",
+  "responseTimestamp": "2024-02-28T09:40:09.835Z",
+  "devices": [
+    {
+      "deviceId": "44-11-02-00-00-1C-7F-52",
+      "tariffs": [
+        {
+          "firstReading": "20240117012220",
+          "lastReading": "20240228012827",
+          "primaryActiveTariffPrice": 62.411,
+          "currencyUnitsName": "Millipence",
+          "currencyUnitsLabel": "GB Pounds",
+          "standingCharge": 125.246
+        }
+      ],
+      "months": [
+        {
+          "monthName": "February",
+          "days": [
+            {
+              "dayNumber": 27,
+              "timePeriods": [
+                {
+                  "start": "00:00:00",
+                  "end": "23:59",
+                  "prices": [
+                    {
+                      "type": "TOU",
+                      "value": 5.648
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 28,
+              "timePeriods": [
+                {
+                  "start": "00:00:00",
+                  "end": "23:59",
+                  "prices": [
+                    {
+                      "type": "TOU",
+                      "value": 5.648
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "availableCacheRange": {
+        "start": "202311211735",
+        "end": "202402280940"
+      }
+    }
+  ]
+}

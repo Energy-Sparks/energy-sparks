@@ -12,7 +12,11 @@ module Meters
       @meters.each do |meter|
         begin
           reference = meter.meter_review.consent_grant.guid
-          @n3rgy_api_factory.consent_api(meter).grant_trusted_consent(meter.mpan_mprn, reference)
+          if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+            DataFeeds::N3rgy::ConsentApiClient.production_client.add_trusted_consent(meter.mpan_mprn, reference)
+          else
+            @n3rgy_api_factory.consent_api(meter).grant_trusted_consent(meter.mpan_mprn, reference)
+          end
           meter.update(consent_granted: true)
         rescue => e
           @errors << e

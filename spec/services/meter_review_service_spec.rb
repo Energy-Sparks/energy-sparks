@@ -11,6 +11,15 @@ RSpec.describe MeterReviewService do
 
   let!(:service)               { MeterReviewService.new(school, admin) }
 
+  describe '.find_schools_needing_review' do
+    let!(:inactive) { create(:school, active: false) }
+
+    it 'lists only active schools' do
+      create(:electricity_meter, school: inactive, dcc_meter: true, consent_granted: false)
+      expect(MeterReviewService.find_schools_needing_review).to match_array([school])
+    end
+  end
+
   context 'when completing a review' do
     before do
       allow_any_instance_of(MeterManagement).to receive(:is_meter_known_to_n3rgy?).and_return(true)

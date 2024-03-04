@@ -2,8 +2,9 @@
 
 require 'rails_helper'
 
-describe 'electricity_peak_kw_per_pupil' do
+describe 'annual_change_in_electricity_out_of_hours_use' do
   let(:school) { create(:school) }
+  let!(:report) { create(:report, key: :annual_change_in_electricity_out_of_hours_use) }
 
   before do
     create(:advice_page, key: :electricity_out_of_hours)
@@ -30,8 +31,8 @@ describe 'electricity_peak_kw_per_pupil' do
   context 'when viewing report' do
     before { visit comparisons_annual_change_in_electricity_out_of_hours_use_index_path }
 
-    it_behaves_like 'a school comparison report', chart: false do
-      let(:title) { I18n.t('analytics.benchmarking.chart_table_config.annual_change_in_electricity_out_of_hours_use') }
+    it_behaves_like 'a school comparison report' do
+      let(:title) { report.title }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_electricity_out_of_hours_path(expected_school) }
       let(:expected_table) do
@@ -46,7 +47,7 @@ describe 'electricity_peak_kw_per_pupil' do
           'Previous year out of hours cost at current tariff',
           'Last year out of hours cost at current tariff',
           'Change %'],
-         ["#{school.name} (*5)", '1', '2', '+100%', '3', '4', '+33%', '5', '6', '+20%'],
+         ["#{school.name} (*5)", '1', '2', '+100%', '3', '4', '+33%', '£5', '£6', '+20%'],
          ["Notes\n" \
           '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
           "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \

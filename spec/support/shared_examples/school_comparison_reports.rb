@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'a school comparison report' do |chart: true, advice_page: true|
+RSpec.shared_examples 'a school comparison report' do
   it 'has the expected page title' do
     expect(page).to have_content(title)
   end
 
-  if chart
-    it 'includes a chart' do
+  it 'includes a chart' do
+    if defined?(chart)
       within '#charts' do
         expect(page).to have_css('#chart_comparison')
       end
     end
   end
 
-  if advice_page
-    it 'links to the relevant advice page' do
+  it 'links to the relevant advice page' do
+    if defined?(advice_page)
       within('#tables') do
         within('#comparison-table') do
           expect(page).to have_link(expected_school.name, href: advice_page_path)
