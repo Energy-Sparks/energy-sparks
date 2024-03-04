@@ -1,0 +1,52 @@
+<table id="comparison-table" class="table advice-table table-sorted">
+  <thead class="sticky-heading">
+    <tr>
+      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.w_floor_area') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.average_peak_kw') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.exemplar_peak_kw') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.saving_if_match_exemplar_£') %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% results.each do |result| %>
+      <tr>
+        <td>
+          <%= link_to result.school.name, advice_page_path(result.school, advice_page, :insights) %>
+          <% if result.electricity_economic_tariff_changed_this_year %>
+            <a href="#electricity_economic_tariff_changed_this_year">(*5)</a>
+          <% end %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.average_school_day_last_year_kw_per_floor_area * 1000.0, :kw, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.average_school_day_last_year_kw, :kw, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.exemplar_kw, :kw, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit([0.0, result.one_year_saving_versus_exemplar_gbp].max, :£, true, :benchmark) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="5">
+        <p><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></p>
+        <a name="electricity_economic_tariff_changed_this_year" />
+        <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
+      </td>
+    </tr>
+  </tfoot>
+</table>

@@ -14,7 +14,7 @@ describe 'change_in_electricity_since_last_year', type: :system do
   end
 
   let!(:school) { create(:school) }
-  let!(:report) { create(:report, key: :change_in_electricity_since_last_year)}
+  let!(:report) { create(:report, key: :change_in_electricity_since_last_year) }
 
   before do
     create(:advice_page, key: :electricity_long_term)
@@ -34,22 +34,12 @@ describe 'change_in_electricity_since_last_year', type: :system do
       let(:title) { report.title }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_electricity_long_term_path(expected_school) }
-    end
-
-    it 'displays the expected data' do
-      within('#tables') do
-        within('#comparison-table') do
-          expect(page).to have_content('1,000') # previous_year_electricity_kwh per pupil
-          expect(page).to have_content('500') # current_year_electricity_kwh
-
-          expect(page).to have_content('800') # previous_year_electricity_co2
-          expect(page).to have_content('400') # current_year_electricity_co2
-
-          expect(page).to have_content('£2,000') # previous_year_electricity_gbp
-          expect(page).to have_content('£1,200') # previous_year_electricity_gbp
-
-          expect(page).to have_content('Yes') # solar
-        end
+      let(:expected_table) do
+        [['', 'kWh', 'CO2 (kg)', '£', 'Solar self consumption'],
+         ['School', 'Previous year', 'Last year', 'Change %', 'Previous year', 'Last year', 'Change %', 'Previous year',
+          'Last year', 'Change %', 'Estimated'],
+         [school.name, '1,000', '500', '-50%', '800', '400', '-50%', '£2,000', '£1,200', '-40%', 'Yes'],
+         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
       end
     end
   end

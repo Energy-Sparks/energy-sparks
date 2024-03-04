@@ -78,7 +78,7 @@ describe 'compare pages', :compare, type: :system do
 
     it 'includes charts', if: feature_flag do
       within '#charts' do
-        expect(page).to have_css('div#chart_baseload_per_pupil')
+        expect(page).to have_css('div#chart_comparison')
       end
     end
 
