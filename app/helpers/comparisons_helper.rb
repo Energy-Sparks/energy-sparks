@@ -15,10 +15,6 @@ module ComparisonsHelper
   end
 
   def comparison_page_exists?(key)
-    begin
-      "Comparisons::#{key.to_s.camelcase}Controller".constantize
-    rescue
-      false
-    end
+    Object.const_defined?("Comparisons::#{key.to_s.camelcase}Controller")
   end
 end
