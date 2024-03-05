@@ -56,6 +56,15 @@ module Comparisons
       []
     end
 
+    # Returns a list of table names. These correspond to a partial that should be
+    # found in the views folder for the comparison. By default assumes a single table
+    # which is defined in a file called _table.html.erb.
+    #
+    # Partials will be provided with the report, advice page, and results
+    def tables
+      [:table]
+    end
+
     def create_single_number_chart(results, name, series_name, y_axis_label)
       chart_data = {}
 
