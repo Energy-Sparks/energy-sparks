@@ -34,20 +34,24 @@ describe '<%= file_name %>' do
       let(:title) { report.title }
       let(:chart) { '#chart_comparison' } # there may be more than one chart!
       let(:expected_school) { school }
-      let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key] }
-    end
-
-    it 'displays the expected data' do
-      within('#tables') do
-        within('#comparison-table') do
-          # change to your data!
-          expect(page).to have_content('+18.7%') # Percent above or below target since target set
-          expect(page).to have_content('-48%') # Percent above or below last year
-          expect(page).to have_content('1,280') # kWh consumption since target set
-          expect(page).to have_content('2,280') # Target kWh consumption
-          expect(page).to have_content('2,400') # Last year kWh consumption
-          expect(page).to have_content('Monday 1 Jan 2024') # Start date for target
-        end
+      let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+      let(:expected_table) do
+        [['School',
+          'Percent above or below target since target set',
+          'Percent above or below last year',
+          'kWh consumption since target set',
+          'Target kWh consumption',
+          'Last year kWh consumption',
+          'Start date for target'],
+         [school.name,
+          '+18.7%',
+          '-48%',
+          '1,280',
+          '2,280',
+          '2,400',
+          'Monday 1 Jan 2024'],
+         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
+        ]
       end
     end
   end
