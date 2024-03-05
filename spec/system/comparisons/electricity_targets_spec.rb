@@ -29,8 +29,11 @@ describe 'electricity_targets' do
     before { visit "/comparisons/#{key}" }
 
     it_behaves_like 'a school comparison report' do
-      let(:title) { report.title }
-      let(:chart) { '#chart_comparison' }
+      let(:expected_report) { report }
+    end
+
+    it_behaves_like 'a school comparison report with a table' do
+      let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
       let(:expected_table) do
@@ -51,6 +54,27 @@ describe 'electricity_targets' do
          ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
         ]
       end
+      let(:expected_csv) do
+        [['School',
+          'Percent above or below target since target set',
+          'Percent above or below last year',
+          'kWh consumption since target set',
+          'Target kWh consumption',
+          'Last year kWh consumption',
+          'Start date for target'],
+         [school.name,
+          '18.7',
+          '-48',
+          '1,280',
+          '2,280',
+          '2,400',
+          '2024-01-01']
+        ]
+      end
+    end
+
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:chart) { '#chart_comparison' }
     end
   end
 end

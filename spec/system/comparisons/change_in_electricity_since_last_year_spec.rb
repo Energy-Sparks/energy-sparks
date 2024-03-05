@@ -31,7 +31,11 @@ describe 'change_in_electricity_since_last_year', type: :system do
     end
 
     it_behaves_like 'a school comparison report' do
-      let(:title) { report.title }
+      let(:expected_report) { report }
+    end
+
+    it_behaves_like 'a school comparison report with a table' do
+      let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_electricity_long_term_path(expected_school) }
       let(:expected_table) do
@@ -40,6 +44,12 @@ describe 'change_in_electricity_since_last_year', type: :system do
           'Last year', 'Change %', 'Estimated'],
          [school.name, '1,000', '500', '-50%', '800', '400', '-50%', '£2,000', '£1,200', '-40%', 'Yes'],
          ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
+      end
+      let(:expected_csv) do
+        [['', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', '', 'Solar self consumption'],
+         ['School', 'Previous year', 'Last year', 'Change %', 'Previous year', 'Last year', 'Change %', 'Previous year',
+          'Last year', 'Change %', 'Estimated'],
+         [school.name, '1,000', '500', '-50', '800', '400', '-50', '2,000', '1,200', '-40', 'Yes']]
       end
     end
   end
