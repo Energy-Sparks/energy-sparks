@@ -7,9 +7,9 @@ FROM
       difference_percent float,
       difference_gbpcurrent float,
       difference_kwh float,
-      name_of_current_period text,
+      current_period_type text,
       truncated_current_period boolean,
-      name_of_previous_period text,
+      previous_period_type text,
       pupils_changed boolean,
       tariff_has_changed boolean
     )
