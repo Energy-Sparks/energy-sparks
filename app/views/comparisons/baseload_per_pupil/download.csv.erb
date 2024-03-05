@@ -1,0 +1,21 @@
+<%-
+  headers = [
+    t('analytics.benchmarking.configuration.column_headings.school'),
+    t('analytics.benchmarking.configuration.column_headings.baseload_per_pupil_w'),
+    t('analytics.benchmarking.configuration.column_headings.last_year_cost_of_baseload'),
+    t('analytics.benchmarking.configuration.column_headings.average_baseload_kw'),
+    t('analytics.benchmarking.configuration.column_headings.baseload_percent'),
+    t('analytics.benchmarking.configuration.column_headings.saving_if_matched_exemplar_school')
+  ]
+-%>
+<%= CSV.generate_line(headers, force_quotes: true).strip.html_safe %>
+<%- @results.each do |baseload_per_pupil| %>
+  <%= CSV.generate_line([baseload_per_pupil.school.name,
+      format_unit(baseload_per_pupil.one_year_baseload_per_pupil_kw * 1000.0, Float),
+      format_unit(baseload_per_pupil.average_baseload_last_year_gbp, Float),
+      format_unit(baseload_per_pupil.average_baseload_last_year_kw, Float),
+      format_unit(baseload_per_pupil.annual_baseload_percent, Float),
+      format_unit([0.0, baseload_per_pupil.one_year_saving_versus_exemplar_gbp].max, Float)
+      ], force_quotes: true).html_safe
+  -%>
+<%- end -%>

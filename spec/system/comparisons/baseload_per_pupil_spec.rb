@@ -40,7 +40,8 @@ describe 'baseload_per_pupil', type: :system do
     end
 
     it_behaves_like 'a school comparison report' do
-      let(:title) { report.title }
+      let(:comparison_page_path) { comparisons_baseload_per_pupil_index_path }
+      let(:expected_report) { report }
       let(:chart) { true }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }

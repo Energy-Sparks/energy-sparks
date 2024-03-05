@@ -13,7 +13,17 @@ module Comparisons
 
     def index
       @results = load_data
-      @charts = create_charts(@results)
+      respond_to do |format|
+        format.html do
+          @charts = create_charts(@results)
+        end
+        format.csv do
+          filename = "#{key}-#{Time.zone.now.iso8601}"
+          response.headers['Content-Type'] = 'text/csv'
+          response.headers['Content-Disposition'] = "attachment; filename=#{filename}.csv"
+          render :download
+        end
+      end
     end
 
     private
