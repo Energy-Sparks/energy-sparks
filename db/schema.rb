@@ -2240,6 +2240,34 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "change_in_electricity_since_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      enba.school_id,
+      enba.previous_year_electricity_kwh,
+      enba.current_year_electricity_kwh,
+      enba.previous_year_electricity_co2,
+      enba.current_year_electricity_co2,
+      enba.previous_year_electricity_gbp,
+      enba.current_year_electricity_gbp,
+      enba.solar_type
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.previous_year_electricity_kwh,
+              data.current_year_electricity_kwh,
+              data.previous_year_electricity_co2,
+              data.current_year_electricity_co2,
+              data.previous_year_electricity_gbp,
+              data.current_year_electricity_gbp,
+              data.solar_type
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) enba,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (enba.alert_generation_run_id = latest_runs.id);
+  SQL
   create_view "change_in_electricity_holiday_consumption_previous_years_holida", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
