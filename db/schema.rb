@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_26_163134) do
+ActiveRecord::Schema.define(version: 2024_03_01_155530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2149,34 +2149,6 @@ ActiveRecord::Schema.define(version: 2024_02_26_163134) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((baseload.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
-  create_view "change_in_electricity_since_last_years", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      enba.school_id,
-      enba.previous_year_electricity_kwh,
-      enba.current_year_electricity_kwh,
-      enba.previous_year_electricity_co2,
-      enba.current_year_electricity_co2,
-      enba.previous_year_electricity_gbp,
-      enba.current_year_electricity_gbp,
-      enba.solar_type
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data.previous_year_electricity_kwh,
-              data.current_year_electricity_kwh,
-              data.previous_year_electricity_co2,
-              data.current_year_electricity_co2,
-              data.previous_year_electricity_gbp,
-              data.current_year_electricity_gbp,
-              data.solar_type
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) enba,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (enba.alert_generation_run_id = latest_runs.id);
-  SQL
   create_view "electricity_peak_kw_per_pupils", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -2282,17 +2254,17 @@ ActiveRecord::Schema.define(version: 2024_02_26_163134) do
       data.truncated_current_period
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data_1.difference_percent,
+              data_1.current_period_type,
               data_1.difference_gbpcurrent,
               data_1.difference_kwh,
-              data_1.name_of_current_period,
-              data_1.truncated_current_period,
-              data_1.name_of_previous_period,
+              data_1.difference_percent,
+              data_1.previous_period_type,
               data_1.pupils_changed,
-              data_1.tariff_has_changed
+              data_1.tariff_has_changed,
+              data_1.truncated_current_period
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(difference_percent double precision, difference_gbpcurrent double precision, difference_kwh double precision, name_of_current_period text, truncated_current_period boolean, name_of_previous_period text, pupils_changed boolean, tariff_has_changed boolean)
+              LATERAL jsonb_to_record(alerts.variables) data_1(current_period_type text, difference_gbpcurrent double precision, difference_kwh double precision, difference_percent double precision, previous_period_type text, pupils_changed boolean, tariff_has_changed boolean, truncated_current_period boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertPreviousYearHolidayComparisonElectricity'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
