@@ -14,9 +14,9 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
                                 difference_percent: 1,
                                 difference_gbpcurrent: 2,
                                 difference_kwh: 3,
-                                name_of_current_period: 'current',
+                                current_period_type: 'easter',
                                 truncated_current_period: true,
-                                name_of_previous_period: 'previous',
+                                previous_period_type: 'easter',
                                 pupils_changed: true,
                                 tariff_has_changed: true
                               })
@@ -26,9 +26,9 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
                                 difference_percent: 'Infinity',
                                 difference_gbpcurrent: 4,
                                 difference_kwh: 5,
-                                name_of_current_period: 'current',
+                                current_period_type: 'easter',
                                 truncated_current_period: false,
-                                name_of_previous_period: 'previous',
+                                previous_period_type: 'easter',
                                 pupils_changed: false,
                                 tariff_has_changed: false
                               })
@@ -38,9 +38,9 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
                                 difference_percent: '-Infinity',
                                 difference_gbpcurrent: 6,
                                 difference_kwh: 7,
-                                name_of_current_period: 'current',
+                                current_period_type: 'easter',
                                 truncated_current_period: false,
-                                name_of_previous_period: 'previous',
+                                previous_period_type: 'easter',
                                 pupils_changed: false,
                                 tariff_has_changed: false
                               })
@@ -54,9 +54,9 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
       let(:expected_school) { schools[0] }
       let(:expected_table) do
         [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday'],
-         ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'current', 'previous'],
-         ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'current (partial)', 'previous'],
-         ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7', 'current', 'previous'],
+         ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'Easter', 'Easter'],
+         ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'Easter (partial)', 'Easter'],
+         ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7', 'Easter', 'Easter'],
          ["Notes\n" \
           '(*1) the comparison has been adjusted because the number of pupils have changed between the two holidays. ' \
           '(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the ' \
