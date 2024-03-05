@@ -1,14 +1,17 @@
 module ComparisonsHelper
-  def comparison_table_id(report)
-    "#{report.key}-comparison-table"
+  def comparison_table_id(report, table_name)
+    "#{report.key}-#{table_name}"
   end
 
-  def download_link(report, params)
-    download_path = polymorphic_path([:comparisons, report.key.to_sym, :index], params: params.merge(format: :csv))
+  def download_link(report, table_name, params)
+    download_path = polymorphic_path(
+      [:comparisons, report.key.to_sym, :index],
+      params: params.merge(table_name: table_name, format: :csv)
+    )
     link_to I18n.t('school_groups.download_as_csv'),
          download_path,
          class: 'btn btn-sm btn-outline-dark rounded-pill font-weight-bold',
-         id: "#{report.key}-download-comparison-table-csv"
+         id: "#{report.key}-#{table_name}-download"
   end
 
   # Calculate percentage change across two values or sum of values in two arrays

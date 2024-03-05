@@ -16,12 +16,13 @@ module Comparisons
       respond_to do |format|
         format.html do
           @charts = create_charts(@results)
+          @table_names = table_names
         end
         format.csv do
-          filename = "#{key}-#{Time.zone.now.iso8601}"
+          filename = "#{key}-#{filter[:table_name]}-#{Time.zone.now.iso8601}.csv"
           response.headers['Content-Type'] = 'text/csv'
-          response.headers['Content-Disposition'] = "attachment; filename=#{filename}.csv"
-          render :download
+          response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
+          render partial: filter[:table_name].to_s
         end
       end
     end
@@ -61,7 +62,7 @@ module Comparisons
     # which is defined in a file called _table.html.erb.
     #
     # Partials will be provided with the report, advice page, and results
-    def tables
+    def table_names
       [:table]
     end
 
@@ -93,7 +94,7 @@ module Comparisons
     def filter
       @filter ||=
         params.permit(:search, :benchmark, :country, :school_type, :funder, school_group_ids: [], school_types: [])
-          .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
+          .with_defaults(school_group_ids: [], school_types: School.school_types.keys, table_name: table_names.first)
           .to_hash.symbolize_keys
     end
 

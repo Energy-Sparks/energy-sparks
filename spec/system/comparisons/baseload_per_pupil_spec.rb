@@ -40,9 +40,11 @@ describe 'baseload_per_pupil', type: :system do
     end
 
     it_behaves_like 'a school comparison report' do
-      let(:comparison_page_path) { comparisons_baseload_per_pupil_index_path }
       let(:expected_report) { report }
-      let(:chart) { true }
+    end
+
+    it_behaves_like 'a school comparison report with a table' do
+      let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }
       let(:expected_table) do
@@ -54,6 +56,13 @@ describe 'baseload_per_pupil', type: :system do
           "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
           "'last year' is defined as this year to date."]]
       end
+      let(:expected_csv) do
+        [['School', 'Baseload per pupil (W)', 'Last year cost of baseload', 'Average baseload kW',
+          'Baseload as a percent of total usage', 'Saving if matched exemplar school (using latest tariff)'],
+         [school.name, '2', '1,000', '20', '10', '200']]
+      end
     end
+
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
