@@ -31,8 +31,9 @@ profiles
 .env
 *.txt
 *.DS_Store
-*csv
+csv
 !etc/**/*csv
+!lib/tasks/deployment/*csv
 !spec/fixtures/**/*csv
 !data-pipeline/spec/support/files/**/*csv
 

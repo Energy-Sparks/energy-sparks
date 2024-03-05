@@ -4,8 +4,8 @@ module Comparisons
   class ChangeInElectricityHolidayConsumptionPreviousYearsHolidayController < BaseController
     private
 
-    def title_key
-      'analytics.benchmarking.chart_table_config.change_in_electricity_holiday_consumption_previous_years_holiday'
+    def key
+      :change_in_electricity_holiday_consumption_previous_years_holiday
     end
 
     def load_data

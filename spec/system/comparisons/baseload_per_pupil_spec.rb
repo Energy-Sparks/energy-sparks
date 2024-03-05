@@ -18,6 +18,7 @@ describe 'baseload_per_pupil', type: :system do
   end
 
   let!(:school) { create(:school) }
+  let!(:report) { create(:report, key: :baseload_per_pupil)}
 
   before do
     create(:advice_page, key: :baseload)
@@ -39,7 +40,8 @@ describe 'baseload_per_pupil', type: :system do
     end
 
     it_behaves_like 'a school comparison report' do
-      let(:title) { I18n.t('analytics.benchmarking.chart_table_config.baseload_per_pupil') }
+      let(:title) { report.title }
+      let(:chart) { true }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }
       let(:expected_table) do

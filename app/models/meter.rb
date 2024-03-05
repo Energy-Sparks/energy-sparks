@@ -82,7 +82,7 @@ class Meter < ApplicationRecord
   scope :not_dcc, -> { where(dcc_meter: false) }
   scope :dcc, -> { where(dcc_meter: true) }
   scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
-  scope :not_recently_checked, -> { where('dcc_checked_at is NULL OR dcc_checked_at < ?', 1.month.ago) }
+  scope :not_recently_checked, -> { where('dcc_checked_at is NULL OR dcc_checked_at < ?', 7.days.ago) }
   scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }

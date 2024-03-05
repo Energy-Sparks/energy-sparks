@@ -8,12 +8,31 @@
 
 <% @benchmark_groups.each do |benchmark_group| %>
   <div class="compare card mb-4">
-    <div class="card-header"><%= %><%= benchmark_group[:name] %></div>
+    <div class="card-header"><%= benchmark_group[:name] %></div>
     <div class="card-body pb-0">
       <div class="card-subtitle text-muted"><%= benchmark_group[:description] %></div>
       <ul class="fa-ul card-columns">
-        <% benchmark_group[:benchmarks].each do |benchmark, title| %>
-          <li class="pt-1"><i class="fa-li fas fa-check"></i><%= link_to title, compare_path(benchmark, @filter) %></li>
+        <% if EnergySparks::FeatureFlags.active?(:comparison_reports) %>
+          <% benchmark_group[:benchmarks].each do |key, title| %>
+            <li class="pt-1">
+              <i class="fa-li fas fa-check"></i>
+                <% if comparison_page_exists?(key) %>
+                  <%= link_to Comparison::Report.find_by(key: key).try(:title),
+                              { controller: "/comparisons/#{key}" }.merge(@filter) %>
+                <% else %>
+                  <%= Comparison::Report.find_by(key: key).try(:title) %>
+                <% end %>
+                <% if EnergySparks::FeatureFlags.active?(:comparison_reports_link_to_old) %>
+                  <%= link_to 'current', compare_path(key, @filter), class: 'badge badge-light' %>
+                <% end %>
+            </li>
+          <% end %>
+        <% else %>
+          <% benchmark_group[:benchmarks].each do |key, title| %>
+            <li class="pt-1"><i class="fa-li fas fa-check"></i>
+              <%= link_to title, compare_path(key, @filter) %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </div>

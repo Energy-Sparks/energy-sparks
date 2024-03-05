@@ -1,7 +1,7 @@
 module MetersHelper
   def consented_in_n3rgy?(list_of_consented_mpans, meter)
     return nil if list_of_consented_mpans.empty?
-    list_of_consented_mpans.include? meter.mpan_mprn
+    list_of_consented_mpans.include? meter.mpan_mprn.to_s
   end
 
   def highlight_consent_mismatch?(list_of_consented_mpans, meter)

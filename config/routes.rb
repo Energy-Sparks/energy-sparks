@@ -60,6 +60,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   end
 
   namespace :comparisons do
+    resources :electricity_targets, only: [:index]
     resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_since_last_year, only: [:index]
     resources :electricity_peak_kw_per_pupil, only: [:index]
@@ -424,7 +425,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
 
     namespace :comparisons do
-      resources :footnotes
+      resources :footnotes, except: [:show]
+      resources :reports, except: [:show]
     end
 
     resources :case_studies
