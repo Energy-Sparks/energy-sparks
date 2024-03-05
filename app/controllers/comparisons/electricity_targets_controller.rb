@@ -15,7 +15,8 @@ module Comparisons
     end
 
     def create_charts(results)
-      create_single_number_chart(results, :current_year_percent_of_target_relative, :percent_above_or_below_target_since_target_set, :percent)
+      create_single_number_chart(results, :current_year_percent_of_target_relative, 100.0,
+                                 :percent_above_or_below_target_since_target_set, :percent)
     end
   end
 end

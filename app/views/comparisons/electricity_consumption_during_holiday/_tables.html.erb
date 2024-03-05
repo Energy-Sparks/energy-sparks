@@ -1,0 +1,34 @@
+<table id="comparison-table" class="table advice-table table-sorted">
+  <thead>
+    <tr>
+      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.projected_usage_by_end_of_holiday') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.holiday_usage_to_date') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.holiday') %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% results.each do |result| %>
+      <tr>
+        <td>
+          <%= result.school.name %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.holiday_projected_usage_gbp, :£, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(result.holiday_usage_to_date_gbp, :£, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= result.holiday_name %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

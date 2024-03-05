@@ -66,7 +66,7 @@ module Comparisons
       [:table]
     end
 
-    def create_single_number_chart(results, name, series_name, y_axis_label)
+    def create_single_number_chart(results, name, multiplier, series_name, y_axis_label)
       chart_data = {}
 
       # Some charts also set x_max_value to 100 if there are metric values > 100
@@ -79,8 +79,9 @@ module Comparisons
         next if metric.nil? || metric.nan? || metric.infinite?
 
         # for a percentage metric we'd multiply * 100.0
-        # here we're converting from kW to W
-        chart_data[result.school.name] = metric * 1000.0
+        # for converting from kW to W 1000.0
+        metric *= multiplier unless multiplier.nil?
+        chart_data[result.school.name] = metric
       end
 
       [{
