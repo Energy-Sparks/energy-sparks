@@ -21,7 +21,7 @@
                       advice_page_path(row.school, advice_page, :insights) %>
         </td>
         <td class="text-right">
-          <%= format_unit(row.one_year_electricity_per_pupil_gbp, :£, true, :benchmark) %>
+          <%= format_unit(row.one_year_electricity_per_pupil_gbp, :£_0dp, true, :benchmark) %>
         </td>
         <td class="text-right">
           <%= format_unit(row.last_year_gbp, :£, true, :benchmark) %>
