@@ -1,0 +1,17 @@
+<%-
+  headers = [
+    t('analytics.benchmarking.configuration.column_headings.school'),
+    t('analytics.benchmarking.configuration.column_headings.projected_usage_by_end_of_holiday'),
+    t('analytics.benchmarking.configuration.column_headings.holiday_usage_to_date'),
+    t('analytics.benchmarking.configuration.column_headings.holiday')
+  ]
+-%>
+<%= CSV.generate_line(headers, force_quotes: true).strip.html_safe %>
+<%- @results.each do |result| -%>
+<%= CSV.generate_line([result.school.name,
+      format_unit(result.holiday_projected_usage_gbp, Float, true, :benchmark),
+      format_unit(result.holiday_usage_to_date_gbp, Float, true, :benchmark),
+      result.holiday_name
+     ], force_quotes: true).html_safe
+-%>
+<%- end -%>
