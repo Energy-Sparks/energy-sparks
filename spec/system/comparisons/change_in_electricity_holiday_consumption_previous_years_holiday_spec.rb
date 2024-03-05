@@ -4,57 +4,53 @@ require 'rails_helper'
 
 describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
   let(:schools) { create_list(:school, 3) }
+  let!(:report) { create(:report, key: :change_in_electricity_holiday_consumption_previous_years_holiday) }
 
   before do
-    create(:alert, school: schools[0],
-                   alert_generation_run: create(:alert_generation_run, school: schools[0]),
-                   alert_type: create(:alert_type, class_name: 'AlertPreviousYearHolidayComparisonElectricity'),
-                   variables: {
-                     difference_percent: 1,
-                     difference_gbpcurrent: 2,
-                     difference_kwh: 3,
-                     name_of_current_period: 'current',
-                     truncated_current_period: true,
-                     name_of_previous_period: 'previous',
-                     pupils_changed: true,
-                     tariff_has_changed: true
-                   })
-    create(:alert, school: schools[1],
-                   alert_generation_run: create(:alert_generation_run, school: schools[1]),
-                   alert_type: create(:alert_type, class_name: 'AlertPreviousYearHolidayComparisonElectricity'),
-                   variables: {
-                     difference_percent: 'Infinity',
-                     difference_gbpcurrent: 4,
-                     difference_kwh: 5,
-                     name_of_current_period: 'current',
-                     truncated_current_period: false,
-                     name_of_previous_period: 'previous',
-                     pupils_changed: false,
-                     tariff_has_changed: false
-                   })
-    create(:alert, school: schools[2],
-                   alert_generation_run: create(:alert_generation_run, school: schools[2]),
-                   alert_type: create(:alert_type, class_name: 'AlertPreviousYearHolidayComparisonElectricity'),
-                   variables: {
-                     difference_percent: '-Infinity',
-                     difference_gbpcurrent: 6,
-                     difference_kwh: 7,
-                     name_of_current_period: 'current',
-                     truncated_current_period: false,
-                     name_of_previous_period: 'previous',
-                     pupils_changed: false,
-                     tariff_has_changed: false
-                   })
+    alert_type = create(:alert_type, class_name: 'AlertPreviousYearHolidayComparisonElectricity')
+    create(:alert, :with_run, school: schools[0],
+                              alert_type: alert_type,
+                              variables: {
+                                difference_percent: 1,
+                                difference_gbpcurrent: 2,
+                                difference_kwh: 3,
+                                name_of_current_period: 'current',
+                                truncated_current_period: true,
+                                name_of_previous_period: 'previous',
+                                pupils_changed: true,
+                                tariff_has_changed: true
+                              })
+    create(:alert, :with_run, school: schools[1],
+                              alert_type: alert_type,
+                              variables: {
+                                difference_percent: 'Infinity',
+                                difference_gbpcurrent: 4,
+                                difference_kwh: 5,
+                                name_of_current_period: 'current',
+                                truncated_current_period: false,
+                                name_of_previous_period: 'previous',
+                                pupils_changed: false,
+                                tariff_has_changed: false
+                              })
+    create(:alert, :with_run, school: schools[2],
+                              alert_type: alert_type,
+                              variables: {
+                                difference_percent: '-Infinity',
+                                difference_gbpcurrent: 6,
+                                difference_kwh: 7,
+                                name_of_current_period: 'current',
+                                truncated_current_period: false,
+                                name_of_previous_period: 'previous',
+                                pupils_changed: false,
+                                tariff_has_changed: false
+                              })
   end
 
   context 'when viewing report' do
     before { visit comparisons_change_in_electricity_holiday_consumption_previous_years_holiday_index_path }
 
     it_behaves_like 'a school comparison report', advice_page: false do
-      let(:title) do
-        I18n.t('analytics.benchmarking.chart_table_config' \
-               '.change_in_electricity_holiday_consumption_previous_years_holiday')
-      end
+      let(:title) { report.title }
       let(:expected_school) { schools[0] }
       let(:expected_table) do
         [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday'],
