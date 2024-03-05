@@ -7,7 +7,6 @@
 #  last_year_gbp                              :float
 #  one_year_electricity_per_pupil_gbp         :float
 #  one_year_saving_versus_exemplar_gbpcurrent :float
-#  rating                                     :float
 #  school_id                                  :bigint(8)
 #
 class Comparison::AnnualElectricityCostsPerPupil < Comparison::View

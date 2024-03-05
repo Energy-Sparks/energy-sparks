@@ -2356,17 +2356,15 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
       data.school_id,
       data.one_year_electricity_per_pupil_gbp,
       data.last_year_gbp,
-      data.one_year_saving_versus_exemplar_gbpcurrent,
-      data.rating
+      data.one_year_saving_versus_exemplar_gbpcurrent
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.one_year_electricity_per_pupil_gbp,
               data_1.last_year_gbp,
-              data_1.one_year_saving_versus_exemplar_gbpcurrent,
-              data_1.rating
+              data_1.one_year_saving_versus_exemplar_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision, rating double precision)
+              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityAnnualVersusBenchmark'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs

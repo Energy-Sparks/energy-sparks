@@ -6,8 +6,7 @@ FROM
     FROM alerts, alert_types, jsonb_to_record(variables) AS data(
       one_year_electricity_per_pupil_gbp float,
       last_year_gbp float,
-      one_year_saving_versus_exemplar_gbpcurrent float,
-      rating float
+      one_year_saving_versus_exemplar_gbpcurrent float
   )
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertElectricityAnnualVersusBenchmark'
   ) AS data,
