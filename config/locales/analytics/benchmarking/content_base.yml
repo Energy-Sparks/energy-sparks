@@ -301,7 +301,7 @@ en:
           unadjusted_kwh: Unadjusted change (kWh)
           urn: URN
           variation_in_baseload_between_days_of_week: Variation in baseload between days of week
-          w_floor_area: w/floor area
+          w_floor_area: W/floor area
           weekend: Weekend
           winter_baseload_kw: Winter baseload kW
           year_before_joined: Year before joined

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Comparisons
   class BaseController < ApplicationController
     include UserTypeSpecific
@@ -42,6 +44,32 @@ module Comparisons
     # Create the chart configuration used to display chart
     def create_charts(_results)
       []
+    end
+
+    def create_single_number_chart(results, name, multiplier, series_name, y_axis_label)
+      chart_data = {}
+
+      # Some charts also set x_max_value to 100 if there are metric values > 100
+      # Removes issues with schools with large % changes breaking the charts
+      #
+      # This could be done by clipping values to 100.0 if the metric has a
+      # unit of percentage/relative_percent
+      results.each do |result|
+        metric = result.send(name)
+        next if metric.nil? || metric.nan? || metric.infinite?
+
+        # for a percentage metric we'd multiply * 100.0
+        # for converting from kW to W 1000.0
+        metric *= multiplier unless multiplier.nil?
+        chart_data[result.school.name] = metric
+      end
+
+      [{
+        id: :comparison,
+        x_axis: chart_data.keys,
+        x_data: { I18n.t("analytics.benchmarking.configuration.column_headings.#{series_name}") => chart_data.values },
+        y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
+      }]
     end
 
     def filter

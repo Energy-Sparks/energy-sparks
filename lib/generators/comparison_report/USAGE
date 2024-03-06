@@ -1,0 +1,13 @@
+Description:
+    Generator to create all the files required for a benchmark
+
+Example:
+    bin/rails generate comparison_report benchmark_key
+
+    This will create:
+        scenic view for benchmark_key
+        model: app/models/comparison/#{benchmark_key}.rb
+        view: app/views/comparisons/#{benchmark_key}/_tables.html.erb
+        controller: comparisons/#{benchmark_key}_controller.rb
+        spec: spec/system/comparisons/#{benchmark_key}_spec.rb
+        route for benchmark_key in config/routes.rb

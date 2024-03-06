@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 
@@ -60,8 +60,12 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
+    resources :electricity_targets, only: [:index]
     resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_since_last_year, only: [:index]
+    resources :electricity_peak_kw_per_pupil, only: [:index]
+    resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
+    resources :electricity_consumption_during_holiday, only: [:index]
   end
 
   # redirect old benchmark URLs

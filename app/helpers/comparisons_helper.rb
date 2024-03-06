@@ -13,4 +13,8 @@ module ComparisonsHelper
     val = data.sum
     to_nil_if_sum_zero && val == 0.0 ? nil : val
   end
+
+  def comparison_page_exists?(key)
+    Object.const_defined?("Comparisons::#{key.to_s.camelcase}Controller")
+  end
 end
