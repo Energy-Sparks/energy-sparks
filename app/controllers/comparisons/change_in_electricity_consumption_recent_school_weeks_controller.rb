@@ -4,8 +4,8 @@ module Comparisons
   class ChangeInElectricityConsumptionRecentSchoolWeeksController < BaseController
     private
 
-    def title_key
-      'analytics.benchmarking.chart_table_config.change_in_electricity_consumption_recent_school_weeks'
+    def key
+      :change_in_electricity_consumption_recent_school_weeks
     end
 
     def load_data

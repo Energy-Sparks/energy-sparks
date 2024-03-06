@@ -2,8 +2,9 @@
 
 require 'rails_helper'
 
-describe 'electricity_peak_kw_per_pupil' do
+describe 'change_in_electricity_consumption_recent_school_weeks' do
   let(:schools) { create_list(:school, 3) }
+  let!(:report) { create(:report, key: :change_in_electricity_consumption_recent_school_weeks)}
 
   before do
     alert_type = create(:alert_type, class_name: 'AlertSchoolWeekComparisonElectricity')
@@ -40,9 +41,7 @@ describe 'electricity_peak_kw_per_pupil' do
     before { visit comparisons_change_in_electricity_consumption_recent_school_weeks_path }
 
     it_behaves_like 'a school comparison report', advice_page: false do
-      let(:title) do
-        I18n.t('analytics.benchmarking.chart_table_config.change_in_electricity_consumption_recent_school_weeks')
-      end
+      let(:title) { report.title }
       let(:expected_school) { schools[0] }
       let(:expected_table) do
         [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh'],
