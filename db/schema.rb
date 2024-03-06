@@ -2149,34 +2149,6 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((baseload.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
-  create_view "change_in_electricity_since_last_years", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      enba.school_id,
-      enba.previous_year_electricity_kwh,
-      enba.current_year_electricity_kwh,
-      enba.previous_year_electricity_co2,
-      enba.current_year_electricity_co2,
-      enba.previous_year_electricity_gbp,
-      enba.current_year_electricity_gbp,
-      enba.solar_type
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data.previous_year_electricity_kwh,
-              data.current_year_electricity_kwh,
-              data.previous_year_electricity_co2,
-              data.current_year_electricity_co2,
-              data.previous_year_electricity_gbp,
-              data.current_year_electricity_gbp,
-              data.solar_type
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) enba,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (enba.alert_generation_run_id = latest_runs.id);
-  SQL
   create_view "electricity_peak_kw_per_pupils", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -2206,6 +2178,33 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
+  create_view "electricity_targets", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.current_year_percent_of_target_relative,
+      data.current_year_unscaled_percent_of_target_relative,
+      data.current_year_kwh,
+      data.current_year_target_kwh,
+      data.unscaled_target_kwh_to_date,
+      data.tracking_start_date
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.current_year_percent_of_target_relative,
+              data_1.current_year_unscaled_percent_of_target_relative,
+              data_1.current_year_kwh,
+              data_1.current_year_target_kwh,
+              data_1.unscaled_target_kwh_to_date,
+              data_1.tracking_start_date
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_unscaled_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, unscaled_target_kwh_to_date double precision, tracking_start_date date)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityTargetAnnual'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
   create_view "annual_change_in_electricity_out_of_hours_uses", sql_definition: <<-SQL
       SELECT latest_runs.id,
@@ -2268,31 +2267,59 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "change_in_electricity_since_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      enba.school_id,
+      enba.previous_year_electricity_kwh,
+      enba.current_year_electricity_kwh,
+      enba.previous_year_electricity_co2,
+      enba.current_year_electricity_co2,
+      enba.previous_year_electricity_gbp,
+      enba.current_year_electricity_gbp,
+      enba.solar_type
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.previous_year_electricity_kwh,
+              data.current_year_electricity_kwh,
+              data.previous_year_electricity_co2,
+              data.current_year_electricity_co2,
+              data.previous_year_electricity_gbp,
+              data.current_year_electricity_gbp,
+              data.solar_type
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) enba,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (enba.alert_generation_run_id = latest_runs.id);
+  SQL
   create_view "change_in_electricity_holiday_consumption_previous_years_holida", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
       data.school_id,
-      data.difference_percent,
+      data.current_period_type,
       data.difference_gbpcurrent,
       data.difference_kwh,
-      data.name_of_current_period,
-      data.truncated_current_period,
-      data.name_of_previous_period,
+      data.difference_percent,
+      data.previous_period_type,
       data.pupils_changed,
-      data.tariff_has_changed
+      data.tariff_has_changed,
+      data.truncated_current_period
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data_1.difference_percent,
+              data_1.current_period_type,
               data_1.difference_gbpcurrent,
               data_1.difference_kwh,
-              data_1.name_of_current_period,
-              data_1.truncated_current_period,
-              data_1.name_of_previous_period,
+              data_1.difference_percent,
+              data_1.previous_period_type,
               data_1.pupils_changed,
-              data_1.tariff_has_changed
+              data_1.tariff_has_changed,
+              data_1.truncated_current_period
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(difference_percent double precision, difference_gbpcurrent double precision, difference_kwh double precision, name_of_current_period text, truncated_current_period boolean, name_of_previous_period text, pupils_changed boolean, tariff_has_changed boolean)
+              LATERAL jsonb_to_record(alerts.variables) data_1(current_period_type text, difference_gbpcurrent double precision, difference_kwh double precision, difference_percent double precision, previous_period_type text, pupils_changed boolean, tariff_has_changed boolean, truncated_current_period boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertPreviousYearHolidayComparisonElectricity'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
@@ -2306,9 +2333,9 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
       data.difference_percent,
       data.difference_gbpcurrent,
       data.difference_kwh,
-      data.name_of_current_period,
+      data.current_period_type,
       data.truncated_current_period,
-      data.name_of_previous_period,
+      data.previous_period_type,
       data.pupils_changed,
       data.tariff_has_changed
      FROM ( SELECT alerts.alert_generation_run_id,
@@ -2316,14 +2343,14 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
               data_1.difference_percent,
               data_1.difference_gbpcurrent,
               data_1.difference_kwh,
-              data_1.name_of_current_period,
+              data_1.current_period_type,
               data_1.truncated_current_period,
-              data_1.name_of_previous_period,
+              data_1.previous_period_type,
               data_1.pupils_changed,
               data_1.tariff_has_changed
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(difference_percent double precision, difference_gbpcurrent double precision, difference_kwh double precision, name_of_current_period text, truncated_current_period boolean, name_of_previous_period text, pupils_changed boolean, tariff_has_changed boolean)
+              LATERAL jsonb_to_record(alerts.variables) data_1(difference_percent double precision, difference_gbpcurrent double precision, difference_kwh double precision, current_period_type text, truncated_current_period boolean, previous_period_type text, pupils_changed boolean, tariff_has_changed boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertPreviousHolidayComparisonElectricity'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
