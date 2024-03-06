@@ -44,10 +44,10 @@
           <%= format_unit(result.max_day_kw, :kw, true, :benchmark) %>
         </td>
         <td class="text-right">
-          <%= result.min_day_str %>
+          <%= t('date.day_names')[result.min_day] %>
         </td>
         <td class="text-right">
-          <%= result.max_day_str %>
+          <%= t('date.day_names')[result.max_day] %>
         </td>
         <td class="text-right">
           <%= format_unit(result.annual_cost_gbpcurrent, :£, true, :benchmark) %>

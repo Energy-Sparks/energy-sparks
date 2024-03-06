@@ -2315,7 +2315,7 @@ ActiveRecord::Schema.define(version: 2024_03_06_145739) do
               data_1.annual_cost_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(percent_intraday_variation double precision, min_day_kw double precision, max_day_kw double precision, min_day text, max_day text, annual_cost_gbpcurrent double precision)
+              LATERAL jsonb_to_record(alerts.variables) data_1(percent_intraday_variation double precision, min_day_kw double precision, max_day_kw double precision, min_day integer, max_day integer, annual_cost_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertIntraweekBaseloadVariation'::text))) data,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
