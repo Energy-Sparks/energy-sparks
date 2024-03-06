@@ -1,0 +1,58 @@
+require 'rails_helper'
+
+describe 'annual_electricity_out_of_hours_use' do
+  let!(:school) { create(:school) }
+  let(:key) { :annual_electricity_out_of_hours_use }
+  let(:advice_page_key) { :your_advice_page_key }
+
+  # change to your variables
+  let(:variables) do
+    {
+      current_year_percent_of_target_relative: +0.18699995372972533,
+      current_year_unscaled_percent_of_target_relative: -0.4799985149375391,
+      current_year_kwh: 1284.7,
+      current_year_target_kwh: 2281.8825833333326,
+      unscaled_target_kwh_to_date: 2401.9816666666666,
+      tracking_start_date: '2024-01-01'
+    }
+  end
+
+  # change to your alert type (there may be more than one!)
+  let(:alert_type) { create(:alert_type, class_name: 'AlertElectricityTargetAnnual') }
+  let(:alert_run) { create(:alert_generation_run, school: school) }
+  let!(:report) { create(:report, key: key) }
+
+  before do
+    create(:advice_page, key: advice_page_key)
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+  end
+
+  context 'when viewing report' do
+    before { visit "/comparisons/#{key}" }
+
+    it_behaves_like 'a school comparison report' do
+      let(:title) { report.title }
+      let(:chart) { '#chart_comparison' } # there may be more than one chart!
+      let(:expected_school) { school }
+      let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+      let(:expected_table) do
+        [['School',
+          'Percent above or below target since target set',
+          'Percent above or below last year',
+          'kWh consumption since target set',
+          'Target kWh consumption',
+          'Last year kWh consumption',
+          'Start date for target'],
+         [school.name,
+          '+18.7%',
+          '-48%',
+          '1,280',
+          '2,280',
+          '2,400',
+          'Monday 1 Jan 2024'],
+         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
+        ]
+      end
+    end
+  end
+end
