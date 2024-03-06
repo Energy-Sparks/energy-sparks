@@ -478,8 +478,4 @@ module ApplicationHelper
   def live_data_path
     ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path
   end
-
-  def comparison_exists?(key)
-    Rails.application.routes.url_helpers.respond_to?("comparisons_#{key}_index_path")
-  end
 end
