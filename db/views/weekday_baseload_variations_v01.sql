@@ -9,8 +9,8 @@ FROM
       percent_intraday_variation float,
       min_day_kw float,
       max_day_kw float,
-      min_day_str float,
-      max_day_str float,
+      min_day text,
+      max_day text,
       annual_cost_gbpcurrent float
     )
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertIntraweekBaseloadVariation'

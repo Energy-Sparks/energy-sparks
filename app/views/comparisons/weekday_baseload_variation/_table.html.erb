@@ -7,16 +7,22 @@
     <tr>
       <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
       <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.w_floor_area') %>
+        <%= t('analytics.benchmarking.configuration.column_headings.variation_in_baseload_between_days_of_week') %>
       </th>
       <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.average_peak_kw') %>
+        <%= t('analytics.benchmarking.configuration.column_headings.min_average_weekday_baseload_kw') %>
       </th>
       <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.exemplar_peak_kw') %>
+        <%= t('analytics.benchmarking.configuration.column_headings.max_average_weekday_baseload_kw') %>
       </th>
       <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.saving_if_match_exemplar_£') %>
+        <%= t('analytics.benchmarking.configuration.column_headings.day_of_week_with_minimum_baseload') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.day_of_week_with_maximum_baseload') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.potential_saving') %>
       </th>
     </tr>
   </thead>
@@ -30,7 +36,7 @@
           <% end %>
         </td>
         <td class="text-right">
-          <%= format_unit(result.percent_intraday_variation, :percent, true, :benchmark) %>
+          <%= up_downify(format_unit(result.percent_intraday_variation, :relative_percent, true, :benchmark)) %>
         <td class="text-right">
           <%= format_unit(result.min_day_kw, :kw, true, :benchmark) %>
         </td>

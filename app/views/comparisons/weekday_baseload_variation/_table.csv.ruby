@@ -3,10 +3,12 @@
 CSV.generate do |csv|
   csv << [
     t('analytics.benchmarking.configuration.column_headings.school'),
-    t('analytics.benchmarking.configuration.column_headings.w_floor_area'),
-    t('analytics.benchmarking.configuration.column_headings.average_peak_kw'),
-    t('analytics.benchmarking.configuration.column_headings.exemplar_peak_kw'),
-    t('analytics.benchmarking.configuration.column_headings.saving_if_match_exemplar_£')
+    t('analytics.benchmarking.configuration.column_headings.variation_in_baseload_between_days_of_week'),
+    t('analytics.benchmarking.configuration.column_headings.min_average_weekday_baseload_kw'),
+    t('analytics.benchmarking.configuration.column_headings.max_average_weekday_baseload_kw'),
+    t('analytics.benchmarking.configuration.column_headings.day_of_week_with_minimum_baseload'),
+    t('analytics.benchmarking.configuration.column_headings.day_of_week_with_maximum_baseload'),
+    t('analytics.benchmarking.configuration.column_headings.potential_saving')
   ]
   @results.each do |result|
     csv << [
@@ -16,7 +18,7 @@ CSV.generate do |csv|
       format_unit(result.max_day_kw,  Float, true, :benchmark),
       result.min_day_str,
       result.max_day_str,
-      format_unit(result.annual_cost_gbpcurrent, :£, true, :benchmark)
+      format_unit(result.annual_cost_gbpcurrent, Float, true, :benchmark)
     ]
   end
 end.html_safe

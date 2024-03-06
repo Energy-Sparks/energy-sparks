@@ -35,16 +35,18 @@ describe 'weekday_baseload_variation' do
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
-      headers = ['School', 'W/floor area', 'Average peak kw', 'Exemplar peak kw',
-                 'Saving if match exemplar (£ at latest tariff)']
+      headers = ['School', 'Variation in baseload between days of week', 'Min average weekday baseload kW',
+                 'Max average weekday baseload kW', 'Day of week with minimum baseload',
+                 'Day of week with maximum baseload', 'Potential saving (at latest tariff)']
+
       let(:expected_table) do
         [headers,
-         ["#{school.name} (*5)", '100&percnt;', '2', '3', '4.0', '5.0', '£6'],
+         ["#{school.name} (*5)", '+100%', '2', '3', '4', '5', '£6'],
          ["Notes\n(*5) The tariff has changed during the last year for this school. Savings are calculated using the " \
           'latest tariff but other £ values are calculated using the relevant tariff at the time']]
       end
       let(:expected_csv) do
-        [headers, [school.name, '100', '2', '3', '4.0', '5.0', '&pound;6']]
+        [headers, [school.name, '100', '2', '3', '4', '5', '6']]
       end
     end
 
