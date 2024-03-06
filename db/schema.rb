@@ -2400,7 +2400,8 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
       data.community_gbp,
       data.out_of_hours_gbp,
       data.potential_saving_gbp,
-      data.rating
+      data.rating,
+      additional.electricity_economic_tariff_changed_this_year
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.schoolday_open_percent,
@@ -2416,10 +2417,16 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data_1(schoolday_open_percent double precision, schoolday_closed_percent double precision, holidays_percent double precision, weekends_percent double precision, community_percent double precision, community_gbp double precision, out_of_hours_gbp double precision, potential_saving_gbp double precision, rating double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursElectricityUsage'::text))) data,
+      ( SELECT alerts.alert_generation_run_id,
+              data_1.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+    WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
   create_view "annual_electricity_costs_per_pupils", sql_definition: <<-SQL
       SELECT latest_runs.id,
