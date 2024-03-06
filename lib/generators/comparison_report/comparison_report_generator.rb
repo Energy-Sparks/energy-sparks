@@ -23,7 +23,8 @@ class ComparisonReportGenerator < Rails::Generators::NamedBase
   end
 
   def create_view
-    template '_tables.html.erb.tt', "app/views/comparisons/#{file_path}/_tables.html.erb"
+    template '_table.html.erb.tt', "app/views/comparisons/#{file_path}/_table.html.erb"
+    template '_table.csv.ruby.tt', "app/views/comparisons/#{file_path}/_table.csv.ruby"
   end
 
   def create_spec

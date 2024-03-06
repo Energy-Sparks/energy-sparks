@@ -1,4 +1,8 @@
-<table id="comparison-table" class="table advice-table table-sorted">
+<div class='text-right mt-2'>
+  <%%= download_link(report, index_params) %>
+</div>
+
+<table id="<%%= comparison_table_id(report) %>" class="table advice-table table-sorted">
   <thead>
     <tr>
       <th><%%= t('analytics.benchmarking.configuration.column_headings.school') %></th>

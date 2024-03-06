@@ -13,7 +13,18 @@ module Comparisons
 
     def index
       @results = load_data
-      @charts = create_charts(@results)
+      respond_to do |format|
+        format.html do
+          @charts = create_charts(@results)
+          @table_names = table_names
+        end
+        format.csv do
+          filename = "#{key}-#{filter[:table_name]}-#{Time.zone.now.iso8601}.csv"
+          response.headers['Content-Type'] = 'text/csv'
+          response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
+          render partial: filter[:table_name].to_s
+        end
+      end
     end
 
     private
@@ -46,6 +57,15 @@ module Comparisons
       []
     end
 
+    # Returns a list of table names. These correspond to a partial that should be
+    # found in the views folder for the comparison. By default assumes a single table
+    # which is defined in a file called _table.html.erb.
+    #
+    # Partials will be provided with the report, advice page, and results
+    def table_names
+      [:table]
+    end
+
     def create_single_number_chart(results, name, multiplier, series_name, y_axis_label)
       chart_data = {}
 
@@ -75,7 +95,7 @@ module Comparisons
     def filter
       @filter ||=
         params.permit(:search, :benchmark, :country, :school_type, :funder, school_group_ids: [], school_types: [])
-          .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
+          .with_defaults(school_group_ids: [], school_types: School.school_types.keys, table_name: table_names.first)
           .to_hash.symbolize_keys
     end
 
