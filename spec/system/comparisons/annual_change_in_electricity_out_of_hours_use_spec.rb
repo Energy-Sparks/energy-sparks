@@ -39,18 +39,21 @@ describe 'annual_change_in_electricity_out_of_hours_use' do
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { insights_school_advice_electricity_out_of_hours_path(expected_school) }
+      let(:headers) do
+        ['School',
+         'Previous year out of hours kwh',
+         'Last year out of hours kwh',
+         'Change %',
+         'Previous year out of hours co2',
+         'Last year out of hours co2',
+         'Change %',
+         'Previous year out of hours cost at current tariff',
+         'Last year out of hours cost at current tariff',
+         'Change %']
+      end
       let(:expected_table) do
         [['', 'kWh', 'CO2 (kg)', 'Cost'],
-         ['School',
-          'Previous year out of hours kwh',
-          'Last year out of hours kwh',
-          'Change %',
-          'Previous year out of hours co2',
-          'Last year out of hours co2',
-          'Change %',
-          'Previous year out of hours cost at current tariff',
-          'Last year out of hours cost at current tariff',
-          'Change %'],
+         headers,
          ["#{school.name} (*5)", '1', '2', '+100%', '3', '4', '+33%', '£5', '£6', '+20%'],
          ["Notes\n" \
           '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
@@ -60,16 +63,7 @@ describe 'annual_change_in_electricity_out_of_hours_use' do
       let(:expected_csv) do
         [
           ['', 'kWh', '', '', 'CO2 (kg)', '', '', 'Cost', '', ''],
-          ['School',
-           'Previous year out of hours kwh',
-           'Last year out of hours kwh',
-           'Change %',
-           'Previous year out of hours co2',
-           'Last year out of hours co2',
-           'Change %',
-           'Previous year out of hours cost at current tariff',
-           'Last year out of hours cost at current tariff',
-           'Change %'],
+          headers,
           [school.name, '1', '2', '100', '3', '4', '33.3', '5', '6', '20']]
       end
     end

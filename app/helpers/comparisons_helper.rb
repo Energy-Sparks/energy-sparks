@@ -8,7 +8,7 @@ module ComparisonsHelper
     # differently, so exclude :index component
     path = [:comparisons, report.key.to_sym]
     path << :index if report.key.singularize == report.key
-    polymorphic_path(path, params: params.merge(table_name: table_name, format: :csv))
+    download_path = polymorphic_path(path, params: params.merge(table_name: table_name, format: :csv))
 
     link_to I18n.t('school_groups.download_as_csv'),
          download_path,

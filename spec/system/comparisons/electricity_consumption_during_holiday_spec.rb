@@ -27,13 +27,12 @@ describe 'electricity_consumption_during_holiday' do
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
+      let(:headers) { ['School', 'Projected usage by end of holiday', 'Holiday usage to date', 'Holiday'] }
       let(:expected_table) do
-        [['School', 'Projected usage by end of holiday', 'Holiday usage to date', 'Holiday'],
-         [school.name, '£1', '£2', 'Holiday 1']]
+        [headers, [school.name, '£1', '£2', 'Holiday 1']]
       end
       let(:expected_csv) do
-        [['School', 'Projected usage by end of holiday', 'Holiday usage to date', 'Holiday'],
-         [school.name, '1', '2', 'Holiday 1']]
+        [headers, [school.name, '1', '2', 'Holiday 1']]
       end
     end
   end
