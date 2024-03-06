@@ -36,7 +36,11 @@ class MeterReviewService
   end
 
   def is_meter_known_to_n3rgy?(meter)
-    MeterManagement.new(meter).is_meter_known_to_n3rgy?
+    if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
+      Meters::N3rgyMeteringService.new(meter).available?
+    else
+      MeterManagement.new(meter).is_meter_known_to_n3rgy?
+    end
   end
 
   def current_consent
