@@ -11,7 +11,6 @@ module Comparisons
     end
 
     def load_data
-      # change as needed
       Comparison::AnnualElectricityOutOfHoursUse.where(school: @schools).where.not(variable_name: nil).order(variable_name: :desc)
     end
 

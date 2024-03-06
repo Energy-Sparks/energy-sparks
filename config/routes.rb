@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   namespace :comparisons do
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
     resources :annual_electricity_costs_per_pupil, only: [:index]
+    resources :annual_electricity_out_of_hours_use, only: [:index]
     resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_consumption_recent_school_weeks, only: [:index]
     resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index]
