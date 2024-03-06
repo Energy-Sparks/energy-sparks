@@ -107,7 +107,7 @@ Layout/MultilineArrayBraceLayout:
 Lint/BooleanSymbol:
   Enabled: false
 Metrics/BlockLength:
-  Enabled: false
+  Enabled: true
 Style/DateTime:
   Enabled: false
 Style/InverseMethods:
@@ -436,3 +436,6 @@ Naming/AsciiIdentifiers:
     - 'spec/models/meter_attribute_spec.rb'
     - 'spec/services/schools/advice/baseload_service_spec.rb'
     - 'spec/system/schools/advice_pages/hot_water_spec.rb'
+Metrics/BlockLength:
+  Exclude: # excluding route file as blocklength can be greater than default 25
+    - 'config/route.rb'
