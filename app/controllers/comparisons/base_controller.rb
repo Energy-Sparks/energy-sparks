@@ -12,6 +12,8 @@ module Comparisons
     before_action :set_report
 
     def index
+      @col_groups = col_groups
+      @headers = headers
       @results = load_data
       respond_to do |format|
         format.html do
@@ -28,6 +30,14 @@ module Comparisons
     end
 
     private
+
+    def col_groups
+      []
+    end
+
+    def headers
+      []
+    end
 
     def set_report
       @report = Comparison::Report.find_by_key(key) if key

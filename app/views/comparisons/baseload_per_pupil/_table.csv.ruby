@@ -1,12 +1,5 @@
 CSV.generate do |csv|
-  csv << [
-    t('analytics.benchmarking.configuration.column_headings.school'),
-    t('analytics.benchmarking.configuration.column_headings.baseload_per_pupil_w'),
-    t('analytics.benchmarking.configuration.column_headings.last_year_cost_of_baseload'),
-    t('analytics.benchmarking.configuration.column_headings.average_baseload_kw'),
-    t('analytics.benchmarking.configuration.column_headings.baseload_percent'),
-    t('analytics.benchmarking.configuration.column_headings.saving_if_matched_exemplar_school')
-  ]
+  csv << @headers
 
   @results.each do |result|
     csv << [result.school.name,
