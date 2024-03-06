@@ -1,0 +1,60 @@
+<div class='text-right mt-2'>
+  <%= download_link(report, table_name, index_params) %>
+</div>
+
+<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted">
+  <thead>
+    <tr>
+      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.solar_generation') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.solar_self_consume') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.solar_export') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.solar_mains_consume') %>
+      </th>
+      <th class="text-right">
+        <%= t('analytics.benchmarking.configuration.column_headings.solar_mains_onsite') %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% results.each do |row| %>
+      <tr>
+        <td>
+          <%= link_to row.school.name,
+                      advice_page_path(row.school, advice_page, :insights) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(row.annual_solar_pv_kwh, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(row.annual_solar_pv_consumed_onsite_kwh, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(row.annual_exported_solar_pv_kwh, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(row.annual_mains_consumed_kwh, :kwh, true, :benchmark) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(row.annual_electricity_kwh, :kwh, true, :benchmark) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="6">
+        <p>
+          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
+        </p>
+      </td>
+    </tr>
+  </tfoot>
+</table>

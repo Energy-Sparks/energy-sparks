@@ -66,6 +66,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :electricity_peak_kw_per_pupil, only: [:index]
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
     resources :electricity_consumption_during_holiday, only: [:index]
+    resources :solar_generation_summary, only: [:index]
   end
 
   # redirect old benchmark URLs
