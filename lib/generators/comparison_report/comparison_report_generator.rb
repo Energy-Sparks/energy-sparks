@@ -4,8 +4,9 @@ class ComparisonReportGenerator < Rails::Generators::NamedBase
   desc 'Generates a comparison report with the given NAME.'
 
   def generate_scenic_view
-    if File.exist?("db/views/#{file_path}_v01.sql")
-      if yes?("It looks like db/views/#{file_path}_v01.sql has already been generated. Do you want to create the next version?")
+    file = "db/views/#{file_name.pluralize}_v01.sql"
+    if File.exist?(file)
+      if yes?("It looks like #{file} has already been generated. Do you want to create the next version?")
         generate 'scenic:view', file_name
       end
     else
@@ -14,7 +15,6 @@ class ComparisonReportGenerator < Rails::Generators::NamedBase
   end
 
   def create_controller
-    # Benchmarking::BenchmarkManager.chart_table_config(file_name)
     template 'controller.rb.tt', "app/controllers/comparisons/#{file_path}_controller.rb"
   end
 
