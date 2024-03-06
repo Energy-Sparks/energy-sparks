@@ -106,8 +106,6 @@ Layout/MultilineArrayBraceLayout:
   Enabled: false
 Lint/BooleanSymbol:
   Enabled: false
-Metrics/BlockLength:
-  Enabled: true
 Style/DateTime:
   Enabled: false
 Style/InverseMethods:
