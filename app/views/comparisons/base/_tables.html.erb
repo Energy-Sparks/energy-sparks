@@ -1,0 +1,5 @@
+<% @table_names.each_with_index do |table_name, index| %>
+  <%= render table_name.to_s,
+             report: report, advice_page: advice_page, results: results,
+             table_name: table_name, table_number: index + 1 %>
+<% end %>
