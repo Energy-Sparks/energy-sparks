@@ -4,9 +4,9 @@ class ComparisonReportGenerator < Rails::Generators::NamedBase
   desc 'Generates a comparison report with the given NAME.'
 
   def generate_scenic_view
-    key = file_name.pluralize
-    if File.exist?("db/views/#{key}_v01.sql")
-      if yes?("It looks like db/views/#{key}_v01.sql has already been generated. Do you want to create the next version?")
+    file = "db/views/#{file_name.pluralize}_v01.sql"
+    if File.exist?(file)
+      if yes?("It looks like #{file} has already been generated. Do you want to create the next version?")
         generate 'scenic:view', file_name
       end
     else
