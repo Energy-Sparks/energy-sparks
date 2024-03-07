@@ -78,8 +78,8 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
          [schools[0].name, '100', '2', '3', 'Easter (partial)', 'Easter'],
          [schools[2].name, '-Infinity', '6', '7', 'Easter', 'Easter']]
       end
-
-      it_behaves_like 'a school comparison report with a chart'
     end
+
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
