@@ -14,8 +14,14 @@ module Comparisons
       Comparison::AnnualElectricityOutOfHoursUse.where(school: @schools).where.not(schoolday_open_percent: nil).order(schoolday_open_percent: :desc)
     end
 
-    # def create_charts(results)
-    #   create_single_number_chart(results, :current_year_percent_of_target_relative, :percent_above_or_below_target_since_target_set, :percent)
-    # end
+    def create_charts(results)
+      create_multi_chart(results, {
+        schoolday_open_percent: :school_day_open,
+        schoolday_closed_percent: :school_day_closed,
+        holidays_percent: :holiday,
+        weekends_percent: :weekend,
+        community_percent: :community
+        }, 100.0, :percent)
+    end
   end
 end

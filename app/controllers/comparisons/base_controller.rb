@@ -112,6 +112,32 @@ module Comparisons
       }]
     end
 
+    def create_multi_chart(results, names, multiplier, y_axis_label)
+      chart_data = {}
+      schools = []
+
+      results.each do |result|
+        schools << result.school.name
+        result.slice(*names.keys).each do |metric, value|
+          value ||= 0
+          # for a percentage metric we'd multiply * 100.0
+          # for converting from kW to W 1000.0
+          value *= multiplier unless multiplier.nil?
+          (chart_data[metric] ||= []) << value
+        end
+      end
+
+      chart_data.transform_keys! { |key| I18n.t("analytics.benchmarking.configuration.column_headings.#{names[key.to_sym]}") }
+
+      [{
+        id: :comparison,
+        x_axis: schools,
+        x_data: chart_data,
+        # I am confused - thought the y axis was always the vertical one? but it appears the other way around here?
+        y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
+      }]
+    end
+
     def filter
       @filter ||=
         params.permit(:search, :benchmark, :country, :school_type, :funder, school_group_ids: [], school_types: [])
