@@ -66,7 +66,7 @@ describe 'annual_electricity_out_of_hours_use' do
 
       let(:expected_csv) do
         [headers,
-         [school.name, '0.278', '0.371', '0.211', '0.139', '0', '0', '41,300', '13,000']
+         [school.name, '27.8', '37.1', '21.1', '13.9', '0', '0', '41,300', '13,000']
         ]
       end
     end
