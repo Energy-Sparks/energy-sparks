@@ -13,19 +13,7 @@ CSV.generate do |csv|
     t('analytics.benchmarking.configuration.column_groups.solar_self_consumption')
   ]
 
-  csv << [
-      t('analytics.benchmarking.configuration.column_headings.school'),
-      t('analytics.benchmarking.configuration.column_headings.previous_year'),
-      t('analytics.benchmarking.configuration.column_headings.last_year'),
-      t('analytics.benchmarking.configuration.column_headings.change_pct'),
-      t('analytics.benchmarking.configuration.column_headings.previous_year'),
-      t('analytics.benchmarking.configuration.column_headings.last_year'),
-      t('analytics.benchmarking.configuration.column_headings.change_pct'),
-      t('analytics.benchmarking.configuration.column_headings.previous_year'),
-      t('analytics.benchmarking.configuration.column_headings.last_year'),
-      t('analytics.benchmarking.configuration.column_headings.change_pct'),
-      t('analytics.benchmarking.configuration.column_headings.estimated')
-    ]
+  csv << @headers
 
   @results.each do |result|
    csv << [
