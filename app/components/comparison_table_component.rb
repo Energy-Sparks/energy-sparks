@@ -62,15 +62,4 @@ class ComparisonTableComponent < ViewComponent::Base
       end
     end
   end
-
-  class ChangeColumnComponent < ViewComponent::Base
-    def initialize(val:, classes: 'text-right')
-      @val = val
-      @classes = classes
-    end
-
-    def call
-      content_tag :td, helpers.updownify(@val), { class: @classes }
-    end
-  end
 end
