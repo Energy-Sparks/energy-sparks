@@ -1,7 +1,9 @@
-<%= component 'comparison_table', headers: @headers, report: report, table_name: table_name, index_params: index_params do |c| %>
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
-      <% r.with_school school: result.school, advice_page: advice_page %>
+      <% r.with_school school: result.school %>
 
       <% if result.electricity_economic_tariff_changed_this_year %>
         <% r.with_reference do %>

@@ -11,15 +11,22 @@ class ComparisonTableComponent < ViewComponent::Base
   include AdvicePageHelper
   include ComparisonsHelper
 
-  def initialize(report:, table_name:, index_params:, headers: [], colgroups: [])
+  def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [], advice_page_tab: :insights)
     @report = report
-    @colgroups = colgroups
-    @headers = headers
+    @advice_page = advice_page
     @table_name = table_name
     @index_params = index_params
+    @headers = headers
+    @colgroups = colgroups
+    @advice_page_tab = advice_page_tab
   end
 
-  renders_many :rows, 'RowComponent'
+  renders_many :rows, ->(**args) do
+    args[:advice_page] = @advice_page
+    args[:advice_page_tab] = @advice_page_tab
+    RowComponent.new(**args)
+  end
+
   renders_one :footer
 
   # For providing information for each row in the comparison table
@@ -32,16 +39,18 @@ class ComparisonTableComponent < ViewComponent::Base
   #
   # The variable columns are specified as additional slots
   class RowComponent < ViewComponent::Base
-    def initialize(classes: '')
+    def initialize(advice_page: nil, advice_page_tab: :insights, classes: '')
+      @advice_page = advice_page
+      @advice_page_tab = advice_page_tab
       @classes = classes
     end
 
     # First column, showing school name and a link
-    renders_one :school, ->(school:, advice_page: nil, tab: :insights, params: {}, anchor: nil) do
-      path = if advice_page.present?
-               helpers.advice_page_path(school, advice_page, tab, params: params, anchor: anchor)
+    renders_one :school, ->(school:) do
+      path = if @advice_page.present?
+               helpers.advice_page_path(school, @advice_page, @advice_page_tab)
              else
-               school_advice_path(school, params: params, anchor: anchor)
+               school_advice_path(school)
              end
       link_to school.name, path
     end

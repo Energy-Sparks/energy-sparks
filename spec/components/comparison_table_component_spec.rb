@@ -6,7 +6,9 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
   subject(:html) { render_inline(described_class.new(**params)) }
 
   # need to use key present in the routes
-  let!(:report)  { create(:report, key: :baseload_per_pupil) }
+  let(:report) { create(:report, key: :baseload_per_pupil) }
+  let(:advice_page) { nil }
+  let(:advice_page_tab) { :insights }
   let(:table_name) { 'table' }
   let(:headers) { ['Col 1', 'Col 2'] }
   let(:colgroups) { [] }
@@ -14,10 +16,12 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
   let(:params) do
     {
       report: report,
+      advice_page: advice_page,
       table_name: table_name,
       index_params: {},
       headers: headers,
-      colgroups: colgroups
+      colgroups: colgroups,
+      advice_page_tab: advice_page_tab
     }
   end
 
@@ -73,14 +77,12 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
           c.with_row do |r|
-            r.with_school school: school, advice_page: advice_page, tab: tab
+            r.with_school school: school
           end
         end
       end
 
       let(:school) { create(:school) }
-      let(:advice_page) { nil }
-      let(:tab) { :insights }
 
       it 'renders a link to advice page index' do
         expect(html).to have_link(school.name, href: school_advice_path(school))
@@ -94,7 +96,7 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         end
 
         context 'when tab is specified' do
-          let(:tab) { :analysis }
+          let(:advice_page_tab) { :analysis }
 
           it 'links to the tab' do
             expect(html).to have_link(school.name, href: analysis_school_advice_baseload_path(school))

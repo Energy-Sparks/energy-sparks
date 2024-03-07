@@ -10,10 +10,9 @@ module Comparisons
     helper_method :index_params
     before_action :set_advice_page
     before_action :set_report
+    before_action :set_headers
 
     def index
-      @colgroups = colgroups
-      @headers = headers
       @results = load_data
       respond_to do |format|
         format.html do
@@ -39,12 +38,18 @@ module Comparisons
       []
     end
 
+    def set_headers
+      @colgroups = colgroups
+      @headers = headers
+    end
+
     def set_report
       @report = Comparison::Report.find_by_key(key) if key
     end
 
     def set_advice_page
       @advice_page = AdvicePage.find_by_key(advice_page_key) if advice_page_key
+      @advice_page_tab = advice_page_tab
     end
 
     # Key for the Comparison::Report
@@ -55,6 +60,11 @@ module Comparisons
     # Key for the AdvicePage used to link to school analysis
     def advice_page_key
       nil
+    end
+
+    # Tab of the advice page to link to by default
+    def advice_page_tab
+      :insights
     end
 
     # Load the results from the view
