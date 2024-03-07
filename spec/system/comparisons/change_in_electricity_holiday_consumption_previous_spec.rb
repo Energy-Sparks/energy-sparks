@@ -4,8 +4,11 @@ require 'rails_helper'
 
 describe 'change_in_electricity_holiday_consumption_previous_*' do
   let(:schools) { create_list(:school, 3) }
+  let(:expected_school) { schools[0] }
+  headers = ['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday',
+             'Previous holiday']
   let(:expected_table) do
-    [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday'],
+    [headers,
      ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'Easter', 'Easter'],
      ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'Easter (partial)', 'Easter'],
      ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7', 'Easter', 'Easter'],
@@ -18,7 +21,12 @@ describe 'change_in_electricity_holiday_consumption_previous_*' do
       '(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
       "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
   end
-  let!(:report) { create(:report, key: :change_in_electricity_holiday_consumption_previous_years_holiday) }
+  let(:expected_csv) do
+    [headers,
+     [schools[1].name, 'Infinity', '4', '5', 'Easter', 'Easter'],
+     [schools[0].name, '100', '2', '3', 'Easter (partial)', 'Easter'],
+     [schools[2].name, '-Infinity', '6', '7', 'Easter', 'Easter']]
+  end
 
   before do
     alert_type = create(:alert_type, class_name: alert_class_name)
@@ -62,25 +70,24 @@ describe 'change_in_electricity_holiday_consumption_previous_*' do
 
   describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
     let(:alert_class_name) { 'AlertPreviousYearHolidayComparisonElectricity' }
-    let!(:report) { create(:report, key: :change_in_electricity_holiday_consumption_previous_years_holiday) }
+    let!(:expected_report) { create(:report, key: :change_in_electricity_holiday_consumption_previous_years_holiday) }
+    let(:expected_school) { schools[0] }
 
     before { visit comparisons_change_in_electricity_holiday_consumption_previous_years_holiday_index_path }
 
-    it_behaves_like 'a school comparison report' do
-      let(:title) { report.title }
-      let(:expected_school) { schools[0] }
-    end
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+    it_behaves_like 'a school comparison report with a chart'
   end
 
   describe 'change_in_electricity_holiday_consumption_previous_holiday' do
     let(:alert_class_name) { 'AlertPreviousHolidayComparisonElectricity' }
-    let!(:report) { create(:report, key: :change_in_electricity_holiday_consumption_previous_holiday) }
+    let!(:expected_report) { create(:report, key: :change_in_electricity_holiday_consumption_previous_holiday) }
 
     before { visit comparisons_change_in_electricity_holiday_consumption_previous_holiday_index_path }
 
-    it_behaves_like 'a school comparison report' do
-      let(:title) { report.title }
-      let(:expected_school) { schools[0] }
-    end
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
