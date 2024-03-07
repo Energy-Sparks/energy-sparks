@@ -1,79 +1,54 @@
-<div class='text-right mt-2'>
-  <%= download_link(report, table_name, index_params) %>
-</div>
-
-<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted">
-  <thead>
-    <tr>
-      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.change_pct') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.change_£current') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.change_kwh') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.most_recent_holiday') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.previous_holiday') %>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% pupils_changed_footnote = false %>
-    <% tariff_has_changed_footnote = false %>
-    <% infinite_increase_footnote = false %>
-    <% infinite_decrease_footnote = false %>
-    <% results.each do |result| %>
-      <tr>
-        <td>
-          <%= result.school.name %>
-          <% if result.pupils_changed %>
-            <% pupils_changed_footnote = true %>
-            <a href="#footnotes">(*1)</a>
-          <% end %>
-          <% if result.difference_percent.infinite? == 1 %>
-            <% infinite_increase_footnote = true %>
-            <a href="#footnotes">(*2)</a>
-          <% end %>
-          <% if result.difference_percent.infinite? == -1 %>
-            <% infinite_decrease_footnote = true %>
-            <a href="#footnotes">(*3)</a>
-          <% end %>
-          <% if result.tariff_has_changed %>
-            <% tariff_has_changed_footnote = true %>
-            <a href="#footnotes">(*6)</a>
-          <% end %>
-        </td>
-        <td class="text-right">
-          <%= up_downify(format_unit(result.difference_percent, :relative_percent_0dp, true, :benchmark)) %>
-        </td>
-        <td class="text-right">
-          <%= up_downify(format_unit(result.difference_gbpcurrent, :£_0dp, true, :benchmark)) %>
-        </td>
-        <td class="text-right">
-          <%= up_downify(format_unit(result.difference_kwh, :kw, true, :benchmark)) %>
-        </td>
-        <td class="text-right">
-          <%= t("analytics.holidays.#{result.current_period_type}", default: '') %>
-          <% if result.truncated_current_period %>
-            <%= t('advice_pages.tables.labels.partial') %>
-          <% end %>
-        </td>
-        <td class="text-right">
-          <%= t("analytics.holidays.#{result.previous_period_type}", default: '') %>
-        </td>
-      </tr>
+<% pupils_changed_footnote = false %>
+<% tariff_has_changed_footnote = false %>
+<% infinite_increase_footnote = false %>
+<% infinite_decrease_footnote = false %>
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |component| %>
+  <% @results.each do |result| %>
+    <% component.with_row do |row| %>
+      <% row.with_school school: result.school %>
+      <% if result.pupils_changed %>
+        <% pupils_changed_footnote = true %>
+        <% row.with_reference do %>
+          <a href="#footnotes">(*1)</a>
+        <% end %>
+      <% end %>
+      <% if result.difference_percent.infinite? == 1 %>
+        <% infinite_increase_footnote = true %>
+        <% row.with_reference do %>
+          <a href="#footnotes">(*2)</a>
+        <% end %>
+      <% end %>
+      <% if result.difference_percent.infinite? == -1 %>
+        <% infinite_decrease_footnote = true %>
+        <% row.with_reference do %>
+          <a href="#footnotes">(*3)</a>
+        <% end %>
+      <% end %>
+      <% if result.tariff_has_changed %>
+        <% tariff_has_changed_footnote = true %>
+        <% row.with_reference do %>
+          <a href="#footnotes">(*6)</a>
+        <% end %>
+      <% end %>
+      <%= row.with_var val: result.difference_percent, unit: :relative_percent_0dp, change: true %>
+      <%= row.with_var val: result.difference_gbpcurrent, unit: :£_0dp, change: true %>
+      <%= row.with_var val: result.difference_kwh, unit: :kw %>
+      <%= row.with_var do %>
+        <%= t("analytics.holidays.#{result.current_period_type}", default: '') %>
+        <% if result.truncated_current_period %>
+          <%= t('advice_pages.tables.labels.partial') %>
+        <% end %>
+      <% end %>
+      <%= row.with_var { t("analytics.holidays.#{result.previous_period_type}", default: '') } %>
     <% end %>
-  </tbody>
-  <% if pupils_changed_footnote || tariff_has_changed_footnote %>
-    <tfoot>
+  <% end %>
+  <% component.with_footer do %>
+    <% if pupils_changed_footnote || infinite_increase_footnote || infinite_decrease_footnote ||
+          tariff_has_changed_footnote %>
       <tr>
-        <td colspan="6">
+        <td colspan="<%= headers.length %>">
           <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
           <ul>
             <% if pupils_changed_footnote %>
@@ -99,6 +74,6 @@
           </ul>
         </td>
       </tr>
-    </tfoot>
+    <% end %>
   <% end %>
-</table>
+<% end %>

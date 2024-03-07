@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 CSV.generate do |csv|
-  csv << [
-    t('analytics.benchmarking.configuration.column_headings.school'),
-    t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    t('analytics.benchmarking.configuration.column_headings.change_£current'),
-    t('analytics.benchmarking.configuration.column_headings.change_kwh'),
-    t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
-    t('analytics.benchmarking.configuration.column_headings.previous_holiday')
-  ]
+  csv << @headers
   @results.each do |result|
     csv << [
       result.school.name,
