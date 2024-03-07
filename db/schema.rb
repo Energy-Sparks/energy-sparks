@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_29_162518) do
+ActiveRecord::Schema.define(version: 2024_03_07_120328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2294,5 +2294,35 @@ ActiveRecord::Schema.define(version: 2024_02_29_162518) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "seasonal_baseload_variations", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      additional.school_id,
+      data.alert_generation_run_id,
+      data.percent_seasonal_variation,
+      data.summer_kw,
+      data.winter_kw,
+      data.annual_cost_gbpcurrent,
+      additional.electricity_economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              data_1.percent_seasonal_variation,
+              data_1.summer_kw,
+              data_1.winter_kw,
+              data_1.annual_cost_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(percent_seasonal_variation double precision, summer_kw double precision, winter_kw double precision, annual_cost_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSeasonalBaseloadVariation'::text))) data,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
 end

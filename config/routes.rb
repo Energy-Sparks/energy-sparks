@@ -60,12 +60,13 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
-    resources :electricity_targets, only: [:index]
+    resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
     resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_since_last_year, only: [:index]
-    resources :electricity_peak_kw_per_pupil, only: [:index]
-    resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
     resources :electricity_consumption_during_holiday, only: [:index]
+    resources :electricity_peak_kw_per_pupil, only: [:index]
+    resources :electricity_targets, only: [:index]
+    resources :seasonal_baseload_variation, only: [:index]
   end
 
   # redirect old benchmark URLs
