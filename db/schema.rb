@@ -2400,7 +2400,6 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
       data.community_gbp,
       data.out_of_hours_gbp,
       data.potential_saving_gbp,
-      data.rating,
       additional.electricity_economic_tariff_changed_this_year
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
@@ -2411,11 +2410,10 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
               data_1.community_percent,
               data_1.community_gbp,
               data_1.out_of_hours_gbp,
-              data_1.potential_saving_gbp,
-              data_1.rating
+              data_1.potential_saving_gbp
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(schoolday_open_percent double precision, schoolday_closed_percent double precision, holidays_percent double precision, weekends_percent double precision, community_percent double precision, community_gbp double precision, out_of_hours_gbp double precision, potential_saving_gbp double precision, rating double precision)
+              LATERAL jsonb_to_record(alerts.variables) data_1(schoolday_open_percent double precision, schoolday_closed_percent double precision, holidays_percent double precision, weekends_percent double precision, community_percent double precision, community_gbp double precision, out_of_hours_gbp double precision, potential_saving_gbp double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursElectricityUsage'::text))) data,
       ( SELECT alerts.alert_generation_run_id,
               data_1.electricity_economic_tariff_changed_this_year

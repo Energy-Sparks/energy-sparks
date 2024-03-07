@@ -12,8 +12,7 @@ FROM
       community_percent float,
       community_gbp float,
       out_of_hours_gbp float,
-      potential_saving_gbp float,
-      rating float
+      potential_saving_gbp float
     )
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertOutOfHoursElectricityUsage'
   ) AS data,

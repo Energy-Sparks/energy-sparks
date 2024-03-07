@@ -10,7 +10,6 @@
 #  id                                            :bigint(8)
 #  out_of_hours_gbp                              :float
 #  potential_saving_gbp                          :float
-#  rating                                        :float
 #  school_id                                     :bigint(8)
 #  schoolday_closed_percent                      :float
 #  schoolday_open_percent                        :float
