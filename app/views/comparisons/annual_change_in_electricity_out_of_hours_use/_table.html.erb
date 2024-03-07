@@ -32,7 +32,7 @@
   <% end %>
   <% c.with_footer do %>
   <tr>
-    <td colspan="10">
+    <td colspan="<%= headers.count %>">
       <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
       <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
       <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
