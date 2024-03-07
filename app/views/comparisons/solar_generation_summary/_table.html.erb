@@ -1,60 +1,14 @@
-<div class='text-right mt-2'>
-  <%= download_link(report, table_name, index_params) %>
-</div>
-
-<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted">
-  <thead>
-    <tr>
-      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.solar_generation') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.solar_self_consume') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.solar_export') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.solar_mains_consume') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.solar_mains_onsite') %>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% results.each do |row| %>
-      <tr>
-        <td>
-          <%= link_to row.school.name,
-                      advice_page_path(row.school, advice_page, :insights) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.annual_solar_pv_kwh, :kwh, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.annual_solar_pv_consumed_onsite_kwh, :kwh, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.annual_exported_solar_pv_kwh, :kwh, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.annual_mains_consumed_kwh, :kwh, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.annual_electricity_kwh, :kwh, true, :benchmark) %>
-        </td>
-      </tr>
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <%= r.with_var val: result.annual_solar_pv_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_solar_pv_consumed_onsite_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_exported_solar_pv_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_mains_consumed_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_electricity_kwh, unit: :kwh %>
     <% end %>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="6">
-        <p>
-          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
-        </p>
-      </td>
-    </tr>
-  </tfoot>
-</table>
+  <% end %>
+<% end %>
