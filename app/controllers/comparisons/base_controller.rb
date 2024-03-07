@@ -12,7 +12,7 @@ module Comparisons
     before_action :set_report
 
     def index
-      @col_groups = col_groups
+      @colgroups = colgroups
       @headers = headers
       @results = load_data
       respond_to do |format|
@@ -31,7 +31,7 @@ module Comparisons
 
     private
 
-    def col_groups
+    def colgroups
       []
     end
 

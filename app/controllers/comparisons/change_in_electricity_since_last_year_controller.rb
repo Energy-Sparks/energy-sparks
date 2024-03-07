@@ -2,7 +2,7 @@ module Comparisons
   class ChangeInElectricitySinceLastYearController < BaseController
     private
 
-    def col_groups
+    def colgroups
       [
         { label: '' },
         { label: t('analytics.benchmarking.configuration.column_groups.kwh'), colspan: 3 },

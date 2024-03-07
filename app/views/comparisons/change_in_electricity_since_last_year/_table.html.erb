@@ -1,17 +1,16 @@
 <%= component 'comparison_table',
-              col_groups: @col_groups, headers: @headers, report: report,
+              colgroups: @colgroups, headers: @headers, report: report,
               table_name: table_name, index_params: index_params do |c| %>
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
-      <% r.with_school do %>
-        <%= link_to result.school.name,
-                    advice_page_path(result.school, advice_page, :insights) %>
-      <% end %>
+      <% r.with_school school: result.school, advice_page: advice_page %>
+
       <%= r.with_var val: result.previous_year_electricity_kwh, unit: :kwh %>
       <%= r.with_var val: result.current_year_electricity_kwh, unit: :kwh %>
       <%= r.with_var change: true,
                      val: percent_change(result.previous_year_electricity_kwh, result.current_year_electricity_kwh),
                      unit: :relative_percent_0dp %>
+
       <%= r.with_var val: result.previous_year_electricity_co2, unit: :co2 %>
       <%= r.with_var val: result.current_year_electricity_co2, unit: :co2 %>
       <%= r.with_var change: true,
@@ -24,13 +23,7 @@
                      val: percent_change(result.previous_year_electricity_gbp, result.current_year_electricity_gbp),
                      unit: :relative_percent_0dp %>
 
-      <%= r.with_var do %>
-        <% if result.solar_type == 'synthetic' %>
-          <%= t('common.labels.yes_label') %>
-        <% else %>
-          <%= t('common.labels.no_label') %>
-        <% end %>
-      <% end %>
+      <%= r.with_var text: result.solar_type == 'synthetic' ? t('common.labels.yes_label') : t('common.labels.no_label') %>
     <% end %>
   <% end %>
   <% c.with_footer do %>

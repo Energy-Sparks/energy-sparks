@@ -4,10 +4,10 @@
 
 <table id="<%= comparison_table_id(@report, @table_name) %>" class="table advice-table table-sorted">
   <thead class="sticky-heading">
-    <% if @col_groups.any? %>
+    <% if @colgroups.any? %>
       <tr>
-        <% @col_groups.each do |col_group| %>
-          <th colspan="<%= col_group[:colspan] || 1 %>"><%= col_group[:label] %></th>
+        <% @colgroups.each do |colgroup| %>
+          <th colspan="<%= colgroup[:colspan] || 1 %>"><%= colgroup[:label] %></th>
         <% end %>
       </tr>
     <% end %>
