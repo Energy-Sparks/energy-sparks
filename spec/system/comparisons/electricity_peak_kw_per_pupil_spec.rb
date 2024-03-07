@@ -26,18 +26,29 @@ describe 'electricity_peak_kw_per_pupil' do
     before { visit comparisons_electricity_peak_kw_per_pupil_index_path }
 
     it_behaves_like 'a school comparison report' do
-      let(:title) { report.title }
+      let(:expected_report) { report }
+    end
+
+    it_behaves_like 'a school comparison report with a table' do
+      let(:headers) do
+        ['School', 'W/floor area', 'Average peak kw', 'Exemplar peak kw',
+         'Saving if match exemplar (£ at latest tariff)']
+      end
+      let(:expected_report) { report }
       let(:expected_school) { school }
-      let(:chart) { true }
       let(:advice_page_path) { insights_school_advice_electricity_intraday_path(expected_school) }
       let(:expected_table) do
-        [['School', 'W/floor area', 'Average peak kw', 'Exemplar peak kw',
-          'Saving if match exemplar (£ at latest tariff)'],
+        [headers,
          ["#{school.name} (*5)", '1,000', '2', '3', '£4'],
          ["Notes\n" \
           '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
           'tariff but other £ values are calculated using the relevant tariff at the time']]
       end
+      let(:expected_csv) do
+        [headers, [school.name, '1,000', '2', '3', '4']]
+      end
     end
+
+    it_behaves_like 'a school comparison report with a chart'
   end
 end

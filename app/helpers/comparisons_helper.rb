@@ -1,4 +1,21 @@
 module ComparisonsHelper
+  def comparison_table_id(report, table_name)
+    "#{report.key}-#{table_name}"
+  end
+
+  def download_link(report, table_name, params)
+    # If the key is plural then rails routing works slightly
+    # differently, so exclude :index component
+    path = [:comparisons, report.key.to_sym]
+    path << :index if report.key.singularize == report.key
+    download_path = polymorphic_path(path, params: params.merge(table_name: table_name, format: :csv))
+
+    link_to I18n.t('school_groups.download_as_csv'),
+         download_path,
+         class: 'btn btn-sm btn-outline-dark rounded-pill font-weight-bold',
+         id: "#{report.key}-#{table_name}-download"
+  end
+
   # Calculate percentage change across two values or sum of values in two arrays
   def percent_change(base, new_val, to_nil_if_sum_zero = false)
     return nil if to_nil_if_sum_zero && sum_data(base) == 0.0
