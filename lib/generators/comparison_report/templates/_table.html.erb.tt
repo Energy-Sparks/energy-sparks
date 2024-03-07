@@ -1,14 +1,14 @@
-<%= component 'comparison_table',
+<%%= component 'comparison_table',
               report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
               headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
-  <% @results.each do |result| %>
-    <% c.with_row do |r| %>
-      <% r.with_school school: result.school %>
+  <%% @results.each do |result| %>
+    <%% c.with_row do |r| %>
+      <%% r.with_school school: result.school %>
 
-      <%# replace these with correct values, in correct order %>
-      <%#= r.with_var val: result.one_year_baseload_per_pupil_kw * 1000.0, unit: :kw %>
-    <% end %>
-  <% end %>
-  <% c.with_footer do %>
-  <% end %>
-<% end %>
+      <%%# replace these with correct values, in correct order %>
+      <%%#= r.with_var val: result.one_year_baseload_per_pupil_kw * 1000.0, unit: :kw %>
+    <%% end %>
+  <%% end %>
+  <%% c.with_footer do %>
+  <%% end %>
+<%% end %>
