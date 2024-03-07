@@ -2371,4 +2371,28 @@ ActiveRecord::Schema.define(version: 2024_03_06_163820) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((benefit_estimate.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
+  create_view "change_in_solar_pv_since_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      versus_benchmark.school_id,
+      versus_benchmark.previous_year_solar_pv_kwh,
+      versus_benchmark.current_year_solar_pv_kwh,
+      versus_benchmark.previous_year_solar_pv_co2,
+      versus_benchmark.current_year_solar_pv_co2,
+      versus_benchmark.solar_type
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.previous_year_solar_pv_kwh,
+              data.current_year_solar_pv_kwh,
+              data.previous_year_solar_pv_co2,
+              data.current_year_solar_pv_co2,
+              data.solar_type
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_solar_pv_kwh double precision, current_year_solar_pv_kwh double precision, previous_year_solar_pv_co2 double precision, current_year_solar_pv_co2 double precision, solar_type text)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) versus_benchmark,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (versus_benchmark.alert_generation_run_id = latest_runs.id);
+  SQL
 end
