@@ -1,51 +1,23 @@
-<div class='text-right mt-2'>
-  <%= download_link(report, table_name, index_params) %>
-</div>
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
 
-<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted">
-  <thead>
-    <tr>
-      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.size_kwp') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.payback_years') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.reduction_in_mains_consumption_pct') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.saving_optimal_panels') %>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% results.each do |row| %>
-      <tr>
-        <td>
-          <%= link_to row.school.name,
-                      advice_page_path(row.school, advice_page, :insights) %>
-          <% if row.electricity_economic_tariff_changed_this_year %>
+      <% if result.electricity_economic_tariff_changed_this_year %>
+        <% r.with_reference do %>
             <a href="#electricity_economic_tariff_changed_this_year">[t]</a>
-          <% end %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.optimum_kwp, :kwp, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.optimum_payback_years, :years, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.optimum_mains_reduction_percent, :percent, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.one_year_saving_gbpcurrent, :£current, true, :benchmark) %>
-        </td>
-      </tr>
+        <% end %>
+      <% end %>
+
+      <%= r.with_var val: result.optimum_kwp, unit: :kwp %>
+      <%= r.with_var val: result.optimum_payback_years, unit: :years %>
+      <%= r.with_var val: result.optimum_mains_reduction_percent, unit: :percent %>
+      <%= r.with_var val: result.one_year_saving_gbpcurrent, unit: :£current %>
     <% end %>
-  </tbody>
-  <tfoot>
+  <% end %>
+  <% c.with_footer do %>
     <tr>
       <td colspan="6">
         <p>
@@ -56,5 +28,5 @@
         <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
       </td>
     </tr>
-  </tfoot>
-</table>
+  <% end %>
+<% end %>

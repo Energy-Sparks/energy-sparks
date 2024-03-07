@@ -1,12 +1,5 @@
 CSV.generate do |csv|
-  # headers
-  csv << [
-    t('analytics.benchmarking.configuration.column_headings.school'),
-    t('analytics.benchmarking.configuration.column_headings.size_kwp'),
-    t('analytics.benchmarking.configuration.column_headings.payback_years'),
-    t('analytics.benchmarking.configuration.column_headings.reduction_in_mains_consumption_pct'),
-    t('analytics.benchmarking.configuration.column_headings.saving_optimal_panels')
-  ]
+  csv << @headers
   @results.each do |row|
     csv << [
       row.school.name,
