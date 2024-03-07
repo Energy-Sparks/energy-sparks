@@ -11,7 +11,7 @@ class ComparisonTableComponent < ViewComponent::Base
   include AdvicePageHelper
   include ComparisonsHelper
 
-  def initialize(report:, headers: [], colgroups: [], table_name:, index_params:)
+  def initialize(report:, table_name:, index_params:, headers: [], colgroups: [])
     @report = report
     @colgroups = colgroups
     @headers = headers
@@ -70,26 +70,21 @@ class ComparisonTableComponent < ViewComponent::Base
   #
   # Displaying a formatted variable. Pass in the `val:` and `unit:`
   # Displaying a change column. Pass in the `val:`, `unit:` and set the `:change` flag.
-  # Displaying a text value. E.g. a simple translated value Pass in the `text:`
   # Displaying arbitrary content. Just pass a block to the var and ERB will be rendered to cell
   #
   # Custom classes can be provided via the classes keyword.
   # By default data columns are right aligned
   class VarColumnComponent < ViewComponent::Base
-    def initialize(val: nil, unit: :kwh, change: false, text: nil, classes: 'text-right')
+    def initialize(val: nil, unit: :kwh, change: false, classes: 'text-right')
       @val = val
       @unit = unit
       @change = change
-      @text = text
       @classes = classes
     end
 
     def call
       # Render content of the block if providing, adding classes to td
       return content_tag :td, content, { class: @classes } if content?
-
-      # Render the provided text if provided
-      return content_tag :td, @text, { class: @classes } if @text.present?
 
       # Otherwise format and present data values
       formatted_value = helpers.format_unit(@val, @unit, true, :benchmark)
