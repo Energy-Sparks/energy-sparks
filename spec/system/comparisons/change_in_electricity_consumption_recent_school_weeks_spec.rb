@@ -40,11 +40,17 @@ describe 'change_in_electricity_consumption_recent_school_weeks' do
   context 'when viewing report' do
     before { visit comparisons_change_in_electricity_consumption_recent_school_weeks_path }
 
-    it_behaves_like 'a school comparison report', advice_page: false do
-      let(:title) { report.title }
-      let(:expected_school) { schools[0] }
+    it_behaves_like 'a school comparison report' do
+      let(:expected_report) { report }
+    end
+
+    it_behaves_like 'a school comparison report with a table' do
+      let(:expected_report) { report }
+      let(:expected_school) { school }
+      let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }
+      headers = ['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh']
       let(:expected_table) do
-        [['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh'],
+        [headers,
          ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5'],
          ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3'],
          ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7'],
@@ -57,6 +63,14 @@ describe 'change_in_electricity_consumption_recent_school_weeks' do
           '(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
           "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
       end
+      let(:expected_csv) do
+        [headers,
+         [schools[1].name, 'Infinity', '4', '5'],
+         [schools[0].name, '100', '2', '3'],
+         [schools[2].name, '-Infinity', '6', '7']]
+      end
     end
+
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
