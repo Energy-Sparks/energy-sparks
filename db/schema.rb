@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_07_181846) do
+ActiveRecord::Schema.define(version: 2024_03_06_163820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2290,6 +2290,27 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_name text)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityUsageDuringCurrentHoliday'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "annual_electricity_costs_per_pupils", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.one_year_electricity_per_pupil_gbp,
+      data.last_year_gbp,
+      data.one_year_saving_versus_exemplar_gbpcurrent
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.one_year_electricity_per_pupil_gbp,
+              data_1.last_year_gbp,
+              data_1.one_year_saving_versus_exemplar_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityAnnualVersusBenchmark'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
