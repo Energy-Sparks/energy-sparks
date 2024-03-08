@@ -33,7 +33,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::ChangeInSolarPvSinceLastYear.where(school: @schools).with_data.by_percentage_change
+      Comparison::ChangeInSolarPvSinceLastYear.where(school: @schools).with_data.by_percentage_change(:previous_year_solar_pv_kwh, :current_year_solar_pv_kwh)
     end
   end
 end
