@@ -26,21 +26,37 @@ describe 'annual_electricity_costs_per_pupil' do
     before { visit "/comparisons/#{key}" }
 
     it_behaves_like 'a school comparison report' do
-      let(:title) { report.title }
+      let(:expected_report) { report }
+    end
+
+    it_behaves_like 'a school comparison report with a table' do
+      let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+      let(:headers) do
+        ['School',
+         'Last year electricity £/pupil',
+         'Last year electricity £',
+         'Saving if matched exemplar school (using latest tariff)']
+      end
+
       let(:expected_table) do
-        [['School',
-          'Last year electricity £/pupil',
-          'Last year electricity £',
-          'Saving if matched exemplar school (using latest tariff)',
-         ],
+        [headers,
          [school.name,
           '£195',
           '£235,000',
           '£155,000',
          ],
          ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
+        ]
+      end
+
+      let(:expected_csv) do
+        [headers,
+         [school.name,
+          '195',
+          '235,000',
+          '155,000']
         ]
       end
     end

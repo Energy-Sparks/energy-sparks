@@ -1,0 +1,20 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_var val: result.one_year_electricity_per_pupil_gbp, unit: :£_0dp %>
+      <% r.with_var val: result.last_year_gbp, unit: :£ %>
+      <% r.with_var val: result.one_year_saving_versus_exemplar_gbpcurrent, unit: :£ %>
+    <% end %>
+  <% end %>
+  <% c.with_footer do %>
+    <tr>
+      <td colspan="<%= headers.count %>">
+        <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
+        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>
