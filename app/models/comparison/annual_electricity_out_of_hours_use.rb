@@ -16,4 +16,6 @@
 #  weekends_percent                              :float
 #
 class Comparison::AnnualElectricityOutOfHoursUse < Comparison::View
+  scope :with_data, -> { where.not(schoolday_open_percent: nil) }
+  scope :sort_default, -> { order(schoolday_open_percent: :desc) }
 end

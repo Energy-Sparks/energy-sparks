@@ -2,7 +2,6 @@ module Comparisons
   class AnnualElectricityOutOfHoursUseController < BaseController
     private
 
-
     def headers
       [
         t('analytics.benchmarking.configuration.column_headings.school'),
@@ -26,7 +25,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::AnnualElectricityOutOfHoursUse.where(school: @schools).where.not(schoolday_open_percent: nil).order(schoolday_open_percent: :desc)
+      Comparison::AnnualElectricityOutOfHoursUse.where(school: @schools).with_data.sort_default
     end
 
     def create_charts(results)

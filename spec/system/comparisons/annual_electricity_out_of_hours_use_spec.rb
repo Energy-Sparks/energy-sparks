@@ -5,7 +5,6 @@ describe 'annual_electricity_out_of_hours_use' do
   let(:key) { :annual_electricity_out_of_hours_use }
   let(:advice_page_key) { :electricity_out_of_hours }
 
-  # change to your variables
   let(:variables) do
     {
       schoolday_open_percent: 0.2783819813845588,
