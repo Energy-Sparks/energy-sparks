@@ -1,81 +1,31 @@
-<div class='text-right mt-2'>
-  <%= download_link(report, table_name, index_params) %>
-</div>
-
-<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted">
-  <thead>
-    <tr>
-      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.school_day_open') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.school_day_closed') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.holiday') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.weekend') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.community') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.community_usage_cost') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.last_year_out_of_hours_cost') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.saving_if_improve_to_exemplar') %>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% results.each do |result| %>
-      <tr>
-        <td>
-          <%= link_to result.school.name,
-                      advice_page_path(result.school, advice_page, :insights) %>
-          <% if result.electricity_economic_tariff_changed_this_year %>
-            <a href="#footnotes">(*5)</a>
-          <% end %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.schoolday_open_percent, :percent, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.schoolday_closed_percent, :percent, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.holidays_percent, :percent, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.weekends_percent, :percent, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.community_percent, :percent, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.community_gbp, :£, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.out_of_hours_gbp, :£, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.potential_saving_gbp, :£, true, :benchmark) %>
-        </td>
-      </tr>
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_var val: result.schoolday_open_percent, unit: :percent %>
+      <% r.with_var val: result.schoolday_open_percent, unit: :percent %>
+      <% r.with_var val: result.schoolday_closed_percent, unit: :percent %>
+      <% r.with_var val: result.holidays_percent, unit: :percent %>
+      <% r.with_var val: result.weekends_percent, unit: :percent %>
+      <% r.with_var val: result.community_percent, unit: :percent %>
+      <% r.with_var val: result.community_gbp, unit: :£ %>
+      <% r.with_var val: result.out_of_hours_gbp, unit: :£ %>
+      <% r.with_var val: result.potential_saving_gbp, unit: :£ %>
     <% end %>
-  </tbody>
-  <tfoot>
+  <% end %>
+  <% c.with_footer do %>
     <tr>
-      <td colspan="10">
-        <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
-        <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
-        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+      <td colspan="<%= headers.count %>">
+        <a name="footnotes">
+          <strong>
+            <%= t('analytics.benchmarking.content.footnotes.notes') %>
+          </strong>
+        </a>
+          <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
+          <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
       </td>
     </tr>
-  </tfoot>
-</table>
+  <% end %>
+<% end %>
