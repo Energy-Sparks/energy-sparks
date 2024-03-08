@@ -10,4 +10,6 @@
 #  school_id                                  :bigint(8)
 #
 class Comparison::AnnualElectricityCostsPerPupil < Comparison::View
+  scope :with_data, -> { where.not(one_year_electricity_per_pupil_gbp: nil) }
+  scope :sort_default, -> { order(one_year_electricity_per_pupil_gbp: :desc) }
 end
