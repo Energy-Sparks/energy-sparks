@@ -2295,31 +2295,6 @@ ActiveRecord::Schema.define(version: 2024_03_06_163820) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
-  create_view "solar_generation_summaries", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      solar_generation.alert_generation_run_id,
-      solar_generation.school_id,
-      solar_generation.annual_electricity_kwh,
-      solar_generation.annual_mains_consumed_kwh,
-      solar_generation.annual_solar_pv_kwh,
-      solar_generation.annual_exported_solar_pv_kwh,
-      solar_generation.annual_solar_pv_consumed_onsite_kwh
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data.annual_electricity_kwh,
-              data.annual_mains_consumed_kwh,
-              data.annual_solar_pv_kwh,
-              data.annual_exported_solar_pv_kwh,
-              data.annual_solar_pv_consumed_onsite_kwh
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(annual_electricity_kwh double precision, annual_mains_consumed_kwh double precision, annual_solar_pv_kwh double precision, annual_exported_solar_pv_kwh double precision, annual_solar_pv_consumed_onsite_kwh double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSolarGeneration'::text))) solar_generation,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (solar_generation.alert_generation_run_id = latest_runs.id);
-  SQL
   create_view "solar_pv_benefit_estimates", sql_definition: <<-SQL
       SELECT latest_runs.id,
       additional.school_id,
