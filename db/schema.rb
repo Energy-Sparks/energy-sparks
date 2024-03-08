@@ -2384,6 +2384,7 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data_1(current_period_type text, current_period_start_date date, current_period_end_date date, difference_gbpcurrent double precision, difference_kwh double precision, difference_percent double precision, previous_period_type text, previous_period_start_date date, previous_period_end_date date, pupils_changed boolean, tariff_has_changed boolean, truncated_current_period boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertPreviousYearHolidayComparisonElectricity'::text))) data,
+  SQL
   create_view "annual_electricity_costs_per_pupils", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
