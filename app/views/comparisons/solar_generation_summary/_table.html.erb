@@ -4,9 +4,11 @@
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
-      <%= r.with_var val: result.holiday_projected_usage_gbp, unit: :£ %>
-      <%= r.with_var val: result.holiday_usage_to_date_gbp, unit: :£ %>
-      <%= r.with_var { result.holiday_name } %>
+      <%= r.with_var val: result.annual_solar_pv_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_solar_pv_consumed_onsite_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_exported_solar_pv_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_mains_consumed_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_electricity_kwh, unit: :kwh %>
     <% end %>
   <% end %>
 <% end %>
