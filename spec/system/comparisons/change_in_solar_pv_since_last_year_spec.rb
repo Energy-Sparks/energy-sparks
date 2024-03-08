@@ -3,22 +3,21 @@ require 'rails_helper'
 describe 'change_in_solar_pv_since_last_year' do
   let!(:school) { create(:school) }
   let(:key) { :change_in_solar_pv_since_last_year }
-  let(:advice_page_key) { :your_advice_page_key }
+  let(:advice_page_key) { :solar_pv }
 
   # change to your variables
   let(:variables) do
     {
-      current_year_percent_of_target_relative: +0.18699995372972533,
-      current_year_unscaled_percent_of_target_relative: -0.4799985149375391,
-      current_year_kwh: 1284.7,
-      current_year_target_kwh: 2281.8825833333326,
-      unscaled_target_kwh_to_date: 2401.9816666666666,
-      tracking_start_date: '2024-01-01'
+      previous_year_solar_pv_kwh: 1000.0,
+      current_year_solar_pv_kwh: 1100.0,
+      previous_year_solar_pv_co2: 800.0,
+      current_year_solar_pv_co2: 900.0,
+      solar_type: 'synthetic'
     }
   end
 
   # change to your alert type (there may be more than one!)
-  let(:alert_type) { create(:alert_type, class_name: 'AlertElectricityTargetAnnual') }
+  let(:alert_type) { create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
@@ -34,43 +33,49 @@ describe 'change_in_solar_pv_since_last_year' do
       let(:expected_report) { report }
     end
 
-    it_behaves_like 'a school comparison report' do
+    it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+      let(:headers) do
+        [
+          I18n.t('analytics.benchmarking.configuration.column_headings.school'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.estimated')
+        ]
+      end
       let(:expected_table) do
-        [['School',
-          'Percent above or below target since target set',
-          'Percent above or below last year',
-          'kWh consumption since target set',
-          'Target kWh consumption',
-          'Last year kWh consumption',
-          'Start date for target'],
-         [school.name,
-          '+18.7%',
-          '-48%',
-          '1,280',
-          '2,280',
-          '2,400',
-          'Monday 1 Jan 2024'],
-         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
+        [
+          ['', 'kWh', 'CO2 (kg)', 'Solar self consumption'],
+          headers,
+          [school.name,
+           '1,000',
+           '1,100',
+           '+10%',
+           '800',
+           '900',
+           '+13%',
+           'Yes'],
+          ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
         ]
       end
       let(:expected_csv) do
-        [['School',
-          'Percent above or below target since target set',
-          'Percent above or below last year',
-          'kWh consumption since target set',
-          'Target kWh consumption',
-          'Last year kWh consumption',
-          'Start date for target'],
-         [school.name,
-          '18.7',
-          '-48',
-          '1,280',
-          '2,280',
-          '2,400',
-          '2024-01-01']
+        [
+          ['', 'kWh', '', '', 'CO2 (kg)', '', '', 'Solar self consumption'],
+          headers,
+          [school.name,
+           '1,000',
+           '1,100',
+           '10',
+           '800',
+           '900',
+           '12.5',
+           'Yes']
         ]
       end
     end

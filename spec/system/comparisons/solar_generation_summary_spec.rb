@@ -31,7 +31,7 @@ describe 'solar_generation_summary' do
       let(:expected_report) { report }
     end
 
-    it_behaves_like 'a school comparison report' do
+    it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:headers) { ['School', 'Generation (kWh)', 'Self consumption (kWh), Export (kWh)', 'Mains consumption (kWh)', 'Total onsite consumption (kWh)']}

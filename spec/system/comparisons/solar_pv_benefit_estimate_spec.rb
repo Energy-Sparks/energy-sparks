@@ -38,7 +38,7 @@ describe 'solar_pv_benefit_estimate' do
       let(:expected_report) { report }
     end
 
-    it_behaves_like 'a school comparison report' do
+    it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:headers) do

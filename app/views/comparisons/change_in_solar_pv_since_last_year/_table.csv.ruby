@@ -1,4 +1,15 @@
 CSV.generate do |csv|
+  csv << [
+    "",
+    t('analytics.benchmarking.configuration.column_groups.kwh'),
+    "",
+    "",
+    t('analytics.benchmarking.configuration.column_groups.co2_kg'),
+    "",
+    "",
+    t('analytics.benchmarking.configuration.column_groups.solar_self_consumption')
+  ]
+
   csv << @headers
   @results.each do |result|
     csv << [
