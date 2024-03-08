@@ -20,7 +20,7 @@
   <% end %>
   <% c.with_footer do %>
     <tr>
-      <td colspan="6">
+      <td colspan="<%= headers.count %>">
         <p>
           <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
         </p>
