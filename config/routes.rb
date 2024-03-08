@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   namespace :comparisons do
     resources :solar_pv_benefit_estimate, only: [:index]
     resources :annual_electricity_costs_per_pupil, only: [:index]
+    resources :change_in_solar_pv_since_last_year, only: [:index]
     resources :electricity_targets, only: [:index]
     resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_since_last_year, only: [:index]
