@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_06_153714) do
+ActiveRecord::Schema.define(version: 2024_03_07_181846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2319,5 +2319,35 @@ ActiveRecord::Schema.define(version: 2024_03_06_153714) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (solar_generation.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "solar_pv_benefit_estimates", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      additional.school_id,
+      benefit_estimate.alert_generation_run_id,
+      benefit_estimate.optimum_kwp,
+      benefit_estimate.optimum_payback_years,
+      benefit_estimate.optimum_mains_reduction_percent,
+      benefit_estimate.one_year_saving_gbpcurrent,
+      additional.electricity_economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              data.optimum_kwp,
+              data.optimum_payback_years,
+              data.optimum_mains_reduction_percent,
+              data.one_year_saving_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(optimum_kwp double precision, optimum_payback_years double precision, optimum_mains_reduction_percent double precision, one_year_saving_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSolarPVBenefitEstimator'::text))) benefit_estimate,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((benefit_estimate.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
 end
