@@ -12,7 +12,7 @@ class Comparison::View < ApplicationRecord
 
   # E.g. previous_year, current_year
   scope :by_percentage_change, ->(base, new_val) do
-    order(Arel.sql("(NULLIF(#{new_val},0.0) - NULLIF(#{base},0.0)) / NULLIF(#{base},0.0) DESC NULLS FIRST"))
+    order(Arel.sql(sanitize_sql_array("(NULLIF(#{new_val},0.0) - NULLIF(#{base},0.0)) / NULLIF(#{base},0.0) DESC NULLS FIRST")))
   end
 
   def readonly?
