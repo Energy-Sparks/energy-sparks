@@ -2388,6 +2388,7 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((benefit_estimate.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
   create_view "annual_electricity_out_of_hours_uses", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
