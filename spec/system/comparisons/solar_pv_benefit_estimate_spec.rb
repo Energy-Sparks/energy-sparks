@@ -8,7 +8,7 @@ describe 'solar_pv_benefit_estimate' do
   let(:variables) do
     {
       optimum_kwp: 44.2,
-      optimum_payback_years: 2.99,
+      optimum_payback_years: 2.5,
       optimum_mains_reduction_percent: 0.15,
       one_year_saving_gbpcurrent: 1000
     }
@@ -42,30 +42,38 @@ describe 'solar_pv_benefit_estimate' do
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:headers) do
-        ['School', 'Size: kWp', 'Reduction in mains consumption %',
-         'Annual saving at latest tariff if optimal panel size installed']
+        [
+          I18n.t('analytics.benchmarking.configuration.column_headings.school'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.size_kwp'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.payback_years'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.reduction_in_mains_consumption_pct'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.saving_optimal_panels')
+        ]
       end
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
       let(:expected_table) do
-        [headers,
-         [school.name,
-          '44.2',
-          '2 years 9 months',
-          '15&percnt;',
-          '£1,000'],
-         ["Notes\n[t]\n" \
-          '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
-          'tariff but other £ values are calculated using the relevant tariff at the time']
-]
+        [
+          headers,
+          ["#{school.name} [t]",
+           '44.2',
+           '2 years 6 months',
+           '15&percnt;',
+           '£1,000'],
+          ["Notes\n[t]\n" \
+           '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+           'tariff but other £ values are calculated using the relevant tariff at the time' \
+            "\nIn school comparisons 'last year' is defined as this year to date."]
+        ]
       end
       let(:expected_csv) do
-        [headers,
-         [school.name,
-          '44.2',
-          '2.9',
-          '15',
-          '1000']
-]
+        [
+          headers,
+          [school.name,
+           '44.2',
+           '2.5',
+           '15',
+           '1,000']
+        ]
       end
     end
   end
