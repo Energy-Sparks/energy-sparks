@@ -2300,26 +2300,34 @@ ActiveRecord::Schema.define(version: 2024_03_01_155530) do
       data.alert_generation_run_id,
       data.school_id,
       data.current_period_type,
+      data.current_period_start_date,
+      data.current_period_end_date,
       data.difference_gbpcurrent,
       data.difference_kwh,
       data.difference_percent,
       data.previous_period_type,
+      data.previous_period_start_date,
+      data.previous_period_end_date,
       data.pupils_changed,
       data.tariff_has_changed,
       data.truncated_current_period
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.current_period_type,
+              data_1.current_period_start_date,
+              data_1.current_period_end_date,
               data_1.difference_gbpcurrent,
               data_1.difference_kwh,
               data_1.difference_percent,
               data_1.previous_period_type,
+              data_1.previous_period_start_date,
+              data_1.previous_period_end_date,
               data_1.pupils_changed,
               data_1.tariff_has_changed,
               data_1.truncated_current_period
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(current_period_type text, difference_gbpcurrent double precision, difference_kwh double precision, difference_percent double precision, previous_period_type text, pupils_changed boolean, tariff_has_changed boolean, truncated_current_period boolean)
+              LATERAL jsonb_to_record(alerts.variables) data_1(current_period_type text, current_period_start_date date, current_period_end_date date, difference_gbpcurrent double precision, difference_kwh double precision, difference_percent double precision, previous_period_type text, previous_period_start_date date, previous_period_end_date date, pupils_changed boolean, tariff_has_changed boolean, truncated_current_period boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertPreviousYearHolidayComparisonElectricity'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs

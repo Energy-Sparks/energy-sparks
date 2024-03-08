@@ -36,12 +36,13 @@
       <%= row.with_var val: result.difference_gbpcurrent, unit: :£_0dp, change: true %>
       <%= row.with_var val: result.difference_kwh, unit: :kw %>
       <%= row.with_var do %>
-        <%= t("analytics.holidays.#{result.current_period_type}", default: '') %>
-        <% if result.truncated_current_period %>
-          <%= t('advice_pages.tables.labels.partial') %>
-        <% end %>
+        <%= holiday_name(result.current_period_type, result.current_period_start_date, result.current_period_end_date,
+                         partial: result.truncated_current_period) %>
       <% end %>
-      <%= row.with_var { t("analytics.holidays.#{result.previous_period_type}", default: '') } %>
+      <%= row.with_var do %>
+        <%= holiday_name(result.previous_period_type, result.previous_period_start_date,
+                         result.previous_period_end_date) %>
+      <% end %>
     <% end %>
   <% end %>
   <% component.with_footer do %>

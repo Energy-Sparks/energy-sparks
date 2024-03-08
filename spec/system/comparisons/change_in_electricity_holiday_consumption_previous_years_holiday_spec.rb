@@ -8,42 +8,41 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
 
   before do
     alert_type = create(:alert_type, class_name: 'AlertPreviousYearHolidayComparisonElectricity')
+    common = {
+      current_period_end_date: '2023-04-14',
+      current_period_start_date: '2023-04-01',
+      current_period_type: 'easter',
+      truncated_current_period: false,
+      previous_period_end_date: '2022-04-14',
+      previous_period_start_date: '2022-04-01',
+      previous_period_type: 'easter',
+      pupils_changed: false,
+      tariff_has_changed: false
+    }
     create(:alert, :with_run, school: schools[0],
                               alert_type: alert_type,
-                              variables: {
+                              variables: common.merge({
                                 difference_percent: 1,
                                 difference_gbpcurrent: 2,
                                 difference_kwh: 3,
-                                current_period_type: 'easter',
                                 truncated_current_period: true,
-                                previous_period_type: 'easter',
                                 pupils_changed: true,
                                 tariff_has_changed: true
-                              })
+                              }))
     create(:alert, :with_run, school: schools[1],
                               alert_type: alert_type,
-                              variables: {
+                              variables: common.merge({
                                 difference_percent: 'Infinity',
                                 difference_gbpcurrent: 4,
                                 difference_kwh: 5,
-                                current_period_type: 'easter',
-                                truncated_current_period: false,
-                                previous_period_type: 'easter',
-                                pupils_changed: false,
-                                tariff_has_changed: false
-                              })
+                              }))
     create(:alert, :with_run, school: schools[2],
                               alert_type: alert_type,
-                              variables: {
+                              variables: common.merge({
                                 difference_percent: '-Infinity',
                                 difference_gbpcurrent: 6,
                                 difference_kwh: 7,
-                                current_period_type: 'easter',
-                                truncated_current_period: false,
-                                previous_period_type: 'easter',
-                                pupils_changed: false,
-                                tariff_has_changed: false
-                              })
+                              }))
   end
 
   context 'when viewing report' do
@@ -60,9 +59,9 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
                  'Previous holiday']
       let(:expected_table) do
         [headers,
-         ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'Easter', 'Easter'],
-         ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'Easter (partial)', 'Easter'],
-         ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7', 'Easter', 'Easter'],
+         ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'Easter 2023', 'Easter 2022'],
+         ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
+         ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7', 'Easter 2023', 'Easter 2022'],
          ["Notes\n" \
           '(*1) the comparison has been adjusted because the number of pupils have changed between the two holidays. ' \
           '(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the ' \
