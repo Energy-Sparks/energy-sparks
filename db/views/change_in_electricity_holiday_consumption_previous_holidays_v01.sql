@@ -8,8 +8,12 @@ FROM
       difference_gbpcurrent float,
       difference_kwh float,
       current_period_type text,
+      current_period_start_date date,
+      current_period_end_date date,
       truncated_current_period boolean,
       previous_period_type text,
+      previous_period_start_date date,
+      previous_period_end_date date,
       pupils_changed boolean,
       tariff_has_changed boolean
     )
