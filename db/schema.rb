@@ -2359,40 +2359,6 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
-  create_view "change_in_electricity_holiday_consumption_previous_holidays", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.difference_percent,
-      data.difference_gbpcurrent,
-      data.difference_kwh,
-      data.current_period_type,
-      data.current_period_start_date,
-      data.current_period_end_date,
-      data.truncated_current_period,
-      data.previous_period_type,
-      data.previous_period_start_date,
-      data.previous_period_end_date,
-      data.pupils_changed,
-      data.tariff_has_changed
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.difference_percent,
-              data_1.difference_gbpcurrent,
-              data_1.difference_kwh,
-              data_1.current_period_type,
-              data_1.current_period_start_date,
-              data_1.current_period_end_date,
-              data_1.truncated_current_period,
-              data_1.previous_period_type,
-              data_1.previous_period_start_date,
-              data_1.previous_period_end_date,
-              data_1.pupils_changed,
-              data_1.tariff_has_changed
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(difference_percent double precision, difference_gbpcurrent double precision, difference_kwh double precision, current_period_type text, current_period_start_date date, current_period_end_date date, truncated_current_period boolean, previous_period_type text, previous_period_start_date date, previous_period_end_date date, pupils_changed boolean, tariff_has_changed boolean)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertPreviousHolidayComparisonElectricity'::text))) data,
   create_view "solar_pv_benefit_estimates", sql_definition: <<-SQL
       SELECT latest_runs.id,
       additional.school_id,
@@ -2467,5 +2433,44 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (versus_benchmark.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "change_in_electricity_holiday_consumption_previous_holidays", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.difference_percent,
+      data.difference_gbpcurrent,
+      data.difference_kwh,
+      data.current_period_type,
+      data.current_period_start_date,
+      data.current_period_end_date,
+      data.truncated_current_period,
+      data.previous_period_type,
+      data.previous_period_start_date,
+      data.previous_period_end_date,
+      data.pupils_changed,
+      data.tariff_has_changed
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.difference_percent,
+              data_1.difference_gbpcurrent,
+              data_1.difference_kwh,
+              data_1.current_period_type,
+              data_1.current_period_start_date,
+              data_1.current_period_end_date,
+              data_1.truncated_current_period,
+              data_1.previous_period_type,
+              data_1.previous_period_start_date,
+              data_1.previous_period_end_date,
+              data_1.pupils_changed,
+              data_1.tariff_has_changed
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(difference_percent double precision, difference_gbpcurrent double precision, difference_kwh double precision, current_period_type text, current_period_start_date date, current_period_end_date date, truncated_current_period boolean, previous_period_type text, previous_period_start_date date, previous_period_end_date date, pupils_changed boolean, tariff_has_changed boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertPreviousHolidayComparisonElectricity'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
 end
