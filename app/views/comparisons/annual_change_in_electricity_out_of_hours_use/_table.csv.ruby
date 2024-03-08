@@ -11,18 +11,7 @@ CSV.generate do |csv|
     "",
     ""
   ]
-  csv << [
-    t('analytics.benchmarking.configuration.column_headings.school'),
-    t('analytics.benchmarking.configuration.column_headings.previous_year_out_of_hours_kwh'),
-    t('analytics.benchmarking.configuration.column_headings.last_year_out_of_hours_kwh'),
-    t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    t('analytics.benchmarking.configuration.column_headings.previous_year_out_of_hours_co2'),
-    t('analytics.benchmarking.configuration.column_headings.last_year_out_of_hours_co2'),
-    t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    t('analytics.benchmarking.configuration.column_headings.previous_year_out_of_hours_cost_ct'),
-    t('analytics.benchmarking.configuration.column_headings.last_year_out_of_hours_cost_ct'),
-    t('analytics.benchmarking.configuration.column_headings.change_pct')
-  ]
+  csv << @headers
 
   @results.each do |result|
     csv << [

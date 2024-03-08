@@ -11,16 +11,15 @@
         <% end %>
       <% end %>
 
-      <%= r.with_var val: result.one_year_baseload_per_pupil_kw * 1000.0, unit: :kw %>
-      <%= r.with_var val: result.average_baseload_last_year_gbp, unit: :£ %>
-      <%= r.with_var val: result.average_baseload_last_year_kw, unit: :kw %>
-      <%= r.with_var val: result.annual_baseload_percent, unit: :percent %>
-      <%= r.with_var val: [0.0, result.one_year_saving_versus_exemplar_gbp].max, unit: :£ %>
+      <%= r.with_var val: result.optimum_kwp, unit: :kwp %>
+      <%= r.with_var val: result.optimum_payback_years, unit: :years %>
+      <%= r.with_var val: result.optimum_mains_reduction_percent, unit: :percent %>
+      <%= r.with_var val: result.one_year_saving_gbpcurrent, unit: :£current %>
     <% end %>
   <% end %>
   <% c.with_footer do %>
     <tr>
-      <td colspan="<%= headers.count %>">
+      <td colspan="6">
         <p>
           <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
         </p>
