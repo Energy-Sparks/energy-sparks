@@ -58,9 +58,11 @@ describe 'annual_electricity_out_of_hours_use' do
 
       let(:expected_table) do
         [headers,
-         ["#{school.name} (*5)", '27.8&percnt;', '37.1&percnt;', '21.1&percnt;', '13.9&percnt;', '0&percnt;', '0p', '£41,300', '£13,000'],
-         ["Notes\n(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons 'last year' is defined as this year to date."]
-        ]
+         ["#{school.name} [t]", '27.8&percnt;', '37.1&percnt;', '21.1&percnt;', '13.9&percnt;', '0&percnt;', '0p', '£41,300', '£13,000'],
+         ["Notes\n[t]\n" \
+          '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+          "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
+          "'last year' is defined as this year to date."]]
       end
 
       let(:expected_csv) do
