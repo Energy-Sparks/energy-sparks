@@ -5,10 +5,14 @@ FROM
     SELECT alert_generation_run_id, school_id, data.*
     FROM alerts, alert_types, jsonb_to_record(variables) AS data(
       current_period_type text,
+      current_period_start_date date,
+      current_period_end_date date,
       difference_gbpcurrent float,
       difference_kwh float,
       difference_percent float,
       previous_period_type text,
+      previous_period_start_date date,
+      previous_period_end_date date,
       pupils_changed boolean,
       tariff_has_changed boolean,
       truncated_current_period boolean

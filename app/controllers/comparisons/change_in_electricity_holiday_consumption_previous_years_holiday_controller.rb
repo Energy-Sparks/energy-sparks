@@ -4,6 +4,15 @@ module Comparisons
   class ChangeInElectricityHolidayConsumptionPreviousYearsHolidayController < BaseController
     private
 
+    def headers
+      [t('analytics.benchmarking.configuration.column_headings.school'),
+       t('analytics.benchmarking.configuration.column_headings.change_pct'),
+       t('analytics.benchmarking.configuration.column_headings.change_£current'),
+       t('analytics.benchmarking.configuration.column_headings.change_kwh'),
+       t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
+       t('analytics.benchmarking.configuration.column_headings.previous_holiday')]
+    end
+
     def key
       :change_in_electricity_holiday_consumption_previous_years_holiday
     end
