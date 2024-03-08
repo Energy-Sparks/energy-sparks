@@ -73,9 +73,9 @@ describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
       end
       let(:expected_csv) do
         [headers,
-         [schools[1].name, 'Infinity', '4', '5', 'Easter', 'Easter'],
-         [schools[0].name, '100', '2', '3', 'Easter (partial)', 'Easter'],
-         [schools[2].name, '-Infinity', '6', '7', 'Easter', 'Easter']]
+         [schools[1].name, 'Infinity', '4', '5', 'Easter 2023', 'Easter 2022'],
+         [schools[0].name, '100', '2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
+         [schools[2].name, '-Infinity', '6', '7', 'Easter 2023', 'Easter 2022']]
       end
     end
 

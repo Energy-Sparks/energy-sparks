@@ -8,9 +8,9 @@ CSV.generate do |csv|
       format_unit(result.difference_percent * 100, Float, true, :benchmark),
       format_unit(result.difference_gbpcurrent, Float, true, :benchmark),
       format_unit(result.difference_kwh, Float, true, :benchmark),
-      t("analytics.holidays.#{result.current_period_type}", default: '') + \
-      (result.truncated_current_period ? " #{t('advice_pages.tables.labels.partial')}" : ''),
-      t("analytics.holidays.#{result.previous_period_type}", default: '')
+      holiday_name(result.current_period_type, result.current_period_start_date, result.current_period_end_date,
+                   partial: result.truncated_current_period),
+      holiday_name(result.previous_period_type, result.previous_period_start_date, result.previous_period_end_date)
     ]
   end
 end.html_safe
