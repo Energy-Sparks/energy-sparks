@@ -31,10 +31,10 @@ describe 'solar_generation_summary' do
       let(:expected_report) { report }
     end
 
-    it_behaves_like 'a school comparison report' do
+    it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
-      let(:headers) { ['School', 'Generation (kWh)', 'Self consumption (kWh), Export (kWh)', 'Mains consumption (kWh)', 'Total onsite consumption (kWh)']}
+      let(:headers) { ['School', 'Generation (kWh)', 'Self consumption (kWh)', 'Export (kWh)', 'Mains consumption (kWh)', 'Total onsite consumption (kWh)']}
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
       let(:expected_table) do
         [
@@ -51,11 +51,11 @@ describe 'solar_generation_summary' do
         [
           headers,
           [school.name,
-           '2500',
-           '2000',
+           '2,500',
+           '2,000',
            '500',
-           '1000',
-           '4000']
+           '1,000',
+           '4,000']
         ]
       end
     end
