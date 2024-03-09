@@ -44,8 +44,7 @@ describe 'seasonal_baseload_variation' do
           'latest tariff but other £ values are calculated using the relevant tariff at the time']]
       end
       let(:expected_csv) do
-        [headers,
-         [school.name, '100', '2', '3', '4']]
+        [headers, [school.name, '100', '2', '3', '4']]
       end
     end
 
