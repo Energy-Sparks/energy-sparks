@@ -4,6 +4,16 @@ module Comparisons
   class ElectricityPeakKwPerPupilController < BaseController
     private
 
+    def headers
+      [
+        t('analytics.benchmarking.configuration.column_headings.school'),
+        t('analytics.benchmarking.configuration.column_headings.w_floor_area'),
+        t('analytics.benchmarking.configuration.column_headings.average_peak_kw'),
+        t('analytics.benchmarking.configuration.column_headings.exemplar_peak_kw'),
+        t('analytics.benchmarking.configuration.column_headings.saving_if_match_exemplar_£')
+      ]
+    end
+
     def key
       :electricity_peak_kw_per_pupil
     end
