@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'change_in_electricity_holiday_consumption_previous_*' do
+describe 'change_in_electricity_*_consumption_*' do
   let(:schools) { create_list(:school, 3) }
   let(:expected_school) { schools[0] }
   let(:headers) do
@@ -32,41 +32,33 @@ describe 'change_in_electricity_holiday_consumption_previous_*' do
 
   before do
     alert_type = create(:alert_type, class_name: alert_class_name)
-    common = {
-      current_period_end_date: '2023-04-14',
-      current_period_start_date: '2023-04-01',
-      current_period_type: 'easter',
-      truncated_current_period: false,
-      previous_period_end_date: '2022-04-14',
-      previous_period_start_date: '2022-04-01',
-      previous_period_type: 'easter',
-      pupils_changed: false,
-      tariff_has_changed: false
-    }
+    common = { current_period_end_date: '2023-04-14',
+               current_period_start_date: '2023-04-01',
+               current_period_type: 'easter',
+               truncated_current_period: false,
+               previous_period_end_date: '2022-04-14',
+               previous_period_start_date: '2022-04-01',
+               previous_period_type: 'easter',
+               pupils_changed: false,
+               tariff_has_changed: false }
     create(:alert, :with_run, school: schools[0],
                               alert_type: alert_type,
-                              variables: common.merge({
-                                                        difference_percent: 1,
+                              variables: common.merge({ difference_percent: 1,
                                                         difference_gbpcurrent: 2,
                                                         difference_kwh: 3,
                                                         truncated_current_period: true,
                                                         pupils_changed: true,
-                                                        tariff_has_changed: true
-                                                      }))
+                                                        tariff_has_changed: true }))
     create(:alert, :with_run, school: schools[1],
                               alert_type: alert_type,
-                              variables: common.merge({
-                                                        difference_percent: 'Infinity',
+                              variables: common.merge({ difference_percent: 'Infinity',
                                                         difference_gbpcurrent: 4,
-                                                        difference_kwh: 5
-                                                      }))
+                                                        difference_kwh: 5 }))
     create(:alert, :with_run, school: schools[2],
                               alert_type: alert_type,
-                              variables: common.merge({
-                                                        difference_percent: '-Infinity',
+                              variables: common.merge({ difference_percent: '-Infinity',
                                                         difference_gbpcurrent: 6,
-                                                        difference_kwh: 7
-                                                      }))
+                                                        difference_kwh: 7 }))
     visit "/comparisons/#{key}"
   end
 
@@ -82,6 +74,20 @@ describe 'change_in_electricity_holiday_consumption_previous_*' do
   describe 'change_in_electricity_holiday_consumption_previous_holiday' do
     let(:alert_class_name) { 'AlertPreviousHolidayComparisonElectricity' }
     let(:key) { :change_in_electricity_holiday_consumption_previous_holiday }
+
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+    it_behaves_like 'a school comparison report with a chart'
+  end
+
+  describe 'change_in_electricity_consumption_recent_school_weeks' do
+    let(:alert_class_name) { 'AlertSchoolWeekComparisonElectricity' }
+    let(:key) { :change_in_electricity_consumption_recent_school_weeks }
+
+    before do
+      expected_table.map! { |row| row[0..3] }
+      expected_csv.map! { |row| row[0..3] }
+    end
 
     it_behaves_like 'a school comparison report'
     it_behaves_like 'a school comparison report with a table'
