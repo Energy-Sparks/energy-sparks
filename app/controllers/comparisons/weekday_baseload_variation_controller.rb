@@ -2,6 +2,16 @@ module Comparisons
   class WeekdayBaseloadVariationController < BaseController
     private
 
+    def headers
+      [t('analytics.benchmarking.configuration.column_headings.school'),
+       t('analytics.benchmarking.configuration.column_headings.variation_in_baseload_between_days_of_week'),
+       t('analytics.benchmarking.configuration.column_headings.min_average_weekday_baseload_kw'),
+       t('analytics.benchmarking.configuration.column_headings.max_average_weekday_baseload_kw'),
+       t('analytics.benchmarking.configuration.column_headings.day_of_week_with_minimum_baseload'),
+       t('analytics.benchmarking.configuration.column_headings.day_of_week_with_maximum_baseload'),
+       t('analytics.benchmarking.configuration.column_headings.potential_saving')]
+    end
+
     def key
       :weekday_baseload_variation
     end
