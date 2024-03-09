@@ -6,9 +6,9 @@
 #  annual_cost_gbpcurrent                        :float
 #  electricity_economic_tariff_changed_this_year :boolean
 #  id                                            :bigint(8)
-#  max_day                                       :text
+#  max_day                                       :integer
 #  max_day_kw                                    :float
-#  min_day                                       :text
+#  min_day                                       :integer
 #  min_day_kw                                    :float
 #  percent_intraday_variation                    :float
 #  school_id                                     :bigint(8)
