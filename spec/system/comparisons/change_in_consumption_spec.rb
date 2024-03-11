@@ -102,4 +102,13 @@ describe 'change_in_*_consumption_*' do
     it_behaves_like 'a school comparison report with a table'
     it_behaves_like 'a school comparison report with a chart'
   end
+
+  describe 'change_in_gas_holiday_consumption_previous_years_holiday' do
+    let(:alert_class_name) { 'AlertPreviousYearHolidayComparisonGas' }
+    let(:key) { :change_in_gas_holiday_consumption_previous_years_holiday }
+
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+    it_behaves_like 'a school comparison report with a chart'
+  end
 end
