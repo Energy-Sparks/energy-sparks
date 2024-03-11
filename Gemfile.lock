@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: edf4a52467b97236d176399852ff71d713caffec
-  branch: 4140-weekday-baseload-variation
+  revision: 83e2dd77b86644ceac2957e944948f5f146949c8
+  tag: 5.1.3
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
