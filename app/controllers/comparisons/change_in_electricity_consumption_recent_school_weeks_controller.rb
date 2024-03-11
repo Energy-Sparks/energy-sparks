@@ -7,10 +7,7 @@ module Comparisons
     private
 
     def headers
-      [t('analytics.benchmarking.configuration.column_headings.school'),
-       t('analytics.benchmarking.configuration.column_headings.change_pct'),
-       t('analytics.benchmarking.configuration.column_headings.change_£current'),
-       t('analytics.benchmarking.configuration.column_headings.change_kwh')]
+      recent_school_weeks_headers
     end
 
     def key
