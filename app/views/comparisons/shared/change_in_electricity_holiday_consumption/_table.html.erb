@@ -1,0 +1,80 @@
+<% pupils_changed_footnote = false %>
+<% tariff_has_changed_footnote = false %>
+<% infinite_increase_footnote = false %>
+<% infinite_decrease_footnote = false %>
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |component| %>
+  <% @results.each do |result| %>
+    <% component.with_row do |row| %>
+      <% row.with_school school: result.school %>
+      <% if result.pupils_changed %>
+        <% pupils_changed_footnote = true %>
+        <% row.with_reference do %>
+          <a href="#footnotes">(*1)</a>
+        <% end %>
+      <% end %>
+      <% if result.difference_percent.infinite? == 1 %>
+        <% infinite_increase_footnote = true %>
+        <% row.with_reference do %>
+          <a href="#footnotes">(*2)</a>
+        <% end %>
+      <% end %>
+      <% if result.difference_percent.infinite? == -1 %>
+        <% infinite_decrease_footnote = true %>
+        <% row.with_reference do %>
+          <a href="#footnotes">(*3)</a>
+        <% end %>
+      <% end %>
+      <% if result.tariff_has_changed %>
+        <% tariff_has_changed_footnote = true %>
+        <% row.with_reference do %>
+          <a href="#footnotes">(*6)</a>
+        <% end %>
+      <% end %>
+      <%= row.with_var val: result.difference_percent, unit: :relative_percent_0dp, change: true %>
+      <%= row.with_var val: result.difference_gbpcurrent, unit: :£_0dp, change: true %>
+      <%= row.with_var val: result.difference_kwh, unit: :kwh %>
+      <%= row.with_var do %>
+        <%= holiday_name(result.current_period_type, result.current_period_start_date, result.current_period_end_date,
+                         partial: result.truncated_current_period) %>
+      <% end %>
+      <%= row.with_var do %>
+        <%= holiday_name(result.previous_period_type, result.previous_period_start_date,
+                         result.previous_period_end_date) %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% component.with_footer do %>
+    <% if pupils_changed_footnote || infinite_increase_footnote || infinite_decrease_footnote ||
+          tariff_has_changed_footnote %>
+      <tr>
+        <td colspan="<%= headers.length %>">
+          <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
+          <ul>
+            <% if pupils_changed_footnote %>
+              <%= t('analytics.benchmarking.content.footnotes.electricity.change_rows_text',
+                    period_type_string:
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')).html_safe %>
+            <% end %>
+            <% if infinite_increase_footnote %>
+              <%= t('analytics.benchmarking.content.footnotes.electricity.infinite_increase_school_names_text',
+                    period_type_string:
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')).html_safe %>
+            <% end %>
+            <% if infinite_decrease_footnote %>
+              <%= t('analytics.benchmarking.content.footnotes.electricity.infinite_decrease_school_names_text',
+                    period_type_string:
+                      t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types')).html_safe %>
+            <% end %>
+            <% if tariff_has_changed_footnote %>
+              <%= t('analytics.benchmarking.content.footnotes.rate_changed_in_period',
+                    change_gbp_current_header:
+                      t('analytics.benchmarking.configuration.column_headings.change_£current')).html_safe %>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+<% end %>
