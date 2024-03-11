@@ -55,6 +55,8 @@ module Amr
         end
       end
 
+      puts @results_array.inspect
+
       truncate_too_many_readings
       reject_any_low_reading_days
     end
