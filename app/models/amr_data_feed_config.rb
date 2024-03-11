@@ -4,6 +4,7 @@
 #
 #  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
+#  convert_to_kwh          :boolean          default(FALSE)
 #  created_at              :datetime         not null
 #  date_format             :text             not null
 #  description             :text             not null
