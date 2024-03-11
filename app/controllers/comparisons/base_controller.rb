@@ -10,6 +10,7 @@ module Comparisons
     helper_method :index_params
     before_action :set_advice_page
     before_action :set_report
+    before_action :set_headers
 
     def index
       @results = load_data
@@ -29,12 +30,26 @@ module Comparisons
 
     private
 
+    def colgroups
+      []
+    end
+
+    def headers
+      []
+    end
+
+    def set_headers
+      @colgroups = colgroups
+      @headers = headers
+    end
+
     def set_report
       @report = Comparison::Report.find_by_key(key) if key
     end
 
     def set_advice_page
       @advice_page = AdvicePage.find_by_key(advice_page_key) if advice_page_key
+      @advice_page_tab = advice_page_tab
     end
 
     # Key for the Comparison::Report
@@ -45,6 +60,11 @@ module Comparisons
     # Key for the AdvicePage used to link to school analysis
     def advice_page_key
       nil
+    end
+
+    # Tab of the advice page to link to by default
+    def advice_page_tab
+      :insights
     end
 
     # Load the results from the view
@@ -88,6 +108,31 @@ module Comparisons
         id: :comparison,
         x_axis: chart_data.keys,
         x_data: { I18n.t("analytics.benchmarking.configuration.column_headings.#{series_name}") => chart_data.values },
+        y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
+      }]
+    end
+
+    def create_multi_chart(results, names, multiplier, y_axis_label)
+      chart_data = {}
+      schools = []
+
+      results.each do |result|
+        schools << result.school.name
+        result.slice(*names.keys).each do |metric, value|
+          value ||= 0
+          # for a percentage metric we'd multiply * 100.0
+          # for converting from kW to W 1000.0
+          value *= multiplier unless multiplier.nil?
+          (chart_data[metric] ||= []) << value
+        end
+      end
+
+      chart_data.transform_keys! { |key| I18n.t("analytics.benchmarking.configuration.column_headings.#{names[key.to_sym]}") }
+
+      [{
+        id: :comparison,
+        x_axis: schools,
+        x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
         y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
       }]
     end

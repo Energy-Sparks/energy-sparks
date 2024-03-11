@@ -14,7 +14,4 @@
 #
 class Comparison::ChangeInElectricitySinceLastYear < Comparison::View
   scope :with_data, -> { where.not(previous_year_electricity_kwh: nil, current_year_electricity_kwh: nil) }
-  scope :by_percentage_change, -> do
-    order(Arel.sql('NULLIF(previous_year_electricity_kwh,0) / NULLIF(current_year_electricity_kwh,0)'))
-  end
 end

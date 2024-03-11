@@ -1,38 +1,12 @@
-<div class='text-right mt-2'>
-  <%= download_link(report, table_name, index_params) %>
-</div>
-
-<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted">
-  <thead>
-    <tr>
-      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.projected_usage_by_end_of_holiday') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.holiday_usage_to_date') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.holiday') %>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% results.each do |result| %>
-      <tr>
-        <td>
-          <%= result.school.name %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.holiday_projected_usage_gbp, :£, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(result.holiday_usage_to_date_gbp, :£, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= result.holiday_name %>
-        </td>
-      </tr>
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <%= r.with_var val: result.holiday_projected_usage_gbp, unit: :£ %>
+      <%= r.with_var val: result.holiday_usage_to_date_gbp, unit: :£ %>
+      <%= r.with_var { result.holiday_name } %>
     <% end %>
-  </tbody>
-</table>
+  <% end %>
+<% end %>
