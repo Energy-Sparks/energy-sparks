@@ -23,7 +23,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::ElectricityPeakKwPerPupil.where(school: @schools)
+      Comparison::ElectricityPeakKwPerPupil.for_schools(@schools)
                                            .where.not(average_school_day_last_year_kw_per_floor_area: nil)
                                            .order(average_school_day_last_year_kw_per_floor_area: :desc)
     end
