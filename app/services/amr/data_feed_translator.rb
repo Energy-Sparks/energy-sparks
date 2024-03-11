@@ -9,7 +9,6 @@ module Amr
 
     def perform
       hash_rows = @array_of_rows.map { |row| translate_row_to_hash(row) }
-      puts hash_rows.inspect
       check_units(hash_rows)
     end
 
