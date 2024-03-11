@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 3ed0b4a654e8079a245269614a406c584e1f8bdc
-  tag: 5.1.2
+  revision: 83e2dd77b86644ceac2957e944948f5f146949c8
+  tag: 5.1.3
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
