@@ -406,6 +406,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_142800) do
     t.string "period_field"
     t.boolean "enabled", default: true, null: false
     t.text "reading_time_field"
+    t.boolean "convert_to_kwh", default: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
