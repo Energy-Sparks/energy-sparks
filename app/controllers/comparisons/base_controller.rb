@@ -132,8 +132,7 @@ module Comparisons
       [{
         id: :comparison,
         x_axis: schools,
-        x_data: chart_data,
-        # I am confused - thought the y axis was always the vertical one? but it appears the other way around here?
+        x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
         y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
       }]
     end
