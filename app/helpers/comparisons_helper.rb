@@ -6,9 +6,9 @@ module ComparisonsHelper
   end
 
   def download_link(report, table_name, params)
+    path = [:comparisons, report.key.to_sym]
     # If the key is plural then rails routing works slightly
     # differently, so exclude :index component
-    path = [:comparisons, report.key.to_sym]
     path << :index if report.key.singularize == report.key
     download_path = polymorphic_path(path, params: params.merge(table_name: table_name, format: :csv))
 

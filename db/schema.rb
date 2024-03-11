@@ -2498,4 +2498,38 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "weekday_baseload_variations", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      additional.school_id,
+      data.alert_generation_run_id,
+      data.percent_intraday_variation,
+      data.min_day_kw,
+      data.max_day_kw,
+      data.min_day,
+      data.max_day,
+      data.annual_cost_gbpcurrent,
+      additional.electricity_economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              data_1.percent_intraday_variation,
+              data_1.min_day_kw,
+              data_1.max_day_kw,
+              data_1.min_day,
+              data_1.max_day,
+              data_1.annual_cost_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(percent_intraday_variation double precision, min_day_kw double precision, max_day_kw double precision, min_day integer, max_day integer, annual_cost_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertIntraweekBaseloadVariation'::text))) data,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
 end

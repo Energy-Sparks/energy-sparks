@@ -60,19 +60,20 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
-    resources :solar_pv_benefit_estimate, only: [:index]
-    resources :annual_electricity_costs_per_pupil, only: [:index]
-    resources :change_in_solar_pv_since_last_year, only: [:index]
-    resources :electricity_targets, only: [:index]
-    resources :baseload_per_pupil, only: [:index]
-    resources :change_in_electricity_since_last_year, only: [:index]
-    resources :electricity_peak_kw_per_pupil, only: [:index]
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
-    resources :electricity_consumption_during_holiday, only: [:index]
-    resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index]
-    resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index]
+    resources :annual_electricity_costs_per_pupil, only: [:index]
+    resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_consumption_recent_school_weeks, only: [:index]
+    resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index]
+    resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index]
+    resources :change_in_electricity_since_last_year, only: [:index]
+    resources :change_in_solar_pv_since_last_year, only: [:index]
+    resources :electricity_consumption_during_holiday, only: [:index]
+    resources :electricity_peak_kw_per_pupil, only: [:index]
+    resources :electricity_targets, only: [:index]
     resources :solar_generation_summary, only: [:index]
+    resources :solar_pv_benefit_estimate, only: [:index]
+    resources :weekday_baseload_variation, only: [:index]
   end
 
   # redirect old benchmark URLs
