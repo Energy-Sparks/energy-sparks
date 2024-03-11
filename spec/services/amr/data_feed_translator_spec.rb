@@ -46,18 +46,55 @@ describe Amr::DataFeedTranslator do
     expect(result[:period]).to eq('1')
   end
 
-  it 'removes rows that do not match the expected_units' do
-    sheffield_config.expected_units = 'kwh'
-    readings = [reading, reading.dup.tap { |r| r[4] = 'LEAD' }]
-    results = described_class.new(sheffield_config, readings).perform
-    expect(results.size).to eq(1)
-    expect(results.first[:readings].first).to eq('1.20800000')
+  context 'when checking units' do
+    it 'removes rows that do not match the expected_units' do
+      sheffield_config.expected_units = 'kwh'
+      readings = [reading, reading.dup.tap { |r| r[4] = 'LEAD' }]
+      results = described_class.new(sheffield_config, readings).perform
+      expect(results.size).to eq(1)
+      expect(results.first[:readings].first).to eq('1.20800000')
+    end
   end
 
   it 'handles trailing whitespace on the MPAN' do
     reading[1] = "#{reading[1]} "
     result = described_class.new(sheffield_config, [reading]).perform.first
     expect(result[:mpan_mprn]).to eq('2333300681718')
+  end
+
+  context 'when converting rows' do
+    before do
+      sheffield_config.convert_to_kwh = true
+    end
+
+    context 'when no units field is specified for each row' do
+      before do
+        sheffield_config.units_field = nil
+        sheffield_config.expected_units = nil
+      end
+
+      it 'converts all rows to kwh' do
+        readings = [reading]
+        results = described_class.new(sheffield_config, readings).perform
+        expect(results.size).to eq(1)
+        expect(results.first[:readings].first).to eq(1.20800000 * 11.1)
+      end
+    end
+
+    context 'when there are different units per row' do
+      it 'converts only specific m3 rows to kwh' do
+        # one row kwh, one row m3
+        readings = [reading, reading.dup.tap { |r| r[4] = 'm3' }]
+        results = described_class.new(sheffield_config, readings).perform
+        expect(results.size).to eq(2)
+
+        expect(results.first[:units]).to eq('kwh')
+        expect(results.first[:readings].first).to eq('1.20800000')
+
+        expect(results.last[:units]).to eq('kwh')
+        expect(results.last[:readings].first).to eq(1.20800000 * 11.1)
+      end
+    end
   end
 
   context 'for Opus gas feed' do

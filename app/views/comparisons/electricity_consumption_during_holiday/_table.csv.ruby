@@ -1,10 +1,5 @@
 CSV.generate do |csv|
-  csv << [
-    t('analytics.benchmarking.configuration.column_headings.school'),
-    t('analytics.benchmarking.configuration.column_headings.projected_usage_by_end_of_holiday'),
-    t('analytics.benchmarking.configuration.column_headings.holiday_usage_to_date'),
-    t('analytics.benchmarking.configuration.column_headings.holiday')
-  ]
+  csv << @headers
 
   @results.each do |result|
     csv << [

@@ -23,7 +23,7 @@ module Amr
       data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
       data_feed_reading_hash[:description] = fetch_from_row(:description_index, row)
       data_feed_reading_hash[:provider_record_id] = fetch_from_row(:provider_record_id_index, row)
-      data_feed_reading_hash[:readings] = readings_as_array(row)
+      data_feed_reading_hash[:readings] = readings_as_array(data_feed_reading_hash, row)
       data_feed_reading_hash[:period] = fetch_from_row(:period_index, row) if @config.positional_index
       data_feed_reading_hash
     end
@@ -50,10 +50,21 @@ module Amr
       row[map_of_fields_to_indexes[index_symbol]]
     end
 
-    def readings_as_array(amr_data_feed_row)
-      @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+    def readings_as_array(data_feed_reading_hash, amr_data_feed_row)
+      array_of_readings = @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+      return array_of_readings if array_of_readings.all?(&:blank?) || !@config.convert_to_kwh
+
+      # if no units specified for each row, assume m3 and convert
+      # if units are specified, then only convert if they are m3
+      if data_feed_reading_hash[:units].blank? || data_feed_reading_hash[:units].casecmp?('m3')
+        data_feed_reading_hash[:units] = 'kwh'
+        array_of_readings.map { |r| r.to_f * Amr::N3rgyDownloader::KWH_PER_M3_GAS }
+      else
+        array_of_readings
+      end
     end
 
+    # Applies a filter to the translated rows, excluding those that dont match the expected units
     def check_units(rows)
       return rows if @config.expected_units.blank?
       rows.select {|row| row[:units] == @config.expected_units}

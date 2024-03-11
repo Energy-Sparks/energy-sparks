@@ -1,7 +1,7 @@
 class ComparisonReportGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
 
-  desc 'Generates a comparison report with the given NAME.'
+  desc 'Generates comparison report scaffolding for the given NAME.'
 
   def generate_scenic_view
     file = "db/views/#{file_name.pluralize}_v01.sql"

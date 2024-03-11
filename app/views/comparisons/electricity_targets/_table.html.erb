@@ -1,69 +1,27 @@
-<div class='text-right mt-2'>
-  <%= download_link(report, table_name, index_params) %>
-</div>
-
-<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted">
-  <thead>
-    <tr>
-      <th><%= t('analytics.benchmarking.configuration.column_headings.school') %></th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.percent_above_or_below_target_since_target_set') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.percent_above_or_below_last_year') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.kwh_consumption_since_target_set') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.target_kwh_consumption') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.last_year_kwh_consumption') %>
-      </th>
-      <th class="text-right">
-        <%= t('analytics.benchmarking.configuration.column_headings.start_date_for_target') %>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% results.each do |row| %>
-      <tr>
-        <td>
-          <%= link_to row.school.name,
-                      advice_page_path(row.school, advice_page, :insights) %>
-        </td>
-        <td class="text-right">
-          <%= up_downify(format_unit(row.current_year_percent_of_target_relative, :relative_percent, true, :benchmark)) %>
-        </td>
-        <td class="text-right">
-          <%= up_downify(format_unit(
-                           row.current_year_unscaled_percent_of_target_relative, :relative_percent, true, :benchmark
-                         )) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.current_year_kwh, :kwh, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.current_year_target_kwh, :kwh, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.unscaled_target_kwh_to_date, :kwh, true, :benchmark) %>
-        </td>
-        <td class="text-right">
-          <%= format_unit(row.tracking_start_date, :date, true, :benchmark) %>
-        </td>
-      </tr>
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% results.each do |row| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: row.school %>
+      <%= r.with_var change: true,
+                     val: row.current_year_percent_of_target_relative, unit: :relative_percent %>
+      <%= r.with_var change: true,
+                     val: row.current_year_unscaled_percent_of_target_relative, unit: :relative_percent %>
+      <%= r.with_var val: row.current_year_kwh, unit: :kwh %>
+      <%= r.with_var val: row.current_year_target_kwh, unit: :kwh %>
+      <%= r.with_var val: row.unscaled_target_kwh_to_date, unit: :kwh %>
+      <%= r.with_var val: row.tracking_start_date, unit: :date %>
     <% end %>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="6">
-        <p>
-          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
-        </p>
-        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-      </td>
-    </tr>
-  </tfoot>
-</table>
+  <% end %>
+  <% c.with_footer do %>
+  <tr>
+    <td colspan="<%= headers.count %>">
+      <p>
+        <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
+      </p>
+      <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+    </td>
+  </tr>
+  <% end %>
+<% end %>
