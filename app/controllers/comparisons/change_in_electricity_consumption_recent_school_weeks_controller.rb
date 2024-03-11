@@ -2,6 +2,8 @@
 
 module Comparisons
   class ChangeInElectricityConsumptionRecentSchoolWeeksController < BaseController
+    include ChangeInConsumption
+
     private
 
     def headers
@@ -15,13 +17,8 @@ module Comparisons
       :change_in_electricity_consumption_recent_school_weeks
     end
 
-    def load_data
+    def model
       Comparison::ChangeInElectricityConsumptionRecentSchoolWeeks
-        .where(school: @schools).where.not(difference_percent: nil).order(difference_percent: :desc)
-    end
-
-    def create_charts(results)
-      create_single_number_chart(results, :difference_percent, 100.0, 'change_pct', 'percent')
     end
   end
 end

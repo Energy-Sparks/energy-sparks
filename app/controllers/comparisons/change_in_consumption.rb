@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+module Comparisons
+  module ChangeInConsumption
+    private
+
+    def headers
+      [t('analytics.benchmarking.configuration.column_headings.school'),
+       t('analytics.benchmarking.configuration.column_headings.change_pct'),
+       t('analytics.benchmarking.configuration.column_headings.change_£current'),
+       t('analytics.benchmarking.configuration.column_headings.change_kwh'),
+       t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
+       t('analytics.benchmarking.configuration.column_headings.previous_holiday')]
+    end
+
+    def create_charts(results)
+      create_single_number_chart(results, :difference_percent, 100.0, 'change_pct', 'percent')
+    end
+
+    def load_data
+      model.where(school: @schools).where.not(difference_percent: nil).order(difference_percent: :desc)
+    end
+  end
+end
