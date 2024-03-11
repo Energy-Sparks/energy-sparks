@@ -71,6 +71,7 @@ Rails.application.routes.draw do
     resources :electricity_consumption_during_holiday, only: [:index]
     resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index]
     resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index]
+    resources :change_in_electricity_consumption_recent_school_weeks, only: [:index]
     resources :solar_generation_summary, only: [:index]
   end
 

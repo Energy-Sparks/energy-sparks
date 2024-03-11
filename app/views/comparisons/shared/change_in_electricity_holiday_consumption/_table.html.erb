@@ -35,13 +35,15 @@
       <%= row.with_var val: result.difference_percent, unit: :relative_percent_0dp, change: true %>
       <%= row.with_var val: result.difference_gbpcurrent, unit: :£_0dp, change: true %>
       <%= row.with_var val: result.difference_kwh, unit: :kwh %>
-      <%= row.with_var do %>
-        <%= holiday_name(result.current_period_type, result.current_period_start_date, result.current_period_end_date,
-                         partial: result.truncated_current_period) %>
-      <% end %>
-      <%= row.with_var do %>
-        <%= holiday_name(result.previous_period_type, result.previous_period_start_date,
-                         result.previous_period_end_date) %>
+      <% if headers.count > 4 %>
+        <%= row.with_var do %>
+          <%= holiday_name(result.current_period_type, result.current_period_start_date, result.current_period_end_date,
+                           partial: result.truncated_current_period) %>
+        <% end %>
+        <%= row.with_var do %>
+          <%= holiday_name(result.previous_period_type, result.previous_period_start_date,
+                           result.previous_period_end_date) %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

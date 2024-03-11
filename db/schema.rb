@@ -2473,4 +2473,29 @@ ActiveRecord::Schema.define(version: 2024_03_07_181846) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "change_in_electricity_consumption_recent_school_weeks", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.difference_percent,
+      data.difference_gbpcurrent,
+      data.difference_kwh,
+      data.pupils_changed,
+      data.tariff_has_changed
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.difference_percent,
+              data_1.difference_gbpcurrent,
+              data_1.difference_kwh,
+              data_1.pupils_changed,
+              data_1.tariff_has_changed
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(difference_percent double precision, difference_gbpcurrent double precision, difference_kwh double precision, pupils_changed boolean, tariff_has_changed boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSchoolWeekComparisonElectricity'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
 end
