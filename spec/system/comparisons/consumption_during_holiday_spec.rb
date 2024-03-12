@@ -35,6 +35,15 @@ describe '*_consumption_during_holiday' do
     it_behaves_like 'a school comparison report with a chart'
   end
 
+  describe 'gas_consumption_during_holiday' do
+    let(:alert_class) { 'AlertGasHeatingHotWaterOnDuringHoliday' }
+    let(:key) { 'gas_consumption_during_holiday' }
+
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+    it_behaves_like 'a school comparison report with a chart'
+  end
+
   describe 'storage_heater_consumption_during_holiday' do
     let(:alert_class) { 'AlertStorageHeaterHeatingOnDuringHoliday' }
     let(:key) { 'storage_heater_consumption_during_holiday' }
