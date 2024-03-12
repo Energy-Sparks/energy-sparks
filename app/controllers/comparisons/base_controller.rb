@@ -158,7 +158,7 @@ module Comparisons
       school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible, pluck: :id)
 
       schools = SchoolFilter.new(**school_params).filter
-      schools.select {|s| can?(:show, s) } unless include_invisible
+      schools = schools.select {|s| can?(:show, s) } unless include_invisible
       schools
     end
   end
