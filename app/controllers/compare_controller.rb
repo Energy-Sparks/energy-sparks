@@ -73,7 +73,7 @@ class CompareController < ApplicationController
 
     school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible)
 
-    schools = SchoolFilter.new(**school_params).filter
+    schools = SchoolFilter.new(**school_params).filter.to_a
     schools = schools.select {|s| can?(:show, s) } unless include_invisible
     schools
   end

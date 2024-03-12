@@ -153,12 +153,14 @@ module Comparisons
     end
 
     def included_schools
-      # wonder if this can be replaced by a use of the scope accessible_by(current_ability)
       include_invisible = can? :show, :all_schools
-      school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible, pluck: :id)
+      school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible)
 
-      schools = SchoolFilter.new(**school_params).filter
-      schools = schools.select {|s| can?(:show, s) } unless include_invisible
+      schools = if include_invisible
+                  SchoolFilter.new(**school_params).filter.pluck(:id)
+                else
+                  SchoolFilter.new(**school_params).filter.accessible_by(current_ability, :show).pluck(:id)
+                end
       schools
     end
   end
