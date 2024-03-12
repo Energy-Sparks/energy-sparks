@@ -20,7 +20,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::AnnualElectricityCostsPerPupil.where(school: @schools).with_data.sort_default
+      Comparison::AnnualElectricityCostsPerPupil.for_schools(@schools).with_data.sort_default
     end
   end
 end

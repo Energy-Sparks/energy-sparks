@@ -12,7 +12,7 @@ module Comparisons
 
     def load_data
       # change as needed
-      Comparison::<%= class_name %>.where(school: @schools).where.not(variable_name: nil).order(variable_name: :desc)
+      Comparison::<%= class_name %>.for_schools(@schools).where.not(variable_name: nil).order(variable_name: :desc)
     end
 
     def create_charts(results)
