@@ -7,7 +7,8 @@ $(document).ready(function() {
     'paging': false,
     'searching': false, // Switch off search field
     'info': false,       // Switch off the summary of rows at the bottom of the page
-    'orderCellsTop': false
+    'orderCellsTop': false, // Switch off adding sorting to first header row
+    'autoWidth': false // Switch off auto resizing
   });
 
   $('.table-large').DataTable({
