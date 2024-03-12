@@ -58,8 +58,4 @@ describe SchoolFilter do
     expect(SchoolFilter.new(funder: funder_1.id).filter).to eq [school_1]
     expect(SchoolFilter.new(funder: funder_2.id).filter).to eq []
   end
-
-  it 'plucks columns if required' do
-    expect(SchoolFilter.new(school_group_ids: [school_group_a.id, school_group_b.id], pluck: :id).filter).to match_array [school_1.id, school_2.id]
-  end
 end

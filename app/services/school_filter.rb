@@ -1,12 +1,11 @@
 class SchoolFilter
-  def initialize(school_group_ids: [], scoreboard_ids: [], school_types: [], school_type: nil, country: nil, funder: nil, include_invisible: false, pluck: nil)
+  def initialize(school_group_ids: [], scoreboard_ids: [], school_types: [], school_type: nil, country: nil, funder: nil, include_invisible: false)
     @school_group_ids = school_group_ids.reject(&:blank?)
     @scoreboard_ids = scoreboard_ids.reject(&:blank?)
     @school_types = school_type.present? ? [school_type] : school_types
     @funders = funder.present? ? [funder] : []
     @country = country
     @default_scope = include_invisible ? School.process_data.data_enabled : School.process_data.data_enabled.visible
-    @pluck = pluck
   end
 
   def filter
@@ -16,8 +15,7 @@ class SchoolFilter
     schools = schools_with_school_type(schools) if @school_types.any?
     schools = schools_with_country(schools) if @country.present?
     schools = schools_with_funder(schools) if @funders.present?
-    schools = schools.pluck(@pluck) if @pluck.present?
-    schools.to_a
+    schools
   end
 
   private

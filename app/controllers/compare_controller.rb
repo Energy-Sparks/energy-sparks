@@ -5,6 +5,7 @@ class CompareController < ApplicationController
   before_action :filter
   before_action :benchmark_groups, only: [:benchmarks]
 
+  before_action :set_school_groups, only: [:index]
   before_action :set_included_schools, only: [:benchmarks, :show]
   helper_method :index_params
 
@@ -69,10 +70,11 @@ class CompareController < ApplicationController
   def included_schools
     # wonder if this can be replaced by a use of the scope accessible_by(current_ability)
     include_invisible = can? :show, :all_schools
+
     school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible)
 
-    schools = SchoolFilter.new(**school_params).filter
-    schools.select {|s| can?(:show, s) } unless include_invisible
+    schools = SchoolFilter.new(**school_params).filter.to_a
+    schools = schools.select {|s| can?(:show, s) } unless include_invisible
     schools
   end
 
@@ -91,5 +93,10 @@ class CompareController < ApplicationController
 
   def extract_title_from_benchmark(benchmark)
     benchmark_groups.find {|group| group[:benchmarks]}.dig(:benchmarks, benchmark)
+  end
+
+  # Set list of school groups visible to this user
+  def set_school_groups
+    @school_groups = ComparisonService.new(current_user).list_school_groups.select(&:has_visible_schools?)
   end
 end
