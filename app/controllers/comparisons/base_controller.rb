@@ -156,12 +156,9 @@ module Comparisons
       include_invisible = can? :show, :all_schools
       school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible)
 
-      schools = if include_invisible
-                  SchoolFilter.new(**school_params).filter.pluck(:id)
-                else
-                  SchoolFilter.new(**school_params).filter.accessible_by(current_ability, :show).pluck(:id)
-                end
-      schools
+      filter = SchoolFilter.new(**school_params).filter
+      filter = filter.accessible_by(current_ability, :show) unless include_invisible
+      filter.pluck(:id)
     end
   end
 end

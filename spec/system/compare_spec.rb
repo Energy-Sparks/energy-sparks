@@ -172,9 +172,6 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_content('There are no schools to report using this filter') }
   end
 
-  shared_examples 'a filtered list of groups' do |id:, school_groups:|
-  end
-
   ## contexts ##
 
   shared_context 'index page context' do |feature_flag: false|
