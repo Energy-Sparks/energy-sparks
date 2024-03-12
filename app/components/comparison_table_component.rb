@@ -98,7 +98,7 @@ class ComparisonTableComponent < ViewComponent::Base
       # Otherwise format and present data values
       formatted_value = helpers.format_unit(@val, @unit, true, :benchmark)
       # Wrap columns showing percentage change in up/down indicator
-      rendered_value = @change ? helpers.up_downify(formatted_value) : formatted_value
+      rendered_value = @change ? helpers.up_downify(formatted_value, sanitize: false) : formatted_value
 
       content_tag :td, rendered_value, { class: @classes }
     end

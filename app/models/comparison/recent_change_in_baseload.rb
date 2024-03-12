@@ -13,4 +13,6 @@
 #  school_id                                     :bigint(8)
 #
 class Comparison::RecentChangeInBaseload < Comparison::View
+  scope :with_data, -> { where.not(predicted_percent_increase_in_usage: nil) }
+  scope :sort_default, -> { order(predicted_percent_increase_in_usage: :desc) }
 end

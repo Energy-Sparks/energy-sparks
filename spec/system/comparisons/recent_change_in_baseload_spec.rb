@@ -3,28 +3,28 @@ require 'rails_helper'
 describe 'recent_change_in_baseload' do
   let!(:school) { create(:school) }
   let(:key) { :recent_change_in_baseload }
-  let(:advice_page_key) { :your_advice_page_key }
+  let(:advice_page_key) { :baseload }
 
-  # change to your variables
   let(:variables) do
     {
-      current_year_percent_of_target_relative: +0.18699995372972533,
-      current_year_unscaled_percent_of_target_relative: -0.4799985149375391,
-      current_year_kwh: 1284.7,
-      current_year_target_kwh: 2281.8825833333326,
-      unscaled_target_kwh_to_date: 2401.9816666666666,
-      tracking_start_date: '2024-01-01'
+      predicted_percent_increase_in_usage: -0.14416360211708243,
+      average_baseload_last_year_kw: 2.939355172413793,
+      average_baseload_last_week_kw: 2.5156071428571427,
+      change_in_baseload_kw: -0.42374802955665025,
+      next_year_change_in_baseload_gbpcurrent: -556.8049108374385,
     }
   end
 
-  # change to your alert type (there may be more than one!)
-  let(:alert_type) { create(:alert_type, class_name: 'AlertElectricityTargetAnnual') }
+  let(:alert_type) { create(:alert_type, class_name: 'AlertChangeInElectricityBaseloadShortTerm') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
   before do
     create(:advice_page, key: advice_page_key)
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+                   variables: { electricity_economic_tariff_changed_this_year: true })
   end
 
   context 'when viewing report' do
@@ -34,45 +34,36 @@ describe 'recent_change_in_baseload' do
       let(:expected_report) { report }
     end
 
-    it_behaves_like 'a school comparison report' do
+    it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
-      let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
-      let(:expected_table) do
-        [['School',
-          'Percent above or below target since target set',
-          'Percent above or below last year',
-          'kWh consumption since target set',
-          'Target kWh consumption',
-          'Last year kWh consumption',
-          'Start date for target'],
-         [school.name,
-          '+18.7%',
-          '-48%',
-          '1,280',
-          '2,280',
-          '2,400',
-          'Monday 1 Jan 2024'],
-         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
+      let(:headers) do
+        [
+          'School',
+          'Change in baseload last week v. year (%)',
+          'Average baseload last year (kW)',
+          'Average baseload last week (kW)',
+          'Change in baseload last week v. year (kW)',
+          'Next year cost of change in baseload'
         ]
+      end
+
+      let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+
+      let(:expected_table) do
+        [headers,
+         ["#{school.name} [t]", '-14.4&percnt;', '2.94', '2.52', '-0.424', '-£557'],
+         ["Notes\n[t]\n" \
+          '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+          "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
+          "'last year' is defined as this year to date."]]
       end
       let(:expected_csv) do
-        [['School',
-          'Percent above or below target since target set',
-          'Percent above or below last year',
-          'kWh consumption since target set',
-          'Target kWh consumption',
-          'Last year kWh consumption',
-          'Start date for target'],
-         [school.name,
-          '18.7',
-          '-48',
-          '1,280',
-          '2,280',
-          '2,400',
-          '2024-01-01']
-        ]
+        [headers, [school.name, '-14.4', '2.94', '2.52', '-0.424', '-557']]
       end
+    end
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:chart) { '#chart_comparison' }
     end
   end
 end

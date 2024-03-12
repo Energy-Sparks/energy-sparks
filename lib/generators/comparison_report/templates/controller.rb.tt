@@ -2,6 +2,14 @@ module Comparisons
   class <%= class_name %>Controller < BaseController
     private
 
+    def headers
+      [
+        t('analytics.benchmarking.configuration.column_headings.school'),
+        ## add your headers in here
+        # t('analytics.benchmarking.configuration.column_headings.percent_above_or_below_target_since_target_set'),
+      ]
+    end
+
     def key
       :<%= file_name %>
     end
