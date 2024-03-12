@@ -75,6 +75,8 @@ Rails.application.routes.draw do
     resources :solar_generation_summary, only: [:index]
     resources :solar_pv_benefit_estimate, only: [:index]
     resources :weekday_baseload_variation, only: [:index]
+
+    resources :storage_heater_consumption_during_holiday, only: [:index]
   end
 
   # redirect old benchmark URLs

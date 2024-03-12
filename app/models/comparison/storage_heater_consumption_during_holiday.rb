@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
-# Table name: electricity_consumption_during_holidays
+# Table name: storage_heater_consumption_during_holidays
 #
 #  alert_generation_run_id     :bigint(8)
 #  holiday_end_date            :date
@@ -13,7 +11,5 @@
 #  id                          :bigint(8)
 #  school_id                   :bigint(8)
 #
-module Comparison
-  class ElectricityConsumptionDuringHoliday < Comparison::View
-  end
+class Comparison::StorageHeaterConsumptionDuringHoliday < Comparison::View
 end
