@@ -39,7 +39,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::ChangeInElectricitySinceLastYear.where(school: @schools).with_data.by_percentage_change(:previous_year_electricity_kwh, :current_year_electricity_kwh)
+      Comparison::ChangeInElectricitySinceLastYear.for_schools(@schools).with_data.by_percentage_change(:previous_year_electricity_kwh, :current_year_electricity_kwh)
     end
   end
 end

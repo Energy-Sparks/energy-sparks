@@ -17,7 +17,7 @@ module Comparisons
 
     def load_data
       Comparison::ChangeInElectricityConsumptionRecentSchoolWeeks
-        .where(school: @schools).where.not(difference_percent: nil).order(difference_percent: :desc)
+        .for_schools(@schools).where.not(difference_percent: nil).order(difference_percent: :desc)
     end
 
     def create_charts(results)
