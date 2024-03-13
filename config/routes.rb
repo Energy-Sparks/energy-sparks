@@ -75,8 +75,6 @@ Rails.application.routes.draw do
     resources :recent_change_in_baseload, only: [:index]
     resources :seasonal_baseload_variation, only: [:index]
     resources :solar_generation_summary, only: [:index]
-    resources :solar_generation_summary, only: [:index]
-    resources :solar_pv_benefit_estimate, only: [:index]
     resources :solar_pv_benefit_estimate, only: [:index]
     resources :weekday_baseload_variation, only: [:index]
   end
