@@ -2,7 +2,6 @@
 #
 # Table name: annual_energy_costs_per_pupils
 #
-#  alert_generation_run_id                       :bigint(8)
 #  electricity_economic_tariff_changed_this_year :boolean
 #  gas_economic_tariff_changed_this_year         :boolean
 #  id                                            :bigint(8)

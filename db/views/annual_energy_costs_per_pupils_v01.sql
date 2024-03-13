@@ -1,5 +1,5 @@
 WITH electricity AS (
-    SELECT alert_generation_run_id, school_id, data.*
+    SELECT alert_generation_run_id, data.*
     FROM alerts, alert_types, jsonb_to_record(variables) AS data(
       one_year_electricity_per_pupil_kwh float,
       one_year_electricity_per_pupil_gbp float,
@@ -34,13 +34,16 @@ WITH electricity AS (
     ORDER BY school_id, created_at DESC
 )
 SELECT latest_runs.id,
-       electricity.*,
+       electricity.one_year_electricity_per_pupil_kwh,
+       electricity.one_year_electricity_per_pupil_gbp,
+       electricity.one_year_electricity_per_pupil_co2,
        gas.one_year_gas_per_pupil_kwh,
        gas.one_year_gas_per_pupil_gbp,
        gas.one_year_gas_per_pupil_co2,
        storage_heaters.one_year_gas_per_pupil_kwh AS one_year_storage_heater_per_pupil_kwh,
        storage_heaters.one_year_gas_per_pupil_gbp AS one_year_storage_heater_per_pupil_gbp,
        storage_heaters.one_year_gas_per_pupil_co2 AS one_year_storage_heater_per_pupil_co2,
+       additional.school_id,
        additional.electricity_economic_tariff_changed_this_year,
        additional.gas_economic_tariff_changed_this_year
 FROM latest_runs

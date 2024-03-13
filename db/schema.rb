@@ -2574,7 +2574,6 @@ ActiveRecord::Schema.define(version: 2024_03_12_162819) do
   create_view "annual_energy_costs_per_pupils", sql_definition: <<-SQL
       WITH electricity AS (
            SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
               data.one_year_electricity_per_pupil_kwh,
               data.one_year_electricity_per_pupil_gbp,
               data.one_year_electricity_per_pupil_co2
@@ -2615,8 +2614,6 @@ ActiveRecord::Schema.define(version: 2024_03_12_162819) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
           )
    SELECT latest_runs.id,
-      electricity.alert_generation_run_id,
-      electricity.school_id,
       electricity.one_year_electricity_per_pupil_kwh,
       electricity.one_year_electricity_per_pupil_gbp,
       electricity.one_year_electricity_per_pupil_co2,
@@ -2626,6 +2623,7 @@ ActiveRecord::Schema.define(version: 2024_03_12_162819) do
       storage_heaters.one_year_gas_per_pupil_kwh AS one_year_storage_heater_per_pupil_kwh,
       storage_heaters.one_year_gas_per_pupil_gbp AS one_year_storage_heater_per_pupil_gbp,
       storage_heaters.one_year_gas_per_pupil_co2 AS one_year_storage_heater_per_pupil_co2,
+      additional.school_id,
       additional.electricity_economic_tariff_changed_this_year,
       additional.gas_economic_tariff_changed_this_year
      FROM ((((latest_runs
