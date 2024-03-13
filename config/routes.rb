@@ -81,6 +81,8 @@ Rails.application.routes.draw do
     resources :change_in_gas_consumption_recent_school_weeks, only: [:index]
     resources :change_in_gas_holiday_consumption_previous_holiday, only: [:index]
     resources :change_in_gas_holiday_consumption_previous_years_holiday, only: [:index]
+    resources :gas_consumption_during_holiday, only: [:index]
+    resources :storage_heater_consumption_during_holiday, only: [:index]
   end
 
   # redirect old benchmark URLs

@@ -39,11 +39,8 @@ module ComparisonsHelper
   end
 
   def holiday_name(type, start_date, end_date, partial: false)
-    year = if start_date.year == end_date.year
-             start_date.year.to_s
-           else
-             "#{start_date.year}/#{end_date.year}"
-           end
+    year = start_date.year.to_s
+    year += "/#{end_date.year}" if start_date.year != end_date.year
     holiday = I18n.t('analytics.holidays')[type.to_sym]
     partial = partial ? " #{I18n.t('advice_pages.tables.labels.partial')}" : ''
     "#{I18n.t('analytics.holiday_year', holiday: holiday, year: year)}#{partial}"
