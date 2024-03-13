@@ -84,23 +84,57 @@ class ComparisonTableComponent < ViewComponent::Base
   # Custom classes can be provided via the classes keyword.
   # By default data columns are right aligned
   class VarColumnComponent < ViewComponent::Base
-    def initialize(val: nil, unit: :kwh, change: false, classes: 'text-right')
+    def initialize(val: nil, unit: :kwh, change: false, classes: 'text-right', data_order: nil)
       @val = val
       @unit = unit
       @change = change
       @classes = classes
+      @data_order = data_order
     end
 
     def call
       # Render content of the block if providing, adding classes to td
-      return content_tag :td, content, { class: @classes } if content?
+      return content_tag(:td, content, attributes) if content?
 
       # Otherwise format and present data values
       formatted_value = helpers.format_unit(@val, @unit, true, :benchmark)
+
       # Wrap columns showing percentage change in up/down indicator
       rendered_value = @change ? helpers.up_downify(formatted_value) : formatted_value
 
-      content_tag :td, rendered_value, { class: @classes }
+      content_tag(:td, rendered_value, attributes)
+    end
+
+    def attributes
+      { data: { order: data_order }, class: @classes }
+    end
+
+    # The value used by DataTable for sorting the column
+    #
+    # When the cell content is passed as a block it might be a simple string but
+    # could be a block of HTML, so we don't specify a default order, it must be
+    # provided or we rely on default behaviour of DataTable
+    #
+    # Otherwise uses a user-provided order or a default
+    def data_order
+      content? ? @data_order : @data_order || format_for_order
+    end
+
+    # This needs to avoid breaking the whole table rendering, better to
+    # have broken sort than no table
+    def format_for_order
+      case @unit
+      when :date, :date_mmm_yyyy, :datetime
+        if @val.is_a?(Date) || @val.is_a?(DateTime)
+          @val.iso8601
+        else
+          @val
+        end
+      else
+        @val
+      end
+    rescue
+      @val
     end
   end
 end

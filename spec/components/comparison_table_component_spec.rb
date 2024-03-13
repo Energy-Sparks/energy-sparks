@@ -73,6 +73,36 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
   end
 
   context 'when rendering rows' do
+    shared_examples 'a customisable td element' do
+      it 'adds the default classes' do
+        expect(html).to have_css('td.text-right')
+      end
+
+      context 'when specifying custom classes' do
+        subject(:html) do
+          render_inline(described_class.new(**params)) do |c|
+            c.with_row do |r|
+              r.with_var classes: 'text-left' do
+                'Test'
+              end
+            end
+          end
+        end
+
+        it 'adds those classes' do
+          expect(html).to have_css('td.text-left')
+        end
+      end
+    end
+
+    shared_examples 'a td element with a data-order' do
+      it { expect(html).to have_selector("td[data-order='#{expected_order}']")}
+    end
+
+    shared_examples 'a td element without a data-order' do
+      it { expect(html).not_to have_selector('td[data-order]')}
+    end
+
     context 'with school' do
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
@@ -124,66 +154,92 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     context 'with var as a block' do
-      let(:var) { 'Data' }
+      let(:value) { 'Data' }
+      let(:data_order) { nil }
 
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
           c.with_row do |r|
-            r.with_var do
-              var
+            r.with_var data_order: data_order do
+              value
             end
           end
         end
       end
 
       it 'adds the variable' do
-        expect(html).to have_content(var)
+        expect(html).to have_content(value)
       end
 
-      it 'adds the default classes' do
-        expect(html).to have_css('td.text-right')
-      end
+      it_behaves_like 'a customisable td element'
+      it_behaves_like 'a td element without a data-order'
 
-      context 'when adding classes' do
-        subject(:html) do
-          render_inline(described_class.new(**params)) do |c|
-            c.with_row do |r|
-              r.with_var classes: 'text-left' do
-                'Test'
-              end
-            end
-          end
-        end
+      context 'when an order is specified' do
+        let(:data_order) { '2000' }
 
-        it 'adds the classes' do
-          expect(html).to have_css('td.text-left')
+        it_behaves_like 'a td element with a data-order' do
+          let(:expected_order) { data_order }
         end
       end
     end
 
     context 'with var to be formatted' do
       let(:value) { 100 }
+      let(:unit) { :£ }
+      let(:data_order) { nil }
 
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
           c.with_row do |r|
-            r.with_var val: value, unit: :£
+            r.with_var val: value, unit: unit, data_order: data_order
           end
         end
       end
 
-      it 'adds the formatted value' do
-        expect(html).to have_content('£100')
+      context 'with money' do
+        let(:unit)  { :£ }
+
+        it 'adds the formatted value' do
+          expect(html).to have_content('£100')
+        end
+
+        it_behaves_like 'a td element with a data-order' do
+          let(:expected_order) { value }
+        end
+      end
+
+      context 'with a date' do
+        let(:value) { Date.new(2024, 1, 1) }
+        let(:unit)  { :date }
+
+        it 'adds the formatted value' do
+          expect(html).to have_content('Monday  1 Jan 2024')
+        end
+
+        it_behaves_like 'a td element with a data-order' do
+          let(:expected_order) { '2024-01-01' }
+        end
+      end
+
+      it_behaves_like 'a customisable td element'
+
+      context 'when a data_order is specified' do
+        let(:data_order) { '2000' }
+
+        it_behaves_like 'a td element with a data-order' do
+          let(:expected_order) { data_order }
+        end
       end
     end
 
     context 'with var to be formatted as a change' do
       let(:value) { 0.5 }
+      let(:data_order) { nil }
 
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
           c.with_row do |r|
-            r.with_var val: value, unit: :relative_percent_0dp, change: true
+            r.with_var val: value, unit: :relative_percent_0dp, change: true, data_order: data_order
           end
         end
       end
@@ -191,6 +247,11 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
       it 'adds the formatted value' do
         expect(html).to have_content('+50%')
         expect(html).to have_css('i.fa-arrow-circle-up')
+      end
+
+      it_behaves_like 'a customisable td element'
+      it_behaves_like 'a td element with a data-order' do
+        let(:expected_order) { value }
       end
     end
   end

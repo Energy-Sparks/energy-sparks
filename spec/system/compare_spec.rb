@@ -6,7 +6,7 @@ describe 'compare pages', :compare, type: :system do
       expect(page).to have_content 'School Comparison Tool'
       expect(page).to have_content 'Identify examples of best practice'
       expect(page).to have_content 'View how schools within the same MAT'
-      expect(page).to have_content 'Use options below to compare 2 schools against 1 benchmarks'
+      expect(page).to have_content 'Use options below to compare 3 schools against 1 benchmarks'
     end
 
     it 'has standard tabs' do
@@ -85,7 +85,7 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_link('Change benchmark') }
   end
 
-  shared_examples 'a form filter' do |id:, school_types_excluding: nil, school_type: nil, country: nil, funder: nil, school_groups: nil|
+  shared_examples 'a form filter' do |id:, school_types_excluding: nil, school_type: nil, country: nil, funder: nil, school_groups: nil, school_group_list: nil|
     let(:all_school_types) { School.school_types.keys }
 
     it 'has school_type checkbox fields', if: school_types_excluding do
@@ -117,9 +117,15 @@ describe 'compare pages', :compare, type: :system do
       end
     end
 
-    it 'has school group select', if: school_groups do
+    it 'has school groups selected', if: school_groups do
       within id.to_s do
         expect(page).to have_select('school_group_ids', selected: school_groups)
+      end
+    end
+
+    it 'has school groups available', if: school_group_list do
+      within id.to_s do
+        expect(page).to have_select('school_group_ids', options: school_group_list)
       end
     end
   end
@@ -246,6 +252,7 @@ describe 'compare pages', :compare, type: :system do
   let!(:school)          { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group, funder: funder)}
   let!(:school_group_2)  { create(:school_group, name: 'Group 2') }
   let!(:school_2)        { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group_2)}
+  let!(:school_3)        { create(:school, country: :scotland, school_group: create(:school_group, name: 'Not Public', public: false)) }
 
   let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { baseload_per_pupil: 'Baseload per pupil' } }] }
 
@@ -413,7 +420,7 @@ describe 'compare pages', :compare, type: :system do
 
           it_behaves_like 'an index page', tab: 'Choose groups'
           it { expect(page).to have_content 'Compare schools in groups' }
-          it_behaves_like 'a form filter', id: '#groups', school_groups: [], school_types_excluding: [] # show all
+          it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2'], school_groups: [], school_types_excluding: [] # show all
 
           context 'Benchmark page' do
             include_context 'benchmarks page context', feature_flag: feature_flag
@@ -434,7 +441,7 @@ describe 'compare pages', :compare, type: :system do
               before { click_on 'Change options' }
 
               it_behaves_like 'an index page', tab: 'Choose groups'
-              it_behaves_like 'a form filter', id: '#groups', school_groups: ['Group 1', 'Group 2'], school_types_excluding: ['infant']
+              it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2'], school_groups: ['Group 1', 'Group 2'], school_types_excluding: ['infant']
             end
 
             context 'Filtering all schools' do
@@ -479,6 +486,7 @@ describe 'compare pages', :compare, type: :system do
         let(:user) {}
 
         it_behaves_like 'an index page', tab: 'Choose country', show_your_group_tab: false
+        it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2']
       end
 
       context 'Admin user' do
@@ -492,6 +500,7 @@ describe 'compare pages', :compare, type: :system do
           it { expect(page).to have_content 'Limit to funder (admin only option)'}
 
           it_behaves_like 'a form filter', id: '#country', country: 'All countries'
+          it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2', 'Not Public']
 
           context 'Benchmark page' do
             include_context 'benchmarks page context', feature_flag: feature_flag
