@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-render 'comparisons/shared/change_in_electricity_holiday_consumption/table'
+render 'comparisons/shared/change_in_consumption/table'
