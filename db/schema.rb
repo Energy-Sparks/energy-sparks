@@ -2603,6 +2603,31 @@ ActiveRecord::Schema.define(version: 2024_03_12_173555) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (versus_benchmark.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "storage_heater_consumption_during_holidays", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.holiday_projected_usage_gbp,
+      data.holiday_usage_to_date_gbp,
+      data.holiday_type,
+      data.holiday_start_date,
+      data.holiday_end_date
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.holiday_projected_usage_gbp,
+              data_1.holiday_usage_to_date_gbp,
+              data_1.holiday_type,
+              data_1.holiday_start_date,
+              data_1.holiday_end_date
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterHeatingOnDuringHoliday'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
   create_view "change_in_gas_since_last_years", sql_definition: <<-SQL
       SELECT latest_runs.id,
       energy.alert_generation_run_id,

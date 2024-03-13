@@ -78,6 +78,7 @@ Rails.application.routes.draw do
     resources :weekday_baseload_variation, only: [:index]
 
     resources :change_in_gas_since_last_year, only: [:index]
+    resources :change_in_storage_heaters_since_last_year, only: [:index]
   end
 
   # redirect old benchmark URLs
