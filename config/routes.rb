@@ -72,6 +72,7 @@ Rails.application.routes.draw do
     resources :electricity_consumption_during_holiday, only: [:index]
     resources :electricity_peak_kw_per_pupil, only: [:index]
     resources :electricity_targets, only: [:index]
+    resources :recent_change_in_baseload, only: [:index]
     resources :solar_generation_summary, only: [:index]
     resources :solar_pv_benefit_estimate, only: [:index]
     resources :weekday_baseload_variation, only: [:index]
