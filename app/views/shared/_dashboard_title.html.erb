@@ -2,7 +2,7 @@
   <div class="dashboard-school-title">
     <h1><%= school.name %></h1>
     <span class="dashboard-school-address">
-      <span class="badge badge-secondary"><%= school.school_type.humanize %></span>
+      <span class="badge badge-secondary"><%= t("common.school_types.#{school.school_type}") %></span>
       <%= school.address %> <%= school.postcode %>
     </span>
   </div>

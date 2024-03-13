@@ -7,13 +7,13 @@
     <% if @colgroups.any? %>
       <tr>
         <% @colgroups.each do |colgroup| %>
-          <th colspan="<%= colgroup[:colspan] || 1 %>"><%= colgroup[:label] %></th>
+          <th class="text-center" colspan="<%= colgroup[:colspan] || 1 %>"><%= colgroup[:label] %></th>
         <% end %>
       </tr>
     <% end %>
     <tr>
-      <% @headers.each do |header| %>
-        <th><%= header %></th>
+      <% @headers.each_with_index do |header, idx| %>
+        <th class="<%= idx.zero? ? 'text-left' : 'text-center' %>"><%= header %></th>
       <% end %>
     </tr>
   </thead>
