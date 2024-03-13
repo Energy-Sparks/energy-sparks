@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 6e6a3f596d4baa7a3739958c3b532326f9fc9337
-  branch: 4157-storage-heater-use-during-current-holiday
+  revision: 88ac8424e86a05005789bb1284dd854027544595
+  tag: 5.1.4
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
