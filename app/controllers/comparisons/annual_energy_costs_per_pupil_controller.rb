@@ -25,7 +25,7 @@ module Comparisons
 
     def load_data
       # change as needed
-      Comparison::AnnualEnergyCostsPerPupil.for_schools(@schools)
+      Comparison::AnnualEnergyCostsPerPupil.for_schools(@schools).by_total([:one_year_electricity_per_pupil_kwh, :one_year_gas_per_pupil_kwh, :one_year_storage_heater_per_pupil_kwh])
     end
 
     def create_charts(results)

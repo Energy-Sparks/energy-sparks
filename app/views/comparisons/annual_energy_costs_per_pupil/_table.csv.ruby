@@ -8,8 +8,8 @@ CSV.generate do |csv|
       format_unit(result.one_year_storage_heater_per_pupil_kwh, Float, true, :benchmark),
 
       format_unit(sum_data(result.kwhs), Float, true, :benchmark),
-      format_unit(sum_data(results.costs), Float, true, :benchmark),
-      format_unit(sum_data(results.co2s), Float, true, :benchmark),
+      format_unit(sum_data(result.costs), Float, true, :benchmark),
+      format_unit(sum_data(result.co2s), Float, true, :benchmark),
 
       I18n.t('common.school_types.' + result.school.school_type)
 
