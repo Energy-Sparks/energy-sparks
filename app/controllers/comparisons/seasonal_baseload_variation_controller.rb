@@ -20,7 +20,7 @@ module Comparisons
 
     def load_data
       Comparison::SeasonalBaseloadVariation
-        .where(school: @schools).where.not(percent_seasonal_variation: nil).order(percent_seasonal_variation: :desc)
+        .for_schools(@schools).where.not(percent_seasonal_variation: nil).order(percent_seasonal_variation: :desc)
     end
 
     def create_charts(results)
