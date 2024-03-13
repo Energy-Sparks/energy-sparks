@@ -1,4 +1,3 @@
-
 SELECT latest_runs.id,
        additional.school_id,
        data.*,
