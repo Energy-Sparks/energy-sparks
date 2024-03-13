@@ -25,7 +25,7 @@ module Comparisons
     end
 
     def load_data
-      model.where(school: @schools).where.not(difference_percent: nil).order(difference_percent: :desc)
+      model.for_schools(@schools).where.not(difference_percent: nil).order(difference_percent: :desc)
     end
   end
 end

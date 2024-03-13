@@ -21,7 +21,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::SolarPvBenefitEstimate.where(school: @schools).with_data.sort_default
+      Comparison::SolarPvBenefitEstimate.for_schools(@schools).with_data.sort_default
     end
   end
 end

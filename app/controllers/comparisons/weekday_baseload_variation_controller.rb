@@ -22,7 +22,7 @@ module Comparisons
 
     def load_data
       Comparison::WeekdayBaseloadVariation
-        .where(school: @schools).where.not(percent_intraday_variation: nil).order(percent_intraday_variation: :desc)
+        .for_schools(@schools).where.not(percent_intraday_variation: nil).order(percent_intraday_variation: :desc)
     end
 
     def create_charts(results)
