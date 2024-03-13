@@ -18,7 +18,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::ElectricityConsumptionDuringHoliday.where(school: @schools)
+      Comparison::ElectricityConsumptionDuringHoliday.for_schools(@schools)
                                                      .where.not(holiday_projected_usage_gbp: nil)
                                                      .order(holiday_projected_usage_gbp: :desc)
     end

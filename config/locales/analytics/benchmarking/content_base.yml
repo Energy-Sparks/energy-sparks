@@ -620,7 +620,7 @@ en:
           introduction_text_html: "<p>This benchmark shows how a school is progressing against the target it has set for this year.</p>"
         footnotes:
           electricity:
-            change_rows_text: "<li>(*1) the comparison has been adjusted because the number of pupils have changed between the two %{period_type_string} for %{schools_to_sentence}.</li>"
+            change_rows_text: "<li>(*1) the comparison has been adjusted because the number of pupils have changed between the two %{period_type_string}.</li>"
             infinite_decrease_school_names_text: "<li>(*3) schools where percentage change is -Infinity is caused by the electricity consumption in the current %{period_type_string} being zero but in the previous %{period_type_string} it was more than zero</li>"
             infinite_increase_school_names_text: "<li>(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the previous %{period_type_string} being more than zero but in the current %{period_type_string} zero</li>"
           gas:

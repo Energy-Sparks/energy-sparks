@@ -25,6 +25,11 @@ describe '<%= file_name %>' do
   before do
     create(:advice_page, key: advice_page_key)
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+    # the following alert is often only required for the tariff changed footnote
+    # delete or amend as appropriate:
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+                   variables: { electricity_economic_tariff_changed_this_year: true })
   end
 
   context 'when viewing report' do
@@ -73,6 +78,9 @@ describe '<%= file_name %>' do
           '2024-01-01']
         ]
       end
+    end
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:chart) { '#chart_comparison' }
     end
   end
 end
