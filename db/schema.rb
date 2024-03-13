@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_11_110540) do
+ActiveRecord::Schema.define(version: 2024_03_12_173555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2602,5 +2602,42 @@ ActiveRecord::Schema.define(version: 2024_03_11_110540) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (versus_benchmark.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "change_in_gas_since_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      energy.alert_generation_run_id,
+      energy.school_id,
+      energy.previous_year_gas_kwh,
+      energy.current_year_gas_kwh,
+      energy.previous_year_gas_co2,
+      energy.current_year_gas_co2,
+      energy.previous_year_gas_gbp,
+      energy.current_year_gas_gbp,
+      gas.temperature_adjusted_previous_year_kwh,
+      gas.temperature_adjusted_percent
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.previous_year_gas_kwh,
+              data.current_year_gas_kwh,
+              data.previous_year_gas_co2,
+              data.current_year_gas_co2,
+              data.previous_year_gas_gbp,
+              data.current_year_gas_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbp double precision, current_year_gas_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.temperature_adjusted_previous_year_kwh,
+              data.temperature_adjusted_percent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(temperature_adjusted_previous_year_kwh double precision, temperature_adjusted_percent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))) gas,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((energy.alert_generation_run_id = latest_runs.id) AND (gas.alert_generation_run_id = latest_runs.id));
   SQL
 end
