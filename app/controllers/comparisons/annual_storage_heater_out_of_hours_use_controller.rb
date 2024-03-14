@@ -28,7 +28,7 @@ module Comparisons
     def create_charts(results)
       create_multi_chart(results, {
         schoolday_open_percent: :school_day_open,
-        schoolday_closed_percent: :school_day_closed,
+        schoolday_closed_percent: :overnight_charging,
         holidays_percent: :holiday,
         weekends_percent: :weekend,
         }, 100.0, :percent)
