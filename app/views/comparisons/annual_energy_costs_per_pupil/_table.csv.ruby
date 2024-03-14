@@ -11,7 +11,7 @@ CSV.generate do |csv|
       format_unit(sum_data(result.costs), Float, true, :benchmark),
       format_unit(sum_data(result.co2s), Float, true, :benchmark),
 
-      I18n.t('common.school_types.' + result.school.school_type)
+      I18n.t("common.school_types.#{result.school.school_type}")
 
     ]
   end
