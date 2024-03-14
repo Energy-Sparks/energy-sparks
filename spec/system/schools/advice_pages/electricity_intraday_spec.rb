@@ -48,7 +48,7 @@ RSpec.describe 'electricity intraday advice page', :aggregate_failures do
         let(:start_date) { end_date - 1.year - 13.days }
 
         it 'shows percentage change' do
-          expect(find('.advice-table')).to have_content('Average peak kW % change 10,000,000 0%')
+          expect(find('.advice-table')).to have_content('Average peak kW % change 10,000,000 0&percnt;')
         end
       end
     end
