@@ -26,6 +26,16 @@ describe ApplicationHelper do
       expect(helper.up_downify('hello')).not_to include('<i')
       expect(helper.up_downify('hello + goodbye')).not_to include('<i')
     end
+
+    context 'with sanitize set to true (default)' do
+      it { expect(helper.up_downify('10.1&percnt;')).to eq('10.1&amp;percnt; ') } # we don't want this!
+      it { expect(helper.up_downify('10.1%')).to eq('10.1% ') }
+    end
+
+    context 'with sanitize set to false' do
+      it { expect(helper.up_downify('10.1&percnt;', sanitize: false)).to eq('10.1&percnt; ') }
+      it { expect(helper.up_downify('10.1%', sanitize: false)).to eq('10.1% ') }
+    end
   end
 
   describe 'last signed in helper' do

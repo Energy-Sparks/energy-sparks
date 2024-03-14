@@ -6,7 +6,7 @@
       <%% r.with_school school: result.school %>
 
       <%%# replace these with correct values, in correct order %>
-      <%%#= r.with_var val: result.one_year_baseload_per_pupil_kw * 1000.0, unit: :kw %>
+      <%%# r.with_var val: result.one_year_baseload_per_pupil_kw * 1000.0, unit: :kw %>
     <%% end %>
   <%% end %>
   <%% c.with_footer do %>
