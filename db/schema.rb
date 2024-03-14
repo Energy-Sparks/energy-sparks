@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_12_155029) do
+ActiveRecord::Schema.define(version: 2024_03_12_162819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2218,31 +2218,6 @@ ActiveRecord::Schema.define(version: 2024_03_12_155029) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (enba.alert_generation_run_id = latest_runs.id);
   SQL
-  create_view "electricity_consumption_during_holidays", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.holiday_projected_usage_gbp,
-      data.holiday_usage_to_date_gbp,
-      data.holiday_type,
-      data.holiday_start_date,
-      data.holiday_end_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.holiday_projected_usage_gbp,
-              data_1.holiday_usage_to_date_gbp,
-              data_1.holiday_type,
-              data_1.holiday_start_date,
-              data_1.holiday_end_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityUsageDuringCurrentHoliday'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
-  SQL
   create_view "electricity_peak_kw_per_pupils", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -2551,38 +2526,6 @@ ActiveRecord::Schema.define(version: 2024_03_12_155029) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((benefit_estimate.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
-  create_view "recent_change_in_baseloads", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.predicted_percent_increase_in_usage,
-      data.average_baseload_last_year_kw,
-      data.average_baseload_last_week_kw,
-      data.change_in_baseload_kw,
-      data.next_year_change_in_baseload_gbpcurrent,
-      additional.electricity_economic_tariff_changed_this_year
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.predicted_percent_increase_in_usage,
-              data_1.average_baseload_last_year_kw,
-              data_1.average_baseload_last_week_kw,
-              data_1.change_in_baseload_kw,
-              data_1.next_year_change_in_baseload_gbpcurrent
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(predicted_percent_increase_in_usage double precision, average_baseload_last_year_kw double precision, average_baseload_last_week_kw double precision, change_in_baseload_kw double precision, next_year_change_in_baseload_gbpcurrent double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertChangeInElectricityBaseloadShortTerm'::text))) data,
-      ( SELECT alerts.alert_generation_run_id,
-              data_1.electricity_economic_tariff_changed_this_year
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(electricity_economic_tariff_changed_this_year boolean)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
-  SQL
   create_view "change_in_solar_pv_since_last_years", sql_definition: <<-SQL
       SELECT latest_runs.id,
       versus_benchmark.school_id,
@@ -2627,6 +2570,38 @@ ActiveRecord::Schema.define(version: 2024_03_12_155029) do
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSeasonalBaseloadVariation'::text))) data,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
+              data_1.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
+  create_view "recent_change_in_baseloads", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.predicted_percent_increase_in_usage,
+      data.average_baseload_last_year_kw,
+      data.average_baseload_last_week_kw,
+      data.change_in_baseload_kw,
+      data.next_year_change_in_baseload_gbpcurrent,
+      additional.electricity_economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.predicted_percent_increase_in_usage,
+              data_1.average_baseload_last_year_kw,
+              data_1.average_baseload_last_week_kw,
+              data_1.change_in_baseload_kw,
+              data_1.next_year_change_in_baseload_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(predicted_percent_increase_in_usage double precision, average_baseload_last_year_kw double precision, average_baseload_last_week_kw double precision, change_in_baseload_kw double precision, next_year_change_in_baseload_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertChangeInElectricityBaseloadShortTerm'::text))) data,
+      ( SELECT alerts.alert_generation_run_id,
               data_1.electricity_economic_tariff_changed_this_year
              FROM alerts,
               alert_types,
@@ -2765,6 +2740,31 @@ ActiveRecord::Schema.define(version: 2024_03_12_155029) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "electricity_consumption_during_holidays", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.holiday_projected_usage_gbp,
+      data.holiday_usage_to_date_gbp,
+      data.holiday_type,
+      data.holiday_start_date,
+      data.holiday_end_date
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.holiday_projected_usage_gbp,
+              data_1.holiday_usage_to_date_gbp,
+              data_1.holiday_type,
+              data_1.holiday_start_date,
+              data_1.holiday_end_date
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityUsageDuringCurrentHoliday'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
   create_view "gas_consumption_during_holidays", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -2789,5 +2789,66 @@ ActiveRecord::Schema.define(version: 2024_03_12_155029) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "annual_energy_costs_per_pupils", sql_definition: <<-SQL
+      WITH electricity AS (
+           SELECT alerts.alert_generation_run_id,
+              data.one_year_electricity_per_pupil_kwh,
+              data.one_year_electricity_per_pupil_gbp,
+              data.one_year_electricity_per_pupil_co2
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_electricity_per_pupil_kwh double precision, one_year_electricity_per_pupil_gbp double precision, one_year_electricity_per_pupil_co2 double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityAnnualVersusBenchmark'::text))
+          ), gas AS (
+           SELECT alerts.alert_generation_run_id,
+              data.one_year_gas_per_pupil_kwh,
+              data.one_year_gas_per_pupil_gbp,
+              data.one_year_gas_per_pupil_co2
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_pupil_kwh double precision, one_year_gas_per_pupil_gbp double precision, one_year_gas_per_pupil_co2 double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
+          ), storage_heaters AS (
+           SELECT alerts.alert_generation_run_id,
+              data.one_year_gas_per_pupil_kwh,
+              data.one_year_gas_per_pupil_gbp,
+              data.one_year_gas_per_pupil_co2
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_pupil_kwh double precision, one_year_gas_per_pupil_gbp double precision, one_year_gas_per_pupil_co2 double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterAnnualVersusBenchmark'::text))
+          ), additional AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.electricity_economic_tariff_changed_this_year,
+              data.gas_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean, gas_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      electricity.one_year_electricity_per_pupil_kwh,
+      electricity.one_year_electricity_per_pupil_gbp,
+      electricity.one_year_electricity_per_pupil_co2,
+      gas.one_year_gas_per_pupil_kwh,
+      gas.one_year_gas_per_pupil_gbp,
+      gas.one_year_gas_per_pupil_co2,
+      storage_heaters.one_year_gas_per_pupil_kwh AS one_year_storage_heater_per_pupil_kwh,
+      storage_heaters.one_year_gas_per_pupil_gbp AS one_year_storage_heater_per_pupil_gbp,
+      storage_heaters.one_year_gas_per_pupil_co2 AS one_year_storage_heater_per_pupil_co2,
+      additional.school_id,
+      additional.electricity_economic_tariff_changed_this_year,
+      additional.gas_economic_tariff_changed_this_year
+     FROM ((((latest_runs
+       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
+       LEFT JOIN electricity ON ((latest_runs.id = electricity.alert_generation_run_id)))
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
+       LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)));
   SQL
 end
