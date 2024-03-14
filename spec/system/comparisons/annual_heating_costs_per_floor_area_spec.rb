@@ -77,8 +77,6 @@ describe 'annual_heating_costs_per_floor_area' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart' do
-      let(:chart) { '#chart_comparison' }
-    end
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
