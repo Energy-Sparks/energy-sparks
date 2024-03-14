@@ -293,7 +293,7 @@ module ApplicationHelper
      Array.new(empty_stars) { far_icon('star') }).compact.inject(&:+)
   end
 
-  def up_downify(text)
+  def up_downify(text, sanitize: true)
     return if text.nil? || text == '-'
     icon = if text.match?(/^\+/)
              fa_icon('arrow-circle-up')
@@ -306,7 +306,8 @@ module ApplicationHelper
            else
              ''
            end
-    (sanitize(text) + ' ' + icon).html_safe
+    text = sanitize(text) if sanitize
+    text + ' ' + icon.html_safe
   end
 
   def safely

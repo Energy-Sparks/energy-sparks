@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 module Comparisons
-  class ChangeInElectricityHolidayConsumptionPreviousHolidayController <
-      ChangeInElectricityHolidayConsumptionPreviousYearsHolidayController
+  class ChangeInElectricityHolidayConsumptionPreviousHolidayController < BaseController
+    include ChangeInConsumption
+
     private
 
     def key
       :change_in_electricity_holiday_consumption_previous_holiday
     end
 
-    def load_data
+    def model
       Comparison::ChangeInElectricityHolidayConsumptionPreviousHoliday
-        .for_schools(@schools).where.not(difference_percent: nil).order(difference_percent: :desc)
     end
   end
 end
