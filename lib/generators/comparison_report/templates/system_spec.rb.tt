@@ -43,39 +43,31 @@ describe '<%= file_name %>' do
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+
+      let(:headers) do
+        ['School',
+         'Last year electricity £/pupil',
+         'Last year electricity £',
+         'Saving if matched exemplar school (using latest tariff)']
+      end
+
       let(:expected_table) do
-        [['School',
-          'Percent above or below target since target set',
-          'Percent above or below last year',
-          'kWh consumption since target set',
-          'Target kWh consumption',
-          'Last year kWh consumption',
-          'Start date for target'],
+        [headers,
          [school.name,
-          '+18.7%',
-          '-48%',
-          '1,280',
-          '2,280',
-          '2,400',
-          'Monday 1 Jan 2024'],
+          '£195',
+          '£235,000',
+          '£155,000',
+         ],
          ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
         ]
       end
+
       let(:expected_csv) do
-        [['School',
-          'Percent above or below target since target set',
-          'Percent above or below last year',
-          'kWh consumption since target set',
-          'Target kWh consumption',
-          'Last year kWh consumption',
-          'Start date for target'],
+        [headers,
          [school.name,
-          '18.7',
-          '-48',
-          '1,280',
-          '2,280',
-          '2,400',
-          '2024-01-01']
+          '195',
+          '235,000',
+          '155,000']
         ]
       end
     end
