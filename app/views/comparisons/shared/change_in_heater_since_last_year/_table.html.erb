@@ -23,5 +23,11 @@
     <% end %>
   <% end %>
   <% component.with_footer do %>
+    <tr>
+      <td colspan="<%= headers.count %>">
+        <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
+        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_previous_year_definition_html') %>
+      </td>
+    </tr>
   <% end %>
 <% end %>
