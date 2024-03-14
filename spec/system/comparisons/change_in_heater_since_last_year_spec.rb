@@ -12,7 +12,9 @@ describe 'change_in_heater_since_last_year' do
   let(:expected_table) do
     [['', 'kWh', 'CO2 (kg)', '£', 'Percent changed'],
      headers,
-     [expected_school.name, '1', '7', '2', '3', '4', '£5', '£6', '+100%', '+800%']]
+     [expected_school.name, '1', '7', '2', '3', '4', '£5', '£6', '+100%', '+800%'],
+     ["Notes\nIn school comparisons 'last year' is defined as this year to date, 'previous year' is defined as the " \
+      'year before.']]
   end
   let(:expected_csv) do
     [['', 'kWh', '', '', 'CO2 (kg)', '', '£', '', 'Percent changed', ''],
