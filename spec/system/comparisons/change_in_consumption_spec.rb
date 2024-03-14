@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'change_in_electricity_*_consumption_*' do
+describe 'change_in_*_consumption_*' do
   let(:schools) { create_list(:school, 3) }
   let(:expected_school) { schools[0] }
   let(:headers) do
@@ -83,6 +83,38 @@ describe 'change_in_electricity_*_consumption_*' do
   describe 'change_in_electricity_consumption_recent_school_weeks' do
     let(:alert_class_name) { 'AlertSchoolWeekComparisonElectricity' }
     let(:key) { :change_in_electricity_consumption_recent_school_weeks }
+
+    before do
+      expected_table.map! { |row| row[0..3] }
+      expected_csv.map! { |row| row[0..3] }
+    end
+
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+    it_behaves_like 'a school comparison report with a chart'
+  end
+
+  describe 'change_in_gas_holiday_consumption_previous_holiday' do
+    let(:alert_class_name) { 'AlertPreviousHolidayComparisonGas' }
+    let(:key) { :change_in_gas_holiday_consumption_previous_holiday }
+
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+    it_behaves_like 'a school comparison report with a chart'
+  end
+
+  describe 'change_in_gas_holiday_consumption_previous_years_holiday' do
+    let(:alert_class_name) { 'AlertPreviousYearHolidayComparisonGas' }
+    let(:key) { :change_in_gas_holiday_consumption_previous_years_holiday }
+
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+    it_behaves_like 'a school comparison report with a chart'
+  end
+
+  describe 'change_in_gas_consumption_recent_school_weeks' do
+    let(:alert_class_name) { 'AlertSchoolWeekComparisonGas' }
+    let(:key) { :change_in_gas_consumption_recent_school_weeks }
 
     before do
       expected_table.map! { |row| row[0..3] }
