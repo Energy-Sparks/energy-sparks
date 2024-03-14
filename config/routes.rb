@@ -60,7 +60,6 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
-    resources :annual_change_in_gas_out_of_hours_use, only: [:index]
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
     resources :annual_electricity_costs_per_pupil, only: [:index]
     resources :annual_electricity_out_of_hours_use, only: [:index]
@@ -79,6 +78,8 @@ Rails.application.routes.draw do
     resources :solar_pv_benefit_estimate, only: [:index]
     resources :weekday_baseload_variation, only: [:index]
 
+    resources :annual_change_in_gas_out_of_hours_use, only: [:index]
+    resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index]
     resources :change_in_gas_consumption_recent_school_weeks, only: [:index]
     resources :change_in_gas_holiday_consumption_previous_holiday, only: [:index]
     resources :change_in_gas_holiday_consumption_previous_years_holiday, only: [:index]

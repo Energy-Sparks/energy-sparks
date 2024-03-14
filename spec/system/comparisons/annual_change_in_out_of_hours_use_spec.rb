@@ -76,4 +76,14 @@ describe 'annual_change_in_*_out_of_hours_use' do
     it_behaves_like 'a school comparison report'
     it_behaves_like 'a school comparison report with a table'
   end
+
+  describe 'annual_change_in_storage_heater_out_of_hours_use' do
+    let(:key) { :annual_change_in_storage_heater_out_of_hours_use }
+    let(:advice_page_key) { :gas_out_of_hours }
+    let(:alert_class_name) { 'AlertStorageHeaterOutOfHours' }
+    let(:alert_class_name_previous_year) { 'AlertOutOfHoursStorageHeaterUsagePreviousYear' }
+
+    it_behaves_like 'a school comparison report'
+    it_behaves_like 'a school comparison report with a table'
+  end
 end
