@@ -29,7 +29,7 @@ describe 'annual_gas_out_of_hours_use' do
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-                   variables: { electricity_economic_tariff_changed_this_year: true })
+                   variables: { gas_economic_tariff_changed_this_year: true })
   end
 
   context 'when viewing report' do
