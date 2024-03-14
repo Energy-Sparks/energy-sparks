@@ -5,13 +5,14 @@ module Comparisons
     def headers
       [
         t('analytics.benchmarking.configuration.column_headings.school'),
+        t('analytics.benchmarking.configuration.column_headings.type'),
         t('analytics.benchmarking.configuration.column_headings.last_year_electricity_kwh_pupil'),
         t('analytics.benchmarking.configuration.column_headings.last_year_gas_kwh_pupil'),
         t('analytics.benchmarking.configuration.column_headings.last_year_storage_heater_kwh_pupil'),
         t('analytics.benchmarking.configuration.column_headings.last_year_energy_kwh_pupil'),
         t('analytics.benchmarking.configuration.column_headings.last_year_energy_£_pupil'),
         t('analytics.benchmarking.configuration.column_headings.last_year_energy_kgco2_pupil'),
-        t('analytics.benchmarking.configuration.column_headings.type')
+        t('analytics.benchmarking.configuration.column_headings.pupils')
       ]
     end
 

@@ -14,6 +14,7 @@
 #  one_year_storage_heater_per_pupil_co2         :float
 #  one_year_storage_heater_per_pupil_gbp         :float
 #  one_year_storage_heater_per_pupil_kwh         :float
+#  pupils                                        :float
 #  school_id                                     :bigint(8)
 #
 class Comparison::AnnualEnergyCostsPerPupil < Comparison::View

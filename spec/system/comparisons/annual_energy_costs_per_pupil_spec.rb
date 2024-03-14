@@ -32,7 +32,8 @@ describe 'annual_energy_costs_per_pupil' do
   let(:additional_data_variables) do
     {
       electricity_economic_tariff_changed_this_year: true,
-      gas_economic_tariff_changed_this_year: false
+      gas_economic_tariff_changed_this_year: false,
+      pupils: 700
     }
   end
 
@@ -75,26 +76,28 @@ describe 'annual_energy_costs_per_pupil' do
       let(:headers) do
         [
           I18n.t('analytics.benchmarking.configuration.column_headings.school'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.type'),
           I18n.t('analytics.benchmarking.configuration.column_headings.last_year_electricity_kwh_pupil'),
           I18n.t('analytics.benchmarking.configuration.column_headings.last_year_gas_kwh_pupil'),
           I18n.t('analytics.benchmarking.configuration.column_headings.last_year_storage_heater_kwh_pupil'),
           I18n.t('analytics.benchmarking.configuration.column_headings.last_year_energy_kwh_pupil'),
           I18n.t('analytics.benchmarking.configuration.column_headings.last_year_energy_£_pupil'),
           I18n.t('analytics.benchmarking.configuration.column_headings.last_year_energy_kgco2_pupil'),
-          I18n.t('analytics.benchmarking.configuration.column_headings.type')
+          I18n.t('analytics.benchmarking.configuration.column_headings.pupils')
         ]
       end
       let(:expected_table) do
         [
           headers,
           ["#{school.name} [t]",
+           I18n.t('common.school_types.' + school.school_type),
            '100',
            '200',
            '300',
            '600',
            '£630',
            '660',
-           I18n.t('common.school_types.' + school.school_type)],
+           '700'],
           ["Notes\n[t]\n" \
            '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
            "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
@@ -105,13 +108,14 @@ describe 'annual_energy_costs_per_pupil' do
         [
           headers,
           [school.name,
+           I18n.t('common.school_types.' + school.school_type),
            '100',
            '200',
            '300',
            '600',
            '630',
            '660',
-           I18n.t('common.school_types.' + school.school_type)]
+           '700']
         ]
       end
     end

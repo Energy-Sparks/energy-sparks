@@ -12,6 +12,7 @@
         <% end %>
       <% end %>
 
+      <% r.with_var { t("common.school_types.#{result.school.school_type}") } %>
       <% r.with_var val: result.one_year_electricity_per_pupil_kwh, unit: :kwh %>
       <% r.with_var val: result.one_year_gas_per_pupil_kwh, unit: :kwh %>
       <% r.with_var val: result.one_year_storage_heater_per_pupil_kwh, unit: :kwh %>
@@ -19,8 +20,7 @@
       <% r.with_var val: sum_data(result.kwhs), unit: :kwh %>
       <% r.with_var val: sum_data(result.costs), unit: :£ %>
       <% r.with_var val: sum_data(result.co2s), unit: :co2 %>
-
-      <% r.with_var { t("common.school_types.#{result.school.school_type}") } %>
+      <% r.with_var val: result.pupils, unit: :pupils %>
     <% end %>
   <% end %>
   <% c.with_footer do %>

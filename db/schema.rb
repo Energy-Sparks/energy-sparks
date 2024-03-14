@@ -2822,10 +2822,11 @@ ActiveRecord::Schema.define(version: 2024_03_12_162819) do
            SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data.electricity_economic_tariff_changed_this_year,
-              data.gas_economic_tariff_changed_this_year
+              data.gas_economic_tariff_changed_this_year,
+              data.pupils
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean, gas_economic_tariff_changed_this_year boolean)
+              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean, gas_economic_tariff_changed_this_year boolean, pupils double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
           ), latest_runs AS (
            SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
@@ -2844,7 +2845,8 @@ ActiveRecord::Schema.define(version: 2024_03_12_162819) do
       storage_heaters.one_year_gas_per_pupil_co2 AS one_year_storage_heater_per_pupil_co2,
       additional.school_id,
       additional.electricity_economic_tariff_changed_this_year,
-      additional.gas_economic_tariff_changed_this_year
+      additional.gas_economic_tariff_changed_this_year,
+      additional.pupils
      FROM ((((latest_runs
        JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
        LEFT JOIN electricity ON ((latest_runs.id = electricity.alert_generation_run_id)))

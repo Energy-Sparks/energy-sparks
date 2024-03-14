@@ -26,7 +26,8 @@ WITH electricity AS (
   SELECT alert_generation_run_id, school_id, data.*
   FROM alerts, alert_types, jsonb_to_record(variables) AS data(
     electricity_economic_tariff_changed_this_year boolean,
-    gas_economic_tariff_changed_this_year boolean)
+    gas_economic_tariff_changed_this_year boolean,
+    pupils float)
   WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertAdditionalPrioritisationData'
 ), latest_runs AS (
     SELECT DISTINCT ON (school_id) id
@@ -45,7 +46,8 @@ SELECT latest_runs.id,
        storage_heaters.one_year_gas_per_pupil_co2 AS one_year_storage_heater_per_pupil_co2,
        additional.school_id,
        additional.electricity_economic_tariff_changed_this_year,
-       additional.gas_economic_tariff_changed_this_year
+       additional.gas_economic_tariff_changed_this_year,
+       additional.pupils
 FROM latest_runs
 JOIN additional ON latest_runs.id = additional.alert_generation_run_id
 LEFT JOIN electricity ON latest_runs.id = electricity.alert_generation_run_id
