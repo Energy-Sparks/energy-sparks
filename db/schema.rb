@@ -2790,6 +2790,89 @@ ActiveRecord::Schema.define(version: 2024_03_13_142445) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "annual_energy_costs_per_units", sql_definition: <<-SQL
+      WITH electricity AS (
+           SELECT alerts.alert_generation_run_id,
+              data.one_year_electricity_per_pupil_kwh,
+              data.one_year_electricity_per_pupil_gbp,
+              data.one_year_electricity_per_pupil_co2,
+              data.one_year_electricity_per_floor_area_kwh,
+              data.one_year_electricity_per_floor_area_gbp,
+              data.one_year_electricity_per_floor_area_co2
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_electricity_per_pupil_kwh double precision, one_year_electricity_per_pupil_gbp double precision, one_year_electricity_per_pupil_co2 double precision, one_year_electricity_per_floor_area_kwh double precision, one_year_electricity_per_floor_area_gbp double precision, one_year_electricity_per_floor_area_co2 double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityAnnualVersusBenchmark'::text))
+          ), gas AS (
+           SELECT alerts.alert_generation_run_id,
+              data.one_year_gas_per_pupil_kwh,
+              data.one_year_gas_per_pupil_gbp,
+              data.one_year_gas_per_pupil_co2,
+              data.one_year_gas_per_floor_area_kwh,
+              data.one_year_gas_per_floor_area_gbp,
+              data.one_year_gas_per_floor_area_co2
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_pupil_kwh double precision, one_year_gas_per_pupil_gbp double precision, one_year_gas_per_pupil_co2 double precision, one_year_gas_per_floor_area_kwh double precision, one_year_gas_per_floor_area_gbp double precision, one_year_gas_per_floor_area_co2 double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
+          ), storage_heaters AS (
+           SELECT alerts.alert_generation_run_id,
+              data.one_year_gas_per_pupil_kwh,
+              data.one_year_gas_per_pupil_gbp,
+              data.one_year_gas_per_pupil_co2,
+              data.one_year_gas_per_floor_area_kwh,
+              data.one_year_gas_per_floor_area_gbp,
+              data.one_year_gas_per_floor_area_co2
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_pupil_kwh double precision, one_year_gas_per_pupil_gbp double precision, one_year_gas_per_pupil_co2 double precision, one_year_gas_per_floor_area_kwh double precision, one_year_gas_per_floor_area_gbp double precision, one_year_gas_per_floor_area_co2 double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterAnnualVersusBenchmark'::text))
+          ), additional AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.electricity_economic_tariff_changed_this_year,
+              data.gas_economic_tariff_changed_this_year,
+              data.pupils,
+              data.floor_area
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean, gas_economic_tariff_changed_this_year boolean, pupils double precision, floor_area double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      electricity.one_year_electricity_per_pupil_kwh,
+      electricity.one_year_electricity_per_pupil_gbp,
+      electricity.one_year_electricity_per_pupil_co2,
+      electricity.one_year_electricity_per_floor_area_kwh,
+      electricity.one_year_electricity_per_floor_area_gbp,
+      electricity.one_year_electricity_per_floor_area_co2,
+      gas.one_year_gas_per_pupil_kwh,
+      gas.one_year_gas_per_pupil_gbp,
+      gas.one_year_gas_per_pupil_co2,
+      gas.one_year_gas_per_floor_area_kwh,
+      gas.one_year_gas_per_floor_area_gbp,
+      gas.one_year_gas_per_floor_area_co2,
+      storage_heaters.one_year_gas_per_pupil_kwh AS one_year_storage_heater_per_pupil_kwh,
+      storage_heaters.one_year_gas_per_pupil_gbp AS one_year_storage_heater_per_pupil_gbp,
+      storage_heaters.one_year_gas_per_pupil_co2 AS one_year_storage_heater_per_pupil_co2,
+      storage_heaters.one_year_gas_per_floor_area_kwh AS one_year_storage_heater_per_floor_area_kwh,
+      storage_heaters.one_year_gas_per_floor_area_gbp AS one_year_storage_heater_per_floor_area_gbp,
+      storage_heaters.one_year_gas_per_floor_area_co2 AS one_year_storage_heater_per_floor_area_co2,
+      additional.school_id,
+      additional.electricity_economic_tariff_changed_this_year,
+      additional.gas_economic_tariff_changed_this_year,
+      additional.pupils,
+      additional.floor_area
+     FROM ((((latest_runs
+       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
+       LEFT JOIN electricity ON ((latest_runs.id = electricity.alert_generation_run_id)))
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
+       LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)));
+  SQL
   create_view "annual_heating_costs_per_floor_areas", sql_definition: <<-SQL
       WITH gas AS (
            SELECT alerts.alert_generation_run_id,
