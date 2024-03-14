@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_14_151022) do
+ActiveRecord::Schema.define(version: 2024_03_14_165231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2877,5 +2877,32 @@ ActiveRecord::Schema.define(version: 2024_03_14_151022) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
+  create_view "annual_storage_heater_out_of_hours_uses", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.schoolday_open_percent,
+      data.schoolday_closed_percent,
+      data.holidays_percent,
+      data.weekends_percent,
+      data.holidays_gbp,
+      data.weekends_gbp
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.schoolday_open_percent,
+              data_1.schoolday_closed_percent,
+              data_1.holidays_percent,
+              data_1.weekends_percent,
+              data_1.holidays_gbp,
+              data_1.weekends_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(schoolday_open_percent double precision, schoolday_closed_percent double precision, holidays_percent double precision, weekends_percent double precision, holidays_gbp double precision, weekends_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterOutOfHours'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
 end

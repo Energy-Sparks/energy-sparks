@@ -1,6 +1,6 @@
 SELECT latest_runs.id,
-       data.*,
-       additional.gas_economic_tariff_changed_this_year
+  data.*,
+  additional.gas_economic_tariff_changed_this_year
 FROM
   (
     SELECT alert_generation_run_id, school_id, data.*
