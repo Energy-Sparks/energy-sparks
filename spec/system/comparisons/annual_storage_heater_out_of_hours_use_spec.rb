@@ -38,7 +38,7 @@ describe 'annual_storage_heater_out_of_hours_use' do
       let(:headers) do
         ['School',
          'School Day Open',
-         'School Day Closed',
+         'Overnight charging',
          'Holiday',
          'Weekend',
          'Last year weekend and holiday costs'
@@ -52,7 +52,7 @@ describe 'annual_storage_heater_out_of_hours_use' do
       let(:expected_table) do
         [headers,
          [school.name, '27.8&percnt;', '37.1&percnt;', '21.1&percnt;', '13.9&percnt;', '£417'],
-         ["Notes\n[t]\n" \
+         ["Notes\n" \
           "In school comparisons 'last year' is defined as this year to date."]]
       end
 
