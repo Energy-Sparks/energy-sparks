@@ -86,7 +86,9 @@ module Comparisons
       [:table]
     end
 
-    def create_single_number_chart(results, name, multiplier, series_name, y_axis_label)
+    def create_single_number_chart(results, name, multiplier, series_name, y_axis_label,
+                                   column_heading_keys: 'analytics.benchmarking.configuration.column_headings',
+                                   y_axis_keys: 'chart_configuration.y_axis_label_name')
       chart_data = {}
 
       # Some charts also set x_max_value to 100 if there are metric values > 100
@@ -107,12 +109,14 @@ module Comparisons
       [{
         id: :comparison,
         x_axis: chart_data.keys,
-        x_data: { I18n.t("analytics.benchmarking.configuration.column_headings.#{series_name}") => chart_data.values },
-        y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
+        x_data: { I18n.t("#{column_heading_keys}.#{series_name}") => chart_data.values },
+        y_axis_label: I18n.t("#{y_axis_keys}.#{y_axis_label}")
       }]
     end
 
-    def create_multi_chart(results, names, multiplier, y_axis_label)
+    def create_multi_chart(results, names, multiplier, y_axis_label,
+                           column_heading_keys: 'analytics.benchmarking.configuration.column_headings',
+                           y_axis_keys: 'chart_configuration.y_axis_label_name')
       chart_data = {}
       schools = []
 
@@ -127,13 +131,13 @@ module Comparisons
         end
       end
 
-      chart_data.transform_keys! { |key| I18n.t("analytics.benchmarking.configuration.column_headings.#{names[key.to_sym]}") }
+      chart_data.transform_keys! { |key| I18n.t("#{column_heading_keys}.#{names[key.to_sym]}") }
 
       [{
         id: :comparison,
         x_axis: schools,
         x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
-        y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
+        y_axis_label: I18n.t("#{y_axis_keys}.#{y_axis_label}")
       }]
     end
 

@@ -13,14 +13,14 @@
       <% end %>
 
       <% r.with_var { t("common.school_types.#{result.school.school_type}") } %>
-      <% r.with_var val: result.one_year_electricity_per_pupil_kwh, unit: :kwh %>
-      <% r.with_var val: result.one_year_gas_per_pupil_kwh, unit: :kwh %>
-      <% r.with_var val: result.one_year_storage_heater_per_pupil_kwh, unit: :kwh %>
+      <% r.with_var val: result.one_year_electricity_per_floor_area_kwh, unit: :kwh %>
+      <% r.with_var val: result.one_year_gas_per_floor_area_kwh, unit: :kwh %>
+      <% r.with_var val: result.one_year_storage_heater_per_floor_area_kwh, unit: :kwh %>
 
-      <% r.with_var val: sum_data(result.pupil_kwhs), unit: :kwh %>
-      <% r.with_var val: sum_data(result.pupil_costs), unit: :£ %>
-      <% r.with_var val: sum_data(result.pupil_co2s), unit: :co2 %>
-      <% r.with_var val: result.pupils, unit: :pupils %>
+      <% r.with_var val: sum_data(result.floor_area_kwhs), unit: :kwh %>
+      <% r.with_var val: sum_data(result.floor_area_costs), unit: :£ %>
+      <% r.with_var val: sum_data(result.floor_area_co2s), unit: :co2 %>
+      <% r.with_var val: result.floor_area, unit: :m2 %>
     <% end %>
   <% end %>
   <% c.with_footer do %>
