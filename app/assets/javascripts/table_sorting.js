@@ -6,7 +6,9 @@ $(document).ready(function() {
     'order': [],        // Default do not sort
     'paging': false,
     'searching': false, // Switch off search field
-    'info': false       // Switch off the summary of rows at the bottom of the page
+    'info': false,       // Switch off the summary of rows at the bottom of the page
+    'orderCellsTop': false, // Switch off adding sorting to first header row
+    'autoWidth': false // Switch off auto resizing
   });
 
   $('.table-large').DataTable({
