@@ -26,7 +26,7 @@ module Comparisons
     end
 
     def create_charts(results)
-      create_single_number_chart(results, :percent_of_annual_heating, nil, :percentage_of_annual_heating_consumed_in_warm_weather, :percent)
+      create_single_number_chart(results, :percent_of_annual_heating, 100.0, :percentage_of_annual_heating_consumed_in_warm_weather, :percent)
     end
   end
 end
