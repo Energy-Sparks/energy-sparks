@@ -68,6 +68,7 @@ class HomeController < ApplicationController
         location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
       }
     ].sample
+    render :for_multi_academy_trusts_new
   end
 
   def energy_audits
