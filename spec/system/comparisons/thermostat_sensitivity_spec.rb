@@ -6,9 +6,7 @@ describe 'thermostat_sensitivity' do
   let(:advice_page_key) { :heating_control }
 
   let(:variables) do
-    {
-      annual_saving_1_C_change_gbp: 389.6826792646185
-    }
+    { annual_saving_1_C_change_gbp: 389.6826792646185 }
   end
 
   let(:alert_type) { create(:alert_type, class_name: 'AlertHeatingSensitivityAdvice') }
@@ -33,23 +31,15 @@ describe 'thermostat_sensitivity' do
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
 
       let(:headers) do
-        ['School',
-         'Saving per 1C reduction in thermostat']
+        ['School', 'Saving per 1C reduction in thermostat']
       end
 
       let(:expected_table) do
-        [headers,
-         [school.name,
-          '£390'
-         ]
-        ]
+        [headers, [school.name, '£390']]
       end
 
       let(:expected_csv) do
-        [headers,
-         [school.name,
-          '390']
-        ]
+        [headers, [school.name, '390']]
       end
     end
 
