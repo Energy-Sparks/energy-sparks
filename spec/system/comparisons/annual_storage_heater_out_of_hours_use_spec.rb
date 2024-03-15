@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'annual_storage_heater_out_of_hours_use' do
   let!(:school) { create(:school) }
   let(:key) { :annual_storage_heater_out_of_hours_use }
-  let(:advice_page_key) { :your_advice_page_key }
+  let(:advice_page_key) { :storage_heaters }
 
   # change to your variables
   let(:variables) do

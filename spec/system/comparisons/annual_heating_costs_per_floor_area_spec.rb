@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'annual_heating_costs_per_floor_area' do
   let!(:school) { create(:school) }
   let(:key) { :annual_heating_costs_per_floor_area }
-  let(:advice_page_key) { :your_advice_page_key }
+  let(:advice_page_key) { :gas_long_term }
 
   let(:gas_variables) do
     {
