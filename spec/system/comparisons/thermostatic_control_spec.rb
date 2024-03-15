@@ -43,6 +43,7 @@ describe 'thermostatic_control' do
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
+      let(:advice_page_path) { polymorphic_path([expected_school, :advice]) }
 
       let(:headers) do
         ['School', 'Thermostatic R2', 'Saving through improved thermostatic control']
