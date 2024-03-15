@@ -70,8 +70,6 @@ describe 'electricity_targets' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart' do
-      let(:chart) { '#chart_comparison' }
-    end
+    it_behaves_like 'a school comparison report with a chart'
   end
 end

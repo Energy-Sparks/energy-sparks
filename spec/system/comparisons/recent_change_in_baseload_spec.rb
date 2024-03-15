@@ -62,8 +62,6 @@ describe 'recent_change_in_baseload' do
         [headers, [school.name, '-14.4', '2.94', '2.52', '-0.424', '-557']]
       end
     end
-    it_behaves_like 'a school comparison report with a chart' do
-      let(:chart) { '#chart_comparison' }
-    end
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
