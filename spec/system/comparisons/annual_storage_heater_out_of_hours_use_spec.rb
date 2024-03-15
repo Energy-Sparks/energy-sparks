@@ -5,7 +5,6 @@ describe 'annual_storage_heater_out_of_hours_use' do
   let(:key) { :annual_storage_heater_out_of_hours_use }
   let(:advice_page_key) { :storage_heaters }
 
-  # change to your variables
   let(:variables) do
     {
       schoolday_open_percent: 0.2783819813845588,
@@ -17,7 +16,6 @@ describe 'annual_storage_heater_out_of_hours_use' do
     }
   end
 
-  # change to your alert type (there may be more than one!)
   let(:alert_type) { create(:alert_type, class_name: 'AlertStorageHeaterOutOfHours') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
