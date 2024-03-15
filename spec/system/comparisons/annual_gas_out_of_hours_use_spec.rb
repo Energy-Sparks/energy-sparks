@@ -18,7 +18,6 @@ describe 'annual_gas_out_of_hours_use' do
     }
   end
 
-  # change to your alert type (there may be more than one!)
   let(:alert_type) { create(:alert_type, class_name: 'AlertOutOfHoursGasUsage') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
@@ -72,8 +71,6 @@ describe 'annual_gas_out_of_hours_use' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart' do
-      let(:chart) { '#chart_comparison' }
-    end
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
