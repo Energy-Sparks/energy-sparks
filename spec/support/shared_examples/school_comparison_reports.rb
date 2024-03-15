@@ -52,11 +52,11 @@ RSpec.shared_examples 'a school comparison report with a table' do
   let(:table_name) { :table }
 
   it 'links each row to the relevant advice page' do
-    if defined?(advice_page)
-      within('#tables') do
-        within("##{expected_report.key}-#{table_name}") do
-          expect(page).to have_link(expected_school.name, href: advice_page_path)
-        end
+    href = defined?(advice_page) ? advice_page_path : school_advice_path(school)
+
+    within('#tables') do
+      within("##{expected_report.key}-#{table_name}") do
+        expect(page).to have_link(expected_school.name, href: href)
       end
     end
   end
