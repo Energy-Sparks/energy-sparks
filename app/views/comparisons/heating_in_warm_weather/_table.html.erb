@@ -1,0 +1,16 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_var val: result.percent_of_annual_heating, unit: :percent %>
+      <% r.with_var val: result.warm_weather_heating_days_all_days_kwh, unit: :kw %>
+      <% r.with_var val: result.warm_weather_heating_days_all_days_co2, unit: :co2 %>
+      <% r.with_var val: result.warm_weather_heating_days_all_days_gbpcurrent, unit: :£ %>
+      <% r.with_var val: result.warm_weather_heating_days_all_days_days, unit: :days %>
+    <% end %>
+  <% end %>
+  <% c.with_footer do %>
+  <% end %>
+<% end %>
