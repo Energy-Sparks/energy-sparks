@@ -72,7 +72,9 @@
   <div class="row">
     <div class="col-md-12">
       <h3><%= t('marketing.pricing.features.title') %></h3>
-      <%= t('marketing.pricing.features.detail_html') %>
+      <%= t('marketing.pricing.features.detail_html',
+            activities_count: marketing_activity_count,
+            actions_count: marketing_action_count) %>
     </div>
   </div>
 

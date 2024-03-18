@@ -5,7 +5,8 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
   before_action :set_newsletters, only: [:index, :show]
-  before_action :set_case_studies, only: [:index, :show, :for_management, :for_teachers]
+  before_action :set_case_studies, only: [:index, :show]
+  before_action :set_marketing_case_studies, only: [:for_local_authorities, :for_multi_academy_trusts, :for_schools]
 
   def index
   end
@@ -15,18 +16,12 @@ class HomeController < ApplicationController
   end
 
   def for_schools
-    @school_count = School.visible.count
-    @activities_count = ActivityType.active_and_not_custom.count
   end
 
   def for_local_authorities
-    @school_count = School.visible.count
-    @activities_count = ActivityType.active_and_not_custom.count
   end
 
   def for_multi_academy_trusts
-    @school_count = School.visible.count
-    @activities_count = ActivityType.active_and_not_custom.count
   end
 
   def energy_audits
@@ -116,6 +111,15 @@ class HomeController < ApplicationController
   def set_case_studies
     @all_case_studies_count = CaseStudy.count
     @case_studies = CaseStudy.order(position: :asc).limit(3)
+  end
+
+  def set_marketing_case_studies
+    @marketing_studies = {
+      costs: CaseStudy.find(15),
+      tool: CaseStudy.find(12),
+      pupils: CaseStudy.find(13),
+      emissions: CaseStudy.find(9)
+    }
   end
 
   def redirect_if_logged_in

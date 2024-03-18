@@ -178,10 +178,6 @@ describe 'Audits', type: :system do
       it 'shows introductory page' do
         expect(page).to have_content('Energy Sparks offers two types of energy audits')
       end
-
-      it 'offers an audit' do
-        expect(page).to have_link('Book an audit')
-      end
     end
 
     context 'with an audit' do

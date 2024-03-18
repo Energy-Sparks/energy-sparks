@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe 'annual_electricity_out_of_hours_use' do
+describe 'annual_gas_out_of_hours_use' do
   let!(:school) { create(:school) }
-  let(:key) { :annual_electricity_out_of_hours_use }
-  let(:advice_page_key) { :electricity_out_of_hours }
+  let(:key) { :annual_gas_out_of_hours_use }
+  let(:advice_page_key) { :gas_out_of_hours }
 
   let(:variables) do
     {
@@ -18,7 +18,7 @@ describe 'annual_electricity_out_of_hours_use' do
     }
   end
 
-  let(:alert_type) { create(:alert_type, class_name: 'AlertOutOfHoursElectricityUsage') }
+  let(:alert_type) { create(:alert_type, class_name: 'AlertOutOfHoursGasUsage') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
@@ -27,7 +27,7 @@ describe 'annual_electricity_out_of_hours_use' do
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-                   variables: { electricity_economic_tariff_changed_this_year: true })
+                   variables: { gas_economic_tariff_changed_this_year: true })
   end
 
   context 'when viewing report' do

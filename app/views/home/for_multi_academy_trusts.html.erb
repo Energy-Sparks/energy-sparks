@@ -37,7 +37,11 @@
     <div class="application container">
       <div class="row">
         <div class="col-md-12 text-center">
-          <h1 style="color: white;"><%= t('marketing.mats.learn_why.title') %></h1>
+          <h1 style="color: white;">
+            <%= t('marketing.mats.learn_why.title',
+                  school_count: marketing_school_count,
+                  mat_count: marketing_mat_count) %>
+          </h1>
         </div>
       </div>
     </div>
@@ -60,7 +64,7 @@
       <div class="row">
         <div class="col-md-12">
           <%= link_to t('marketing.mats.costs.case_study'),
-                      'https://energysparks.uk/case_studies/15/link?locale=en',
+                      case_study_link(@marketing_studies[:costs]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -106,7 +110,7 @@
       <div class="row">
         <div class="col-md-12 text-right">
           <%= link_to t('marketing.mats.tool.case_study'),
-                      'https://energysparks.uk/case_studies/12/link?locale=en',
+                      case_study_link(@marketing_studies[:tool]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -122,7 +126,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.mats.pupils.sub_title_1') %></h4>
+          <h4><%= t('marketing.mats.pupils.sub_title_1', activities_count: marketing_activity_count) %></h4>
         </div>
       </div>
       <div class="row">
@@ -133,7 +137,7 @@
       <div class="row">
         <div class="col-md-12">
           <%= link_to t('marketing.mats.pupils.case_study'),
-                      'https://energysparks.uk/case_studies/13/link?locale=en',
+                      case_study_link(@marketing_studies[:pupils]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -181,7 +185,7 @@
       <div class="row">
         <div class="col-md-12 text-right">
           <%= link_to t('marketing.mats.emissions.case_study'),
-                      'https://energysparks.uk/case_studies/9/link?locale=en',
+                      case_study_link(@marketing_studies[:emissions]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
