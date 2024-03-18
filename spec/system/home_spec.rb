@@ -40,9 +40,6 @@ RSpec.describe 'home', type: :system do
       click_on('For Local Authorities')
     end
     expect(page).to have_content('Energy Sparks for Local Authorities')
-    click_on('Enrol our Local Authority')
-    expect(page).to have_content('Enrol our Local Authority')
-    expect(page).to have_link('Enrol now')
   end
 
   it 'has a for-multi-academy-trusts page' do

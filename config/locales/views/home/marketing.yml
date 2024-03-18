@@ -1,6 +1,12 @@
 ---
 en:
   marketing:
+    las:
+      benefits:
+        emissions: Cut your school's carbon footprint
+      final_prompt:
+        booking: Book your free demo session today to see how we can support your local authority
+      title: Energy Sparks for Local Authorities
     mats:
       benefits:
         costs: Save up to 40% off school energy bills
@@ -48,6 +54,8 @@ en:
     schools:
       benefits:
         emissions: Cut your carbon footprint
+      final_prompt:
+        booking: Book your free demo session today to see how we can support your school
       learn_why:
         title: Learn why over 800 schools and counting are using Energy Sparks
       title: Energy Sparks for Schools
