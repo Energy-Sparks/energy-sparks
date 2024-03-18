@@ -22,7 +22,7 @@ en:
         title: Cut Carbon Emissions
       final_prompt:
         booking: Book your free demo session today to see how we can support your Trust
-        question: Ready to cut energy costs and spark pupils’ commitment to sustainability?
+        question: Ready to cut energy costs and spark pupils' commitment to sustainability?
       learn_why:
         title: Learn why over 800 schools and 50 trusts are using Energy Sparks
       pupils:
@@ -45,3 +45,11 @@ en:
         sub_title_1: Receive analysis of your schools’ gas and electricity use, action prompts, and energy-saving priorities via pupil and staff dashboards and weekly alert emails
         sub_title_2: Benchmark school energy use against others in the trust and around the country using our dashboards
         title: Take control
+    schools:
+      benefits:
+        emissions: Cut your carbon footprint
+      learn_why:
+        title: Learn why over 800 schools and counting are using Energy Sparks
+      title: Energy Sparks for Schools
+      tool:
+        sub_title_1: Receive analysis of your school's gas and electricity use, action prompts, and energy-saving priorities via pupil and staff dashboards and weekly alert emails
