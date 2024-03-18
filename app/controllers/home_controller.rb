@@ -17,45 +17,25 @@ class HomeController < ApplicationController
   def for_schools
     @school_count = School.visible.count
     @activities_count = ActivityType.active_and_not_custom.count
-    @videos = videos
-    @testimonial = [
-      {
-        quote: t('for_schools.quote_1.text_html'),
-        by: 'Andrew Wishart',
-        title: t('for_schools.quote_1.job_title'),
-        location: 'Freshford Church School'
-      }
-    ].sample
   end
 
   def for_local_authorities
     @school_count = School.visible.count
-    @testimonial = [
-      {
-        quote: t('for_local_authorities.quote_1.text_html'),
-        by: 'Kremena Renwick',
-        title: t('for_local_authorities.quote_1.job_title'),
-        location: 'Highland Council'
-      }
-    ].sample
-    @testimonial_saving = [
-      {
-        quote: t('for_local_authorities.quote_2.text_html'),
-        by: 'Andrew Marriott',
-        title: t('for_local_authorities.quote_2.job_title'),
-        location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
-      }
-    ].sample
-    @videos = videos
+    @activities_count = ActivityType.active_and_not_custom.count
   end
 
   def for_multi_academy_trusts
+    @school_count = School.visible.count
+    @activities_count = ActivityType.active_and_not_custom.count
   end
 
   def energy_audits
   end
 
   def education_workshops
+  end
+
+  def pricing
   end
 
   def contact
