@@ -19,7 +19,7 @@ RSpec.describe 'home', type: :system do
     within('#our-services') do
       click_on('For Schools')
     end
-    expect(page).to have_content('Energy Sparks for schools')
+    expect(page).to have_content('Energy Sparks for Schools')
   end
 
   it 'redirects old pages' do
