@@ -526,13 +526,6 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
-[o:energy-sparks:p:energy-sparks:r:views-home-for_multi_academy_trusts-yml]
-file_filter  = config/locales/<lang>/views/home/for_multi_academy_trusts.yml
-source_file  = config/locales/views/home/for_multi_academy_trusts.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
 [o:energy-sparks:p:energy-sparks:r:views-home-for_schools-yml]
 file_filter  = config/locales/<lang>/views/home/for_schools.yml
 source_file  = config/locales/views/home/for_schools.yml
@@ -550,6 +543,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-home-home-yml]
 file_filter  = config/locales/<lang>/views/home/home.yml
 source_file  = config/locales/views/home/home.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-home-marketing-yml]
+file_filter  = config/locales/<lang>/views/home/marketing.yml
+source_file  = config/locales/views/home/marketing.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100

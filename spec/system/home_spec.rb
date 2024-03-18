@@ -55,9 +55,6 @@ RSpec.describe 'home', type: :system do
       click_on('For Multi-Academy Trusts')
     end
     expect(page).to have_content('Energy Sparks for Multi-Academy Trusts')
-    click_on('Enrol our Multi-Academy Trust')
-    expect(page).to have_content('Enrol our Multi-Academy Trust')
-    expect(page).to have_link('Enrol now')
   end
 
   it 'has a contact page' do
