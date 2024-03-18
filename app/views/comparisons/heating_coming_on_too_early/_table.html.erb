@@ -1,0 +1,14 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% c.footer_tariff_has_changed = true %>
+  <% c.footer_last_year_definition = true %>
+  <% @results.each do |result| %>
+    <% c.with_row(tariff_has_changed: result.gas_economic_tariff_changed_this_year) do |row| %>
+      <% row.with_school school: result.school %>
+      <% row.with_var { result.avg_week_start_time_to_time_of_day.to_s } %>
+      <% row.with_var { result.average_start_time_hh_mm_to_time_of_day.to_s } %>
+      <% row.with_var val: result.one_year_optimum_start_saving_gbpcurrent, unit: :£ %>
+    <% end %>
+  <% end %>
+<% end %>
