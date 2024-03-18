@@ -79,6 +79,7 @@ Rails.application.routes.draw do
     resources :seasonal_baseload_variation, only: [:index]
     resources :solar_generation_summary, only: [:index]
     resources :solar_pv_benefit_estimate, only: [:index]
+    resources :thermostatic_control, only: [:index]
     resources :weekday_baseload_variation, only: [:index]
 
     resources :change_in_gas_consumption_recent_school_weeks, only: [:index]

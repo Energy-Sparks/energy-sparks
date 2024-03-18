@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_14_165231) do
+ActiveRecord::Schema.define(version: 2024_03_15_140539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -2904,5 +2904,42 @@ ActiveRecord::Schema.define(version: 2024_03_14_165231) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "thermostatic_controls", sql_definition: <<-SQL
+      WITH gas AS (
+           SELECT alerts.alert_generation_run_id,
+              data.r2,
+              data.potential_saving_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(r2 double precision, potential_saving_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertThermostaticControl'::text))
+          ), storage_heaters AS (
+           SELECT alerts.alert_generation_run_id,
+              data.r2,
+              data.potential_saving_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(r2 double precision, potential_saving_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterThermostatic'::text))
+          ), additional AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id
+             FROM alerts,
+              alert_types
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      additional.school_id,
+      COALESCE(gas.r2, storage_heaters.r2) AS r2,
+      NULLIF((COALESCE(gas.potential_saving_gbp, (0)::double precision) + COALESCE(storage_heaters.potential_saving_gbp, (0)::double precision)), (0)::double precision) AS potential_saving_gbp
+     FROM (((latest_runs
+       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
+       LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)));
   SQL
 end
