@@ -5,7 +5,8 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
   before_action :set_newsletters, only: [:index, :show]
-  before_action :set_case_studies, only: [:index, :show, :for_management, :for_teachers]
+  before_action :set_case_studies, only: [:index, :show]
+  before_action :set_marketing_case_studies, only: [:for_local_authorities, :for_multi_academy_trusts, :for_schools]
 
   def index
   end
@@ -15,65 +16,21 @@ class HomeController < ApplicationController
   end
 
   def for_schools
-    @school_count = School.visible.count
-    @activities_count = ActivityType.active_and_not_custom.count
-    @videos = videos
-    @testimonial = [
-      {
-        quote: t('for_schools.quote_1.text_html'),
-        by: 'Andrew Wishart',
-        title: t('for_schools.quote_1.job_title'),
-        location: 'Freshford Church School'
-      }
-    ].sample
   end
 
   def for_local_authorities
-    @school_count = School.visible.count
-    @testimonial = [
-      {
-        quote: t('for_local_authorities.quote_1.text_html'),
-        by: 'Kremena Renwick',
-        title: t('for_local_authorities.quote_1.job_title'),
-        location: 'Highland Council'
-      }
-    ].sample
-    @testimonial_saving = [
-      {
-        quote: t('for_local_authorities.quote_2.text_html'),
-        by: 'Andrew Marriott',
-        title: t('for_local_authorities.quote_2.job_title'),
-        location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
-      }
-    ].sample
-    @videos = videos
   end
 
   def for_multi_academy_trusts
-    @school_count = School.visible.count
-    @videos = videos
-    @testimonial = [
-      {
-        quote: t('for_multi_academy_trusts.quote_1.text_html'),
-        by: 'Warrick Barton',
-        title: t('for_multi_academy_trusts.quote_1.job_title'),
-        location: 'Pensford Primary School, Bath'
-      }
-    ].sample
-    @testimonial_saving = [
-      {
-        quote: t('for_local_authorities.quote_2.text_html'),
-        by: 'Andrew Marriott',
-        title: t('for_local_authorities.quote_2.job_title'),
-        location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
-      }
-    ].sample
   end
 
   def energy_audits
   end
 
   def education_workshops
+  end
+
+  def pricing
   end
 
   def contact
@@ -154,6 +111,15 @@ class HomeController < ApplicationController
   def set_case_studies
     @all_case_studies_count = CaseStudy.count
     @case_studies = CaseStudy.order(position: :asc).limit(3)
+  end
+
+  def set_marketing_case_studies
+    @marketing_studies = {
+      costs: CaseStudy.find(15),
+      tool: CaseStudy.find(12),
+      pupils: CaseStudy.find(13),
+      emissions: CaseStudy.find(9)
+    }
   end
 
   def redirect_if_logged_in
