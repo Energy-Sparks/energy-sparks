@@ -64,7 +64,7 @@
       <div class="row">
         <div class="col-md-12">
           <%= link_to t('marketing.mats.costs.case_study'),
-                      case_study_link(CaseStudy.find(15)),
+                      case_study_link(@marketing_studies[:costs]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -110,7 +110,7 @@
       <div class="row">
         <div class="col-md-12 text-right">
           <%= link_to t('marketing.mats.tool.case_study'),
-                      case_study_link(CaseStudy.find(12)),
+                      case_study_link(@marketing_studies[:tool]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -137,7 +137,7 @@
       <div class="row">
         <div class="col-md-12">
           <%= link_to t('marketing.mats.pupils.case_study'),
-                      case_study_link(CaseStudy.find(13)),
+                      case_study_link(@marketing_studies[:pupils]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -185,7 +185,7 @@
       <div class="row">
         <div class="col-md-12 text-right">
           <%= link_to t('marketing.mats.emissions.case_study'),
-                      case_study_link(CaseStudy.find(9)),
+                      case_study_link(@marketing_studies[:emissions]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
