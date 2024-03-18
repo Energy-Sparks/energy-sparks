@@ -15,7 +15,11 @@
       </div>
       <div class="row">
         <div class="col-md-12 pt-5 text-center cta">
-          <%= render 'home/marketing/book_demo_embed', label: t('book_a_demo') %>
+          <% if local_assigns[:school] %>
+            <%= link_to t('marketing.book_a_demo'), training_path, class: 'btn bg-positive' %>
+          <% else %>
+            <%= render 'home/marketing/book_demo_embed', label: t('marketing.book_a_demo') %>
+          <% end %>
         </div>
       </div>
     </div>
