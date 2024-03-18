@@ -4,8 +4,6 @@ describe 'hot_water_efficiency' do
   let!(:school) { create(:school) }
   let(:key) { :hot_water_efficiency }
   let(:advice_page_key) { :hot_water }
-
-  # change to your variables
   let(:variables) do
     {
       avg_gas_per_pupil_gbp: 6.253909100526937,
@@ -14,7 +12,6 @@ describe 'hot_water_efficiency' do
       benchmark_point_of_use_electric_saving_gbp: 259.88822973489596,
     }
   end
-
   let(:alert_type) { create(:alert_type, class_name: 'AlertHotWaterEfficiency') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
