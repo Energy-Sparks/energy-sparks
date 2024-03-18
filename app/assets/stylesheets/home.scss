@@ -55,9 +55,23 @@ header img {
     background-color: $dark-blue;
   }
 
-   p.display-3 {
+  p.display-3 {
     font-size: $f3;
   }
+
+  blockquote {
+    font-size: $f7;
+  }
+
+  .quote-by {
+    font-size: $f7;
+  }
+
+}
+
+.cta .btn {
+  font-size: $f5;
+  padding: 10px;
 }
 
 // Small devices (landscape phones, 576px and up)
@@ -84,6 +98,7 @@ header img {
   p.display-3 {
     font-size: $f2;
   }
+
 }
 
 
@@ -98,6 +113,11 @@ header img {
   }
 
   .masthead .btn {
+    font-size: $f4;
+    padding: 10px;
+  }
+
+  .cta .btn {
     font-size: $f4;
     padding: 10px;
   }
@@ -133,7 +153,13 @@ header img {
   .headline-sub-text {
     font-size: $f3;
   }
+
   .masthead .btn {
+    font-size: $f3;
+    padding: 20px;
+  }
+
+  .cta .btn {
     font-size: $f3;
     padding: 20px;
   }
