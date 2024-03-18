@@ -2,158 +2,155 @@
 
 <%= render 'home/marketing/header', title: t('marketing.mats.title') %>
 
-<section>
-  <div class="application container">
-    <div class="row">
-      <div class="col-7">
-        <div class="row">
-          <h1 style="color: #232b49;"><%= t('marketing.mats.benefits.costs') %></h1>
-        </div>
-        <div class="row">
-          <h1 style="color: #232b49;"><%= t('marketing.mats.benefits.emissions') %></h1>
-        </div>
-        <div class="row">
-          <h1 style="color: #232b49;"><%= t('marketing.mats.benefits.pupils') %></h1>
-        </div>
-        <div class="row">
-          <div class="col-md-8 offset-md-3 pt-2">
-            <%= render 'home/marketing/book_demo_embed', label: t('book_a_demo') %>
-          </div>
-        </div>
+<div class="application container">
+  <div class="row">
+    <div class="col-md-7">
+      <div class="row">
+        <h1 style="color: #232b49;"><%= t('marketing.mats.benefits.costs') %></h1>
       </div>
-      <div class="col-5 audit-image">
+      <div class="row">
+        <h1 style="color: #232b49;"><%= t('marketing.mats.benefits.emissions') %></h1>
+      </div>
+      <div class="row">
+        <h1 style="color: #232b49;"><%= t('marketing.mats.benefits.pupils') %></h1>
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-3 pt-2">
+          <%= render 'home/marketing/book_demo_embed', label: t('book_a_demo') %>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-
-<div class="row bg-dark-blue" style="background-color: #232b49;">
-  <div class="col">
-    <div class="row justify-content-center">
-      <h1 style="color: white;"><%= t('marketing.mats.learn_why.title') %></h1>
+    <div class="col-md-5 audit-image">
     </div>
   </div>
 </div>
 
-<section>
-  <div class="application container">
-    <div class="row pb-5">
-      <div class="col-5">
-        <div class="row">
-          <h1><%= t('marketing.mats.costs.title') %></h1>
-        </div>
-        <div class="row">
-          <p class="headline-sub-text">
-            <%= t('marketing.mats.costs.sub_title') %>
-          </p>
-        </div>
-        <div class="row">
-          <%= link_to t('marketing.mats.costs.case_study'),
-                      'https://energysparks.uk/case_studies/15/link?locale=en',
-                      class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
-        </div>
-      </div>
-      <div class="col-1"></div>
-      <div class="col-6">
-        <div class="row">
-          <div class="bg-light-blue p-5 justify-content-center testimonial rounded-25">
-            <blockquote class="quotes"><%= t('marketing.mats.costs.quote_html') %></blockquote>
-            <figcaption class="quote-by">
-              <strong><%= t('marketing.mats.costs.quote_source') %></strong>
-            </figcaption>
-          </div>
-        </div>
+<div class="row bg-dark-blue" style="background-color: #232b49;">
+  <div class="col-md-12">
+    <div class="application container">
+      <div class="row justify-content-center">
+        <h1 style="color: white;"><%= t('marketing.mats.learn_why.title') %></h1>
       </div>
     </div>
-
-    <div class="row pt-5 pb-5">
-      <div class="col-5">
-        <div class="row">
-          <%= image_tag('laptop.jpg', class: 'img-fluid rounded-25') %>
-        </div>
-      </div>
-      <div class="col-1"></div>
-      <div class="col-6">
-        <div class="row">
-          <h1><%= t('marketing.mats.tool.title') %></h1>
-        </div>
-        <div class="row">
-          <p class="headline-sub-text">
-            <%= t('marketing.mats.tool.sub_title_1') %>
-          </p>
-          <p class="headline-sub-text">
-            <%= t('marketing.mats.tool.sub_title_2') %>
-          </p>
-        </div>
-        <div class="row justify-content-end">
-          <%= link_to t('marketing.mats.tool.case_study'),
-                      'https://energysparks.uk/case_studies/2/link?locale=en',
-                      class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
-        </div>
-      </div>
-    </div>
-
-    <div class="row pt-5 pb-5">
-      <div class="col-5">
-        <div class="row">
-          <h1><%= t('marketing.mats.pupils.title') %></h1>
-        </div>
-        <div class="row">
-          <p class="headline-sub-text">
-            <%= t('marketing.mats.pupils.sub_title_1') %>
-          </p>
-          <p class="headline-sub-text">
-            <%= t('marketing.mats.pupils.sub_title_2') %>
-          </p>
-        </div>
-        <div class="row">
-          <%= link_to t('marketing.mats.pupils.case_study'),
-                      'https://energysparks.uk/case_studies/13/link?locale=en',
-                      class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
-        </div>
-      </div>
-      <div class="col-1"></div>
-      <div class="col-6">
-        <div class="row">
-          <div class="bg-light-blue p-5 justify-content-center testimonial rounded-25">
-            <blockquote class="quotes"><%= t('marketing.mats.pupils.quote') %></blockquote>
-            <figcaption class="quote-by">
-              <strong><%= t('marketing.mats.pupils.quote_source') %></strong>
-            </figcaption>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row pt-5 pb-5">
-      <div class="col-5">
-        <div class="row">
-          <%= image_tag('pupil-carbon.jpg', class: 'img-fluid rounded-25') %>
-        </div>
-      </div>
-      <div class="col-1"></div>
-      <div class="col-6">
-        <div class="row">
-          <h1><%= t('marketing.mats.emissions.title') %></h1>
-        </div>
-        <div class="row">
-          <p class="headline-sub-text">
-            <%= t('marketing.mats.emissions.sub_title_1') %>
-          </p>
-          <p class="headline-sub-text">
-            <%= t('marketing.mats.emissions.sub_title_2') %>
-          </p>
-        </div>
-        <div class="row justify-content-end">
-          <%= link_to t('marketing.mats.emissions.case_study'),
-                      'https://energysparks.uk/case_studies/9/link?locale=en',
-                      class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
-        </div>
-      </div>
-    </div>
-
   </div>
-</section>
+</div>
+
+<div class="application container">
+  <div class="row pb-5">
+    <div class="col-md-5">
+      <div class="row">
+        <h1><%= t('marketing.mats.costs.title') %></h1>
+      </div>
+      <div class="row">
+        <p class="headline-sub-text">
+          <%= t('marketing.mats.costs.sub_title') %>
+        </p>
+      </div>
+      <div class="row">
+        <%= link_to t('marketing.mats.costs.case_study'),
+                    'https://energysparks.uk/case_studies/15/link?locale=en',
+                    class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="bg-light-blue p-5 justify-content-center testimonial rounded-25">
+          <blockquote class="quotes"><%= t('marketing.mats.costs.quote_html') %></blockquote>
+          <figcaption class="quote-by">
+            <strong><%= t('marketing.mats.costs.quote_source') %></strong>
+          </figcaption>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row pt-5 pb-5">
+    <div class="col-md-5">
+      <div class="row">
+        <%= image_tag('laptop.jpg', class: 'img-fluid rounded-25') %>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+      <div class="row">
+        <h1><%= t('marketing.mats.tool.title') %></h1>
+      </div>
+      <div class="row">
+        <p class="headline-sub-text">
+          <%= t('marketing.mats.tool.sub_title_1') %>
+        </p>
+        <p class="headline-sub-text">
+          <%= t('marketing.mats.tool.sub_title_2') %>
+        </p>
+      </div>
+      <div class="row justify-content-end">
+        <%= link_to t('marketing.mats.tool.case_study'),
+                    'https://energysparks.uk/case_studies/2/link?locale=en',
+                    class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row pt-5 pb-5">
+    <div class="col-md-5">
+      <div class="row">
+        <h1><%= t('marketing.mats.pupils.title') %></h1>
+      </div>
+      <div class="row">
+        <p class="headline-sub-text">
+          <%= t('marketing.mats.pupils.sub_title_1') %>
+        </p>
+        <p class="headline-sub-text">
+          <%= t('marketing.mats.pupils.sub_title_2') %>
+        </p>
+      </div>
+      <div class="row">
+        <%= link_to t('marketing.mats.pupils.case_study'),
+                    'https://energysparks.uk/case_studies/13/link?locale=en',
+                    class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="bg-light-blue p-5 justify-content-center testimonial rounded-25">
+          <blockquote class="quotes"><%= t('marketing.mats.pupils.quote') %></blockquote>
+          <figcaption class="quote-by">
+            <strong><%= t('marketing.mats.pupils.quote_source') %></strong>
+          </figcaption>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row pt-5 pb-5">
+    <div class="col-md-5">
+      <div class="row">
+        <%= image_tag('pupil-carbon.jpg', class: 'img-fluid rounded-25') %>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+      <div class="row">
+        <h1><%= t('marketing.mats.emissions.title') %></h1>
+      </div>
+      <div class="row">
+        <p class="headline-sub-text">
+          <%= t('marketing.mats.emissions.sub_title_1') %>
+        </p>
+        <p class="headline-sub-text">
+          <%= t('marketing.mats.emissions.sub_title_2') %>
+        </p>
+      </div>
+      <div class="row justify-content-end">
+        <%= link_to t('marketing.mats.emissions.case_study'),
+                    'https://energysparks.uk/case_studies/9/link?locale=en',
+                    class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row bg-dark-blue p-5" style="background-color: #232b49;">
   <div class="col">
@@ -168,7 +165,7 @@
 <div class="row bg-light-blue">
   <div class="application container">
     <div class="row justify-content-center">
-      <div class="testimonial col-10">
+      <div class="testimonial">
         <blockquote class="quotes"><%= t('marketing.mats.testimonial.quote') %></blockquote>
         <figcaption class="quote-by">
           <strong><%= t('marketing.mats.testimonial.quote_source') %></strong>
@@ -180,23 +177,21 @@
   </div>
 </div>
 
-<section>
-  <div class="application container">
-    <div class="row">
-      <div class="col-7">
-        <div class="row">
-          <h1 style="color: #232b49;"><%= t('marketing.mats.final_prompt.question') %></h1>
-        </div>
-        <div class="row">
-          <h1 style="color: #232b49;"><%= t('marketing.mats.final_prompt.booking') %></h1>
-        </div>
-        <div class="row">
-          <%= render 'home/marketing/book_demo_embed', label: t('book_a_demo') %>
-        </div>
+<div class="application container">
+  <div class="row">
+    <div class="col-md-7">
+      <div class="row">
+        <h1 style="color: #232b49;"><%= t('marketing.mats.final_prompt.question') %></h1>
       </div>
-      <div class="col-5">
-        <%= image_tag('on-screen.jpg', class: 'img-fluid rounded-25') %>
+      <div class="row">
+        <h1 style="color: #232b49;"><%= t('marketing.mats.final_prompt.booking') %></h1>
+      </div>
+      <div class="row">
+        <%= render 'home/marketing/book_demo_embed', label: t('book_a_demo') %>
       </div>
     </div>
+    <div class="col-md-5">
+      <%= image_tag('on-screen.jpg', class: 'img-fluid rounded-25') %>
+    </div>
   </div>
-</section>
+</div>

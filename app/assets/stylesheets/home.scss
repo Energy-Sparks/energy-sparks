@@ -23,24 +23,6 @@ header img {
   height: 650px;
 }
 
-.masthead-small {
-  background-image: image-url('background-image.jpg');
-  padding: 0 10px 0 0;
-  color: white;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 500px;
-}
-
-.header-img {
-  background-image: image-url('freshford.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 500px;
-}
-
 .rounded-25 {
   border-radius: 25px;
 }
@@ -51,6 +33,7 @@ header img {
   background-repeat: no-repeat;
   background-size: contain;
 }
+
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
   .home-page .carousel-item {

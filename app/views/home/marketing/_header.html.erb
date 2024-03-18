@@ -1,11 +1,11 @@
 <header>
   <div class="row masthead">
-    <div class="col-7">
+    <div class="col-md-7">
     </div>
-    <div class="col-5 masthead-content">
+    <div class="col-md-5 masthead-content">
       <div class="row pt-5">
         <div class="col">
-          <p class="display-3"><strong><%= title %></strong></p>
+          <h1 class="display-4"><strong><%= title %></strong></h1>
       </div>
       </div>
       <div class="row">
@@ -13,8 +13,8 @@
           <h1 class="headline-sub-text"><%= t('home.sub_title') %></h1>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-8 offset-md-3 pt-5">
+      <div class="row justify-content-center">
+        <div class="pt-5">
           <%= render 'home/marketing/book_demo_embed', label: t('book_a_demo') %>
         </div>
       </div>
