@@ -27,13 +27,6 @@ header img {
   border-radius: 25px;
 }
 
-.audit-image {
-  background-image: image-url('audit-image.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
   .home-page .carousel-item {
