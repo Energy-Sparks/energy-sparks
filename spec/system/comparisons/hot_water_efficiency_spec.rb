@@ -1,22 +1,18 @@
 require 'rails_helper'
 
-describe 'annual_storage_heater_out_of_hours_use' do
+describe 'hot_water_efficiency' do
   let!(:school) { create(:school) }
-  let(:key) { :annual_storage_heater_out_of_hours_use }
-  let(:advice_page_key) { :storage_heaters }
-
+  let(:key) { :hot_water_efficiency }
+  let(:advice_page_key) { :hot_water }
   let(:variables) do
     {
-      schoolday_open_percent: 0.2783819813845588,
-      schoolday_closed_percent: 0.3712268903038169,
-      holidays_percent: 0.21123782178479827,
-      weekends_percent: 0.13915330652682595,
-      holidays_gbp: 201,
-      weekends_gbp: 216
+      avg_gas_per_pupil_gbp: 6.253909100526937,
+      benchmark_existing_gas_efficiency: 0.13641467860927484,
+      benchmark_gas_better_control_saving_gbp: 912.590927914895,
+      benchmark_point_of_use_electric_saving_gbp: 259.88822973489596,
     }
   end
-
-  let(:alert_type) { create(:alert_type, class_name: 'AlertStorageHeaterOutOfHours') }
+  let(:alert_type) { create(:alert_type, class_name: 'AlertHotWaterEfficiency') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
@@ -33,31 +29,27 @@ describe 'annual_storage_heater_out_of_hours_use' do
     end
 
     it_behaves_like 'a school comparison report with a table' do
-      let(:headers) do
-        ['School',
-         'School Day Open',
-         'Overnight charging',
-         'Holiday',
-         'Weekend',
-         'Last year weekend and holiday costs'
-        ]
-      end
-
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
 
+      let(:headers) do
+        ['School',
+         'Cost per pupil',
+         'Efficiency of system',
+         'Saving improving timing',
+         'Saving with POU electric hot water']
+      end
+
       let(:expected_table) do
         [headers,
-         [school.name, '27.8&percnt;', '37.1&percnt;', '21.1&percnt;', '13.9&percnt;', '£417'],
-         ["Notes\n" \
-          "In school comparisons 'last year' is defined as this year to date."]]
+         [school.name, '£6.25', '13.6&percnt;', '£913', '£260']
+        ]
       end
 
       let(:expected_csv) do
         [headers,
-         [school.name, '27.8', '37.1', '21.1', '13.9', '417']
-        ]
+         [school.name, '6.25', '13.6', '913', '260']]
       end
     end
 
