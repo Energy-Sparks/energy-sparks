@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 02280209ec5fb76ffb0f0e7dceb8a04535809342
-  tag: 5.1.5
+  revision: c4ba6b90dfd9e24655f62193c98e945d6a096092
+  branch: 4174-heating-start-time
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
