@@ -1,6 +1,6 @@
 <% content_for :page_title, t('marketing.schools.title') %>
 
-<%= render 'home/marketing/header', title: t('marketing.schools.title') %>
+<%= render 'home/marketing/header', title: t('marketing.schools.title'), school: true %>
 
 <div class="application container">
   <div class="row">
@@ -99,13 +99,13 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.mats.tool.sub_title_2') %></h4>
+          <h4><%= t('marketing.schools.tool.sub_title_2') %></h4>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12 text-right">
           <%= link_to t('marketing.mats.tool.case_study'),
-                      'https://energysparks.uk/case_studies/2/link?locale=en',
+                      'https://energysparks.uk/case_studies/12/link?locale=en',
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -236,9 +236,8 @@
       </div>
       <div class="row">
         <div class="col-md-12 pt-2 text-center cta">
-          <%= render 'home/marketing/book_demo_embed', label: t('marketing.book_a_demo') %>
+          <%= link_to t('marketing.book_a_demo'), training_path, class: 'btn bg-positive' %>
           <%= link_to t('enrol.enrol_now'), enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
-
         </div>
       </div>
       <div class="row">
