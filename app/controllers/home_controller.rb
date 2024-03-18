@@ -50,25 +50,6 @@ class HomeController < ApplicationController
   end
 
   def for_multi_academy_trusts
-    @school_count = School.visible.count
-    @videos = videos
-    @testimonial = [
-      {
-        quote: t('for_multi_academy_trusts.quote_1.text_html'),
-        by: 'Warrick Barton',
-        title: t('for_multi_academy_trusts.quote_1.job_title'),
-        location: 'Pensford Primary School, Bath'
-      }
-    ].sample
-    @testimonial_saving = [
-      {
-        quote: t('for_local_authorities.quote_2.text_html'),
-        by: 'Andrew Marriott',
-        title: t('for_local_authorities.quote_2.job_title'),
-        location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
-      }
-    ].sample
-    render :for_multi_academy_trusts_new
   end
 
   def energy_audits

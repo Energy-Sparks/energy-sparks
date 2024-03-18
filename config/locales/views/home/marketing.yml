@@ -1,10 +1,16 @@
 ---
 en:
   marketing:
+    las:
+      benefits:
+        emissions: Cut your school's carbon footprint
+      final_prompt:
+        booking: Book your free demo session today to see how we can support your local authority
+      title: Energy Sparks for Local Authorities
     mats:
       benefits:
         costs: Save up to 40% off school energy bills
-        emissions: Cut carbon footprints
+        emissions: Cut your Trust carbon footprint
         pupils: Give pupils the knowledge and skills to cut energy waste at school
       costs:
         case_study: 'Case Study: reducing gas use by 40%, saving £34,000'
@@ -13,8 +19,7 @@ en:
           It also provides this in a pupil accessible way that enables sustainability to be integrated into the curriculum.
           The best chance of fighting the climate crisis is by empowering the next generation and that's what Energy Sparks does.
         quote_source: Heart Education Trust
-        savings: Average savings are £3,000 for Primary and £12,000 for Secondary.
-        sub_title: Follow our low and no-cost recommendations to reduce energy use.
+        sub_title: Follow our school-specific low and no-cost recommendations to reduce primary school energy bills by an average of £3,000. Secondary schools save an average of £12,000
         title: Save money
       emissions:
         case_study: 'Case Study: cut heating bills by 38%'
@@ -23,15 +28,15 @@ en:
         title: Cut Carbon Emissions
       final_prompt:
         booking: Book your free demo session today to see how we can support your Trust
-        question: Ready to cut energy costs and spark pupils’ commitment to sustainability?
+        question: Ready to cut energy costs and spark pupils' commitment to sustainability?
       learn_why:
         title: Learn why over 800 schools and 50 trusts are using Energy Sparks
       pupils:
         case_study: 'Case Study: Scoreboard Champions'
         quote: Energy Sparks shares real data with pupils based on their actions. It is so valuable for their learning and shows clearly how we can all make a greater impact on our world.
         quote_source: Prendergast Primary, Pembrokeshire
-        sub_title_1: Access over 140 downloadable resources to develop core understanding of energy use and its impact.
-        sub_title_2: Record activities to participate in our competitions and win prizes.
+        sub_title_1: Access over 140 downloadable education resources to develop pupil understanding of energy use and its impact
+        sub_title_2: Record activities to participate in our competitions and win prizes
         title: Empower Pupils
       read_more:
         title: Read more of our case studies
@@ -40,8 +45,19 @@ en:
         quote_job: Business Manager
         quote_organisation: Sunnyfield Primary School, Doncaster
         quote_source: Emma Oxtoby
+      title: Energy Sparks for Multi-Academy Trusts
       tool:
         case_study: 'Case Study: Improving the timing of boiler controls'
-        sub_title_1: Receive tailored insights based on our analysis of energy usage through our website and weekly emails.
+        sub_title_1: Receive analysis of your schools’ gas and electricity use, action prompts, and energy-saving priorities via pupil and staff dashboards and weekly alert emails
         sub_title_2: Benchmark school energy use against others in the trust and around the country using our dashboards
         title: Take control
+    schools:
+      benefits:
+        emissions: Cut your carbon footprint
+      final_prompt:
+        booking: Book your free demo session today to see how we can support your school
+      learn_why:
+        title: Learn why over 800 schools and counting are using Energy Sparks
+      title: Energy Sparks for Schools
+      tool:
+        sub_title_1: Receive analysis of your school's gas and electricity use, action prompts, and energy-saving priorities via pupil and staff dashboards and weekly alert emails
