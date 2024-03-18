@@ -60,7 +60,7 @@
       <div class="row">
         <div class="col-md-12">
           <%= link_to t('marketing.mats.costs.case_study'),
-                      'https://energysparks.uk/case_studies/15/link?locale=en',
+                      case_study_link(CaseStudy.find(15)),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -106,7 +106,7 @@
       <div class="row">
         <div class="col-md-12 text-right">
           <%= link_to t('marketing.mats.tool.case_study'),
-                      'https://energysparks.uk/case_studies/12/link?locale=en',
+                      case_study_link(CaseStudy.find(12)),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -133,7 +133,7 @@
       <div class="row">
         <div class="col-md-12">
           <%= link_to t('marketing.mats.pupils.case_study'),
-                      'https://energysparks.uk/case_studies/13/link?locale=en',
+                      case_study_link(CaseStudy.find(13)),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -181,7 +181,7 @@
       <div class="row">
         <div class="col-md-12 text-right">
           <%= link_to t('marketing.mats.emissions.case_study'),
-                      'https://energysparks.uk/case_studies/9/link?locale=en',
+                      case_study_link(CaseStudy.find(9)),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>

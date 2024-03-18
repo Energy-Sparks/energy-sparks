@@ -479,4 +479,9 @@ module ApplicationHelper
   def live_data_path
     ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path
   end
+
+  def case_study_link(case_study, serve: :link)
+    download_locale = I18n.locale.to_sym == :cy && case_study.t_attached(:file, :cy).present? ? :cy : :en
+    url_for(controller: :case_studies, action: :download, serve: serve, id: case_study.id, :locale => download_locale)
+  end
 end
