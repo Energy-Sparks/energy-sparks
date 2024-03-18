@@ -37,7 +37,11 @@
     <div class="application container">
       <div class="row">
         <div class="col-md-12 text-center">
-          <h1 style="color: white;"><%= t('marketing.schools.learn_why.title') %></h1>
+          <h1 style="color: white;">
+            <%= t('marketing.schools.learn_why.title',
+                  school_count: marketing_school_count,
+                  mat_count: marketing_mat_count) %>
+          </h1>
         </div>
       </div>
     </div>
@@ -122,7 +126,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.mats.pupils.sub_title_1') %></h4>
+          <h4><%= t('marketing.mats.pupils.sub_title_1', activities_count: marketing_activity_count) %></h4>
         </div>
       </div>
       <div class="row">

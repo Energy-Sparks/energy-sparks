@@ -34,12 +34,12 @@ en:
         booking: Book your free demo session today to see how we can support your Trust
         question: Ready to cut energy costs and spark pupils' commitment to sustainability?
       learn_why:
-        title: Learn why over 800 schools and 50 trusts are using Energy Sparks
+        title: Learn why over %{school_count} schools and %{mat_count} trusts are using Energy Sparks
       pupils:
         case_study: 'Case Study: Scoreboard Champions'
         quote: Energy Sparks shares real data with pupils based on their actions. It is so valuable for their learning and shows clearly how we can all make a greater impact on our world.
         quote_source: Prendergast Primary, Pembrokeshire
-        sub_title_1: Access over 140 downloadable education resources to develop pupil understanding of energy use and its impact
+        sub_title_1: Access over %{activities_count} downloadable education resources to develop pupil understanding of energy use and its impact
         sub_title_2: Record activities to participate in our competitions and win prizes
         title: Empower Pupils
       read_more:
@@ -74,8 +74,8 @@ en:
             <li>unlimited user accounts</li>
             <li>webinar training</li>
             <li>email support with energy management and sustainability education</li>
-            <li>access to >140 pupil activities with downloadable lesson plans, workshops and additional resources</li>
-            <li>guidance on >60 adult led low and no-cost energy efficiency actions</li>
+            <li>access to >%{activities_count} pupil activities with downloadable lesson plans, workshops and additional resources</li>
+            <li>guidance on >%{actions_count} adult led low and no-cost energy efficiency actions</li>
             <li>analysis of up to 10 gas and electricity meters</li>
             <li>integrated solar data (if relevant)</li>
             <li>support with upgrading meters to half-hourly metering (if needed)</li>
@@ -132,7 +132,7 @@ en:
       final_prompt:
         booking: Book your free demo session today to see how we can support your school
       learn_why:
-        title: Learn why over 800 schools and counting are using Energy Sparks
+        title: Learn why over %{school_count} schools and counting are using Energy Sparks
       title: Energy Sparks for Schools
       tool:
         sub_title_1: Receive analysis of your school's gas and electricity use, action prompts, and energy-saving priorities via pupil and staff dashboards and weekly alert emails

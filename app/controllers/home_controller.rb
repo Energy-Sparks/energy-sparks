@@ -15,18 +15,12 @@ class HomeController < ApplicationController
   end
 
   def for_schools
-    @school_count = School.visible.count
-    @activities_count = ActivityType.active_and_not_custom.count
   end
 
   def for_local_authorities
-    @school_count = School.visible.count
-    @activities_count = ActivityType.active_and_not_custom.count
   end
 
   def for_multi_academy_trusts
-    @school_count = School.visible.count
-    @activities_count = ActivityType.active_and_not_custom.count
   end
 
   def energy_audits
