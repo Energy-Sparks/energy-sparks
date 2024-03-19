@@ -5,7 +5,7 @@
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
 
-      <% if result.electricity_economic_tariff_changed_this_year %>
+      <% if result.economic_tariff_changed_this_year %>
         <% r.with_reference do %>
             <a href="#footnotes">(*5)</a>
         <% end %>
