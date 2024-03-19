@@ -48,8 +48,8 @@ describe 'electricity_targets' do
       let(:expected_table) do
         [headers,
          [school.name,
-          '+18.7%',
-          '-48%',
+          '+18.7&percnt;',
+          '-48&percnt;',
           '1,280',
           '2,280',
           '2,400',
@@ -70,8 +70,6 @@ describe 'electricity_targets' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart' do
-      let(:chart) { '#chart_comparison' }
-    end
+    it_behaves_like 'a school comparison report with a chart'
   end
 end

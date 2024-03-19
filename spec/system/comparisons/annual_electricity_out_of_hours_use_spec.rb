@@ -14,8 +14,7 @@ describe 'annual_electricity_out_of_hours_use' do
       community_percent: 0.0,
       community_gbp: 0.0,
       out_of_hours_gbp: 41347.98790211005,
-      potential_saving_gbp: 13006.849331677073,
-      rating: 0.0
+      potential_saving_gbp: 13006.849331677073
     }
   end
 
@@ -72,8 +71,6 @@ describe 'annual_electricity_out_of_hours_use' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart' do
-      let(:chart) { '#chart_comparison' }
-    end
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
