@@ -48,8 +48,8 @@ describe 'electricity_targets' do
       let(:expected_table) do
         [headers,
          [school.name,
-          '+18.7%',
-          '-48%',
+          '+18.7&percnt;',
+          '-48&percnt;',
           '1,280',
           '2,280',
           '2,400',

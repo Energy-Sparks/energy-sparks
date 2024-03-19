@@ -46,7 +46,7 @@ describe 'change_in_electricity_since_last_year', type: :system do
         [
           ['', 'kWh', 'CO2 (kg)', '£', 'Solar self consumption'],
           headers,
-          [school.name, '1,000', '500', '-50%', '800', '400', '-50%', '£2,000', '£1,200', '-40%', 'Yes'],
+          [school.name, '1,000', '500', '-50&percnt;', '800', '400', '-50&percnt;', '£2,000', '£1,200', '-40&percnt;', 'Yes'],
           ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
       end
       let(:expected_csv) do

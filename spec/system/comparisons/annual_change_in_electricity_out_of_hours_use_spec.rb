@@ -54,7 +54,7 @@ describe 'annual_change_in_electricity_out_of_hours_use' do
       let(:expected_table) do
         [['', 'kWh', 'CO2 (kg)', 'Cost'],
          headers,
-         ["#{school.name} (*5)", '1', '2', '+100%', '3', '4', '+33%', '£5', '£6', '+20%'],
+         ["#{school.name} (*5)", '1', '2', '+100&percnt;', '3', '4', '+33&percnt;', '£5', '£6', '+20&percnt;'],
          ["Notes\n" \
           '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
           "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \

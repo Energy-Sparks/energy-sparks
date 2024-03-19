@@ -49,11 +49,14 @@ en:
       panels: "%{value} solar PV panels"
       percent: "%{value}%"
       percent_0dp: "%{value}%"
+      percent_0dp_html: "%{value}&percnt;"
       percent_html: "%{value}&percnt;"
       pupils: "%{value} pupils"
       r2: ''
       relative_percent: "%{sign}%{value}%"
       relative_percent_0dp: "%{sign}%{value}%"
+      relative_percent_0dp_html: "%{sign}%{value}&percnt;"
+      relative_percent_html: "%{sign}%{value}&percnt;"
       school_name: ''
       short_school_name: ''
       shower: "%{value} showers"
