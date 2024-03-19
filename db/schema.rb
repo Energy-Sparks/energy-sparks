@@ -3133,7 +3133,7 @@ ActiveRecord::Schema.define(version: 2024_03_18_160119) do
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data(last_year_gbp double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterAnnualVersusBenchmark'::text))
-          ), total AS (
+          ), energy AS (
            SELECT alerts.alert_generation_run_id,
               data.last_year_gbp,
               data.one_year_energy_per_pupil_gbp,
@@ -3162,10 +3162,10 @@ ActiveRecord::Schema.define(version: 2024_03_18_160119) do
       electricity.last_year_gbp AS last_year_electricity,
       gas.last_year_gbp AS last_year_gas,
       storage_heaters.last_year_gbp AS last_year_storage_heaters,
-      total.last_year_gbp,
-      total.one_year_energy_per_pupil_gbp,
-      total.last_year_co2_tonnes,
-      total.last_year_kwh,
+      energy.last_year_gbp,
+      energy.one_year_energy_per_pupil_gbp,
+      energy.last_year_co2_tonnes,
+      energy.last_year_kwh,
       additional.alert_generation_run_id,
       additional.school_id,
       additional.school_type_name,
@@ -3176,6 +3176,6 @@ ActiveRecord::Schema.define(version: 2024_03_18_160119) do
        LEFT JOIN electricity ON ((latest_runs.id = electricity.alert_generation_run_id)))
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
        LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)))
-       LEFT JOIN total ON ((latest_runs.id = total.alert_generation_run_id)));
+       LEFT JOIN energy ON ((latest_runs.id = energy.alert_generation_run_id)));
   SQL
 end

@@ -8,7 +8,7 @@ describe 'annual_energy_costs' do
   let(:gas_variables) { { last_year_gbp: 3159.183706023337 } }
   let(:storage_heater_variables) { { last_year_gbp: 1242.1469999999988 } }
 
-  let(:total_variables) do
+  let(:energy_variables) do
     {
       last_year_gbp: 12558.301294241202,
       one_year_energy_per_pupil_gbp: 76.57500789171466,
@@ -40,7 +40,7 @@ describe 'annual_energy_costs' do
                    variables: storage_heater_variables)
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark'),
-                   variables: total_variables)
+                   variables: energy_variables)
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
                    variables: additional_variables)
