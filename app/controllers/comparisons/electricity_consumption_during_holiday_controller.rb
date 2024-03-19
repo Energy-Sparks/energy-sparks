@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Comparisons
-  class ElectricityConsumptionDuringHolidayController < Shared::ConsumptionDuringHoliday
+  class ElectricityConsumptionDuringHolidayController < Shared::ConsumptionDuringHolidayController
     private
 
     def key
