@@ -2850,30 +2850,30 @@ ActiveRecord::Schema.define(version: 2024_03_14_185832) do
       usage_previous_year.previous_out_of_hours_kwh,
       usage_previous_year.previous_out_of_hours_co2,
       usage_previous_year.previous_out_of_hours_gbpcurrent,
-      additional.electricity_economic_tariff_changed_this_year
+      additional.economic_tariff_changed_this_year
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data.out_of_hours_kwh,
-              data.out_of_hours_co2,
-              data.out_of_hours_gbpcurrent
+              json.out_of_hours_kwh,
+              json.out_of_hours_co2,
+              json.out_of_hours_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursGasUsage'::text))) usage,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data.out_of_hours_kwh AS previous_out_of_hours_kwh,
-              data.out_of_hours_co2 AS previous_out_of_hours_co2,
-              data.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
+              json.out_of_hours_kwh AS previous_out_of_hours_kwh,
+              json.out_of_hours_co2 AS previous_out_of_hours_co2,
+              json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursGasUsagePreviousYear'::text))) usage_previous_year,
       ( SELECT alerts.alert_generation_run_id,
-              data.electricity_economic_tariff_changed_this_year
+              json.gas_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean)
+              LATERAL jsonb_to_record(alerts.variables) json(gas_economic_tariff_changed_this_year boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
@@ -2890,30 +2890,30 @@ ActiveRecord::Schema.define(version: 2024_03_14_185832) do
       usage_previous_year.previous_out_of_hours_kwh,
       usage_previous_year.previous_out_of_hours_co2,
       usage_previous_year.previous_out_of_hours_gbpcurrent,
-      additional.electricity_economic_tariff_changed_this_year
+      additional.economic_tariff_changed_this_year
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data.out_of_hours_kwh,
-              data.out_of_hours_co2,
-              data.out_of_hours_gbpcurrent
+              json.out_of_hours_kwh,
+              json.out_of_hours_co2,
+              json.out_of_hours_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterOutOfHours'::text))) usage,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data.out_of_hours_kwh AS previous_out_of_hours_kwh,
-              data.out_of_hours_co2 AS previous_out_of_hours_co2,
-              data.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
+              json.out_of_hours_kwh AS previous_out_of_hours_kwh,
+              json.out_of_hours_co2 AS previous_out_of_hours_co2,
+              json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursStorageHeaterUsagePreviousYear'::text))) usage_previous_year,
       ( SELECT alerts.alert_generation_run_id,
-              data.electricity_economic_tariff_changed_this_year
+              json.electricity_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean)
+              LATERAL jsonb_to_record(alerts.variables) json(electricity_economic_tariff_changed_this_year boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs

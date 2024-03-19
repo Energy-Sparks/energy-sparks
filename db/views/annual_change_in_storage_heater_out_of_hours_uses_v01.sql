@@ -3,11 +3,11 @@ SELECT latest_runs.id,
        usage_previous_year.previous_out_of_hours_kwh,
        usage_previous_year.previous_out_of_hours_co2,
        usage_previous_year.previous_out_of_hours_gbpcurrent,
-       additional.electricity_economic_tariff_changed_this_year
+       additional.economic_tariff_changed_this_year
 FROM
   (
-    SELECT alert_generation_run_id, school_id, data.*
-    FROM alerts, alert_types, jsonb_to_record(variables) AS data(
+    SELECT alert_generation_run_id, school_id, json.*
+    FROM alerts, alert_types, jsonb_to_record(variables) AS json(
       out_of_hours_kwh float,
       out_of_hours_co2 float,
       out_of_hours_gbpcurrent float
@@ -16,10 +16,10 @@ FROM
   ) AS usage,
   (
     SELECT alert_generation_run_id, school_id,
-      data.out_of_hours_kwh AS previous_out_of_hours_kwh,
-      data.out_of_hours_co2 AS previous_out_of_hours_co2,
-      data.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
-    FROM alerts, alert_types, jsonb_to_record(variables) AS data(
+      json.out_of_hours_kwh AS previous_out_of_hours_kwh,
+      json.out_of_hours_co2 AS previous_out_of_hours_co2,
+      json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
+    FROM alerts, alert_types, jsonb_to_record(variables) AS json(
       out_of_hours_kwh float,
       out_of_hours_co2 float,
       out_of_hours_gbpcurrent float
@@ -27,8 +27,9 @@ FROM
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertOutOfHoursStorageHeaterUsagePreviousYear'
   ) AS usage_previous_year,
   (
-    SELECT alert_generation_run_id, data.*
-    FROM alerts, alert_types, jsonb_to_record(variables) AS data(electricity_economic_tariff_changed_this_year boolean)
+    SELECT alert_generation_run_id,
+      json.electricity_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
+    FROM alerts, alert_types, jsonb_to_record(variables) AS json(electricity_economic_tariff_changed_this_year boolean)
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertAdditionalPrioritisationData'
   ) AS additional,
   (
