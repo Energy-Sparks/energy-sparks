@@ -107,8 +107,7 @@ module Comparisons
       { id: :comparison,
         x_axis: schools,
         x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
-        y_axis_label: I18n.t("#{y_axis_keys}.#{y_axis_label}")
-      }
+        y_axis_label: I18n.t("#{y_axis_keys}.#{y_axis_label}") }
     end
 
     def create_single_number_chart(results, name, multiplier, series_name, y_axis_label, **kwargs)
