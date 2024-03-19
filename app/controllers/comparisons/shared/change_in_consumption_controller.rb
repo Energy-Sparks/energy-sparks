@@ -2,7 +2,7 @@
 
 module Comparisons
   module Shared
-    class ChangeInConsumption < BaseController
+    class ChangeInConsumptionController < BaseController
       private
 
       def headers

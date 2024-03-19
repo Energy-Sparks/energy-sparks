@@ -14,7 +14,7 @@ describe '*_targets' do
   end
   let(:expected_table) do
     [headers,
-     [expected_school.name, '+4.78%', '-0.463%', '28,000', '26,800', '28,200', 'Friday 1 Mar 2024'],
+     [expected_school.name, '+4.78&percnt;', '-0.463&percnt;', '28,000', '26,800', '28,200', 'Friday 1 Mar 2024'],
      ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
     ]
   end

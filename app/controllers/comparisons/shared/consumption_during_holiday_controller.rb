@@ -2,7 +2,7 @@
 
 module Comparisons
   module Shared
-    class ConsumptionDuringHoliday < BaseController
+    class ConsumptionDuringHolidayController < BaseController
       private
 
       def headers
