@@ -60,11 +60,11 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
-    resources :annual_energy_costs_per_floor_area, only: [:index]
-    resources :annual_energy_costs_per_pupil, only: [:index]
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
     resources :annual_electricity_costs_per_pupil, only: [:index]
     resources :annual_electricity_out_of_hours_use, only: [:index]
+    resources :annual_energy_costs_per_floor_area, only: [:index]
+    resources :annual_energy_costs_per_pupil, only: [:index]
     resources :annual_heating_costs_per_floor_area, only: [:index]
     resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_consumption_recent_school_weeks, only: [:index]
