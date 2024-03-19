@@ -1,0 +1,30 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_var val: result.last_year_electricity, unit: :£ %>
+      <% r.with_var val: result.last_year_gas, unit: :£ %>
+      <% r.with_var val: result.last_year_storage_heaters, unit: :£ %>
+      <% r.with_var val: result.last_year_gbp, unit: :£ %>
+      <% r.with_var val: result.one_year_energy_per_pupil_gbp, unit: :£ %>
+      <% r.with_var val: result.last_year_co2_tonnes, unit: :co2 %>
+      <% r.with_var val: result.last_year_kwh, unit: :kwh %>
+      <% r.with_var { result.school_type_name } %>
+      <% r.with_var val: result.pupils, unit: :pupils %>
+      <% r.with_var val: result.floor_area, unit: :m2 %>
+    <% end %>
+  <% end %>
+  <% c.with_footer do %>
+    <tr>
+      <td colspan="<%= headers.count %>">
+        <p>
+          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
+        </p>
+        <%= t('analytics.benchmarking.caveat_text.es_data_not_in_sync_html') %>
+        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>
