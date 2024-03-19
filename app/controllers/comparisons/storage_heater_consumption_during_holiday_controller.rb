@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Comparisons
-  class StorageHeaterConsumptionDuringHolidayController < BaseController
-    include ConsumptionDuringHoliday
-
+  class StorageHeaterConsumptionDuringHolidayController < Shared::ConsumptionDuringHolidayController
     private
 
     def key

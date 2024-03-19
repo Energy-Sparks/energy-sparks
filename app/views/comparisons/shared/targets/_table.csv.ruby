@@ -1,3 +1,4 @@
+
 CSV.generate do |csv|
   csv << @headers
   @results.each do |result|
