@@ -1,5 +1,5 @@
 module Comparisons
-  class GasTargetsController < Comparisons::Shared::TargetsController
+  class GasTargetsController < Shared::TargetsController
     private
 
     def key

@@ -1,7 +1,5 @@
 module Comparisons
-  class GasConsumptionDuringHolidayController < BaseController
-    include ConsumptionDuringHoliday
-
+  class GasConsumptionDuringHolidayController < Shared::ConsumptionDuringHoliday
     private
 
     def key

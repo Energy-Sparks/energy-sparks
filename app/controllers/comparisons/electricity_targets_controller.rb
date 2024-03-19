@@ -1,5 +1,5 @@
 module Comparisons
-  class ElectricityTargetsController < Comparisons::Shared::TargetsController
+  class ElectricityTargetsController < Shared::TargetsController
     private
 
     def key
