@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'change_in_heater_since_last_year' do
+describe 'change_in_heating_since_last_year' do
   let!(:expected_school) { create(:school) }
   let!(:expected_report) { create(:report, key: key) }
   let(:headers) do
@@ -21,18 +21,14 @@ describe 'change_in_heater_since_last_year' do
      headers,
      [expected_school.name, '1', '7', '2', '3', '4', '5', '6', '100', '8']]
   end
+  let(:variables) {}
 
   before do
     alert_run = create(:alert_generation_run, school: expected_school)
 
     create(:alert, school: expected_school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark'),
-                   variables: { previous_year_gas_kwh: 1,
-                                current_year_gas_kwh: 2,
-                                previous_year_gas_co2: 3,
-                                current_year_gas_co2: 4,
-                                previous_year_gas_gbp: 5,
-                                current_year_gas_gbp: 6 })
+                   variables: variables)
     create(:alert, school: expected_school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: alert_class_name),
                    variables: { temperature_adjusted_previous_year_kwh: 7,
@@ -43,6 +39,14 @@ describe 'change_in_heater_since_last_year' do
   describe 'change_in_gas_since_last_year' do
     let(:alert_class_name) { 'AlertGasAnnualVersusBenchmark' }
     let(:key) { :change_in_gas_since_last_year }
+    let(:variables) do
+      { previous_year_gas_kwh: 1,
+        current_year_gas_kwh: 2,
+        previous_year_gas_co2: 3,
+        current_year_gas_co2: 4,
+        previous_year_gas_gbp: 5,
+        current_year_gas_gbp: 6 }
+    end
 
     it_behaves_like 'a school comparison report'
     it_behaves_like 'a school comparison report with a table'
@@ -51,6 +55,14 @@ describe 'change_in_heater_since_last_year' do
   describe 'change_in_storage_heaters_since_last_year' do
     let(:alert_class_name) { 'AlertStorageHeaterAnnualVersusBenchmark' }
     let(:key) { :change_in_storage_heaters_since_last_year }
+    let(:variables) do
+      { previous_year_storage_heaters_kwh: 1,
+        current_year_storage_heaters_kwh: 2,
+        previous_year_storage_heaters_co2: 3,
+        current_year_storage_heaters_co2: 4,
+        previous_year_storage_heaters_gbp: 5,
+        current_year_storage_heaters_gbp: 6 }
+    end
 
     it_behaves_like 'a school comparison report'
     it_behaves_like 'a school comparison report with a table'

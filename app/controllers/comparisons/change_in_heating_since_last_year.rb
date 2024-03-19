@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Comparisons
-  module ChangeInHeaterSinceLastYear
+  module ChangeInHeatingSinceLastYear
     def colgroups
       [{ label: '' },
        { label: t('analytics.benchmarking.configuration.column_groups.kwh'), colspan: 3 },

@@ -1,6 +1,6 @@
 module Comparisons
   class ChangeInStorageHeatersSinceLastYearController < BaseController
-    include ChangeInHeaterSinceLastYear
+    include ChangeInHeatingSinceLastYear
 
     private
 

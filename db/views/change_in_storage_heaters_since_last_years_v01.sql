@@ -5,20 +5,26 @@ SELECT latest_runs.id,
 
 FROM
   (
-    SELECT alert_generation_run_id, school_id, data.*
-    FROM alerts, alert_types, jsonb_to_record(variables) AS data(
-      previous_year_gas_kwh float,
-      current_year_gas_kwh float,
-      previous_year_gas_co2 float,
-      current_year_gas_co2 float,
-      previous_year_gas_gbp float,
-      current_year_gas_gbp float
+    SELECT alert_generation_run_id, school_id,
+      json.previous_year_storage_heaters_kwh AS previous_year_kwh,
+      json.current_year_storage_heaters_kwh AS current_year_kwh,
+      json.previous_year_storage_heaters_co2 AS previous_year_co2,
+      json.current_year_storage_heaters_co2 AS current_year_co2,
+      json.previous_year_storage_heaters_gbp AS previous_year_gbp,
+      json.current_year_storage_heaters_gbp AS current_year_gbp
+    FROM alerts, alert_types, jsonb_to_record(variables) AS json(
+      previous_year_storage_heaters_kwh float,
+      current_year_storage_heaters_kwh float,
+      previous_year_storage_heaters_co2 float,
+      current_year_storage_heaters_co2 float,
+      previous_year_storage_heaters_gbp float,
+      current_year_storage_heaters_gbp float
     )
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertEnergyAnnualVersusBenchmark'
   ) AS energy,
   (
-    SELECT alert_generation_run_id, school_id, data.*
-    FROM alerts, alert_types, jsonb_to_record(variables) AS data(
+    SELECT alert_generation_run_id, school_id, json.*
+    FROM alerts, alert_types, jsonb_to_record(variables) AS json(
       temperature_adjusted_previous_year_kwh float,
       temperature_adjusted_percent float
     )

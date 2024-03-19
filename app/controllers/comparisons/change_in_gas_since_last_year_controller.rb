@@ -2,7 +2,7 @@
 
 module Comparisons
   class ChangeInGasSinceLastYearController < BaseController
-    include ChangeInHeaterSinceLastYear
+    include ChangeInHeatingSinceLastYear
 
     private
 
