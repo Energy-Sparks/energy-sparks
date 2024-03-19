@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Comparisons
-  class AnnualChangeInGasOutOfHoursUseController < BaseController
-    include AnnualChangeInOutOfHoursUse
-
+  class AnnualChangeInGasOutOfHoursUseController < Shared::AnnualChangeInOutOfHoursUse
     private
 
     def key

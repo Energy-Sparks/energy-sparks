@@ -83,7 +83,7 @@ describe 'annual_change_in_*_out_of_hours_use' do
 
   describe 'annual_change_in_storage_heater_out_of_hours_use' do
     let(:key) { :annual_change_in_storage_heater_out_of_hours_use }
-    let(:advice_page_key) { :gas_out_of_hours }
+    let(:advice_page_key) { :storage_heaters }
     let(:alert_class_name) { 'AlertStorageHeaterOutOfHours' }
     let(:alert_class_name_previous_year) { 'AlertOutOfHoursStorageHeaterUsagePreviousYear' }
 
