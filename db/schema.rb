@@ -3094,4 +3094,21 @@ ActiveRecord::Schema.define(version: 2024_03_15_164815) do
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
        LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)));
   SQL
+  create_view "thermostat_sensitivities", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data."annual_saving_1_C_change_gbp"
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1."annual_saving_1_C_change_gbp"
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1("annual_saving_1_C_change_gbp" double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHeatingSensitivityAdvice'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
 end
