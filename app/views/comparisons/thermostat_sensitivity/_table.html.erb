@@ -4,7 +4,7 @@
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
-      <% r.with_var val: result.annual_saving_1_C_change_gbp, unit: :£ %>
+      <% r.with_var val: result.annual_saving_1_C_change_gbp, unit: :£, change: true %>
     <% end %>
   <% end %>
 <% end %>
