@@ -479,4 +479,32 @@ module ApplicationHelper
   def live_data_path
     ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path
   end
+
+  def case_study_link(case_study, serve: :link)
+    download_locale = I18n.locale.to_sym == :cy && case_study.t_attached(:file, :cy).present? ? :cy : :en
+    url_for(controller: :case_studies, action: :download, serve: serve, id: case_study.id, :locale => download_locale)
+  end
+
+  # Round down to nearest hundred
+  def marketing_school_count
+    (School.visible.count / 100) * 100
+  end
+
+  # Round down to nearest 10
+  def marketing_activity_count
+    round_down_to_nearest_ten(ActivityType.active_and_not_custom.count)
+  end
+
+  # Round down to nearest 10
+  def marketing_action_count
+    round_down_to_nearest_ten(InterventionType.active_and_not_custom.count)
+  end
+
+  def marketing_mat_count
+    round_down_to_nearest_ten(SchoolGroup.multi_academy_trust.with_active_schools.count)
+  end
+
+  def round_down_to_nearest_ten(val)
+    (val / 10) * 10
+  end
 end

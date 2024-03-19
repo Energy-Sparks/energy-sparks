@@ -39,7 +39,7 @@ describe 'seasonal_baseload_variation' do
                  'Winter baseload kW', 'Saving if same all year around (at latest tariff)']
       let(:expected_table) do
         [headers,
-         ["#{school.name} (*5)", '+100%', '2', '3', '£4'],
+         ["#{school.name} (*5)", '+100&percnt;', '2', '3', '£4'],
          ["Notes\n(*5) The tariff has changed during the last year for this school. Savings are calculated using the " \
           'latest tariff but other £ values are calculated using the relevant tariff at the time']]
       end

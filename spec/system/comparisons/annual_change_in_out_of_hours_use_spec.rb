@@ -21,17 +21,16 @@ describe 'annual_change_in_*_out_of_hours_use' do
   let(:expected_table) do
     [['', 'kWh', 'CO2 (kg)', 'Cost'],
      headers,
-     ["#{expected_school.name} (*5)", '1', '2', '+100%', '3', '4', '+33%', '£5', '£6', '+20%'],
+     ["#{expected_school.name} (*5)", '1', '2', '+100&percnt;', '3', '4', '+33&percnt;', '£5', '£6', '+20&percnt;'],
      ["Notes\n" \
       '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
       "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
       "'last year' is defined as this year to date."]]
   end
   let(:expected_csv) do
-    [
-      ['', 'kWh', '', '', 'CO2 (kg)', '', '', 'Cost', '', ''],
-      headers,
-      [expected_school.name, '1', '2', '100', '3', '4', '33.3', '5', '6', '20']]
+    [['', 'kWh', '', '', 'CO2 (kg)', '', '', 'Cost', '', ''],
+     headers,
+     [expected_school.name, '1', '2', '100', '3', '4', '33.3', '5', '6', '20']]
   end
 
   before do
@@ -51,9 +50,14 @@ describe 'annual_change_in_*_out_of_hours_use' do
                      out_of_hours_co2: 4,
                      out_of_hours_gbpcurrent: 6
                    })
+    variables = if alert_class_name == 'AlertOutOfHoursGasUsage'
+                  { gas_economic_tariff_changed_this_year: true }
+                else
+                  { electricity_economic_tariff_changed_this_year: true }
+                end
     create(:alert, school: expected_school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-                   variables: { electricity_economic_tariff_changed_this_year: true })
+                   variables: variables)
     visit "/comparisons/#{key}"
   end
 

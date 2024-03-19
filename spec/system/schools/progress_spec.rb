@@ -130,21 +130,21 @@ describe 'target progress report', type: :system do
         expect(page).to have_content('Tracking progress')
         expect(page).to have_content(first.strftime('%b'))
         expect(page).to have_content(second.strftime('%b'))
-        expect(page).to have_content('-25%')
-        expect(page).to have_content('+35%')
-        expect(page).to have_content('-99%')
-        expect(page).to have_content('+99%')
+        expect(page).to have_content('-25&percnt;')
+        expect(page).to have_content('+35&percnt;')
+        expect(page).to have_content('-99&percnt;')
+        expect(page).to have_content('+99&percnt;')
       end
 
       it 'says I am not achieving my target' do
-        expect(page).to have_content('Unfortunately you are using +99% more electricity than last year')
+        expect(page).to have_content('Unfortunately you are using +99&percnt; more electricity than last year')
       end
 
       context 'if I am achieving my target' do
         let(:cumulative_performance) { [-0.99, -0.99] }
 
         it 'says I am' do
-          expect(page).to have_content('Well done, you are using -99% less electricity than last year')
+          expect(page).to have_content('Well done, you are using -99&percnt; less electricity than last year')
         end
       end
 
@@ -257,8 +257,8 @@ describe 'target progress report', type: :system do
             expect(page).to have_content('Tracking progress')
             expect(page).to have_content('15')
             expect(page).to have_content('25')
-            expect(page).to have_content('+35%')
-            expect(page).to have_content('+99%')
+            expect(page).to have_content('+35&percnt;')
+            expect(page).to have_content('+99&percnt;')
           end
 
           it 'describes why target consumption data is missing' do
@@ -290,10 +290,10 @@ describe 'target progress report', type: :system do
         expect(page).to have_content('Results of reducing')
         expect(page).to have_content(first.strftime('%b'))
         expect(page).to have_content(second.strftime('%b'))
-        expect(page).to have_content('-25%')
-        expect(page).to have_content('+35%')
-        expect(page).to have_content('-99%')
-        expect(page).to have_content('+99%')
+        expect(page).to have_content('-25&percnt;')
+        expect(page).to have_content('+35&percnt;')
+        expect(page).to have_content('-99&percnt;')
+        expect(page).to have_content('+99&percnt;')
       end
 
       it 'says I am not achieving my target' do
@@ -304,7 +304,7 @@ describe 'target progress report', type: :system do
         let(:cumulative_performance) { [-0.99, -0.99] }
 
         it 'says I am' do
-          expect(page).to have_content('Well done! You managed to reduce your electricity usage by -99%')
+          expect(page).to have_content('Well done! You managed to reduce your electricity usage by -99&percnt;')
         end
       end
 

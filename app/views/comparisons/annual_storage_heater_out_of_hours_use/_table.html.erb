@@ -1,0 +1,24 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_var val: result.schoolday_open_percent, unit: :percent %>
+      <% r.with_var val: result.schoolday_closed_percent, unit: :percent %>
+      <% r.with_var val: result.holidays_percent, unit: :percent %>
+      <% r.with_var val: result.weekends_percent, unit: :percent %>
+      <% r.with_var val: result.weekend_and_holiday_gbp, unit: :£ %>
+    <% end %>
+  <% end %>
+  <% c.with_footer do %>
+    <tr>
+      <td colspan="<%= headers.count %>">
+        <p>
+          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
+        </p>
+        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>
