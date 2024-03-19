@@ -5,7 +5,6 @@ describe 'change_in_solar_pv_since_last_year' do
   let(:key) { :change_in_solar_pv_since_last_year }
   let(:advice_page_key) { :solar_pv }
 
-  # change to your variables
   let(:variables) do
     {
       previous_year_solar_pv_kwh: 1000.0,
@@ -16,7 +15,6 @@ describe 'change_in_solar_pv_since_last_year' do
     }
   end
 
-  # change to your alert type (there may be more than one!)
   let(:alert_type) { create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }

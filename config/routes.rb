@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   get 'training', to: 'home#training'
   get 'energy-audits', to: 'home#energy_audits'
   get 'education-workshops', to: 'home#education_workshops'
+  get 'pricing', to: 'home#pricing'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
@@ -65,7 +66,9 @@ Rails.application.routes.draw do
     resources :annual_electricity_out_of_hours_use, only: [:index]
     resources :annual_energy_costs_per_floor_area, only: [:index]
     resources :annual_energy_costs_per_pupil, only: [:index]
+    resources :annual_gas_out_of_hours_use, only: [:index]
     resources :annual_heating_costs_per_floor_area, only: [:index]
+    resources :annual_storage_heater_out_of_hours_use, only: [:index]
     resources :baseload_per_pupil, only: [:index]
     resources :change_in_electricity_consumption_recent_school_weeks, only: [:index]
     resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index]
@@ -75,10 +78,13 @@ Rails.application.routes.draw do
     resources :electricity_consumption_during_holiday, only: [:index]
     resources :electricity_peak_kw_per_pupil, only: [:index]
     resources :electricity_targets, only: [:index]
+    resources :heating_in_warm_weather, only: [:index]
+    resources :hot_water_efficiency, only: [:index]
     resources :recent_change_in_baseload, only: [:index]
     resources :seasonal_baseload_variation, only: [:index]
     resources :solar_generation_summary, only: [:index]
     resources :solar_pv_benefit_estimate, only: [:index]
+    resources :thermostatic_control, only: [:index]
     resources :weekday_baseload_variation, only: [:index]
 
     resources :change_in_gas_consumption_recent_school_weeks, only: [:index]

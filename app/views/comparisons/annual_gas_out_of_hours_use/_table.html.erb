@@ -1,0 +1,34 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% if result.gas_economic_tariff_changed_this_year %>
+        <% r.with_reference do %>
+            <a href="#gas_economic_tariff_changed_this_year">[t]</a>
+        <% end %>
+      <% end %>
+      <% r.with_var val: result.schoolday_open_percent, unit: :percent %>
+      <% r.with_var val: result.schoolday_closed_percent, unit: :percent %>
+      <% r.with_var val: result.holidays_percent, unit: :percent %>
+      <% r.with_var val: result.weekends_percent, unit: :percent %>
+      <% r.with_var val: result.community_percent, unit: :percent %>
+      <% r.with_var val: result.community_gbp, unit: :£ %>
+      <% r.with_var val: result.out_of_hours_gbp, unit: :£ %>
+      <% r.with_var val: result.potential_saving_gbp, unit: :£ %>
+    <% end %>
+  <% end %>
+  <% c.with_footer do %>
+    <tr>
+      <td colspan="<%= headers.count %>">
+        <p>
+          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
+        </p>
+        <a name="gas_economic_tariff_changed_this_year">[t]</a>
+        <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
+        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

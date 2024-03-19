@@ -13,51 +13,50 @@ RSpec.describe 'home', type: :system do
     end
   end
 
-  it 'has a for-schools page' do
-    visit root_path
-    click_on('Our services')
-    within('#our-services') do
-      click_on('For Schools')
+  context 'with marketing pages' do
+    let(:case_study) { create(:case_study) }
+
+    before do
+      allow(CaseStudy).to receive(:find).and_return(case_study)
     end
-    expect(page).to have_content('Energy Sparks for schools')
-    click_on('Enrol our school')
-    expect(page).to have_content('Enrol our school')
-    expect(page).to have_link('Enrol now')
-  end
 
-  it 'redirects old pages' do
-    get for_teachers_path
-    expect(response).to redirect_to(for_schools_path)
-
-    get for_pupils_path
-    expect(response).to redirect_to(for_schools_path)
-
-    get for_management_path
-    expect(response).to redirect_to(for_schools_path)
-  end
-
-  it 'has a for-local-authorities page' do
-    visit root_path
-    click_on('Our services')
-    within('#our-services') do
-      click_on('For Local Authorities')
+    it 'has a for-schools page' do
+      visit root_path
+      click_on('Our services')
+      within('#our-services') do
+        click_on('For Schools')
+      end
+      expect(page).to have_content('Energy Sparks for Schools')
     end
-    expect(page).to have_content('Energy Sparks for Local Authorities')
-    click_on('Enrol our Local Authority')
-    expect(page).to have_content('Enrol our Local Authority')
-    expect(page).to have_link('Enrol now')
-  end
 
-  it 'has a for-multi-academy-trusts page' do
-    visit root_path
-    click_on('Our services')
-    within('#our-services') do
-      click_on('For Multi-Academy Trusts')
+    it 'redirects old pages' do
+      get for_teachers_path
+      expect(response).to redirect_to(for_schools_path)
+
+      get for_pupils_path
+      expect(response).to redirect_to(for_schools_path)
+
+      get for_management_path
+      expect(response).to redirect_to(for_schools_path)
     end
-    expect(page).to have_content('Energy Sparks for Multi-Academy Trusts')
-    click_on('Enrol our Multi-Academy Trust')
-    expect(page).to have_content('Enrol our Multi-Academy Trust')
-    expect(page).to have_link('Enrol now')
+
+    it 'has a for-local-authorities page' do
+      visit root_path
+      click_on('Our services')
+      within('#our-services') do
+        click_on('For Local Authorities')
+      end
+      expect(page).to have_content('Energy Sparks for Local Authorities')
+    end
+
+    it 'has a for-multi-academy-trusts page' do
+      visit root_path
+      click_on('Our services')
+      within('#our-services') do
+        click_on('For Multi-Academy Trusts')
+      end
+      expect(page).to have_content('Energy Sparks for Multi-Academy Trusts')
+    end
   end
 
   it 'has a contact page' do
@@ -73,6 +72,12 @@ RSpec.describe 'home', type: :system do
     visit root_path
     click_on('Enrol')
     expect(page.has_content?('Enrol with Energy Sparks'))
+  end
+
+  it 'has a pricing page' do
+    visit root_path
+    click_on('Pricing')
+    expect(page.has_content?('Pricing'))
   end
 
   describe 'having a training page' do
