@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Comparisons
-  class ChangeInElectricityConsumptionRecentSchoolWeeksController < Shared::ChangeInConsumption
+  class ChangeInElectricityConsumptionRecentSchoolWeeksController < Shared::ChangeInConsumptionController
     private
 
     def headers

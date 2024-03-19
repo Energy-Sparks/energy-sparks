@@ -1,5 +1,5 @@
 module Comparisons
-  class ChangeInGasConsumptionRecentSchoolWeeksController < Shared::ChangeInConsumption
+  class ChangeInGasConsumptionRecentSchoolWeeksController < Shared::ChangeInConsumptionController
     private
 
     def headers
