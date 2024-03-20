@@ -43,14 +43,17 @@ module Comparisons
     def create_charts(results)
       @chart_heating_coming_on_too_early = create_chart(
         results,
-        { avg_week_start_time_to_time_of_day: :average_heating_start_time_last_week }, nil,
+        { avg_week_start_time_to_time_of_day: :average_heating_start_time_last_week },
+        nil,
         :timeofday
       )
       @chart_heating_coming_on_too_early[:id] = :heating_coming_on_too_early
 
       @chart_optimum_start_analysis = create_chart(
-        results, { average_start_time_hh_mm_to_time_of_day: :average_heating_start_time_last_year },
-        nil, :timeofday
+        results,
+        { average_start_time_hh_mm_to_time_of_day: :average_heating_start_time_last_year },
+        nil,
+        :timeofday
       )
       @chart_optimum_start_analysis[:id] = :optimum_start_analysis
       [true]
