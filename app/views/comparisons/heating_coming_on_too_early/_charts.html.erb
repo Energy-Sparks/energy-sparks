@@ -1,4 +1,9 @@
 <%= component 'comparison_chart', **@chart_heating_coming_on_too_early %>
-<h3><%= t('analytics.benchmarking.chart_table_config.optimum_start_analysis') %></h3>
-<%= t('analytics.benchmarking.content.optimum_start_analysis.introduction_text_html') %>
-<%= component 'comparison_chart', **@chart_optimum_start_analysis %>
+<%= component 'comparison_chart', **@chart_optimum_start_analysis do |component| %>
+  <% component.with_title do %>
+    <%= t('analytics.benchmarking.chart_table_config.optimum_start_analysis') %>
+  <% end %>
+  <% component.with_introduction do %>
+    <%= t('analytics.benchmarking.content.optimum_start_analysis.introduction_text_html') %>
+  <% end %>
+<% end %>

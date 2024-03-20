@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Comparisons
-  class ChangeInGasSinceLastYearController < Shared::ChangeInHeatingSinceLastYear
+  class ChangeInGasSinceLastYearController < Shared::ChangeInHeatingSinceLastYearController
     private
 
     def key

@@ -2,7 +2,7 @@
 
 module Comparisons
   module Shared
-    class AnnualChangeInOutOfHoursUse < BaseController
+    class AnnualChangeInOutOfHoursUseController < BaseController
       private
 
       def colgroups

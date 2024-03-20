@@ -2,7 +2,7 @@
 
 module Comparisons
   module Shared
-    class ChangeInHeatingSinceLastYear < BaseController
+    class ChangeInHeatingSinceLastYearController < BaseController
       private
 
       def colgroups

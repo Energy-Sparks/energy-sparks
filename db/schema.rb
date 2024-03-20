@@ -3380,6 +3380,15 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
               LATERAL jsonb_to_record(alerts.variables) data(avg_week_start_time time without time zone, one_year_optimum_start_saving_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHeatingComingOnTooEarly'::text))) early,
       ( SELECT alerts.alert_generation_run_id,
+              data.gas_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(gas_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      (( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+       LEFT JOIN ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data.average_start_time_hh_mm,
               data.start_time_standard_devation,
@@ -3390,16 +3399,7 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
              FROM alerts,
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data(average_start_time_hh_mm time without time zone, start_time_standard_devation double precision, rating double precision, regression_start_time double precision, optimum_start_sensitivity double precision, regression_r2 double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOptimumStartAnalysis'::text))) optimum,
-      ( SELECT alerts.alert_generation_run_id,
-              data.gas_economic_tariff_changed_this_year
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(gas_economic_tariff_changed_this_year boolean)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE ((early.alert_generation_run_id = latest_runs.id) AND (optimum.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOptimumStartAnalysis'::text))) optimum ON ((optimum.alert_generation_run_id = latest_runs.id)))
+    WHERE ((early.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
 end

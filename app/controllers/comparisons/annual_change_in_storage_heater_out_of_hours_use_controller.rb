@@ -1,5 +1,5 @@
 module Comparisons
-  class AnnualChangeInStorageHeaterOutOfHoursUseController < Shared::AnnualChangeInOutOfHoursUse
+  class AnnualChangeInStorageHeaterOutOfHoursUseController < Shared::AnnualChangeInOutOfHoursUseController
     private
 
     def key
