@@ -3205,4 +3205,78 @@ ActiveRecord::Schema.define(version: 2024_03_18_160119) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "change_in_gas_since_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      energy.alert_generation_run_id,
+      energy.school_id,
+      energy.previous_year_kwh,
+      energy.current_year_kwh,
+      energy.previous_year_co2,
+      energy.current_year_co2,
+      energy.previous_year_gbp,
+      energy.current_year_gbp,
+      gas.temperature_adjusted_previous_year_kwh,
+      gas.temperature_adjusted_percent
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.previous_year_gas_kwh AS previous_year_kwh,
+              json.current_year_gas_kwh AS current_year_kwh,
+              json.previous_year_gas_co2 AS previous_year_co2,
+              json.current_year_gas_co2 AS current_year_co2,
+              json.previous_year_gas_gbp AS previous_year_gbp,
+              json.current_year_gas_gbp AS current_year_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbp double precision, current_year_gas_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.temperature_adjusted_previous_year_kwh,
+              json.temperature_adjusted_percent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(temperature_adjusted_previous_year_kwh double precision, temperature_adjusted_percent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))) gas,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((energy.alert_generation_run_id = latest_runs.id) AND (gas.alert_generation_run_id = latest_runs.id));
+  SQL
+  create_view "change_in_storage_heaters_since_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      energy.alert_generation_run_id,
+      energy.school_id,
+      energy.previous_year_kwh,
+      energy.current_year_kwh,
+      energy.previous_year_co2,
+      energy.current_year_co2,
+      energy.previous_year_gbp,
+      energy.current_year_gbp,
+      storage.temperature_adjusted_previous_year_kwh,
+      storage.temperature_adjusted_percent
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.previous_year_storage_heaters_kwh AS previous_year_kwh,
+              json.current_year_storage_heaters_kwh AS current_year_kwh,
+              json.previous_year_storage_heaters_co2 AS previous_year_co2,
+              json.current_year_storage_heaters_co2 AS current_year_co2,
+              json.previous_year_storage_heaters_gbp AS previous_year_gbp,
+              json.current_year_storage_heaters_gbp AS current_year_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbp double precision, current_year_storage_heaters_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.temperature_adjusted_previous_year_kwh,
+              json.temperature_adjusted_percent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(temperature_adjusted_previous_year_kwh double precision, temperature_adjusted_percent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterAnnualVersusBenchmark'::text))) storage,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((energy.alert_generation_run_id = latest_runs.id) AND (storage.alert_generation_run_id = latest_runs.id));
+  SQL
 end
