@@ -11,8 +11,6 @@ class ComparisonTableComponent < ViewComponent::Base
   include AdvicePageHelper
   include ComparisonsHelper
 
-  attr_accessor :footer_last_year_definition, :footer_tariff_has_changed
-
   def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [], advice_page_tab: :insights)
     @report = report
     @advice_page = advice_page
@@ -21,8 +19,6 @@ class ComparisonTableComponent < ViewComponent::Base
     @headers = headers
     @colgroups = colgroups
     @advice_page_tab = advice_page_tab
-    @footer_tariff_has_changed = false
-    @footer_last_year_definition = false
   end
 
   renders_many :rows, ->(**args) do
@@ -43,11 +39,10 @@ class ComparisonTableComponent < ViewComponent::Base
   #
   # The variable columns are specified as additional slots
   class RowComponent < ViewComponent::Base
-    def initialize(advice_page: nil, advice_page_tab: :insights, classes: '', tariff_has_changed: false)
+    def initialize(advice_page: nil, advice_page_tab: :insights, classes: '')
       @advice_page = advice_page
       @advice_page_tab = advice_page_tab
       @classes = classes
-      @tariff_has_changed = tariff_has_changed
     end
 
     # First column, showing school name and a link
@@ -69,9 +64,6 @@ class ComparisonTableComponent < ViewComponent::Base
       <tr class="<%= @classes %>">
         <td>
           <%= school %>
-          <% if @tariff_has_changed %>
-            <%= link_to '(*5)', '#tariff_has_changed' %>
-          <% end %>
           <% references.each do |ref| %>
             <%= ref %>
           <% end %>

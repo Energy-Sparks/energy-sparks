@@ -57,7 +57,7 @@ module Comparisons
     end
 
     def table_names
-      super + [:optimum_start_analysis]
+      %i[table optimum_start_analysis]
     end
   end
 end

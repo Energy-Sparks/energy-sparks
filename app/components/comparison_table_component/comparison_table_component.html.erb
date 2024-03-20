@@ -24,19 +24,5 @@
   </tbody>
   <tfoot>
     <%= footer %>
-    <% if @footer_tariff_has_changed || @footer_last_year_definition %>
-      <tr>
-        <td colspan="<%= @headers.count %>">
-          <p><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></p>
-          <% if @footer_tariff_has_changed %>
-            <a name="tariff_has_changed" />
-            <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
-          <% end %>
-          <% if @footer_last_year_definition %>
-            <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
   </tfoot>
 </table>
