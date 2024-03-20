@@ -94,7 +94,8 @@ module Comparisons
       results.each do |result|
         schools << result.school.name
         result.slice(*metric_to_translation_key.keys).each do |metric, value|
-          value ||= 0
+          next if value.nil? || (value.respond_to?(:nan?) && (value.nan? || value.infinite?))
+
           # for a percentage metric we'd multiply * 100.0
           # for converting from kW to W 1000.0
           value *= multiplier unless multiplier.nil?
