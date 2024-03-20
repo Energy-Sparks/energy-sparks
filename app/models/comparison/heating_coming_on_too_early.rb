@@ -19,10 +19,10 @@ class Comparison::HeatingComingOnTooEarly < Comparison::View
   self.table_name = :heating_coming_on_too_early
 
   def avg_week_start_time_to_time_of_day
-    TimeOfDay.from_time(avg_week_start_time)
+    avg_week_start_time.nil? ? '' : TimeOfDay.from_time(avg_week_start_time)
   end
 
   def average_start_time_hh_mm_to_time_of_day
-    TimeOfDay.from_time(average_start_time_hh_mm)
+    average_start_time_hh_mm.nil? ? '' : TimeOfDay.from_time(average_start_time_hh_mm)
   end
 end

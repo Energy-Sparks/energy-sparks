@@ -6,7 +6,7 @@
               table_name: table_name,
               index_params: index_params,
               headers: @headers_optimum_start_analysis do |c| %>
-  <% @results.each do |result| %>
+  <% @results.order(average_start_time_hh_mm: :desc).each do |result| %>
     <% c.with_row do |row| %>
       <% row.with_school school: result.school %>
       <% row.with_var { result.average_start_time_hh_mm_to_time_of_day.to_s } %>

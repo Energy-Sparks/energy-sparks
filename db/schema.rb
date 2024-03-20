@@ -3360,46 +3360,54 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
     WHERE ((energy.alert_generation_run_id = latest_runs.id) AND (storage.alert_generation_run_id = latest_runs.id));
   SQL
   create_view "heating_coming_on_too_early", sql_definition: <<-SQL
-      SELECT latest_runs.id,
+      WITH early AS (
+           SELECT alerts.alert_generation_run_id,
+              json.avg_week_start_time,
+              json.one_year_optimum_start_saving_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(avg_week_start_time time without time zone, one_year_optimum_start_saving_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHeatingComingOnTooEarly'::text))
+          ), optimum AS (
+           SELECT alerts.alert_generation_run_id,
+              json.average_start_time_hh_mm,
+              json.start_time_standard_devation,
+              json.rating,
+              json.regression_start_time,
+              json.optimum_start_sensitivity,
+              json.regression_r2
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(average_start_time_hh_mm time without time zone, start_time_standard_devation double precision, rating double precision, regression_start_time double precision, optimum_start_sensitivity double precision, regression_r2 double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOptimumStartAnalysis'::text))
+          ), additional AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.gas_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(gas_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      additional.alert_generation_run_id,
+      additional.school_id,
+      additional.gas_economic_tariff_changed_this_year,
       early.avg_week_start_time,
       early.one_year_optimum_start_saving_gbpcurrent,
-      optimum.alert_generation_run_id,
-      optimum.school_id,
       optimum.average_start_time_hh_mm,
       optimum.start_time_standard_devation,
       optimum.rating,
       optimum.regression_start_time,
       optimum.optimum_start_sensitivity,
-      optimum.regression_r2,
-      additional.gas_economic_tariff_changed_this_year
-     FROM ( SELECT alerts.alert_generation_run_id,
-              data.avg_week_start_time,
-              data.one_year_optimum_start_saving_gbpcurrent
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(avg_week_start_time time without time zone, one_year_optimum_start_saving_gbpcurrent double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHeatingComingOnTooEarly'::text))) early,
-      ( SELECT alerts.alert_generation_run_id,
-              data.gas_economic_tariff_changed_this_year
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(gas_economic_tariff_changed_this_year boolean)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
-      (( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-       LEFT JOIN ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data.average_start_time_hh_mm,
-              data.start_time_standard_devation,
-              data.rating,
-              data.regression_start_time,
-              data.optimum_start_sensitivity,
-              data.regression_r2
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(average_start_time_hh_mm time without time zone, start_time_standard_devation double precision, rating double precision, regression_start_time double precision, optimum_start_sensitivity double precision, regression_r2 double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOptimumStartAnalysis'::text))) optimum ON ((optimum.alert_generation_run_id = latest_runs.id)))
-    WHERE ((early.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+      optimum.regression_r2
+     FROM (((latest_runs
+       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
+       LEFT JOIN early ON ((latest_runs.id = early.alert_generation_run_id)))
+       LEFT JOIN optimum ON ((latest_runs.id = optimum.alert_generation_run_id)));
   SQL
 end

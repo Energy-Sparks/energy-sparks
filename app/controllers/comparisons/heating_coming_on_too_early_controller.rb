@@ -36,8 +36,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::HeatingComingOnTooEarly
-        .for_schools(@schools).where.not(avg_week_start_time: nil).order(avg_week_start_time: :desc)
+      Comparison::HeatingComingOnTooEarly.for_schools(@schools)
     end
 
     def create_charts(results)
