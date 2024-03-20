@@ -12,7 +12,7 @@ describe 'change_in_heating_since_last_year' do
   let(:expected_table) do
     [['', 'kWh', 'CO2 (kg)', '£', 'Percent changed'],
      headers,
-     [expected_school.name, '1', '7', '2', '3', '4', '£5', '£6', '+100%', '+800%'],
+     [expected_school.name, '1', '7', '2', '3', '4', '£5', '£6', '+100&percnt;', '+800&percnt;'],
      ["Notes\nIn school comparisons 'last year' is defined as this year to date, 'previous year' is defined as the " \
       'year before.']]
   end
@@ -21,7 +21,6 @@ describe 'change_in_heating_since_last_year' do
      headers,
      [expected_school.name, '1', '7', '2', '3', '4', '5', '6', '100', '8']]
   end
-  let(:variables) {}
 
   before do
     alert_run = create(:alert_generation_run, school: expected_school)
