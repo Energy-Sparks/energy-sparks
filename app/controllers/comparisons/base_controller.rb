@@ -85,7 +85,7 @@ module Comparisons
       []
     end
 
-    def create_chart(results, names, multiplier, y_axis_label,
+    def create_chart(results, metric_to_translation_key, multiplier, y_axis_label,
                      column_heading_keys: 'analytics.benchmarking.configuration.column_headings',
                      y_axis_keys: 'chart_configuration.y_axis_label_name')
       chart_data = {}
@@ -93,7 +93,7 @@ module Comparisons
 
       results.each do |result|
         schools << result.school.name
-        result.slice(*names.keys).each do |metric, value|
+        result.slice(*metric_to_translation_key.keys).each do |metric, value|
           value ||= 0
           # for a percentage metric we'd multiply * 100.0
           # for converting from kW to W 1000.0
@@ -102,7 +102,7 @@ module Comparisons
         end
       end
 
-      chart_data.transform_keys! { |key| I18n.t("#{column_heading_keys}.#{names[key.to_sym]}") }
+      chart_data.transform_keys! { |key| I18n.t("#{column_heading_keys}.#{metric_to_translation_key[key.to_sym]}") }
 
       { id: :comparison,
         x_axis: schools,
