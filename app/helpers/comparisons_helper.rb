@@ -45,4 +45,10 @@ module ComparisonsHelper
     partial = partial ? " #{I18n.t('advice_pages.tables.labels.partial')}" : ''
     "#{I18n.t('analytics.holiday_year', holiday: holiday, year: year)}#{partial}"
   end
+
+  def csv_colgroups(colgroups)
+    colgroups.flat_map do |group|
+      [group[:label]] + Array.new(group.fetch(:colspan, 1) - 1, '')
+    end
+  end
 end
