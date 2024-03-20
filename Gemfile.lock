@@ -1,27 +1,4 @@
 GIT
-  remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 95667ee2702c5b8e1c8e2c82ca57f4abe79c21c9
-  tag: 5.1.6
-  specs:
-    energy-sparks_analytics (1.2.1)
-      activesupport (>= 6.0, < 7.1)
-      benchmark-memory (~> 0)
-      chroma (~> 0)
-      faraday (~> 2)
-      faraday-retry (~> 2)
-      hashdiff (~> 1)
-      html-table (~> 1)
-      interpolate (~> 0.3.0)
-      require_all (~> 3)
-      roo (~> 2)
-      roo-xls (~> 1)
-      ruby-limiter (~> 2)
-      ruby-sun-times (~> 0)
-      statsample (~> 2)
-      structured_warnings (~> 0)
-      write_xlsx (~> 1)
-
-GIT
   remote: https://github.com/Energy-Sparks/roo.git
   revision: 058a8e3d1c711c04c59a686805bbe1962d2b2ed1
   branch: bug-fix-branch
@@ -46,6 +23,27 @@ GIT
       rserve-client (~> 0.3)
       rubyvis (~> 0.6.1)
       spreadsheet (~> 1.1)
+
+PATH
+  remote: ../energy-sparks_analytics
+  specs:
+    energy-sparks_analytics (1.2.1)
+      activesupport (>= 6.0, < 7.1)
+      benchmark-memory (~> 0)
+      chroma (~> 0)
+      faraday (~> 2)
+      faraday-retry (~> 2)
+      hashdiff (~> 1)
+      html-table (~> 1)
+      interpolate (~> 0.3.0)
+      require_all (~> 3)
+      roo (~> 2)
+      roo-xls (~> 1)
+      ruby-limiter (~> 2)
+      ruby-sun-times (~> 0)
+      statsample (~> 2)
+      structured_warnings (~> 0)
+      write_xlsx (~> 1)
 
 GEM
   remote: https://rubygems.org/
@@ -829,4 +827,4 @@ DEPENDENCIES
   wisper-rspec
 
 BUNDLED WITH
-   2.5.6
+   2.4.22

@@ -10,7 +10,9 @@ FROM
       last_year_holiday_electricity_gbpcurrent float,
       last_year_holiday_gas_kwh_per_floor_area float,
       last_year_holiday_electricity_kwh_per_floor_area float,
-      name_of_last_year_holiday text
+      last_year_holiday_type text,
+      last_year_holiday_start_date date,
+      last_year_holiday_end_date date
     )
     WHERE alerts.alert_type_id = alert_types.id and alert_types.class_name='AlertImpendingHoliday'
   ) AS data,

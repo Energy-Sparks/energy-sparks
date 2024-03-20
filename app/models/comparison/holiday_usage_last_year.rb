@@ -7,10 +7,12 @@
 #  last_year_holiday_electricity_gbp                :float
 #  last_year_holiday_electricity_gbpcurrent         :float
 #  last_year_holiday_electricity_kwh_per_floor_area :float
+#  last_year_holiday_end_date                       :date
 #  last_year_holiday_gas_gbp                        :float
 #  last_year_holiday_gas_gbpcurrent                 :float
 #  last_year_holiday_gas_kwh_per_floor_area         :float
-#  name_of_last_year_holiday                        :text
+#  last_year_holiday_start_date                     :date
+#  last_year_holiday_type                           :text
 #  school_id                                        :bigint(8)
 #
 class Comparison::HolidayUsageLastYear < Comparison::View

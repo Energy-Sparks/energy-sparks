@@ -39,6 +39,8 @@ module ComparisonsHelper
   end
 
   def holiday_name(type, start_date, end_date, partial: false)
+    return '' if type.nil?
+
     year = start_date.year.to_s
     year += "/#{end_date.year}" if start_date.year != end_date.year
     holiday = I18n.t('analytics.holidays')[type.to_sym]

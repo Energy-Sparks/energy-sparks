@@ -3420,7 +3420,9 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
       data.last_year_holiday_electricity_gbpcurrent,
       data.last_year_holiday_gas_kwh_per_floor_area,
       data.last_year_holiday_electricity_kwh_per_floor_area,
-      data.name_of_last_year_holiday
+      data.last_year_holiday_type,
+      data.last_year_holiday_start_date,
+      data.last_year_holiday_end_date
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.last_year_holiday_gas_gbp,
@@ -3429,10 +3431,12 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
               data_1.last_year_holiday_electricity_gbpcurrent,
               data_1.last_year_holiday_gas_kwh_per_floor_area,
               data_1.last_year_holiday_electricity_kwh_per_floor_area,
-              data_1.name_of_last_year_holiday
+              data_1.last_year_holiday_type,
+              data_1.last_year_holiday_start_date,
+              data_1.last_year_holiday_end_date
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(last_year_holiday_gas_gbp double precision, last_year_holiday_electricity_gbp double precision, last_year_holiday_gas_gbpcurrent double precision, last_year_holiday_electricity_gbpcurrent double precision, last_year_holiday_gas_kwh_per_floor_area double precision, last_year_holiday_electricity_kwh_per_floor_area double precision, name_of_last_year_holiday text)
+              LATERAL jsonb_to_record(alerts.variables) data_1(last_year_holiday_gas_gbp double precision, last_year_holiday_electricity_gbp double precision, last_year_holiday_gas_gbpcurrent double precision, last_year_holiday_electricity_gbpcurrent double precision, last_year_holiday_gas_kwh_per_floor_area double precision, last_year_holiday_electricity_kwh_per_floor_area double precision, last_year_holiday_type text, last_year_holiday_start_date date, last_year_holiday_end_date date)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertImpendingHoliday'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs

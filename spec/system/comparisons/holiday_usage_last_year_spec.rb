@@ -12,7 +12,9 @@ describe 'holiday_usage_last_year' do
       last_year_holiday_electricity_gbpcurrent: 4778.43,
       last_year_holiday_gas_kwh_per_floor_area: 2.9478264187500005,
       last_year_holiday_electricity_kwh_per_floor_area: 28.960181818181812,
-      name_of_last_year_holiday: 'Easter 2023'
+      last_year_holiday_type: 'easter',
+      last_year_holiday_start_date: '2023-04-01',
+      last_year_holiday_end_date: '2023-04-14'
     }
   end
 
