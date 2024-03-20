@@ -66,6 +66,7 @@ Rails.application.routes.draw do
     resources :annual_electricity_out_of_hours_use, only: [:index]
     resources :annual_energy_costs_per_floor_area, only: [:index]
     resources :annual_energy_costs_per_pupil, only: [:index]
+    resources :annual_energy_costs, only: [:index]
     resources :annual_gas_out_of_hours_use, only: [:index]
     resources :annual_heating_costs_per_floor_area, only: [:index]
     resources :annual_storage_heater_out_of_hours_use, only: [:index]
@@ -82,6 +83,7 @@ Rails.application.routes.draw do
     resources :electricity_peak_kw_per_pupil, only: [:index]
     resources :electricity_targets, only: [:index]
     resources :gas_consumption_during_holiday, only: [:index]
+    resources :gas_targets, only: [:index]
     resources :heating_coming_on_too_early, only: [:index]
     resources :heating_in_warm_weather, only: [:index]
     resources :hot_water_efficiency, only: [:index]
@@ -90,6 +92,7 @@ Rails.application.routes.draw do
     resources :solar_generation_summary, only: [:index]
     resources :solar_pv_benefit_estimate, only: [:index]
     resources :storage_heater_consumption_during_holiday, only: [:index]
+    resources :thermostat_sensitivity, only: [:index]
     resources :thermostatic_control, only: [:index]
     resources :weekday_baseload_variation, only: [:index]
   end

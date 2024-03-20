@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_15_164815) do
+ActiveRecord::Schema.define(version: 2024_03_18_160119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -3093,6 +3093,117 @@ ActiveRecord::Schema.define(version: 2024_03_15_164815) do
        JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
        LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)));
+  SQL
+  create_view "thermostat_sensitivities", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data."annual_saving_1_C_change_gbp"
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1."annual_saving_1_C_change_gbp"
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1("annual_saving_1_C_change_gbp" double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHeatingSensitivityAdvice'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "annual_energy_costs", sql_definition: <<-SQL
+      WITH electricity AS (
+           SELECT alerts.alert_generation_run_id,
+              data.last_year_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(last_year_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityAnnualVersusBenchmark'::text))
+          ), gas AS (
+           SELECT alerts.alert_generation_run_id,
+              data.last_year_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(last_year_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
+          ), storage_heaters AS (
+           SELECT alerts.alert_generation_run_id,
+              data.last_year_gbp
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(last_year_gbp double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterAnnualVersusBenchmark'::text))
+          ), energy AS (
+           SELECT alerts.alert_generation_run_id,
+              data.last_year_gbp,
+              data.one_year_energy_per_pupil_gbp,
+              data.last_year_co2_tonnes,
+              data.last_year_kwh
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(last_year_gbp double precision, one_year_energy_per_pupil_gbp double precision, last_year_co2_tonnes double precision, last_year_kwh double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))
+          ), additional AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.school_type_name,
+              data.pupils,
+              data.floor_area
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(school_type_name text, pupils double precision, floor_area double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      electricity.last_year_gbp AS last_year_electricity,
+      gas.last_year_gbp AS last_year_gas,
+      storage_heaters.last_year_gbp AS last_year_storage_heaters,
+      energy.last_year_gbp,
+      energy.one_year_energy_per_pupil_gbp,
+      energy.last_year_co2_tonnes,
+      energy.last_year_kwh,
+      additional.alert_generation_run_id,
+      additional.school_id,
+      additional.school_type_name,
+      additional.pupils,
+      additional.floor_area
+     FROM (((((latest_runs
+       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
+       LEFT JOIN electricity ON ((latest_runs.id = electricity.alert_generation_run_id)))
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
+       LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)))
+       LEFT JOIN energy ON ((latest_runs.id = energy.alert_generation_run_id)));
+  SQL
+  create_view "gas_targets", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.current_year_percent_of_target_relative,
+      data.current_year_unscaled_percent_of_target_relative,
+      data.current_year_kwh,
+      data.current_year_target_kwh,
+      data.unscaled_target_kwh_to_date,
+      data.tracking_start_date
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.current_year_percent_of_target_relative,
+              data_1.current_year_unscaled_percent_of_target_relative,
+              data_1.current_year_kwh,
+              data_1.current_year_target_kwh,
+              data_1.unscaled_target_kwh_to_date,
+              data_1.tracking_start_date
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_unscaled_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, unscaled_target_kwh_to_date double precision, tracking_start_date date)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasTargetAnnual'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
   create_view "heating_coming_on_too_early", sql_definition: <<-SQL
       SELECT latest_runs.id,
