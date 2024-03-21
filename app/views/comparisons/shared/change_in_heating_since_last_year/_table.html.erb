@@ -1,0 +1,33 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |component| %>
+  <% @results.each do |result| %>
+    <% component.with_row do |row| %>
+      <% row.with_school school: result.school %>
+      <% row.with_var val: result.previous_year_kwh, unit: :kwh %>
+      <% row.with_var val: result.temperature_adjusted_previous_year_kwh, unit: :kwh %>
+      <% row.with_var val: result.current_year_kwh, unit: :kwh %>
+
+      <% row.with_var val: result.previous_year_co2, unit: :co2 %>
+      <% row.with_var val: result.current_year_co2, unit: :co2 %>
+
+      <% row.with_var val: result.previous_year_gbp, unit: :£ %>
+      <% row.with_var val: result.current_year_gbp, unit: :£ %>
+
+      <% row.with_var change: true,
+                      val: percent_change(result.previous_year_kwh, result.current_year_kwh),
+                      unit: :relative_percent_0dp %>
+      <% row.with_var change: true,
+                      val: result.temperature_adjusted_percent,
+                      unit: :relative_percent_0dp %>
+    <% end %>
+  <% end %>
+  <% component.with_footer do %>
+    <tr>
+      <td colspan="<%= headers.count %>">
+        <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
+        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_previous_year_definition_html') %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>
