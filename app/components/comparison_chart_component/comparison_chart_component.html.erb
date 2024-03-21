@@ -8,6 +8,10 @@
     <h5 class="chart-subtitle"><%= subtitle %></h5>
   <% end %>
 
+  <% if introduction %>
+    <%= introduction %>
+  <% end %>
+
   <div id='chart_<%= id %>'
        class='analysis-chart tabbed'
        style='height:<%= height %>px;'
