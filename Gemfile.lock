@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 95667ee2702c5b8e1c8e2c82ca57f4abe79c21c9
-  tag: 5.1.6
+  revision: ed95ed111d58f203a5500b5f130670e6073d1a41
+  branch: gas-target-estimation-changes
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -839,4 +839,4 @@ DEPENDENCIES
   wisper-rspec
 
 BUNDLED WITH
-   2.5.6
+   2.5.4

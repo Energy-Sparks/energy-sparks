@@ -28,7 +28,9 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.1.6'
+# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.1.6'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'gas-target-estimation-changes'
+
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
