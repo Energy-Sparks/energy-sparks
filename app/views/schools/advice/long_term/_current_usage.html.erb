@@ -27,7 +27,8 @@
       <td class="text-right"><%= format_unit(annual_usage.£, :£) %></td>
       <td class="text-right">
         <% if annual_usage_change_since_last_year.present? %>
-          <%= up_downify(format_unit(annual_usage_change_since_last_year.percent, :relative_percent, false)) %>
+          <%= up_downify(format_unit(annual_usage_change_since_last_year.percent, :relative_percent, false),
+                         sanitize: false) %>
         <% else %>
           -
         <% end %>
