@@ -3071,6 +3071,33 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
+  create_view "gas_targets", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.current_year_percent_of_target_relative,
+      data.current_year_unscaled_percent_of_target_relative,
+      data.current_year_kwh,
+      data.current_year_target_kwh,
+      data.unscaled_target_kwh_to_date,
+      data.tracking_start_date
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.current_year_percent_of_target_relative,
+              data_1.current_year_unscaled_percent_of_target_relative,
+              data_1.current_year_kwh,
+              data_1.current_year_target_kwh,
+              data_1.unscaled_target_kwh_to_date,
+              data_1.tracking_start_date
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_unscaled_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, unscaled_target_kwh_to_date double precision, tracking_start_date date)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasTargetAnnual'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
   create_view "annual_energy_costs", sql_definition: <<-SQL
       WITH electricity AS (
            SELECT alerts.alert_generation_run_id,
@@ -3137,153 +3164,6 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
        LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)))
        LEFT JOIN energy ON ((latest_runs.id = energy.alert_generation_run_id)));
-  SQL
-  create_view "gas_targets", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.current_year_percent_of_target_relative,
-      data.current_year_unscaled_percent_of_target_relative,
-      data.current_year_kwh,
-      data.current_year_target_kwh,
-      data.unscaled_target_kwh_to_date,
-      data.tracking_start_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.current_year_percent_of_target_relative,
-              data_1.current_year_unscaled_percent_of_target_relative,
-              data_1.current_year_kwh,
-              data_1.current_year_target_kwh,
-              data_1.unscaled_target_kwh_to_date,
-              data_1.tracking_start_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_unscaled_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, unscaled_target_kwh_to_date double precision, tracking_start_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasTargetAnnual'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
-  SQL
-  create_view "annual_change_in_gas_out_of_hours_uses", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      usage.alert_generation_run_id,
-      usage.school_id,
-      usage.out_of_hours_kwh,
-      usage.out_of_hours_co2,
-      usage.out_of_hours_gbpcurrent,
-      usage_previous_year.previous_out_of_hours_kwh,
-      usage_previous_year.previous_out_of_hours_co2,
-      usage_previous_year.previous_out_of_hours_gbpcurrent,
-      additional.economic_tariff_changed_this_year
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              json.out_of_hours_kwh,
-              json.out_of_hours_co2,
-              json.out_of_hours_gbpcurrent
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursGasUsage'::text))) usage,
-      ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              json.out_of_hours_kwh AS previous_out_of_hours_kwh,
-              json.out_of_hours_co2 AS previous_out_of_hours_co2,
-              json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursGasUsagePreviousYear'::text))) usage_previous_year,
-      ( SELECT alerts.alert_generation_run_id,
-              json.gas_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(gas_economic_tariff_changed_this_year boolean)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE ((usage.alert_generation_run_id = latest_runs.id) AND (usage_previous_year.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
-  SQL
-  create_view "annual_change_in_storage_heater_out_of_hours_uses", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      usage.alert_generation_run_id,
-      usage.school_id,
-      usage.out_of_hours_kwh,
-      usage.out_of_hours_co2,
-      usage.out_of_hours_gbpcurrent,
-      usage_previous_year.previous_out_of_hours_kwh,
-      usage_previous_year.previous_out_of_hours_co2,
-      usage_previous_year.previous_out_of_hours_gbpcurrent,
-      additional.economic_tariff_changed_this_year
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              json.out_of_hours_kwh,
-              json.out_of_hours_co2,
-              json.out_of_hours_gbpcurrent
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterOutOfHours'::text))) usage,
-      ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              json.out_of_hours_kwh AS previous_out_of_hours_kwh,
-              json.out_of_hours_co2 AS previous_out_of_hours_co2,
-              json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursStorageHeaterUsagePreviousYear'::text))) usage_previous_year,
-      ( SELECT alerts.alert_generation_run_id,
-              json.electricity_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(electricity_economic_tariff_changed_this_year boolean)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE ((usage.alert_generation_run_id = latest_runs.id) AND (usage_previous_year.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
-  SQL
-  create_view "annual_change_in_electricity_out_of_hours_uses", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      usage.alert_generation_run_id,
-      usage.school_id,
-      usage.out_of_hours_kwh,
-      usage.out_of_hours_co2,
-      usage.out_of_hours_gbpcurrent,
-      usage_previous_year.previous_out_of_hours_kwh,
-      usage_previous_year.previous_out_of_hours_co2,
-      usage_previous_year.previous_out_of_hours_gbpcurrent,
-      additional.economic_tariff_changed_this_year
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              json.out_of_hours_kwh,
-              json.out_of_hours_co2,
-              json.out_of_hours_gbpcurrent
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursElectricityUsage'::text))) usage,
-      ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              json.out_of_hours_kwh AS previous_out_of_hours_kwh,
-              json.out_of_hours_co2 AS previous_out_of_hours_co2,
-              json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursElectricityUsagePreviousYear'::text))) usage_previous_year,
-      ( SELECT alerts.alert_generation_run_id,
-              json.electricity_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(electricity_economic_tariff_changed_this_year boolean)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE ((usage.alert_generation_run_id = latest_runs.id) AND (usage_previous_year.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
   create_view "change_in_gas_since_last_years", sql_definition: <<-SQL
       SELECT latest_runs.id,
@@ -3410,6 +3290,86 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
        LEFT JOIN early ON ((latest_runs.id = early.alert_generation_run_id)))
        LEFT JOIN optimum ON ((latest_runs.id = optimum.alert_generation_run_id)));
   SQL
+  create_view "annual_change_in_gas_out_of_hours_uses", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      usage.alert_generation_run_id,
+      usage.school_id,
+      usage.out_of_hours_kwh,
+      usage.out_of_hours_co2,
+      usage.out_of_hours_gbpcurrent,
+      usage_previous_year.previous_out_of_hours_kwh,
+      usage_previous_year.previous_out_of_hours_co2,
+      usage_previous_year.previous_out_of_hours_gbpcurrent,
+      additional.economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.out_of_hours_kwh,
+              json.out_of_hours_co2,
+              json.out_of_hours_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursGasUsage'::text))) usage,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.out_of_hours_kwh AS previous_out_of_hours_kwh,
+              json.out_of_hours_co2 AS previous_out_of_hours_co2,
+              json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursGasUsagePreviousYear'::text))) usage_previous_year,
+      ( SELECT alerts.alert_generation_run_id,
+              json.gas_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(gas_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((usage.alert_generation_run_id = latest_runs.id) AND (usage_previous_year.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
+  create_view "annual_change_in_storage_heater_out_of_hours_uses", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      usage.alert_generation_run_id,
+      usage.school_id,
+      usage.out_of_hours_kwh,
+      usage.out_of_hours_co2,
+      usage.out_of_hours_gbpcurrent,
+      usage_previous_year.previous_out_of_hours_kwh,
+      usage_previous_year.previous_out_of_hours_co2,
+      usage_previous_year.previous_out_of_hours_gbpcurrent,
+      additional.economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.out_of_hours_kwh,
+              json.out_of_hours_co2,
+              json.out_of_hours_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterOutOfHours'::text))) usage,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.out_of_hours_kwh AS previous_out_of_hours_kwh,
+              json.out_of_hours_co2 AS previous_out_of_hours_co2,
+              json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursStorageHeaterUsagePreviousYear'::text))) usage_previous_year,
+      ( SELECT alerts.alert_generation_run_id,
+              json.electricity_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((usage.alert_generation_run_id = latest_runs.id) AND (usage_previous_year.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
   create_view "holiday_usage_last_years", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -3442,5 +3402,45 @@ ActiveRecord::Schema.define(version: 2024_03_19_175227) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "annual_change_in_electricity_out_of_hours_uses", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      usage.alert_generation_run_id,
+      usage.school_id,
+      usage.out_of_hours_kwh,
+      usage.out_of_hours_co2,
+      usage.out_of_hours_gbpcurrent,
+      usage_previous_year.previous_out_of_hours_kwh,
+      usage_previous_year.previous_out_of_hours_co2,
+      usage_previous_year.previous_out_of_hours_gbpcurrent,
+      additional.economic_tariff_changed_this_year
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.out_of_hours_kwh,
+              json.out_of_hours_co2,
+              json.out_of_hours_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursElectricityUsage'::text))) usage,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              json.out_of_hours_kwh AS previous_out_of_hours_kwh,
+              json.out_of_hours_co2 AS previous_out_of_hours_co2,
+              json.out_of_hours_gbpcurrent AS previous_out_of_hours_gbpcurrent
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(out_of_hours_kwh double precision, out_of_hours_co2 double precision, out_of_hours_gbpcurrent double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertOutOfHoursElectricityUsagePreviousYear'::text))) usage_previous_year,
+      ( SELECT alerts.alert_generation_run_id,
+              json.electricity_economic_tariff_changed_this_year AS economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((usage.alert_generation_run_id = latest_runs.id) AND (usage_previous_year.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
 end
