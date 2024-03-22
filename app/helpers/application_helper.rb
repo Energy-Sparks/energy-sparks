@@ -307,7 +307,7 @@ module ApplicationHelper
              ''
            end
     text = sanitize(text) if sanitize
-    text + ' ' + icon.html_safe
+    (text + ' ' + icon).html_safe
   end
 
   def safely

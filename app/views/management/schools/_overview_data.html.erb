@@ -19,7 +19,7 @@
       <tr>
         <% if data.period == I18n.t('classes.tables.summary_table_data.last_week') %>
           <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
-          <td class="text-left"><%= t('common.' + data.fuel_type.to_s) %></td>
+          <td class="text-left"><%= t("common.#{data.fuel_type}") %></td>
         <% else %>
           <td></td>
           <td></td>
@@ -32,7 +32,7 @@
           <% if local_assigns[:show_savings].nil? || local_assigns[:shows_savings] == true %>
             <td class="text-right <%= data.message_class %>"><%= data.savings %></td>
           <% end %>
-          <td class="text-right"><%= up_downify(data.change) %></td>
+          <td class="text-right"><%= up_downify(data.change, sanitize: false) %></td>
         <% else %>
           <td class="text-center <%= data.message_class %>" colspan='5'><%= data.message %></td>
         <% end %>
