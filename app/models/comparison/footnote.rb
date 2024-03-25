@@ -25,7 +25,7 @@ class Comparison::Footnote < ApplicationRecord
   scope :by_label, ->(order = :asc) { order(label: order) }
   scope :by_key, ->(order = :asc) { order(key: order) }
 
-  def t(key, params)
-    find_by_key(key) % params
+  def self.t(key, params)
+    find_by(key: key).description % params
   end
 end
