@@ -39,10 +39,18 @@ module ComparisonsHelper
   end
 
   def holiday_name(type, start_date, end_date, partial: false)
+    return '' if type.nil?
+
     year = start_date.year.to_s
     year += "/#{end_date.year}" if start_date.year != end_date.year
     holiday = I18n.t('analytics.holidays')[type.to_sym]
     partial = partial ? " #{I18n.t('advice_pages.tables.labels.partial')}" : ''
     "#{I18n.t('analytics.holiday_year', holiday: holiday, year: year)}#{partial}"
+  end
+
+  def csv_colgroups(colgroups)
+    colgroups.flat_map do |group|
+      [group[:label]] + Array.new(group.fetch(:colspan, 1) - 1, '')
+    end
   end
 end

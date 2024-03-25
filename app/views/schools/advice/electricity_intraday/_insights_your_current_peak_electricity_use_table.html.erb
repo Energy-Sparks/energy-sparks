@@ -19,7 +19,7 @@
     </td>
     <% if peak_kw_usage_percentage_change %>
       <td class="text-right">
-        <%= up_downify(format_unit(peak_kw_usage_percentage_change, :relative_percent)) %>
+        <%= up_downify(format_unit(peak_kw_usage_percentage_change, :relative_percent), sanitize: false) %>
       </td>
     <% end %>
   </tr>

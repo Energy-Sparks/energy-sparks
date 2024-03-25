@@ -54,10 +54,10 @@ describe 'change_in_solar_pv_since_last_year' do
           [school.name,
            '1,000',
            '1,100',
-           '+10%',
+           '+10&percnt;',
            '800',
            '900',
-           '+13%',
+           '+13&percnt;',
            'Yes'],
           ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
         ]

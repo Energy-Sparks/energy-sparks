@@ -10,9 +10,9 @@ describe 'change_in_*_consumption_*' do
   end
   let(:expected_table) do
     [headers,
-     ["#{schools[1].name} (*2)", '+Infinity%', '£4', '5', 'Easter 2023', 'Easter 2022'],
-     ["#{schools[0].name} (*1) (*6)", '+100%', '£2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
-     ["#{schools[2].name} (*3)", '-Infinity%', '£6', '7', 'Easter 2023', 'Easter 2022'],
+     ["#{schools[1].name} (*2)", '+Infinity&percnt;', '£4', '5', 'Easter 2023', 'Easter 2022'],
+     ["#{schools[0].name} (*1) (*6)", '+100&percnt;', '£2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
+     ["#{schools[2].name} (*3)", '-Infinity&percnt;', '£6', '7', 'Easter 2023', 'Easter 2022'],
      ["Notes\n" \
       '(*1) the comparison has been adjusted because the number of pupils have changed between the two holidays. ' \
       '(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the ' \

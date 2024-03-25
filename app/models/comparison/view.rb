@@ -18,6 +18,14 @@ class Comparison::View < ApplicationRecord
     order(Arel.sql(sanitize_sql_array("(NULLIF(#{new_val},0.0) - NULLIF(#{base},0.0)) / NULLIF(#{base},0.0) DESC NULLS FIRST")))
   end
 
+  scope :by_total, ->(columns) do
+    order(Arel.sql(sanitize_sql_array(columns.map { |c| "COALESCE(#{c}, 0.0)" }.join('+'))))
+  end
+
+  scope :where_any_present, ->(columns) do
+    where(Arel.sql(sanitize_sql_array(columns.map { |c| "#{c} IS NOT NULL" }.join(' OR '))))
+  end
+
   def readonly?
     true
   end

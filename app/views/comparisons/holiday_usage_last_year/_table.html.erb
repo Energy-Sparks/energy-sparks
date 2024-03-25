@@ -1,0 +1,22 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_var val: result.last_year_holiday_gas_gbp, unit: :£ %>
+      <% r.with_var val: result.last_year_holiday_electricity_gbp, unit: :£ %>
+      <% r.with_var val: result.last_year_holiday_gas_gbpcurrent, unit: :£ %>
+      <% r.with_var val: result.last_year_holiday_electricity_gbpcurrent, unit: :£ %>
+      <% r.with_var val: result.last_year_holiday_gas_kwh_per_floor_area, unit: :kwh %>
+      <% r.with_var val: result.last_year_holiday_electricity_kwh_per_floor_area, unit: :kwh %>
+      <% r.with_var do %>
+        <%= holiday_name(result.last_year_holiday_type,
+                         result.last_year_holiday_start_date,
+                         result.last_year_holiday_end_date) %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% c.with_footer do %>
+  <% end %>
+<% end %>

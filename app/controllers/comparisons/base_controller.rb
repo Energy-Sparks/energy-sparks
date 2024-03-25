@@ -72,11 +72,6 @@ module Comparisons
       nil
     end
 
-    # Create the chart configuration used to display chart
-    def create_charts(_results)
-      []
-    end
-
     # Returns a list of table names. These correspond to a partial that should be
     # found in the views folder for the comparison. By default assumes a single table
     # which is defined in a file called _table.html.erb.
@@ -86,40 +81,21 @@ module Comparisons
       [:table]
     end
 
-    def create_single_number_chart(results, name, multiplier, series_name, y_axis_label)
-      chart_data = {}
-
-      # Some charts also set x_max_value to 100 if there are metric values > 100
-      # Removes issues with schools with large % changes breaking the charts
-      #
-      # This could be done by clipping values to 100.0 if the metric has a
-      # unit of percentage/relative_percent
-      results.each do |result|
-        metric = result.send(name)
-        next if metric.nil? || metric.nan? || metric.infinite?
-
-        # for a percentage metric we'd multiply * 100.0
-        # for converting from kW to W 1000.0
-        metric *= multiplier unless multiplier.nil?
-        chart_data[result.school.name] = metric
-      end
-
-      [{
-        id: :comparison,
-        x_axis: chart_data.keys,
-        x_data: { I18n.t("analytics.benchmarking.configuration.column_headings.#{series_name}") => chart_data.values },
-        y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
-      }]
+    def create_charts(_results)
+      []
     end
 
-    def create_multi_chart(results, names, multiplier, y_axis_label)
+    def create_chart(results, metric_to_translation_key, multiplier, y_axis_label,
+                     column_heading_keys: 'analytics.benchmarking.configuration.column_headings',
+                     y_axis_keys: 'chart_configuration.y_axis_label_name')
       chart_data = {}
       schools = []
 
       results.each do |result|
         schools << result.school.name
-        result.slice(*names.keys).each do |metric, value|
-          value ||= 0
+        result.slice(*metric_to_translation_key.keys).each do |metric, value|
+          next if value.nil? || (value.respond_to?(:nan?) && (value.nan? || value.infinite?))
+
           # for a percentage metric we'd multiply * 100.0
           # for converting from kW to W 1000.0
           value *= multiplier unless multiplier.nil?
@@ -127,21 +103,27 @@ module Comparisons
         end
       end
 
-      chart_data.transform_keys! { |key| I18n.t("analytics.benchmarking.configuration.column_headings.#{names[key.to_sym]}") }
+      chart_data.transform_keys! { |key| I18n.t("#{column_heading_keys}.#{metric_to_translation_key[key.to_sym]}") }
 
-      [{
-        id: :comparison,
+      { id: :comparison,
         x_axis: schools,
         x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
-        y_axis_label: I18n.t("chart_configuration.y_axis_label_name.#{y_axis_label}")
-      }]
+        y_axis_label: I18n.t("#{y_axis_keys}.#{y_axis_label}") }
+    end
+
+    def create_single_number_chart(results, name, multiplier, series_name, y_axis_label, **kwargs)
+      [create_chart(results, { name => series_name }, multiplier, y_axis_label, **kwargs)]
+    end
+
+    def create_multi_chart(results, names, multiplier, y_axis_label, **kwargs)
+      [create_chart(results, names, multiplier, y_axis_label, **kwargs)]
     end
 
     def filter
-      @filter ||=
-        params.permit(:search, :benchmark, :country, :school_type, :funder, school_group_ids: [], school_types: [])
-          .with_defaults(school_group_ids: [], school_types: School.school_types.keys, table_name: table_names.first)
-          .to_hash.symbolize_keys
+      @filter ||= params.permit(:search, :benchmark, :country, :school_type, :funder, :table_name,
+                                school_group_ids: [], school_types: [])
+                        .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
+                        .to_hash.symbolize_keys
     end
 
     def index_params
@@ -154,7 +136,8 @@ module Comparisons
 
     def included_schools
       include_invisible = can? :show, :all_schools
-      school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible)
+      school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country,
+                                   :funder).merge(include_invisible: include_invisible)
 
       filter = SchoolFilter.new(**school_params).filter
       filter = filter.accessible_by(current_ability, :show) unless include_invisible

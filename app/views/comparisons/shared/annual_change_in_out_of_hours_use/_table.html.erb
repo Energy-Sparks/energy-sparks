@@ -1,0 +1,42 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+
+      <% if result.economic_tariff_changed_this_year %>
+        <% r.with_reference do %>
+            <a href="#footnotes">(*5)</a>
+        <% end %>
+      <% end %>
+
+      <%= r.with_var val: result.previous_out_of_hours_kwh, unit: :kwh %>
+      <%= r.with_var val: result.out_of_hours_kwh, unit: :kwh %>
+      <%= r.with_var change: true,
+                     val: percent_change(result.previous_out_of_hours_kwh, result.out_of_hours_kwh),
+                     unit: :relative_percent_0dp %>
+
+      <%= r.with_var val: result.previous_out_of_hours_co2, unit: :co2 %>
+      <%= r.with_var val: result.out_of_hours_co2, unit: :co2 %>
+      <%= r.with_var change: true,
+                     val: percent_change(result.previous_out_of_hours_co2, result.out_of_hours_co2),
+                     unit: :relative_percent_0dp %>
+
+      <%= r.with_var val: result.previous_out_of_hours_gbpcurrent, unit: :£ %>
+      <%= r.with_var val: result.out_of_hours_gbpcurrent, unit: :£ %>
+      <%= r.with_var change: true,
+                     val: percent_change(result.previous_out_of_hours_gbpcurrent, result.out_of_hours_gbpcurrent),
+                     unit: :relative_percent_0dp %>
+    <% end %>
+  <% end %>
+  <% c.with_footer do %>
+  <tr>
+    <td colspan="<%= headers.count %>">
+      <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
+      <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
+      <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+    </td>
+  </tr>
+  <% end %>
+<% end %>

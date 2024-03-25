@@ -21,4 +21,10 @@ describe ComparisonsHelper do
         eq('Xmas 2023/2024 (partial)')
     end
   end
+
+  describe '#csv_colgroups' do
+    it 'add blanks' do
+      expect(csv_colgroups([{ label: '' }, { label: 'kwh', colspan: 3 }])).to eq(['', 'kwh', '', ''])
+    end
+  end
 end

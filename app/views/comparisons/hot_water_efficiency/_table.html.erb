@@ -7,7 +7,7 @@
       <% r.with_var val: result.avg_gas_per_pupil_gbp, unit: :£ %>
       <% r.with_var val: result.benchmark_existing_gas_efficiency, unit: :percent %>
       <% r.with_var val: result.benchmark_gas_better_control_saving_gbp, unit: :£ %>
-      <% r.with_var val: result.benchmark_point_of_use_electric_saving_gbp, unit: :£ %>
+      <% r.with_var val: result.benchmark_point_of_use_electric_saving_gbp, unit: :£, change: true %>
     <% end %>
   <% end %>
 <% end %>

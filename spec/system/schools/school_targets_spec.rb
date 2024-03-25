@@ -238,7 +238,7 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
           it 'shows progress summary' do
             def expect_row_to_have_target_and_progress(id, target, progress)
               expect(find(id)).to have_content("#{target.round(1)}%").and \
-                have_content("#{(progress['progress'] * 100).round(0)}%")
+                have_content("#{(progress['progress'] * 100).round(0)}&percnt")
             end
 
             expect_row_to_have_target_and_progress('#electricity-row', expired_target.electricity,
@@ -355,7 +355,7 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
           it 'still shows the full progress summary for gas' do
             within('#gas-row') do
               expect(page).to have_content("-#{target.gas.to_f}%") # target
-              expect(page).to have_content('59%') # % change workweek
+              expect(page).to have_content('59&percnt;') # % change workweek
               expect(page).not_to have_content('last week')
             end
           end
@@ -373,12 +373,12 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
         it 'shows detailed progress data' do
           within('#electricity-row') do
             expect(page).to have_content("-#{target.electricity.to_f}%") # target
-            expect(page).to have_content('99%') # progress
+            expect(page).to have_content('99&percnt;') # progress
             expect(page).not_to have_content('last week')
           end
           within('#gas-row') do
             expect(page).to have_content("-#{target.gas.to_f}%") # target
-            expect(page).to have_content('59%') # progress
+            expect(page).to have_content('59&percnt;') # progress
             expect(page).not_to have_content('last week')
           end
         end
