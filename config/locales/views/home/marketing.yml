@@ -31,6 +31,7 @@ en:
         sub_title_2: Set targets to reduce energy usage
         title: Cut Carbon Emissions
       final_prompt:
+        additional_html: More information about our <a href="/pricing">pricing</a>, <a href="/energy-audits">energy audits</a> and <a href="/education-workshops">educational workshops</a>
         booking: Book your free demo session today to see how we can support your Trust
         question: Ready to cut energy costs and spark pupils' commitment to sustainability?
       learn_why:
