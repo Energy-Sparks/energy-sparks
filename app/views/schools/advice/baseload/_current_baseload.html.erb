@@ -19,7 +19,7 @@
         <% if analysis_dates.recent_data %>
           <td class="text-right"><%= format_unit(current_baseload.average_baseload_kw_last_week, :kw) %></td>
           <td class="text-right">
-            <%= up_downify(format_unit(current_baseload.percentage_change_week, :relative_percent)) %>
+            <%= up_downify(format_unit(current_baseload.percentage_change_week, :relative_percent), sanitize: false) %>
           </td>
         <% else %>
           <td class="text-right old-data">
@@ -39,7 +39,7 @@
         <td class="text-right"><%= format_unit(current_baseload.average_baseload_kw_last_year, :kw) %></td>
         <td class="text-right">
           <% if analysis_dates.one_years_data? %>
-            <%= up_downify(format_unit(current_baseload.percentage_change_year, :relative_percent)) %>
+            <%= up_downify(format_unit(current_baseload.percentage_change_year, :relative_percent), sanitize: false) %>
           <% else %>
             -
           <% end %>

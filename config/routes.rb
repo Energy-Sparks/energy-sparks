@@ -90,6 +90,7 @@ Rails.application.routes.draw do
     resources :gas_targets, only: [:index]
     resources :heating_coming_on_too_early, only: [:index]
     resources :heating_in_warm_weather, only: [:index]
+    resources :holiday_usage_last_year, only: [:index]
     resources :hot_water_efficiency, only: [:index]
     resources :recent_change_in_baseload, only: [:index]
     resources :seasonal_baseload_variation, only: [:index]
