@@ -3,33 +3,51 @@ require 'rails_helper'
 describe 'change_in_energy_since_last_year' do
   let!(:school) { create(:school) }
   let(:key) { :change_in_energy_since_last_year }
-  let(:advice_page_key) { :your_advice_page_key }
+  let(:advice_page_key) { :total_energy_use }
 
-  # change to your variables
   let(:variables) do
     {
-      current_year_percent_of_target_relative: +0.18699995372972533,
-      current_year_unscaled_percent_of_target_relative: -0.4799985149375391,
-      current_year_kwh: 1284.7,
-      current_year_target_kwh: 2281.8825833333326,
-      unscaled_target_kwh_to_date: 2401.9816666666666,
-      tracking_start_date: '2024-01-01'
+      previous_year_electricity_kwh: 0,
+      current_year_electricity_kwh: 0,
+      previous_year_electricity_co2: 0,
+      current_year_electricity_co2: 0,
+      previous_year_electricity_gbp: 0,
+      current_year_electricity_gbp: 0,
+
+      previous_year_gas_kwh: 0,
+      current_year_gas_kwh: 0,
+      previous_year_gas_co2: 0,
+      current_year_gas_co2: 0,
+      previous_year_gas_gbp: 0,
+      current_year_gas_gbp: 0,
+
+      previous_year_storage_heaters_kwh: 0,
+      current_year_storage_heaters_kwh: 0,
+      previous_year_storage_heaters_co2: 0,
+      current_year_storage_heaters_co2: 0,
+      previous_year_storage_heaters_gbp: 0,
+      current_year_storage_heaters_gbp: 0,
+
+      previous_year_solar_pv_kwh: 0,
+      current_year_solar_pv_kwh: 0,
+      previous_year_solar_pv_co2: 0,
+      current_year_solar_pv_co2: 0,
+      previous_year_solar_pv_gbp: 0,
+      current_year_solar_pv_gbp: 0,
+
+      solar_type: 'synthetic'
     }
   end
 
-  # change to your alert type (there may be more than one!)
-  let(:alert_type) { create(:alert_type, class_name: 'AlertElectricityTargetAnnual') }
-  let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
   before do
     create(:advice_page, key: advice_page_key)
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
-    # the following alert is often only required for the tariff changed footnote
-    # delete or amend as appropriate:
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-                   variables: { electricity_economic_tariff_changed_this_year: true })
+
+    alert_run = create(:alert_generation_run, school: school)
+
+    alert = create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert, variables: variables)
   end
 
   context 'when viewing report' do
@@ -45,14 +63,25 @@ describe 'change_in_energy_since_last_year' do
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
 
       let(:headers) do
-        ['School',
-         'Last year electricity £/pupil',
-         'Last year electricity £',
-         'Saving if matched exemplar school (using latest tariff)']
+        [
+          I18n.t('analytics.benchmarking.configuration.column_headings.school'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.fuel'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.no_recent_data')
+        ]
       end
 
       let(:expected_table) do
-        [headers,
+        [['', 'kWh', 'CO2 (kg)', 'Cost', 'Metering'],
+         headers,
          [school.name,
           '£195',
           '£235,000',
@@ -63,7 +92,8 @@ describe 'change_in_energy_since_last_year' do
       end
 
       let(:expected_csv) do
-        [headers,
+        [['', 'kWh', '', '', 'CO2 (kg)', '', '', 'Cost', '', '', 'Metering', '', ''],
+         headers,
          [school.name,
           '195',
           '235,000',
@@ -71,7 +101,5 @@ describe 'change_in_energy_since_last_year' do
         ]
       end
     end
-
-    it_behaves_like 'a school comparison report with a chart'
   end
 end
