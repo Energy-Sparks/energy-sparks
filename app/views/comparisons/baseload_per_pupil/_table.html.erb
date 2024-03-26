@@ -4,12 +4,8 @@
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
-
-      <% if result.electricity_economic_tariff_changed_this_year %>
-        <% r.with_reference do %>
-            <a href="#electricity_economic_tariff_changed_this_year">[t]</a>
-        <% end %>
-      <% end %>
+      <% r.with_reference 'tariff_changed_last_year',
+                          if: result.electricity_economic_tariff_changed_this_year %>
 
       <%= r.with_var val: result.one_year_baseload_per_pupil_kw * 1000.0, unit: :kw %>
       <%= r.with_var val: result.average_baseload_last_year_gbp, unit: :£ %>
@@ -18,14 +14,14 @@
       <%= r.with_var val: [0.0, result.one_year_saving_versus_exemplar_gbp].max, unit: :£ %>
     <% end %>
   <% end %>
+
   <% c.with_footer do %>
     <tr>
       <td colspan="<%= headers.count %>">
         <p>
           <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
         </p>
-        <a name="electricity_economic_tariff_changed_this_year">[t]</a>
-        <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
+        <strong>[t]</strong><%= Comparison::Footnote.t('tariff_changed_last_year') %>
         <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
       </td>
     </tr>

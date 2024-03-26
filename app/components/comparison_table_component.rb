@@ -19,12 +19,28 @@ class ComparisonTableComponent < ViewComponent::Base
     @headers = headers
     @colgroups = colgroups
     @advice_page_tab = advice_page_tab
+    @footnotes = []
   end
 
   renders_many :rows, ->(**args) do
     args[:advice_page] = @advice_page
     args[:advice_page_tab] = @advice_page_tab
     RowComponent.new(**args)
+  end
+
+  def before_render
+    collect_footnotes
+  end
+
+  def collect_footnotes
+    rows.each do |row|
+      row.to_s
+      @footnotes += row.refs
+    end
+  end
+
+  def footnotes
+    @footnotes.inspect
   end
 
   renders_one :footer
@@ -39,6 +55,8 @@ class ComparisonTableComponent < ViewComponent::Base
   #
   # The variable columns are specified as additional slots
   class RowComponent < ViewComponent::Base
+    attr_reader :refs
+
     def initialize(advice_page: nil, advice_page_tab: :insights, classes: '')
       @advice_page = advice_page
       @advice_page_tab = advice_page_tab
@@ -56,7 +74,15 @@ class ComparisonTableComponent < ViewComponent::Base
     end
 
     # Footnote references
-    renders_many :references
+    renders_many :references, 'ComparisonTableComponent::ReferenceComponent'
+
+    def before_render
+      @refs ||= []
+      references.each do |reference|
+        @refs << reference.key if reference.key && reference.if
+      end
+    end
+
     # Data columns
     renders_many :vars, 'ComparisonTableComponent::VarColumnComponent'
 
@@ -136,6 +162,33 @@ class ComparisonTableComponent < ViewComponent::Base
       end
     rescue
       @val
+    end
+  end
+
+  class ReferenceComponent < ViewComponent::Base
+    attr_reader :key, :footnote, :params, :if
+
+    def initialize(key, params = {})
+      @key = key
+      @if = params.delete(:if)
+      @params = params
+      @footnote = Comparison::Footnote.fetch(key)
+    end
+
+    def title
+      t('analytics.benchmarking.content.footnotes.notes')
+    end
+
+    def text
+      "#{@footnote.label}: #{@footnote.t(params)}"
+    end
+
+    def render?
+      @if
+    end
+
+    def call
+      tag.sup("[#{footnote.label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: text })
     end
   end
 end
