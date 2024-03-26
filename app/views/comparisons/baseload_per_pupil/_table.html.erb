@@ -14,16 +14,7 @@
       <%= r.with_var val: [0.0, result.one_year_saving_versus_exemplar_gbp].max, unit: :£ %>
     <% end %>
   <% end %>
-
-  <% c.with_footer do %>
-    <tr>
-      <td colspan="<%= headers.count %>">
-        <p>
-          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
-        </p>
-        <strong>[t]</strong><%= Comparison::Footnote.t('tariff_changed_last_year') %>
-        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-      </td>
-    </tr>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
   <% end %>
 <% end %>

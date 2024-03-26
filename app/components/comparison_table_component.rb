@@ -11,6 +11,8 @@ class ComparisonTableComponent < ViewComponent::Base
   include AdvicePageHelper
   include ComparisonsHelper
 
+  attr_reader :notes, :footnotes, :headers, :colgroups, :report, :table_name, :index_params
+
   def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [], advice_page_tab: :insights)
     @report = report
     @advice_page = advice_page
@@ -19,7 +21,6 @@ class ComparisonTableComponent < ViewComponent::Base
     @headers = headers
     @colgroups = colgroups
     @advice_page_tab = advice_page_tab
-    @footnotes = []
   end
 
   renders_many :rows, ->(**args) do
@@ -28,22 +29,25 @@ class ComparisonTableComponent < ViewComponent::Base
     RowComponent.new(**args)
   end
 
+  renders_many :footnotes, 'FootnoteComponent'
+  renders_many :notes
+
   def before_render
     collect_footnotes
   end
 
   def collect_footnotes
+    seen = []
     rows.each do |row|
-      row.to_s
-      @footnotes += row.refs
+      row.to_s # force render to collect footnotes
+      row.references.each do |reference|
+        if reference.footnote && reference.if && seen.exclude?(reference.key)
+          with_footnote(reference.footnote, reference.params)
+          seen << reference.key
+        end
+      end
     end
   end
-
-  def footnotes
-    @footnotes.inspect
-  end
-
-  renders_one :footer
 
   # For providing information for each row in the comparison table
   #
@@ -75,13 +79,6 @@ class ComparisonTableComponent < ViewComponent::Base
 
     # Footnote references
     renders_many :references, 'ComparisonTableComponent::ReferenceComponent'
-
-    def before_render
-      @refs ||= []
-      references.each do |reference|
-        @refs << reference.key if reference.key && reference.if
-      end
-    end
 
     # Data columns
     renders_many :vars, 'ComparisonTableComponent::VarColumnComponent'
@@ -189,6 +186,19 @@ class ComparisonTableComponent < ViewComponent::Base
 
     def call
       tag.sup("[#{footnote.label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: text })
+    end
+  end
+
+  class FootnoteComponent < ViewComponent::Base
+    attr_reader :footnote, :params
+
+    def initialize(footnote, params = {})
+      @footnote = footnote
+      @params = params
+    end
+
+    def call
+      tag.strong("[#{footnote.label}]") + footnote.t(params)
     end
   end
 end

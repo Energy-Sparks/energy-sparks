@@ -1,18 +1,18 @@
 <div class='text-right mt-2'>
-  <%= download_link(@report, @table_name, @index_params) %>
+  <%= download_link(report, table_name, index_params) %>
 </div>
 
-<table id="<%= comparison_table_id(@report, @table_name) %>" class="table advice-table table-sorted table-hover">
+<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted table-hover">
   <thead class="sticky-heading">
-    <% if @colgroups.any? %>
+    <% if colgroups.any? %>
       <tr>
-        <% @colgroups.each do |colgroup| %>
+        <% colgroups.each do |colgroup| %>
           <th class="text-center" colspan="<%= colgroup[:colspan] || 1 %>"><%= colgroup[:label] %></th>
         <% end %>
       </tr>
     <% end %>
     <tr>
-      <% @headers.each_with_index do |header, idx| %>
+      <% headers.each_with_index do |header, idx| %>
         <th class="<%= idx.zero? ? 'text-left' : 'text-center' %>"><%= header %></th>
       <% end %>
     </tr>
@@ -22,9 +22,22 @@
       <%= row %>
     <% end %>
   </tbody>
-  <tfoot>
-    <%= footer %>
-  </tfoot>
-</table>
 
-<%= footnotes %>
+  <% if footnotes || notes %>
+    <tfoot>
+      <tr>
+        <td colspan="<%= headers.count %>">
+          <p>
+            <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
+          </p>
+          <% footnotes.each do |footnote| %>
+            <%= footnote %>
+          <% end %>
+          <hr>
+          <% notes.each do |note| %>
+            <%= note %>
+          <% end %>
+      </tr>
+    </tfoot>
+  <% end %>
+</table>
