@@ -4,9 +4,8 @@
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
-      <% r.with_reference 'tariff_changed_last_year',
+      <% r.with_reference key: 'tariff_changed_last_year',
                           if: result.electricity_economic_tariff_changed_this_year %>
-
       <%= r.with_var val: result.one_year_baseload_per_pupil_kw * 1000.0, unit: :kw %>
       <%= r.with_var val: result.average_baseload_last_year_gbp, unit: :£ %>
       <%= r.with_var val: result.average_baseload_last_year_kw, unit: :kw %>
@@ -14,7 +13,5 @@
       <%= r.with_var val: [0.0, result.one_year_saving_versus_exemplar_gbp].max, unit: :£ %>
     <% end %>
   <% end %>
-  <% c.with_note do %>
-    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-  <% end %>
+  <% c.with_note t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
 <% end %>

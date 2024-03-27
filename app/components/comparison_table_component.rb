@@ -29,21 +29,23 @@ class ComparisonTableComponent < ViewComponent::Base
     RowComponent.new(**args)
   end
 
-  renders_many :footnotes, 'FootnoteComponent'
-  renders_many :notes
-
-  def before_render
-    collect_footnotes
+  renders_many :footnotes, 'ComparisonTableComponent::FootnoteComponent'
+  renders_many :notes, ->(note) do
+    note
   end
 
-  def collect_footnotes
+  def before_render
+    collect_references
+  end
+
+  def collect_references
     seen = []
     rows.each do |row|
-      row.to_s # force render to collect footnotes
+      row.to_s # force early render to collect references
       row.references.each do |reference|
-        if reference.footnote && reference.if && seen.exclude?(reference.key)
-          with_footnote(reference.footnote, reference.params)
-          seen << reference.key
+        if reference.if && seen.exclude?(reference.id)
+          with_footnote(reference)
+          seen << reference.id
         end
       end
     end
@@ -161,42 +163,48 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   class ReferenceComponent < ViewComponent::Base
-    attr_reader :key, :footnote, :params, :if
+    attr_reader :key, :params, :if
 
-    def initialize(key, params = {})
-      @key = key
-      @if = params.delete(:if)
+    def initialize(**params)
+      @key = params.delete(:key)
+      @if = params.key?(:if) ? params.delete(:if) : true
       @params = params
-      @footnote = Comparison::Footnote.fetch(key)
+    end
+
+    def footnote
+      @footnote ||= Comparison::Footnote.fetch(key) if key
     end
 
     def title
       t('analytics.benchmarking.content.footnotes.notes')
     end
 
-    def text
-      "#{@footnote.label}: #{@footnote.t(params)}"
-    end
-
     def render?
       @if
     end
 
+    def id
+      @id ||= key || Digest::MD5.hexdigest(content)
+    end
+
     def call
-      tag.sup("[#{footnote.label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: text })
+      return content % params if content?
+
+      tag.sup("[#{footnote.label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: "#{@footnote.label}: #{@footnote.t(params)}" })
     end
   end
 
   class FootnoteComponent < ViewComponent::Base
-    attr_reader :footnote, :params
+    attr_reader :reference
 
-    def initialize(footnote, params = {})
-      @footnote = footnote
-      @params = params
+    def initialize(reference)
+      @reference = reference
     end
 
     def call
-      tag.strong("[#{footnote.label}]") + footnote.t(params)
+      return reference.content % reference.params if reference.content?
+
+      tag.strong("[#{reference.footnote.label}] ") + reference.footnote.t(reference.params)
     end
   end
 end
