@@ -54,20 +54,20 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
   end
 
-  context 'with footer' do
-    let(:footer) { 'This is the footer' }
+  context 'with notes' do
+    let(:note) { 'This is note 1' }
 
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|
-        c.with_footer do
-          footer
-        end
+        c.with_note note_1
+        c.with_note note_2
       end
     end
 
-    it 'adds the footer' do
+    it 'adds the notes' do
       within('table tfoot') do
-        expect(html).to have_content(footer)
+        expect(html).to have_content(note_1)
+        expect(html).to have_content(note_2)
       end
     end
   end
