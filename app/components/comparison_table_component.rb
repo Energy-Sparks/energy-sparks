@@ -30,9 +30,7 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   renders_many :footnotes, 'ComparisonTableComponent::FootnoteComponent'
-  renders_many :notes, ->(note) do
-    note
-  end
+  renders_many :notes, 'ComparisonTableComponent::NoteComponent'
 
   def before_render
     collect_references
@@ -205,6 +203,16 @@ class ComparisonTableComponent < ViewComponent::Base
       return reference.content % reference.params if reference.content?
 
       tag.strong("[#{reference.footnote.label}] ") + reference.footnote.t(reference.params)
+    end
+  end
+
+  class NoteComponent < ViewComponent::Base
+    def initialize(note = nil)
+      @note = note
+    end
+
+    def call
+      content? ? content : note
     end
   end
 end

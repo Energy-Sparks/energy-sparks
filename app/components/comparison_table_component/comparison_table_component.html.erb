@@ -33,7 +33,9 @@
           <% footnotes.each do |footnote| %>
             <%= footnote %>
           <% end %>
-          <hr>
+          <% if footnotes.any? && notes.any? %>
+            <hr>
+          <% end %>
           <% notes.each do |note| %>
             <%= note %>
           <% end %>
