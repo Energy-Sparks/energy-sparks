@@ -59,8 +59,6 @@ class ComparisonTableComponent < ViewComponent::Base
   #
   # The variable columns are specified as additional slots
   class RowComponent < ViewComponent::Base
-    attr_reader :refs
-
     def initialize(advice_page: nil, advice_page_tab: :insights, classes: '')
       @advice_page = advice_page
       @advice_page_tab = advice_page_tab
