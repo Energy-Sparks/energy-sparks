@@ -31,6 +31,7 @@ class ComparisonTableComponent < ViewComponent::Base
 
   renders_many :footnotes, 'ComparisonTableComponent::FootnoteComponent'
   renders_many :notes, 'ComparisonTableComponent::NoteComponent'
+  renders_one :footer
 
   def before_render
     collect_references
