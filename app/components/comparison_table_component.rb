@@ -200,7 +200,7 @@ class ComparisonTableComponent < ViewComponent::Base
     end
 
     def call
-      tag.sup("[#{label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: "#{label}: #{description % params}" })
+      tag.sup("[#{label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: "#{label}: #{description}" })
     end
   end
 
