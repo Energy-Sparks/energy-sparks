@@ -55,7 +55,8 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
   end
 
   context 'with notes' do
-    let(:note) { 'This is note 1' }
+    let(:note_1) { 'This is note 1' }
+    let(:note_2) { 'This is note 2' }
 
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|

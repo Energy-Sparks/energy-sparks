@@ -38,8 +38,6 @@ describe 'annual_change_in_*_out_of_hours_use' do
      [expected_school.name, '1', '2', '100', '3', '4', '33.3', '5', '6', '20']]
   end
 
-  include_context 'with comparison report footnotes', ['tariff_changed_last_year']
-
   before do
     create(:advice_page, key: advice_page_key)
     alert_run = create(:alert_generation_run, school: expected_school)

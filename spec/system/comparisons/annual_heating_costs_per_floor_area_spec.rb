@@ -28,6 +28,10 @@ describe 'annual_heating_costs_per_floor_area' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
   before do
     create(:advice_page, key: advice_page_key)
     create(:alert, school: school, alert_generation_run: alert_run,
@@ -65,8 +69,8 @@ describe 'annual_heating_costs_per_floor_area' do
 
       let(:expected_table) do
         [headers,
-         ["#{school.name} [t]", '£2.71', '£4,400', '-£13,400', '114,000', '23.4'],
-         ["Notes\n[t]\n(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons 'last year' is defined as this year to date."]
+         ["#{school.name} [5]", '£2.71', '£4,400', '-£13,400', '114,000', '23.4'],
+         ["Notes\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons 'last year' is defined as this year to date."]
         ]
       end
 
