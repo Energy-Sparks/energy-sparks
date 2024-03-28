@@ -61,7 +61,9 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|
         c.with_note note_1
-        c.with_note note_2
+        c.with_note do
+          note_2
+        end
       end
     end
 

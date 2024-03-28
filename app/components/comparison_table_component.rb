@@ -222,7 +222,7 @@ class ComparisonTableComponent < ViewComponent::Base
     end
 
     def call
-      note || content
+      @note || content
     end
   end
 end
