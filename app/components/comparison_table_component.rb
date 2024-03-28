@@ -23,10 +23,10 @@ class ComparisonTableComponent < ViewComponent::Base
     @advice_page_tab = advice_page_tab
   end
 
-  renders_many :rows, ->(**args) do
-    args[:advice_page] = @advice_page
-    args[:advice_page_tab] = @advice_page_tab
-    RowComponent.new(**args)
+  renders_many :rows, ->(**kwargs) do
+    kwargs[:advice_page] = @advice_page
+    kwargs[:advice_page_tab] = @advice_page_tab
+    RowComponent.new(**kwargs)
   end
 
   renders_many :footnotes, 'ComparisonTableComponent::FootnoteComponent'
@@ -164,10 +164,10 @@ class ComparisonTableComponent < ViewComponent::Base
   class ReferenceComponent < ViewComponent::Base
     attr_reader :key, :params, :if
 
-    def initialize(**params)
-      @key = params.delete(:key)
-      @if = params.key?(:if) ? params.delete(:if) : true
-      @params = params
+    def initialize(**kwargs)
+      @key = kwargs.delete(:key)
+      @if = kwargs.key?(:if) ? kwargs.delete(:if) : true
+      @params = kwargs
     end
 
     def footnote
