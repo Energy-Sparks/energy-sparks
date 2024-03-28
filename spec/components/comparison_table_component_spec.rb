@@ -137,20 +137,48 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     context 'with reference' do
-      let(:reference) { 'This is the reference' }
+      let(:reference_params) {}
+      let(:content) {}
 
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
           c.with_row do |r|
-            r.with_reference do
-              reference
-            end
+            r.with_reference(**reference_params) { content }
           end
         end
       end
 
-      it 'adds the reference' do
-        expect(html).to have_content(reference)
+      context 'with a label, description and params' do
+        let(:reference_params) { { label: 't', description: 'my reference with %{sub}', sub: 'parameters' } }
+
+        it 'adds the reference' do
+          expect(html).to have_content('[t] my reference with parameters')
+        end
+
+        context 'with missing params' do
+          let(:reference_params) { { label: 't', description: 'my reference with %{sub}' } }
+
+          it 'raises KeyError' do
+            expect { html }.to raise_error(KeyError)
+          end
+        end
+      end
+
+      context 'with a footnote key and params' do
+        let!(:footnote) { create(:footnote, key: 'note', label: 't', description: 'my reference with %{sub}')}
+        let(:reference_params) { { key: 'note', sub: 'parameters' } }
+
+        it 'adds the reference' do
+          expect(html).to have_content('[t] my reference with parameters')
+        end
+
+        context 'with missing params' do
+          let(:reference_params) { { key: 'note' } }
+
+          it 'raises KeyError' do
+            expect { html }.to raise_error(KeyError)
+          end
+        end
       end
     end
 

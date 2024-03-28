@@ -162,12 +162,16 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   class ReferenceComponent < ViewComponent::Base
-    attr_reader :key, :params, :if
+    attr_reader :key, :params, :if, :label
 
-    def initialize(**kwargs)
-      @key = kwargs.delete(:key)
+    def initialize(key: nil, label: nil, description: nil, **kwargs)
+      @key = key
+
+      @label = key ? footnote.label : label
+      @description = key ? footnote.description : (description || content)
+
       @if = kwargs.key?(:if) ? kwargs.delete(:if) : true
-      @params = kwargs
+      @params = kwargs || {}
     end
 
     def footnote
@@ -182,22 +186,21 @@ class ComparisonTableComponent < ViewComponent::Base
       @if
     end
 
+    def description
+      @description % params
+    end
+
+    # used for sorting footnotes in the footer
     def sort_key
-      footnote ? "#{footnote.label}#{footnote.description}" : content
+      "#{label}#{description}"
     end
 
     def id
-      @id ||= footnote ? footnote.key : Digest::MD5.hexdigest(content)
+      @id ||= footnote ? footnote.key : Digest::MD5.hexdigest(description)
     end
 
     def call
-      return content % params if content?
-
-      if footnote
-        tag.sup("[#{footnote.label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: "#{@footnote.label}: #{@footnote.t(params)}" })
-      else
-        raise "missing footnote: #{key}"
-      end
+      tag.sup("[#{label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: "#{label}: #{description % params}" })
     end
   end
 
@@ -209,9 +212,7 @@ class ComparisonTableComponent < ViewComponent::Base
     end
 
     def call
-      return reference.content % reference.params if reference.content?
-
-      tag.strong("[#{reference.footnote.label}] ") + reference.footnote.t(reference.params)
+      tag.strong("[#{reference.label}] ") + reference.description
     end
   end
 
@@ -221,7 +222,7 @@ class ComparisonTableComponent < ViewComponent::Base
     end
 
     def call
-      content? ? content : note
+      note || content
     end
   end
 end
