@@ -23,7 +23,7 @@
     <% end %>
   </tbody>
 
-  <% if footnotes || notes %>
+  <% if footnotes.any? || notes.any? %>
     <tfoot>
       <tr>
         <td colspan="<%= headers.count %>">

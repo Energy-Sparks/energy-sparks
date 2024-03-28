@@ -7,8 +7,8 @@ namespace :after_party do
     def import_footnote(label, key, i18n_key)
       footnote = Comparison::Footnote.find_or_initialize_by(key: key)
       footnote.label = label
-      footnote.description_en = Loofah.fragment(I18n.t(i18n_key, locale: :en)).text.gsub(/\(\*\d\) /, '').gsub(/\s+/, ' ')
-      footnote.description_cy = Loofah.fragment(I18n.t(i18n_key, locale: :cy)).text.gsub(/\(\*\d\) /, '').gsub(/\s+/, ' ')
+      footnote.description_en = Loofah.fragment(I18n.t(i18n_key, locale: :en)).text.gsub(/\(\*\d\)\s+/, '').gsub(/\s+/, ' ')
+      footnote.description_cy = Loofah.fragment(I18n.t(i18n_key, locale: :cy)).text.gsub(/\(\*\d\)\s+/, '').gsub(/\s+/, ' ')
       footnote.save!
     end
 

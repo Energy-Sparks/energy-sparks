@@ -11,14 +11,7 @@
       <% r.with_var val: result.weekend_and_holiday_gbp, unit: :£ %>
     <% end %>
   <% end %>
-  <% c.with_footer do %>
-    <tr>
-      <td colspan="<%= headers.count %>">
-        <p>
-          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
-        </p>
-        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-      </td>
-    </tr>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
   <% end %>
 <% end %>

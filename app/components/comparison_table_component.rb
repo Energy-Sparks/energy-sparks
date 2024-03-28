@@ -38,16 +38,16 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   def collect_references
-    seen = []
+    seen = {}
     rows.each do |row|
       row.to_s # force early render to collect references
       row.references.each do |reference|
-        if reference.if && seen.exclude?(reference.id)
-          with_footnote(reference)
-          seen << reference.id
+        if reference.if && !seen.key?(reference.id)
+          seen[reference.id] = reference
         end
       end
     end
+    seen.values.sort_by(&:sort_key).each {|ref| with_footnote(ref) }
   end
 
   # For providing information for each row in the comparison table
@@ -182,14 +182,22 @@ class ComparisonTableComponent < ViewComponent::Base
       @if
     end
 
+    def sort_key
+      footnote ? "#{footnote.label}#{footnote.description}" : content
+    end
+
     def id
-      @id ||= key || Digest::MD5.hexdigest(content)
+      @id ||= footnote ? footnote.key : Digest::MD5.hexdigest(content)
     end
 
     def call
       return content % params if content?
 
-      tag.sup("[#{footnote.label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: "#{@footnote.label}: #{@footnote.t(params)}" })
+      if footnote
+        tag.sup("[#{footnote.label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: "#{@footnote.label}: #{@footnote.t(params)}" })
+      else
+        raise "missing footnote: #{key}"
+      end
     end
   end
 

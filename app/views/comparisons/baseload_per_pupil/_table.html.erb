@@ -13,5 +13,7 @@
       <%= r.with_var val: [0.0, result.one_year_saving_versus_exemplar_gbp].max, unit: :£ %>
     <% end %>
   <% end %>
-  <% c.with_note t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+  <% end %>
 <% end %>

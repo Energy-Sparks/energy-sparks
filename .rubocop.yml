@@ -440,4 +440,3 @@ Metrics/BlockLength:
 Rails/FindEach:
   Exclude: # find_each does not work here
     - 'app/components/comparison_table_component.rb'
-

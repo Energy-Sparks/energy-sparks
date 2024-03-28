@@ -6,6 +6,11 @@ describe 'heating_coming_on_too_early' do
   let!(:schools) { create_list(:school, 3) }
   let(:key) { :heating_coming_on_too_early }
   let(:advice_page_key) { :heating_control }
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
   let!(:report) { create(:report, key: key) }
 
   before do
@@ -82,8 +87,8 @@ describe 'heating_coming_on_too_early' do
         [headers,
          [schools[2].name, '', '13:03', ''],
          [schools[1].name, '13:02', '', '£1.10'],
-         ["#{schools[0].name} (*5)", '13:00', '13:01', '10p'],
-         ["Notes\n(*5) The tariff has changed during the last year for this school. Savings are calculated using the " \
+         ["#{schools[0].name} [5]", '13:00', '13:01', '10p'],
+         ["Notes\n[5] The tariff has changed during the last year for this school. Savings are calculated using the " \
           "latest tariff but other £ values are calculated using the relevant tariff at the time\n" \
           "In school comparisons 'last year' is defined as this year to date."]]
       end
