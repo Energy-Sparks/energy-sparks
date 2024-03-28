@@ -5,7 +5,7 @@ module Admin::Comparisons
     load_and_authorize_resource :footnote, class: 'Comparison::Footnote'
 
     def index
-      @footnotes = @footnotes.by_key
+      @footnotes = @footnotes.by_label.by_key
     end
 
     def create
@@ -33,7 +33,7 @@ module Admin::Comparisons
 
     def footnote_params
       translated_params = t_params(Comparison::Footnote.mobility_attributes)
-      params.require(:footnote).permit(translated_params, :key)
+      params.require(:footnote).permit(translated_params, :label, :key)
     end
   end
 end

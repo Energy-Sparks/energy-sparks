@@ -6,6 +6,10 @@ describe 'electricity_peak_kw_per_pupil' do
   let(:school) { create(:school) }
   let!(:report) { create(:report, key: :electricity_peak_kw_per_pupil) }
 
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
   before do
     create(:advice_page, key: :electricity_intraday)
     alert_run = create(:alert_generation_run, school: school)
@@ -39,9 +43,9 @@ describe 'electricity_peak_kw_per_pupil' do
       let(:advice_page_path) { insights_school_advice_electricity_intraday_path(expected_school) }
       let(:expected_table) do
         [headers,
-         ["#{school.name} (*5)", '1,000', '2', '3', '£4'],
+         ["#{school.name} [5]", '1,000', '2', '3', '£4'],
          ["Notes\n" \
-          '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+          '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
           'tariff but other £ values are calculated using the relevant tariff at the time']]
       end
       let(:expected_csv) do

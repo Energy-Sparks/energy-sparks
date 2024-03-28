@@ -9,12 +9,7 @@
       <% r.with_var val: result.one_year_saving_versus_exemplar_gbpcurrent, unit: :£ %>
     <% end %>
   <% end %>
-  <% c.with_footer do %>
-    <tr>
-      <td colspan="<%= headers.count %>">
-        <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
-        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-      </td>
-    </tr>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
   <% end %>
 <% end %>

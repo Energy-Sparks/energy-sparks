@@ -4,11 +4,8 @@
   <% results.each do |result| %>
     <% component.with_row do |row| %>
       <% row.with_school school: result.school %>
-      <% if result.electricity_economic_tariff_changed_this_year %>
-        <% row.with_reference do %>
-            <a href="#footnotes">(*5)</a>
-        <% end %>
-      <% end %>
+      <% row.with_reference key: 'tariff_changed_last_year',
+                            if: result.electricity_economic_tariff_changed_this_year %>
       <% row.with_var change: true, val: result.percent_intraday_variation, unit: :relative_percent %>
       <% row.with_var val: result.min_day_kw, unit: :kw %>
       <% row.with_var val: result.max_day_kw, unit: :kw %>
@@ -16,13 +13,5 @@
       <% row.with_var { t('date.day_names')[result.max_day] } %>
       <% row.with_var val: result.annual_cost_gbpcurrent, unit: :£ %>
     <% end %>
-  <% end %>
-  <% component.with_footer do %>
-    <tr>
-      <td colspan="<%= headers.count %>">
-        <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
-        <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
-      </td>
-    </tr>
   <% end %>
 <% end %>

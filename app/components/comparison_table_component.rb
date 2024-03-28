@@ -11,6 +11,8 @@ class ComparisonTableComponent < ViewComponent::Base
   include AdvicePageHelper
   include ComparisonsHelper
 
+  attr_reader :notes, :footnotes, :headers, :colgroups, :report, :table_name, :index_params
+
   def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [], advice_page_tab: :insights)
     @report = report
     @advice_page = advice_page
@@ -21,13 +23,31 @@ class ComparisonTableComponent < ViewComponent::Base
     @advice_page_tab = advice_page_tab
   end
 
-  renders_many :rows, ->(**args) do
-    args[:advice_page] = @advice_page
-    args[:advice_page_tab] = @advice_page_tab
-    RowComponent.new(**args)
+  renders_many :rows, ->(**kwargs) do
+    kwargs[:advice_page] = @advice_page
+    kwargs[:advice_page_tab] = @advice_page_tab
+    RowComponent.new(**kwargs)
   end
 
-  renders_one :footer
+  renders_many :footnotes, 'ComparisonTableComponent::FootnoteComponent'
+  renders_many :notes, 'ComparisonTableComponent::NoteComponent'
+
+  def before_render
+    collect_references
+  end
+
+  def collect_references
+    seen = {}
+    rows.each do |row|
+      row.to_s # force early render to collect references, haven't found a better way as yet
+      row.references.each do |reference|
+        if reference.if && !seen.key?(reference.id)
+          seen[reference.id] = reference
+        end
+      end
+    end
+    seen.values.sort_by(&:sort_key).each {|ref| with_footnote(ref) }
+  end
 
   # For providing information for each row in the comparison table
   #
@@ -56,7 +76,8 @@ class ComparisonTableComponent < ViewComponent::Base
     end
 
     # Footnote references
-    renders_many :references
+    renders_many :references, 'ComparisonTableComponent::ReferenceComponent'
+
     # Data columns
     renders_many :vars, 'ComparisonTableComponent::VarColumnComponent'
 
@@ -136,6 +157,71 @@ class ComparisonTableComponent < ViewComponent::Base
       end
     rescue
       @val
+    end
+  end
+
+  class ReferenceComponent < ViewComponent::Base
+    attr_reader :key, :params, :if, :label
+
+    def initialize(key: nil, label: nil, description: nil, **kwargs)
+      @key = key
+
+      @label = key ? footnote.label : label
+      @description = key ? footnote.description : description
+
+      @if = kwargs.key?(:if) ? kwargs.delete(:if) : true
+      @params = kwargs || {}
+    end
+
+    def footnote
+      @footnote ||= Comparison::Footnote.fetch(key) if key
+    end
+
+    def title
+      t('analytics.benchmarking.content.footnotes.notes')
+    end
+
+    def render?
+      @if
+    end
+
+    def description
+      @description % params
+    end
+
+    # used for sorting footnotes in the footer
+    def sort_key
+      "#{label}#{description}"
+    end
+
+    def id
+      @id ||= footnote ? footnote.key : Digest::MD5.hexdigest(description)
+    end
+
+    def call
+      tag.sup("[#{label}]", tabindex: 0, title: title, data: { trigger: 'focus', toggle: 'popover', content: "#{label}: #{description}" })
+    end
+  end
+
+  class FootnoteComponent < ViewComponent::Base
+    attr_reader :reference
+
+    def initialize(reference)
+      @reference = reference
+    end
+
+    def call
+      tag.strong("[#{reference.label}] ") + reference.description
+    end
+  end
+
+  class NoteComponent < ViewComponent::Base
+    def initialize(note = nil)
+      @note = note
+    end
+
+    def call
+      @note || content
     end
   end
 end

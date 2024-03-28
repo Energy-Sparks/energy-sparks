@@ -437,3 +437,6 @@ Naming/AsciiIdentifiers:
 Metrics/BlockLength:
   Exclude: # excluding route file as blocklength can be greater than default 25
     - 'config/route.rb'
+Rails/FindEach:
+  Exclude: # find_each does not work here
+    - 'app/components/comparison_table_component.rb'

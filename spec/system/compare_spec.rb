@@ -51,7 +51,7 @@ describe 'compare pages', :compare, type: :system do
     it 'includes tabular data', if: feature_flag do
       within '#tables' do
         expect(page).to have_selector(:table_row, {
-          'School' => "#{school.name} [t]",
+          'School' => "#{school.name} [5]",
           'Baseload per pupil (W)' => '3,000',
           'Last year cost of baseload' => '£2',
           'Average baseload kW' => '1',
@@ -199,6 +199,10 @@ describe 'compare pages', :compare, type: :system do
 
   shared_context 'results page context' do |feature_flag: false|
     if feature_flag
+      include_context 'with comparison report footnotes' do
+        let(:footnotes) { [tariff_changed_last_year] }
+      end
+
       before do
         create(:advice_page, key: :baseload)
 

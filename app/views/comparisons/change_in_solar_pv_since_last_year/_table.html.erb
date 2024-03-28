@@ -20,14 +20,7 @@
       <%= r.with_var { y_n(result.solar_type == 'synthetic') } %>
     <% end %>
   <% end %>
-  <% c.with_footer do %>
-    <tr>
-      <td colspan="6">
-        <p>
-          <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
-        </p>
-        <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-      </td>
-    </tr>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
   <% end %>
 <% end %>

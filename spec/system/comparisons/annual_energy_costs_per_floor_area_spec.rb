@@ -41,6 +41,10 @@ describe 'annual_energy_costs_per_floor_area' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
   before do
     create(:advice_page, key: advice_page_key)
 
@@ -89,7 +93,7 @@ describe 'annual_energy_costs_per_floor_area' do
       let(:expected_table) do
         [
           headers,
-          ["#{school.name} [t]",
+          ["#{school.name} [5]",
            I18n.t('common.school_types.' + school.school_type),
            '100',
            '200',
@@ -98,8 +102,8 @@ describe 'annual_energy_costs_per_floor_area' do
            '£630',
            '660',
            '700'],
-          ["Notes\n[t]\n" \
-           '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+          ["Notes\n" \
+           '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
            "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
            "'last year' is defined as this year to date."]
         ]

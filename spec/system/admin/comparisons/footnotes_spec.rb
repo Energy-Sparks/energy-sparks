@@ -38,7 +38,7 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
 
       it 'lists footnote' do
         within('table') do
-          expect(page).to have_selector(:table_row, { 'Key' => footnote.key, 'Description' => footnote.description })
+          expect(page).to have_selector(:table_row, { 'Label' => footnote.label, 'Key' => footnote.key, 'Description' => footnote.description })
         end
       end
 
@@ -53,24 +53,27 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
 
         context 'with invalid attributes' do
           before do
+            fill_in 'Label', with: ''
             fill_in 'Key', with: ''
             fill_in 'Description en', with: ''
             click_on 'Save'
           end
 
+          it { expect(page).to have_content("Label *\ncan't be blank") }
           it { expect(page).to have_content("Key *\ncan't be blank") }
           it { expect(page).to have_content("Description en\ncan't be blank") }
         end
 
         context 'with valid attributes' do
           before do
+            fill_in 'Label', with: 'Updated label'
             fill_in 'Key', with: 'Updated key'
             fill_in 'Description en', with: 'Updated description'
             click_on 'Save'
           end
 
           it { expect(page).to have_content('Footnote was successfully updated') }
-          it { expect(page).to have_selector(:table_row, { 'Key' => 'Updated key', 'Description' => 'Updated description' }) }
+          it { expect(page).to have_selector(:table_row, { 'Label' => 'Updated label', 'Key' => 'Updated key', 'Description' => 'Updated description' }) }
         end
       end
 
@@ -85,24 +88,27 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
 
         context 'with invalid attributes' do
           before do
+            fill_in 'Label', with: ''
             fill_in 'Key', with: ''
             fill_in 'Description en', with: ''
             click_on 'Save'
           end
 
           it { expect(page).to have_content("Key *\ncan't be blank") }
+          it { expect(page).to have_content("Label *\ncan't be blank") }
           it { expect(page).to have_content("Description en\ncan't be blank") }
         end
 
         context 'with valid attributes' do
           before do
+            fill_in 'Label', with: 'New label'
             fill_in 'Key', with: 'New key'
             fill_in 'Description en', with: 'New description'
             click_on 'Save'
           end
 
           it { expect(page).to have_content('Footnote was successfully created') }
-          it { expect(page).to have_selector(:table_row, { 'Key' => 'New key', 'Description' => 'New description' }) }
+          it { expect(page).to have_selector(:table_row, { 'Label' => 'New label', 'Key' => 'New key', 'Description' => 'New description' }) }
         end
       end
 
