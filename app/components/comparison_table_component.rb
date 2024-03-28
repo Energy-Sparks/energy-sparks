@@ -40,7 +40,7 @@ class ComparisonTableComponent < ViewComponent::Base
   def collect_references
     seen = {}
     rows.each do |row|
-      row.to_s # force early render to collect references
+      row.to_s # force early render to collect references, haven't found a better way as yet
       row.references.each do |reference|
         if reference.if && !seen.key?(reference.id)
           seen[reference.id] = reference
@@ -168,7 +168,7 @@ class ComparisonTableComponent < ViewComponent::Base
       @key = key
 
       @label = key ? footnote.label : label
-      @description = key ? footnote.description : (description || content)
+      @description = key ? footnote.description : description
 
       @if = kwargs.key?(:if) ? kwargs.delete(:if) : true
       @params = kwargs || {}
