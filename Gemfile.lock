@@ -234,9 +234,9 @@ GEM
     distribution (0.8.0)
     docile (1.4.0)
     domain_name (0.6.20231109)
-    dotenv (3.0.2)
-    dotenv-rails (3.0.2)
-      dotenv (= 3.0.2)
+    dotenv (3.1.0)
+    dotenv-rails (3.1.0)
+      dotenv (= 3.1.0)
       railties (>= 6.1)
     erb_lint (0.5.0)
       activesupport
