@@ -8,7 +8,7 @@ class CampaignMailerPreview < ActionMailer::Preview
       tel: '01225 444444',
       job_title: 'CFO',
       organisation: 'Fake Academies',
-      org_type: ['Primary school (state)', 'Secondary school (state)'],
+      org_type: :mat,
       consent: true
     }
     party = {

@@ -20,7 +20,7 @@ RSpec.describe CampaignMailer do
         tel: '01225 444444',
         job_title: 'CFO',
         organisation: 'Fake Academies',
-        org_type: ['Multi-Academy Trust'],
+        org_type: :mat,
         consent: true
       }
     end
@@ -55,7 +55,7 @@ RSpec.describe CampaignMailer do
       expect(email.html_part.decoded).to include('jane@example.org')
       expect(email.html_part.decoded).to include('01225 444444')
       expect(email.html_part.decoded).to include('CFO')
-      expect(email.html_part.decoded).to include('Multi-Academy Trust')
+      expect(email.html_part.decoded).to include('Mat')
       expect(email.html_part.decoded).to include('true')
     end
 
