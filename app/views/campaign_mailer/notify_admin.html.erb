@@ -1,0 +1,29 @@
+<h1 class="mb-3">
+  <%= @request_type.to_s.humanize %>
+</h1>
+
+<h2>Submitted Details</h2>
+
+<ul>
+<li>Name: <%= @contact[:first_name] %> <%= @contact[:last_name] %></li>
+<li>Email: <%= @contact[:email] %></li>
+<li>Tel: <%= @contact[:tel] %></li>
+<li>Job Title: <%= @contact[:job_title] %></li>
+<li>Organisation: <%= @contact[:organisation] %></li>
+<li>Organisation Type: <%= @contact[:org_type].to_s.humanize %></li>
+<li>Marketing Consent: <%= @contact[:consent] %></li>
+</ul>
+
+<% if @party.present? %>
+  <h2>Capsule Links</h2>
+
+  <%= link_to 'View Contact',
+              "https://energysparks.capsulecrm.com/party/#{@party['party']['id']}",
+              class: 'btn btn-primary mt-3 mb-3' %>
+
+  <% if @opportunity.present? %>
+    <%= link_to 'View Opportunity',
+                "https://energysparks.capsulecrm.com/opportunity/#{@opportunity['opportunity']['id']}",
+                class: 'btn btn-primary mt-3 mb-3' %>
+  <% end %>
+<% end %>
