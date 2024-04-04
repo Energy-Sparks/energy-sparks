@@ -129,7 +129,7 @@ describe Campaigns::ContactHandlerService do
             { name: 'Secondary school (state)' }
           ],
           fields: [
-            { id: described_class::MARKETING_CONSENT_FIELD_ID, value: true }
+            { definition: { id: described_class::MARKETING_CONSENT_FIELD_ID }, value: true }
           ]
         }
       })
@@ -153,9 +153,11 @@ describe Campaigns::ContactHandlerService do
       expect(capsule_data).to eq({
         opportunity: {
           party: { id: 12345 },
-          name: 'New Opportunity - Fake Academies',
+          name: 'Fake Academies',
           description: 'Auto-generated opportunity from campaign contact form',
+          milestone: { id: described_class::NEW_MILESTONE_ID },
           tags: [
+            { name: 'Campaign' },
             { name: 'Book demo' }
           ]
         }

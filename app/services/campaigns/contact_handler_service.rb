@@ -3,6 +3,7 @@ module Campaigns
     # Unique identifier for the custom field created in Capsule for capturing
     # consent to receive marketing emails
     MARKETING_CONSENT_FIELD_ID = 830129
+    NEW_MILESTONE_ID = 2041588
 
     def initialize(request_type, contact)
       @request_type = request_type
@@ -43,7 +44,7 @@ module Campaigns
           phoneNumbers: [{ number: @contact[:tel] }],
           tags: tags,
           fields: [
-            { id: MARKETING_CONSENT_FIELD_ID, value: @contact[:consent] }
+            { definition: { id: MARKETING_CONSENT_FIELD_ID }, value: @contact[:consent] }
           ]
         }
       }
@@ -62,12 +63,14 @@ module Campaigns
     def create_opportunity_for_party(party)
       {
         opportunity: {
-          name: "New Opportunity - #{@contact[:organisation]}",
+          name: @contact[:organisation],
           description: 'Auto-generated opportunity from campaign contact form',
+          milestone: { id: NEW_MILESTONE_ID },
           party: {
             id: party['party']['id']
           },
           tags: [
+            { name: 'Campaign' },
             { name: @request_type.to_s.humanize }
           ]
         }

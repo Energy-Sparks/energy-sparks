@@ -20,6 +20,10 @@ module CapsuleCrm
       @connection = connection || Faraday.new(BASE_URL, headers: headers)
     end
 
+    def milestones
+      get_data('/milestones')
+    end
+
     def field_definitions(entity = :parties)
       get_data("/#{entity}/fields/definitions")
     end
