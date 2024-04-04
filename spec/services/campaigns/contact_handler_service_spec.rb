@@ -127,6 +127,9 @@ describe Campaigns::ContactHandlerService do
             { name: 'Book demo' },
             { name: 'Primary school (state)' },
             { name: 'Secondary school (state)' }
+          ],
+          fields: [
+            { id: described_class::MARKETING_CONSENT_FIELD_ID, value: true }
           ]
         }
       })

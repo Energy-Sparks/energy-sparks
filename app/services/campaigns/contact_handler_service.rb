@@ -1,5 +1,9 @@
 module Campaigns
   class ContactHandlerService
+    # Unique identifier for the custom field created in Capsule for capturing
+    # consent to receive marketing emails
+    MARKETING_CONSENT_FIELD_ID = 830129
+
     def initialize(request_type, contact)
       @request_type = request_type
       @contact = contact
@@ -37,7 +41,10 @@ module Campaigns
           organisation: { name: @contact[:organisation] },
           emailAddresses: [{ address: @contact[:email] }],
           phoneNumbers: [{ number: @contact[:tel] }],
-          tags: tags
+          tags: tags,
+          fields: [
+            { id: MARKETING_CONSENT_FIELD_ID, value: @contact[:consent] }
+          ]
         }
       }
     end

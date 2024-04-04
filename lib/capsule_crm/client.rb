@@ -1,12 +1,14 @@
 module CapsuleCrm
   # other unexpected errors
   class ApiFailure < StandardError; end
+  # 400 incorrect request body
+  class BadRequest < ApiFailure; end
   # 401 invalid api key
   class NotAuthorised < ApiFailure; end
   # 403 operation not permitted
   class NotAllowed < ApiFailure; end
-  # 400 incorrect request body
-  class BadRequest < ApiFailure; end
+  # 404 incorrect url
+  class NotFound < ApiFailure; end
   # 422 field validation failed
   class ValidationFailed < ApiFailure; end
 
@@ -16,6 +18,10 @@ module CapsuleCrm
     def initialize(api_key: ENV['CAPSULECRM_API_KEY'], connection: nil)
       @api_key = api_key
       @connection = connection || Faraday.new(BASE_URL, headers: headers)
+    end
+
+    def field_definitions(entity = :parties)
+      get_data("/#{entity}/fields/definitions")
     end
 
     def users
