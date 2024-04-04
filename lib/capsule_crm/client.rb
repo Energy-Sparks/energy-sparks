@@ -1,14 +1,14 @@
 module CapsuleCrm
-  # 401 invalid api key
-  class NotAuthorised < StandardError; end
-  # 403 operation not permitted
-  class NotAllowed < StandardError; end
-  # 400 incorrect request body
-  class BadRequest < StandardError; end
-  # 422 field validation failed
-  class ValidationFailed < StandardError; end
   # other unexpected errors
   class ApiFailure < StandardError; end
+  # 401 invalid api key
+  class NotAuthorised < ApiFailure; end
+  # 403 operation not permitted
+  class NotAllowed < ApiFailure; end
+  # 400 incorrect request body
+  class BadRequest < ApiFailure; end
+  # 422 field validation failed
+  class ValidationFailed < ApiFailure; end
 
   class Client
     BASE_URL = 'https://api.capsulecrm.com/api/v2'.freeze

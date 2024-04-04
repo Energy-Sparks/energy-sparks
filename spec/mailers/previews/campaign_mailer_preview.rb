@@ -1,6 +1,6 @@
 class CampaignMailerPreview < ActionMailer::Preview
   def notify_admin
-    request_type = :book_now
+    request_type = :book_demo
     contact = {
       first_name: 'Jane',
       last_name: 'Smith',
@@ -8,7 +8,7 @@ class CampaignMailerPreview < ActionMailer::Preview
       tel: '01225 444444',
       job_title: 'CFO',
       organisation: 'Fake Academies',
-      org_type: :mat,
+      org_type: ['Primary school (state)', 'Secondary school (state)'],
       consent: true
     }
     party = {
