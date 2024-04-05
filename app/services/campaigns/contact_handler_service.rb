@@ -20,6 +20,7 @@ module Campaigns
 
     def create_party
       party = create_party_from_contact
+      puts party.inspect
       CapsuleCrm::Client.new.create_party(party)
     rescue => e
       Rails.logger.error("Error: #{e.message} when creating party in CapsuleCRM")
@@ -32,7 +33,7 @@ module Campaigns
         { name: 'Campaign' },
         { name: @request_type.to_s.humanize }
       ]
-      tags = tags + @contact[:org_type].map { |t| { name: t } }
+      tags = tags + @contact[:org_type].map { |t| { name: t.to_s.humanize } }
       {
         party: {
           type: :person,

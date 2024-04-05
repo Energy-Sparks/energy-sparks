@@ -12,7 +12,7 @@ describe Campaigns::ContactHandlerService do
       tel: '01225 444444',
       job_title: 'CFO',
       organisation: 'Fake Academies',
-      org_type: ['Primary school (state)', 'Secondary school (state)'],
+      org_type: [:primary, :secondary],
       consent: true
     }
   end
@@ -125,8 +125,8 @@ describe Campaigns::ContactHandlerService do
           tags: [
             { name: 'Campaign' },
             { name: 'Book demo' },
-            { name: 'Primary school (state)' },
-            { name: 'Secondary school (state)' }
+            { name: 'Primary' },
+            { name: 'Secondary' }
           ],
           fields: [
             { definition: { id: described_class::MARKETING_CONSENT_FIELD_ID }, value: true }
