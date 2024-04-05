@@ -23,7 +23,7 @@ class LandingPagesController < ApplicationController
   def more_information
   end
 
-  # Process form and submit job
+  # Process forms and submit job
   def submit_contact
     request_type = contact_params['request_type'].to_sym
     contact = contact_for_capsule
@@ -31,7 +31,7 @@ class LandingPagesController < ApplicationController
     redirect_to thank_you_campaigns_path(redirect_params(request_type, contact))
   end
 
-  # Final thank you page
+  # Final step either shows confirmation or embedded booking form
   def thank_you
     case params[:request_type].to_sym
     when :book_demo
@@ -44,8 +44,22 @@ class LandingPagesController < ApplicationController
 
   private
 
+  def contact_for_capsule
+    contact = contact_params.except('request_type')
+    contact['consent'] = ActiveModel::Type::Boolean.new.cast(contact['consent'])
+    contact.to_h
+  end
+
+  def trust_or_local_authority?
+    contact_params[:org_type].any? {|t| GROUP_TYPES.include? t }
+  end
+
+  def calendly_event_type
+    trust_or_local_authority? ? 'mat-demo' : 'demo-for-individual-schools'
+  end
+
   def calendly_data_url
-    event_type = params[:event_type]
+    event_type = params[:event_type] || 'demo-for-individual-schools'
     calendly_params = {
       name: params[:name],
       email: params[:email],
@@ -65,26 +79,12 @@ class LandingPagesController < ApplicationController
         event_type: calendly_event_type,
         name: "#{contact['first_name']} #{contact['last_name']}",
         email: contact['email'],
-        tel: contact['tel'].gsub(/^0/, '+44'),
+        tel: contact['tel'].gsub(/^0/, '+44'), # Ensures number is shown correctly in calendly widget
         organisation: contact['organisation']
       })
     else
       params
     end
-  end
-
-  def calendly_event_type
-    trust_or_local_authority? ? 'mat-demo' : 'demo-for-individual-schools'
-  end
-
-  def contact_for_capsule
-    contact = contact_params.except('request_type')
-    contact['consent'] = ActiveModel::Type::Boolean.new.cast(contact['consent'])
-    contact.to_h
-  end
-
-  def trust_or_local_authority?
-    contact_params[:org_type].any? {|t| GROUP_TYPES.include? t }
   end
 
   def set_marketing_case_studies
