@@ -1,16 +1,6 @@
 class CampaignMailerPreview < ActionMailer::Preview
   def notify_admin
     request_type = :book_demo
-    contact = {
-      first_name: 'Jane',
-      last_name: 'Smith',
-      email: 'jane@example.org',
-      tel: '01225 444444',
-      job_title: 'CFO',
-      organisation: 'Fake Academies',
-      org_type: ['Primary school (state)', 'Secondary school (state)'],
-      consent: true
-    }
     party = {
       'party' => {
         'id' => 1234
@@ -22,8 +12,32 @@ class CampaignMailerPreview < ActionMailer::Preview
       }
     }
     CampaignMailer.with(request_type: request_type,
-                     contact: contact,
+                     contact: contact(['primary']),
                      party: party,
                      opportunity: opportunity).notify_admin
+  end
+
+  def send_information
+    org_type = if params[:org_type]
+                 [params[:org_type]]
+               else
+                 %w[primary multi_academy_trust].sample(1)
+               end
+    CampaignMailer.with(contact: contact(org_type)).send_information
+  end
+
+  private
+
+  def contact(org_type)
+    {
+      first_name: 'Jane',
+      last_name: 'Smith',
+      email: 'jane@example.org',
+      tel: '01225 444444',
+      job_title: 'CFO',
+      organisation: 'Fake Academies',
+      org_type: org_type,
+      consent: true
+    }
   end
 end

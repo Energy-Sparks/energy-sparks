@@ -54,6 +54,21 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
+  resources :campaigns, controller: 'landing_pages', only: [:index] do
+    collection do
+      get :find_out_more
+      get :more_information
+      get :book_demo
+      post :submit_contact
+      get :thank_you
+      get :mat_pack
+      get :school_pack
+      get :example_adult_dashboard
+      get :example_pupil_dashboard
+      get :example_group_dashboard
+    end
+  end
+
   resources :compare, controller: 'compare', param: :benchmark, only: [:index, :show] do
     collection do
       get :benchmarks

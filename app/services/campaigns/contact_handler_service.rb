@@ -14,11 +14,13 @@ module Campaigns
       party = create_party
       opportunity = create_opportunity(party)
       notify_admin(party, opportunity)
+      email_user
     end
 
     private
 
     def create_party
+      return nil unless can_create_party?
       party = create_party_from_contact
       CapsuleCrm::Client.new.create_party(party)
     rescue => e
@@ -32,7 +34,7 @@ module Campaigns
         { name: 'Campaign' },
         { name: @request_type.to_s.humanize }
       ]
-      tags = tags + @contact[:org_type].map { |t| { name: t } }
+      tags = tags + @contact[:org_type].map { |t| { name: t.to_s.humanize } }
       {
         party: {
           type: :person,
@@ -82,6 +84,19 @@ module Campaigns
                        contact: @contact,
                        party: party,
                        opportunity: opportunity).notify_admin.deliver_now
+    end
+
+    def email_user
+      return unless @request_type == :more_information
+      CampaignMailer.with(contact: @contact).send_information.deliver_now
+    end
+
+    # Attempt Capsule integration in dev/test to allow mocking in specs
+    # and manual tests. Otherwise only do the Capsule api calls
+    # from the production server.
+    def can_create_party?
+      return true unless Rails.env.production?
+      return true unless ENV['ENVIRONMENT_IDENTIFIER'] != 'test'
     end
   end
 end

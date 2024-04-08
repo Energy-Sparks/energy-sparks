@@ -12,7 +12,7 @@ describe Campaigns::ContactHandlerService do
       tel: '01225 444444',
       job_title: 'CFO',
       organisation: 'Fake Academies',
-      org_type: ['Primary school (state)', 'Secondary school (state)'],
+      org_type: [:primary, :secondary],
       consent: true
     }
   end
@@ -46,6 +46,7 @@ describe Campaigns::ContactHandlerService do
 
         it 'sends an email' do
           expect { service.perform }.to change(ActionMailer::Base.deliveries, :count)
+          expect(ActionMailer::Base.deliveries.count).to eq 1
         end
 
         it 'includes capsule link to contact' do
@@ -75,6 +76,7 @@ describe Campaigns::ContactHandlerService do
 
         it 'sends an email' do
           expect { service.perform }.to change(ActionMailer::Base.deliveries, :count)
+          expect(ActionMailer::Base.deliveries.count).to eq 1
         end
 
         it 'includes capsule links' do
@@ -105,6 +107,27 @@ describe Campaigns::ContactHandlerService do
         expect(email.html_part.decoded).not_to include('View Opportunity')
       end
     end
+
+    context 'with more information request' do
+      let(:request_type) { :more_information }
+
+      before do
+        allow(capsule).to receive(:create_party).and_raise(CapsuleCrm::ApiFailure)
+      end
+
+      it 'sends several emails' do
+        expect { service.perform }.to change(ActionMailer::Base.deliveries, :count)
+        expect(ActionMailer::Base.deliveries.count).to eq 2
+
+        expected_email_subjects = [
+          '[energy-sparks-unknown] Campaign form: Fake Academies - More information',
+          I18n.t('campaign_mailer.send_information.subject')
+        ]
+
+        subjects = ActionMailer::Base.deliveries.map(&:subject)
+        expect(subjects).to match_array(expected_email_subjects)
+      end
+    end
   end
 
   describe '#create_party_from_contact' do
@@ -125,8 +148,8 @@ describe Campaigns::ContactHandlerService do
           tags: [
             { name: 'Campaign' },
             { name: 'Book demo' },
-            { name: 'Primary school (state)' },
-            { name: 'Secondary school (state)' }
+            { name: 'Primary' },
+            { name: 'Secondary' }
           ],
           fields: [
             { definition: { id: described_class::MARKETING_CONSENT_FIELD_ID }, value: true }
