@@ -61,6 +61,11 @@ Rails.application.routes.draw do
       get :book_demo
       post :submit_contact
       get :thank_you
+      get :mat_pack
+      get :school_pack
+      get :example_adult_dashboard
+      get :example_pupil_dashboard
+      get :example_group_dashboard
     end
   end
 

@@ -14,13 +14,13 @@ module Campaigns
       party = create_party
       opportunity = create_opportunity(party)
       notify_admin(party, opportunity)
+      email_user
     end
 
     private
 
     def create_party
       party = create_party_from_contact
-      puts party.inspect
       CapsuleCrm::Client.new.create_party(party)
     rescue => e
       Rails.logger.error("Error: #{e.message} when creating party in CapsuleCRM")
@@ -83,6 +83,11 @@ module Campaigns
                        contact: @contact,
                        party: party,
                        opportunity: opportunity).notify_admin.deliver_now
+    end
+
+    def email_user
+      return unless @request_type == :more_information
+      CampaignMailer.with(contact: @contact).send_information.deliver_now
     end
   end
 end

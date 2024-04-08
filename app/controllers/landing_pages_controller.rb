@@ -10,6 +10,26 @@ class LandingPagesController < ApplicationController
     redirect_to find_out_more_campaigns_path
   end
 
+  def mat_pack
+    redirect_to url_for(controller: :resource_files, action: :download, serve: :inline, id: 30)
+  end
+
+  def school_pack
+    redirect_to url_for(controller: :resource_files, action: :download, serve: :inline, id: 29)
+  end
+
+  def example_adult_dashboard
+    redirect_to school_path(find_example_school)
+  end
+
+  def example_pupil_dashboard
+    redirect_to pupils_school_path(find_example_school)
+  end
+
+  def example_group_dashboard
+    redirect_to school_group_path(find_example_group)
+  end
+
   # Main entry point
   def find_out_more
     render :find_out_more, layout: 'home'
@@ -109,5 +129,13 @@ class LandingPagesController < ApplicationController
 
   def contact_params
     params.require(:contact).permit(:first_name, :last_name, :job_title, :organisation, { org_type: [] }, :email, :tel, :consent, :request_type)
+  end
+
+  def find_example_school
+    School.find_by_id('northampton-academy') || School.data_enabled.visible.sample(1)
+  end
+
+  def find_example_group
+    SchoolGroup.find_by_id('united-learning') || SchoolGroup.is_public.with_schools.sample(1)
   end
 end
