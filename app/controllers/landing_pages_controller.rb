@@ -45,7 +45,6 @@ class LandingPagesController < ApplicationController
 
   # Process forms and submit job
   def submit_contact
-    request_type = contact_params['request_type'].to_sym
     contact = contact_for_capsule
     CampaignContactHandlerJob.perform_later(request_type, contact)
     redirect_to thank_you_campaigns_path(redirect_params(request_type, contact))
@@ -63,6 +62,10 @@ class LandingPagesController < ApplicationController
   end
 
   private
+
+  def request_type
+    contact_params['request_type'].present? ? contact_params['request_type'].to_sym : :more_information
+  end
 
   def contact_for_capsule
     contact = contact_params.except('request_type')
