@@ -18,6 +18,10 @@ class LandingPagesController < ApplicationController
     redirect_to url_for(controller: :resource_files, action: :download, serve: :inline, id: 29)
   end
 
+  def demo_video
+    redirect_to 'https://www.youtube.com/watch?v=x2EeYWwdEpE'
+  end
+
   def example_adult_dashboard
     redirect_to school_path(find_example_school)
   end
@@ -139,6 +143,6 @@ class LandingPagesController < ApplicationController
   end
 
   def find_example_group
-    SchoolGroup.find_by_id('united-learning') || SchoolGroup.is_public.with_schools.sample(1)
+    SchoolGroup.find_by_slug('united-learning') || SchoolGroup.is_public.sample(1)
   end
 end

@@ -38,10 +38,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 pt-2 text-center cta">
+        <div class="col-md-12 pt-2 text-center cta">
           <%= link_to t('campaigns.find_out_more.book_demo'), book_demo_campaigns_path, class: 'btn bg-positive' %>
-        </div>
-        <div class="col-md-6 pt-2 text-center cta">
           <%= link_to t('campaigns.find_out_more.find_out_more'), more_information_campaigns_path,
                       class: 'btn bg-positive' %>
         </div>
@@ -246,11 +244,14 @@
           <h1 style="color: #232b49;"><%= t('marketing.mats.final_prompt.question') %></h1>
         </div>
       </div>
-      <div class="row mt-auto">
-        <div class="col-md-6 pt-2 text-center cta">
-          <%= link_to t('campaigns.find_out_more.book_demo'), book_demo_campaigns_path, class: 'btn bg-positive' %>
+      <div class="row">
+        <div class="col-md-12">
+          <h1 style="color: #232b49;"><%= t('marketing.mats.final_prompt.booking') %></h1>
         </div>
-        <div class="col-md-6 pt-2 text-center cta">
+      </div>
+      <div class="row">
+        <div class="col-md-12 pt-2 text-center cta">
+          <%= link_to t('campaigns.find_out_more.book_demo'), book_demo_campaigns_path, class: 'btn bg-positive' %>
           <%= link_to t('campaigns.find_out_more.find_out_more'), more_information_campaigns_path,
                       class: 'btn bg-positive' %>
         </div>

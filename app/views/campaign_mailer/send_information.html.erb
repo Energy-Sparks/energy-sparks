@@ -22,11 +22,11 @@
 <p>
   <% if @group %>
     <%= t('campaign_mailer.send_information.for_mats.video_html',
-          video_link: 'https://www.youtube.com/watch?v=x2EeYWwdEpE',
+          video_link: demo_video_campaigns_url,
           book_demo_link: 'https://calendly.com/energy-sparks/mat-demo') %>
   <% else %>
     <%= t('campaign_mailer.send_information.for_schools.video_html',
-          video_link: 'https://www.youtube.com/watch?v=x2EeYWwdEpE',
+          video_link: demo_video_campaigns_url,
           book_demo_link: 'https://calendly.com/energy-sparks/demo-for-individual-schools') %>
   <% end %>
 </p>

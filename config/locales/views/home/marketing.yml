@@ -12,7 +12,7 @@ en:
         costs: Save up to 40% off school energy bills
         emissions: Cut your your school's or Trust's carbon footprint
         pupils: Give pupils the knowledge and skills to cut energy waste at school
-      book_demo: Book demo
+      book_demo: Book a demo
       costs:
         bullets: |-
           <ul>
@@ -27,7 +27,7 @@ en:
       find_out_more: Find out more
       pupils:
         case_study: 'Damers First School: National Scoreboard Champions'
-      sub_title: Energy Sparks is a registered charity that can help your school or MAT save on energy costs and improve sustainability with our online energy management tool
+      sub_title: Energy Sparks is a charity that offers a unique school-specific energy management tool and education programme
       title: Are you ready to cut your school’s energy costs and carbon footprint?
       tool:
         case_study: Harris Academy Sutton uncovered £20k in potential savings
@@ -94,7 +94,7 @@ en:
         title: Cut Carbon Emissions
       final_prompt:
         additional_html: More information about our <a href="/pricing">pricing</a>, <a href="/energy-audits">energy audits</a> and <a href="/education-workshops">educational workshops</a>
-        booking: Book your free demo session today to see how we can support your Trust
+        booking: Book your free demo session today or request more information
         question: Ready to cut energy costs and spark pupils' commitment to sustainability?
       learn_why:
         title: Learn why over %{school_count} schools and %{mat_count} trusts are using Energy Sparks

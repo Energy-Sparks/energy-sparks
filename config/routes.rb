@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
   get 'up', to: 'health#show'
 
+  get 'find-out-more', to: 'home#find_out_more'
   get 'for-schools', to: 'home#for_schools'
   get 'for-teachers', to: redirect('/for-schools')
   get 'for-pupils', to: redirect('/for-schools')
@@ -66,6 +67,7 @@ Rails.application.routes.draw do
       get :example_adult_dashboard
       get :example_pupil_dashboard
       get :example_group_dashboard
+      get :demo_video
     end
   end
 
