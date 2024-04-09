@@ -44,11 +44,6 @@ en:
         <li>let you know if you are doing well compared to other schools and your past performance</li>
       </ul>
     title: 'Energy Sparks alerts:'
-  cookie_banner:
-    accept: Accept
-    learn_more: Learn more
-    notice: We use some essential cookies to make Energy Sparks work. We'd also like to use analytics cookies so we can understand how you use the service and make improvements.
-    reject: Reject
   dashboards:
     adult_dashboard: Adult dashboard
     pupil_dashboard: Pupil dashboard

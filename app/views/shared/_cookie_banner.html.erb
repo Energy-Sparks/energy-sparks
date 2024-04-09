@@ -1,6 +1,6 @@
 <div id="cookie-banner" class="alert text-center mb-0" role="alert">
   <%= I18n.t('cookie_banner.notice') %>
-  <a href="https://www.cookiesandyou.com/" target="blank"><%= I18n.t('cookie_banner.learn_more') %></a>
+  <%= link_to I18n.t('cookie_banner.learn_more'), cookies_path %>
   <button type="button" class="btn btn-primary btn-sm ms-3" onclick="window.acceptCookies()">
     <%= I18n.t('cookie_banner.accept') %>
   </button>
