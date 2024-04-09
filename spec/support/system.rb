@@ -52,8 +52,11 @@ RSpec.configure do |config|
   config.before(:each, type: :system, js: true) do
     @supports_js = true
 
-    # driven_by :headless_chrome
-    driven_by :selenium_chrome_headless
+    # register our custom driver configuration as a known adapter to allow access to
+    # cookies in specs that use JS
+    ShowMeTheCookies.register_adapter(:headless_chrome, ShowMeTheCookies::Selenium)
+
+    driven_by :headless_chrome
     # driven_by :headless_firefox
     # page.driver.browser.manage.window.resize_to(2800,10000)
   end
