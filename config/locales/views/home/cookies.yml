@@ -7,6 +7,7 @@ en:
     reject: Reject
   cookies:
     analytics:
+      explain: Choose an option to immediately update your preference.
       ga:
         expires: 2 years
         purpose: Checks if you’ve visited Energy Sparks before. This helps us count how many people visit our site.
