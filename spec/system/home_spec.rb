@@ -26,7 +26,7 @@ RSpec.describe 'home', type: :system do
       within('#our-services') do
         click_on('For Schools')
       end
-      expect(page).to have_content('Energy Sparks for Schools')
+      expect(page).to have_current_path(find_out_more_campaigns_path)
     end
 
     it 'redirects old pages' do
