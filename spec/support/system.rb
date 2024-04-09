@@ -43,13 +43,17 @@ RSpec.configure do |config|
     options.add_argument('disable-gpu')
     options.add_argument('disable-dev-shm-usage')
     options.add_argument('window-size=1400,10000')
+    # Uncomment to make all console entries available via
+    # page.driver.browser.logs.get(:browser) if needed for debugging.
+    # options.add_option("goog:loggingPrefs", {browser: 'ALL'})
     Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
   end
 
   config.before(:each, type: :system, js: true) do
     @supports_js = true
 
-    driven_by :headless_chrome
+    # driven_by :headless_chrome
+    driven_by :selenium_chrome_headless
     # driven_by :headless_firefox
     # page.driver.browser.manage.window.resize_to(2800,10000)
   end
