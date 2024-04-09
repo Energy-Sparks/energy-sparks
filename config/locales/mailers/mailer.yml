@@ -62,6 +62,7 @@ en:
         name: Claudia
         ready: Ready to get started?
         sign_off: Kind regards
+        title: Energy Sparks CEO
         video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools. Or join a <a href="%{book_demo_link}">weekly live demo</a> and Q&A session.
       subject: More information about Energy Sparks
   consent_grant_mailer:

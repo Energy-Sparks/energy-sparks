@@ -10,7 +10,7 @@ en:
     find_out_more:
       benefits:
         costs: Save up to 40% off school energy bills
-        emissions: Cut your your school's or Trust's carbon footprint
+        emissions: Cut school carbon footprints
         pupils: Give pupils the knowledge and skills to cut energy waste at school
       book_demo: Book a demo
       costs:
@@ -20,7 +20,7 @@ en:
             <li>Save £12,000 per year for the average secondary school</li>
           </ul>
         case_study: Northampton Academy cut its gas consumption by 40%
-        sub_title: 'Our energy management tool reviews your gas and electricity consumption and provides easy to implement recommendations to:'
+        sub_title: 'Our energy management tool analyses your gas and electricity consumption and provides easy to implement recommendations to:'
         title: Save money
       emissions:
         case_study: Mallaig High School cut heating bills by 38%
@@ -28,7 +28,7 @@ en:
       pupils:
         case_study: 'Damers First School: National Scoreboard Champions'
       sub_title: Energy Sparks is a charity that offers a unique school-specific energy management tool and education programme
-      title: Are you ready to cut your school’s energy costs and carbon footprint?
+      title: Are you ready to cut your school energy costs and carbon footprint?
       tool:
         case_study: Harris Academy Sutton uncovered £20k in potential savings
     form:
@@ -116,7 +116,7 @@ en:
       tool:
         case_study: 'Case Study: ICT switch off, saving £20,000'
         sub_title_1: Receive analysis of your schools’ gas and electricity use, action prompts, and energy-saving priorities via pupil and staff dashboards and weekly alert emails
-        sub_title_2: Benchmark school energy use against others in the trust and around the country using our dashboards
+        sub_title_2: Benchmark school energy use against other similar schools around the country or in your Trust using our dashboards
         title: Take control
     pricing:
       features:
