@@ -470,6 +470,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-home-cookies-yml]
+file_filter  = config/locales/<lang>/views/home/cookies.yml
+source_file  = config/locales/views/home/cookies.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-home-datasets-yml]
 file_filter  = config/locales/<lang>/views/home/datasets.yml
 source_file  = config/locales/views/home/datasets.yml

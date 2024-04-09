@@ -1,0 +1,86 @@
+<% content_for :page_title, t('cookies.title') %>
+
+<div class="application container ">
+  <div class="row">
+    <div class="col col-md-10 col-lg-8">
+      <h1><%= t('cookies.title') %></h1>
+
+      <%= t('cookies.intro_html', privacy_and_cookie_policy: privacy_and_cookie_policy_path) %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-10 col-lg-8">
+      <h2><%= t('cookies.essential.title') %></h2>
+
+      <p>
+        <%= t('cookies.essential.intro_html') %>
+      </p>
+
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th><%= t('cookies.name') %></th>
+            <th><%= t('cookies.purpose') %></th>
+            <th><%= t('cookies.expires') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-3"><code>_energy-sparks_session</code></td>
+            <td><%= t('cookies.essential.session.purpose') %></td>
+            <td><%= t('cookies.essential.session.expires') %></td>
+          </tr>
+          <tr>
+            <td class="col-3"><code>cookie_preference</code></td>
+            <td><%= t('cookies.essential.preference.purpose') %></td>
+            <td><%= t('cookies.essential.preference.expires') %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-md-10 col-lg-8">
+      <h2><%= t('cookies.analytics.title') %></h2>
+
+      <p>
+        <%= t('cookies.analytics.intro_html') %>
+      </p>
+
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th><%= t('cookies.name') %></th>
+            <th><%= t('cookies.purpose') %></th>
+            <th><%= t('cookies.expires') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-1"><code>_ga</code></td>
+            <td><%= t('cookies.analytics.ga.purpose') %></td>
+            <td><%= t('cookies.analytics.ga.expires') %></td>
+          </tr>
+          <tr>
+            <td class="col-1"><code>_gid</code></td>
+            <td><%= t('cookies.analytics.gid.purpose') %></td>
+            <td><%= t('cookies.analytics.gid.expires') %></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>
+        <%= t('cookies.analytics.question') %>
+      </h3>
+
+      <p>
+        <%= t('cookies.analytics.explain') %>
+      </p>
+
+      <%= render 'shared/cookie_buttons' %>
+
+    </div>
+  </div>
+</div>

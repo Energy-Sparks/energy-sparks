@@ -24,7 +24,8 @@
             <div class="col">
               <ul class="list-unstyled">
                 <li><%= link_to t('footer.terms_and_conditions'), terms_and_conditions_path %></li>
-                <li><%= link_to t('footer.privacy_and_cookie_policy'), privacy_and_cookie_policy_path %></li>
+                <li><%= link_to t('cookies.title'), cookies_path %></li>
+                <li><%= link_to t('about_menu.privacy_policy'), privacy_and_cookie_policy_path %></li>
                 <li><%= link_to t('footer.child_safeguarding_policy'), child_safeguarding_policy_path %></li>
               </ul>
             </div>
@@ -51,4 +52,6 @@
 
 </footer>
 
-<%= render 'shared/google_analytics', analytics_code: @analytics_code if Rails.env.production? && !@analytics_code.blank? %>
+<%= if Rails.env.production? && @analytics_code.present?
+      render 'shared/google_analytics', analytics_code: @analytics_code
+    end %>
