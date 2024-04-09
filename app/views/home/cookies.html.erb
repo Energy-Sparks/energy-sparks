@@ -75,6 +75,13 @@
         <%= t('cookies.analytics.question') %>
       </h3>
 
+      <button type="button" class="btn btn-primary btn-sm ms-3" onclick="window.acceptCookies()">
+        <%= I18n.t('cookie_banner.accept') %>
+      </button>
+      <button type="button" class="btn btn-primary btn-sm ms-3" onclick="window.rejectCookies()">
+        <%= I18n.t('cookie_banner.reject') %>
+      </button>
+
     </div>
   </div>
 </div>
