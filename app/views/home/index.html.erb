@@ -8,7 +8,7 @@
     <div class="col-5 masthead-content">
       <div class="row pt-5">
         <div class="col">
-        <p class="headline-text"><%= t('home.title')%></p>
+        <p class="headline-text"><%= t('home.title') %></p>
       </div>
       </div>
       <div class="row">
@@ -18,7 +18,7 @@
       </div>
       <div class="row">
         <div class="col-md-8 offset-md-3 pt-5">
-        <%= link_to t('home.enrol_your_school'), enrol_path, class: 'btn bg-positive' %>
+        <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn bg-positive' %>
         </div>
       </div>
     </div>
@@ -30,11 +30,10 @@
 <%= render 'funnels' %>
 
 <%= render 'testimonial',
-  quote: t('home.quote.text_html'),
-  by: 'Jennie Nixon',
-  title: t('home.quote.job_title'),
-  location: 'Whiteways Primary School, Sheffield'
-%>
+           quote: t('home.quote.text_html'),
+           by: 'Jennie Nixon',
+           title: t('home.quote.job_title'),
+           location: 'Whiteways Primary School, Sheffield' %>
 
 <%= render 'videos' %>
 

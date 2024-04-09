@@ -101,7 +101,7 @@ RSpec.describe CampaignMailer do
 
     context 'when sending for a school' do
       it 'includes common links' do
-        expect(body).to have_link(href: 'https://www.youtube.com/watch?v=x2EeYWwdEpE')
+        expect(body).to have_link(href: demo_video_campaigns_url)
         expect(body).to have_link('Example adult dashboard', href: example_adult_dashboard_campaigns_url)
         expect(body).to have_link('Example pupil dashboard', href: example_pupil_dashboard_campaigns_url)
         expect(body).to have_link(href: case_studies_url)
@@ -126,7 +126,7 @@ RSpec.describe CampaignMailer do
       let(:org_type) { ['multi_academy_trust'] }
 
       it 'includes common links' do
-        expect(body).to have_link(href: 'https://www.youtube.com/watch?v=x2EeYWwdEpE')
+        expect(body).to have_link(href: demo_video_campaigns_url)
         expect(body).to have_link('Example adult dashboard', href: example_adult_dashboard_campaigns_url)
         expect(body).to have_link('Example pupil dashboard', href: example_pupil_dashboard_campaigns_url)
         expect(body).to have_link(href: case_studies_url)

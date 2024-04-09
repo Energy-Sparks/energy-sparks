@@ -5,11 +5,14 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
   get 'up', to: 'health#show'
 
-  get 'for-schools', to: 'home#for_schools'
+  # old urls maintained to avoid breakage
   get 'for-teachers', to: redirect('/for-schools')
   get 'for-pupils', to: redirect('/for-schools')
   get 'for-management', to: redirect('/for-schools')
+  get 'enrol', to: redirect('/find-out-more')
 
+  get 'find-out-more', to: 'home#find_out_more'
+  get 'for-schools', to: 'home#for_schools'
   get 'for-local-authorities', to: 'home#for_local_authorities'
   get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
 
@@ -27,7 +30,6 @@ Rails.application.routes.draw do
   get 'school_statistics_key_data', to: 'home#school_statistics_key_data'
 
   get 'contact', to: 'home#contact'
-  get 'enrol', to: 'home#enrol'
   get 'enrol-our-school', to: 'home#enrol_our_school'
   get 'enrol-our-multi-academy-trust', to: 'home#enrol_our_multi_academy_trust'
   get 'enrol-our-local-authority', to: 'home#enrol_our_local_authority'
@@ -66,6 +68,7 @@ Rails.application.routes.draw do
       get :example_adult_dashboard
       get :example_pupil_dashboard
       get :example_group_dashboard
+      get :demo_video
     end
   end
 
