@@ -34,6 +34,10 @@ class LandingPagesController < ApplicationController
     redirect_to school_group_path(find_example_group)
   end
 
+  def example_la_dashboard
+    redirect_to school_group_path(find_example_local_authority)
+  end
+
   # Main entry point
   def find_out_more
     render :find_out_more, layout: 'home'
@@ -143,6 +147,10 @@ class LandingPagesController < ApplicationController
   end
 
   def find_example_group
-    SchoolGroup.find_by_slug('united-learning') || SchoolGroup.is_public.sample(1)
+    SchoolGroup.find_by_slug('united-learning') || SchoolGroup.is_public.multi_academy_trust.sample(1)
+  end
+
+  def find_example_local_authority
+    SchoolGroup.find_by_slug('pembrokeshire-sir-penfro') || SchoolGroup.is_public.local_authority.sample(1)
   end
 end

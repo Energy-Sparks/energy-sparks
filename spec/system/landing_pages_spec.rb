@@ -97,8 +97,9 @@ describe 'landing pages', type: :system do
   end
 
   context 'when following redirects from emails' do
-    let!(:school_group) { create(:school_group, public: true)}
-    let!(:school) { create(:school, data_enabled: true, visible: true, school_group: school_group)}
+    let!(:mat_school_group) { create(:school_group, public: true, group_type: :multi_academy_trust)}
+    let!(:la_school_group) { create(:school_group, public: true, group_type: :local_authority)}
+    let!(:school) { create(:school, data_enabled: true, visible: true, school_group: mat_school_group)}
 
     it 'redirects to adult dashboard' do
       visit example_adult_dashboard_campaigns_path
@@ -112,7 +113,12 @@ describe 'landing pages', type: :system do
 
     it 'redirects to school group dashboard' do
       visit example_group_dashboard_campaigns_path
-      expect(page).to have_current_path(school_group_path(school_group))
+      expect(page).to have_current_path(school_group_path(mat_school_group))
+    end
+
+    it 'redirects to local authority dashboard' do
+      visit example_la_dashboard_campaigns_path
+      expect(page).to have_current_path(school_group_path(la_school_group))
     end
   end
 end
