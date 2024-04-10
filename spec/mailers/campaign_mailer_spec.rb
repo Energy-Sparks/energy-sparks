@@ -3,13 +3,6 @@ require 'rails_helper'
 RSpec.describe CampaignMailer do
   let(:email) { ActionMailer::Base.deliveries.last }
   let(:body) { email.html_part.body.raw_source }
-
-  around do |example|
-    ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'unknown' do
-      example.run
-    end
-  end
-
   let(:contact) do
     {
       first_name: 'Jane',
@@ -21,6 +14,12 @@ RSpec.describe CampaignMailer do
       org_type: org_type,
       consent: true
     }
+  end
+
+  around do |example|
+    ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'unknown' do
+      example.run
+    end
   end
 
   describe '#notify_admin' do
