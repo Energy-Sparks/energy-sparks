@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   get 'for-management', to: redirect('/for-schools')
   get 'enrol', to: redirect('/find-out-more')
 
-  get 'find-out-more', to: 'home#find_out_more'
+  # Short link for marketing
+  get 'find-out-more', to: 'landing_pages#find_out_more', as: :find_out_more
   get 'for-schools', to: 'home#for_schools'
   get 'for-local-authorities', to: 'home#for_local_authorities'
   get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'

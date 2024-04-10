@@ -40,11 +40,6 @@ class HomeController < ApplicationController
   def contact
   end
 
-  # Short link for marketing
-  def find_out_more
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
   def enrol_our_school
   end
 
