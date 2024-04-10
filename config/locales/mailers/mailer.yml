@@ -42,9 +42,13 @@ en:
       upload_bill: Upload your bill
   campaign_mailer:
     send_information:
+      for_las:
+        enrol_html: If you are ready to proceed, please complete our Local Authority <a href="%{enrol_link}">enrolment form</a> to share further details about your schools and their energy supply arrangements.
+        group_dashboard_html: Local Authorities are provided with a <a href="%{group_dashboard_link}">group dashboard</a> to view the energy performance of all schools and their energy-saving priorities.
+        video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools or <a href="%{book_demo_link}">book a live demo</a> and Q&A session for your Local Authority.
       for_mats:
-        enrol_html: If you are ready to proceed, please complete our <a href="%{enrol_link}">Trust enrolment form</a> to share further details about your schools and their energy supply arrangements.
-        mat_dashboard_html: Multi-Academy Trusts are provided with a <a href="%{trust_dashboard_link}">trust-wide dashboard</a> to view the energy performance of all schools and their energy-saving priorities.
+        enrol_html: If you are ready to proceed, please complete our Trust <a href="%{enrol_link}">enrolment form</a> to share further details about your schools and their energy supply arrangements.
+        group_dashboard_html: Multi-Academy Trusts are provided with a <a href="%{group_dashboard_link}">trust-wide dashboard</a> to view the energy performance of all schools and their energy-saving priorities.
         video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools or <a href="%{book_demo_link}">book a live demo</a> and Q&A session for your Trust.
       for_schools:
         about_us: We are a registered charity that can help you save on energy costs and reduce your carbon footprint with our energy management tool and education programme.

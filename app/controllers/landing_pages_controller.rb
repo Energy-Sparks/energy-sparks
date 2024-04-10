@@ -32,7 +32,7 @@ class LandingPagesController < ApplicationController
     redirect_to pupils_school_path(find_example_school)
   end
 
-  def example_group_dashboard
+  def example_mat_dashboard
     redirect_to school_group_path(find_example_group)
   end
 

@@ -69,7 +69,7 @@ Rails.application.routes.draw do
       get 'school-pack', as: :school_pack
       get 'example-adult-dashboard', as: :example_adult_dashboard
       get 'example-pupil-dashboard', as: :example_pupil_dashboard
-      get 'example-group-dashboard', as: :example_group_dashboard
+      get 'example-mat-dashboard', as: :example_mat_dashboard
       get 'example-la-dashboard', as: :example_la_dashboard
       get 'demo-video', as: :demo_video
     end

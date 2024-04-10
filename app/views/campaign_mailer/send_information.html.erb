@@ -25,7 +25,10 @@
     <%= t('campaign_mailer.send_information.for_mats.video_html',
           video_link: demo_video_campaigns_url,
           book_demo_link: 'https://calendly.com/energy-sparks/mat-demo') %>
-
+  <% when :local_authority %>
+    <%= t('campaign_mailer.send_information.for_las.video_html',
+          video_link: demo_video_campaigns_url,
+          book_demo_link: 'https://calendly.com/energy-sparks/mat-demo') %>
   <% else %>
     <%= t('campaign_mailer.send_information.for_schools.video_html',
           video_link: demo_video_campaigns_url,
@@ -58,11 +61,17 @@
   </li>
 </ul>
 
-<% if @contact_org_type == :multi_academy_trust %>
+<% if [:multi_academy_trust, :local_authority].include?(@contact_org_type) %>
+  <% if @contact_org_type == :multi_academy_trust %>
+    <% key = 'campaign_mailer.send_information.for_mats.group_dashboard_html' %>
+    <% url = example_mat_dashboard_campaigns_url %>
+  <% else %>
+    <% key = 'campaign_mailer.send_information.for_las.group_dashboard_html' %>
+    <% url = example_la_dashboard_campaigns_url %>
+  <% end %>
   <div class="s-3"></div>
   <p>
-    <%= t('campaign_mailer.send_information.for_mats.mat_dashboard_html',
-          trust_dashboard_link: example_group_dashboard_campaigns_url) %>
+    <%= t(key, group_dashboard_link: url) %>
   </p>
 <% end %>
 
@@ -103,6 +112,9 @@
   <% when :multi_academy_trust %>
     <%= t('campaign_mailer.send_information.for_mats.enrol_html',
           enrol_link: enrol_our_multi_academy_trust_url) %>
+  <% when :local_authority %>
+    <%= t('campaign_mailer.send_information.for_las.enrol_html',
+          enrol_link: enrol_our_local_authority_url) %>
   <% else %>
     <%= t('campaign_mailer.send_information.for_schools.enrol_html',
           enrol_link: enrol_our_school_url) %>
