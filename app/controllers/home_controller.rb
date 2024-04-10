@@ -48,6 +48,9 @@ class HomeController < ApplicationController
   def enrol_our_local_authority
   end
 
+  def cookies
+  end
+
   def privacy_and_cookie_policy
   end
 

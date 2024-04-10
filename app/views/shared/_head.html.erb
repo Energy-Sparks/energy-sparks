@@ -1,14 +1,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="description" content="We help schools become more energy efficient and fight climate change, through an online, school-specific energy analysis tool and energy education programme.">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description"
+      content="We help schools become more energy efficient and fight climate change, through an online,
+      school-specific energy analysis tool and energy education programme.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="google-site-verification" content="XV9Bt0UF-LWMNqtPSOz_Sjm9tZYDmI7jTe1NUpAIeZ4" />
+<meta name="google-site-verification" content="XV9Bt0UF-LWMNqtPSOz_Sjm9tZYDmI7jTe1NUpAIeZ4">
 
 <title>
   <% if content_for?(:page_title) %>
     <%= content_for(:page_title) %> |
-  <% end  %>
+  <% end %>
   <%= t('common.application') %>
 </title>
 
@@ -16,19 +18,20 @@
 
 <%= render 'shared/favicon' %>
 
-<%= stylesheet_link_tag "//cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" %>
-<%= stylesheet_link_tag "//cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" %>
-<%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans|Quicksand:300&display=swap" %>
-<%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans|Quicksand:500&display=swap" %>
-<%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans|Quicksand:700&display=swap" %>
-<%= stylesheet_link_tag "//cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css" %>
+<%= stylesheet_link_tag '//cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css' %>
+<%= stylesheet_link_tag '//cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css' %>
+<%= stylesheet_link_tag '//fonts.googleapis.com/css?family=Open+Sans|Quicksand:300&display=swap' %>
+<%= stylesheet_link_tag '//fonts.googleapis.com/css?family=Open+Sans|Quicksand:500&display=swap' %>
+<%= stylesheet_link_tag '//fonts.googleapis.com/css?family=Open+Sans|Quicksand:700&display=swap' %>
+<%= stylesheet_link_tag '//cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css' %>
 
-<%= stylesheet_link_tag    'application', media: 'all' %>
-<%= javascript_pack_tag    'application' %>
+<%= stylesheet_link_tag 'application', media: 'all' %>
+<%= javascript_pack_tag 'application' %>
 <%= javascript_include_tag 'application' %>
-<%= javascript_include_tag "//cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js" %>
-<%= javascript_include_tag "//cdn.datatables.net/2.0.2/js/dataTables.min.js" %>
-<%= javascript_include_tag "//cdn.datatables.net/2.0.2/js/dataTables.bootstrap4.min.js" %>
+<%= javascript_include_tag '//cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js' %>
+<%= javascript_include_tag '//cdn.datatables.net/2.0.2/js/dataTables.min.js' %>
+<%= javascript_include_tag '//cdn.datatables.net/2.0.2/js/dataTables.bootstrap4.min.js' %>
+<%= javascript_include_tag '//cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js' %>
 
 <!--js and css for leaflet -->
 <%= render 'shared/leaflet' %>

@@ -1,0 +1,57 @@
+---
+en:
+  cookie_banner:
+    accept: Accept
+    learn_more: Learn more
+    notice: We use some essential cookies to make Energy Sparks work. We'd also like to use analytics cookies so we can understand how you use the service and make improvements.
+    reject: Reject
+  cookies:
+    analytics:
+      explain: Choose an option to immediately update your preference.
+      ga:
+        expires: 2 years
+        purpose: Checks if you’ve visited Energy Sparks before. This helps us count how many people visit our site.
+      gid:
+        expires: 24 hours
+        purpose: Checks if you’ve visited Energy Sparks before. This helps us count how many people visit our site.
+      intro_html: |-
+        <p>
+        With your permission, we use Google Analytics cookies to collect data about how you use Energy Sparks. This information helps us to improve our service.
+        </p>
+        <p>
+        Google is not allowed to use or share our analytics data with anyone.
+        </p>
+        <p>
+        Google Analytics stores anonymised information about how you got to Energy Sparks, the pages you visit on Energy Sparks, and how long you spend on them.
+        </p>
+      question: Do you want to accept analytics cookies?
+      title: Google Analytics cookies (optional)
+    essential:
+      intro_html: |-
+        <p>Essential cookies keep your information secure while you use Energy Sparks. We do not need to ask permission to use them.
+        </p>
+      preference:
+        expires: 1 year
+        purpose: Saves your cookie consent settings
+      remember:
+        expires: After 2 weeks, or when you sign out.
+        purpose: Used to keep you signed in for longer, if you choose to "Stay signed in".
+      session:
+        expires: When you close the browser.
+        purpose: Used to keep you signed in
+      title: Essential cookies
+    expires: Expires
+    intro_html: |-
+      <p>
+        Cookies are small files saved on your phone, tablet or computer when you visit a website.
+      </p>
+      <p>
+        We use cookies to make Energy Sparks work and collect information about how you use our service.
+      </p>
+      <p>
+        For further information, visit <a href="https://allaboutcookies.org">allaboutcookies.org</a>. Or
+        view our detailed <a href="%{privacy_and_cookie_policy}">privacy and cookie policy</a>.
+      </p>
+    name: Name
+    purpose: Purpose
+    title: Cookies
