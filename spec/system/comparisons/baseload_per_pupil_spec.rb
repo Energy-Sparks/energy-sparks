@@ -20,6 +20,10 @@ describe 'baseload_per_pupil', type: :system do
   let!(:school) { create(:school) }
   let!(:report) { create(:report, key: :baseload_per_pupil)}
 
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
   before do
     create(:advice_page, key: :baseload)
 
@@ -53,9 +57,9 @@ describe 'baseload_per_pupil', type: :system do
       end
       let(:expected_table) do
         [headers,
-         ["#{school.name} [t]", '2', '£1,000', '20', '10&percnt;', '£200'],
-         ["Notes\n[t]\n" \
-          '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+         ["#{school.name} [5]", '2', '£1,000', '20', '10&percnt;', '£200'],
+         ["Notes\n" \
+          '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
           "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
           "'last year' is defined as this year to date."]]
       end

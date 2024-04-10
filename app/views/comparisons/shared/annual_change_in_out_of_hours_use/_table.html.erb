@@ -4,13 +4,8 @@
   <% results.each do |result| %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
-
-      <% if result.economic_tariff_changed_this_year %>
-        <% r.with_reference do %>
-            <a href="#footnotes">(*5)</a>
-        <% end %>
-      <% end %>
-
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.economic_tariff_changed_this_year %>
       <%= r.with_var val: result.previous_out_of_hours_kwh, unit: :kwh %>
       <%= r.with_var val: result.out_of_hours_kwh, unit: :kwh %>
       <%= r.with_var change: true,
@@ -30,13 +25,7 @@
                      unit: :relative_percent_0dp %>
     <% end %>
   <% end %>
-  <% c.with_footer do %>
-  <tr>
-    <td colspan="<%= headers.count %>">
-      <a name="footnotes"><strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong></a>
-      <%= t('analytics.benchmarking.configuration.the_tariff_has_changed_during_the_last_year_html') %>
-      <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
-    </td>
-  </tr>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
   <% end %>
 <% end %>
