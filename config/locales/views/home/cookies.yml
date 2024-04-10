@@ -33,8 +33,11 @@ en:
       preference:
         expires: 1 year
         purpose: Saves your cookie consent settings
+      remember:
+        expires: After 2 weeks, or when you sign out.
+        purpose: Used to keep you signed in for longer, if you choose to "Stay signed in".
       session:
-        expires: When you close the browser or sign out. Or in 2 weeks if you choose to "Stay signed in".
+        expires: When you close the browser.
         purpose: Used to keep you signed in
       title: Essential cookies
     expires: Expires
