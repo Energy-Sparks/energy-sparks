@@ -1,22 +1,3 @@
 cy:
   enrol:
-    enrol_la:
-      read_more_html: Darllen rhagor am <a href="/for-local-authorities">sut y gall Sbarcynni gefnogi ysgolion yn eich ardal</a>
-      title: Cofrestru ein Hawdurdod Lleol
-    enrol_mat:
-      read_more_html: Darllen rhagor am <a href="/for-multi-academy-trusts">sut y gall Sbarcynni gefnogi eich MAT</a>
-      title: Cofrestru ein Hymddiriedolaeth Aml-Academi
     enrol_now: Cofrestru nawr
-    enrol_school:
-      read_more_html: Darllen rhagor am<a href="/for-schools"> sut y gall Sbarcynni gefnogi eich ysgol</a>
-      title: Cofrestru ein Hysgol
-    section_1_html: |-
-      <p>
-        Mae gennym brosesau gwahanol i gefnogi cofrestru ysgolion unigol, Ymddiriedolaethau Aml-Academi cyfan neu grwpiau o ysgolion o fewn
-      Ardal Awdurdod Lleol.
-      </p>
-      <p>
-        Dysgu rhagor am yr hyn y gall ein gwasanaeth ei gynnig i wahanol ddefnyddwyr, ac yna dewiswch un o'r opsiynau isod i ddechrau'r
-      broses.
-      </p>
-    title: Cofrestru gyda Sbarcynni
