@@ -3,6 +3,7 @@
 <table class="table table-sorted">
   <thead>
     <tr>
+      <th>Label</th>
       <th>Key</th>
       <th>Description</th>
       <th>Actions</th>
@@ -12,6 +13,7 @@
   <tbody>
     <% @footnotes.each do |footnote| %>
       <tr>
+        <td><%= footnote.label %></td>
         <td><%= footnote.key %></td>
         <td><%= footnote.description %></td>
         <td>

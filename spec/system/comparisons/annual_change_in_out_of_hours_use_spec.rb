@@ -18,12 +18,17 @@ describe 'annual_change_in_*_out_of_hours_use' do
      'Last year out of hours cost at current tariff',
      'Change %']
   end
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
   let(:expected_table) do
     [['', 'kWh', 'CO2 (kg)', 'Cost'],
      headers,
-     ["#{expected_school.name} (*5)", '1', '2', '+100&percnt;', '3', '4', '+33&percnt;', '£5', '£6', '+20&percnt;'],
+     ["#{expected_school.name} [5]", '1', '2', '+100&percnt;', '3', '4', '+33&percnt;', '£5', '£6', '+20&percnt;'],
      ["Notes\n" \
-      '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+      '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
       "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
       "'last year' is defined as this year to date."]]
   end

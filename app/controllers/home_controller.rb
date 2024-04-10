@@ -40,18 +40,15 @@ class HomeController < ApplicationController
   def contact
   end
 
-  # Short link for marketing
-  def find_out_more
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
   def enrol_our_school
   end
 
   def enrol_our_multi_academy_trust
+    redirect_to 'https://forms.gle/K1XHu3GAUWJkNwFi6'
   end
 
   def enrol_our_local_authority
+    redirect_to 'https://forms.gle/v78XueeSdfggcyhz8'
   end
 
   def cookies

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'cookie banner', type: :system do
+describe 'cookie banner' do
   def cookie_preference
     get_me_the_cookie('cookie_preference')
   end
@@ -60,7 +60,7 @@ describe 'cookie banner', type: :system do
   end
 
   shared_examples 'a dismissable cookie banner' do
-    context 'when banner is accepted', js: true do
+    context 'when banner is accepted', :js do
       before do
         within('#cookie-banner') do
           click_on(I18n.t('cookie_banner.accept'))
@@ -72,7 +72,7 @@ describe 'cookie banner', type: :system do
       end
     end
 
-    context 'when banner is rejected', js: true do
+    context 'when banner is rejected', :js do
       before do
         within('#cookie-banner') do
           click_on(I18n.t('cookie_banner.reject'))

@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   get 'for-management', to: redirect('/for-schools')
   get 'enrol', to: redirect('/find-out-more')
 
-  get 'find-out-more', to: 'home#find_out_more'
+  # Short link for marketing
+  get 'find-out-more', to: 'landing_pages#find_out_more', as: :find_out_more
   get 'for-schools', to: 'home#for_schools'
   get 'for-local-authorities', to: 'home#for_local_authorities'
   get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
@@ -59,17 +60,18 @@ Rails.application.routes.draw do
 
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
-      get :find_out_more
-      get :more_information
-      get :book_demo
+      get 'find-out-more', as: :find_out_more
+      get 'more-information', as: :more_information
+      get 'book-demo', as: :book_demo
       post :submit_contact
-      get :thank_you
-      get :mat_pack
-      get :school_pack
-      get :example_adult_dashboard
-      get :example_pupil_dashboard
-      get :example_group_dashboard
-      get :demo_video
+      get 'thank-you', as: :thank_you
+      get 'mat-pack', as: :mat_pack
+      get 'school-pack', as: :school_pack
+      get 'example-adult-dashboard', as: :example_adult_dashboard
+      get 'example-pupil-dashboard', as: :example_pupil_dashboard
+      get 'example-mat-dashboard', as: :example_mat_dashboard
+      get 'example-la-dashboard', as: :example_la_dashboard
+      get 'demo-video', as: :demo_video
     end
   end
 

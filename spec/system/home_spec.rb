@@ -40,9 +40,9 @@ RSpec.describe 'home', type: :system do
       expect(response).to redirect_to(for_schools_path)
     end
 
-    it 'redirects to campaign page' do
+    it 'routes to the campaign page' do
       visit find_out_more_path
-      expect(page).to have_current_path(find_out_more_campaigns_path)
+      expect(page).to have_content(I18n.t('campaigns.find_out_more.title'))
     end
 
     it 'has a for-local-authorities page' do
