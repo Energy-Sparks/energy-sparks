@@ -6,7 +6,7 @@ class CampaignMailer < LocaleMailer
 
   def send_information
     @contact = params[:contact]
-    @group = trust_or_local_authority?(@contact)
+    @contact_org_type = contact_org_type(@contact)
     @title = I18n.t('campaign_mailer.send_information.subject')
     make_bootstrap_mail(to: @contact[:email], subject: I18n.t('campaign_mailer.send_information.subject'))
   end
@@ -21,7 +21,9 @@ class CampaignMailer < LocaleMailer
     "[energy-sparks-#{env}] Campaign form: #{organisation} - #{request_type.to_s.humanize}"
   end
 
-  def trust_or_local_authority?(contact)
-    contact[:org_type].any? {|t| LandingPagesController::GROUP_TYPES.include? t }
+  def contact_org_type(contact)
+    return :multi_academy_trust if contact[:org_type].include?(LandingPagesController::TRUST)
+    return :local_authority if contact[:org_type].include?(LandingPagesController::LA)
+    return :school
   end
 end

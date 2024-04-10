@@ -1,6 +1,8 @@
 class LandingPagesController < ApplicationController
+  TRUST = 'multi_academy_trust'.freeze
+  LA = 'local_authority'.freeze
   # Needs to be aligned with values in set_org_types
-  GROUP_TYPES = %w[multi_academy_trust local_authority].freeze
+  GROUP_TYPES = %w[TRUST LA].freeze
 
   skip_before_action :authenticate_user!
   before_action :set_marketing_case_studies
@@ -30,8 +32,12 @@ class LandingPagesController < ApplicationController
     redirect_to pupils_school_path(find_example_school)
   end
 
-  def example_group_dashboard
+  def example_mat_dashboard
     redirect_to school_group_path(find_example_group)
+  end
+
+  def example_la_dashboard
+    redirect_to school_group_path(find_example_local_authority)
   end
 
   # Main entry point
@@ -148,6 +154,10 @@ class LandingPagesController < ApplicationController
   end
 
   def find_example_group
-    SchoolGroup.find_by_slug('united-learning') || SchoolGroup.is_public.sample(1)
+    SchoolGroup.find_by_slug('united-learning') || SchoolGroup.is_public.multi_academy_trust.sample(1)
+  end
+
+  def find_example_local_authority
+    SchoolGroup.find_by_slug('pembrokeshire-sir-penfro') || SchoolGroup.is_public.local_authority.sample(1)
   end
 end
