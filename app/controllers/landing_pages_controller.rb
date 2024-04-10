@@ -72,7 +72,7 @@ class LandingPagesController < ApplicationController
   end
 
   def contact_for_capsule
-    contact = contact_params.except('request_type')
+    contact = contact_params.except('request_type', 'utm_source', 'utm_medium', 'utm_campaign')
     contact['consent'] = ActiveModel::Type::Boolean.new.cast(contact['consent'])
     contact.to_h
   end
@@ -98,7 +98,10 @@ class LandingPagesController < ApplicationController
 
   def redirect_params(request_type, contact)
     params = {
-      request_type: request_type
+      request_type: request_type,
+      utm_source: contact_params['utm_source'],
+      utm_medium: contact_params['utm_medium'],
+      utm_campaign: contact_params['utm_campaign']
     }
     case request_type
     when :book_demo
@@ -135,7 +138,9 @@ class LandingPagesController < ApplicationController
   end
 
   def contact_params
-    params.require(:contact).permit(:first_name, :last_name, :job_title, :organisation, { org_type: [] }, :email, :tel, :consent, :request_type)
+    params.require(:contact).permit(:first_name, :last_name,
+      :job_title, :organisation, { org_type: [] }, :email, :tel, :consent, :request_type,
+      :utm_source, :utm_medium, :utm_campaign)
   end
 
   def find_example_school

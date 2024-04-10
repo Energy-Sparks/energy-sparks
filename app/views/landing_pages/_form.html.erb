@@ -52,5 +52,8 @@
     </div>
   </div>
   <%= f.hidden_field :request_type, value: request_type %>
+  <%= f.hidden_field :utm_source, value: params[:utm_source] %>
+  <%= f.hidden_field :utm_medium, value: params[:utm_medium] %>
+  <%= f.hidden_field :utm_campaign, value: params[:utm_campaign] %>
   <%= f.submit t('campaigns.form.fields.submit'), class: 'btn btn-primary' %>
 <% end %>
