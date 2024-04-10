@@ -111,8 +111,8 @@ describe 'landing pages', type: :system do
       expect(page).to have_current_path(pupils_school_path(school))
     end
 
-    it 'redirects to school group dashboard' do
-      visit example_group_dashboard_campaigns_path
+    it 'redirects to MAT dashboard' do
+      visit example_mat_dashboard_campaigns_path
       expect(page).to have_current_path(school_group_path(mat_school_group))
     end
 
