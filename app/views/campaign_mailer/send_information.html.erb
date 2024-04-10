@@ -20,10 +20,12 @@
 
 <div class="s-3"></div>
 <p>
-  <% if @group %>
+  <% case @contact_org_type %>
+  <% when :multi_academy_trust %>
     <%= t('campaign_mailer.send_information.for_mats.video_html',
           video_link: demo_video_campaigns_url,
           book_demo_link: 'https://calendly.com/energy-sparks/mat-demo') %>
+
   <% else %>
     <%= t('campaign_mailer.send_information.for_schools.video_html',
           video_link: demo_video_campaigns_url,
@@ -56,7 +58,7 @@
   </li>
 </ul>
 
-<% if @group %>
+<% if @contact_org_type == :multi_academy_trust %>
   <div class="s-3"></div>
   <p>
     <%= t('campaign_mailer.send_information.for_mats.mat_dashboard_html',
@@ -78,14 +80,14 @@
 
 <div class="s-3"></div>
 <p>
-  <% if @group %>
-    <%= t('campaign_mailer.send_information.for_schools.download_pack_html',
-          download_pack_link: mat_pack_campaigns_url,
-          prices_link: pricing_url) %>
+  <% if @contact_org_type == :school %>
+  <%= t('campaign_mailer.send_information.for_schools.download_pack_html',
+        download_pack_link: school_pack_campaigns_url,
+        prices_link: pricing_url) %>
   <% else %>
-    <%= t('campaign_mailer.send_information.for_schools.download_pack_html',
-          download_pack_link: school_pack_campaigns_url,
-          prices_link: pricing_url) %>
+      <%= t('campaign_mailer.send_information.for_schools.download_pack_html',
+            download_pack_link: mat_pack_campaigns_url,
+            prices_link: pricing_url) %>
   <% end %>
 </p>
 
@@ -97,9 +99,10 @@
 
 <div class="s-3"></div>
 <p>
-  <% if @group %>
+  <% case @contact_org_type %>
+  <% when :multi_academy_trust %>
     <%= t('campaign_mailer.send_information.for_mats.enrol_html',
-          enrol_link: 'https://forms.gle/K1XHu3GAUWJkNwFi6') %>
+          enrol_link: enrol_our_multi_academy_trust_url) %>
   <% else %>
     <%= t('campaign_mailer.send_information.for_schools.enrol_html',
           enrol_link: enrol_our_school_url) %>

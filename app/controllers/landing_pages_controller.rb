@@ -1,6 +1,8 @@
 class LandingPagesController < ApplicationController
+  TRUST = 'multi_academy_trust'.freeze
+  LA = 'local_authority'.freeze
   # Needs to be aligned with values in set_org_types
-  GROUP_TYPES = %w[multi_academy_trust local_authority].freeze
+  GROUP_TYPES = %w[TRUST LA].freeze
 
   skip_before_action :authenticate_user!
   before_action :set_marketing_case_studies

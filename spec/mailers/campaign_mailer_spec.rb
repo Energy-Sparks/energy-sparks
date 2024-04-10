@@ -117,7 +117,7 @@ RSpec.describe CampaignMailer do
         expect(body).not_to have_link(href: 'https://calendly.com/energy-sparks/mat-demo')
         expect(body).not_to have_link(href: example_group_dashboard_campaigns_url)
         expect(body).not_to have_link(href: mat_pack_campaigns_url)
-        expect(body).not_to have_link(href: 'https://forms.gle/K1XHu3GAUWJkNwFi6')
+        expect(body).not_to have_link(href: enrol_our_multi_academy_trust_url)
       end
     end
 
@@ -136,7 +136,7 @@ RSpec.describe CampaignMailer do
         expect(body).to have_link(href: 'https://calendly.com/energy-sparks/mat-demo')
         expect(body).to have_link(href: example_group_dashboard_campaigns_url)
         expect(body).to have_link(href: mat_pack_campaigns_url)
-        expect(body).to have_link(href: 'https://forms.gle/K1XHu3GAUWJkNwFi6')
+        expect(body).to have_link(href: enrol_our_multi_academy_trust_url)
       end
 
       it 'does not include school specific links' do
