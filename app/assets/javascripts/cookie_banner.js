@@ -2,6 +2,11 @@
 
 const COOKIE_BANNER_ID = 'cookie-banner';
 const COOKIE_PREFERENCE_NAME = 'cookie_preference';
+const COOKIE_PREFERENCE_BTNS = 'cookie-preference-buttons';
+const COOKIE_PREFERENCE_ACCEPT_BTN = 'cookie-preference-accept';
+const COOKIE_PREFERENCE_REJECT_BTN = 'cookie-preference-reject';
+const COOKIE_PREFERENCE_ACCEPT_MSG = 'cookie-preference-accepted-message';
+const COOKIE_PREFERENCE_REJECT_MSG = 'cookie-preference-rejected-message';
 const ACCEPTED = 'Accepted';
 const REJECTED = 'Rejected';
 
@@ -17,7 +22,7 @@ function initializeCookieBanner() {
    // preference cookie is current and user has refused
    setAnalyticsConsent('denied');
  }
- let preferenceButtons = document.getElementById('cookie-preference-buttons');
+ let preferenceButtons = document.getElementById(COOKIE_PREFERENCE_BTNS);
  if(preferenceButtons != null) {
    setPreferenceButtonState();
  }
@@ -63,10 +68,10 @@ function setAnalyticsConsent(permission) {
 function updateCookiePreference(status) {
   hideBanner();
   setPreferenceCookie(status);
-  let accept = document.getElementById('cookie-preference-accept');
-  let reject = document.getElementById('cookie-preference-reject');
-  let accept_msg = document.getElementById('cookie-preference-accepted-message');
-  let reject_msg = document.getElementById('cookie-preference-rejected-message');
+  let accept = document.getElementById(COOKIE_PREFERENCE_ACCEPT_BTN);
+  let reject = document.getElementById(COOKIE_PREFERENCE_REJECT_BTN);
+  let accept_msg = document.getElementById(COOKIE_PREFERENCE_ACCEPT_MSG);
+  let reject_msg = document.getElementById(COOKIE_PREFERENCE_REJECT_MSG);
   if(status === 'Accepted') {
     accept.style.display = 'none';
     reject.style.display = 'inline';
@@ -82,8 +87,8 @@ function updateCookiePreference(status) {
 
 function setPreferenceButtonState() {
   let cookieStatus = Cookies.get(COOKIE_PREFERENCE_NAME);
-  let accept = document.getElementById('cookie-preference-accept');
-  let reject = document.getElementById('cookie-preference-reject');
+  let accept = document.getElementById(COOKIE_PREFERENCE_ACCEPT_BTN);
+  let reject = document.getElementById(COOKIE_PREFERENCE_REJECT_BTN);
 
   if(cookieStatus === undefined) {
     // user has not accepted or refused; or preference cookie expired
