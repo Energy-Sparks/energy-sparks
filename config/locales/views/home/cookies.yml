@@ -7,7 +7,8 @@ en:
     reject: Reject
   cookies:
     analytics:
-      explain: Choose an option to immediately update your preference.
+      accepted_msg: Your cookie preference has been updated. You have accepted analytics cookies
+      explain: Update or change your preference.
       ga:
         expires: 2 years
         purpose: Checks if you’ve visited Energy Sparks before. This helps us count how many people visit our site.
@@ -25,6 +26,7 @@ en:
         Google Analytics stores anonymised information about how you got to Energy Sparks, the pages you visit on Energy Sparks, and how long you spend on them.
         </p>
       question: Do you want to accept analytics cookies?
+      rejected_msg: Your cookie preference has been updated. You have rejected analytics cookies
       title: Google Analytics cookies (optional)
     essential:
       intro_html: |-

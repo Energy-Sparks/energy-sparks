@@ -1,5 +1,10 @@
 <div id="cookie-banner" class="alert text-center mb-0" role="alert">
   <%= I18n.t('cookie_banner.notice') %>
   <%= link_to I18n.t('cookie_banner.learn_more'), cookies_path %>
-  <%= render 'shared/cookie_buttons' %>
+  <button type="button" class="btn btn-primary btn-sm ms-3" onclick="window.acceptCookies()">
+    <%= I18n.t('cookie_banner.accept') %>
+  </button>
+  <button type="button" class="btn btn-primary btn-sm ms-3" onclick="window.rejectCookies()">
+    <%= I18n.t('cookie_banner.reject') %>
+  </button>
 </div>
