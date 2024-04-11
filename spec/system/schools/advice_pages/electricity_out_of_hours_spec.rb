@@ -2,11 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'electricity out of hours advice page', type: :system do
   let(:reading_start_date) { 1.year.ago }
+  let(:reading_end_date) { Time.zone.today }
 
   let(:school) do
     create(:school, :with_basic_configuration_single_meter_and_tariffs,
       reading_start_date: reading_start_date,
-      calendar: nil) # dont create a calendar initially, see nested tests
+      reading_end_date: reading_end_date,
+      calendar: create(:calendar, calendar_type: :school)) # create empty calendar initially, see nested tests
   end
 
   before { create(:advice_page, key: :electricity_out_of_hours, fuel_type: :electricity) }

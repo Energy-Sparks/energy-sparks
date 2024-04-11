@@ -1,6 +1,8 @@
 "use strict"
 
 $(document).ready(function() {
+  DataTable.ext.errMode = 'throw';
+
   $('.table-sorted').DataTable({
     'columnDefs': [{ targets: 'no-sort', orderable: false }],
     'order': [],        // Default do not sort

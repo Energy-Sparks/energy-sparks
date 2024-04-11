@@ -84,8 +84,24 @@
         <%= t('cookies.analytics.explain') %>
       </p>
 
-      <%= render 'shared/cookie_buttons' %>
+      <div id="cookie-preference-buttons">
+        <button id="cookie-preference-accept" type="button" class="btn btn-primary btn-sm ms-3" onclick="window.updateCookiePreference('Accepted')">
+          <%= I18n.t('cookie_banner.accept') %>
+        </button>
 
+        <button id="cookie-preference-reject" type="button" class="btn btn-primary btn-sm ms-3" onclick="window.updateCookiePreference('Rejected')">
+          <%= I18n.t('cookie_banner.reject') %>
+        </button>
+
+        <div id="cookie-preference-rejected-message" class="mt-2">
+          <p><%= t('cookies.analytics.rejected_msg') %></p>
+        </div>
+
+        <div id="cookie-preference-accepted-message" class="mt-2">
+          <p><%= t('cookies.analytics.accepted_msg') %></p>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
