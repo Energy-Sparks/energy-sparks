@@ -18,6 +18,6 @@ class Video < ApplicationRecord
   scope :featured, -> { where(featured: true) }
 
   def embed_url
-    "https://www.youtube.com/embed/#{youtube_id}"
+    "https://www.youtube-nocookie.com/embed/#{youtube_id}"
   end
 end

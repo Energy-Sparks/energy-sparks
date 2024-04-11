@@ -1,28 +1,50 @@
-<% content_for :page_title, t('marketing.schools.title') %>
+<% content_for :page_title, t('campaigns.find_out_more.title') %>
 
-<%= render 'home/marketing/header', title: t('marketing.schools.title'), school: true %>
+<header>
+  <div class="row masthead" style="height: 600px;">
+    <div class="col-md-7">
+    </div>
+    <div class="col-md-5 masthead-content">
+      <div class="row pt-5">
+        <div class="col-md-12">
+          <h1 class="display-4"><strong><%= t('campaigns.find_out_more.title') %></strong></h1>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 pr-5">
+          <h3><%= t('campaigns.find_out_more.sub_title') %></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
 <div class="application container">
   <div class="row">
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-12">
-          <h1 style="color: #232b49;"><%= t('marketing.mats.benefits.costs') %></h1>
+          <h1 style="color: #232b49;"><%= t('campaigns.find_out_more.benefits.costs') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h1 style="color: #232b49;"><%= t('marketing.schools.benefits.emissions') %></h1>
+          <h1 style="color: #232b49;"><%= t('campaigns.find_out_more.benefits.emissions') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h1 style="color: #232b49;"><%= t('marketing.mats.benefits.pupils') %></h1>
+          <h1 style="color: #232b49;"><%= t('campaigns.find_out_more.benefits.pupils') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12 pt-2 text-center cta">
-          <%= link_to t('enrol.enrol_now'), enrol_our_school_path, class: 'btn bg-positive' %>
+          <%= link_to t('campaigns.find_out_more.book_demo'),
+                      book_demo_campaigns_path(utm_params_for_redirect),
+                      class: 'btn bg-positive' %>
+          <%= link_to t('campaigns.find_out_more.find_out_more'),
+                      more_information_campaigns_path(utm_params_for_redirect),
+                      class: 'btn bg-positive' %>
         </div>
       </div>
     </div>
@@ -38,7 +60,7 @@
       <div class="row">
         <div class="col-md-12 text-center">
           <h1 style="color: white;">
-            <%= t('marketing.schools.learn_why.title',
+            <%= t('campaigns.find_out_more.learn_why.title',
                   school_count: marketing_school_count,
                   mat_count: marketing_mat_count) %>
           </h1>
@@ -53,17 +75,22 @@
     <div class="col-md-5">
       <div class="row">
         <div class="col-md-12">
-          <h1><%= t('marketing.mats.costs.title') %></h1>
+          <h1><%= t('campaigns.find_out_more.costs.title') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.mats.costs.sub_title') %></h4>
+          <h4><%= t('campaigns.find_out_more.costs.sub_title') %></h4>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <%= link_to t('marketing.mats.costs.case_study'),
+          <h4><%= t('campaigns.find_out_more.costs.bullets').html_safe %></h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <%= link_to t('campaigns.find_out_more.costs.case_study'),
                       case_study_link(@marketing_studies[:costs]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
@@ -74,9 +101,9 @@
       <div class="row">
         <div class="col-md-12">
           <div class="bg-light-blue p-5 justify-content-center testimonial rounded-25">
-            <blockquote class="quotes"><%= t('marketing.mats.costs.quote_html') %></blockquote>
+            <blockquote class="quotes"><%= t('campaigns.find_out_more.costs.quote_html') %></blockquote>
             <figcaption class="quote-by">
-              <strong><%= t('marketing.mats.costs.quote_source') %></strong>
+              <strong><%= t('campaigns.find_out_more.costs.quote_source') %></strong>
             </figcaption>
           </div>
         </div>
@@ -94,22 +121,22 @@
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-12">
-          <h1><%= t('marketing.mats.tool.title') %></h1>
+          <h1><%= t('campaigns.find_out_more.tool.title') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.schools.tool.sub_title_1') %></h4>
+          <h4><%= t('campaigns.find_out_more.tool.sub_title_1') %></h4>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.schools.tool.sub_title_2') %></h4>
+          <h4><%= t('campaigns.find_out_more.tool.sub_title_2') %></h4>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12 text-right">
-          <%= link_to t('marketing.mats.tool.case_study'),
+          <%= link_to t('campaigns.find_out_more.tool.case_study'),
                       case_study_link(@marketing_studies[:tool]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
@@ -121,22 +148,22 @@
     <div class="col-md-5">
       <div class="row">
         <div class="col-md-12">
-          <h1><%= t('marketing.mats.pupils.title') %></h1>
+          <h1><%= t('campaigns.find_out_more.pupils.title') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.mats.pupils.sub_title_1', activities_count: marketing_activity_count) %></h4>
+          <h4><%= t('campaigns.find_out_more.pupils.sub_title_1', activities_count: marketing_activity_count) %></h4>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.mats.pupils.sub_title_2') %></h4>
+          <h4><%= t('campaigns.find_out_more.pupils.sub_title_2') %></h4>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <%= link_to t('marketing.mats.pupils.case_study'),
+          <%= link_to t('campaigns.find_out_more.pupils.case_study'),
                       case_study_link(@marketing_studies[:pupils]),
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
@@ -147,9 +174,9 @@
       <div class="row">
         <div class="col-md-12">
           <div class="bg-light-blue p-5 justify-content-center testimonial rounded-25">
-            <blockquote class="quotes"><%= t('marketing.mats.pupils.quote') %></blockquote>
+            <blockquote class="quotes"><%= t('campaigns.find_out_more.pupils.quote') %></blockquote>
             <figcaption class="quote-by">
-              <strong><%= t('marketing.mats.pupils.quote_source') %></strong>
+              <strong><%= t('campaigns.find_out_more.pupils.quote_source') %></strong>
             </figcaption>
           </div>
         </div>
@@ -167,39 +194,25 @@
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-12">
-          <h1><%= t('marketing.mats.emissions.title') %></h1>
+          <h1><%= t('campaigns.find_out_more.emissions.title') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('marketing.mats.emissions.sub_title_1') %></h4>
+          <h4><%= t('campaigns.find_out_more.emissions.sub_title_1') %></h4>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <h4>
-            <%= t('marketing.mats.emissions.sub_title_2') %>
+            <%= t('campaigns.find_out_more.emissions.sub_title_2') %>
           </h4>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12 text-right">
-          <%= link_to t('marketing.mats.emissions.case_study'),
+          <%= link_to t('campaigns.find_out_more.emissions.case_study'),
                       case_study_link(@marketing_studies[:emissions]),
-                      class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row bg-dark-blue" style="background-color: #232b49;">
-  <div class="col-md-12">
-    <div class="application container">
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <%= link_to t('marketing.mats.read_more.title'),
-                      case_studies_path,
                       class: 'btn btn-lg btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
@@ -213,11 +226,11 @@
       <div class="row">
         <div class="col-md-12">
           <div class="testimonial">
-            <blockquote class="quotes"><%= t('marketing.mats.testimonial.quote') %></blockquote>
+            <blockquote class="quotes"><%= t('campaigns.find_out_more.testimonial.quote') %></blockquote>
             <figcaption class="quote-by">
-              <strong><%= t('marketing.mats.testimonial.quote_source') %></strong>
-              <p class="very-small"><%= t('marketing.mats.testimonial.quote_job') %></p>
-              <p class="very-small"><%= t('marketing.mats.testimonial.quote_organisation') %></p>
+              <strong><%= t('campaigns.find_out_more.testimonial.quote_source') %></strong>
+              <p class="very-small"><%= t('campaigns.find_out_more.testimonial.quote_job') %></p>
+              <p class="very-small"><%= t('campaigns.find_out_more.testimonial.quote_organisation') %></p>
             </figcaption>
           </div>
         </div>
@@ -231,23 +244,22 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-12">
-          <h1 style="color: #232b49;"><%= t('marketing.mats.final_prompt.question') %></h1>
+          <h1 style="color: #232b49;"><%= t('campaigns.find_out_more.final_prompt.question') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h1 style="color: #232b49;"><%= t('marketing.schools.final_prompt.booking') %></h1>
+          <h1 style="color: #232b49;"><%= t('campaigns.find_out_more.final_prompt.booking') %></h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12 pt-2 text-center cta">
-          <%= link_to t('marketing.book_a_demo'), training_path, class: 'btn bg-positive' %>
-          <%= link_to t('enrol.enrol_now'), enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12 pt-3 text-center">
-          <%= t('marketing.mats.final_prompt.additional_html') %>
+          <%= link_to t('campaigns.find_out_more.book_demo'),
+                      book_demo_campaigns_path(utm_params_for_redirect),
+                      class: 'btn bg-positive' %>
+          <%= link_to t('campaigns.find_out_more.find_out_more'),
+                      more_information_campaigns_path(utm_params_for_redirect),
+                      class: 'btn bg-positive' %>
         </div>
       </div>
     </div>

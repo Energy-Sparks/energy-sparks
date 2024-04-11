@@ -26,7 +26,7 @@ RSpec.describe 'home', type: :system do
       within('#our-services') do
         click_on('For Schools')
       end
-      expect(page).to have_content('Energy Sparks for Schools')
+      expect(page).to have_current_path(find_out_more_campaigns_path)
     end
 
     it 'redirects old pages' do
@@ -40,13 +40,18 @@ RSpec.describe 'home', type: :system do
       expect(response).to redirect_to(for_schools_path)
     end
 
+    it 'routes to the campaign page' do
+      visit find_out_more_path
+      expect(page).to have_content(I18n.t('campaigns.find_out_more.title'))
+    end
+
     it 'has a for-local-authorities page' do
       visit root_path
       click_on('Our services')
       within('#our-services') do
         click_on('For Local Authorities')
       end
-      expect(page).to have_content('Energy Sparks for Local Authorities')
+      expect(page).to have_current_path(find_out_more_campaigns_path)
     end
 
     it 'has a for-multi-academy-trusts page' do
@@ -55,7 +60,13 @@ RSpec.describe 'home', type: :system do
       within('#our-services') do
         click_on('For Multi-Academy Trusts')
       end
-      expect(page).to have_content('Energy Sparks for Multi-Academy Trusts')
+      expect(page).to have_current_path(find_out_more_campaigns_path)
+    end
+
+    it 'links to the marketing page from home page' do
+      visit root_path
+      click_on('Find out more')
+      expect(page).to have_current_path(find_out_more_campaigns_path)
     end
   end
 
@@ -66,12 +77,6 @@ RSpec.describe 'home', type: :system do
       click_on('Contact')
     end
     expect(page.has_content?('Contact us'))
-  end
-
-  it 'has an enrol page' do
-    visit root_path
-    click_on('Enrol')
-    expect(page.has_content?('Enrol with Energy Sparks'))
   end
 
   it 'has a pricing page' do

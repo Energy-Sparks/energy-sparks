@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   include VideoHelper
+  include ApplicationHelper
 
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
@@ -16,12 +17,15 @@ class HomeController < ApplicationController
   end
 
   def for_schools
+    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
   end
 
   def for_local_authorities
+    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
   end
 
   def for_multi_academy_trusts
+    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
   end
 
   def energy_audits
@@ -36,16 +40,18 @@ class HomeController < ApplicationController
   def contact
   end
 
-  def enrol
-  end
-
   def enrol_our_school
   end
 
   def enrol_our_multi_academy_trust
+    redirect_to 'https://forms.gle/K1XHu3GAUWJkNwFi6'
   end
 
   def enrol_our_local_authority
+    redirect_to 'https://forms.gle/v78XueeSdfggcyhz8'
+  end
+
+  def cookies
   end
 
   def privacy_and_cookie_policy

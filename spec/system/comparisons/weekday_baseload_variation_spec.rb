@@ -6,6 +6,10 @@ describe 'weekday_baseload_variation' do
   let(:advice_page_key) { :baseload }
   let!(:report) { create(:report, key: key) }
 
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
   before do
     create(:advice_page, key: advice_page_key)
     alert_run = create(:alert_generation_run, school: school)
@@ -41,8 +45,8 @@ describe 'weekday_baseload_variation' do
 
       let(:expected_table) do
         [headers,
-         ["#{school.name} (*5)", '+100&percnt;', '2', '3', 'Thursday', 'Friday', '£6'],
-         ["Notes\n(*5) The tariff has changed during the last year for this school. Savings are calculated using the " \
+         ["#{school.name} [5]", '+100&percnt;', '2', '3', 'Thursday', 'Friday', '£6'],
+         ["Notes\n[5] The tariff has changed during the last year for this school. Savings are calculated using the " \
           'latest tariff but other £ values are calculated using the relevant tariff at the time']]
       end
       let(:expected_csv) do

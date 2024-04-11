@@ -22,6 +22,10 @@ describe 'annual_gas_out_of_hours_use' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
   before do
     create(:advice_page, key: advice_page_key)
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
@@ -57,9 +61,9 @@ describe 'annual_gas_out_of_hours_use' do
 
       let(:expected_table) do
         [headers,
-         ["#{school.name} [t]", '27.8&percnt;', '37.1&percnt;', '21.1&percnt;', '13.9&percnt;', '0&percnt;', '0p', '£41,300', '£13,000'],
-         ["Notes\n[t]\n" \
-          '(*5) The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+         ["#{school.name} [5]", '27.8&percnt;', '37.1&percnt;', '21.1&percnt;', '13.9&percnt;', '0&percnt;', '0p', '£41,300', '£13,000'],
+         ["Notes\n" \
+          '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
           "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
           "'last year' is defined as this year to date."]]
       end

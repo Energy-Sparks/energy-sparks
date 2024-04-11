@@ -163,6 +163,8 @@ ignore_unused:
   - 'onboarding_mailer.reminder_email.paragraph_3.*'
   - 'components.observation.*.compact_message*'
   - 'components.observation.*.message*'
+  - 'campaign_mailer.send_information.for_las.group_dashboard_html'
+  - 'campaign_mailer.send_information.for_mats.group_dashboard_html'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
