@@ -104,4 +104,75 @@ describe 'cookie banner' do
       it_behaves_like 'a dismissable cookie banner'
     end
   end
+
+  context 'when visiting the cookies page', :js do
+    before do
+      visit cookies_path
+    end
+
+    it 'displays the basic content' do
+      expect(page).to have_content(I18n.t('cookies.title'))
+      expect(page).to have_content(I18n.t('cookies.essential.title'))
+      expect(page).to have_content(I18n.t('cookies.analytics.title'))
+    end
+
+    it 'displays both preference buttons when there is no existing preference' do
+      within('#cookie-preference-buttons') do
+        expect(page).to have_button(I18n.t('cookie_banner.accept'))
+        expect(page).to have_button(I18n.t('cookie_banner.reject'))
+      end
+    end
+
+    context 'when clicking accept button', :js do
+      before do
+        within('#cookie-preference-buttons') do
+          click_on(I18n.t('cookie_banner.accept'))
+        end
+      end
+
+      it 'updates page state correctly' do
+        # accept button is hidden
+        expect(page).to have_css('#cookie-preference-accept', visible: :hidden)
+        # reject button is visible
+        expect(page).to have_css('#cookie-preference-reject')
+
+        # accepted message is visible
+        expect(page).to have_css('#cookie-preference-accepted-message')
+        # rejected message is hidden
+        expect(page).to have_css('#cookie-preference-rejected-message', visible: :hidden)
+      end
+
+      it 'updates the cookie' do
+        expect(cookie_preference[:value]).to eq('Accepted')
+      end
+
+      context 'when toggling the preference', :js do
+        before do
+          within('#cookie-preference-buttons') do
+            click_on(I18n.t('cookie_banner.reject'))
+          end
+        end
+
+        it 'updates page state correctly' do
+          # reject button is hidden
+          expect(page).to have_css('#cookie-preference-reject', visible: :hidden)
+          # accept button is visible
+          expect(page).to have_css('#cookie-preference-accept')
+
+          # rejected message is visible
+          expect(page).to have_css('#cookie-preference-rejected-message')
+          # accepted message is hidden
+          expect(page).to have_css('#cookie-preference-accepted-message', visible: :hidden)
+        end
+
+        it 'updates the cookie' do
+          expect(cookie_preference[:value]).to eq('Rejected')
+        end
+      end
+
+      it 'hides the cookie banner' do
+        expect(page).to have_css('#cookie-banner', visible: :hidden)
+      end
+    end
+  end
 end
