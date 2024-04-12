@@ -140,7 +140,7 @@ class LandingPagesController < ApplicationController
       I18n.t('campaigns.form.org_types.special') => :special,
       I18n.t('campaigns.form.org_types.independent') => :independent,
       I18n.t('campaigns.form.org_types.local_authority') => :local_authority
-    }.sort
+    }
   end
 
   def contact_params
