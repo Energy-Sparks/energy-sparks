@@ -96,7 +96,7 @@ module Campaigns
     # from the production server.
     def can_create_party?
       return true unless Rails.env.production?
-      return true unless ENV['ENVIRONMENT_IDENTIFIER'] != 'test'
+      return ENV['ENVIRONMENT_IDENTIFIER'] != 'test'
     end
   end
 end

@@ -187,4 +187,27 @@ describe Campaigns::ContactHandlerService do
       })
     end
   end
+
+  describe '#can_create_party?' do
+    # rubocop:disable Rails/Inquiry
+    it 'returns true in production' do
+      allow(Rails).to receive(:env) { 'production'.inquiry }
+      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
+        expect(service.send(:can_create_party?)).to be(true)
+      end
+    end
+
+    it 'returns false on test server' do
+      allow(Rails).to receive(:env) { 'production'.inquiry }
+      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'test' do
+        expect(service.send(:can_create_party?)).to be(false)
+      end
+    end
+
+    it 'returns true in dev' do
+      allow(Rails).to receive(:env) { 'development'.inquiry }
+      expect(service.send(:can_create_party?)).to be(true)
+    end
+    # rubocop:enable Rails/Inquiry
+  end
 end
