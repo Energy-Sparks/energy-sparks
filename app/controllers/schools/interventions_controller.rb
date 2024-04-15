@@ -46,6 +46,11 @@ module Schools
     end
 
     def show
+      if @observation.observation_type == 'activity'
+        redirect_to school_activity_path(@school, @observation.activity_id)
+      else
+        render :show
+      end
     end
 
     def completed
