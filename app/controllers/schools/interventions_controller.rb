@@ -47,7 +47,7 @@ module Schools
 
     def show
       if @observation.observation_type == 'activity'
-        redirect_to school_activity_path(@school, @observation.activity_id)
+        redirect_to school_activity_path(@school, @observation.activity_id), :status => :moved_permanently
       else
         render :show
       end
