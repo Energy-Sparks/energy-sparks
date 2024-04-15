@@ -265,7 +265,7 @@ describe 'compare pages', :compare, type: :system do
   end
 
   [true, false].each do |feature_flag|
-    context "when feature flag is set to #{feature_flag}" do
+    context "when comparison report feature flag is set to #{feature_flag}" do
       around do |example|
         ClimateControl.modify FEATURE_FLAG_COMPARISON_REPORTS: feature_flag.to_s do
           example.run
