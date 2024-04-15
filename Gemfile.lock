@@ -272,7 +272,7 @@ GEM
     ffi (1.16.3)
     font-awesome-sass (6.5.1)
       sassc (~> 2.0)
-    foreman (0.87.2)
+    foreman (0.88.1)
     formatador (1.1.0)
     friendly_id (5.5.1)
       activerecord (>= 4.0.0)
