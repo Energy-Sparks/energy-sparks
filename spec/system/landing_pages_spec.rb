@@ -62,12 +62,12 @@ describe 'landing pages', type: :system do
     end
   end
 
-  def fill_in_form
+  def fill_in_form(organisation_type = org_type)
     fill_in('First Name', with: first_name)
     fill_in('Last Name', with: last_name)
     fill_in('Job Title', with: job_title)
     fill_in('Organisation', with: organisation)
-    select(org_type, from: :contact_org_type)
+    select(organisation_type, from: :contact_org_type)
     fill_in('Email Address', with: email)
     fill_in('Telephone Number', with: tel)
     check(:contact_consent)
@@ -122,14 +122,30 @@ describe 'landing pages', type: :system do
     end
 
     context 'with no UTM params' do
-      it 'handles form submission correctly' do
-        expect(page).to have_content(I18n.t('campaigns.book_demo.title'))
-        fill_in_form
-        expect(CampaignContactHandlerJob).to receive(:perform_later).with(:book_demo, expected_contact)
-        allow(CampaignContactHandlerJob).to receive(:perform_later).and_return(true)
-        click_on('Next')
-        expect(page).to have_content(I18n.t('campaigns.book_demo_final.title'))
-        expect(page).to have_css('.calendly-inline-widget')
+      context 'when completing as a MAT' do
+        it 'handles form submission correctly' do
+          expect(page).to have_content(I18n.t('campaigns.book_demo.title'))
+          fill_in_form
+          expect(CampaignContactHandlerJob).to receive(:perform_later).with(:book_demo, expected_contact)
+          allow(CampaignContactHandlerJob).to receive(:perform_later).and_return(true)
+          click_on('Next')
+          expect(page).to have_content(I18n.t('campaigns.book_demo_final.title'))
+          expect(page).to have_css('.calendly-inline-widget')
+          widget = find('.calendly-inline-widget')
+          expect(widget['data-url']).to match('https://calendly.com/energy-sparks/mat-demo')
+        end
+      end
+
+      context 'when completing as a school' do
+        it 'shows the right calendar link' do
+          expect(page).to have_content(I18n.t('campaigns.book_demo.title'))
+          fill_in_form('Independent school')
+          click_on('Next')
+          expect(page).to have_content(I18n.t('campaigns.book_demo_final.title'))
+          expect(page).to have_css('.calendly-inline-widget')
+          widget = find('.calendly-inline-widget')
+          expect(widget['data-url']).to match('https://calendly.com/energy-sparks/demo-for-individual-schools')
+        end
       end
     end
 
