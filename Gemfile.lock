@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: c912a059b016689035eaf3b32ce122dc10e3eb61
-  tag: 5.1.8
+  revision: 34488aaacc361445aff2a64d683bfba27415c909
+  branch: 4132-rework-arbitrary-period-comparison-alert-to-allow-periods-to-be-provided-as-parameters
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)

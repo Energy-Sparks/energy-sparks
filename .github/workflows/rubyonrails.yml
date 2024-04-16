@@ -18,10 +18,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # limited to 20
+        # limited to 19 (1 spare for overcommit)
         # https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits
-        ci_node_total: [20]
-        ci_node_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+        ci_node_total: [19]
+        ci_node_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
