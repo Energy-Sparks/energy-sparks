@@ -10,8 +10,8 @@ module Alerts
     end
 
     def self.generate_alert_report(alert_type, asof_date, school)
+      alert_type_run_result = new(alert_type: alert_type, asof_date: asof_date)
       report = yield
-      alert_type_run_result = self.class.new(alert_type: alert_type, asof_date: asof_date)
       alert_type_run_result.reports << report
       alert_type_run_result
     rescue StandardError => e
