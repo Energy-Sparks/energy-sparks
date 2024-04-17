@@ -11,8 +11,7 @@ module Alerts
         true
       end
 
-      def analyse(_analysis_date, _max_as_of_date = nil)
-      end
+      def analyse(_analysis_date, _max_as_of_date = nil, **kwargs); end
 
       def rating
         5.0

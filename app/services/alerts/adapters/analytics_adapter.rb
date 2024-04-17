@@ -6,10 +6,11 @@ module Alerts
       def report(alert_configuration: nil)
         analysis_object = alert_class.new(@aggregate_school)
         if analysis_object.valid_alert?
+          benchmark = benchmark_variables?(alert_class)
           analysis_object.analyse(*[@analysis_date,
                                     benchmark ? @use_max_meter_date_if_less_than_asof_date : nil].compact,
                                   comparison_configuration: alert_configuration)
-          produce_report(analysis_object, benchmark_variables?(alert_class))
+          produce_report(analysis_object, benchmark)
         else
           invalid_alert_report(analysis_object)
         end
