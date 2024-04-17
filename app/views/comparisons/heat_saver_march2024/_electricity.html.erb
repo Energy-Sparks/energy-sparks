@@ -1,0 +1,32 @@
+<%= render 'table_title', table_number: table_number, table_title: t('comparisons.tables.electricity_usage') %>
+
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: @electricity_headers, colgroups: @electricity_colgroups,
+              advice_page_tab: advice_page_tab do |c| %>
+  <% @results.where.not(electricity_previous_period_kwh: nil).find_each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.electricity_tariff_has_changed %>
+      <% r.with_var val: result.activation_date, unit: :date_mmm_yyyy %>
+      <% r.with_var val: result.electricity_previous_period_kwh, unit: :kwh %>
+      <% r.with_var val: result.electricity_current_period_kwh, unit: :kwh %>
+      <% r.with_var val: percent_change(result.electricity_previous_period_kwh, result.electricity_current_period_kwh),
+                    change: true,
+                    unit: :relative_percent_0dp %>
+
+      <% r.with_var val: result.electricity_previous_period_co2, unit: :co2 %>
+      <% r.with_var val: result.electricity_current_period_co2, unit: :co2 %>
+      <% r.with_var val: percent_change(result.electricity_previous_period_co2, result.electricity_current_period_co2),
+                    change: true,
+                    unit: :relative_percent_0dp %>
+
+      <% r.with_var val: result.electricity_previous_period_gbp, unit: :£ %>
+      <% r.with_var val: result.electricity_current_period_gbp, unit: :£ %>
+      <% r.with_var val: percent_change(result.electricity_previous_period_gbp, result.electricity_current_period_gbp),
+                    change: true,
+                    unit: :relative_percent_0dp %>
+    <% end %>
+  <% end %>
+<% end %>
