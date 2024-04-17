@@ -34,7 +34,7 @@ module Alerts
 
       describe 'error handling' do
         it 'does not raise an error if the framework_adapter raises one' do
-          expect(adapter_instance).to receive(:analyse).and_raise(IOError)
+          expect(adapter_instance).to receive(:analyse).and_raise(IOError) # TODO: is IOError the most typical error?
 
           service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
 
@@ -73,6 +73,8 @@ module Alerts
 
         expect(service.perform.reports).to include(alert_report)
       end
+
+      it ''
     end
   end
 end

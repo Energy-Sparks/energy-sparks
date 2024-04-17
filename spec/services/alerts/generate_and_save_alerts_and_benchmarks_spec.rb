@@ -3,7 +3,7 @@ require 'rails_helper'
 module Alerts
   describe GenerateAndSaveAlertsAndBenchmarks do
     let!(:school)                 { create(:school) }
-    let(:aggregate_school)        { double(:aggregate_school) }
+    let(:aggregate_school)        { build(:meter_collection, :with_aggregate_meter) }
     let(:asof_date)               { Date.parse('01/01/2019') }
     let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
     let(:benchmark_result_generation_run) { BenchmarkResultGenerationRun.create! }
@@ -124,6 +124,26 @@ module Alerts
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_error_count).to be 1
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 0
       end
+
+      fit 'handles custom report reports' do
+        create(:alert_type, class_name: 'AlertConfigurablePeriodElectricityComparison', fuel_type: :electricity)
+        create(:report, :with_custom_period)
+        expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
+
+        service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
+        service.perform
+        # debugger
+        # expect { service.perform }.to change(Alert, :count).by(2) &&
+        #                               change(AlertError, :count).by(1) &&
+        #                               change(BenchmarkResult, :count).by(0) &&
+        #                               change(BenchmarkResultError, :count).by(0)
+
+        expect(Alert.first.run_on).not_to be_nil
+        expect(Alert.first.template_data).not_to be_nil
+        expect(Alert.first.template_data_cy).not_to be_nil
+      end
+
+
     end
   end
 end
