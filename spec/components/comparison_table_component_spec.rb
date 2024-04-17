@@ -211,7 +211,7 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
           let(:current_user) { create(:admin) }
 
           it 'has edit link' do
-            expect(html).to have_link('Edit', href: admin_comparisons_footnote_fetch_path('note'))
+            expect(html).to have_link('Edit', href: edit_admin_comparisons_footnote_path('note'))
           end
         end
       end

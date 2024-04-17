@@ -16,11 +16,6 @@ module Admin::Comparisons
       end
     end
 
-    def fetch
-      @footnote = Comparison::Footnote.fetch(params[:footnote_id])
-      render :edit
-    end
-
     def update
       if @footnote.update(footnote_params)
         redirect_to admin_comparisons_footnotes_path, notice: 'Footnote was successfully updated.'

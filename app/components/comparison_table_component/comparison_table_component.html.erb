@@ -32,8 +32,8 @@
           </p>
           <% footnotes.each do |footnote| %>
             <%= footnote %>
-            <% if helpers.current_user&.admin? && footnote.reference.key %>
-              <%= link_to 'Edit', admin_comparisons_footnote_fetch_path(footnote.reference.key),
+            <% if helpers.current_user&.admin? && footnote.reference.footnote %>
+              <%= link_to 'Edit', edit_admin_comparisons_footnote_path(footnote.reference.footnote),
                           class: 'btn btn-sm',
                           data: { toggle: 'tooltip', placement: 'right' }, title: 'Admin Only' %>
             <% end %>
