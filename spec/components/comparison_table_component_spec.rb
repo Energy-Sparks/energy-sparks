@@ -142,10 +142,19 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
       let(:reference_params) {}
       let(:content) {}
 
+      let(:current_user) { }
+
+      before do
+        # This allows us to set the current user during rendering
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
+      end
+
       subject(:html) do
-        render_inline(described_class.new(**params)) do |c|
-          c.with_row do |r|
-            r.with_reference(**reference_params) { content }
+        with_controller_class ApplicationController do
+          render_inline(described_class.new(**params)) do |c|
+            c.with_row do |r|
+              r.with_reference(**reference_params) { content }
+            end
           end
         end
       end
@@ -164,6 +173,14 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
             expect { html }.to raise_error(KeyError)
           end
         end
+
+        context 'when current user is admin' do
+          let(:current_user) { create(:admin) }
+
+          it 'does not have edit link' do
+            expect(html).not_to have_link('Edit')
+          end
+        end
       end
 
       context 'with a footnote key and params' do
@@ -179,6 +196,22 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
 
           it 'raises KeyError' do
             expect { html }.to raise_error(KeyError)
+          end
+        end
+
+        context 'when current user is not admin' do
+          let(:current_user) { }
+
+          it 'does not show edit link' do
+            expect(html).not_to have_link('Edit')
+          end
+        end
+
+        context 'when current user is admin' do
+          let(:current_user) { create(:admin) }
+
+          it 'has edit link' do
+            expect(html).to have_link('Edit', href: admin_comparisons_footnote_fetch_path('note'))
           end
         end
       end
