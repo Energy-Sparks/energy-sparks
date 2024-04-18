@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 58f95e9befab4c04b12a33d93ab303399fe764fd
-  branch: 4069-create-new-comparison-for-new-energy-sparks-competition
+  revision: aa0cb5f912fb162d5da32d4c00451a47aced6d4f
+  tag: 5.1.9
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
