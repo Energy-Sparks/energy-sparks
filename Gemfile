@@ -26,8 +26,8 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-# gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '4132-rework-arbitrary-period-comparison-alert-to-allow-periods-to-be-provided-as-parameters'
-gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '4133-integrate-parameterised-period-comparison-alert-into-the-application'
+# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
