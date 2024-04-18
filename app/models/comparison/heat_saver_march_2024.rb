@@ -41,4 +41,9 @@ class Comparison::HeatSaverMarch2024 < Comparison::View
       gas_tariff_has_changed ||
       storage_heater_tariff_has_changed
   end
+
+  # E.g. previous_year, current_year
+  scope :by_total_percentage_change, ->(base_vals, new_vals) do
+    order(Arel.sql(sanitize_sql_array("(NULLIF(#{new_vals.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0) - NULLIF(#{base_vals.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0)) / NULLIF(#{base_vals.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0) ASC NULLS FIRST")))
+  end
 end
