@@ -9,6 +9,9 @@
       <% r.with_school school: result.school %>
       <% r.with_reference key: 'tariff_changed_last_year',
                           if: result.electricity_tariff_has_changed %>
+      <% r.with_reference key: 'electricity_change_rows',
+                          period_type_string: @period_type_string,
+                          if: result.pupils_changed %>
       <% r.with_var val: result.activation_date, unit: :date_mmm_yyyy %>
       <% r.with_var val: result.electricity_previous_period_kwh, unit: :kwh %>
       <% r.with_var val: result.electricity_current_period_kwh, unit: :kwh %>

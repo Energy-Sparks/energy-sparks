@@ -5,6 +5,7 @@ module Comparisons
       @electricity_colgroups = electricity_colgroups
       @heating_colgroups = heating_colgroups
       @heating_headers = heating_headers
+      @period_type_string = I18n.t('comparisons.period_types.periods')
       super
     end
 
@@ -23,7 +24,7 @@ module Comparisons
         t('analytics.benchmarking.configuration.column_headings.change_pct'),
         t('comparisons.column_headings.previous_period'),
         t('comparisons.column_headings.current_period'),
-        t('analytics.benchmarking.configuration.column_headings.change_pct'),
+        t('analytics.benchmarking.configuration.column_headings.change_pct')
       ]
     end
 
