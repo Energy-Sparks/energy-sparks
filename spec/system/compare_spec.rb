@@ -34,9 +34,21 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_link('Baseload per pupil') }
   end
 
-  shared_examples 'a results page' do |display_new_comparison_pages: false|
+  shared_examples 'a results page' do |display_new_comparison_pages: false, edit: false|
     it { expect(page).to have_selector('h1', text: 'Baseload per pupil') }
     it { expect(page).to have_content('intro html') }
+
+    it 'allows report introduction to be edited', if: edit do
+      within('#intro') do
+        expect(page).to have_link('Edit')
+      end
+    end
+
+    it 'does not allow report introduction to be edited', unless: edit do
+      within('#intro') do
+        expect(page).not_to have_link('Edit')
+      end
+    end
 
     it 'includes tabular data', unless: display_new_comparison_pages do
       within '#tables' do
@@ -540,7 +552,7 @@ describe 'compare pages', :compare, type: :system do
 
               before { click_on 'Baseload per pupil' }
 
-              it_behaves_like 'a results page', display_new_comparison_pages: true
+              it_behaves_like 'a results page', display_new_comparison_pages: true, edit: true
               it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
               it_behaves_like 'a filter summary', funder: 'Grant Funder'
 
