@@ -106,31 +106,44 @@ describe 'heat_saver_march_2024' do
         end
 
         let(:expected_table) do
-          [colgroups,
-           headers,
-           ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}] [#{gas_change_rows[:label]}]",
-            '',
-            'Jan 2023',
-            '6,000',
-            '3,000',
-            '-50&percnt;',
-            '600',
-            '300',
-            '-50&percnt;',
-            '£12,000',
-            '£6,000',
-            '-50&percnt;'
-           ],
-           ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools. [1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
-]
+          [
+            colgroups,
+            headers,
+            ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}] [#{gas_change_rows[:label]}]",
+             '',
+             'Jan 2023',
+             '6,000',
+             '3,000',
+             '-50&percnt;',
+             '600',
+             '300',
+             '-50&percnt;',
+             '£12,000',
+             '£6,000',
+             '-50&percnt;'
+            ],
+            ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools. [1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+          ]
         end
 
         let(:expected_csv) do
-          [headers,
-           [school.name,
-            '195',
-            '235,000',
-            '155,000']
+          [
+            ['', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            headers,
+            [
+              school.name,
+              '',
+              '2023-01-01',
+              '6,000',
+              '3,000',
+              '-50',
+              '600',
+              '300',
+              '-50',
+              '12,000',
+              '6,000',
+              '-50'
+            ]
           ]
         end
       end
@@ -168,30 +181,41 @@ describe 'heat_saver_march_2024' do
         end
 
         let(:expected_table) do
-          [colgroups,
-           headers,
-           ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
-            'Jan 2023',
-            '2,000',
-            '1,000',
-            '-50&percnt;',
-            '200',
-            '100',
-            '-50&percnt;',
-            '£4,000',
-            '£2,000',
-            '-50&percnt;'
-           ],
-           ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
-]
+          [
+            colgroups,
+            headers,
+            ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Jan 2023',
+             '2,000',
+             '1,000',
+             '-50&percnt;',
+             '200',
+             '100',
+             '-50&percnt;',
+             '£4,000',
+             '£2,000',
+             '-50&percnt;'
+            ],
+            ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+          ]
         end
 
         let(:expected_csv) do
-          [headers,
-           [school.name,
-            '195',
-            '235,000',
-            '155,000']
+          [
+            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            headers,
+            [school.name,
+             '2023-01-01',
+             '2,000',
+             '1,000',
+             '-50',
+             '200',
+             '100',
+             '-50',
+             '4,000',
+             '2,000',
+             '-50'
+            ]
           ]
         end
       end
@@ -230,31 +254,43 @@ describe 'heat_saver_march_2024' do
         end
 
         let(:expected_table) do
-          [colgroups,
-           headers,
-           ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
-            'Jan 2023',
-            '1,800',
-            '2,000',
-            '1,000',
-            '-50&percnt;',
-            '200',
-            '100',
-            '-50&percnt;',
-            '£4,000',
-            '£2,000',
-            '-50&percnt;'
-           ],
-           ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
-]
+          [
+            colgroups,
+            headers,
+            ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Jan 2023',
+             '1,800',
+             '2,000',
+             '1,000',
+             '-50&percnt;',
+             '200',
+             '100',
+             '-50&percnt;',
+             '£4,000',
+             '£2,000',
+             '-50&percnt;'
+            ],
+            ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+          ]
         end
 
         let(:expected_csv) do
-          [headers,
-           [school.name,
-            '195',
-            '235,000',
-            '155,000']
+          [
+            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            headers,
+            [school.name,
+             '2023-01-01',
+             '1,800',
+             '2,000',
+             '1,000',
+             '-50',
+             '200',
+             '100',
+             '-50',
+             '4,000',
+             '2,000',
+             '-50'
+            ]
           ]
         end
       end
@@ -293,31 +329,43 @@ describe 'heat_saver_march_2024' do
         end
 
         let(:expected_table) do
-          [colgroups,
-           headers,
-           ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
-            'Jan 2023',
-            '1,800',
-            '2,000',
-            '1,000',
-            '-50&percnt;',
-            '200',
-            '100',
-            '-50&percnt;',
-            '£4,000',
-            '£2,000',
-            '-50&percnt;'
-           ],
-           ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
-]
+          [
+            colgroups,
+            headers,
+            ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Jan 2023',
+             '1,800',
+             '2,000',
+             '1,000',
+             '-50&percnt;',
+             '200',
+             '100',
+             '-50&percnt;',
+             '£4,000',
+             '£2,000',
+             '-50&percnt;'
+            ],
+            ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+          ]
         end
 
         let(:expected_csv) do
-          [headers,
-           [school.name,
-            '195',
-            '235,000',
-            '155,000']
+          [
+            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            headers,
+            [school.name,
+             '2023-01-01',
+             '1,800',
+             '2,000',
+             '1,000',
+             '-50',
+             '200',
+             '100',
+             '-50',
+             '4,000',
+             '2,000',
+             '-50'
+            ]
           ]
         end
       end
