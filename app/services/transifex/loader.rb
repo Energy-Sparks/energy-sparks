@@ -31,6 +31,10 @@ module Transifex
         synchronise_resources(transifex_load, EquivalenceTypeContentVersion.tx_resources)
         log('Synchronising Consent Statements')
         synchronise_resources(transifex_load, ConsentStatement.tx_resources)
+        log('Synchronising Comparison Reports')
+        synchronise_resources(transifex_load, Comparison::Report.tx_resources)
+        log('Synchronising Comparison Footnotes')
+        synchronise_resources(transifex_load, Comparison::Footnote.tx_resources)
 
         if EnergySparks::FeatureFlags.active?(:sync_advice_page_translations)
           log('Synchronising Advice Pages')
