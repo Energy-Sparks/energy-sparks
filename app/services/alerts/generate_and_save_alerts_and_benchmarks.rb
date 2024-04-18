@@ -124,7 +124,6 @@ module Alerts
                      AlertConfigurablePeriodStorageHeaterComparison].filter_map do |alert_class|
         AlertType.find_by(class_name: alert_class.name)
       end
-      # binding.pry
       Comparison::Report.where.not(custom_period: nil).find_each do |report|
         alert_types.each do |alert_type|
           analysis_date = AggregateSchoolService.analysis_date(@aggregate_school, alert_type.fuel_type)
@@ -141,7 +140,6 @@ module Alerts
                                              current_period: report.custom_period.current_start_date..report.custom_period.current_end_date,
                                              previous_period: report.custom_period.previous_start_date..report.custom_period.previous_end_date })
           end
-          # debugger
           process_alert_type_run_result(result)
           process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
         end
