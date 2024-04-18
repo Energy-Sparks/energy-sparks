@@ -18,7 +18,6 @@
           <% end %>
         </div>
       </div>
-      <a id="introduction"></a>
       <%= render 'admin/shared/locale_tabs', f: f, field: :introduction do |locale| %>
         <%= f.label "Introduction #{locale}" %>
         <%= f.rich_text_area t_field(:introduction, locale), label: 'Introduction', as: :string %>
