@@ -96,7 +96,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::HeatSaverMarch2024.for_schools(@schools).where_any_present([:electricity_previous_period_kwh, :gas_previous_period_kwh, :storage_heater_current_period_kwh]).order('schools.name ASC')
+      Comparison::HeatSaverMarch2024.for_schools(@schools).where_any_present([:electricity_previous_period_kwh, :gas_previous_period_kwh, :storage_heater_previous_period_kwh]).order('schools.name ASC')
     end
 
     def table_names
@@ -104,9 +104,7 @@ module Comparisons
     end
 
     def create_charts(_results)
-      []
-      # change as appropriate!
-      # create_single_number_chart(results, name, multiplier, series_name, y_axis_label)
+      create_single_number_chart(@results, :total_percentage_change_kwh, nil, :change_kwh, :kwh)
     end
   end
 end

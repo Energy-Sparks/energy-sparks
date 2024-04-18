@@ -33,34 +33,12 @@
 #  storage_heater_tariff_has_changed             :boolean
 #
 class Comparison::HeatSaverMarch2024 < Comparison::View
+  include MultipleFuelComparisonView
   self.table_name = 'heat_saver_march_2024s'
 
   def any_tariff_changed?
     electricity_tariff_has_changed ||
       gas_tariff_has_changed ||
       storage_heater_tariff_has_changed
-  end
-
-  def all_previous_period(unit: :kwh)
-    field_names(period: :previous_period, unit: unit).map do |field|
-      send(field)
-    end
-  end
-
-  def all_current_period(unit: :kwh)
-    field_names(period: :current_period, unit: unit).map do |field|
-      send(field)
-    end
-  end
-
-  private
-
-  def field_names(period: :previous_year, unit: :kwh)
-    unit = :gbp if unit == :£
-    field_names = []
-    %i[electricity gas storage_heater].each do |fuel_type|
-      field_names << :"#{fuel_type}_#{period}_#{unit}"
-    end
-    field_names
   end
 end

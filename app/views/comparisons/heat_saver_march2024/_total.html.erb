@@ -38,14 +38,11 @@
       <% r.with_var val: result.activation_date, unit: :date_mmm_yyyy %>
 
       <% %i[kwh co2 £].each do |unit| %>
-         <%= r.with_var val: sum_if_complete(result.all_previous_period(unit: unit),
-                                             result.all_current_period(unit: unit)),
+         <%= r.with_var val: result.total_current_period(unit: unit),
                         unit: unit %>
-         <%= r.with_var val: sum_data(result.all_current_period(unit: unit)), unit: unit %>
-         <%= r.with_var val: percent_change(
-               sum_if_complete(result.all_previous_period(unit: unit), result.all_current_period(unit: unit)),
-               sum_data(result.all_current_period(unit: unit))
-             ),
+         <%= r.with_var val: result.total_previous_period(unit: unit),
+                        unit: unit %>
+         <%= r.with_var val: result.total_percentage_change(unit: unit),
                         change: true,
                         unit: :relative_percent_0dp %>
      <% end %>
