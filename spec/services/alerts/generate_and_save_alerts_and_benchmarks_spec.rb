@@ -125,25 +125,19 @@ module Alerts
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 0
       end
 
-      fit 'handles custom report reports' do
+      it 'handles custom report reports' do
         create(:alert_type, class_name: 'AlertConfigurablePeriodElectricityComparison', fuel_type: :electricity)
         create(:report, :with_custom_period)
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
-
         service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
-        service.perform
-        # debugger
-        # expect { service.perform }.to change(Alert, :count).by(2) &&
-        #                               change(AlertError, :count).by(1) &&
-        #                               change(BenchmarkResult, :count).by(0) &&
-        #                               change(BenchmarkResultError, :count).by(0)
-
+        expect { service.perform }.to change(Alert, :count).by(2) &&
+                                      change(AlertError, :count).by(1) &&
+                                      change(BenchmarkResult, :count).by(0) &&
+                                      change(BenchmarkResultError, :count).by(0)
         expect(Alert.first.run_on).not_to be_nil
         expect(Alert.first.template_data).not_to be_nil
         expect(Alert.first.template_data_cy).not_to be_nil
       end
-
-
     end
   end
 end
