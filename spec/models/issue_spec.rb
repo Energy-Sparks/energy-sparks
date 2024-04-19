@@ -232,19 +232,19 @@ RSpec.describe Issue, type: :model do
     let!(:issue_2) { create(:issue, title: 'Issue 2 title', description: 'I\'m hiding here') }
 
     it 'finds records with term in title' do
-      Issue.search('findme').should eq([issue_1])
+      expect(Issue.search('findme')).to eq([issue_1])
     end
 
     it 'finds records with term in description' do
-      Issue.search('hiding').should eq([issue_2])
+      expect(Issue.search('hiding')).to eq([issue_2])
     end
 
     it 'finds records with term in either' do
-      Issue.search('findme|hiding').should eq([issue_1, issue_2])
+      expect(Issue.search('findme|hiding')).to eq([issue_1, issue_2])
     end
 
     it 'returns nothing when not found' do
-      Issue.search('nothing to see here').should be_empty
+      expect(Issue.search('nothing to see here')).to be_empty
     end
   end
 end
