@@ -133,11 +133,13 @@ module Alerts
       it 'handles custom period reports' do
         alert_type = create(:alert_type, class_name: 'AlertConfigurablePeriodElectricityComparison',
                                          fuel_type: :electricity)
-        create(:report, :with_custom_period)
+        report = create(:report, :with_custom_period)
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
         service = described_class.new(school: school, aggregate_school: aggregate_school)
         service.perform
         expect(Alert.last.alert_type.class_name).to eq(alert_type.class_name)
+        expect(Alert.last.reporting_period).to eq('custom')
+        expect(Alert.last.custom_period_id).to eq(report.custom_period_id)
       end
     end
   end

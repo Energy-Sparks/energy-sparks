@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_25_112425) do
+ActiveRecord::Schema.define(version: 2024_04_19_100237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -367,10 +367,12 @@ ActiveRecord::Schema.define(version: 2024_03_25_112425) do
     t.bigint "alert_generation_run_id"
     t.json "template_data_cy", default: {}
     t.jsonb "variables"
-    t.integer "report_period"
+    t.integer "reporting_period"
+    t.bigint "custom_period_id"
     t.index ["alert_generation_run_id"], name: "index_alerts_on_alert_generation_run_id"
     t.index ["alert_type_id", "created_at"], name: "index_alerts_on_alert_type_id_and_created_at"
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
+    t.index ["custom_period_id"], name: "index_alerts_on_custom_period_id"
     t.index ["run_on"], name: "index_alerts_on_run_on"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
@@ -664,6 +666,8 @@ ActiveRecord::Schema.define(version: 2024_03_25_112425) do
     t.date "previous_end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "max_days_out_of_date"
+    t.integer "enough_days_data"
   end
 
   create_table "comparison_footnotes", force: :cascade do |t|
@@ -1973,6 +1977,7 @@ ActiveRecord::Schema.define(version: 2024_03_25_112425) do
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
+  add_foreign_key "alerts", "comparison_custom_periods", column: "custom_period_id", on_delete: :cascade
   add_foreign_key "alerts", "schools", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade

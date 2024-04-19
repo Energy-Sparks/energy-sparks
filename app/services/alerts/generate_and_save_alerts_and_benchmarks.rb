@@ -95,7 +95,7 @@ module Alerts
       RelevantAlertTypes.new(@school).list
     end
 
-    def process_alert_type_run_result(alert_type_run_result)
+    def process_alert_type_run_result(alert_type_run_result, alert_attributes: {})
       asof_date = alert_type_run_result.asof_date
       alert_type = alert_type_run_result.alert_type
 
@@ -105,14 +105,14 @@ module Alerts
       end
 
       alert_type_run_result.reports.each do |alert_report|
-        process_alert_report(alert_type, alert_report, asof_date)
+        process_alert_report(alert_type, alert_report, asof_date, alert_attributes)
       end
     end
 
-    def process_alert_report(alert_type, alert_report, asof_date)
+    def process_alert_report(alert_type, alert_report, asof_date, alert_attributes)
       if alert_report.valid
         Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type,
-                                                asof_date).generate)
+                                                asof_date).generate.merge(**alert_attributes))
       else
         AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date,
                            information: "INVALID. Relevance: #{alert_report.relevance}", alert_type: alert_type)
@@ -135,12 +135,13 @@ module Alerts
                    aggregate_school: @aggregate_school,
                    use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present?)
               .report(alert_configuration: { name: report.title,
-                                             max_days_out_of_date: 365,
-                                             enough_days_data: 1,
+                                             max_days_out_of_date: report.custom_period.max_days_out_of_date,
+                                             enough_days_data: report.custom_period.enough_days_data,
                                              current_period: report.custom_period.current_start_date..report.custom_period.current_end_date,
                                              previous_period: report.custom_period.previous_start_date..report.custom_period.previous_end_date })
           end
-          process_alert_type_run_result(result)
+          process_alert_type_run_result(result, alert_attributes: { reporting_period: :custom,
+                                                                    custom_period: report.custom_period })
           process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
         end
       end
