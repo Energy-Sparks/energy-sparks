@@ -4,28 +4,13 @@ module Amr
   class N3rgyDownloader
     KWH_PER_M3_GAS = 11.1 # this depends on the calorifc value of the gas and so is an approximate average
 
-    def initialize(meter:, start_date:, end_date:, n3rgy_api: MeterReadingsFeeds::N3rgyData.new)
+    def initialize(meter:, start_date:, end_date:)
       @meter = meter
-      @n3rgy_api = n3rgy_api
       @start_date = start_date
       @end_date = end_date
     end
 
     def readings
-      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
-        download_readings
-      else
-        @n3rgy_api.readings(@meter.mpan_mprn, @meter.meter_type, @start_date, @end_date)
-      end
-    end
-
-    def tariffs
-      @n3rgy_api.tariffs(@meter.mpan_mprn, @meter.meter_type, @start_date, @end_date)
-    end
-
-    private
-
-    def download_readings
       # Turn the array of [DateTime, value] into a hash
       readings_by_date_time = fetch_all_readings
 
@@ -33,7 +18,7 @@ module Amr
       meter_readings = X48Formatter.convert_dt_to_v_to_date_to_v_x48(@start_date.to_date,
         @end_date.to_date, readings_by_date_time, true, nil)
 
-      # This return format matches the existing v1 code. This can be simplified as there is no
+      # This return format matches the original v1 code. This can be simplified as there is no
       # need to create the one day readings to then just throw them away in the next step
       {
         @meter.meter_type =>
@@ -44,6 +29,8 @@ module Amr
           }
       }
     end
+
+    private
 
     # TODO remove, unnecessary, see note above
     def make_one_day_readings(meter_readings_by_date, mpan_mprn)
