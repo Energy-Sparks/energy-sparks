@@ -68,10 +68,10 @@ RSpec.describe 'meter management', :meters, type: :system, include_application_h
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123) }
 
-      let!(:data_api) { double(status: :available, readings_available_date_range: Time.zone.today..Time.zone.today) }
+      let!(:stub) { double(status: :available, available?: true, consented?: true, available_data: Time.zone.today..Time.zone.today) }
 
       before do
-        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+        allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
       end
 
       it 'the meter inventory button is not shown' do
@@ -211,10 +211,14 @@ RSpec.describe 'meter management', :meters, type: :system, include_application_h
 
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123) }
-      let!(:data_api) { double(find: true, status: :available, inventory: { device_id: 123999 }, readings_available_date_range: Time.zone.today..Time.zone.today) }
+
+      let!(:stub) do
+        double(status: :available, available?: true, consented?: true, inventory: { device_id: 123999 },
+          available_data: Time.zone.today..Time.zone.today)
+      end
 
       before do
-        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+        allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
         click_on 'Manage meters'
       end
 
@@ -240,7 +244,6 @@ RSpec.describe 'meter management', :meters, type: :system, include_application_h
       it 'the dcc checkboxes and status are shown on the edit form' do
         click_on 'Edit'
         check 'DCC Smart Meter'
-        check 'Sandbox'
         click_on 'Update Meter'
         meter.reload
         expect(meter.dcc_meter).to be true
@@ -248,10 +251,13 @@ RSpec.describe 'meter management', :meters, type: :system, include_application_h
     end
 
     context 'when creating meters' do
-      let!(:data_api) { double(status: :available, inventory: { device_id: 123999 }) }
+      let!(:stub) do
+        double(status: :available, available?: true, consented?: true, inventory: { device_id: 123999 },
+          available_data: Time.zone.today..Time.zone.today)
+      end
 
       before do
-        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).and_return(data_api)
+        allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
       end
 
       it 'allows adding of meters from the management page with validation' do
