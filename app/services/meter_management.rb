@@ -8,17 +8,6 @@ class MeterManagement
     subscribe(Targets::FuelTypeEventListener.new)
   end
 
-  def n3rgy_consented?
-    return false unless @meter.dcc_meter?
-    mpxns = MeterReadingsFeeds::N3rgy.new(api_key: ENV['N3RGY_API_KEY'], production: true).mpxns
-    mpxns.include? @meter.mpan_mprn
-  rescue => e
-    Rails.logger.warn "Error fetching list of consented mpans #{e.class} #{e.message}"
-    Rails.logger.warn e.backtrace.join("\n")
-    Rollbar.warning(e)
-    return nil
-  end
-
   def process_creation!
     assign_amr_data_feed_readings
     DccCheckerJob.perform_later(@meter) if Meter.main_meter.exists?(@meter.id)
