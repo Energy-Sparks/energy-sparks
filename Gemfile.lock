@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: c912a059b016689035eaf3b32ce122dc10e3eb61
-  tag: 5.1.8
+  revision: aa0cb5f912fb162d5da32d4c00451a47aced6d4f
+  tag: 5.1.9
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -265,7 +265,7 @@ GEM
       faraday (>= 1, < 3)
     faraday-net_http (3.1.0)
       net-http
-    faraday-retry (2.2.0)
+    faraday-retry (2.2.1)
       faraday (~> 2.0)
     fasterer (0.11.0)
       ruby_parser (>= 3.19.1)
@@ -712,7 +712,7 @@ GEM
     websocket-extensions (0.1.5)
     wisper (2.0.1)
     wisper-rspec (1.1.0)
-    write_xlsx (1.11.2)
+    write_xlsx (1.12.1)
       nkf
       rubyzip (>= 1.0.0)
     xpath (3.2.0)
@@ -832,4 +832,4 @@ DEPENDENCIES
   wisper-rspec
 
 BUNDLED WITH
-   2.5.6
+   2.5.4
