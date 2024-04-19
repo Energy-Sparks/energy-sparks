@@ -2,8 +2,19 @@
 en:
   comparisons:
     column_headings:
+      current_period: Latest period
       last_year_electricity_kwh_floor_area: Last year electricity kWh/floor area
       last_year_energy_kgco2_floor_area: Last year energy kgCO2/floor area
       last_year_energy_kwh_floor_area: Last year energy kWh/floor area
       last_year_gas_kwh_floor_area: Last year gas kWh/floor area
       last_year_storage_heater_kwh_floor_area: Last year storage heater kWh/floor area
+      previous_period: Previous period
+      previous_period_unadjusted: Previous period (not adjusted)
+    period_types:
+      periods: periods
+    tables:
+      electricity_usage: Electricity usage comparison
+      gas_usage: Gas usage comparison
+      storage_heater_usage: Storage heater usage comparison
+      table_title: 'Table %{table_number}: %{table_title}'
+      total_usage: Total energy usage comparison

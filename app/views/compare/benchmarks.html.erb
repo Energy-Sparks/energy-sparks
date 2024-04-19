@@ -12,7 +12,7 @@
     <div class="card-body pb-0">
       <div class="card-subtitle text-muted"><%= benchmark_group[:description] %></div>
       <ul class="fa-ul card-columns">
-        <% if EnergySparks::FeatureFlags.active?(:comparison_reports) %>
+        <% if EnergySparks::FeatureFlags.active?(:comparison_reports) || current_user&.admin? %>
           <% benchmark_group[:benchmarks].each do |key, title| %>
             <li class="pt-1">
               <i class="fa-li fas fa-check"></i>
@@ -22,7 +22,7 @@
                 <% else %>
                   <%= Comparison::Report.find_by(key: key).try(:title) %>
                 <% end %>
-                <% if EnergySparks::FeatureFlags.active?(:comparison_reports_link_to_old) %>
+                <% if EnergySparks::FeatureFlags.active?(:comparison_reports_link_to_old) || current_user&.admin? %>
                   <%= link_to 'current', compare_path(key, @filter), class: 'badge badge-light' %>
                 <% end %>
             </li>
