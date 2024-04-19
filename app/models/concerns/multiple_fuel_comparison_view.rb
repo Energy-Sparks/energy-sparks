@@ -19,7 +19,7 @@ module MultipleFuelComparisonView
   #
   # Simply totals the values across all kwh fields for each fuel type
   def total_current_period(unit: :kwh)
-    all_current_period(unit: unit).sum
+    all_current_period(unit: unit).sum(&:to_f)
   end
 
   # Returns total consumption for +unit+ in the current period

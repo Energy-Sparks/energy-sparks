@@ -97,7 +97,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::HeatSaverMarch2024.for_schools(@schools).where_any_present([:electricity_previous_period_kwh, :gas_previous_period_kwh, :storage_heater_previous_period_kwh]).by_total_percentage_change([:electricity_previous_period_kwh, :gas_previous_period_kwh, :storage_heater_previous_period_kwh], [:electricity_current_period_kwh, :gas_current_period_kwh, :storage_heater_current_period_kwh]) # .order('schools.name ASC')
+      Comparison::HeatSaverMarch2024.for_schools(@schools).with_data_for_previous_period.by_total_percentage_change
     end
 
     def table_names
