@@ -20,7 +20,6 @@
 #  name                           :string
 #  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
-#  sandbox                        :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  updated_at                     :datetime         not null

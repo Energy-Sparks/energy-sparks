@@ -6,8 +6,7 @@ RSpec.describe Schools::MetersController, type: :controller do
       mpan_mprn: 2199989617206,
       name: 'Test meter',
       meter_serial_number: '123',
-      meter_type: :electricity,
-      sandbox: '0'
+      meter_type: :electricity
     }
   end
   let(:invalid_attributes) do
@@ -41,24 +40,6 @@ RSpec.describe Schools::MetersController, type: :controller do
           expect(response).to render_template('index')
         end
       end
-
-      context 'with DCC sandbox meters' do
-        let(:dcc_meter_attributes) do
-          {
-            mpan_mprn: 2199989617206,
-            name: 'Test meter',
-            meter_serial_number: '123',
-            meter_type: :electricity,
-            sandbox: '1'
-          }
-        end
-
-        it 'creates a sandbox meter' do
-          allow_any_instance_of(MeterManagement).to receive(:check_n3rgy_status).and_return(true)
-          post :create, params: { school_id: school.id, meter: dcc_meter_attributes }
-          expect(Meter.last.sandbox?).to be true
-        end
-      end
     end
 
     describe 'PUT #update' do
@@ -82,17 +63,10 @@ RSpec.describe Schools::MetersController, type: :controller do
             name: 'New name',
             meter_serial_number: '123',
             meter_type: :electricity,
-            dcc_meter: '1',
-            sandbox: '1'
+            dcc_meter: '1'
           }
         end
         let(:meter) { create :electricity_meter, name: 'Original name', school: school, dcc_meter: false }
-
-        it 'sets as sandbox meter' do
-          put :update, params: { school_id: school.id, id: meter.id, meter: new_attributes }
-          meter.reload
-          expect(meter.sandbox?).to eq true
-        end
 
         it 'allows DCC registered meters to be activated' do
           put :update, params: { school_id: school.id, id: meter.id, meter: new_attributes }

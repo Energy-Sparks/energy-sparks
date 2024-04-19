@@ -4,7 +4,7 @@ module Admin
       before_action :set_consented_mpxns
 
       def index
-        @dcc_meters = Meter.dcc.where.not(sandbox: true).sort_by(&:school)
+        @dcc_meters = Meter.dcc.sort_by(&:school)
         @schools = @dcc_meters.map(&:school).uniq
       end
 
