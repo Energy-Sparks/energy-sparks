@@ -44,8 +44,7 @@ module Amr
           expect(Amr::N3rgyDownloader).to receive(:new).with(
             meter: meter,
             start_date: start_date,
-            end_date: end_date,
-            n3rgy_api: anything
+            end_date: end_date
           ).and_return(downloader)
           expect(downloader).to receive(:readings).and_return(readings)
 
@@ -63,8 +62,7 @@ module Amr
           expect(Amr::N3rgyDownloader).to receive(:new).with(
             meter: meter,
             start_date: earliest,
-            end_date: yesterday,
-            n3rgy_api: anything
+            end_date: yesterday
           ).and_return(downloader)
           expect(downloader).to receive(:readings).and_return(readings)
 
@@ -80,8 +78,7 @@ module Amr
           expect(Amr::N3rgyDownloader).to receive(:new).with(
             meter: meter,
             start_date: thirteen_months_ago,
-            end_date: yesterday,
-            n3rgy_api: anything
+            end_date: yesterday
           ).and_return(downloader)
           expect(downloader).to receive(:readings).and_return(readings)
 
@@ -113,8 +110,7 @@ module Amr
             expect(Amr::N3rgyDownloader).to receive(:new).with(
               meter: meter,
               start_date: last_week - 1,
-              end_date: yesterday,
-              n3rgy_api: anything
+              end_date: yesterday
             ).and_return(downloader)
             expect(downloader).to receive(:readings).and_return(readings)
 
@@ -136,8 +132,7 @@ module Amr
             expect(Amr::N3rgyDownloader).to receive(:new).with(
               meter: meter,
               start_date: last_week + 2,
-              end_date: yesterday,
-              n3rgy_api: anything
+              end_date: yesterday
             ).and_return(downloader)
             expect(downloader).to receive(:readings).and_return(readings)
 
@@ -153,8 +148,7 @@ module Amr
             expect(Amr::N3rgyDownloader).to receive(:new).with(
               meter: meter,
               start_date: thirteen_months_ago,
-              end_date: yesterday,
-              n3rgy_api: anything
+              end_date: yesterday
             ).and_return(downloader)
             expect(downloader).to receive(:readings).and_return(readings)
 
@@ -169,8 +163,7 @@ module Amr
           expect(Amr::N3rgyDownloader).to receive(:new).with(
             meter: meter,
             start_date: start_date,
-            end_date: end_date,
-            n3rgy_api: anything
+            end_date: end_date
           ).and_return(downloader)
           expect(downloader).to receive(:readings).and_return(readings)
 
