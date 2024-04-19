@@ -43,20 +43,29 @@ module MultipleFuelComparisonView
     percent_change(total_previous_period(unit: unit), total_current_period(unit: unit))
   end
 
-  # Returns an array of field names for the specified unit, for the previous period
-  # E.g. [:electricity_previous_period_kwh, :gas_previous_period_kwh]
+  # Returns an array of values for the specified unit, for the previous period
+  # E.g. by calling :electricity_previous_period_kwh, :gas_previous_period_kwh, etc
   def all_previous_period(unit: :kwh)
     field_names(period: :previous_period, unit: unit).map do |field|
       send(field)
     end
   end
 
-  # Returns an array of field names for the specified unit, for the current period
-  # E.g. [:electricity_current_period_kwh, :gas_current_period_kwh]
+  # Returns an array of values for the specified unit, for the current period
+  # E.g. by calling :electricity_current_period_kwh, :gas_current_period_kwh, etc
   def all_current_period(unit: :kwh)
     field_names(period: :current_period, unit: unit).map do |field|
       send(field)
     end
+  end
+
+  def field_names(period: :previous_period, unit: :kwh)
+    unit = :gbp if unit == :£
+    field_names = []
+    fuel_types.each do |fuel_type|
+      field_names << field_name(fuel_type, period, unit)
+    end
+    field_names
   end
 
   private
@@ -71,15 +80,6 @@ module MultipleFuelComparisonView
 
   def field_name(fuel_type, period, unit)
     :"#{fuel_type}_#{period}_#{unit}"
-  end
-
-  def field_names(period: :previous_year, unit: :kwh)
-    unit = :gbp if unit == :£
-    field_names = []
-    fuel_types.each do |fuel_type|
-      field_names << field_name(fuel_type, period, unit)
-    end
-    field_names
   end
 
   def percent_change(base, new_val, to_nil_if_sum_zero = false)
