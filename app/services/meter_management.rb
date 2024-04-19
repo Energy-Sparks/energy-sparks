@@ -3,8 +3,7 @@ require 'dashboard'
 class MeterManagement
   include Wisper::Publisher
 
-  def initialize(meter, n3rgy_api_factory: Amr::N3rgyApiFactory.new)
-    @n3rgy_api_factory = n3rgy_api_factory
+  def initialize(meter)
     @meter = meter
     subscribe(Targets::FuelTypeEventListener.new)
   end
@@ -18,34 +17,6 @@ class MeterManagement
     Rails.logger.warn e.backtrace.join("\n")
     Rollbar.warning(e)
     return nil
-  end
-
-  def available_cache_range
-    return [] unless @meter.dcc_meter?
-    @n3rgy_api_factory.data_api(@meter).readings_available_date_range(@meter.mpan_mprn, @meter.fuel_type)
-  rescue => e
-    Rails.logger.warn "Error fetching available cache range for #{@meter.mpan_mprn} #{e.class} #{e.message}"
-    Rails.logger.warn e.backtrace.join("\n")
-    Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
-    return [:api_error]
-  end
-
-  def is_meter_known_to_n3rgy?
-    @n3rgy_api_factory.data_api(@meter).find(@meter.mpan_mprn)
-  rescue => e
-    Rails.logger.warn "Error looking up #{@meter.mpan_mprn} #{e.class} #{e.message}"
-    Rails.logger.warn e.backtrace.join("\n")
-    Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
-    return false
-  end
-
-  def check_n3rgy_status
-    @n3rgy_api_factory.data_api(@meter).status(@meter.mpan_mprn)
-  rescue => e
-    Rails.logger.warn "Error checking status of #{@meter.mpan_mprn} #{e.class} #{e.message}"
-    Rails.logger.warn e.backtrace.join("\n")
-    Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
-    return :api_error
   end
 
   def process_creation!

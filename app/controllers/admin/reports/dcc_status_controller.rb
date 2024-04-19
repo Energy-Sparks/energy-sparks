@@ -11,11 +11,7 @@ module Admin
       private
 
       def set_consented_mpxns
-        if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
-          @mpxns = Meters::N3rgyMeteringService.consented_meters
-        else
-          @mpxns = MeterReadingsFeeds::N3rgy.new(api_key: ENV['N3RGY_API_KEY'], production: true).mpxns
-        end
+        @mpxns = Meters::N3rgyMeteringService.consented_meters
         @consent_lookup_error = false
       rescue
         @mpxns = []
