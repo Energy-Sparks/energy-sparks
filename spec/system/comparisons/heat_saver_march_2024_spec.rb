@@ -132,7 +132,7 @@ describe 'heat_saver_march_2024' do
             headers,
             [
               school.name,
-              '',
+              'Electricity;Gas;Storage heaters',
               '2023-01-01',
               '6,000',
               '3,000',

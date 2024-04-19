@@ -14,7 +14,8 @@ CSV.generate do |csv|
 
   csv << @headers
   @results.each do |result|
-    data = [result.school.name, '']
+    data = [result.school.name]
+    data << result.fuel_type_names
     data << result.activation_date.iso8601
     %i[kwh co2 £].each do |unit|
       data << format_unit(result.total_previous_period(unit: unit), Float, true, :benchmark)
