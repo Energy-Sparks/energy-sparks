@@ -86,9 +86,7 @@ RSpec.describe Schools::MetersController, type: :controller do
             sandbox: '1'
           }
         end
-        let(:meter)             { create :electricity_meter, name: 'Original name', school: school, dcc_meter: false }
-        let(:n3rgy_api)         { double(:n3rgy_api) }
-        let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
+        let(:meter) { create :electricity_meter, name: 'Original name', school: school, dcc_meter: false }
 
         it 'sets as sandbox meter' do
           put :update, params: { school_id: school.id, id: meter.id, meter: new_attributes }
