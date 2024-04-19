@@ -55,11 +55,16 @@ class Comparison::HeatSaverMarch2024 < Comparison::View
     )
   end
 
-  # E.g. previous_year, current_year
+  # Orders the results by a percentage change value that is calculated from summing together multiple attributes
+  #
+  # Uses COALESCE to convert nil values for an attribute to zero (e.g. if a school doesn't have gas or storage heaters)
+  #
+  # Uses NULLIF to convert a total of 0.0 for a set of attributes to NULL, so the order value becomes NULL.
+  # This avoids errors in the calculations. We then sort NULLs last
   scope :by_percentage_change_across_fields, ->(base_val_fields, new_val_fields) do
     order(
       Arel.sql(
-        sanitize_sql_array("(NULLIF(#{new_val_fields.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0) - NULLIF(#{base_val_fields.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0)) / NULLIF(#{base_val_fields.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0) ASC NULLS FIRST")
+        sanitize_sql_array("(NULLIF(#{new_val_fields.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0) - NULLIF(#{base_val_fields.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0)) / NULLIF(#{base_val_fields.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0) ASC NULLS LAST")
       )
     )
   end
