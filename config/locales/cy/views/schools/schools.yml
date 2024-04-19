@@ -252,7 +252,6 @@ cy:
         meter_point_number: Rhif Pwynt Mesurydd
         meter_system: System mesurydd
         name: Enw
-        only_check_if_adding_an_n3rgy_test_meter: Gwiriwch a ydych yn ychwanegu mesurydd prawf n3rgy, nad yw'n cael ei ddefnyddio ar gyfer ysgolion byw, yn unig
         procurement_route: Llwybr caffael
         serial_number: Rhif cyfresol
         title: Gelwir y Rhif Pwynt Mesurydd hefyd yn MPAN (ar gyfer mesuryddion trydan) a'r MPRN (ar gyfer mesuryddion nwy).
