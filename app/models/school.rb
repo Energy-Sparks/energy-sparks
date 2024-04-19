@@ -248,7 +248,13 @@ class School < ApplicationRecord
 
   validates_associated :school_times, on: :school_time_update
 
-  validates :alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
+  validates :alternative_heating_oil_percent,
+            :alternative_heating_lpg_percent,
+            :alternative_heating_biomass_percent,
+            :alternative_heating_district_heating_percent,
+            :alternative_heating_ground_source_heat_pump_percent,
+            :alternative_heating_air_source_heat_pump_percent,
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
 
   validates :weather_station, presence: true
 

@@ -689,6 +689,9 @@ en:
     your_school_estates:
       edit:
         alternative_heating_sources:
+          air_source_heat_pump:
+            label: Our school has an air source heat pump
+            percentage: What percentage of the school using the air source heat pump for heating?
           biomass:
             label: Our school has a Biomass boiler
             percentage: What percentage of the school using a Biomass boiler for heating?
@@ -697,6 +700,9 @@ en:
           district_heating:
             label: Our school has District Heating
             percentage: What percentage of the school using District Heating for heating?
+          ground_source_heat_pump:
+            label: Our school has a ground source heat pump
+            percentage: What percentage of the school using the ground source heat pump for heating?
           header: Alternative heating sources
           lpg:
             label: Our school is using LPG for heating
