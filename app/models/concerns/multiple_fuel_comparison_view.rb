@@ -19,7 +19,7 @@ module MultipleFuelComparisonView
   #
   # Simply totals the values across all kwh fields for each fuel type
   def total_current_period(unit: :kwh)
-    sum_data(all_current_period(unit: unit))
+    all_current_period(unit: unit).sum
   end
 
   # Returns total consumption for +unit+ in the current period
@@ -34,13 +34,13 @@ module MultipleFuelComparisonView
   #
   # See EnergySparks::Calculator.sum_if_complete
   def total_previous_period(unit: :kwh, mode: :strict)
-    return sum_data(all_previous_period(unit: unit)) unless mode == :strict
-    sum_if_complete(all_previous_period(unit: unit), all_current_period(unit: unit))
+    return all_previous_period(unit: unit).sum unless mode == :strict
+    EnergySparks::Calculator.sum_if_complete(all_previous_period(unit: unit), all_current_period(unit: unit))
   end
 
   # Calculate percentage change, for a specific unit across the two periods
   def total_percentage_change(unit:)
-    percent_change(total_previous_period(unit: unit), total_current_period(unit: unit))
+    EnergySparks::Calculator.percent_change(total_previous_period(unit: unit), total_current_period(unit: unit))
   end
 
   # Returns an array of values for the specified unit, for the previous period
@@ -80,17 +80,5 @@ module MultipleFuelComparisonView
 
   def field_name(fuel_type, period, unit)
     :"#{fuel_type}_#{period}_#{unit}"
-  end
-
-  def percent_change(base, new_val, to_nil_if_sum_zero = false)
-    EnergySparks::Calculator.percent_change(base, new_val, to_nil_if_sum_zero)
-  end
-
-  def sum_data(data, to_nil_if_sum_zero = false)
-    EnergySparks::Calculator.sum_data(data, to_nil_if_sum_zero)
-  end
-
-  def sum_if_complete(previous_year_values, current_year_values)
-    EnergySparks::Calculator.sum_if_complete(previous_year_values, current_year_values)
   end
 end
