@@ -1,0 +1,50 @@
+<%= render 'table_title', table_number: table_number, table_title: t('comparisons.tables.total_usage') %>
+
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.any_tariff_changed? %>
+      <% r.with_reference key: 'electricity_change_rows',
+                          period_type_string: @period_type_string,
+                          if: result.pupils_changed %>
+      <% r.with_reference key: 'gas_change_rows',
+                          period_type_string: @period_type_string,
+                          schools_to_sentence: 'some schools',
+                          if: result.floor_area_changed %>
+      <%= r.with_var do %>
+        <% if !result.electricity_current_period_kwh.nil? %>
+          <span class="<%= fuel_type_class(:electricity) %>">
+            <%= fa_icon(fuel_type_icon(:electricity)) %>
+          </span>
+        <% end %>
+        <% if !result.gas_current_period_kwh.nil? %>
+          <span class="<%= fuel_type_class(:gas) %>">
+            <%= fa_icon(fuel_type_icon(:gas)) %>
+          </span>
+        <% end %>
+        <% if !result.storage_heater_current_period_kwh.nil? %>
+          <span class="<%= fuel_type_class(:storage_heater) %>">
+            <%= fa_icon(fuel_type_icon(:storage_heater)) %>
+          </span>
+        <% end %>
+      <% end %>
+
+      <% r.with_var val: result.activation_date, unit: :date_mmm_yyyy %>
+
+      <% %i[kwh co2 £].each do |unit| %>
+        <%= r.with_var val: result.total_previous_period(unit: unit),
+                       unit: unit %>
+         <%= r.with_var val: result.total_current_period(unit: unit),
+                        unit: unit %>
+         <%= r.with_var val: result.total_percentage_change(unit: unit),
+                        change: true,
+                        unit: :relative_percent_0dp %>
+     <% end %>
+
+    <% end %>
+  <% end %>
+<% end %>

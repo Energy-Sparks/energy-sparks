@@ -184,6 +184,14 @@ describe 'viewing and recording action', type: :system do
       end
     end
 
+    context 'when requesting an incorrect url' do
+      let!(:observation) { create(:observation, :activity, school: school, activity: create(:activity, school: school))}
+
+      it 'redirects to activity' do
+        visit school_intervention_path(school, observation.id)
+      end
+    end
+
     context 'when recording an action' do
       let(:today) { Time.zone.today }
 

@@ -16,6 +16,7 @@ class Comparison::Footnote < ApplicationRecord
   self.table_name = 'comparison_footnotes'
 
   extend Mobility
+  include TransifexSerialisable
 
   translates :description, type: :string, fallbacks: { cy: :en }
 
