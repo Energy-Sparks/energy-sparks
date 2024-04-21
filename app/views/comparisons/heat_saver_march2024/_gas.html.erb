@@ -3,7 +3,8 @@
 <%= component 'comparison_table',
               report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
               headers: @heating_headers, colgroups: @heating_colgroups, advice_page_tab: advice_page_tab do |c| %>
-  <% @results.where.not(gas_previous_period_kwh: nil).each do |result| %>
+  <% @results.each do |result| %>
+    <% next if result.gas_previous_period_kwh.blank? %>
     <% c.with_row do |r| %>
     <% r.with_school school: result.school %>
     <% r.with_reference key: 'tariff_changed_last_year',
