@@ -68,7 +68,10 @@ RSpec.describe 'meter management', :meters, type: :system, include_application_h
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123) }
 
-      let!(:stub) { double(status: :available, available?: true, consented?: true, available_data: Time.zone.today..Time.zone.today) }
+      let!(:stub) do
+        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true,
+        consented?: true, available_data: Time.zone.today..Time.zone.today)
+      end
 
       before do
         allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
@@ -213,7 +216,7 @@ RSpec.describe 'meter management', :meters, type: :system, include_application_h
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123) }
 
       let!(:stub) do
-        double(status: :available, available?: true, consented?: true, inventory: { device_id: 123999 },
+        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true, consented?: true, inventory: { device_id: 123999 },
           available_data: Time.zone.today..Time.zone.today)
       end
 
@@ -252,7 +255,7 @@ RSpec.describe 'meter management', :meters, type: :system, include_application_h
 
     context 'when creating meters' do
       let!(:stub) do
-        double(status: :available, available?: true, consented?: true, inventory: { device_id: 123999 },
+        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true, consented?: true, inventory: { device_id: 123999 },
           available_data: Time.zone.today..Time.zone.today)
       end
 

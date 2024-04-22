@@ -29,7 +29,7 @@ module Amr
           allow(Amr::N3rgyDownloader).to receive(:new).and_return(downloader)
           expect(downloader).to receive(:readings).and_raise(StandardError)
 
-          upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(config: config, meter: meter, start_date: start_date, end_date: end_date)
+          upserter = described_class.new(config: config, meter: meter, start_date: start_date, end_date: end_date)
           upserter.perform
 
           expect(AmrDataFeedImportLog.count).to be 1
@@ -48,7 +48,7 @@ module Amr
           ).and_return(downloader)
           expect(downloader).to receive(:readings).and_return(readings)
 
-          upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(config: config, meter: meter, start_date: start_date, end_date: end_date)
+          upserter = described_class.new(config: config, meter: meter, start_date: start_date, end_date: end_date)
           upserter.perform
         end
 
@@ -66,7 +66,7 @@ module Amr
           ).and_return(downloader)
           expect(downloader).to receive(:readings).and_return(readings)
 
-          upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(config: config, meter: meter, start_date: nil, end_date: nil)
+          upserter = described_class.new(config: config, meter: meter, start_date: nil, end_date: nil)
           upserter.perform
         end
 
@@ -86,7 +86,7 @@ module Amr
             earliest_available_data: nil
           })
 
-          upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(config: config, meter: meter, start_date: nil, end_date: nil)
+          upserter = described_class.new(config: config, meter: meter, start_date: nil, end_date: nil)
           upserter.perform
         end
 
@@ -118,7 +118,7 @@ module Amr
             expect(meter.amr_data_feed_readings.minimum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
             expect(meter.amr_data_feed_readings.maximum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
 
-            upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(config: config, meter: meter, start_date: nil, end_date: nil)
+            upserter = described_class.new(config: config, meter: meter, start_date: nil, end_date: nil)
             upserter.perform
           end
 
@@ -136,7 +136,7 @@ module Amr
             ).and_return(downloader)
             expect(downloader).to receive(:readings).and_return(readings)
 
-            upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(config: config, meter: meter, start_date: nil, end_date: nil)
+            upserter = described_class.new(config: config, meter: meter, start_date: nil, end_date: nil)
             upserter.perform
           end
 
@@ -152,7 +152,7 @@ module Amr
             ).and_return(downloader)
             expect(downloader).to receive(:readings).and_return(readings)
 
-            upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(config: config, meter: meter, start_date: nil, end_date: nil)
+            upserter = described_class.new(config: config, meter: meter, start_date: nil, end_date: nil)
             upserter.perform
           end
         end
@@ -167,7 +167,7 @@ module Amr
           ).and_return(downloader)
           expect(downloader).to receive(:readings).and_return(readings)
 
-          upserter = Amr::N3rgyReadingsDownloadAndUpsert.new(config: config, meter: meter, start_date: start_date, end_date: end_date)
+          upserter = described_class.new(config: config, meter: meter, start_date: start_date, end_date: end_date)
           upserter.perform
 
           expect(AmrDataFeedImportLog.count).to be 1
