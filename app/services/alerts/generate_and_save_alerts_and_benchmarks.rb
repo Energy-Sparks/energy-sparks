@@ -134,11 +134,7 @@ module Alerts
                    school: @school,
                    aggregate_school: @aggregate_school,
                    use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present?)
-              .report(alert_configuration: { name: report.title,
-                                             max_days_out_of_date: report.custom_period.max_days_out_of_date,
-                                             enough_days_data: report.custom_period.enough_days_data,
-                                             current_period: report.custom_period.current_start_date..report.custom_period.current_end_date,
-                                             previous_period: report.custom_period.previous_start_date..report.custom_period.previous_end_date })
+              .report(alert_configuration: report.to_alert_configuration)
           end
           process_alert_type_run_result(result, alert_attributes: { reporting_period: :custom,
                                                                     custom_period: report.custom_period })

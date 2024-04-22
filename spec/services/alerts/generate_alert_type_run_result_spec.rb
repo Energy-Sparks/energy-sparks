@@ -36,7 +36,7 @@ module Alerts
 
       describe 'error handling' do
         it 'does not raise an error if the framework_adapter raises one' do
-          expect(adapter_instance).to receive(:analyse).and_raise(IOError) # TODO: is IOError the most typical error?
+          allow(adapter_instance).to receive(:analyse).and_raise(NoMethodError)
 
           service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter,
                                                    aggregate_school: aggregate_school, alert_type: alert_type)
