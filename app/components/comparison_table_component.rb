@@ -161,19 +161,20 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   class ReferenceComponent < ViewComponent::Base
-    attr_reader :key, :params, :if, :label
+    attr_reader :key, :params, :if, :label, :footnote
 
-    def initialize(key: nil, label: nil, description: nil, **kwargs)
+    def initialize(key: nil, label: nil, description: nil, footnote: nil, **kwargs)
       @key = key
 
-      @label = key ? footnote.label : label
-      @description = key ? footnote.description : description
+      @footnote = footnote || fetch_footnote
+      @label = @footnote.label || label
+      @description = @footnote.description || description
 
       @if = kwargs.key?(:if) ? kwargs.delete(:if) : true
       @params = kwargs || {}
     end
 
-    def footnote
+    def fetch_footnote
       @footnote ||= Comparison::Footnote.fetch(key) if key
     end
 
@@ -195,7 +196,7 @@ class ComparisonTableComponent < ViewComponent::Base
     end
 
     def id
-      @id ||= footnote ? footnote.key : Digest::MD5.hexdigest(description)
+      @id ||= @footnote ? @footnote.key : Digest::MD5.hexdigest(description)
     end
 
     def call

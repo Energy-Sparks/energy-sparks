@@ -1,4 +1,8 @@
 <%= render 'table_title', table_number: table_number, table_title: t('comparisons.tables.electricity_usage') %>
+<%
+tariff_changed_last_year = Comparison::Footnote.fetch('tariff_changed_last_year')
+electricity_change_rows = Comparison::Footnote.fetch('electricity_change_rows')
+%>
 
 <%= component 'comparison_table',
               report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
@@ -8,9 +12,9 @@
     <% next if result.electricity_current_period_kwh.blank? %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
-      <% r.with_reference key: 'tariff_changed_last_year',
+      <% r.with_reference footnote: tariff_changed_last_year,
                           if: result.electricity_tariff_has_changed %>
-      <% r.with_reference key: 'electricity_change_rows',
+      <% r.with_reference footnote: electricity_change_rows,
                           period_type_string: @period_type_string,
                           if: result.pupils_changed %>
       <% r.with_var val: result.activation_date, unit: :date_mmm_yyyy %>
