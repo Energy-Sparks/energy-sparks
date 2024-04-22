@@ -138,11 +138,16 @@ module Alerts
         create(:alert_type, class_name: 'AlertConfigurablePeriodGasComparison')
         create(:alert_type, class_name: 'AlertConfigurablePeriodStorageHeaterComparison', fuel_type: :storage_heater)
         report = create(:report, :with_custom_period)
+        report.custom_period.update(current_start_date: 1.day.ago,
+                                    previous_end_date: 2.days.ago,
+                                    previous_start_date: 3.days.ago)
         service = described_class.new(school: school, aggregate_school: aggregate_school)
         service.perform
-        expect(Alert.last.alert_type.class_name).to eq(alert_type.class_name)
-        expect(Alert.last.reporting_period).to eq('custom')
-        expect(Alert.last.custom_period_id).to eq(report.custom_period_id)
+        alert = Alert.last
+        expect(alert.enough_data).to eq('enough')
+        expect(alert.alert_type.class_name).to eq(alert_type.class_name)
+        expect(alert.reporting_period).to eq('custom')
+        expect(alert.custom_period_id).to eq(report.custom_period_id)
       end
     end
   end
