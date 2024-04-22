@@ -8,12 +8,13 @@ module Amr
       if current_range && current_range.first <= start
         start = current_range.last
       end
-
       start.change({ hour: 0, min: 0, sec: 0 })
     end
 
     def self.end_date(available_range)
-      available_range.present? ? available_range.last : default_end_date
+      candidate_end_date = available_range.present? ? available_range.last : default_end_date
+      # encountered a data problem at n3rgy where availableCacheRange had a future date
+      candidate_end_date >= Time.zone.today ? default_end_date : candidate_end_date
     end
 
     def self.default_start_date
