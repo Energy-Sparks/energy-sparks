@@ -13,6 +13,7 @@ CSV.generate do |csv|
   ]
   csv << @electricity_headers
   @results.each do |result|
+    next if result.electricity_current_period_kwh.blank?
     csv << [
       result.school.name,
       result.activation_date.iso8601,
