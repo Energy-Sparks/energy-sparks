@@ -11,8 +11,7 @@ namespace :after_party do
         title: 'Configurable Electricity Comparison',
         class_name: 'AlertConfigurablePeriodElectricityComparison',
         source: :analytics,
-        has_ratings: true,
-        benchmark: true
+        has_ratings: true
       )
     end
 
@@ -24,8 +23,7 @@ namespace :after_party do
         title: 'Configurable Gas Comparison',
         class_name: 'AlertConfigurablePeriodGasComparison',
         source: :analytics,
-        has_ratings: true,
-        benchmark: true
+        has_ratings: true
       )
     end
 
@@ -37,8 +35,7 @@ namespace :after_party do
         title: 'Configurable Storage heater Comparison',
         class_name: 'AlertConfigurablePeriodStorageHeaterComparison',
         source: :analytics,
-        has_ratings: true,
-        benchmark: true
+        has_ratings: true
       )
     end
 

@@ -142,7 +142,6 @@ module Alerts
           end
           process_alert_type_run_result(result, alert_attributes: { reporting_period: :custom,
                                                                     custom_period: report.custom_period })
-          process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
         end
       end
     end
