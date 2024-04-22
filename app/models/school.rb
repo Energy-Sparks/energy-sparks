@@ -376,6 +376,19 @@ class School < ApplicationRecord
     end
   end
 
+  def fuel_type?(fuel_type)
+    case fuel_type.to_sym
+    when :electricity
+      has_electricity?
+    when :gas
+      has_gas?
+    when :storage_heater
+      has_storage_heaters?
+    when :solar
+      has_solar_pv?
+    end
+  end
+
   def has_gas?
     configuration.has_gas
   end

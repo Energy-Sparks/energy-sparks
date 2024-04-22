@@ -47,7 +47,7 @@ module Alerts
 
         alert_type_run_result = service.perform
         process_alert_type_run_result(alert_type_run_result)
-        process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
+        process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark
       end
     end
 
@@ -122,7 +122,8 @@ module Alerts
     def process_custom_periods
       alert_types = [AlertConfigurablePeriodElectricityComparison, AlertConfigurablePeriodGasComparison,
                      AlertConfigurablePeriodStorageHeaterComparison].filter_map do |alert_class|
-        AlertType.find_by(class_name: alert_class.name)
+        alert_type = AlertType.find_by(class_name: alert_class.name)
+        alert_type && @school.fuel_type?(alert_type.fuel_type) ? alert_type : nil
       end
       Comparison::Report.where.not(custom_period: nil).find_each do |report|
         alert_types.each do |alert_type|
@@ -133,7 +134,7 @@ module Alerts
                    analysis_date: analysis_date,
                    school: @school,
                    aggregate_school: @aggregate_school,
-                   use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present?)
+                   use_max_meter_date_if_less_than_asof_date: true)
               .report(alert_configuration: report.to_alert_configuration)
           end
           process_alert_type_run_result(result, alert_attributes: { reporting_period: :custom,
