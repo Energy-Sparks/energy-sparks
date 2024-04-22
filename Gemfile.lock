@@ -625,7 +625,7 @@ GEM
     scenic (1.8.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
-    scout_apm (5.3.7)
+    scout_apm (5.3.8)
       parser
     selenium-webdriver (4.19.0)
       base64 (~> 0.2)
