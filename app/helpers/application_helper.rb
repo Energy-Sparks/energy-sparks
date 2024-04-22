@@ -307,7 +307,7 @@ module ApplicationHelper
              ''
            end
     text = sanitize(text) if sanitize
-    text + ' ' + icon.html_safe
+    (text + ' ' + icon).html_safe
   end
 
   def safely
@@ -373,6 +373,14 @@ module ApplicationHelper
       utm_source: source,
       utm_medium: 'email',
       utm_campaign: campaign
+    }
+  end
+
+  def utm_params_for_redirect
+    {
+      utm_source: params[:utm_source],
+      utm_medium: params[:utm_medium],
+      utm_campaign: params[:utm_campaign]
     }
   end
 

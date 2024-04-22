@@ -54,20 +54,23 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
   end
 
-  context 'with footer' do
-    let(:footer) { 'This is the footer' }
+  context 'with notes' do
+    let(:note_1) { 'This is note 1' }
+    let(:note_2) { 'This is note 2' }
 
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|
-        c.with_footer do
-          footer
+        c.with_note note_1
+        c.with_note do
+          note_2
         end
       end
     end
 
-    it 'adds the footer' do
+    it 'adds the notes' do
       within('table tfoot') do
-        expect(html).to have_content(footer)
+        expect(html).to have_content(note_1)
+        expect(html).to have_content(note_2)
       end
     end
   end
@@ -136,20 +139,81 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     context 'with reference' do
-      let(:reference) { 'This is the reference' }
+      let(:reference_params) {}
+      let(:content) {}
+
+      let(:current_user) { }
+
+      before do
+        # This allows us to set the current user during rendering
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
+      end
 
       subject(:html) do
-        render_inline(described_class.new(**params)) do |c|
-          c.with_row do |r|
-            r.with_reference do
-              reference
+        with_controller_class ApplicationController do
+          render_inline(described_class.new(**params)) do |c|
+            c.with_row do |r|
+              r.with_reference(**reference_params) { content }
             end
           end
         end
       end
 
-      it 'adds the reference' do
-        expect(html).to have_content(reference)
+      context 'with a label, description and params' do
+        let(:reference_params) { { label: 't', description: 'my reference with %{sub}', sub: 'parameters' } }
+
+        it 'adds the reference' do
+          expect(html).to have_content('[t] my reference with parameters')
+        end
+
+        context 'with missing params' do
+          let(:reference_params) { { label: 't', description: 'my reference with %{sub}' } }
+
+          it 'raises KeyError' do
+            expect { html }.to raise_error(KeyError)
+          end
+        end
+
+        context 'when current user is admin' do
+          let(:current_user) { create(:admin) }
+
+          it 'does not have edit link' do
+            expect(html).not_to have_link('Edit')
+          end
+        end
+      end
+
+      context 'with a footnote key and params' do
+        let!(:footnote) { create(:footnote, key: 'note', label: 't', description: 'my reference with %{sub}')}
+        let(:reference_params) { { key: 'note', sub: 'parameters' } }
+
+        it 'adds the reference' do
+          expect(html).to have_content('[t] my reference with parameters')
+        end
+
+        context 'with missing params' do
+          let(:reference_params) { { key: 'note' } }
+
+          it 'raises KeyError' do
+            expect { html }.to raise_error(KeyError)
+          end
+        end
+
+        context 'when current user is not admin' do
+          let(:current_user) { }
+
+          it 'does not show edit link' do
+            expect(html).not_to have_link('Edit')
+          end
+        end
+
+        context 'when current user is admin' do
+          let(:current_user) { create(:admin) }
+
+          it 'has edit link' do
+            expect(html).to have_link('Edit', href: edit_admin_comparisons_footnote_path(footnote))
+          end
+        end
       end
     end
 

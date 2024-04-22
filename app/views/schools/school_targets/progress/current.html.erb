@@ -27,13 +27,13 @@
       <p>
         <%= t('schools.school_targets.progress.current.unfortunately_more_than_last_year',
               fuel_type: human_fuel_type(@fuel_type),
-              relative_percent: format_target(@latest_progress, :relative_percent)) %>.
+              relative_percent: format_target(@latest_progress, :relative_percent)).html_safe %>.
       </p>
     <% else %>
       <p>
         <%= t('schools.school_targets.progress.current.well_done_less_than_last_year',
               fuel_type: human_fuel_type(@fuel_type),
-              relative_percent: format_target(@latest_progress, :relative_percent)) %>.
+              relative_percent: format_target(@latest_progress, :relative_percent)).html_safe %>.
       </p>
     <% end %>
   <% end %>

@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'gas out of hours advice page', type: :system do
   let(:reading_start_date) { 1.year.ago }
-
+  let(:reading_end_date) { Time.zone.today }
   let(:school) do
     create(:school, :with_basic_configuration_single_meter_and_tariffs,
       fuel_type: :gas,
       reading_start_date: reading_start_date,
-      calendar: nil) # dont create a calendar initially, see nested tests
+      reading_end_date: reading_end_date,
+      calendar: create(:calendar, calendar_type: :school)) # create empty calendar initially, see nested tests
   end
 
   before { create(:advice_page, key: :gas_out_of_hours, fuel_type: :gas) }
@@ -135,7 +136,8 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         it 'has by day section' do
           expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
           expect(page).to have_css('#chart_wrapper_gas_by_day_of_week_tolerant')
-          expect(page).to have_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
+          # not enough data for this
+          expect(page).not_to have_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
         end
 
         it 'does not have a holiday usage section' do

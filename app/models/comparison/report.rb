@@ -23,6 +23,7 @@ class Comparison::Report < ApplicationRecord
   self.table_name = 'comparison_reports'
 
   extend Mobility
+  include TransifexSerialisable
   include EnumReportingPeriod
 
   translates :title, type: :string, fallbacks: { cy: :en }

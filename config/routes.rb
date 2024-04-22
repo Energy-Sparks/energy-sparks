@@ -5,11 +5,15 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
   get 'up', to: 'health#show'
 
-  get 'for-schools', to: 'home#for_schools'
+  # old urls maintained to avoid breakage
   get 'for-teachers', to: redirect('/for-schools')
   get 'for-pupils', to: redirect('/for-schools')
   get 'for-management', to: redirect('/for-schools')
+  get 'enrol', to: redirect('/find-out-more')
 
+  # Short link for marketing
+  get 'find-out-more', to: 'landing_pages#find_out_more', as: :find_out_more
+  get 'for-schools', to: 'home#for_schools'
   get 'for-local-authorities', to: 'home#for_local_authorities'
   get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
 
@@ -27,7 +31,6 @@ Rails.application.routes.draw do
   get 'school_statistics_key_data', to: 'home#school_statistics_key_data'
 
   get 'contact', to: 'home#contact'
-  get 'enrol', to: 'home#enrol'
   get 'enrol-our-school', to: 'home#enrol_our_school'
   get 'enrol-our-multi-academy-trust', to: 'home#enrol_our_multi_academy_trust'
   get 'enrol-our-local-authority', to: 'home#enrol_our_local_authority'
@@ -40,6 +43,7 @@ Rails.application.routes.draw do
 
   get 'team', to: 'home#team'
   get 'funders', to: 'home#funders'
+  get 'cookies', to: 'home#cookies'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
   get 'support_us', to: 'home#support_us', as: :support_us
   get 'terms_and_conditions', to: 'home#terms_and_conditions', as: :terms_and_conditions
@@ -54,6 +58,23 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
+  resources :campaigns, controller: 'landing_pages', only: [:index] do
+    collection do
+      get 'find-out-more', as: :find_out_more
+      get 'more-information', as: :more_information
+      get 'book-demo', as: :book_demo
+      post :submit_contact
+      get 'thank-you', as: :thank_you
+      get 'mat-pack', as: :mat_pack
+      get 'school-pack', as: :school_pack
+      get 'example-adult-dashboard', as: :example_adult_dashboard
+      get 'example-pupil-dashboard', as: :example_pupil_dashboard
+      get 'example-mat-dashboard', as: :example_mat_dashboard
+      get 'example-la-dashboard', as: :example_la_dashboard
+      get 'demo-video', as: :demo_video
+    end
+  end
+
   resources :compare, controller: 'compare', param: :benchmark, only: [:index, :show] do
     collection do
       get :benchmarks
@@ -61,6 +82,7 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
+    resources :heat_saver_march_2024, only: [:index]
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
     resources :annual_change_in_gas_out_of_hours_use, only: [:index]
     resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index]
@@ -89,7 +111,9 @@ Rails.application.routes.draw do
     resources :electricity_targets, only: [:index]
     resources :gas_consumption_during_holiday, only: [:index]
     resources :gas_targets, only: [:index]
+    resources :heating_coming_on_too_early, only: [:index]
     resources :heating_in_warm_weather, only: [:index]
+    resources :holiday_usage_last_year, only: [:index]
     resources :hot_water_efficiency, only: [:index]
     resources :recent_change_in_baseload, only: [:index]
     resources :seasonal_baseload_variation, only: [:index]

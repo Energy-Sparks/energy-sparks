@@ -4,6 +4,7 @@
 class ComparisonChartComponent < ViewComponent::Base
   renders_one :title
   renders_one :subtitle
+  renders_one :introduction
 
   attr_reader :id
 

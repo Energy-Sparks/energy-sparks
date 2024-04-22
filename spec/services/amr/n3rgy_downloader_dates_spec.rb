@@ -24,6 +24,12 @@ module Amr
           expect(Amr::N3rgyDownloaderDates.end_date(nil).to_s).to eq('2023-06-28T23:30:00+00:00') # DateTime now minus 1 day
         end
       end
+
+      it 'does not use future dates' do
+        travel_to DateTime.parse('2023-06-29T04:05:06+00:00') do
+          expect(Amr::N3rgyDownloaderDates.end_date([DateTime.parse('2023-01-01T12:00'), DateTime.parse('2023-06-30T00:00')]).to_s).to eq('2023-06-28T23:30:00+00:00')
+        end
+      end
     end
   end
 end

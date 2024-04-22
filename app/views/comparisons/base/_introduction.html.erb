@@ -1,1 +1,13 @@
-<%= @report.introduction %>
+<div id='intro'>
+  <%= @report.introduction %>
+  <%= render 'introduction_extra' %>
+  <% if current_user&.admin? %>
+    <p>
+      <%= link_to 'Edit',
+                  edit_admin_comparisons_report_path(@report),
+                  class: 'btn btn-info btn-sm',
+                  data: { toggle: 'tooltip', placement: 'right' },
+                  title: 'Admin Only' %>
+    </p>
+  <% end %>
+</div>
