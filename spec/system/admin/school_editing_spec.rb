@@ -118,10 +118,10 @@ RSpec.describe 'editing school details', type: :system do
       check 'Our school has solar PV panels'
       check 'Our school has night storage heaters'
       check 'Our school has its own swimming pool'
-      check 'Our school uses Oil for heating'
+      check 'Our school uses oil for heating'
       check 'Our school is using LPG for heating'
-      check 'Our school has a Biomass boiler'
-      check 'Our school has District Heating'
+      check 'Our school has a biomass boiler'
+      check 'Our school has district Heating'
       check 'Our school has a ground source heat pump'
       check 'Our school has an air source heat pump'
       click_on('Update School')

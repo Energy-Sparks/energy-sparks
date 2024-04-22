@@ -21,11 +21,11 @@ en:
         activation_date: Activation date
         address: Address
         alternative_heating_air_source_heat_pump: Our school has an air source heat pump
-        alternative_heating_biomass: Our school has a Biomass boiler
-        alternative_heating_district_heating: Our school has District Heating
+        alternative_heating_biomass: Our school has a biomass boiler
+        alternative_heating_district_heating: Our school has district heating
         alternative_heating_ground_source_heat_pump: Our school has a ground source heat pump
         alternative_heating_lpg: Our school is using LPG for heating
-        alternative_heating_oil: Our school uses Oil for heating
+        alternative_heating_oil: Our school uses oil for heating
         cooks_dinners_for_other_schools: The kitchen cooks dinners for other schools
         cooks_dinners_for_other_schools_count: How many schools does your school cook dinners for?
         cooks_dinners_onsite: Dinners are cooked on site
