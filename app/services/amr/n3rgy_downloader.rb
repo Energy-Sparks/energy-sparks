@@ -15,6 +15,10 @@ module Amr
       readings_by_date_time = fetch_all_readings
 
       # Creates a hash of { readings: {date => x48 array}, missing_readings: [date_time] }
+      # The fourth parameter is set to true to ensure that we correctly process the date times
+      # in the list of readings. For a given day d, n3rgy return the final half-hourly reading
+      # as midnight of d+1. This conversion function handles this, so that the readings
+      # are properly associated with each date
       meter_readings = X48Formatter.convert_dt_to_v_to_date_to_v_x48(@start_date.to_date,
         @end_date.to_date, readings_by_date_time, true, nil)
 
