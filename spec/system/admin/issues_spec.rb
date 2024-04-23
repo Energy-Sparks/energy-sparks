@@ -364,8 +364,27 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         it_behaves_like 'a displayed list issue' do
           let(:issue) { user_issue }
         end
+
         it "doesn't display issue for other user" do
           expect(page).not_to have_content other_user_issue.title
+        end
+      end
+
+      context 'and searching issues' do
+        let!(:issue_1) { create(:issue, title: 'Issue 1 findme here', description: 'description') }
+        let!(:issue_2) { create(:issue, title: 'Issue 2 title', description: 'I\'m hiding here') }
+        let(:setup_data) { [issue_1, issue_2] }
+
+        before do
+          fill_in 'Search', with: 'findme|hiding'
+          click_button 'Filter'
+        end
+
+        it_behaves_like 'a displayed list issue' do
+          let(:issue) { issue_1 }
+        end
+        it_behaves_like 'a displayed list issue' do
+          let(:issue) { issue_2 }
         end
       end
 

@@ -111,16 +111,32 @@ RSpec.describe 'editing school details', type: :system do
     expect(school.enable_targets_feature?).to be false
   end
 
-  context 'when updating storage heaters' do
-    it 'and changes are saved' do
+  context 'when updating school features checkboxes - excluding dinners js fields' do
+    before do
       click_on(school_name)
       click_on('Edit school details')
+      check 'Our school has solar PV panels'
       check 'Our school has night storage heaters'
-
+      check 'Our school has its own swimming pool'
+      check 'Our school uses oil for heating'
+      check 'Our school is using LPG for heating'
+      check 'Our school has a biomass boiler'
+      check 'Our school has district heating'
+      check 'Our school has a ground source heat pump'
+      check 'Our school has an air source heat pump'
       click_on('Update School')
-
       school.reload
+    end
+
+    it 'and changes are saved' do
+      expect(school.indicated_has_solar_panels).to be true
       expect(school.indicated_has_storage_heaters).to be true
+      expect(school.has_swimming_pool).to be true
+      expect(school.alternative_heating_oil).to be true
+      expect(school.alternative_heating_lpg).to be true
+      expect(school.alternative_heating_biomass).to be true
+      expect(school.alternative_heating_ground_source_heat_pump).to be true
+      expect(school.alternative_heating_air_source_heat_pump).to be true
     end
   end
 
