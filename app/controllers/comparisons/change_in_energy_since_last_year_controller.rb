@@ -4,27 +4,27 @@ module Comparisons
 
     def colgroups
       [
-        { label: '' },
+        { label: '', colspan: 2 },
         { label: t('analytics.benchmarking.configuration.column_groups.kwh'), colspan: 3 },
         { label: t('analytics.benchmarking.configuration.column_groups.co2_kg'), colspan: 3 },
         { label: t('analytics.benchmarking.configuration.column_groups.cost'), colspan: 3 },
-        { label: t('analytics.benchmarking.configuration.column_groups.metering'), colspan: 2 }
+        { label: t('analytics.benchmarking.configuration.column_groups.metering') }
       ]
     end
 
     def headers
       [
         t('analytics.benchmarking.configuration.column_headings.school'),
-        t('analytics.benchmarking.configuration.column_headings.previous_year'),
-        t('analytics.benchmarking.configuration.column_headings.last_year'),
-        t('analytics.benchmarking.configuration.column_headings.change_pct'),
-        t('analytics.benchmarking.configuration.column_headings.previous_year'),
-        t('analytics.benchmarking.configuration.column_headings.last_year'),
-        t('analytics.benchmarking.configuration.column_headings.change_pct'),
-        t('analytics.benchmarking.configuration.column_headings.previous_year'),
-        t('analytics.benchmarking.configuration.column_headings.last_year'),
-        t('analytics.benchmarking.configuration.column_headings.change_pct'),
         t('analytics.benchmarking.configuration.column_headings.fuel'),
+        t('analytics.benchmarking.configuration.column_headings.previous_year'),
+        t('analytics.benchmarking.configuration.column_headings.last_year'),
+        t('analytics.benchmarking.configuration.column_headings.change_pct'),
+        t('analytics.benchmarking.configuration.column_headings.previous_year'),
+        t('analytics.benchmarking.configuration.column_headings.last_year'),
+        t('analytics.benchmarking.configuration.column_headings.change_pct'),
+        t('analytics.benchmarking.configuration.column_headings.previous_year'),
+        t('analytics.benchmarking.configuration.column_headings.last_year'),
+        t('analytics.benchmarking.configuration.column_headings.change_pct'),
         t('analytics.benchmarking.configuration.column_headings.no_recent_data')
       ]
     end

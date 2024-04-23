@@ -4,6 +4,23 @@
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
+        <%= r.with_var do %>
+          <% if !result.current_year_electricity_kwh.nil? %>
+            <span class="<%= fuel_type_class(:electricity) %>">
+              <%= fa_icon(fuel_type_icon(:electricity)) %>
+            </span>
+          <% end %>
+          <% if !result.current_year_gas_kwh.nil? %>
+            <span class="<%= fuel_type_class(:gas) %>">
+              <%= fa_icon(fuel_type_icon(:gas)) %>
+            </span>
+          <% end %>
+          <% if !result.current_year_storage_heaters_kwh.nil? %>
+            <span class="<%= fuel_type_class(:storage_heater) %>">
+              <%= fa_icon(fuel_type_icon(:storage_heater)) %>
+            </span>
+          <% end %>
+        <% end %>
 
         <% %i[kwh co2 £].each do |unit| %>
           <%= r.with_var val: sum_if_complete(result.all_previous_year(unit: unit),
@@ -16,28 +33,12 @@
               ),
                          change: true,
                          unit: :relative_percent_0dp %>
-      <% end %>
-
-      <%= r.with_var do
-            [
-              result.current_year_electricity_kwh.nil? ? nil : 'E',
-              result.current_year_gas_kwh.nil? ? nil : 'G',
-              result.current_year_storage_heaters_kwh.nil? ? nil : 'SH',
-              if result.solar_type == ''
-                nil
-              else
-                (result.solar_type == 'synthetic' ? 's' : 'S')
-              end
-            ].compact.join(' + ')
-          end %>
+        <% end %>
 
       <%= r.with_var do
             'Y' if result.school.has_electricity? && result.current_year_electricity_kwh.nil? ||
                    result.school.has_gas? && result.current_year_gas_kwh.nil?
           end %>
-
     <% end %>
-  <% end %>
-  <% c.with_footer do %>
   <% end %>
 <% end %>
