@@ -9,8 +9,7 @@ module Amr
         end_date: nil)
     end
 
-    let(:earliest) { DateTime.parse('2019-01-01T00:00') }
-    let(:meter)    { create(:electricity_meter, earliest_available_data: earliest) }
+    let(:meter) { create(:electricity_meter) }
 
     let(:downloader) { instance_double(Amr::N3rgyDownloader) }
     let(:thirteen_months_ago) { DateTime.now - 13.months }
@@ -61,6 +60,8 @@ module Amr
         end
 
         context 'with available data in n3rgy' do
+          let(:earliest) { DateTime.parse('2019-01-01T00:00') }
+
           let(:available_data) do
             (earliest..yesterday)
           end
@@ -76,9 +77,8 @@ module Amr
           end
         end
 
-        context 'with no dates available' do
+        context 'with no other dates available' do
           let(:available_data) { nil }
-          let(:meter) { create(:electricity_meter, earliest_available_data: nil) }
 
           it 'requests 12 months by default' do
             expect(Amr::N3rgyDownloader).to receive(:new).with(
@@ -92,7 +92,7 @@ module Amr
         end
       end
 
-      context 'when some readings have already been loaded' do
+      context 'when there is data in the database' do
         # Note: this is a Date object as the reading date needs to be stored in the database in ISO 8601 format e.g. 2023-06-29
         let(:last_week) { Time.zone.today - 7 }
 
@@ -115,57 +115,54 @@ module Amr
           }
         end
 
-        it 'requests earlier data from n3rgy if they have data prior to the first reading' do
-          available_range = (last_week - 1..yesterday)
-
+        before do
           metering_service_stub = double('metering-service')
-          expect(Meters::N3rgyMeteringService).to receive(:new).and_return(metering_service_stub)
-          expect(metering_service_stub).to receive(:available_data).and_return(available_range)
-
-          expect(Amr::N3rgyDownloader).to receive(:new).with(
-            meter: meter,
-            start_date: last_week - 1,
-            end_date: yesterday
-          ).and_return(downloader)
+          allow(Meters::N3rgyMeteringService).to receive(:new).and_return(metering_service_stub)
+          allow(metering_service_stub).to receive(:available_data).and_return(available_data)
           allow(downloader).to receive(:readings).and_return(readings)
-
-          # maximum and minimum amr data feed readings reading date should be in ISO 8601 format e.g. '2023-06-29'
-          expect(meter.amr_data_feed_readings.minimum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
-          expect(meter.amr_data_feed_readings.maximum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
-
-          upserter.perform
         end
 
-        it 'requests newer data if we have the earliest readings' do
-          available_range = (last_week..yesterday)
+        context 'with earlier data available from n3rgy' do
+          let(:available_data) { (last_week - 1..yesterday) }
 
-          metering_service_stub = double('metering-service')
-          expect(Meters::N3rgyMeteringService).to receive(:new).and_return(metering_service_stub)
-          expect(metering_service_stub).to receive(:available_data).and_return(available_range)
+          it 'requests earlier data from n3rgy if they have data prior to the first reading' do
+            # maximum and minimum amr data feed readings reading date should be in ISO 8601 format e.g. '2023-06-29'
+            expect(meter.amr_data_feed_readings.minimum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
+            expect(meter.amr_data_feed_readings.maximum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
 
-          expect(Amr::N3rgyDownloader).to receive(:new).with(
-            meter: meter,
-            start_date: last_week + 2,
-            end_date: yesterday
-          ).and_return(downloader)
-          allow(downloader).to receive(:readings).and_return(readings)
-
-          upserter.perform
+            expect(Amr::N3rgyDownloader).to receive(:new).with(
+              meter: meter,
+              start_date: last_week - 1,
+              end_date: yesterday
+            )
+            upserter.perform
+          end
         end
 
-        it 'requests data from 13 months ago if no date ranges available from n3rgy' do
-          metering_service_stub = double('metering-service')
-          expect(Meters::N3rgyMeteringService).to receive(:new).and_return(metering_service_stub)
-          expect(metering_service_stub).to receive(:available_data).and_return(nil)
+        context 'with earlier data in our database' do
+          let(:available_data) { (last_week..yesterday) }
 
-          expect(Amr::N3rgyDownloader).to receive(:new).with(
-            meter: meter,
-            start_date: thirteen_months_ago,
-            end_date: yesterday
-          ).and_return(downloader)
-          allow(downloader).to receive(:readings).and_return(readings)
+          it 'requests newer data if we have the earliest readings' do
+            expect(Amr::N3rgyDownloader).to receive(:new).with(
+              meter: meter,
+              start_date: last_week + 2,
+              end_date: yesterday
+            )
+            upserter.perform
+          end
+        end
 
-          upserter.perform
+        context 'with no data from n3rgy' do
+          let(:available_data) { nil }
+
+          it 'requests data from 13 months ago if no date ranges available from n3rgy' do
+            expect(Amr::N3rgyDownloader).to receive(:new).with(
+              meter: meter,
+              start_date: thirteen_months_ago,
+              end_date: yesterday
+            )
+            upserter.perform
+          end
         end
       end
 
