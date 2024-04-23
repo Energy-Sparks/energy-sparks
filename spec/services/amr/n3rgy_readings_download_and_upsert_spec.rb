@@ -12,8 +12,8 @@ module Amr
     let(:meter) { create(:electricity_meter) }
 
     let(:downloader) { instance_double(Amr::N3rgyDownloader) }
-    let(:thirteen_months_ago) { DateTime.now - 13.months }
-    let(:yesterday) { DateTime.now - 1 }
+    let(:thirteen_months_ago) { (DateTime.now - 13.months).change(hour: 0, min: 30, sec: 0) }
+    let(:yesterday) { DateTime.now.change(hour: 0, min: 0, sec: 0) }
 
     before do
       allow(Amr::N3rgyDownloader).to receive(:new).and_return(downloader)
@@ -80,7 +80,7 @@ module Amr
         context 'with no other dates available' do
           let(:available_data) { nil }
 
-          it 'requests 12 months by default' do
+          it 'requests 13 months by default' do
             expect(Amr::N3rgyDownloader).to receive(:new).with(
               meter: meter,
               start_date: thirteen_months_ago,
@@ -93,37 +93,26 @@ module Amr
       end
 
       context 'when there is data in the database' do
-        # Note: this is a Date object as the reading date needs to be stored in the database in ISO 8601 format e.g. 2023-06-29
-        let(:last_week) { Time.zone.today - 7 }
+        # Note: this is a Date object as the reading date needs to be stored in the database
+        # in ISO 8601 format e.g. 2023-06-29
+        let(:earliest_reading) { Date.new(2024, 4, 1) }
 
         before do
-          create(:amr_data_feed_reading, meter: meter, reading_date: last_week)
-          create(:amr_data_feed_reading, meter: meter, reading_date: last_week + 1)
-          create(:amr_data_feed_reading, meter: meter, reading_date: last_week + 2)
-        end
-
-        let(:end_date)          { DateTime.now - 7 }
-        let(:start_date)        { end_date - 8 }
-
-        let(:readings) do
-          {
-            meter.meter_type => {
-                mpan_mprn:        meter.mpan_mprn,
-                readings:         { start_date => OneDayAMRReading.new(meter.mpan_mprn, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
-                missing_readings: []
-              }
-          }
+          create(:amr_data_feed_reading, meter: meter, reading_date: earliest_reading)
+          create(:amr_data_feed_reading, meter: meter, reading_date: earliest_reading + 1)
+          create(:amr_data_feed_reading, meter: meter, reading_date: earliest_reading + 2)
         end
 
         before do
           metering_service_stub = double('metering-service')
           allow(Meters::N3rgyMeteringService).to receive(:new).and_return(metering_service_stub)
           allow(metering_service_stub).to receive(:available_data).and_return(available_data)
-          allow(downloader).to receive(:readings).and_return(readings)
+          allow(downloader).to receive(:readings).and_return({})
         end
 
         context 'with earlier data available from n3rgy' do
-          let(:available_data) { (last_week - 1..yesterday) }
+          let(:expected_start) { Date.new(2024, 3, 31) }
+          let(:available_data) { (expected_start..yesterday) }
 
           it 'requests earlier data from n3rgy if they have data prior to the first reading' do
             # maximum and minimum amr data feed readings reading date should be in ISO 8601 format e.g. '2023-06-29'
@@ -132,7 +121,7 @@ module Amr
 
             expect(Amr::N3rgyDownloader).to receive(:new).with(
               meter: meter,
-              start_date: last_week - 1,
+              start_date: expected_start,
               end_date: yesterday
             )
             upserter.perform
@@ -140,12 +129,13 @@ module Amr
         end
 
         context 'with earlier data in our database' do
-          let(:available_data) { (last_week..yesterday) }
+          let(:expected_start) { Date.new(2024, 4, 2) }
+          let(:available_data) { (expected_start..yesterday) }
 
-          it 'requests newer data if we have the earliest readings' do
+          it 'requests newer data if we have earlier readings' do
             expect(Amr::N3rgyDownloader).to receive(:new).with(
               meter: meter,
-              start_date: last_week + 2,
+              start_date: earliest_reading + 2,
               end_date: yesterday
             )
             upserter.perform

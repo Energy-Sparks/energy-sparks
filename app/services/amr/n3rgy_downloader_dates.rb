@@ -20,12 +20,26 @@ module Amr
 
     # 13 months ago, starting at 00:30 which is 1st reading from n3rgy API
     def self.default_start_date
-      (DateTime.now - 13.months).change({ hour: 0, min: 30, sec: 0 })
+      self.n3rgy_first_reading_of_day(DateTime.now - 13.months)
     end
 
     # midnight today is the final reading from yesterday
     def self.default_end_date
-      DateTime.now.change({ hour: 0, min: 0, sec: 0 })
+      self.n3rgy_last_reading_of_day(DateTime.now)
+    end
+
+    # n3rgy uses 00:30 as the first half-hourly reading for a day
+    # so convert the date to a date time and set the time accordingly
+    def self.n3rgy_first_reading_of_day(date_time)
+      date_time.change(hour: 0, min: 30, sec: 0)
+    end
+
+    # the last half-hourly reading for a day in the n3rgy API is
+    # midnight of the following day.
+    #
+    # so convert date to a date time and set time accordingly
+    def self.n3rgy_last_reading_of_day(date_time)
+      date_time.change(hour: 0, min: 0, sec: 0)
     end
   end
 end

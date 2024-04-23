@@ -50,17 +50,9 @@ module Amr
       if meter.amr_data_feed_readings.any?
         first = meter.amr_data_feed_readings.minimum(:reading_date)
         last = meter.amr_data_feed_readings.maximum(:reading_date)
-        # n3rgy uses 00:30 as the start of readings for a day, so parse the iso8601 string to
-        # a date and set time
-        #
-        # for the end of the range we have to increment the date as n3rgy treats midnight of the
-        # following day as the final reading of the previous day
-        (to_date_with_specific_time(first, 0, 0, 30)..to_date_with_specific_time(last, 1, 0, 0))
+        (Amr::N3rgyDownloaderDates.n3rgy_first_reading_of_day(DateTime.parse(first + 'T00:30'))..
+          Amr::N3rgyDownloaderDates.n3rgy_last_reading_of_day(DateTime.parse(last + 'T00:00')))
       end
-    end
-
-    def to_date_with_specific_time(date, days, hour, min)
-      (Date.parse(date) + days).to_time.change(hour: hour, min: min, sec: 0)
     end
   end
 end
