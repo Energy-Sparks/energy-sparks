@@ -2,9 +2,8 @@ module Meters
   class DccGrantTrustedConsents
     attr_reader :errors
 
-    def initialize(meters, n3rgy_api_factory = Amr::N3rgyApiFactory.new)
+    def initialize(meters)
       @meters = meters
-      @n3rgy_api_factory = n3rgy_api_factory
       @errors = []
     end
 
@@ -12,11 +11,7 @@ module Meters
       @meters.each do |meter|
         begin
           reference = meter.meter_review.consent_grant.guid
-          if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
-            DataFeeds::N3rgy::ConsentApiClient.production_client.add_trusted_consent(meter.mpan_mprn, reference)
-          else
-            @n3rgy_api_factory.consent_api(meter).grant_trusted_consent(meter.mpan_mprn, reference)
-          end
+          DataFeeds::N3rgy::ConsentApiClient.production_client.add_trusted_consent(meter.mpan_mprn, reference)
           meter.update(consent_granted: true)
         rescue => e
           @errors << e
