@@ -140,6 +140,8 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
 
     context 'with reference' do
       let(:reference_params) {}
+      let(:more_reference_params) {}
+
       let(:content) {}
 
       let(:current_user) { }
@@ -154,6 +156,7 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
           render_inline(described_class.new(**params)) do |c|
             c.with_row do |r|
               r.with_reference(**reference_params) { content }
+              r.with_reference(**more_reference_params) if more_reference_params
             end
           end
         end

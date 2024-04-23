@@ -1,8 +1,4 @@
 <%= render 'table_title', table_number: table_number, table_title: t('comparisons.tables.gas_usage') %>
-<%
-tariff_changed_last_year = Comparison::Footnote.fetch('tariff_changed_last_year')
-gas_change_rows = Comparison::Footnote.fetch('gas_change_rows')
-%>
 
 <%= component 'comparison_table',
               report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
@@ -11,9 +7,9 @@ gas_change_rows = Comparison::Footnote.fetch('gas_change_rows')
     <% next if result.gas_previous_period_kwh.blank? %>
     <% c.with_row do |r| %>
     <% r.with_school school: result.school %>
-    <% r.with_reference footnote: tariff_changed_last_year,
+    <% r.with_reference key: 'tariff_changed_last_year',
                         if: result.gas_tariff_has_changed %>
-    <% r.with_reference footnote: gas_change_rows,
+    <% r.with_reference key: 'gas_change_rows',
                         period_type_string: @period_type_string,
                         schools_to_sentence: 'some schools',
                         if: result.floor_area_changed %>
