@@ -4,12 +4,10 @@ module Amr
         meter:,
         config:,
         start_date:,
-        end_date:,
-        n3rgy_api_factory: Amr::N3rgyApiFactory.new
+        end_date:
       )
       @meter = meter
       @config = config
-      @n3rgy_api_factory = n3rgy_api_factory
       @start_date = start_date
       @end_date = end_date
     end
@@ -26,7 +24,7 @@ module Amr
       return if (start_date.strftime('Y%m%d') == end_date.strftime('%Y%m%d')) && (end_date.strftime('%H%M') != '2330')
 
       import_log = create_import_log
-      readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).readings
+      readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date).readings
       N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings: readings, import_log: import_log).perform
     rescue => e
       import_log.update!(error_messages: "Error downloading data from #{start_date} to #{end_date} : #{e.message}") if import_log
@@ -38,19 +36,7 @@ module Amr
     private
 
     def fetch_cached_dates
-      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
-        Meters::N3rgyMeteringService.new(@meter).available_data
-      else
-        n3rgy_api.readings_available_date_range(@meter.mpan_mprn, @meter.fuel_type)
-      end
-    end
-
-    def n3rgy_api
-      if EnergySparks::FeatureFlags.active?(:n3rgy_v2)
-        nil
-      else
-        @n3rgy_api ||= @n3rgy_api_factory.data_api(@meter)
-      end
+      Meters::N3rgyMeteringService.new(@meter).available_data
     end
 
     def create_import_log

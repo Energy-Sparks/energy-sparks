@@ -251,9 +251,7 @@ en:
         meter_point_number: Meter Point Number
         meter_system: Meter system
         name: Name
-        only_check_if_adding_an_n3rgy_test_meter: Only check if you're adding an n3rgy test meter, not used for live schools
         procurement_route: Procurement route
-        sandbox: Sandbox
         serial_number: Serial number
         title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
         type: Type
@@ -311,7 +309,6 @@ en:
         n3rgy_consent_confirmed: n3rgy Confirm Consented
         n3rgy_known_meter: Available from n3rgy?
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
-        sandbox: Sandbox (test meter)
         school_meter_management: School meter management
         serial_number: Serial Number
         tariff_report: Tariff Report

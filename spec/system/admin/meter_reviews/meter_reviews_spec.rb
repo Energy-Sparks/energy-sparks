@@ -106,7 +106,9 @@ RSpec.describe 'meter_reviews', type: :system do
 
   context 'when performing a review' do
     before do
-      allow_any_instance_of(MeterManagement).to receive(:is_meter_known_to_n3rgy?).and_return(true)
+      service = double
+      allow(Meters::N3rgyMeteringService).to receive(:new).and_return(service)
+      allow(service).to receive(:available?).and_return(true)
       login_as(admin)
       visit root_path
       click_on 'Admin'
