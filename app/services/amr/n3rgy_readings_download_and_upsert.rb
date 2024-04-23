@@ -60,7 +60,7 @@ module Amr
     end
 
     def to_date_with_specific_time(date, days, hour, min)
-      (Date.parse(date) + days).to_time.change(hour: hour, min: min)
+      (Date.parse(date) + days).to_time.change(hour: hour, min: min, sec: 0)
     end
   end
 end
