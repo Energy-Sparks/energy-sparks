@@ -15,11 +15,11 @@ describe 'change_in_*_consumption_*' do
      ["#{schools[0].name} [1] [6]", '+100&percnt;', '£2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
      ["#{schools[2].name} [3]", '-Infinity&percnt;', '£6', '7', 'Easter 2023', 'Easter 2022'],
      ["Notes\n" \
-      '[1] the comparison has been adjusted because the number of pupils have changed between the two holidays. ' \
+      "[1] the comparison has been adjusted because the number of pupils have changed between the two holidays.\n" \
       '[2] schools where percentage change is +Infinity is caused by the electricity consumption in the ' \
-      'previous holidays being more than zero but in the current holidays zero ' \
+      "previous holidays being more than zero but in the current holidays zero\n" \
       '[3] schools where percentage change is -Infinity is caused by the electricity consumption in the current ' \
-      'holidays being zero but in the previous holidays it was more than zero ' \
+      "holidays being zero but in the previous holidays it was more than zero\n" \
       '[6] schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
       "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
   end
