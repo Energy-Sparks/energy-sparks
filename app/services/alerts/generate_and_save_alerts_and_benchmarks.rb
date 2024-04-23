@@ -17,10 +17,10 @@ module Alerts
     def perform
       ActiveRecord::Base.transaction do
         @alert_generation_run = AlertGenerationRun.create!(school: @school)
-        @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school,
-                                                                                             benchmark_result_generation_run: @benchmark_result_generation_run)
+        @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(
+          school: @school, benchmark_result_generation_run: @benchmark_result_generation_run
+        )
         @relevant_alert_types.each { |alert_type| process_alert_and_benchmarks_for(alert_type) }
-
         process_custom_periods
       end
     end

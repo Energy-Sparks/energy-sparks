@@ -4,7 +4,10 @@ module Alerts
   module Adapters
     class AnalyticsAdapter < Adapter
       def report(alert_configuration: nil)
-        analysis_object = alert_class.new(@aggregate_school, comparison_configuration: alert_configuration)
+        analysis_object = alert_class.new(@aggregate_school)
+        if analysis_object.respond_to?(:comparison_configuration=)
+          analysis_object.comparison_configuration = alert_configuration
+        end
         if analysis_object.valid_alert?
           benchmark = benchmark_variables?(alert_class)
           analysis_object.analyse(*[@analysis_date,
