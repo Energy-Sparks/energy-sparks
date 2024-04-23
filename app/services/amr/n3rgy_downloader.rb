@@ -41,17 +41,25 @@ module Amr
 
     # Query the n3rgy API in blocks of up to 90 days to fetch all of the readings
     #
+    # start_date is a DateTime with hour/mins of 00:30
+    # end_date is a DateTime with hour/mins of 00:00
+    #
+    # `.each_slice` returns ranges that use the same hours/mins as the start of the
+    # sliced range. So we need to adjust the end range before use
+    #
     # Extracts the readings from each API response, adjusting units as required
     #
     # Returns a single hash of DateTime => half hourly reading value
     def fetch_all_readings
       readings = []
       (@start_date..@end_date).each_slice(90) do |date_range_max_90days|
+        start_date_time = date_range_max_90days.first
+        end_date_time = (date_range_max_90days.last + 1.day).change({ hour: 0, min: 0, sec: 0 })
         response = api_client.readings(@meter.mpan_mprn,
           @meter.fuel_type.to_s,
           DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION,
-          date_range_max_90days.first,
-          date_range_max_90days.last)
+          start_date_time,
+          end_date_time)
         readings += extract_readings(response)
       end
       readings.to_h

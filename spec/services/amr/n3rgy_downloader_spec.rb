@@ -18,8 +18,8 @@ describe Amr::N3rgyDownloader do
     end
 
     context 'with a period of more than 90 days' do
-      let(:start_date) { Date.new(2023, 1, 1) }
-      let(:end_date) { start_date + 100.days }
+      let(:start_date) { DateTime.new(2023, 1, 1, 0, 30) }
+      let(:end_date) { DateTime.new(2023, 4, 11, 0, 0) } # 100 days ahead
       let(:response) do
         {
           'devices' => [{ 'values' => [] }]
@@ -27,7 +27,13 @@ describe Amr::N3rgyDownloader do
       end
 
       it 'makes multiple API requests' do
-        expect(stub).to receive(:readings).at_least(:twice).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
+        allow(stub).to receive(:readings).at_least(:twice).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
+
+        # split into 90 day first range, with correct start and end time
+        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, start_date, DateTime.new(2023, 4, 1, 0, 0))
+
+        # split into final 10 day range with correct start and end time
+        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, DateTime.new(2023, 4, 1, 0, 30), end_date)
         service.readings
       end
     end
