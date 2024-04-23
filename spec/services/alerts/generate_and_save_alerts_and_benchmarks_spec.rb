@@ -4,12 +4,17 @@ require 'rails_helper'
 
 module Alerts
   describe GenerateAndSaveAlertsAndBenchmarks do
-    let!(:school)                 { create(:school) }
-    let(:aggregate_school)        { build(:meter_collection, :with_aggregate_meter) }
-    let(:asof_date)               { Date.parse('01/01/2019') }
-    let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
+    let!(:school) do
+      school = create(:school)
+      school.configuration.update(
+        fuel_configuration: school.configuration[:fuel_configuration].merge('has_electricity' => true)
+      )
+      school
+    end
+    let(:aggregate_school) { build(:meter_collection, :with_aggregate_meter) }
+    let(:asof_date) { Date.parse('01/01/2019') }
+    let(:alert_type) { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
     let(:benchmark_result_generation_run) { BenchmarkResultGenerationRun.create! }
-
     let(:alert_report_attributes) do
       {
         valid: true,
@@ -46,7 +51,8 @@ module Alerts
 
     let(:alert_type_run_result) do
       AlertTypeRunResult.new(alert_type: alert_type,
-                             reports: [example_alert_report, example_benchmark_alert_report, example_invalid_report], asof_date: asof_date)
+                             reports: [example_alert_report, example_benchmark_alert_report, example_invalid_report],
+                             asof_date: asof_date)
     end
 
     let(:alert_type_run_result_just_errors) do
@@ -55,6 +61,10 @@ module Alerts
 
     before do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+      create(:alert_type, class_name: 'AlertConfigurablePeriodElectricityComparison',
+                          fuel_type: :electricity)
+      create(:alert_type, class_name: 'AlertConfigurablePeriodGasComparison')
+      create(:alert_type, class_name: 'AlertConfigurablePeriodStorageHeaterComparison', fuel_type: :storage_heater)
     end
 
     describe '#perform' do
@@ -117,7 +127,8 @@ module Alerts
 
       it 'handles alert and benchmark errors' do
         alert_type.update!(benchmark: true)
-        expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result_just_errors)
+        expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform)
+          .and_return(alert_type_run_result_just_errors)
 
         service = described_class.new(school: school, aggregate_school: aggregate_school)
         expect { service.perform }.to not_change(Alert, :count) &&
@@ -131,12 +142,6 @@ module Alerts
       end
 
       it 'handles custom period reports' do
-        school.configuration.update(fuel_configuration:
-          school.configuration[:fuel_configuration].merge('has_electricity' => true))
-        alert_type = create(:alert_type, class_name: 'AlertConfigurablePeriodElectricityComparison',
-                                         fuel_type: :electricity)
-        create(:alert_type, class_name: 'AlertConfigurablePeriodGasComparison')
-        create(:alert_type, class_name: 'AlertConfigurablePeriodStorageHeaterComparison', fuel_type: :storage_heater)
         report = create(:report, :with_custom_period)
         report.custom_period.update(current_start_date: 1.day.ago,
                                     previous_end_date: 2.days.ago,
@@ -145,7 +150,7 @@ module Alerts
         service.perform
         alert = Alert.last
         expect(alert.enough_data).to eq('enough')
-        expect(alert.alert_type.class_name).to eq(alert_type.class_name)
+        expect(alert.alert_type.class_name).to eq('AlertConfigurablePeriodElectricityComparison')
         expect(alert.reporting_period).to eq('custom')
         expect(alert.custom_period_id).to eq(report.custom_period_id)
       end

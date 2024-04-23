@@ -222,6 +222,9 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.3.4)
+    debug (1.9.2)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
     debug_inspector (1.2.0)
     devise (4.9.4)
       bcrypt (~> 3.0)
@@ -339,6 +342,10 @@ GEM
       ruby-vips (>= 2.0.17, < 3)
     iniparse (1.5.0)
     interpolate (0.3.0)
+    io-console (0.7.2)
+    irb (1.12.0)
+      rdoc
+      reline (>= 0.4.2)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -464,6 +471,8 @@ GEM
       pry (>= 0.13, < 0.15)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
+    psych (5.1.2)
+      stringio
     public_suffix (5.0.4)
     puma (6.4.2)
       nio4r (~> 2.0)
@@ -520,7 +529,11 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
+    rdoc (6.6.3.1)
+      psych (>= 4.0.0)
     regexp_parser (2.9.0)
+    reline (0.5.2)
+      io-console (~> 0.5)
     reportbuilder (1.4.2)
       clbustos-rtf (~> 0.4.0)
       prawn (~> 0.8.4)
@@ -662,6 +675,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     stateful_enum (0.7.0)
+    stringio (3.1.0)
     structured_warnings (0.4.0)
     terminal-notifier (2.0.0)
     terminal-notifier-guard (1.7.0)
@@ -747,6 +761,7 @@ DEPENDENCIES
   closed_struct
   cocoon
   database_cleaner
+  debug
   devise
   dotenv-rails
   energy-sparks_analytics!

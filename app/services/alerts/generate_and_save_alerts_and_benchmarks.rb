@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Alerts
   class GenerateAndSaveAlertsAndBenchmarks
     def initialize(school:, aggregate_school: nil, benchmark_result_generation_run: nil,
@@ -6,6 +8,10 @@ module Alerts
       @aggregate_school = aggregate_school || AggregateSchoolService.new(school).aggregate_school
       @benchmark_result_generation_run = benchmark_result_generation_run || BenchmarkResultGenerationRun.create!
       @framework_adapter = framework_adapter
+      @configurable_alert_types, @relevant_alert_types = RelevantAlertTypes.new(@school).list.partition do |alert_type|
+        [AlertConfigurablePeriodElectricityComparison, AlertConfigurablePeriodGasComparison,
+         AlertConfigurablePeriodStorageHeaterComparison].map(&:name).include?(alert_type.class_name)
+      end
     end
 
     def perform
@@ -13,8 +19,7 @@ module Alerts
         @alert_generation_run = AlertGenerationRun.create!(school: @school)
         @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school,
                                                                                              benchmark_result_generation_run: @benchmark_result_generation_run)
-
-        relevant_alert_types.each { |alert_type| process_alert_and_benchmarks_for(alert_type) }
+        @relevant_alert_types.each { |alert_type| process_alert_and_benchmarks_for(alert_type) }
 
         process_custom_periods
       end
@@ -91,10 +96,6 @@ module Alerts
       end
     end
 
-    def relevant_alert_types
-      RelevantAlertTypes.new(@school).list
-    end
-
     def process_alert_type_run_result(alert_type_run_result, alert_attributes: {})
       asof_date = alert_type_run_result.asof_date
       alert_type = alert_type_run_result.alert_type
@@ -120,13 +121,8 @@ module Alerts
     end
 
     def process_custom_periods
-      alert_types = [AlertConfigurablePeriodElectricityComparison, AlertConfigurablePeriodGasComparison,
-                     AlertConfigurablePeriodStorageHeaterComparison].filter_map do |alert_class|
-        alert_type = AlertType.find_by(class_name: alert_class.name)
-        alert_type && @school.fuel_type?(alert_type.fuel_type) ? alert_type : nil
-      end
       Comparison::Report.where.not(custom_period: nil).find_each do |report|
-        alert_types.each do |alert_type|
+        @configurable_alert_types.each do |alert_type|
           analysis_date = AggregateSchoolService.analysis_date(@aggregate_school, alert_type.fuel_type)
           result = AlertTypeRunResult.generate_alert_report(alert_type, analysis_date, @school) do
             Adapters::AnalyticsAdapter
