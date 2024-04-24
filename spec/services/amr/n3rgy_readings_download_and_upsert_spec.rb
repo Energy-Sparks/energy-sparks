@@ -3,9 +3,10 @@ require 'rails_helper'
 module Amr
   describe N3rgyReadingsDownloadAndUpsert do
     subject(:upserter) do
-      described_class.new(config: create(:amr_data_feed_config), meter: meter)
+      described_class.new(config: config, meter: meter)
     end
 
+    let(:config) { create(:amr_data_feed_config, process_type: :n3rgy_api) }
     let(:meter) { create(:electricity_meter) }
 
     let(:downloader) { instance_double(Amr::N3rgyDownloader) }
@@ -42,7 +43,7 @@ module Amr
         let(:start_date)        { end_date - 8 }
 
         subject(:upserter) do
-          described_class.new(config: create(:amr_data_feed_config),
+          described_class.new(config: config,
             meter: meter,
             override_start_date: start_date,
             override_end_date: end_date)
@@ -64,7 +65,7 @@ module Amr
         end
 
         context 'with available data in n3rgy' do
-          let(:earliest) { DateTime.parse('2019-01-01T00:00') }
+          let(:earliest) { DateTime.parse('2019-01-01T00:30') }
 
           let(:available_data) do
             [earliest, yesterday_last_reading]
@@ -78,6 +79,20 @@ module Amr
             )
             expect(downloader).to receive(:readings)
             upserter.perform
+          end
+
+          context 'with available data start as a midnight' do
+            let(:earliest) { DateTime.parse('2019-01-02T00:00') }
+
+            it 'winds back a day' do
+              expect(Amr::N3rgyDownloader).to receive(:new).with(
+                meter: meter,
+                start_date: DateTime.parse('2019-01-01T00:00'),
+                end_date: yesterday_last_reading
+              )
+              expect(downloader).to receive(:readings)
+              upserter.perform
+            end
           end
 
           context 'with available date end in the future' do
@@ -130,9 +145,9 @@ module Amr
         let(:earliest_reading) { Date.new(2024, 4, 1) }
 
         before do
-          create(:amr_data_feed_reading, meter: meter, reading_date: earliest_reading)
-          create(:amr_data_feed_reading, meter: meter, reading_date: earliest_reading + 1)
-          create(:amr_data_feed_reading, meter: meter, reading_date: earliest_reading + 2)
+          create(:amr_data_feed_reading, amr_data_feed_config: config, meter: meter, reading_date: earliest_reading)
+          create(:amr_data_feed_reading, amr_data_feed_config: config, meter: meter, reading_date: earliest_reading + 1)
+          create(:amr_data_feed_reading, amr_data_feed_config: config, meter: meter, reading_date: earliest_reading + 2)
         end
 
         before do
@@ -140,7 +155,7 @@ module Amr
         end
 
         context 'with earlier data available from n3rgy' do
-          let(:expected_start) { Date.new(2024, 3, 31) }
+          let(:expected_start) { DateTime.parse('2024-03-31T00:30') }
           let(:available_data) { [expected_start, yesterday_last_reading] }
 
           it 'requests earlier data from n3rgy if they have data prior to the first reading' do
@@ -158,7 +173,7 @@ module Amr
         end
 
         context 'with earlier data in our database' do
-          let(:expected_start) { Date.new(2024, 4, 2) }
+          let(:expected_start) { DateTime.parse('2024-04-2T00:30') }
           let(:available_data) { [expected_start, yesterday_last_reading] }
 
           it 'just requests newer data if we have earlier readings' do
@@ -173,7 +188,7 @@ module Amr
 
         context 'when we are up to date' do
           let(:available_data) do
-            [DateTime.parse('2024-04-01T00:30'), DateTime.parse('2024-04-03T00:00')]
+            [DateTime.parse('2024-04-01T00:30'), DateTime.parse('2024-04-04T00:00')]
           end
 
           it 'does not attempt to load data' do
