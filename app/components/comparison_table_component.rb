@@ -23,13 +23,12 @@ class ComparisonTableComponent < ViewComponent::Base
     @advice_page_tab = advice_page_tab
     @comparison_footnotes = {}
     @seen = {}
-    @parent = self
   end
 
   renders_many :rows, ->(**kwargs) do
     kwargs[:advice_page] = @advice_page
     kwargs[:advice_page_tab] = @advice_page_tab
-    kwargs[:parent] = @parent
+    kwargs[:parent] = self
     RowComponent.new(**kwargs)
   end
 
