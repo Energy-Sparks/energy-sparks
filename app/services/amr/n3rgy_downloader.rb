@@ -51,12 +51,15 @@ module Amr
     # `.each_slice` returns ranges that use the same hours/mins as the start of the
     # sliced range. So we need to adjust the end range before use
     #
+    # Slices use 89 days because of this
+    #
+    #
     # Extracts the readings from each API response, adjusting units as required
     #
     # Returns a single hash of DateTime => half hourly reading value
     def fetch_all_readings
       readings = []
-      (@start_date..@end_date).each_slice(90) do |date_range_max_90days|
+      (@start_date..@end_date).each_slice(89) do |date_range_max_90days|
         start_date_time = date_range_max_90days.first
         end_date_time = (date_range_max_90days.last + 1.day).change({ hour: 0, min: 0, sec: 0 })
         response = api_client.readings(@meter.mpan_mprn,

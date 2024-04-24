@@ -29,11 +29,11 @@ describe Amr::N3rgyDownloader do
       it 'makes multiple API requests' do
         allow(stub).to receive(:readings).at_least(:twice).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
 
-        # split into 90 day first range, with correct start and end time
-        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, start_date, DateTime.new(2023, 4, 1, 0, 0))
+        # split into 89 day first range, with correct start and end time
+        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, start_date, DateTime.new(2023, 3, 31, 0, 0))
 
-        # split into final 10 day range with correct start and end time
-        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, DateTime.new(2023, 4, 1, 0, 30), end_date)
+        # split into final 11 day range with correct start and end time
+        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, DateTime.new(2023, 3, 31, 0, 30), end_date)
         service.readings
       end
     end
