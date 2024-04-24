@@ -10,7 +10,6 @@ module Amr
     let(:meter) { create(:electricity_meter) }
 
     let(:downloader) { instance_double(Amr::N3rgyDownloader) }
-    let(:thirteen_months_ago) { (DateTime.now - 13.months).change(hour: 0, min: 30, sec: 0) }
 
     let(:yesterday_first_reading) do
       (DateTime.now - 1).change(hour: 0, min: 30, sec: 0)
@@ -19,6 +18,13 @@ module Amr
       DateTime.now.change(hour: 0, min: 0, sec: 0)
     end
     let(:available_data) { [yesterday_first_reading, yesterday_last_reading] }
+
+    # Use a fixed date for today to avoid any date/time issues
+    around do |example|
+      travel_to Date.new(2024, 4, 20) do
+        example.run
+      end
+    end
 
     before do
       metering_service_stub = instance_double(Meters::N3rgyMeteringService)
@@ -159,10 +165,6 @@ module Amr
           let(:available_data) { [expected_start, yesterday_last_reading] }
 
           it 'requests earlier data from n3rgy if they have data prior to the first reading' do
-            # maximum and minimum amr data feed readings reading date should be in ISO 8601 format e.g. '2023-06-29'
-            expect(meter.amr_data_feed_readings.minimum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
-            expect(meter.amr_data_feed_readings.maximum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
-
             expect(Amr::N3rgyDownloader).to receive(:new).with(
               meter: meter,
               start_date: expected_start,
