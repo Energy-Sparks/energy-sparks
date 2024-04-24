@@ -192,11 +192,6 @@ class ComparisonTableComponent < ViewComponent::Base
       t('analytics.benchmarking.content.footnotes.notes')
     end
 
-    # used for sorting footnotes in the footer
-    def sort_key
-      "#{label}#{description}"
-    end
-
     def id
       @id ||= key || Digest::MD5.hexdigest(description)
     end

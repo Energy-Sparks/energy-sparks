@@ -30,7 +30,7 @@
           <p>
             <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
           </p>
-          <% footnotes.sort_by { |f| f.reference.sort_key }.each do |footnote| %>
+          <% footnotes.sort_by(&:to_s).each do |footnote| %>
             <div>
               <%= footnote %>
               <% if helpers.current_user&.admin? && footnote.reference.footnote %>
