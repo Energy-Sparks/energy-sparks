@@ -8,6 +8,7 @@ module Comparisons
     before_action :filter
     before_action :set_schools
     helper_method :index_params
+    helper_method :footnote_cache
     before_action :set_advice_page
     before_action :set_report
     before_action :set_headers
@@ -26,6 +27,11 @@ module Comparisons
           render partial: filter[:table_name].to_s
         end
       end
+    end
+
+    # Used to store footnotes loaded by the comparison table component across multiple calls in one page
+    def footnote_cache
+      @footnote_cache ||= {}
     end
 
     private
