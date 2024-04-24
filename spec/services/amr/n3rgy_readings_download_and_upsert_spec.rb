@@ -58,7 +58,7 @@ module Amr
         end
       end
 
-      context 'when there is no data in the database' do
+      context 'when there are no readings in database' do
         before do
           allow(downloader).to receive(:readings).and_return({})
         end
@@ -81,11 +81,35 @@ module Amr
           end
 
           context 'with available date end in the future' do
-            it 'only loads data up to yesterday'
+            let(:available_data) do
+              [earliest, (DateTime.now + 1)]
+            end
+
+            it 'only loads data up to yesterday' do
+              expect(Amr::N3rgyDownloader).to receive(:new).with(
+                meter: meter,
+                start_date: earliest,
+                end_date: yesterday_last_reading
+              )
+              expect(downloader).to receive(:readings)
+              upserter.perform
+            end
           end
 
-          context 'with available data end in middle of day' do
-            it 'only loads data up until previous day'
+          context 'with available data end after midnight' do
+            let(:available_data) do
+              [earliest, DateTime.now.change(hour: 10, min: 30, sec: 0)]
+            end
+
+            it 'only loads data up until previous day' do
+              expect(Amr::N3rgyDownloader).to receive(:new).with(
+                meter: meter,
+                start_date: earliest,
+                end_date: yesterday_last_reading
+              )
+              expect(downloader).to receive(:readings)
+              upserter.perform
+            end
           end
         end
 
@@ -100,7 +124,7 @@ module Amr
         end
       end
 
-      context 'when there is previously loaded data in the database' do
+      context 'when there is previously loaded readings' do
         # Note: this is a Date object as the reading date needs to be stored in the database
         # in ISO 8601 format e.g. 2023-06-29
         let(:earliest_reading) { Date.new(2024, 4, 1) }
@@ -137,7 +161,7 @@ module Amr
           let(:expected_start) { Date.new(2024, 4, 2) }
           let(:available_data) { [expected_start, yesterday_last_reading] }
 
-          it 'requests newer data if we have earlier readings' do
+          it 'just requests newer data if we have earlier readings' do
             expect(Amr::N3rgyDownloader).to receive(:new).with(
               meter: meter,
               start_date: earliest_reading + 2,
@@ -148,7 +172,15 @@ module Amr
         end
 
         context 'when we are up to date' do
-          it 'does not load data'
+          let(:available_data) do
+            [DateTime.parse('2024-04-01T00:30'), DateTime.parse('2024-04-03T00:00')]
+          end
+
+          it 'does not attempt to load data' do
+            expect(Amr::N3rgyDownloader).not_to receive(:new)
+            expect(downloader).not_to receive(:readings)
+            upserter.perform
+          end
         end
 
         context 'with no data from n3rgy' do

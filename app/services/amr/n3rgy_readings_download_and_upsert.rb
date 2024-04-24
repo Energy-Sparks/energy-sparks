@@ -21,6 +21,9 @@ module Amr
       start_date = determine_start_date
       end_date = determine_end_date
 
+      # don't load data if we are up to date
+      return if start_date.to_date == end_date.to_date
+
       import_log = create_import_log(start_date, end_date)
       readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date).readings
       N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings: readings, import_log: import_log).perform
