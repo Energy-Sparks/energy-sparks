@@ -10,7 +10,7 @@ namespace :amr do
 
     puts "#{DateTime.now.utc} #{config.description} start"
     Meter.where(active: true, dcc_meter: true, consent_granted: true).each do |meter|
-      Amr::N3rgyReadingsDownloadAndUpsert.new(meter: meter, config: config, start_date: start_date, end_date: end_date).perform
+      Amr::N3rgyReadingsDownloadAndUpsert.new(meter: meter, config: config, override_start_date: start_date, override_end_date: end_date).perform
     end
     puts "#{DateTime.now.utc} #{config.description} end"
   end
