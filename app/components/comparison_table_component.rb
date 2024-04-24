@@ -78,9 +78,7 @@ class ComparisonTableComponent < ViewComponent::Base
     renders_many :references, ->(**kwargs) do
       if kwargs.key?(:if) ? kwargs.delete(:if) : true
         kwargs[:parent] = @parent
-        reference = ReferenceComponent.new(**kwargs)
-        @parent.add_footnote(reference)
-        reference
+        ReferenceComponent.new(**kwargs)
       end
     end
 
@@ -175,6 +173,7 @@ class ComparisonTableComponent < ViewComponent::Base
       @label = label
       @description = description
       @params = kwargs || {}
+      @parent.add_footnote(self)
     end
 
     def label
