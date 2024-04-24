@@ -40,7 +40,7 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   def add_footnote(reference)
-    if reference.if && !@seen.key?(reference.id)
+    unless @seen.key?(reference.id)
       with_footnote(reference)
       @seen[reference.id] = true
     end
@@ -75,10 +75,12 @@ class ComparisonTableComponent < ViewComponent::Base
 
     # Footnote references
     renders_many :references, ->(**kwargs) do
-      kwargs[:parent] = @parent
-      reference = ReferenceComponent.new(**kwargs)
-      @parent.add_footnote(reference)
-      reference
+      if kwargs.key?(:if) ? kwargs.delete(:if) : true
+        kwargs[:parent] = @parent
+        reference = ReferenceComponent.new(**kwargs)
+        @parent.add_footnote(reference)
+        reference
+      end
     end
 
     # Data columns
@@ -164,16 +166,13 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   class ReferenceComponent < ViewComponent::Base
-    attr_reader :key, :params, :if
+    attr_reader :key, :params
 
     def initialize(key: nil, label: nil, description: nil, parent:, **kwargs)
       @key = key
       @parent = parent
       @label = label
       @description = description
-
-      @if = kwargs.key?(:if) ? kwargs.delete(:if) : true
-
       @params = kwargs || {}
     end
 
@@ -191,10 +190,6 @@ class ComparisonTableComponent < ViewComponent::Base
 
     def title
       t('analytics.benchmarking.content.footnotes.notes')
-    end
-
-    def render?
-      @if
     end
 
     # used for sorting footnotes in the footer
