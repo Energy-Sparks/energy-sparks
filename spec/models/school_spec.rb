@@ -57,18 +57,22 @@ describe School do
     end
   end
 
-  it 'validates alternative heating percents' do
-    [:alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent].each do |field|
-      subject[field] = 100
-      expect(subject).to be_valid
-      subject[field] = 0
-      expect(subject).to be_valid
-      subject[field] = -1
-      expect(subject).not_to be_valid
-      subject[field] = 101
-      expect(subject).not_to be_valid
-      subject[field] = nil
-      expect(subject).to be_valid
+  context 'when validating alternative heating percent fields' do
+    let(:alternative_heating_fields) do
+      [
+        :alternative_heating_oil_percent,
+        :alternative_heating_lpg_percent,
+        :alternative_heating_biomass_percent,
+        :alternative_heating_district_heating_percent,
+        :alternative_heating_ground_source_heat_pump_percent,
+        :alternative_heating_air_source_heat_pump_percent
+      ]
+    end
+
+    it 'validates alternative heating percentages' do
+      alternative_heating_fields.each do |field|
+        expect(subject).to validate_numericality_of(field).is_greater_than_or_equal_to(0).is_less_than_or_equal_to(100).allow_nil
+      end
     end
   end
 

@@ -226,4 +226,25 @@ RSpec.describe Issue, type: :model do
       it { expect(school_group_issue.school_group).to eq(school_group) }
     end
   end
+
+  describe '.search' do
+    let!(:issue_1) { create(:issue, title: 'Issue 1 findme here', description: 'description') }
+    let!(:issue_2) { create(:issue, title: 'Issue 2 title', description: 'I\'m hiding here') }
+
+    it 'finds records with term in title' do
+      expect(Issue.search('findme')).to eq([issue_1])
+    end
+
+    it 'finds records with term in description' do
+      expect(Issue.search('hiding')).to eq([issue_2])
+    end
+
+    it 'finds records with term in either' do
+      expect(Issue.search('findme|hiding')).to eq([issue_1, issue_2])
+    end
+
+    it 'returns nothing when not found' do
+      expect(Issue.search('nothing to see here')).to be_empty
+    end
+  end
 end

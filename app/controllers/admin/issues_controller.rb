@@ -14,6 +14,7 @@ module Admin
       @issues = @issues.for_issue_types(params[:issue_types])
       @issues = @issues.for_statuses(params[:statuses])
       @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
+      @issues = @issues.search(params[:search]) if params[:search].present?
 
       respond_to do |format|
         format.html do
