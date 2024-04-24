@@ -21,8 +21,13 @@ class ComparisonTableComponent < ViewComponent::Base
     @headers = headers
     @colgroups = colgroups
     @advice_page_tab = advice_page_tab
-    @comparison_footnotes = {}
     @seen = {}
+  end
+
+  def before_render
+    # can't call controller methods in initialize
+    # keep a cache of the footnote objects - use the controller footnote cache if there is one
+    @footnote_cache = defined?(controller.footnote_cache) ? controller.footnote_cache : {}
   end
 
   renders_many :rows, ->(**kwargs) do
@@ -36,7 +41,7 @@ class ComparisonTableComponent < ViewComponent::Base
   renders_many :notes, 'ComparisonTableComponent::NoteComponent'
 
   def fetch(key)
-    @comparison_footnotes[key] ||= Comparison::Footnote.fetch(key)
+    @footnote_cache[key] ||= Comparison::Footnote.fetch(key)
   end
 
   def add_footnote(reference)
