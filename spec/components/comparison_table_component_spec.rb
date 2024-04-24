@@ -139,11 +139,10 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     context 'with reference' do
-      let(:reference_params) {}
-      let(:more_reference_params) {}
-
+      let(:reference_params_1) {}
+      let(:reference_params_2) {}
+      let(:reference_params_3) {}
       let(:content) {}
-
       let(:current_user) { }
 
       before do
@@ -155,22 +154,29 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         with_controller_class ApplicationController do
           render_inline(described_class.new(**params)) do |c|
             c.with_row do |r|
-              r.with_reference(**reference_params) { content }
-              r.with_reference(**more_reference_params) if more_reference_params
+              r.with_reference(**reference_params_1) { content }
+              r.with_reference(**reference_params_2) if reference_params_2
+            end
+            c.with_row do |r|
+              r.with_reference(**reference_params_3) if reference_params_3
             end
           end
         end
       end
 
       context 'with a label, description and params' do
-        let(:reference_params) { { label: 't', description: 'my reference with %{sub}', sub: 'parameters' } }
+        let(:reference_params_1) { { label: 't', description: 'my reference with %{sub}', sub: 'parameters' } }
 
-        it 'adds the reference' do
+        it 'has the reference' do
+          expect(html).to have_css('sup[data-content="t: my reference with parameters"]', text: '[t]')
+        end
+
+        it 'adds the footnote' do
           expect(html).to have_content('[t] my reference with parameters')
         end
 
         context 'with missing params' do
-          let(:reference_params) { { label: 't', description: 'my reference with %{sub}' } }
+          let(:reference_params_1) { { label: 't', description: 'my reference with %{sub}' } }
 
           it 'raises KeyError' do
             expect { html }.to raise_error(KeyError)
@@ -187,18 +193,47 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
       end
 
       context 'with a footnote key and params' do
-        let!(:footnote) { create(:footnote, key: 'note', label: 't', description: 'my reference with %{sub}')}
-        let(:reference_params) { { key: 'note', sub: 'parameters' } }
+        let!(:footnote) { create(:footnote, key: 'footnote_one', label: 't', description: 'my reference with %{sub}')}
+        let(:reference_params_1) { { key: 'footnote_one', sub: 'parameters' } }
 
-        it 'adds the reference' do
+        it 'has the reference' do
+          expect(html).to have_css('sup[data-content="t: my reference with parameters"]', text: '[t]')
+        end
+
+        it 'has the footnote' do
           expect(html).to have_content('[t] my reference with parameters')
         end
 
         context 'with missing params' do
-          let(:reference_params) { { key: 'note' } }
+          let(:reference_params_1) { { key: 'footnote_one' } }
 
           it 'raises KeyError' do
             expect { html }.to raise_error(KeyError)
+          end
+        end
+
+        context 'with a second reference' do
+          let!(:footnote_2) { create(:footnote, key: 'footnote_two', label: 'a', description: 'footnote two') }
+          let(:reference_params_2) { { key: 'footnote_two' } }
+
+          it 'has the reference' do
+            expect(html).to have_css('sup[data-content="a: footnote two"]', text: '[a]')
+          end
+
+          it 'has the footnote' do
+            expect(html).to have_content('[a] footnote two')
+          end
+
+          it 'orders the footnotes' do
+            expect(html).to have_content(/\[a\] footnote two\s+\[t\] my reference with parameters/)
+          end
+        end
+
+        context 'when same reference is added on two rows' do
+          let(:reference_params_3) { { key: 'footnote_one', sub: 'parameters' } }
+
+          it 'shows the footnote once' do
+            expect(html).to have_content('[t] my reference with parameters').once
           end
         end
 
