@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_19_151307) do
+ActiveRecord::Schema.define(version: 2024_04_24_142738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1239,7 +1239,6 @@ ActiveRecord::Schema.define(version: 2024_04_19_151307) do
     t.bigint "solar_edge_installation_id"
     t.boolean "dcc_meter", default: false
     t.boolean "consent_granted", default: false
-    t.date "earliest_available_data"
     t.bigint "meter_review_id"
     t.datetime "dcc_checked_at"
     t.bigint "data_source_id"

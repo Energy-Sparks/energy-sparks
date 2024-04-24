@@ -245,7 +245,6 @@ en:
         create_meter: Create Meter
         data_source: Data source
         dcc_smart_meter: DCC Smart Meter
-        earliest_available_data: Earliest available data
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
         leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
         meter_point_number: Meter Point Number
