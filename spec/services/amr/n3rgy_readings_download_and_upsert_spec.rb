@@ -149,11 +149,12 @@ module Amr
         # Note: this is a Date object as the reading date needs to be stored in the database
         # in ISO 8601 format e.g. 2023-06-29
         let(:earliest_reading) { Date.new(2024, 4, 1) }
+        let(:days_of_data) { 10 }
 
         before do
-          create(:amr_data_feed_reading, amr_data_feed_config: config, meter: meter, reading_date: earliest_reading)
-          create(:amr_data_feed_reading, amr_data_feed_config: config, meter: meter, reading_date: earliest_reading + 1)
-          create(:amr_data_feed_reading, amr_data_feed_config: config, meter: meter, reading_date: earliest_reading + 2)
+          days_of_data.times do |n|
+            create(:amr_data_feed_reading, amr_data_feed_config: config, meter: meter, reading_date: earliest_reading + n)
+          end
         end
 
         before do
@@ -178,13 +179,28 @@ module Amr
           let(:expected_start) { DateTime.parse('2024-04-2T00:30') }
           let(:available_data) { [expected_start, yesterday_last_reading] }
 
-          it 'just requests newer data if we have earlier readings' do
-            expect(Amr::N3rgyDownloader).to receive(:new).with(
-              meter: meter,
-              start_date: earliest_reading + 2,
-              end_date: yesterday_last_reading
-            )
-            upserter.perform
+          context 'when there is >7 days available' do
+            it 'justs reload the last 7 days from n3rgy' do
+              expect(Amr::N3rgyDownloader).to receive(:new).with(
+                meter: meter,
+                start_date: earliest_reading + 2, # reload last week
+                end_date: yesterday_last_reading
+              )
+              upserter.perform
+            end
+          end
+
+          context 'when there is <7 days of data available' do
+            let(:days_of_data) { 3 }
+
+            it 'reloads all the data' do
+              expect(Amr::N3rgyDownloader).to receive(:new).with(
+                meter: meter,
+                start_date: expected_start,
+                end_date: yesterday_last_reading
+              )
+              upserter.perform
+            end
           end
 
           context 'when reload option is set' do
@@ -205,12 +221,15 @@ module Amr
 
         context 'when we are up to date' do
           let(:available_data) do
-            [DateTime.parse('2024-04-01T00:30'), DateTime.parse('2024-04-04T00:00')]
+            [DateTime.parse('2024-04-01T00:30'), DateTime.parse('2024-04-10T00:00')]
           end
 
-          it 'does not attempt to load data' do
-            expect(Amr::N3rgyDownloader).not_to receive(:new)
-            expect(downloader).not_to receive(:readings)
+          it 'still reloads the last week every time' do
+            expect(Amr::N3rgyDownloader).to receive(:new).with(
+              meter: meter,
+              start_date: available_data.first + 2,
+              end_date: available_data.last
+            )
             upserter.perform
           end
 
