@@ -122,7 +122,7 @@ describe 'heat_saver_march_2024' do
              '£6,000',
              '-50&percnt;'
             ],
-            ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools. [1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+            ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools.\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
           ]
         end
 
@@ -196,7 +196,7 @@ describe 'heat_saver_march_2024' do
              '£2,000',
              '-50&percnt;'
             ],
-            ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+            ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
           ]
         end
 
@@ -270,7 +270,7 @@ describe 'heat_saver_march_2024' do
              '£2,000',
              '-50&percnt;'
             ],
-            ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+            ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
           ]
         end
 
@@ -345,7 +345,7 @@ describe 'heat_saver_march_2024' do
              '£2,000',
              '-50&percnt;'
             ],
-            ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+            ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
           ]
         end
 

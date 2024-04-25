@@ -246,7 +246,6 @@ cy:
         create_meter: Creu Mesurydd
         data_source: Ffynhonnell ddata
         dcc_smart_meter: Mesurydd Clyfar DCC
-        earliest_available_data: Y data cynharaf sydd ar gael
         editing_disabled_for_pseudo_meters: Analluogwyd golygu ar gyfer mesuryddion ffug
         leave_this_blank_message: Gadewch hwn yn wag am fesuryddion newydd a bydd y system yn gwirio ei fod wedi'i gofrestru gyda n3rgy
         meter_point_number: Rhif Pwynt Mesurydd
