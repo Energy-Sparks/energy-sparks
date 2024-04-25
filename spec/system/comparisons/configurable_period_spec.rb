@@ -4,10 +4,7 @@ require 'rails_helper'
 
 describe 'configurable_period' do
   let!(:schools) { create_list(:school, 6) }
-  # let(:key) { :custom }
   let(:advice_page_key) { :total_energy_use }
-
-  # let!(:report) { create(:report, key: key) }
   let!(:reports) { create_list(:report, 2, :with_custom_period) }
 
   include_context 'with comparison report footnotes' do
@@ -70,15 +67,38 @@ describe 'configurable_period' do
     create_alerts(schools[3], Date.new(2023, 4, 1), electricity: true)
     create_alerts(schools[4], Date.new(2023, 5, 1), electricity: true, gas: true)
     create_alerts(schools[5], Date.new(2023, 6, 1), electricity: true, storage_heater: true)
-    # Alert.find_by(school: schools[1],
-    #               alert_type: AlertType.find_by(class_name: AlertConfigurablePeriodStorageHeaterComparison.name)).update(custom_period: nil)
+  end
+
+  self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration
+    '',
+    I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
+    I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
+    I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
+  ].freeze
+
+  def generate_headers(fuel:, unadjusted:)
+    [
+      I18n.t('analytics.benchmarking.configuration.column_headings.school'),
+      fuel && I18n.t('analytics.benchmarking.configuration.column_headings.fuel'),
+      I18n.t('activerecord.attributes.school.activation_date'),
+      unadjusted && I18n.t('comparisons.column_headings.previous_period_unadjusted'),
+      I18n.t('comparisons.column_headings.previous_period'),
+      I18n.t('comparisons.column_headings.current_period'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
+      I18n.t('comparisons.column_headings.previous_period'),
+      I18n.t('comparisons.column_headings.current_period'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
+      I18n.t('comparisons.column_headings.previous_period'),
+      I18n.t('comparisons.column_headings.current_period'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
+    ].select(&:itself)
   end
 
   context 'when viewing report' do
     before { visit "/comparisons/#{reports[0].key}" }
 
     it_behaves_like 'a school comparison report' do
-      let(:expected_report) { report }
+      let(:expected_report) { reports[0] }
     end
 
     context 'with a total table' do
@@ -87,34 +107,11 @@ describe 'configurable_period' do
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
         let(:table_name) { :total }
-
-        let(:colgroups) do
-          [
-            '',
-            I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-          ]
-        end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.fuel'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
-
+        let(:colgroups) { self.class::COL_GROUPS }
+        let(:headers) { generate_headers(fuel: true, unadjusted: false) }
         let(:expected_table) do
-          footnotes = "[#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}] [#{gas_change_rows[:label]}]"
+          footnotes = \
+            "[#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}] [#{gas_change_rows[:label]}]"
           [
             colgroups,
             headers,
@@ -158,7 +155,6 @@ describe 'configurable_period' do
              'latest tariff but other £ values are calculated using the relevant tariff at the time']
           ]
         end
-
         let(:expected_csv) do
           [
             ['', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
@@ -198,222 +194,180 @@ describe 'configurable_period' do
       end
     end
 
-    # context 'with an electricity table' do
-    #   it_behaves_like 'a school comparison report with a table' do
-    #     let(:expected_report) { report }
-    #     let(:expected_school) { school }
-    #     let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
-    #     let(:table_name) { :electricity }
+    context 'with an electricity table' do
+      it_behaves_like 'a school comparison report with a table' do
+        let(:expected_report) { reports[0] }
+        let(:expected_school) { schools[0] }
+        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:table_name) { :electricity }
+        let(:colgroups) { self.class::COL_GROUPS }
+        let(:headers) { generate_headers(fuel: false, unadjusted: false) }
+        let(:expected_table) do
+          [
+            colgroups,
+            headers,
+            ["#{schools[0].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Jan 2023',
+             '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["#{schools[3].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Apr 2023',
+             '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["#{schools[4].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'May 2023',
+             '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["#{schools[5].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Jun 2023',
+             '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["Notes\n" \
+             '[1] the comparison has been adjusted because the number of pupils have changed between the two ' \
+             'periods. ' \
+             '[5] The tariff has changed during the last year for this school. Savings are calculated using the ' \
+             'latest tariff but other £ values are calculated using the relevant tariff at the time']
+          ]
+        end
+        let(:expected_csv) do
+          [
+            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            headers,
+            [schools[0].name,
+             '2023-01-01',
+             '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50'],
+            [schools[3].name,
+             '2023-04-01',
+             '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50'],
+            [schools[4].name,
+             '2023-05-01',
+             '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50'],
+            [schools[5].name,
+             '2023-06-01',
+             '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50']
+          ]
+        end
+      end
+    end
 
-    #     let(:colgroups) do
-    #       [
-    #         '',
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-    #       ]
-    #     end
-    #     let(:headers) do
-    #       [
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-    #         I18n.t('activerecord.attributes.school.activation_date'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-    #       ]
-    #     end
+    context 'with a gas table' do
+      it_behaves_like 'a school comparison report with a table' do
+        let(:expected_report) { reports[0] }
+        let(:expected_school) { schools[0] }
+        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:table_name) { :gas }
+        let(:colgroups) { self.class::COL_GROUPS }
+        let(:headers) { generate_headers(fuel: false, unadjusted: true) }
+        let(:expected_table) do
+          [
+            colgroups,
+            headers,
+            ["#{schools[0].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Jan 2023',
+             '1,800', '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["#{schools[2].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Mar 2023',
+             '1,800', '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["#{schools[4].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'May 2023',
+             '1,800', '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["Notes\n" \
+             '[1] the comparison has been adjusted because the floor area has changed between the two periods for ' \
+             'some schools. ' \
+             '[5] The tariff has changed during the last year for this school. Savings are calculated using the ' \
+             'latest tariff but other £ values are calculated using the relevant tariff at the time']
+          ]
+        end
+        let(:expected_csv) do
+          [
+            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            headers,
+            [schools[0].name,
+             '2023-01-01',
+             '1,800', '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50'],
+            [schools[2].name,
+             '2023-03-01',
+             '1,800', '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50'],
+            [schools[4].name,
+             '2023-05-01',
+             '1,800', '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50']
+          ]
+        end
+      end
+    end
 
-    #     let(:expected_table) do
-    #       [
-    #         colgroups,
-    #         headers,
-    #         ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
-    #          'Jan 2023',
-    #          '2,000',
-    #          '1,000',
-    #          '-50&percnt;',
-    #          '200',
-    #          '100',
-    #          '-50&percnt;',
-    #          '£4,000',
-    #          '£2,000',
-    #          '-50&percnt;'],
-    #         ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
-    #       ]
-    #     end
+    context 'with a storage heater table' do
+      it_behaves_like 'a school comparison report with a table' do
+        let(:expected_report) { reports[0] }
+        let(:expected_school) { schools[0] }
+        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:table_name) { :storage_heater }
+        let(:colgroups) { self.class::COL_GROUPS }
+        let(:headers) { generate_headers(fuel: false, unadjusted: true) }
+        let(:expected_table) do
+          [
+            colgroups,
+            headers,
+            ["#{schools[0].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Jan 2023',
+             '1,800', '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["#{schools[5].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
+             'Jun 2023',
+             '1,800', '2,000', '1,000', '-50&percnt;',
+             '200', '100', '-50&percnt;',
+             '£4,000', '£2,000', '-50&percnt;'],
+            ["Notes\n" \
+             '[1] the comparison has been adjusted because the number of pupils have changed between the two ' \
+             'periods. ' \
+             '[5] The tariff has changed during the last year for this school. Savings are calculated using the ' \
+             'latest tariff but other £ values are calculated using the relevant tariff at the time']
+          ]
+        end
+        let(:expected_csv) do
+          [
+            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            headers,
+            [schools[0].name,
+             '2023-01-01',
+             '1,800', '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50'],
+            [schools[5].name,
+             '2023-06-01',
+             '1,800', '2,000', '1,000', '-50',
+             '200', '100', '-50',
+             '4,000', '2,000', '-50']
+          ]
+        end
+      end
+    end
 
-    #     let(:expected_csv) do
-    #       [
-    #         ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-    #         headers,
-    #         [school.name,
-    #          '2023-01-01',
-    #          '2,000',
-    #          '1,000',
-    #          '-50',
-    #          '200',
-    #          '100',
-    #          '-50',
-    #          '4,000',
-    #          '2,000',
-    #          '-50']
-    #       ]
-    #     end
-    #   end
-    # end
-
-    # context 'with a gas table' do
-    #   it_behaves_like 'a school comparison report with a table' do
-    #     let(:expected_report) { report }
-    #     let(:expected_school) { school }
-    #     let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
-    #     let(:table_name) { :gas }
-
-    #     let(:colgroups) do
-    #       [
-    #         '',
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-    #       ]
-    #     end
-    #     let(:headers) do
-    #       [
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-    #         I18n.t('activerecord.attributes.school.activation_date'),
-    #         I18n.t('comparisons.column_headings.previous_period_unadjusted'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-    #       ]
-    #     end
-
-    #     let(:expected_table) do
-    #       [
-    #         colgroups,
-    #         headers,
-    #         ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
-    #          'Jan 2023',
-    #          '1,800',
-    #          '2,000',
-    #          '1,000',
-    #          '-50&percnt;',
-    #          '200',
-    #          '100',
-    #          '-50&percnt;',
-    #          '£4,000',
-    #          '£2,000',
-    #          '-50&percnt;'],
-    #         ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
-    #       ]
-    #     end
-
-    #     let(:expected_csv) do
-    #       [
-    #         ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-    #         headers,
-    #         [school.name,
-    #          '2023-01-01',
-    #          '1,800',
-    #          '2,000',
-    #          '1,000',
-    #          '-50',
-    #          '200',
-    #          '100',
-    #          '-50',
-    #          '4,000',
-    #          '2,000',
-    #          '-50']
-    #       ]
-    #     end
-    #   end
-    # end
-
-    # context 'with a storage heater table' do
-    #   it_behaves_like 'a school comparison report with a table' do
-    #     let(:expected_report) { report }
-    #     let(:expected_school) { school }
-    #     let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
-    #     let(:table_name) { :storage_heater }
-
-    #     let(:colgroups) do
-    #       [
-    #         '',
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-    #         I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-    #       ]
-    #     end
-    #     let(:headers) do
-    #       [
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-    #         I18n.t('activerecord.attributes.school.activation_date'),
-    #         I18n.t('comparisons.column_headings.previous_period_unadjusted'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-    #         I18n.t('comparisons.column_headings.previous_period'),
-    #         I18n.t('comparisons.column_headings.current_period'),
-    #         I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-    #       ]
-    #     end
-
-    #     let(:expected_table) do
-    #       [
-    #         colgroups,
-    #         headers,
-    #         ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
-    #          'Jan 2023',
-    #          '1,800',
-    #          '2,000',
-    #          '1,000',
-    #          '-50&percnt;',
-    #          '200',
-    #          '100',
-    #          '-50&percnt;',
-    #          '£4,000',
-    #          '£2,000',
-    #          '-50&percnt;'],
-    #         ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods. [5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
-    #       ]
-    #     end
-
-    #     let(:expected_csv) do
-    #       [
-    #         ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-    #         headers,
-    #         [school.name,
-    #          '2023-01-01',
-    #          '1,800',
-    #          '2,000',
-    #          '1,000',
-    #          '-50',
-    #          '200',
-    #          '100',
-    #          '-50',
-    #          '4,000',
-    #          '2,000',
-    #          '-50']
-    #       ]
-    #     end
-    #   end
-    # end
-
-    # it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart'
   end
 end
