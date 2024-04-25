@@ -30,13 +30,15 @@
           <p>
             <strong><%= t('analytics.benchmarking.content.footnotes.notes') %></strong>
           </p>
-          <% footnotes.each do |footnote| %>
-            <%= footnote %>
-            <% if helpers.current_user&.admin? && footnote.reference.footnote %>
-              <%= link_to 'Edit', edit_admin_comparisons_footnote_path(footnote.reference.footnote),
-                          class: 'btn btn-sm',
-                          data: { toggle: 'tooltip', placement: 'right' }, title: 'Admin Only' %>
-            <% end %>
+          <% footnotes.sort_by(&:to_s).each do |footnote| %>
+            <div>
+              <%= footnote %>
+              <% if helpers.current_user&.admin? && footnote.reference.footnote %>
+                <%= link_to 'Edit', edit_admin_comparisons_footnote_path(footnote.reference.footnote),
+                            class: 'btn btn-sm',
+                            data: { toggle: 'tooltip', placement: 'right' }, title: 'Admin Only' %>
+              <% end %>
+            </div>
           <% end %>
           <% if footnotes.any? && notes.any? %>
             <hr>
