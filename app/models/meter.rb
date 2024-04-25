@@ -9,7 +9,6 @@
 #  data_source_id                 :bigint(8)
 #  dcc_checked_at                 :datetime
 #  dcc_meter                      :boolean          default(FALSE)
-#  earliest_available_data        :date
 #  id                             :bigint(8)        not null, primary key
 #  low_carbon_hub_installation_id :bigint(8)
 #  meter_review_id                :bigint(8)
@@ -20,7 +19,6 @@
 #  name                           :string
 #  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
-#  sandbox                        :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  updated_at                     :datetime         not null
