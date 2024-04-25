@@ -117,7 +117,6 @@ group :development, :test do
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'byebug', platform: :mri
   gem 'climate_control'
-  gem 'debug'
   gem 'factory_bot_rails'
   gem 'fakefs', require: 'fakefs/safe'
   gem 'foreman'

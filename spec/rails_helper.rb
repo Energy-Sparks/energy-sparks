@@ -17,7 +17,6 @@ require 'selenium-webdriver'
 require 'capybara/email/rspec'
 require 'cancan/matchers'
 require 'wisper/rspec/matchers'
-require 'debug'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
