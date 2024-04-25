@@ -38,7 +38,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::ChangeInEnergySinceLastYear.for_schools(@schools).where_any_present([:current_year_electricity_kwh, :current_year_gas_kwh, :current_year_storage_heaters_kwh, :current_year_solar_pv_kwh])
+      Comparison::ChangeInEnergySinceLastYear.for_schools(@schools).with_total_that_covers_both_periods.by_total_percentage_change
     end
   end
 end
