@@ -6,12 +6,16 @@ module ComparisonsHelper
   end
 
   def download_link(report, table_name, params)
-    path = [:comparisons, report.key.to_sym]
-    # If the key is plural then rails routing works slightly
-    # differently, so exclude :index component
-    path << :index if report.key.singularize == report.key
-    download_path = polymorphic_path(path, params: params.merge(table_name: table_name, format: :csv))
-
+    download_params = params.merge(table_name: table_name, format: :csv)
+    download_path = if controller_name == 'configurable_period'
+                      comparisons_configurable_period_path(download_params)
+                    else
+                      path = [:comparisons, report.key.to_sym]
+                      # If the key is plural then rails routing works slightly
+                      # differently, so exclude :index component
+                      path << :index if report.key.singularize == report.key
+                      polymorphic_path(path, params: download_params)
+                    end
     link_to I18n.t('school_groups.download_as_csv'),
             download_path,
             class: 'btn btn-sm btn-outline-dark rounded-pill font-weight-bold',

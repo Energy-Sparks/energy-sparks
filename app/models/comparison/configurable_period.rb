@@ -1,8 +1,9 @@
 # == Schema Information
 #
-# Table name: heat_saver_march_2024s
+# Table name: configurable_periods
 #
 #  activation_date                               :date
+#  custom_period_id                              :bigint(8)
 #  electricity_current_period_co2                :float
 #  electricity_current_period_gbp                :float
 #  electricity_current_period_kwh                :float
@@ -32,8 +33,7 @@
 #  storage_heater_previous_period_kwh_unadjusted :float
 #  storage_heater_tariff_has_changed             :boolean
 #
-class Comparison::HeatSaverMarch2024 < Comparison::View
+class Comparison::ConfigurablePeriod < Comparison::View
   include MultipleFuelComparisonView
   include ArbitraryPeriodComparisonView
-  self.table_name = 'heat_saver_march_2024s'
 end
