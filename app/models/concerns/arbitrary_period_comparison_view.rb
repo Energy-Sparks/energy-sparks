@@ -18,6 +18,10 @@ module ArbitraryPeriodComparisonView
     codes.join(';')
   end
 
+  def self.fields_total_with_zero_as_null(fields)
+    "NULLIF(#{fields.map { |v| "COALESCE(#{v}, 0.0)" }.join(' + ')}, 0.0)"
+  end
+
   included do
     scope :with_data_for_previous_period, lambda {
       where_any_present(
@@ -39,17 +43,11 @@ module ArbitraryPeriodComparisonView
     # Uses NULLIF to convert a total of 0.0 for a set of attributes to NULL, so the order value becomes NULL.
     # This avoids errors in the calculations. We then sort NULLs last
     scope :by_percentage_change_across_fields, lambda { |base_val_fields, new_val_fields|
-      order(
-        Arel.sql(
-          sanitize_sql_array("(NULLIF(#{new_val_fields.map do |v|
-                                          "COALESCE(#{v}, 0.0)"
-                                        end.join('+')},0.0) - NULLIF(#{base_val_fields.map do |v|
-                                                                         "COALESCE(#{v}, 0.0)"
-                                                                       end.join('+')},0.0)) / NULLIF(#{base_val_fields.map do |v|
-                                                                                                         "COALESCE(#{v}, 0.0)"
-                                                                                                       end.join('+')},0.0) ASC NULLS LAST")
-        )
-      )
+      order(Arel.sql(sanitize_sql_array(
+                       "(#{ArbitraryPeriodComparisonView.fields_total_with_zero_as_null(new_val_fields)} - " \
+                       "#{ArbitraryPeriodComparisonView.fields_total_with_zero_as_null(base_val_fields)}) / " \
+                       "#{ArbitraryPeriodComparisonView.fields_total_with_zero_as_null(base_val_fields)} ASC NULLS LAST"
+                     )))
     }
   end
 end

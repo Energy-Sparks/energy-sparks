@@ -148,9 +148,9 @@ describe 'configurable_period' do
             # TODO: two [1]s?
             ["Notes\n" \
              '[1] the comparison has been adjusted because the floor area has changed between the two periods ' \
-             'for some schools. ' \
+             "for some schools.\n" \
              '[1] the comparison has been adjusted because the number of pupils have changed between the two ' \
-             'periods. ' \
+             "periods.\n" \
              '[5] The tariff has changed during the last year for this school. Savings are calculated using the ' \
              'latest tariff but other £ values are calculated using the relevant tariff at the time']
           ]
@@ -228,7 +228,7 @@ describe 'configurable_period' do
              '£4,000', '£2,000', '-50&percnt;'],
             ["Notes\n" \
              '[1] the comparison has been adjusted because the number of pupils have changed between the two ' \
-             'periods. ' \
+             "periods.\n" \
              '[5] The tariff has changed during the last year for this school. Savings are calculated using the ' \
              'latest tariff but other £ values are calculated using the relevant tariff at the time']
           ]
@@ -291,7 +291,7 @@ describe 'configurable_period' do
              '£4,000', '£2,000', '-50&percnt;'],
             ["Notes\n" \
              '[1] the comparison has been adjusted because the floor area has changed between the two periods for ' \
-             'some schools. ' \
+             "some schools.\n" \
              '[5] The tariff has changed during the last year for this school. Savings are calculated using the ' \
              'latest tariff but other £ values are calculated using the relevant tariff at the time']
           ]
@@ -344,7 +344,7 @@ describe 'configurable_period' do
              '£4,000', '£2,000', '-50&percnt;'],
             ["Notes\n" \
              '[1] the comparison has been adjusted because the number of pupils have changed between the two ' \
-             'periods. ' \
+             "periods.\n" \
              '[5] The tariff has changed during the last year for this school. Savings are calculated using the ' \
              'latest tariff but other £ values are calculated using the relevant tariff at the time']
           ]
