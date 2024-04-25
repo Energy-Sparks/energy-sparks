@@ -26,11 +26,6 @@ module Amr
       # incomplete readings.
       return if start_date > end_date
 
-      # don't load data if we are up to date, indicated by the
-      # start and ends being same date, after winding back the end date
-      # from midnight
-      return if existing_n3rgy_readings.any? && start_date.to_date == (end_date - 1).to_date
-
       import_log = create_import_log(start_date, end_date)
       readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date).readings
       N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings: readings, import_log: import_log).perform
@@ -57,10 +52,11 @@ module Amr
 
     def current_date_range_of_readings
       if existing_n3rgy_readings.any?
-        first = existing_n3rgy_readings.minimum(:reading_date)
-        last = existing_n3rgy_readings.maximum(:reading_date)
-        (n3rgy_first_reading_of_day(DateTime.parse(first + 'T00:30'))..
-          n3rgy_last_reading_of_day(DateTime.parse(last + 'T00:00')))
+        first = DateTime.parse(existing_n3rgy_readings.minimum(:reading_date))
+        # Instead of using the maximum date, we now use 7 days prior to that
+        # so we're regularly refreshing the last 7 days of data.
+        last = DateTime.parse(existing_n3rgy_readings.maximum(:reading_date)) - 7.days
+        [n3rgy_first_reading_of_day(first), n3rgy_last_reading_of_day(last)]
       end
     end
 
@@ -84,9 +80,13 @@ module Amr
         start = n3rgy_first_reading_of_day(start - 1)
       end
 
-      # start new loading from the end of any existing readings if we have any
+      # Continue loading newer readings if there's no additional historical data
+      # in n3rgy.
+      #
+      # As the end of our current range includes reloading of last 7 days, then
+      # also check that this isn't before the available date range
       current_range = current_date_range_of_readings
-      if current_range && current_range.first <= start
+      if current_range && current_range.first <= start && current_range.last > start
         start = current_range.last
       end
 
