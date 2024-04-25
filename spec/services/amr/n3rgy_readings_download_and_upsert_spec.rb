@@ -202,6 +202,21 @@ module Amr
               upserter.perform
             end
           end
+
+          context 'when reload option is set' do
+            subject(:upserter) do
+              described_class.new(config: config, meter: meter, reload: true)
+            end
+
+            it 'reloads all the data' do
+              expect(Amr::N3rgyDownloader).to receive(:new).with(
+                meter: meter,
+                start_date: expected_start,
+                end_date: yesterday_last_reading
+              )
+              upserter.perform
+            end
+          end
         end
 
         context 'when we are up to date' do
@@ -216,6 +231,21 @@ module Amr
               end_date: available_data.last
             )
             upserter.perform
+          end
+
+          context 'when reload option is set' do
+            subject(:upserter) do
+              described_class.new(config: config, meter: meter, reload: true)
+            end
+
+            it 'reloads all the data' do
+              expect(Amr::N3rgyDownloader).to receive(:new).with(
+                meter: meter,
+                start_date: available_data.first,
+                end_date: available_data.last
+              )
+              upserter.perform
+            end
           end
         end
 

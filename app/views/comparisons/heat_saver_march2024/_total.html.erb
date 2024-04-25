@@ -15,6 +15,7 @@
                           period_type_string: @period_type_string,
                           schools_to_sentence: 'some schools',
                           if: result.floor_area_changed %>
+
       <%= r.with_var do %>
         <% if !result.electricity_current_period_kwh.nil? %>
           <span class="<%= fuel_type_class(:electricity) %>">

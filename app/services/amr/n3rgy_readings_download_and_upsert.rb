@@ -4,12 +4,14 @@ module Amr
         meter:,
         config:,
         override_start_date: nil,
-        override_end_date: nil
+        override_end_date: nil,
+        reload: false
       )
       @meter = meter
       @config = config
       @override_start_date = override_start_date
       @override_end_date = override_end_date
+      @reload = reload
     end
 
     def perform
@@ -80,11 +82,15 @@ module Amr
         start = n3rgy_first_reading_of_day(start - 1)
       end
 
+      # if set to reload, then just use dates from n3rgy
+      return n3rgy_first_reading_of_day(start) if @reload
+
       # Continue loading newer readings if there's no additional historical data
       # in n3rgy.
       #
       # As the end of our current range includes reloading of last 7 days, then
       # also check that this isn't before the available date range
+      # start new loading from the end of any existing readings if we have any
       current_range = current_date_range_of_readings
       if current_range && current_range.first <= start && current_range.last > start
         start = current_range.last
