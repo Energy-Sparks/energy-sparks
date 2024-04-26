@@ -246,15 +246,12 @@ cy:
         create_meter: Creu Mesurydd
         data_source: Ffynhonnell ddata
         dcc_smart_meter: Mesurydd Clyfar DCC
-        earliest_available_data: Y data cynharaf sydd ar gael
         editing_disabled_for_pseudo_meters: Analluogwyd golygu ar gyfer mesuryddion ffug
         leave_this_blank_message: Gadewch hwn yn wag am fesuryddion newydd a bydd y system yn gwirio ei fod wedi'i gofrestru gyda n3rgy
         meter_point_number: Rhif Pwynt Mesurydd
         meter_system: System mesurydd
         name: Enw
-        only_check_if_adding_an_n3rgy_test_meter: Gwiriwch a ydych yn ychwanegu mesurydd prawf n3rgy, nad yw'n cael ei ddefnyddio ar gyfer ysgolion byw, yn unig
         procurement_route: Llwybr caffael
-        sandbox: Blwch tywod
         serial_number: Rhif cyfresol
         title: Gelwir y Rhif Pwynt Mesurydd hefyd yn MPAN (ar gyfer mesuryddion trydan) a'r MPRN (ar gyfer mesuryddion nwy).
         type: Math
@@ -312,7 +309,6 @@ cy:
         n3rgy_consent_confirmed: n3rgy Cadarnhau Caniatâd
         n3rgy_known_meter: Ar gael gan n3rgy?
         not_configured_as_a_dcc_meter: Heb ei ffurfweddu fel mesurydd DCC
-        sandbox: Blwch tywod (mesurydd prawf)
         school_meter_management: Rheoli mesuryddion ysgol
         serial_number: Rhif Cyfresol
         tariff_report: Adroddiad Tariff

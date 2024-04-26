@@ -120,8 +120,6 @@ RSpec/ContextWording:
     - 'spec/services/amr/csv_parser_and_upserter_spec.rb'
     - 'spec/services/amr/data_feed_translator_spec.rb'
     - 'spec/services/amr/data_file_parser_spec.rb'
-    - 'spec/services/amr/n3rgy_api_factory_spec.rb'
-    - 'spec/services/amr/n3rgy_energy_tariff_inserter_spec.rb'
     - 'spec/services/amr/n3rgy_readings_upserter_spec.rb'
     - 'spec/services/amr/single_read_converter_spec.rb'
     - 'spec/services/amr/upsert_validated_readings_for_a_meter_spec.rb'

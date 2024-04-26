@@ -209,6 +209,8 @@ private
       :alternative_heating_lpg,
       :alternative_heating_biomass,
       :alternative_heating_district_heating,
+      :alternative_heating_ground_source_heat_pump,
+      :alternative_heating_air_source_heat_pump,
       :enable_targets_feature,
       :public,
       :chart_preference,

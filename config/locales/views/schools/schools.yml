@@ -245,15 +245,12 @@ en:
         create_meter: Create Meter
         data_source: Data source
         dcc_smart_meter: DCC Smart Meter
-        earliest_available_data: Earliest available data
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
         leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
         meter_point_number: Meter Point Number
         meter_system: Meter system
         name: Name
-        only_check_if_adding_an_n3rgy_test_meter: Only check if you're adding an n3rgy test meter, not used for live schools
         procurement_route: Procurement route
-        sandbox: Sandbox
         serial_number: Serial number
         title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
         type: Type
@@ -311,7 +308,6 @@ en:
         n3rgy_consent_confirmed: n3rgy Confirm Consented
         n3rgy_known_meter: Available from n3rgy?
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
-        sandbox: Sandbox (test meter)
         school_meter_management: School meter management
         serial_number: Serial Number
         tariff_report: Tariff Report
@@ -689,22 +685,28 @@ en:
     your_school_estates:
       edit:
         alternative_heating_sources:
+          air_source_heat_pump:
+            label: Our school has an air source heat pump
+            percentage: What percentage of the school is using the air source heat pump for heating?
           biomass:
-            label: Our school has a Biomass boiler
-            percentage: What percentage of the school using a Biomass boiler for heating?
+            label: Our school has a biomass boiler
+            percentage: What percentage of the school is using a biomass boiler for heating?
           description_1: Tell us about any alternative sources of heating that you use in your school
           description_2: At the moment we only analyse your gas data. But by letting us know about other sources, we can qualify any potential cost savings or recommendations
           district_heating:
-            label: Our school has District Heating
-            percentage: What percentage of the school using District Heating for heating?
+            label: Our school has district heating
+            percentage: What percentage of the school is using district heating for heating?
+          ground_source_heat_pump:
+            label: Our school has a ground source heat pump
+            percentage: What percentage of the school is using the ground source heat pump for heating?
           header: Alternative heating sources
           lpg:
             label: Our school is using LPG for heating
             percentage: What percentage of the school using LPG for heating?
           notes: Is there anything else we should know?
           oil:
-            label: Our school uses Oil for heating
-            percentage: What percentage of the school is heated by Oil Heating?
+            label: Our school uses oil for heating
+            percentage: What percentage of the school is heated by oil heating?
         description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
         school_was_successfully_updated: School was successfully updated
         solar_panels: Solar panels

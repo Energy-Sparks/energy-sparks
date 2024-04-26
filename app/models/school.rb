@@ -2,68 +2,74 @@
 #
 # Table name: schools
 #
-#  activation_date                              :date
-#  active                                       :boolean          default(TRUE)
-#  address                                      :text
-#  alternative_heating_biomass                  :boolean          default(FALSE), not null
-#  alternative_heating_biomass_notes            :text
-#  alternative_heating_biomass_percent          :integer          default(0)
-#  alternative_heating_district_heating         :boolean          default(FALSE), not null
-#  alternative_heating_district_heating_notes   :text
-#  alternative_heating_district_heating_percent :integer          default(0)
-#  alternative_heating_lpg                      :boolean          default(FALSE), not null
-#  alternative_heating_lpg_notes                :text
-#  alternative_heating_lpg_percent              :integer          default(0)
-#  alternative_heating_oil                      :boolean          default(FALSE), not null
-#  alternative_heating_oil_notes                :text
-#  alternative_heating_oil_percent              :integer          default(0)
-#  bill_requested                               :boolean          default(FALSE)
-#  bill_requested_at                            :datetime
-#  calendar_id                                  :bigint(8)
-#  chart_preference                             :integer          default("default"), not null
-#  cooks_dinners_for_other_schools              :boolean          default(FALSE), not null
-#  cooks_dinners_for_other_schools_count        :integer
-#  cooks_dinners_onsite                         :boolean          default(FALSE), not null
-#  country                                      :integer          default("england"), not null
-#  created_at                                   :datetime         not null
-#  dark_sky_area_id                             :bigint(8)
-#  data_enabled                                 :boolean          default(FALSE)
-#  enable_targets_feature                       :boolean          default(TRUE)
-#  floor_area                                   :decimal(, )
-#  funder_id                                    :bigint(8)
-#  funding_status                               :integer          default("state_school"), not null
-#  has_swimming_pool                            :boolean          default(FALSE), not null
-#  id                                           :bigint(8)        not null, primary key
-#  indicated_has_solar_panels                   :boolean          default(FALSE), not null
-#  indicated_has_storage_heaters                :boolean          default(FALSE)
-#  latitude                                     :decimal(10, 6)
-#  level                                        :integer          default(0)
-#  local_authority_area_id                      :bigint(8)
-#  longitude                                    :decimal(10, 6)
-#  met_office_area_id                           :bigint(8)
-#  name                                         :string
-#  number_of_pupils                             :integer
-#  percentage_free_school_meals                 :integer
-#  postcode                                     :string
-#  process_data                                 :boolean          default(FALSE)
-#  public                                       :boolean          default(TRUE)
-#  region                                       :integer
-#  removal_date                                 :date
-#  school_group_cluster_id                      :bigint(8)
-#  school_group_id                              :bigint(8)
-#  school_type                                  :integer          not null
-#  scoreboard_id                                :bigint(8)
-#  serves_dinners                               :boolean          default(FALSE), not null
-#  slug                                         :string
-#  solar_pv_tuos_area_id                        :bigint(8)
-#  temperature_area_id                          :bigint(8)
-#  template_calendar_id                         :integer
-#  updated_at                                   :datetime         not null
-#  urn                                          :integer          not null
-#  validation_cache_key                         :string           default("initial")
-#  visible                                      :boolean          default(FALSE)
-#  weather_station_id                           :bigint(8)
-#  website                                      :string
+#  activation_date                                     :date
+#  active                                              :boolean          default(TRUE)
+#  address                                             :text
+#  alternative_heating_air_source_heat_pump            :boolean          default(FALSE), not null
+#  alternative_heating_air_source_heat_pump_notes      :text
+#  alternative_heating_air_source_heat_pump_percent    :integer          default(0)
+#  alternative_heating_biomass                         :boolean          default(FALSE), not null
+#  alternative_heating_biomass_notes                   :text
+#  alternative_heating_biomass_percent                 :integer          default(0)
+#  alternative_heating_district_heating                :boolean          default(FALSE), not null
+#  alternative_heating_district_heating_notes          :text
+#  alternative_heating_district_heating_percent        :integer          default(0)
+#  alternative_heating_ground_source_heat_pump         :boolean          default(FALSE), not null
+#  alternative_heating_ground_source_heat_pump_notes   :text
+#  alternative_heating_ground_source_heat_pump_percent :integer          default(0)
+#  alternative_heating_lpg                             :boolean          default(FALSE), not null
+#  alternative_heating_lpg_notes                       :text
+#  alternative_heating_lpg_percent                     :integer          default(0)
+#  alternative_heating_oil                             :boolean          default(FALSE), not null
+#  alternative_heating_oil_notes                       :text
+#  alternative_heating_oil_percent                     :integer          default(0)
+#  bill_requested                                      :boolean          default(FALSE)
+#  bill_requested_at                                   :datetime
+#  calendar_id                                         :bigint(8)
+#  chart_preference                                    :integer          default("default"), not null
+#  cooks_dinners_for_other_schools                     :boolean          default(FALSE), not null
+#  cooks_dinners_for_other_schools_count               :integer
+#  cooks_dinners_onsite                                :boolean          default(FALSE), not null
+#  country                                             :integer          default("england"), not null
+#  created_at                                          :datetime         not null
+#  dark_sky_area_id                                    :bigint(8)
+#  data_enabled                                        :boolean          default(FALSE)
+#  enable_targets_feature                              :boolean          default(TRUE)
+#  floor_area                                          :decimal(, )
+#  funder_id                                           :bigint(8)
+#  funding_status                                      :integer          default("state_school"), not null
+#  has_swimming_pool                                   :boolean          default(FALSE), not null
+#  id                                                  :bigint(8)        not null, primary key
+#  indicated_has_solar_panels                          :boolean          default(FALSE), not null
+#  indicated_has_storage_heaters                       :boolean          default(FALSE)
+#  latitude                                            :decimal(10, 6)
+#  level                                               :integer          default(0)
+#  local_authority_area_id                             :bigint(8)
+#  longitude                                           :decimal(10, 6)
+#  met_office_area_id                                  :bigint(8)
+#  name                                                :string
+#  number_of_pupils                                    :integer
+#  percentage_free_school_meals                        :integer
+#  postcode                                            :string
+#  process_data                                        :boolean          default(FALSE)
+#  public                                              :boolean          default(TRUE)
+#  region                                              :integer
+#  removal_date                                        :date
+#  school_group_cluster_id                             :bigint(8)
+#  school_group_id                                     :bigint(8)
+#  school_type                                         :integer          not null
+#  scoreboard_id                                       :bigint(8)
+#  serves_dinners                                      :boolean          default(FALSE), not null
+#  slug                                                :string
+#  solar_pv_tuos_area_id                               :bigint(8)
+#  temperature_area_id                                 :bigint(8)
+#  template_calendar_id                                :integer
+#  updated_at                                          :datetime         not null
+#  urn                                                 :integer          not null
+#  validation_cache_key                                :string           default("initial")
+#  visible                                             :boolean          default(FALSE)
+#  weather_station_id                                  :bigint(8)
+#  website                                             :string
 #
 # Indexes
 #
@@ -243,7 +249,13 @@ class School < ApplicationRecord
 
   validates_associated :school_times, on: :school_time_update
 
-  validates :alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
+  validates :alternative_heating_oil_percent,
+            :alternative_heating_lpg_percent,
+            :alternative_heating_biomass_percent,
+            :alternative_heating_district_heating_percent,
+            :alternative_heating_ground_source_heat_pump_percent,
+            :alternative_heating_air_source_heat_pump_percent,
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
 
   validates :weather_station, presence: true
 

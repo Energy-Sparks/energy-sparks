@@ -6,10 +6,8 @@
     <%= if can? :manage_school_times, school
           link_to t('manage_school_menu.edit_school_times'), edit_school_times_path(school), class: 'dropdown-item'
         end %>
-    <%= if EnergySparks::FeatureFlags.active?(:your_school_estates)
-          link_to t('manage_school_menu.your_school_estate'), edit_school_your_school_estate_path(school),
-                  class: 'dropdown-item'
-        end %>
+    <%= link_to t('manage_school_menu.your_school_estate'), edit_school_your_school_estate_path(school),
+                class: 'dropdown-item' %>
     <%= if school.calendar && can?(:show, school.calendar)
           link_to t('manage_school_menu.school_calendar'), calendar_path(school.calendar), class: 'dropdown-item'
         end %>

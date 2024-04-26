@@ -8,17 +8,25 @@
 
 <div class="form-group">
   <%= f.label :funding_status %>
-  <%= f.select :funding_status, options_for_select(School.funding_statuses.map {|key, value| [t("schools.funding_status.#{key}"), key]}, f.object.funding_status), {include_blank: false}, { class: 'form-control' } %>
+  <%= f.select :funding_status,
+               options_for_select(
+                 School.funding_statuses.map { |key, _value| [t("schools.funding_status.#{key}"), key] },
+                 f.object.funding_status
+               ),
+               { include_blank: false },
+               { class: 'form-control' } %>
 </div>
 
 <% if current_user.admin? %>
   <div class="bg-light">
     <strong><%= t('schools.school_details.admin_options') %></strong>
-    <%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil, hint: t('schools.school_details.activation_date_hint') %>
+    <%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil,
+                                  hint: t('schools.school_details.activation_date_hint') %>
     <%= f.input :enable_targets_feature %>
     <%= f.input :public %>
     <%= f.label :funder %>
-    <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
+    <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id),
+                 { include_blank: true }, { class: 'form-control' } %>
   </div>
 <% end %>
 
@@ -31,7 +39,13 @@
   <h2><%= t('schools.school_details.location') %></h2>
   <div class="form-group">
     <%= f.label :country %>
-    <%= f.select :country, options_for_select(School.countries.map {|key, value| [t('school_statistics.' + key), key]}, f.object.country), {include_blank: false}, { class: 'form-control' } %>
+    <%= f.select :country,
+                 options_for_select(
+                   School.countries.map { |key, _value| [t("school_statistics.#{key}"), key] },
+                   f.object.country
+                 ),
+                 { include_blank: false },
+                 { class: 'form-control' } %>
   </div>
   <p><%= t('schools.school_details.geocode_message') %></p>
   <div class="form-group">
@@ -41,7 +55,10 @@
 
   <% if f.object.latitude && f.object.longitude %>
     <p>
-      <%= link_to t('schools.school_details.view_on_map'), "https://www.openstreetmap.org/?mlat=#{f.object.latitude}&mlon=#{f.object.longitude}", target: "_blank" %>
+      <%= link_to t('schools.school_details.view_on_map'),
+                  "https://www.openstreetmap.org/?mlat=#{f.object.latitude}&mlon=#{f.object.longitude}",
+                  target: '_blank',
+                  rel: 'noopener' %>
     </p>
   <% end %>
 <% end %>
@@ -52,8 +69,9 @@
 
   <% School.school_types.keys.each do |school_type| %>
     <div class="form-check form-check-inline">
-      <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
-      <%= f.label "school_type_#{school_type.to_sym}", t("common.school_types.#{school_type}", default: school_type.humanize),  class: "form-check-label" %>
+      <%= f.radio_button :school_type, school_type, class: 'form-check-input' %>
+      <%= f.label "school_type_#{school_type.to_sym}",
+                  t("common.school_types.#{school_type}", default: school_type.humanize), class: 'form-check-label' %>
     </div>
   <% end %>
 </div>
@@ -63,8 +81,8 @@
 
   <%= f.collection_check_boxes(:key_stage_ids, key_stages, :id, :name) do |b| %>
     <div class="custom-control custom-checkbox custom-control-inline">
-      <%= b.check_box(class: "custom-control-input") %>
-      <%= b.label(class: "custom-control-label") do %>
+      <%= b.check_box(class: 'custom-control-input') %>
+      <%= b.label(class: 'custom-control-label') do %>
         <%= t(b.object.i18n_key) %>
       <% end %>
     </div>
@@ -90,27 +108,33 @@
 <%= f.input :indicated_has_solar_panels %>
 <%= f.input :indicated_has_storage_heaters %>
 <%= f.input :has_swimming_pool %>
-<%= f.input :serves_dinners, input_html: {data: {reveals: '.school_cooks_dinners_onsite'}}%>
-<%= f.input :cooks_dinners_onsite, input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools'}}, wrapper_html: {data: {revealed_by: '.school_serves_dinners'}} %>
-<%= f.input :cooks_dinners_for_other_schools, input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools_count'}}, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_on_site'}} %>
-<%= f.input :cooks_dinners_for_other_schools_count, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_for_other_schools'}}%>
+<%= f.input :serves_dinners, input_html: { data: { reveals: '.school_cooks_dinners_onsite' } } %>
+<%= f.input :cooks_dinners_onsite, input_html: { data: { reveals: '.school_cooks_dinners_for_other_schools' } },
+                                   wrapper_html: { data: { revealed_by: '.school_serves_dinners' } } %>
+<%= f.input :cooks_dinners_for_other_schools,
+            input_html: { data: { reveals: '.school_cooks_dinners_for_other_schools_count' } },
+            wrapper_html: { data: { revealed_by: '.school_cooks_dinners_on_site' } } %>
+<%= f.input :cooks_dinners_for_other_schools_count,
+            wrapper_html: { data: { revealed_by: '.school_cooks_dinners_for_other_schools' } } %>
 
-<% if EnergySparks::FeatureFlags.active?(:your_school_estates) %>
-  <%= f.input :alternative_heating_oil %>
-  <%= f.input :alternative_heating_lpg %>
-  <%= f.input :alternative_heating_biomass %>
-  <%= f.input :alternative_heating_district_heating %>
-<% end %>
+<%= f.input :alternative_heating_oil %>
+<%= f.input :alternative_heating_lpg %>
+<%= f.input :alternative_heating_biomass %>
+<%= f.input :alternative_heating_district_heating %>
+<%= f.input :alternative_heating_ground_source_heat_pump %>
+<%= f.input :alternative_heating_air_source_heat_pump %>
 
 <h2 id="preferences"><%= t('schools.school_details.analysis_preferences') %></h2>
 
 <div class="form-group">
-  <label><%= t("schools.chart_preference.form_group") %></label>
-  <p class="small"><%= t("schools.chart_preference.explanation") %></p>
+  <label><%= t('schools.chart_preference.form_group') %></label>
+  <p class="small"><%= t('schools.chart_preference.explanation') %></p>
   <% School.chart_preferences.keys.each do |preference| %>
     <div class="form-check">
-      <%= f.radio_button :chart_preference, preference, checked: @school.chart_preference == preference, class: "form-check-input" %>
-      <%= f.label "chart_preference_#{preference.to_sym}", t("schools.chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
+      <%= f.radio_button :chart_preference, preference, checked: @school.chart_preference == preference,
+                                                        class: 'form-check-input' %>
+      <%= f.label "chart_preference_#{preference.to_sym}",
+                  t("schools.chart_preference.#{preference}", default: preference.humanize), class: 'form-check-label' %>
     </div>
   <% end %>
 </div>

@@ -21,32 +21,34 @@ class ComparisonTableComponent < ViewComponent::Base
     @headers = headers
     @colgroups = colgroups
     @advice_page_tab = advice_page_tab
+    @seen = {}
+  end
+
+  def before_render
+    # can't call controller methods in initialize
+    # keep a cache of the footnote objects - use the controller footnote cache if there is one
+    @footnote_cache = defined?(controller.footnote_cache) ? controller.footnote_cache : {}
   end
 
   renders_many :rows, ->(**kwargs) do
     kwargs[:advice_page] = @advice_page
     kwargs[:advice_page_tab] = @advice_page_tab
+    kwargs[:parent] = self
     RowComponent.new(**kwargs)
   end
 
   renders_many :footnotes, 'ComparisonTableComponent::FootnoteComponent'
   renders_many :notes, 'ComparisonTableComponent::NoteComponent'
 
-  def before_render
-    collect_references
+  def fetch(key)
+    @footnote_cache[key] ||= Comparison::Footnote.fetch(key)
   end
 
-  def collect_references
-    seen = {}
-    rows.each do |row|
-      row.to_s # force early render to collect references, haven't found a better way as yet
-      row.references.each do |reference|
-        if reference.if && !seen.key?(reference.id)
-          seen[reference.id] = reference
-        end
-      end
+  def add_footnote(reference)
+    unless @seen.key?(reference.id)
+      with_footnote(reference)
+      @seen[reference.id] = true
     end
-    seen.values.sort_by(&:sort_key).each {|ref| with_footnote(ref) }
   end
 
   # For providing information for each row in the comparison table
@@ -59,10 +61,11 @@ class ComparisonTableComponent < ViewComponent::Base
   #
   # The variable columns are specified as additional slots
   class RowComponent < ViewComponent::Base
-    def initialize(advice_page: nil, advice_page_tab: :insights, classes: '')
+    def initialize(advice_page: nil, advice_page_tab: :insights, classes: '', parent:)
       @advice_page = advice_page
       @advice_page_tab = advice_page_tab
       @classes = classes
+      @parent = parent
     end
 
     # First column, showing school name and a link
@@ -76,7 +79,12 @@ class ComparisonTableComponent < ViewComponent::Base
     end
 
     # Footnote references
-    renders_many :references, 'ComparisonTableComponent::ReferenceComponent'
+    renders_many :references, ->(**kwargs) do
+      if kwargs.key?(:if) ? kwargs.delete(:if) : true
+        kwargs[:parent] = @parent
+        ReferenceComponent.new(**kwargs)
+      end
+    end
 
     # Data columns
     renders_many :vars, 'ComparisonTableComponent::VarColumnComponent'
@@ -161,41 +169,35 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   class ReferenceComponent < ViewComponent::Base
-    attr_reader :key, :params, :if, :label
+    attr_reader :key, :params
 
-    def initialize(key: nil, label: nil, description: nil, **kwargs)
+    def initialize(key: nil, label: nil, description: nil, parent:, **kwargs)
       @key = key
-
-      @label = key ? footnote.label : label
-      @description = key ? footnote.description : description
-
-      @if = kwargs.key?(:if) ? kwargs.delete(:if) : true
+      @parent = parent
+      @label = label
+      @description = description
       @params = kwargs || {}
+      @parent.add_footnote(self)
+    end
+
+    def label
+      @label || footnote.label
+    end
+
+    def description
+      (@description || footnote.description) % params
     end
 
     def footnote
-      @footnote ||= Comparison::Footnote.fetch(key) if key
+      @parent.fetch(key) if key
     end
 
     def title
       t('analytics.benchmarking.content.footnotes.notes')
     end
 
-    def render?
-      @if
-    end
-
-    def description
-      @description % params
-    end
-
-    # used for sorting footnotes in the footer
-    def sort_key
-      "#{label}#{description}"
-    end
-
     def id
-      @id ||= footnote ? footnote.key : Digest::MD5.hexdigest(description)
+      @id ||= key || Digest::MD5.hexdigest(description)
     end
 
     def call
