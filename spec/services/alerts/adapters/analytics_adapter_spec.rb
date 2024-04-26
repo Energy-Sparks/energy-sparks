@@ -3,7 +3,7 @@ require 'rails_helper'
 module Alerts
   describe Alerts::Adapters::AnalyticsAdapter do
     class DummyAnalyticsAlertClass
-      def initialize(aggregate_school, **_kwargs)
+      def initialize(aggregate_school)
         @aggregate_school = aggregate_school
       end
 
@@ -11,7 +11,8 @@ module Alerts
         true
       end
 
-      def analyse(_analysis_date, _max_as_of_date = nil); end
+      def analyse(_analysis_date, _max_as_of_date = nil)
+      end
 
       def rating
         5.0
