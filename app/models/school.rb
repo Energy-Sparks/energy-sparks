@@ -202,6 +202,7 @@ class School < ApplicationRecord
   scope :data_visible,        -> { data_enabled.visible }
 
   scope :with_config, -> { joins(:configuration) }
+
   scope :by_name,     -> { order(name: :asc) }
 
   scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }

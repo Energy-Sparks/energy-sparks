@@ -30,6 +30,12 @@ module ComparisonsHelper
     EnergySparks::Calculator.sum_if_complete(previous_year_values, current_year_values)
   end
 
+  def gas_or_electricity_data_stale?(result, window = 90)
+    threshold = Time.zone.today - window
+    result.school.has_electricity? && result.school.configuration.meter_end_date(:electricity).present? && result.school.configuration.meter_end_date(:electricity).before?(threshold) ||
+      result.school.has_gas? && result.school.configuration.meter_end_date(:gas).present? && result.school.configuration.meter_end_date(:gas).before?(threshold)
+  end
+
   def comparison_page_exists?(key)
     Object.const_defined?("Comparisons::#{key.to_s.camelcase}Controller")
   end

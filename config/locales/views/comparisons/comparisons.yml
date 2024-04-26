@@ -10,6 +10,7 @@ en:
       last_year_storage_heater_kwh_floor_area: Last year storage heater kWh/floor area
       previous_period: Previous period
       previous_period_unadjusted: Previous period (not adjusted)
+      recent_data: Recent data
     period_types:
       periods: periods
     tables:

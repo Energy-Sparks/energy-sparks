@@ -4,11 +4,11 @@ module Comparisons
 
     def colgroups
       [
-        { label: '', colspan: 2 },
+        { label: '' },
+        { label: t('analytics.benchmarking.configuration.column_groups.metering'), colspan: 2 },
         { label: t('analytics.benchmarking.configuration.column_groups.kwh'), colspan: 3 },
         { label: t('analytics.benchmarking.configuration.column_groups.co2_kg'), colspan: 3 },
-        { label: t('analytics.benchmarking.configuration.column_groups.cost'), colspan: 3 },
-        { label: t('analytics.benchmarking.configuration.column_groups.metering') }
+        { label: t('analytics.benchmarking.configuration.column_groups.cost'), colspan: 3 }
       ]
     end
 
@@ -16,6 +16,7 @@ module Comparisons
       [
         t('analytics.benchmarking.configuration.column_headings.school'),
         t('analytics.benchmarking.configuration.column_headings.fuel'),
+        t('comparisons.column_headings.recent_data'),
         t('analytics.benchmarking.configuration.column_headings.previous_year'),
         t('analytics.benchmarking.configuration.column_headings.last_year'),
         t('analytics.benchmarking.configuration.column_headings.change_pct'),
@@ -24,8 +25,7 @@ module Comparisons
         t('analytics.benchmarking.configuration.column_headings.change_pct'),
         t('analytics.benchmarking.configuration.column_headings.previous_year'),
         t('analytics.benchmarking.configuration.column_headings.last_year'),
-        t('analytics.benchmarking.configuration.column_headings.change_pct'),
-        t('analytics.benchmarking.configuration.column_headings.no_recent_data')
+        t('analytics.benchmarking.configuration.column_headings.change_pct')
       ]
     end
 
@@ -38,7 +38,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::ChangeInEnergySinceLastYear.for_schools(@schools).with_total_that_covers_both_periods.by_total_percentage_change
+      Comparison::ChangeInEnergySinceLastYear.for_schools(@schools).with_school_configuration.with_consistent_fuels_across_periods.by_total_percentage_change
     end
   end
 end

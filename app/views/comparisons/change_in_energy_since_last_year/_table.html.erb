@@ -2,8 +2,10 @@
               report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
               headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
   <% @results.each do |result| %>
-    <% c.with_row do |r| %>
+    <% c.with_row classes: (gas_or_electricity_data_stale?(result) ? 'old-data' : '') do |r| %>
       <% r.with_school school: result.school %>
+        <% r.with_reference key: 'tariff_changed_last_year',
+                            if: result.any_tariff_changed? %>
         <%= r.with_var do %>
           <% if !result.electricity_current_period_kwh.nil? %>
             <span class="<%= fuel_type_class(:electricity) %>">
@@ -25,27 +27,24 @@
               <%= fa_icon(fuel_type_icon(:solar_pv)) %>
             </span>
           <% end %>
-
         <% end %>
 
+        <%= r.with_var do
+              gas_or_electricity_data_stale?(result) ? t('common.labels.no_label') : t('common.labels.yes_label')
+            end %>
+
         <% %i[kwh co2 £].each do |unit| %>
-          <%= r.with_var val: sum_if_complete(result.all_previous_period(unit: unit),
-                                              result.all_current_period(unit: unit)),
+          <%= r.with_var val: sum_data(result.all_previous_period(unit: unit)),
                          unit: unit %>
           <%= r.with_var val: sum_data(result.all_current_period(unit: unit)), unit: unit %>
           <%= r.with_var val: percent_change(
-                sum_if_complete(result.all_previous_period(unit: unit), result.all_current_period(unit: unit)),
+                sum_data(result.all_previous_period(unit: unit)),
                 sum_data(result.all_current_period(unit: unit)),
                 true
               ),
                          change: true,
                          unit: :relative_percent_0dp %>
         <% end %>
-
-      <%= r.with_var do
-            'Y' if result.school.has_electricity? && result.electricity_current_period_kwh.nil? ||
-                   result.school.has_gas? && result.gas_current_period_kwh.nil?
-          end %>
     <% end %>
   <% end %>
 <% end %>
