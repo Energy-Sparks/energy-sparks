@@ -22,12 +22,9 @@ CSV.generate do |csv|
 
     %i[kwh co2 £].each do |unit|
       fields << format_unit(
-              sum_data(result.all_previous_period(unit: unit)), Float, true, :benchmark)
-      fields << format_unit( sum_data(result.all_current_period(unit: unit)), Float, true, :benchmark)
-      fields << format_unit( percent_change(
-                      sum_data(result.all_previous_period(unit: unit)),
-                      sum_data(result.all_current_period(unit: unit))
-                      ), Float, true, :benchmark)
+              result.total_previous_period(unit: unit), Float, true, :benchmark)
+      fields << format_unit( result.total_current_period(unit: unit), Float, true, :benchmark)
+      fields << format_unit( result.total_percentage_change(unit: unit) * 100, Float, true, :benchmark)
     end
 
     csv << fields

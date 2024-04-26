@@ -26,8 +26,6 @@ SELECT latest_runs.id,
        energy.previous_year_solar_pv_kwh AS solar_pv_previous_period_kwh,
        energy.current_year_solar_pv_co2 AS solar_pv_current_period_co2,
        energy.previous_year_solar_pv_co2 AS solar_pv_previous_period_co2,
-       energy.current_year_solar_pv_gbp AS solar_pv_current_period_gbp,
-       energy.previous_year_solar_pv_gbp AS solar_pv_previous_period_gbp,
 
        additional.electricity_economic_tariff_changed_this_year AS electricity_tariff_has_changed,
        additional.gas_economic_tariff_changed_this_year AS gas_tariff_has_changed,
@@ -62,8 +60,6 @@ FROM
       current_year_solar_pv_kwh float,
       previous_year_solar_pv_co2 float,
       current_year_solar_pv_co2 float,
-      previous_year_solar_pv_gbp float,
-      current_year_solar_pv_gbp float,
 
       solar_type text
     )

@@ -19,10 +19,8 @@
 #  id                                 :bigint(8)
 #  school_id                          :bigint(8)
 #  solar_pv_current_period_co2        :float
-#  solar_pv_current_period_gbp        :float
 #  solar_pv_current_period_kwh        :float
 #  solar_pv_previous_period_co2       :float
-#  solar_pv_previous_period_gbp       :float
 #  solar_pv_previous_period_kwh       :float
 #  solar_type                         :text
 #  storage_heater_current_period_co2  :float
@@ -63,6 +61,22 @@ class Comparison::ChangeInEnergySinceLastYear < Comparison::View
       [:electricity_previous_period_kwh, :gas_previous_period_kwh, :storage_heater_previous_period_kwh, :solar_pv_previous_period_kwh],
       [:electricity_current_period_kwh, :gas_current_period_kwh, :storage_heater_current_period_kwh, :solar_pv_current_period_kwh]
     )
+  end
+
+  def total_previous_period(unit: :kwh, mode: :strict)
+    return all_previous_period(unit: unit).sum(&:to_f)
+  end
+
+  # Override this. The underlying alert doesn't generate variables for
+  # solar costs as we don't have that data. So if the unit is gbp and
+  # fuel is solar then skip
+  def field_names(period: :previous_period, unit: :kwh)
+    unit = :gbp if unit == :£
+    field_names = []
+    fuel_types.each do |fuel_type|
+      field_names << field_name(fuel_type, period, unit) unless unit == :gbp && fuel_type == :solar_pv
+    end
+    field_names
   end
 
   private

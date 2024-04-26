@@ -3473,8 +3473,6 @@ ActiveRecord::Schema.define(version: 2024_04_24_142738) do
       energy.previous_year_solar_pv_kwh AS solar_pv_previous_period_kwh,
       energy.current_year_solar_pv_co2 AS solar_pv_current_period_co2,
       energy.previous_year_solar_pv_co2 AS solar_pv_previous_period_co2,
-      energy.current_year_solar_pv_gbp AS solar_pv_current_period_gbp,
-      energy.previous_year_solar_pv_gbp AS solar_pv_previous_period_gbp,
       additional.electricity_economic_tariff_changed_this_year AS electricity_tariff_has_changed,
       additional.gas_economic_tariff_changed_this_year AS gas_tariff_has_changed,
       energy.solar_type
@@ -3502,12 +3500,10 @@ ActiveRecord::Schema.define(version: 2024_04_24_142738) do
               data.current_year_solar_pv_kwh,
               data.previous_year_solar_pv_co2,
               data.current_year_solar_pv_co2,
-              data.previous_year_solar_pv_gbp,
-              data.current_year_solar_pv_gbp,
               data.solar_type
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbp double precision, current_year_gas_gbp double precision, previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbp double precision, current_year_storage_heaters_gbp double precision, previous_year_solar_pv_kwh double precision, current_year_solar_pv_kwh double precision, previous_year_solar_pv_co2 double precision, current_year_solar_pv_co2 double precision, previous_year_solar_pv_gbp double precision, current_year_solar_pv_gbp double precision, solar_type text)
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbp double precision, current_year_gas_gbp double precision, previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbp double precision, current_year_storage_heaters_gbp double precision, previous_year_solar_pv_kwh double precision, current_year_solar_pv_kwh double precision, previous_year_solar_pv_co2 double precision, current_year_solar_pv_co2 double precision, solar_type text)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT alerts.alert_generation_run_id,
               data.electricity_economic_tariff_changed_this_year,
