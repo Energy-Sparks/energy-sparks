@@ -81,49 +81,53 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :comparisons do
-    resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
-    resources :annual_change_in_gas_out_of_hours_use, only: [:index]
-    resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index]
-    resources :annual_electricity_costs_per_pupil, only: [:index]
-    resources :annual_electricity_out_of_hours_use, only: [:index]
-    resources :annual_energy_costs_per_floor_area, only: [:index]
-    resources :annual_energy_costs_per_pupil, only: [:index]
-    resources :annual_energy_costs, only: [:index]
-    resources :annual_gas_out_of_hours_use, only: [:index]
-    resources :annual_heating_costs_per_floor_area, only: [:index]
-    resources :annual_storage_heater_out_of_hours_use, only: [:index]
-    resources :baseload_per_pupil, only: [:index]
-    resources :change_in_electricity_consumption_recent_school_weeks, only: [:index]
-    resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index]
-    resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index]
-    resources :change_in_electricity_since_last_year, only: [:index]
-    resources :change_in_energy_since_last_year, only: [:index]
-    resources :change_in_gas_consumption_recent_school_weeks, only: [:index]
-    resources :change_in_gas_holiday_consumption_previous_holiday, only: [:index]
-    resources :change_in_gas_holiday_consumption_previous_years_holiday, only: [:index]
-    resources :change_in_gas_since_last_year, only: [:index]
-    resources :change_in_solar_pv_since_last_year, only: [:index]
-    resources :change_in_storage_heaters_since_last_year, only: [:index]
-    resources :electricity_consumption_during_holiday, only: [:index]
-    resources :electricity_peak_kw_per_pupil, only: [:index]
-    resources :electricity_targets, only: [:index]
-    resources :gas_consumption_during_holiday, only: [:index]
-    resources :gas_targets, only: [:index]
-    resources :heat_saver_march_2024, only: [:index]
-    resources :heating_coming_on_too_early, only: [:index]
-    resources :heating_in_warm_weather, only: [:index]
-    resources :holiday_usage_last_year, only: [:index]
-    resources :hot_water_efficiency, only: [:index]
-    resources :recent_change_in_baseload, only: [:index]
-    resources :seasonal_baseload_variation, only: [:index]
-    resources :solar_generation_summary, only: [:index]
-    resources :solar_pv_benefit_estimate, only: [:index]
-    resources :storage_heater_consumption_during_holiday, only: [:index]
-    resources :thermostat_sensitivity, only: [:index]
-    resources :thermostatic_control, only: [:index]
-    resources :weekday_baseload_variation, only: [:index]
+  concern :unlisted do
+    get :unlisted, on: :collection
+  end
 
+  namespace :comparisons do
+    resources :annual_change_in_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_change_in_gas_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_electricity_costs_per_pupil, only: [:index], concerns: :unlisted
+    resources :annual_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_energy_costs_per_floor_area, only: [:index], concerns: :unlisted
+    resources :annual_energy_costs_per_pupil, only: [:index], concerns: :unlisted
+    resources :annual_energy_costs, only: [:index], concerns: :unlisted
+    resources :annual_gas_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_heating_costs_per_floor_area, only: [:index], concerns: :unlisted
+    resources :annual_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :baseload_per_pupil, only: [:index], concerns: :unlisted
+    resources :change_in_electricity_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
+    resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
+    resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
+    resources :change_in_electricity_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_energy_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_gas_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
+    resources :change_in_gas_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
+    resources :change_in_gas_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
+    resources :change_in_gas_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_solar_pv_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_storage_heaters_since_last_year, only: [:index], concerns: :unlisted
+    resources :electricity_consumption_during_holiday, only: [:index], concerns: :unlisted
+    resources :electricity_peak_kw_per_pupil, only: [:index], concerns: :unlisted
+    resources :electricity_targets, only: [:index], concerns: :unlisted
+    resources :gas_consumption_during_holiday, only: [:index], concerns: :unlisted
+    resources :gas_targets, only: [:index], concerns: :unlisted
+    resources :heat_saver_march_2024, only: [:index], concerns: :unlisted
+    resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
+    resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
+    resources :holiday_usage_last_year, only: [:index], concerns: :unlisted
+    resources :hot_water_efficiency, only: [:index], concerns: :unlisted
+    resources :recent_change_in_baseload, only: [:index], concerns: :unlisted
+    resources :seasonal_baseload_variation, only: [:index], concerns: :unlisted
+    resources :solar_generation_summary, only: [:index], concerns: :unlisted
+    resources :solar_pv_benefit_estimate, only: [:index], concerns: :unlisted
+    resources :storage_heater_consumption_during_holiday, only: [:index], concerns: :unlisted
+    resources :thermostat_sensitivity, only: [:index], concerns: :unlisted
+    resources :thermostatic_control, only: [:index], concerns: :unlisted
+    resources :weekday_baseload_variation, only: [:index], concerns: :unlisted
+    
     get '*key', to: 'configurable_period#index', as: :configurable_period
   end
 

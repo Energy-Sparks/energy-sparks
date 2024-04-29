@@ -8,4 +8,21 @@ class FootnoteModalComponent < ViewComponent::Base
     @modal_id = modal_id
     @modal_dialog_classes = modal_dialog_classes
   end
+
+  class Link < ViewComponent::Base
+    attr_reader :modal_id
+
+    def initialize(modal_id:, href: '', remote: false, title: 'Schools')
+      @modal_id = modal_id
+      @href = href
+      @title = title
+      @remote = remote
+    end
+
+    def call
+      args = { title: @title, 'data-toggle': 'modal', 'data-target': "##{modal_id}", 'data-remote': @remote.to_s }
+
+      link_to(content, @href, args)
+    end
+  end
 end

@@ -40,13 +40,12 @@
       <% %i[kwh co2 £].each do |unit| %>
         <%= r.with_var val: result.total_previous_period(unit: unit),
                        unit: unit %>
-         <%= r.with_var val: result.total_current_period(unit: unit),
-                        unit: unit %>
-         <%= r.with_var val: result.total_percentage_change(unit: unit),
-                        change: true,
-                        unit: :relative_percent_0dp %>
-     <% end %>
-
+        <%= r.with_var val: result.total_current_period(unit: unit),
+                       unit: unit %>
+        <%= r.with_var val: result.total_percentage_change(unit: unit),
+                       change: true,
+                       unit: :relative_percent_0dp %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

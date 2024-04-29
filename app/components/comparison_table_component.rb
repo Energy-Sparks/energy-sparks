@@ -38,7 +38,12 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   renders_many :footnotes, 'ComparisonTableComponent::FootnoteComponent'
-  renders_many :notes, 'ComparisonTableComponent::NoteComponent'
+
+  renders_many :notes, ->(**kwargs) do
+    if kwargs.key?(:if) ? kwargs.delete(:if) : true
+      NoteComponent.new(**kwargs)
+    end
+  end
 
   def fetch(key)
     @footnote_cache[key] ||= Comparison::Footnote.fetch(key)
@@ -218,12 +223,12 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   class NoteComponent < ViewComponent::Base
-    def initialize(note = nil)
+    def initialize(note: nil)
       @note = note
     end
 
     def call
-      @note || content
+      (@note || content).html_safe
     end
   end
 end

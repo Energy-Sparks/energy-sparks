@@ -7,6 +7,8 @@ module Comparisons
 
     before_action :filter
     before_action :set_schools
+    before_action :set_results, only: [:index]
+    before_action :set_unlisted_schools_count, only: [:index]
     helper_method :index_params
     helper_method :footnote_cache
     before_action :set_advice_page
@@ -14,7 +16,6 @@ module Comparisons
     before_action :set_headers
 
     def index
-      @results = load_data
       respond_to do |format|
         format.html do
           @charts = create_charts(@results)
@@ -27,6 +28,11 @@ module Comparisons
           render partial: filter[:table_name].to_s
         end
       end
+    end
+
+    def unlisted
+      @unlisted = School.where(id: (@schools - load_data.pluck(:school_id))).order(:name)
+      respond_to(&:js)
     end
 
     # Used to store footnotes loaded by the comparison table component across multiple calls in one page
@@ -51,6 +57,14 @@ module Comparisons
 
     def set_report
       @report = Comparison::Report.find_by!(key: key) if key
+    end
+
+    def set_results
+      @results = load_data
+    end
+
+    def set_unlisted_schools_count
+      @unlisted_schools_count = @schools.count - @results.count
     end
 
     def set_advice_page
