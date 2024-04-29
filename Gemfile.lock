@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 4c5333139df99f6b27b6613dd940b99f917dc011
-  branch: 4133-integrate-parameterised-period-comparison-alert-into-the-application
+  revision: edbee37063b4b95b82cb242912c628976fa97a1e
+  tag: 5.2.1
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
