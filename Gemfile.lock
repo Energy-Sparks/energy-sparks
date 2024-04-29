@@ -339,7 +339,7 @@ GEM
       ruby-vips (>= 2.0.17, < 3)
     iniparse (1.5.0)
     interpolate (0.3.0)
-    jbuilder (2.11.5)
+    jbuilder (2.12.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
@@ -768,7 +768,7 @@ DEPENDENCIES
   handlebars_assets
   i18n-tasks (~> 1.0.10)
   image_processing (~> 1.12)
-  jbuilder (~> 2.5)
+  jbuilder (~> 2.12)
   jquery-rails
   knapsack
   listen
