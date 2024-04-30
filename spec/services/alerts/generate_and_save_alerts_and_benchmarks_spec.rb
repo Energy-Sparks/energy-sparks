@@ -5,7 +5,7 @@ require 'rails_helper'
 module Alerts
   describe GenerateAndSaveAlertsAndBenchmarks do
     let!(:school) { create(:school, :with_fuel_configuration, has_gas: false) }
-    let(:aggregate_school) { build(:meter_collection, :with_aggregate_meter) }
+    let(:aggregate_school) { build(:meter_collection, :with_fuel_and_aggregate_meters, start_date: Date.yesterday - 14) }
     let(:asof_date) { Date.parse('01/01/2019') }
     let(:alert_type) { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
     let(:benchmark_result_generation_run) { BenchmarkResultGenerationRun.create! }
@@ -55,10 +55,9 @@ module Alerts
 
     before do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
-      create(:alert_type, class_name: 'AlertConfigurablePeriodElectricityComparison',
-                          fuel_type: :electricity)
-      create(:alert_type, class_name: 'AlertConfigurablePeriodGasComparison')
-      create(:alert_type, class_name: 'AlertConfigurablePeriodStorageHeaterComparison', fuel_type: :storage_heater)
+      create(:alert_type, class_name: AlertConfigurablePeriodElectricityComparison.name, fuel_type: :electricity)
+      create(:alert_type, class_name: AlertConfigurablePeriodGasComparison.name)
+      create(:alert_type, class_name: AlertConfigurablePeriodStorageHeaterComparison.name, fuel_type: :storage_heater)
     end
 
     describe '#perform' do
@@ -72,6 +71,14 @@ module Alerts
                                           change(AlertError, :count) &&
                                           change(BenchmarkResult, :count) &&
                                           change(BenchmarkResultError, :count)
+      end
+
+      it 'sets reporting_period' do
+        create(:alert_type, class_name: AlertSchoolWeekComparisonElectricity.name, fuel_type: :electricity)
+        service = described_class.new(school: school, aggregate_school: aggregate_school)
+        expect { service.perform }.to change(Alert, :count)
+        alert = Alert.last
+        expect(alert.reporting_period).to eq('last_2_weeks')
       end
 
       it 'handles just alert reports' do
@@ -141,7 +148,7 @@ module Alerts
                                     previous_end_date: 2.days.ago,
                                     previous_start_date: 3.days.ago)
         service = described_class.new(school: school, aggregate_school: aggregate_school)
-        service.perform
+        expect { service.perform }.to change(Alert, :count)
         alert = Alert.last
         expect(alert.enough_data).to eq('enough')
         expect(alert.alert_type.class_name).to eq('AlertConfigurablePeriodElectricityComparison')
