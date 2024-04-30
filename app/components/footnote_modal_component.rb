@@ -12,7 +12,7 @@ class FootnoteModalComponent < ViewComponent::Base
   class Link < ViewComponent::Base
     attr_reader :modal_id, :href, :title, :remote
 
-    def initialize(modal_id:, href: '', remote: false, title: '')
+    def initialize(modal_id:, href: '#', remote: false, title: '')
       @modal_id = modal_id
       @href = href
       @title = title

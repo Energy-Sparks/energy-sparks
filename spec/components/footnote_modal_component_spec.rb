@@ -82,7 +82,7 @@ RSpec.describe FootnoteModalComponent, type: :component do
     context 'with default params' do
       let(:params) { link_params.except(:title, :remote, :title, :href) }
 
-      it_behaves_like 'a footnote modal link', title: '', remote: false, href: '', modal_id: 'mymodal', content: ''
+      it_behaves_like 'a footnote modal link', title: '', remote: false, href: '#', modal_id: 'mymodal', content: ''
     end
   end
 end
