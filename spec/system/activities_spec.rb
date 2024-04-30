@@ -157,6 +157,10 @@ describe 'viewing and recording activities', type: :system do
         click_on 'Record this activity'
       end
 
+      it 'shows score and threshold' do
+        expect(page).to have_content('Completing this activity up to 10 times this academic year will earn you 25 points')
+      end
+
       context 'with non-custom activity' do
         before do
           fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
@@ -245,6 +249,17 @@ describe 'viewing and recording activities', type: :system do
             expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
             expect(page).to have_content('You are in 2nd place')
           end
+        end
+      end
+
+      context 'with previous recordings' do
+        before do
+          create_list(:activity, 10, activity_type: activity_type, school: school)
+          refresh
+        end
+
+        it 'shows message about exceeded threshold' do
+          expect(page).to have_content('You have already completed this activity 10 times this academic year. You will not score additional points for recording it')
         end
       end
     end
