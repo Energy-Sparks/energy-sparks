@@ -1,53 +1,59 @@
-module Admin::Comparisons
-  class ReportsController < AdminController
-    include LocaleHelper
+# frozen_string_literal: true
 
-    load_and_authorize_resource :report, class: 'Comparison::Report'
+module Admin
+  module Comparisons
+    class ReportsController < AdminController
+      include LocaleHelper
 
-    before_action :build_custom_period, only: [:new, :create, :edit, :update]
+      load_and_authorize_resource :report, class: 'Comparison::Report'
 
-    def index
-      @reports = @reports.by_key
-    end
+      before_action :build_custom_period, only: %i[new create edit update]
 
-    def create
-      if @report.save
-        redirect_to admin_comparisons_reports_path, notice: 'Report was successfully created.'
-      else
-        render :new
+      def index
+        @reports = @reports.by_key
       end
-    end
 
-    def update
-      if @report.update(report_params)
-        redirect_to admin_comparisons_reports_path, notice: 'Report was successfully updated.'
-      else
-        render :edit
+      def create
+        if @report.save
+          redirect_to admin_comparisons_reports_path, notice: 'Report was successfully created.'
+        else
+          render :new
+        end
       end
-    end
 
-    def destroy
-      @report.destroy
-      redirect_to admin_comparisons_reports_path, notice: 'Report was successfully deleted.'
-    end
+      def update
+        if @report.update(report_params)
+          redirect_to admin_comparisons_reports_path, notice: 'Report was successfully updated.'
+        else
+          render :edit
+        end
+      end
 
-    private
+      def destroy
+        @report.destroy
+        redirect_to admin_comparisons_reports_path, notice: 'Report was successfully deleted.'
+      end
 
-    def build_custom_period
-      @report.custom_period || @report.build_custom_period
-    end
+      private
 
-    def report_params
-      translated_params = t_params(Comparison::Report.mobility_attributes)
-      params.require(:report).permit(
-        translated_params,
-        :key,
-        :reporting_period,
-        :title,
-        :introduction,
-        :notes,
-        :public,
-        custom_period_attributes: %i[current_label current_start_date current_end_date previous_label previous_start_date previous_end_date])
+      def build_custom_period
+        @report.custom_period || @report.build_custom_period
+      end
+
+      def report_params
+        translated_params = t_params(Comparison::Report.mobility_attributes)
+        params.require(:report).permit(
+          translated_params,
+          :key,
+          :reporting_period,
+          :title,
+          :introduction,
+          :notes,
+          :public,
+          custom_period_attributes: %i[current_label current_start_date current_end_date previous_label
+                                       previous_start_date previous_end_date max_days_out_of_date enough_days_data]
+        )
+      end
     end
   end
 end

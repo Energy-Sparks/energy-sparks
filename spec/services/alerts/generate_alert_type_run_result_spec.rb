@@ -12,31 +12,34 @@ module Alerts
       let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
       let(:alert_report_attributes) do
         {
-        valid: true,
-        rating: 5.0,
-        enough_data: :enough,
-        relevance: :relevant,
-        template_data: { template: 'variables' },
-        chart_data: { chart: 'variables' },
-        table_data: { table: 'variables' },
-        priority_data: { priority: 'variables' },
-        benchmark_data: { benchmark: 'variables' }
-      }
+          valid: true,
+          rating: 5.0,
+          enough_data: :enough,
+          relevance: :relevant,
+          template_data: { template: 'variables' },
+          chart_data: { chart: 'variables' },
+          table_data: { table: 'variables' },
+          priority_data: { priority: 'variables' },
+          benchmark_data: { benchmark: 'variables' }
+        }
       end
 
       let(:alert_report) { Adapters::Report.new(**alert_report_attributes) }
 
       before do
-        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil, use_max_meter_date_if_less_than_asof_date: false).and_return(adapter_instance)
+        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school,
+                                                        aggregate_school: aggregate_school, analysis_date: nil,
+                                                        use_max_meter_date_if_less_than_asof_date: false)
+                                                  .and_return(adapter_instance)
         expect(adapter_instance).to receive(:analysis_date).and_return(asof_date)
       end
 
-
       describe 'error handling' do
         it 'does not raise an error if the framework_adapter raises one' do
-          expect(adapter_instance).to receive(:analyse).and_raise(NotImplementedError)
+          allow(adapter_instance).to receive(:analyse).and_raise(NoMethodError)
 
-          service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
+          service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter,
+                                                   aggregate_school: aggregate_school, alert_type: alert_type)
 
           result = service.perform
           expect(result.error_messages).not_to be_empty
@@ -47,7 +50,8 @@ module Alerts
       it 'working normally it returns alert report with benchmark' do
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
+        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter,
+                                                 aggregate_school: aggregate_school, alert_type: alert_type)
         expect(service.perform.reports).to include(alert_report)
       end
 
@@ -57,7 +61,8 @@ module Alerts
 
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
+        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter,
+                                                 aggregate_school: aggregate_school, alert_type: alert_type)
         expect(service.perform.reports).to include(alert_report)
       end
 
@@ -69,7 +74,8 @@ module Alerts
 
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
+        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter,
+                                                 aggregate_school: aggregate_school, alert_type: alert_type)
 
         expect(service.perform.reports).to include(alert_report)
       end

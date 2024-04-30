@@ -3,9 +3,19 @@ require 'dashboard'
 module Alerts
   module Adapters
     class AnalyticsAdapter < Adapter
-      def report
+      def report(alert_configuration: nil)
         analysis_object = alert_class.new(@aggregate_school)
-        analysis_object.valid_alert? ? produce_report(analysis_object, benchmark_variables?(alert_class)) : invalid_alert_report(analysis_object)
+        if analysis_object.respond_to?(:comparison_configuration=)
+          analysis_object.comparison_configuration = alert_configuration
+        end
+        if analysis_object.valid_alert?
+          benchmark = benchmark_variables?(alert_class)
+          analysis_object.analyse(*[@analysis_date,
+                                    benchmark ? @use_max_meter_date_if_less_than_asof_date : nil].compact)
+          produce_report(analysis_object, benchmark)
+        else
+          invalid_alert_report(analysis_object)
+        end
       end
 
       def content(user_type = nil)
@@ -30,22 +40,17 @@ module Alerts
         has_structured_content? ? analysis_object.structured_content : []
       end
 
-    private
+      private
 
       def benchmark_variables?(alert_class)
         alert_class.benchmark_template_variables.present? && @alert_type.analytics?
       end
 
       def produce_report(analysis_object, benchmark)
-        benchmark ? analysis_object.analyse(@analysis_date, @use_max_meter_date_if_less_than_asof_date) : analysis_object.analyse(@analysis_date)
-        variables = variable_data(analysis_object, benchmark)
-
-        Report.new(**{
-          valid:       true,
-          rating:      analysis_object.rating,
-          enough_data: analysis_object.enough_data,
-          relevance:   analysis_object.relevance
-        }.merge(variables))
+        Report.new(valid: true,
+                   rating: analysis_object.rating,
+                   enough_data: analysis_object.enough_data,
+                   relevance: analysis_object.relevance, **variable_data(analysis_object, benchmark))
       end
 
       def variable_data(analysis_object, benchmark)
@@ -53,10 +58,10 @@ module Alerts
 
         variable_data = {
           template_data: analysis_object.front_end_template_data,
-          chart_data:    analysis_object.front_end_template_chart_data,
-          table_data:    analysis_object.front_end_template_table_data,
+          chart_data: analysis_object.front_end_template_chart_data,
+          table_data: analysis_object.front_end_template_table_data,
           priority_data: analysis_object.priority_template_data,
-          variables:     rename_variables(convert_for_storage(analysis_object.variables_for_reporting))
+          variables: rename_variables(convert_for_storage(analysis_object.variables_for_reporting))
         }
 
         I18n.with_locale(:cy) do
@@ -75,10 +80,10 @@ module Alerts
 
       def invalid_alert_report(analysis_object)
         Report.new(
-          valid:       false,
-          rating:      nil,
+          valid: false,
+          rating: nil,
           enough_data: nil,
-          relevance:   analysis_object.relevance
+          relevance: analysis_object.relevance
         )
       end
 
@@ -98,6 +103,7 @@ module Alerts
       # strings that Postgres can cast back into the appropriate type
       def convert(val)
         return val if val.nil? || !needs_conversion?(val)
+
         if [true, false].include? val
           val.to_s
         elsif val.infinite? == 1
