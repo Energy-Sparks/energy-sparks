@@ -23,5 +23,5 @@ en:
       link: View list of schools
       loading: Loading schools
       message:
-        many: "%{count} schools could not be shown in this report as they do not have enough data to be analysed"
+        one: "%{count} schools could not be shown in this report as they do not have enough data to be analysed"
         other: "%{count} school could not be shown in this report as it does not have enough data to be analysed"
