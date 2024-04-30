@@ -55,9 +55,19 @@ FactoryBot.define do
     end
 
     trait :with_fuel_configuration do
-      after(:create) do |school|
+      transient do
+        has_electricity { true }
+        has_gas { true }
+        has_storage_heaters { true }
+        has_solar_pv { true }
+      end
+
+      after(:create) do |school, evaluator|
         fuel_configuration = Schools::FuelConfiguration.new(
-          has_electricity: true, has_gas: true, has_storage_heaters: true, has_solar_pv: true
+          has_electricity: evaluator.has_electricity,
+          has_gas: evaluator.has_gas,
+          has_storage_heaters: evaluator.has_storage_heaters,
+          has_solar_pv: evaluator.has_solar_pv
         )
         school.configuration.update!(fuel_configuration: fuel_configuration)
       end

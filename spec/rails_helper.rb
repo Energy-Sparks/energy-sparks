@@ -95,3 +95,9 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+require 'dashboard/test_factory_path'
+FactoryBot.definition_file_paths = [
+  Dashboard::TEST_FACTORY_PATH
+]
+FactoryBot.find_definitions

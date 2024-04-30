@@ -7,7 +7,7 @@ gem 'rails', '~> 6.1'
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.12'
-gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.12' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
@@ -28,8 +28,8 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.0'
-#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.1'
+# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)

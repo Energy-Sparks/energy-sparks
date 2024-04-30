@@ -53,7 +53,15 @@ module Schools
       Rollbar.error(e, job: :school_metric_genetator, school_id: @school.id, school: @school.name)
     end
 
-    def suppress_output
+    def suppress_output(&block)
+      if Rails.env.production?
+        _suppress_output(&block)
+      else
+        yield
+      end
+    end
+
+    def _suppress_output
       original_stdout = $stdout.clone
       original_stderr = $stderr.clone
       $stderr.reopen File.new('/dev/null', 'w')

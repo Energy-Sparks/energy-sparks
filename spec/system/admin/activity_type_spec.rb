@@ -62,6 +62,7 @@ describe 'activity type', type: :system do
       end
 
       fill_in('Score', with: 20)
+      fill_in('Maximum frequency', with: 5)
 
       check('KS1')
       check('Science')
@@ -79,7 +80,7 @@ describe 'activity type', type: :system do
       expect(activity_type.activity_timings).to match_array([half_hour])
       expect(activity_type.topics).to     match_array([energy])
       expect(activity_type.impacts).to    match_array([reducing_electricity])
-
+      expect(activity_type.maximum_frequency).to eq(5)
       expect(activity_type.image_en.filename).to eq('placeholder.png')
 
       expect(page.has_content?('Activity type was successfully created.')).to be true
@@ -127,8 +128,8 @@ describe 'activity type', type: :system do
       expect(ActivityType.count).to be 0
     end
 
-    it 'can edit a new activity and add KS2 and KS3' do
-      activity_type = create(:activity_type, activity_category: activity_category)
+    it 'can edit a new activity' do
+      activity_type = create(:activity_type, activity_category: activity_category, maximum_frequency: 10)
       refresh
 
       click_on 'Edit'
@@ -136,6 +137,7 @@ describe 'activity type', type: :system do
 
       check('KS2')
       check('KS3')
+      fill_in('Maximum frequency', with: 5)
 
       click_on('Update Activity type')
 
@@ -144,6 +146,7 @@ describe 'activity type', type: :system do
       expect(activity_type.key_stages).not_to include(ks1)
       expect(activity_type.key_stages).to     include(ks2)
       expect(activity_type.key_stages).to     include(ks3)
+      expect(activity_type.maximum_frequency).to eq(5)
 
       expect(page.has_content?('Activity type was successfully updated.')).to be true
       expect(ActivityType.count).to be 1

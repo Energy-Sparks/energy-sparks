@@ -199,6 +199,10 @@ describe 'viewing and recording action', type: :system do
         click_on 'Record this action'
       end
 
+      it 'shows score and threshold' do
+        expect(page).to have_content('Completing this action up to 10 times this academic year will earn you 30 points')
+      end
+
       context "when time isn't provided" do
         before do
           fill_in 'observation_at', with: ''
@@ -255,19 +259,19 @@ describe 'viewing and recording action', type: :system do
         context 'site settings photo_bonus_points is nil' do
           let(:photo_bonus_points) { nil }
 
-          it { expect(page).not_to have_content('Adding a photo to document your action will score you')}
+          it { expect(page).not_to have_content('Adding a photo to document your action can score you')}
         end
 
         context 'site settings photo_bonus_points is set' do
           let(:photo_bonus_points) { 5 }
 
-          it { expect(page).to have_content('Adding a photo to document your action will score you 5 bonus points')}
+          it { expect(page).to have_content('Adding a photo to document your action can score you 5 bonus points')}
         end
 
         context 'site settings photo_bonus_points is 0' do
           let(:photo_bonus_points) { 0 }
 
-          it { expect(page).not_to have_content('Adding a photo to document your action will score you')}
+          it { expect(page).not_to have_content('Adding a photo to document your action can score you')}
         end
       end
 
@@ -317,6 +321,17 @@ describe 'viewing and recording action', type: :system do
             expect(page).to have_content("Congratulations! You've just scored #{intervention_type.score} points")
             expect(page).to have_content('You are in 2nd place')
           end
+        end
+      end
+
+      context 'with previous recordings' do
+        before do
+          create_list(:observation, 10, :intervention, intervention_type: intervention_type, school: school)
+          refresh
+        end
+
+        it 'shows message about exceeded threshold' do
+          expect(page).to have_content('You have already completed this action 10 times this academic year. You will not score additional points for recording it')
         end
       end
     end

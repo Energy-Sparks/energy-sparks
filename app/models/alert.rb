@@ -7,13 +7,14 @@
 #  analytics_valid         :boolean          default(TRUE), not null
 #  chart_data              :json
 #  created_at              :datetime         not null
+#  custom_period_id        :bigint(8)
 #  displayable             :boolean          default(TRUE), not null
 #  enough_data             :integer
 #  id                      :bigint(8)        not null, primary key
 #  priority_data           :json
 #  rating                  :decimal(, )
 #  relevance               :integer          default("relevant")
-#  report_period           :integer
+#  reporting_period        :integer
 #  run_on                  :date
 #  school_id               :bigint(8)        not null
 #  table_data              :json
@@ -27,6 +28,7 @@
 #  index_alerts_on_alert_generation_run_id       (alert_generation_run_id)
 #  index_alerts_on_alert_type_id                 (alert_type_id)
 #  index_alerts_on_alert_type_id_and_created_at  (alert_type_id,created_at)
+#  index_alerts_on_custom_period_id              (custom_period_id)
 #  index_alerts_on_run_on                        (run_on)
 #  index_alerts_on_school_id                     (school_id)
 #
@@ -34,6 +36,7 @@
 #
 #  fk_rails_...  (alert_generation_run_id => alert_generation_runs.id) ON DELETE => cascade
 #  fk_rails_...  (alert_type_id => alert_types.id) ON DELETE => cascade
+#  fk_rails_...  (custom_period_id => comparison_custom_periods.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
@@ -43,8 +46,9 @@ class Alert < ApplicationRecord
   belongs_to :school,               inverse_of: :alerts
   belongs_to :alert_type,           inverse_of: :alerts
   belongs_to :alert_generation_run, optional: true
+  belongs_to :custom_period, class_name: 'Comparison::CustomPeriod', optional: true
 
-  has_many :find_out_mores,         inverse_of: :alert
+  has_many :find_out_mores, inverse_of: :alert
   has_many :alert_subscription_events
 
   has_many :alert_type_ratings, ->(alert) { alert.rating.present? ? for_rating(alert.rating.to_f.round(1)) : none }, primary_key: 'alert_type_id', foreign_key: 'alert_type_id'

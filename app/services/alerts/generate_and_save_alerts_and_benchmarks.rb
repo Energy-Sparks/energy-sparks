@@ -1,18 +1,27 @@
+# frozen_string_literal: true
+
 module Alerts
   class GenerateAndSaveAlertsAndBenchmarks
-    def initialize(school:, aggregate_school: nil, benchmark_result_generation_run: nil, framework_adapter: FrameworkAdapter)
+    def initialize(school:, aggregate_school: nil, benchmark_result_generation_run: nil,
+                   framework_adapter: FrameworkAdapter)
       @school = school
       @aggregate_school = aggregate_school || AggregateSchoolService.new(school).aggregate_school
       @benchmark_result_generation_run = benchmark_result_generation_run || BenchmarkResultGenerationRun.create!
       @framework_adapter = framework_adapter
+      @configurable_alert_types, @relevant_alert_types = RelevantAlertTypes.new(@school).list.partition do |alert_type|
+        [AlertConfigurablePeriodElectricityComparison, AlertConfigurablePeriodGasComparison,
+         AlertConfigurablePeriodStorageHeaterComparison].map(&:name).include?(alert_type.class_name)
+      end
     end
 
     def perform
       ActiveRecord::Base.transaction do
         @alert_generation_run = AlertGenerationRun.create!(school: @school)
-        @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
-
-        relevant_alert_types.each { |alert_type| process_alert_and_benchmarks_for(alert_type) }
+        @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(
+          school: @school, benchmark_result_generation_run: @benchmark_result_generation_run
+        )
+        @relevant_alert_types.each { |alert_type| process_alert_and_benchmarks_for(alert_type) }
+        process_custom_periods
       end
     end
 
@@ -38,11 +47,12 @@ module Alerts
       else
         service = generate_alert_type_run_result_service(
           alert_type: alert_type,
-          use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present? ? true : false
+          use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present?
         )
+
         alert_type_run_result = service.perform
         process_alert_type_run_result(alert_type_run_result)
-        process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
+        process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark
       end
     end
 
@@ -60,7 +70,8 @@ module Alerts
       alert_type = alert_type_run_result.alert_type
 
       alert_type_run_result.error_messages.each do |error_message|
-        BenchmarkResultError.create!(benchmark_result_school_generation_run: @benchmark_result_school_generation_run, asof_date: asof_date, information: error_message, alert_type: alert_type)
+        BenchmarkResultError.create!(benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
+                                     asof_date: asof_date, information: error_message, alert_type: alert_type)
       end
 
       alert_type_run_result.reports.each do |alert_report|
@@ -80,32 +91,51 @@ module Alerts
           )
         end
       else
-        BenchmarkResultError.create!(benchmark_result_school_generation_run: @benchmark_result_school_generation_run, asof_date: asof_date, information: "Relevance: #{alert_report.relevance}", alert_type: alert_type)
+        BenchmarkResultError.create!(benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
+                                     asof_date: asof_date, information: "Relevance: #{alert_report.relevance}", alert_type: alert_type)
       end
     end
 
-    def relevant_alert_types
-      RelevantAlertTypes.new(@school).list
-    end
-
-    def process_alert_type_run_result(alert_type_run_result)
+    def process_alert_type_run_result(alert_type_run_result, alert_attributes: {})
       asof_date = alert_type_run_result.asof_date
       alert_type = alert_type_run_result.alert_type
 
       alert_type_run_result.error_messages.each do |error_message|
-        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, information: error_message, alert_type: alert_type)
+        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date,
+                           information: error_message, alert_type: alert_type)
       end
 
       alert_type_run_result.reports.each do |alert_report|
-        process_alert_report(alert_type, alert_report, asof_date)
+        process_alert_report(alert_type, alert_report, asof_date, alert_attributes)
       end
     end
 
-    def process_alert_report(alert_type, alert_report, asof_date)
+    def process_alert_report(alert_type, alert_report, asof_date, alert_attributes)
       if alert_report.valid
-        Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type, asof_date).generate)
+        Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type,
+                                                asof_date).generate.merge(**alert_attributes))
       else
-        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, information: "INVALID. Relevance: #{alert_report.relevance}", alert_type: alert_type)
+        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date,
+                           information: "INVALID. Relevance: #{alert_report.relevance}", alert_type: alert_type)
+      end
+    end
+
+    def process_custom_periods
+      Comparison::Report.where.not(custom_period: nil).find_each do |report|
+        @configurable_alert_types.each do |alert_type|
+          analysis_date = AggregateSchoolService.analysis_date(@aggregate_school, alert_type.fuel_type)
+          result = AlertTypeRunResult.generate_alert_report(alert_type, analysis_date, @school) do
+            Adapters::AnalyticsAdapter
+              .new(alert_type: alert_type,
+                   analysis_date: analysis_date,
+                   school: @school,
+                   aggregate_school: @aggregate_school,
+                   use_max_meter_date_if_less_than_asof_date: true)
+              .report(alert_configuration: report.to_alert_configuration)
+          end
+          process_alert_type_run_result(result, alert_attributes: { reporting_period: :custom,
+                                                                    custom_period: report.custom_period })
+        end
       end
     end
   end
