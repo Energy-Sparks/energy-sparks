@@ -1,17 +1,18 @@
 <% if unlisted_schools_count > 0 %>
   <div class="alert alert-secondary">
-  <%= unlisted_schools_count %> schools could not be shown in this report as they do not have enough data to be analysed.
+  <%= t('comparisons.unlisted.message', count: unlisted_schools_count) %>.
   <%= component 'footnote_modal/link', modal_id: 'unlisted-schools',
                                        href: polymorphic_path(
                                          [:unlisted, :comparisons, controller_name.to_sym, :index]
                                        ),
                                        title: 'Title', remote: true do
-        'View list of schools'
+        t('comparisons.unlisted.link')
       end %>
   </div>
   <%= component 'footnote_modal', title: 'Schools excluded from report', modal_id: 'unlisted-schools' do |c| %>
     <% c.with_body_content do %>
-        <%= unlisted_schools_count %> schools could not be shown in this report as they do not have enough data to be analysed. Loading schools <div class="spinner-border"></div>
+      <%= t('comparisons.unlisted.message', count: unlisted_schools_count) %>
+         <%= t('comparisons.unlisted.loading') %> <div class="spinner-border"></div>
 
     <% end %>
   <% end %>
