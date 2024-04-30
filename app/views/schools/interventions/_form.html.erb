@@ -1,14 +1,22 @@
 <fieldset class="form-group">
   <label><%= t('interventions.form.what_did_you_do') %></label>
   <p><%= intervention_type.name %></p>
+  <% if !observation.persisted? %>
+    <p class="small text-muted">
+      <%= t('interventions.form.completing_this_activity', maximum: observation.intervention_type.maximum_frequency, count: observation.intervention_type.score) %>
+    </p>
+    <p class="small text-muted">
+      <%= t('interventions.form.previous_years') %>
+    </p>
+  <% end %>
 </fieldset>
 <fieldset class="form-group mt-4">
   <%= f.label t('interventions.form.when_did_you_complete_this_action'), for: :at %>
-  <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: "form-control form-control-lg" } %>
   <small class="form-text text-muted"><%= t('interventions.form.you_can_record_label') %>.</small>
+  <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: "form-control form-control-lg" } %>
 </fieldset>
 
-<fieldset class="form-group mt-5">
+<fieldset class="form-group mt-4">
   <%= f.label t('interventions.form.tell_us_more'), for: :description %>
   <small class="form-text text-muted"><%= t('interventions.form.adding_some_background_detail_label') %></small>
   <small class="form-text text-muted"><%= t('interventions.form.you_can_add_formatting_label') %>.</small>
@@ -26,7 +34,7 @@
   </div>
 </fieldset>
 
-<fieldset class="form-group mt-5">
+<fieldset class="form-group mt-4">
   <%= f.input :pupil_count, as: :numeric, label: t('activities.form.how_many_pupils_were_involved_in_this_activity') %>
 </fieldset>
 

@@ -6,9 +6,12 @@
     <label><%= t('activities.form.the_activity_you_completed') %></label>
     <p><%= activity.activity_type.name %></p>
     <% if !activity.persisted? %>
-      <small class="form-text text-muted">
-        <%= t('activities.form.completing_this_activity', count: activity.activity_type.score) %>
-      </small>
+      <p class="small text-muted">
+        <%= t('activities.form.completing_this_activity', maximum: activity.activity_type.maximum_frequency, count: activity.activity_type.score) %>
+      </p>
+      <p class="small text-muted">
+        <%= t('activities.form.previous_years') %>
+      </p>
     <% end %>
   </fieldset>
 
@@ -24,7 +27,7 @@
 
   <div class="form-group mt-4">
     <%= f.label t('activities.form.when_did_you_complete_this_activity'), for: :happened_on %>
-    <p class="small">
+    <p class="small text-muted">
       <%= t('activities.form.build_a_record_message') %>.
     </p>
     <%= f.input :happened_on, label: false, as: :tempus_dominus_date %>

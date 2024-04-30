@@ -157,6 +157,10 @@ describe 'viewing and recording activities', type: :system do
         click_on 'Record this activity'
       end
 
+      it 'shows score and threshold' do
+        expect(page).to have_content('Completing this activity up to 10 times this academic year will earn you 25 points')
+      end
+
       context 'with non-custom activity' do
         before do
           fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
