@@ -30,24 +30,9 @@ module Alerts
 
     def generate_alert_report(asof_date)
       afa = alert_framework_adapter(asof_date)
-      alert_type_run_result = AlertTypeRunResult.new(alert_type: @alert_type, asof_date: afa.analysis_date)
-
-      report = afa.analyse
-
-      alert_type_run_result.reports << report
-      alert_type_run_result
-      # rubocop:disable Lint/RescueException
-    rescue Exception => e
-      # rubocop:enable Lint/RescueException
-      error_message = "Exception: #{@alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
-      Rails.logger.error error_message
-      Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, job: :generate_alert_report, school_id: @school.id, school: @school.name, alert_type: @alert_type.class_name)
-
-      error_message = "#{error_message}\n" + e.backtrace.join("\n")
-
-      alert_type_run_result.error_messages << error_message
-      alert_type_run_result
+      AlertTypeRunResult.generate_alert_report(@alert_type, afa.analysis_date, @school) do
+        afa.analyse
+      end
     end
   end
 end

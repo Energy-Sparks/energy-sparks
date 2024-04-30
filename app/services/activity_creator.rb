@@ -30,10 +30,7 @@ class ActivityCreator
   end
 
   def create_activity_observation
-    academic_year = @activity.school.academic_year_for(@activity.happened_on)
-    points = if academic_year && academic_year.current?
-               @activity.activity_type.score
-             end
+    points = @activity.activity_type.score_when_recorded_at(@activity.school, @activity.happened_on)
     Observation.create!(
       school: @activity.school,
       observation_type: :activity,

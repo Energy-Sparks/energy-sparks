@@ -77,7 +77,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
 
     it 'allows calendar to be resynced to dependents' do
       regional_calendar = create(:regional_calendar, title: 'Regional calendar')
-      parent_event = create(:holiday, calendar: regional_calendar, description: 'Regional calendar event', start_date: '2021-01-01')
+      parent_event = create(:calendar_event_holiday, calendar: regional_calendar, description: 'Regional calendar event', start_date: '2021-01-01')
 
       calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar', calendar_type: :school).create
       expect(calendar.calendar_events.count).to eq(1)
@@ -107,7 +107,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
 
     it 'shows status of calendar events and resets parent to nil after edit' do
       regional_calendar = create(:regional_calendar, title: 'Regional calendar')
-      parent_event = create(:holiday, calendar: regional_calendar, description: 'Regional calendar event')
+      parent_event = create(:calendar_event_holiday, calendar: regional_calendar, description: 'Regional calendar event')
       calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar', calendar_type: :school).create
 
       expect(calendar.calendar_events.first.based_on).to eq(parent_event)

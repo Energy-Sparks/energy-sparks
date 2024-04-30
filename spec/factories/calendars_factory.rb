@@ -71,7 +71,7 @@ FactoryBot.define do
           holiday_start = term_end + 1
           holiday_end = holiday_start + evaluator.holiday_length.weeks
           create(:term, calendar: calendar, start_date: term_start, end_date: term_end)
-          create(:holiday, calendar: calendar, start_date: holiday_start, end_date: holiday_end)
+          create(:calendar_event_holiday, calendar: calendar, start_date: holiday_start, end_date: holiday_end)
           term_start = holiday_end + 1
         end
       end
