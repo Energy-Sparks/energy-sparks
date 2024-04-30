@@ -169,7 +169,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
               # create a number of holidays outside usage period
               calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: Date.new(2022, 1, 1))
               # but ensure there's one holiday within the period to confirm table displays
-              create(:holiday, calendar: calendar, start_date: Date.new(2024, 1, 6), end_date: Date.new(2024, 1, 13))
+              create(:calendar_event_holiday, calendar: calendar, start_date: Date.new(2024, 1, 6), end_date: Date.new(2024, 1, 13))
               create(:school, :with_basic_configuration_single_meter_and_tariffs,
                 fuel_type: :gas,
                 reading_start_date: reading_start_date,

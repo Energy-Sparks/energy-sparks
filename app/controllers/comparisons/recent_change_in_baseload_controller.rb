@@ -22,7 +22,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::RecentChangeInBaseload.with_data.sort_default
+      Comparison::RecentChangeInBaseload.for_schools(@schools).with_data.sort_default
     end
 
     def create_charts(results)

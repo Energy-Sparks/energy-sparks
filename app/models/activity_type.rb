@@ -10,6 +10,7 @@
 #  deprecated_description :text
 #  fuel_type              :string           default([]), is an Array
 #  id                     :bigint(8)        not null, primary key
+#  maximum_frequency      :integer          default(10)
 #  name                   :string
 #  score                  :integer
 #  show_on_charts         :boolean          default(TRUE)
@@ -32,6 +33,7 @@ class ActivityType < ApplicationRecord
   include Searchable
   include TranslatableAttachment
   include FuelTypeable
+  include Recordable
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
@@ -132,6 +134,10 @@ class ActivityType < ApplicationRecord
 
   def self.tx_resources
     active.order(:id)
+  end
+
+  def count_existing_for_academic_year(school, academic_year)
+    school.activities.where(activity_type: self).where(happened_on: academic_year.start_date..academic_year.end_date).count
   end
 
   private
