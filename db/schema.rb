@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_24_142738) do
+ActiveRecord::Schema.define(version: 2024_04_29_144652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 2024_04_24_142738) do
     t.string "summary"
     t.boolean "show_on_charts", default: true
     t.string "fuel_type", default: [], array: true
+    t.integer "maximum_frequency", default: 10
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
@@ -1078,6 +1079,7 @@ ActiveRecord::Schema.define(version: 2024_04_24_142738) do
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.boolean "show_on_charts", default: true
     t.string "fuel_type", default: [], array: true
+    t.integer "maximum_frequency", default: 10
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
   end
 
