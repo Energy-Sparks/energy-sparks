@@ -75,6 +75,10 @@ module Alerts
       def self.benchmark_template_variables
         { benchmark: true }
       end
+
+      def reporting_period
+        :period
+      end
     end
 
     class DummyAnalyticsAlertFailedClass < DummyAnalyticsAlertClass
