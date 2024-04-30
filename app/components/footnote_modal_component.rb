@@ -10,9 +10,9 @@ class FootnoteModalComponent < ViewComponent::Base
   end
 
   class Link < ViewComponent::Base
-    attr_reader :modal_id
+    attr_reader :modal_id, :href, :title, :remote
 
-    def initialize(modal_id:, href: '', remote: false, title: 'Schools')
+    def initialize(modal_id:, href: '', remote: false, title: '')
       @modal_id = modal_id
       @href = href
       @title = title
@@ -20,9 +20,9 @@ class FootnoteModalComponent < ViewComponent::Base
     end
 
     def call
-      args = { title: @title, 'data-toggle': 'modal', 'data-target': "##{modal_id}", 'data-remote': @remote.to_s }
+      args = { title: title, 'data-toggle': 'modal', 'data-target': "##{modal_id}", 'data-remote': remote.to_s }
 
-      link_to(content, @href, args)
+      link_to(content, href, args)
     end
   end
 end

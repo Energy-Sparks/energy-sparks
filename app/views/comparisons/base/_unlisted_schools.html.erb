@@ -9,7 +9,7 @@
         'View list of schools'
       end %>
   </div>
-  <%= component 'footnote_modal', title: 'Schools not displayed in report', modal_id: 'unlisted-schools' do |c| %>
+  <%= component 'footnote_modal', title: 'Schools excluded from report', modal_id: 'unlisted-schools' do |c| %>
     <% c.with_body_content do %>
       <div class="spinner-border"></div>
     <% end %>

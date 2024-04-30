@@ -227,8 +227,12 @@ class ComparisonTableComponent < ViewComponent::Base
       @note = note
     end
 
+    def note
+      @note || content || ''
+    end
+
     def call
-      (@note || content).html_safe
+      note.html_safe
     end
   end
 end
