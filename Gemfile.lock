@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 01327320e8d3f7aafa55fe97be4fb3cdec1ef32f
+  revision: b26bba90b4c63214557d098a91224d724aba207d
   branch: 4237-add-additional-reporting-periods
   specs:
     energy-sparks_analytics (1.2.1)
