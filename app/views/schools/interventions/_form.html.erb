@@ -3,7 +3,13 @@
   <p><%= intervention_type.name %></p>
   <% if !observation.persisted? %>
     <p class="small text-muted">
-      <%= t('interventions.form.completing_this_activity', maximum: observation.intervention_type.maximum_frequency, count: observation.intervention_type.score) %>
+      <% if observation.intervention_type.exceeded_maximum_in_year?(@school) %>
+        <%= t('interventions.form.exceeded_maximum_in_year', maximum: observation.intervention_type.maximum_frequency) %>
+      <% else %>
+        <%= t('interventions.form.completing_this_activity',
+              maximum: observation.intervention_type.maximum_frequency,
+              count: observation.intervention_type.score) %>
+      <% end %>
     </p>
     <p class="small text-muted">
       <%= t('interventions.form.previous_years') %>

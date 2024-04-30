@@ -323,6 +323,17 @@ describe 'viewing and recording action', type: :system do
           end
         end
       end
+
+      context 'with previous recordings' do
+        before do
+          create_list(:observation, 10, :intervention, intervention_type: intervention_type, school: school)
+          refresh
+        end
+
+        it 'shows message about exceeded threshold' do
+          expect(page).to have_content('You have already completed this action 10 times this academic year. You will not score additional points for recording it')
+        end
+      end
     end
 
     context 'editing an action' do

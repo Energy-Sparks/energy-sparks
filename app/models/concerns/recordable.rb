@@ -12,6 +12,12 @@ module Recordable
     score
   end
 
+  def exceeded_maximum_in_year?(school, date = Time.zone.today)
+    academic_year = school.academic_year_for(date)
+    return false unless academic_year&.current?
+    count_existing_for_academic_year(school, academic_year) >= maximum_frequency
+  end
+
   # Implement in including class. Should return number of existing recordings of this
   # recordable in the given academic year
   def count_existing_for_academic_year(_school, _academic_year)

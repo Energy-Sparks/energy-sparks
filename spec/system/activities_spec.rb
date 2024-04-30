@@ -251,6 +251,17 @@ describe 'viewing and recording activities', type: :system do
           end
         end
       end
+
+      context 'with previous recordings' do
+        before do
+          create_list(:activity, 10, activity_type: activity_type, school: school)
+          refresh
+        end
+
+        it 'shows message about exceeded threshold' do
+          expect(page).to have_content('You have already completed this activity 10 times this academic year. You will not score additional points for recording it')
+        end
+      end
     end
   end
 

@@ -7,7 +7,13 @@
     <p><%= activity.activity_type.name %></p>
     <% if !activity.persisted? %>
       <p class="small text-muted">
-        <%= t('activities.form.completing_this_activity', maximum: activity.activity_type.maximum_frequency, count: activity.activity_type.score) %>
+        <% if activity.activity_type.exceeded_maximum_in_year?(@school) %>
+          <%= t('activities.form.exceeded_maximum_in_year', maximum: activity.activity_type.maximum_frequency) %>
+        <% else %>
+          <%= t('activities.form.completing_this_activity',
+                maximum: activity.activity_type.maximum_frequency,
+                count: activity.activity_type.score) %>
+        <% end %>
       </p>
       <p class="small text-muted">
         <%= t('activities.form.previous_years') %>
