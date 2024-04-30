@@ -75,12 +75,7 @@ class ComparisonTableComponent < ViewComponent::Base
 
     # First column, showing school name and a link
     renders_one :school, ->(school:) do
-      path = if @advice_page.present?
-               helpers.advice_page_path(school, @advice_page, @advice_page_tab)
-             else
-               school_advice_path(school)
-             end
-      link_to school.name, path
+      link_to school.name, helpers.advice_page_path(school, @advice_page, @advice_page_tab)
     end
 
     # Footnote references

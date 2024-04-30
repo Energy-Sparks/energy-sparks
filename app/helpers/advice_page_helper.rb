@@ -1,7 +1,11 @@
 # rubocop:disable Naming/AsciiIdentifiers
 module AdvicePageHelper
-  def advice_page_path(school, advice_page, tab = :insights, params: {}, anchor: nil)
-    polymorphic_path([tab, school, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
+  def advice_page_path(school, advice_page = nil, tab = :insights, params: {}, anchor: nil)
+    if advice_page.present?
+      polymorphic_path([tab, school, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
+    else
+      school_advice_path(school)
+    end
   end
 
   def sort_by_label(advice_pages)
