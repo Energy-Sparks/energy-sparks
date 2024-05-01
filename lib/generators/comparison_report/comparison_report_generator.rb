@@ -32,6 +32,6 @@ class ComparisonReportGenerator < Rails::Generators::NamedBase
   end
 
   def add_route
-    route "resources :#{file_name}, only: [:index]", namespace: :comparisons
+    route "resources :#{file_name}, only: [:index], concerns: :unlisted", namespace: :comparisons
   end
 end
