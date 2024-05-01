@@ -6,7 +6,7 @@
       <% r.with_school school: result.school %>
       <% r.with_reference key: 'tariff_changed_last_year',
                           if: result.any_tariff_changed? %>
-      <%= r.with_var do %>
+      <% r.with_var do %>
         <span class="text-nowrap">
           <% if !result.electricity_current_period_kwh.nil? %>
             <span class="<%= fuel_type_class(:electricity) %>">
@@ -28,18 +28,18 @@
               <%= fa_icon(fuel_type_icon(:solar_pv)) %>
             </span>
           <% end %>
-          </span>
+        </span>
       <% end %>
-      <%= r.with_var do
-            gas_or_electricity_data_stale?(result) ? t('common.labels.no_label') : t('common.labels.yes_label')
-          end %>
+      <% r.with_var do
+           gas_or_electricity_data_stale?(result) ? t('common.labels.no_label') : t('common.labels.yes_label')
+         end %>
       <% %i[kwh co2 £].each do |unit| %>
-        <%= r.with_var val: result.total_previous_period(unit: unit),
-                       unit: unit %>
-        <%= r.with_var val: result.total_current_period(unit: unit), unit: unit %>
-        <%= r.with_var val: result.total_percentage_change(unit: unit),
-                       change: true,
-                       unit: :relative_percent_0dp %>
+        <% r.with_var val: result.total_previous_period(unit: unit),
+                      unit: unit %>
+        <% r.with_var val: result.total_current_period(unit: unit), unit: unit %>
+        <% r.with_var val: result.total_percentage_change(unit: unit),
+                      change: true,
+                      unit: :relative_percent_0dp %>
       <% end %>
     <% end %>
   <% end %>
