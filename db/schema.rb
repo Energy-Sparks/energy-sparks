@@ -3669,6 +3669,75 @@ ActiveRecord::Schema.define(version: 2024_04_29_144652) do
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
        LEFT JOIN storage_heater ON ((latest_runs.id = storage_heater.alert_generation_run_id)))
        LEFT JOIN benchmark ON ((latest_runs.id = benchmark.alert_generation_run_id)))
-    WHERE (((electricity.custom_period_id = gas.custom_period_id) AND (electricity.custom_period_id = storage_heater.custom_period_id)) OR ((electricity.custom_period_id IS NULL) AND (gas.custom_period_id = storage_heater.custom_period_id)) OR ((gas.custom_period_id IS NULL) AND (electricity.custom_period_id = storage_heater.custom_period_id)) OR ((storage_heater.custom_period_id IS NULL) AND (electricity.custom_period_id = gas.custom_period_id)) OR ((electricity.custom_period_id IS NOT NULL) AND (COALESCE(gas.custom_period_id, storage_heater.custom_period_id) IS NULL)) OR ((gas.custom_period_id IS NOT NULL) AND (COALESCE(electricity.custom_period_id, storage_heater.custom_period_id) IS NULL)) OR ((storage_heater.custom_period_id IS NOT NULL) AND (COALESCE(electricity.custom_period_id, gas.custom_period_id) IS NULL)));
+    WHERE (((electricity.custom_period_id = gas.custom_period_id) AND (gas.custom_period_id = storage_heater.custom_period_id)) OR ((electricity.custom_period_id IS NULL) AND (gas.custom_period_id = storage_heater.custom_period_id)) OR ((gas.custom_period_id IS NULL) AND (electricity.custom_period_id = storage_heater.custom_period_id)) OR ((storage_heater.custom_period_id IS NULL) AND (electricity.custom_period_id = gas.custom_period_id)) OR ((electricity.custom_period_id IS NOT NULL) AND (COALESCE(gas.custom_period_id, storage_heater.custom_period_id) IS NULL)) OR ((gas.custom_period_id IS NOT NULL) AND (COALESCE(electricity.custom_period_id, storage_heater.custom_period_id) IS NULL)) OR ((storage_heater.custom_period_id IS NOT NULL) AND (COALESCE(electricity.custom_period_id, gas.custom_period_id) IS NULL)));
+  SQL
+  create_view "change_in_energy_since_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      energy.school_id,
+      energy.current_year_electricity_kwh AS electricity_current_period_kwh,
+      energy.previous_year_electricity_kwh AS electricity_previous_period_kwh,
+      energy.current_year_electricity_co2 AS electricity_current_period_co2,
+      energy.previous_year_electricity_co2 AS electricity_previous_period_co2,
+      energy.current_year_electricity_gbp AS electricity_current_period_gbp,
+      energy.previous_year_electricity_gbp AS electricity_previous_period_gbp,
+      energy.current_year_gas_kwh AS gas_current_period_kwh,
+      energy.previous_year_gas_kwh AS gas_previous_period_kwh,
+      energy.current_year_gas_co2 AS gas_current_period_co2,
+      energy.previous_year_gas_co2 AS gas_previous_period_co2,
+      energy.current_year_gas_gbp AS gas_current_period_gbp,
+      energy.previous_year_gas_gbp AS gas_previous_period_gbp,
+      energy.current_year_storage_heaters_kwh AS storage_heater_current_period_kwh,
+      energy.previous_year_storage_heaters_kwh AS storage_heater_previous_period_kwh,
+      energy.current_year_storage_heaters_co2 AS storage_heater_current_period_co2,
+      energy.previous_year_storage_heaters_co2 AS storage_heater_previous_period_co2,
+      energy.current_year_storage_heaters_gbp AS storage_heater_current_period_gbp,
+      energy.previous_year_storage_heaters_gbp AS storage_heater_previous_period_gbp,
+      energy.current_year_solar_pv_kwh AS solar_pv_current_period_kwh,
+      energy.previous_year_solar_pv_kwh AS solar_pv_previous_period_kwh,
+      energy.current_year_solar_pv_co2 AS solar_pv_current_period_co2,
+      energy.previous_year_solar_pv_co2 AS solar_pv_previous_period_co2,
+      additional.electricity_economic_tariff_changed_this_year AS electricity_tariff_has_changed,
+      additional.gas_economic_tariff_changed_this_year AS gas_tariff_has_changed,
+      energy.solar_type
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.previous_year_electricity_kwh,
+              data.current_year_electricity_kwh,
+              data.previous_year_electricity_co2,
+              data.current_year_electricity_co2,
+              data.previous_year_electricity_gbp,
+              data.current_year_electricity_gbp,
+              data.previous_year_gas_kwh,
+              data.current_year_gas_kwh,
+              data.previous_year_gas_co2,
+              data.current_year_gas_co2,
+              data.previous_year_gas_gbp,
+              data.current_year_gas_gbp,
+              data.previous_year_storage_heaters_kwh,
+              data.current_year_storage_heaters_kwh,
+              data.previous_year_storage_heaters_co2,
+              data.current_year_storage_heaters_co2,
+              data.previous_year_storage_heaters_gbp,
+              data.current_year_storage_heaters_gbp,
+              data.previous_year_solar_pv_kwh,
+              data.current_year_solar_pv_kwh,
+              data.previous_year_solar_pv_co2,
+              data.current_year_solar_pv_co2,
+              data.solar_type
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbp double precision, current_year_gas_gbp double precision, previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbp double precision, current_year_storage_heaters_gbp double precision, previous_year_solar_pv_kwh double precision, current_year_solar_pv_kwh double precision, previous_year_solar_pv_co2 double precision, current_year_solar_pv_co2 double precision, solar_type text)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
+      ( SELECT alerts.alert_generation_run_id,
+              data.electricity_economic_tariff_changed_this_year,
+              data.gas_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(electricity_economic_tariff_changed_this_year boolean, gas_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((energy.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
 end
