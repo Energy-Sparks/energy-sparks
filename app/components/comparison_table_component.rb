@@ -38,7 +38,12 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   renders_many :footnotes, 'ComparisonTableComponent::FootnoteComponent'
-  renders_many :notes, 'ComparisonTableComponent::NoteComponent'
+
+  renders_many :notes, ->(**kwargs) do
+    if kwargs.key?(:if) ? kwargs.delete(:if) : true
+      NoteComponent.new(**kwargs)
+    end
+  end
 
   def fetch(key)
     @footnote_cache[key] ||= Comparison::Footnote.fetch(key)
@@ -70,12 +75,7 @@ class ComparisonTableComponent < ViewComponent::Base
 
     # First column, showing school name and a link
     renders_one :school, ->(school:) do
-      path = if @advice_page.present?
-               helpers.advice_page_path(school, @advice_page, @advice_page_tab)
-             else
-               school_advice_path(school)
-             end
-      link_to school.name, path
+      link_to school.name, helpers.advice_page_path(school, @advice_page, @advice_page_tab)
     end
 
     # Footnote references
@@ -218,12 +218,16 @@ class ComparisonTableComponent < ViewComponent::Base
   end
 
   class NoteComponent < ViewComponent::Base
-    def initialize(note = nil)
+    def initialize(note: nil)
       @note = note
     end
 
+    def note
+      @note || content || ''
+    end
+
     def call
-      @note || content
+      note.html_safe
     end
   end
 end

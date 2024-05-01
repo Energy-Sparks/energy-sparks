@@ -25,6 +25,7 @@
       <div class="col-sm-12">
         <%= render 'tables', results: @results, advice_page: @advice_page, report: @report,
                              headers: @headers, colgroups: @colgroups, advice_page_tab: @advice_page_tab %>
+        <%= render 'unlisted_schools', unlisted_schools_count: @unlisted_schools_count %>
       </div>
     </div>
   </div>

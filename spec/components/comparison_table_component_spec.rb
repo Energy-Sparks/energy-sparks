@@ -57,12 +57,17 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
   context 'with notes' do
     let(:note_1) { 'This is note 1' }
     let(:note_2) { 'This is note 2' }
+    let(:note_3) { 'This is note 3' }
+    let(:condition) { true }
 
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|
-        c.with_note note_1
+        c.with_note note: note_1
         c.with_note do
           note_2
+        end
+        c.with_note if: condition do
+          note_3
         end
       end
     end
@@ -71,6 +76,15 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
       within('table tfoot') do
         expect(html).to have_content(note_1)
         expect(html).to have_content(note_2)
+        expect(html).to have_content(note_3)
+      end
+    end
+
+    context 'when conditon is false' do
+      let(:condition) { false }
+
+      it 'does not add note' do
+        expect(html).not_to have_content(note_3)
       end
     end
   end

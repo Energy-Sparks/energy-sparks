@@ -1,7 +1,7 @@
 <div class="text-right advice-table-caption">
   <%= @additional_notice_text %>
-  <a href="" data-toggle="modal" data-target="#<%= data_target %>">
+  <%= component 'footnote_modal/link', modal_id: data_target do %>
     <%= t('advice_pages.how_have_we_analysed_your_data.link_title') %>
     <span class="advice-question-icon"><%= fa_icon('question-circle') %></span>
-  </a>
+  <% end %>
 </div>
