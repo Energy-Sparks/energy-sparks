@@ -127,7 +127,7 @@ Rails.application.routes.draw do
     resources :thermostat_sensitivity, only: [:index], concerns: :unlisted
     resources :thermostatic_control, only: [:index], concerns: :unlisted
     resources :weekday_baseload_variation, only: [:index], concerns: :unlisted
-    
+
     get '*key', to: 'configurable_period#index', as: :configurable_period
   end
 
