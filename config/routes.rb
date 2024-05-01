@@ -82,7 +82,6 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
-    resources :heat_saver_march_2024, only: [:index]
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index]
     resources :annual_change_in_gas_out_of_hours_use, only: [:index]
     resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index]
@@ -110,6 +109,7 @@ Rails.application.routes.draw do
     resources :electricity_targets, only: [:index]
     resources :gas_consumption_during_holiday, only: [:index]
     resources :gas_targets, only: [:index]
+    resources :heat_saver_march_2024, only: [:index]
     resources :heating_coming_on_too_early, only: [:index]
     resources :heating_in_warm_weather, only: [:index]
     resources :holiday_usage_last_year, only: [:index]
@@ -122,6 +122,8 @@ Rails.application.routes.draw do
     resources :thermostat_sensitivity, only: [:index]
     resources :thermostatic_control, only: [:index]
     resources :weekday_baseload_variation, only: [:index]
+
+    get '*key', to: 'configurable_period#index', as: :configurable_period
   end
 
   # redirect old benchmark URLs

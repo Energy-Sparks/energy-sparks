@@ -5,11 +5,16 @@ en:
       page_title: Update energy saving action
       title: Update your energy saving action
     form:
-      adding_a_photo_to_document_your_action_will_score_you: Adding a photo to document your action will score you
+      adding_a_photo_to_document_your_action_will_score_you: Adding a photo to document your action can score you
       adding_some_background_detail_label: Adding some background detail can help you track and monitor improvements
       bonus_points:
         one: bonus point
         other: bonus points
+      completing_this_activity:
+        one: Completing this action up to %{maximum} times this academic year will earn you 1 point
+        other: Completing this action up to %{maximum} times this academic year  will earn you %{count} points
+      exceeded_maximum_in_year: You have already completed this action %{maximum} times this academic year. You will not score additional points for recording it
+      previous_years: Actions recorded in previous academic years do not score points
       record_action: Record action
       tell_us_more: Tell us more about what you did
       update_action: Update action

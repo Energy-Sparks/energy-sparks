@@ -81,6 +81,7 @@ module Admin
           :active,
           :activity_category_id,
           :score,
+          :maximum_frequency,
           :data_driven,
           :show_on_charts,
           key_stage_ids: [],
