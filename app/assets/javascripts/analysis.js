@@ -145,9 +145,6 @@ function processAnalysisCharts(){
       }
     });
   }
-
-  //activate tooltips
-  $('[data-toggle="tooltip"]').tooltip();
 }
 
 function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
@@ -251,6 +248,7 @@ function processAnnotations(loaded_annotations, chart){
     labels: annotations
   }, true);
   if (annotations.length) {
+    // activate tooltips created in the annotations
     $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
     chart.redraw()
   }
