@@ -126,9 +126,6 @@ function chartSuccess(chartConfig, chartData, chart) {
 
   $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
 
-  // Activate any popovers
-  $('[data-toggle="popover"]').popover();
-
   chart.hideLoading();
 }
 
@@ -145,9 +142,6 @@ function processAnalysisCharts(){
       }
     });
   }
-
-  //activate tooltips
-  $('[data-toggle="tooltip"]').tooltip();
 }
 
 function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
@@ -209,7 +203,7 @@ function processAnalysisChart(chartContainer, chartConfig){
 }
 
 //Highcharts filters attributes from HTML given as text labels, so add this
-//so we can style the annotation popovers using Bootstrap.
+//so we can style the annotation tooltips using Bootstrap.
 Highcharts.AST.allowedAttributes.push('data-toggle');
 Highcharts.AST.allowedAttributes.push('data-placement');
 
@@ -251,6 +245,7 @@ function processAnnotations(loaded_annotations, chart){
     labels: annotations
   }, true);
   if (annotations.length) {
+    // activate tooltips created in the annotations
     $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
     chart.redraw()
   }
