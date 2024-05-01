@@ -111,13 +111,7 @@ class Observation < ApplicationRecord
   end
 
   def add_points_for_interventions
-    record_points_for_current_academic_year
-  end
-
-  def record_points_for_current_academic_year
-    return unless school.academic_year_for(at)&.current?
-
-    self.points = intervention_type.score
+    self.points = intervention_type.score_when_recorded_at(school, at)
   end
 
   def reject_temperature_recordings(attributes)
