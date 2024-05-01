@@ -7,6 +7,7 @@
 #  electricity_current_period_co2                :float
 #  electricity_current_period_gbp                :float
 #  electricity_current_period_kwh                :float
+#  electricity_custom_period_id                  :bigint(8)
 #  electricity_previous_period_co2               :float
 #  electricity_previous_period_gbp               :float
 #  electricity_previous_period_kwh               :float
@@ -15,6 +16,7 @@
 #  gas_current_period_co2                        :float
 #  gas_current_period_gbp                        :float
 #  gas_current_period_kwh                        :float
+#  gas_custom_period_id                          :bigint(8)
 #  gas_previous_period_co2                       :float
 #  gas_previous_period_gbp                       :float
 #  gas_previous_period_kwh                       :float
@@ -27,6 +29,7 @@
 #  storage_heater_current_period_co2             :float
 #  storage_heater_current_period_gbp             :float
 #  storage_heater_current_period_kwh             :float
+#  storage_heater_custom_period_id               :bigint(8)
 #  storage_heater_previous_period_co2            :float
 #  storage_heater_previous_period_gbp            :float
 #  storage_heater_previous_period_kwh            :float
