@@ -5,7 +5,7 @@ cy:
         comparison:
           title: Cymhariaeth cost ar gyfer y 2 flynedd ddiwethaf
         cost_breakdown_by_charge:
-          title: Dadansoddiad cost yn ôl tâl am y %{ cyfnod} diwethaf
+          title: Dadansoddiad cost yn ôl tâl am y %{period}diwethaf
         cost_breakdown_by_meter:
           intro: Mae'r tabl canlynol yn crynhoi cyfanswm y gost sy'n gysylltiedig â phob metr am y %{period} diwethaf rhwng %{start_date} a %{end_date}
           title: Cyfanswm y gost am y %{period} diwethaf
