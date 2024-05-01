@@ -16,21 +16,23 @@
                           schools_to_sentence: 'some schools',
                           if: result.floor_area_changed %>
       <%= r.with_var do %>
-        <% if !result.electricity_current_period_kwh.nil? %>
-          <span class="<%= fuel_type_class(:electricity) %>">
-            <%= fa_icon(fuel_type_icon(:electricity)) %>
-          </span>
-        <% end %>
-        <% if !result.gas_current_period_kwh.nil? %>
-          <span class="<%= fuel_type_class(:gas) %>">
-            <%= fa_icon(fuel_type_icon(:gas)) %>
-          </span>
-        <% end %>
-        <% if !result.storage_heater_current_period_kwh.nil? %>
-          <span class="<%= fuel_type_class(:storage_heater) %>">
-            <%= fa_icon(fuel_type_icon(:storage_heater)) %>
-          </span>
-        <% end %>
+        <span class="text-nowrap">
+          <% if !result.electricity_current_period_kwh.nil? %>
+            <span class="<%= fuel_type_class(:electricity) %>">
+              <%= fa_icon(fuel_type_icon(:electricity)) %>
+            </span>
+          <% end %>
+          <% if !result.gas_current_period_kwh.nil? %>
+            <span class="<%= fuel_type_class(:gas) %>">
+              <%= fa_icon(fuel_type_icon(:gas)) %>
+            </span>
+          <% end %>
+          <% if !result.storage_heater_current_period_kwh.nil? %>
+            <span class="<%= fuel_type_class(:storage_heater) %>">
+              <%= fa_icon(fuel_type_icon(:storage_heater)) %>
+            </span>
+          <% end %>
+        </span>
       <% end %>
 
       <% r.with_var val: result.activation_date, unit: :date_mmm_yyyy %>
