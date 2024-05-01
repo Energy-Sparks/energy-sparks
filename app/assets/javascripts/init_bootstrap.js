@@ -1,8 +1,8 @@
 "use strict"
 $(document).ready(function() {
-  //activate tooltips
+  // Activate tooltips
   $('[data-toggle="tooltip"]').tooltip();
 
-  // Activate any popovers
+  // Activate popovers
   $('[data-toggle="popover"]').popover();
 });
