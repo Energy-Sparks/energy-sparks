@@ -8,6 +8,7 @@
 #  fuel_type                  :string           default([]), is an Array
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
+#  maximum_frequency          :integer          default(10)
 #  name                       :string
 #  score                      :integer
 #  show_on_charts             :boolean          default(TRUE)
@@ -29,6 +30,7 @@ class InterventionType < ApplicationRecord
   include Searchable
   include TranslatableAttachment
   include FuelTypeable
+  include Recordable
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
 
@@ -79,6 +81,10 @@ class InterventionType < ApplicationRecord
 
   def self.tx_resources
     active.order(:id)
+  end
+
+  def count_existing_for_academic_year(school, academic_year)
+    school.observations.where(intervention_type: self).where(at: academic_year.start_date..academic_year.end_date).count
   end
 
   private

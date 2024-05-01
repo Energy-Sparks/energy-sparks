@@ -303,4 +303,13 @@ describe 'ActivityType' do
       end
     end
   end
+
+  context 'as a Recordable' do
+    it_behaves_like 'a recordable' do
+      let(:factory) {:activity_type}
+      let(:recorded_factory) {:activity}
+      let(:trait) { nil }
+      let(:recording_date_field) { :happened_on }
+    end
+  end
 end

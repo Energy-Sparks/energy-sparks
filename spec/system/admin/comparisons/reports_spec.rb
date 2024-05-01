@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 shared_examples 'a report page with valid attributes' do |action:|
@@ -12,6 +14,8 @@ shared_examples 'a report page with valid attributes' do |action:|
     fill_in 'Previous label', with: 'Previous label'
     fill_in 'Previous start date', with: '01/01/2023'
     fill_in 'Previous end date', with: '01/02/2023'
+    fill_in 'Max days out of date', with: 365
+    fill_in 'Enough days data', with: 1
 
     fill_in_trix '#report_introduction_en', with: 'New introduction'
     fill_in_trix '#report_notes_en', with: 'New notes'
@@ -20,7 +24,15 @@ shared_examples 'a report page with valid attributes' do |action:|
   end
 
   it { expect(page).to have_content("Report was successfully #{action}") }
-  it { expect(page).to have_selector(:table_row, { 'Key' => 'New key', 'Title' => 'New title', 'Reporting period' => 'Custom (comparing Current label to Previous label', 'Public' => '' }) }
+
+  it do
+    expect(page).to have_selector(:table_row, { 'Key' => 'New key',
+                                                'Title' => 'New title',
+                                                'Reporting period' =>
+                                                  'Custom (comparing Current label to Previous label',
+                                                'Public' => '' })
+  end
+
   it { expect(page).to have_css("i[class*='fa-check-circle']") }
 end
 
@@ -41,11 +53,11 @@ shared_examples 'a report page with invalid attributes' do
   it { expect(page).to have_content("Previous label *\ncan't be blank") }
   it { expect(page).to have_content("Previous start date *\ncan't be blank") }
   it { expect(page).to have_content("Previous end date *\ncan't be blank") }
-  it { expect(page).not_to have_content("Introduction en\ncan't be blank") }
-  it { expect(page).not_to have_content("Notes en\ncan't be blank") }
+  it { expect(page).to have_no_content("Introduction en\ncan't be blank") }
+  it { expect(page).to have_no_content("Notes en\ncan't be blank") }
 end
 
-describe 'admin comparisons reports', type: :system, include_application_helper: true do
+describe 'admin comparisons reports', :include_application_helper do
   let!(:admin)  { create(:admin) }
   let!(:report) { create(:report) }
 
@@ -83,7 +95,11 @@ describe 'admin comparisons reports', type: :system, include_application_helper:
 
       it 'lists report' do
         within('table') do
-          expect(page).to have_selector(:table_row, { 'Key' => report.key, 'Reporting period' => report.reporting_period.humanize, 'Title' => report.title, 'Public' => '' })
+          expect(page).to have_selector(:table_row,
+                                        { 'Key' => report.key,
+                                          'Reporting period' => report.reporting_period.humanize,
+                                          'Title' => report.title,
+                                          'Public' => '' })
         end
         expect(page).to have_css("i[class*='fa-check-circle']")
       end
@@ -125,7 +141,10 @@ describe 'admin comparisons reports', type: :system, include_application_helper:
 
         it 'no longer lists report' do
           within('table') do
-            expect(page).not_to have_selector(:table_row, { 'Key' => report.key, 'Reporting period' => report.reporting_period.humanize, 'Title' => report.title })
+            expect(page).to have_no_selector(:table_row,
+                                             { 'Key' => report.key,
+                                               'Reporting period' => report.reporting_period.humanize,
+                                               'Title' => report.title })
           end
         end
       end

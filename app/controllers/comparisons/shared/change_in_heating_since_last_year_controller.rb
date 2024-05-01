@@ -32,7 +32,7 @@ module Comparisons
 
       def load_data
         model.for_schools(@schools).where.not(temperature_adjusted_percent: nil)
-             .order(temperature_adjusted_percent: :asc)
+             .order(current_year_kwh: :desc)
       end
     end
   end

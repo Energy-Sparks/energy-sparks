@@ -44,6 +44,14 @@ class Comparison::Report < ApplicationRecord
 
   scope :by_key, ->(order = :asc) { order(key: order) }
 
+  def to_alert_configuration
+    { name: title,
+      max_days_out_of_date: custom_period.max_days_out_of_date,
+      enough_days_data: custom_period.enough_days_data,
+      current_period: custom_period.current_start_date..custom_period.current_end_date,
+      previous_period: custom_period.previous_start_date..custom_period.previous_end_date }
+  end
+
   private
 
   def not_custom?

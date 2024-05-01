@@ -178,4 +178,13 @@ describe 'InterventionType' do
       expect(subject.download_links_cy.to_s).to eql("<div class=\"trix-content\">\n  Links for Welsh <a href=\"google.com\">Google</a>\n</div>\n")
     end
   end
+
+  context 'as a Recordable' do
+    it_behaves_like 'a recordable' do
+      let(:factory) {:intervention_type}
+      let(:recorded_factory) {:observation}
+      let(:trait) { :intervention }
+      let(:recording_date_field) { :at }
+    end
+  end
 end

@@ -105,7 +105,7 @@ describe Observation do
         expect(observation.points).to eq(nil)
         observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div></div>', points: 0)
         observation.save
-        expect(observation.points).to eq(0)
+        expect(observation.points).to eq(nil)
       end
 
       it 'only adds points automatically if its an intervention' do

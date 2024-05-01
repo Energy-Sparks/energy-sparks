@@ -2,15 +2,17 @@
 #
 # Table name: comparison_custom_periods
 #
-#  created_at          :datetime         not null
-#  current_end_date    :date             not null
-#  current_label       :string           not null
-#  current_start_date  :date             not null
-#  id                  :bigint(8)        not null, primary key
-#  previous_end_date   :date             not null
-#  previous_label      :string           not null
-#  previous_start_date :date             not null
-#  updated_at          :datetime         not null
+#  created_at           :datetime         not null
+#  current_end_date     :date             not null
+#  current_label        :string           not null
+#  current_start_date   :date             not null
+#  enough_days_data     :integer
+#  id                   :bigint(8)        not null, primary key
+#  max_days_out_of_date :integer
+#  previous_end_date    :date             not null
+#  previous_label       :string           not null
+#  previous_start_date  :date             not null
+#  updated_at           :datetime         not null
 #
 class Comparison::CustomPeriod < ApplicationRecord
   self.table_name = 'comparison_custom_periods'
@@ -19,6 +21,7 @@ class Comparison::CustomPeriod < ApplicationRecord
 
   validates :current_label, :current_start_date, :current_end_date, presence: true
   validates :previous_label, :previous_start_date, :previous_end_date, presence: true
+  validates :max_days_out_of_date, :enough_days_data, presence: true
 
   # Rails 7 comparison validations (imported to: app/validators/comparison_validator.rb)
   # Basic rules. They could be more complex than this!

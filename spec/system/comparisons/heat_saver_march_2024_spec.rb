@@ -5,7 +5,6 @@ describe 'heat_saver_march_2024' do
   let(:key) { :heat_saver_march_2024 }
   let(:advice_page_key) { :total_energy_use }
 
-  # change to your variables
   let(:usage_variables) do
     {
       current_period_kwh: 1000.0,

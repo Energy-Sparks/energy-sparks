@@ -3,7 +3,7 @@ require 'rails_helper'
 
 describe Alerts::System::UpcomingHoliday do
   let(:calendar) { create :calendar }
-  let!(:holiday) { create :holiday, start_date: start_date, end_date: start_date + 7.days, calendar: calendar }
+  let!(:holiday) { create :calendar_event_holiday, start_date: start_date, end_date: start_date + 7.days, calendar: calendar }
   let(:school) { create :school, calendar: calendar}
   let!(:aggregate_school) { instance_double('meter-collection') }
 

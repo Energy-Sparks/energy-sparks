@@ -69,6 +69,7 @@ module Admin
           :active,
           :intervention_type_group_id,
           :score,
+          :maximum_frequency,
           :custom,
           :show_on_charts,
           fuel_type: [],
