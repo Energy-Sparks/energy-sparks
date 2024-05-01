@@ -7,12 +7,13 @@ module Comparisons
 
     before_action :filter
     before_action :set_schools
+    before_action :set_advice_page
+    before_action :set_report
     before_action :set_results, only: [:index]
     before_action :set_unlisted_schools_count, only: [:index]
     helper_method :index_params
+    helper_method :key
     helper_method :footnote_cache
-    before_action :set_advice_page
-    before_action :set_report
     before_action :set_headers
 
     def index
