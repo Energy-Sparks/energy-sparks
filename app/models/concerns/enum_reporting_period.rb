@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnumReportingPeriod
   extend ActiveSupport::Concern
 
@@ -6,6 +8,10 @@ module EnumReportingPeriod
   ENUM_REPORTING_PERIODS = {
     custom: 0,
     last_12_months: 1,
+    last_2_weeks: 2,
+    last_2_holidays: 3,
+    same_holidays: 4,
+    current_holidays: 5
   }.freeze
 
   included do
