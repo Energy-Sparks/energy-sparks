@@ -50,11 +50,11 @@ module Comparisons
     end
 
     def set_report
-      @report = Comparison::Report.find_by_key(key) if key
+      @report = Comparison::Report.find_by!(key: key) if key
     end
 
     def set_advice_page
-      @advice_page = AdvicePage.find_by_key(advice_page_key) if advice_page_key
+      @advice_page = AdvicePage.find_by!(key: advice_page_key) if advice_page_key
       @advice_page_tab = advice_page_tab
     end
 
