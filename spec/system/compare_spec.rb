@@ -97,6 +97,46 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_link('Change benchmark') }
   end
 
+  shared_examples 'an unlisted schools modal' do
+    it "doesn't display included schools" do
+      within '.modal-body' do
+        expect(page).not_to have_link school.name
+      end
+    end
+
+    it 'displays schools' do
+      within '.modal-body' do
+        unlisted_schools.each do |school|
+          expect(page).to have_link school.name, href: school_path(school)
+        end
+      end
+    end
+
+    it 'links to advice pages' do
+      within '.modal-body' do
+        unlisted_schools.each do |school|
+          expect(page).to have_link 'View analysis', href: insights_school_advice_baseload_path(school)
+        end
+      end
+    end
+  end
+
+  shared_examples 'a results page with unlisted schools' do |unlisted_count: 0|
+    context 'with no excluded schools', if: unlisted_count == 0 do
+      it { expect(page).not_to have_content 'school could not be shown in this report' }
+    end
+
+    context 'with multiple excluded schools', if: unlisted_count > 1 do
+      it { expect(page).to have_content("#{unlisted_count} schools could not be shown in this report as they do not have enough data to be analysed") }
+      it { expect(page).to have_link('View list of schools') }
+    end
+
+    context 'with a single excluded school', if: unlisted_count == 1 do
+      it { expect(page).to have_content('1 school could not be shown in this report as it does not have enough data to be analysed') }
+      it {expect(page).to have_link('View school') }
+    end
+  end
+
   shared_examples 'a form filter' do |id:, school_types_excluding: nil, school_type: nil, country: nil, funder: nil, school_groups: nil, school_group_list: nil|
     let(:all_school_types) { School.school_types.keys }
 
@@ -260,24 +300,25 @@ describe 'compare pages', :compare, type: :system do
 
   ## tests start here ##
 
-  let(:user) {}
-  let(:all_school_types) { School.school_types.keys }
-  let!(:funder)          { create(:funder, name: 'Grant Funder') }
-  let!(:school_group)    { create(:school_group, name: 'Group 1') }
-  # the stubbed out geocoder stamps on the country if the postcode is defaulted
-  let!(:school)          { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group, funder: funder)}
-  let!(:school_group_2)  { create(:school_group, name: 'Group 2') }
-  let!(:school_2)        { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group_2)}
-  let!(:school_3)        { create(:school, country: :scotland, school_group: create(:school_group, name: 'Not Public', public: false)) }
-
-  let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { baseload_per_pupil: 'Baseload per pupil' } }] }
-
-  before do
-    sign_in(user) if user
-  end
 
   [true, false].each do |feature_flag|
     context "when comparison report feature flag is set to #{feature_flag}" do
+      let(:user) {}
+      let(:all_school_types) { School.school_types.keys }
+      let!(:funder)          { create(:funder, name: 'Grant Funder') }
+      # the stubbed out geocoder stamps on the country if the postcode is defaulted
+      let!(:school_group)    { create(:school_group, name: 'Group 1') }
+      let!(:school_group_2)  { create(:school_group, name: 'Group 2') }
+      let!(:school)          { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group, funder: funder)}
+      let!(:school_2)        { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group_2)}
+      let!(:school_3)        { create(:school, country: :scotland, school_group: create(:school_group, name: 'Not Public', public: false)) }
+
+      let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { baseload_per_pupil: 'Baseload per pupil' } }] }
+
+      before do
+        sign_in(user) if user
+      end
+
       around do |example|
         ClimateControl.modify FEATURE_FLAG_COMPARISON_REPORTS: feature_flag.to_s do
           example.run
@@ -569,7 +610,57 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
-  describe 'Redirecting old benchmark to new compare routes', type: :request do
+  context 'when comparison report feature is switched on' do
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_COMPARISON_REPORTS: 'true' do
+        example.run
+      end
+    end
+
+    describe 'displaying unlisted schools on the results page' do
+      # school should be the only school with results
+      let!(:school)    { create(:school, name: 'Included school') }
+      let(:excluded_1) { create(:school, name: 'Excluded 1') }
+      let(:excluded_2) { create(:school, name: 'Excluded 2') }
+
+      let!(:unlisted_schools) { }
+
+      include_context 'index page context', display_new_comparison_pages: true
+      include_context 'results page context', display_new_comparison_pages: true
+
+      before { visit comparisons_baseload_per_pupil_index_path }
+
+      context 'when there are several excluded schools', js: true do
+        let!(:unlisted_schools) { [excluded_1, excluded_2] }
+
+        it_behaves_like 'a results page with unlisted schools', unlisted_count: 2
+
+        context 'when clicking link' do
+          before { click_on 'View list of schools' }
+
+          it_behaves_like 'an unlisted schools modal'
+        end
+      end
+
+      context 'when there is one excluded school', js: true do
+        let(:unlisted_schools) { [excluded_1] }
+
+        it_behaves_like 'a results page with unlisted schools', unlisted_count: 1
+
+        context 'when clicking link' do
+          before { click_on 'View school' }
+
+          it_behaves_like 'an unlisted schools modal'
+        end
+      end
+
+      context 'when there are no unlisted schools' do
+        it_behaves_like 'a results page with unlisted schools', unlisted_count: 0
+      end
+    end
+  end
+
+  describe 'Redirecting old benchmark routes to new compare routes', type: :request do
     before do
       get old_benchmark_url
     end
@@ -583,6 +674,9 @@ describe 'compare pages', :compare, type: :system do
 
     context '/benchmark' do
       context 'with school groups' do
+        let!(:school_group) { create(:school_group) }
+        let!(:school_group_2) { create(:school_group) }
+
         let(:old_benchmark_url) { "/benchmark?benchmark_type=baseload_per_pupil&benchmark%5Bschool_group_ids%5D%5B%5D=&benchmark%5Bschool_group_ids%5D%5B%5D=#{school_group.id}&benchmark%5Bschool_group_ids%5D%5B%5D=#{school_group_2.id}&benchmark%5Bschool_types%5D%5B%5D=&benchmark%5Bschool_types%5D%5B%5D=0&benchmark%5Bschool_types%5D%5B%5D=1&benchmark%5Bschool_types%5D%5B%5D=2&benchmark%5Bschool_types%5D%5B%5D=3&benchmark%5Bschool_group_ids%5D%5B%5D=&benchmark%5Bschool_types%5D%5B%5D=4&benchmark%5Bschool_types%5D%5B%5D=5&benchmark%5Bschool_types%5D%5B%5D=6&commit=Compare" }
 
         it 'redirects to the new pages' do

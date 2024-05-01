@@ -20,8 +20,10 @@ en:
       table_title: 'Table %{table_number}: %{table_title}'
       total_usage: Total energy usage comparison
     unlisted:
-      link: View list of schools
+      link:
+        one: View school
+        other: View list of schools
       loading: Loading schools
       message:
-        one: "%{count} schools could not be shown in this report as they do not have enough data to be analysed"
-        other: "%{count} school could not be shown in this report as it does not have enough data to be analysed"
+        one: "%{count} school could not be shown in this report as it does not have enough data to be analysed"
+        other: "%{count} schools could not be shown in this report as they do not have enough data to be analysed"
