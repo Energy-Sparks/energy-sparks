@@ -64,7 +64,7 @@ module Comparisons
     end
 
     def set_unlisted_schools_count
-      @unlisted_schools_count = @schools.count - @results.count
+      @unlisted_schools_count = @schools.length - @results.length
     end
 
     def set_advice_page
