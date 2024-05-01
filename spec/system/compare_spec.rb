@@ -111,14 +111,6 @@ describe 'compare pages', :compare, type: :system do
         end
       end
     end
-
-    it 'links to advice pages' do
-      within '.modal-body' do
-        unlisted_schools.each do |school|
-          expect(page).to have_link 'View analysis', href: insights_school_advice_baseload_path(school)
-        end
-      end
-    end
   end
 
   shared_examples 'a results page with unlisted schools' do |unlisted_count: 0|

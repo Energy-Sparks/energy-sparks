@@ -4,17 +4,12 @@
   <thead>
     <tr>
       <th class="text-left"><%= t('common.school') %></th>
-      <th class="no-sort"></th>
     </tr>
   </thead>
   <tbody>
     <% @unlisted&.each do |school| %>
       <tr>
         <td class='text-left'><%= link_to school.name, school_path(school) %></td>
-        <td class='text-right'>
-          <%= link_to t('school_groups.priority_actions.view_analysis'),
-                      advice_page_path(school, @advice_page, @advice_page_tab) %>
-         </td>
       </tr>
     <% end %>
   </tbody>
