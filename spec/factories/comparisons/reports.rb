@@ -7,6 +7,8 @@ FactoryBot.define do
     sequence(:introduction) {|n| "Introduction #{n}"}
     sequence(:notes) {|n| "Notes #{n}"}
     public { true }
+
+    initialize_with { Comparison::Report.find_or_create_by(key: key) }
   end
 
   trait :with_custom_period do

@@ -221,7 +221,7 @@ describe 'compare pages', :compare, type: :system do
   shared_context 'index page context' do |display_new_comparison_pages: false|
     before do
       if display_new_comparison_pages
-        Comparison::Report.find_or_create_by(key: 'baseload_per_pupil').update(title: 'Baseload per pupil', introduction: 'intro html', public: true)
+        create(:report, key: 'baseload_per_pupil', title: 'Baseload per pupil', introduction: 'intro html', public: true)
       else
         expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
       end
