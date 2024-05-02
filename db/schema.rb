@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_29_144652) do
+ActiveRecord::Schema.define(version: 2024_05_01_145002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -679,6 +679,12 @@ ActiveRecord::Schema.define(version: 2024_04_29_144652) do
     t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
   end
 
+  create_table "comparison_report_groups", force: :cascade do |t|
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "comparison_reports", force: :cascade do |t|
     t.string "key", null: false
     t.boolean "public", default: false
@@ -686,8 +692,10 @@ ActiveRecord::Schema.define(version: 2024_04_29_144652) do
     t.bigint "custom_period_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "report_group_id"
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
     t.index ["key"], name: "index_comparison_reports_on_key", unique: true
+    t.index ["report_group_id"], name: "index_comparison_reports_on_report_group_id"
   end
 
   create_table "configurations", force: :cascade do |t|
@@ -2010,6 +2018,7 @@ ActiveRecord::Schema.define(version: 2024_04_29_144652) do
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
+  add_foreign_key "comparison_reports", "comparison_report_groups", column: "report_group_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"
