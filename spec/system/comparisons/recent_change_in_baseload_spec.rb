@@ -1,7 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'recent_change_in_baseload' do
   let!(:school) { create(:school) }
+  let!(:alerts) do
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+                   variables: { electricity_economic_tariff_changed_this_year: true })
+  end
   let(:key) { :recent_change_in_baseload }
   let(:advice_page_key) { :baseload }
 
@@ -11,7 +19,7 @@ describe 'recent_change_in_baseload' do
       average_baseload_last_year_kw: 2.939355172413793,
       average_baseload_last_week_kw: 2.5156071428571427,
       change_in_baseload_kw: -0.42374802955665025,
-      next_year_change_in_baseload_gbpcurrent: -556.8049108374385,
+      next_year_change_in_baseload_gbpcurrent: -556.8049108374385
     }
   end
 
@@ -25,10 +33,6 @@ describe 'recent_change_in_baseload' do
 
   before do
     create(:advice_page, key: advice_page_key)
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-                   variables: { electricity_economic_tariff_changed_this_year: true })
   end
 
   context 'when viewing report' do

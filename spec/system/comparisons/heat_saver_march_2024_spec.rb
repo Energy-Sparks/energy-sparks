@@ -1,7 +1,31 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'heat_saver_march_2024' do
   let!(:school) { create(:school) }
+  let!(:alerts) do
+    alert_run = create(:alert_generation_run, school: school)
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+                   variables: { activation_date: Date.new(2023, 1, 1) })
+
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark'),
+                   variables: { solar_type: 'metered' })
+
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertHeatSaver2024ElectricityComparison'),
+                   variables: usage_variables)
+
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertHeatSaver2024GasComparison'),
+                   variables: heating_usage_variables)
+
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertHeatSaver2024StorageHeaterComparison'),
+                   variables: heating_usage_variables)
+  end
   let(:key) { :heat_saver_march_2024 }
   let(:advice_page_key) { :total_energy_use }
 
@@ -42,27 +66,6 @@ describe 'heat_saver_march_2024' do
 
   before do
     create(:advice_page, key: advice_page_key)
-    alert_run = create(:alert_generation_run, school: school)
-
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-                   variables: { activation_date: Date.new(2023, 1, 1) })
-
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark'),
-                   variables: { solar_type: 'metered' })
-
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertHeatSaver2024ElectricityComparison'),
-                   variables: usage_variables)
-
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertHeatSaver2024GasComparison'),
-                   variables: heating_usage_variables)
-
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertHeatSaver2024StorageHeaterComparison'),
-                   variables: heating_usage_variables)
   end
 
   context 'when viewing report' do
@@ -119,8 +122,7 @@ describe 'heat_saver_march_2024' do
              '-50&percnt;',
              '£12,000',
              '£6,000',
-             '-50&percnt;'
-            ],
+             '-50&percnt;'],
             ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools.\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
           ]
         end
@@ -193,8 +195,7 @@ describe 'heat_saver_march_2024' do
              '-50&percnt;',
              '£4,000',
              '£2,000',
-             '-50&percnt;'
-            ],
+             '-50&percnt;'],
             ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
           ]
         end
@@ -213,8 +214,7 @@ describe 'heat_saver_march_2024' do
              '-50',
              '4,000',
              '2,000',
-             '-50'
-            ]
+             '-50']
           ]
         end
       end
@@ -267,8 +267,7 @@ describe 'heat_saver_march_2024' do
              '-50&percnt;',
              '£4,000',
              '£2,000',
-             '-50&percnt;'
-            ],
+             '-50&percnt;'],
             ["Notes\n[1] the comparison has been adjusted because the floor area has changed between the two periods for some schools.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
           ]
         end
@@ -288,8 +287,7 @@ describe 'heat_saver_march_2024' do
              '-50',
              '4,000',
              '2,000',
-             '-50'
-            ]
+             '-50']
           ]
         end
       end
@@ -342,8 +340,7 @@ describe 'heat_saver_march_2024' do
              '-50&percnt;',
              '£4,000',
              '£2,000',
-             '-50&percnt;'
-            ],
+             '-50&percnt;'],
             ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
           ]
         end
@@ -363,8 +360,7 @@ describe 'heat_saver_march_2024' do
              '-50',
              '4,000',
              '2,000',
-             '-50'
-            ]
+             '-50']
           ]
         end
       end

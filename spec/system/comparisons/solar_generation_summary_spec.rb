@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'solar_generation_summary' do
@@ -19,9 +21,12 @@ describe 'solar_generation_summary' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
+  let!(:alerts) do
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+  end
+
   before do
     create(:advice_page, key: advice_page_key)
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
   end
 
   context 'when viewing report' do
@@ -34,7 +39,10 @@ describe 'solar_generation_summary' do
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
-      let(:headers) { ['School', 'Generation (kWh)', 'Self consumption (kWh)', 'Export (kWh)', 'Mains consumption (kWh)', 'Total onsite consumption (kWh)']}
+      let(:headers) do
+        ['School', 'Generation (kWh)', 'Self consumption (kWh)', 'Export (kWh)', 'Mains consumption (kWh)',
+         'Total onsite consumption (kWh)']
+      end
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
       let(:expected_table) do
         [

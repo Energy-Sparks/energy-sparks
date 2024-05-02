@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'hot_water_efficiency' do
@@ -9,16 +11,19 @@ describe 'hot_water_efficiency' do
       avg_gas_per_pupil_gbp: 6.253909100526937,
       benchmark_existing_gas_efficiency: 0.13641467860927484,
       benchmark_gas_better_control_saving_gbp: 912.590927914895,
-      benchmark_point_of_use_electric_saving_gbp: 259.88822973489596,
+      benchmark_point_of_use_electric_saving_gbp: 259.88822973489596
     }
   end
   let(:alert_type) { create(:alert_type, class_name: 'AlertHotWaterEfficiency') }
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
+  let!(:alerts) do
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+  end
+
   before do
     create(:advice_page, key: advice_page_key)
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
   end
 
   context 'when viewing report' do
@@ -43,8 +48,7 @@ describe 'hot_water_efficiency' do
 
       let(:expected_table) do
         [headers,
-         [school.name, '£6.25', '13.6&percnt;', '£913', '£260']
-        ]
+         [school.name, '£6.25', '13.6&percnt;', '£913', '£260']]
       end
 
       let(:expected_csv) do

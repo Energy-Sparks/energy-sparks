@@ -4,14 +4,7 @@ require 'rails_helper'
 
 describe 'electricity_peak_kw_per_pupil' do
   let(:school) { create(:school) }
-  let!(:report) { create(:report, key: :electricity_peak_kw_per_pupil) }
-
-  include_context 'with comparison report footnotes' do
-    let(:footnotes) { [tariff_changed_last_year] }
-  end
-
-  before do
-    create(:advice_page, key: :electricity_intraday)
+  let!(:alerts) do
     alert_run = create(:alert_generation_run, school: school)
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertElectricityPeakKWVersusBenchmark'),
@@ -24,6 +17,15 @@ describe 'electricity_peak_kw_per_pupil' do
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
                    variables: { electricity_economic_tariff_changed_this_year: true })
+  end
+  let!(:report) { create(:report, key: :electricity_peak_kw_per_pupil) }
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
+  before do
+    create(:advice_page, key: :electricity_intraday)
   end
 
   context 'when viewing report' do

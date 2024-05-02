@@ -1,7 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'annual_gas_out_of_hours_use' do
   let!(:school) { create(:school) }
+  let!(:alerts) do
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+                   variables: { gas_economic_tariff_changed_this_year: true })
+  end
   let(:key) { :annual_gas_out_of_hours_use }
   let(:advice_page_key) { :gas_out_of_hours }
 
@@ -13,8 +21,8 @@ describe 'annual_gas_out_of_hours_use' do
       weekends_percent: 0.13915330652682595,
       community_percent: 0.0,
       community_gbp: 0.0,
-      out_of_hours_gbp: 41347.98790211005,
-      potential_saving_gbp: 13006.849331677073
+      out_of_hours_gbp: 41_347.98790211005,
+      potential_saving_gbp: 13_006.849331677073
     }
   end
 
@@ -28,10 +36,6 @@ describe 'annual_gas_out_of_hours_use' do
 
   before do
     create(:advice_page, key: advice_page_key)
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-                   variables: { gas_economic_tariff_changed_this_year: true })
   end
 
   context 'when viewing report' do
@@ -51,8 +55,7 @@ describe 'annual_gas_out_of_hours_use' do
          'Community',
          'Community usage cost',
          'Last year out of hours cost',
-         'Saving if improve to exemplar (at latest tariff)'
-        ]
+         'Saving if improve to exemplar (at latest tariff)']
       end
 
       let(:expected_report) { report }
@@ -61,7 +64,8 @@ describe 'annual_gas_out_of_hours_use' do
 
       let(:expected_table) do
         [headers,
-         ["#{school.name} [5]", '27.8&percnt;', '37.1&percnt;', '21.1&percnt;', '13.9&percnt;', '0&percnt;', '0p', '£41,300', '£13,000'],
+         ["#{school.name} [5]", '27.8&percnt;', '37.1&percnt;', '21.1&percnt;', '13.9&percnt;', '0&percnt;', '0p',
+          '£41,300', '£13,000'],
          ["Notes\n" \
           '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
           "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
@@ -70,8 +74,7 @@ describe 'annual_gas_out_of_hours_use' do
 
       let(:expected_csv) do
         [headers,
-         [school.name, '27.8', '37.1', '21.1', '13.9', '0', '0', '41,300', '13,000']
-        ]
+         [school.name, '27.8', '37.1', '21.1', '13.9', '0', '0', '41,300', '13,000']]
       end
     end
 

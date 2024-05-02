@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'heating_in_warm_weather' do
@@ -28,8 +30,7 @@ describe 'heating_in_warm_weather' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
-  before do
-    create(:advice_page, key: advice_page_key)
+  let!(:alerts) do
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertSeasonalHeatingSchoolDays'),
                    variables: gas_variables)
@@ -38,6 +39,10 @@ describe 'heating_in_warm_weather' do
                    variables: storage_heater_variables)
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'))
+  end
+
+  before do
+    create(:advice_page, key: advice_page_key)
   end
 
   context 'when viewing report' do

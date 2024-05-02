@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'thermostatic_control' do
@@ -21,7 +23,7 @@ describe 'thermostatic_control' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
-  before do
+  let!(:alerts) do
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertThermostaticControl'),
                    variables: gas_variables)

@@ -12,8 +12,7 @@ describe '*_consumption_during_holiday' do
   let(:expected_csv) do
     [headers, [expected_school.name, '1', '2', 'Easter 2023']]
   end
-
-  before do
+  let!(:alerts) do
     create(:alert, :with_run, school: expected_school,
                               alert_type: create(:alert_type, class_name: alert_class),
                               variables: {
@@ -23,6 +22,9 @@ describe '*_consumption_during_holiday' do
                                 holiday_start_date: '2023-04-01',
                                 holiday_end_date: '2023-04-14'
                               })
+  end
+
+  before do
     visit "/comparisons/#{key}"
   end
 

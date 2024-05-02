@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe 'baseload_per_pupil', type: :system do
+describe 'baseload_per_pupil' do
   let(:baseload_variables) do
     {
       average_baseload_last_year_kw: 20.0,
@@ -18,15 +20,13 @@ describe 'baseload_per_pupil', type: :system do
   end
 
   let!(:school) { create(:school) }
-  let!(:report) { create(:report, key: :baseload_per_pupil)}
+  let!(:report) { create(:report, key: :baseload_per_pupil) }
 
   include_context 'with comparison report footnotes' do
     let(:footnotes) { [tariff_changed_last_year] }
   end
 
-  before do
-    create(:advice_page, key: :baseload)
-
+  let!(:alerts) do
     alert_run = create(:alert_generation_run, school: school)
 
     baseload_alert = create(:alert_type, class_name: 'AlertElectricityBaseloadVersusBenchmark')
@@ -36,6 +36,10 @@ describe 'baseload_per_pupil', type: :system do
     additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert,
                    variables: additional_data_variables)
+  end
+
+  before do
+    create(:advice_page, key: :baseload)
   end
 
   context 'when viewing report' do

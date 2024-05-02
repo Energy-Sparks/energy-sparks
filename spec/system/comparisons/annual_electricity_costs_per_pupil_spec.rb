@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'annual_electricity_costs_per_pupil' do
@@ -8,8 +10,8 @@ describe 'annual_electricity_costs_per_pupil' do
   let(:variables) do
     {
       one_year_electricity_per_pupil_gbp: 195.43244945007083,
-      last_year_gbp: 234518.939340085,
-      one_year_saving_versus_exemplar_gbpcurrent: 154778.21934008508,
+      last_year_gbp: 234_518.939340085,
+      one_year_saving_versus_exemplar_gbpcurrent: 154_778.21934008508
     }
   end
 
@@ -17,9 +19,12 @@ describe 'annual_electricity_costs_per_pupil' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
+  let!(:alerts) do
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+  end
+
   before do
     create(:advice_page, key: advice_page_key)
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
   end
 
   context 'when viewing report' do
@@ -45,10 +50,8 @@ describe 'annual_electricity_costs_per_pupil' do
          [school.name,
           '£195',
           '£235,000',
-          '£155,000',
-         ],
-         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
-        ]
+          '£155,000'],
+         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
       end
 
       let(:expected_csv) do
@@ -56,8 +59,7 @@ describe 'annual_electricity_costs_per_pupil' do
          [school.name,
           '195',
           '235,000',
-          '155,000']
-        ]
+          '155,000']]
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'holiday_usage_last_year' do
@@ -22,7 +24,7 @@ describe 'holiday_usage_last_year' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
-  before do
+  let!(:alerts) do
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
   end
 
@@ -51,14 +53,12 @@ describe 'holiday_usage_last_year' do
 
       let(:expected_table) do
         [headers,
-         [school.name, '£1,410', '£4,780', '£1,410', '£4,780', '2.95', '29', 'Easter 2023']
-        ]
+         [school.name, '£1,410', '£4,780', '£1,410', '£4,780', '2.95', '29', 'Easter 2023']]
       end
 
       let(:expected_csv) do
         [headers,
-         [school.name, '1,410', '4,780', '1,410', '4,780', '2.95', '29', 'Easter 2023']
-        ]
+         [school.name, '1,410', '4,780', '1,410', '4,780', '2.95', '29', 'Easter 2023']]
       end
     end
 

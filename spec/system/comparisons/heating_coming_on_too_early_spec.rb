@@ -4,18 +4,8 @@ require 'rails_helper'
 
 describe 'heating_coming_on_too_early' do
   let!(:schools) { create_list(:school, 3) }
-  let(:key) { :heating_coming_on_too_early }
-  let(:advice_page_key) { :heating_control }
-
-  include_context 'with comparison report footnotes' do
-    let(:footnotes) { [tariff_changed_last_year] }
-  end
-
   let!(:report) { create(:report, key: key) }
-
-  before do
-    create(:advice_page, key: advice_page_key)
-
+  let!(:alerts) do
     alert_run = create(:alert_generation_run, school: schools[0])
     create(:alert, school: schools[0], alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertHeatingComingOnTooEarly'),
@@ -62,6 +52,16 @@ describe 'heating_coming_on_too_early' do
     create(:alert, school: schools[2], alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
                    variables: { gas_economic_tariff_changed_this_year: false })
+  end
+  let(:key) { :heating_coming_on_too_early }
+  let(:advice_page_key) { :heating_control }
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
+  before do
+    create(:advice_page, key: advice_page_key)
   end
 
   context 'when viewing report' do

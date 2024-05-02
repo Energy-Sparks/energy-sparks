@@ -1,7 +1,27 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'change_in_energy_since_last_year' do
   let!(:school) { create(:school, :with_fuel_configuration) }
+  let!(:alerts) do
+    alert_run = create(:alert_generation_run, school: school)
+
+    alert_type = create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+
+    alert_type = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
+    create(
+      :alert,
+      school: school,
+      alert_generation_run: alert_run,
+      alert_type: alert_type,
+      variables: {
+        electricity_economic_tariff_changed_this_year: true,
+        gas_economic_tariff_changed_this_year: true
+      }
+    )
+  end
   let(:key) { :change_in_energy_since_last_year }
   let(:advice_page_key) { :total_energy_use }
 
@@ -45,23 +65,6 @@ describe 'change_in_energy_since_last_year' do
 
   before do
     create(:advice_page, key: advice_page_key)
-
-    alert_run = create(:alert_generation_run, school: school)
-
-    alert_type = create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
-
-    alert_type = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
-    create(
-      :alert,
-      school: school,
-      alert_generation_run: alert_run,
-      alert_type: alert_type,
-      variables: {
-        electricity_economic_tariff_changed_this_year: true,
-        gas_economic_tariff_changed_this_year: true
-        }
-    )
   end
 
   context 'when viewing report' do
@@ -99,7 +102,8 @@ describe 'change_in_energy_since_last_year' do
           I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
           I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
           I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
-          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')]
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
+        ]
       end
 
       let(:expected_table) do
@@ -117,8 +121,7 @@ describe 'change_in_energy_since_last_year' do
            '-50&percnt;',
            '£12,000',
            '£6,000',
-           '-50&percnt;'
-          ],
+           '-50&percnt;'],
           ["Notes\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
         ]
       end

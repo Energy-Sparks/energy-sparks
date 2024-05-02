@@ -4,25 +4,6 @@ require 'rails_helper'
 
 describe 'annual_change_in_*_out_of_hours_use' do
   let(:expected_school) { create(:school) }
-  let!(:expected_report) { create(:report, key: key) }
-  let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
-  let(:headers) do
-    ['School',
-     'Previous year out of hours kwh',
-     'Last year out of hours kwh',
-     'Change %',
-     'Previous year out of hours co2',
-     'Last year out of hours co2',
-     'Change %',
-     'Previous year out of hours cost at current tariff',
-     'Last year out of hours cost at current tariff',
-     'Change %']
-  end
-
-  include_context 'with comparison report footnotes' do
-    let(:footnotes) { [tariff_changed_last_year] }
-  end
-
   let(:expected_table) do
     [['', 'kWh', 'CO2 (kg)', 'Cost'],
      headers,
@@ -37,9 +18,7 @@ describe 'annual_change_in_*_out_of_hours_use' do
      headers,
      [expected_school.name, '1', '2', '100', '3', '4', '33.3', '5', '6', '20']]
   end
-
-  before do
-    create(:advice_page, key: advice_page_key)
+  let!(:alerts) do
     alert_run = create(:alert_generation_run, school: expected_school)
     create(:alert, school: expected_school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: alert_class_name_previous_year),
@@ -63,6 +42,28 @@ describe 'annual_change_in_*_out_of_hours_use' do
     create(:alert, school: expected_school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
                    variables: variables)
+  end
+  let!(:expected_report) { create(:report, key: key) }
+  let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+  let(:headers) do
+    ['School',
+     'Previous year out of hours kwh',
+     'Last year out of hours kwh',
+     'Change %',
+     'Previous year out of hours co2',
+     'Last year out of hours co2',
+     'Change %',
+     'Previous year out of hours cost at current tariff',
+     'Last year out of hours cost at current tariff',
+     'Change %']
+  end
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
+  before do
+    create(:advice_page, key: advice_page_key)
     visit "/comparisons/#{key}"
   end
 

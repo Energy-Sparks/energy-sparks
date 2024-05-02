@@ -4,6 +4,20 @@ require 'rails_helper'
 
 describe 'configurable_period' do
   let!(:schools) { create_list(:school, 6) }
+  let!(:alerts) do
+    create(:alert_type, class_name: AlertAdditionalPrioritisationData.name)
+    create(:alert_type, class_name: AlertEnergyAnnualVersusBenchmark.name)
+    create(:alert_type, class_name: AlertConfigurablePeriodElectricityComparison.name)
+    create(:alert_type, class_name: AlertConfigurablePeriodGasComparison.name)
+    create(:alert_type, class_name: AlertConfigurablePeriodStorageHeaterComparison.name)
+
+    create_alerts(schools[0], Date.new(2023, 1, 1), electricity: true, gas: true, storage_heater: true)
+    create_alerts(schools[1], Date.new(2023, 2, 1))
+    create_alerts(schools[2], Date.new(2023, 3, 1), gas: true)
+    create_alerts(schools[3], Date.new(2023, 4, 1), electricity: true)
+    create_alerts(schools[4], Date.new(2023, 5, 1), electricity: true, gas: true)
+    create_alerts(schools[5], Date.new(2023, 6, 1), electricity: true, storage_heater: true)
+  end
   let(:advice_page_key) { :total_energy_use }
   let!(:reports) { create_list(:report, 2, :with_custom_period) }
 
@@ -55,18 +69,6 @@ describe 'configurable_period' do
 
   before do
     create(:advice_page, key: advice_page_key)
-
-    create(:alert_type, class_name: AlertAdditionalPrioritisationData.name)
-    create(:alert_type, class_name: AlertEnergyAnnualVersusBenchmark.name)
-    create(:alert_type, class_name: AlertConfigurablePeriodElectricityComparison.name)
-    create(:alert_type, class_name: AlertConfigurablePeriodGasComparison.name)
-    create(:alert_type, class_name: AlertConfigurablePeriodStorageHeaterComparison.name)
-    create_alerts(schools[0], Date.new(2023, 1, 1), electricity: true, gas: true, storage_heater: true)
-    create_alerts(schools[1], Date.new(2023, 2, 1))
-    create_alerts(schools[2], Date.new(2023, 3, 1), gas: true)
-    create_alerts(schools[3], Date.new(2023, 4, 1), electricity: true)
-    create_alerts(schools[4], Date.new(2023, 5, 1), electricity: true, gas: true)
-    create_alerts(schools[5], Date.new(2023, 6, 1), electricity: true, storage_heater: true)
   end
 
   self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration

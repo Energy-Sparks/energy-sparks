@@ -4,16 +4,7 @@ require 'rails_helper'
 
 describe 'seasonal_baseload_variation' do
   let!(:school) { create(:school) }
-  let!(:report) { create(:report, key: key) }
-  let(:key) { :seasonal_baseload_variation }
-  let(:advice_page_key) { :baseload }
-
-  include_context 'with comparison report footnotes' do
-    let(:footnotes) { [tariff_changed_last_year] }
-  end
-
-  before do
-    create(:advice_page, key: advice_page_key)
+  let!(:alerts) do
     alert_run = create(:alert_generation_run, school: school)
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertSeasonalBaseloadVariation'),
@@ -26,6 +17,17 @@ describe 'seasonal_baseload_variation' do
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
                    variables: { electricity_economic_tariff_changed_this_year: true })
+  end
+  let!(:report) { create(:report, key: key) }
+  let(:key) { :seasonal_baseload_variation }
+  let(:advice_page_key) { :baseload }
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
+  before do
+    create(:advice_page, key: advice_page_key)
   end
 
   context 'when viewing report' do
