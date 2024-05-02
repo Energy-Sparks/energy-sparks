@@ -17,7 +17,7 @@ RSpec.describe Comparison::Report, type: :model do
     context 'with relationships' do
       subject(:report) { create :report }
 
-      it { expect(report).to belong_to(:report_group) }
+      it { expect(report).to belong_to(:report_group).optional(true) }
     end
   end
 
