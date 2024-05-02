@@ -19,7 +19,6 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (comparison_report_groups_id => comparison_report_groups.id)
 #  fk_rails_...  (custom_period_id => comparison_custom_periods.id)
 #  fk_rails_...  (report_group_id => comparison_report_groups.id)
 #
