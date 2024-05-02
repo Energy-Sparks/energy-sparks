@@ -70,6 +70,7 @@ describe Transifex::Loader, type: :service do
     let!(:comparison_report_group)  { create(:report_group) }
     let!(:comparison_report)        { create(:report, report_group: comparison_report_group) }
     let!(:comparison_footnote)      { create(:footnote) }
+    let!(:comparison_report_group)  { create(:report_group) }
     let!(:advice_page)              { create(:advice_page, learn_more: advice_page_text) }
 
     before do
