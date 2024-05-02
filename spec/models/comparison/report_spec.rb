@@ -13,6 +13,12 @@ RSpec.describe Comparison::Report, type: :model do
       it { expect(report).not_to validate_presence_of(:notes) }
       it { expect(report).not_to validate_presence_of(:reporting_period) }
     end
+
+    context 'with relationships' do
+      subject(:report) { create :report }
+
+      it { expect(report).to belong_to(:report_group) }
+    end
   end
 
   it_behaves_like 'an enum reporting period', model: :report
