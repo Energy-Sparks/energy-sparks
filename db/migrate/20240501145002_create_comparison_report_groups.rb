@@ -5,6 +5,6 @@ class CreateComparisonReportGroups < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
-    add_reference :comparison_reports, :comparison_report_groups, foreign_key: :report_group_id, foreign_key: true
+    add_reference :comparison_reports, :report_group, foreign_key: { to_table: :comparison_report_groups }
   end
 end

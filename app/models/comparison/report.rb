@@ -2,25 +2,25 @@
 #
 # Table name: comparison_reports
 #
-#  comparison_report_groups_id :bigint(8)
-#  created_at                  :datetime         not null
-#  custom_period_id            :bigint(8)
-#  id                          :bigint(8)        not null, primary key
-#  key                         :string           not null
-#  public                      :boolean          default(FALSE)
-#  reporting_period            :integer
-#  updated_at                  :datetime         not null
+#  created_at       :datetime         not null
+#  custom_period_id :bigint(8)
+#  id               :bigint(8)        not null, primary key
+#  key              :string           not null
+#  public           :boolean          default(FALSE)
+#  report_group_id  :bigint(8)
+#  reporting_period :integer
+#  updated_at       :datetime         not null
 #
 # Indexes
 #
-#  index_comparison_reports_on_comparison_report_groups_id  (comparison_report_groups_id)
-#  index_comparison_reports_on_custom_period_id             (custom_period_id)
-#  index_comparison_reports_on_key                          (key) UNIQUE
+#  index_comparison_reports_on_custom_period_id  (custom_period_id)
+#  index_comparison_reports_on_key               (key) UNIQUE
+#  index_comparison_reports_on_report_group_id   (report_group_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (comparison_report_groups_id => comparison_report_groups.id)
 #  fk_rails_...  (custom_period_id => comparison_custom_periods.id)
+#  fk_rails_...  (report_group_id => comparison_report_groups.id)
 #
 class Comparison::Report < ApplicationRecord
   self.table_name = 'comparison_reports'
