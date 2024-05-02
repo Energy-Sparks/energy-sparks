@@ -23,6 +23,13 @@ SELECT latest_runs.id,
        energy.current_year_storage_heaters_gbp AS storage_heater_current_period_gbp,
        energy.activationyear_storage_heaters_gbp AS storage_heater_previous_period_gbp,
 
+       -- the alert puts text in these fields when there is limited or not enough data
+       -- rename the columns as we're only using them to access those notes not the
+       -- values which we calculate dynamically.
+       energy.activationyear_electricity_kwh_relative_percent AS activationyear_electricity_note,
+       energy.activationyear_gas_kwh_relative_percent AS activationyear_gas_note,
+       energy.activationyear_storage_heaters_kwh_relative_percent AS activationyear_storage_heater_note,
+
        energy.solar_type
 FROM
   (
@@ -48,6 +55,10 @@ FROM
       current_year_storage_heaters_co2 float,
       activationyear_storage_heaters_gbp float,
       current_year_storage_heaters_gbp float,
+
+      activationyear_electricity_kwh_relative_percent text,
+      activationyear_gas_kwh_relative_percent text,
+      activationyear_storage_heaters_kwh_relative_percent text,
 
       solar_type text
     )
