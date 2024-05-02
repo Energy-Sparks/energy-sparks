@@ -32,6 +32,8 @@ class Comparison::ChangeInEnergyUseSinceJoinedEnergySparks < Comparison::View
   include MultipleFuelComparisonView
   include ArbitraryPeriodComparisonView
 
+  NO_DATA = [ManagementSummaryTable::NO_RECENT_DATA_MESSAGE, ManagementSummaryTable::NOT_ENOUGH_DATA_MESSAGE].freeze
+
   scope :with_some_data, -> do
     where("COALESCE(activationyear_electricity_note, activationyear_gas_note) IS NOT NULL AND (activationyear_electricity_note NOT IN ('no recent data', 'not enough data') OR activationyear_gas_note NOT IN ('no recent data', 'not enough data'))")
   end
@@ -62,5 +64,17 @@ class Comparison::ChangeInEnergyUseSinceJoinedEnergySparks < Comparison::View
 
   def gas_previous_period_kwh_unadjusted
     nil
+  end
+
+  private
+
+  # Returns a list of fuel types that have data to be included in the total
+  # Fuel types are filtered by value of the note column using values set
+  # by the alert.
+  def fuel_types
+    fuel_types = []
+    fuel_types = fuel_types += [:electricity, :storage_heater] unless NO_DATA.include?(activationyear_electricity_note)
+    fuel_types << :gas unless NO_DATA.include?(activationyear_gas_note)
+    fuel_types
   end
 end
