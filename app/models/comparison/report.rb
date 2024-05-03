@@ -57,6 +57,10 @@ class Comparison::Report < ApplicationRecord
       previous_period: custom_period.previous_start_date..custom_period.previous_end_date }
   end
 
+  def self.fetch(key)
+    find_by(key: key)
+  end
+
   private
 
   def not_custom?
