@@ -61,7 +61,7 @@ gem 'twilio-ruby' # For SMS notifications
 gem 'bootstrap-email'
 
 # Frontend
-gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 5' # Use bootstrap for responsive layout
 gem 'cocoon' # nested forms
 gem 'simple_form'
 gem 'view_component'
