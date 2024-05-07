@@ -22,7 +22,7 @@ module Comparisons
     # When calculating totals only add up kwh consumption for fuel types with data in both
     # periods.
     def load_data
-      Comparison::ChangeInEnergyUseSinceJoinedEnergySparks.for_schools(@schools).with_some_data.by_total_percentage_change
+      Comparison::ChangeInEnergyUseSinceJoinedEnergySparks.for_schools(@schools).with_reportable_data.by_total_percentage_change
     end
   end
 end

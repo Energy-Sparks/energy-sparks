@@ -34,7 +34,7 @@ class Comparison::ChangeInEnergyUseSinceJoinedEnergySparks < Comparison::View
 
   NO_DATA = [ManagementSummaryTable::NO_RECENT_DATA_MESSAGE, ManagementSummaryTable::NOT_ENOUGH_DATA_MESSAGE].freeze
 
-  scope :with_some_data, -> do
+  scope :with_reportable_data, -> do
     where("COALESCE(activationyear_electricity_note, activationyear_gas_note) IS NOT NULL AND (activationyear_electricity_note NOT IN ('no recent data', 'not enough data') OR activationyear_gas_note NOT IN ('no recent data', 'not enough data'))")
   end
 
