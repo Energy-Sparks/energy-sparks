@@ -34,7 +34,7 @@ class Comparison::Report < ApplicationRecord
   translates :notes, backend: :action_text
 
   belongs_to :custom_period, class_name: 'Comparison::CustomPeriod', optional: true, autosave: true, dependent: :destroy
-  belongs_to :report_group, class_name: 'Comparison::ReportGroup', optional: true
+  belongs_to :report_group, class_name: 'Comparison::ReportGroup'
 
   scope :by_title, ->(order = :asc) { i18n.order(title: order) }
 
