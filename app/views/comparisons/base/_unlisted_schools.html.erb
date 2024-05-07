@@ -3,7 +3,7 @@
   <%= t('comparisons.unlisted.message', count: unlisted_schools_count) %>.
   <%= component 'footnote_modal/link', modal_id: 'unlisted-schools',
                                        href:
-                                        url_for({ controller: "/comparisons/#{controller_name.to_sym}",
+                                        url_for({ controller: "/comparisons/#{@report.key}",
                                                   action: 'unlisted' }.merge(index_params)),
                                        title: 'Title', remote: true do
         t('comparisons.unlisted.link', count: unlisted_schools_count)
