@@ -227,7 +227,6 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
           [
             I18n.t('analytics.benchmarking.configuration.column_headings.school'),
             I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('comparisons.column_headings.previous_period_unadjusted'),
             I18n.t('comparisons.column_headings.previous_period'),
             I18n.t('comparisons.column_headings.current_period'),
             I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
@@ -246,7 +245,6 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
             headers,
             [school.name,
              'Jan 2023',
-             '',
              '2,000',
              '1,000',
              '-50&percnt;',
@@ -262,11 +260,10 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
             headers,
             [school.name,
              '2023-01-01',
-             '',
              '2,000',
              '1,000',
              '-50',
@@ -301,7 +298,6 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
           [
             I18n.t('analytics.benchmarking.configuration.column_headings.school'),
             I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('comparisons.column_headings.previous_period_unadjusted'),
             I18n.t('comparisons.column_headings.previous_period'),
             I18n.t('comparisons.column_headings.current_period'),
             I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
@@ -320,7 +316,6 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
             headers,
             [school.name,
              'Jan 2023',
-             '',
              '2,000',
              '1,000',
              '-50&percnt;',
@@ -336,11 +331,10 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
             headers,
             [school.name,
              '2023-01-01',
-             '',
              '2,000',
              '1,000',
              '-50',

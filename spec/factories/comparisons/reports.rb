@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :report, class: 'Comparison::Report' do
     reporting_period { :last_12_months }
-    sequence(:key) {|n| "key#{n}"}
+    sequence(:key) {|n| "key_#{n}"}
     sequence(:title) {|n| "Title #{n}"}
     sequence(:introduction) {|n| "Introduction #{n}"}
     sequence(:notes) {|n| "Notes #{n}"}

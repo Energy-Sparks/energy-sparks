@@ -4,6 +4,16 @@ module Comparisons
       :change_in_energy_use_since_joined_energy_sparks
     end
 
+    def set_headers
+      super
+      @include_previous_period_unadjusted = false
+      @electricity_colgroups = colgroups(fuel: false)
+      @electricity_headers = headers(fuel: false)
+      @heating_colgroups = colgroups(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
+      @heating_headers = headers(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
+      @period_type_string = I18n.t('comparisons.period_types.periods')
+    end
+
     # Fetch data for all schools where we can calculate a % change between last 12 months and
     # the 12 months prior to them having data activated on Energy Sparks.
     #
