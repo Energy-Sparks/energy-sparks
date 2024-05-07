@@ -1,0 +1,18 @@
+<% if unlisted_schools_count > 0 %>
+  <div class="alert alert-secondary">
+  <%= t('comparisons.unlisted.message', count: unlisted_schools_count) %>.
+  <%= component 'footnote_modal/link', modal_id: 'unlisted-schools',
+                                       href:
+                                        url_for({ controller: "/comparisons/#{controller_name.to_sym}",
+                                                  action: 'unlisted' }.merge(index_params)),
+                                       title: 'Title', remote: true do
+        t('comparisons.unlisted.link', count: unlisted_schools_count)
+      end %>
+  </div>
+  <%= component 'footnote_modal', title: 'Schools excluded from report', modal_id: 'unlisted-schools' do |c| %>
+    <% c.with_body_content do %>
+      <%= t('comparisons.unlisted.message', count: unlisted_schools_count) %>.
+      <%= t('comparisons.unlisted.loading') %> <div class="spinner-border"></div>
+    <% end %>
+  <% end %>
+<% end %>
