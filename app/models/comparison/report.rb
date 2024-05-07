@@ -36,6 +36,8 @@ class Comparison::Report < ApplicationRecord
   belongs_to :custom_period, class_name: 'Comparison::CustomPeriod', optional: true, autosave: true, dependent: :destroy
   belongs_to :report_group, class_name: 'Comparison::ReportGroup', optional: true
 
+  scope :by_title, ->(order = :asc) { i18n.order(title: order) }
+
   accepts_nested_attributes_for :custom_period, update_only: true, reject_if: :not_custom?
 
   before_validation -> { custom_period.try(:mark_for_destruction) if not_custom? }

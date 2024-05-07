@@ -15,8 +15,10 @@ class Comparison::ReportGroup < ApplicationRecord
 
   has_many :reports, class_name: 'Comparison::Report'
 
+  scope :by_position, ->(order = :asc) { order(position: order) }
+
   translates :title, type: :string, fallbacks: { cy: :en }
-  translates :description, backend: :action_text
+  translates :description, type: :string, fallbacks: { cy: :en }
 
   validates :title, presence: true
   validates :position, numericality: true, presence: true

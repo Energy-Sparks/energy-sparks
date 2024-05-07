@@ -19,7 +19,8 @@ namespace :after_party do
 
       benchmarks.each do |benchmark|
         report = Comparison::Report.fetch(benchmark)
-        report_group.reports << report unless report_group.reports.include?(report)
+        report.report_group = report_group
+        report.save!
       end
 
       report_group.save!
