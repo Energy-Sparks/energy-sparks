@@ -5,7 +5,7 @@
     "@rails/webpacker": "^5.2.1",
     "babel-loader": "^8.1.0",
     "core-js": "3",
-    "trix": "^1.2.4"
+    "trix": "^2.1.1"
   },
   "devDependencies": {
     "webpack-dev-server": "4"
