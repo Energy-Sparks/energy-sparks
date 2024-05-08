@@ -28,10 +28,22 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
-  shared_examples 'a benchmark list page' do
+  shared_examples 'a benchmark list page' do |edit: false|
     it { expect(page).to have_content('Benchmark group name') }
     it { expect(page).to have_content('Benchmark description') }
     it { expect(page).to have_link('Baseload per pupil') }
+
+    it 'allows report group to be edited', if: edit do
+      within first('div.compare') do
+        expect(page).to have_link('Edit')
+      end
+    end
+
+    it 'does not allow report group to be edited', unless: edit do
+      within first('div.compare') do
+        expect(page).not_to have_link('Edit')
+      end
+    end
   end
 
   shared_examples 'a results page' do |display_new_comparison_pages: false, edit: false|
@@ -559,7 +571,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', edit: feature_flag
             it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
             it_behaves_like 'a filter summary', funder: 'Grant Funder'
 
