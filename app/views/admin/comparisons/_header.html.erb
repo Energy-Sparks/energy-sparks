@@ -1,24 +1,24 @@
 <% type = controller_name.humanize(capitalize: false) %>
 
 <div class="d-flex justify-content-between align-items-center">
-  <h1><%= "Comparison#{" #{type}"}#{": #{title}" if title.present?}" %></h1>
+  <h1>
+    <%= "Comparison#{" #{type}"}#{": #{title}" if title.present?}" %>
+    <%= if current_page?(action: :index)
+          link_to 'New', [:new, :admin, :comparisons, controller_name.singularize.to_sym],
+                  class: 'btn btn-sm'
+        end %>
+  </h1>
   <div>
-    <%= unless current_page?(controller: 'report_groups', action: :index)
-          link_to 'Report groups', admin_comparisons_report_groups_path,
-                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
-        end %>
-    <%= unless current_page?(controller: 'reports', action: :index)
-          link_to 'Reports', admin_comparisons_reports_path,
-                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
-        end %>
-    <%= unless current_page?(controller: 'footnotes', action: :index)
-          link_to 'Footnotes', admin_comparisons_footnotes_path,
-                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
-        end %>
+    <% disabled = current_page?(controller: 'report_groups', action: :index) ? ' disabled' : '' %>
+    <%= link_to 'Report groups', admin_comparisons_report_groups_path, class:
+          "btn btn-outline-dark rounded-pill font-weight-bold#{disabled}" %>
 
-    <%= unless current_page?(action: :new)
-          link_to "New #{type.singularize}", [:new, :admin, :comparisons, controller_name.singularize.to_sym],
-                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
-        end %>
+    <% disabled = current_page?(controller: 'reports', action: :index) ? ' disabled' : '' %>
+    <%= link_to 'Reports', admin_comparisons_reports_path,
+                class: "btn btn-outline-dark rounded-pill font-weight-bold#{disabled}" %>
+
+    <% disabled = current_page?(controller: 'footnotes', action: :index) ? ' disabled' : '' %>
+    <%= link_to 'Footnotes', admin_comparisons_footnotes_path,
+                class: "btn btn-outline-dark rounded-pill font-weight-bold#{disabled}" %>
   </div>
 </div>

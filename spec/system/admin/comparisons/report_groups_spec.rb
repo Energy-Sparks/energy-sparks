@@ -92,10 +92,10 @@ describe 'admin comparisons report groups', :include_application_helper do
         it_behaves_like 'a report group page with valid attributes', action: 'updated'
       end
 
-      it { expect(page).to have_link('New report group') }
+      it { expect(page).to have_link('New') }
 
       context 'when clicking the new button' do
-        before { click_link('New report') }
+        before { click_link('New') }
 
         it 'shows report group new page' do
           expect(page).to have_current_path(new_admin_comparisons_report_group_path)
