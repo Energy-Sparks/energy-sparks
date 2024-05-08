@@ -3,6 +3,7 @@
 # Table name: holiday_usage_last_years
 #
 #  alert_generation_run_id                          :bigint(8)
+#  holiday_start_date                               :date
 #  id                                               :bigint(8)
 #  last_year_holiday_electricity_gbp                :float
 #  last_year_holiday_electricity_gbpcurrent         :float

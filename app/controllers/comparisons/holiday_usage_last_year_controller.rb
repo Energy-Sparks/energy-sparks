@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Comparisons
   class HolidayUsageLastYearController < BaseController
     private
@@ -20,16 +22,19 @@ module Comparisons
     end
 
     def load_data
-      Comparison::HolidayUsageLastYear.for_schools(@schools).with_data.sort_default
+      Comparison::HolidayUsageLastYear.for_schools(@schools)
+                                      .with_data
+                                      .where(holiday_start_date: Time.zone.today...)
+                                      .sort_default
     end
 
     def create_charts(results)
       create_multi_chart(results, {
-        last_year_holiday_gas_gbp: :gas_cost_ht,
-        last_year_holiday_electricity_gbp: :electricity_cost_ht,
-        last_year_holiday_gas_gbpcurrent: :gas_cost_ct,
-        last_year_holiday_electricity_gbpcurrent: :electricity_cost_ct,
-        }, nil, :£)
+                           last_year_holiday_gas_gbp: :gas_cost_ht,
+                           last_year_holiday_electricity_gbp: :electricity_cost_ht,
+                           last_year_holiday_gas_gbpcurrent: :gas_cost_ct,
+                           last_year_holiday_electricity_gbpcurrent: :electricity_cost_ct
+                         }, nil, :£)
     end
   end
 end

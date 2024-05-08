@@ -14,7 +14,8 @@ describe 'holiday_usage_last_year' do
       last_year_holiday_electricity_kwh_per_floor_area: 28.960181818181812,
       last_year_holiday_type: 'easter',
       last_year_holiday_start_date: '2023-04-01',
-      last_year_holiday_end_date: '2023-04-14'
+      last_year_holiday_end_date: '2023-04-14',
+      holiday_start_date: '2024-04-01'
     }
   end
 
@@ -23,6 +24,7 @@ describe 'holiday_usage_last_year' do
   let!(:report) { create(:report, key: key) }
 
   before do
+    travel_to Date.new(2024, 3, 30)
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
   end
 

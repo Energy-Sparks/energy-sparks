@@ -14,6 +14,7 @@ describe '*_consumption_during_holiday' do
   end
 
   before do
+    travel_to Date.new(2023, 4, 1)
     create(:alert, :with_run, school: expected_school,
                               alert_type: create(:alert_type, class_name: alert_class),
                               variables: {
