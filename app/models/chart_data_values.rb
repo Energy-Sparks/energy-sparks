@@ -71,7 +71,7 @@ class ChartDataValues
   end
 
   def translate_data_keys_for(data)
-    return if data.nil?
+    return unless data.present?
 
     data.transform_keys { |series_item| translated_series_item_for(series_item) }
   end
