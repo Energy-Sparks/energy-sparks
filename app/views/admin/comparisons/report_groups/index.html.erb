@@ -1,0 +1,34 @@
+<%= render 'admin/comparisons/header', title: '' %>
+
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Position</th>
+      <th>Reports</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @report_groups.each do |report_group| %>
+      <tr>
+        <td><%= report_group.title %></td>
+        <td><%= report_group.description %></td>
+        <td><%= report_group.position %></td>
+        <td><%= report_group.reports.count %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_comparisons_report_group_path(report_group),
+                        class: 'btn btn-info btn-sm' %>
+            <%= link_to 'Delete', admin_comparisons_report_group_path(report_group),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: 'btn btn-info btn-sm' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

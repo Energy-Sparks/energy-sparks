@@ -1,0 +1,24 @@
+<% type = controller_name.humanize(capitalize: false) %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1><%= "Comparison#{" #{type}"}#{": #{title}" if title.present?}" %></h1>
+  <div>
+    <%= unless current_page?(controller: 'reports', action: :index)
+          link_to 'Reports', admin_comparisons_reports_path,
+                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
+        end %>
+    <%= unless current_page?(controller: 'report_groups', action: :index)
+          link_to 'Report groups', admin_comparisons_report_groups_path,
+                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
+        end %>
+    <%= unless current_page?(controller: 'footnotes', action: :index)
+          link_to 'Footnotes', admin_comparisons_footnotes_path,
+                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
+        end %>
+
+    <%= unless current_page?(action: :new)
+          link_to "New #{type.singularize}", [:new, :admin, :comparisons, controller_name.singularize.to_sym],
+                  class: 'btn btn-outline-dark rounded-pill font-weight-bold'
+        end %>
+  </div>
+</div>
