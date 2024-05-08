@@ -515,4 +515,14 @@ module ApplicationHelper
   def round_down_to_nearest_ten(val)
     (val / 10) * 10
   end
+
+  def admin_link(path, to: 'Edit', tag: nil, classes: nil)
+    if current_user&.admin?
+      link = link_to to, path,
+                  class: "badge badge-light font-weight-normal border align-text-top #{classes}",
+                  data: { toggle: 'tooltip', placement: 'right' },
+                  title: 'Admin Only'
+      tag ? content_tag(tag, link) : link
+    end
+  end
 end
