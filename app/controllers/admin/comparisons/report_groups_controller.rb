@@ -13,7 +13,7 @@ module Admin
 
       def create
         if @report_group.save
-          redirect_to admin_comparisons_report_groups_path, notice: 'ReportGroup was successfully created.'
+          redirect_to admin_comparisons_report_groups_path, notice: 'Report group was successfully created.'
         else
           render :new
         end
@@ -21,7 +21,7 @@ module Admin
 
       def update
         if @report_group.update(report_group_params)
-          redirect_to admin_comparisons_report_groups_path, notice: 'ReportGroup was successfully updated.'
+          redirect_to admin_comparisons_report_groups_path, notice: 'Report group was successfully updated.'
         else
           render :edit
         end
@@ -29,7 +29,7 @@ module Admin
 
       def destroy
         @report_group.destroy
-        redirect_to admin_comparisons_report_groups_path, notice: 'ReportGroup was successfully deleted.'
+        redirect_to admin_comparisons_report_groups_path, notice: 'Report group was successfully deleted.'
       end
 
       private
@@ -38,7 +38,7 @@ module Admin
         translated_params = t_params(Comparison::ReportGroup.mobility_attributes)
         params.require(:report_group).permit(
           translated_params,
-          :order
+          :position
         )
       end
     end
