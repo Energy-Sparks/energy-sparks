@@ -14,7 +14,7 @@ RSpec.describe Comparison::ReportGroup, type: :model do
     context 'with relationships' do
       subject(:report_group) { create :report_group }
 
-      it { expect(report_group).to have_many(:reports) }
+      it { expect(report_group).to have_many(:reports).dependent(:restrict_with_error) }
     end
   end
 end

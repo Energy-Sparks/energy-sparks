@@ -36,6 +36,7 @@ end
 describe 'admin comparisons report groups', :include_application_helper do
   let!(:admin)  { create(:admin) }
   let!(:report_group) { create(:report_group, title: 'Electricity') }
+  let!(:report) { }
 
   describe 'when not logged in' do
     context 'when viewing the index' do
@@ -104,23 +105,32 @@ describe 'admin comparisons report groups', :include_application_helper do
         it_behaves_like 'a report group page with valid attributes', action: 'created'
       end
 
-      it { expect(page).to have_link('Delete') }
+      context 'when the report group is empty' do
+        it { expect(page).not_to have_link('Delete', class: 'disabled') }
+        it { expect(page).to have_link('Delete') }
 
-      context 'when clicking on the delete button' do
-        before { click_link('Delete') }
+        context 'when clicking on the delete button' do
+          before { click_link('Delete') }
 
-        it 'shows index page' do
-          expect(page).to have_current_path(admin_comparisons_report_groups_path)
-        end
+          it 'shows index page' do
+            expect(page).to have_current_path(admin_comparisons_report_groups_path)
+          end
 
-        it 'no longer lists report' do
-          within('table') do
-            expect(page).to have_no_selector(:table_row,
-                                              { 'Title' => report_group.title,
-                                                'Description' => report_group.description,
-                                                'Position' => report_group.position })
+          it 'no longer lists report' do
+            within('table') do
+              expect(page).to have_no_selector(:table_row,
+                                                { 'Title' => report_group.title,
+                                                  'Description' => report_group.description,
+                                                  'Position' => report_group.position })
+            end
           end
         end
+      end
+
+      context 'when the report group contains reports' do
+        let(:report) { create(:report, report_group: report_group) }
+
+        it { expect(page).to have_link('Delete', class: 'disabled') }
       end
     end
   end

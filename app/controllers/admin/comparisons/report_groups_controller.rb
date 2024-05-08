@@ -28,8 +28,12 @@ module Admin
       end
 
       def destroy
-        @report_group.destroy
-        redirect_to admin_comparisons_report_groups_path, notice: 'Report group was successfully deleted.'
+        notice = if @report_group.destroy
+                   'Report group was successfully deleted.'
+                 else
+                   "Unable to delete report group: #{@report_group.errors.full_messages.join(', ')}"
+                 end
+        redirect_to admin_comparisons_report_groups_path, notice: notice
       end
 
       private
