@@ -64,7 +64,7 @@ module Alerts
           table_data: analysis_object.front_end_template_table_data,
           priority_data: analysis_object.priority_template_data,
           variables: rename_variables(convert_for_storage(analysis_object.variables_for_reporting)),
-          reporting_period: analysis_object.reporting_period
+          reporting_period: analysis_object.try(:reporting_period)
         }
 
         I18n.with_locale(:cy) do
