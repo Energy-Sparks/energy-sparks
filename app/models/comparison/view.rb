@@ -43,8 +43,8 @@ class Comparison::View < ApplicationRecord
   # NULLIF is then used to convert a total of 0.0 for a set of fields to NULL, so the order value becomes NULL.
   # This avoids divide by zero errors in the calculations. We then sort NULLs last
   scope :by_percentage_change_across_fields, ->(base_value_fields, new_value_fields) do
-    null_if_base_values = "NULLIF(#{base_value_fields.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0)"
-    null_if_new_values = "NULLIF(#{new_value_fields.map {|v| "COALESCE(#{v}, 0.0)" }.join('+')},0.0)"
+    null_if_base_values = Comparison::View.fields_total_with_zero_as_null(base_value_fields)
+    null_if_new_values = Comparison::View.fields_total_with_zero_as_null(new_value_fields)
     order(
       Arel.sql(
         sanitize_sql_array(
@@ -61,6 +61,10 @@ class Comparison::View < ApplicationRecord
   # Restricts results to rows that have values in any of the provided columns
   scope :where_any_present, ->(columns) do
     where(Arel.sql(sanitize_sql_array(columns.map { |c| "#{c} IS NOT NULL" }.join(' OR '))))
+  end
+
+  def self.fields_total_with_zero_as_null(fields)
+    "NULLIF(#{fields.map { |v| "COALESCE(#{v}, 0.0)" }.join(' + ')}, 0.0)"
   end
 
   def readonly?

@@ -46,6 +46,7 @@ module Admin
           translated_params,
           :key,
           :reporting_period,
+          :report_group_id,
           :title,
           :introduction,
           :notes,

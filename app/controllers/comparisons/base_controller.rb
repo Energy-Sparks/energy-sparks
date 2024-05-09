@@ -13,7 +13,7 @@ module Comparisons
     before_action :set_unlisted_schools_count, only: [:index]
     helper_method :index_params
     helper_method :footnote_cache
-    before_action :set_headers
+    before_action :set_headers, only: [:index]
 
     def index
       respond_to do |format|

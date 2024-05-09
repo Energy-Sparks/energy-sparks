@@ -386,6 +386,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-comparisons-comparisons-yml]
+file_filter  = config/locales/<lang>/views/comparisons/comparisons.yml
+source_file  = config/locales/views/comparisons/comparisons.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-components-breadcrumbs-yml]
 file_filter  = config/locales/<lang>/views/components/breadcrumbs.yml
 source_file  = config/locales/views/components/breadcrumbs.yml
@@ -501,20 +508,6 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-home-enrol-yml]
 file_filter  = config/locales/<lang>/views/home/enrol.yml
 source_file  = config/locales/views/home/enrol.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
-[o:energy-sparks:p:energy-sparks:r:views-home-enrol_our_local_authority-yml]
-file_filter  = config/locales/<lang>/views/home/enrol_our_local_authority.yml
-source_file  = config/locales/views/home/enrol_our_local_authority.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
-[o:energy-sparks:p:energy-sparks:r:views-home-enrol_our_multi_academy_trust-yml]
-file_filter  = config/locales/<lang>/views/home/enrol_our_multi_academy_trust.yml
-source_file  = config/locales/views/home/enrol_our_multi_academy_trust.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -700,3 +693,4 @@ source_file  = config/locales/views/terms_and_conditions/terms_and_conditions.ym
 source_lang  = en
 type         = YML
 minimum_perc = 100
+

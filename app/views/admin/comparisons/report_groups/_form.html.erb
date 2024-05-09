@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col">
+    <% url = if report_group.new_record?
+               admin_comparisons_report_groups_path
+             else
+               admin_comparisons_report_group_path(report_group)
+             end %>
+    <%= simple_form_for(report_group, as: :report_group, url: url) do |f| %>
+      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+        <%= f.input t_field(:title, locale), as: :string %>
+      <% end %>
+      <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+        <%= f.input t_field(:description, locale), as: :string %>
+      <% end %>
+      <%= f.input :position %>
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

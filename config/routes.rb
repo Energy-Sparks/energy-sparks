@@ -103,6 +103,7 @@ Rails.application.routes.draw do
     resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
     resources :change_in_electricity_since_last_year, only: [:index], concerns: :unlisted
     resources :change_in_energy_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_energy_use_since_joined_energy_sparks, only: [:index], concerns: :unlisted
     resources :change_in_gas_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
     resources :change_in_gas_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
     resources :change_in_gas_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
@@ -489,6 +490,7 @@ Rails.application.routes.draw do
     namespace :comparisons do
       resources :footnotes, except: [:show]
       resources :reports, except: [:show]
+      resources :report_groups, except: [:show]
     end
 
     resources :case_studies
@@ -710,6 +712,7 @@ Rails.application.routes.draw do
 
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
+      mount Flipper::UI.app(Flipper) => 'flipper', as: :flipper
     end
   end # Admin name space
 
