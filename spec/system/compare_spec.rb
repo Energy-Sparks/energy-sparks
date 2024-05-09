@@ -38,13 +38,13 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_selector('h1', text: 'Baseload per pupil') }
     it { expect(page).to have_content('intro html') }
 
-    it 'allows report introduction to be edited', if: edit do
+    it 'allows report introduction to be edited', if: display_new_comparison_pages && edit do
       within('#intro') do
         expect(page).to have_link('Edit')
       end
     end
 
-    it 'does not allow report introduction to be edited', unless: edit do
+    it 'does not allow report introduction to be edited', unless: display_new_comparison_pages && edit do
       within('#intro') do
         expect(page).not_to have_link('Edit')
       end
@@ -221,7 +221,7 @@ describe 'compare pages', :compare, type: :system do
   shared_context 'index page context' do |display_new_comparison_pages: false|
     before do
       if display_new_comparison_pages
-        Comparison::Report.find_or_create_by(key: 'baseload_per_pupil').update(title: 'Baseload per pupil', introduction: 'intro html', public: true)
+        create(:report, key: 'baseload_per_pupil', title: 'Baseload per pupil', introduction: 'intro html', public: true)
       else
         expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
       end
@@ -229,12 +229,15 @@ describe 'compare pages', :compare, type: :system do
   end
 
   shared_context 'benchmarks page context' do |display_new_comparison_pages: false|
-    ### Ready for if we switch the benchmark group info over to the frontend
-    if display_new_comparison_pages || !display_new_comparison_pages
-      let(:content_manager)   { double(:content_manager) }
-      let!(:benchmark_run)    { BenchmarkResultSchoolGenerationRun.create(school: school, benchmark_result_generation_run: BenchmarkResultGenerationRun.create!) }
+    if display_new_comparison_pages
+      before do
+        create(:report_group, title: 'Benchmark group name', description: 'Benchmark description')
+      end
+    else
+      let!(:content_manager) { double(:content_manager) }
 
       before do
+        BenchmarkResultSchoolGenerationRun.create!(school: school, benchmark_result_generation_run: BenchmarkResultGenerationRun.create!)
         expect(Benchmarking::BenchmarkContentManager).to receive(:new).at_least(:once).and_return(content_manager)
         expect(content_manager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
       end
@@ -292,9 +295,8 @@ describe 'compare pages', :compare, type: :system do
 
   ## tests start here ##
 
-
   [true, false].each do |feature_flag|
-    context "when comparison report feature flag is set to #{feature_flag}" do
+    context "when comparison report feature flag is #{feature_flag}" do
       let(:user) {}
       let(:all_school_types) { School.school_types.keys }
       let!(:funder)          { create(:funder, name: 'Grant Funder') }
@@ -308,44 +310,53 @@ describe 'compare pages', :compare, type: :system do
       let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { baseload_per_pupil: 'Baseload per pupil' } }] }
 
       before do
+        feature_flag ? Flipper.enable(:comparison_reports) : Flipper.disable(:comparison_reports)
         sign_in(user) if user
       end
 
-      around do |example|
-        ClimateControl.modify FEATURE_FLAG_COMPARISON_REPORTS: feature_flag.to_s do
-          example.run
-        end
-      end
+      include_context 'index page context', display_new_comparison_pages: feature_flag
 
-      context 'when user is non-admin' do
-        include_context 'index page context', display_new_comparison_pages: feature_flag
+      before { visit compare_index_path }
 
-        before { visit compare_index_path }
+      context 'when user is logged in user with school group' do
+        let(:user) { create(:user, school_group: school_group) }
 
-        context 'when user is logged in user with school group' do
-          let(:user) { create(:user, school_group: school_group) }
+        it_behaves_like 'an index page', tab: 'Your group'
+
+        context "'Your group' filter tab" do
+          before { click_on 'Your group' }
 
           it_behaves_like 'an index page', tab: 'Your group'
 
-          context "'Your group' filter tab" do
-            before { click_on 'Your group' }
+          it { expect(page).to have_content "Compare all schools within #{user.school_group_name}" }
+          it_behaves_like 'a form filter', id: '#group', school_types_excluding: [] # show all
 
-            it_behaves_like 'an index page', tab: 'Your group'
+          context 'Benchmark page' do
+            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
 
-            it { expect(page).to have_content "Compare all schools within #{user.school_group_name}" }
-            it_behaves_like 'a form filter', id: '#group', school_types_excluding: [] # show all
-
-            context 'Benchmark page' do
-              include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
-
-              before do
-                within '#group' do
-                  uncheck 'Junior'
-                  click_on 'Compare schools'
-                end
+            before do
+              within '#group' do
+                uncheck 'Junior'
+                click_on 'Compare schools'
               end
+            end
 
-              it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a filter summary', school_types_excluding: ['junior']
+
+            context 'Changing options' do
+              before { click_on 'Change options' }
+
+              it_behaves_like 'an index page', tab: 'Your group'
+              it_behaves_like 'a form filter', id: '#group', school_types_excluding: ['junior']
+            end
+
+            context 'results page' do
+              include_context 'results page context', display_new_comparison_pages: feature_flag
+
+              before { click_on 'Baseload per pupil' }
+
+              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
               it_behaves_like 'a filter summary', school_types_excluding: ['junior']
 
               context 'Changing options' do
@@ -354,45 +365,45 @@ describe 'compare pages', :compare, type: :system do
                 it_behaves_like 'an index page', tab: 'Your group'
                 it_behaves_like 'a form filter', id: '#group', school_types_excluding: ['junior']
               end
-
-              context 'results page' do
-                include_context 'results page context', display_new_comparison_pages: feature_flag
-
-                before { click_on 'Baseload per pupil' }
-
-                it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
-                it_behaves_like 'a filter summary', school_types_excluding: ['junior']
-
-                context 'Changing options' do
-                  before { click_on 'Change options' }
-
-                  it_behaves_like 'an index page', tab: 'Your group'
-                  it_behaves_like 'a form filter', id: '#group', school_types_excluding: ['junior']
-                end
-              end
             end
           end
+        end
 
-          context "'Country' filter tab" do
-            before { click_on 'Choose country' }
+        context "'Country' filter tab" do
+          before { click_on 'Choose country' }
 
-            it_behaves_like 'an index page', tab: 'Choose country'
-            it { expect(page).to have_content 'Compare schools by country' }
+          it_behaves_like 'an index page', tab: 'Choose country'
+          it { expect(page).to have_content 'Compare schools by country' }
 
-            it_behaves_like 'a form filter', id: '#country', country: 'All countries'
+          it_behaves_like 'a form filter', id: '#country', country: 'All countries'
 
-            context 'Benchmark page' do
-              include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
+          context 'Benchmark page' do
+            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
 
-              before do
-                within '#country' do
-                  choose 'Scotland'
-                  uncheck 'Middle'
-                  click_on 'Compare schools'
-                end
+            before do
+              within '#country' do
+                choose 'Scotland'
+                uncheck 'Middle'
+                click_on 'Compare schools'
               end
+            end
 
-              it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
+
+            context 'Changing options' do
+              before { click_on 'Change options' }
+
+              it_behaves_like 'an index page', tab: 'Choose country'
+              it_behaves_like 'a form filter', id: '#country', country: 'scotland', school_types_excluding: ['middle']
+            end
+
+            context 'results page' do
+              include_context 'results page context', display_new_comparison_pages: feature_flag
+
+              before { click_on 'Baseload per pupil' }
+
+              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
               it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
 
               context 'Changing options' do
@@ -401,45 +412,45 @@ describe 'compare pages', :compare, type: :system do
                 it_behaves_like 'an index page', tab: 'Choose country'
                 it_behaves_like 'a form filter', id: '#country', country: 'scotland', school_types_excluding: ['middle']
               end
-
-              context 'results page' do
-                include_context 'results page context', display_new_comparison_pages: feature_flag
-
-                before { click_on 'Baseload per pupil' }
-
-                it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
-                it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
-
-                context 'Changing options' do
-                  before { click_on 'Change options' }
-
-                  it_behaves_like 'an index page', tab: 'Choose country'
-                  it_behaves_like 'a form filter', id: '#country', country: 'scotland', school_types_excluding: ['middle']
-                end
-              end
             end
           end
+        end
 
-          context "'Type' filter tab" do
-            before { click_on 'Choose type' }
+        context "'Type' filter tab" do
+          before { click_on 'Choose type' }
 
-            it_behaves_like 'an index page', tab: 'Choose type'
-            it { expect(page).to have_content 'Compare schools by type' }
+          it_behaves_like 'an index page', tab: 'Choose type'
+          it { expect(page).to have_content 'Compare schools by type' }
 
-            it_behaves_like 'a form filter', id: '#type', school_type: []
+          it_behaves_like 'a form filter', id: '#type', school_type: []
 
-            context 'Benchmark page' do
-              include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
+          context 'Benchmark page' do
+            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
 
-              before do
-                within '#type' do
-                  select 'Primary'
-                  click_on 'Compare schools'
-                end
+            before do
+              within '#type' do
+                select 'Primary'
+                click_on 'Compare schools'
               end
+            end
 
+            it_behaves_like 'a filter summary', school_types: ['primary']
+            it_behaves_like 'a benchmark list page'
+
+            context 'Changing options' do
+              before { click_on 'Change options' }
+
+              it_behaves_like 'an index page', tab: 'Choose type'
+              it_behaves_like 'a form filter', id: '#type', school_type: 'Primary'
+            end
+
+            context 'results page' do
+              include_context 'results page context', display_new_comparison_pages: feature_flag
+
+              before { click_on 'Baseload per pupil' }
+
+              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
               it_behaves_like 'a filter summary', school_types: ['primary']
-              it_behaves_like 'a benchmark list page'
 
               context 'Changing options' do
                 before { click_on 'Change options' }
@@ -447,100 +458,80 @@ describe 'compare pages', :compare, type: :system do
                 it_behaves_like 'an index page', tab: 'Choose type'
                 it_behaves_like 'a form filter', id: '#type', school_type: 'Primary'
               end
-
-              context 'results page' do
-                include_context 'results page context', display_new_comparison_pages: feature_flag
-
-                before { click_on 'Baseload per pupil' }
-
-                it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
-                it_behaves_like 'a filter summary', school_types: ['primary']
-
-                context 'Changing options' do
-                  before { click_on 'Change options' }
-
-                  it_behaves_like 'an index page', tab: 'Choose type'
-                  it_behaves_like 'a form filter', id: '#type', school_type: 'Primary'
-                end
-              end
             end
           end
+        end
 
-          context "'Groups' filter tab" do
-            before { click_on 'Choose groups' }
+        context "'Groups' filter tab" do
+          before { click_on 'Choose groups' }
 
-            it_behaves_like 'an index page', tab: 'Choose groups'
-            it { expect(page).to have_content 'Compare schools in groups' }
-            it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2'], school_groups: [], school_types_excluding: [] # show all
+          it_behaves_like 'an index page', tab: 'Choose groups'
+          it { expect(page).to have_content 'Compare schools in groups' }
+          it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2'], school_groups: [], school_types_excluding: [] # show all
 
-            context 'Benchmark page' do
-              include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
+          context 'Benchmark page' do
+            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
 
+            before do
+              within '#groups' do
+                select 'Group 1'
+                select 'Group 2'
+                uncheck 'Infant'
+                click_on 'Compare schools'
+              end
+            end
+
+            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
+
+            context 'Changing options' do
+              before { click_on 'Change options' }
+
+              it_behaves_like 'an index page', tab: 'Choose groups'
+              it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2'], school_groups: ['Group 1', 'Group 2'], school_types_excluding: ['infant']
+            end
+
+            context 'Filtering all schools' do
               before do
+                click_on 'Change options'
                 within '#groups' do
-                  select 'Group 1'
-                  select 'Group 2'
-                  uncheck 'Infant'
+                  uncheck 'Primary'
                   click_on 'Compare schools'
                 end
               end
 
-              it_behaves_like 'a benchmark list page'
+              it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
+              it_behaves_like 'an empty filter notice'
+            end
+
+            context 'results page' do
+              include_context 'results page context', display_new_comparison_pages: feature_flag
+
+              before { click_on 'Baseload per pupil' }
+
+              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
               it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
 
               context 'Changing options' do
                 before { click_on 'Change options' }
 
                 it_behaves_like 'an index page', tab: 'Choose groups'
-                it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2'], school_groups: ['Group 1', 'Group 2'], school_types_excluding: ['infant']
-              end
-
-              context 'Filtering all schools' do
-                before do
-                  click_on 'Change options'
-                  within '#groups' do
-                    uncheck 'Primary'
-                    click_on 'Compare schools'
-                  end
-                end
-
-                it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
-                it_behaves_like 'an empty filter notice'
-              end
-
-              context 'results page' do
-                include_context 'results page context', display_new_comparison_pages: feature_flag
-
-                before { click_on 'Baseload per pupil' }
-
-                it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
-                it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
-
-                context 'Changing options' do
-                  before { click_on 'Change options' }
-
-                  it_behaves_like 'an index page', tab: 'Choose groups'
-                  it_behaves_like 'a form filter', id: '#groups', school_groups: ['Group 1', 'Group 2'], school_types_excluding: ['infant']
-                end
+                it_behaves_like 'a form filter', id: '#groups', school_groups: ['Group 1', 'Group 2'], school_types_excluding: ['infant']
               end
             end
           end
         end
-
-        context 'when user is logged out' do
-          let(:user) {}
-
-          it_behaves_like 'an index page', tab: 'Choose country', show_your_group_tab: false
-          it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2']
-        end
       end
 
-      context 'when user is an admin' do
+      context 'when user is logged out' do
+        let(:user) {}
+
+        it_behaves_like 'an index page', tab: 'Choose country', show_your_group_tab: false
+        it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2']
+      end
+
+      context 'When user is admin' do
         let(:user) { create(:admin) }
-
-        include_context 'index page context', display_new_comparison_pages: true
-
-        before { visit compare_index_path }
 
         context "'Country' filter tab" do
           before { click_on 'Choose country' }
@@ -553,7 +544,7 @@ describe 'compare pages', :compare, type: :system do
           it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2', 'Not Public']
 
           context 'Benchmark page' do
-            include_context 'benchmarks page context', display_new_comparison_pages: true
+            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
 
             before do
               within '#country' do
@@ -581,11 +572,11 @@ describe 'compare pages', :compare, type: :system do
             end
 
             context 'results page' do
-              include_context 'results page context', display_new_comparison_pages: true
+              include_context 'results page context', display_new_comparison_pages: feature_flag
 
               before { click_on 'Baseload per pupil' }
 
-              it_behaves_like 'a results page', display_new_comparison_pages: true, edit: true
+              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag, edit: true
               it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
               it_behaves_like 'a filter summary', funder: 'Grant Funder'
 
@@ -603,10 +594,8 @@ describe 'compare pages', :compare, type: :system do
   end
 
   context 'when comparison report feature is switched on' do
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_COMPARISON_REPORTS: 'true' do
-        example.run
-      end
+    before do
+      Flipper.enable :comparison_reports
     end
 
     describe 'displaying unlisted schools on the results page' do

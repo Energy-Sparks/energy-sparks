@@ -35,6 +35,8 @@ module Transifex
         synchronise_resources(transifex_load, Comparison::Report.tx_resources)
         log('Synchronising Comparison Footnotes')
         synchronise_resources(transifex_load, Comparison::Footnote.tx_resources)
+        log('Synchronising Comparison Report Groups')
+        synchronise_resources(transifex_load, Comparison::ReportGroup.tx_resources)
 
         if EnergySparks::FeatureFlags.active?(:sync_advice_page_translations)
           log('Synchronising Advice Pages')
