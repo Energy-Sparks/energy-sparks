@@ -8,6 +8,7 @@
       <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>
+      <%= f.association :report_group, label_method: :title, value_method: :id, include_blank: false %>
       <%= f.input :reporting_period,
                   collection: Comparison::Report.reporting_periods.keys,
                   label_method: ->(k) { k.humanize } %>

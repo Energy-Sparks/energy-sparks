@@ -4,38 +4,7 @@ require 'rails_helper'
 
 describe 'change_in_*_consumption_*' do
   let(:schools) { create_list(:school, 3) }
-  let(:expected_school) { schools[0] }
-  let(:headers) do
-    ['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday']
-  end
-
-  let(:expected_table) do
-    [headers,
-     ["#{schools[1].name} [2]", '+Infinity&percnt;', '£4', '5', 'Easter 2023', 'Easter 2022'],
-     ["#{schools[0].name} [1] [6]", '+100&percnt;', '£2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
-     ["#{schools[2].name} [3]", '-Infinity&percnt;', '£6', '7', 'Easter 2023', 'Easter 2022'],
-     ["Notes\n" \
-      "[1] the comparison has been adjusted because the number of pupils have changed between the two holidays.\n" \
-      '[2] schools where percentage change is +Infinity is caused by the electricity consumption in the ' \
-      "previous holidays being more than zero but in the current holidays zero\n" \
-      '[3] schools where percentage change is -Infinity is caused by the electricity consumption in the current ' \
-      "holidays being zero but in the previous holidays it was more than zero\n" \
-      '[6] schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
-      "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
-  end
-  let(:expected_csv) do
-    [headers,
-     [schools[1].name, 'Infinity', '4', '5', 'Easter 2023', 'Easter 2022'],
-     [schools[0].name, '100', '2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
-     [schools[2].name, '-Infinity', '6', '7', 'Easter 2023', 'Easter 2022']]
-  end
-  let!(:expected_report) { create(:report, key: key) }
-
-  include_context 'with comparison report footnotes' do
-    let(:footnotes) { [electricity_change_rows, electricity_infinite_increase, electricity_infinite_decrease, tariff_changed_in_period] }
-  end
-
-  before do
+  let!(:alerts) do
     alert_type = create(:alert_type, class_name: alert_class_name)
     common = { current_period_end_date: '2023-04-14',
                current_period_start_date: '2023-04-01',
@@ -64,6 +33,41 @@ describe 'change_in_*_consumption_*' do
                               variables: common.merge({ difference_percent: '-Infinity',
                                                         difference_gbpcurrent: 6,
                                                         difference_kwh: 7 }))
+  end
+  let(:expected_school) { schools[0] }
+  let(:headers) do
+    ['School', 'Change %', 'Change £ (latest tariff)', 'Change kWh', 'Most recent holiday', 'Previous holiday']
+  end
+
+  let(:expected_table) do
+    [headers,
+     ["#{schools[1].name} [2]", '+Infinity&percnt;', '£4', '5', 'Easter 2023', 'Easter 2022'],
+     ["#{schools[0].name} [1] [6]", '+100&percnt;', '£2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
+     ["#{schools[2].name} [3]", '-Infinity&percnt;', '£6', '7', 'Easter 2023', 'Easter 2022'],
+     ["Notes\n" \
+      "[1] the comparison has been adjusted because the number of pupils have changed between the two holidays.\n" \
+      '[2] schools where percentage change is +Infinity is caused by the electricity consumption in the ' \
+      "previous holidays being more than zero but in the current holidays zero\n" \
+      '[3] schools where percentage change is -Infinity is caused by the electricity consumption in the current ' \
+      "holidays being zero but in the previous holidays it was more than zero\n" \
+      '[6] schools where the economic tariff has changed between the two periods, this is not reflected in the ' \
+      "'Change £ (latest tariff)' column as it is calculated using the most recent tariff."]]
+  end
+  let(:expected_csv) do
+    [headers,
+     [schools[1].name, 'Infinity', '4', '5', 'Easter 2023', 'Easter 2022'],
+     [schools[0].name, '100', '2', '3', 'Easter 2023 (partial)', 'Easter 2022'],
+     [schools[2].name, '-Infinity', '6', '7', 'Easter 2023', 'Easter 2022']]
+  end
+  let!(:expected_report) { create(:report, key: key) }
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) do
+      [electricity_change_rows, electricity_infinite_increase, electricity_infinite_decrease, tariff_changed_in_period]
+    end
+  end
+
+  before do
     visit "/comparisons/#{key}"
   end
 

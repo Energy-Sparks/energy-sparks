@@ -33,6 +33,10 @@ class ComparisonChartComponent < ViewComponent::Base
     }.to_json
   end
 
+  def render?
+    @x_data.any?
+  end
+
   private
 
   def chart_config
