@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_29_144652) do
+ActiveRecord::Schema.define(version: 2024_05_07_101407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -679,6 +679,12 @@ ActiveRecord::Schema.define(version: 2024_04_29_144652) do
     t.index ["key"], name: "index_comparison_footnotes_on_key", unique: true
   end
 
+  create_table "comparison_report_groups", force: :cascade do |t|
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "comparison_reports", force: :cascade do |t|
     t.string "key", null: false
     t.boolean "public", default: false
@@ -686,8 +692,10 @@ ActiveRecord::Schema.define(version: 2024_04_29_144652) do
     t.bigint "custom_period_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "report_group_id"
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
     t.index ["key"], name: "index_comparison_reports_on_key", unique: true
+    t.index ["report_group_id"], name: "index_comparison_reports_on_report_group_id"
   end
 
   create_table "configurations", force: :cascade do |t|
@@ -927,6 +935,22 @@ ActiveRecord::Schema.define(version: 2024_04_29_144652) do
     t.index ["alert_id"], name: "index_find_out_mores_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "fom_fom_content_v_id"
     t.index ["content_generation_run_id"], name: "index_find_out_mores_on_content_generation_run_id"
+  end
+
+  create_table "flipper_features", force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_flipper_features_on_key", unique: true
+  end
+
+  create_table "flipper_gates", force: :cascade do |t|
+    t.string "feature_key", null: false
+    t.string "key", null: false
+    t.text "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -2010,6 +2034,7 @@ ActiveRecord::Schema.define(version: 2024_04_29_144652) do
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
+  add_foreign_key "comparison_reports", "comparison_report_groups", column: "report_group_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "consent_grants", "consent_statements"
   add_foreign_key "consent_grants", "schools"

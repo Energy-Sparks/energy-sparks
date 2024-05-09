@@ -112,6 +112,10 @@ gem 'roo-xls'
 # Used to handle mail processing for the admin mailer
 gem 'premailer-rails'
 
+# Feature flags
+gem "flipper-ui", "~> 1.3"
+gem "flipper-active_record", "~> 1.3"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', require: false # use bullet to optimise queries

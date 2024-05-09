@@ -710,6 +710,7 @@ Rails.application.routes.draw do
 
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
+      mount Flipper::UI.app(Flipper) => 'flipper', as: :flipper
     end
   end # Admin name space
 
