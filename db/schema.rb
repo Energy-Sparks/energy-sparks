@@ -3765,4 +3765,69 @@ ActiveRecord::Schema.define(version: 2024_05_07_101407) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((energy.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
+  create_view "change_in_energy_use_since_joined_energy_sparks", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      energy.school_id,
+      additional.activation_date,
+      energy.current_year_electricity_kwh AS electricity_current_period_kwh,
+      energy.activationyear_electricity_kwh AS electricity_previous_period_kwh,
+      energy.current_year_electricity_co2 AS electricity_current_period_co2,
+      energy.activationyear_electricity_co2 AS electricity_previous_period_co2,
+      energy.current_year_electricity_gbp AS electricity_current_period_gbp,
+      energy.activationyear_electricity_gbp AS electricity_previous_period_gbp,
+      energy.current_year_gas_kwh AS gas_current_period_kwh,
+      energy.activationyear_gas_kwh AS gas_previous_period_kwh,
+      energy.current_year_gas_co2 AS gas_current_period_co2,
+      energy.activationyear_gas_co2 AS gas_previous_period_co2,
+      energy.current_year_gas_gbp AS gas_current_period_gbp,
+      energy.activationyear_gas_gbp AS gas_previous_period_gbp,
+      energy.current_year_storage_heaters_kwh AS storage_heater_current_period_kwh,
+      energy.activationyear_storage_heaters_kwh AS storage_heater_previous_period_kwh,
+      energy.current_year_storage_heaters_co2 AS storage_heater_current_period_co2,
+      energy.activationyear_storage_heaters_co2 AS storage_heater_previous_period_co2,
+      energy.current_year_storage_heaters_gbp AS storage_heater_current_period_gbp,
+      energy.activationyear_storage_heaters_gbp AS storage_heater_previous_period_gbp,
+      energy.activationyear_electricity_kwh_relative_percent AS activationyear_electricity_note,
+      energy.activationyear_gas_kwh_relative_percent AS activationyear_gas_note,
+      energy.activationyear_storage_heaters_kwh_relative_percent AS activationyear_storage_heater_note,
+      energy.solar_type
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.activationyear_electricity_kwh,
+              data.current_year_electricity_kwh,
+              data.activationyear_electricity_co2,
+              data.current_year_electricity_co2,
+              data.activationyear_electricity_gbp,
+              data.current_year_electricity_gbp,
+              data.activationyear_gas_kwh,
+              data.current_year_gas_kwh,
+              data.activationyear_gas_co2,
+              data.current_year_gas_co2,
+              data.activationyear_gas_gbp,
+              data.current_year_gas_gbp,
+              data.activationyear_storage_heaters_kwh,
+              data.current_year_storage_heaters_kwh,
+              data.activationyear_storage_heaters_co2,
+              data.current_year_storage_heaters_co2,
+              data.activationyear_storage_heaters_gbp,
+              data.current_year_storage_heaters_gbp,
+              data.activationyear_electricity_kwh_relative_percent,
+              data.activationyear_gas_kwh_relative_percent,
+              data.activationyear_storage_heaters_kwh_relative_percent,
+              data.solar_type
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(activationyear_electricity_kwh double precision, current_year_electricity_kwh double precision, activationyear_electricity_co2 double precision, current_year_electricity_co2 double precision, activationyear_electricity_gbp double precision, current_year_electricity_gbp double precision, activationyear_gas_kwh double precision, current_year_gas_kwh double precision, activationyear_gas_co2 double precision, current_year_gas_co2 double precision, activationyear_gas_gbp double precision, current_year_gas_gbp double precision, activationyear_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, activationyear_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, activationyear_storage_heaters_gbp double precision, current_year_storage_heaters_gbp double precision, activationyear_electricity_kwh_relative_percent text, activationyear_gas_kwh_relative_percent text, activationyear_storage_heaters_kwh_relative_percent text, solar_type text)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
+      ( SELECT alerts.alert_generation_run_id,
+              data.activation_date
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(activation_date date)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE ((energy.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
+  SQL
 end

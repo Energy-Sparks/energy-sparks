@@ -3,16 +3,17 @@
 module Comparisons
   module Shared
     class ArbitraryPeriodController < BaseController
-      def index
+      private
+
+      def set_headers
+        super
+        @include_previous_period_unadjusted = true
         @electricity_colgroups = colgroups(fuel: false)
         @electricity_headers = headers(fuel: false)
-        @heating_colgroups = colgroups(fuel: false, previous_period_unadjusted: true)
-        @heating_headers = headers(fuel: false, previous_period_unadjusted: true)
+        @heating_colgroups = colgroups(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
+        @heating_headers = headers(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
         @period_type_string = I18n.t('comparisons.period_types.periods')
-        super
       end
-
-      private
 
       def headers(fuel: true, previous_period_unadjusted: false)
         [
