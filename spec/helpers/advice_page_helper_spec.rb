@@ -88,6 +88,10 @@ describe AdvicePageHelper do
         helper.advice_page_path(school, advice_page, :blah)
       end.to raise_error(NoMethodError)
     end
+
+    it 'returns advice root if advice page not specified' do
+      expect(helper.advice_page_path(school)).to end_with("/schools/#{school.slug}/advice")
+    end
   end
 
   describe '.sort_by_label' do

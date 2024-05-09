@@ -28,7 +28,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.1'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.3'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -113,6 +113,10 @@ gem 'roo-xls'
 
 # Used to handle mail processing for the admin mailer
 gem 'premailer-rails'
+
+# Feature flags
+gem "flipper-ui", "~> 1.3"
+gem "flipper-active_record", "~> 1.3"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

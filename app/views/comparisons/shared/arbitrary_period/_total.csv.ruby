@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 CSV.generate do |csv|
   csv << [
-    "", "", "",
+    '', '', '',
     t('analytics.benchmarking.configuration.column_groups.kwh'),
-    "",
-    "",
+    '',
+    '',
     t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-    "",
-    "",
+    '',
+    '',
     t('analytics.benchmarking.configuration.column_groups.gbp'),
-    "",
-    ""
+    '',
+    ''
   ]
 
   csv << @headers

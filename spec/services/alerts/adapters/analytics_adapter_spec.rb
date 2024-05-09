@@ -75,6 +75,10 @@ module Alerts
       def self.benchmark_template_variables
         { benchmark: true }
       end
+
+      def reporting_period
+        :period
+      end
     end
 
     class DummyAnalyticsAlertFailedClass < DummyAnalyticsAlertClass
@@ -281,6 +285,24 @@ module Alerts
             'nan': 'NaN'
           }
         )
+      end
+    end
+
+    context 'when reporting_period is undefined' do
+      class DummyAlertWithMissingMethod < DummyAnalyticsAlertClass
+        undef_method :reporting_period
+
+        def self.alert_type
+          FactoryBot.create :alert_type,
+            class_name: 'Alerts::DummyAlertWithMissingMethod',
+            source: :analytics
+        end
+      end
+
+      subject(:normalised_report) { Adapters::AnalyticsAdapter.new(alert_type: DummyAlertWithMissingMethod.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report }
+
+      it 'returns nil' do
+        expect(normalised_report.reporting_period).to eq(nil)
       end
     end
   end

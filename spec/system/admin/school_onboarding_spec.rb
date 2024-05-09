@@ -257,8 +257,10 @@ RSpec.describe 'onboarding', :schools, type: :system do
       school_group = create :school_group
       school = create :school, country: :england, school_group: school_group
       onboarding = create :school_onboarding, :with_events, event_names: [:onboarding_complete], school: school
-      click_on 'Manage'
-      click_on 'Reports'
+      within('#navbarNavDropdown') do
+        click_on 'Manage'
+        click_on 'Reports'
+      end
       click_on 'Recently onboarded'
 
       expect(page).to have_content 'Schools recently onboarded'

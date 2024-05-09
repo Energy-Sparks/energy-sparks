@@ -215,6 +215,9 @@ table.management-priorities {
 .old-data {
   background: white;
   color: $bg-negative;
+  sup {
+    color: black;
+  }
 }
 
 .chart-placeholder-image {

@@ -4,6 +4,8 @@ class SchoolGroupComparisonComponent < ViewComponent::Base
   renders_one :footer
   renders_one :csv_download_link
 
+  include ApplicationHelper
+
   CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
 
   def initialize(id:, comparison:, advice_page_key:, include_cluster: false)

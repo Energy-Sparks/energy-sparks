@@ -67,7 +67,8 @@ describe Transifex::Loader, type: :service do
     let!(:programme_type2)          { create(:programme_type, active: false) }
     let!(:transport_type)           { create(:transport_type) }
     let!(:consent_statement)        { create(:consent_statement) }
-    let!(:comparison_report)        { create(:report) }
+    let!(:comparison_report_group)  { create(:report_group) }
+    let!(:comparison_report)        { create(:report, report_group: comparison_report_group) }
     let!(:comparison_footnote)      { create(:footnote) }
     let!(:advice_page)              { create(:advice_page, learn_more: advice_page_text) }
 
@@ -78,11 +79,11 @@ describe Transifex::Loader, type: :service do
     end
 
     it 'updates the pull count' do
-      expect(TransifexLoad.first.pulled).to eq 11
+      expect(TransifexLoad.first.pulled).to eq 12
     end
 
     it 'updates the push count' do
-      expect(TransifexLoad.first.pushed).to eq 11
+      expect(TransifexLoad.first.pushed).to eq 12
     end
 
     context 'when advice page syncing is enabled' do
@@ -93,22 +94,22 @@ describe Transifex::Loader, type: :service do
       end
 
       it 'updates the pull count' do
-        expect(TransifexLoad.first.pulled).to eq 12
+        expect(TransifexLoad.first.pulled).to eq 13
       end
 
       it 'updates the push count' do
-        expect(TransifexLoad.first.pushed).to eq 12
+        expect(TransifexLoad.first.pushed).to eq 13
       end
 
       context 'when a record has no contents' do
         let!(:advice_page_text) { '' }
 
         it 'skips the pull' do
-          expect(TransifexLoad.first.pulled).to eq 11
+          expect(TransifexLoad.first.pulled).to eq 12
         end
 
         it 'skips the push' do
-          expect(TransifexLoad.first.pushed).to eq 11
+          expect(TransifexLoad.first.pushed).to eq 12
         end
       end
     end
