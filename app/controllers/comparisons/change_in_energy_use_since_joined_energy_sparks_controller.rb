@@ -5,7 +5,8 @@ module Comparisons
     end
 
     def set_headers
-      super
+      @colgroups = colgroups
+      @headers = headers
       @include_previous_period_unadjusted = false
       @electricity_colgroups = colgroups(fuel: false)
       @electricity_headers = headers(fuel: false)
