@@ -1,5 +1,3 @@
-<%= render 'table_title', table_number: table_number, table_title: t('comparisons.tables.electricity_usage') %>
-
 <%= component 'comparison_table',
               report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
               headers: @electricity_headers, colgroups: @electricity_colgroups,

@@ -16,8 +16,10 @@ en:
     tables:
       electricity_usage: Electricity usage comparison
       gas_usage: Gas usage comparison
+      heating_start_time: Heating Start Times
+      optimum_start_analysis: Optimum Start Analysis
       storage_heater_usage: Storage heater usage comparison
-      table_title: 'Table %{table_number}: %{table_title}'
+      table_number: Table %{table_number}
       total_usage: Total energy usage comparison
     unlisted:
       link:
