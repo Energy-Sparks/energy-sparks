@@ -13,7 +13,7 @@ class Comparison::ReportGroup < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
 
-  has_many :reports, class_name: 'Comparison::Report'
+  has_many :reports, class_name: 'Comparison::Report', dependent: :restrict_with_error
 
   scope :by_position, ->(order = :asc) { order(position: order) }
 

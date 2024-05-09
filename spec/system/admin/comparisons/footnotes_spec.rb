@@ -77,10 +77,10 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
         end
       end
 
-      it { expect(page).to have_link('New footnote') }
+      it { expect(page).to have_link('New') }
 
       context 'when clicking the new button' do
-        before { click_link('New footnote') }
+        before { click_link('New') }
 
         it 'shows footnote new page' do
           expect(page).to have_current_path(new_admin_comparisons_footnote_path)
