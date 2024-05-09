@@ -25,6 +25,7 @@ describe '*_consumption_during_holiday' do
   end
 
   before do
+    travel_to Date.new(2023, 4, 1)
     visit "/comparisons/#{key}"
   end
 

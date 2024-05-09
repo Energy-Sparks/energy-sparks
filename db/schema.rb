@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_07_101407) do
+ActiveRecord::Schema.define(version: 2024_05_08_115851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -3298,39 +3298,6 @@ ActiveRecord::Schema.define(version: 2024_05_07_101407) do
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
        LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)));
   SQL
-  create_view "holiday_usage_last_years", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.last_year_holiday_gas_gbp,
-      data.last_year_holiday_electricity_gbp,
-      data.last_year_holiday_gas_gbpcurrent,
-      data.last_year_holiday_electricity_gbpcurrent,
-      data.last_year_holiday_gas_kwh_per_floor_area,
-      data.last_year_holiday_electricity_kwh_per_floor_area,
-      data.last_year_holiday_type,
-      data.last_year_holiday_start_date,
-      data.last_year_holiday_end_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.last_year_holiday_gas_gbp,
-              data_1.last_year_holiday_electricity_gbp,
-              data_1.last_year_holiday_gas_gbpcurrent,
-              data_1.last_year_holiday_electricity_gbpcurrent,
-              data_1.last_year_holiday_gas_kwh_per_floor_area,
-              data_1.last_year_holiday_electricity_kwh_per_floor_area,
-              data_1.last_year_holiday_type,
-              data_1.last_year_holiday_start_date,
-              data_1.last_year_holiday_end_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(last_year_holiday_gas_gbp double precision, last_year_holiday_electricity_gbp double precision, last_year_holiday_gas_gbpcurrent double precision, last_year_holiday_electricity_gbpcurrent double precision, last_year_holiday_gas_kwh_per_floor_area double precision, last_year_holiday_electricity_kwh_per_floor_area double precision, last_year_holiday_type text, last_year_holiday_start_date date, last_year_holiday_end_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertImpendingHoliday'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
-  SQL
   create_view "hot_water_efficiencies", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -3695,6 +3662,41 @@ ActiveRecord::Schema.define(version: 2024_05_07_101407) do
        LEFT JOIN storage_heater ON ((latest_runs.id = storage_heater.alert_generation_run_id)))
        LEFT JOIN benchmark ON ((latest_runs.id = benchmark.alert_generation_run_id)))
     WHERE (((electricity.custom_period_id = gas.custom_period_id) AND (gas.custom_period_id = storage_heater.custom_period_id)) OR ((electricity.custom_period_id IS NULL) AND (gas.custom_period_id = storage_heater.custom_period_id)) OR ((gas.custom_period_id IS NULL) AND (electricity.custom_period_id = storage_heater.custom_period_id)) OR ((storage_heater.custom_period_id IS NULL) AND (electricity.custom_period_id = gas.custom_period_id)) OR ((electricity.custom_period_id IS NOT NULL) AND (COALESCE(gas.custom_period_id, storage_heater.custom_period_id) IS NULL)) OR ((gas.custom_period_id IS NOT NULL) AND (COALESCE(electricity.custom_period_id, storage_heater.custom_period_id) IS NULL)) OR ((storage_heater.custom_period_id IS NOT NULL) AND (COALESCE(electricity.custom_period_id, gas.custom_period_id) IS NULL)));
+  SQL
+  create_view "holiday_usage_last_years", sql_definition: <<-SQL
+      SELECT latest_runs.id,
+      data.alert_generation_run_id,
+      data.school_id,
+      data.last_year_holiday_gas_gbp,
+      data.last_year_holiday_electricity_gbp,
+      data.last_year_holiday_gas_gbpcurrent,
+      data.last_year_holiday_electricity_gbpcurrent,
+      data.last_year_holiday_gas_kwh_per_floor_area,
+      data.last_year_holiday_electricity_kwh_per_floor_area,
+      data.last_year_holiday_type,
+      data.last_year_holiday_start_date,
+      data.last_year_holiday_end_date,
+      data.holiday_start_date
+     FROM ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.last_year_holiday_gas_gbp,
+              data_1.last_year_holiday_electricity_gbp,
+              data_1.last_year_holiday_gas_gbpcurrent,
+              data_1.last_year_holiday_electricity_gbpcurrent,
+              data_1.last_year_holiday_gas_kwh_per_floor_area,
+              data_1.last_year_holiday_electricity_kwh_per_floor_area,
+              data_1.last_year_holiday_type,
+              data_1.last_year_holiday_start_date,
+              data_1.last_year_holiday_end_date,
+              data_1.holiday_start_date
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(last_year_holiday_gas_gbp double precision, last_year_holiday_electricity_gbp double precision, last_year_holiday_gas_gbpcurrent double precision, last_year_holiday_electricity_gbpcurrent double precision, last_year_holiday_gas_kwh_per_floor_area double precision, last_year_holiday_electricity_kwh_per_floor_area double precision, last_year_holiday_type text, last_year_holiday_start_date date, last_year_holiday_end_date date, holiday_start_date date)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertImpendingHoliday'::text))) data,
+      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
+    WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
   create_view "change_in_energy_since_last_years", sql_definition: <<-SQL
       SELECT latest_runs.id,
