@@ -34,7 +34,7 @@
             <div>
               <%= footnote %>
               <% if footnote.reference.footnote %>
-                <%= helpers.admin_link edit_admin_comparisons_footnote_path(footnote.reference.footnote) %>
+                <%= helpers.admin_button edit_admin_comparisons_footnote_path(footnote.reference.footnote) %>
               <% end %>
             </div>
           <% end %>
