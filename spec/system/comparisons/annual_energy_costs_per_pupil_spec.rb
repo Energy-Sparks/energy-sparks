@@ -1,7 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'annual_energy_costs_per_pupil' do
   let!(:school) { create(:school) }
+  let!(:alerts) do
+    electricity_alert = create(:alert_type, class_name: 'AlertElectricityAnnualVersusBenchmark')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: electricity_alert,
+                   variables: electricity_variables)
+    gas_alert = create(:alert_type, class_name: 'AlertGasAnnualVersusBenchmark')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: gas_alert,
+                   variables: gas_variables)
+    storage_heater_alert = create(:alert_type, class_name: 'AlertStorageHeaterAnnualVersusBenchmark')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: storage_heater_alert,
+                   variables: storage_heater_variables)
+    additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert,
+                   variables: additional_data_variables)
+  end
   let(:key) { :annual_energy_costs_per_pupil }
   let(:advice_page_key) { :total_energy_use }
 
@@ -37,7 +53,6 @@ describe 'annual_energy_costs_per_pupil' do
     }
   end
 
-
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
@@ -47,23 +62,6 @@ describe 'annual_energy_costs_per_pupil' do
 
   before do
     create(:advice_page, key: advice_page_key)
-
-    electricity_alert = create(:alert_type, class_name: 'AlertElectricityAnnualVersusBenchmark')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: electricity_alert,
-                   variables: electricity_variables)
-
-    gas_alert = create(:alert_type, class_name: 'AlertGasAnnualVersusBenchmark')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: gas_alert,
-                   variables: gas_variables)
-
-
-    storage_heater_alert = create(:alert_type, class_name: 'AlertStorageHeaterAnnualVersusBenchmark')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: storage_heater_alert,
-                   variables: storage_heater_variables)
-
-    additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert,
-                   variables: additional_data_variables)
   end
 
   context 'when viewing report' do
@@ -94,7 +92,7 @@ describe 'annual_energy_costs_per_pupil' do
         [
           headers,
           ["#{school.name} [5]",
-           I18n.t('common.school_types.' + school.school_type),
+           I18n.t("common.school_types.#{school.school_type}"),
            '100',
            '200',
            '300',
@@ -112,7 +110,7 @@ describe 'annual_energy_costs_per_pupil' do
         [
           headers,
           [school.name,
-           I18n.t('common.school_types.' + school.school_type),
+           I18n.t("common.school_types.#{school.school_type}"),
            '100',
            '200',
            '300',

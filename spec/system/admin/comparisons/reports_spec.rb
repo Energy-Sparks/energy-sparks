@@ -5,6 +5,7 @@ require 'rails_helper'
 shared_examples 'a report page with valid attributes' do |action:|
   before do
     fill_in 'Key', with: 'New key'
+    select 'Electricity', from: 'Report group'
     fill_in 'Title en', with: 'New title'
 
     select 'Custom', from: 'Reporting period'
@@ -28,6 +29,7 @@ shared_examples 'a report page with valid attributes' do |action:|
   it do
     expect(page).to have_selector(:table_row, { 'Key' => 'New key',
                                                 'Title' => 'New title',
+                                                'Group' => 'Electricity',
                                                 'Reporting period' =>
                                                   'Custom (comparing Current label to Previous label',
                                                 'Public' => '' })
@@ -59,7 +61,8 @@ end
 
 describe 'admin comparisons reports', :include_application_helper do
   let!(:admin)  { create(:admin) }
-  let!(:report) { create(:report) }
+  let!(:report_group) { create(:report_group, title: 'Electricity') }
+  let!(:report) { create(:report, report_group: report_group) }
 
   describe 'when not logged in' do
     context 'when viewing the index' do
@@ -98,6 +101,7 @@ describe 'admin comparisons reports', :include_application_helper do
           expect(page).to have_selector(:table_row,
                                         { 'Key' => report.key,
                                           'Reporting period' => report.reporting_period.humanize,
+                                          'Group' => report.report_group.title,
                                           'Title' => report.title,
                                           'Public' => '' })
         end
@@ -117,10 +121,10 @@ describe 'admin comparisons reports', :include_application_helper do
         it_behaves_like 'a report page with valid attributes', action: 'updated'
       end
 
-      it { expect(page).to have_link('New report') }
+      it { expect(page).to have_link('New') }
 
       context 'when clicking the new button' do
-        before { click_link('New report') }
+        before { click_link('New') }
 
         it 'shows report new page' do
           expect(page).to have_current_path(new_admin_comparisons_report_path)

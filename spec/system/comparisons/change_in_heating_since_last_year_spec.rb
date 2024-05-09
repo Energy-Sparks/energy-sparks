@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'change_in_heating_since_last_year' do
@@ -22,9 +24,8 @@ describe 'change_in_heating_since_last_year' do
      [expected_school.name, '1', '7', '2', '3', '4', '5', '6', '100', '8']]
   end
 
-  before do
+  let!(:alerts) do
     alert_run = create(:alert_generation_run, school: expected_school)
-
     create(:alert, school: expected_school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark'),
                    variables: variables)
@@ -32,6 +33,9 @@ describe 'change_in_heating_since_last_year' do
                    alert_type: create(:alert_type, class_name: alert_class_name),
                    variables: { temperature_adjusted_previous_year_kwh: 7,
                                 temperature_adjusted_percent: 8 })
+  end
+
+  before do
     visit "/comparisons/#{key}"
   end
 

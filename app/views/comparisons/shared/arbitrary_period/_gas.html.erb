@@ -15,7 +15,9 @@
                         if: result.floor_area_changed %>
     <% r.with_var val: result.activation_date, unit: :date_mmm_yyyy %>
 
-    <% r.with_var val: result.gas_previous_period_kwh_unadjusted, unit: :kwh %>
+    <% if @include_previous_period_unadjusted %>
+      <% r.with_var val: result.gas_previous_period_kwh_unadjusted, unit: :kwh %>
+    <% end %>
     <% r.with_var val: result.gas_previous_period_kwh, unit: :kwh %>
     <% r.with_var val: result.gas_current_period_kwh, unit: :kwh %>
     <% r.with_var val: percent_change(result.gas_previous_period_kwh, result.gas_current_period_kwh),
@@ -34,7 +36,5 @@
                   change: true,
                   unit: :relative_percent_0dp %>
     <% end %>
-  <% end %>
-  <% c.with_note do %>
   <% end %>
 <% end %>

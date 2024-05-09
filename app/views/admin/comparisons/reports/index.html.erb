@@ -1,10 +1,11 @@
-<%= render 'header', title: '' %>
+<%= render 'admin/comparisons/header', title: '' %>
 
 <table class="table table-sorted">
   <thead>
     <tr>
       <th>Key</th>
       <th>Title</th>
+      <th>Group</th>
       <th>Reporting period</th>
       <th>Public</th>
       <th>Actions</th>
@@ -16,6 +17,7 @@
       <tr>
         <td><span class="badge badge-secondary"><%= report.key %></span></td>
         <td><%= report.title %></td>
+        <td><%= report.report_group.title %></td>
         <td>
           <%= report.reporting_period.try(:humanize) %>
           <%= "(#{report.custom_period})" if report.custom_period %>

@@ -1,7 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'solar_pv_benefit_estimate' do
   let!(:school) { create(:school) }
+  let!(:alerts) do
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+    additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert,
+                   variables: additional_data_variables)
+  end
   let(:key) { :solar_pv_benefit_estimate }
   let(:advice_page_key) { :solar_pv }
 
@@ -30,9 +38,6 @@ describe 'solar_pv_benefit_estimate' do
 
   before do
     create(:advice_page, key: advice_page_key)
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
-    additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert, variables: additional_data_variables)
   end
 
   context 'when viewing report' do
@@ -66,7 +71,7 @@ describe 'solar_pv_benefit_estimate' do
           ["Notes\n" \
            '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
            'tariff but other £ values are calculated using the relevant tariff at the time' \
-            "\nIn school comparisons 'last year' is defined as this year to date."]
+           "\nIn school comparisons 'last year' is defined as this year to date."]
         ]
       end
       let(:expected_csv) do
