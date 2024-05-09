@@ -46,6 +46,14 @@ RSpec.shared_examples 'a school comparison report' do |school_types: nil, school
 
     it { expect(page).to have_link('Change options') }
   end
+
+  context 'with no data' do
+    let(:alerts) {} # rubocop:disable Lint/EmptyBlock
+
+    it 'works with no data' do
+      expect(page).to have_content(expected_report.title)
+    end
+  end
 end
 
 RSpec.shared_examples 'a school comparison report with a table' do
