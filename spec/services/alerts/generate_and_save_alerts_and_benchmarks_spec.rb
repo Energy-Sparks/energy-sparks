@@ -80,7 +80,7 @@ module Alerts
       end
 
       [[AlertSchoolWeekComparisonElectricity, :last_2_weeks],
-       [ManagementSummaryTable, :last_12_months],
+       [ManagementSummaryTable, :last_12_months], # ContentBase type alert
        [AlertElectricityUsageDuringCurrentHoliday, :current_holidays],
        [AlertPreviousHolidayComparisonElectricity, :last_2_holidays]].each do |alert_class, period|
         it "sets reporting_period with #{alert_class}" do
@@ -88,8 +88,7 @@ module Alerts
           create(:alert_type, class_name: alert_class.name, fuel_type: :electricity)
           service = described_class.new(school: school, aggregate_school: aggregate_school)
           expect { service.perform }.to change(Alert, :count)
-          alert = Alert.last
-          expect(alert.reporting_period).to eq(period.to_s)
+          expect(Alert.last.reporting_period).to eq(period.to_s)
         end
       end
 
