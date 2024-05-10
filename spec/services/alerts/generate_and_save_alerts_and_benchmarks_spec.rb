@@ -5,7 +5,7 @@ require 'rails_helper'
 module Alerts
   describe GenerateAndSaveAlertsAndBenchmarks do
     let!(:school) { create(:school, :with_fuel_configuration, has_gas: false) }
-    let(:aggregate_school) { build(:meter_collection, :with_fuel_and_aggregate_meters, start_date: Date.yesterday - 15) }
+    let(:aggregate_school) { build(:meter_collection, :with_fuel_and_aggregate_meters, start_date: Date.yesterday - 16) }
     let(:asof_date) { Date.parse('01/01/2019') }
     let(:alert_type) { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
     let(:benchmark_result_generation_run) { BenchmarkResultGenerationRun.create! }
@@ -79,6 +79,12 @@ module Alerts
         expect { service.perform }.to change(Alert, :count)
         alert = Alert.last
         expect(alert.reporting_period).to eq('last_2_weeks')
+      end
+
+      it 'works with ContentBase alerts' do
+        create(:alert_type, class_name: ManagementSummaryTable.name, fuel_type: :electricity)
+        service = described_class.new(school: school, aggregate_school: aggregate_school)
+        expect { service.perform }.to change(Alert, :count)
       end
 
       it 'handles just alert reports' do
