@@ -7,9 +7,10 @@ module Alerts
     let!(:school) { create(:school, :with_fuel_configuration, has_gas: false) }
     let(:aggregate_school) do
       holidays = build(:holidays, :with_calendar_year)
-      build(:meter_collection, :with_fuel_and_aggregate_meters, holidays: holidays,
-                                                                start_date: Date.new(Time.zone.today.year, 1, 1),
-                                                                end_date: holidays.last.end_date)
+      build(:meter_collection, :with_fuel_and_aggregate_meters,
+            holidays: holidays,
+            start_date: Date.new(holidays.last.start_date.year, 1, 1),
+            end_date: holidays.last.end_date)
     end
     let(:asof_date) { Date.parse('01/01/2019') }
     let(:alert_type) { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
