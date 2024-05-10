@@ -5,7 +5,12 @@ require 'rails_helper'
 module Alerts
   describe GenerateAndSaveAlertsAndBenchmarks do
     let!(:school) { create(:school, :with_fuel_configuration, has_gas: false) }
-    let(:aggregate_school) { build(:meter_collection, :with_fuel_and_aggregate_meters, start_date: Date.yesterday - 16) }
+    let(:aggregate_school) do
+      holidays = build(:holidays, :with_calendar_year)
+      build(:meter_collection, :with_fuel_and_aggregate_meters, holidays: holidays,
+                                                                start_date: Date.new(Time.zone.today.year, 1, 1),
+                                                                end_date: holidays.last.end_date)
+    end
     let(:asof_date) { Date.parse('01/01/2019') }
     let(:alert_type) { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
     let(:benchmark_result_generation_run) { BenchmarkResultGenerationRun.create! }
@@ -73,18 +78,18 @@ module Alerts
                                           change(BenchmarkResultError, :count)
       end
 
-      it 'sets reporting_period' do
-        create(:alert_type, class_name: AlertSchoolWeekComparisonElectricity.name, fuel_type: :electricity)
-        service = described_class.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change(Alert, :count)
-        alert = Alert.last
-        expect(alert.reporting_period).to eq('last_2_weeks')
-      end
-
-      it 'works with ContentBase alerts' do
-        create(:alert_type, class_name: ManagementSummaryTable.name, fuel_type: :electricity)
-        service = described_class.new(school: school, aggregate_school: aggregate_school)
-        expect { service.perform }.to change(Alert, :count)
+      [[AlertSchoolWeekComparisonElectricity, :last_2_weeks],
+       [ManagementSummaryTable, :last_12_months],
+       [AlertElectricityUsageDuringCurrentHoliday, :current_holidays],
+       [AlertPreviousHolidayComparisonElectricity, :last_2_holidays]].each do |alert_class, period|
+        it "sets reporting_period with #{alert_class}" do
+          travel_to aggregate_school.holidays.last.start_date if period == :current_holidays
+          create(:alert_type, class_name: alert_class.name, fuel_type: :electricity)
+          service = described_class.new(school: school, aggregate_school: aggregate_school)
+          expect { service.perform }.to change(Alert, :count)
+          alert = Alert.last
+          expect(alert.reporting_period).to eq(period.to_s)
+        end
       end
 
       it 'handles just alert reports' do
