@@ -16,7 +16,7 @@ header img {
 .masthead {
   background-image: image-url('background-image.jpg');
   padding: 0 10px 0 0;
-  color: white;
+  color: $white;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -265,7 +265,7 @@ header img {
 
 section.highlight {
   background: $dark-orange;
-  color: white;
+  color: $white;
 }
 
 .mailchimp  {

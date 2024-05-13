@@ -1,62 +1,79 @@
 //Core colours for use across the application
 
-//Basic colour definitions
-$yellow: #ffee8f;       /* yellow rgb(255,238,143) */
-$light-orange: #ffac21; /* orange  rgb(255,172,33) */
-$dark-orange: #ff4500;  /* almost red; rgb(255,69,0) */
-$light-blue-links: #007bff;
-$dark-blue: #232b49;    /* very dark blue rgb(35,43,73) */
+// Yellows
+$yellow: #ffee8f; // not used? Could be overriding bootstrap yellow? - remove?
+$new-yellow: #fcb43a; // not used in the site but same colour is used in mailers
+$new-light-yellow: #ffe5b8; // not used? - remove?
 
-$green: #5cb85c;        /* nice green rgb(92,184,92) */
+// Keep these seperate for now until we decide if they are to use standard palette colours
+$podium-dark-yellow: #ffde4d;
+$podium-light-yellow: #fff9b2; // similar to new-light-yellow
 
+// Oranges
+$dark-orange: #ff4500;
+$light-orange: #ffac21;
 
-/* New colours for redesign, will probably take the place of the originals */
-/* at some point */
+// Blues
+$dark-blue: #232b49;
+$mid-blue: #007bff;
+$light-blue: #97e6fc;
+$lighter-light-blue: #cbf4ff;
 
-$new-light-yellow: #FFE5B8;
-$new-yellow: #FCB43A;
+// Greens
+$green: #5cb85c;
 
-$new-red: #FF3A5B;
-$light-blue: #97E6FC;
-$lighter-light-blue: #CBF4FF;
+// Reds
+$new-red: #ff3a5b;
+$light-red: #ff9b9c;
 
-$grey: #C4CCD4;
-$light-grey: #e6e6e6;
-$very-light-grey: #FCFFFF;
+// Turquoise
+$turquoise: #50e3c2;
+$light-turquoise: #a1ffe9;
 
+// Greys
 $dark: #222222;
+$grey: #c4ccd4;
+$light-grey: #e6e6e6;
+
+// Shortcuts
 
 $text: $dark;
 
-$bg-positive: #50E3C2;
-$bg-neutral: #97E6FC;
-$bg-negative: #FF3A5B;
+// Positive / Neutral / Negatives
 
-$bg-positive-light: #A1FFE9;
-$bg-neutral-light: #CBF4FF;
-$bg-negative-light: #FF9B9C;
+$bg-positive: $turquoise;
+$bg-neutral: $light-blue;
+$bg-negative: $new-red;
 
-$electric-dark: #007EFF;
-$electric-light: #93e1f6;
+$bg-positive-light: $light-turquoise;
+$bg-neutral-light: $lighter-light-blue;
+$bg-negative-light: $light-red;
 
-$storage-dark: #7C3AFF;
-$storage-light: #E097FC;
+// Fuel Types
+// Wasn't sure if these needed moving into the palette or leaving seperately
+// Have give variables to the ones that are re-used
 
-$solar-dark: #50E3C2;
-$solar-light: #A1FFE9;
+$electric-dark: #007eff; // very similar to $mid-blue
+$electric-light: #93e1f6; // very similar to $light-blue
 
-$gas-dark: #FF8438;
-$gas-light: #ffdd4b;
+$storage-dark: #7c3aff; // dark purple
+$storage-light: #e097fc; // pinky purple
 
-$live-data-dark: $green;
-$live-data-light: $light-grey;
+$solar-dark: $turquoise;
+$solar-light: $light-turquoise;
+
+$gas-dark: #ff8438 // mid orange;
+$gas-light: #ffdd4b; // dark yellow
+
+$carbon-dark: $grey;
+$carbon-light: $light-grey;
 
 $colours-light: (
   "electric" : $electric-light,
   "gas"      : $gas-light,
   "storage"  : $storage-light,
   "solar"    : $solar-light,
-  "carbon"   : $light-grey
+  "carbon"   : $carbon-light
 );
 
 $colours-dark: (
@@ -64,7 +81,7 @@ $colours-dark: (
   "gas"      : $gas-dark,
   "storage"  : $storage-dark,
   "solar"    : $solar-dark,
-  "carbon"   : $grey
+  "carbon"   : $carbon-dark
 );
 
 @each $tag, $colour in $colours-light {
@@ -78,6 +95,13 @@ $colours-dark: (
     background-color: $colour;
   }
 }
+
+// Live Data
+
+$live-data-dark: $green;
+$live-data-light: $light-grey;
+
+// Comparisons
 
 $exemplar-school: $green;
 $benchmark-school: $light-orange;
