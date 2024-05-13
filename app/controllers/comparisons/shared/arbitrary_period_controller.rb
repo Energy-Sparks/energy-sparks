@@ -5,9 +5,9 @@ module Comparisons
     class ArbitraryPeriodController < BaseController
       private
 
-      def set_headers
-        super
-        @include_previous_period_unadjusted = true
+      def set_headers(include_previous_period_unadjusted: true)
+        super()
+        @include_previous_period_unadjusted = include_previous_period_unadjusted
         @electricity_colgroups = colgroups(fuel: false)
         @electricity_headers = headers(fuel: false)
         @heating_colgroups = colgroups(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
