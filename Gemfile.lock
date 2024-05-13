@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 058a2ce3dfbe15f19eb7a5b9f0ee71321b3e6a47
-  tag: 5.2.3
+  revision: a7e581be782f49617d642b3a324f9c8584557c3a
+  tag: 5.2.4
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -244,9 +244,9 @@ GEM
     distribution (0.8.0)
     docile (1.4.0)
     domain_name (0.6.20231109)
-    dotenv (3.1.0)
-    dotenv-rails (3.1.0)
-      dotenv (= 3.1.0)
+    dotenv (3.1.2)
+    dotenv-rails (3.1.2)
+      dotenv (= 3.1.2)
       railties (>= 6.1)
     erb_lint (0.5.0)
       activesupport
@@ -345,7 +345,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    i18n (1.14.4)
+    i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     i18n-tasks (1.0.13)
       activesupport (>= 4.0.2)

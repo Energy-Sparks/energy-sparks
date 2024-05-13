@@ -5,14 +5,7 @@ module Comparisons
     end
 
     def set_headers
-      @colgroups = colgroups
-      @headers = headers
-      @include_previous_period_unadjusted = false
-      @electricity_colgroups = colgroups(fuel: false)
-      @electricity_headers = headers(fuel: false)
-      @heating_colgroups = colgroups(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
-      @heating_headers = headers(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
-      @period_type_string = I18n.t('comparisons.period_types.periods')
+      super(include_previous_period_unadjusted: false)
     end
 
     # Fetch data for all schools where we can calculate a % change between last 12 months and

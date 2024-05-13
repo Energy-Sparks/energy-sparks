@@ -13,5 +13,5 @@
 #  solar_type                    :text
 #
 class Comparison::ChangeInElectricitySinceLastYear < Comparison::View
-  scope :with_data, -> { where.not(previous_year_electricity_kwh: nil, current_year_electricity_kwh: nil) }
+  scope :with_data, -> { where('previous_year_electricity_kwh IS NOT NULL AND current_year_electricity_kwh IS NOT NULL') }
 end
