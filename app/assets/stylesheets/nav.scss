@@ -15,7 +15,7 @@
   .navbar-brand:focus,
   .navbar-brand:active,
   .navbar-brand.active {
-    color: white;
+    color: $white;
     font-size: 18px;
   }
 
@@ -24,15 +24,15 @@
   }
 
   .navbar-toggle {
-    color: white;
+    color: $white;
     font-size: 10px;
-    border-color: white;
+    border-color: $white;
   }
 
   .navbar-toggle:hover,
   .navbar-toggle:focus {
     background-color: $light-blue;
-    color: white;
+    color: $white;
     border-color: $light-blue;
   }
 
@@ -63,7 +63,7 @@
   }
 
   .navbar-toggler {
-    border-color: rgb(255,255,255);
+    border-color: $white;
     margin: 6px;
   }
 
@@ -99,7 +99,7 @@
   background: $black;
 
   .nav-item {
-    color: white;
+    color: $white;
   }
 
   img {
