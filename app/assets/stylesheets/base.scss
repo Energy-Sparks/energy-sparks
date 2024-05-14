@@ -161,8 +161,8 @@ th.fixed-width-150 {
 
 div.meter-attributes {
   kbd {
-    color: black;
-    background-color: white;
+    color: $black;
+    background-color: $white;
   }
 }
 
@@ -175,7 +175,7 @@ div.meter-attributes {
 
 // imput fields with specified 'pattern' will highlight when invalid
 input:invalid {
-  color: red;
+  color: $new-red;
 }
 
 .funnel-image {

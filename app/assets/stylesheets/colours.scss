@@ -32,8 +32,11 @@ $light-turquoise: #a1ffe9;
 
 // Greys
 $dark: #222222;
+$mid-grey: #6c757d; // used for dashboard school text colour
 $grey: #c4ccd4;
 $light-grey: #e6e6e6;
+$silver: #c0c0c0; // highcharts tooltip border
+$dark-grey: #999999; // used in charts
 
 // Shortcuts
 
@@ -62,7 +65,7 @@ $storage-light: #e097fc; // pinky purple
 $solar-dark: $turquoise;
 $solar-light: $light-turquoise;
 
-$gas-dark: #ff8438 // mid orange;
+$gas-dark: #ff8438; // mid orange;
 $gas-light: #ffdd4b; // dark yellow
 
 $carbon-dark: $grey;

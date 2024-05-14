@@ -21,7 +21,7 @@
 .advice-table {
   thead {
     background-color: $dark-blue !important;
-    color: white;
+    color: $white;
     th {
       border-bottom: 0px;
       border-top: 0px;
@@ -94,7 +94,7 @@
 .advice-page-benchmark-colored-label {
   @extend .advice-page-benchmark-label;
   font-weight: bold;
-  color: white;
+  color: $white;
   a {
     color: inherit;
     text-decoration: none;

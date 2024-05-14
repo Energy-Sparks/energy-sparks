@@ -10,7 +10,7 @@
 
 trix-editor {
   min-height: 320px !important;
-  background: white;
+  background: $white;
 }
 
 trix-toolbar .button_groups {
@@ -43,12 +43,12 @@ trix-toolbar .button_groups {
   }
 
   .trix-button {
-    background: white;
+    background: $white;
   }
 }
 
 .select2-container--bootstrap .select2-results__group {
-  color: #212529;
+  color: $text;
   font-size: 24px;
 }
 
@@ -65,7 +65,7 @@ trix-toolbar .button_groups {
   height:0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #888;
+  border-top: 5px solid $gray-600;
 }
 
 img.activity-card-img {
