@@ -19,7 +19,7 @@ module Amr
           Rollbar.error(e, job: :import_all, config: @config.identifier, file_name: file_name)
         end
       end
-      Rails.logger.info "Downloaded all"
+      Rails.logger.info 'Downloaded all'
     end
 
   private

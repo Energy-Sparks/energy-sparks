@@ -1,7 +1,11 @@
 # rubocop:disable Naming/AsciiIdentifiers
 module AdvicePageHelper
-  def advice_page_path(school, advice_page, tab = :insights, params: {}, anchor: nil)
-    polymorphic_path([tab, school, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
+  def advice_page_path(school, advice_page = nil, tab = :insights, params: {}, anchor: nil)
+    if advice_page.present?
+      polymorphic_path([tab, school, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
+    else
+      school_advice_path(school)
+    end
   end
 
   def sort_by_label(advice_pages)
@@ -12,9 +16,9 @@ module AdvicePageHelper
     I18n.t("advice_pages.nav.pages.#{advice_page.key}")
   end
 
-  #Helper for the advice pages, passes a scope to the I18n.t API based on
-  #our naming convention and page keys. Will only work on advice pages
-  #content, e.g advice_pages.*
+  # Helper for the advice pages, passes a scope to the I18n.t API based on
+  # our naming convention and page keys. Will only work on advice pages
+  # content, e.g advice_pages.*
   def advice_t(key, **vars)
     I18n.t(key, **vars.merge(scope: [:advice_pages])).html_safe
   end
@@ -34,7 +38,7 @@ module AdvicePageHelper
   end
 
   def month_year(date)
-    I18n.t('date.month_names')[date.month] + " " + date.year.to_s
+    I18n.t('date.month_names')[date.month] + ' ' + date.year.to_s
   end
 
   def partial_year_note(year, amr_start_date, amr_end_date)
@@ -52,11 +56,11 @@ module AdvicePageHelper
   end
 
   def format_rating(rating)
-    rating > 4 ? "Limited variation" : "Large variation"
+    rating > 4 ? 'Limited variation' : 'Large variation'
   end
 
-  #link to a specific benchmark for a school group, falls back to the
-  #generic benchmark page if a school doesn't have a group
+  # link to a specific benchmark for a school group, falls back to the
+  # generic benchmark page if a school doesn't have a group
   def compare_for_school_group_path(benchmark_type, school)
     if school.school_group.present?
       compare_path(benchmark: benchmark_type, school_group_ids: [school.school_group.id])
@@ -65,7 +69,7 @@ module AdvicePageHelper
     end
   end
 
-  #calculate relative % change of a current value from a base value
+  # calculate relative % change of a current value from a base value
   def relative_percent(base, current)
     return 0.0 if base.nil? || current.nil? || base == current
     return 0.0 if base == 0.0
@@ -144,8 +148,8 @@ module AdvicePageHelper
   end
 
   def school_has_fuel_type?(school, fuel_type)
-    fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
-    fuel_type = 'electricity' if fuel_type == "solar_pv"
+    fuel_type = 'storage_heaters' if fuel_type == 'storage_heater'
+    fuel_type = 'electricity' if fuel_type == 'solar_pv'
     school.send("has_#{fuel_type}?".to_sym)
   end
 
@@ -183,31 +187,22 @@ module AdvicePageHelper
     I18n.t('date.day_names')[week_day]
   end
 
-  #sort an array of SchoolPeriod objects
-  def sort_school_periods(periods)
-    periods.sort { |a, b| a.start_date <=> b.start_date }
-  end
-
-  def can_compare_holiday_usage?(holiday, holiday_usage)
-    return false unless holiday_usage.usage.present?
-    return false unless holiday_usage.previous_holiday_usage.present?
-    Time.zone.today > holiday.end_date
-  end
-
-  def within_school_period?(school_period)
-    @analysis_dates.end_date > school_period.start_date && @analysis_dates.end_date < school_period.end_date
-  end
-
-  def average_daily_usage(usage, school_period)
-    return usage.kwh / (school_period.end_date - school_period.start_date)
-  end
-
   def icon_tooltip(text = '')
-    tag.span(fa_icon('info-circle'), data: { toggle: "tooltip", placement: "top", title: text }, class: 'text-muted') if text.present?
+    tag.span(fa_icon('info-circle'), data: { toggle: 'tooltip', placement: 'top', title: text }, class: 'text-muted') if text.present?
   end
 
   def formatted_unit_to_num(value)
     value.gsub(/(,|kWh|kg CO2)/, '').to_i
+  end
+
+  def format_date_range(date_range)
+    date_range.map { |d| d.to_s(:es_short) }.join(' - ')
+  end
+
+  # holiday usage is a Hash of school_period => OpenStruct
+  # confirms that at least one period has usage
+  def show_holiday_usage_section?(holiday_usage)
+    holiday_usage.values.any? { |usage| usage.usage.present? }
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers

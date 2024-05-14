@@ -4,8 +4,8 @@ module Amr
 
     BLANK_THRESHOLD = 1
 
-    #@param Array single_reading_array an array of readings
-    #@param boolean indexed whether the array should be interpreted in HH order, rather than via timestamp.
+    # @param Array single_reading_array an array of readings
+    # @param boolean indexed whether the array should be interpreted in HH order, rather than via timestamp.
     def initialize(single_reading_array, indexed: false)
       @single_reading_array = single_reading_array
       @indexed = indexed
@@ -28,7 +28,7 @@ module Amr
     # For here we need to determine the period by counting the index into the array
     def perform
       @single_reading_array.each do |single_reading|
-        #ignore rows that dont have necessary information
+        # ignore rows that dont have necessary information
         next unless single_reading[:reading_date].present? && single_reading[:mpan_mprn].present?
 
         reading_day = Date.parse(single_reading[:reading_date])

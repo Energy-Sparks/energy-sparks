@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   end
 
   def admin_mode?
-    ENV["ADMIN_MODE"] == 'true'
+    ENV['ADMIN_MODE'] == 'true'
   end
 
   def current_user_admin?

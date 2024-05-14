@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "activity type", type: :system do
+describe 'activity type', type: :system do
   let!(:admin) { create(:admin)}
   let!(:activity_category) { create(:activity_category)}
   let!(:ks1) { KeyStage.create(name: 'KS1') }
@@ -47,7 +47,7 @@ describe "activity type", type: :system do
       fill_in :activity_type_name_en, with: activity_name
       fill_in :activity_type_summary_en, with: summary
 
-      attach_file(:activity_type_image_en, Rails.root + "spec/fixtures/images/placeholder.png")
+      attach_file(:activity_type_image_en, Rails.root + 'spec/fixtures/images/placeholder.png')
 
       within('.download-links-trix-editor.en') do
         fill_in_trix with: download_links
@@ -62,6 +62,7 @@ describe "activity type", type: :system do
       end
 
       fill_in('Score', with: 20)
+      fill_in('Maximum frequency', with: 5)
 
       check('KS1')
       check('Science')
@@ -79,10 +80,10 @@ describe "activity type", type: :system do
       expect(activity_type.activity_timings).to match_array([half_hour])
       expect(activity_type.topics).to     match_array([energy])
       expect(activity_type.impacts).to    match_array([reducing_electricity])
-
+      expect(activity_type.maximum_frequency).to eq(5)
       expect(activity_type.image_en.filename).to eq('placeholder.png')
 
-      expect(page.has_content?("Activity type was successfully created.")).to be true
+      expect(page.has_content?('Activity type was successfully created.')).to be true
       expect(ActivityType.count).to be 1
 
       click_on activity_name
@@ -99,7 +100,7 @@ describe "activity type", type: :system do
 
       click_on 'New Activity Type'
       within('.school-specific-description-trix-editor') do
-        fill_in_trix '#activity_type_school_specific_description_en', with: "Your chart"
+        fill_in_trix '#activity_type_school_specific_description_en', with: 'Your chart'
         find('button[data-trix-action="chart"]').click
         select 'last_7_days_intraday_gas', from: 'chart-list-chart'
         click_on 'Insert'
@@ -115,7 +116,7 @@ describe "activity type", type: :system do
     it 'can does not crash if you forget the score' do
       click_on 'New Activity Type'
       fill_in :activity_type_name_en, with: 'New activity'
-      fill_in_trix with: "the description"
+      fill_in_trix with: 'the description'
 
       check('KS1')
 
@@ -123,12 +124,12 @@ describe "activity type", type: :system do
 
       expect(page.has_content?("Score can't be blank"))
 
-      expect(page.has_content?("Activity type was successfully created.")).not_to be true
+      expect(page.has_content?('Activity type was successfully created.')).not_to be true
       expect(ActivityType.count).to be 0
     end
 
-    it 'can edit a new activity and add KS2 and KS3' do
-      activity_type = create(:activity_type, activity_category: activity_category)
+    it 'can edit a new activity' do
+      activity_type = create(:activity_type, activity_category: activity_category, maximum_frequency: 10)
       refresh
 
       click_on 'Edit'
@@ -136,6 +137,7 @@ describe "activity type", type: :system do
 
       check('KS2')
       check('KS3')
+      fill_in('Maximum frequency', with: 5)
 
       click_on('Update Activity type')
 
@@ -144,8 +146,9 @@ describe "activity type", type: :system do
       expect(activity_type.key_stages).not_to include(ks1)
       expect(activity_type.key_stages).to     include(ks2)
       expect(activity_type.key_stages).to     include(ks3)
+      expect(activity_type.maximum_frequency).to eq(5)
 
-      expect(page.has_content?("Activity type was successfully updated.")).to be true
+      expect(page.has_content?('Activity type was successfully updated.')).to be true
       expect(ActivityType.count).to be 1
     end
 

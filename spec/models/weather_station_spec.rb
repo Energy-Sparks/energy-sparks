@@ -6,25 +6,25 @@ RSpec.describe WeatherStation, type: :model do
 
   it 'applies active by type scope' do
     expect(WeatherStation.count).to be 2
-    expect(WeatherStation.by_provider("meteostat").to_a).to eql([station, station_inactive])
-    expect(WeatherStation.active_by_provider("meteostat").to_a).to eql([station])
+    expect(WeatherStation.by_provider('meteostat').to_a).to eql([station, station_inactive])
+    expect(WeatherStation.active_by_provider('meteostat').to_a).to eql([station])
   end
 
-  context "with observations" do
-    it "counts correctly" do
+  context 'with observations' do
+    it 'counts correctly' do
       expect(station.observation_count).to be 0
       create(:weather_observation, weather_station: station)
       expect(WeatherObservation.count).to be 1
       expect(station.observation_count).to be 1
     end
 
-    it "formats earliest" do
+    it 'formats earliest' do
       create(:weather_observation, weather_station: station, reading_date: Date.yesterday)
       create(:weather_observation, weather_station: station, reading_date: Time.zone.today)
       expect(station.first_observation_date).to eql(Date.yesterday.strftime('%d %b %Y'))
     end
 
-    it "formats latest" do
+    it 'formats latest' do
       create(:weather_observation, weather_station: station, reading_date: Date.yesterday)
       create(:weather_observation, weather_station: station, reading_date: Time.zone.today)
       expect(station.last_observation_date).to eql(Time.zone.today.strftime('%d %b %Y'))

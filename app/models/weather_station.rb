@@ -14,7 +14,7 @@
 #  updated_at      :datetime         not null
 #
 class WeatherStation < ApplicationRecord
-  METEOSTAT = "meteostat".freeze
+  METEOSTAT = 'meteostat'.freeze
   has_many :weather_observations, dependent: :destroy
   validates_presence_of :latitude, :longitude, :title, :provider, :back_fill_years
   validates :provider, inclusion: { in: [METEOSTAT] }

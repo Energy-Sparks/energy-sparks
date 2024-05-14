@@ -1,0 +1,59 @@
+<%= render 'schools/advice/section_title',
+           section_id: 'holiday-usage',
+           section_title:
+          t("advice_pages.#{fuel_type}_out_of_hours.analysis.holiday_usage.title") %>
+
+<% alert_classes.each do |alert_class| %>
+  <%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts,
+                          alert_types: alert_types_for_class(alert_class), show_links: false, show_icons: false %>
+<% end %>
+
+<% if analysis_dates.months_of_data >= 14 %>
+  <% chart_type = full_chart %>
+  <% chart_title = "#{fuel_type}_out_of_hours.analysis.holiday_usage.#{chart_type}.title" %>
+  <% chart_config = {} %>
+<% else %>
+  <% chart_type = limited_chart %>
+  <% chart_title = "#{fuel_type}_out_of_hours.analysis.holiday_usage.#{chart_type}.title" %>
+  <% chart_config = { y_axis_units: select_y_axis(school, chart_type, :£) } %>
+<% end %>
+
+<%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.analysis.holiday_usage.alert_group_by_week_electricity_14_months.header") %>
+<%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.analysis.holiday_usage.alert_group_by_week_electricity_14_months.title") %>
+<%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.analysis.holiday_usage.alert_group_by_week_electricity_14_months.subtitle_html") %>
+<%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.analysis.holiday_usage.management_dashboard_group_by_week_electricity.title") %>
+
+<%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.alert_group_by_week_gas_14_months.header") %>
+<%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.alert_group_by_week_gas_14_months.title") %>
+<%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.alert_group_by_week_gas_14_months.subtitle_html") %>
+<%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.management_dashboard_group_by_week_gas.title") %>
+
+<%= component 'chart', chart_type: chart_type, school: school, chart_config: chart_config do |c| %>
+  <% c.with_title do %>
+    <%= advice_t(chart_title) %>
+  <% end %>
+  <% c.with_subtitle do %>
+    <%= advice_t("#{fuel_type}_out_of_hours.analysis.holiday_usage.#{full_chart}.subtitle_html",
+                 start_date: analysis_dates.last_full_week_start_date.to_s(:es_short),
+                 end_date: analysis_dates.last_full_week_end_date.to_s(:es_short)) %>
+  <% end %>
+  <% c.with_header do %>
+    <p>
+      <%= advice_t("#{fuel_type}_out_of_hours.analysis.holiday_usage.#{full_chart}.header") %>
+    </p>
+  <% end %>
+<% end %>
+
+<%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.analysis.holiday_usage.table_intro") %>
+<%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.table_intro") %>
+<p><%= advice_t("#{fuel_type}_out_of_hours.analysis.holiday_usage.table_intro") %></p>
+
+<%= component 'holiday_usage_table', holiday_usage: holiday_usage, analysis_dates: analysis_dates %>
+
+<% if fuel_type == :gas %>
+  <p><%= advice_t('gas_out_of_hours.analysis.holiday_usage.table_alert_note') %></p>
+<% end %>
+
+<%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.analysis.holiday_usage.table_footer") %>
+<%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.table_footer") %>
+<p><%= advice_t("#{fuel_type}_out_of_hours.analysis.holiday_usage.table_footer") %></p>

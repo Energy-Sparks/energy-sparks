@@ -1,18 +1,24 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>Manually load data</h1>
   <div>
-    <%= link_to "All data feed configurations", admin_amr_data_feed_configs_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to 'All data feed configurations', admin_amr_data_feed_configs_path,
+                class: 'btn btn-outline-dark font-weight-bold' %>
   </div>
 </div>
 
-<p>Upload a .csv, .xlsx or .xls file containing AMR data using the <strong><%= @amr_data_feed_config.description %></strong> configuration and preview the results before deciding on whether to import the data or not</p>
+<p>Upload a .csv, .xlsx or .xls file containing AMR data using the
+  <strong><%= @amr_data_feed_config.description %></strong> configuration and preview the
+  results before deciding on whether to import the data or not
+</p>
 
 <ul class="nav nav-tabs" id="manual-loading" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id='loading-tab' data-toggle="tab" href="#loading" role="tab" aria-controls="loading" aria-selected="true">Preview and load</a>
+    <a class="nav-link active" id='loading-tab' data-toggle="tab"
+       href="#loading" role="tab" aria-controls="loading" aria-selected="true">Preview and load</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id='config-tab' data-toggle="tab" href="#config" role="tab" aria-controls="config" aria-selected="false">Configuration</a>
+    <a class="nav-link"
+       id='config-tab' data-toggle="tab" href="#config" role="tab" aria-controls="config" aria-selected="false">Configuration</a>
   </li>
 </ul>
 <div class="tab-content" id="manual-loading-tabs">
@@ -47,12 +53,14 @@
         <p>Note: There were no warnings for this file</p>
       <% end %>
 
-      <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data if @valid_reading_data.present? && @valid_reading_data.any? %>
+      <%= if @valid_reading_data.present? && @valid_reading_data.any?
+            render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data
+          end %>
     <% end %>
 
     <div class="alert alert-secondary">
       <%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
-        <%= f.input :data_file, label: 'Upload a file', as: :file, input_html: {accept: '.csv, .xls, .xlsx'} %>
+        <%= f.input :data_file, label: 'Upload a file', as: :file, input_html: { accept: '.csv, .xls, .xlsx, .cns' } %>
         <%= f.submit 'Preview', class: 'btn' %>
       <% end %>
     </div>
@@ -83,24 +91,30 @@
         <% end %>
 
         <% if @amr_data_feed_config.row_per_reading && (@amr_data_feed_config.reading_time_field.nil? && @amr_data_feed_config.period_field.nil?) %>
-          <li>The date and time for the reading date to be in a column labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
+          <li>The date and time for the reading date to be in a column
+            labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
         <% else %>
           <li>The reading date to be in a column labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
         <% end %>
 
-        <li>Dates formatted like this <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b> (<code><%= @amr_data_feed_config.date_format %></code>)</li>
+        <li>Dates formatted like this <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b>
+          (<code><%= @amr_data_feed_config.date_format %></code>)</li>
 
         <% if @amr_data_feed_config.row_per_reading %>
           <li>A reading field column labelled  <b><%= @amr_data_feed_config.reading_fields.first %></b></li>
           <% if @amr_data_feed_config.positional_index && @amr_data_feed_config.period_field %>
-            <li>A <b>numbered</b> half-hourly period in a column labelled <b><%= @amr_data_feed_config.period_field %></b>, e.g. 1, 2, 3, 4 </li>
+            <li>A <b>numbered</b> half-hourly period in a column labelled
+              <b><%= @amr_data_feed_config.period_field %></b>, e.g. 1, 2, 3, 4 </li>
           <% end %>
           <% if @amr_data_feed_config.reading_time_field %>
-            <li>The reading times to specified in a separate column labelled <b><%= @amr_data_feed_config.reading_time_field %></b></li>
-            <li>The separate reading times to be formatted like this <b>01:30</b>, <b>23:30</b> but this format is also supported: <b>130</b>, <b>2330</b></li>
+            <li>The reading times to specified in a separate column labelled
+              <b><%= @amr_data_feed_config.reading_time_field %></b></li>
+            <li>The separate reading times to be formatted like this
+              <b>01:30</b>, <b>23:30</b> but this format is also supported: <b>130</b>, <b>2330</b></li>
           <% end %>
         <% else %>
-          <li>Reading fields to be in columns labelled <b><%= @amr_data_feed_config.reading_fields.join(',').truncate(70) %></b></li>
+          <li>Reading fields to be in columns labelled
+            <b><%= @amr_data_feed_config.reading_fields.join(',').truncate(70) %></b></li>
         <% end %>
 
         <% if @amr_data_feed_config.handle_off_by_one %>

@@ -61,6 +61,7 @@ en:
         electricity_targets: Progress against electricity target
         gas_consumption_during_holiday: Gas use during current holiday
         gas_targets: Progress against gas target
+        heat_saver_march_2024: Heat Saver March 2024
         heating_coming_on_too_early: Heating start time
         heating_in_warm_weather: Heating used in warm weather
         holiday_usage_last_year: Cost of energy used in upcoming holiday last year
@@ -68,6 +69,7 @@ en:
         jan_august_2022_2023_energy_comparison: Jan to August 2022 to 2023 energy use
         layer_up_powerdown_day_november_2022: Change in energy for layer up power down day 11 November 2022 (compared with 12 Nov 2021)
         layer_up_powerdown_day_november_2023: Change in energy for layer up power down day 24 November 2023 (compared with 17 November 2023)
+        optimum_start_analysis: Optimum start analysis
         recent_change_in_baseload: Recent change in baseload
         seasonal_baseload_variation: Seasonal baseload variation
         sept_nov_2021_2022_energy_comparison: September to November 2021 versus 2022 energy use
@@ -206,7 +208,7 @@ en:
           last_year_saving_if_improve_to_exemplar: Last year saving if improve to exemplar
           last_year_saving_per_1c_reduction_in_thermostat: Saving per 1C reduction in thermostat
           last_year_storage_heater_costs_£: Last year storage heater costs
-          last_year_storage_heater_kwh_pupil: Last year storage heater  kWh/pupil
+          last_year_storage_heater_kwh_pupil: Last year storage heater kWh/pupil
           last_year_storage_heater_£: Last year Storage Heater £
           last_year_weekend_and_holiday_costs: Last year weekend and holiday costs
           layer_down_day: Layer down day
@@ -301,7 +303,7 @@ en:
           unadjusted_kwh: Unadjusted change (kWh)
           urn: URN
           variation_in_baseload_between_days_of_week: Variation in baseload between days of week
-          w_floor_area: w/floor area
+          w_floor_area: W/floor area
           weekend: Weekend
           winter_baseload_kw: Winter baseload kW
           year_before_joined: Year before joined
@@ -620,7 +622,7 @@ en:
           introduction_text_html: "<p>This benchmark shows how a school is progressing against the target it has set for this year.</p>"
         footnotes:
           electricity:
-            change_rows_text: "<li>(*1) the comparison has been adjusted because the number of pupils have changed between the two %{period_type_string} for %{schools_to_sentence}.</li>"
+            change_rows_text: "<li>(*1) the comparison has been adjusted because the number of pupils have changed between the two %{period_type_string}.</li>"
             infinite_decrease_school_names_text: "<li>(*3) schools where percentage change is -Infinity is caused by the electricity consumption in the current %{period_type_string} being zero but in the previous %{period_type_string} it was more than zero</li>"
             infinite_increase_school_names_text: "<li>(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the previous %{period_type_string} being more than zero but in the current %{period_type_string} zero</li>"
           gas:

@@ -11,8 +11,8 @@ module Schools
     before_action :check_aggregated_school_in_cache, only: :show
 
     def show
-      @suggestions = ActivityType.active.live_data.sample(5)
-      @actions = Interventions::SuggestAction.new(@school).suggest
+      @activities = ActivityType.active.live_data.sample(5)
+      @actions = Recommendations::Actions.new(@school).based_on_energy_use
       @daily_variation_url = find_daily_variation_url(@school)
       @timeout_interval = timeout_interval
       cache_power_consumption_service

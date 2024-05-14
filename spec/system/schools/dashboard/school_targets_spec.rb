@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "target prompts" do
+RSpec.shared_examples 'target prompts' do
   context 'when no target is set' do
     let(:feature_active)    { true }
     let(:enough_data)       { true }
@@ -50,13 +50,13 @@ RSpec.shared_examples "target prompts" do
     end
 
     it 'prompts to set a new target' do
-      expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+      expect(page).to have_link('Review progress', href: school_school_targets_path(school))
       expect(page).to have_content("It's time to review your progress and set a new target for the year ahead")
     end
   end
 end
 
-RSpec.shared_examples "progress reports" do
+RSpec.shared_examples 'progress reports' do
   context 'when a target is set' do
     let(:progress_summary) { nil }
     let!(:school_target) { create(:school_target, school: school) }
@@ -72,8 +72,8 @@ RSpec.shared_examples "progress reports" do
 
     context 'and there is no data' do
       it 'has no notice' do
-        expect(page).not_to have_content("Well done, you are making progress towards achieving your target")
-        expect(page).not_to have_content("Unfortunately you are not meeting your targets")
+        expect(page).not_to have_content('Well done, you are making progress towards achieving your target')
+        expect(page).not_to have_content('Unfortunately you are not meeting your targets')
       end
     end
 
@@ -81,11 +81,11 @@ RSpec.shared_examples "progress reports" do
       let(:progress_summary) { build(:progress_summary, school_target: school_target) }
 
       it 'displays a notice' do
-        expect(page).to have_content("Well done, you are making progress towards achieving your target")
+        expect(page).to have_content('Well done, you are making progress towards achieving your target')
       end
 
       it 'links to target page' do
-        expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+        expect(page).to have_link('Review progress', href: school_school_targets_path(school))
       end
     end
 
@@ -93,12 +93,12 @@ RSpec.shared_examples "progress reports" do
       let(:progress_summary) { build(:progress_summary_with_failed_target, school_target: school_target) }
 
       it 'displays a notice' do
-        expect(page).to have_content("Unfortunately you are not meeting your target to reduce your gas usage")
-        expect(page).to have_content("Well done, you are making progress towards achieving your target to reduce your electricity and storage heater usage")
+        expect(page).to have_content('Unfortunately you are not meeting your target to reduce your gas usage')
+        expect(page).to have_content('Well done, you are making progress towards achieving your target to reduce your electricity and storage heater usage')
       end
 
       it 'links to target page' do
-        expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+        expect(page).to have_link('Review progress', href: school_school_targets_path(school))
       end
     end
 
@@ -107,7 +107,7 @@ RSpec.shared_examples "progress reports" do
       let(:progress_summary)  { build(:progress_summary, school_target: school_target) }
 
       it 'does not display a progress notice' do
-        expect(page).not_to have_content("Well done, you are making progress towards achieving your target")
+        expect(page).not_to have_content('Well done, you are making progress towards achieving your target')
       end
     end
 
@@ -116,18 +116,18 @@ RSpec.shared_examples "progress reports" do
       let(:progress_summary) { build(:progress_summary, electricity: electricity_progress, school_target: school_target) }
 
       it 'displays a notice' do
-        expect(page).not_to have_content("Unfortunately you are not meeting your target")
-        expect(page).to have_content("Well done, you are making progress towards achieving your target to reduce your gas and storage heater usage")
+        expect(page).not_to have_content('Unfortunately you are not meeting your target')
+        expect(page).to have_content('Well done, you are making progress towards achieving your target to reduce your gas and storage heater usage')
       end
 
       it 'links to target page' do
-        expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+        expect(page).to have_link('Review progress', href: school_school_targets_path(school))
       end
     end
   end
 end
 
-RSpec.describe "adult dashboard target prompts", type: :system do
+RSpec.describe 'adult dashboard target prompts', type: :system do
   let(:school) { create(:school) }
 
   before do
@@ -137,10 +137,10 @@ RSpec.describe "adult dashboard target prompts", type: :system do
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 
-    it_behaves_like "target prompts" do
+    it_behaves_like 'target prompts' do
       let(:test_school) { school }
     end
-    it_behaves_like "progress reports" do
+    it_behaves_like 'progress reports' do
       let(:test_school) { school }
     end
   end
@@ -148,10 +148,10 @@ RSpec.describe "adult dashboard target prompts", type: :system do
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
-    it_behaves_like "target prompts" do
+    it_behaves_like 'target prompts' do
       let(:test_school) { school }
     end
-    it_behaves_like "progress reports" do
+    it_behaves_like 'progress reports' do
       let(:test_school) { school }
     end
   end
@@ -172,7 +172,7 @@ RSpec.describe "adult dashboard target prompts", type: :system do
       end
     end
 
-    it_behaves_like "progress reports" do
+    it_behaves_like 'progress reports' do
       let(:test_school) { school }
     end
   end
@@ -182,10 +182,10 @@ RSpec.describe "adult dashboard target prompts", type: :system do
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
 
-    it_behaves_like "target prompts" do
+    it_behaves_like 'target prompts' do
       let(:test_school) { school }
     end
-    it_behaves_like "progress reports" do
+    it_behaves_like 'progress reports' do
       let(:test_school) { school }
     end
   end

@@ -80,6 +80,7 @@ cy:
         co2_kg: CO2 (kg)
         cost_gbp: Cost (£)
         use_kwh: Defnyddio (kWh)
+        average_daily_usage: Defnydd dyddiol ar gyfartaledd (kWh)
     terms_and_conditions: telerau ac amodau
     units:
       minutes:

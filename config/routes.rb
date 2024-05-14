@@ -5,11 +5,15 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
   get 'up', to: 'health#show'
 
-  get 'for-schools', to: 'home#for_schools'
+  # old urls maintained to avoid breakage
   get 'for-teachers', to: redirect('/for-schools')
   get 'for-pupils', to: redirect('/for-schools')
   get 'for-management', to: redirect('/for-schools')
+  get 'enrol', to: redirect('/find-out-more')
 
+  # Short link for marketing
+  get 'find-out-more', to: 'landing_pages#find_out_more', as: :find_out_more
+  get 'for-schools', to: 'home#for_schools'
   get 'for-local-authorities', to: 'home#for_local_authorities'
   get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
 
@@ -27,7 +31,6 @@ Rails.application.routes.draw do
   get 'school_statistics_key_data', to: 'home#school_statistics_key_data'
 
   get 'contact', to: 'home#contact'
-  get 'enrol', to: 'home#enrol'
   get 'enrol-our-school', to: 'home#enrol_our_school'
   get 'enrol-our-multi-academy-trust', to: 'home#enrol_our_multi_academy_trust'
   get 'enrol-our-local-authority', to: 'home#enrol_our_local_authority'
@@ -40,12 +43,14 @@ Rails.application.routes.draw do
 
   get 'team', to: 'home#team'
   get 'funders', to: 'home#funders'
+  get 'cookies', to: 'home#cookies'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
   get 'support_us', to: 'home#support_us', as: :support_us
   get 'terms_and_conditions', to: 'home#terms_and_conditions', as: :terms_and_conditions
   get 'training', to: 'home#training'
   get 'energy-audits', to: 'home#energy_audits'
   get 'education-workshops', to: 'home#education_workshops'
+  get 'pricing', to: 'home#pricing'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
@@ -53,10 +58,79 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
+  resources :campaigns, controller: 'landing_pages', only: [:index] do
+    collection do
+      get 'find-out-more', as: :find_out_more
+      get 'more-information', as: :more_information
+      get 'book-demo', as: :book_demo
+      post :submit_contact
+      get 'thank-you', as: :thank_you
+      get 'mat-pack', as: :mat_pack
+      get 'school-pack', as: :school_pack
+      get 'example-adult-dashboard', as: :example_adult_dashboard
+      get 'example-pupil-dashboard', as: :example_pupil_dashboard
+      get 'example-mat-dashboard', as: :example_mat_dashboard
+      get 'example-la-dashboard', as: :example_la_dashboard
+      get 'demo-video', as: :demo_video
+    end
+  end
+
   resources :compare, controller: 'compare', param: :benchmark, only: [:index, :show] do
     collection do
       get :benchmarks
     end
+  end
+
+  concern :unlisted do
+    get :unlisted, on: :collection
+  end
+
+  namespace :comparisons do
+    resources :annual_change_in_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_change_in_gas_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_electricity_costs_per_pupil, only: [:index], concerns: :unlisted
+    resources :annual_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_energy_costs_per_floor_area, only: [:index], concerns: :unlisted
+    resources :annual_energy_costs_per_pupil, only: [:index], concerns: :unlisted
+    resources :annual_energy_costs, only: [:index], concerns: :unlisted
+    resources :annual_gas_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :annual_heating_costs_per_floor_area, only: [:index], concerns: :unlisted
+    resources :annual_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
+    resources :baseload_per_pupil, only: [:index], concerns: :unlisted
+    resources :change_in_electricity_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
+    resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
+    resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
+    resources :change_in_electricity_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_energy_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_energy_use_since_joined_energy_sparks, only: [:index], concerns: :unlisted
+    resources :change_in_gas_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
+    resources :change_in_gas_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
+    resources :change_in_gas_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
+    resources :change_in_gas_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_solar_pv_since_last_year, only: [:index], concerns: :unlisted
+    resources :change_in_storage_heaters_since_last_year, only: [:index], concerns: :unlisted
+    resources :electricity_consumption_during_holiday, only: [:index], concerns: :unlisted
+    resources :electricity_peak_kw_per_pupil, only: [:index], concerns: :unlisted
+    resources :electricity_targets, only: [:index], concerns: :unlisted
+    resources :gas_consumption_during_holiday, only: [:index], concerns: :unlisted
+    resources :gas_targets, only: [:index], concerns: :unlisted
+    resources :heat_saver_march_2024, only: [:index], concerns: :unlisted
+    resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
+    resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
+    resources :holiday_usage_last_year, only: [:index], concerns: :unlisted
+    resources :hot_water_efficiency, only: [:index], concerns: :unlisted
+    resources :recent_change_in_baseload, only: [:index], concerns: :unlisted
+    resources :seasonal_baseload_variation, only: [:index], concerns: :unlisted
+    resources :solar_generation_summary, only: [:index], concerns: :unlisted
+    resources :solar_pv_benefit_estimate, only: [:index], concerns: :unlisted
+    resources :storage_heater_consumption_during_holiday, only: [:index], concerns: :unlisted
+    resources :thermostat_sensitivity, only: [:index], concerns: :unlisted
+    resources :thermostatic_control, only: [:index], concerns: :unlisted
+    resources :weekday_baseload_variation, only: [:index], concerns: :unlisted
+
+    get '*key/unlisted', to: 'configurable_period#unlisted'
+    get '*key', to: 'configurable_period#index', as: :configurable_period
   end
 
   # redirect old benchmark URLs
@@ -412,12 +486,20 @@ Rails.application.routes.draw do
         resource :intervention_types, only: [:show, :update]
       end
     end
+
+    namespace :comparisons do
+      resources :footnotes, except: [:show]
+      resources :reports, except: [:show]
+      resources :report_groups, except: [:show]
+    end
+
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
     post 'dcc_consents/:mpxn/grant', to: 'dcc_consents#grant', as: :grant_dcc_consent
     resources :consent_grants, only: [:index, :show]
-    resources :meters, only: [:index]
+    resources :find_school_by_mpxn, only: :index
+    resources :find_school_by_urn, only: :index
     get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues'
 
     resources :consent_statements
@@ -595,6 +677,10 @@ Rails.application.routes.draw do
     namespace :schools do
       resources :meter_collections, only: :index
       resources :removals, only: :index
+      namespace :search do
+        resources :find_school_by_mpxn, only: :index
+        resources :find_school_by_urn, only: :index
+      end
     end
 
     resources :schools, only: [:show] do
@@ -626,6 +712,7 @@ Rails.application.routes.draw do
 
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
+      mount Flipper::UI.app(Flipper) => 'flipper', as: :flipper
     end
   end # Admin name space
 

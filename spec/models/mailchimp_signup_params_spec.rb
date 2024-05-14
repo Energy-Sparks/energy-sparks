@@ -33,7 +33,7 @@ describe MailchimpSignupParams do
 
     it 'is not valid' do
       expect(@mailchimp_signup_params.valid?).to be false
-      expect(@mailchimp_signup_params.errors[:interests]).to include("At least one group must be specified")
+      expect(@mailchimp_signup_params.errors[:interests]).to include('At least one group must be specified')
     end
   end
 end

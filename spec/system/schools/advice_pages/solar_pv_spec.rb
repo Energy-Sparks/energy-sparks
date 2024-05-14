@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "solar pv advice page", type: :system do
+RSpec.describe 'solar pv advice page', type: :system do
   let(:key) { 'solar_pv' }
 
-  include_context "solar advice page"
+  include_context 'solar advice page'
 
   def expected_page_title
     school.has_solar_pv? ? 'Solar PV generation' : 'Benefits of installing solar panels'
@@ -53,7 +53,7 @@ RSpec.describe "solar pv advice page", type: :system do
       visit school_advice_solar_pv_path(school)
     end
 
-    it_behaves_like "an advice page tab", tab: "Insights"
+    it_behaves_like 'an advice page tab', tab: 'Insights'
 
     context "clicking the 'Insights' tab as a school *without* solar pv" do
       before do
@@ -62,7 +62,7 @@ RSpec.describe "solar pv advice page", type: :system do
         click_on 'Insights'
       end
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
         expect(page).to have_content('Benefits of installing solar panels')
@@ -80,7 +80,7 @@ RSpec.describe "solar pv advice page", type: :system do
         click_on 'Insights'
       end
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
         expect(page).not_to have_content('Benefits of installing solar panels')
@@ -97,12 +97,12 @@ RSpec.describe "solar pv advice page", type: :system do
     context "clicking the 'Analysis' tab as a school *without* solar pv" do
       before do
         allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(false)
-        @expected_page_title = "Benefits of installing solar panels"
+        @expected_page_title = 'Benefits of installing solar panels'
 
         click_on 'Analysis'
       end
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
         expect(page).to have_content('Analysis')
@@ -119,7 +119,7 @@ RSpec.describe "solar pv advice page", type: :system do
         click_on 'Analysis'
       end
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
         expect(page).to have_content('Analysis')
@@ -141,7 +141,7 @@ RSpec.describe "solar pv advice page", type: :system do
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
 
-      it_behaves_like "an advice page tab", tab: "Learn More"
+      it_behaves_like 'an advice page tab', tab: 'Learn More'
     end
   end
 end

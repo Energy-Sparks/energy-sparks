@@ -4,7 +4,7 @@ describe AmrDataFeedImportLog, type: :system, include_application_helper: true d
   let!(:admin)            { create(:admin) }
   let!(:config)           { create(:amr_data_feed_config) }
   let!(:disabled_config)  { create(:amr_data_feed_config, description: 'Disabled', enabled: false) }
-  let!(:import_log_1)     { create(:amr_data_feed_import_log, amr_data_feed_config: config, error_messages: "oh no!", import_time: 1.day.ago) }
+  let!(:import_log_1)     { create(:amr_data_feed_import_log, amr_data_feed_config: config, error_messages: 'oh no!', import_time: 1.day.ago) }
   let!(:import_log_2)     { create(:amr_data_feed_import_log, amr_data_feed_config: config, records_imported: 200, import_time: 1.day.ago) }
   let!(:import_log_3)     { create(:amr_data_feed_import_log, amr_data_feed_config: config, records_imported: 200, import_time: 31.days.ago) }
 

@@ -14,14 +14,14 @@ module Targets
         service = Targets::SchoolGroupProgressReportingService.new(school_group)
         data = service.report
         data.each do |school_target_progress|
-          #rows for all schools
+          # rows for all schools
           row = [
             school_group.name,
             school_target_progress.school.name,
             school_target_progress.targets_enabled,
             school_target_progress.enough_data
           ]
-          #add 8 more columns: 2x dates, 2x for each fuel type
+          # add 8 more columns: 2x dates, 2x for each fuel type
           progress_summary = school_target_progress.progress_summary
           if progress_summary.present?
             row = add_progress_report_fuel_type_columns(row, progress_summary)
@@ -90,40 +90,40 @@ module Targets
     end
 
     def target_data_report_headers
-      ["Group",
-       "School",
-       "Visible?",
-       "Data Visible?",
-       "Fuel type",
-       "Target set?",
-       "Holidays?",
-       "Temperature?",
-       "Readings?",
-       "Annual estimate needed?",
-       "Annual estimate set?",
-       "Can calculate synthetic data?"]
+      ['Group',
+       'School',
+       'Visible?',
+       'Data Visible?',
+       'Fuel type',
+       'Target set?',
+       'Holidays?',
+       'Temperature?',
+       'Readings?',
+       'Annual estimate needed?',
+       'Annual estimate set?',
+       'Can calculate synthetic data?']
     end
 
     def progress_report_headers
-      ["Group",
-       "School",
-       "Targets Enabled?",
-       "Enough Data?",
-       "Start Date",
-       "Target Date",
-       "Electricity Target",
-       "Electricity Progress",
-       "Gas Target",
-       "Gas Progress",
-       "Storage Heater Target",
-       "Storage Heater Progress"]
+      ['Group',
+       'School',
+       'Targets Enabled?',
+       'Enough Data?',
+       'Start Date',
+       'Target Date',
+       'Electricity Target',
+       'Electricity Progress',
+       'Gas Target',
+       'Gas Progress',
+       'Storage Heater Target',
+       'Storage Heater Progress']
     end
 
     def add_progress_report_fuel_type_columns(row, progress_summary)
       school_target = progress_summary.school_target
-      #dates
-      row += [school_target.start_date.strftime("%Y-%m-%d"), school_target.target_date.strftime("%Y-%m-%d")]
-      #add 2 columns for each fuel type
+      # dates
+      row += [school_target.start_date.strftime('%Y-%m-%d'), school_target.target_date.strftime('%Y-%m-%d')]
+      # add 2 columns for each fuel type
       row = add_progress_report_fuel_type(row, school_target.electricity, progress_summary.electricity_progress)
       row = add_progress_report_fuel_type(row, school_target.gas, progress_summary.gas_progress)
       row = add_progress_report_fuel_type(row, school_target.storage_heaters, progress_summary.storage_heater_progress)
@@ -143,7 +143,7 @@ module Targets
     end
 
     def format_percent_reduction(target)
-      return "0%" if target == 0
+      return '0%' if target == 0
       return "-#{target}%"
     end
 

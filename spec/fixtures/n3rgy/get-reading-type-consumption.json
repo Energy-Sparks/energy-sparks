@@ -1,0 +1,143 @@
+{
+  "resource": "/mpxn/1234567891000/utility/electricity/readingtype/consumption?outputFormat=json&end=20120428&start=20120427&granularity=halfhour",
+  "responseTimestamp": "2024-02-23T11:17:01.055Z",
+  "availableCacheRange": {
+    "start": "201204270900",
+    "end": "201402280000"
+  },
+  "start": "201204270030",
+  "end": "201204280000",
+  "granularity": "halfhour",
+  "unit": "kWh",
+  "devices": [
+    {
+      "deviceId": "01-00-00-00-00-00-01-01",
+      "values": [
+        {
+          "primaryValue": 0.214,
+          "timestamp": "2012-04-27 09:00"
+        },
+        {
+          "primaryValue": 0.158,
+          "timestamp": "2012-04-27 09:30"
+        },
+        {
+          "primaryValue": 0.064,
+          "timestamp": "2012-04-27 10:00"
+        },
+        {
+          "primaryValue": 0.062,
+          "timestamp": "2012-04-27 10:30"
+        },
+        {
+          "primaryValue": 0.1,
+          "timestamp": "2012-04-27 11:00"
+        },
+        {
+          "primaryValue": 0.096,
+          "timestamp": "2012-04-27 11:30"
+        },
+        {
+          "primaryValue": 0.061,
+          "timestamp": "2012-04-27 12:00"
+        },
+        {
+          "primaryValue": 0.097,
+          "timestamp": "2012-04-27 12:30"
+        },
+        {
+          "primaryValue": 0.102,
+          "timestamp": "2012-04-27 13:00"
+        },
+        {
+          "primaryValue": 0.129,
+          "timestamp": "2012-04-27 13:30"
+        },
+        {
+          "primaryValue": 0.1,
+          "timestamp": "2012-04-27 14:00"
+        },
+        {
+          "primaryValue": 0.101,
+          "timestamp": "2012-04-27 14:30"
+        },
+        {
+          "primaryValue": 0.123,
+          "timestamp": "2012-04-27 15:00"
+        },
+        {
+          "primaryValue": 0.245,
+          "timestamp": "2012-04-27 15:30"
+        },
+        {
+          "primaryValue": 0.109,
+          "timestamp": "2012-04-27 16:00"
+        },
+        {
+          "primaryValue": 0.018,
+          "timestamp": "2012-04-27 16:30"
+        },
+        {
+          "primaryValue": 0.058,
+          "timestamp": "2012-04-27 17:00"
+        },
+        {
+          "primaryValue": 0.057,
+          "timestamp": "2012-04-27 17:30"
+        },
+        {
+          "primaryValue": 0.019,
+          "timestamp": "2012-04-27 18:00"
+        },
+        {
+          "primaryValue": 0.03,
+          "timestamp": "2012-04-27 18:30"
+        },
+        {
+          "primaryValue": 0.107,
+          "timestamp": "2012-04-27 19:00"
+        },
+        {
+          "primaryValue": 0.058,
+          "timestamp": "2012-04-27 19:30"
+        },
+        {
+          "primaryValue": 0.025,
+          "timestamp": "2012-04-27 20:00"
+        },
+        {
+          "primaryValue": 0.019,
+          "timestamp": "2012-04-27 20:30"
+        },
+        {
+          "primaryValue": 0.1,
+          "timestamp": "2012-04-27 21:00"
+        },
+        {
+          "primaryValue": 0.219,
+          "timestamp": "2012-04-27 21:30"
+        },
+        {
+          "primaryValue": 0.132,
+          "timestamp": "2012-04-27 22:00"
+        },
+        {
+          "primaryValue": 0.091,
+          "timestamp": "2012-04-27 22:30"
+        },
+        {
+          "primaryValue": 0.105,
+          "timestamp": "2012-04-27 23:00"
+        },
+        {
+          "primaryValue": 0.11,
+          "timestamp": "2012-04-27 23:30"
+        },
+        {
+          "primaryValue": 0.09,
+          "timestamp": "2012-04-28 00:00"
+        }
+      ]
+    }
+  ]
+}

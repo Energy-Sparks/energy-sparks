@@ -2,7 +2,6 @@
 en:
   energy_audits:
     availability: Energy Sparks offers two types of energy audits, online virtual energy audits and on-site energy audits. These services are currently only offered to schools with active Energy Sparks accounts.
-    book: Book an audit
     onsite:
       intro_html: |-
         <h4 id="onsite-energy-audits"><strong>On-site energy audits</strong></h4>

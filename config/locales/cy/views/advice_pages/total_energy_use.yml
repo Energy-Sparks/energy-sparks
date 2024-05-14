@@ -23,7 +23,6 @@ cy:
           title: Newid yn y defnydd o ynni dros yr ychydig flynyddoedd diwethaf
       insights:
         comparison:
-          how_do_you_compare: Sut mae eich defnydd o ynni ar gyfer y 12 mis diwethaf yn cymharu ag ysgolion %{school_type} eraill ar Sbarcynni, sydd â nifer tebyg o ddisgyblion?
           more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
           title: Sut ydych chi'n cymharu?
         energy_use:

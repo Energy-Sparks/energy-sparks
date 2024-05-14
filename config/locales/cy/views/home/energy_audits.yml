@@ -1,7 +1,6 @@
 cy:
   energy_audits:
     availability: Mae Sbarcynni yn cynnig dau fath o archwiliadau ynni, archwiliadau ynni rhithwir ar-lein ac archwiliadau ynni ar y safle. Dim ond i ysgolion sydd â chyfrifon Sbarcynni gweithredol y cynigir y gwasanaethau hyn ar hyn o bryd.
-    book: Archebu archwiliad
     onsite:
       intro_html: |-
         <h4 id="onsite-energy-audits"><strong>Archwiliadau ynni ar y safle</strong></h4>

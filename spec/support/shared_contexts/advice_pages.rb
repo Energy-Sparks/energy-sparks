@@ -1,5 +1,5 @@
-RSpec.shared_context "advice page base" do
-  let(:learn_more_content) { "Learn more content" }
+RSpec.shared_context 'advice page base' do
+  let(:learn_more_content) { 'Learn more content' }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true, has_solar_pv: true)}
   let(:school) { create(:school, school_group: create(:school_group)) }
   before do
@@ -7,14 +7,14 @@ RSpec.shared_context "advice page base" do
   end
 end
 
-RSpec.shared_context "advice page" do
-  include_context "advice page base"
+RSpec.shared_context 'advice page' do
+  include_context 'advice page base'
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: learn_more_content) }
 end
 
-RSpec.shared_context "total energy advice page" do
+RSpec.shared_context 'total energy advice page' do
   let(:fuel_type) { nil }
-  include_context "advice page base"
+  include_context 'advice page base'
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 
   let(:start_date)  { Time.zone.today - 366}
@@ -37,9 +37,9 @@ RSpec.shared_context "total energy advice page" do
   end
 end
 
-RSpec.shared_context "electricity advice page" do
+RSpec.shared_context 'electricity advice page' do
   let(:fuel_type) { :electricity }
-  include_context "advice page base"
+  include_context 'advice page base'
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 
   let(:start_date)  { Time.zone.today - 366}
@@ -64,9 +64,9 @@ RSpec.shared_context "electricity advice page" do
   end
 end
 
-RSpec.shared_context "gas advice page" do
+RSpec.shared_context 'gas advice page' do
   let(:fuel_type) { :gas }
-  include_context "advice page base"
+  include_context 'advice page base'
 
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 
@@ -91,9 +91,9 @@ RSpec.shared_context "gas advice page" do
   end
 end
 
-RSpec.shared_context "solar advice page" do
+RSpec.shared_context 'solar advice page' do
   let(:fuel_type) { :electricity }
-  include_context "advice page base"
+  include_context 'advice page base'
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 
   let(:start_date)  { Time.zone.today - 366}
@@ -116,9 +116,9 @@ RSpec.shared_context "solar advice page" do
   end
 end
 
-RSpec.shared_context "storage advice page" do
+RSpec.shared_context 'storage advice page' do
   let(:fuel_type) { :storage_heater }
-  include_context "advice page base"
+  include_context 'advice page base'
   # let(:fuel_type) { :solar_pv }
   # include_context "advice page base"
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }

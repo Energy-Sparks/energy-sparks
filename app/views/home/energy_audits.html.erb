@@ -19,27 +19,27 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <%= t('energy_audits.virtual.intro_html') %>
+      <%= t('energy_audits.onsite.intro_html') %>
       <p>
-        <%= t('energy_audits.virtual.availability') %>
+        <%= mail_to 'hello@energysparks.uk', t('energy_audits.quote'), class: 'btn' %>
       </p>
-      <%= mail_to 'hello@energysparks.uk', t('energy_audits.quote'), class: 'btn' %> <a href="https://forms.gle/kgdMW6LhV7SEtbJH8" target="_blank" class="btn"><%= t('energy_audits.book') %></a>
     </div>
   </div>
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <%= t('energy_audits.onsite.intro_html') %>
+      <%= t('energy_audits.virtual.intro_html') %>
       <p>
-        <a href="https://forms.gle/kgdMW6LhV7SEtbJH8" class="btn" target="_blank"><%= t('energy_audits.book') %></a>
+        <%= t('energy_audits.virtual.availability') %>
       </p>
+      <%= mail_to 'hello@energysparks.uk', t('energy_audits.quote'), class: 'btn' %></a>
     </div>
   </div>
 
   <div class="row pb-4 pt-4">
     <div class="col-md-12">
       <div class="d-flex justify-content-center">
-        <%= image_tag("thermal-camera.png", class: "img-fluid") %>
+        <%= image_tag('thermal-camera.png', class: 'img-fluid') %>
       </div>
     </div>
   </div>

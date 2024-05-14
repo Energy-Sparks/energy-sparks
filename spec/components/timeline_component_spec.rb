@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
   let(:observation) { create(:observation, :activity) }
@@ -21,14 +21,14 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
     end
   end
 
-  context "with all params" do
-    it { expect(html).to have_selector("div.timeline-component") }
+  context 'with all params' do
+    it { expect(html).to have_selector('div.timeline-component') }
 
-    it "adds specified classes" do
+    it 'adds specified classes' do
       expect(html).to have_css('div.timeline-component.my-class')
     end
 
-    it "adds specified id" do
+    it 'adds specified id' do
       expect(html).to have_css('div.timeline-component#my-id')
     end
   end

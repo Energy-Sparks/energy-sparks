@@ -7,7 +7,7 @@ describe ScoredSchoolsList do
     let(:school_c) { double(:school, sum_points: 0)}
     let(:school_d) { double(:school, sum_points: nil)}
 
-    context "when always_include is not set" do
+    context 'when always_include is not set' do
       it 'returns just those with points' do
         expect(ScoredSchoolsList.new([school_a, school_b, school_c, school_d]).with_points).to match_array(
           [school_a, school_b]
@@ -15,7 +15,7 @@ describe ScoredSchoolsList do
       end
     end
 
-    context "when always_include is set school with 0 points" do
+    context 'when always_include is set school with 0 points' do
       it 'includes school' do
         expect(ScoredSchoolsList.new([school_a, school_b, school_c, school_d]).with_points(always_include: school_c)).to match_array(
           [school_c, school_a, school_b]
@@ -23,7 +23,7 @@ describe ScoredSchoolsList do
       end
     end
 
-    context "when always_include is set school with nil points" do
+    context 'when always_include is set school with nil points' do
       it 'includes school' do
         expect(ScoredSchoolsList.new([school_a, school_b, school_c, school_d]).with_points(always_include: school_d)).to match_array(
           [school_d, school_a, school_b]

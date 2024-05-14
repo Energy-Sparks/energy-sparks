@@ -9,7 +9,6 @@
 #  data_source_id                 :bigint(8)
 #  dcc_checked_at                 :datetime
 #  dcc_meter                      :boolean          default(FALSE)
-#  earliest_available_data        :date
 #  id                             :bigint(8)        not null, primary key
 #  low_carbon_hub_installation_id :bigint(8)
 #  meter_review_id                :bigint(8)
@@ -20,7 +19,6 @@
 #  name                           :string
 #  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
-#  sandbox                        :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  updated_at                     :datetime         not null
@@ -82,17 +80,17 @@ class Meter < ApplicationRecord
   scope :not_dcc, -> { where(dcc_meter: false) }
   scope :dcc, -> { where(dcc_meter: true) }
   scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
-  scope :not_recently_checked, -> { where("dcc_checked_at is NULL OR dcc_checked_at < ?", 1.month.ago) }
+  scope :not_recently_checked, -> { where('dcc_checked_at is NULL OR dcc_checked_at < ?', 7.days.ago) }
   scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
   scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
 
   scope :with_zero_reading_days_and_dates, -> {
-      left_outer_joins(:amr_validated_readings)
-        .group('schools.id', 'meters.id')
-        .select(
-          "meters.*,
+    left_outer_joins(:amr_validated_readings)
+      .group('schools.id', 'meters.id')
+      .select(
+        "meters.*,
            MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
            MAX(amr_validated_readings.reading_date) AS last_validated_reading_date,
            COUNT(1) FILTER (WHERE one_day_kwh = 0.0) AS zero_reading_days_count")
@@ -203,7 +201,7 @@ class Meter < ApplicationRecord
     output = mpan_mprn.to_s
     output += " - #{name}" if display_name && name.present?
     output += " - #{data_source.name}" if display_data_source && data_source
-    output += " (inactive)" if display_inactive && !active?
+    output += ' (inactive)' if display_inactive && !active?
     output
   end
 
@@ -277,7 +275,7 @@ class Meter < ApplicationRecord
   end
 
   def open_issues
-    issues&.where(issue_type: "issue")&.status_open
+    issues&.where(issue_type: 'issue')&.status_open
   end
 
   private
@@ -285,13 +283,13 @@ class Meter < ApplicationRecord
   def pseudo_mpan_mprn_not_changed
     return unless pseudo && mpan_mprn_changed?
 
-    errors.add(:mpan_mprn, "Change of mpan mprn is not allowed for pseudo meters")
+    errors.add(:mpan_mprn, 'Change of mpan mprn is not allowed for pseudo meters')
   end
 
   def pseudo_meter_type_not_changed
     return unless pseudo && meter_type_changed?
 
-    errors.add(:meter_type, "Change of meter type is not allowed for pseudo meters")
+    errors.add(:meter_type, 'Change of meter type is not allowed for pseudo meters')
   end
 
   def real_electric?

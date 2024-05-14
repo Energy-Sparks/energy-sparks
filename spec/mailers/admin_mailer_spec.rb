@@ -10,7 +10,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
   end
 
   describe '#school_group_meters_report' do
-    shared_examples "a report with gaps in the meter readings" do
+    shared_examples 'a report with gaps in the meter readings' do
       let(:base_date) { Time.zone.today - 1.year }
 
       before do
@@ -36,7 +36,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
       end
     end
 
-    shared_examples "a report with standard fields" do |active_only: true|
+    shared_examples 'a report with standard fields' do |active_only: true|
       it 'includes school and meters for active meters' do
         expect(body).to have_content(active_meter.school.name)
         expect(body).to have_content(active_meter.mpan_mprn)
@@ -71,41 +71,41 @@ RSpec.describe AdminMailer, include_application_helper: true do
       AdminMailer.with(to: to, meter_report: meter_report).school_group_meters_report.deliver
     end
 
-    context "All meters" do
+    context 'All meters' do
       let(:all_meters) { true }
 
       it { expect(email.subject).to eql("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - all meters") }
     end
 
-    context "Only active meters" do
+    context 'Only active meters' do
       let(:all_meters) { false }
 
       it { expect(email.subject).to eql("[energy-sparks-unknown] Energy Sparks - Meter report for #{school_group.name} - active meters") }
     end
 
-    context "html report" do
+    context 'html report' do
       let(:body) { email.html_part.body.raw_source }
 
-      it "has heading" do
+      it 'has heading' do
         expect(body).to include("#{school_group.name} meter report")
       end
 
-      it_behaves_like "a report with gaps in the meter readings"
+      it_behaves_like 'a report with gaps in the meter readings'
 
-      context "All meters" do
+      context 'All meters' do
         let(:all_meters) { true }
 
-        it_behaves_like "a report with standard fields", active_only: false
+        it_behaves_like 'a report with standard fields', active_only: false
       end
 
-      context "Active meters" do
+      context 'Active meters' do
         let(:all_meters) { false }
 
-        it_behaves_like "a report with standard fields", active_only: true
+        it_behaves_like 'a report with standard fields', active_only: true
       end
     end
 
-    context "csv report" do
+    context 'csv report' do
       let(:attachment) { email.attachments[0] }
 
       let(:body) { attachment.body.raw_source }
@@ -115,18 +115,18 @@ RSpec.describe AdminMailer, include_application_helper: true do
       it { expect(attachment.filename).to eq(meter_report.csv_filename) }
 
 
-      it_behaves_like "a report with gaps in the meter readings"
+      it_behaves_like 'a report with gaps in the meter readings'
 
-      context "All meters" do
+      context 'All meters' do
         let(:all_meters) { true }
 
-        it_behaves_like "a report with standard fields", active_only: false
+        it_behaves_like 'a report with standard fields', active_only: false
       end
 
-      context "Active meters" do
+      context 'Active meters' do
         let(:all_meters) { false }
 
-        it_behaves_like "a report with standard fields", active_only: true
+        it_behaves_like 'a report with standard fields', active_only: true
       end
     end
   end
@@ -151,12 +151,12 @@ RSpec.describe AdminMailer, include_application_helper: true do
       AdminMailer.with(user: admin).issues_report.deliver
     end
 
-    context "showing only open issues for user" do
+    context 'showing only open issues for user' do
       let(:issues) { [issue, note, closed_issue, someone_elses_issue] }
 
       it { expect(email.subject).to eql "[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}" }
 
-      it "displays issue" do
+      it 'displays issue' do
         expect(body).to have_content(issue.title)
         expect(body).to have_content(school_group.name)
         expect(body).to have_content(issue.fuel_type.capitalize)
@@ -165,8 +165,8 @@ RSpec.describe AdminMailer, include_application_helper: true do
         expect(body).to have_content(nice_date_times(issue.created_at))
         expect(body).to have_content(issue.updated_by.display_name)
         expect(body).to have_content(nice_date_times(issue.updated_at))
-        expect(body).to have_link("View", href: admin_school_issue_url(issue.issueable, issue))
-        expect(body).to have_link("Edit", href: edit_admin_issue_url(issue))
+        expect(body).to have_link('View', href: admin_school_issue_url(issue.issueable, issue))
+        expect(body).to have_link('Edit', href: edit_admin_issue_url(issue))
       end
 
       it { expect(body).to have_link("View all issues for: #{admin.display_name}", href: admin_issues_url(user: admin)) }
@@ -175,16 +175,16 @@ RSpec.describe AdminMailer, include_application_helper: true do
       it { expect(body).not_to have_content(someone_elses_issue.title) }
     end
 
-    context "when there are new issues for user" do
+    context 'when there are new issues for user' do
       let(:issues) { [new_issue] }
 
-      it { expect(body).to have_content("new!") }
+      it { expect(body).to have_content('new!') }
     end
 
-    context "when there are only old issues for user" do
+    context 'when there are only old issues for user' do
       let(:issues) { [issue] }
 
-      it { expect(body).not_to have_content("new!") }
+      it { expect(body).not_to have_content('new!') }
     end
 
     context "when there aren't any issues for user" do
@@ -193,7 +193,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
       end
     end
 
-    context "csv report" do
+    context 'csv report' do
       let(:issues) { [new_issue] }
 
       it { expect(email.attachments.count).to eq(1) }

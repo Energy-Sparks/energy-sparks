@@ -1,4 +1,4 @@
-RSpec.shared_examples "a basic gas tariff editor" do
+RSpec.shared_examples 'a basic gas tariff editor' do
   let(:meter_type) { :gas }
   context 'when adding a new tariff' do
     before { click_link('Add gas tariff') }
@@ -10,12 +10,12 @@ RSpec.shared_examples "a basic gas tariff editor" do
     let!(:energy_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
 
     before do
-      #assumes starting from tariff index
+      # assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
 
-    it_behaves_like "the user can edit the tariff"
+    it_behaves_like 'the user can edit the tariff'
 
     it 'does not offer option to edit the type of tariff' do
       expect(page).not_to have_css('#choose-type')
@@ -23,7 +23,7 @@ RSpec.shared_examples "a basic gas tariff editor" do
   end
 end
 
-RSpec.shared_examples "a basic electricity tariff editor" do
+RSpec.shared_examples 'a basic electricity tariff editor' do
   let(:meter_type) { :electricity }
   context 'when adding a new tariff' do
     before { click_link('Add electricity tariff') }
@@ -35,40 +35,40 @@ RSpec.shared_examples "a basic electricity tariff editor" do
     let!(:energy_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: meter_type)}
 
     before do
-      #assumes starting from tariff index
+      # assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
 
-    it_behaves_like "the user can edit the tariff"
+    it_behaves_like 'the user can edit the tariff'
     it_behaves_like 'the user can change the type of tariff'
 
     it 'allows adding all the charges' do
       find('#charges-section-edit').click
 
-      fill_in "energy_tariff_charges[fixed_charge][value]", with: '1.11'
+      fill_in 'energy_tariff_charges[fixed_charge][value]', with: '1.11'
       select 'day', from: 'energy_tariff_charges[fixed_charge][units]'
 
-      fill_in "energy_tariff_charges[site_fee][value]", with: '2.22'
+      fill_in 'energy_tariff_charges[site_fee][value]', with: '2.22'
       select 'month', from: 'energy_tariff_charges[site_fee][units]'
 
-      fill_in "energy_tariff_charges[duos_red][value]", with: '3.33'
-      fill_in "energy_tariff_charges[duos_amber][value]", with: '4.44'
-      fill_in "energy_tariff_charges[duos_green][value]", with: '5.55'
+      fill_in 'energy_tariff_charges[duos_red][value]', with: '3.33'
+      fill_in 'energy_tariff_charges[duos_amber][value]', with: '4.44'
+      fill_in 'energy_tariff_charges[duos_green][value]', with: '5.55'
 
-      fill_in "energy_tariff_charges[agreed_availability_charge][value]", with: '6.66'
-      fill_in "energy_tariff_charges[excess_availability_charge][value]", with: '7.77'
-      fill_in "energy_tariff_charges[asc_limit_kw][value]", with: '8.88'
+      fill_in 'energy_tariff_charges[agreed_availability_charge][value]', with: '6.66'
+      fill_in 'energy_tariff_charges[excess_availability_charge][value]', with: '7.77'
+      fill_in 'energy_tariff_charges[asc_limit_kw][value]', with: '8.88'
 
-      fill_in "energy_tariff_charges[reactive_power_charge][value]", with: '9.99'
-      fill_in "energy_tariff_charges[feed_in_tariff_levy][value]", with: '9.87'
+      fill_in 'energy_tariff_charges[reactive_power_charge][value]', with: '9.99'
+      fill_in 'energy_tariff_charges[feed_in_tariff_levy][value]', with: '9.87'
 
-      fill_in "energy_tariff_charges[settlement_agency_fee][value]", with: '6.54'
-      fill_in "energy_tariff_charges[meter_asset_provider_charge][value]", with: '3.21'
-      fill_in "energy_tariff_charges[nhh_metering_agent_charge][value]", with: '1.9'
+      fill_in 'energy_tariff_charges[settlement_agency_fee][value]', with: '6.54'
+      fill_in 'energy_tariff_charges[meter_asset_provider_charge][value]', with: '3.21'
+      fill_in 'energy_tariff_charges[nhh_metering_agent_charge][value]', with: '1.9'
 
-      fill_in "energy_tariff_charges[nhh_automatic_meter_reading_charge][value]", with: '.12'
-      fill_in "energy_tariff_charges[data_collection_dcda_agent_charge][value]", with: '.34'
+      fill_in 'energy_tariff_charges[nhh_automatic_meter_reading_charge][value]', with: '.12'
+      fill_in 'energy_tariff_charges[data_collection_dcda_agent_charge][value]', with: '.34'
       # TNUoS has been temporarily removed from the form
       # check 'energy_tariff_charges[energy_tariff][tnuos]'
       check 'energy_tariff_charges[energy_tariff][ccl]'
@@ -109,7 +109,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
     let!(:energy_tariff) { create(:energy_tariff, tariff_type: :differential, tariff_holder: tariff_holder, meter_type: meter_type)}
 
     before do
-      #assumes starting from tariff index
+      # assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
@@ -154,10 +154,10 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       expect(page).to have_content('Please add valid prices for all marked rates.')
       expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
       expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
-      expect(find("a", text: "Add rate")[:class]).to eq('btn disabled')
-      expect(find("a", text: "Reset to default")[:class]).to eq('btn disabled')
+      expect(find('a', text: 'Add rate')[:class]).to eq('btn disabled')
+      expect(find('a', text: 'Reset to default')[:class]).to eq('btn disabled')
 
-      click_link("Delete", match: :first)
+      click_link('Delete', match: :first)
 
       expect(page).not_to have_content('Rate from 00:30 to 06:30')
       expect(page).to have_content('Rate from 07:00 to 00:00')
@@ -167,10 +167,10 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       expect(page).not_to have_content('Complete 24 hour coverage.')
       expect(page).to have_content('Please add valid prices for all marked rates.')
       expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
-      expect(find("a", text: "Add rate")[:class]).to eq('btn')
-      expect(find("a", text: "Reset to default")[:class]).to eq('btn')
+      expect(find('a', text: 'Add rate')[:class]).to eq('btn')
+      expect(find('a', text: 'Reset to default')[:class]).to eq('btn')
 
-      click_link("Delete", match: :first)
+      click_link('Delete', match: :first)
 
       expect(page).not_to have_content('Rate from 00:30 to 06:30')
       expect(page).not_to have_content('Rate from 07:00 to 00:00')
@@ -180,8 +180,8 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       expect(page).not_to have_content('Please add valid prices for all marked rates.')
       expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
       expect(page).to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
-      expect(find("a", text: "Add rate")[:class]).to eq('btn')
-      expect(find("a", text: "Reset to default")[:class]).to eq('btn')
+      expect(find('a', text: 'Add rate')[:class]).to eq('btn')
+      expect(find('a', text: 'Reset to default')[:class]).to eq('btn')
 
       click_link('Reset to default')
 
@@ -200,7 +200,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       expect(page).to have_content('£0.15 per kWh')
       expect(page).to have_content('£ per kWh')
 
-      expect(find("a", text: "Continue")[:class]).to eq('btn disabled')
+      expect(find('a', text: 'Continue')[:class]).to eq('btn disabled')
 
       find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.last.id}").click
 
@@ -215,8 +215,8 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       expect(page).to have_content('Complete 24 hour coverage.')
       expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
       expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
-      expect(find("a", text: "Add rate")[:class]).to eq('btn disabled')
-      expect(find("a", text: "Reset to default")[:class]).to eq('btn disabled')
+      expect(find('a', text: 'Add rate')[:class]).to eq('btn disabled')
+      expect(find('a', text: 'Reset to default')[:class]).to eq('btn disabled')
 
       click_link('Continue')
 
@@ -236,7 +236,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
   end
 end
 
-RSpec.shared_examples "a school tariff editor" do
+RSpec.shared_examples 'a school tariff editor' do
   let(:tariff_holder)       { school }
   let(:tariff_holder_type)  { 'School' }
 
@@ -253,7 +253,7 @@ RSpec.shared_examples "a school tariff editor" do
 
     before { visit school_energy_tariffs_path(school) }
 
-    it_behaves_like "a tariff editor index"
+    it_behaves_like 'a tariff editor index'
   end
 
   it 'is navigable from the manage school menu' do
@@ -283,9 +283,9 @@ RSpec.shared_examples "a school tariff editor" do
       click_on(energy_tariff.name)
     end
 
-    it_behaves_like "the user can select the meters"
-    it_behaves_like "the user can select the meter system"
-    it_behaves_like "the user can not see the meterless applies to editor"
+    it_behaves_like 'the user can select the meters'
+    it_behaves_like 'the user can select the meter system'
+    it_behaves_like 'the user can not see the meterless applies to editor'
   end
 
   context 'when editing a school gas tariff' do
@@ -299,16 +299,16 @@ RSpec.shared_examples "a school tariff editor" do
       click_on(energy_tariff.name)
     end
 
-    it_behaves_like "the user can select the meters"
-    it_behaves_like "the user can not select the meter system"
-    it_behaves_like "the user can not see the meterless applies to editor"
+    it_behaves_like 'the user can select the meters'
+    it_behaves_like 'the user can not select the meter system'
+    it_behaves_like 'the user can not see the meterless applies to editor'
   end
 end
 
-RSpec.shared_examples "a school group energy tariff editor" do
+RSpec.shared_examples 'a school group energy tariff editor' do
   before { sign_in(current_user) }
 
-  context 'has navigation links', skip: "Group tariff editor is temporarily admin only.  This skip can be removed when the group sub nav template is updated" do
+  context 'has navigation links', skip: 'Group tariff editor is temporarily admin only.  This skip can be removed when the group sub nav template is updated' do
     it 'from school group page to energy tariffs index' do
       visit school_group_path(school_group)
       click_link('Manage Group')
@@ -323,7 +323,7 @@ RSpec.shared_examples "a school group energy tariff editor" do
 
     before { visit school_group_energy_tariffs_path(school_group) }
 
-    it_behaves_like "a tariff editor index"
+    it_behaves_like 'a tariff editor index'
   end
 
   context 'when creating tariffs' do
@@ -337,11 +337,11 @@ RSpec.shared_examples "a school group energy tariff editor" do
 
     it_behaves_like 'a basic gas tariff editor'
     it_behaves_like 'a basic electricity tariff editor'
-    it_behaves_like "the meterless applies to editor"
+    it_behaves_like 'the meterless applies to editor'
   end
 end
 
-RSpec.shared_examples "the site settings energy tariff editor" do
+RSpec.shared_examples 'the site settings energy tariff editor' do
   before do
     visit admin_path
     click_link('Energy Tariffs')
@@ -352,7 +352,7 @@ RSpec.shared_examples "the site settings energy tariff editor" do
 
     before { visit admin_settings_energy_tariffs_path }
 
-    it_behaves_like "a tariff editor index"
+    it_behaves_like 'a tariff editor index'
   end
 
   it 'has expected index' do
@@ -367,6 +367,6 @@ RSpec.shared_examples "the site settings energy tariff editor" do
 
     it_behaves_like 'a basic gas tariff editor'
     it_behaves_like 'a basic electricity tariff editor'
-    it_behaves_like "the meterless applies to editor"
+    it_behaves_like 'the meterless applies to editor'
   end
 end

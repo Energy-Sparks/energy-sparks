@@ -62,8 +62,8 @@ class Ability
         can :manage, CalendarEvent do |calendar_event|
           user.school_group.calendars.include?(calendar_event.calendar)
         end
-        #A group admin can manage onboarding for any school in their group
-        #The onboarding must be associated with the group
+        # A group admin can manage onboarding for any school in their group
+        # The onboarding must be associated with the group
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.school_group.present? && user.school_group == onboarding.school_group
         end
@@ -79,7 +79,7 @@ class Ability
         can :switch, School
         can :manage, EnergyTariff, tariff_holder: user.school
       end
-      #allow users from schools in same group to access dashboards
+      # allow users from schools in same group to access dashboards
       if user.school.present?
         can [:show, :usage, :show_pupils_dash], School, { school_group_id: user.school.school_group_id, visible: true }
         can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
@@ -124,12 +124,12 @@ class Ability
       can [:show, :read, :index], Audit, related_school_scope
       can :download_school_data, School, school_scope
     elsif user.staff? || user.volunteer? || user.pupil?
-      #abilities that give you access to dashboards for own school
+      # abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
       can [
         :show, :usage, :show_pupils_dash, :suggest_activity
       ], School, school_scope
-      #they can also do these things for schools in same group
+      # they can also do these things for schools in same group
       can [
         :show, :usage, :show_pupils_dash, :suggest_activity
       ], School, { school_group_id: user.school.school_group_id, visible: true }
@@ -144,19 +144,19 @@ class Ability
       can :download_school_data, School, school_scope
       can :read, Meter
       can [:start_programme], School, id: user.school_id, visible: true
-      #pupils can view management dashboard for their school and others in group
+      # pupils can view management dashboard for their school and others in group
       if user.pupil?
         can :show_management_dash, School, id: user.school_id, visible: true
         can :show_management_dash, School, { school_group_id: user.school.school_group_id, visible: true }
         can [:start, :read, :update, :create], TransportSurvey, related_school_scope
         can [:read, :create], TransportSurvey::Response, transport_survey: related_school_scope
       end
-      #pupils and volunteers can only read real cost data if their school is public
+      # pupils and volunteers can only read real cost data if their school is public
       if user.volunteer? || user.pupil?
         can :read_restricted_analysis, School, { id: user.school_id, visible: true, public: true }
         can :read_restricted_advice, School, { id: user.school_id, visible: true, public: true }
       else
-        #but staff can read it regardless
+        # but staff can read it regardless
         can :read_restricted_analysis, School, { id: user.school_id, visible: true }
         can :read_restricted_advice, School, { id: user.school_id, visible: true }
       end

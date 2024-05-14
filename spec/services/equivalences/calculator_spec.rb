@@ -115,7 +115,7 @@ describe Equivalences::Calculator do
     content_version = create(
       :equivalence_type_content_version,
       equivalence_type: equivalence_type,
-      equivalence: "You used {{kwh}} of electricity last month"
+      equivalence: 'You used {{kwh}} of electricity last month'
     )
     school = create(:school)
 
@@ -128,7 +128,7 @@ describe Equivalences::Calculator do
       }
     )
 
-    #Welsh
+    # Welsh
     expect(analytics).to receive(:front_end_convert).with(:kwh, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '100 kwh in Welsh',

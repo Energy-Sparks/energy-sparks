@@ -10,7 +10,7 @@ module Schools
       if @solar_edge_installation.cached_api_information?
         start_time = @solar_edge_installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
         end_time = @solar_edge_installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
-        @reading_params = @api_params.merge({ timeUnit: "QUARTER_OF_AN_HOUR", startTime: start_time, endTime: end_time })
+        @reading_params = @api_params.merge({ timeUnit: 'QUARTER_OF_AN_HOUR', startTime: start_time, endTime: end_time })
       end
     end
 
@@ -55,7 +55,7 @@ module Schools
       end
 
       @solar_edge_installation.destroy
-      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Solar Edge API feed deleted"
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Solar Edge API feed deleted'
     end
 
     def check
@@ -78,7 +78,7 @@ module Schools
 
     def set_breadcrumbs
       @breadcrumbs = [
-        { name: "Solar API Feeds" },
+        { name: 'Solar API Feeds' },
       ]
     end
   end

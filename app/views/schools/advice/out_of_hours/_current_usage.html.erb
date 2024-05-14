@@ -1,0 +1,26 @@
+<%= render 'schools/advice/section_title',
+           section_id: 'current',
+           section_title:
+          t("advice_pages.#{fuel_type}_out_of_hours.insights.your_out_of_hours_usage_title") %>
+
+<% alert_classes.each do |alert_class| %>
+  <%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts,
+                          alert_types: alert_types_for_class(alert_class), show_links: false, show_icons: false %>
+<% end %>
+
+<% if analysis_dates.one_years_data? %>
+  <%= t(
+        "advice_pages.#{fuel_type}_out_of_hours.insights.your_out_of_hours_usage_html",
+        out_of_hours_percent: format_unit(annual_usage_breakdown&.out_of_hours&.percent, :percent),
+        out_of_hours_gbp: format_unit(annual_usage_breakdown&.out_of_hours&.£, :£),
+        out_of_hours_co2: format_unit(annual_usage_breakdown&.out_of_hours&.co2, :co2)
+      ) %>
+<% else %>
+  <%= t(
+        "advice_pages.#{fuel_type}_out_of_hours.insights.your_out_of_hours_usage_since_date_html",
+        date: short_dates(analysis_dates.start_date),
+        out_of_hours_percent: format_unit(annual_usage_breakdown&.out_of_hours&.percent, :percent),
+        out_of_hours_gbp: format_unit(annual_usage_breakdown&.out_of_hours&.£, :£),
+        out_of_hours_co2: format_unit(annual_usage_breakdown&.out_of_hours&.co2, :co2)
+      ) %>
+<% end %>

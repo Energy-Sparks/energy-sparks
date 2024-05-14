@@ -12,7 +12,7 @@ RSpec.describe SchoolGroups::CsvGenerator do
     end
   end
 
-  context "with school group data" do
+  context 'with school group data' do
     let(:school_groups) { 2.times.collect { create(:school_group) } }
     let(:header) { 'School group,Group type,School type,Onboarding,Active,Data visible,Invisible,Removed' }
     subject(:data) { SchoolGroups::CsvGenerator.new(school_groups).export_detail }
@@ -26,24 +26,24 @@ RSpec.describe SchoolGroups::CsvGenerator do
     it { expect(data.lines.count).to eq(line_count) }
     it { expect(data.lines.first.chomp).to eq(header) }
 
-    it "returns exported detail" do
+    it 'returns exported detail' do
       i = 1
       school_groups.each do |school_group|
         School.school_types.each_key do |school_type|
-          expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize, school_type.humanize, 1, 1, 1, 1, 1].join(","))
+          expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize, school_type.humanize, 1, 1, 1, 1, 1].join(','))
           i += 1
         end
-        expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize, 'All school types', 7, 7, 7, 7, 7].join(","))
+        expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize, 'All school types', 7, 7, 7, 7, 7].join(','))
         i += 1
       end
-      expect(data.lines[i].chomp).to eq(['All Energy Sparks schools', 'All school types', 14, 14, 14, 14, 14].join(","))
+      expect(data.lines[i].chomp).to eq(['All Energy Sparks schools', 'All school types', 14, 14, 14, 14, 14].join(','))
     end
   end
 
-  describe ".filename" do
+  describe '.filename' do
     subject(:filename) { SchoolGroups::CsvGenerator.filename }
 
-    it "includes school-groups and time" do
+    it 'includes school-groups and time' do
       Timecop.freeze do
         expect(filename).to eq "school-groups-#{Time.zone.now.iso8601.parameterize}.csv"
       end

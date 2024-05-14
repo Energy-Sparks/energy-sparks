@@ -59,7 +59,7 @@ describe 'Users', type: :system do
 
       it 'can be deleted but keeps consent grant' do
         visit admin_users_path
-        click_link "Delete", href: admin_user_path(user)
+        click_link 'Delete', href: admin_user_path(user)
         expect(page).to have_content('User was successfully destroyed')
         expect(User).not_to exist(user.id)
         expect(ConsentGrant).to exist(consent_grant.id)

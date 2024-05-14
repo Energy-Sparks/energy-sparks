@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "thermostatic control advice page", type: :system do
+RSpec.describe 'thermostatic control advice page', type: :system do
   let(:key) { 'thermostatic_control' }
-  let(:expected_page_title) { "Thermostatic control analysis" }
+  let(:expected_page_title) { 'Thermostatic control analysis' }
 
-  include_context "gas advice page"
+  include_context 'gas advice page'
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
@@ -31,12 +31,12 @@ RSpec.describe "thermostatic control advice page", type: :system do
       visit school_advice_thermostatic_control_path(school)
     end
 
-    it_behaves_like "an advice page tab", tab: "Insights"
+    it_behaves_like 'an advice page tab', tab: 'Insights'
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
         expect(page).to have_content('What is thermostatic control?')
@@ -48,7 +48,7 @@ RSpec.describe "thermostatic control advice page", type: :system do
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
         expect(page).to have_content('Analysis')
@@ -62,7 +62,7 @@ RSpec.describe "thermostatic control advice page", type: :system do
 
         ['#chart_wrapper_thermostatic_up_to_1_year', '#chart_wrapper_thermostatic_control_large_diurnal_range'].each do |chart_type|
           within chart_type do
-            expect(page).not_to have_css(".axis-choice", visible: :hidden)
+            expect(page).not_to have_css('.axis-choice', visible: :hidden)
           end
         end
       end
@@ -71,7 +71,7 @@ RSpec.describe "thermostatic control advice page", type: :system do
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
 
-      it_behaves_like "an advice page tab", tab: "Learn More"
+      it_behaves_like 'an advice page tab', tab: 'Learn More'
     end
   end
 end

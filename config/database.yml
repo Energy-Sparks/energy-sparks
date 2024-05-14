@@ -12,7 +12,7 @@ development:
 
 test: &test
   <<: *default
-  host: localhost
+  host: <%= ENV['DEV_DB_HOST'] || 'localhost' %>
   database: energy_sparks_test
   username: <%= ENV['DEV_DB_USERNAME'] %>
   password: <%= ENV['DEV_DB_PASSWORD'] %>

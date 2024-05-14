@@ -1,0 +1,18 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.electricity_economic_tariff_changed_this_year %>
+      <%= r.with_var val: result.optimum_kwp, unit: :kwp %>
+      <%= r.with_var val: result.optimum_payback_years, unit: :years %>
+      <%= r.with_var val: result.optimum_mains_reduction_percent, unit: :percent %>
+      <%= r.with_var val: result.one_year_saving_gbpcurrent, unit: :£current %>
+    <% end %>
+  <% end %>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+  <% end %>
+<% end %>

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module DataFeeds
-  RSpec.describe "Carbon intensity readings report", type: :system do
+  RSpec.describe 'Carbon intensity readings report', type: :system do
     let!(:carbon_intensity_reading) { CarbonIntensityReading.create(reading_date: Date.parse('01/06/2019'), carbon_intensity_x48: Array.new(48, rand))}
     let!(:admin) { create(:admin)}
 
@@ -13,7 +13,7 @@ module DataFeeds
     context 'with a reading' do
       it 'allows a download of all CSV data' do
         click_on('Reports')
-        click_on "Carbon intensity data CSV"
+        click_on 'Carbon intensity data CSV'
 
         # Make sure the page is a CSV
         header = page.response_headers['Content-Disposition']

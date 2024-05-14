@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "dashboard chart display" do
+RSpec.shared_examples 'dashboard chart display' do
   let(:dashboard_charts) { [] }
 
   before do
@@ -16,12 +16,12 @@ RSpec.shared_examples "dashboard chart display" do
     let(:dashboard_charts) { [:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas, :management_dashboard_group_by_week_storage_heater, :management_dashboard_group_by_month_solar_pv] }
 
     it 'displays the expected charts' do
-      expect(page).to have_content("Recent energy usage")
-      expect(page).to have_css("#management-energy-overview")
-      expect(page).to have_css("#electricity-overview")
-      expect(page).to have_css("#gas-overview")
-      expect(page).to have_css("#storage_heater-overview")
-      expect(page).to have_css("#solar-overview")
+      expect(page).to have_content('Recent energy usage')
+      expect(page).to have_css('#management-energy-overview')
+      expect(page).to have_css('#electricity-overview')
+      expect(page).to have_css('#gas-overview')
+      expect(page).to have_css('#storage_heater-overview')
+      expect(page).to have_css('#solar-overview')
     end
   end
 
@@ -33,12 +33,12 @@ RSpec.shared_examples "dashboard chart display" do
     let(:dashboard_charts) { [:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas] }
 
     it 'displays the expected charts' do
-      expect(page).to have_content("Recent energy usage")
-      expect(page).to have_css("#management-energy-overview")
-      expect(page).to have_css("#electricity-overview")
-      expect(page).to have_css("#gas-overview")
-      expect(page).not_to have_css("#storage_heater-overview")
-      expect(page).not_to have_css("#solar-overview")
+      expect(page).to have_content('Recent energy usage')
+      expect(page).to have_css('#management-energy-overview')
+      expect(page).to have_css('#electricity-overview')
+      expect(page).to have_css('#gas-overview')
+      expect(page).not_to have_css('#storage_heater-overview')
+      expect(page).not_to have_css('#solar-overview')
     end
   end
 
@@ -48,13 +48,13 @@ RSpec.shared_examples "dashboard chart display" do
     end
 
     it 'displays the expected charts' do
-      expect(page).not_to have_content("Recent energy usage")
-      expect(page).not_to have_css("#management-energy-overview")
+      expect(page).not_to have_content('Recent energy usage')
+      expect(page).not_to have_css('#management-energy-overview')
     end
   end
 end
 
-RSpec.describe "adult dashboard charts", type: :system do
+RSpec.describe 'adult dashboard charts', type: :system do
   let(:school) { create(:school) }
 
   before do
@@ -64,7 +64,7 @@ RSpec.describe "adult dashboard charts", type: :system do
   context 'as guest' do
     let(:user) { nil }
 
-    it_behaves_like "dashboard chart display" do
+    it_behaves_like 'dashboard chart display' do
       let(:test_school) { school }
     end
   end
@@ -72,7 +72,7 @@ RSpec.describe "adult dashboard charts", type: :system do
   context 'as pupil' do
     let(:user) { create(:pupil, school: school) }
 
-    it_behaves_like "dashboard chart display" do
+    it_behaves_like 'dashboard chart display' do
       let(:test_school) { school }
     end
     context 'and school is not data-enabled' do
@@ -82,7 +82,7 @@ RSpec.describe "adult dashboard charts", type: :system do
       end
 
       it 'shows placeholder chart' do
-        expect(page).to have_css(".chart-placeholder-image")
+        expect(page).to have_css('.chart-placeholder-image')
       end
     end
   end
@@ -90,7 +90,7 @@ RSpec.describe "adult dashboard charts", type: :system do
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 
-    it_behaves_like "dashboard chart display" do
+    it_behaves_like 'dashboard chart display' do
       let(:test_school) { school }
     end
     context 'and school is not data-enabled' do
@@ -100,7 +100,7 @@ RSpec.describe "adult dashboard charts", type: :system do
       end
 
       it 'shows placeholder chart' do
-        expect(page).to have_css(".chart-placeholder-image")
+        expect(page).to have_css('.chart-placeholder-image')
       end
     end
   end
@@ -108,7 +108,7 @@ RSpec.describe "adult dashboard charts", type: :system do
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
-    it_behaves_like "dashboard chart display" do
+    it_behaves_like 'dashboard chart display' do
       let(:test_school) { school }
     end
     context 'and school is not data-enabled' do
@@ -118,7 +118,7 @@ RSpec.describe "adult dashboard charts", type: :system do
       end
 
       it 'shows placeholder chart' do
-        expect(page).to have_css(".chart-placeholder-image")
+        expect(page).to have_css('.chart-placeholder-image')
       end
     end
   end
@@ -128,7 +128,7 @@ RSpec.describe "adult dashboard charts", type: :system do
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
 
-    it_behaves_like "dashboard chart display" do
+    it_behaves_like 'dashboard chart display' do
       let(:test_school) { school }
     end
     context 'and school is not data-enabled' do
@@ -138,7 +138,7 @@ RSpec.describe "adult dashboard charts", type: :system do
       end
 
       it 'shows placeholder chart' do
-        expect(page).to have_css(".chart-placeholder-image")
+        expect(page).to have_css('.chart-placeholder-image')
       end
     end
   end

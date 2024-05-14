@@ -1,30 +1,20 @@
 ---
 en:
   interventions:
-    completed:
-      actions_completed:
-        one: You've recorded 1 action so far this year
-        other: You've recorded %{count} actions so far this year
-      choose_next_action: Choose your next action from the suggestions below.
-      current_school_position: and your school is currently in %{position} place.
-      our_suggestions: Our suggestions based on your energy use alerts and any energy audit completed at your school
-      page_title: "%{school} Action"
-      points_scored: You've just scored %{points} points!
-      points_to_change_position: and need to score %{points} points to reach %{position} place.
-      see_scoreboard: See the scoreboard
-      suggested_actions: Suggested actions for your school
-      title: Congratulations! We've recorded your action.
-      view_action: View your action
-      view_all_actions: View all actions
     edit:
       page_title: Update energy saving action
       title: Update your energy saving action
     form:
-      adding_a_photo_to_document_your_action_will_score_you: Adding a photo to document your action will score you
+      adding_a_photo_to_document_your_action_will_score_you: Adding a photo to document your action can score you
       adding_some_background_detail_label: Adding some background detail can help you track and monitor improvements
       bonus_points:
         one: bonus point
         other: bonus points
+      completing_this_activity:
+        one: Completing this action up to %{maximum} times this academic year will earn you 1 point
+        other: Completing this action up to %{maximum} times this academic year  will earn you %{count} points
+      exceeded_maximum_in_year: You have already completed this action %{maximum} times this academic year. You will not score additional points for recording it
+      previous_years: Actions recorded in previous academic years do not score points
       record_action: Record action
       tell_us_more: Tell us more about what you did
       update_action: Update action

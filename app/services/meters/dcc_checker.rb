@@ -1,8 +1,7 @@
 module Meters
   class DccChecker
-    def initialize(meters, n3rgy_api_factory = Amr::N3rgyApiFactory.new)
+    def initialize(meters)
       @meters = meters
-      @n3rgy_api_factory = n3rgy_api_factory
     end
 
     def perform
@@ -10,7 +9,7 @@ module Meters
       @meters.each do |meter|
         begin
           fields = { dcc_checked_at: DateTime.now }
-          status = @n3rgy_api_factory.data_api(meter).find(meter.mpan_mprn)
+          status = Meters::N3rgyMeteringService.new(meter).available?
           fields[:dcc_meter] = status
           meter.update!(fields)
           updated_meters << meter if meter.saved_change_to_dcc_meter?

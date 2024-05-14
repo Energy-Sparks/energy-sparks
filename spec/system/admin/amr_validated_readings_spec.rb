@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "meter reports", :amr_validated_readings, type: :system do
+RSpec.describe 'meter reports', :amr_validated_readings, type: :system do
   let(:school_name)   { 'Oldfield Park Infants'}
   let!(:school)       { create(:school, :with_school_group, name: school_name)}
   let!(:admin)        { create(:admin)}

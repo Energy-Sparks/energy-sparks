@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "advice pages", type: :system do
+RSpec.describe 'advice pages', type: :system do
   let(:key) { 'total_energy_use' }
   let!(:advice_page) { create(:advice_page, key: key) }
 
@@ -12,7 +12,7 @@ RSpec.describe "advice pages", type: :system do
       visit school_advice_path(school)
     end
 
-    it "has an active overview tab" do
+    it 'has an active overview tab' do
       expect(page).to have_link('Overview', class: 'active')
     end
 
@@ -62,7 +62,7 @@ RSpec.describe "advice pages", type: :system do
       click_on('Priority actions')
     end
 
-    it "has an active priorities tab" do
+    it 'has an active priorities tab' do
       expect(page).to have_link('Priority actions', class: 'active')
     end
 
@@ -117,11 +117,11 @@ RSpec.describe "advice pages", type: :system do
     end
 
     context 'in English' do
-      it "has an active alerts tab" do
+      it 'has an active alerts tab' do
         expect(page).to have_link('Recent alerts', class: 'active')
       end
 
-      it "displays the alert group" do
+      it 'displays the alert group' do
         expect(page).to have_content('Long term trends and advice')
       end
 

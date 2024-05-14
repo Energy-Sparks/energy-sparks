@@ -6,7 +6,8 @@
     <div class="d-flex justify-content-center mt-2">
       <h4 class="text-center">
         <% if overview_data.present? && overview_data.work_week(fuel_type).has_data %>
-              <%= up_downify(overview_data.work_week(fuel_type).change) %> last week against target of <%= -target %>%
+          <%= up_downify(overview_data.work_week(fuel_type).change, sanitize: false) %>
+          last week against target of <%= -target %>%
         <% else %>
           Target reduction of <%= target %>%
         <% end %>

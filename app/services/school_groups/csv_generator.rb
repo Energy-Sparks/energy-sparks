@@ -25,7 +25,7 @@ module SchoolGroups
           School.school_types.each_key do |school_type|
             csv << [g.name, g.group_type.humanize, school_type.humanize, g.school_onboardings.for_school_type(school_type).incomplete.count] + g.schools.where(school_type: school_type).status_counts.slice(*self.class.count_fields).values
           end
-          csv << [g.name, g.group_type.humanize, "All school types", g.school_onboardings.incomplete.count] + g.schools.status_counts.slice(*self.class.count_fields).values
+          csv << [g.name, g.group_type.humanize, 'All school types', g.school_onboardings.incomplete.count] + g.schools.status_counts.slice(*self.class.count_fields).values
         end
         csv << ['All Energy Sparks schools', 'All school types', SchoolOnboarding.incomplete.count] + School.all.status_counts.slice(*self.class.count_fields).values
       end

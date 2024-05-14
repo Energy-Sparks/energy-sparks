@@ -177,9 +177,9 @@ describe AmrReadingData do
         expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
       end
 
-      it "with missing readings (as \"\")" do
+      it 'with missing readings (as "")' do
         readings = amr_reading_data[:reading_data].first[:readings]
-        readings[readings.size - 1] = ""
+        readings[readings.size - 1] = ''
 
         amr_reading_data[:reading_data].first[:readings] = readings
 
@@ -192,9 +192,9 @@ describe AmrReadingData do
         expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
       end
 
-      it "with missing readings (as \"-\")" do
+      it 'with missing readings (as "-")' do
         readings = amr_reading_data[:reading_data].first[:readings]
-        readings[readings.size - 1] = "-"
+        readings[readings.size - 1] = '-'
 
         amr_reading_data[:reading_data].first[:readings] = readings
 

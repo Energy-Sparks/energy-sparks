@@ -17,7 +17,7 @@ RSpec.describe 'Intervention Type Groups', type: :system do
       expect(page).to have_content(intervention_type_group.description)
 
       new_description = 'Some useful text'
-      new_name = "Upgrade equipment"
+      new_name = 'Upgrade equipment'
 
       click_on 'Edit'
       fill_in :intervention_type_group_description_en, with: new_description
@@ -33,7 +33,7 @@ RSpec.describe 'Intervention Type Groups', type: :system do
       expect(page).to have_content('Intervention Categories')
       expect(page).to have_content(new_name)
       expect(page).to have_content(new_description)
-      expect(page).to have_content("No")
+      expect(page).to have_content('No')
     end
 
     it 'I can create a new intervention type group' do
@@ -41,7 +41,7 @@ RSpec.describe 'Intervention Type Groups', type: :system do
       click_on 'New intervention category'
 
       new_description = 'Some useful text'
-      new_name = "Upgrade equipment"
+      new_name = 'Upgrade equipment'
 
       fill_in :intervention_type_group_name_en, with: ''
       fill_in :intervention_type_group_description_en, with: new_description

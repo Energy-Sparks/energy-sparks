@@ -66,15 +66,15 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let!(:gas_meter) { create(:gas_meter, active: true, data_source: data_source_2, procurement_route: procurement_route_2, school: school_1)}
     let!(:solar_meter) { create(:solar_pv_meter, active: true, data_source: data_source_3, procurement_route: procurement_route_3, school: school_1)}
 
-    #only basic data, helps to catch errors checking for nils
+    # only basic data, helps to catch errors checking for nils
     let!(:school_2) { create(:school, visible: true, active: false, removal_date: nil, school_group: create(:school_group), funder: funder_2) }
-    #not included in export
+    # not included in export
     let!(:not_visible) { create(:school, visible: true, active: false, removal_date: Time.zone.today, school_group: school_group) }
 
     let(:csv)   { service.csv }
 
     it 'returns the right headers' do
-      expect(csv.lines.first.chomp).to eq Schools::FunderAllocationReportService.csv_headers.join(",")
+      expect(csv.lines.first.chomp).to eq Schools::FunderAllocationReportService.csv_headers.join(',')
     end
 
     it 'returns one row per visible school' do
@@ -121,7 +121,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         solar_meter.procurement_route.organisation_name,
         nil,
         nil
-      ].join(",")
+      ].join(',')
       expect(csv.lines[2].chomp).to eq [
         school_2.school_group.name,
         school_2.name,
@@ -158,7 +158,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil,
         nil,
         nil
-      ].join(",")
+      ].join(',')
     end
   end
 end

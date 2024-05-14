@@ -37,7 +37,7 @@ class SchoolCreator
   end
 
   def make_visible!
-    raise Error.new("School cannot be made visible as we dont have a record of consent") unless @school.consent_grants.any?
+    raise Error.new('School cannot be made visible as we dont have a record of consent') unless @school.consent_grants.any?
     @school.update!(visible: true)
     if onboarding_service.should_complete_onboarding?(@school)
       users = @school.users.reject(&:pupil?)
@@ -74,11 +74,11 @@ private
   end
 
   def copy_onboarding_details_to_school(onboarding)
-      @school.update!(
-        public: onboarding.school_will_be_public,
-        chart_preference: onboarding.default_chart_preference
-      )
-      Solar::SolarAreaLookupService.new(@school, onboarding).assign
+    @school.update!(
+      public: onboarding.school_will_be_public,
+      chart_preference: onboarding.default_chart_preference
+    )
+    Solar::SolarAreaLookupService.new(@school, onboarding).assign
   end
 
   def create_default_contact(onboarding)

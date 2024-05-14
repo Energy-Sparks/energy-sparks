@@ -1,23 +1,4 @@
 ---
 en:
   enrol:
-    enrol_la:
-      read_more_html: Read more about <a href="/for-local-authorities">how Energy Sparks can support schools in your area</a>
-      title: Enrol our Local Authority
-    enrol_mat:
-      read_more_html: Read more about <a href="/for-multi-academy-trusts">how Energy Sparks can support your MAT</a>
-      title: Enrol our Multi-Academy Trust
     enrol_now: Enrol now
-    enrol_school:
-      read_more_html: Read more about <a href="/for-schools">how Energy Sparks can support your school</a>
-      title: Enrol our School
-    section_1_html: |-
-      <p>
-        We have difference processes to support enrolling individual schools, whole Multi-Academy Trusts or groups of schools within a
-        Local Authority Area.
-      </p>
-      <p>
-        Learn more about what our service can offer for different users, and then select one of the options below to start the
-        process.
-      </p>
-    title: Enrol with Energy Sparks

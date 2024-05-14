@@ -15,7 +15,7 @@ class SchoolFilter
     schools = schools_with_school_type(schools) if @school_types.any?
     schools = schools_with_country(schools) if @country.present?
     schools = schools_with_funder(schools) if @funders.present?
-    schools.to_a
+    schools
   end
 
   private

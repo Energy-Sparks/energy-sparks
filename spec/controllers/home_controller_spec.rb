@@ -5,7 +5,7 @@ RSpec.describe HomeController, type: :controller do
     context 'where the user is not signed in' do
       it 'loads the homepage' do
         get :index
-        expect(response).to render_template("index")
+        expect(response).to render_template('index')
       end
     end
 

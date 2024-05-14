@@ -14,15 +14,15 @@ module Alerts
     let(:alert_type_1)        { create(:alert_type, benchmark: true, source: :analytics) }
     let(:alert_type_2)        { create(:alert_type, benchmark: true, source: :analytics) }
 
-    let(:variables_1)         { { "number_example" => 1.0, "string_example" => "A", "time_of_day" => TimeOfDay.new(0, 10) } }
-    let(:variables_2)         { { "number_example" => 2.0, "string_example" => "B", "time_of_day" => TimeOfDay.new(0, 20) } }
-    let(:variables_3)         { { "number_example_2" => 3.0, "string_example_2" => "C", "time_of_day_2" => TimeOfDay.new(1, 30) } }
-    let(:variables_4)         { { "number_example_2" => 4.0, "string_example_2" => "D", "time_of_day_2" => TimeOfDay.new(1, 40) } }
-    let(:variables_5)         { { "number_example" => 5.0, "string_example" => "E", "time_of_day" => TimeOfDay.new(0, 15) } }
-    let(:variables_6)         { { "number_example" => 6.0, "string_example" => "F", "time_of_day" => TimeOfDay.new(0, 30) } }
-    let(:variables_7)         { { "number_example_2" => 7.0, "string_example_2" => "G", "time_of_day_2" => TimeOfDay.new(1, 35) } }
-    let(:variables_8)         { { "number_example_2" => 8.0, "string_example_2" => "H", "time_of_day_2" => TimeOfDay.new(1, 45) } }
-    let(:variables_9)         { { "number_example_2" => 9.0, "string_example_2" => "H", "time_of_day_2" => TimeOfDay.new(1, 45) } }
+    let(:variables_1)         { { 'number_example' => 1.0, 'string_example' => 'A', 'time_of_day' => TimeOfDay.new(0, 10) } }
+    let(:variables_2)         { { 'number_example' => 2.0, 'string_example' => 'B', 'time_of_day' => TimeOfDay.new(0, 20) } }
+    let(:variables_3)         { { 'number_example_2' => 3.0, 'string_example_2' => 'C', 'time_of_day_2' => TimeOfDay.new(1, 30) } }
+    let(:variables_4)         { { 'number_example_2' => 4.0, 'string_example_2' => 'D', 'time_of_day_2' => TimeOfDay.new(1, 40) } }
+    let(:variables_5)         { { 'number_example' => 5.0, 'string_example' => 'E', 'time_of_day' => TimeOfDay.new(0, 15) } }
+    let(:variables_6)         { { 'number_example' => 6.0, 'string_example' => 'F', 'time_of_day' => TimeOfDay.new(0, 30) } }
+    let(:variables_7)         { { 'number_example_2' => 7.0, 'string_example_2' => 'G', 'time_of_day_2' => TimeOfDay.new(1, 35) } }
+    let(:variables_8)         { { 'number_example_2' => 8.0, 'string_example_2' => 'H', 'time_of_day_2' => TimeOfDay.new(1, 45) } }
+    let(:variables_9)         { { 'number_example_2' => 9.0, 'string_example_2' => 'H', 'time_of_day_2' => TimeOfDay.new(1, 45) } }
 
     let(:benchmark_result_1)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_1, benchmark_result_school_generation_run: school_run_1, results: variables_1)}
 

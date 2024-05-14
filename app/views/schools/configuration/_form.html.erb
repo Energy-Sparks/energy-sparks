@@ -1,47 +1,143 @@
-<h1>Configuration: <%= school.name %> </h1>
+<h1><%= school.name %> Configuration</h1>
+
+<p>
+  This form provides information that is used internally by Energy Sparks to support data analysis and
+  reporting for the school. With the exception of the country field, these settings are not available to users.
+</p>
 
 <%= form_for(school, url: school_configuration_path, method: method) do |f| %>
-  <p>Energy sparks uses a variety of data feeds to analyse energy usage for your school. The data is more accurate if the correct areas are used for gathering the data.</p>
+
+  <h3>Basic Configuration</h3>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :school_group_id, 'School group' %>
-      <%= f.select :school_group_id, options_from_collection_for_select(SchoolGroup.order(:name), 'id', 'name', (@school.school_group.id if @school.school_group)),{}, { class: 'form-control' }%>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :template_calendar_id, 'Template calendar' %>
-    <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school.template_calendar_id if @school.template_calendar)),{},{ disabled: !edit_template_calendar, class: 'form-control' }%>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
-      <%= f.select :solar_pv_tuos_area_id, options_from_collection_for_select(SolarPvTuosArea.all.active.order(:title), 'id', 'title', (@school.solar_pv_tuos_area.id if @school.solar_pv_tuos_area)),{}, { class: 'form-control' }%>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <%= f.label :dark_sky_area_id, 'Dark Sky Data Feed Area' %>
-      <%= f.select :dark_sky_area_id, options_from_collection_for_select(DarkSkyArea.order(:title), 'id', 'title', (@school.dark_sky_area.id if @school.dark_sky_area)),{include_blank: true}, { class: 'form-control' }%>
+      <%= f.select :school_group_id,
+                   options_from_collection_for_select(
+                     SchoolGroup.order(:name),
+                     'id',
+                     'name',
+                     @school&.school_group&.id
+                   ),
+                   {},
+                   { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :weather_station_id, 'Weather Station' %>
-      <%= f.select :weather_station_id, options_from_collection_for_select(WeatherStation.by_title, 'id', 'title', (@school.weather_station_id if @school.weather_station)), { }, { class: 'form-control' }%>
+      <%= f.label :template_calendar_id, 'Template calendar' %>
+      <%= f.select :template_calendar_id,
+                   options_from_collection_for_select(
+                     Calendar.regional.order(:title), 'id', 'title', @school&.template_calendar&.id
+                   ),
+                   {},
+                   { disabled: !edit_template_calendar, class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :scoreboard_id, 'Scoreboard' %>
-      <%= f.select :scoreboard_id, options_from_collection_for_select(@scoreboards, 'id', 'name', (@school.scoreboard.id if @school.scoreboard)),{}, { class: 'form-control' }%>
+      <%= f.select :scoreboard_id,
+                    options_from_collection_for_select(
+                      @scoreboards,
+                      'id',
+                      'name',
+                      @school&.scoreboard&.id
+                    ),
+                    {},
+                    { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :funder_id, 'Funder' %>
-      <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
+      <%= f.select :funder_id,
+                   options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
     </div>
   </div>
+
+  <h3>Weather and Solar Data Feeds</h3>
+  <p>Select the right data sources to support analysis of school data.</p>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :solar_pv_tuos_area_id, 'The University of Sheffield Solar Data Feed Area' %>
+      <%= f.select :solar_pv_tuos_area_id,
+                   options_from_collection_for_select(
+                     SolarPvTuosArea.all.active.order(:title),
+                     'id',
+                     'title',
+                     @school&.solar_pv_tuos_area&.id
+                   ),
+                   {},
+                   { class: 'form-control' } %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :weather_station_id, 'Weather Station' %>
+      <%= f.select :weather_station_id,
+                   options_from_collection_for_select(
+                     WeatherStation.by_title, 'id', 'title', @school&.weather_station&.id
+                   ),
+                   {},
+                   { class: 'form-control' } %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :dark_sky_area_id, 'Dark Sky Area' %>
+      <%= f.select :dark_sky_area_id,
+                   options_from_collection_for_select(
+                     DarkSkyArea.order(:title), 'id', 'title', @school&.dark_sky_area&.id
+                   ),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
+      <small class="form-text text-muted">Provided for historical data access for older schools</small>
+    </div>
+  </div>
+
+  <h3>Geographic areas</h3>
+  <p>These areas are used for reporting and allocations schools to funders.</p>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :local_authority_area_id, 'Local Authority Area' %>
+      <%= f.select :local_authority_area_id,
+                   options_for_select(
+                     LocalAuthorityArea.all.order(name: :asc).pluck(:name, :id), school.local_authority_area_id
+                   ),
+                   { include_blank: false },
+                   { class: 'form-control' } %>
+      <small class="form-text text-muted">Local authority areas cover the whole of England, Wales and Scotland</small>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :region, 'Region' %>
+      <%= f.select :region,
+                   options_for_select(School.regions.map { |key, _value| [key.humanize, key] }, f.object.region),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
+      <small class="form-text text-muted">Government Office Regions don't cover Scotland or Wales, so leave
+        bank for schools in those countries</small>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :country %>
+      <%= f.select :country,
+                   options_for_select(
+                     School.countries.map { |key, _value| [t("school_statistics.#{key}"), key] }, f.object.country
+                   ),
+                   { include_blank: false },
+                   { class: 'form-control' } %>
+      <small class="form-text text-muted">Note: this option is available to school admins on the school details form.
+        <br>It will be automatically populated based on the school postcode</small>
+    </div>
+  </div>
+
   <div class="actions">
     <%= f.submit submit_text, class: 'btn btn-primary' %>
   </div>

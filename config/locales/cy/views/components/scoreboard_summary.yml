@@ -1,0 +1,6 @@
+cy:
+  components:
+    scoreboard_summary:
+      recent_activity: Gweithgarwch diweddar ar draws Sbarcynni
+      recent_scoreboard_activity_html: Gweithgarwch diweddar ar <a href="%{scoreboard_path}">eich sgorfwrdd</a>
+      title: Diweddariad sgorfwrdd

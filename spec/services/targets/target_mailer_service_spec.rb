@@ -11,54 +11,54 @@ RSpec.describe Targets::TargetMailerService do
   end
 
   describe '#list_schools' do
-      let!(:other_school) { create(:school) }
+    let!(:other_school) { create(:school) }
 
-      let(:enough_data) { true }
-      let(:list_of_schools) { service.list_schools }
+    let(:enough_data) { true }
+    let(:list_of_schools) { service.list_schools }
 
-      it 'lists all schools without a target' do
-        expect(list_of_schools).to contain_exactly(school, other_school)
-      end
+    it 'lists all schools without a target' do
+      expect(list_of_schools).to contain_exactly(school, other_school)
+    end
 
-      it 'ignores non-visible schools' do
-        other_school.update!(visible: false)
-        expect(list_of_schools).to contain_exactly(school)
-      end
+    it 'ignores non-visible schools' do
+      other_school.update!(visible: false)
+      expect(list_of_schools).to contain_exactly(school)
+    end
 
-      it 'ignores schools that are not data enabled' do
-        other_school.update!(data_enabled: false)
-        expect(list_of_schools).to contain_exactly(school)
-      end
+    it 'ignores schools that are not data enabled' do
+      other_school.update!(data_enabled: false)
+      expect(list_of_schools).to contain_exactly(school)
+    end
 
-      it 'ignores schools with a target' do
-        create(:school_target, school: school)
-        expect(list_of_schools).to contain_exactly(other_school)
-      end
+    it 'ignores schools with a target' do
+      create(:school_target, school: school)
+      expect(list_of_schools).to contain_exactly(other_school)
+    end
 
-      it 'ignores schools that have received an invite' do
-        create(:school_target_event, school: school, event: :first_target_sent)
-        expect(list_of_schools).to contain_exactly(other_school)
-      end
+    it 'ignores schools that have received an invite' do
+      create(:school_target_event, school: school, event: :first_target_sent)
+      expect(list_of_schools).to contain_exactly(other_school)
+    end
 
-      context 'when a school cant use feature because of data' do
-        context 'because they lack data' do
-          let(:enough_data) { false }
+    context 'when a school cant use feature because of data' do
+      context 'because they lack data' do
+        let(:enough_data) { false }
 
-          it 'ignores schools that cant use feature' do
-            expect(list_of_schools).to be_empty
-          end
-        end
-
-        context 'because its disabled for them' do
-          before do
-            school.update!(enable_targets_feature: false)
-          end
-
-          it 'ignores schools that cant use feature' do
-            expect(list_of_schools).to contain_exactly(other_school)
-          end
+        it 'ignores schools that cant use feature' do
+          expect(list_of_schools).to be_empty
         end
       end
+
+      context 'because its disabled for them' do
+        before do
+          school.update!(enable_targets_feature: false)
+        end
+
+        it 'ignores schools that cant use feature' do
+          expect(list_of_schools).to contain_exactly(other_school)
+        end
+      end
+    end
   end
 
   describe '#list_schools_requiring_reminder' do
@@ -113,46 +113,46 @@ RSpec.describe Targets::TargetMailerService do
   end
 
   describe '#list_schools_requiring_review' do
-      let!(:other_school) { create(:school) }
-      let(:enough_data) { true }
-      let(:list_of_schools) { service.list_schools_requiring_review }
+    let!(:other_school) { create(:school) }
+    let(:enough_data) { true }
+    let(:list_of_schools) { service.list_schools_requiring_review }
 
-      it 'ignores schools with no target' do
-        expect(list_of_schools).to be_empty
-      end
+    it 'ignores schools with no target' do
+      expect(list_of_schools).to be_empty
+    end
 
-      it 'ignores schools with a current target' do
-        create(:school_target, school: school)
-        expect(list_of_schools).to be_empty
-      end
+    it 'ignores schools with a current target' do
+      create(:school_target, school: school)
+      expect(list_of_schools).to be_empty
+    end
 
-      it 'lists school with an expired target' do
-        create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
-        expect(list_of_schools).to contain_exactly(school)
-      end
+    it 'lists school with an expired target' do
+      create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
+      expect(list_of_schools).to contain_exactly(school)
+    end
 
-      it 'ignores non-visible schools' do
-        create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
-        school.update!(visible: false)
-        expect(list_of_schools).to be_empty
-      end
+    it 'ignores non-visible schools' do
+      create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
+      school.update!(visible: false)
+      expect(list_of_schools).to be_empty
+    end
 
-      it 'ignores schools that have received an email to review/set new target' do
+    it 'ignores schools that have received an email to review/set new target' do
+      create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
+      create(:school_target, school: other_school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
+      create(:school_target_event, school: school, event: :review_target_sent)
+      expect(list_of_schools).to contain_exactly(other_school)
+    end
+
+    context 'when a school cant use feature' do
+      let(:enough_data) { false }
+
+      it 'ignores schools that cant use feature' do
         create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
         create(:school_target, school: other_school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
-        create(:school_target_event, school: school, event: :review_target_sent)
-        expect(list_of_schools).to contain_exactly(other_school)
+        expect(list_of_schools).to be_empty
       end
-
-      context 'when a school cant use feature' do
-        let(:enough_data) { false }
-
-        it 'ignores schools that cant use feature' do
-          create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
-          create(:school_target, school: other_school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
-          expect(list_of_schools).to be_empty
-        end
-      end
+    end
   end
 
   describe '#invite_schools_to_set_first_target' do
@@ -169,7 +169,7 @@ RSpec.describe Targets::TargetMailerService do
     it 'sends an email' do
       service.invite_schools_to_set_first_target
       expect(ActionMailer::Base.deliveries.count).to be 1
-      expect(email.subject).to eql "Set your first energy saving target"
+      expect(email.subject).to eql 'Set your first energy saving target'
     end
 
     it 'doesnt send an email if one was sent already' do
@@ -190,8 +190,8 @@ RSpec.describe Targets::TargetMailerService do
 
     it 'generates correct email' do
       service.invite_schools_to_set_first_target
-      expect(email_body).to include("Set your first energy saving target")
-      expect(matcher).to have_link("Set your first target")
+      expect(email_body).to include('Set your first energy saving target')
+      expect(matcher).to have_link('Set your first target')
     end
 
     context 'when preferred locales specified' do
@@ -203,8 +203,8 @@ RSpec.describe Targets::TargetMailerService do
         emails = ActionMailer::Base.deliveries.last(2)
 
         expected_subjects = [
-          "Set your first energy saving target",
-          "Gosodwch eich targed arbed ynni cyntaf"
+          'Set your first energy saving target',
+          'Gosodwch eich targed arbed ynni cyntaf'
         ]
 
         expect(emails.map(&:subject)).to match_array(expected_subjects)
@@ -214,11 +214,11 @@ RSpec.describe Targets::TargetMailerService do
     it 'adds utm parameters' do
       service.invite_schools_to_set_first_target
       params = {
-        "utm_source": "invite",
-        "utm_medium": "email",
-        "utm_campaign": "targets"
+        "utm_source": 'invite',
+        "utm_medium": 'email',
+        "utm_campaign": 'targets'
       }
-      expect(matcher).to have_link("Set your first target", href: school_school_targets_url(school, params: params, host: "localhost"))
+      expect(matcher).to have_link('Set your first target', href: school_school_targets_url(school, params: params, host: 'localhost'))
     end
   end
 
@@ -236,7 +236,7 @@ RSpec.describe Targets::TargetMailerService do
     it 'sends an email' do
       service.invite_schools_to_review_target
       expect(ActionMailer::Base.deliveries.count).to be 1
-      expect(email.subject).to eql "Review your progress and set a new saving target"
+      expect(email.subject).to eql 'Review your progress and set a new saving target'
     end
 
     it 'doesnt send an email if one was sent already' do
@@ -257,18 +257,18 @@ RSpec.describe Targets::TargetMailerService do
 
     it 'generates correct email' do
       service.invite_schools_to_review_target
-      expect(email_body).to include("Set your next energy saving target")
-      expect(matcher).to have_link("Set a new target")
+      expect(email_body).to include('Set your next energy saving target')
+      expect(matcher).to have_link('Set a new target')
     end
 
     it 'adds utm parameters' do
       service.invite_schools_to_review_target
       params = {
-        "utm_source": "review",
-        "utm_medium": "email",
-        "utm_campaign": "targets"
+        "utm_source": 'review',
+        "utm_medium": 'email',
+        "utm_campaign": 'targets'
       }
-      expect(matcher).to have_link("Set a new target", href: school_school_targets_url(school, params: params, host: "localhost"))
+      expect(matcher).to have_link('Set a new target', href: school_school_targets_url(school, params: params, host: 'localhost'))
     end
   end
 
@@ -287,7 +287,7 @@ RSpec.describe Targets::TargetMailerService do
     it 'sends an email' do
       service.remind_schools_to_set_first_target
       expect(ActionMailer::Base.deliveries.count).to be 1
-      expect(email.subject).to eql "Reminder to set your first energy saving target"
+      expect(email.subject).to eql 'Reminder to set your first energy saving target'
     end
 
     it 'doesnt send an email if one was sent already' do
@@ -308,18 +308,18 @@ RSpec.describe Targets::TargetMailerService do
 
     it 'generates correct email' do
       service.remind_schools_to_set_first_target
-      expect(email_body).to include("Set your first energy saving target")
-      expect(matcher).to have_link("Set your first target")
+      expect(email_body).to include('Set your first energy saving target')
+      expect(matcher).to have_link('Set your first target')
     end
 
     it 'adds utm parameters' do
       service.remind_schools_to_set_first_target
       params = {
-        "utm_source": "invite",
-        "utm_medium": "email",
-        "utm_campaign": "targets"
+        "utm_source": 'invite',
+        "utm_medium": 'email',
+        "utm_campaign": 'targets'
       }
-      expect(matcher).to have_link("Set your first target", href: school_school_targets_url(school, params: params, host: "localhost"))
+      expect(matcher).to have_link('Set your first target', href: school_school_targets_url(school, params: params, host: 'localhost'))
     end
   end
 end

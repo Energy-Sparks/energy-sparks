@@ -55,8 +55,8 @@ module Admin
     def find_users
       if params[:search].present?
         search = params[:search]
-        if search["email"].present?
-          return User.where("email ILIKE ?", "%#{search['email']}%").where.not(role: :pupil).limit(50)
+        if search['email'].present?
+          return User.where('email ILIKE ?', "%#{search['email']}%").where.not(role: :pupil).limit(50)
         else
           return []
         end

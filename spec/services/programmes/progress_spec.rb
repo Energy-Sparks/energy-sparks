@@ -8,7 +8,7 @@ describe Programmes::Progress, type: :service do
 
   let(:service) { Programmes::Progress.new(programme) }
 
-  context "a programme activity has been completed" do
+  context 'a programme activity has been completed' do
     let(:activity) { build(:activity, school: school, activity_type: activity_types.first, happened_on: Date.yesterday) }
 
     before do
@@ -31,7 +31,7 @@ describe Programmes::Progress, type: :service do
       end
     end
 
-    describe "#programme_points_for_completion" do
+    describe '#programme_points_for_completion' do
       it 'includes bonus points if the programme is completed within the same academic year as started' do
         allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
         expect(service.programme_points_for_completion).to eq(12)
@@ -93,7 +93,7 @@ describe Programmes::Progress, type: :service do
     end
   end
 
-  context "no activities completed yet" do
+  context 'no activities completed yet' do
     describe '#notification' do
       it 'returns the full notification text' do
         allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
@@ -102,7 +102,7 @@ describe Programmes::Progress, type: :service do
     end
   end
 
-  context "with 1 activity left to complete" do
+  context 'with 1 activity left to complete' do
     let(:activity) { build(:activity, school: school, activity_type: activity_types.first, happened_on: Date.yesterday) }
 
     before do

@@ -17,7 +17,7 @@ describe 'password reset' do
     before do
       visit new_user_session_path
       click_link 'Forgot your password'
-      fill_in "user_email", with: user.email
+      fill_in 'user_email', with: user.email
       click_button 'Send me reset password instructions'
     end
 
@@ -25,7 +25,7 @@ describe 'password reset' do
       let(:preferred_locale) { :en }
 
       it 'links to non-locale specific site' do
-        expect(email.html_part.decoded).to include("http://localhost/users/password/edit?reset_password_token=")
+        expect(email.html_part.decoded).to include('http://localhost/users/password/edit?reset_password_token=')
       end
     end
 
@@ -33,7 +33,7 @@ describe 'password reset' do
       let(:preferred_locale) { :cy }
 
       it 'links to locale specific site' do
-        expect(email.html_part.decoded).to include("http://cy.localhost/users/password/edit?reset_password_token=")
+        expect(email.html_part.decoded).to include('http://cy.localhost/users/password/edit?reset_password_token=')
       end
     end
 
@@ -41,15 +41,15 @@ describe 'password reset' do
       let(:preferred_locale) { :cy }
 
       it 'shows locale selector' do
-        expect(user.reload.preferred_locale).to eq("cy")
+        expect(user.reload.preferred_locale).to eq('cy')
         urls = URI.extract(email.html_part.decoded, ['http'])
         visit urls.last
         expect(page).to have_content('Preferred language')
-        fill_in "New password", with: "password"
-        fill_in "Confirm new password", with: "password"
-        select "English", from: "Preferred language"
-        click_button "Set my password"
-        expect(user.reload.preferred_locale).to eq("en")
+        fill_in 'New password', with: 'password'
+        fill_in 'Confirm new password', with: 'password'
+        select 'English', from: 'Preferred language'
+        click_button 'Set my password'
+        expect(user.reload.preferred_locale).to eq('en')
       end
     end
   end

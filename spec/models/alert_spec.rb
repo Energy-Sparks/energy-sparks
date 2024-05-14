@@ -24,14 +24,14 @@ describe 'Alert' do
   context 'when loading alert variables' do
     let(:template_data) do
       {
-        "urn" => "1234",
-        "timescale" => "last 2 years"
+        'urn' => '1234',
+        'timescale' => 'last 2 years'
       }
     end
     let(:template_data_cy) do
       {
-        "urn" => "1234",
-        "timescale" => "2 flynedd diwethaf"
+        'urn' => '1234',
+        'timescale' => '2 flynedd diwethaf'
       }
     end
     let!(:alert) { create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Time.zone.today, template_data: template_data, template_data_cy: template_data_cy) }
@@ -40,8 +40,8 @@ describe 'Alert' do
       I18n.with_locale(:cy) do
         expect(Alert.first.template_variables).to eq(
           {
-            urn: "1234",
-            timescale: "2 flynedd diwethaf"
+            urn: '1234',
+            timescale: '2 flynedd diwethaf'
           }
         )
       end
@@ -51,15 +51,15 @@ describe 'Alert' do
       alert.update!(template_data_cy: nil)
       expect(Alert.first.template_variables).to eq(
         {
-          urn: "1234",
-          timescale: "last 2 years"
+          urn: '1234',
+          timescale: 'last 2 years'
         }
       )
       alert.update!(template_data_cy: {})
       expect(Alert.first.template_variables).to eq(
         {
-          urn: "1234",
-          timescale: "last 2 years"
+          urn: '1234',
+          timescale: 'last 2 years'
         }
       )
     end
@@ -67,8 +67,8 @@ describe 'Alert' do
     it 'returns english template data for other locales' do
       expect(Alert.first.template_variables).to eq(
         {
-          urn: "1234",
-          timescale: "last 2 years"
+          urn: '1234',
+          timescale: 'last 2 years'
         }
       )
     end

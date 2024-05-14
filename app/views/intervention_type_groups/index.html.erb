@@ -5,7 +5,9 @@
     <div class="d-flex justify-content-between align-items-center">
       <p class="display-3"><strong><%= t('intervention_type_groups.index.explore_energy_saving_actions') %></strong></p>
       <% if EnergySparks::FeatureFlags.active?(:intervention_type_search) %>
-        <%= link_to t('intervention_type_groups.index.search'), search_intervention_types_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+        <%= link_to t('intervention_type_groups.index.search'),
+                    search_intervention_types_path,
+                    class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       <% end %>
     </div>
   </div>
@@ -19,23 +21,7 @@
   </div>
 </div>
 
-<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-  <%= render 'schools/prompt_recommended', scope: :adult %>
-<% else %>
-  <% if !@suggested_interventions.blank? %>
-    <div class="row mt-3">
-      <div class="col">
-        <div class="d-flex justify-content-between align-items-center">
-          <h4><strong><%= t('intervention_type_groups.index.recommended_for_your_school') %></strong></h4>
-          <div>
-            <%= link_to t('intervention_type_groups.index.view_all_suggestions'), recommended_intervention_type_groups_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
-          </div>
-        </div>
-      </div>
-    </div>
-    <%= render "cards", intervention_types: @suggested_interventions.first(4), card_deck_css: "" %>
-  <% end %>
-<% end %>
+<%= render 'schools/prompt_recommended', scope: :adult %>
 
 <% @intervention_type_groups.each do |intervention_type_group| %>
   <div class="row mt-3">
@@ -43,10 +29,14 @@
       <div class="d-flex justify-content-between align-items-center">
         <h4><strong><%= intervention_type_group.name %></strong></h4>
         <div>
-          <%= link_to t('intervention_type_groups.index.view_all_actions', count: intervention_type_group.intervention_types.active.count), intervention_type_group_path(intervention_type_group), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+          <%= link_to t('intervention_type_groups.index.view_all_actions',
+                        count: intervention_type_group.intervention_types.active.count),
+                      intervention_type_group_path(intervention_type_group),
+                      class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
         </div>
       </div>
     </div>
   </div>
-  <%= render "cards", intervention_types: intervention_type_group.intervention_types.active_and_not_custom.sample(4), card_deck_css: "" %>
+  <%= render 'cards', intervention_types: intervention_type_group.intervention_types.active_and_not_custom.sample(4),
+                      card_deck_css: '' %>
 <% end %>

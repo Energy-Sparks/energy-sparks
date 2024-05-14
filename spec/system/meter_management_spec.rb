@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.shared_examples_for "a listed meter" do |admin: true|
-  it "displays list heading" do
+RSpec.shared_examples_for 'a listed meter' do |admin: true|
+  it 'displays list heading' do
     if meter.active
-      expect(page).to have_content("Active meters")
+      expect(page).to have_content('Active meters')
     else
-      expect(page).to have_content("Inactive meters")
+      expect(page).to have_content('Inactive meters')
     end
   end
 
-  it "displays meter" do
+  it 'displays meter' do
     expect(page).to have_content(meter.mpan_mprn)
     expect(page).to have_content(meter.name)
     expect(page).to have_content(short_dates(meter.first_validated_reading))
@@ -26,7 +26,7 @@ RSpec.shared_examples_for "a listed meter" do |admin: true|
   end
 end
 
-RSpec.describe "meter management", :meters, type: :system, include_application_helper: true do
+RSpec.describe 'meter management', :meters, type: :system, include_application_helper: true do
   let(:school_name)     { 'Oldfield Park Infants'}
   let!(:school)         { create_active_school(name: school_name)}
   let!(:admin)          { create(:admin)}
@@ -68,10 +68,13 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123) }
 
-      let!(:data_api) { double(status: :available, readings_available_date_range: Time.zone.today..Time.zone.today) }
+      let!(:stub) do
+        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true,
+        consented?: true, available_data: Time.zone.today..Time.zone.today)
+      end
 
       before do
-        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+        allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
       end
 
       it 'the meter inventory button is not shown' do
@@ -93,24 +96,24 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       end
     end
 
-    context "Manage meters page" do
+    context 'Manage meters page' do
       before { visit school_meters_path(school) }
 
-      it_behaves_like "admin dashboard messages", permitted: false
+      it_behaves_like 'admin dashboard messages', permitted: false
 
-      context "Add meter form" do
-        it "does not display admin only fields" do
+      context 'Add meter form' do
+        it 'does not display admin only fields' do
           expect(page).not_to have_content('Data source')
         end
       end
 
-      context "listing meters" do
+      context 'listing meters' do
         let!(:setup_data) { meter }
 
-        it_behaves_like "a listed meter", admin: false do
+        it_behaves_like 'a listed meter', admin: false do
           let(:meter) { active_meter }
         end
-        it_behaves_like "a listed meter", admin: false do
+        it_behaves_like 'a listed meter', admin: false do
           let(:meter) { inactive_meter }
         end
       end
@@ -130,21 +133,21 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       expect(page).not_to have_content('Deactivate')
     end
 
-    it_behaves_like "admin dashboard messages", permitted: false
+    it_behaves_like 'admin dashboard messages', permitted: false
 
-    context "Add meter form" do
-      it "does not display admin only fields" do
+    context 'Add meter form' do
+      it 'does not display admin only fields' do
         expect(page).not_to have_content('Data source')
       end
     end
 
-    context "listing meters" do
+    context 'listing meters' do
       let(:setup_data) { meter }
 
-      it_behaves_like "a listed meter", admin: false do
+      it_behaves_like 'a listed meter', admin: false do
         let(:meter) { active_meter }
       end
-      it_behaves_like "a listed meter", admin: false do
+      it_behaves_like 'a listed meter', admin: false do
         let(:meter) { inactive_meter }
       end
     end
@@ -158,25 +161,25 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       click_on('Oldfield Park Infants')
     end
 
-    context "Manage meters page" do
+    context 'Manage meters page' do
       before { click_on 'Manage meters' }
 
-      it_behaves_like "admin dashboard messages" do
+      it_behaves_like 'admin dashboard messages' do
         let(:messageable) { school }
       end
 
-      context "listing meters" do
+      context 'listing meters' do
         let!(:setup_data) { meter }
 
-        it_behaves_like "a listed meter", admin: true do
+        it_behaves_like 'a listed meter', admin: true do
           let(:meter) { active_meter }
         end
-        it_behaves_like "a listed meter", admin: true do
+        it_behaves_like 'a listed meter', admin: true do
           let(:meter) { inactive_meter }
         end
       end
 
-      context "without meter issues" do
+      context 'without meter issues' do
         let(:meter) { active_meter }
         let!(:setup_data) { meter }
 
@@ -192,7 +195,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         end
       end
 
-      context "with meter issues" do
+      context 'with meter issues' do
         let(:meter) { active_meter }
         let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin)}
         let!(:setup_data) { issue }
@@ -211,16 +214,20 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
 
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123) }
-      let!(:data_api) { double(find: true, status: :available, inventory: { device_id: 123999 }, readings_available_date_range: Time.zone.today..Time.zone.today) }
+
+      let!(:stub) do
+        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true, consented?: true, inventory: { device_id: 123999 },
+          available_data: Time.zone.today..Time.zone.today)
+      end
 
       before do
-        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+        allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
         click_on 'Manage meters'
       end
 
       it 'shows the status and dates' do
         click_on meter.mpan_mprn.to_s
-        expect(page).to have_content("Available")
+        expect(page).to have_content('Available')
         expect(page).to have_content(Time.zone.today.iso8601)
       end
 
@@ -234,13 +241,12 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       it 'the tariff report can be shown' do
         click_on meter.mpan_mprn.to_s
         click_on 'Tariff Report'
-        expect(page).to have_content("Smart meter tariffs")
+        expect(page).to have_content('Smart meter tariffs')
       end
 
       it 'the dcc checkboxes and status are shown on the edit form' do
         click_on 'Edit'
-        check "DCC Smart Meter"
-        check "Sandbox"
+        check 'DCC Smart Meter'
         click_on 'Update Meter'
         meter.reload
         expect(meter.dcc_meter).to be true
@@ -248,10 +254,13 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     end
 
     context 'when creating meters' do
-      let!(:data_api) { double(status: :available, inventory: { device_id: 123999 }) }
+      let!(:stub) do
+        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true, consented?: true, inventory: { device_id: 123999 },
+          available_data: Time.zone.today..Time.zone.today)
+      end
 
       before do
-        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).and_return(data_api)
+        allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
       end
 
       it 'allows adding of meters from the management page with validation' do
@@ -347,7 +356,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         end
 
         it 'links to detail' do
-          expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
+          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
         end
       end
 
@@ -358,7 +367,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         end
 
         it 'links to detail' do
-          expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
+          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
         end
       end
     end

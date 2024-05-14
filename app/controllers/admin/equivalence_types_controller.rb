@@ -6,7 +6,7 @@ module Admin
     before_action :set_template_variables, except: [:index, :show]
 
     def index
-     @equivalence_types = @equivalence_types.order(created_at: :desc)
+      @equivalence_types = @equivalence_types.order(created_at: :desc)
     end
 
     def new
@@ -37,7 +37,7 @@ module Admin
 
     def destroy
       @equivalence_type.destroy
-      redirect_to admin_equivalence_types_path, notice: "Equivalence type was successfully deleted."
+      redirect_to admin_equivalence_types_path, notice: 'Equivalence type was successfully deleted.'
     end
 
   private

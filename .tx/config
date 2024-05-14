@@ -386,6 +386,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-comparisons-comparisons-yml]
+file_filter  = config/locales/<lang>/views/comparisons/comparisons.yml
+source_file  = config/locales/views/comparisons/comparisons.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-components-breadcrumbs-yml]
 file_filter  = config/locales/<lang>/views/components/breadcrumbs.yml
 source_file  = config/locales/views/components/breadcrumbs.yml
@@ -470,6 +477,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-home-cookies-yml]
+file_filter  = config/locales/<lang>/views/home/cookies.yml
+source_file  = config/locales/views/home/cookies.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-home-datasets-yml]
 file_filter  = config/locales/<lang>/views/home/datasets.yml
 source_file  = config/locales/views/home/datasets.yml
@@ -498,44 +512,9 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
-[o:energy-sparks:p:energy-sparks:r:views-home-enrol_our_local_authority-yml]
-file_filter  = config/locales/<lang>/views/home/enrol_our_local_authority.yml
-source_file  = config/locales/views/home/enrol_our_local_authority.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
-[o:energy-sparks:p:energy-sparks:r:views-home-enrol_our_multi_academy_trust-yml]
-file_filter  = config/locales/<lang>/views/home/enrol_our_multi_academy_trust.yml
-source_file  = config/locales/views/home/enrol_our_multi_academy_trust.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
 [o:energy-sparks:p:energy-sparks:r:views-home-enrol_our_school-yml]
 file_filter  = config/locales/<lang>/views/home/enrol_our_school.yml
 source_file  = config/locales/views/home/enrol_our_school.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
-[o:energy-sparks:p:energy-sparks:r:views-home-for_local_authorities-yml]
-file_filter  = config/locales/<lang>/views/home/for_local_authorities.yml
-source_file  = config/locales/views/home/for_local_authorities.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
-[o:energy-sparks:p:energy-sparks:r:views-home-for_multi_academy_trusts-yml]
-file_filter  = config/locales/<lang>/views/home/for_multi_academy_trusts.yml
-source_file  = config/locales/views/home/for_multi_academy_trusts.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
-[o:energy-sparks:p:energy-sparks:r:views-home-for_schools-yml]
-file_filter  = config/locales/<lang>/views/home/for_schools.yml
-source_file  = config/locales/views/home/for_schools.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -550,6 +529,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-home-home-yml]
 file_filter  = config/locales/<lang>/views/home/home.yml
 source_file  = config/locales/views/home/home.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-home-marketing-yml]
+file_filter  = config/locales/<lang>/views/home/marketing.yml
+source_file  = config/locales/views/home/marketing.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -690,6 +676,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-shared-shared-yml]
 file_filter  = config/locales/<lang>/views/shared/shared.yml
 source_file  = config/locales/views/shared/shared.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-tasks-tasks-yml]
+file_filter  = config/locales/<lang>/views/tasks/tasks.yml
+source_file  = config/locales/views/tasks/tasks.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100

@@ -1,34 +1,34 @@
-RSpec.shared_context "school group recent usage" do
+RSpec.shared_context 'school group recent usage' do
   before do
     allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return([:electricity, :gas, :storage_heaters])
     electricity_changes = OpenStruct.new(
-      change: "-16%",
+      change: '-16%',
       usage: '910',
       cost: '£137',
       co2: '8,540',
-      change_text: "-16%",
+      change_text: '-16%',
       usage_text: '910',
       cost_text: '137',
       co2_text: '8,540',
       has_data: true
     )
     gas_changes = OpenStruct.new(
-      change: "-5%",
+      change: '-5%',
       usage: '500',
       cost: '£200',
       co2: '4,000',
-      change_text: "-5%",
+      change_text: '-5%',
       usage_text: '500',
       cost_text: '200',
       co2_text: '4,000',
       has_data: true
     )
     storage_heater_changes = OpenStruct.new(
-      change: "-12%",
+      change: '-12%',
       usage: '312',
       cost: '£111',
       co2: '1,111',
-      change_text: "-12%",
+      change_text: '-12%',
       usage_text: '312',
       cost_text: '111',
       co2_text: '1,111',
@@ -44,7 +44,7 @@ RSpec.shared_context "school group recent usage" do
   end
 end
 
-RSpec.shared_context "school group priority actions" do
+RSpec.shared_context 'school group priority actions' do
   let!(:alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
   let!(:alert_type_rating) do
     create(
@@ -53,7 +53,7 @@ RSpec.shared_context "school group priority actions" do
       rating_from: 6.1,
       rating_to: 10,
       management_priorities_active: true,
-      description: "high"
+      description: 'high'
     )
   end
   let!(:alert_type_rating_content_version) do
@@ -96,95 +96,95 @@ RSpec.shared_context "school group priority actions" do
   end
 end
 
-RSpec.shared_context "school group comparisons" do
+RSpec.shared_context 'school group comparisons' do
   before do
     allow_any_instance_of(SchoolGroup).to receive(:categorise_schools).and_return({
         electricity: {
           baseload: {
             other_school: [
               {
-                "school_id" => 1,
-                "school_slug" => "school-1",
-                "school_name" => "School 1",
-                "cluster_name" => "My Cluster"
+                'school_id' => 1,
+                'school_slug' => 'school-1',
+                'school_name' => 'School 1',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 2,
-                "school_slug" => "school-2",
-                "school_name" => "School 2",
-                "cluster_name" => "My Cluster"
+                'school_id' => 2,
+                'school_slug' => 'school-2',
+                'school_name' => 'School 2',
+                'cluster_name' => 'My Cluster'
               }
             ],
             benchmark_school: [
               {
-                "school_id" => 3,
-                "school_slug" => "school-3",
-                "school_name" => "School 3",
-                "cluster_name" => "My Cluster"
+                'school_id' => 3,
+                'school_slug' => 'school-3',
+                'school_name' => 'School 3',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 4,
-                "school_slug" => "school-4",
-                "school_name" => "School 4",
-                "cluster_name" => "My Cluster"
+                'school_id' => 4,
+                'school_slug' => 'school-4',
+                'school_name' => 'School 4',
+                'cluster_name' => 'My Cluster'
               }
             ],
             exemplar_school: [
               {
-                "school_id" => 5,
-                "school_slug" => "school-5",
-                "school_name" => "School 5",
-                "cluster_name" => "My Cluster"
+                'school_id' => 5,
+                'school_slug' => 'school-5',
+                'school_name' => 'School 5',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 6,
-                "school_slug" => "school-6",
-                "school_name" => "School 6",
-                "cluster_name" => "My Cluster"
+                'school_id' => 6,
+                'school_slug' => 'school-6',
+                'school_name' => 'School 6',
+                'cluster_name' => 'My Cluster'
               }
             ]
           },
           electricity_long_term: {
             other_school: [
               {
-                "school_id" => 1,
-                "school_slug" => "school-1",
-                "school_name" => "School 1",
-                "cluster_name" => "My Cluster"
+                'school_id' => 1,
+                'school_slug' => 'school-1',
+                'school_name' => 'School 1',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 2,
-                "school_slug" => "school-2",
-                "school_name" => "School 2",
-                "cluster_name" => "My Cluster"
+                'school_id' => 2,
+                'school_slug' => 'school-2',
+                'school_name' => 'School 2',
+                'cluster_name' => 'My Cluster'
               }
             ],
             benchmark_school: [
               {
-                "school_id" => 3,
-                "school_slug" => "school-3",
-                "school_name" => "School 3",
-                "cluster_name" => "My Cluster"
+                'school_id' => 3,
+                'school_slug' => 'school-3',
+                'school_name' => 'School 3',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 4,
-                "school_slug" => "school-4",
-                "school_name" => "School 4",
-                "cluster_name" => "My Cluster"
+                'school_id' => 4,
+                'school_slug' => 'school-4',
+                'school_name' => 'School 4',
+                'cluster_name' => 'My Cluster'
               }
             ],
             exemplar_school: [
               {
-                "school_id" => 5,
-                "school_slug" => "school-5",
-                "school_name" => "School 5",
-                "cluster_name" => "My Cluster"
+                'school_id' => 5,
+                'school_slug' => 'school-5',
+                'school_name' => 'School 5',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 6,
-                "school_slug" => "school-6",
-                "school_name" => "School 6",
-                "cluster_name" => "My Cluster"
+                'school_id' => 6,
+                'school_slug' => 'school-6',
+                'school_name' => 'School 6',
+                'cluster_name' => 'My Cluster'
               }
             ]
           }
@@ -193,88 +193,88 @@ RSpec.shared_context "school group comparisons" do
           gas_long_term: {
             other_school: [
               {
-                "school_id" => 1,
-                "school_slug" => "school-1",
-                "school_name" => "School 1",
-                "cluster_name" => "My Cluster"
+                'school_id' => 1,
+                'school_slug' => 'school-1',
+                'school_name' => 'School 1',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 2,
-                "school_slug" => "school-2",
-                "school_name" => "School 2",
-                "cluster_name" => "My Cluster"
+                'school_id' => 2,
+                'school_slug' => 'school-2',
+                'school_name' => 'School 2',
+                'cluster_name' => 'My Cluster'
               }
             ],
             benchmark_school: [
               {
-                "school_id" => 3,
-                "school_slug" => "school-3",
-                "school_name" => "School 3",
-                "cluster_name" => "My Cluster"
+                'school_id' => 3,
+                'school_slug' => 'school-3',
+                'school_name' => 'School 3',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 4,
-                "school_slug" => "school-4",
-                "school_name" => "School 4",
-                "cluster_name" => "My Cluster"
+                'school_id' => 4,
+                'school_slug' => 'school-4',
+                'school_name' => 'School 4',
+                'cluster_name' => 'My Cluster'
               }
             ],
             exemplar_school: [
               {
-                "school_id" => 5,
-                "school_slug" => "school-5",
-                "school_name" => "School 5",
-                "cluster_name" => "My Cluster"
+                'school_id' => 5,
+                'school_slug' => 'school-5',
+                'school_name' => 'School 5',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 6,
-                "school_slug" => "school-6",
-                "school_name" => "School 6",
-                "cluster_name" => "My Cluster"
+                'school_id' => 6,
+                'school_slug' => 'school-6',
+                'school_name' => 'School 6',
+                'cluster_name' => 'My Cluster'
               }
             ]
           },
           gas_out_of_hours: {
             other_school: [
               {
-                "school_id" => 1,
-                "school_slug" => "school-1",
-                "school_name" => "School 1",
-                "cluster_name" => "My Cluster"
+                'school_id' => 1,
+                'school_slug' => 'school-1',
+                'school_name' => 'School 1',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 2,
-                "school_slug" => "school-2",
-                "school_name" => "School 2",
-                "cluster_name" => "My Cluster"
+                'school_id' => 2,
+                'school_slug' => 'school-2',
+                'school_name' => 'School 2',
+                'cluster_name' => 'My Cluster'
               }
             ],
             benchmark_school: [
               {
-                "school_id" => 3,
-                "school_slug" => "school-3",
-                "school_name" => "School 3",
-                "cluster_name" => "My Cluster"
+                'school_id' => 3,
+                'school_slug' => 'school-3',
+                'school_name' => 'School 3',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 4,
-                "school_slug" => "school-4",
-                "school_name" => "School 4",
-                "cluster_name" => "My Cluster"
+                'school_id' => 4,
+                'school_slug' => 'school-4',
+                'school_name' => 'School 4',
+                'cluster_name' => 'My Cluster'
               }
             ],
             exemplar_school: [
               {
-                "school_id" => 5,
-                "school_slug" => "school-5",
-                "school_name" => "School 5",
-                "cluster_name" => "My Cluster"
+                'school_id' => 5,
+                'school_slug' => 'school-5',
+                'school_name' => 'School 5',
+                'cluster_name' => 'My Cluster'
               },
               {
-                "school_id" => 6,
-                "school_slug" => "school-6",
-                "school_name" => "School 6",
-                "cluster_name" => nil
+                'school_id' => 6,
+                'school_slug' => 'school-6',
+                'school_name' => 'School 6',
+                'cluster_name' => nil
               }
             ]
           }
@@ -283,17 +283,17 @@ RSpec.shared_context "school group comparisons" do
   end
 end
 
-RSpec.shared_context "school group current scores" do
+RSpec.shared_context 'school group current scores' do
   before do
     allow_any_instance_of(SchoolGroup).to receive(:scored_schools) do
       OpenStruct.new(
         with_points: OpenStruct.new(
           schools_with_positions: {
-           1 => [OpenStruct.new(name: 'School 1', sum_points: 20, school_group_cluster_name: "My Cluster"), OpenStruct.new(name: 'School 2', sum_points: 20, school_group_cluster_name: "Not set")],
-           2 => [OpenStruct.new(name: 'School 3', sum_points: 18, school_group_cluster_name: "Not set")]
+           1 => [OpenStruct.new(name: 'School 1', sum_points: 20, school_group_cluster_name: 'My Cluster'), OpenStruct.new(name: 'School 2', sum_points: 20, school_group_cluster_name: 'Not set')],
+           2 => [OpenStruct.new(name: 'School 3', sum_points: 18, school_group_cluster_name: 'Not set')]
           }
                      ),
-        without_points: [OpenStruct.new(name: 'School 4', school_group_cluster_name: "Not set"), OpenStruct.new(name: 'School 5', school_group_cluster_name: "Not set")]
+        without_points: [OpenStruct.new(name: 'School 4', school_group_cluster_name: 'Not set'), OpenStruct.new(name: 'School 5', school_group_cluster_name: 'Not set')]
       )
     end
   end

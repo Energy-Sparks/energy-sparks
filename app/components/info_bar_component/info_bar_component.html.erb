@@ -1,10 +1,8 @@
 <%= component 'notice', status: status, classes: classes, style: style do %>
   <div class="row align-items-center">
-    <% if icon.present? %>
-      <div class="col-md-1 d-flex justify-content-center align-content-center">
-        <div class="d-flex align-content-center flex-wrap">
-          <%= icon %>
-        </div>
+    <% if icon %>
+      <div class="col-md-<%= icon_cols %> d-flex justify-content-center align-content-center flex-wrap">
+        <%= icon %>
       </div>
     <% end %>
     <% if buttons.present? %>

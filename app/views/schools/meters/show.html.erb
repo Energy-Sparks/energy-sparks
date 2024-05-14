@@ -82,8 +82,6 @@
           <dd class="col-sm-9"><%= @n3rgy_status.to_s.humanize %></dd>
           <dt class="col-sm-3"><%= t('schools.meters.show.available_cache_range') %></dt>
           <dd class="col-sm-9"><%= @available_cache_range %></dd>
-          <dt class="col-sm-3"><%= t('schools.meters.show.sandbox') %>?</dt>
-          <dd class="col-sm-9"><%= @meter.sandbox? %></dd>
         </dl>
       <% else %>
         <p><%= t('schools.meters.show.not_configured_as_a_dcc_meter') %></p>

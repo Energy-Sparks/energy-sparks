@@ -61,7 +61,9 @@ cy:
         heating_in_warm_weather: Gwres a ddefnyddir mewn tywydd cynnes
         holiday_usage_last_year: Cost yr ynni a ddefnyddiwyd yn ystod y gwyliau sydd i ddod y llynedd
         hot_water_efficiency: Effeithlonrwydd Dŵr Poeth
+        jan_august_2022_2023_energy_comparison: Defnydd ynni Ionawr i Awst 2022 i 2023
         layer_up_powerdown_day_november_2022: Newid mewn ynni ar gyfer diwrnod cydio mewn siwmper/pŵeru i lawr 11 Tachwedd 2022 (o gymharu â 12 Tachwedd 2021)
+        layer_up_powerdown_day_november_2023: Newid mewn ynni ar gyfer diwrnod cydio mewn siwmper pweru i lawr 24 Tachwedd 2023 (o gymharu â 17 Tachwedd 2023)
         recent_change_in_baseload: Newid diweddar yn y llwyth sylfaenol
         seasonal_baseload_variation: Amrywiad llwyth sylfaenol tymhorol
         sept_nov_2021_2022_energy_comparison: Medi i Ragfyr 2021 yn erbyn defnydd ynni 2022
@@ -203,6 +205,7 @@ cy:
           last_year_storage_heater_kwh_pupil: Stôr-wresogydd y llynedd kWh/disgybl
           last_year_storage_heater_£: Stôr-wresogydd y llynedd £
           last_year_weekend_and_holiday_costs: Costau penwythnos a gwyliau llynedd
+          layer_down_day: Diwrnod haenu i lawr
           max_average_weekday_baseload_kw: Llwyth sylfaenol cyfartalog uchaf yn ystod yr wythnos kW
           metering: Mesurydd
           min_average_weekday_baseload_kw: Isafswm llwyth sylfaenol yn ystod yr wythnos kW
@@ -224,6 +227,8 @@ cy:
           potential_annual_saving_£: Arbediad blynyddol posib £
           potential_max_annual_saving_£: Arbediad blynyddol mwyaf posib £
           potential_saving: Arbediad posib (ar y tariff diweddaraf)
+          previous_day: Diwrnod blaenorol
+          previous_day_temperature_unadjusted: Diwrnod blaenorol (tymheredd heb ei addasu)
           previous_holiday: Gwyliau blaenorol
           previous_year: Gwyliau blaenorol
           previous_year_electricity_£: Trydan y flwyddyn flaenorol £
@@ -379,6 +384,10 @@ cy:
         benchmark_holidays_change_base:
           period_type: gwyliau
           period_types: gwyliau
+        benchmark_jan_august_2022_2023_gas_table:
+          introduction_text: 'Mae''r colofnau newid yn cael eu cyfrifo gan ddefnyddio gwerthoedd tymheredd wedi''u haddasu:'
+        benchmark_layer_up_powerdown_day_november_2023_gas_table:
+          introduction_text: 'Mae''r colofnau newid yn cael eu cyfrifo gan ddefnyddio gwerthoedd tymheredd wedi''u haddasu:'
         benchmark_sept_nov_2022_gas_table:
           introduction_text: 'Mae''r colofnau newid yn cael eu cyfrifo gan ddefnyddio gwerthoedd tymheredd wedi''u haddasu:'
         change_in_electricity_consumption_recent_school_weeks:
@@ -556,8 +565,38 @@ cy:
           introduction_text_html: "<p>Mae'r meincnod hwn yn dangos cost trydan a nwy a ddefnyddiwyd y llynedd ar gyfer y gwyliau sydd i ddod. Er enghraifft, os mai gwyliau haf 2023 yw'r gwyliau nesaf, bydd y data a ddangosir ar gyfer haf 2022. Mae hyn yn eich galluogi i nodi pa ysgolion yn eich grŵp sydd angen cymryd y camau mwyaf i leihau gwastraff gwyliau.</p> "
         hot_water_efficiency:
           introduction_text_html: "<p> Mae'r meincnod hwn yn dadansoddi effeithlonrwydd systemau dŵr poeth ysgolion a'r arbedion posibl naill ai o wella rheolaeth amseru systemau dŵr poeth presennol neu eu disodli'n gyfan gwbl â systemau dŵr poeth trydan pwynt defnyddio.<p>"
+        jan_august_2023_2023_energy_comparison:
+          introduction_text_html: |-
+            <p>
+            Mae'r meincnod hwn yn dangos y newid yn y defnydd o ynni rhwng Ionawr-Awst 2022 a 2023.
+            </p>
+            <p>
+            Mae'r tabl cyntaf yn rhoi crynodeb o'r newid cyffredinol yn y defnydd o ynni, ac mae'r tablau eraill yn rhoi
+            rhagor o fanylion am drydan, nwy a stôr-wresogyddion.
+            </p>
         layer_up_powerdown_day_november_2022:
           introduction_text_html: "<p>\n  Mae'r gymhariaeth isod ar gyfer stôr-wresogyddion a gwresogyddion nwy\nwedi gwneud iawn am dymheredd y cyfnod blaenorol i \ndymheredd y cyfnod presennol.\n  </p>\n<p>\n  Mae cynhyrchiad solar ffotofoltäig ysgolion wedi'i dynnu o'r gymhariaeth.\n</p>\n<p>\n  Mae'n anodd cymharu gwerthoedd CO2 ar gyfer trydan (gan gynnwys lle mae'r CO2\nwedi'i agregu ar draws gwresogyddion trydan, nwy, storio)\nam gyfnodau byr gan ei fod yn dibynnu ar ddwysedd carbon\ny grid cenedlaethol ar y diwrnodau sy'n cael eu cymharu a gallai hyn amrywio hyd at \n300&percnt; o ddydd i ddydd.\n</p>"
+        layer_up_powerdown_day_november_2023:
+          introduction_text_html: |-
+            <p>
+              Mae'r gymhariaeth isod ar gyfer nwy a stôr-wresogyddion wedi
+             gwneud iawn am dymheredd y cyfnod blaenorol
+             i dymheredd y cyfnod presennol.
+            </p>
+            <p>
+             Mae cynhyrchiad solar ffotofoltäig ysgolion wedi'i dynnu o'r gymhariaeth.
+            </p>
+            <p>
+              Mae'n anodd cymharu gwerthoedd CO2 ar gyfer trydan (gan gynnwys lle mae'r CO2
+             wedi'i agregu ar draws trydan, nwy, stôr-wresogyddion)
+             am gyfnodau byr gan ei fod yn dibynnu ar ddwysedd carbon
+             y grid cenedlaethol ar y diwrnodau sy'n cael eu cymharu a gallai hyn amrywio hyd at
+             300% o ddydd i ddydd.
+            </p>
+            <p>
+              Bydd y cyfanswm kWh, CO2 a newidiadau cost ond yn cynnwys y mathau o danwydd y mae gennym ddata ar eu cyfer. Felly, e.e. oherwydd nad oes gan ysgol ddata nwy ar gyfer
+            17 Tachwedd ni fydd yn ymddangos yn y tabl nwy, ond efallai y bydd ei data trydan yn bresennol o hyd.
+            </p>
         optimum_start_analysis:
           caveat_text_html: |-
             <p>

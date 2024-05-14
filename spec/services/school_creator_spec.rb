@@ -85,7 +85,7 @@ describe SchoolCreator, :schools, type: :service do
     end
 
     it 'defaults contact name when not set on administrator user' do
-      onboarding_user.update!({ name: "" })
+      onboarding_user.update!({ name: '' })
       service.onboard_school!(school_onboarding)
       contact = school.contacts.first
       expect(contact.email_address).to eq(onboarding_user.email)

@@ -4,7 +4,7 @@ RSpec.describe 'equivalence type management', type: :system do
   let!(:school)   { create(:school)}
   let!(:admin)    { create(:admin)}
 
-  let!(:kwh_value)          { "2,600 kWh" }
+  let!(:kwh_value)          { '2,600 kWh' }
   let!(:equivalence_calc)   { double(from_date: Date.parse('20200101'), to_date: Date.parse('20210101'), formatted_variables: { kwh: kwh_value }, :hide_preview? => false) }
 
   before do

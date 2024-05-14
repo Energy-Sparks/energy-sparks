@@ -8,6 +8,8 @@ en:
             header: This chart can help your school compare electricity use during holidays
             subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
             title: Electricity use by week for the last 14 months
+          management_dashboard_group_by_week_electricity:
+            title: Recent electricity use by week
           table_footer: There may be reasons for some holidays to have higher energy use, for example additional security lighting in winter or contractors working on school property. Ideally the summary holiday should be lower than other holidays as more equipment and appliances can be switched off.
           table_intro: The table below shows a summary of your electricity usage during the last year of school holidays. It includes average energy use per day to enable comparison for different length holidays.
           title: Holiday usage
@@ -21,9 +23,6 @@ en:
           table_introduction: The table below shows how much electricity has been used when the school is open and closed on a school day as well as during weekends and holidays.
           title: Last 12 months
         summary: This section gives a more detailed analysis of your school's out of hours electricity use and some things to look out for. For good energy management, you want most of your energy use to be when the school is open.
-        tables:
-          columns:
-            average_daily_usage: Average daily usage (kWh)
         title: Analysis
         usage_by_day_of_week:
           daytype_breakdown_electricity_tolerant_chart:
@@ -38,6 +37,8 @@ en:
         comparison:
           callout_footer: annual usage
           how_do_you_compare: How does your electricity usage out of school hours compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
+          less_than_a_year_html: "<p>As we have less than a years worth of data for your school we are not yet able to benchmark your out of hours electricity consumption against other schools.</p><p>This comparison will become available on %{date}.</p>"
+          less_than_a_year_indicator_html: In a year a well managed school will use less than %{well_managed_percent} of its electricity out of hours.
           more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
           title: How do you compare?
         next_steps: Make sure you switch off lights and electrical equipment on a daily basis and do a more thorough check before weekends and holidays.
@@ -54,5 +55,6 @@ en:
           </p>
         what_is_out_of_hours_usage_link: Learn more
         your_out_of_hours_usage_html: Over the last year %{out_of_hours_percent} of your electricity was used when the school was closed. This has cost you %{out_of_hours_gbp} and led to emissions of %{out_of_hours_co2}kg CO2.
+        your_out_of_hours_usage_since_date_html: Since %{date}, %{out_of_hours_percent} of your electricity was used when the school was closed. This has cost you %{out_of_hours_gbp} and led to emissions of %{out_of_hours_co2}kg CO2.
         your_out_of_hours_usage_title: Your out of hours usage
       page_title: Out of school hours electricity use

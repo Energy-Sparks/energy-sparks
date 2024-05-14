@@ -5,13 +5,18 @@ class CompareController < ApplicationController
   before_action :filter
   before_action :benchmark_groups, only: [:benchmarks]
 
+  before_action :set_school_groups, only: [:index]
   before_action :set_included_schools, only: [:benchmarks, :show]
   helper_method :index_params
 
   # filters
   def index
     # Count is of all available benchmarks for guest users only
-    @benchmark_count = Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
+    if Flipper.enabled?(:comparison_reports, current_user)
+      @benchmark_count = Comparison::Report.where(public: true).count
+    else
+      @benchmark_count = Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
+    end
   end
 
   # pick benchmark
@@ -23,7 +28,7 @@ class CompareController < ApplicationController
 
   # display results
   def show
-    #user wouldn't be able to get here, but adding in case crawlers/bots hit the page
+    # user wouldn't be able to get here, but adding in case crawlers/bots hit the page
     if @included_schools.empty?
       render :no_schools
     else
@@ -55,7 +60,9 @@ class CompareController < ApplicationController
   end
 
   def benchmark_groups
-    @benchmark_groups ||= content_manager.structured_pages(user_type: user_type_hash)
+    unless Flipper.enabled?(:comparison_reports, current_user)
+      @benchmark_groups ||= content_manager.structured_pages(user_type: user_type_hash)
+    end
   end
 
   def set_included_schools
@@ -65,10 +72,11 @@ class CompareController < ApplicationController
   def included_schools
     # wonder if this can be replaced by a use of the scope accessible_by(current_ability)
     include_invisible = can? :show, :all_schools
+
     school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country, :funder).merge(include_invisible: include_invisible)
 
-    schools = SchoolFilter.new(**school_params).filter
-    schools.select {|s| can?(:show, s) } unless include_invisible
+    schools = SchoolFilter.new(**school_params).filter.to_a
+    schools = schools.select {|s| can?(:show, s) } unless include_invisible
     schools
   end
 
@@ -87,5 +95,10 @@ class CompareController < ApplicationController
 
   def extract_title_from_benchmark(benchmark)
     benchmark_groups.find {|group| group[:benchmarks]}.dig(:benchmarks, benchmark)
+  end
+
+  # Set list of school groups visible to this user
+  def set_school_groups
+    @school_groups = ComparisonService.new(current_user).list_school_groups.select(&:has_visible_schools?)
   end
 end

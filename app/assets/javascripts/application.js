@@ -64,3 +64,5 @@
 //= require gtag
 //= require cocoon
 //= require loading
+//= require cookie_banner
+//= require init_bootstrap

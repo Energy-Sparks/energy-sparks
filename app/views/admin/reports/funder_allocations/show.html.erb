@@ -2,27 +2,50 @@
 
 <h1>Funder school count</h1>
 
+<h2>Funded schools</h2>
+
+<p>
+  This table summarises the number of visible and data enabled schools for each funder, along with a count of
+  schools which have no funder assigned.
+</p>
+<p>
+  Visible schools have finished onboarding, but do not yet have their data enabled. Funders are either directly linked
+  to schools or via their school group.
+</p>
 <table class="table">
   <thead>
     <tr>
       <th scope="col">Funder</th>
-      <th scope="col">Count</th>
+      <th scope="col">Visible not data enabled</th>
+      <th scope="col">Visible and data enabled</th>
     </tr>
   </thead>
   <tbody>
-    <% for funder in @funders %>
+    <% @funders_visible.each do |funder, school_count| %>
       <tr>
-        <td><%= funder.name.nil? ? 'No funder' : funder.name %></td>
-        <td><%= funder.school_count %></td>
+        <td><%= funder %></td>
+        <td><%= school_count %></td>
+        <td><%= @funders_visible_and_enabled[funder] %></td>
       </tr>
     <% end %>
+    <tr>
+      <td>No funder</td>
+      <td><%= @unfunded_visible %></td>
+      <td><%= @unfunded_visible_and_enabled %></td>
+    </tr>
   </tbody>
 <table>
 
 <h1>Funder allocation report</h1>
 
 <p>
-Generates a report designed to support allocating schools across potential funders.
+  Generates a report designed to support allocating schools across potential funders. The report includes all
+  active schools as well as those that have been archived.
+</p>
+
+<p>
+  Active schools includes all schools that are either still in the process of onboarding, or have completed onboarding.
+  So this report will include more schools than are shown in the above table.
 </p>
 
 <%= form_tag deliver_admin_reports_funder_allocations_path, method: :post do %>
@@ -30,10 +53,6 @@ Generates a report designed to support allocating schools across potential funde
     <%= fa_icon('envelope') %> Email funder report
   <% end %>
 <% end %>
-
-<p>
-  The report includes all visible schools.
-</p>
 
 <p>
   Summary of column headings:
@@ -46,7 +65,7 @@ Generates a report designed to support allocating schools across potential funde
   <li>Data visible? - true or false depending on whether school is data visible</li>
   <li>Onboarding date - date school onboarding was completed. Will be empty for some older schools, or any created manually</li>
   <li>Date enabled date - date school was first made data enabled. Consistent with the "recently onboarded" report. Will be empty if school not yet visible</li>
-  <li>Funder</li>
+  <li>Funder - the funder either directly linked to the school or to its school group</li>
   <li>Funding status</li>
   <li>Postcode</li>
   <li>Country</li>

@@ -64,17 +64,6 @@
           <%= t('schools.meters.form.leave_this_blank_message') %>
         </small>
       </div>
-
-      <div class="custom-control custom-checkbox">
-        <%= form.check_box :sandbox, class: 'custom-control-input' %>
-        <%= form.label :sandbox, t('schools.meters.form.sandbox'), class: "custom-control-label" %>
-        <small class="form-text text-muted"><%= t('schools.meters.form.only_check_if_adding_an_n3rgy_test_meter') %></small>
-      </div>
-
-      <div class="form-group">
-        <%= form.label :earliest_available_data, t('schools.meters.form.earliest_available_data') %>
-        <%= component 'date_picker_form', form: form, field_name: :earliest_available_data, value: meter.earliest_available_data&.strftime('%d/%m/%Y') %>
-      </div>
     <% end %>
   </div>
 

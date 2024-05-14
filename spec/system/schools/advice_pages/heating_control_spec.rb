@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "heating control advice page", type: :system do
+RSpec.describe 'heating control advice page', type: :system do
   let(:key) { 'heating_control' }
-  let(:expected_page_title) { "Heating control analysis" }
-  include_context "gas advice page"
+  let(:expected_page_title) { 'Heating control analysis' }
+  include_context 'gas advice page'
 
   let(:enough_data) { true }
   let(:enough_data_for_seasonal_analysis) { true }
@@ -48,12 +48,12 @@ RSpec.describe "heating control advice page", type: :system do
       visit school_advice_heating_control_path(school)
     end
 
-    it_behaves_like "an advice page tab", tab: "Insights"
+    it_behaves_like 'an advice page tab', tab: 'Insights'
 
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      it_behaves_like 'an advice page tab', tab: 'Insights'
       it 'includes expected sections' do
         expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.title'))
         expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.comparison.title'))
@@ -63,9 +63,9 @@ RSpec.describe "heating control advice page", type: :system do
 
       it 'includes expected data' do
         expect(page).to have_content('the average start time for your heating')
-        expect(page).to have_content("04:00")
-        expect(page).to have_content("£1,234")
-        expect(page).to have_content("42")
+        expect(page).to have_content('04:00')
+        expect(page).to have_content('£1,234')
+        expect(page).to have_content('42')
       end
 
       context 'and theres is no average start time' do
@@ -80,7 +80,7 @@ RSpec.describe "heating control advice page", type: :system do
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'an advice page tab', tab: 'Analysis'
       it 'includes expected sections' do
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.title'))
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.school_day_heating.title'))
@@ -98,9 +98,9 @@ RSpec.describe "heating control advice page", type: :system do
         within('#heating-start-times') do
           expect(page).to have_content(date.to_s(:es_full))
           expect(page).to have_content('12')
-          expect(page).to have_content("05:00")
-          expect(page).to have_content("06:00")
-          expect(page).to have_content("too early")
+          expect(page).to have_content('05:00')
+          expect(page).to have_content('06:00')
+          expect(page).to have_content('too early')
         end
       end
 
@@ -120,16 +120,16 @@ RSpec.describe "heating control advice page", type: :system do
           within('#heating-start-times') do
             expect(page).to have_content(date.to_s(:es_full))
             expect(page).to have_content('4')
-            expect(page).to have_content("05:00")
-            expect(page).to have_content("-")
-            expect(page).to have_content("on time")
+            expect(page).to have_content('05:00')
+            expect(page).to have_content('-')
+            expect(page).to have_content('on time')
           end
         end
       end
 
       it 'includes expected data in seasonal analysis' do
-        expect(page).to have_content("£1,234")
-        expect(page).to have_content("42")
+        expect(page).to have_content('£1,234')
+        expect(page).to have_content('42')
       end
 
       context 'and theres is no average start time' do
@@ -145,7 +145,7 @@ RSpec.describe "heating control advice page", type: :system do
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
 
-      it_behaves_like "an advice page tab", tab: "Learn More"
+      it_behaves_like 'an advice page tab', tab: 'Learn More'
     end
   end
 end

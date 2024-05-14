@@ -18,7 +18,7 @@ class ChartDataValues
   DARK_STORAGE = '#7C3AFF'.freeze
   LIGHT_STORAGE = '#E097FC'.freeze
   GREEN = '#5cb85c'.freeze
-  STORAGE_HEATER = "#501e74".freeze
+  STORAGE_HEATER = '#501e74'.freeze
   MONEY = '#232B49'.freeze
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
@@ -101,7 +101,7 @@ class ChartDataValues
     elsif @chart1_type == :scatter
       scatter_and_trendline
     elsif @chart1_type == :line
-      #TODO chart colours that show gas/electricity/storage should all be using usage_line.
+      # TODO chart colours that show gas/electricity/storage should all be using usage_line.
       if @chart_type.match?(/^targeting_and_tracking/) || @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
         usage_line
       else
@@ -221,7 +221,7 @@ class ChartDataValues
     return I18n.t('advice_pages.benchmarks.exemplar_school') if series_key_as_string == 'exemplar'
     return I18n.t('analytics.common.school_day') if series_key_as_string == 'school day'
 
-    return translate_bill_component_series(series_key_as_string) if I18n.t("advice_pages.tables.labels.bill_components").keys.map(&:to_s).include?(series_key_as_string)
+    return translate_bill_component_series(series_key_as_string) if I18n.t('advice_pages.tables.labels.bill_components').keys.map(&:to_s).include?(series_key_as_string)
 
     i18n_key = series_translation_key_lookup[series_key_as_string]
     return series_key_as_string unless i18n_key
@@ -295,16 +295,16 @@ private
   def usage_column
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       colour = teachers_chart_colour(index)
-      #get the start date
+      # get the start date
       start_date = start_date_from_label(data_type)
 
-      #run map over the data to turn it into a hash of {y: d, day: formatted_date from index}
+      # run map over the data to turn it into a hash of {y: d, day: formatted_date from index}
       if start_date
         data.map!.with_index {|v, i| { y: v, day: I18n.l(start_date.next_day(i), format: '%a %d/%m/%Y') } }
       end
 
-      #add some useful cue to the json to indicate it should use an alternate formatter
-      #e.g. pointFormat: :day, :orderedPoint
+      # add some useful cue to the json to indicate it should use an alternate formatter
+      # e.g. pointFormat: :day, :orderedPoint
       { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index, day_format: start_date.present? }
     end
   end
@@ -376,7 +376,7 @@ private
   end
 
   def trendline?(data_type)
-    data_type.to_s.downcase.start_with?("trendline")
+    data_type.to_s.downcase.start_with?('trendline')
   end
 
   def scatter_and_trendline
@@ -550,19 +550,19 @@ private
   def colour_benchmark_bars(data_type, data)
     @x_axis_categories.each_with_index do |category, index|
       if BENCHMARK_LABELS.include?(category)
-         #replace the scalar value with an object that
-         #holds the original y axis data and specifies a custom colour
-         data[index] = {
-           y: data[index], color: benchmark_colour(data_type, category)
-         }
+        # replace the scalar value with an object that
+        # holds the original y axis data and specifies a custom colour
+        data[index] = {
+          y: data[index], color: benchmark_colour(data_type, category)
+        }
       end
     end
   end
 
-  #category = benchmark, exemplar
-  #data_type = Gas, Electricity
+  # category = benchmark, exemplar
+  # data_type = Gas, Electricity
   def benchmark_colour(data_type, category)
-    #this has multiple fuel types
+    # this has multiple fuel types
     if [:benchmark, :benchmark_one_year].include?(@chart_type)
       return colours_for_multiple_fuel_type_bencmark(data_type, category)
     end

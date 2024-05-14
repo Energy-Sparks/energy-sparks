@@ -60,7 +60,7 @@ describe AmrDataFeedReading do
         let(:date_format)   { '%d/%m/%Y' }
         let(:reading_date)  { '2-Jun-23' }
 
-        context "it parses correctly" do
+        context 'it parses correctly' do
           it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 2).iso8601 }
         end
       end

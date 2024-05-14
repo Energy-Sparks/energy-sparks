@@ -10,7 +10,7 @@ describe NavHelper do
   end
 
   describe '#locale_switcher_buttons' do
-    context "with locale_switcher_buttons_feature switched on" do
+    context 'with locale_switcher_buttons_feature switched on' do
       let(:locale_switcher_buttons_feature) { true }
 
       it 'returns buttons for all available locales except the current locale' do
@@ -24,12 +24,12 @@ describe NavHelper do
       end
     end
 
-    context "with locale_switcher_buttons_feature switched off" do
+    context 'with locale_switcher_buttons_feature switched off' do
       let(:locale_switcher_buttons_feature) { false }
 
-      it "returns nothing" do
+      it 'returns nothing' do
         allow(helper).to receive(:url_for).and_return('http://energysparks.uk/')
-        expect(helper.locale_switcher_buttons).to eq("")
+        expect(helper.locale_switcher_buttons).to eq('')
       end
     end
   end

@@ -17,7 +17,7 @@ module Admin
       @admin_meter_status = AdminMeterStatus.new(admin_meter_status_params)
       respond_to do |format|
         if @admin_meter_status.save
-          format.html { redirect_to admin_meter_statuses_path, notice: "Meter status was successfully created." }
+          format.html { redirect_to admin_meter_statuses_path, notice: 'Meter status was successfully created.' }
         else
           format.html { render :new, status: :unprocessable_entity }
         end
@@ -27,7 +27,7 @@ module Admin
     def update
       respond_to do |format|
         if @admin_meter_status.update(admin_meter_status_params)
-          format.html { redirect_to admin_meter_statuses_path, notice: "Meter status was successfully updated." }
+          format.html { redirect_to admin_meter_statuses_path, notice: 'Meter status was successfully updated.' }
         else
           format.html { render :edit, status: :unprocessable_entity }
         end

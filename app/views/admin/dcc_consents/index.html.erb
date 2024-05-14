@@ -1,13 +1,5 @@
 <h1>DCC Consents</h1>
 
-<p>
-  <% if params[:sandbox] %>
-    <%= link_to "Show without sandbox meters", admin_dcc_consents_path, class: 'btn' %>
-  <% else %>
-    <%= link_to "Show with sandbox meters", admin_dcc_consents_path(sandbox: true), class: 'btn' %>
-  <% end %>
-</p>
-
 <h2>Total schools with DCC consents: <%= @dcc_consent_calcs.total_schools_with_consents %></h2>
 <h2>Total meters with DCC consents: <%= @dcc_consent_calcs.total_meters_with_consents %></h2>
 
@@ -40,7 +32,6 @@
       <th>Reviewed</th>
       <th>User consented?</th>
       <th>DCC consented?</th>
-      <th>Sandbox?</th>
       <th>Active?</th>
       <th>Actions</th>
     </tr>
@@ -56,7 +47,6 @@
         <td><%= link_to nice_dates(meter.meter_review.created_at), admin_school_meter_review_path(school, meter.meter_review) if meter.meter_review %></td>
         <td><%= meter.meter_review.present? %></td>
         <td><%= meter.consent_granted? %></td>
-        <td><%= meter.sandbox? %></td>
         <td><%= meter.active? %></td>
         <td>
           <% if meter.can_withdraw_consent? && can?(:withdraw_consent, meter) %>
@@ -72,4 +62,3 @@
     </tbody>
   </table>
 <% end %>
-

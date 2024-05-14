@@ -3,7 +3,7 @@ require 'dashboard'
 
 module Solar
   describe LowCarbonHubInstallationFactory do
-    include_context "low carbon hub data"
+    include_context 'low carbon hub data'
 
     it 'creates the meters and initial readings' do
       allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api)

@@ -7,7 +7,7 @@ module Solar
     end
 
     def solar_feed_type
-      "Solar Edge"
+      'Solar Edge'
     end
   end
 end

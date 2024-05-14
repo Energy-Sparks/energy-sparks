@@ -18,7 +18,7 @@ module Schools
     private
 
     def content_managed?
-      @find_out_more.alert.alert_type.class_name == "Alerts::System::ContentManaged"
+      @find_out_more.alert.alert_type.class_name == 'Alerts::System::ContentManaged'
     end
   end
 end

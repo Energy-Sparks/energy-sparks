@@ -1,0 +1,13 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_var val: result.avg_gas_per_pupil_gbp, unit: :£ %>
+      <% r.with_var val: result.benchmark_existing_gas_efficiency, unit: :percent %>
+      <% r.with_var val: result.benchmark_gas_better_control_saving_gbp, unit: :£ %>
+      <% r.with_var val: result.benchmark_point_of_use_electric_saving_gbp, unit: :£, change: true %>
+    <% end %>
+  <% end %>
+<% end %>

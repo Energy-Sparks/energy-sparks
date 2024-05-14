@@ -3,7 +3,7 @@ module Admin
   class SchoolOnboardingsController < AdminController
     load_and_authorize_resource find_by: :uuid
 
-    INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = "incomplete-onboarding-schools.csv".freeze
+    INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = 'incomplete-onboarding-schools.csv'.freeze
 
     def index
       @school_groups = SchoolGroup.order(name: :asc)

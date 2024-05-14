@@ -1,4 +1,4 @@
-<%= render 'header', title: "Issues & Notes" do %>
+<%= render 'header', title: 'Issues & Notes' do %>
   <% if @issueable.try(:school_group) %>
     <%= header_nav_link "#{@issueable.school_group.name} school group", admin_school_group_path(@issueable.school_group) %>
   <% elsif @issueable %>
@@ -7,7 +7,9 @@
 <% end %>
 <% if @issueable %>
   <div class="clearfix">
-    <%= link_to "Issues & Notes", admin_issues_path %> > <%= @issueable.model_name.human.capitalize %> > <%= @issueable.try(:name) %>
+    <%= link_to 'Issues & Notes', admin_issues_path %> >
+    <%= @issueable.model_name.human.capitalize %> >
+    <%= @issueable.try(:name) %>
     <span class="float-right"><%= render 'new_issues_links', issueable: @issueable %></span>
   </div>
 <% end %>
@@ -15,20 +17,34 @@
   <%= form_tag polymorphic_path(@issueable ? [:admin, @issueable, Issue] : [:admin, Issue]), method: :get do %>
     <span class="nowrap">
       <%= label_tag :user, nil, class: 'small' %>
-      <%= select_tag :user, options_from_collection_for_select(User.admin,:id, :display_name, params[:user]), include_blank: "Any Admin User", class: "form-control-sm" %>
+      <%= select_tag :user,
+                     options_from_collection_for_select(User.admin, :id, :display_name, params[:user]),
+                     include_blank: 'Any Admin User',
+                     class: 'form-control-sm' %>
+    </span>
+    <span class="ml-4 nowrap">
+      <%= label_tag :search, nil, class: 'small' %>
+      <%= text_field_tag :search, params[:search], autocomplete: 'off' %>
     </span>
     <span class="ml-4 nowrap ensure-one-checked">
       <%= label_tag :issue_type, nil, class: 'small' %>
       <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
-        <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type), id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
-        <%= label_tag issue_type, issue_type.capitalize, data: {toggle: "tooltip", placement: "bottom", delay: { "show": 500, "hide": 100 }}, title: "Select at least one" %>
+        <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type),
+                          id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
+        <%= label_tag issue_type, issue_type.capitalize,
+                      data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
+                      title: 'Select at least one' %>
       <% end %>
     </span>
     <span class="ml-4 nowrap ensure-one-checked">
       <%= label_tag :status, nil, class: 'small' %>
       <% Issue.statuses.keys.each do |status, status_id| %>
-        <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status), id: status, class: "badge badge-pill-toggle-#{Issue.status_classes[status.to_sym]}") %>
-        <%= label_tag status, status.capitalize, data: {toggle: "tooltip", placement: "bottom", delay: { "show": 500, "hide": 100 }}, title: "Select at least one" %>
+        <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status),
+                          id: status,
+                          class: "badge badge-pill-toggle-#{Issue.status_classes[status.to_sym]}") %>
+        <%= label_tag status, status.capitalize,
+                      data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
+                      title: 'Select at least one' %>
       <% end %>
     </span>
     <span class="float-right">
@@ -47,8 +63,7 @@
   <% else %>
     <%= render 'issues_list', issues: @issues %>
   <% end %>
-  <%= render "shared/pagy_footer" %>
+  <%= render 'shared/pagy_footer' %>
 <% else %>
   <p>No issues or notes to display.</p>
 <% end %>
-

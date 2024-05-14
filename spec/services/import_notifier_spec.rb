@@ -114,9 +114,9 @@ describe ImportNotifier do
       let(:school_group_b)   { create(:school_group, name: 'BBB') }
 
       let(:meter_1_school)   { create(:school, school_group: school_group_a) }
-      let(:meter_2_school)   { create(:school, name: "A School", school_group: school_group_b) }
-      let(:meter_3_school)   { create(:school, name: "B School", school_group: school_group_b) }
-      let(:meter_4_school)   { create(:school) } #no group
+      let(:meter_2_school)   { create(:school, name: 'A School', school_group: school_group_b) }
+      let(:meter_3_school)   { create(:school, name: 'B School', school_group: school_group_b) }
+      let(:meter_4_school)   { create(:school) } # no group
 
       let!(:meter_1)         { create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: meter_1_school, start_date: start_date, end_date: end_date, data_source: data_source) }
       let!(:meter_2)         { create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: meter_2_school, start_date: start_date, end_date: end_date, data_source: data_source) }
@@ -124,7 +124,7 @@ describe ImportNotifier do
       let!(:meter_4)         { create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: meter_4_school, start_date: start_date, end_date: end_date, data_source: data_source) }
 
       it 'sorts meters' do
-        #nil group first, then by school group name, then meter type and school
+        # nil group first, then by school group name, then meter type and school
         expect(ImportNotifier.new.meters_running_behind.map(&:id)).to match_array([meter_4.id, meter_1.id, meter_2.id, meter_3.id])
       end
     end
@@ -159,7 +159,7 @@ describe ImportNotifier do
 
     context 'and there is blank data' do
       it 'returns the meter' do
-       expect(meters_with_blank_data).to match_array([meter_1])
+        expect(meters_with_blank_data).to match_array([meter_1])
       end
     end
   end
@@ -193,7 +193,7 @@ describe ImportNotifier do
 
     context 'and there is zero data' do
       it 'returns the meter' do
-       expect(meters_with_zero_data).to match_array([meter_1])
+        expect(meters_with_zero_data).to match_array([meter_1])
       end
     end
 
@@ -205,13 +205,13 @@ describe ImportNotifier do
       end
     end
 
-    #future requirement
+    # future requirement
     xit 'does not include gas data in the summer'
   end
 
   describe '#notify' do
-    let!(:sheffield_school)          { create(:school, :with_school_group, name: "Sheffield School")}
-    let!(:bath_school)               { create(:school, :with_school_group, name: "Bath School")}
+    let!(:sheffield_school)          { create(:school, :with_school_group, name: 'Sheffield School')}
+    let!(:bath_school)               { create(:school, :with_school_group, name: 'Bath School')}
     let!(:amr_data_feed_config)      { create(:amr_data_feed_config, description: 'Sheffield') }
     let!(:bath_amr_data_feed_config) { create(:amr_data_feed_config, description: 'Bath') }
 
@@ -235,7 +235,7 @@ describe ImportNotifier do
     it 'formats the email properly' do
       expect(email.subject).to include('Energy Sparks import')
       email_body = email.html_part.body
-      expect(email_body).to include("Data issues")
+      expect(email_body).to include('Data issues')
     end
 
     context 'with meter data' do
@@ -275,7 +275,7 @@ describe ImportNotifier do
         attachment = email.attachments[0]
         expect(attachment.content_type).to include('text/csv')
         expect(attachment.filename).to eq("[energy-sparks-unknown] Energy Sparks import report: #{Time.zone.today.strftime('%d/%m/%Y')}.csv")
-        expect(attachment.body.raw_source.split("\r\n").first).to eq("\"\",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,Last validated reading date,Admin meter status,Issues,Notes,Group admin name")
+        expect(attachment.body.raw_source.split("\r\n").first).to eq('"",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,Last validated reading date,Admin meter status,Issues,Notes,Group admin name')
       end
     end
 

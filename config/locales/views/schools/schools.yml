@@ -245,15 +245,12 @@ en:
         create_meter: Create Meter
         data_source: Data source
         dcc_smart_meter: DCC Smart Meter
-        earliest_available_data: Earliest available data
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
         leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
         meter_point_number: Meter Point Number
         meter_system: Meter system
         name: Name
-        only_check_if_adding_an_n3rgy_test_meter: Only check if you're adding an n3rgy test meter, not used for live schools
         procurement_route: Procurement route
-        sandbox: Sandbox
         serial_number: Serial number
         title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
         type: Type
@@ -311,7 +308,6 @@ en:
         n3rgy_consent_confirmed: n3rgy Confirm Consented
         n3rgy_known_meter: Available from n3rgy?
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
-        sandbox: Sandbox (test meter)
         school_meter_management: School meter management
         serial_number: Serial Number
         tariff_report: Tariff Report
@@ -326,6 +322,18 @@ en:
       audit:
         message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your recent energy audit
         summary_html: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
+      completed_programme:
+        message_html:
+          one: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{count}</strong> bonus point!
+          other: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{count}</strong> bonus points!
+          zero: Well done, you've just completed the <strong>%{title}</strong> programme!
+      join_programme:
+        message_html:
+          one: You've recently completed an activity that is part of the <strong>%{title}</strong> programme. Do you want to enroll in the programme?
+          other: You've recently completed %{count} activities that are part of the <strong>%{title}</strong> programme. Do you want to enroll in the programme?
+      no_active_programmes:
+        choose_programme: Choose programme
+        message: Congratulations you've completed all your energy saving programmes! Time to choose your next programme
       programme:
         choose_a_new_programme_message: It's time to choose a new programme of activities. What challenge will you take on next?
         message_html: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme
@@ -476,13 +484,11 @@ en:
           cumulative_progress: Cumulative progress
           debug: Debug
           error: Error
-          error_bad_estimate_html: The <a href='%{estimated_annual_consumptions_path}'>annual estimate</a> of your %{fuel_type} usage that has been provided for your school is too low
           error_message: Unfortunately due to an error we are currently unable to display your detailed progress report
           month: Month
           month_by_month_progress: Month by month progress
           overall_change_since_last_year: Overall change since last year
           overall_performance_since_last_year: Overall performance since last year
-          please_review_your_estimate_and_our_guidance_html: Please <a href='%{estimated_annual_consumptions_path}'>review your estimate and our guidance</a> to see if it is correct
           problem: Problem
           progress_charts: Progress charts
           review_targets: Review targets
@@ -491,7 +497,6 @@ en:
           unfortunately_as_much_as_last_year: Unfortunately you are using as much %{fuel_type} as you did last year
           unfortunately_more_than_last_year: Unfortunately you are using %{relative_percent} more %{fuel_type} than last year
           view_last_years_target_report: View last year’s target report
-          we_have_been_notified_about_this_error_1: In the meantime, we have been notified about this error and will investigate
           we_have_been_notified_about_this_error_2: We have been notified about this error and will investigate
           we_have_not_received_data: We have not received data for your %{fuel_type} usage for over thirty days. As a result your progress report will be out of date
           well_done_less_than_last_year: Well done, you are using %{relative_percent} less %{fuel_type} than last year
@@ -571,8 +576,6 @@ en:
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
       add_estimate: Add an estimate
       coming_soon: Coming Soon
-      complete_activities: Teach pupils about energy and climate change within the context of your own school by completing our freely available activities
-      complete_interventions: Record energy saving actions made by school staff and facilities management to help to track whether your interventions have saved energy.
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore
       create_pupil_account: Create a pupil account
       dashboard_title: Adult dashboard for %{school_name}
@@ -588,11 +591,7 @@ en:
       percentage_change: "% Change"
       potential_savings: Potential savings
       print_view: Print view
-      recent_energy_audit: The Energy Sparks team have recently completed an energy audit for this school
       recent_energy_usage: Recent energy usage
-      record_action: Record an action
-      record_pupil_activity: Record a pupil activity
-      review_audit: Review audit
       review_progress: Review progress
       review_target: Review your target
       revisit_targets: The configuration of your school has changed, you may need to revisit your targets for this year.
@@ -686,22 +685,28 @@ en:
     your_school_estates:
       edit:
         alternative_heating_sources:
+          air_source_heat_pump:
+            label: Our school has an air source heat pump
+            percentage: What percentage of the school is using the air source heat pump for heating?
           biomass:
-            label: Our school has a Biomass boiler
-            percentage: What percentage of the school using a Biomass boiler for heating?
+            label: Our school has a biomass boiler
+            percentage: What percentage of the school is using a biomass boiler for heating?
           description_1: Tell us about any alternative sources of heating that you use in your school
           description_2: At the moment we only analyse your gas data. But by letting us know about other sources, we can qualify any potential cost savings or recommendations
           district_heating:
-            label: Our school has District Heating
-            percentage: What percentage of the school using District Heating for heating?
+            label: Our school has district heating
+            percentage: What percentage of the school is using district heating for heating?
+          ground_source_heat_pump:
+            label: Our school has a ground source heat pump
+            percentage: What percentage of the school is using the ground source heat pump for heating?
           header: Alternative heating sources
           lpg:
             label: Our school is using LPG for heating
             percentage: What percentage of the school using LPG for heating?
           notes: Is there anything else we should know?
           oil:
-            label: Our school uses Oil for heating
-            percentage: What percentage of the school is heated by Oil Heating?
+            label: Our school uses oil for heating
+            percentage: What percentage of the school is heated by oil heating?
         description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
         school_was_successfully_updated: School was successfully updated
         solar_panels: Solar panels

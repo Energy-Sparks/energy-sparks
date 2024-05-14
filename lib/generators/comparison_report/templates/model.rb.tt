@@ -1,0 +1,2 @@
+class Comparison::<%= class_name %> < Comparison::View
+end

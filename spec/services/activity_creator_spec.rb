@@ -20,7 +20,7 @@ describe ActivityCreator do
     activity = build(:activity, activity_type: activity_type)
     ActivityCreator.new(activity).process
     observation = Observation.find_by!(activity_id: activity.id)
-    expect(observation.observation_type).to eq("activity")
+    expect(observation.observation_type).to eq('activity')
     expect(observation.school).to eq(activity.school)
     expect(observation.at).to eq(activity.happened_on)
     expect(observation.points).to eq(50)
@@ -75,7 +75,7 @@ describe ActivityCreator do
       end.to change { programme.programme_activities.count }.by(0).and change(Observation, :count).by(1).and change(activity, :updated_at)
     end
 
-    it "completes the programme if all the activities are completed" do
+    it 'completes the programme if all the activities are completed' do
       programme_type.activity_types.each do |activity_type|
         activity = build(:activity, activity_type: activity_type, school: school)
         ActivityCreator.new(activity).process
@@ -84,14 +84,14 @@ describe ActivityCreator do
       expect(programme.completed?).to eq(true)
     end
 
-    context "when extra activities are recorded, which are no longer in the programme" do
+    context 'when extra activities are recorded, which are no longer in the programme' do
       before do
         extra_activity_type = create(:activity_type)
         extra_activity = create(:activity, activity_type: extra_activity_type)
         programme.programme_activities.create(activity_type: extra_activity_type, activity: extra_activity)
       end
 
-      it "still completes the programme when all activities are completed" do
+      it 'still completes the programme when all activities are completed' do
         programme_type.activity_types.each do |activity_type|
           activity = build(:activity, activity_type: activity_type, school: school)
           ActivityCreator.new(activity).process
@@ -109,7 +109,7 @@ describe ActivityCreator do
       expect(programme.programme_activities.count).to be 0
     end
 
-    it "adds activity even if previous programme activity existed" do
+    it 'adds activity even if previous programme activity existed' do
       programme.programme_activities.create(activity_type: activity_type, activity: create(:activity))
       activity = build(:activity, activity_type: activity_type, school: school)
       ActivityCreator.new(activity).process

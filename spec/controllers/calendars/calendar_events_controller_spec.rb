@@ -15,8 +15,8 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
   let!(:valid_attributes) do
     {
       calendar_event_type_id: CalendarEventType.first.id,
-      start_date: "2022-01-01",
-      end_date: "2022-01-31"
+      start_date: '2022-01-01',
+      end_date: '2022-01-31'
     }
   end
 
@@ -27,10 +27,10 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
     sign_in_user(:admin)
   end
 
-  describe "POST #create" do
+  describe 'POST #create' do
     it 'creates event' do
       post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
-      event = CalendarEvent.where(calendar: calendar, start_date: Date.parse("2022-01-01")).last
+      event = CalendarEvent.where(calendar: calendar, start_date: Date.parse('2022-01-01')).last
       expect(response).to redirect_to(calendar_path(calendar, anchor: "calendar_event_#{event.id}"))
     end
 
@@ -41,11 +41,11 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
     end
   end
 
-  describe "PUT #update" do
+  describe 'PUT #update' do
     let!(:new_attributes) do
       {
-        start_date: "2022-01-02",
-        end_date: "2022-01-31"
+        start_date: '2022-01-02',
+        end_date: '2022-01-31'
       }
     end
     let!(:event) { CalendarEvent.first }
@@ -63,7 +63,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
     end
   end
 
-  describe "DELETE #destroy" do
+  describe 'DELETE #destroy' do
     let!(:event) { CalendarEvent.first }
 
     it 'removes event' do

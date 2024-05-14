@@ -57,27 +57,31 @@ describe School do
     end
   end
 
-  it 'validates alternative heating percents' do
-    [:alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent].each do |field|
-      subject[field] = 100
-      expect(subject).to be_valid
-      subject[field] = 0
-      expect(subject).to be_valid
-      subject[field] = -1
-      expect(subject).not_to be_valid
-      subject[field] = 101
-      expect(subject).not_to be_valid
-      subject[field] = nil
-      expect(subject).to be_valid
+  context 'when validating alternative heating percent fields' do
+    let(:alternative_heating_fields) do
+      [
+        :alternative_heating_oil_percent,
+        :alternative_heating_lpg_percent,
+        :alternative_heating_biomass_percent,
+        :alternative_heating_district_heating_percent,
+        :alternative_heating_ground_source_heat_pump_percent,
+        :alternative_heating_air_source_heat_pump_percent
+      ]
+    end
+
+    it 'validates alternative heating percentages' do
+      alternative_heating_fields.each do |field|
+        expect(subject).to validate_numericality_of(field).is_greater_than_or_equal_to(0).is_less_than_or_equal_to(100).allow_nil
+      end
     end
   end
 
   it 'validates postcodes' do
-    ["BA2 £3Z", "BA14 9 DU", "TS11 7B"].each do |invalid|
+    ['BA2 £3Z', 'BA14 9 DU', 'TS11 7B'].each do |invalid|
       subject.postcode = invalid
       expect(subject).not_to be_valid
     end
-    ["OL84JZ", "OL8 4JZ"].each do |valid|
+    ['OL84JZ', 'OL8 4JZ'].each do |valid|
       subject.postcode = valid
       expect(subject).to be_valid
     end
@@ -309,7 +313,7 @@ describe School do
       expect(school.longitude).to eq(-3.174625)
       expect(school.country).to eq('scotland')
 
-      school.update(postcode: "OL8 4JZ")
+      school.update(postcode: 'OL8 4JZ')
       school.reload
 
       # values from default stub on Geocoder::Lookup::Test
@@ -341,20 +345,20 @@ describe School do
     let(:partner)       { create(:partner) }
     let(:other_partner) { create(:partner) }
 
-    it "can add a partner" do
+    it 'can add a partner' do
       expect(SchoolPartner.count).to be(0)
       subject.partners << partner
       expect(SchoolPartner.count).to be(1)
     end
 
-    it "orders partners by position" do
+    it 'orders partners by position' do
       SchoolPartner.create(school: subject, partner: partner, position: 1)
       SchoolPartner.create(school: subject, partner: other_partner, position: 0)
       expect(subject.partners.first).to eql(other_partner)
       expect(subject.partners).to match_array([other_partner, partner])
     end
 
-    it "finds all partners" do
+    it 'finds all partners' do
       expect(subject.all_partners).to match([])
       subject.partners << partner
       expect(subject.all_partners).to match([partner])
@@ -368,7 +372,7 @@ describe School do
   context 'with consent' do
     let!(:consent_statement) { create(:consent_statement, current: true) }
 
-    it "identifies whether consent is current" do
+    it 'identifies whether consent is current' do
       expect(subject.consent_up_to_date?).to be false
       create(:consent_grant, school: subject)
       expect(subject.consent_up_to_date?).to be false
@@ -395,7 +399,7 @@ describe School do
         expect(ability).not_to be_able_to(:read_restricted_analysis, school)
       end
 
-      context "as school admin" do
+      context 'as school admin' do
         let!(:user) { create(:school_admin, school: school) }
 
         it 'disallows access' do
@@ -406,10 +410,10 @@ describe School do
         end
       end
 
-      context "as admin" do
+      context 'as admin' do
         let(:user) { create(:admin) }
 
-        it "can do anything" do
+        it 'can do anything' do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
@@ -429,7 +433,7 @@ describe School do
         expect(ability).not_to be_able_to(:read_restricted_analysis, school)
       end
 
-      context "as school admin" do
+      context 'as school admin' do
         let!(:user) { create(:school_admin, school: school) }
 
         it 'disallows access' do
@@ -440,7 +444,7 @@ describe School do
         end
       end
 
-      context "as related school admin" do
+      context 'as related school admin' do
         let!(:user) { create(:school_admin, school: other_school) }
 
         it 'allows access' do
@@ -451,10 +455,10 @@ describe School do
         end
       end
 
-      context "as admin" do
+      context 'as admin' do
         let(:user) { create(:admin) }
 
-        it "can do anything" do
+        it 'can do anything' do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
@@ -473,7 +477,7 @@ describe School do
         expect(ability).not_to be_able_to(:read_restricted_analysis, school)
       end
 
-      context "as school admin" do
+      context 'as school admin' do
         let!(:user) { create(:school_admin, school: school) }
 
         it 'allows access' do
@@ -484,7 +488,7 @@ describe School do
         end
       end
 
-      context "as teacher" do
+      context 'as teacher' do
         let!(:user) { create(:staff, school: school) }
 
         it 'allows access' do
@@ -495,7 +499,7 @@ describe School do
         end
       end
 
-      context "as pupil" do
+      context 'as pupil' do
         let!(:user) { create(:pupil, school: school) }
 
         it 'allows access' do
@@ -506,7 +510,7 @@ describe School do
         end
       end
 
-      context "as related school admin" do
+      context 'as related school admin' do
         let!(:user) { create(:school_admin, school: other_school) }
 
         it 'allows access' do
@@ -517,7 +521,7 @@ describe School do
         end
       end
 
-      context "as teacher from school in same group" do
+      context 'as teacher from school in same group' do
         let!(:user) { create(:staff, school: other_school) }
 
         it 'allows access' do
@@ -528,7 +532,7 @@ describe School do
         end
       end
 
-      context "as pupil from school in same group" do
+      context 'as pupil from school in same group' do
         let!(:user)          { create(:pupil, school: other_school) }
 
         it 'allows access' do
@@ -539,10 +543,10 @@ describe School do
         end
       end
 
-      context "as admin" do
+      context 'as admin' do
         let(:user) { create(:admin) }
 
-        it "can do anything" do
+        it 'can do anything' do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
@@ -555,7 +559,7 @@ describe School do
   context 'with live data' do
     let(:cad) { create(:cad, school: subject, active: true) }
 
-    it "checks for presence of active cads" do
+    it 'checks for presence of active cads' do
       expect(subject.has_live_data?).to be false
       subject.cads << cad
       expect(subject.has_live_data?).to be true
@@ -565,43 +569,43 @@ describe School do
   end
 
   context 'with annual estimates' do
-    it "there are no meter attributes without an estimate" do
+    it 'there are no meter attributes without an estimate' do
       expect(subject.estimated_annual_consumption_meter_attributes).to eql({})
       expect(subject.all_pseudo_meter_attributes).to eql({ :aggregated_electricity => [], :aggregated_gas => [], :solar_pv_consumed_sub_meter => [], :solar_pv_exported_sub_meter => [] })
     end
 
-    context "when an estimate is given" do
+    context 'when an estimate is given' do
       let!(:estimate) { create(:estimated_annual_consumption, school: subject, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
 
       before do
         subject.reload
       end
 
-      it "the target should add meter attributes" do
-        expect(subject.all_pseudo_meter_attributes[:aggregated_electricity]).not_to be_empty
+      it 'they are not passed to the analytics' do
+        expect(subject.all_pseudo_meter_attributes).to eql({ :aggregated_electricity => [], :aggregated_gas => [], :solar_pv_consumed_sub_meter => [], :solar_pv_exported_sub_meter => [] })
       end
     end
   end
 
   context 'with school targets' do
-    it "there is no target by default" do
+    it 'there is no target by default' do
       expect(subject.has_target?).to be false
       expect(subject.current_target).to be nil
     end
 
-    it "there are no meter attributes without a target" do
+    it 'there are no meter attributes without a target' do
       expect(subject.school_target_attributes).to eql({})
       expect(subject.all_pseudo_meter_attributes).to eql({ :aggregated_electricity => [], :aggregated_gas => [], :solar_pv_consumed_sub_meter => [], :solar_pv_exported_sub_meter => [] })
     end
 
-    context "when a target is set" do
+    context 'when a target is set' do
       let!(:target) { create(:school_target, start_date: Date.yesterday, school: subject) }
 
       before do
         subject.reload
       end
 
-      it "finds the target" do
+      it 'finds the target' do
         expect(subject.has_target?).to be true
         expect(subject.has_current_target?).to be true
         expect(subject.current_target).to eql target
@@ -610,14 +614,14 @@ describe School do
         expect(subject.has_expired_target?).to be false
       end
 
-      it "the target should add meter attributes" do
+      it 'the target should add meter attributes' do
         expect(subject.all_pseudo_meter_attributes[:aggregated_electricity]).not_to be_empty
       end
 
-      context "with multiple targets" do
+      context 'with multiple targets' do
         let!(:future_target) { create(:school_target, start_date: Date.tomorrow, school: subject) }
 
-        it "finds the current target" do
+        it 'finds the current target' do
           expect(subject.has_target?).to be true
           expect(subject.has_current_target?).to be true
           expect(subject.current_target).to eql target
@@ -627,12 +631,12 @@ describe School do
         end
       end
 
-      context "with expired target" do
+      context 'with expired target' do
         before do
           target.update!(start_date: Date.yesterday.prev_year)
         end
 
-        it "finds the expired target" do
+        it 'finds the expired target' do
           expect(subject.has_target?).to be true
           expect(subject.has_current_target?).to be false
           expect(subject.current_target).to be nil
@@ -641,12 +645,12 @@ describe School do
           expect(subject.has_expired_target?).to be true
         end
 
-        it "stills produce meter attributes" do
+        it 'stills produce meter attributes' do
           expect(subject.all_pseudo_meter_attributes[:aggregated_electricity]).not_to be_empty
         end
       end
 
-      describe "#has_expired_target_for_fuel_type?" do
+      describe '#has_expired_target_for_fuel_type?' do
         before do
           target.update!(electricity: 5)
         end
@@ -657,7 +661,7 @@ describe School do
         it { expect(subject.has_expired_target_for_fuel_type?(:gas)).to be false }
       end
 
-      describe "#previous_expired_target" do
+      describe '#previous_expired_target' do
         let!(:expired_target) { create(:school_target, start_date: Date.yesterday.prev_year, school: subject) }
         let!(:older_expired_target) { create(:school_target, start_date: Date.yesterday.years_ago(2), school: subject) }
         let!(:oldest_expired_target) { create(:school_target, start_date: Date.yesterday.years_ago(3), school: subject) }
@@ -673,7 +677,7 @@ describe School do
 
   context 'school users' do
     let!(:school_admin)     { create(:school_admin, school: subject, email: 'school_user_1@test.com')}
-    let!(:cluster_admin)    { create(:school_admin, name: "Cluster admin", cluster_schools: [subject], email: 'school_user_2@test.com') }
+    let!(:cluster_admin)    { create(:school_admin, name: 'Cluster admin', cluster_schools: [subject], email: 'school_user_2@test.com') }
     let!(:staff)            { create(:staff, school: subject, email: 'school_user_3@test.com')}
     let!(:staff_2)          { create(:staff, school: subject, cluster_schools: [subject], email: 'school_user_4@test.com') }
     let!(:pupil)            { create(:pupil, school: subject, email: 'school_user_5@test.com')}
@@ -742,8 +746,12 @@ describe School do
     let!(:activity_1) { create :activity, happened_on: date_1, school: school }
     let!(:activity_2) { create :activity, happened_on: date_2, school: school }
 
-    it 'finds activities from the academic year' do
-      expect(school.activities_in_academic_year(academic_year.start_date + 2.months)).to eq([activity_1])
+    it 'finds activity_types from the academic year' do
+      expect(school.activity_types_in_academic_year(academic_year.start_date + 2.months)).to eq([activity_1.activity_type])
+    end
+
+    it 'handles missing academic year' do
+      expect(school.activity_types_in_academic_year(Date.parse('01-01-1900'))).to eq([])
     end
   end
 
@@ -758,14 +766,6 @@ describe School do
     let!(:observation_1) { create :observation, :intervention, at: date_1, school: school, intervention_type: intervention_type_1 }
     let!(:observation_2) { create :observation, :intervention, at: date_2, school: school, intervention_type: intervention_type_2 }
     let!(:observation_without_intervention_type) { create(:observation, :temperature, at: date_1 + 1.day, school: school) }
-
-    it 'finds observations from the academic year' do
-      expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1, observation_without_intervention_type])
-    end
-
-    it 'handles missing academic year' do
-      expect(school.observations_in_academic_year(Date.parse('01-01-1900'))).to eq([])
-    end
 
     it 'finds intervention types from the academic year' do
       expect(school.intervention_types_in_academic_year(academic_year.start_date + 2.months)).to eq([intervention_type_1])
@@ -786,14 +786,6 @@ describe School do
         expect(school.subscription_frequency).to eq([:weekly])
       end
     end
-
-    context 'when finding intervention types by date' do
-      let!(:recent_observation) { create(:observation, :intervention, at: date_1 + 1.day, school: school, intervention_type: intervention_type_2) }
-
-      it 'finds intervention types by date, including duplicates, excluding non-intervention observations' do
-        expect(school.intervention_types_by_date).to eq([intervention_type_2, intervention_type_1, intervention_type_2])
-      end
-    end
   end
 
   describe '.all_pseudo_meter_attributes' do
@@ -810,11 +802,10 @@ describe School do
       let!(:estimate)  { create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
 
       it 'maps them to the pseudo meters, targets, and estimates' do
-        expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 5
+        expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 4
         expect(all_pseudo_meter_attributes[:aggregated_electricity].map(&:attribute_type)).to match_array(
           %w[
             targeting_and_tracking
-            estimated_period_consumption
             accounting_tariff_generic
             accounting_tariff_generic
             accounting_tariff_generic
@@ -826,5 +817,91 @@ describe School do
 
   describe 'weather_station required' do
     it { is_expected.to validate_presence_of(:weather_station) }
+  end
+
+  describe '#suggested_programme_types' do
+    let(:school) { create(:school) }
+
+    let!(:programme_type_1) { create(:programme_type_with_activity_types, title: 'programme 1') }
+    let!(:programme_type_2) { create(:programme_type_with_activity_types, title: 'programme 2') }
+
+    subject(:programme_types) { school.suggested_programme_types }
+
+    def create_activity(activity_type, happened_on: Time.zone.now)
+      school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: happened_on)
+    end
+
+    context 'when school has not completed any activities at all' do
+      it { expect(programme_types).to be_empty }
+    end
+
+    context 'when school has completed activities from a programme type' do
+      before do
+        create_activity(programme_type_1.activity_types.first)
+        create_activity(programme_type_1.activity_types.second)
+      end
+
+      it { expect(programme_types).to include(programme_type_1) }
+      it { expect(programme_types.length).to be(1) }
+
+      it 'includes a count of activities completed in programme' do
+        expect(programme_types.first.activity_count).to be(2)
+      end
+
+      context 'when school is already subscribed to programme type' do
+        before do
+          school.programmes.create!(programme_type: programme_type_1, started_on: Time.zone.now)
+        end
+
+        it 'is not suggested' do
+          expect(programme_types).to be_empty
+        end
+      end
+    end
+
+    context 'when school has completed activities from multiple programme types' do
+      before do
+        create_activity(programme_type_2.activity_types.first)
+        create_activity(programme_type_2.activity_types.second)
+
+        create_activity(programme_type_1.activity_types.first)
+      end
+
+      it 'orders by activity_count desc' do
+        expect(programme_types.first).to eq(programme_type_2)
+        expect(programme_types.second).to eq(programme_type_1)
+      end
+
+      it 'includes activity counts' do
+        expect(programme_types.first.activity_count).to be(2)
+        expect(programme_types.second.activity_count).to be(1)
+      end
+    end
+
+    context 'when activity was completed in a previous academic year' do
+      before do
+        create_activity(programme_type_1.activity_types.first, happened_on: 2.years.ago)
+      end
+
+      it "doesn't include programme" do
+        expect(programme_types.length).to be(0)
+      end
+
+      context 'when another activity was in current year' do
+        before do
+          create_activity(programme_type_1.activity_types.second, happened_on: Time.zone.now)
+        end
+
+        it 'includes programme' do
+          expect(programme_types.first).to eq(programme_type_1)
+        end
+      end
+    end
+
+    context 'when school has completed activities not in existing programmes' do
+      before { create_activity(create(:activity_type)) }
+
+      it { expect(programme_types).to be_empty }
+    end
   end
 end

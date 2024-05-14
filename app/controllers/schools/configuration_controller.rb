@@ -41,7 +41,10 @@ module Schools
         :scoreboard_id,
         :school_group_id,
         :weather_station_id,
-        :funder_id
+        :funder_id,
+        :region,
+        :local_authority_area_id,
+        :country
       )
     end
 

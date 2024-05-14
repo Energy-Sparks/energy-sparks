@@ -48,8 +48,8 @@ module Schools
 
     def enough_data_to_set_target_for_fuel_type?(fuel_type)
       case fuel_type.to_s
-      when "storage_heater", "storage_heaters"
-        school_target_fuel_types.include?("storage_heater")
+      when 'storage_heater', 'storage_heaters'
+        school_target_fuel_types.include?('storage_heater')
       else
         school_target_fuel_types.include?(fuel_type.to_s)
       end
@@ -61,8 +61,8 @@ module Schools
 
     def suggest_annual_estimate_for_fuel_type?(fuel_type)
       case fuel_type.to_s
-      when "storage_heater", "storage_heaters"
-        suggest_estimates_fuel_types.include?("storage_heater")
+      when 'storage_heater', 'storage_heaters'
+        suggest_estimates_fuel_types.include?('storage_heater')
       else
         suggest_estimates_fuel_types.include?(fuel_type.to_s)
       end

@@ -11,7 +11,7 @@ class ScoreboardSummaryComponent < ViewComponent::Base
   end
 
   def title
-    @title || I18n.t("components.scoreboard_summary.title")
+    @title || I18n.t('components.scoreboard_summary.title')
   end
 
   def other_schools?
@@ -37,9 +37,9 @@ class ScoreboardSummaryComponent < ViewComponent::Base
 
   def timeline_title
     if other_schools?
-      I18n.t("components.scoreboard_summary.recent_scoreboard_activity_html", scoreboard_path: scoreboard_path(scoreboard)).html_safe
+      I18n.t('components.scoreboard_summary.recent_scoreboard_activity_html', scoreboard_path: scoreboard_path(scoreboard)).html_safe
     else
-      I18n.t("components.scoreboard_summary.recent_activity")
+      I18n.t('components.scoreboard_summary.recent_activity')
     end
   end
 

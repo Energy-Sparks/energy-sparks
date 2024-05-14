@@ -15,7 +15,7 @@ module Admin
         collection
       end
       respond_to do |format|
-        format.yaml { send_data YAML.dump(attributes), filename: "meter_attributes.yml" }
+        format.yaml { send_data YAML.dump(attributes), filename: 'meter_attributes.yml' }
       end
     end
   end

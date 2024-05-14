@@ -10,6 +10,7 @@
 #  deprecated_description :text
 #  fuel_type              :string           default([]), is an Array
 #  id                     :bigint(8)        not null, primary key
+#  maximum_frequency      :integer          default(10)
 #  name                   :string
 #  score                  :integer
 #  show_on_charts         :boolean          default(TRUE)
@@ -32,6 +33,7 @@ class ActivityType < ApplicationRecord
   include Searchable
   include TranslatableAttachment
   include FuelTypeable
+  include Recordable
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
@@ -67,6 +69,7 @@ class ActivityType < ApplicationRecord
   scope :live_data, -> { joins(:activity_category).merge(ActivityCategory.live_data) }
   scope :for_key_stages, ->(key_stages) { joins(:key_stages).where(key_stages: { id: key_stages.map(&:id) }).distinct }
   scope :for_subjects, ->(subjects) { joins(:subjects).where(subjects: { id: subjects.map(&:id) }).distinct }
+  scope :not_including, ->(records = []) { where.not(id: records) }
 
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
@@ -93,11 +96,11 @@ class ActivityType < ApplicationRecord
   before_save :copy_searchable_attributes
 
   def suggested_from
-    ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.suggested_type_id = ?", id)
+    ActivityType.joins(:activity_type_suggestions).where('activity_type_suggestions.suggested_type_id = ?', id)
   end
 
   def referenced_from_find_out_mores
-    AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", id)
+    AlertTypeRating.joins(:alert_type_rating_activity_types).where('alert_type_rating_activity_types.activity_type_id = ?', id)
   end
 
   def key_stage_list
@@ -124,13 +127,17 @@ class ActivityType < ApplicationRecord
     activities.select(:school_id).distinct.count
   end
 
-  #override default name for this resource in transifex
+  # override default name for this resource in transifex
   def tx_name
     name
   end
 
   def self.tx_resources
     active.order(:id)
+  end
+
+  def count_existing_for_academic_year(school, academic_year)
+    school.activities.where(activity_type: self).where(happened_on: academic_year.start_date..academic_year.end_date).count
   end
 
   private

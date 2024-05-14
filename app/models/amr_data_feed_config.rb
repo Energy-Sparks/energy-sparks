@@ -4,6 +4,7 @@
 #
 #  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
+#  convert_to_kwh          :boolean          default(FALSE)
 #  created_at              :datetime         not null
 #  date_format             :text             not null
 #  description             :text             not null
@@ -27,6 +28,7 @@
 #  provider_id_field       :text
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
+#  reading_time_field      :text
 #  row_per_reading         :boolean          default(FALSE), not null
 #  source_type             :integer          default("email"), not null
 #  total_field             :text

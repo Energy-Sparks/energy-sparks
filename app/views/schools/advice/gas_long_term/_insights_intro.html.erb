@@ -1,4 +1,7 @@
 <%= component 'notice', status: :neutral do |c| %>
-  <% c.with_link { link_to t('advice_pages.gas_long_term.what_is_long_term_use.link'), learn_more_school_advice_gas_long_term_path(school) } %>
+  <% c.with_link do
+       link_to t('advice_pages.gas_long_term.what_is_long_term_use.link'),
+               learn_more_school_advice_gas_long_term_path(school)
+     end %>
   <%= t('advice_pages.gas_long_term.what_is_long_term_use.text_html') %>
 <% end %>

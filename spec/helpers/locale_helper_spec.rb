@@ -19,8 +19,8 @@ describe LocaleHelper do
 
   describe '.t_fuels_as_sentence' do
     before do
-      I18n.backend.store_translations("cy", { common: { electricity: 'Trydan', gas: 'Nwy', storage_heater: 'Gwresogydd storio' } })
-      I18n.backend.store_translations("cy", { support: { array: { last_word_connector: ', a ' } } })
+      I18n.backend.store_translations('cy', { common: { electricity: 'Trydan', gas: 'Nwy', storage_heater: 'Gwresogydd storio' } })
+      I18n.backend.store_translations('cy', { support: { array: { last_word_connector: ', a ' } } })
     end
 
     it 'formats single fuel' do
@@ -99,7 +99,7 @@ describe LocaleHelper do
 
   describe '.t_role' do
     before do
-      I18n.backend.store_translations("cy", { role: { guest: 'gwestai', school_admin: 'gweinyddwr ysgol' } })
+      I18n.backend.store_translations('cy', { role: { guest: 'gwestai', school_admin: 'gweinyddwr ysgol' } })
     end
 
     it 'formats role' do

@@ -7,7 +7,7 @@ gem 'rails', '~> 6.1'
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.12'
-gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.12' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
@@ -23,7 +23,7 @@ gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 gem 'pg'
-gem 'pg_search'
+gem 'scenic'
 
 # Dashboard analytics
 # gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.0.2'
@@ -113,6 +113,10 @@ gem 'roo-xls'
 # Used to handle mail processing for the admin mailer
 gem 'premailer-rails'
 
+# Feature flags
+gem "flipper-ui", "~> 1.3"
+gem "flipper-active_record", "~> 1.3"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', require: false # use bullet to optimise queries
@@ -124,6 +128,7 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'knapsack'
+  gem 'pry-rails'
   gem 'rails-controller-testing'
   gem 'rb-readline', require: false
   gem 'rspec-json_expectations'
@@ -145,6 +150,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'brakeman'
   gem 'bundler-audit'
+  gem 'erb_lint', require: false
   gem 'fasterer'
   gem 'listen' # listen for file changes - what's this used by?
   gem 'overcommit'

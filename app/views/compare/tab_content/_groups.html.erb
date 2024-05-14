@@ -5,7 +5,10 @@
       <%= hidden_field_tag(:search, 'groups') %>
       <div class="form-group">
         <%= label_tag 'school_group_ids', t('compare.filter.school_groups') %>
-        <%= select_tag('school_group_ids', options_from_collection_for_select(SchoolGroup.all.by_name.select(&:has_visible_schools?), "id", "name", @filter[:school_group_ids]), multiple: true, class: 'form-control select2') %>
+        <%= select_tag('school_group_ids',
+                       options_from_collection_for_select(@school_groups, 'id', 'name', @filter[:school_group_ids]),
+                       multiple: true,
+                       class: 'form-control select2') %>
       </div>
       <%= render 'school_type_filter', type: 'groups' %>
       <div class="pt-2">

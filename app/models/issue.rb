@@ -31,7 +31,6 @@
 #
 class Issue < ApplicationRecord
   include CsvExportable
-
   delegated_type :issueable, types: %w[School SchoolGroup DataSource]
   delegate :name, to: :issueable
 
@@ -53,6 +52,7 @@ class Issue < ApplicationRecord
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
   scope :for_owned_by, ->(owned_by) { where(owned_by: owned_by) }
   scope :for_statuses, ->(statuses) { where(status: statuses) }
+  scope :search, ->(search) { joins(:rich_text_description).where('title ~* ? or action_text_rich_texts.body ~* ?', search, search) }
 
   scope :by_pinned, -> { order(pinned: :desc) }
   scope :by_status, -> { order(status: :asc) }
@@ -82,7 +82,7 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["For", "Name", "Title", "Description", "Fuel type", "Type", "Status", "Status summary", "Meters", "Meter status", "Data sources", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
+    ['For', 'Name', 'Title', 'Description', 'Fuel type', 'Type', 'Status', 'Status summary', 'Meters', 'Meter status', 'Data sources', 'Owned by', 'Created by', 'Created at', 'Updated by', 'Updated at']
   end
 
   def self.csv_attributes
@@ -106,7 +106,7 @@ class Issue < ApplicationRecord
   end
 
   def status_summary
-    issue? ? "#{status} issue" : "note"
+    issue? ? "#{status} issue" : 'note'
   end
 
   def issue_type_image
@@ -159,7 +159,7 @@ class Issue < ApplicationRecord
 
   def school_issue_meters_only
     if meters.any? && !issueable.is_a?(School)
-      errors.add(:base, "Only school issues can have associated meters")
+      errors.add(:base, 'Only school issues can have associated meters')
     end
   end
 end

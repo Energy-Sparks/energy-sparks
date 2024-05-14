@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "downloads", type: :system do
+describe 'downloads', type: :system do
   let(:school_name)               { 'Active school'}
   let!(:school)                   { create_active_school(name: school_name)}
   let!(:teacher)                  { create(:staff, school: school)}
@@ -13,7 +13,7 @@ describe "downloads", type: :system do
 
       sign_in(teacher)
       visit root_path
-      #this is the my school menu link
+      # this is the my school menu link
       click_link 'download-your-data'
       expect(page).to have_content("Downloads for #{school.name}")
       expect(page).to have_content(mpan)
@@ -57,18 +57,18 @@ describe "downloads", type: :system do
     it 'does not allow download of other schools data' do
       sign_in(school_admin)
       visit school_downloads_path(other_school)
-      expect(page).to have_content("You are not authorized to view that page")
+      expect(page).to have_content('You are not authorized to view that page')
     end
   end
 
   context 'as admin' do
     let!(:admin)                  { create(:admin) }
-    let!(:filtered_school)        { create(:school, :with_feed_areas, name: "Filter school") }
+    let!(:filtered_school)        { create(:school, :with_feed_areas, name: 'Filter school') }
 
     before do
       sign_in(admin)
       visit school_path(filtered_school)
-      #this is the in-page link
+      # this is the in-page link
       click_on 'Download your data'
       expect(page).to have_content("Downloads for #{filtered_school.name}")
     end

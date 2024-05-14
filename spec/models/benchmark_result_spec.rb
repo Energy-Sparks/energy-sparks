@@ -6,18 +6,18 @@ describe BenchmarkResult do
 
   describe '#convert_for_processing' do
     it 'returns simple json unchanged' do
-      data = { foo: 123, bar: 1.2, other: "String", check: true, var: Date.new(2022, 4, 1) }
+      data = { foo: 123, bar: 1.2, other: 'String', check: true, var: Date.new(2022, 4, 1) }
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
-          other: "String",
+          other: 'String',
           check: true,
           var: Date.new(2022, 4, 1)
         })
     end
 
     it 'replaces .inf with Infinity' do
-      data = { foo: 123, bar: 1.2, var: ".inf" }
+      data = { foo: 123, bar: 1.2, var: '.inf' }
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
@@ -26,7 +26,7 @@ describe BenchmarkResult do
     end
 
     it 'replaces -.Inf with -Infinity' do
-      data = { foo: 123, bar: 1.2, var: "-.Inf" }
+      data = { foo: 123, bar: 1.2, var: '-.Inf' }
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
@@ -35,7 +35,7 @@ describe BenchmarkResult do
     end
 
     it 'replaces .Nan with NaN' do
-      data = { foo: 123, bar: 1.2, var: ".NAN" }
+      data = { foo: 123, bar: 1.2, var: '.NAN' }
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
@@ -59,13 +59,13 @@ describe BenchmarkResult do
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
-          var: ".inf"
+          var: '.inf'
         })
       data = { foo: 123, bar: 1.2, var: BigDecimal('Infinity') }
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
-          var: ".inf"
+          var: '.inf'
         })
     end
 
@@ -74,13 +74,13 @@ describe BenchmarkResult do
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
-          var: "-.Inf"
+          var: '-.Inf'
         })
       data = { foo: 123, bar: 1.2, var: BigDecimal('-Infinity') }
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
-          var: "-.Inf"
+          var: '-.Inf'
         })
     end
 
@@ -89,7 +89,7 @@ describe BenchmarkResult do
       expect(BenchmarkResult.convert_for_storage(data)).to eq({
           foo: 123,
           bar: 1.2,
-          var: ".NAN"
+          var: '.NAN'
         })
     end
   end

@@ -27,7 +27,7 @@ module Admin
 
       def lock_all
         @school_group.users.each { |user| user.lock_access!(send_instructions: false) }
-        redirect_to admin_school_group_users_path(@school_group), notice: "All group users locked."
+        redirect_to admin_school_group_users_path(@school_group), notice: 'All group users locked.'
       end
 
       private
@@ -75,7 +75,7 @@ module Admin
           school_group.name,
           school.present? ? school.name : 'N/A',
           user.name,
-          user.pupil? ? "N/A" : user.email,
+          user.pupil? ? 'N/A' : user.email,
           user.role.titleize,
           user.group_admin? ? 'N/A' : user.staff_role&.title,
           y_n(user.confirmed?),

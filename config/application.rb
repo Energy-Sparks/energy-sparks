@@ -24,6 +24,15 @@ module EnergySparks
     # Pull in folders without namespacing
     config.eager_load_paths << Rails.root.join('app', 'models', 'areas')
 
+    # Rails generators are auto-discovered from fixed locations. The paths dont match the
+    # expected module structure. However when eager loading is enabled Zeitwerk refuses to
+    # load the code and the app fails to boot.
+    #
+    # Rails 7 has a solution to this: https://github.com/rails/rails/pull/48572
+    #
+    # For now, explicitly ignore the generator from being auto-loaded.
+    Rails.autoloaders.main.ignore(Rails.root.join('lib/generators/comparison_report/comparison_report_generator.rb'))
+
     #config.time_zone = 'London'
     # optional - note it can be only :utc or :local (default is :utc)
     # HAS to be UTC for group by date to work

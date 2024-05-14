@@ -49,6 +49,13 @@ GEM
     crass (1.0.6)
     drb (2.2.0)
       ruby2_keywords
+    erb_lint (0.5.0)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
     erubi (1.12.0)
     fasterer (0.11.0)
       ruby_parser (>= 3.19.1)
@@ -182,6 +189,7 @@ PLATFORMS
 DEPENDENCIES
   brakeman
   bundler-audit
+  erb_lint
   fasterer
   i18n-tasks (~> 1.0.10)
   overcommit

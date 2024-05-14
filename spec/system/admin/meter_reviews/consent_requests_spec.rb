@@ -15,7 +15,7 @@ RSpec.describe 'consent_requests', type: :system do
       visit root_path
       click_on 'Admin'
       click_on 'Meter Reviews'
-      expect(page).to have_link("Request consent", href: new_admin_school_consent_request_path(school))
+      expect(page).to have_link('Request consent', href: new_admin_school_consent_request_path(school))
     end
   end
 
@@ -30,11 +30,11 @@ RSpec.describe 'consent_requests', type: :system do
       end
 
       it 'says there are no users' do
-        expect(page).to have_text("The school has no staff or admin users")
+        expect(page).to have_text('The school has no staff or admin users')
       end
 
       it 'links to add a user' do
-        expect(page).to have_link("Add user", href: school_users_path(school))
+        expect(page).to have_link('Add user', href: school_users_path(school))
       end
     end
 
@@ -54,13 +54,13 @@ RSpec.describe 'consent_requests', type: :system do
       end
 
       it 'links to manage users' do
-        expect(page).to have_link("Manage users", href: school_users_path(school))
+        expect(page).to have_link('Manage users', href: school_users_path(school))
       end
 
       context 'when invalid form is submitted' do
         it 'displays an error' do
           click_on 'Request consent'
-          expect(page.has_text?("You must select at least one user")).to be true
+          expect(page.has_text?('You must select at least one user')).to be true
           expect(ActionMailer::Base.deliveries.count).to be 0
         end
       end
@@ -72,7 +72,7 @@ RSpec.describe 'consent_requests', type: :system do
         end
 
         it 'confirms email has been sent' do
-          expect(page.has_text?("Consent has been requested")).to be true
+          expect(page.has_text?('Consent has been requested')).to be true
         end
 
         it 'sends the email' do
@@ -87,7 +87,7 @@ RSpec.describe 'consent_requests', type: :system do
 
     let!(:school_admin) { create(:school_admin, school: school)}
 
-    context "as the school admin" do
+    context 'as the school admin' do
       before do
         login_as(school_admin)
         visit school_consents_path(school)
@@ -124,7 +124,7 @@ RSpec.describe 'consent_requests', type: :system do
           expect(ActionMailer::Base.deliveries.count).to be 1
           @email = ActionMailer::Base.deliveries.last
           expect(@email.to).to match_array([school_admin.email])
-          expect(@email.subject).to eql("Your grant of consent to Energy Sparks")
+          expect(@email.subject).to eql('Your grant of consent to Energy Sparks')
           email_body = @email.html_part.decoded
           body = Capybara::Node::Simple.new(email_body)
           expect(body).to have_link('terms and conditions')
@@ -133,37 +133,37 @@ RSpec.describe 'consent_requests', type: :system do
     end
 
     context 'with non visible school' do
-        let!(:school) { create(:school, name: "School", visible: false)}
-        let!(:school_admin) { create(:school_admin, school: school)}
+      let!(:school) { create(:school, name: 'School', visible: false)}
+      let!(:school_admin) { create(:school_admin, school: school)}
 
-        it 'displays login page' do
+      it 'displays login page' do
+        visit school_consents_path(school)
+        expect(page).to have_content('Sign in to Energy Sparks')
+      end
+
+      context 'when logging in as the school admin user' do
+        it 'shows the page' do
           visit school_consents_path(school)
-          expect(page).to have_content("Sign in to Energy Sparks")
+          expect(page).to have_content('Sign in to Energy Sparks')
+          fill_in 'Email', with: school_admin.email
+          fill_in 'Password', with: school_admin.password
+          first("input[name='commit']").click
+          expect(page).to have_content(consent_statement.content.to_plain_text)
         end
+      end
 
-        context 'when logging in as the school admin user' do
-          it 'shows the page' do
-            visit school_consents_path(school)
-            expect(page).to have_content("Sign in to Energy Sparks")
-            fill_in 'Email', with: school_admin.email
-            fill_in 'Password', with: school_admin.password
-            first("input[name='commit']").click
-            expect(page).to have_content(consent_statement.content.to_plain_text)
-          end
+      context 'when logging in as another user' do
+        let!(:other_user) { create(:staff) }
+
+        it 'denies access' do
+          visit school_consent_documents_path(school)
+          expect(page).to have_content('Sign in to Energy Sparks')
+          fill_in 'Email', with: other_user.email
+          fill_in 'Password', with: other_user.password
+          first("input[name='commit']").click
+          expect(page).to have_content('You are not authorized to access this page')
         end
-
-        context 'when logging in as another user' do
-          let!(:other_user) { create(:staff) }
-
-          it 'denies access' do
-            visit school_consent_documents_path(school)
-            expect(page).to have_content("Sign in to Energy Sparks")
-            fill_in 'Email', with: other_user.email
-            fill_in 'Password', with: other_user.password
-            first("input[name='commit']").click
-            expect(page).to have_content("You are not authorized to access this page")
-          end
-        end
+      end
     end
   end
 end

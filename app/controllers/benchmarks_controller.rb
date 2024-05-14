@@ -25,7 +25,7 @@ class BenchmarksController < ApplicationController
 
         sort_content_and_page_groups(@page_groups)
       end
-      format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
+      format.yaml { send_data YAML.dump(@benchmark_results), filename: 'benchmark_results_data.yaml' }
     end
   end
 
@@ -55,7 +55,7 @@ private
 
     error_message = "Exception: #{page}: #{e.class} #{e.message}"
 
-    backtrace = e.backtrace.select { |b| b.include?('analytics')}.join("<br>")
+    backtrace = e.backtrace.select { |b| b.include?('analytics')}.join('<br>')
     full_html_output = "Exception: #{page}: #{e.class} #{e.message} #{backtrace}"
     errors << { message: error_message, full_html_output: full_html_output }
     {}

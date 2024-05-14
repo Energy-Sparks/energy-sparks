@@ -36,7 +36,7 @@ class ManagementPriority < ApplicationRecord
 
   scope :by_priority, -> { order(priority: :desc) }
 
-  #Returns an Array of OpenStruct
+  # Returns an Array of OpenStruct
   def self.for_school_group(school_group)
     query = <<-SQL.squish
       SELECT a.school_id, a.id, cv.alert_type_rating_id, vars.average_one_year_saving_£, vars.one_year_saving_co2, vars.one_year_saving_kwh

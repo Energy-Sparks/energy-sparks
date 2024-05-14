@@ -7,7 +7,7 @@ describe Programmes::Creator do
 
   let(:service) { Programmes::Creator.new(school, programme_type) }
 
-  describe "#create" do
+  describe '#create' do
     let(:programme) { school.programmes.first }
 
     context 'when school has no activities' do
@@ -15,33 +15,33 @@ describe Programmes::Creator do
         service.create
       end
 
-      it "creates school programme" do
+      it 'creates school programme' do
         expect(school.programmes.count).to be 1
         expect(programme.programme_type).to eql programme_type
       end
 
-      it "starts programme today" do
+      it 'starts programme today' do
         expect(programme.started_on).to eql Time.zone.today
       end
 
-      it "marks programme as started" do
+      it 'marks programme as started' do
         expect(programme.started?).to be true
       end
 
-      it "doesnt create any programme activities by default" do
+      it 'doesnt create any programme activities by default' do
         expect(programme.programme_activities.any?).to be false
       end
 
-      it "does not have an activity" do
+      it 'does not have an activity' do
         expect(school.programmes.first.activities.any?).to be false
       end
 
-      it "doesnt enrol twice" do
+      it 'doesnt enrol twice' do
         service.create
         expect(school.programmes.count).to be 1
       end
 
-      it "doesnt enrol twice when multiple programmes" do
+      it 'doesnt enrol twice when multiple programmes' do
         programme_type_other = create(:programme_type)
         school.programmes << create(:programme, programme_type: programme_type_other, started_on: Time.zone.now)
         service.create
@@ -49,21 +49,21 @@ describe Programmes::Creator do
       end
     end
 
-    context "when school has recent activity in programme" do
+    context 'when school has recent activity in programme' do
       let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first)}
 
       before do
         service.create
       end
 
-      it "recognises progress when recent" do
+      it 'recognises progress when recent' do
         expect(programme.programme_activities.count).to be 1
         expect(programme.activities.any?).to be true
         expect(programme.activities.first).to eq activity
       end
     end
 
-    context "when school has multiple activities" do
+    context 'when school has multiple activities' do
       let!(:activities) do
         [1.hour.ago, 1.day.ago, 1.year.ago].map do |time|
           create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: time)
@@ -74,20 +74,20 @@ describe Programmes::Creator do
         service.create
       end
 
-      it "recognises the most recent" do
+      it 'recognises the most recent' do
         expect(programme.programme_activities.count).to be 1
         expect(programme.activities.first).to eq activities.first
       end
     end
 
-    context "when school recorded an activity last year" do
+    context 'when school recorded an activity last year' do
       let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.today.last_year)}
 
       before do
         service.create
       end
 
-      it "this doesnt count towards progress" do
+      it 'this doesnt count towards progress' do
         expect(programme.programme_activities.count).to be 0
         expect(programme.activities.any?).to be false
       end

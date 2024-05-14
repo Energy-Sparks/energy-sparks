@@ -1,0 +1,31 @@
+module Comparisons
+  class <%= class_name %>Controller < BaseController
+    private
+
+    def headers
+      [
+        t('analytics.benchmarking.configuration.column_headings.school'),
+        ## add your headers in here
+        # t('analytics.benchmarking.configuration.column_headings.percent_above_or_below_target_since_target_set'),
+      ]
+    end
+
+    def key
+      :<%= file_name %>
+    end
+
+    def advice_page_key
+      :your_advice_page_key
+    end
+
+    def load_data
+      # change as needed
+      Comparison::<%= class_name %>.for_schools(@schools).where.not(variable_name: nil).order(variable_name: :desc)
+    end
+
+    def create_charts(results)
+      # change as appropriate!
+      create_single_number_chart(results, name, multiplier, series_name, y_axis_label)
+    end
+  end
+end

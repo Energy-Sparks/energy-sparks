@@ -25,7 +25,7 @@ describe 'Team members', type: :system do
       # for some reason, this is filling the profile field
       # fill_in_trix with: profile
 
-      attach_file("Image", Rails.root + "spec/fixtures/images/banes.png")
+      attach_file('Image', Rails.root + 'spec/fixtures/images/banes.png')
       click_on 'Create Team member'
       expect(page).to have_content 'Team member was successfully created'
       expect(page).to have_content title

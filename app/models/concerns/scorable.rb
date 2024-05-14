@@ -1,6 +1,10 @@
 module Scorable
   extend ActiveSupport::Concern
 
+  def national?
+    is_a? NationalScoreboard
+  end
+
   def this_academic_year(today: Time.zone.today)
     scorable_calendar.academic_year_for(today)
   end
@@ -9,7 +13,7 @@ module Scorable
     scorable_calendar.academic_year_for(today).previous_year
   end
 
-  #Calendar to be used for finding academic years. Overridden by groups
+  # Calendar to be used for finding academic years. Overridden by groups
   def scorable_calendar
     academic_year_calendar
   end

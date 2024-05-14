@@ -31,19 +31,19 @@ module Targets
     end
 
     def refresh_target(target)
-      if target.revised_fuel_types.include?("storage_heater") && target.storage_heaters.nil?
+      if target.revised_fuel_types.include?('storage_heater') && target.storage_heaters.nil?
         target.storage_heaters = DEFAULT_STORAGE_HEATER_TARGET
       end
-      if target.revised_fuel_types.include?("electricity") && target.electricity.nil?
+      if target.revised_fuel_types.include?('electricity') && target.electricity.nil?
         target.electricity = DEFAULT_ELECTRICITY_TARGET
       end
-      if target.revised_fuel_types.include?("gas") && target.gas.nil?
+      if target.revised_fuel_types.include?('gas') && target.gas.nil?
         target.gas = DEFAULT_GAS_TARGET
       end
     end
 
     def enough_data?
-      #always return true for v2
+      # always return true for v2
       true
     end
 
@@ -73,18 +73,18 @@ module Targets
       Time.zone.today.beginning_of_month
     end
 
-    #Some schools are running slightly behind on their data, but do have enough data
-    #to set a target. In this case we're rolling back the target start date to the
-    #month of the last validated reading. But only if they're not using an annual
-    #estimate.
+    # Some schools are running slightly behind on their data, but do have enough data
+    # to set a target. In this case we're rolling back the target start date to the
+    # month of the last validated reading. But only if they're not using an annual
+    # estimate.
     #
-    #However if there's a previous target, then we just default to when that ended
+    # However if there's a previous target, then we just default to when that ended
     def determine_target_start_date
       return most_recent_target.target_date if most_recent_target.present?
       target_start_date = default_target_start_date
       [:electricity, :gas, :storage_heater].each do |fuel_type|
         service = target_service(aggregate_school, fuel_type)
-        #ignore if school doesnt have this fuel type, we have enough data to set a target, and we're not using, or needing to use an estimate
+        # ignore if school doesnt have this fuel type, we have enough data to set a target, and we're not using, or needing to use an estimate
         if service.meter_present? && service.enough_data_to_set_target? && !service.annual_kwh_estimate_required?
           suggested_date = service.default_target_start_date
           target_start_date = suggested_date if suggested_date.present? && suggested_date < target_start_date

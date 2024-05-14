@@ -46,27 +46,20 @@ module Schools
     end
 
     def show
+      if @observation.observation_type == 'activity'
+        redirect_to school_activity_path(@school, @observation.activity_id), :status => :moved_permanently
+      else
+        render :show
+      end
     end
 
     def completed
-      return if EnergySparks::FeatureFlags.active?(:activities_2024)
-
-      @suggested_actions = load_suggested_actions(@school)
-      @completed_actions = load_completed_actions(@school)
     end
 
   private
 
     def observation_params
       params.require(:observation).permit(:description, :at, :intervention_type_id, :involved_pupils, :pupil_count)
-    end
-
-    def load_suggested_actions(school)
-      Interventions::SuggestAction.new(school).suggest(4)
-    end
-
-    def load_completed_actions(school)
-      school.observations_in_academic_year(Time.zone.today)
     end
   end
 end

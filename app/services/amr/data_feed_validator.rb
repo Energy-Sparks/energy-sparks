@@ -20,8 +20,8 @@ module Amr
       @config.column_row_filters.each do |column_name, filter_as_regex|
         column_index = headers_as_array.index(column_name)
         next unless column_index
-        #if there's no value for the column we're trying to filter it's an incomplete row,
-        #e.g. has fewer columns than expected so remove
+        # if there's no value for the column we're trying to filter it's an incomplete row,
+        # e.g. has fewer columns than expected so remove
         array_of_rows = array_of_rows.reject { |row| row[column_index].nil? || row[column_index].match?(filter_as_regex) }
       end
       array_of_rows
@@ -60,7 +60,7 @@ module Amr
       end
 
       new_array.last.slice!(index_of_first_reading_field)
-      new_array.last << "0.0"
+      new_array.last << '0.0'
       new_array
     end
 

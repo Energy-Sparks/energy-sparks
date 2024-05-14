@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "school removal", :schools, type: :system do
+RSpec.describe 'school removal', :schools, type: :system do
   let(:visible) { true }
   let(:school)  { create(:school, name: 'My High School', visible: visible) }
 

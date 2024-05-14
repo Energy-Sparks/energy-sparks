@@ -9,21 +9,21 @@ module Admin
     def deactivate_users
       service = SchoolRemover.new(@school)
       service.remove_users!
-      redirect_back fallback_location: root_path, notice: "Users have been deactivated"
+      redirect_back fallback_location: root_path, notice: 'Users have been deactivated'
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end
 
     def archive_meters
       remove_meters(archive: true)
-      redirect_back fallback_location: root_path, notice: "Meters have been archived and validated data removed"
+      redirect_back fallback_location: root_path, notice: 'Meters have been archived and validated data removed'
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end
 
     def delete_meters
       remove_meters(archive: false)
-      redirect_back fallback_location: root_path, notice: "Meters have been deactivated and validated data removed"
+      redirect_back fallback_location: root_path, notice: 'Meters have been deactivated and validated data removed'
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end
@@ -31,21 +31,21 @@ module Admin
     def reenable
       service = SchoolRemover.new(@school)
       service.reenable_school!
-      redirect_back fallback_location: root_path, notice: "School has been re-enabled"
+      redirect_back fallback_location: root_path, notice: 'School has been re-enabled'
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end
 
     def archive
       remove_school(archive: true)
-      redirect_back fallback_location: root_path, notice: "School has been archived"
+      redirect_back fallback_location: root_path, notice: 'School has been archived'
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end
 
     def delete
       remove_school(archive: false)
-      redirect_back fallback_location: root_path, notice: "School has been removed"
+      redirect_back fallback_location: root_path, notice: 'School has been removed'
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end

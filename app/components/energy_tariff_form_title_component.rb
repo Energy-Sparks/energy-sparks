@@ -1,4 +1,4 @@
-#Handles display of page title and subtitle for forms
+# Handles display of page title and subtitle for forms
 class EnergyTariffFormTitleComponent < ViewComponent::Base
   renders_one :page_title
   renders_one :notice

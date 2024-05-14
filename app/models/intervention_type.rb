@@ -8,6 +8,7 @@
 #  fuel_type                  :string           default([]), is an Array
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
+#  maximum_frequency          :integer          default(10)
 #  name                       :string
 #  score                      :integer
 #  show_on_charts             :boolean          default(TRUE)
@@ -29,6 +30,7 @@ class InterventionType < ApplicationRecord
   include Searchable
   include TranslatableAttachment
   include FuelTypeable
+  include Recordable
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
 
@@ -64,7 +66,7 @@ class InterventionType < ApplicationRecord
   scope :active_and_not_custom, -> { active.not_custom }
   scope :custom_last,           -> { order(:custom) }
   scope :between,               ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
-  scope :not_including,         ->(records = []) { where.not(id: records.pluck(:id)) }
+  scope :not_including,         ->(records = []) { where.not(id: records) }
 
   before_save :copy_searchable_attributes
 
@@ -72,13 +74,17 @@ class InterventionType < ApplicationRecord
     observations.for_school(school)
   end
 
-  #override default name for this resource in transifex
+  # override default name for this resource in transifex
   def tx_name
     name
   end
 
   def self.tx_resources
     active.order(:id)
+  end
+
+  def count_existing_for_academic_year(school, academic_year)
+    school.observations.where(intervention_type: self).where(at: academic_year.start_date..academic_year.end_date).count
   end
 
   private

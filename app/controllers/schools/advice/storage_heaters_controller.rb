@@ -41,7 +41,7 @@ module Schools
       end
 
       def annual_usage_breakdown_service
-        @annual_usage_breakdown_service ||= ::Usage::AnnualUsageBreakdownService.new(
+        @annual_usage_breakdown_service ||= ::Usage::UsageBreakdownService.new(
           meter_collection: aggregate_school,
           fuel_type: :storage_heater
         )

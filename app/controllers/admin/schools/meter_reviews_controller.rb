@@ -15,11 +15,11 @@ module Admin
       end
 
       def create
-        meters = @school.meters.where(id: params[:meter_review]["meter_ids"])
-        consent_documents = @school.consent_documents.where(id: params[:meter_review]["consent_document_ids"])
+        meters = @school.meters.where(id: params[:meter_review]['meter_ids'])
+        consent_documents = @school.consent_documents.where(id: params[:meter_review]['consent_document_ids'])
         service = MeterReviewService.new(@school, current_user)
         review = service.complete_review!(meters, consent_documents)
-        redirect_to admin_school_meter_review_path(@school, review), notice: "Review was successfully recorded. Meters will shortly be activated."
+        redirect_to admin_school_meter_review_path(@school, review), notice: 'Review was successfully recorded. Meters will shortly be activated.'
       rescue => e
         redirect_to new_admin_school_meter_review_path(@school), alert: e.message
       end

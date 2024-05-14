@@ -28,8 +28,8 @@ module Schools
           @date_ranges_by_meter = baseload_service.date_ranges_by_meter
         end
 
-        #need at least a years worth of data for this analysis
-        if @analysis_dates.one_years_data
+        # need at least a years worth of data for this analysis
+        if @analysis_dates.one_years_data?
           @seasonal_variation = baseload_service.seasonal_variation
           @seasonal_variation_by_meter = baseload_service.seasonal_variation_by_meter
           @intraweek_variation = baseload_service.intraweek_variation

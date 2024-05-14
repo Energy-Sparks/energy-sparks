@@ -1,0 +1,36 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |component| %>
+  <% @results.each do |result| %>
+    <% component.with_row do |row| %>
+      <%= period_type_string = t('analytics.benchmarking.content.benchmark_holidays_change_base.period_types') %>
+      <%= change_gbp_current_header = t('analytics.benchmarking.configuration.column_headings.change_£current') %>
+      <% row.with_school school: result.school %>
+      <% row.with_reference key: 'electricity_change_rows',
+                            period_type_string: period_type_string,
+                            if: result.pupils_changed %>
+      <% row.with_reference key: 'electricity_infinite_increase',
+                            period_type_string: period_type_string,
+                            if: result.difference_percent.infinite? == 1 %>
+      <% row.with_reference key: 'electricity_infinite_decrease',
+                            period_type_string: period_type_string,
+                            if: result.difference_percent.infinite? == -1 %>
+      <% row.with_reference key: 'tariff_changed_in_period',
+                            change_gbp_current_header: change_gbp_current_header,
+                            if: result.tariff_has_changed %>
+      <%= row.with_var val: result.difference_percent, unit: :relative_percent_0dp, change: true %>
+      <%= row.with_var val: result.difference_gbpcurrent, unit: :£_0dp, change: true %>
+      <%= row.with_var val: result.difference_kwh, unit: :kwh, change: true %>
+      <% if headers.count > 4 %>
+        <%= row.with_var do %>
+          <%= holiday_name(result.current_period_type, result.current_period_start_date, result.current_period_end_date,
+                           partial: result.truncated_current_period) %>
+        <% end %>
+        <%= row.with_var do %>
+          <%= holiday_name(result.previous_period_type, result.previous_period_start_date,
+                           result.previous_period_end_date) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

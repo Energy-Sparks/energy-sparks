@@ -68,7 +68,7 @@ class EnergyTariffTableComponent < ViewComponent::Base
   end
 
   def class_for_tariff(energy_tariff)
-    return "table-secondary" unless energy_tariff.enabled
-    return "table-danger" unless energy_tariff.usable?
+    return 'table-secondary' unless energy_tariff.enabled
+    return 'table-danger' unless energy_tariff.usable?
   end
 end

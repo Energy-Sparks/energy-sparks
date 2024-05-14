@@ -5,23 +5,23 @@ describe EnergySparks::PointsDisplayNormaliser do
 
   subject(:normalised_points) { EnergySparks::PointsDisplayNormaliser.normalise(points) }
 
-  context "when points is empty" do
+  context 'when points is empty' do
     let(:points) { [] }
 
-    it "returns an empty array" do
+    it 'returns an empty array' do
       expect(normalised_points).to be_empty
     end
   end
 
-  context "when all points are the same" do
+  context 'when all points are the same' do
     let(:points) { [20, 20, 20] }
 
-    it "returns 0.5s" do
+    it 'returns 0.5s' do
       expect(normalised_points).to eq([0.5, 0.5, 0.5])
     end
   end
 
-  context "when there is a nil point" do
+  context 'when there is a nil point' do
     let(:points) { [0, 4, 10] }
 
     it { expect(normalised_points).to eq([0, 0.4, 1]) }

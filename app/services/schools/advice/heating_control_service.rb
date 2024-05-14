@@ -3,7 +3,7 @@ module Schools
     class HeatingControlService
       include AnalysableMixin
 
-      #number of days heating on in warm weather => rating
+      # number of days heating on in warm weather => rating
       WARM_WEATHER_DAYS_RATING = {
         0..5     => :excellent,
         6..11    => :good,
@@ -45,7 +45,7 @@ module Schools
         end
       end
 
-      #TODO: needs changes in the analytics
+      # TODO: needs changes in the analytics
       def data_available_from
         nil
       end

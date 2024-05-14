@@ -6,9 +6,9 @@ describe 'TariffsReport', type: :system, include_application_helper: true do
   let(:school)                  { create(:school, school_group: school_group) }
   let(:school_without_group)    { create(:school) }
 
-  let!(:meter)                  { create(:electricity_meter, dcc_meter: true, school: school) }
+  let!(:meter)                  { create(:electricity_meter, dcc_meter: true, consent_granted: true, school: school) }
 
-  let!(:meter_without_group)    { create(:electricity_meter, dcc_meter: true, school: school_without_group) }
+  let!(:meter_without_group)    { create(:electricity_meter, dcc_meter: true, consent_granted: true, school: school_without_group) }
 
   # let!(:standing_charge_1) { create(:tariff_standing_charge, meter: meter, value: 1.23, start_date: Date.parse('2020-01-01')) }
   # let!(:standing_charge_2) { create(:tariff_standing_charge, meter: meter, value: 1.23, start_date: Date.parse('2020-01-02')) }
@@ -16,10 +16,10 @@ describe 'TariffsReport', type: :system, include_application_helper: true do
   # let!(:price_1) { create(:tariff_price, meter: meter, tariff_date: Date.parse('2020-01-03'), prices: [1,2,3]) }
   # let!(:price_2) { create(:tariff_price, meter: meter, tariff_date: Date.parse('2020-01-04'), prices: [1,2,3]) }
 
-  let(:energy_tariff_1) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: "School", school: school, tariff_type: 'differential')}
-  let(:energy_tariff_2) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2019-01-01', end_date: '2019-12-31', tariff_holder_type: "School", school: school, tariff_type: 'differential')}
-  let(:energy_tariff_3) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2020-01-01', end_date: '2020-12-31', tariff_holder_type: "School", school: school, tariff_type: 'differential')}
-  let(:energy_tariff_4) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2021-01-01', end_date: '2021-12-31', tariff_holder_type: "School", school: school_without_group, tariff_type: 'differential')}
+  let(:energy_tariff_1) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: 'School', school: school, tariff_type: 'differential')}
+  let(:energy_tariff_2) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2019-01-01', end_date: '2019-12-31', tariff_holder_type: 'School', school: school, tariff_type: 'differential')}
+  let(:energy_tariff_3) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2020-01-01', end_date: '2020-12-31', tariff_holder_type: 'School', school: school, tariff_type: 'differential')}
+  let(:energy_tariff_4) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2021-01-01', end_date: '2021-12-31', tariff_holder_type: 'School', school: school_without_group, tariff_type: 'differential')}
 
   before do
     meter.update!(energy_tariffs: [energy_tariff_1, energy_tariff_2, energy_tariff_3])

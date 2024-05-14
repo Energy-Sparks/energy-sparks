@@ -38,10 +38,10 @@ describe Charts::Annotate do
   describe '#annotate_weekly' do
     let(:x_axis_categories) do
       [
-        "24 Jun 2018",
-        "01 Jul 2018",
-        "08 Jul 2018",
-        "15 Jul 2018"
+        '24 Jun 2018',
+        '01 Jul 2018',
+        '08 Jul 2018',
+        '15 Jul 2018'
       ]
     end
 
@@ -767,7 +767,7 @@ describe Charts::Annotate do
   describe '#abbr_month_name_lookup' do
     it 'creates a lookup hash for abbreviated month names and those in default locale as values' do
       I18n.locale = 'cy'
-      expect(Charts::Annotate.new(school: school).send(:abbr_month_name_lookup)).to eq({ "" => "", "Awst" => "Aug", "Chwe" => "Feb", "Ebr" => "Apr", "Gorff" => "Jul", "Hyd" => "Oct", "Ion" => "Jan", "Mai" => "May", "Maw" => "Mar", "Medi" => "Sep", "Meh" => "Jun", "Rhag" => "Dec", "Tach" => "Nov" })
+      expect(Charts::Annotate.new(school: school).send(:abbr_month_name_lookup)).to eq({ '' => '', 'Awst' => 'Aug', 'Chwe' => 'Feb', 'Ebr' => 'Apr', 'Gorff' => 'Jul', 'Hyd' => 'Oct', 'Ion' => 'Jan', 'Mai' => 'May', 'Maw' => 'Mar', 'Medi' => 'Sep', 'Meh' => 'Jun', 'Rhag' => 'Dec', 'Tach' => 'Nov' })
       I18n.locale = 'en'
     end
   end

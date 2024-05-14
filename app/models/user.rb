@@ -59,7 +59,7 @@ class User < ApplicationRecord
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 
-  has_and_belongs_to_many :cluster_schools, class_name: "School", join_table: :cluster_schools_users
+  has_and_belongs_to_many :cluster_schools, class_name: 'School', join_table: :cluster_schools_users
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -214,11 +214,11 @@ class User < ApplicationRecord
       ]
       where.not(role: [:pupil, :admin]).order(:email).each do |user|
         school_group_name = if user.group_admin?
-          user.school_group.name
+                              user.school_group.name
                             elsif user.school && user.school.school_group
-          user.school_group_name
+                              user.school_group_name
                             else
-          ''
+                              ''
                             end
 
         csv << [
@@ -242,7 +242,7 @@ protected
   def preferred_locale_presence_in_available_locales
     return if I18n.available_locales.include? preferred_locale&.to_sym
 
-    errors.add(:preferred_locale, "must be present in the list of availale locales")
+    errors.add(:preferred_locale, 'must be present in the list of availale locales')
   end
 
   def password_required?

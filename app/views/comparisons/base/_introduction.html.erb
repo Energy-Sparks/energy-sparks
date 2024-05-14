@@ -1,0 +1,5 @@
+<div id='intro'>
+  <%= @report.introduction %>
+  <%= render 'introduction_extra' %>
+  <%= admin_button(edit_admin_comparisons_report_path(@report), tag: :p) %>
+</div>

@@ -20,7 +20,7 @@
 
 class InterventionTypeSuggestion < ApplicationRecord
   belongs_to :intervention_type, optional: true
-  belongs_to :suggested_type, class_name: "InterventionType"
+  belongs_to :suggested_type, class_name: 'InterventionType'
 
   scope :initial, -> { where(intervention_type: nil) }
 end

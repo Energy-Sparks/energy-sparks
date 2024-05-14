@@ -9,11 +9,11 @@ class HealthController < ActionController::Base # rubocop:disable Rails/Applicat
   private
 
   def render_up
-    render html: html_status(color: "green")
+    render html: html_status(color: 'green')
   end
 
   def render_down
-    render html: html_status(color: "red"), status: :internal_server_error
+    render html: html_status(color: 'red'), status: :internal_server_error
   end
 
   def html_status(color:)

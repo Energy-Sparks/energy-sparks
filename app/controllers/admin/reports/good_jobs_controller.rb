@@ -13,7 +13,7 @@ module Admin
         respond_to do |format|
           format.csv do
             response.headers['Content-Type'] = 'text/csv'
-            response.headers['Content-Disposition'] = "attachment; filename=good_jobs_time_to_completion.csv"
+            response.headers['Content-Disposition'] = 'attachment; filename=good_jobs_time_to_completion.csv'
           end
         end
       end

@@ -123,13 +123,13 @@ $(document).ready(function() {
     var firstDataPicker = $(chartDiv).find("input[name='first-date-picker']");
     var firstDataPickerWrapper = $(firstDataPicker).closest('.date');
     if (firstDataPickerWrapper.length) {
-      setUpDatePicker(firstDataPickerWrapper, firstDataPicker, minMaxReadings, defaultDate, period);
+      setUpDatePicker(firstDataPickerWrapper, firstDataPicker, minMaxReadings, defaultComparisonDate, period);
     }
 
     var secondDataPicker = $(chartDiv).find("input[name='second-date-picker']");
     var secondDataPickerWrapper = $(secondDataPicker).closest('.date');
     if (secondDataPickerWrapper.length) {
-      setUpDatePicker(secondDataPickerWrapper, secondDataPicker, minMaxReadings, defaultComparisonDate, period);
+      setUpDatePicker(secondDataPickerWrapper, secondDataPicker, minMaxReadings, defaultDate, period);
     }
 
     var chartContainer = $(chartDiv).find('.usage-chart').first();

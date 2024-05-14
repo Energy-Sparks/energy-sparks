@@ -1,24 +1,23 @@
 <div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
   <% if podium.includes_school? && podium.school_has_points? %>
-    <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-      <h4 class="text-center"><%= t('components.podium.full_position_html',
-        position_ordinal: podium.school_position.ordinal,
-        scoreboard: podium.scoreboard.name,
-        scoreboard_path: scoreboard_path(podium.scoreboard),
-        national_position_ordinal: national_podium.school_position.ordinal,
-        national_scoreboard_path: scoreboard_path(national_podium.scoreboard)) %>.</h4>
-    <% else %>
-      <h4 class="text-center"><%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.</h4>
-    <% end %>
+    <h4 class="text-center">
+      <%= t('components.podium.full_position_html',
+            position_ordinal: podium.school_position.ordinal,
+            scoreboard: podium.scoreboard.name,
+            scoreboard_path: scoreboard_path(podium.scoreboard),
+            national_position_ordinal: national_podium.school_position.ordinal,
+            national_scoreboard_path: scoreboard_path(national_podium.scoreboard)) %>.
+      </h4>
   <% else %>
     <h4 class="text-center"><%= t('components.podium.no_points_this_year') %></h4>
-
-    <p class="text-center"><%= t('components.podium.complete_an_activity_html', recommendations_path: (EnergySparks::FeatureFlags.active?(:activities_2023) ? school_recommendations_path(school) : activity_categories_path)) %>.
-      <%= t('components.podium.points_needed_to_overtake', points: podium.points_to_overtake) if podium.points_to_overtake %>
+    <p class="text-center"><%= t('components.podium.complete_an_activity_html',
+                                 recommendations_path: school_recommendations_path(school)) %>.
+      <%= if podium.points_to_overtake
+            t('components.podium.points_needed_to_overtake', points: podium.points_to_overtake)
+          end %>
     </p>
   <% end %>
-  <% if (EnergySparks::FeatureFlags.active?(:activities_2023) && (podium.school_has_points? || podium.positions.count > 1)) ||
-       !EnergySparks::FeatureFlags.active?(:activities_2023) && podium.includes_school? %>
+  <% if podium.school_has_points? || podium.positions.count > 1 %>
     <div class="row align-items-end border-bottom grey">
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">

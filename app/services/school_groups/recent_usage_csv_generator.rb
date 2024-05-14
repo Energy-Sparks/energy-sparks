@@ -29,15 +29,15 @@ module SchoolGroups
     def columns_for_usage(recent_usage)
       columns = []
       fuel_types.each do |fuel_type|
-        #loop first to add all metrics for last week, then last year
-        #rubocop:disable Style/CombinableLoops
+        # loop first to add all metrics for last week, then last year
+        # rubocop:disable Style/CombinableLoops
         METRICS.each do |metric|
           columns << (recent_usage&.send(fuel_type)&.week&.has_data ? recent_usage&.send(fuel_type)&.week&.send(metric) : '-')
         end
         METRICS.each do |metric|
           columns << (recent_usage&.send(fuel_type)&.year&.has_data ? recent_usage&.send(fuel_type)&.year&.send(metric) : '-')
         end
-        #rubocop:enable Style/CombinableLoops
+        # rubocop:enable Style/CombinableLoops
       end
       columns
     end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Intervention Types", type: :system do
+describe 'Intervention Types', type: :system do
   let!(:admin)                    { create(:admin)}
   let!(:intervention_type_group)  { create(:intervention_type_group)}
 
@@ -31,7 +31,7 @@ describe "Intervention Types", type: :system do
       fill_in :intervention_type_name_en, with: title
       fill_in :intervention_type_summary_en, with: summary
 
-      attach_file(:intervention_type_image_en, Rails.root + "spec/fixtures/images/placeholder.png")
+      attach_file(:intervention_type_image_en, Rails.root + 'spec/fixtures/images/placeholder.png')
 
       within('.download-links-trix-editor.en') do
         fill_in_trix with: download_links
@@ -42,10 +42,11 @@ describe "Intervention Types", type: :system do
       end
 
       fill_in('Score', with: 20)
+      fill_in('Maximum frequency', with: 5)
 
       click_on('Create Intervention type')
 
-      expect(page.has_content?("Intervention type was successfully created.")).to be true
+      expect(page.has_content?('Intervention type was successfully created.')).to be true
       expect(InterventionType.count).to be 1
 
       intervention_type = InterventionType.first
@@ -53,6 +54,7 @@ describe "Intervention Types", type: :system do
       expect(intervention_type.name).to eq(title)
       expect(intervention_type.summary).to eq(summary)
       expect(intervention_type.image_en.filename).to eq('placeholder.png')
+      expect(intervention_type.maximum_frequency).to eq(5)
 
       click_on title
       expect(page).to have_css("img[src*='placeholder.png']")
@@ -64,7 +66,7 @@ describe "Intervention Types", type: :system do
     it 'can does not crash if you forget the score' do
       click_on('New Intervention type', match: :first)
       fill_in :intervention_type_name_en, with: 'New activity'
-      fill_in_trix with: "the description"
+      fill_in_trix with: 'the description'
 
       click_on('Create Intervention type')
 
@@ -72,15 +74,15 @@ describe "Intervention Types", type: :system do
       expect(InterventionType.count).to be 0
     end
 
-    it 'can edit a new activity' do
+    it 'can edit an intervention' do
       intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group)
       refresh
 
       click_on 'Edit'
 
-      title = "New title"
-      description = "New description"
-      summary = "New summary"
+      title = 'New title'
+      description = 'New description'
+      summary = 'New summary'
 
       uncheck('Active')
       fill_in :intervention_type_name_en, with: title
@@ -89,8 +91,10 @@ describe "Intervention Types", type: :system do
         fill_in_trix with: description
       end
 
+      fill_in('Maximum frequency', with: 5)
+
       click_on('Update Intervention type')
-      expect(page.has_content?("Intervention type was successfully updated.")).to be true
+      expect(page.has_content?('Intervention type was successfully updated.')).to be true
       expect(InterventionType.count).to be 1
 
       intervention_type.reload
@@ -98,6 +102,7 @@ describe "Intervention Types", type: :system do
       expect(intervention_type.summary).to eq(summary)
       expect(intervention_type.description.body.to_plain_text).to eq(description)
       expect(intervention_type.active?).to be false
+      expect(intervention_type.maximum_frequency).to eq(5)
     end
 
     it 'shows user view from index' do
@@ -118,7 +123,7 @@ describe "Intervention Types", type: :system do
       end
 
       click_on('Update Intervention type')
-      expect(page.has_content?("Intervention type was successfully updated.")).to be true
+      expect(page.has_content?('Intervention type was successfully updated.')).to be true
       intervention_type.reload
       expect(intervention_type.suggested_types).to match_array([intervention_type])
 
@@ -128,7 +133,7 @@ describe "Intervention Types", type: :system do
       end
 
       click_on('Update Intervention type')
-      expect(page.has_content?("Intervention type was successfully updated.")).to be true
+      expect(page.has_content?('Intervention type was successfully updated.')).to be true
       intervention_type.reload
       expect(intervention_type.suggested_types).to be_empty
     end
