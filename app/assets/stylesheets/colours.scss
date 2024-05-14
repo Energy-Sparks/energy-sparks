@@ -71,7 +71,7 @@ $gas-light: #ffdd4b; // dark yellow
 $carbon-dark: $grey;
 $carbon-light: $light-grey;
 
-$colours-light: (
+$fuel-colours-light: (
   "electric" : $electric-light,
   "gas"      : $gas-light,
   "storage"  : $storage-light,
@@ -79,7 +79,7 @@ $colours-light: (
   "carbon"   : $carbon-light
 );
 
-$colours-dark: (
+$fuel-colours-dark: (
   "electric" : $electric-dark,
   "gas"      : $gas-dark,
   "storage"  : $storage-dark,
@@ -87,15 +87,18 @@ $colours-dark: (
   "carbon"   : $carbon-dark
 );
 
-@each $tag, $colour in $colours-light {
+@each $tag, $colour in $fuel-colours-light {
   .bg-#{$tag}-light {
     background-color: $colour;
   }
 }
 
-@each $tag, $colour in $colours-dark {
+@each $tag, $colour in $fuel-colours-dark {
   .bg-#{$tag}-dark {
     background-color: $colour;
+  }
+  .text-#{$tag} {
+    color: $colour;
   }
 }
 
