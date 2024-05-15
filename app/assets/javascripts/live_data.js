@@ -105,9 +105,9 @@ $(document).ready(function() {
       stops.push([i, '#ffac21']); // $light-orange
     }
     for (i = 0.8; i < 1.0; i += 0.01) {
-      stops.push([i, '#FF3A5B']); // $bg-negative
+      stops.push([i, '#ff3a5b']); // $new-red
     }
-    stops.push([1, '#FF3A5B']); // $bg-negative
+    stops.push([1, '#ff3a5b']); // $new-red
     return stops;
   }
 

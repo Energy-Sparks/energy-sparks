@@ -49,7 +49,7 @@ describe ChartDataValues do
       let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
+        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::GAS_DARK
       end
     end
 
@@ -57,7 +57,7 @@ describe ChartDataValues do
       let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
+        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::ELECTRIC_DARK
       end
     end
 
@@ -66,7 +66,7 @@ describe ChartDataValues do
       let(:chart_type) { :line }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
+        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::ELECTRIC_DARK
       end
     end
 
