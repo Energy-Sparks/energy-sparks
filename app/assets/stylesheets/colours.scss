@@ -1,7 +1,7 @@
 // Core colours for use across the application
 
 // Yellows
-$new-yellow: #fcb43a; // not used in the site but same colour is used in mailers
+$new-yellow: #fcb43a; // not used in the site but same colour is used in mailers & chart_data_values.rb
 $dark-yellow: #ffde4d; // podium
 $light-yellow: #fff9b2; // podium
 
@@ -59,6 +59,7 @@ $bg-negative-light: $light-red;
 // Have given variables to the ones that are re-used
 
 $electric-dark: #007eff; // very similar to $mid-blue
+$electric-middle: 02b8ff // used in charts only
 $electric-light: #93e1f6; // very similar to $light-blue
 
 $storage-dark: #7c3aff; // dark purple
@@ -68,6 +69,7 @@ $solar-dark: $turquoise;
 $solar-light: $light-turquoise;
 
 $gas-dark: #ff8438; // mid orange
+$gas-middle: #ffb138; // used in charts only
 $gas-light: #ffdd4b; // dark yellow
 
 $carbon-dark: $grey;
