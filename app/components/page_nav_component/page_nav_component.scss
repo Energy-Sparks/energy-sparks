@@ -17,11 +17,11 @@
 }
 
 .page-nav-component a.nav-link.electric-item:hover {
-  background-color: rgba(147, 255, 246, 0.5); //electric-light, 0.5 opacity
+  background-color: rgba($electric-light, 0.5);
 }
 
 .page-nav-component a.nav-link.electric-item.current {
-  background-color: rgba(147, 255, 246, 0.5); //electric-light, 0.5 opacity
+  background-color: rgba($electric-light, 0.5);
   font-weight: bolder;
 }
 
@@ -36,11 +36,11 @@
 }
 
 .page-nav-component a.nav-link.gas-item:hover {
-  background-color: rgba(255, 221, 75, 0.5); //gas-light, 0.5 opacity;
+  background-color: rgba($gas-light, 0.5);
 }
 
 .page-nav-component a.nav-link.gas-item.current {
-  background-color: rgba(255, 221, 75, 0.5); //gas-light, 0.5 opacity;
+  background-color: rgba($gas-light, 0.5);
   font-weight: bolder;
 }
 
@@ -55,11 +55,11 @@
 }
 
 .page-nav-component a.nav-link.solar-item:hover {
-  background-color: rgba(161, 255, 233, 0.5); //solar-light, 0.5 opacity;
+  background-color: rgba($solar-light, 0.5);
 }
 
 .page-nav-component a.nav-link.solar-item.current {
-  background-color: rgba(161, 255, 233, 0.5); //solar-light, 0.5 opacity;
+  background-color: rgba($solar-light, 0.5);
   font-weight: bolder;
 }
 
@@ -74,10 +74,10 @@
 }
 
 .page-nav-component a.nav-link.storage-item:hover {
-  background-color: rgba(224, 151, 252, 0.5); //storage-light, 0.5 opacity;
+  background-color: rgba($storage-light, 0.5);
 }
 
 .page-nav-component a.nav-link.storage-item.current {
-  background-color: rgba(224, 151, 252, 0.5); //storage-light, 0.5 opacity;
+  background-color: rgba($storage-light, 0.5);
   font-weight: bolder;
 }
