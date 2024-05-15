@@ -1,12 +1,10 @@
 //Core colours for use across the application
 
 // Yellows
-$yellow: #ffee8f; // not used? Could be overriding bootstrap yellow? - remove?
 $new-yellow: #fcb43a; // not used in the site but same colour is used in mailers
-$new-light-yellow: #ffe5b8; // not used? - remove?
 
 $dark-yellow: #ffde4d; // podium
-$light-yellow: #fff9b2; // podium - similar to new-light-yellow
+$light-yellow: #fff9b2; // podium
 
 // Oranges
 $dark-orange: #ff4500;
@@ -17,6 +15,7 @@ $dark-blue: #232b49; // main nav blue
 $bright-blue: #007bff;
 $light-blue: #97e6fc;
 $lighter-light-blue: #cbf4ff;
+$bluey-white: #FCFFFF; // used for background on pupil dashboards
 
 // Greens
 $green: #5cb85c;
@@ -36,6 +35,7 @@ $darker-grey: #6c757d;
 $dark-grey: #999999;
 $silver: #c0c0c0;
 $grey: #c4ccd4;
+$bluey-grey: #E7EDF0; // used for background on pupil dashboards
 $light-grey: #e6e6e6;
 $lighter-grey: #F1F3F5;
 $very-light-grey: #f8f9fa;
