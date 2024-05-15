@@ -133,10 +133,10 @@
 
 .nav-lozenge {
   white-space: nowrap;
-  background: #232B49;
-  background-image: linear-gradient(180deg, #252E50 0%, #374268 99%);
+  background: $dark-blue;
+  background: linear-gradient(180deg, saturate($dark-blue, 5%), lighten($dark-blue, 10%));
   border-radius: 25px;
-  border: 1px solid #161D37;
+  border: 1px solid darken($dark-blue, 15%);
   padding: 5px;
 
   .nav-link {

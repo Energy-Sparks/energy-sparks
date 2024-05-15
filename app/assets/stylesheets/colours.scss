@@ -13,8 +13,8 @@ $dark-orange: #ff4500;
 $light-orange: #ffac21;
 
 // Blues
-$dark-blue: #232b49;
-$mid-blue: #007bff;
+$dark-blue: #232b49; // main nav blue
+$bright-blue: #007bff;
 $light-blue: #97e6fc;
 $lighter-light-blue: #cbf4ff;
 
@@ -57,7 +57,7 @@ $bg-negative-light: $light-red;
 
 // Fuel Types
 // Wasn't sure if these needed moving into the palette or leaving seperately
-// Have give variables to the ones that are re-used
+// Have given variables to the ones that are re-used
 
 $electric-dark: #007eff; // very similar to $mid-blue
 $electric-light: #93e1f6; // very similar to $light-blue
