@@ -1,4 +1,19 @@
-<% @table_names.each_with_index do |table_name, index| %>
+<% if @table_names.size > 1 %>
+  <div class="mt-4" id="table-list">
+    <ul>
+      <% @table_names.each.with_index(1) do |table_name, index| %>
+        <li>
+          <%= link_to table_number_and_title(index, table_name), "#report-table-#{index}" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<% @table_names.each.with_index(1) do |table_name, index| %>
+  <% if @table_names.size > 1 %>
+    <%= render 'table_title', table_number: index, table_name: table_name %>
+  <% end %>
   <%= render table_name.to_s,
              results: results,
              report: report,
@@ -8,5 +23,5 @@
              headers: headers,
              colgroups: colgroups,
              advice_page_tab: advice_page_tab,
-             table_number: index + 1 %>
+             table_number: index %>
 <% end %>

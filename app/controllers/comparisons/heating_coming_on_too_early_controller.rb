@@ -2,6 +2,8 @@
 
 module Comparisons
   class HeatingComingOnTooEarlyController < BaseController
+    include MultipleTableComparison
+
     def index
       @headers_optimum_start_analysis = headers_optimum_start_analysis
       super
@@ -58,8 +60,11 @@ module Comparisons
       [true]
     end
 
-    def table_names
-      %i[table optimum_start_analysis]
+    def table_configuration
+      {
+        table: I18n.t('comparisons.tables.heating_start_time'),
+        optimum_start_analysis: I18n.t('comparisons.tables.optimum_start_analysis')
+      }
     end
   end
 end

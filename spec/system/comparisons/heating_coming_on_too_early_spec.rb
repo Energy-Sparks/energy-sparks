@@ -71,6 +71,9 @@ describe 'heating_coming_on_too_early' do
       let(:expected_report) { report }
     end
 
+    it_behaves_like 'a school comparison report with multiple tables',
+      table_titles: [I18n.t('comparisons.tables.heating_start_time'), I18n.t('comparisons.tables.optimum_start_analysis')]
+
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { schools[0] }

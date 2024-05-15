@@ -3,6 +3,8 @@
 module Comparisons
   module Shared
     class ArbitraryPeriodController < BaseController
+      include MultipleTableComparison
+
       private
 
       def set_headers(include_previous_period_unadjusted: true)
@@ -47,8 +49,13 @@ module Comparisons
         :total_energy_use
       end
 
-      def table_names
-        %i[total electricity gas storage_heater]
+      def table_configuration
+        {
+          total: I18n.t('comparisons.tables.total_usage'),
+          electricity: I18n.t('comparisons.tables.electricity_usage'),
+          gas: I18n.t('comparisons.tables.gas_usage'),
+          storage_heater: I18n.t('comparisons.tables.storage_heater_usage')
+        }
       end
 
       def create_charts(_results)
