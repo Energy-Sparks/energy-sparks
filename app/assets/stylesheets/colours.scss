@@ -5,9 +5,8 @@ $yellow: #ffee8f; // not used? Could be overriding bootstrap yellow? - remove?
 $new-yellow: #fcb43a; // not used in the site but same colour is used in mailers
 $new-light-yellow: #ffe5b8; // not used? - remove?
 
-// Keep these seperate for now until we decide if they are to use standard palette colours
-$podium-dark-yellow: #ffde4d;
-$podium-light-yellow: #fff9b2; // similar to new-light-yellow
+$dark-yellow: #ffde4d; // podium
+$light-yellow: #fff9b2; // podium - similar to new-light-yellow
 
 // Oranges
 $dark-orange: #ff4500;
@@ -30,13 +29,16 @@ $light-red: #ff9b9c;
 $turquoise: #50e3c2;
 $light-turquoise: #a1ffe9;
 
-// Greys
+// Shades of grey
+$black: #000000;
 $dark: #222222;
-$mid-grey: #6c757d; // used for dashboard school text colour
+$darker-grey: #6c757d;
+$dark-grey: #999999;
+$silver: #c0c0c0;
 $grey: #c4ccd4;
 $light-grey: #e6e6e6;
-$silver: #c0c0c0; // highcharts tooltip border
-$dark-grey: #999999; // used in charts
+$very-light-grey: #f8f9fa;
+$white: #ffffff;
 
 // Shortcuts
 

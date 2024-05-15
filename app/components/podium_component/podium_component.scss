@@ -7,12 +7,12 @@
     margin-left: auto;
 
     &-body {
-      background-color: $podium-light-yellow;
+      background-color: $light-yellow;
     }
 
     &-current {
       .bar-body {
-        background-color: $podium-dark-yellow;
+        background-color: $dark-yellow;
       }
     }
   }
