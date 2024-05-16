@@ -552,16 +552,16 @@ private
     end
     if @chart_type.match?(/_gas_/)
       if benchmark_school_category?(category)
-        GAS_MIDDLE
+        Colours::GAS_MIDDLE
       else
-        GAS_LIGHT
+        Colours::GAS_LIGHT
       end
     elsif @chart_type.match?(/_storage_/)
-      STORAGE_DARK
+      Colours::STORAGE_DARK
     elsif benchmark_school_category?(category)
-      ELECTRIC_MIDDLE
+      Colours::ELECTRIC_MIDDLE
     else
-      ELECTRIC_LIGHT
+      Colours::ELECTRIC_LIGHT
     end
   end
 
@@ -569,18 +569,18 @@ private
     case data_type
     when translated_series_item_for('Gas')
       if benchmark_school_category?(category)
-        GAS_MIDDLE
+        Colours::GAS_MIDDLE
       else
-        GAS_LIGHT
+        Colours::GAS_LIGHT
       end
     when translated_series_item_for('Electricity')
       if benchmark_school_category?(category)
-        ELECTRIC_MIDDLE
+        Colours::ELECTRIC_MIDDLE
       else
-        ELECTRIC_LIGHT
+        Colours::ELECTRIC_LIGHT
       end
     else
-      STORAGE_DARK
+      Colours::STORAGE_DARK
     end
   end
 
