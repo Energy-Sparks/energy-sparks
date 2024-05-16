@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: a7e581be782f49617d642b3a324f9c8584557c3a
-  tag: 5.2.4
+  revision: d32b8247622d9656119c88df6c6d10d68828db67
+  tag: 5.2.5
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -429,12 +429,12 @@ GEM
     netrc (0.11.0)
     nio4r (2.7.0)
     nkf (0.2.0)
-    nokogiri (1.16.4)
+    nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.16.4-aarch64-linux)
+    nokogiri (1.16.5-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.16.4-x86_64-linux)
+    nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
     notiffany (0.1.3)
       nenv (~> 0.1)

@@ -87,3 +87,20 @@ RSpec.shared_examples 'a school comparison report with a chart' do
     end
   end
 end
+
+RSpec.shared_examples 'a school comparison report with multiple tables' do |table_titles: nil|
+  it 'includes a table of contents' do
+    within '#table-list' do
+      expect(page).to have_css('li', count: table_titles.size)
+    end
+  end
+
+  it 'includes all table titles' do
+    index = 0
+    while index < table_titles.size
+      expect(page).to have_css("#report-table-#{index + 1}")
+      expect(page).to have_content(table_titles[index])
+      index += 1
+    end
+  end
+end
