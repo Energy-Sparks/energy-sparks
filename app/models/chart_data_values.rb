@@ -15,14 +15,14 @@ class ChartDataValues
 
   ELECTRIC_DARK = '#007eff'.freeze # $electric-dark
   ELECTRIC_LIGHT = '#93e1f6'.freeze # $electric-light
-  ELECTIC_MIDDLE = '#02b8ff'.freeze # $electric-middle
+  ELECTRIC_MIDDLE = '#02b8ff'.freeze # $electric-middle
   ELECTRIC_DARK_LINE = DARK_BLUE
   ELECTRIC_LIGHT_LINE = BRIGHT_BLUE
   GAS_DARK = '#ff8438'.freeze # $gas-dark
   GAS_MIDDLE = '#ffb138'.freeze # $gas-middle
-  LIGHT_GAS = '#ffdd4b'.freeze # gas-light
+  GAS_LIGHT = '#ffdd4b'.freeze # gas-light
   GAS_DARK_LINE = NEW_RED
-  LIGHT_GAS_LINE = NEW_YELLOW
+  GAS_LIGHT_LINE = NEW_YELLOW
   STORAGE_DARK = '#7c3aff'.freeze # $storage-dark
   STORAGE_LIGHT = '#e097fc'.freeze # $storage-light
   STORAGE_HEATER = '#501e74'.freeze # not used in the main site
