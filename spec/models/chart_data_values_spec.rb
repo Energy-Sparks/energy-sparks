@@ -49,7 +49,7 @@ describe ChartDataValues do
       let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::GAS_DARK
+        expect(chart_data_values.series_data.first[:color]).to eq Colours::GAS_DARK
       end
     end
 
@@ -57,7 +57,7 @@ describe ChartDataValues do
       let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::ELECTRIC_DARK
+        expect(chart_data_values.series_data.first[:color]).to eq Colours::ELECTRIC_DARK
       end
     end
 
@@ -66,7 +66,7 @@ describe ChartDataValues do
       let(:chart_type) { :line }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::ELECTRIC_DARK
+        expect(chart_data_values.series_data.first[:color]).to eq Colours::ELECTRIC_DARK
       end
     end
 
@@ -75,7 +75,7 @@ describe ChartDataValues do
       let(:chart_type) { :line }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::GAS_DARK
+        expect(chart_data_values.series_data.first[:color]).to eq Colours::GAS_DARK
       end
     end
 
@@ -297,9 +297,9 @@ describe ChartDataValues do
 
     it 'has right series default colours' do
       expect(electricity_series[:name]).to eq 'Electricity'
-      expect(electricity_series[:color]).to eq '#007eff' # $electric-dark
+      expect(electricity_series[:color]).to eq Colours::ELECTRIC_DARK
       expect(gas_series[:name]).to eq 'Gas'
-      expect(gas_series[:color]).to eq '#ff8438' # $gas-dark
+      expect(gas_series[:color]).to eq Colours::GAS_DARK
     end
 
     it 'overrides colours for benchmark and exemplar schools' do
@@ -309,11 +309,11 @@ describe ChartDataValues do
 
       exemplar = electricity_data[2]
       expect(exemplar[:y]).to be_within(0.1).of(32928.3)
-      expect(exemplar[:color]).to eq '#93e1f6'
+      expect(exemplar[:color]).to eq Colours::ELECTRIC_LIGHT
 
       benchmark = electricity_data[3]
       expect(benchmark[:y]).to be_within(0.1).of(47040.4)
-      expect(benchmark[:color]).to eq '#02b8ff'
+      expect(benchmark[:color]).to eq Colours::ELECTRIC_MIDDLE
 
       gas_data = gas_series[:data]
       expect(gas_data[0]).to be_within(0.1).of(21031.1)
@@ -321,11 +321,11 @@ describe ChartDataValues do
 
       exemplar = gas_data[2]
       expect(exemplar[:y]).to be_within(0.1).of(15151.6)
-      expect(exemplar[:color]).to eq '#ffdd4b' # $gas-light
+      expect(exemplar[:color]).to eq Colours::GAS_LIGHT
 
       benchmark = gas_data[3]
       expect(benchmark[:y]).to be_within(0.1).of(16335.3)
-      expect(benchmark[:color]).to eq '#ffb138' # $gas-middle
+      expect(benchmark[:color]).to eq Colours::GAS_MIDDLE
     end
   end
 end
