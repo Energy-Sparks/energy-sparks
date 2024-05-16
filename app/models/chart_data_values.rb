@@ -5,28 +5,6 @@ class ChartDataValues
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
               :uses_time_of_day, :y1_axis_choices, :explore_message, :pinch_and_zoom_message, :click_and_drag_message
 
-  DARK_BLUE = '#232b49'.freeze; # $dark-blue
-  BRIGHT_BLUE = '#007bff'.freeze # $bright-blue
-  NEW_RED = '#ff3a5b'.freeze # $new-red
-  NEW_YELLOW = '#fcb43a'.freeze # $new-yellow
-  GREEN = '#5cb85c'.freeze # $green
-  LIGHT_ORANGE = '#ffac21'.freeze # $light-orange
-  DARK_ORANGE = '#ff4500'.freeze # $dark-orange
-
-  ELECTRIC_DARK = '#007eff'.freeze # $electric-dark
-  ELECTRIC_LIGHT = '#93e1f6'.freeze # $electric-light
-  ELECTRIC_MIDDLE = '#02b8ff'.freeze # $electric-middle
-  ELECTRIC_DARK_LINE = DARK_BLUE
-  ELECTRIC_LIGHT_LINE = BRIGHT_BLUE
-  GAS_DARK = '#ff8438'.freeze # $gas-dark
-  GAS_MIDDLE = '#ffb138'.freeze # $gas-middle
-  GAS_LIGHT = '#ffdd4b'.freeze # gas-light
-  GAS_DARK_LINE = NEW_RED
-  GAS_LIGHT_LINE = NEW_YELLOW
-  STORAGE_DARK = '#7c3aff'.freeze # $storage-dark
-  STORAGE_LIGHT = '#e097fc'.freeze # $storage-light
-  STORAGE_HEATER = '#501e74'.freeze # not used in the main site
-
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
   BENCHMARK_LABELS = [
@@ -131,26 +109,26 @@ class ChartDataValues
 
   def colour_lookup
     @colour_lookup ||= {
-      I18n.t("analytics.series_data_manager.series_name.#{Series::DegreeDays::DEGREEDAYS_I18N_KEY}") => DARK_BLUE,
-      I18n.t("analytics.series_data_manager.series_name.#{Series::Temperature::TEMPERATURE_I18N_KEY}") => DARK_BLUE,
-      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::SCHOOLDAYCLOSED_I18N_KEY}") => '#3bc0f0',
-      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::SCHOOLDAYOPEN_I18N_KEY}") => GREEN,
-      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::HOLIDAY_I18N_KEY}") => DARK_ORANGE,
-      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::WEEKEND_I18N_KEY}") => LIGHT_ORANGE,
-      I18n.t("analytics.series_data_manager.series_name.#{Series::HeatingNonHeating::HEATINGDAY_I18N_KEY}") => '#3bc0f0',
-      I18n.t("analytics.series_data_manager.series_name.#{Series::HeatingNonHeating::NONHEATINGDAY_I18N_KEY}") => GREEN,
-      I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY}") => '#3bc0f0',
-      I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY}") => DARK_ORANGE,
-      I18n.t("analytics.series_data_manager.series_name.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => LIGHT_ORANGE,
-      I18n.t('analytics.series_data_manager.series_name.electricity') => ELECTRIC_DARK,
-      I18n.t('analytics.series_data_manager.series_name.gas') => GAS_DARK,
-      I18n.t('analytics.series_data_manager.series_name.storage_heaters') => STORAGE_HEATER,
-      '£' => DARK_BLUE,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => GREEN,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME_I18N_KEY}") => ELECTRIC_DARK,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME_I18N_KEY}") => GAS_LIGHT_LINE,
-      I18n.t('analytics.series_data_manager.y2_solar_label') => GAS_MIDDLE,
-      I18n.t('analytics.series_data_manager.y2_rating') => DARK_BLUE
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DegreeDays::DEGREEDAYS_I18N_KEY}") => Colours::DARK_BLUE,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::Temperature::TEMPERATURE_I18N_KEY}") => Colours::DARK_BLUE,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::SCHOOLDAYCLOSED_I18N_KEY}") => Colours::MID_BLUE,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::SCHOOLDAYOPEN_I18N_KEY}") => Colours::GREEN,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::HOLIDAY_I18N_KEY}") => Colours::DARK_ORANGE,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::WEEKEND_I18N_KEY}") => Colours::LIGHT_ORANGE,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::HeatingNonHeating::HEATINGDAY_I18N_KEY}") => Colours::MID_BLUE,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::HeatingNonHeating::NONHEATINGDAY_I18N_KEY}") => Colours::GREEN,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY}") => Colours::MID_BLUE,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY}") => Colours::DARK_ORANGE,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => Colours::LIGHT_ORANGE,
+      I18n.t('analytics.series_data_manager.series_name.electricity') => Colours::ELECTRIC_DARK,
+      I18n.t('analytics.series_data_manager.series_name.gas') => Colours::GAS_DARK,
+      I18n.t('analytics.series_data_manager.series_name.storage_heaters') => Colours::STORAGE_HEATER,
+      '£' => Colours::DARK_BLUE,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => Colours::GREEN,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME_I18N_KEY}") => Colours::ELECTRIC_DARK,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME_I18N_KEY}") => Colours::GAS_LIGHT_LINE,
+      I18n.t('analytics.series_data_manager.y2_solar_label') => Colours::GAS_MIDDLE,
+      I18n.t('analytics.series_data_manager.y2_rating') => Colours::DARK_BLUE
     }
   end
 
@@ -317,11 +295,11 @@ private
 
   def teachers_chart_colour(index)
     if @chart_type.match?(/_gas_/)
-      index.zero? ? GAS_DARK : GAS_LIGHT
+      index.zero? ? Colours::GAS_DARK : Colours::GAS_LIGHT
     elsif @chart_type.match?(/_storage_/)
-      index.zero? ? STORAGE_DARK : STORAGE_LIGHT
+      index.zero? ? Colours::STORAGE_DARK : Colours::STORAGE_LIGHT
     else
-      index.zero? ? ELECTRIC_DARK : ELECTRIC_LIGHT
+      index.zero? ? Colours::ELECTRIC_DARK : Colours::ELECTRIC_LIGHT
     end
   end
 
@@ -418,9 +396,9 @@ private
 
   def usage_line
     colour_options = case @chart_type
-                     when /_gas_/ then [GAS_DARK, GAS_LIGHT]
-                     when /_storage_/ then [STORAGE_DARK, STORAGE_LIGHT]
-                     else [ELECTRIC_DARK, ELECTRIC_LIGHT]
+                     when /_gas_/ then [Colours::GAS_DARK, Colours::GAS_LIGHT]
+                     when /_storage_/ then [Colours::STORAGE_DARK, Colours::STORAGE_LIGHT]
+                     else [Colours::ELECTRIC_DARK, Colours::ELECTRIC_LIGHT]
                      end
     line(colour_options: colour_options)
   end

@@ -1,0 +1,136 @@
+// Core colours for use across the application
+
+// Mappings to values found in initializers/colours.rb
+// Yellows
+$new-yellow: <%= Colours::NEW_YELLOW %>; // not used in the site but same colour is used in mailers & chart_data_values.rb
+$dark-yellow: <%= Colours::DARK_YELLOW %>; // podium
+$light-yellow: <%= Colours::LIGHT_YELLOW %>; // podium
+
+// Oranges
+$dark-orange: <%= Colours::DARK_ORANGE %>;
+$light-orange: <%= Colours::LIGHT_ORANGE %>;
+
+// Blues
+$dark-blue: <%= Colours::DARK_BLUE %>; // main nav blue
+$bright-blue: <%= Colours::BRIGHT_BLUE %>;
+$mid-blue: <%= Colours::MID_BLUE %>; // used in charts
+$light-blue: <%= Colours::LIGHT_BLUE %>;
+$lighter-light-blue: <%= Colours::LIGHTER_LIGHT_BLUE %>;
+$bluey-white: <%= Colours::BLUEY_WHITE %>; // used for background on pupil dashboards
+
+// Greens
+$green: <%= Colours::GREEN %>;
+
+// Reds
+$new-red: <%= Colours::NEW_RED %>;
+$light-red: <%= Colours::LIGHT_RED %>;
+
+// Turquoise
+$turquoise: <%= Colours::TURQUOISE %>;
+$light-turquoise: <%= Colours::LIGHT_TURQUOISE %>;
+
+// Shades of grey - these need sorting
+$black: <%= Colours::BLACK %>;
+$dark: <%= Colours::DARK %>;
+$darker-grey: <%= Colours::DARKER_GREY %>;
+$dark-grey: <%= Colours::DARK_GREY %>;
+$silver: <%= Colours::SILVER %>;
+$grey: <%= Colours::GREY %>;
+$bluey-grey: <%= Colours::BLUEY_GREY %>; // used for background on pupil dashboards
+$light-grey: <%= Colours::LIGHT_GREY %>;
+$lighter-grey: <%= Colours::LIGHTER_GREY %>;
+$very-light-grey: <%= Colours::VERY_LIGHT_GREY %>;
+$white: <%= Colours::WHITE %>;
+
+// Fuel Types
+// Wasn't sure if these needed moving into the palette or leaving seperately
+// Have given variables to the ones that are re-used
+
+$electric-dark: <%= Colours::ELECTRIC_DARK %>; // very similar to $mid-blue
+$electric-middle: <%= Colours::ELECTRIC_MIDDLE %>; // used in charts only
+$electric-light: <%= Colours::ELECTRIC_LIGHT %>; // very similar to $light-blue
+
+$storage-dark: <%= Colours::STORAGE_DARK %>; // dark purple
+$storage-light: <%= Colours::STORAGE_LIGHT %>; // pinky purple
+
+$solar-dark: <%= Colours::SOLAR_DARK %>;
+$solar-light: <%= Colours::SOLAR_LIGHT %>;
+
+$gas-dark: <%= Colours::GAS_DARK %>; // mid orange
+$gas-middle: <%= Colours::GAS_MIDDLE %>; // used in charts only
+$gas-light: <%= Colours::GAS_LIGHT %>; // dark yellow
+
+$carbon-dark: <%= Colours::CARBON_DARK %>;
+$carbon-light: <%= Colours::CARBON_LIGHT %>;
+
+// Shortcuts
+
+$text: $dark;
+$bg-positive: $turquoise;
+$bg-neutral: $light-blue;
+$bg-negative: $new-red;
+
+$bg-positive-light: $light-turquoise;
+$bg-neutral-light: $lighter-light-blue;
+$bg-negative-light: $light-red;
+
+$fuel-colours-light: (
+  "electric" : $electric-light,
+  "gas"      : $gas-light,
+  "storage"  : $storage-light,
+  "solar"    : $solar-light,
+  "carbon"   : $carbon-light
+);
+
+$fuel-colours-dark: (
+  "electric" : $electric-dark,
+  "gas"      : $gas-dark,
+  "storage"  : $storage-dark,
+  "solar"    : $solar-dark,
+  "carbon"   : $carbon-dark
+);
+
+@each $tag, $colour in $fuel-colours-light {
+  .bg-#{$tag}-light {
+    background-color: $colour;
+  }
+}
+
+@each $tag, $colour in $fuel-colours-dark {
+  .bg-#{$tag}-dark {
+    background-color: $colour;
+  }
+  .text-#{$tag} {
+    color: $colour;
+  }
+}
+
+// Live Data
+
+$live-data-dark: $green;
+$live-data-light: $light-grey;
+
+// Comparisons
+
+$exemplar-school: $green;
+$benchmark-school: $light-orange;
+$other-school: $bg-negative;
+
+$colours-comparison: (
+  "exemplar_school": $exemplar-school,
+  "benchmark_school": $benchmark-school,
+  "other_school": $other-school
+);
+
+@each $tag, $colour in $colours-comparison {
+  .bg-#{$tag} {
+    background-color: $colour !important;
+  }
+  .text-#{$tag} {
+    text-decoration: underline;
+    text-decoration-color: $colour;
+    text-decoration-thickness: 3px;
+    font-weight: bolder;
+  }
+}
+
