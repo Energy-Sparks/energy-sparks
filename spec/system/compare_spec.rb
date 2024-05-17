@@ -31,7 +31,7 @@ describe 'compare pages', :compare, type: :system do
   shared_examples 'a benchmark list page' do |edit: false|
     it { expect(page).to have_content('Benchmark group name') }
     it { expect(page).to have_content('Benchmark description') }
-    it { expect(page).to have_link('Baseload per pupil') }
+    it { expect(page).to have_link('Baseload per pupil', href: %r{^/compar(e|isons)/baseload_per_pupil?}) }
 
     it 'allows report group to be edited', if: edit do
       within first('div.compare') do
