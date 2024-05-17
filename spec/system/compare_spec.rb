@@ -32,6 +32,7 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_content('Benchmark group name') }
     it { expect(page).to have_content('Benchmark description') }
     it { expect(page).to have_link('Baseload per pupil', href: %r{^/compar(e|isons)/baseload_per_pupil?}) }
+    it { expect(page).not_to have_link('Disabled report') }
 
     it 'allows report group to be edited', if: edit do
       within first('div.compare') do
@@ -234,6 +235,7 @@ describe 'compare pages', :compare, type: :system do
     before do
       if display_new_comparison_pages
         create(:report, key: 'baseload_per_pupil', title: 'Baseload per pupil', introduction: 'intro html', public: true)
+        create(:report, key: 'disabled_report', title: 'Disabled', public: true, disabled: true)
       else
         expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
       end
