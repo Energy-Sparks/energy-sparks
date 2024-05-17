@@ -29,7 +29,7 @@ $light-red: <%= Colours::LIGHT_RED %>;
 $turquoise: <%= Colours::TURQUOISE %>;
 $light-turquoise: <%= Colours::LIGHT_TURQUOISE %>;
 
-// Shades of grey - these need sorting
+// Shades of grey
 $black: <%= Colours::BLACK %>;
 $dark: <%= Colours::DARK %>;
 $darker-grey: <%= Colours::DARKER_GREY %>;
@@ -43,9 +43,6 @@ $very-light-grey: <%= Colours::VERY_LIGHT_GREY %>;
 $white: <%= Colours::WHITE %>;
 
 // Fuel Types
-// Wasn't sure if these needed moving into the palette or leaving seperately
-// Have given variables to the ones that are re-used
-
 $electric-dark: <%= Colours::ELECTRIC_DARK %>; // very similar to $mid-blue
 $electric-middle: <%= Colours::ELECTRIC_MIDDLE %>; // used in charts only
 $electric-light: <%= Colours::ELECTRIC_LIGHT %>; // very similar to $light-blue
@@ -64,7 +61,6 @@ $carbon-dark: <%= Colours::CARBON_DARK %>;
 $carbon-light: <%= Colours::CARBON_LIGHT %>;
 
 // Shortcuts
-
 $text: $dark;
 $bg-positive: $turquoise;
 $bg-neutral: $light-blue;
@@ -90,28 +86,11 @@ $fuel-colours-dark: (
   "carbon"   : $carbon-dark
 );
 
-@each $tag, $colour in $fuel-colours-light {
-  .bg-#{$tag}-light {
-    background-color: $colour;
-  }
-}
-
-@each $tag, $colour in $fuel-colours-dark {
-  .bg-#{$tag}-dark {
-    background-color: $colour;
-  }
-  .text-#{$tag} {
-    color: $colour;
-  }
-}
-
 // Live Data
-
 $live-data-dark: $green;
 $live-data-light: $light-grey;
 
 // Comparisons
-
 $exemplar-school: $green;
 $benchmark-school: $light-orange;
 $other-school: $bg-negative;
@@ -121,27 +100,3 @@ $colours-comparison: (
   "benchmark_school": $benchmark-school,
   "other_school": $other-school
 );
-
-@each $tag, $colour in $colours-comparison {
-  .bg-#{$tag} {
-    background-color: $colour !important;
-  }
-  .text-#{$tag} {
-    text-decoration: underline;
-    text-decoration-color: $colour;
-    text-decoration-thickness: 3px;
-    font-weight: bolder;
-  }
-}
-
-.bg-dark-blue {
-  background-color: $dark-blue;
-}
-
-.text-white {
-  color: $white;
-}
-
-.text-dark-blue {
-  color: $dark-blue;
-}

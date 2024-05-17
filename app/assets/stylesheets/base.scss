@@ -243,3 +243,42 @@ dl dt {
   background-color: transparent;
   padding: 0;
 }
+
+@each $tag, $colour in $fuel-colours-light {
+  .bg-#{$tag}-light {
+    background-color: $colour;
+  }
+}
+
+@each $tag, $colour in $fuel-colours-dark {
+  .bg-#{$tag}-dark {
+    background-color: $colour;
+  }
+  .text-#{$tag} {
+    color: $colour;
+  }
+}
+
+@each $tag, $colour in $colours-comparison {
+  .bg-#{$tag} {
+    background-color: $colour !important;
+  }
+  .text-#{$tag} {
+    text-decoration: underline;
+    text-decoration-color: $colour;
+    text-decoration-thickness: 3px;
+    font-weight: bolder;
+  }
+}
+
+.bg-dark-blue {
+  background-color: $dark-blue;
+}
+
+.text-white {
+  color: $white;
+}
+
+.text-dark-blue {
+  color: $dark-blue;
+}
