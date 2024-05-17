@@ -244,6 +244,8 @@ dl dt {
   padding: 0;
 }
 
+// fuel colour styles
+
 @each $tag, $colour in $fuel-colours-light {
   .bg-#{$tag}-light {
     background-color: $colour;
@@ -281,4 +283,9 @@ dl dt {
 
 .text-dark-blue {
   color: $dark-blue;
+}
+
+.card .card-footer.plain {
+  border-top: none;
+  background-color: white;
 }

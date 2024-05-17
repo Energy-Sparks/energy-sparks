@@ -10,7 +10,7 @@
             <%= link_to activity_type.name, activity_type_path(activity_type) %>
           </p>
         </div>
-        <div class="card-footer">
+        <div class="card-footer plain">
           <% if activity_type.subjects.any? %>
             <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
           <% end %>
