@@ -219,6 +219,16 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
         expect(result['meter1'].to_h.keys).to match_array([:meter, :enough_data?, :data_available_from])
       end
     end
+
+    context 'when there is a solar meter that hasnt been configured' do
+      let(:solar_meter) { double(mpan_mprn: 'solar_meter', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :solar_pv, aggregate_meter?: false) }
+      let(:electricity_meters) { [electricity_meter_1, electricity_meter_2, solar_meter] }
+
+      it 'returns variation for the actual electricity meters only' do
+        result = service.seasonal_variation_by_meter
+        expect(result.keys).to match_array(%w[meter1 meter2])
+      end
+    end
   end
 
   describe '#intraweek_variation' do
@@ -269,8 +279,8 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#date_ranges_by_meter' do
-    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(start_date: Date.parse('20190101'), end_date: Date.parse('20200101'))) }
-    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(start_date: Date.parse('20180101'), end_date: Date.parse('20210101'))) }
+    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', fuel_type: :electricity, amr_data: double(start_date: Date.parse('20190101'), end_date: Date.parse('20200101'))) }
+    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', fuel_type: :electricity, amr_data: double(start_date: Date.parse('20180101'), end_date: Date.parse('20210101'))) }
     let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
 
     it 'returns date ranges' do
