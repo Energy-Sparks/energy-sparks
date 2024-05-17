@@ -11,7 +11,7 @@ cy:
       message_4: Cael rhybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid.
       message_5: Archwiliwch weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
       message_6: Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill.
-    enrol_your_school: Cofrestru eich ysgol
+    enrol_your_school: Dysgu rhagor
     funnels:
       local_authority:
         button: Sbarcynni ar gyfer Awdurdodau Lleol
@@ -28,7 +28,7 @@ cy:
     quote:
       job_title: Pennaeth yr Ysgol
       text_html: Mae ymgysylltu ag Sbarcynni wedi bod yn brofiad gwerth chweil. Nid yn unig y mae'r ysgol wedi arbed arian, mae'r plant wedi dod yn fwy ymwybodol o'r ffyrdd y gallant helpu i leihau defnydd ynni&hellip;
-    sub_title: Offeryn dadansoddi ynni a rhaglen addysg ynni ar-lein sy'n benodol i ysgolion yw Sbarcynni.
+    sub_title: Offeryn rheoli ynni a rhaglen addysg unigryw i ysgolion
     title: Rydym yn helpu ysgolion i ddod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd.
   mailchimp:
     continue: Parhau

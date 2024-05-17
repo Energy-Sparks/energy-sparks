@@ -1,0 +1,15 @@
+cy:
+  tasks:
+    completed:
+      action:
+        no_points: Rydym wedi cofnodi eich gweithred
+        page_title: "Gweithred %{school} "
+        view_link: Gweld eich gweithred
+      activity:
+        no_points: Rydym wedi cofnodi eich gweithgaredd
+        page_title: "Gweithgaredd %{school}"
+        view_link: Gweld eich gweithgarwch
+      congratulations: Llongyfarchiadau!
+      points: Rydych chi newydd sgorio %{points} o bwyntiau
+      share: Rhannwch yr hyn rydych chi wedi’i wneud ag eraill yng nghymuned yr ysgol
+      what_next: Beth ydych chi eisiau ei wneud nesaf?
