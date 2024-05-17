@@ -23,7 +23,7 @@
   box-shadow: 1px 1px $silver;
   margin-top: 10px;
   margin-bottom: 12px;
-  background-color: white;
+  background-color: $white;
   text-align: center;
 
   div.body h2 {
@@ -38,7 +38,7 @@
   left: 50%;
   height: 20px;
   width: 20px;
-  background: white;
+  background: $white;
   box-sizing: border-box;
   transform: rotate(45deg) translate(-50%);
   border-bottom: inherit;
