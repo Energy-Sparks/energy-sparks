@@ -244,6 +244,23 @@ dl dt {
   padding: 0;
 }
 
+.bg-dark-blue {
+  background-color: $dark-blue;
+}
+
+.text-white {
+  color: $white;
+}
+
+.text-dark-blue {
+  color: $dark-blue;
+}
+
+.card .card-footer.plain {
+  border-top: none;
+  background-color: white;
+}
+
 // fuel colour styles
 
 @each $tag, $colour in $fuel-colours-light {
@@ -273,19 +290,3 @@ dl dt {
   }
 }
 
-.bg-dark-blue {
-  background-color: $dark-blue;
-}
-
-.text-white {
-  color: $white;
-}
-
-.text-dark-blue {
-  color: $dark-blue;
-}
-
-.card .card-footer.plain {
-  border-top: none;
-  background-color: white;
-}
