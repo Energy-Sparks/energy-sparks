@@ -13,7 +13,6 @@ module Colours
   DARK_BLUE = '#232b49'.freeze
   BRIGHT_BLUE = '#007bff'.freeze
   MID_BLUE = '#3bc0f0'.freeze
-
   LIGHT_BLUE = '#97e6fc'.freeze
   LIGHTER_LIGHT_BLUE = '#cbf4ff'.freeze
   BLUEY_WHITE = '#FCFFFF'.freeze
@@ -24,6 +23,9 @@ module Colours
   # REDS
   NEW_RED = '#ff3a5b'.freeze
   LIGHT_RED = '#ff9b9c'.freeze
+
+  # PURPLES / PINKS
+  MID_PURPLE = '#B56CE2'.freeze
 
   # Turquoise
   TURQUOISE = '#50e3c2'.freeze
