@@ -19,10 +19,12 @@ cy:
       school:
         activation_date: Dyddiad gweithredu
         address: Cyfeiriad
-        alternative_heating_biomass: Mae gan ein hysgol foeler Biomas
-        alternative_heating_district_heating: Mae gan ein hysgol Wresogi Ardal
+        alternative_heating_air_source_heat_pump: Mae gan ein hysgol bwmp gwres ffynhonnell aer
+        alternative_heating_biomass: Mae gan ein hysgol foeler biomas
+        alternative_heating_district_heating: Mae gan ein hysgol wresogi ardal
+        alternative_heating_ground_source_heat_pump: Mae gan ein hysgol bwmp gwres o'r ddaear
         alternative_heating_lpg: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
-        alternative_heating_oil: Mae ein hysgol yn defnyddio Olew ar gyfer gwresogi
+        alternative_heating_oil: Mae ein hysgol yn defnyddio olew ar gyfer gwresogi
         cooks_dinners_for_other_schools: Mae'r gegin yn coginio ciniawau ar gyfer ysgolion eraill
         cooks_dinners_for_other_schools_count: Ar gyfer faint o ysgolion mae eich ysgol yn coginio cinio?
         cooks_dinners_onsite: Ciniawau yn cael eu coginio ar y safle

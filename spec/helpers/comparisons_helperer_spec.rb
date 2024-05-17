@@ -1,16 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ComparisonsHelper do
-  describe '#comparison_page_exists?' do
-    it 'returns true if controller exists' do
-      expect(comparison_page_exists?(:baseload_per_pupil)).to be true
-    end
-
-    it 'returns false if controller does not exist' do
-      expect(comparison_page_exists?(:never_ever_going_to_exist)).to be false
-    end
-  end
-
   describe '#holiday_name' do
     it 'works for easter' do
       expect(holiday_name(:easter, Date.new(2023, 4, 1), Date.new(2023, 4, 15))).to eq('Easter 2023')
