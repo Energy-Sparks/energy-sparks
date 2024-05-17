@@ -28,6 +28,7 @@
         <%= f.rich_text_area t_field(:notes, locale), as: :string %>
       <% end %>
       <%= f.input :public %>
+      <%= f.input :disabled %>
       <%= f.submit 'Save', class: 'btn btn-primary' %>
     <% end %>
   </div>

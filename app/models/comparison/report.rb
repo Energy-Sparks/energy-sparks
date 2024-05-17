@@ -4,6 +4,7 @@
 #
 #  created_at       :datetime         not null
 #  custom_period_id :bigint(8)
+#  disabled         :boolean          default(FALSE), not null
 #  id               :bigint(8)        not null, primary key
 #  key              :string           not null
 #  public           :boolean          default(FALSE)

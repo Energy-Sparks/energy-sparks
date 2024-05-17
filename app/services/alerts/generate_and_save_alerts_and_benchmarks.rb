@@ -121,7 +121,7 @@ module Alerts
     end
 
     def process_custom_periods
-      Comparison::Report.where.not(custom_period: nil).find_each do |report|
+      Comparison::Report.where(disabled: false).where.not(custom_period: nil).find_each do |report|
         @configurable_alert_types.each do |alert_type|
           analysis_date = AggregateSchoolService.analysis_date(@aggregate_school, alert_type.fuel_type)
           result = AlertTypeRunResult.generate_alert_report(alert_type, analysis_date, @school) do
