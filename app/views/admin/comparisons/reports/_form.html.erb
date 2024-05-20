@@ -4,7 +4,6 @@
   <div class="col">
     <% url = report.new_record? ? admin_comparisons_reports_path : admin_comparisons_report_path(report) %>
     <%= simple_form_for(report, as: :report, url: url) do |f| %>
-      <%= f.input :key %>
       <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>
