@@ -79,5 +79,16 @@ describe 'hot_water_efficiency' do
     it 'has custom unlisted message' do
       expect(page).to have_content('1 school could not be shown in this report as it does not have enough data to be analysed, or has a swimming pool so its hot water usage cannot be accurately estimated')
     end
+
+    context 'when opening the modal', js: true do
+      before { click_on 'View school' }
+
+      it 'displays the school name and whether it has a swimming pool' do
+        within '.modal-body' do
+          expect(page).to have_link other_school.name, href: school_path(other_school)
+          expect(page).to have_content 'Yes'
+        end
+      end
+    end
   end
 end
