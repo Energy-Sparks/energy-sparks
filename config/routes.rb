@@ -133,7 +133,7 @@ Rails.application.routes.draw do
     get '*key', to: 'configurable_period#index', as: :configurable_period
   end
 
-  # older version of benchmarks redirect
+  # redirect old benchmark URLs
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
