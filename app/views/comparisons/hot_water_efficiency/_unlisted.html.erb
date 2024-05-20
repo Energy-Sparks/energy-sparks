@@ -4,12 +4,14 @@
   <thead>
     <tr>
       <th class="text-left"><%= t('common.school') %></th>
+      <th class="text-right"><%= t('comparisons.column_headings.swimming_pool') %></th>
     </tr>
   </thead>
   <tbody>
     <% @unlisted&.each do |school| %>
       <tr>
         <td class='text-left'><%= link_to school.name, school_path(school) %></td>
+        <td class='text-right'><%= y_n(school.has_swimming_pool) %></td>
       </tr>
     <% end %>
   </tbody>

@@ -13,7 +13,9 @@ module Comparisons
     before_action :set_unlisted_schools_count, only: [:index]
     helper_method :index_params
     helper_method :footnote_cache
+    helper_method :unlisted_message
     before_action :set_headers, only: [:index]
+
 
     def index
       respond_to do |format|
@@ -162,6 +164,10 @@ module Comparisons
       filter = SchoolFilter.new(**school_params).filter
       filter = filter.accessible_by(current_ability, :show) unless include_invisible
       filter.pluck(:id)
+    end
+
+    def unlisted_message(count)
+      I18n.t('comparisons.unlisted.message', count: count)
     end
   end
 end
