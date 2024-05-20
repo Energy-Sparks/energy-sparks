@@ -36,6 +36,7 @@ describe 'hot_water_efficiency' do
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
+
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
 
       let(:headers) do
@@ -58,5 +59,25 @@ describe 'hot_water_efficiency' do
     end
 
     it_behaves_like 'a school comparison report with a chart'
+  end
+
+  context 'when there are schools with swimming pools' do
+    let!(:other_school) { create(:school, has_swimming_pool: true) }
+
+    before do
+      create(:alert, school: other_school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+      visit "/comparisons/#{key}"
+    end
+
+    it 'still has a single school' do
+      within("##{report.key}-table") do
+        expect(page).to have_link(school.name)
+        expect(page).not_to have_link(other_school.name)
+      end
+    end
+
+    it 'has custom unlisted message' do
+      expect(page).to have_content('1 school could not be shown in this report as it does not have enough data to be analysed, or has a swimming pool so its hot water usage cannot be accurately estimated')
+    end
   end
 end
