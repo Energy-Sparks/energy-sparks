@@ -28,22 +28,17 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
-  shared_examples 'a benchmark list page' do |edit: false|
+  shared_examples 'a benchmark list page' do |feature_flag:, edit: false|
     it { expect(page).to have_content('Benchmark group name') }
     it { expect(page).to have_content('Benchmark description') }
-    it { expect(page).to have_link('Baseload per pupil', href: %r{^/compar(e|isons)/baseload_per_pupil?}) }
-    it { expect(page).not_to have_link('Disabled report') }
 
-    it 'allows report group to be edited', if: edit do
-      within first('div.compare') do
-        expect(page).to have_link('Edit')
-      end
+    it "#{edit ? '' : 'does not '}allows report group to be edited" do
+      expect(first('div.compare').has_link?('Edit')).to be edit
     end
 
-    it 'does not allow report group to be edited', unless: edit do
-      within first('div.compare') do
-        expect(page).not_to have_link('Edit')
-      end
+    context 'when using new comparison', if: feature_flag do
+      it { expect(page).to have_link('Baseload per pupil', href: %r{^/comparisons/baseload_per_pupil?}) }
+      it { expect(page).to have_no_link(Comparison::Report.find_by(key: 'disabled_report').title) }
     end
   end
 
@@ -235,7 +230,7 @@ describe 'compare pages', :compare, type: :system do
     before do
       if display_new_comparison_pages
         create(:report, key: 'baseload_per_pupil', title: 'Baseload per pupil', introduction: 'intro html', public: true)
-        create(:report, key: 'disabled_report', title: 'Disabled', public: true, disabled: true)
+        create(:report, key: 'disabled_report', title: 'Disabled Report', public: true, disabled: true)
       else
         expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
       end
@@ -355,7 +350,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
             it_behaves_like 'a filter summary', school_types_excluding: ['junior']
 
             context 'Changing options' do
@@ -402,7 +397,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
             it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
 
             context 'Changing options' do
@@ -449,7 +444,7 @@ describe 'compare pages', :compare, type: :system do
             end
 
             it_behaves_like 'a filter summary', school_types: ['primary']
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
 
             context 'Changing options' do
               before { click_on 'Change options' }
@@ -495,7 +490,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
             it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
 
             context 'Changing options' do
@@ -573,7 +568,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page', edit: feature_flag
+            it_behaves_like 'a benchmark list page', edit: feature_flag, feature_flag: feature_flag
             it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
             it_behaves_like 'a filter summary', funder: 'Grant Funder'
 
