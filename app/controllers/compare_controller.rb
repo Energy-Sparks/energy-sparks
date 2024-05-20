@@ -13,7 +13,7 @@ class CompareController < ApplicationController
   def index
     # Count is of all available benchmarks for guest users only
     if Flipper.enabled?(:comparison_reports, current_user)
-      @benchmark_count = Comparison::Report.where(public: true).count
+      @benchmark_count = Comparison::Report.where(public: true, disabled: false).count
     else
       @benchmark_count = Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
     end

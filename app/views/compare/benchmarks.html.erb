@@ -19,7 +19,7 @@
           <%= admin_button edit_admin_comparisons_report_group_path(report_group) %>
         </div>
         <ul class="fa-ul card-columns">
-          <% report_group.reports.by_title.each do |report| %>
+          <% report_group.reports.where(disabled: false).by_title.each do |report| %>
             <li class="pt-1">
               <i class="fa-li fas fa-check"></i>
               <% path = comparison_report_path(report, @filter) %>
