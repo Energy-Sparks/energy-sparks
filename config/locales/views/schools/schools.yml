@@ -707,6 +707,9 @@ en:
           oil:
             label: Our school uses oil for heating
             percentage: What percentage of the school is heated by oil heating?
+          water_source_heat_pump:
+            label: Our school has a water source heat pump
+            percentage: What percentage of the school is using the water source heat pump for heating?
         description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
         school_was_successfully_updated: School was successfully updated
         solar_panels: Solar panels
