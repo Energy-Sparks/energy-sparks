@@ -32,7 +32,7 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_content('Benchmark group name') }
     it { expect(page).to have_content('Benchmark description') }
 
-    it "#{edit ? '' : 'does not '}allows report group to be edited" do
+    it "#{edit ? 'allows' : 'does not allow'} report group to be edited" do
       expect(first('div.compare').has_link?('Edit')).to be edit
     end
 
