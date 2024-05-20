@@ -75,6 +75,10 @@ Rails.application.routes.draw do
     end
   end
 
+  # older version of benchmarks redirect
+  get '/benchmarks', to: redirect('/compare')
+  get '/benchmark', to: redirect(BenchmarkRedirector.new)
+
   resources :compare, controller: 'compare', param: :benchmark, only: [:index, :show] do
     collection do
       get :benchmarks
@@ -132,10 +136,6 @@ Rails.application.routes.draw do
     get '*key/unlisted', to: 'configurable_period#unlisted'
     get '*key', to: 'configurable_period#index', as: :configurable_period
   end
-
-  # redirect old benchmark URLs
-  get '/benchmarks', to: redirect('/compare')
-  get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
   get 'version', to: 'version#show'
 
