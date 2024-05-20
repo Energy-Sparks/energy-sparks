@@ -6,6 +6,7 @@ class CompareController < ApplicationController
   before_action :benchmark_groups, only: [:benchmarks]
 
   before_action :set_school_groups, only: [:index]
+  before_action :comparison_reports_redirect, only: [:show]
   before_action :set_included_schools, only: [:benchmarks, :show]
   helper_method :index_params
 
@@ -100,5 +101,11 @@ class CompareController < ApplicationController
   # Set list of school groups visible to this user
   def set_school_groups
     @school_groups = ComparisonService.new(current_user).list_school_groups.select(&:has_visible_schools?)
+  end
+
+  def comparison_reports_redirect
+    if Flipper.enabled?(:comparison_reports_redirect, current_user)
+      redirect_to controller: "comparisons/#{filter.delete(:benchmark)}", **filter
+    end
   end
 end

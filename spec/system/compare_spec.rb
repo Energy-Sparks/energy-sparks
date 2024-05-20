@@ -650,6 +650,36 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
+  context 'when comparison report redirect is switched on', type: :request do
+    before do
+      Flipper.enable :comparison_reports_redirect
+      get old_compare_url
+    end
+
+    context 'with school groups' do
+      let!(:school_group) { create(:school_group) }
+      let!(:school_group_2) { create(:school_group) }
+
+      let(:old_compare_url) { "/compare/baseload_per_pupil?school_group_ids%5B%5D=#{school_group.id}&school_group_ids%5B%5D=#{school_group_2.id}&school_types%5B%5D=primary&school_types%5B%5D=secondary&search=groups" }
+
+      it 'redirects to the new report' do
+        expect(response).to redirect_to("/comparisons/baseload_per_pupil?school_group_ids%5B%5D=#{school_group.id}&school_group_ids%5B%5D=#{school_group_2.id}&school_types%5B%5D=primary&school_types%5B%5D=secondary&search=groups")
+      end
+
+      it { expect(response.status).to eq(302) }
+    end
+
+    context 'without school groups' do
+      let(:old_compare_url) { '/compare/baseload_per_pupil?school_types%5B%5D=primary&school_types%5B%5D=secondary&search=groups' }
+
+      it 'redirects to the new pages' do
+        expect(response).to redirect_to('/comparisons/baseload_per_pupil?school_types%5B%5D=primary&school_types%5B%5D=secondary&search=groups')
+      end
+
+      it { expect(response.status).to eq(302) }
+    end
+  end
+
   describe 'Redirecting old benchmark routes to new compare routes', type: :request do
     before do
       get old_benchmark_url
