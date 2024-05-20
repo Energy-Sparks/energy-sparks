@@ -88,9 +88,9 @@ describe 'heating_coming_on_too_early' do
 
       let(:expected_table) do
         [headers,
-         [schools[2].name, '', '13:03', ''],
-         [schools[1].name, '13:02', '', '£1.10'],
          ["#{schools[0].name} [5]", '13:00', '13:01', '10p'],
+         [schools[1].name, '13:02', '', '£1.10'],
+         [schools[2].name, '', '13:03', ''],
          ["Notes\n[5] The tariff has changed during the last year for this school. Savings are calculated using the " \
           "latest tariff but other £ values are calculated using the relevant tariff at the time\n" \
           "In school comparisons 'last year' is defined as this year to date."]]
@@ -98,9 +98,9 @@ describe 'heating_coming_on_too_early' do
 
       let(:expected_csv) do
         [headers,
-         [schools[2].name, '', '13:03', ''],
+         [schools[0].name, '13:00', '13:01', '0.1'],
          [schools[1].name, '13:02', '', '1.1'],
-         [schools[0].name, '13:00', '13:01', '0.1']]
+         [schools[2].name, '', '13:03', '']]
       end
     end
 
@@ -118,9 +118,9 @@ describe 'heating_coming_on_too_early' do
 
       let(:expected_table) do
         [headers,
+         [schools[0].name, '13:01', '0.2', '0.3', '0.4', '0.5', '0.6', '13:00'],
          [schools[1].name, '', '', '', '', '', '', '13:02'],
-         [schools[2].name, '13:03', '2.1', '2.2', '2.3', '2.4', '2.5', ''],
-         [schools[0].name, '13:01', '0.2', '0.3', '0.4', '0.5', '0.6', '13:00']]
+         [schools[2].name, '13:03', '2.1', '2.2', '2.3', '2.4', '2.5', '']]
       end
 
       let(:expected_csv) do

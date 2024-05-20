@@ -169,7 +169,7 @@ module Schools
       end
 
       def electricity_meters
-        @electricity_meters ||= @meter_collection.electricity_meters
+        @electricity_meters ||= @meter_collection.electricity_meters.select { |meter| meter.fuel_type == :electricity }
       end
 
       def aggregate_meter

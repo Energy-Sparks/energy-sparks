@@ -1,15 +1,9 @@
 <script type="text/javascript">
   $(document).ready(function(){
-    displayCustomPeriod(this);
-
-    $('.report_reporting_period').change(function() {
-      displayCustomPeriod(this);
-    })
+    $('.report_reporting_period').on('change', function() {
+      const selected = $(this).find(":selected").val();
+      const display = (selected == 'custom') ? 'block' : 'none';
+      $('.custom_period').css('display', display);
+    }).trigger('change');
   })
-
-  function displayCustomPeriod(selector) {
-    let selected = $(selector).find(":selected").val();
-    let display = (selected == 'custom') ? 'block' : 'none';
-    $('.custom_period').css('display', display);
-  }
 </script>

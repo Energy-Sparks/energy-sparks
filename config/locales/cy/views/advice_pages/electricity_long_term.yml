@@ -32,10 +32,10 @@ cy:
           title: Cymhariaeth defnydd trydan blynyddol ag ysgolion eraill
         electricity_by_month_year:
           explanation: Gall y siart hwn fod yn ffordd gyflym o weld a yw ymddygiad arbed ynni a diweddariadau goleuo ac offer yn cael effaith ar eich defnydd o drydan. Mae angen bod yn ofalus wrth gymharu misoedd â gwyliau, yn enwedig y Pasg, sef rhai blynyddoedd ym mis Mawrth ac adegau eraill ym mis Ebrill.
-          subtitle_html: Mae'r siart hwn yn dangos y gwahaniaeth yn y defnydd o %{fuel_type} o %{start_date} i <span class='end-date'>%{end_date}</span>
+          subtitle_html: Mae'r siart hwn yn dangos y defnydd %{fuel_type} misol o %{start_date} i <span class='end-date'>%{end_date}</span>
           subtitle_two_years_html: Mae'r siart hwn yn dangos y gwahaniaeth yn y defnydd o %{fuel_type} ar gyfer y 12 mis yn diweddu ar <span class='end-date'>%{end_date}</span> a'r 12 mis blaenorol
           title: Cymhariaeth defnydd %{fuel_type} misol
-          title_two_years: Cymhariaeth defnydd %{fuel_type} misol dros y ddwy flynedd ddiwethaf
+          title_two_years: Cymhariaeth defnydd %{fuel_type} misol dros y ddwy flynedd diwethaf
         electricity_longterm_trend:
           explanation: Oni bai bod adeiladau ychwanegol wedi'u hychwanegu at yr ysgol, os ydych yn rheoli eich defnydd o drydan yn dda, dylai hyn ddangos tuedd ar i lawr; mae offer TGCh mwy modern, goleuadau LED a newid ymddygiad i gyd yn cyfrannu at leihau'r defnydd o drydan.
           subtitle: Mae’r siart hwn, a’r tabl isod yn rhoi dadansoddiad o’r defnydd o drydan rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob blwyddyn lawn o ddata sydd gennym ar gyfer eich ysgol
@@ -63,6 +63,8 @@ cy:
         comparison:
           callout_footer: defnydd blynyddol o drydan
           how_do_you_compare: Sut mae eich defnydd o drydan ar gyfer y 12 mis diwethaf yn cymharu ag ysgolion %{school_type} eraill ar Sbarcynni, sydd â nifer tebyg o ddisgyblion?
+          less_than_a_year: Gan fod gennym llai na blwyddyn o ddata ar gyfer eich ysgol nid ydym eto'n gallu meincnodi eich defnydd o drydan yn erbyn ysgolion eraill. Bydd y gymhariaeth hon ar gael ar %{available_date}.
+          less_than_a_year_well_managed: Bydd ysgol a reolir yn dda gyda'r un nifer o ddisgyblion yn defnyddio %{usage}kWh o drydan mewn blwyddyn.
           more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
           title: Sut ydych chi'n cymharu?
         current_usage:
@@ -75,11 +77,14 @@ cy:
       tables:
         columns:
           annual_change: Newidiadau ers y flwyddyn flaenorol
+          annual_usage_co2: Co2 flynyddol (kg/CO2)
+          annual_usage_gbp: Cost blynyddol (£)
+          annual_usage_kwh: Defnydd blynyddol (kWh)
           estimated_savings_gbp: Arbediad amcangyfrifedig (£)
           meter: Mesurydd
           name: Enw
           percent: Canran o gyfanswm y defnydd
-          usage_co2: Co2 (kg/CO2)
+          usage_co2: CO2 (kg/CO2)
           usage_gbp: Cost (£)
           usage_kwh: Defnydd (kWh)
         labels:

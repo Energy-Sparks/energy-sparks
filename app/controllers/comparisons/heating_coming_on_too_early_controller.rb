@@ -38,7 +38,7 @@ module Comparisons
     end
 
     def load_data
-      Comparison::HeatingComingOnTooEarly.for_schools(@schools)
+      Comparison::HeatingComingOnTooEarly.for_schools(@schools).with_data.sort_default
     end
 
     def create_charts(results)

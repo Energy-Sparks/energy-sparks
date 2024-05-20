@@ -23,6 +23,9 @@
 #  alternative_heating_oil                             :boolean          default(FALSE), not null
 #  alternative_heating_oil_notes                       :text
 #  alternative_heating_oil_percent                     :integer          default(0)
+#  alternative_heating_water_source_heat_pump          :boolean          default(FALSE), not null
+#  alternative_heating_water_source_heat_pump_notes    :text
+#  alternative_heating_water_source_heat_pump_percent  :integer          default(0)
 #  bill_requested                                      :boolean          default(FALSE)
 #  bill_requested_at                                   :datetime
 #  calendar_id                                         :bigint(8)
