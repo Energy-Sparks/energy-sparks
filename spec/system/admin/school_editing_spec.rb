@@ -124,6 +124,7 @@ RSpec.describe 'editing school details', type: :system do
       check 'Our school has district heating'
       check 'Our school has a ground source heat pump'
       check 'Our school has an air source heat pump'
+      check 'Our school has a water source heat pump'
       click_on('Update School')
       school.reload
     end
@@ -137,6 +138,7 @@ RSpec.describe 'editing school details', type: :system do
       expect(school.alternative_heating_biomass).to be true
       expect(school.alternative_heating_ground_source_heat_pump).to be true
       expect(school.alternative_heating_air_source_heat_pump).to be true
+      expect(school.alternative_heating_water_source_heat_pump).to be true
     end
   end
 
