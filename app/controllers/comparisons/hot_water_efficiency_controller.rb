@@ -21,11 +21,15 @@ module Comparisons
     end
 
     def load_data
-      Comparison::HotWaterEfficiency.for_schools(@schools).with_data.sort_default
+      Comparison::HotWaterEfficiency.for_schools(@schools).with_data.without_swimming_pool.sort_default
     end
 
     def create_charts(results)
       create_single_number_chart(results, :avg_gas_per_pupil_gbp, nil, :cost_per_pupil, :£)
+    end
+
+    def unlisted_message(count)
+      I18n.t('comparisons.hot_water_efficiency.unlisted.message', count: count)
     end
   end
 end
