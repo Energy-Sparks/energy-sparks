@@ -98,13 +98,11 @@ Rails.application.routes.draw do
     resources :annual_heating_costs_per_floor_area, only: [:index], concerns: :unlisted
     resources :annual_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :baseload_per_pupil, only: [:index], concerns: :unlisted
-    resources :change_in_electricity_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
     resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
     resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
     resources :change_in_electricity_since_last_year, only: [:index], concerns: :unlisted
     resources :change_in_energy_since_last_year, only: [:index], concerns: :unlisted
     resources :change_in_energy_use_since_joined_energy_sparks, only: [:index], concerns: :unlisted
-    resources :change_in_gas_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
     resources :change_in_gas_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
     resources :change_in_gas_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
     resources :change_in_gas_since_last_year, only: [:index], concerns: :unlisted

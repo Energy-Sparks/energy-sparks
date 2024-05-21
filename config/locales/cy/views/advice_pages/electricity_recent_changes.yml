@@ -23,9 +23,6 @@ cy:
         summary: Mae'r adran hon yn rhoi dadansoddiad manylach o sut mae defnydd trydan eich ysgol wedi newid yn ddiweddar. Gall fod yn arbennig o ddefnyddiol os ydych yn ceisio ymchwilio i newid yn y defnydd o drydan neu fonitro effaith camau a gymerwyd yn yr ysgol.
         title: Dadansoddiad
       insights:
-        how_do_you_compare:
-          summary_html: Cymharwch eich defnydd diweddar o drydan <a href='%{comparison_link}'>ag ysgolion eraill yn eich grŵp</a>.
-          title: Sut ydych chi'n cymharu?
         link: Dysgu rhagor
         next_steps: Ceisiwch sicrhau eich bod yn deall achosion unrhyw newidiadau sylweddol yn eich defnydd o drydan.
         summary: Mae'r dudalen hon yn nodi a yw eich defnydd o drydan wedi cynyddu neu owstwng yn ddiweddar. Gall monitro newidiadau diweddar i'ch defnydd o ynni eich helpu i asesu effeithiau newidiadau rydych wedi'u gwneud, neu nodi problemau'n gyflym.
