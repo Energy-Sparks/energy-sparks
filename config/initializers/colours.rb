@@ -68,12 +68,9 @@ module Colours
   CARBON_LIGHT = LIGHT_GREY
 
   # Other non-standard colour definitions can be found in:
-
   # assets/javascripts/common_chart_options.js
   # colors: ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
 
   # Admin areas / mailers e.g.:
   # controllers/admin/reports/amr_validated_readings_controller.rb
-
-  # test_warning.scss which seems unused
 end
