@@ -27,6 +27,18 @@ RSpec.describe Comparison::Report, type: :model do
       it 'builds a key on create using :title' do
         expect(report.key).to eq('lovely_title')
       end
+
+      context 'when the title changes' do
+        before do
+          report.update(title: 'New title')
+        end
+
+        it { expect(report.title).to eq('New title') }
+
+        it 'does not change the key' do
+          expect(report.key).to eq('lovely_title')
+        end
+      end
     end
 
     context 'when there is no title' do
