@@ -54,8 +54,12 @@ class Comparison::View < ApplicationRecord
   end
 
   # Orders by the total of a number of columns. If the column is nil then its treated as zero
-  scope :by_total, ->(columns) do
-    order(Arel.sql(sanitize_sql_array(columns.map { |c| "COALESCE(#{c}, 0.0)" }.join('+'))))
+  scope :by_total, ->(columns, direction = 'ASC NULLS LAST') do
+    order(
+      Arel.sql(
+        sanitize_sql_array(columns.map { |c| "COALESCE(#{c}, 0.0)" }.join('+') + ' ' + direction)
+      )
+    )
   end
 
   # Restricts results to rows that have values in any of the provided columns

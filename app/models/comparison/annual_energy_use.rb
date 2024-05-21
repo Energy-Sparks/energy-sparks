@@ -24,7 +24,7 @@ class Comparison::AnnualEnergyUse < Comparison::View
   self.table_name = 'annual_energy_uses'
 
   scope :with_data, -> { where('electricity_last_year_kwh IS NOT NULL OR gas_last_year_kwh IS NOT NULL OR storage_heaters_last_year_kwh IS NOT NULL')}
-  scope :sort_default, -> { joins(:school).order('schools.name') }
+  scope :sort_default, -> { by_total([:electricity_last_year_kwh, :gas_last_year_kwh, :storage_heaters_last_year_kwh], 'DESC NULLS LAST') }
 
   def any_tariff_changed?
     electricity_tariff_has_changed || gas_tariff_has_changed
