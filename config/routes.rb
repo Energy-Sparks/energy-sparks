@@ -86,6 +86,7 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
+    resources :annual_energy_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_gas_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
