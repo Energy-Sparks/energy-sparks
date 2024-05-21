@@ -13,5 +13,4 @@ Rails.application.config.assets.precompile += %w( application_mailer.scss )
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
-
-Rails.application.config.assets.precompile += %w( transport_surveys transport_surveys/charts.js )
+Rails.application.config.assets.precompile += %w( transport_surveys.js transport_surveys/carbon.js transport_surveys/charts.js transport_surveys/handlebars_helpers.js transport_surveys/helpers.js transport_surveys/notifier.js transport_surveys/storage.js )
