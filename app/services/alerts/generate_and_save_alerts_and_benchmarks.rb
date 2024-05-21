@@ -114,9 +114,9 @@ module Alerts
       if alert_report.valid
         Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type,
                                                 asof_date).generate.merge(reporting_period: :custom,
-                                                                          report: report))
+                                                                          comparison_report: report))
       else
-        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, report: report,
+        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, comparison_report: report,
                            information: "INVALID. Relevance: #{alert_report.relevance}", alert_type: alert_type)
       end
     end

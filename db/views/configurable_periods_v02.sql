@@ -13,7 +13,7 @@ WITH electricity AS (
   )
   WHERE alerts.alert_type_id = alert_types.id
      AND alert_types.class_name='AlertConfigurablePeriodElectricityComparison'
-     AND alerts.report_id = comparison_reports.id
+     AND alerts.comparison_report_id = comparison_reports.id
      AND comparison_reports.custom_period_id IS NOT NULL
 ), gas AS (
   SELECT alert_generation_run_id, comparison_reports.custom_period_id, json.*
@@ -31,7 +31,7 @@ WITH electricity AS (
   )
   WHERE alerts.alert_type_id = alert_types.id
     AND alert_types.class_name='AlertConfigurablePeriodGasComparison'
-    AND alerts.report_id = comparison_reports.id
+    AND alerts.comparison_report_id = comparison_reports.id
     AND comparison_reports.custom_period_id IS NOT NULL
 ), storage_heater AS (
   SELECT alert_generation_run_id, comparison_reports.custom_period_id, json.*
@@ -49,7 +49,7 @@ WITH electricity AS (
   )
   WHERE alerts.alert_type_id = alert_types.id
     AND alert_types.class_name='AlertConfigurablePeriodStorageHeaterComparison'
-    AND alerts.report_id = comparison_reports.id
+    AND alerts.comparison_report_id = comparison_reports.id
     AND comparison_reports.custom_period_id IS NOT NULL
 ), benchmark AS (
     SELECT alert_generation_run_id, data.*
