@@ -96,26 +96,27 @@ module Alerts
       end
     end
 
-    def process_alert_type_run_result(alert_type_run_result, alert_attributes: {})
+    def process_alert_type_run_result(alert_type_run_result, report: nil)
       asof_date = alert_type_run_result.asof_date
       alert_type = alert_type_run_result.alert_type
 
       alert_type_run_result.error_messages.each do |error_message|
         AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date,
-                           information: error_message, alert_type: alert_type)
+                           information: error_message, alert_type: alert_type, report: report)
       end
 
       alert_type_run_result.reports.each do |alert_report|
-        process_alert_report(alert_type, alert_report, asof_date, alert_attributes)
+        process_alert_report(alert_type, alert_report, asof_date, report)
       end
     end
 
-    def process_alert_report(alert_type, alert_report, asof_date, alert_attributes)
+    def process_alert_report(alert_type, alert_report, asof_date, report)
       if alert_report.valid
         Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type,
-                                                asof_date).generate.merge(**alert_attributes))
+                                                asof_date).generate.merge(reporting_period: :custom,
+                                                                          report: report))
       else
-        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date,
+        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, report: report,
                            information: "INVALID. Relevance: #{alert_report.relevance}", alert_type: alert_type)
       end
     end
@@ -133,8 +134,7 @@ module Alerts
                    use_max_meter_date_if_less_than_asof_date: true)
               .report(alert_configuration: report.to_alert_configuration)
           end
-          process_alert_type_run_result(result, alert_attributes: { reporting_period: :custom,
-                                                                    custom_period: report.custom_period })
+          process_alert_type_run_result(result, report: report)
         end
       end
     end

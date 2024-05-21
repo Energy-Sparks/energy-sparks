@@ -47,6 +47,7 @@ class Alert < ApplicationRecord
   belongs_to :alert_type,           inverse_of: :alerts
   belongs_to :alert_generation_run, optional: true
   belongs_to :custom_period, class_name: 'Comparison::CustomPeriod', optional: true
+  belongs_to :comparison_report, class_name: 'Comparison::Report', optional: true
 
   has_many :find_out_mores, inverse_of: :alert
   has_many :alert_subscription_events
@@ -98,6 +99,10 @@ class Alert < ApplicationRecord
     template_data_for_locale(locale).deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
+  end
+
+  def alert_type_title_with_report
+    alert_type.title + comparison_report.nil? ? '' : " - #{comparison_report.title}}"
   end
 
   private

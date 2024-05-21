@@ -24,4 +24,9 @@
 class AlertError < ApplicationRecord
   belongs_to :alert_type
   belongs_to :alert_generation_run
+  belongs_to :comparison_report, class_name: 'Comparison::Report', optional: true
+
+  def alert_type_title_with_report
+    alert_type.title + comparison_report.nil? ? '' : "#{comparison_report.title}}"
+  end
 end
