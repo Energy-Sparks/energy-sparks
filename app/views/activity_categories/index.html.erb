@@ -70,7 +70,8 @@
         </div>
       </div>
     </div>
-    <%= render 'cards', activity_types: activity_category.activity_types.active_and_not_custom.sample(4),
-                        card_deck_css: '' %>
+    <%= render 'cards',
+               activity_types: activity_category.activity_types.active_and_not_custom.sample(4),
+               card_deck_css: '' %>
   <% end %>
 </div>

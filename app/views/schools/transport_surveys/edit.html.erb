@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= javascript_pack_tag 'transport_surveys' %>
+  <%= javascript_include_tag 'transport_surveys', type: :module, defer: true %>
 <% end %>
 
 <%= render 'header_nav' %>
@@ -31,11 +31,15 @@
           <%= render 'app_config' %>
           <div id="setup" class="panel">
             <h2><%= t('schools.transport_surveys.edit.steps.weather') %></h2>
-            <%= hidden_field_tag :weather, "", class: 'selected' %>
+            <%= hidden_field_tag :weather, '', class: 'selected' %>
             <div class="container">
               <div class="row">
                 <% TransportSurvey::Response.weather_images.each do |label, symbol| %>
-                  <%= render 'option', { label: TransportSurvey::Response.human_enum_name(:weather, label), content: symbol, identifier: label, action: "start" } %>
+                  <%= render 'option',
+                             { label: TransportSurvey::Response.human_enum_name(:weather, label),
+                               content: symbol,
+                               identifier: label,
+                               action: 'start' } %>
                 <% end %>
               </div>
             </div>
@@ -46,11 +50,15 @@
 
             <fieldset class="panel" id="time">
               <h2><%= t('schools.transport_surveys.edit.steps.time') %></h2>
-              <%= hidden_field_tag :journey_minutes, "", class: 'selected' %>
+              <%= hidden_field_tag :journey_minutes, '', class: 'selected' %>
               <div class="container">
                 <div class="row">
                   <% TransportSurvey::Response.journey_minutes_options.each do |time| %>
-                    <%= render 'option', { label: t('schools.transport_surveys.edit.labels.minutes'), content: time, identifier: time, action: "time" } %>
+                    <%= render 'option',
+                               { label: t('schools.transport_surveys.edit.labels.minutes'),
+                                 content: time,
+                                 identifier: time,
+                                 action: 'time' } %>
                   <% end %>
                 </div>
               </div>
@@ -58,53 +66,86 @@
 
             <fieldset class="panel" id="transport" style="display: none;">
               <h2><%= t('schools.transport_surveys.edit.steps.transport') %></h2>
-              <%= hidden_field_tag :transport_type_id, "", class: 'selected' %>
+              <%= hidden_field_tag :transport_type_id, '', class: 'selected' %>
               <div class="container">
                 <div class="row">
                   <% TransportSurvey::TransportType.all.by_position.each do |transport_type| %>
-                    <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "transport" } %>
+                    <%= render 'option',
+                               { label: transport_type.name,
+                                 content: transport_type.image,
+                                 identifier: transport_type.id,
+                                 action: 'transport' } %>
                   <% end %>
                 </div>
               </div>
-              <%= button_tag t('schools.transport_surveys.edit.buttons.back'), type: 'button', class: "previous btn btn-outline-secondary w-100" %>
+              <%= button_tag t('schools.transport_surveys.edit.buttons.back'),
+                             type: 'button',
+                             class: 'previous btn btn-outline-secondary w-100' %>
             </fieldset>
 
             <fieldset class="panel" id="sharing" style="display: none;">
-              <%= hidden_field_tag :passengers, "", class: 'selected' %>
-              <h2 class="pb-0"><%= t('schools.transport_surveys.edit.steps.sharing_html', transport: '<span id="transport_type_name"></span>'.html_safe) %></h2>
+              <%= hidden_field_tag :passengers, '', class: 'selected' %>
+              <h2 class="pb-0"><%= t('schools.transport_surveys.edit.steps.sharing_html',
+                                     transport: '<span id="transport_type_name"></span>'.html_safe) %></h2>
               <h2><small class="pb-4"><%= t('schools.transport_surveys.edit.steps.sharing_note') %></small></h2>
               <div class="container">
                 <div class="row">
                   <% TransportSurvey::Response.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: t('schools.transport_surveys.edit.pupils', count: passengers), content: TransportSurvey::Response.passenger_symbol * passengers, identifier: passengers, action: "sharing" } %>
+                    <%= render 'option',
+                               { label: t('schools.transport_surveys.edit.pupils', count: passengers),
+                                 content: TransportSurvey::Response.passenger_symbol * passengers,
+                                 identifier: passengers, action: 'sharing' } %>
                   <% end %>
                 </div>
               </div>
-              <%= button_tag t('schools.transport_surveys.edit.buttons.back'), type: 'button', class: "previous btn btn-outline-secondary w-100" %>
+              <%= button_tag t('schools.transport_surveys.edit.buttons.back'),
+                             type: 'button',
+                             class: 'previous btn btn-outline-secondary w-100' %>
             </fieldset>
 
             <fieldset class="panel" id="confirm" style="display: none;">
               <h2><%= t('schools.transport_surveys.edit.steps.confirm') %></h2>
               <div class="container">
                 <div class="row">
-                  <%= render 'option', { label: t('schools.transport_surveys.edit.labels.minutes'), content: 'x', identifier: 'confirm-time', action: '' } %>
-                  <%= render 'option', { label: t('schools.transport_surveys.edit.labels.transport'), content: 'x', identifier: 'confirm-transport', action: '' } %>
-                  <%= render 'option', { label: t('schools.transport_surveys.edit.labels.pupils'), content: 'x', identifier: 'confirm-passengers', action: '' } %>
+                  <%= render 'option',
+                             { label: t('schools.transport_surveys.edit.labels.minutes'),
+                               content: 'x',
+                               identifier: 'confirm-time',
+                               action: '' } %>
+                  <%= render 'option',
+                             { label: t('schools.transport_surveys.edit.labels.transport'),
+                               content: 'x',
+                               identifier: 'confirm-transport',
+                               action: '' } %>
+                  <%= render 'option',
+                             { label: t('schools.transport_surveys.edit.labels.pupils'),
+                               content: 'x',
+                               identifier: 'confirm-passengers',
+                               action: '' } %>
                 </div>
               </div>
               <p>
-                <%= button_tag t('schools.transport_surveys.edit.buttons.confirm'), type: 'button', class: 'confirm btn btn-primary w-100 mb-2 mt-2' %>
-                <%= button_tag t('schools.transport_surveys.edit.buttons.back'), type: 'button', class: "previous-transport btn btn-outline-secondary w-100" %>
+                <%= button_tag t('schools.transport_surveys.edit.buttons.confirm'),
+                               type: 'button',
+                               class: 'confirm btn btn-primary w-100 mb-2 mt-2' %>
+                <%= button_tag t('schools.transport_surveys.edit.buttons.back'),
+                               type: 'button',
+                               class: 'previous-transport btn btn-outline-secondary w-100' %>
               </p>
             </fieldset>
 
             <fieldset class="panel" id="summary" style="display: none;">
-              <h2><%= t('schools.transport_surveys.edit.steps.summary_html', time: '<span id="display-time"></span>'.html_safe, transport: '<span id="display-transport"></span>'.html_safe) %></h2>
-              <hr />
-              <h2><%= t('schools.transport_surveys.edit.steps.carbon_html', carbon: '<span id="display-carbon" class="badge badge-secondary"></span>'.html_safe) %></h2>
-              <hr />
+              <h2><%= t('schools.transport_surveys.edit.steps.summary_html',
+                        time: '<span id="display-time"></span>'.html_safe,
+                        transport: '<span id="display-transport"></span>'.html_safe) %></h2>
+              <hr>
+              <h2><%= t('schools.transport_surveys.edit.steps.carbon_html',
+                        carbon: '<span id="display-carbon" class="badge badge-secondary"></span>'.html_safe) %></h2>
+              <hr>
               <h2 class="mb-0"><span id="display-carbon-equivalent"></span></h2>
-              <p><%= button_tag t('schools.transport_surveys.edit.buttons.next_pupil'), type: 'button', class: 'summary btn btn-primary w-100' %></p>
+              <p><%= button_tag t('schools.transport_surveys.edit.buttons.next_pupil'),
+                                type: 'button',
+                                class: 'summary btn btn-primary w-100' %></p>
             </fieldset>
           </div>
         <% end %>
