@@ -2,7 +2,7 @@
   .table-charges {
     margin-bottom: 0px;
     td {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: rgba($black, 0.05);
     }
     td.description {
       width: 60%
@@ -26,7 +26,7 @@
       border-left: 5px solid $new-red;
     }
     tr.neutral-row {
-      border-left: 5px solid #97E6FC;
+      border-left: 5px solid $light-blue;
     }
   }
 

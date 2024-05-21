@@ -30,7 +30,7 @@ a.nav-link.active {
 a.badge.outline {
   outline: solid;
   outline-width: 1px;
-  outline-color: lightgray;
+  outline-color: $light-grey;
 }
 
 .btn,
@@ -61,7 +61,7 @@ a.badge.outline {
 }
 
 .btn-dark-blue {
-  color: white;
+  color: $white;
   background-color: $dark-blue;
   background-image: none;
 }
@@ -97,7 +97,7 @@ a.badge.outline {
     outline: none;
     text-decoration: none;
     font-weight: bold;
-    color: white;
+    color: $white;
   }
 }
 
