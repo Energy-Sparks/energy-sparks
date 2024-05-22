@@ -215,11 +215,7 @@ $(document).ready(function() {
       response[element] = $("#" + element).val();
     }
     response['run_identifier'] = config.runIdentifier;
-    //response['passengers'] ||= 1;
-    // the above was changed as follows as a workaround for an issue with uglifier
-    if (!response['passengers']) {
-      response['passengers'] = 1;
-    }
+    response['passengers'] ||= 1;
     response['surveyed_at'] = moment().toISOString();
     return response;
   }

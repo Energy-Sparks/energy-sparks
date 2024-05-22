@@ -31,9 +31,6 @@ cy:
         summary: Mae'r adran hon yn rhoi dadansoddiad manylach o sut mae defnydd nwy eich ysgol wedi newid yn ddiweddar. Gall fod yn arbennig o ddefnyddiol os ydych yn ceisio ymchwilio i newid yn y defnydd o nwy  neu fonitro effaith camau a gymerwyd yn yr ysgol.
         title: Dadansoddiad
       insights:
-        how_do_you_compare:
-          summary_html: Cymharwch eich defnydd diweddar o nwy <a href='%{comparison_link}'>ag ysgolion eraill yn eich grŵp</a>.
-          title: Sut ydych chi'n cymharu?
         link: Dysgu rhagor
         next_steps: Ceisiwch sicrhau eich bod yn deall achosion unrhyw newidiadau sylweddol yn eich defnydd o nwy.
         summary: Mae'r dudalen hon yn nodi a yw eich defnydd o nwy wedi cynyddu neu owstwng yn ddiweddar. Gall monitro newidiadau diweddar i'ch defnydd o ynni eich helpu i asesu effeithiau newidiadau rydych wedi'u gwneud, neu nodi problemau'n gyflym.
