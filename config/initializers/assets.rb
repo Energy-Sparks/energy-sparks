@@ -14,5 +14,6 @@ Rails.application.config.assets.precompile += %w( application_mailer.scss )
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
-# A note about sprockets v4 and using manifest.js:
+
+# A note about sprockets v4 and using manifest.js for assets instead:
 # https://github.com/rails/sprockets/blob/main/UPGRADING.md#manifestjs
