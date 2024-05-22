@@ -26,6 +26,7 @@
 #  alternative_heating_water_source_heat_pump          :boolean          default(FALSE), not null
 #  alternative_heating_water_source_heat_pump_notes    :text
 #  alternative_heating_water_source_heat_pump_percent  :integer          default(0)
+#  archived_date                                       :date
 #  bill_requested                                      :boolean          default(FALSE)
 #  bill_requested_at                                   :datetime
 #  calendar_id                                         :bigint(8)
