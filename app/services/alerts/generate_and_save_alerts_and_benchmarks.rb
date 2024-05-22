@@ -112,9 +112,10 @@ module Alerts
 
     def process_alert_report(alert_type, alert_report, asof_date, report)
       if alert_report.valid
+        alert_attributes = { comparison_report: report }
+        alert_attributes[:reporting_period] = :custom unless report.nil?
         Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type,
-                                                asof_date).generate.merge(reporting_period: :custom,
-                                                                          comparison_report: report))
+                                                asof_date).generate.merge(**alert_attributes))
       else
         AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, comparison_report: report,
                            information: "INVALID. Relevance: #{alert_report.relevance}", alert_type: alert_type)
