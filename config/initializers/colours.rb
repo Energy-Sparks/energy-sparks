@@ -73,4 +73,9 @@ module Colours
 
   # Admin areas / mailers e.g.:
   # controllers/admin/reports/amr_validated_readings_controller.rb
+
+  # Transport survey chart:
+  # app/javascript/packs/transport_surveys/charts.js
+  # var colors = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"];
+
 end
