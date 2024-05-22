@@ -29,11 +29,7 @@ export const storage = ( function() {
 
   function getResponses(date) {
     let responses = getAllResponses();
-    // changed to bypass an issue with uglifier
-    // responses[date] ||= [];
-    if (!responses[date]) {
-      responses[date] = [];
-    }
+    responses[date] ||= [];
     return responses[date];
   }
 
@@ -45,11 +41,7 @@ export const storage = ( function() {
 
   function addResponse(date, response) {
     let responses = getAllResponses();
-    // changed to bypass an issue with uglifier
-    // responses[date] ||= [];
-    if (!responses[date]) {
-      responses[date] = [];
-    }
+    responses[date] ||= [];
     responses[date].push(response);
     localStorage.setItem(local.key, JSON.stringify( responses ));
   }
