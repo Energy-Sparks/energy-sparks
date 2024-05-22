@@ -28,7 +28,7 @@ class SchoolRemover
   def remove_school!
     raise SchoolRemover::Error.new('Cannot remove school while it is still visible') if @school.visible?
     @school.transaction do
-      if @school.update!(active: false, process_data: false, removal_date: removal_date)
+      if @school.update!(active: false, process_data: false, removal_date: removal_date, archived_date: archived_date)
         delete_school_issues
       end
     end
@@ -37,7 +37,7 @@ class SchoolRemover
   def reenable_school!
     raise SchoolRemover::Error.new('Cannot reenable an active school') if @school.active?
     @school.transaction do
-      @school.update(active: true, removal_date: nil)
+      @school.update(active: true, removal_date: nil, archived_date: nil)
     end
   end
 
@@ -99,6 +99,10 @@ class SchoolRemover
 
   def removal_date
     @archive ? nil : Time.zone.today
+  end
+
+  def archived_date
+    @archive ? Time.zone.today : nil
   end
 
   def remove_meter(meter)

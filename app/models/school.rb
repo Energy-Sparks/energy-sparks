@@ -200,8 +200,8 @@ class School < ApplicationRecord
   # are archived, with chance of returning if we receive funding
   scope :active,              -> { where(active: true) }
   scope :inactive,            -> { where(active: false) }
+  scope :archived,            -> { inactive.where.not(archived_date: nil) }
   scope :deleted,             -> { inactive.where.not(removal_date: nil) }
-  scope :archived,            -> { inactive.where(removal_date: nil) }
   scope :visible,             -> { active.where(visible: true) }
   scope :not_visible,         -> { active.where(visible: false) }
   scope :process_data,        -> { active.where(process_data: true) }
@@ -282,7 +282,7 @@ class School < ApplicationRecord
   end
 
   def archived?
-    not_active? && removal_date.nil?
+    not_active? && archived_date.present?
   end
 
   def not_active?
