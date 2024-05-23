@@ -1,4 +1,4 @@
-class CreateHeatingVsHotWaters < ActiveRecord::Migration[6.1]
+class CreateHeatingVsHotWater < ActiveRecord::Migration[6.1]
   def change
     create_view :heating_vs_hot_waters
   end

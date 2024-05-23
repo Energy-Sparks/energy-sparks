@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_21_182605) do
+ActiveRecord::Schema.define(version: 2024_05_23_150531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -3883,5 +3883,4 @@ ActiveRecord::Schema.define(version: 2024_05_21_182605) do
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
        LEFT JOIN hot_water ON ((latest_runs.id = hot_water.alert_generation_run_id)));
   SQL
-
 end
