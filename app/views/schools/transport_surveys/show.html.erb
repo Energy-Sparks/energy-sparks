@@ -48,7 +48,12 @@
       <% @transport_survey.responses_per_time_for_category_car.each do |time, value| %>
         <tr>
           <td class="col-md-8">
-            <%= time == '30+' ? t('schools.transport_surveys.show.30_or_more_minutes') : t('common.units.minutes', count: time) %></td>
+            <% if time == '30+' %>
+              <%= t('schools.transport_surveys.show.30_or_more_minutes') %>
+            <% else %>
+              <%= t('common.units.minutes', count: time) %>
+            <% end %>
+          </td>
           <td class="col-md-4"><%= value %></td>
         </tr>
       <% end %>

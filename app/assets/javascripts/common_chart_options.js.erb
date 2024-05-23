@@ -70,7 +70,7 @@ function commonChartOptions(clickListener){
       },
       column: {
         dataLabels: {
-          color: '#232b49'
+          color: '<%= Colours::DARK_BLUE %>'
         },
         point: {
           events: {
@@ -158,7 +158,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
     }
 
-    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours::DARK_BLUE %>' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
 
     if (chartData.x_max_value) {
       highchartsChart.update({yAxis: { max: chartData.x_max_value }})
@@ -183,7 +183,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
     }
 
     if (subChartType == 'stacked') {
-      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours::DARK_BLUE %>' } } }]});
     } else {
 
       if(seriesData[0]['day_format'] && seriesData[0]['day_format']) {
@@ -198,7 +198,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // Handle Y2 axis
   if (y2AxisLabel) {
-    var colour = '#232b49';
+    var colour = '<%= Colours::DARK_BLUE %>';
 
     //console.log('Y2 axis label' + y2AxisLabel);
 

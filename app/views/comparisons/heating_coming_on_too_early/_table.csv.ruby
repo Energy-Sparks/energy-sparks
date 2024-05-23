@@ -2,7 +2,7 @@
 
 CSV.generate do |csv|
   csv << @headers
-  @results.order(avg_week_start_time: :desc).each do |result|
+  @results.each do |result|
     csv << [
       result.school.name,
       result.avg_week_start_time_to_time_of_day,
