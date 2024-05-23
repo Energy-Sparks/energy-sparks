@@ -87,6 +87,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
 
         it 'includes the comparison' do
           expect(page).to have_css('#electricity-comparison')
+          expect(page).to have_link('compare with other schools in your group', href: compare_path(benchmark: :annual_electricity_costs_per_pupil, school_group_ids: [school.school_group.id]))
         end
       end
     end

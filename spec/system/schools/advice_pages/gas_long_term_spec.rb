@@ -81,6 +81,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
 
         it 'includes the comparison' do
           expect(page).to have_css('#gas-comparison')
+          expect(page).to have_link('compare with other schools in your group', href: compare_path(benchmark: :annual_heating_costs_per_floor_area, school_group_ids: [school.school_group.id]))
         end
       end
     end
