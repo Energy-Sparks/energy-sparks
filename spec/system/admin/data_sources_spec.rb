@@ -102,11 +102,15 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
           context 'Summary panel' do
             let(:school) { create(:school) }
-            let(:active_meters) { 3.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
-            let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source) } }
-            let(:setup_data) { [active_meters, inactive_meters] }
 
-            it { expect(page).to have_content('Active meters 3') }
+            let(:active_meters) { 4.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
+            let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source) } }
+            let(:inactive_school) { create(:school, active: false) }
+            let(:active_meter_for_archived_school) { create(:gas_meter, active: true, data_source: existing_data_source, school: inactive_school) }
+
+            let(:setup_data) { [active_meters, inactive_meters, active_meter_for_archived_school] }
+
+            it { expect(page).to have_content('Active meters 5') }
             it { expect(page).to have_content('Inactive meters 2') }
             it { expect(page).to have_content('Associated schools 3') }
           end
