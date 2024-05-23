@@ -85,8 +85,7 @@ Rails.application.routes.draw do
     get :unlisted, on: :collection
   end
 
-  namespace :comparisons do
-    resources :annual_energy_use, only: [:index], concerns: :unlisted
+  namespace :comparisons d
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_gas_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
@@ -95,6 +94,7 @@ Rails.application.routes.draw do
     resources :annual_energy_costs_per_floor_area, only: [:index], concerns: :unlisted
     resources :annual_energy_costs_per_pupil, only: [:index], concerns: :unlisted
     resources :annual_energy_costs, only: [:index], concerns: :unlisted
+    resources :annual_energy_use, only: [:index], concerns: :unlisted
     resources :annual_gas_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_heating_costs_per_floor_area, only: [:index], concerns: :unlisted
     resources :annual_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
