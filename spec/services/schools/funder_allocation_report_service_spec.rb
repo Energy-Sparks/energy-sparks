@@ -67,7 +67,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let!(:solar_meter) { create(:solar_pv_meter, active: true, data_source: data_source_3, procurement_route: procurement_route_3, school: school_1)}
 
     # only basic data, helps to catch errors checking for nils
-    let!(:school_2) { create(:school, visible: true, active: false, archived_date: Time.zone.today, school_group: create(:school_group), funder: funder_2) }
+    let!(:school_2) { create(:school, visible: true, active: false, removal_date: nil, archived_date: Time.zone.today, school_group: create(:school_group), funder: funder_2) }
     # not included in export
     let!(:not_visible) { create(:school, visible: true, active: false, removal_date: Time.zone.today, school_group: school_group) }
 
