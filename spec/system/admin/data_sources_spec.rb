@@ -105,8 +105,8 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
             let(:active_meters) { 4.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
             let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source) } }
-            let(:archived_school) { create(:school, active: false) }
-            let(:active_meter_for_archived_school) { create(:gas_meter, active: true, data_source: existing_data_source, school: archived_school) }
+            let(:inactive_school) { create(:school, active: false) }
+            let(:active_meter_for_archived_school) { create(:gas_meter, active: true, data_source: existing_data_source, school: inactive_school) }
 
             let(:setup_data) { [active_meters, inactive_meters, active_meter_for_archived_school] }
 
