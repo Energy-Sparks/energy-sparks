@@ -5,6 +5,7 @@ namespace :after_party do
 
     Comparison::Report.create!(
       key: :heating_vs_hot_water,
+      reporting_period: :last_12_months,
       title: 'Heating vs hot water usage',
       public: false,
       report_group_id: 3
