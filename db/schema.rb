@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_21_182605) do
+ActiveRecord::Schema.define(version: 2024_05_22_150121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -3785,5 +3785,34 @@ ActiveRecord::Schema.define(version: 2024_05_21_182605) do
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
+  SQL
+  create_view "heating_vs_hot_waters", sql_definition: <<-SQL
+      WITH gas AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.last_year_kwh
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(last_year_kwh double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
+          ), hot_water AS (
+           SELECT alerts.alert_generation_run_id,
+              data.existing_gas_annual_kwh
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(existing_gas_annual_kwh double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHotWaterEfficiency'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      gas.school_id,
+      gas.last_year_kwh AS last_year_gas_kwh,
+      hot_water.existing_gas_annual_kwh AS estimated_hot_water_gas_kwh
+     FROM ((latest_runs
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
+       LEFT JOIN hot_water ON ((latest_runs.id = hot_water.alert_generation_run_id)));
   SQL
 end

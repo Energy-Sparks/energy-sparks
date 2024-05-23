@@ -5,26 +5,16 @@ module Comparisons
     private
 
     def header_groups
-      [
-        ['', [t('analytics.benchmarking.configuration.column_headings.school')]],
-        [
-          t('analytics.benchmarking.configuration.column_groups.kwh'),
-          [
-            t('analytics.benchmarking.configuration.column_headings.gas'),
-            t('analytics.benchmarking.configuration.column_headings.hot_water_gas'),
-            t('analytics.benchmarking.configuration.column_headings.heating_gas')
-          ]
-        ],
-        ['', [t('analytics.benchmarking.configuration.column_headings.percentage_of_gas_use_for_hot_water')]]
-      ]
-    end
-
-    def headers
-      header_groups.pluck(1).flatten
-    end
-
-    def colgroups
-      header_groups.map { |group| { label: group[0], colspan: group[1].length } }
+      [{ label: '',
+         headers: [t('analytics.benchmarking.configuration.column_headings.school')] },
+       { label: t('analytics.benchmarking.configuration.column_groups.kwh'),
+         headers: [
+           t('analytics.benchmarking.configuration.column_headings.gas'),
+           t('analytics.benchmarking.configuration.column_headings.hot_water_gas'),
+           t('analytics.benchmarking.configuration.column_headings.heating_gas')
+         ] },
+       { label: '',
+         headers: [t('analytics.benchmarking.configuration.column_headings.percentage_of_gas_use_for_hot_water')] }]
     end
 
     def key

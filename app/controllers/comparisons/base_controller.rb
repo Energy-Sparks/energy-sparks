@@ -44,12 +44,16 @@ module Comparisons
 
     private
 
-    def colgroups
+    def header_groups
       []
     end
 
+    def colgroups
+      header_groups.each { |group| group[:colspan] = group[:headers].length }
+    end
+
     def headers
-      []
+      header_groups.pluck(:headers).flatten
     end
 
     def set_headers
