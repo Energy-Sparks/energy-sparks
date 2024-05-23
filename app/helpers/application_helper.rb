@@ -212,7 +212,7 @@ module ApplicationHelper
   def fuel_type_class(fuel_type)
     case fuel_type.to_sym
     when :electricity
-      'text-electricity'
+      'text-electric'
     when :gas
       'text-gas'
     when :solar_pv

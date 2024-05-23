@@ -44,7 +44,6 @@ module Admin
         translated_params = t_params(Comparison::Report.mobility_attributes)
         params.require(:report).permit(
           translated_params,
-          :key,
           :reporting_period,
           :report_group_id,
           :title,

@@ -29,10 +29,17 @@ class Comparison::Report < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   include EnumReportingPeriod
+  extend FriendlyId
 
   translates :title, type: :string, fallbacks: { cy: :en }
   translates :introduction, backend: :action_text
   translates :notes, backend: :action_text
+
+  friendly_id :title, use: [:slugged], slug_column: :key
+
+  def normalize_friendly_id(string)
+    super.tr('-', '_')
+  end
 
   belongs_to :custom_period, class_name: 'Comparison::CustomPeriod', optional: true, autosave: true, dependent: :destroy
   belongs_to :report_group, class_name: 'Comparison::ReportGroup'

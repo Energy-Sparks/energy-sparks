@@ -6,7 +6,7 @@
 
 .illustration-background {
   padding-top: 20px;
-  background-image: linear-gradient(to right, #FCFFFF 0%, #FCFFFF 15%, #E7EDF0 50%, #FCFFFF 85%, #FCFFFF 100%);
+  background: linear-gradient(to right, $bluey-white 0%, $bluey-white 15%, $bluey-grey 50%, $bluey-white 85%, $bluey-white 100%);
 }
 
 .illustration-wrapper {
