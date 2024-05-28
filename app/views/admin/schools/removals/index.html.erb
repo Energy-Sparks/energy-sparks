@@ -5,6 +5,7 @@
     <tr>
       <th>Name</th>
       <th>Archived?</th>
+      <th>Archived date</th>
       <th>Removal date</th>
       <th>Meters</th>
     </tr>
@@ -14,6 +15,7 @@
     <tr>
       <td><%= link_to school.name, admin_school_path(school) %></td>
       <td><%= y_n(school.archived?) %></td>
+      <td><%= nice_dates(school.archived_date) %></td>
       <td><%= nice_dates(school.removal_date) %></td>
       <td>
         <% school.meters.each do |meter| %>
