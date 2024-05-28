@@ -2,7 +2,7 @@ class SchoolGroupMeterReportJob < ApplicationJob
   queue_as :default
 
   def priority
-    10
+    5
   end
 
   def perform(to:, school_group:, all_meters: false)
