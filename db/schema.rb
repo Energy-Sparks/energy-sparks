@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_21_182605) do
+ActiveRecord::Schema.define(version: 2024_05_22_155559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1708,6 +1708,7 @@ ActiveRecord::Schema.define(version: 2024_05_21_182605) do
     t.boolean "alternative_heating_water_source_heat_pump", default: false, null: false
     t.integer "alternative_heating_water_source_heat_pump_percent", default: 0
     t.text "alternative_heating_water_source_heat_pump_notes"
+    t.date "archived_date"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
