@@ -13,7 +13,7 @@ cy:
             <p>
               Os oes gan eich ysgol ddefnydd uchel dros nos, o gymharu <p></p>â'r ysgolion meincnod, gallai hyn ddangos bod angen i chi leihau eich llwyth sylfaenol. Os yw defnydd yn bennaf yn uchel yn ystod canol y dydd, mae hyn yn dangos bod angen i chi leihau eich defnydd trydan brig.
             </p>
-          comparison_chart_subtitle_html: Mae'r siart isod yn darparu cymhariaeth o ddefnydd cyfartalog eich ysgol yn ystod diwrnod ysgol rhwng <span class="start-date">%{start_month_year}</span> a %{end_month_year}<span class="end-date">, ac yn cynnwys cymhariaeth gydag ysgolion 'Dan reolaeth dda' ac 'Enghreifftiol'.
+          comparison_chart_subtitle_html: Mae'r siart isod yn darparu cymhariaeth o ddefnydd cyfartalog eich ysgol yn ystod diwrnod ysgol rhwng <span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>, ac yn cynnwys cymhariaeth gydag ysgolion 'Dan reolaeth dda' ac 'Enghreifftiol'.
           comparison_chart_title:
             one: Eich defnydd trydan diwrnod ysgol diweddar
             two: Eich defnydd o drydan diwrnod ysgol dros y %{count} fis diwethaf

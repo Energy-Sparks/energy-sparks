@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 077fc774b308739481fe3d0296b6ce90a8bf22f4
-  branch: 3848-school-day-legend-needs-capitalising-on-electricity-intraday-analysis-chart
+  revision: d74174e84e73259f40bb9aaadb41dce015c4641b
+  tag: 5.2.8
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
