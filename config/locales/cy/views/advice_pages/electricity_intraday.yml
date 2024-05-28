@@ -48,7 +48,7 @@ cy:
         schooldays:
           title: Diwrnodau ysgol
         sections: Mae'r adrannau canlynol yn darparu mwy o gefndir a dadansoddiad ar eich llwyth sylfaenol trydan
-        summary: 'Mae''r adran hon yn rhoi dadansoddiad manylach o sut mae defnydd trydan eich ysgol yn amrywio drwy gydol y dydd. Gwneir cymhariaethau rhwng eich ysgol ac ysgolion meincnod ac ysgolion enghreifftiol yn ogystal â rhwng eleni a''r flwyddyn flaenorol ar gyfer dyddiau''r wythnos, penwythnosau a gwyliau. '
+        summary: Mae'r adran hon yn rhoi dadansoddiad manylach o sut mae defnydd trydan eich ysgol yn amrywio drwy gydol y dydd. Gwneir cymhariaethau rhwng eich ysgol ac ysgolion meincnod ac ysgolion enghreifftiol yn ogystal â rhwng eleni a'r flwyddyn flaenorol ar gyfer dyddiau'r wythnos, penwythnosau a gwyliau.
         title: Dadansoddiad
         trends:
           title: Tueddiadau diweddar
