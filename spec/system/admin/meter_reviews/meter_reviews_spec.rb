@@ -10,6 +10,13 @@ RSpec.describe 'meter_reviews', type: :system do
 
   let!(:admin)                 { create(:admin) }
 
+  context 'with no completed reviews' do
+    it 'has no link to the list of completed reviews' do
+      visit school_meters_path(other_school)
+      expect(page).not_to have_link('Completed DCC meter reviews', href: admin_school_meter_reviews_path(school))
+    end
+  end
+
   context 'with pending reviews' do
     before do
       login_as(admin)
