@@ -6,7 +6,7 @@ en:
         charts:
           comparison_chart_explanation_html: |-
             <p>
-              This chart allows you to see how your school’s electricity consumption compares with other energy efficient schools throughout the school day. A 'benchmark' school represents the 30.0% best ranked %{school_type} schools and 'exemplar' the 17.5% best %{school_type} schools.
+              This chart allows you to see how your school’s electricity consumption compares with other energy efficient schools throughout the school day. A 'Well Managed' school represents the 30.0% best ranked %{school_type} schools and 'Exemplar' the 17.5% best %{school_type} schools.
             </p>
             <p>
               This chart can be useful to observe where your school’s pattern of energy use differs from other schools. There might be anomalies like jumps in usage outside school hours which can’t be accounted for.
@@ -14,7 +14,7 @@ en:
             <p>
               If your school has high consumption overnight, compared to the benchmark schools, this could indicate that you need to reduce your baseload. If consumption is mainly high during the middle of the day, this indicates you need to reduce your peak electricity use.
             </p>
-          comparison_chart_subtitle_html: The chart below provides a comparison of your school's average consumption during school days between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'benchmark' and 'exemplar' schools.
+          comparison_chart_subtitle_html: The chart below provides a comparison of your school's average consumption during school days between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'Well managed' and 'Exemplar' schools.
           comparison_chart_title:
             one: Your recent school day electricity consumption
             other: Your school day electricity consumption over the last %{count} months
@@ -47,7 +47,7 @@ en:
         schooldays:
           title: School days
         sections: The following sections provide more background and analysis on your electricity baseload
-        summary: This section gives a more detailed analysis of how your school’s electricity use varies throughout the day. Comparisons are made between your school and benchmark and exemplar schools as well as between this year and the previous year for weekdays, weekends and holidays.
+        summary: This section gives a more detailed analysis of how your school’s electricity use varies throughout the day. Comparisons are made between your school, 'Well managed' and 'Exemplar' schools as well as between this year and the previous year for weekdays, weekends and holidays.
         title: Analysis
         trends:
           title: Recent trends

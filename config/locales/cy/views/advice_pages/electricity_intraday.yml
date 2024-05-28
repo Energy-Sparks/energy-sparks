@@ -5,7 +5,7 @@ cy:
         charts:
           comparison_chart_explanation_html: |-
             <p>
-              Mae'r siart hwn yn eich galluogi i weld sut mae defnydd trydan eich ysgol yn cymharu ag ysgolion eraill sy'n defnyddio ynni'n effeithlon trwy gydol y diwrnod ysgol. Mae ysgol 'meincnod' yn cynrychioli'r 30.0% gorau o ysgolion %{school_type} ac mae 'enghreifftiol' yn cynrychioli'r 17.5% o ysgolion %{school_type} orau.
+              Mae'r siart hwn yn eich galluogi i weld sut mae defnydd trydan eich ysgol yn cymharu ag ysgolion eraill sy'n defnyddio ynni'n effeithlon trwy gydol y diwrnod ysgol. Mae ysgol 'Dan reolaeth dda' yn cynrychioli'r 30.0% gorau o ysgolion %{school_type} ac mae 'Enghreifftiol' yn cynrychioli'r 17.5% o ysgolion %{school_type} orau.
             </p>
 
               Gall y siart hwn fod yn ddefnyddiol i arsylwi lle mae patrwm eich ysgol o ddefnyddio ynni yn wahanol i ysgolion eraill. Efallai y bydd anghysondebau fel neidiau mewn defnydd y tu allan i oriau ysgol na ellir eu cyfrif.
@@ -13,7 +13,7 @@ cy:
             <p>
               Os oes gan eich ysgol ddefnydd uchel dros nos, o gymharu <p></p>â'r ysgolion meincnod, gallai hyn ddangos bod angen i chi leihau eich llwyth sylfaenol. Os yw defnydd yn bennaf yn uchel yn ystod canol y dydd, mae hyn yn dangos bod angen i chi leihau eich defnydd trydan brig.
             </p>
-          comparison_chart_subtitle_html: Mae'r siart isod yn darparu cymhariaeth o ddefnydd cyfartalog eich ysgol yn ystod diwrnod ysgol rhwng <span class="start-date">%{start_month_year}</span> a %{end_month_year}<span class="end-date">, ac yn cynnwys cymhariaeth gydag ysgolion 'meincnod' ac 'enghreifftiol'.
+          comparison_chart_subtitle_html: Mae'r siart isod yn darparu cymhariaeth o ddefnydd cyfartalog eich ysgol yn ystod diwrnod ysgol rhwng <span class="start-date">%{start_month_year}</span> a %{end_month_year}<span class="end-date">, ac yn cynnwys cymhariaeth gydag ysgolion 'Dan reolaeth dda' ac 'Enghreifftiol'.
           comparison_chart_title:
             one: Eich defnydd trydan diwrnod ysgol diweddar
             two: Eich defnydd o drydan diwrnod ysgol dros y %{count} fis diwethaf
