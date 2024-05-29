@@ -25,18 +25,19 @@ function updateDatesInSubtitles(subTitleElement, chartData) {
   }
 }
 
-function chartFailure(chart, title) {
-  var $standardErrorMessage = document.getElementById('chart-error').textContent
+function chartFailure(chart) {
+  // the chart
   var $chartDiv = $(chart.renderTo);
+  // the chart wrapper containing the titles, header, various controls
+
   var $chartWrapper = $chartDiv.parents('.chart-wrapper');
+  // disable specific controls if chart fails
+  $chartWrapper.find('.chart-controls .axis-controls :input').attr("disabled", true);
+  $chartWrapper.find('.chart-controls .analysis-controls :input').attr("disabled", true);
 
-  $chartWrapper.addClass('alert alert-warning');
-
-  if (title) {
-    $chartWrapper.html(`<h3>${title}</h3>`)
-  } else {
-    $chartWrapper.html(`<h3>${$standardErrorMessage}</h3>`)
-  }
+  // display standard error message
+  var $standardErrorMessage = document.getElementById('chart-error').textContent
+  $chartDiv.html(`<div class='alert alert-warning'><h3>${$standardErrorMessage}</h3></div>`)
 }
 
 function chartSuccess(chartConfig, chartData, chart) {
@@ -177,15 +178,15 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
     success: function (returnedData) {
       var thisChartData = returnedData;
       if (thisChartData == undefined || thisChartData.length == 0) {
-        chartFailure(highchartsChart, "");
+        chartFailure(highchartsChart);
       } else if (thisChartData.series_data == null) {
-        chartFailure(highchartsChart, thisChartData.title);
+        chartFailure(highchartsChart);
       } else {
         chartSuccess(chartConfig, thisChartData, highchartsChart);
       }
     },
     error: function(broken) {
-      chartFailure(highchartsChart, "");
+      chartFailure(highchartsChart);
     }
   });
 }
