@@ -12,6 +12,8 @@ end
 shared_examples_for 'a data source form' do
   it 'shows prefilled form' do
     expect(page).to have_select('Organisation type', selected: data_source.organisation_type.try(:humanize).presence || [])
+    expect(page).to have_field('Load tariffs for SMETS meters')
+
     text_attributes.each do |text_field, label|
       if data_source[text_field]
         expect(page).to have_field(label, with: data_source[text_field])
@@ -139,6 +141,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
               before do
                 select new_data_source.organisation_type.humanize, from: 'Organisation type'
+                check 'Load tariffs for SMETS meters'
                 text_attributes.each do |text_field, label|
                   fill_in label, with: new_data_source[text_field]
                 end
