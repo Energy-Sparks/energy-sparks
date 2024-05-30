@@ -82,9 +82,6 @@ cy:
       view_current_scores: Gweld y sgorau cyfredol
     download_as_csv: Lawrlwytho fel CSV
     header:
-      compare_schools: Cymharu ysgolion
-      scoreboard: Bwrdd sgorio
-      view_all_schools: Gweld pob ysgol
       view_group: Gweld y dangosfwrdd
       view_map: Gweld y map
     labels:
@@ -192,18 +189,6 @@ cy:
       view_analysis: Gweler dadansoddiad
     show:
       change_units: Newid unedau
-      currently_works_with_from:
-        one: Mae Energy Sparks yn gweithio gydag %{count} ysgol ar hyn o bryd
-        two: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
-        many: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
-        other: Ar hyn o bryd mae Sbarcynni yn gweithio gyda %{count} ysgol o
-      currently_works_with_schools_from:
-        one: Mae Energy Sparks yn gweithio gydag 1 ysgol ar hyn o bryd
-        two: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
-        many: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
-        other: Ar hyn o bryd mae Sbarcynni yn gweithio gyda %{count} ysgol o
-      if_you_would_like_support_enrol_here_html: Os hoffech i Sbarcynni gefnogi eich ysgol i leihau ei hallyriadau carbon, cofrestrwch <a href='%{enrol_path}'>yma</a>
-      in_partnership_with: mewn partneriaeth â
       metric:
         change: "% Newid"
         co2: CO2 (kg)
