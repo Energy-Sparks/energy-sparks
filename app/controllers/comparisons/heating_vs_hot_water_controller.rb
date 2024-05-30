@@ -2,6 +2,11 @@
 
 module Comparisons
   class HeatingVsHotWaterController < BaseController
+    def unlisted
+      @unlisted_swimming_pool = true
+      super
+    end
+
     private
 
     def header_groups
@@ -31,6 +36,10 @@ module Comparisons
                                    .where.not(estimated_hot_water_gas_kwh: nil)
                                    .without_swimming_pool
                                    .order(estimated_hot_water_percentage: :desc)
+    end
+
+    def unlisted_message(count)
+      I18n.t('comparisons.hot_water_efficiency.unlisted.message', count: count)
     end
   end
 end

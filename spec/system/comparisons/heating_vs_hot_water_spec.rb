@@ -56,5 +56,11 @@ describe 'heating_vs_hot_water' do
         [['', 'kWh', '', '', ''], headers, [schools[0].name, '10', '5', '5', '0.5']]
       end
     end
+
+    it 'has a custom unlisted message' do
+      expect(page).to have_content('2 schools could not be shown in this report as they do not have enough data to ' \
+                                   'be analysed, or have swimming pools so their hot water usage cannot be ' \
+                                   'accurately estimated.')
+    end
   end
 end

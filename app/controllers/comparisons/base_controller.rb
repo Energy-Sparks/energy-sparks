@@ -11,11 +11,11 @@ module Comparisons
     before_action :set_report
     before_action :set_results, only: [:index]
     before_action :set_unlisted_schools_count, only: [:index]
+    before_action :set_headers, only: [:index]
+
     helper_method :index_params
     helper_method :footnote_cache
     helper_method :unlisted_message
-    before_action :set_headers, only: [:index]
-
 
     def index
       respond_to do |format|
