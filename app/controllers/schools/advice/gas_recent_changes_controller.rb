@@ -1,7 +1,7 @@
 module Schools
   module Advice
     class GasRecentChangesController < AdviceBaseController
-      before_action :load_dashboard_alerts, only: [:insights]
+      before_action :load_dashboard_alerts
 
       def insights
         @analysis_dates = analysis_dates
