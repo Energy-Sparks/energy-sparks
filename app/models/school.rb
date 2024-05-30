@@ -26,6 +26,7 @@
 #  alternative_heating_water_source_heat_pump          :boolean          default(FALSE), not null
 #  alternative_heating_water_source_heat_pump_notes    :text
 #  alternative_heating_water_source_heat_pump_percent  :integer          default(0)
+#  archived_date                                       :date
 #  bill_requested                                      :boolean          default(FALSE)
 #  bill_requested_at                                   :datetime
 #  calendar_id                                         :bigint(8)
@@ -199,8 +200,8 @@ class School < ApplicationRecord
   # are archived, with chance of returning if we receive funding
   scope :active,              -> { where(active: true) }
   scope :inactive,            -> { where(active: false) }
-  scope :deleted,             -> { inactive.where.not(removal_date: nil) }
   scope :archived,            -> { inactive.where(removal_date: nil) }
+  scope :deleted,             -> { inactive.where.not(removal_date: nil) }
   scope :visible,             -> { active.where(visible: true) }
   scope :not_visible,         -> { active.where(visible: false) }
   scope :process_data,        -> { active.where(process_data: true) }

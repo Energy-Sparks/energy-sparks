@@ -12,7 +12,7 @@
     <% errors.each do |error| %>
       <tr scope="row">
         <td><%= fa_icon(alert_icon(error)) %> <%= error.alert_type.display_fuel_type %></td>
-        <td><%= error.alert_type.title %></td>
+        <td><%= error.alert_type_title_with_report %></td>
         <td><%= nice_dates error.asof_date %></td>
         <td><%= nice_date_times error.created_at %></td>
         <td><%= error.information %></td>

@@ -41,7 +41,7 @@ cy:
       last_school_week: wythnos ysgol ddiwethaf
       pa: "%{cost}pa"
       previous_school_week: wythnos ysgol flaenorol
-      school_day: diwrnod ysgol
+      school_day: Diwrnod ysgol
       storage_heaters: stôr-wresogyddion
       weekend: penwythnos
     holidays:
