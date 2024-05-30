@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_22_155559) do
+ActiveRecord::Schema.define(version: 2024_05_23_150531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -3860,5 +3860,35 @@ ActiveRecord::Schema.define(version: 2024_05_22_155559) do
        LEFT JOIN storage_heater ON ((latest_runs.id = storage_heater.alert_generation_run_id)))
        LEFT JOIN benchmark ON ((latest_runs.id = benchmark.alert_generation_run_id)))
     WHERE (((electricity.custom_period_id = gas.custom_period_id) AND (gas.custom_period_id = storage_heater.custom_period_id)) OR ((electricity.custom_period_id IS NULL) AND (gas.custom_period_id = storage_heater.custom_period_id)) OR ((gas.custom_period_id IS NULL) AND (electricity.custom_period_id = storage_heater.custom_period_id)) OR ((storage_heater.custom_period_id IS NULL) AND (electricity.custom_period_id = gas.custom_period_id)) OR ((electricity.custom_period_id IS NOT NULL) AND (COALESCE(gas.custom_period_id, storage_heater.custom_period_id) IS NULL)) OR ((gas.custom_period_id IS NOT NULL) AND (COALESCE(electricity.custom_period_id, storage_heater.custom_period_id) IS NULL)) OR ((storage_heater.custom_period_id IS NOT NULL) AND (COALESCE(electricity.custom_period_id, gas.custom_period_id) IS NULL)));
+  SQL
+  create_view "heating_vs_hot_waters", sql_definition: <<-SQL
+      WITH gas AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.last_year_kwh
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(last_year_kwh double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
+          ), hot_water AS (
+           SELECT alerts.alert_generation_run_id,
+              data.existing_gas_annual_kwh
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(existing_gas_annual_kwh double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHotWaterEfficiency'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      gas.school_id,
+      gas.last_year_kwh AS last_year_gas_kwh,
+      hot_water.existing_gas_annual_kwh AS estimated_hot_water_gas_kwh,
+      (hot_water.existing_gas_annual_kwh / gas.last_year_kwh) AS estimated_hot_water_percentage
+     FROM ((latest_runs
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
+       LEFT JOIN hot_water ON ((latest_runs.id = hot_water.alert_generation_run_id)));
   SQL
 end

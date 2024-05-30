@@ -7,7 +7,7 @@
       <% row.with_var val: result.last_year_gas_kwh, unit: :kw %>
       <% row.with_var val: result.estimated_hot_water_gas_kwh, unit: :kw %>
       <% row.with_var val: result.last_year_gas_kwh - result.estimated_hot_water_gas_kwh, unit: :kw %>
-      <% row.with_var val: result.estimated_hot_water_gas_kwh / result.last_year_gas_kwh, unit: :percent %>
+      <% row.with_var val: result.estimated_hot_water_percentage, unit: :percent %>
     <% end %>
   <% end %>
 <% end %>

@@ -26,7 +26,11 @@ module Comparisons
     end
 
     def load_data
-      Comparison::HeatingVsHotWater.for_schools(@schools).where.not(last_year_gas_kwh: nil).order(last_year_gas_kwh: :desc)
+      Comparison::HeatingVsHotWater.for_schools(@schools)
+                                   .where.not(last_year_gas_kwh: nil)
+                                   .where.not(estimated_hot_water_gas_kwh: nil)
+                                   .without_swimming_pool
+                                   .order(estimated_hot_water_percentage: :desc)
     end
   end
 end

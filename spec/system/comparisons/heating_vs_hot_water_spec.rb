@@ -3,18 +3,29 @@
 require 'rails_helper'
 
 describe 'heating_vs_hot_water' do
-  let!(:school) { create(:school) }
+  let!(:schools) do
+    list = create_list(:school, 3)
+    list[1].update(has_swimming_pool: true)
+    list
+  end
   let(:key) { :heating_vs_hot_water }
   let(:advice_page_key) { :hot_water }
   let!(:report) { create(:report, key: key) }
   let!(:alerts) do
-    alert_run = create(:alert_generation_run, school: school)
-    create(:alert, school: school, alert_generation_run: alert_run,
+    schools[0..1].each do |school|
+      alert_run = create(:alert_generation_run, school: school)
+      create(:alert, school: school, alert_generation_run: alert_run,
+                     alert_type: create(:alert_type, class_name: AlertGasAnnualVersusBenchmark.name),
+                     variables: { last_year_kwh: 10 })
+      create(:alert, school: school, alert_generation_run: alert_run,
+                     alert_type: create(:alert_type, class_name: AlertHotWaterEfficiency.name),
+                     variables: { existing_gas_annual_kwh: 5 })
+    end
+    # school where hot water efficiency doesn't run
+    alert_run = create(:alert_generation_run, school: schools[2])
+    create(:alert, school: schools[2], alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: AlertGasAnnualVersusBenchmark.name),
                    variables: { last_year_kwh: 10 })
-    create(:alert, school: school, alert_generation_run: alert_run,
-                   alert_type: create(:alert_type, class_name: AlertHotWaterEfficiency.name),
-                   variables: { existing_gas_annual_kwh: 5 })
   end
 
   before do
@@ -30,7 +41,7 @@ describe 'heating_vs_hot_water' do
 
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
-      let(:expected_school) { school }
+      let(:expected_school) { schools[0] }
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
 
       let(:headers) do
@@ -38,11 +49,11 @@ describe 'heating_vs_hot_water' do
       end
 
       let(:expected_table) do
-        [['', 'kWh', ''], headers, [school.name, '10', '5', '5', '50&percnt;']]
+        [['', 'kWh', ''], headers, [schools[0].name, '10', '5', '5', '50&percnt;']]
       end
 
       let(:expected_csv) do
-        [['', 'kWh', '', '', ''], headers, [school.name, '10', '5', '5', '0.5']]
+        [['', 'kWh', '', '', ''], headers, [schools[0].name, '10', '5', '5', '0.5']]
       end
     end
   end
