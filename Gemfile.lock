@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 3fe779793c494f19794476687c0db67241843014
+  revision: 4871a702ac740d4bbb5ded1b4e6d9dd455b64370
   branch: 3826-add-new-school-comparison-for-of-gas-used-for-heating-vs-hot-water
   specs:
     energy-sparks_analytics (1.2.1)
