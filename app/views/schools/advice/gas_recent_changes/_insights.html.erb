@@ -8,8 +8,11 @@
 <%= render 'schools/advice/section_title',
            section_id: 'your_recent_gas_use',
            section_title: t('advice_pages.gas_recent_changes.insights.your_recent_gas_use.title') %>
+
 <%= component 'alerts', school: @school,
                         dashboard_alerts: @dashboard_alerts,
-                        alert_types: alert_types_for_class(AlertSchoolWeekComparisonGas),
+                        alert_types: alert_types_for_class([AlertSchoolWeekComparisonGas,
+                                                            AlertWeekendGasConsumptionShortTerm]),
                         show_links: false, show_icons: false %>
+
 <%= render 'your_recent_gas_use_table' %>

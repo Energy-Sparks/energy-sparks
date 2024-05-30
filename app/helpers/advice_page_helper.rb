@@ -171,7 +171,8 @@ module AdvicePageHelper
   end
 
   def alert_types_for_class(class_name)
-    AlertType.where(class_name: class_name.to_s)
+    class_names = Array(class_name).map(&:to_s)
+    AlertType.where(class_name: class_names)
   end
 
   # alert type groups have a specific order here

@@ -149,8 +149,12 @@ describe AdvicePageHelper do
     end
 
     describe '.alert_types_for_class' do
-      it 'returns alert types for class name' do
+      it 'returns alert types for class name as string' do
         expect(helper.alert_types_for_class('ChangeAlert')).to eq([alert_type_change])
+      end
+
+      it 'returns alert types for class name as array' do
+        expect(helper.alert_types_for_class(['ChangeAlert'])).to eq([alert_type_change])
       end
     end
   end

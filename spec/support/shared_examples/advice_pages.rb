@@ -79,3 +79,17 @@ RSpec.shared_examples 'an advice page showing electricity data warning' do
     expect(page).to have_content('We have not received data for your electricity usage for over thirty days')
   end
 end
+
+RSpec.shared_examples 'an advice page with an alert notice' do |link: false|
+  it 'shows the notice' do
+    within('.alerts-component') do
+      expect(page).to have_content(expected_notice)
+    end
+  end
+
+  it 'has a link in the notice', if: link do
+    within('.alerts-component') do
+      expect(page).to have_link('View analysis')
+    end
+  end
+end
