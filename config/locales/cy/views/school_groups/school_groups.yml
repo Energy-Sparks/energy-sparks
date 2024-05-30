@@ -194,7 +194,6 @@ cy:
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Defnyddio (kWh)
-      not_visible_schools: Dim ysgolion gweladwy
       recent_usage_intro:
         general: Crynodeb o'r defnydd diweddar o ynni ar draws ysgolion yn y grŵp hwn.
         local_authority: Crynodeb o’r defnydd diweddar o ynni ar draws ysgolion yn yr awdurdod lleol hwn.
