@@ -93,12 +93,12 @@ module Schools
         @school.meters
                .active
                .gas
-               .where.not(id: MeterAttribute.where(meter_id: @school.meters.pluck(:id))
+               .where.not(id: MeterAttribute.where(meter_id: @school.meters.pluck(:id), attribute_type: :function_switch)
                                             .where(
                                               <<-SQL.squish
                                                 input_data::text IN ('"kitchen_only"', '"hotwater_only"')
                                               SQL
-                                            ).select(:meter_id)
+                                            ).active.select(:meter_id)
               )
       end
 
