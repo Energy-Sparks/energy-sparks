@@ -2,7 +2,7 @@ class SendReviewGroupTariffsReminderJob < ApplicationJob
   queue_as :default
 
   def priority
-    10
+    5
   end
 
   def perform

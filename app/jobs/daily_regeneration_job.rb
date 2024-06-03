@@ -2,7 +2,7 @@ class DailyRegenerationJob < ApplicationJob
   queue_as :regeneration
 
   def priority
-    10
+    5
   end
 
   def perform(school:)

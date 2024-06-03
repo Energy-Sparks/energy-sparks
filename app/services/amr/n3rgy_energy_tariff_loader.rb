@@ -5,6 +5,8 @@ module Amr
     end
 
     def perform
+      return unless @meter.data_source.nil? || @meter.data_source.load_tariffs
+
       todays_tariff = N3rgyTariffDownloader.new(meter: @meter).current_tariff
 
       N3rgyTariffManager.new(meter: @meter,
