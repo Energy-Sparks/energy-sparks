@@ -15,6 +15,10 @@ describe ManualDataLoadRunJob, ts: false do
     allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(updated)
   end
 
+  describe '#priority' do
+    it_behaves_like 'a high priority job'
+  end
+
   context 'with a valid file' do
     before do
       expect(run.status).to eq 'pending'

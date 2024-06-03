@@ -44,13 +44,13 @@ module Admin
         translated_params = t_params(Comparison::Report.mobility_attributes)
         params.require(:report).permit(
           translated_params,
-          :key,
           :reporting_period,
           :report_group_id,
           :title,
           :introduction,
           :notes,
           :public,
+          :disabled,
           custom_period_attributes: %i[current_label current_start_date current_end_date previous_label
                                        previous_start_date previous_end_date max_days_out_of_date enough_days_data]
         )

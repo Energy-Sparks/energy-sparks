@@ -1,0 +1,31 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row classes: (gas_or_electricity_data_stale?(result) ? 'old-data' : '') do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.any_tariff_changed? %>
+
+      <% r.with_var do
+           gas_or_electricity_data_stale?(result) ? t('common.labels.no_label') : t('common.labels.yes_label')
+         end %>
+
+      <%= r.with_var val: result.electricity_last_year_kwh, unit: :kwh %>
+      <%= r.with_var val: result.electricity_last_year_gbp, unit: :£ %>
+      <%= r.with_var val: result.electricity_last_year_co2, unit: :co2 %>
+
+      <%= r.with_var val: result.gas_last_year_kwh, unit: :kwh %>
+      <%= r.with_var val: result.gas_last_year_gbp, unit: :£ %>
+      <%= r.with_var val: result.gas_last_year_co2, unit: :co2 %>
+
+      <%= r.with_var val: result.storage_heaters_last_year_kwh, unit: :kwh %>
+      <%= r.with_var val: result.storage_heaters_last_year_gbp, unit: :£ %>
+      <%= r.with_var val: result.storage_heaters_last_year_co2, unit: :co2 %>
+
+      <% r.with_var { result.school_type_name } %>
+      <% r.with_var val: result.pupils, unit: :pupils %>
+      <% r.with_var val: result.floor_area, unit: :m2 %>
+    <% end %>
+  <% end %>
+<% end %>

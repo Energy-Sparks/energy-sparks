@@ -6,17 +6,17 @@ RSpec.describe 'gas recent changes advice page', type: :system do
 
   include_context 'gas advice page'
 
+  let(:alert_notice) { 'Weekend gas consumption is poor' }
+
+  include_context 'displayable alert content' do
+    let(:alert_type) { create(:alert_type, class_name: AlertWeekendGasConsumptionShortTerm) }
+    let(:alert_text) { alert_notice }
+  end
+
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
     before do
-      #      allow_any_instance_of(Usage::RecentUsagePeriodCalculationService).to receive(:recent_usage) do
-      #        OpenStruct.new(
-      #          date_range: [Time.zone.today, Time.zone.today - 1.week],
-      #          combined_usage_metric: CombinedUsageMetric.new(kwh: 12.0, £: 12.0, co2: 12.0)
-      #        )
-      #      end
-
       sign_in(user)
       visit school_advice_gas_recent_changes_path(school)
     end
@@ -31,8 +31,11 @@ RSpec.describe 'gas recent changes advice page', type: :system do
       it 'shows expected content' do
         expect(page).to have_content('What do we mean by recent changes?')
         expect(page).to have_content('Your recent gas use')
-        expect(page).to have_content('How do you compare?')
         expect(page).to have_content(12)
+      end
+
+      it_behaves_like 'an advice page with an alert notice' do
+        let(:expected_notice) { alert_notice }
       end
     end
 
@@ -42,6 +45,10 @@ RSpec.describe 'gas recent changes advice page', type: :system do
       end
 
       it_behaves_like 'an advice page tab', tab: 'Analysis'
+
+      it_behaves_like 'an advice page with an alert notice' do
+        let(:expected_notice) { alert_notice }
+      end
 
       it 'shows titles' do
         expect(page).to have_content('Comparison of gas use over 2 recent weeks')

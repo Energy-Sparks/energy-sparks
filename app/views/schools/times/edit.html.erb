@@ -1,7 +1,7 @@
 <h1><%= t('schools.times.edit.title') %></h1>
 
 <div class="alert alert-warning">
-  <p><%= t('schools.times.edit.introduction_message') %></p>
+  <%= t('schools.times.edit.introduction_message') %>
 </div>
 
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
@@ -25,7 +25,11 @@
 
   <p>
     <%= t('schools.times.edit.community_use.use_the_form_message') %>.
-  </p
+  </p>
+
+  <p>
+    <%= t('schools.times.edit.community_use.breakfast_and_after_school_clubs') %>.
+  </p>
 
   <p>
     <%= t('schools.times.edit.community_use.twenty_four_hour_format_message') %>.
@@ -48,13 +52,22 @@
   </div>
 </div>
 
-  <%= form_for(@school, url: school_times_path(@school), html: {id: :community_use_form}) do |f| %>
+  <%= form_for(@school, url: school_times_path(@school), html: { id: :community_use_form }) do |f| %>
     <div id="school-times">
-      <%= f.simple_fields_for :school_times, f.object.school_times.reject{|t| t.usage_type!='community_use'}.sort_by{|time| time.day ?  SchoolTime.days[time.day] : 99 } do |school_time| %>
+      <%= f.simple_fields_for(:school_times,
+                              f.object.school_times.select { |t| t.usage_type == 'community_use' }
+                              .sort_by { |time| time.day ? SchoolTime.days[time.day] : 99 }) do |school_time| %>
         <%= render 'schools/times/school_time_fields', f: school_time %>
       <% end %>
       <div class="links mt-2">
-        <%= link_to_add_association t('schools.times.edit.community_use.add_time'), f, :school_times, partial: 'schools/times/school_time_fields', wrap_object: Proc.new{|time| time.usage_type=:community_use; time.community_use_defaults!; time}, class: 'btn' %>
+        <%= link_to_add_association t('schools.times.edit.community_use.add_time'), f,
+                                    :school_times,
+                                    partial: 'schools/times/school_time_fields',
+                                    wrap_object: proc { |time|
+                                                   time.usage_type = :community_use
+                                                   time.community_use_defaults!
+                                                   time
+                                                 }, class: 'btn' %>
         <%= f.submit t('schools.times.edit.community_use.save_community_use_times'), class: 'btn btn-primary' %>
       </div>
     </div>

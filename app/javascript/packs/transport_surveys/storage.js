@@ -29,7 +29,7 @@ export const storage = ( function() {
 
   function getResponses(date) {
     let responses = getAllResponses();
-    responses[date] ||= []
+    responses[date] ||= [];
     return responses[date];
   }
 

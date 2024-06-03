@@ -11,13 +11,21 @@ en:
       previous_period: Previous period
       previous_period_unadjusted: Previous period (not adjusted)
       recent_data: Recent data
+      swimming_pool: Swimming pool
+    hot_water_efficiency:
+      unlisted:
+        message:
+          one: "%{count} school could not be shown in this report as it does not have enough data to be analysed, or has a swimming pool so its hot water usage cannot be accurately estimated"
+          other: "%{count} schools could not be shown in this report as they do not have enough data to be analysed, or have swimming pools so their hot water usage cannot be accurately estimated"
     period_types:
       periods: periods
     tables:
       electricity_usage: Electricity usage comparison
       gas_usage: Gas usage comparison
+      heating_start_time: Heating Start Times
+      optimum_start_analysis: Optimum Start Analysis
       storage_heater_usage: Storage heater usage comparison
-      table_title: 'Table %{table_number}: %{table_title}'
+      table_number: Table %{table_number}
       total_usage: Total energy usage comparison
     unlisted:
       link:

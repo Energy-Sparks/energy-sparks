@@ -1,5 +1,5 @@
 footer {
-  color: white;
+  color: $white;
   text-align: left;
   padding-top: 50px;
   padding-bottom: 50px;
@@ -11,7 +11,7 @@ footer p {
 }
 
 .btn-outline {
-  color: white;
+  color: $white;
   border: solid 2px white;
   background: transparent;
   transition: all 0.3s ease-in-out;
@@ -23,7 +23,7 @@ footer p {
 .btn-outline:active,
 .btn-outline.active {
   color: $light-blue;
-  background: white;
+  background: $white;
   border: solid 2px white;
 }
 
@@ -31,7 +31,7 @@ footer p {
   display: inline-block;
   height: 50px;
   width: 50px;
-  border: 2px solid white;
+  border: 2px solid $white;
   border-radius: 100%;
   text-align: center;
   line-height: 45px;

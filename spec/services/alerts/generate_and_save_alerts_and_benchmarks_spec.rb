@@ -87,7 +87,7 @@ module Alerts
           travel_to aggregate_school.holidays.last.start_date if period == :current_holidays
           create(:alert_type, class_name: alert_class.name, fuel_type: :electricity)
           service = described_class.new(school: school, aggregate_school: aggregate_school)
-          expect { service.perform }.to change(Alert, :count)
+          expect { service.perform }.to change(Alert, :count).by(1)
           expect(Alert.last.reporting_period).to eq(period.to_s)
         end
       end
@@ -164,7 +164,7 @@ module Alerts
         expect(alert.enough_data).to eq('enough')
         expect(alert.alert_type.class_name).to eq('AlertConfigurablePeriodElectricityComparison')
         expect(alert.reporting_period).to eq('custom')
-        expect(alert.custom_period_id).to eq(report.custom_period_id)
+        expect(alert.comparison_report_id).to eq(report.id)
       end
     end
   end

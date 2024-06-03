@@ -12,9 +12,10 @@ cy:
           baseload_chart_explanation: Mae pob pwynt yn y siart hwn yn cynrychioli'r llwyth sylfaenol cyfartalog dros yr oriau y mae ysgol ar gau ar y diwrnod hwnnw. Gallwch glicio ar bwynt yn y siart a bydd yn drilio i lawr i ddangos y defnydd llawn o drydan i chi ar y diwrnod hwnnw.
           baseload_chart_subtitle_html: Mae'r siart hwn yn dangos llwyth sylfaenol trydan eich ysgol rhwng<span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>.
           baseload_chart_title:
-            one: Llwyth sylfaenol trydan ar gyfer y mis diwethaf
+            one: Llwyth sylfaenol trydan am y mis diwethaf
+            two: Llwyth sylfaenol trydan am y %{count}  fis diwethaf
+            many: Llwyth sylfaenol trydan ar gyfer y %{count} mis diwethaf
             other: Llwyth sylfaenol trydan ar gyfer y %{count} mis diwethaf
-            zero: Llwyth sylfaenol trydan ar gyfer y mis diwethaf
           long_term_baseload_chart_explanation: Gallwch glicio ar y siart i drilio i lawr i ddiwrnodau unigol a gweithio allan ar ba adegau o'r dydd a'r flwyddyn y mae eich ysgol yn ei wneud naill ai'n well neu'n waeth na'r ysgolion hyn.
           long_term_baseload_chart_subtitle_html: Mae'r siart hwn yn dangos tueddiad hirdymor yn llwyth sylfaenol eich ysgol rhwng <span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>, ac yn cynnwys cymhariaeth gydag ysgolion 'meincnod' ac 'enghreifftiol'.
           long_term_baseload_chart_title: Cymhariaeth llwyth sylfaenol hirdymor gydag ysgolion enghreifftiol a meincnod
@@ -32,7 +33,7 @@ cy:
           whole_school: Ysgol gyfan
         meter_charts:
           title: Siartiau llwyth sylfaenol fesul mesurydd
-        multiple_meters_suggestion_html: Yn ddelfrydol, ni ddylai fod llawer o amrywiad yn y llwyth sylfaenol rhwng diwrnodau a thymhorau gwahanol. Os byddwch yn sylwi ar newidiadau anarferol neu lwyth sylfaenol uchel iawn, efallai y gallwch chi leihau'r hyn sy'n ei achosi trwy edrych ar eich llwyth sylfaenol isod.
+        multiple_meters_suggestion_html: Yn ddelfrydol, ni ddylai fod llawer o amrywiad yn y llwyth sylfaenol rhwng diwrnodau a thymhorau gwahanol. Os byddwch yn sylwi ar newidiadau anarferol neu lwyth sylfaenol uchel iawn, efallai y gallwch chi leihau'r hyn sy'n ei achosi trwy edrych ar %{link} eich llwyth sylfaenol isod.
         recent_trend:
           title: Tueddiad diweddar
         seasonal_variation:
@@ -44,9 +45,10 @@ cy:
         summary: Mae'r adran hon yn rhoi dadansoddiad manylach o lwyth sylfaenol trydan eich ysgol a rhai pethau i gadw llygad amdanynt.
         title: Dadansoddiad Llwyth Sylfaenol
         usage_last_month:
-          one: Roedd eich llwyth sylfaenol dros y mis diwethaf yn %{baseload_usage} kW.
-          other: Roedd eich llwyth sylfaenol dros y %{count} mis diwethaf yn %{baseload_usage} kW.
-          zero: Roedd eich llwyth sylfaenol dros y mis diwethaf yn %{baseload_usage} kW.
+          one: Eich llwyth sylfaenol am y mis diwethaf oedd %{baseload_usage}  kW.
+          two: Eich llwyth sylfaenol am y %{count} fis diwethaf oedd %{baseload_usage} kW.
+          many: Eich llwyth sylfaenol am y %{count} mis diwethaf oedd %{baseload_usage} kW.
+          other: Eich llwyth sylfaenol dros  y %{count} mis diwethaf oedd %{baseload_usage} kW.
         usage_other: Mae gan ysgolion eraill sydd â nifer tebyg o ddisgyblion lwyth sylfaenol o %{benchmark_usage} kW.
         usage_percent_html: Mae eich llwyth sylfaenol yn cynrychioli %{percent} o'ch defnydd blynyddol.
         weekday_variation:

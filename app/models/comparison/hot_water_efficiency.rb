@@ -11,6 +11,7 @@
 #  school_id                                  :bigint(8)
 #
 class Comparison::HotWaterEfficiency < Comparison::View
-  scope :with_data, -> { where.not(avg_gas_per_pupil_gbp: nil) }
+  scope :with_data, -> { where.not(avg_gas_per_pupil_gbp: [nil, 0.0]) }
+  scope :without_swimming_pool, -> { joins(:school).where({ school: { has_swimming_pool: false } }) }
   scope :sort_default, -> { order(avg_gas_per_pupil_gbp: :desc) }
 end

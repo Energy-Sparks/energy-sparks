@@ -18,6 +18,9 @@
 class Comparison::HeatingComingOnTooEarly < Comparison::View
   self.table_name = :heating_coming_on_too_early
 
+  scope :with_data, -> { where.not(avg_week_start_time: nil, average_start_time_hh_mm: nil) }
+  scope :sort_default, -> { joins(:school).order('schools.name') }
+
   def avg_week_start_time_to_time_of_day
     avg_week_start_time.nil? ? '' : TimeOfDay.from_time(avg_week_start_time)
   end

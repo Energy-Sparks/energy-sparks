@@ -25,7 +25,7 @@
     <% end %>
 
     <% if can? :manage, MeterReview %>
-      <% if @school.meters.reviewed_dcc_meter %>
+      <% if @school.meters.reviewed_dcc_meter.any? %>
         <%= link_to t('schools.meters.index.meter_reviews'), admin_school_meter_reviews_path(@school), class: 'btn' %>
       <% end %>
       <% if @pending_reviews %>
