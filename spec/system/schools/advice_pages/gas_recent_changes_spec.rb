@@ -6,6 +6,13 @@ RSpec.describe 'gas recent changes advice page', type: :system do
 
   include_context 'gas advice page'
 
+  let(:alert_notice) { 'Weekend gas consumption is poor' }
+
+  include_context 'displayable alert content' do
+    let(:alert_type) { create(:alert_type, class_name: AlertWeekendGasConsumptionShortTerm) }
+    let(:alert_text) { alert_notice }
+  end
+
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
@@ -26,6 +33,10 @@ RSpec.describe 'gas recent changes advice page', type: :system do
         expect(page).to have_content('Your recent gas use')
         expect(page).to have_content(12)
       end
+
+      it_behaves_like 'an advice page with an alert notice' do
+        let(:expected_notice) { alert_notice }
+      end
     end
 
     context "clicking the 'Analysis' tab" do
@@ -34,6 +45,10 @@ RSpec.describe 'gas recent changes advice page', type: :system do
       end
 
       it_behaves_like 'an advice page tab', tab: 'Analysis'
+
+      it_behaves_like 'an advice page with an alert notice' do
+        let(:expected_notice) { alert_notice }
+      end
 
       it 'shows titles' do
         expect(page).to have_content('Comparison of gas use over 2 recent weeks')
