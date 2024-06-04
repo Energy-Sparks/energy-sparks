@@ -1,5 +1,4 @@
 module Colours
-
   # YELLOWS
   NEW_YELLOW = '#fcb43a'.freeze
   DARK_YELLOW = '#ffde4d'.freeze
@@ -77,5 +76,4 @@ module Colours
   # Transport survey chart:
   # app/javascript/packs/transport_surveys/charts.js
   # var colors = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"];
-
 end
