@@ -8,6 +8,7 @@ gem 'rails', '~> 7.0'
 gem 'bootsnap'
 gem 'image_processing', '~> 1.12'
 gem 'jbuilder', '~> 2.12' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jsbundling-rails'
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
@@ -15,7 +16,6 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
-gem 'webpacker'
 gem 'wisper' # publish subscribe for ruby objects
 
 # Database/Data
