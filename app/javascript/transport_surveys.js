@@ -5,7 +5,7 @@ import { carbon } from 'transport_surveys/carbon';
 import { notifier } from 'transport_surveys/notifier';
 import { pluralise, nice_date } from 'transport_surveys/helpers';
 // this import has side effect
-import * as handlebarsHelpers from './transport_surveys/handlebars_helpers';
+import * as handlebarsHelpers from 'transport_surveys/handlebars_helpers';
 
 $(document).ready(function() {
 
