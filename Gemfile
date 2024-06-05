@@ -39,7 +39,8 @@ gem 'font-awesome-sass'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sass-rails' # Use SCSS for stylesheets
-gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
+gem 'terser'
+# gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 
 # Pagination
 gem 'pagy'
