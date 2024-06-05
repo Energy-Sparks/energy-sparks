@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
 
 # Rails/Core
 gem 'bootsnap'
@@ -15,7 +15,6 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
-gem 'webpacker'
 gem 'wisper' # publish subscribe for ruby objects
 
 # Database/Data
