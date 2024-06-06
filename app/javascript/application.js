@@ -1,5 +1,6 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 
-import Trix from 'trix'
+import 'trix'
+import '@rails/actiontext'
 
 Trix.config.attachments.preview.caption = { name: false, size: false }

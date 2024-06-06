@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 7.0'
+gem 'rails', '7.0.8.1'
 
 # Rails/Core
 gem 'bootsnap'
@@ -70,9 +70,6 @@ gem 'view_component'
 gem 'handlebars_assets'
 # Template variables
 gem 'mustache', '~> 1.0'
-
-# User input
-gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'cancancan', '~> 3' # Use cancancan for authorization
