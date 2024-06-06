@@ -31,11 +31,11 @@ header img {
 @media (max-width: 575.98px) {
   .home-page .carousel-item {
     h2 {
-      font-size: $f5;
+      @include font(f5);
     }
 
     i {
-      font-size: $f2;
+      @include font(f2);
     }
 
     .col-1 {
@@ -49,35 +49,35 @@ header img {
   }
 
   p.display-3 {
-    font-size: $f3;
+    @include font(f3);
   }
 
   blockquote {
-    font-size: $f7;
+    @include font(f7);
   }
 
   .quote-by {
-    font-size: $f7;
+    @include font(f7);
   }
 
 }
 
 .cta .btn {
-  font-size: $f5;
-  padding: 10px;
   font-family: $default-font-family;
-  line-height: 20px;
+  @include font(f5);
+  padding: 10px;
+//  line-height: 20px; // check this
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
   .home-page .carousel-item {
     h2 {
-      font-size: $f5;
+      @include font(f5);
     }
 
     i {
-      font-size: $f1;
+      @include font(f1);
     }
 
     .col-1 {
@@ -91,39 +91,46 @@ header img {
   }
 
   p.display-3 {
-    font-size: $f2;
+    @include font(f2);
   }
 
 }
 
+.headline-text {
+  font-family: $header-font-family;
+}
+
+.headline-sub-text {
+  font-family: $default-font-family;
+}
 
 // Medium devices (tablets, 768px and up) // max-width: 991.98px
 @media (min-width: 768px) and (max-width: 1199.98px) {
   .headline-text {
-    font-size: $f2;
+    @include font(f2);
   }
 
   .headline-sub-text {
-    font-size: $f5;
+    @include font(f5);
   }
 
   .masthead .btn {
-    font-size: $f4;
+    @include font(f4);
     padding: 10px;
   }
 
   .cta .btn {
-    font-size: $f4;
+    @include font(f4);
     padding: 10px;
   }
 
   .home-page .carousel-item {
     h2 {
-      font-size: $f3;
+      @include font(f3);
     }
 
     i {
-      font-size: $f0;
+      @include font(f0);
     }
 
     .col-1 {
@@ -143,29 +150,29 @@ header img {
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1140px) {
   .headline-text {
-    font-size: $f1;
+    @include font(f1);
   }
   .headline-sub-text {
-    font-size: $f3;
+    @include font(f3);
   }
 
   .masthead .btn {
-    font-size: $f3;
+    @include font(f3);
     padding: 20px;
   }
 
   .cta .btn {
-    font-size: $f3;
+    @include font(f3);
     padding: 20px;
   }
 
   .home-page .carousel-item {
     h2 {
-      font-size: $f1;
+      @include font(f1);
     }
 
     i {
-      font-size: $f-super-big;
+      @include font(f-xl);
     }
 
     .col-1 {

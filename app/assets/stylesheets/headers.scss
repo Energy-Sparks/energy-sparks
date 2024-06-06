@@ -1,39 +1,36 @@
-h1, .trix-content h1 {
-  font-size: $f1;
+h1 {
+  @include font(f1);
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-h2, .trix-content h2 {
-  font-size: $f2;
+h2 {
+  @include font(f2);
 }
 
-h3, .trix-content h3 {
-  font-size: $f3;
+h3 {
+  @include font(f3);
 }
 
-h4, .trix-content h4 {
-  font-size: $f4;
-}
-
-h5, .trix-content h5 {
-  font-size: $f5;
-}
-
-h2,
-h3,
-.trix-content h2,
-.trix-content h3 {
+h2, h3
+ {
   padding-top: 10px;
   padding-bottom: 20px;
 }
 
-h4,
-h5,
-h6,
-.trix-content h4,
-.trix-content h5,
-.trix-content h6 {
+h4 {
+  @include font(f4);
+}
+
+h5 {
+  @include font(f5);
+}
+
+h6 {
+  @include font(f6);
+}
+
+h4, h5, h6 {
  padding-top: 10px;
  padding-bottom: 10px;
 }
@@ -45,71 +42,60 @@ h6,
   margin: 0px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: $header-font-family;
+  font-weight: $header-font-weight;
+  color: $dark-blue;
+}
+
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
-  h1, .trix-content h1 {
-    font-size: $f6;
+  h1 {
+    @include font(f6);
     padding-top: 5px;
     padding-bottom: 5px;
   }
 
   h2 {
-    font-size: $f7;
-  }
-
-  .trix-content div {
-    font-size: $f7;
+    @include font(f7);
   }
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
-  h1, .trix-content h1 {
-    font-size: $f5;
+  h1 {
+    @include font(f5);
     padding-top: 10px;
     padding-bottom: 10px;
   }
 
   h2 {
-    font-size: $f6;
-  }
-
-  .trix-content div {
-    font-size: $f6;
+    @include font(f6);
   }
 }
 
 // Medium devices (tablets, 768px and up) // max-width: 991.98px
 @media (min-width: 768px) and (max-width: 991.98px) {
-  h1, .trix-content h1 {
-    font-size: $f4;
+  h1 {
+    @include font(f4);
     padding-top: 10px;
     padding-bottom: 10px;
   }
 
   h2 {
-    font-size: $f5;
-  }
-
-
-  .trix-content div {
-    font-size: $f5;
+    @include font(f5);
   }
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
-  h1, .trix-content h1 {
-    font-size: $f3;
+  h1 {
+    @include font(f3);
     padding-top: 10px;
     padding-bottom: 10px;
   }
 
   h2 {
-    font-size: $f4;
-  }
-
-  .trix-content div {
-    font-size: $f5;
+    @include font(f4);
   }
 }
 
@@ -118,14 +104,9 @@ h6,
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
-  h1, .trix-content h1 {
-    font-size: $f1;
+  h1 {
+    @include font(f1);
     padding-top: 20px;
     padding-bottom: 20px;
   }
-
-  .trix-content div {
-    font-size: $f5;
-  }
 }
-

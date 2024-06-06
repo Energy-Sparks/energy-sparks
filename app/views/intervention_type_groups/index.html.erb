@@ -3,7 +3,7 @@
 <div class="row mt-2">
   <div class="col">
     <div class="d-flex justify-content-between align-items-center">
-      <p class="display-3"><strong><%= t('intervention_type_groups.index.explore_energy_saving_actions') %></strong></p>
+      <h1 class="f-xl"><%= t('intervention_type_groups.index.explore_energy_saving_actions') %></h1>
       <% if EnergySparks::FeatureFlags.active?(:intervention_type_search) %>
         <%= link_to t('intervention_type_groups.index.search'),
                     search_intervention_types_path,
@@ -27,7 +27,7 @@
   <div class="row mt-3">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
-        <h4><strong><%= intervention_type_group.name %></strong></h4>
+        <h3><%= intervention_type_group.name %></h3>
         <div>
           <%= link_to t('intervention_type_groups.index.view_all_actions',
                         count: intervention_type_group.intervention_types.active.count),
