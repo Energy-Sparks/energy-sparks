@@ -1,0 +1,90 @@
+/* Font size definitions */
+/* Other font definitions also found in common_chart_options.js.erb & live_data.js.erb */
+
+$f-xl: 60px;
+$f0: 48px;
+
+$f1: 36px;
+$f2: 30px;
+$f3: 24px;
+$f4: 18px;
+$f5: 16px; // default
+$f6: 14px;
+$f7: 12px;
+$f8: 10px;
+
+// old
+/*
+$f-super-big: 60px;
+$f0: 50px;
+$f1: 37.3px;
+$f2: 31.1px;
+$f3: 25.9px;
+$f4: 21.6px;
+$f5: 18px; // default
+$f6: 15px;
+$f7: 12.5px;
+$f8: 10px;
+*/
+
+$fonts: (
+  f-xl: (
+    font-size: $f-xl,
+    line-height: 70px
+  ),
+  f0: (
+    font-size: $f0,
+    line-height: 58px
+  ),
+  f1: (
+    font-size: $f1,
+    line-height: 46px
+  ),
+  f2: (
+    font-size: $f2,
+    line-height: 40px
+  ),
+  f3: (
+    font-size: $f3,
+    line-height: 34px
+  ),
+  f4: (
+    font-size: $f4,
+    line-height: 30px
+  ),
+  f5: (
+    font-size: $f5,
+    line-height: 26px
+  ),
+  f6: (
+    font-size: $f6,
+    line-height: 24px
+  ),
+  f7: (
+    font-size: $f7,
+    line-height: 22px // spec says 24
+  ),
+  f8: (
+    font-size: $f8,
+    line-height: 20px // made up as no value given for this
+  )
+);
+
+@mixin font($name) {
+  @each $property, $value in map-get($fonts, $name) {
+    #{$property}: #{$value};
+  }
+}
+
+@each $name, $font in $fonts {
+  .#{$name} {
+    @include font($name);
+  }
+}
+
+$default-font-family: 'Inter';
+$default-font-size: $f5;
+$default-font-weight: 400; // regular. medium is 500
+
+$header-font-family: 'Quicksand';
+$header-font-weight: 700;
