@@ -39,8 +39,6 @@ jobs:
       - run: bundle exec rake knapsack:rspec
   overcommit:
     runs-on: ubuntu-latest
-    env:
-      BUNDLE_GEMFILE: .overcommit_gems.rb
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
