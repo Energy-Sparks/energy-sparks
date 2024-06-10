@@ -22,6 +22,21 @@ h6 {
   @include font(f6);
 }
 
+h1 {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+h2, h3 {
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+h4, h5, h6 {
+ padding-top: 10px;
+ padding-bottom: 10px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   color: $dark-blue;
   font-family: $header-font-family;
