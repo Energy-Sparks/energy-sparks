@@ -48,6 +48,13 @@ GIT
       rubyvis (~> 0.6)
       spreadsheet (~> 1.1)
 
+GIT
+  remote: https://github.com/tbhi/sassc-ruby.git
+  revision: 4fce2b635ca5d616a8b1381c64846410bc785ea4
+  specs:
+    sassc (2.4.0)
+      ffi (~> 1.9)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -636,8 +643,6 @@ GEM
       nokogiri (>= 1.12.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
-    sassc (2.4.0)
-      ffi (~> 1.9)
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
       sassc (>= 2.0)
@@ -824,6 +829,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   sass-rails
+  sassc!
   scenic
   scout_apm
   selenium-webdriver

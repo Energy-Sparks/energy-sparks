@@ -1,6 +1,8 @@
 #!/bin/sh
 set -xe
 
+exit 0
+
 # from
 # https://stackoverflow.com/questions/77496256/elasticbeanstalk-ruby-3-2-2-platform-sassc-loaderror
 # https://github.com/sass/sassc-ruby/issues/146
