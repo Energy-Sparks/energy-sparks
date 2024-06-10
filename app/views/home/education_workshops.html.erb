@@ -1,9 +1,11 @@
 <% content_for :page_title, t('education_workshops.title') %>
 
 <div class="application container">
-  <h1 class="f-xl"><strong><%= t('education_workshops.title') %></strong></h1>
+  <h1 class="f-xl"><%= t('education_workshops.title') %></h1>
 
-  <%= render 'two_column_image_deck', column_one: 'for-schools/workshop-class.png', column_two: 'for-schools/workshop-activity.png' %>
+  <%= render 'two_column_image_deck',
+             column_one: 'for-schools/workshop-class.png',
+             column_two: 'for-schools/workshop-activity.png' %>
 
   <div class="row">
     <div class="col-md-12">

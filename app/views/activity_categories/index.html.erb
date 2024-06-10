@@ -32,7 +32,7 @@
     <div class="row mt-3 bg-light">
       <div class="col">
         <div class="d-flex justify-content-between align-items-center">
-          <h3><%= t('activity_categories.pupil.title') %></h3>
+          <h4><%= t('activity_categories.pupil.title') %></h4>
         </div>
         <p><%= t('activity_categories.pupil.introduction') %></p>
       </div>
@@ -44,7 +44,7 @@
     <div class="row mt-3 bg-light">
       <div class="col">
         <div class="d-flex justify-content-between align-items-center">
-          <h3><%= t('activity_categories.our_programmes.title') %></h3>
+          <h4><%= t('activity_categories.our_programmes.title') %></h4>
           <div>
             <%= link_to t('activity_categories.view_all_programmes'), programme_types_path,
                         class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
@@ -60,7 +60,7 @@
     <div class="row mt-3">
       <div class="col">
         <div class="d-flex justify-content-between align-items-center">
-          <h3><%= activity_category.name %></h3>
+          <h4><%= activity_category.name %></h4>
           <div>
             <%= link_to t('activity_categories.view_all',
                           count: activity_category.activity_types.active.count),
