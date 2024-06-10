@@ -23,6 +23,19 @@ header img {
   height: 650px;
 }
 
+.masthead-content {
+  background-color: $dark-blue;
+}
+
+.masthead-content .display-4 {
+  color: $white;
+}
+
+.masthead-content h3 {
+  color: $white;
+  font-weight: 400;
+}
+
 .rounded-25 {
   border-radius: 25px;
 }
@@ -44,10 +57,6 @@ header img {
     }
   }
 
-  .masthead-content {
-    background-color: $dark-blue;
-  }
-
   p.display-3 {
     @include font(f3);
   }
@@ -59,14 +68,13 @@ header img {
   .quote-by {
     @include font(f7);
   }
-
 }
 
 .cta .btn {
   font-family: $default-font-family;
-  @include font(f5);
+  font-size: $f5;
   padding: 10px;
-//  line-height: 20px; // check this
+  line-height: 20px;
 }
 
 // Small devices (landscape phones, 576px and up)
@@ -86,22 +94,19 @@ header img {
     }
   }
 
-  .masthead-content {
-    background-color: $dark-blue;
-  }
-
   p.display-3 {
     @include font(f2);
   }
-
 }
 
 .headline-text {
   font-family: $header-font-family;
+  font-weight: 500 !important;
 }
 
 .headline-sub-text {
   font-family: $default-font-family;
+  font-weight: 400 !important;
 }
 
 // Medium devices (tablets, 768px and up) // max-width: 991.98px
