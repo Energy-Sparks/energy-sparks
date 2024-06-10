@@ -41,7 +41,7 @@ gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sass-rails' # Use SCSS for stylesheets
-gem 'sassc', github: 'tbhi/sassc-ruby'
+gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
 gem 'terser'
 
 # Pagination
