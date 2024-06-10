@@ -5,9 +5,7 @@ describe 'school group energy tariffs', type: :system do
 
   around do |example|
     ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: 'true' do
-      ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-        example.run
-      end
+      example.run
     end
   end
 
