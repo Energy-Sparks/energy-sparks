@@ -325,7 +325,7 @@ describe 'School admin user management' do
           click_on 'Add user'
           expect(page).to have_content(other_school_admin.name)
           other_school_admin.reload
-          expect(other_school_admin.cluster_schools_for_switching).to eql([school])
+          expect(other_school_admin.cluster_schools_for_switching).to eq([school])
         end
 
         it 'adds the user as an alert contact, by default' do
@@ -380,7 +380,7 @@ describe 'School admin user management' do
 
           it 'removes the user' do
             other_school_admin.reload
-            expect(other_school_admin.cluster_schools_for_switching).to eql([])
+            expect(other_school_admin.cluster_schools_for_switching).to eq([])
           end
 
           it 'removes alert contact' do
