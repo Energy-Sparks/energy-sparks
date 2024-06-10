@@ -1,7 +1,5 @@
 h1 {
   @include font(f1);
-  padding-top: 20px;
-  padding-bottom: 20px;
 }
 
 h2 {
@@ -10,12 +8,6 @@ h2 {
 
 h3 {
   @include font(f3);
-}
-
-h2, h3
- {
-  padding-top: 10px;
-  padding-bottom: 20px;
 }
 
 h4 {
@@ -30,22 +22,9 @@ h6 {
   @include font(f6);
 }
 
-h4, h5, h6 {
- padding-top: 10px;
- padding-bottom: 10px;
-}
-
-.sub-navbar h3,
-.sub-navbar h4 {
-  padding-top: 11px;
-  padding-bottom: 11px;
-  margin: 0px;
-}
-
 h1, h2, h3, h4, h5, h6 {
-  font-family: $header-font-family;
-  font-weight: $header-font-weight;
   color: $dark-blue;
+  font-family: $header-font-family;
 }
 
 // Extra small devices (portrait phones, less than 576px)

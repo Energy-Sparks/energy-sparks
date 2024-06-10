@@ -3,15 +3,20 @@
 
 $f-xl: 60px;
 $f0: 48px;
-
 $f1: 36px;
 $f2: 30px;
 $f3: 24px;
-$f4: 18px;
-$f5: 16px; // default
-$f6: 14px;
-$f7: 12px;
-$f8: 10px;
+$f4: 20px; // found under 'components -> text styles' in Sketch (not in New Typography page)
+$f5: 18px; // needs to be the default
+$f6: 16px;
+$f7: 14px;
+$f8: 12px;
+$f9: 10px; // not in 'components -> text styles' in Sketch (but in New Typography page)
+
+$default-font-family: 'Inter';
+$default-font-size: $f5;
+$default-font-weight: 400; // regular. medium is 500
+$header-font-family: 'Quicksand';
 
 // old
 /*
@@ -29,44 +34,59 @@ $f8: 10px;
 
 $fonts: (
   f-xl: (
-    font-size: $f-xl,
-    line-height: 70px
+    font-size: $f-xl, // 60
+    line-height: 70px,
+    font-weight: 600,
   ),
   f0: (
-    font-size: $f0,
-    line-height: 58px
+    font-size: $f0, // 48
+    line-height: 58px,
+    font-weight: 600,
   ),
   f1: (
-    font-size: $f1,
-    line-height: 46px
+    font-size: $f1, // 36
+    line-height: 46px,
+    font-weight: 600,
   ),
   f2: (
-    font-size: $f2,
-    line-height: 40px
+    font-size: $f2, // 30
+    line-height: 40px,
+    font-weight: 700,
   ),
   f3: (
-    font-size: $f3,
-    line-height: 34px
+    font-size: $f3, // 24
+    line-height: 34px,
+    font-weight: 700,
   ),
   f4: (
-    font-size: $f4,
-    line-height: 30px
+    font-size: $f4, // 20
+    line-height: 30px,
+    font-weight: 600,
   ),
   f5: (
-    font-size: $f5,
-    line-height: 26px
+    font-size: $f5, // 18
+    line-height: 30px,
+    font-weight: $default-font-weight,
   ),
   f6: (
-    font-size: $f6,
-    line-height: 24px
+    font-size: $f6, // 16
+    line-height: 26px,
+    font-weight: $default-font-weight,
   ),
   f7: (
-    font-size: $f7,
-    line-height: 22px // spec says 24
+    font-size: $f7, // 14
+    line-height: 24px,
+    font-weight: $default-font-weight,
   ),
   f8: (
-    font-size: $f8,
-    line-height: 20px // made up as no value given for this
+    font-size: $f8, // 12
+    line-height: 22px,
+    font-weight: $default-font-weight,
+  ),
+  f9: (
+    font-size: $f9, // 10
+    line-height: 20px,
+    font-weight: $default-font-weight,
   )
 );
 
@@ -82,9 +102,3 @@ $fonts: (
   }
 }
 
-$default-font-family: 'Inter';
-$default-font-size: $f5;
-$default-font-weight: 400; // regular. medium is 500
-
-$header-font-family: 'Quicksand';
-$header-font-weight: 700;
