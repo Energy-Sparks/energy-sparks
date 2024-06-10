@@ -1,38 +1,43 @@
-h1 {
+h1, .trix-content h1 {
   @include font(f1);
 }
 
-h2 {
+h2, .trix-content h2 {
   @include font(f2);
 }
 
-h3 {
+h3, .trix-content h3 {
   @include font(f3);
 }
 
-h4 {
+h4, .trix-content h4 {
   @include font(f4);
 }
 
-h5 {
+h5, .trix-content h5 {
   @include font(f5);
 }
 
-h6 {
+h6, .trix-content h6 {
   @include font(f6);
 }
 
-h1 {
+h1, .trix-content h1 {
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-h2, h3 {
+h2, h3,
+.trix-content h2,
+.trix-content h3 {
   padding-top: 10px;
   padding-bottom: 20px;
 }
 
-h4, h5, h6 {
+h4, h5, h6,
+.trix-content h4,
+.trix-content h5,
+.trix-content h6 {
  padding-top: 10px;
  padding-bottom: 10px;
 }
@@ -52,7 +57,7 @@ h1, h2, h3, h4, h5, h6 {
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
-  h1 {
+  h1, .trix-content h1 {
     @include font(f6);
     padding-top: 5px;
     padding-bottom: 5px;
@@ -69,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
-  h1 {
+  h1, .trix-content h1 {
     @include font(f5);
     padding-top: 10px;
     padding-bottom: 10px;
@@ -86,7 +91,7 @@ h1, h2, h3, h4, h5, h6 {
 
 // Medium devices (tablets, 768px and up) // max-width: 991.98px
 @media (min-width: 768px) and (max-width: 991.98px) {
-  h1 {
+  h1, .trix-content h1 {
     @include font(f4);
     padding-top: 10px;
     padding-bottom: 10px;
@@ -102,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
-  h1 {
+  h1, .trix-content h1 {
     @include font(f3);
     padding-top: 10px;
     padding-bottom: 10px;
@@ -122,7 +127,7 @@ h1, h2, h3, h4, h5, h6 {
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
-  h1 {
+  h1, .trix-content h1 {
     @include font(f1);
     padding-top: 20px;
     padding-bottom: 20px;
