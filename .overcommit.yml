@@ -14,7 +14,7 @@
 # https://github.com/sds/overcommit#configuration
 #
 
-gemfile: .overcommit_gems.rb
+gemfile: Gemfile
 verify_signatures: false
 
 PreCommit:
