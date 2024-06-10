@@ -7,19 +7,19 @@ $f1: 36px;
 $f2: 30px;
 $f3: 24px;
 $f4: 20px; // found under 'components -> text styles' in Sketch (not in New Typography page)
+
 $f5: 18px; // default
-$f6: 16px;
-$f7: 14px;
-$f8: 12px;
-$f9: 10px; // not in 'components -> text styles' in Sketch (but in New Typography page)
+$f6: 16px; // almost an extra
+$f7: 14px; // more like old f6
+$f8: 12px; // old f7 ish
+$f9: 10px; // old f8. not in 'components -> text styles' in Sketch (but in New Typography page)
 
 $default-font-family: 'Inter';
 $default-font-size: $f5;
 $default-font-weight: 400; // regular. medium is 500
 $header-font-family: 'Quicksand';
 
-// old
-/*
+/* old
 $f-super-big: 60px;
 $f0: 50px;
 $f1: 37.3px;
@@ -36,7 +36,7 @@ $fonts: (
   f-xl: (
     font-size: $f-xl, // 60
     line-height: 70px,
-    font-weight: 600,
+    font-weight: 600, // font weights of headers are either 600 or 700. Not sure if this is intentional
   ),
   f0: (
     font-size: $f0, // 48
