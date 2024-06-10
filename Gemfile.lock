@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: https://github.com/tbhi/sassc-ruby.git
-  revision: e9825c283d95fed009401210bc0109a1778676dc
+  revision: b5b0b78cfb89b9fd0c6ad16e7668a5d1eb861f18
   branch: load_error
   specs:
     sassc (2.4.0)
@@ -284,7 +284,9 @@ GEM
       faraday (~> 2.0)
     fasterer (0.11.0)
       ruby_parser (>= 3.19.1)
-    ffi (1.16.3)
+    ffi (1.17.0)
+    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-x86_64-linux-gnu)
     flipper (1.3.0)
       concurrent-ruby (< 2)
     flipper-active_record (1.3.0)
@@ -743,7 +745,10 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  ruby
+  arm-linux
+  arm64-darwin
+  x86-linux
+  x86_64-darwin
   x86_64-linux
 
 DEPENDENCIES
