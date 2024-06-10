@@ -37,7 +37,7 @@ function chartFailure(chart) {
 
   // display standard error message
   var $standardErrorMessage = document.getElementById('chart-error').textContent
-  $chartDiv.html(`<div class='alert alert-warning'><h3>${$standardErrorMessage}</h3></div>`)
+  $chartDiv.html(`<div class='alert alert-warning align-middle'><h3 style="padding-bottom: 10px;">${$standardErrorMessage}</h3></div>`)
 }
 
 function chartSuccess(chartConfig, chartData, chart) {
