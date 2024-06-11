@@ -8,12 +8,6 @@ describe 'school group clusters', :school_group_clusters, type: :system do
   let!(:school_2)               { create(:school, name: 'School 2', school_group: school_group) }
   let!(:school_3)               { create(:school, name: 'School 3', school_group: school_group) }
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-      example.run
-    end
-  end
-
   shared_examples 'school group clusters index page' do |name: nil, count: 0|
     it 'shows breadcrumbs' do
       expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters'])
