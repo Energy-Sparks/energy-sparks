@@ -68,6 +68,14 @@ h1, h2, h3, h4, h5, h6 {
     @include font(f7);
   }
 
+  h3 {
+    @include font(f8);
+  }
+
+  h4 {
+    @include font(f9);
+  }
+
   .trix-content div {
     @include font(f7);
   }
@@ -83,6 +91,14 @@ h1, h2, h3, h4, h5, h6 {
 
   h2 {
     @include font(f6);
+  }
+
+  h3 {
+    @include font(f7);
+  }
+
+  h4 {
+    @include font(f8);
   }
 
   .trix-content div {
@@ -102,6 +118,14 @@ h1, h2, h3, h4, h5, h6 {
     @include font(f5);
   }
 
+  h2 {
+    @include font(f6);
+  }
+
+  h4 {
+    @include font(f7);
+  }
+
   .trix-content div {
     @include font(f5);
   }
@@ -116,6 +140,14 @@ h1, h2, h3, h4, h5, h6 {
 
   h2 {
     @include font(f4);
+  }
+
+  h3 {
+    @include font(f5);
+  }
+
+  h4 {
+    @include font(f6);
   }
 
   .trix-content div {
