@@ -2,22 +2,23 @@
 /* Other font definitions also found in common_chart_options.js.erb & live_data.js.erb */
 
 $f-xl: 60px;
-$f0: 48px;
-$f1: 36px;
-$f2: 30px;
-$f3: 24px;
-$f4: 20px; // found under 'components -> text styles' in Sketch (not in New Typography page)
 
-$f5: 18px; // default
-$f6: 16px; // almost an extra
-$f7: 14px; // more like old f6
+$f1: 48px; // over 10px bigger than old f1 - was 37.3
+$f2: 36px; // approx 5px bigger than old f2 - was 31.1
+$f3: 30px; // approx 4px bigger than old f3 - was 25.9
+$f4: 24px; // approx 3px bigger than old f4 - was 21.6
+
+$f5: 18px; // default - same as old f5
+$f6: 16px; // 1px bigger than old f6
+$f7: 14px; // slightly smaller than old f6
 $f8: 12px; // old f7 ish
-$f9: 10px; // old f8. not in 'components -> text styles' in Sketch (but in New Typography page)
+$f9: 10px; // old f8. not in new design but required for responsive layout
 
 $default-font-family: 'Inter';
 $default-font-size: $f5;
 $default-font-weight: 400; // regular. medium is 500
 $header-font-family: 'Quicksand';
+$header-font-weight: 700; // regular. medium is 500
 
 /* old
 $f-super-big: 60px;
@@ -36,42 +37,33 @@ $fonts: (
   f-xl: (
     font-size: $f-xl, // 60
     line-height: 70px,
-    font-weight: 600, // font weights of headers are either 600 or 700. Not sure if this is intentional
   ),
-  f0: (
-    font-size: $f0, // 48
-    line-height: 58px,
-    font-weight: 600,
-  ),
+
   f1: (
-    font-size: $f1, // 36
-    line-height: 46px,
-    font-weight: 600,
+    font-size: $f1, // 48
+    line-height: 58px,
   ),
   f2: (
-    font-size: $f2, // 30
-    line-height: 40px,
-    font-weight: 700,
+    font-size: $f2, // 36
+    line-height: 46px,
   ),
   f3: (
-    font-size: $f3, // 24
-    line-height: 34px,
-    font-weight: 700,
+    font-size: $f3, // 30
+    line-height: 40px,
   ),
   f4: (
-    font-size: $f4, // 20
-    line-height: 30px,
-    font-weight: 600,
+    font-size: $f4, // 24
+    line-height: 34px,
   ),
+
+
   f5: (
     font-size: $f5, // 18
     line-height: 30px,
-    font-weight: $default-font-weight,
   ),
   f6: (
     font-size: $f6, // 16
     line-height: 26px,
-    font-weight: $default-font-weight,
   ),
   f7: (
     font-size: $f7, // 14
@@ -80,13 +72,11 @@ $fonts: (
   ),
   f8: (
     font-size: $f8, // 12
-    line-height: 22px,
-    font-weight: $default-font-weight,
+    line-height: 24px,
   ),
   f9: (
     font-size: $f9, // 10
-    line-height: 20px,
-    font-weight: $default-font-weight,
+    line-height: 22px,
   )
 );
 

@@ -29,6 +29,10 @@ address {
   font-size: initial;
 }
 
+body p {
+  @include font(f5);
+}
+
 p.small {
   @include font(f6);
 }
