@@ -9,7 +9,8 @@ describe Database::VacuumService do
   subject(:vacuum_service) { Database::VacuumService.new(tables) }
 
   describe '#perform' do
-    context 'under normal running conditions' do
+    # Vacuum can't run inside in a transaction block! ts: false means we don't use transactions for rolling back data created in tests
+    context 'under normal running conditions', ts: false do
       it "doesn't raise" do
         expect { subject.perform(vacuum: true) }.not_to raise_error
       end
