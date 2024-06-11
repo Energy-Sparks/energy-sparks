@@ -14,6 +14,7 @@ header img {
 }
 
 .masthead {
+  background-color: $dark-blue;
   background-image: image-url('background-image.jpg');
   padding: 0 10px 0 0;
   color: $white;
@@ -124,12 +125,12 @@ header img {
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1140px) {
   .masthead .btn {
-    @include font(f3);
+    @include font(f4);
     padding: 20px;
   }
 
   .cta .btn {
-    @include font(f3);
+    @include font(f4);
     padding: 20px;
   }
 
