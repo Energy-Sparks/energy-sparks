@@ -1,6 +1,6 @@
 # Pin npm packages by running ./bin/importmap
 
-pin 'application_importmap'
+pin 'application'
 
 pin 'transport_surveys/storage', preload: false
 pin 'transport_surveys/carbon', preload: false
