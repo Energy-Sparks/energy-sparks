@@ -12,6 +12,7 @@ $f5: 18px; // default - same as old f5
 $f6: 16px; // 1px bigger than old f6
 $f7: 14px; // slightly smaller than old f6
 $f8: 12px; // old f7 ish
+$f9: 10px; // old f8 - kept for responsive layout
 
 $default-font-family: 'Inter';
 $default-font-size: $f5;
@@ -72,7 +73,12 @@ $fonts: (
   f8: (
     font-size: $f8, // 12
     line-height: 24px,
+  ),
+  f9: (
+    font-size: $f9, // 10
+    line-height: 22px,
   )
+
 );
 
 @mixin font($name) {

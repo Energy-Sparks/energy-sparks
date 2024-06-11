@@ -16,20 +16,11 @@ header img {
 .masthead {
   background-image: image-url('background-image.jpg');
   padding: 0 10px 0 0;
-  background-color: $dark-blue;
   color: $white;
-  @include font(f2);
-  font: $header-font-family;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   height: 650px;
-}
-
-.masthead-content h1 {
-  color: $white;
-  font: $header-font-family;
-  font-weight: 400;
 }
 
 .rounded-25 {
@@ -97,14 +88,6 @@ header img {
 
 // Medium devices (tablets, 768px and up) // max-width: 991.98px
 @media (min-width: 768px) and (max-width: 1199.98px) {
-  .headline-text {
-    @include font(f3);
-  }
-
-  .headline-sub-text {
-    @include font(f5);
-  }
-
   .masthead .btn {
     @include font(f4);
     padding: 10px;
@@ -140,13 +123,6 @@ header img {
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1140px) {
-  .headline-text {
-    @include font(f2);
-  }
-  .headline-sub-text {
-    @include font(f3);
-  }
-
   .masthead .btn {
     @include font(f3);
     padding: 20px;
