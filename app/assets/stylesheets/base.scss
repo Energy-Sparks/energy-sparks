@@ -1,6 +1,7 @@
 body {
   @include font(f5);
   font-family: $default-font-family;
+  font-weight: $default-font-weight;
   overflow-x: hidden;
 }
 
