@@ -18,7 +18,7 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
   context 'with all params' do
     let(:params) { all_params }
 
-    it { expect(html).to have_selector('h3', text: 'Title text') }
+    it { expect(html).to have_selector('h4', text: 'Title text') }
     it { expect(html).to have_selector('div.recommendations-component>p', text: 'Description text') }
 
     it 'adds specified classes' do

@@ -7,7 +7,12 @@ footer {
 }
 
 footer p {
+  @include font(f7);
   margin-right: 5px;
+}
+
+footer li {
+  @include font(f7);
 }
 
 .btn-outline {
