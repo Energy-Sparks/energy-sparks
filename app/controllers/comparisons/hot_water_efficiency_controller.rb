@@ -1,5 +1,12 @@
+# frozen_string_literal: true
+
 module Comparisons
   class HotWaterEfficiencyController < BaseController
+    def unlisted
+      @unlisted_swimming_pool = true
+      super
+    end
+
     private
 
     def headers

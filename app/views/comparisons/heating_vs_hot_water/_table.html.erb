@@ -1,0 +1,13 @@
+<%= component 'comparison_table',
+              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+              headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |row| %>
+      <% row.with_school school: result.school %>
+      <% row.with_var val: result.last_year_gas_kwh, unit: :kw %>
+      <% row.with_var val: result.estimated_hot_water_gas_kwh, unit: :kw %>
+      <% row.with_var val: result.last_year_gas_kwh - result.estimated_hot_water_gas_kwh, unit: :kw %>
+      <% row.with_var val: result.estimated_hot_water_percentage, unit: :percent %>
+    <% end %>
+  <% end %>
+<% end %>
