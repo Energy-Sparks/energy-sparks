@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 4dd19d7b3ab5b129c6209aa140749e6bed43e81a
-  tag: 5.2.9
+  revision: 6b5b92b4c183f0f48be457de3db7d7ad3eac61bc
+  tag: 5.2.10
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -659,7 +659,7 @@ GEM
       railties (>= 4.0.0)
     scout_apm (5.3.8)
       parser
-    selenium-webdriver (4.19.0)
+    selenium-webdriver (4.21.1)
       base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)

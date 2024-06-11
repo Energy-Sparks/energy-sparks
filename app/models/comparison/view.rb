@@ -67,6 +67,8 @@ class Comparison::View < ApplicationRecord
     where(Arel.sql(sanitize_sql_array(columns.map { |c| "#{c} IS NOT NULL" }.join(' OR '))))
   end
 
+  scope :without_swimming_pool, -> { joins(:school).where({ school: { has_swimming_pool: false } }) }
+
   def self.fields_total_with_zero_as_null(fields)
     "NULLIF(#{fields.map { |v| "COALESCE(#{v}, 0.0)" }.join(' + ')}, 0.0)"
   end

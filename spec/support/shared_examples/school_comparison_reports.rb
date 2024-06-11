@@ -51,6 +51,8 @@ RSpec.shared_examples 'a school comparison report' do |school_types: nil, school
     let(:alerts) {} # rubocop:disable Lint/EmptyBlock
 
     it 'works with no data' do
+      # TODO: seems like this might be brittle but want to ensure the test hasn't created any alerts
+      expect(Alert.count).to eq(0)
       expect(page).to have_content(expected_report.title)
     end
   end
