@@ -162,6 +162,7 @@ end
 group :test do
   gem 'capybara'
   gem 'capybara-email'
+  gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'
