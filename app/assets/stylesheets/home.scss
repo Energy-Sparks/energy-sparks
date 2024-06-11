@@ -16,23 +16,19 @@ header img {
 .masthead {
   background-image: image-url('background-image.jpg');
   padding: 0 10px 0 0;
+  background-color: $dark-blue;
   color: $white;
+  @include font(f2);
+  font: $header-font-family;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   height: 650px;
 }
 
-.masthead-content {
-  background-color: $dark-blue;
-}
-
-.masthead-content .display-4 {
+.masthead-content h1 {
   color: $white;
-}
-
-.masthead-content h3 {
-  color: $white;
+  font: $header-font-family;
   font-weight: 400;
 }
 
@@ -99,20 +95,10 @@ header img {
   }
 }
 
-.headline-text {
-  font-family: $header-font-family;
-  font-weight: 500 !important;
-}
-
-.headline-sub-text {
-  font-family: $default-font-family;
-  font-weight: 400 !important;
-}
-
 // Medium devices (tablets, 768px and up) // max-width: 991.98px
 @media (min-width: 768px) and (max-width: 1199.98px) {
   .headline-text {
-    @include font(f2);
+    @include font(f3);
   }
 
   .headline-sub-text {
@@ -155,7 +141,7 @@ header img {
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1140px) {
   .headline-text {
-    @include font(f1);
+    @include font(f2);
   }
   .headline-sub-text {
     @include font(f3);

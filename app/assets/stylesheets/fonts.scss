@@ -12,13 +12,12 @@ $f5: 18px; // default - same as old f5
 $f6: 16px; // 1px bigger than old f6
 $f7: 14px; // slightly smaller than old f6
 $f8: 12px; // old f7 ish
-$f9: 10px; // old f8. not in new design but required for responsive layout
 
 $default-font-family: 'Inter';
 $default-font-size: $f5;
 $default-font-weight: 400; // regular. medium is 500
 $header-font-family: 'Quicksand';
-$header-font-weight: 700; // regular. medium is 500
+$header-font-weight: 600;
 
 /* old
 $f-super-big: 60px;
@@ -73,10 +72,6 @@ $fonts: (
   f8: (
     font-size: $f8, // 12
     line-height: 24px,
-  ),
-  f9: (
-    font-size: $f9, // 10
-    line-height: 22px,
   )
 );
 
