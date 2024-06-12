@@ -45,10 +45,6 @@ header img {
     }
   }
 
-  p.display-3 {
-    @include font(f3);
-  }
-
   blockquote {
     @include font(f7);
   }
@@ -80,10 +76,6 @@ header img {
       line-height: 80px;
       margin-right: 20px;
     }
-  }
-
-  p.display-3 {
-    @include font(f2);
   }
 }
 
