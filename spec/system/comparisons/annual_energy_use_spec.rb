@@ -43,12 +43,7 @@ describe 'annual_energy_use' do
   let(:alert_run) { create(:alert_generation_run, school: school) }
   let!(:report) { create(:report, key: key) }
 
-  include_context 'with comparison report footnotes' do
-    let(:footnotes) { [tariff_changed_last_year] }
-  end
-
-  before do
-    create(:advice_page, key: advice_page_key)
+  let!(:alerts) do
     create(:alert, school: school, alert_generation_run: alert_run,
                    alert_type: create(:alert_type, class_name: 'AlertElectricityAnnualVersusBenchmark'),
                    variables: electricity_variables)
@@ -59,8 +54,16 @@ describe 'annual_energy_use' do
                    alert_type: create(:alert_type, class_name: 'AlertStorageHeaterAnnualVersusBenchmark'),
                    variables: storage_heater_variables)
     create(:alert, school: school, alert_generation_run: alert_run,
-                  alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-                  variables: additional_variables)
+                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+                   variables: additional_variables)
+  end
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
+  end
+
+  before do
+    create(:advice_page, key: advice_page_key)
   end
 
   context 'when viewing report' do
@@ -130,7 +133,8 @@ describe 'annual_energy_use' do
 
       let(:expected_csv) do
         [
-          ['', '', 'Electricity consumption', '', '', 'Gas consumption', '', '', 'Storage heater consumption', '', '', '', '', ''],
+          ['', '', 'Electricity consumption', '', '', 'Gas consumption', '', '', 'Storage heater consumption', '', '',
+           '', '', ''],
           headers,
           [
             school.name,

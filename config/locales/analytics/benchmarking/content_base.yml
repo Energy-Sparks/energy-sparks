@@ -173,8 +173,10 @@ en:
           gas_cost_ct: Gas cost (current tariff)
           gas_cost_ht: Gas cost (historic tariff)
           gas_kwh_per_floor_area: Gas kWh per floor area per holiday
+          heating_gas: Heating Gas
           holiday: Holiday
           holiday_usage_to_date: Holiday usage to date
+          hot_water_gas: Hot Water Gas
           kwh_consumption_since_target_set: kWh consumption since target set
           last_school_week: Final school week
           last_school_week_temperature_adjusted: Final school week (temperature adjusted)
@@ -230,6 +232,7 @@ en:
           percent_above_or_below_target_since_target_set: Percent above or below target since target set
           percent_increase_on_winter_baseload_over_summer: Percent increase on winter baseload over summer
           percentage_of_annual_heating_consumed_in_warm_weather: Percentage of annual heating consumed in warm weather
+          percentage_of_gas_use_for_hot_water: Percentage of gas use for hot water
           potential_annual_saving_£: Potential annual saving £
           potential_max_annual_saving_£: Potential max annual saving £
           potential_saving: Potential saving (at latest tariff)

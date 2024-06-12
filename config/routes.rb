@@ -117,6 +117,7 @@ Rails.application.routes.draw do
     resources :heat_saver_march_2024, only: [:index], concerns: :unlisted
     resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
     resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
+    resources :heating_vs_hot_water, only: [:index], concerns: :unlisted
     resources :holiday_usage_last_year, only: [:index], concerns: :unlisted
     resources :hot_water_efficiency, only: [:index], concerns: :unlisted
     resources :recent_change_in_baseload, only: [:index], concerns: :unlisted
