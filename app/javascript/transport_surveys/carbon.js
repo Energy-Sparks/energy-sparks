@@ -1,5 +1,3 @@
-import { pluralise } from './helpers';
-
 export const carbon = ( function() {
 
   var local = {

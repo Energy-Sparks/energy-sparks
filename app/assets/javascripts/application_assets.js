@@ -66,3 +66,6 @@
 //= require loading
 //= require cookie_banner
 //= require init_bootstrap
+
+//= require date_picker_form_component
+//= require panel_switcher_component

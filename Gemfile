@@ -36,10 +36,11 @@ gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'update-gems-and-a
 # Assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'font-awesome-sass'
+gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sass-rails' # Use SCSS for stylesheets
-gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
+gem 'terser'
 
 # Pagination
 gem 'pagy'
