@@ -1,4 +1,5 @@
 /* Font sizes */
+/* Other font definitions also found in common_chart_options.js.erb & live_data.js.erb */
 
 $f-super-big: 60px;
 $f0: 50px;
@@ -14,14 +15,6 @@ $f8: 10px;
 $default-font-family: 'Quicksand', sans-serif;
 $default-font-size: $f5;
 
-body {
-  font-family: $default-font-family;
-  font-weight: 500;
-  font-size: $default-font-size;
-  margin-top: 18px;
-  overflow-x: hidden;
-}
-
 .f1 { font-size: $f1; }
 .f2 { font-size: $f2; }
 .f3 { font-size: $f3; }
@@ -29,6 +22,14 @@ body {
 .f5 { font-size: $f5; }
 .f6 { font-size: $f6; }
 .f7 { font-size: $f7; }
+
+body {
+  font-family: $default-font-family;
+  font-weight: 500;
+  font-size: $default-font-size;
+  margin-top: 18px;
+  overflow-x: hidden;
+}
 
 div.application.container {
   margin-top: 53px;
