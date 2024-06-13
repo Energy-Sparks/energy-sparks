@@ -51,14 +51,18 @@ module NavHelper
   def subdomain_for(locale)
     split_application_host = split_application_host_for(locale)
     return split_application_host.first if split_application_host&.size == 3
-    return '' if locale.to_s == 'en'
+    return nil if locale.to_s == 'en'
     locale.to_s
   end
 
   def split_application_host_for(locale)
+    application_host_for(locale)&.split('.')
+  end
+
+  def application_host_for(locale)
     case locale.to_s
-    when 'en' then ENV['APPLICATION_HOST']&.split('.')
-    when 'cy' then ENV['WELSH_APPLICATION_HOST']&.split('.')
+    when 'en' then ENV['APPLICATION_HOST']
+    when 'cy' then ENV['WELSH_APPLICATION_HOST']
     end
   end
 

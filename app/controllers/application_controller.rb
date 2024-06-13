@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::Base
   include DefaultUrlOptionsHelper
-
-  protect_from_forgery with: :exception
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
@@ -15,8 +13,14 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(user)
-    subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
-    root_url(subdomain: subdomain).chomp('/') + session.fetch(:user_return_to, '/')
+    host = ApplicationController.helpers.application_host_for(user.preferred_locale)
+    url = if host.nil?
+            subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
+            root_url(subdomain: subdomain).chomp('/')
+          else
+            "https://#{host}"
+          end
+    url + session.fetch(:user_return_to, '/')
   end
 
   def switch_locale(*_args, &action)
