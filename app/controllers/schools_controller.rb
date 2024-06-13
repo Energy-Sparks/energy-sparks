@@ -11,6 +11,7 @@ class SchoolsController < ApplicationController
 
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
+
   skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
