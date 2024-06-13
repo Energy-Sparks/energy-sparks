@@ -32,20 +32,20 @@ module NavHelper
     link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters) + secondary_presentation)
   end
 
-  def header_fix_enabled?
-    @header_fix_enabled == true
-  end
-
   def sub_nav?
     @sub_nav == true
   end
 
+  def nav_margin_classes
+    if Flipper.enabled?(:navigation, current_user, current_user.school_group)
+      ' navigation-margin'
+    else
+      sub_nav? ? ' sub-nav-margin' : ' top-nav-margin'
+    end
+  end
+
   def conditional_application_container_classes
-    classes = ''
-    classes += ' sub-nav' if sub_nav?
-    classes += ' header-fix' if header_fix_enabled?
-    classes += " #{content_for(:container_classes)}" if content_for?(:container_classes)
-    classes
+    " #{content_for(:container_classes)}" if content_for?(:container_classes)
   end
 
   def subdomain_for(locale)
