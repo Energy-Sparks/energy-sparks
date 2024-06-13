@@ -38,8 +38,7 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
   let!(:report) { create(:report, key: key) }
 
-  before do
-    create(:advice_page, key: advice_page_key)
+  let!(:alerts) do
     alert_run = create(:alert_generation_run, school: school)
 
     alert_type = create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark')
@@ -53,6 +52,10 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
       alert_type: alert_type,
       variables: { activation_date: Date.new(2023, 1, 1) }
     )
+  end
+
+  before do
+    create(:advice_page, key: advice_page_key)
   end
 
   context 'when viewing report' do

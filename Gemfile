@@ -26,8 +26,8 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.9'
-# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.10'
+#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
@@ -36,10 +36,11 @@ gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'update-gems-and-a
 # Assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'font-awesome-sass'
+gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sass-rails' # Use SCSS for stylesheets
-gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
+gem 'terser'
 
 # Pagination
 gem 'pagy'
