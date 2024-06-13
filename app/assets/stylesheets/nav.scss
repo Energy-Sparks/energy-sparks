@@ -16,7 +16,7 @@
   .navbar-brand:active,
   .navbar-brand.active {
     color: $white;
-    font-size: 18px;
+    font-size: $f5;
   }
 
   .navbar-nav {
@@ -25,7 +25,7 @@
 
   .navbar-toggle {
     color: $white;
-    font-size: 10px;
+    font-size: $f8;
     border-color: $white;
   }
 
@@ -91,7 +91,7 @@
 
 @media (min-width: 992px) {
   .navbar-brand {
-    font-size: 22px;
+    font-size: $f4;
   }
 }
 
