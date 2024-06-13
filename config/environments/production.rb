@@ -113,7 +113,8 @@ Rails.application.configure do
   config.action_mailer.asset_host = ENV.fetch('ASSET_HOST'){ "https://#{ENV['APPLICATION_HOST']}" }
   config.active_storage.service = :amazon
   # session cookie has configurable name so that live and test logins are separated
-  config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME') { '_energy-sparks_session' }, domain: '.energysparks.uk'
+  config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME', '_energy-sparks_session'),
+                                      domain: ENV.fetch('SESSION_COOKIE_DOMAIN', '.energysparks.uk')
   config.cache_store = :file_store, "#{root}/tmp/cache/rails_cache_store"
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
