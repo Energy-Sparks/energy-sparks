@@ -4,7 +4,7 @@
     <%= render 'shared/head' %>
   </head>
   <body vocab="http://schema.org/">
-    <% if Flipper.enabled?(:navigation, current_user, current_user&.school_group %>
+    <% if Flipper.enabled?(:navigation, current_user, current_user&.school_group) %>
       <%= render 'shared/navigation/top' %>
     <% else %>
       <%= render 'shared/navigation' %>
