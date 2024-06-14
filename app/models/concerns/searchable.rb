@@ -6,7 +6,7 @@ module Searchable
       query = query.gsub("'", '\"')
 
       select("#{table_name}.*, search_type_results.rank").joins(sanitized_sql_for(locale, query))
-                                                         .order('search_type_results.rank')
+                                                         .order('search_type_results.rank', "#{table_name}.id")
     end
 
     def sanitized_sql_for(locale, query)
