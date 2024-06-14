@@ -37,7 +37,7 @@ module NavHelper
   end
 
   def nav_margin_classes
-    if Flipper.enabled?(:navigation, current_user, current_user.school_group)
+    if Flipper.enabled?(:navigation, current_user, current_user&.school_group)
       ' navigation-margin'
     else
       sub_nav? ? ' sub-nav-margin' : ' top-nav-margin'
