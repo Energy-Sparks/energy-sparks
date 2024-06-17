@@ -2,7 +2,7 @@ class EncryptedField
   KEY = ActiveSupport::KeyGenerator.new(
     Rails.application.secret_key_base
   ).generate_key(
-    Rails.env.development? ? 'vinegar' : ENV.fetch('ENCRYPTED_FIELD_SALT'),
+    Rails.env.production? ? ENV.fetch('ENCRYPTED_FIELD_SALT') : 'vinegar',
     ActiveSupport::MessageEncryptor.key_len
   ).freeze
   private_constant :KEY
