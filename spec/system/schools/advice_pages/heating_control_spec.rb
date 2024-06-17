@@ -96,7 +96,7 @@ RSpec.describe 'heating control advice page', type: :system do
       it 'includes expected data in table' do
         expect(page).to have_css('#heating-start-times')
         within('#heating-start-times') do
-          expect(page).to have_content(date.to_s(:es_full))
+          expect(page).to have_content(date.to_fs(:es_full))
           expect(page).to have_content('12')
           expect(page).to have_content('05:00')
           expect(page).to have_content('06:00')
@@ -118,7 +118,7 @@ RSpec.describe 'heating control advice page', type: :system do
         it 'includes expected data in table' do
           expect(page).to have_css('#heating-start-times')
           within('#heating-start-times') do
-            expect(page).to have_content(date.to_s(:es_full))
+            expect(page).to have_content(date.to_fs(:es_full))
             expect(page).to have_content('4')
             expect(page).to have_content('05:00')
             expect(page).to have_content('-')

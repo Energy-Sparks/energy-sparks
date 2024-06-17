@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def nice_dates(date)
-    date ? date.to_s(:es_full) : ''
+    date ? date.to_fs(:es_full) : ''
   end
 
   def short_dates(date)
