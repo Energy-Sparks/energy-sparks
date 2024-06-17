@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '7.0.8.1'
+gem 'rails', '~> 7.1.0'
 
 # Rails/Core
 gem 'bootsnap'
@@ -25,7 +25,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.10'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: 'master'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -118,6 +118,7 @@ group :development, :test do
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'byebug', platform: :mri
   gem 'climate_control'
+  gem 'debug'
   gem 'factory_bot_rails'
   gem 'fakefs', require: 'fakefs/safe'
   gem 'foreman'
