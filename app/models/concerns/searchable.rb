@@ -5,22 +5,18 @@ module Searchable
     def search(query:, locale:)
       query = query.gsub("'", '\"')
 
-      ids = select("DISTINCT #{name.underscore.pluralize}.id, search_type_results.rank").joins(sanitized_sql_for(locale, query)).pluck(:id)
-      where(id: ids)
+      select("#{table_name}.*, search_type_results.rank").joins(sanitized_sql_for(locale, query))
+                                                         .order('search_type_results.rank', "#{table_name}.id")
     end
 
     def sanitized_sql_for(locale, query)
       ActiveRecord::Base.sanitize_sql_array(build_translation_search_sql(locale, query))
     end
 
-    def table_name
-      name.underscore.pluralize
-    end
-
     def build_translation_search_sql(locale, query)
       dictionary = dictionary_for(locale)
 
-      search_sql = <<-SQL.squish
+      <<-SQL.squish
         INNER JOIN (
           SELECT "#{table_name}"."id" AS search_id, (
             ts_rank(
@@ -69,10 +65,7 @@ module Searchable
           )
         ) AS search_type_results ON "#{table_name}"."id" = search_type_results.search_id
 
-        ORDER BY search_type_results.rank DESC, "#{table_name}"."id" ASC
       SQL
-
-      search_sql
     end
 
     def dictionary_for(locale)

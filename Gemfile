@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.1'
+gem 'rails', '7.0.8.1'
 
 # Rails/Core
 gem 'bootsnap'
@@ -15,7 +15,6 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
-gem 'webpacker'
 gem 'wisper' # publish subscribe for ruby objects
 
 # Database/Data
@@ -71,9 +70,6 @@ gem 'view_component'
 gem 'handlebars_assets'
 # Template variables
 gem 'mustache', '~> 1.0'
-
-# User input
-gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'cancancan', '~> 3' # Use cancancan for authorization
