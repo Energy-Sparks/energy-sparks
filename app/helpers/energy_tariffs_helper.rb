@@ -76,8 +76,8 @@ module EnergyTariffsHelper
   def energy_tariff_price_title(energy_tariff_price)
     I18n.t(
       'schools.tariffs_helper.rate_from',
-      start_time: energy_tariff_price&.start_time&.to_s(:time),
-      end_time: energy_tariff_price&.end_time&.to_s(:time)
+      start_time: energy_tariff_price&.start_time&.to_fs(:time),
+      end_time: energy_tariff_price&.end_time&.to_fs(:time)
     )
   end
 
@@ -96,8 +96,8 @@ module EnergyTariffsHelper
   def all_energy_tariff_price_times_for(energy_tariff)
     energy_tariff.energy_tariff_prices.map do |energy_tariff_price|
       [
-        energy_tariff_price.start_time.to_s(:time),
-        energy_tariff_price.end_time.to_s(:time)
+        energy_tariff_price.start_time.to_fs(:time),
+        energy_tariff_price.end_time.to_fs(:time)
       ]
     end
   end

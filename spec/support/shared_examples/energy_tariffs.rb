@@ -145,8 +145,8 @@ RSpec.shared_examples 'the user can create a tariff' do
     expect(energy_tariff.meters).to match_array([])
 
     energy_tariff_price = energy_tariff.energy_tariff_prices.first
-    expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.end_time.to_s(:time)).to eq('23:30')
+    expect(energy_tariff_price.start_time.to_fs(:time)).to eq('00:00')
+    expect(energy_tariff_price.end_time.to_fs(:time)).to eq('23:30')
     expect(energy_tariff_price.value).to eq(0.15)
     expect(energy_tariff_price.units).to eq('kwh')
 

@@ -223,7 +223,7 @@ class EnergyTariff < ApplicationRecord
   end
 
   def hour_minutes(time)
-    hm = time.to_s(:time).split(':')
+    hm = time.to_fs(:time).split(':')
     {
       hour: hm.first,
       minutes: hm.last
