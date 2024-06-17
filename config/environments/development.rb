@@ -75,7 +75,7 @@ Rails.application.configure do
   config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', :local)
   config.action_controller.enable_fragment_cache_logging = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.active_support.deprecation = :raise
+  # config.active_support.deprecation = :raise TODO:
   config.i18n.raise_on_missing_translations = true
   # Use mailcatcher locally - https://github.com/sj26/mailcatcher
   # NOTE not using default port!
