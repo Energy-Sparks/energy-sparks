@@ -15,13 +15,6 @@ $f8: 10px;
 $default-font-family: 'Quicksand', sans-serif;
 $default-font-size: $f5;
 
-body {
-  font-family: $default-font-family;
-  font-weight: 500;
-  font-size: $default-font-size;
-  overflow-x: hidden;
-}
-
 .f1 { font-size: $f1; }
 .f2 { font-size: $f2; }
 .f3 { font-size: $f3; }
