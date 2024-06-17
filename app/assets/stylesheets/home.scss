@@ -27,6 +27,12 @@ header img {
   border-radius: 25px;
 }
 
+.carousel-item {
+  h1 {
+    @include font(f2);
+  }
+}
+
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
   .masthead-content {
