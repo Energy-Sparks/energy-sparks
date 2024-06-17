@@ -18,7 +18,7 @@ module ApplicationHelper
   end
 
   def short_dates(date)
-    date ? date.to_s(:es_short) : ''
+    date ? date.to_fs(:es_short) : ''
   end
 
   def nice_date_times_today(datetime)
