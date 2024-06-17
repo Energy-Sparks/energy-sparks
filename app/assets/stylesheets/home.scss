@@ -14,7 +14,6 @@ header img {
 }
 
 .masthead {
-  background-color: $dark-blue;
   background-image: image-url('background-image.jpg');
   padding: 0 10px 0 0;
   color: $white;
@@ -30,6 +29,10 @@ header img {
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
+  .masthead-content {
+    background-color: $dark-blue;
+  }
+
   .home-page .carousel-item {
     h2 {
       @include font(f5);
@@ -63,6 +66,10 @@ header img {
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
+  .masthead-content {
+    background-color: $dark-blue;
+  }
+
   .home-page .carousel-item {
     h2 {
       @include font(f5);
