@@ -2,6 +2,9 @@
 
 pin 'application'
 
+pin 'trix'
+pin '@rails/actiontext', to: 'actiontext.js'
+
 pin 'transport_surveys/storage', preload: false
 pin 'transport_surveys/carbon', preload: false
 pin 'transport_surveys/notifier', preload: false
