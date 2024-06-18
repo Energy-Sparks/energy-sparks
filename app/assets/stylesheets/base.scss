@@ -1,5 +1,5 @@
 body {
-  @include font(f5);
+  @include font(f6);
   font-family: $default-font-family;
   font-weight: $default-font-weight;
   overflow-x: hidden;
@@ -31,15 +31,15 @@ address {
 }
 
 body p {
-  @include font(f5);
-}
-
-p.small {
   @include font(f6);
 }
 
-.very-small {
+p.small {
   @include font(f7);
+}
+
+.very-small {
+  @include font(f8);
 }
 
 .nowrap {
@@ -47,7 +47,7 @@ p.small {
 }
 
 nav li {
-  @include font(f7);
+  @include font(f8);
 }
 
 .bg-positive {

@@ -56,7 +56,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .trix-content div {
-  @include font(f5);
+  @include font(f6);
 }
 
 // Extra small devices (portrait phones, less than 576px)
@@ -77,6 +77,10 @@ h1, h2, h3, h4, h5, h6 {
 
   h4 {
     @include font(f7);
+  }
+
+  h5 {
+    @include font(f8);
   }
 
   .trix-content div {
@@ -102,6 +106,10 @@ h1, h2, h3, h4, h5, h6 {
 
   h4 {
     @include font(f6);
+  }
+
+  h5 {
+    @include font(f7);
   }
 
   .trix-content div {
@@ -130,7 +138,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .trix-content div {
-    @include font(f5);
+    @include font(f6);
   }
 }
 
@@ -155,7 +163,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .trix-content div {
-    @include font(f5);
+    @include font(f6);
   }
 }
 
