@@ -6,7 +6,7 @@ module Events
     let(:url_base) { "organizations/#{org_id}/events" }
     let(:api_token)    { 'secret-token'}
     let(:query)    { { expand: 'ticket_availability', status: 'live', order_by: :start_asc } }
-    let(:response) { JSON.load(File.new(File.join(fixture_path, 'events/events.json'))) }
+    let(:response) { JSON.load(File.new(File.join(fixture_paths.first, 'events/events.json'))) }
 
     it 'handles API errors' do
       expect(EventbriteSDK).to receive(:get).with(api_token: api_token, query: query, url: url_base) do
@@ -21,7 +21,7 @@ module Events
         response
       end
       events = Events::ListEvents.new(org_id, api_token).perform
-      expect(events.size).to be 4
+      expect(events.size).to eq 4
     end
 
     it 'converts to local objects' do
