@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :school do
     sequence(:urn)
     sequence(:number_of_pupils)
-    sequence(:name) { |n| "test #{n} school" }
+    sequence(:name, 'School AAAAA1')
     school_type     { :primary }
     funding_status  { :state_school }
     visible         { true }
