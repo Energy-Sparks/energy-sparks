@@ -133,10 +133,6 @@ Rails.application.routes.draw do
     get '*key', to: 'configurable_period#index', as: :configurable_period
   end
 
-  # redirect old benchmark URLs
-  get '/benchmarks', to: redirect('/compare')
-  get '/benchmark', to: redirect(BenchmarkRedirector.new)
-
   get 'version', to: 'version#show'
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
@@ -405,7 +401,6 @@ Rails.application.routes.draw do
       resource :your_school_estate, only: [:edit, :update]
 
       resources :alerts, only: [:show]
-      resources :find_out_more, controller: :find_out_more
 
       resources :interventions do
         member do
@@ -451,9 +446,6 @@ Rails.application.routes.draw do
 
       resource :consents, only: [:show, :create]
     end
-
-    # Maintain old scoreboard URL
-    get '/scoreboard', to: redirect('/schools')
   end
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
@@ -724,17 +716,6 @@ Rails.application.routes.draw do
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
 
-  #redirect from old teacher dashboard
-  namespace :teachers do
-    get '/schools/:name', to: redirect('/management/schools/%{name}')
-  end
-
-  namespace :management do
-    resources :schools, only: :show do
-      resources :management_priorities, only: :index
-    end
-  end
-
   namespace :pupils do
     resource :session, only: [:create]
     resources :schools, only: :show do
@@ -742,4 +723,24 @@ Rails.application.routes.draw do
       get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
     end
   end
+
+  # LEGACY PATHS
+  # Old paths that (may) have been indexed by crawlers or used in comms/emails that
+  # we want to maintain and redirect.
+
+  # Old 'find out more' pages
+  get '/schools/:name/find_out_more', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/find_out_more/:id', to: redirect('/schools/%{name}/advice')
+  # Maintain old scoreboard URL
+  get '/schools/:name/scoreboard', to: redirect('/scoreboards')
+
+  # Old teacher and management dashboards
+  get '/teachers/schools/:name', to: redirect('/schools/%{name}')
+  get '/management/schools/:name', to: redirect('/schools/%{name}')
+  # Old management priorities list
+  get '/management/schools/:name/management_priorities', to: redirect('/schools/%{name}/advice/priorities')
+
+  # Old benchmark URLs
+  get '/benchmarks', to: redirect('/compare')
+  get '/benchmark', to: redirect(BenchmarkRedirector.new)
 end

@@ -28,7 +28,6 @@
 //= require usage_charts
 //= require schools
 //= require users
-//= require header_fix
 //= require nav_tabs_url_aware
 
 // from https://github.com/neivars/bootstrap-year-calendar
