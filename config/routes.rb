@@ -723,18 +723,18 @@ Rails.application.routes.draw do
   # we want to maintain and redirect.
 
   # Old 'find out more' pages
-  get '/schools/:name/find_out_more', to: redirect('/schools/%{name}/advice', status: 301)
-  get '/schools/:name/find_out_more/:id', to: redirect('/schools/%{name}/advice', status: 301)
+  get '/schools/:name/find_out_more', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/find_out_more/:id', to: redirect('/schools/%{name}/advice')
   # Maintain old scoreboard URL
   get '/schools/:name/scoreboard', to: redirect('/scoreboards')
 
   # Old teacher and management dashboards
-  get '/teachers/schools/:name', to: redirect('/schools/%{name}', status: 301)
-  get '/management/schools/:name', to: redirect('/schools/%{name}', status: 301)
+  get '/teachers/schools/:name', to: redirect('/schools/%{name}')
+  get '/management/schools/:name', to: redirect('/schools/%{name}')
   # Old management priorities list
-  get '/management/schools/:name/management_priorities', to: redirect('/schools/%{name}/advice/priorities', status: 301)
+  get '/management/schools/:name/management_priorities', to: redirect('/schools/%{name}/advice/priorities')
 
   # Old benchmark URLs
-  get '/benchmarks', to: redirect('/compare', status: 301)
-  get '/benchmark', to: redirect(BenchmarkRedirector.new, status: 301)
+  get '/benchmarks', to: redirect('/compare')
+  get '/benchmark', to: redirect(BenchmarkRedirector.new)
 end
