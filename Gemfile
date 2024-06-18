@@ -26,7 +26,7 @@ gem 'scenic'
 
 # Dashboard analytics
 gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20240617-rails71'
-#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
@@ -110,8 +110,8 @@ gem 'roo-xls'
 gem 'premailer-rails'
 
 # Feature flags
-gem "flipper-ui", "~> 1.3"
-gem "flipper-active_record", "~> 1.3"
+gem 'flipper-active_record', '~> 1.3'
+gem 'flipper-ui', '~> 1.3'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
