@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe Amr::DataFeedTranslator do
-  let(:reading_fields) { (1..48).map { |i| "kWh_#{i}" } }
   let(:config) do
+    reading_fields = (1..48).map { |i| "kWh_#{i}" }
     build(:amr_data_feed_config,
           date_format: '%d/%m/%Y',
           mpan_mprn_field: 'MPAN',
@@ -16,21 +16,28 @@ describe Amr::DataFeedTranslator do
           header_example:
             "siteRef,MPAN,ConsumptionDate,Period,units,#{reading_fields.join(',')},#{(1..48).map { |i| "kVArh_#{i}" }}")
   end
-  let(:reading) do
-    ['MEERSBROOK PRIMARY - M1', '2333300681718', '31/12/2019', '1', 'kwh',
-     '1.20800000', '1.16100000', '1.19500000', '1.21000000', '1.16600000', '1.20100000',
-     '1.17800000', '1.30000000', '1.30100000', '1.26600000', '1.27300000', '1.28000000',
-     '2.10900000', '2.03700000', '1.29100000', '1.24600000', '1.67800000', '1.24500000',
-     '1.12800000', '1.11300000', '1.35000000', '1.11700000', '1.14200000', '1.40600000',
-     '1.10100000', '1.12300000', '1.16400000', '1.42700000', '1.12900000', '1.10400000',
-     '1.11900000', '1.46600000', '1.18400000', '1.14600000', '1.22600000', '1.20800000',
-     '1.25500000', '1.20000000', '1.23600000', '1.16300000', '1.12400000', '1.19800000',
-     '1.12800000', '1.15500000', '1.13000000', '1.18200000', '1.14500000', '1.17700000'] + ([''] * 48)
-  end
 
   describe '#perform' do
-    it 'converts array rows to a keyed hash' do
-      result = described_class.new(config, [reading]).perform.first
+    subject(:results) do
+      described_class.new(config, readings).perform
+    end
+
+    let(:reading) do
+      ['MEERSBROOK PRIMARY - M1', '2333300681718', '31/12/2019', '1', 'kwh',
+       '1.20800000', '1.16100000', '1.19500000', '1.21000000', '1.16600000', '1.20100000',
+       '1.17800000', '1.30000000', '1.30100000', '1.26600000', '1.27300000', '1.28000000',
+       '2.10900000', '2.03700000', '1.29100000', '1.24600000', '1.67800000', '1.24500000',
+       '1.12800000', '1.11300000', '1.35000000', '1.11700000', '1.14200000', '1.40600000',
+       '1.10100000', '1.12300000', '1.16400000', '1.42700000', '1.12900000', '1.10400000',
+       '1.11900000', '1.46600000', '1.18400000', '1.14600000', '1.22600000', '1.20800000',
+       '1.25500000', '1.20000000', '1.23600000', '1.16300000', '1.12400000', '1.19800000',
+       '1.12800000', '1.15500000', '1.13000000', '1.18200000', '1.14500000', '1.17700000'] + ([''] * 48)
+    end
+
+    let(:readings) { [reading] }
+
+    it 'converts the array of rows to a keyed hash' do
+      result = results.first
       expect(result[:mpan_mprn]).to eq('2333300681718')
       expect(result[:reading_date]).to eq('31/12/2019')
       expect(result[:description]).to eq('MEERSBROOK PRIMARY - M1')
@@ -41,15 +48,13 @@ describe Amr::DataFeedTranslator do
 
     it 'removes trailing whitespace from the MPAN' do
       reading[1] = "#{reading[1]} "
-      result = described_class.new(config, [reading]).perform.first
-      expect(result[:mpan_mprn]).to eq('2333300681718')
+      expect(results.first[:mpan_mprn]).to eq('2333300681718')
     end
 
     context 'when the config has a positional index' do
       it 'adds period to hash' do
         config.positional_index = true
-        result = described_class.new(config, [reading]).perform.first
-        expect(result[:period]).to eq('1')
+        expect(results.first[:period]).to eq('1')
       end
     end
 
@@ -69,7 +74,7 @@ describe Amr::DataFeedTranslator do
       let!(:meter_1) { create(:solar_pv_meter, meter_serial_number: '10070831') }
       let!(:meter_2) { create(:solar_pv_meter, meter_serial_number: '10070839') }
 
-      it 'parses into a hash with date, time and single readings' do
+      let(:readings) do
         half_hours = (0..23).map { |hour| [format('%02d:00', hour), format('%02d:30', hour)] }.flatten
         readings = ['01/06/2023', '02/06/2023'].flat_map do |date|
           half_hours.map.with_index do |time, i|
@@ -77,9 +82,9 @@ describe Amr::DataFeedTranslator do
             [date, time, '10070831', "0.#{format('%03d', (i + 1))}"]
           end
         end
+      end
 
-        results = described_class.new(config, readings).perform
-
+      it 'parses into a hash with date, time and single readings' do
         expect(results.size).to eq(readings.size)
 
         expect(results.first[:mpan_mprn]).to eq('10070831')
@@ -95,10 +100,12 @@ describe Amr::DataFeedTranslator do
     end
 
     context 'when the config defines expected units' do
+      let(:readings) do
+        [reading, reading.dup.tap { |r| r[4] = 'LEAD' }]
+      end
+
       it 'removes rows that do not match the expected_units' do
         config.expected_units = 'kwh'
-        readings = [reading, reading.dup.tap { |r| r[4] = 'LEAD' }]
-        results = described_class.new(config, readings).perform
         expect(results.size).to eq(1)
         expect(results.first[:readings].first).to eq('1.20800000')
       end
@@ -106,6 +113,7 @@ describe Amr::DataFeedTranslator do
 
     context 'when the config uses serial numbers' do
       let(:config) do
+        reading_fields = (1..48).map { |i| "kWh_#{i}" }
         build(:amr_data_feed_config,
               date_format: '%H:%M:%S %a %d/%m/%Y',
               mpan_mprn_field: '',
@@ -154,9 +162,7 @@ describe Amr::DataFeedTranslator do
       end
 
       it 'parses into a hash with serial number' do
-        results = described_class.new(config, readings).perform
-
-        expect(results.size).to eq(2)
+        expect(results.size).to eq(readings.size)
         expect(results.first[:readings].count).to eq(48)
         expect(results.first[:meter_serial_number]).to eq('10070831')
         expect(results.first[:readings][12]).to eq('0.121895')
@@ -170,9 +176,7 @@ describe Amr::DataFeedTranslator do
       end
 
       it 'finds correct meter id and mpan from serial number' do
-        results = described_class.new(config, readings).perform
-
-        expect(results.size).to eq(2)
+        expect(results.size).to eq(readings.size)
 
         expect(results.first[:meter_id]).to eq(meters[0].id)
         expect(results.first[:mpan_mprn]).to eq(meters[0].mpan_mprn.to_s)
@@ -187,9 +191,7 @@ describe Amr::DataFeedTranslator do
         readings[0][0] = readings[0][1] = '1234'
         readings[1][0] = readings[1][1] = '5678'
 
-        results = described_class.new(config, readings).perform
-
-        expect(results.size).to eq(2)
+        expect(results.size).to eq(readings.size)
 
         expect(results.first[:meter_id]).to be_nil
         expect(results.first[:mpan_mprn]).to be_nil
@@ -209,7 +211,6 @@ describe Amr::DataFeedTranslator do
 
       it 'handles trailing whitespace on the meter serial' do
         readings[0][1] = "#{readings[0][1]} "
-        results = described_class.new(config, readings).perform
         expect(results.first[:meter_serial_number]).to eq('10070831')
       end
     end
@@ -226,30 +227,28 @@ describe Amr::DataFeedTranslator do
         end
 
         it 'converts all rows to kwh' do
-          readings = [reading]
-          results = described_class.new(config, readings).perform
-          expect(results.size).to eq(1)
+          expect(results.size).to eq(readings.size)
           expect(results.first[:readings].first).to eq(1.20800000 * 11.1)
         end
       end
 
       context 'when there are different units per row' do
-        it 'converts only specific m3 rows to kwh' do
-          # one row kwh, one row m3
-          readings = [reading, reading.dup.tap { |r| r[4] = 'm3' }]
-          results = described_class.new(config, readings).perform
-          expect(results.size).to eq(2)
+        # one row kwh, one row m3
+        let(:readings) do
+          [reading, reading.dup.tap { |r| r[4] = 'm3' }]
+        end
 
+        it 'converts only specific m3 rows to kwh' do
+          expect(results.size).to eq(readings.size)
           expect(results.first[:units]).to eq('kwh')
           expect(results.first[:readings].first).to eq('1.20800000')
-
           expect(results.last[:units]).to eq('kwh')
           expect(results.last[:readings].first).to eq(1.20800000 * 11.1)
         end
       end
     end
 
-    context 'when the config delayed readings' do
+    context 'when the config indicates there are delayed readings' do
       it 'reformats the dates'
     end
   end
