@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_05_154636) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_19_100851) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1013,17 +1013,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_05_154636) do
     t.datetime "finished_at", precision: nil
     t.text "error"
     t.integer "error_event", limit: 2
-    t.text "error_backtrace", array: true
-    t.uuid "process_id"
     t.index ["active_job_id", "created_at"], name: "index_good_job_executions_on_active_job_id_and_created_at"
-    t.index ["process_id", "created_at"], name: "index_good_job_executions_on_process_id_and_created_at"
   end
 
   create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "state"
-    t.integer "lock_type", limit: 2
   end
 
   create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1056,8 +1052,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_05_154636) do
     t.text "job_class"
     t.integer "error_event", limit: 2
     t.text "labels", array: true
-    t.uuid "locked_by_id"
-    t.datetime "locked_at", precision: nil
     t.index ["active_job_id", "created_at"], name: "index_good_jobs_on_active_job_id_and_created_at"
     t.index ["batch_callback_id"], name: "index_good_jobs_on_batch_callback_id", where: "(batch_callback_id IS NOT NULL)"
     t.index ["batch_id"], name: "index_good_jobs_on_batch_id", where: "(batch_id IS NOT NULL)"
@@ -1066,10 +1060,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_05_154636) do
     t.index ["cron_key", "cron_at"], name: "index_good_jobs_on_cron_key_and_cron_at_cond", unique: true, where: "(cron_key IS NOT NULL)"
     t.index ["finished_at"], name: "index_good_jobs_jobs_on_finished_at", where: "((retried_good_job_id IS NULL) AND (finished_at IS NOT NULL))"
     t.index ["labels"], name: "index_good_jobs_on_labels", where: "(labels IS NOT NULL)", using: :gin
-    t.index ["locked_by_id"], name: "index_good_jobs_on_locked_by_id", where: "(locked_by_id IS NOT NULL)"
-    t.index ["priority", "created_at"], name: "index_good_job_jobs_for_candidate_lookup", where: "(finished_at IS NULL)"
     t.index ["priority", "created_at"], name: "index_good_jobs_jobs_on_priority_created_at_when_unfinished", order: { priority: "DESC NULLS LAST" }, where: "(finished_at IS NULL)"
-    t.index ["priority", "scheduled_at"], name: "index_good_jobs_on_priority_scheduled_at_unfinished_unlocked", where: "((finished_at IS NULL) AND (locked_by_id IS NULL))"
     t.index ["queue_name", "scheduled_at"], name: "index_good_jobs_on_queue_name_and_scheduled_at", where: "(finished_at IS NULL)"
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
   end
@@ -3582,6 +3573,36 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_05_154636) do
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
        LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)));
   SQL
+  create_view "heating_vs_hot_waters", sql_definition: <<-SQL
+      WITH gas AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data.last_year_kwh
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(last_year_kwh double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
+          ), hot_water AS (
+           SELECT alerts.alert_generation_run_id,
+              data.existing_gas_annual_kwh
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(existing_gas_annual_kwh double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHotWaterEfficiency'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      gas.school_id,
+      gas.last_year_kwh AS last_year_gas_kwh,
+      hot_water.existing_gas_annual_kwh AS estimated_hot_water_gas_kwh,
+      (hot_water.existing_gas_annual_kwh / gas.last_year_kwh) AS estimated_hot_water_percentage
+     FROM ((latest_runs
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
+       LEFT JOIN hot_water ON ((latest_runs.id = hot_water.alert_generation_run_id)));
+  SQL
   create_view "holiday_usage_last_years", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -3870,34 +3891,108 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_05_154636) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
-  create_view "heating_vs_hot_waters", sql_definition: <<-SQL
-      WITH gas AS (
+  create_view "holiday_and_terms", sql_definition: <<-SQL
+      WITH electricity AS (
+           SELECT alerts.alert_generation_run_id,
+              json.current_period_kwh,
+              json.previous_period_kwh,
+              json.current_period_co2,
+              json.previous_period_co2,
+              json.current_period_gbp,
+              json.previous_period_gbp,
+              json.tariff_has_changed,
+              json.pupils_changed,
+              json.floor_area_changed
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(current_period_kwh double precision, previous_period_kwh double precision, current_period_co2 double precision, previous_period_co2 double precision, current_period_gbp double precision, previous_period_gbp double precision, tariff_has_changed boolean, pupils_changed boolean, floor_area_changed boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHolidayAndTermElectricityComparison'::text))
+          ), gas AS (
+           SELECT alerts.alert_generation_run_id,
+              json.current_period_kwh,
+              json.previous_period_kwh,
+              json.current_period_co2,
+              json.previous_period_co2,
+              json.current_period_gbp,
+              json.previous_period_gbp,
+              json.previous_period_kwh_unadjusted,
+              json.tariff_has_changed,
+              json.pupils_changed,
+              json.floor_area_changed
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(current_period_kwh double precision, previous_period_kwh double precision, current_period_co2 double precision, previous_period_co2 double precision, current_period_gbp double precision, previous_period_gbp double precision, previous_period_kwh_unadjusted double precision, tariff_has_changed boolean, pupils_changed boolean, floor_area_changed boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHolidayAndTermGasComparison'::text))
+          ), storage_heater AS (
+           SELECT alerts.alert_generation_run_id,
+              json.current_period_kwh,
+              json.previous_period_kwh,
+              json.current_period_co2,
+              json.previous_period_co2,
+              json.current_period_gbp,
+              json.previous_period_gbp,
+              json.previous_period_kwh_unadjusted,
+              json.tariff_has_changed,
+              json.pupils_changed,
+              json.floor_area_changed
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) json(current_period_kwh double precision, previous_period_kwh double precision, current_period_co2 double precision, previous_period_co2 double precision, current_period_gbp double precision, previous_period_gbp double precision, previous_period_kwh_unadjusted double precision, tariff_has_changed boolean, pupils_changed boolean, floor_area_changed boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHolidayAndTermStorageHeaterComparison'::text))
+          ), enba AS (
+           SELECT alerts.alert_generation_run_id,
+              data.solar_type
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(solar_type text)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))
+          ), additional AS (
            SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data.last_year_kwh
+              data.activation_date
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(last_year_kwh double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
-          ), hot_water AS (
-           SELECT alerts.alert_generation_run_id,
-              data.existing_gas_annual_kwh
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(existing_gas_annual_kwh double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertHotWaterEfficiency'::text))
+              LATERAL jsonb_to_record(alerts.variables) data(activation_date date)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
           ), latest_runs AS (
            SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
           )
    SELECT latest_runs.id,
-      gas.school_id,
-      gas.last_year_kwh AS last_year_gas_kwh,
-      hot_water.existing_gas_annual_kwh AS estimated_hot_water_gas_kwh,
-      (hot_water.existing_gas_annual_kwh / gas.last_year_kwh) AS estimated_hot_water_percentage
-     FROM ((latest_runs
+      additional.school_id,
+      additional.activation_date,
+      (electricity.pupils_changed OR gas.pupils_changed OR storage_heater.pupils_changed) AS pupils_changed,
+      (electricity.floor_area_changed OR gas.floor_area_changed OR storage_heater.floor_area_changed) AS floor_area_changed,
+      enba.solar_type,
+      electricity.current_period_kwh AS electricity_current_period_kwh,
+      electricity.previous_period_kwh AS electricity_previous_period_kwh,
+      electricity.current_period_co2 AS electricity_current_period_co2,
+      electricity.previous_period_co2 AS electricity_previous_period_co2,
+      electricity.current_period_gbp AS electricity_current_period_gbp,
+      electricity.previous_period_gbp AS electricity_previous_period_gbp,
+      electricity.tariff_has_changed AS electricity_tariff_has_changed,
+      gas.current_period_kwh AS gas_current_period_kwh,
+      gas.previous_period_kwh AS gas_previous_period_kwh,
+      gas.current_period_co2 AS gas_current_period_co2,
+      gas.previous_period_co2 AS gas_previous_period_co2,
+      gas.current_period_gbp AS gas_current_period_gbp,
+      gas.previous_period_gbp AS gas_previous_period_gbp,
+      gas.previous_period_kwh_unadjusted AS gas_previous_period_kwh_unadjusted,
+      gas.tariff_has_changed AS gas_tariff_has_changed,
+      storage_heater.current_period_kwh AS storage_heater_current_period_kwh,
+      storage_heater.previous_period_kwh AS storage_heater_previous_period_kwh,
+      storage_heater.current_period_co2 AS storage_heater_current_period_co2,
+      storage_heater.previous_period_co2 AS storage_heater_previous_period_co2,
+      storage_heater.current_period_gbp AS storage_heater_current_period_gbp,
+      storage_heater.previous_period_gbp AS storage_heater_previous_period_gbp,
+      storage_heater.previous_period_kwh_unadjusted AS storage_heater_previous_period_kwh_unadjusted,
+      storage_heater.tariff_has_changed AS storage_heater_tariff_has_changed
+     FROM (((((latest_runs
+       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
+       LEFT JOIN electricity ON ((latest_runs.id = electricity.alert_generation_run_id)))
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
-       LEFT JOIN hot_water ON ((latest_runs.id = hot_water.alert_generation_run_id)));
+       LEFT JOIN storage_heater ON ((latest_runs.id = storage_heater.alert_generation_run_id)))
+       LEFT JOIN enba ON ((latest_runs.id = enba.alert_generation_run_id)));
   SQL
 end
