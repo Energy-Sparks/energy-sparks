@@ -4,7 +4,9 @@ namespace :after_party do
     puts "Running deploy task 'migrate_pupil_password'"
 
     User.find_each do |user|
-      user.pupil_password = user.pupil_password_old unless user.pupil_password_old.nil?
+      next if user.pupil_password_old.nil?
+
+      user.pupil_password = user.pupil_password_old
       user.save(validate: false)
     end
     # Put your task implementation HERE.
