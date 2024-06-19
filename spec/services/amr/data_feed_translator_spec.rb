@@ -249,7 +249,35 @@ describe Amr::DataFeedTranslator do
     end
 
     context 'when the config indicates there are delayed readings' do
-      it 'reformats the dates'
+      before do
+        config.delayed_reading = true
+      end
+
+      it 'reformats the dates' do
+        expect(results.first[:reading_date]).to eq('30/12/2019')
+      end
+
+      context 'with a date time format' do
+        let(:reading) do
+          ['MEERSBROOK PRIMARY - M1', '2333300681718', '2023-09-12T01:05:02Z', '1', 'kwh',
+           '1.20800000', '1.16100000', '1.19500000', '1.21000000', '1.16600000', '1.20100000',
+           '1.17800000', '1.30000000', '1.30100000', '1.26600000', '1.27300000', '1.28000000',
+           '2.10900000', '2.03700000', '1.29100000', '1.24600000', '1.67800000', '1.24500000',
+           '1.12800000', '1.11300000', '1.35000000', '1.11700000', '1.14200000', '1.40600000',
+           '1.10100000', '1.12300000', '1.16400000', '1.42700000', '1.12900000', '1.10400000',
+           '1.11900000', '1.46600000', '1.18400000', '1.14600000', '1.22600000', '1.20800000',
+           '1.25500000', '1.20000000', '1.23600000', '1.16300000', '1.12400000', '1.19800000',
+           '1.12800000', '1.15500000', '1.13000000', '1.18200000', '1.14500000', '1.17700000'] + ([''] * 48)
+        end
+
+        before do
+          config.date_format = '%Y-%m-%dT%H:%M:%SZ'
+        end
+
+        it 'reformats the dates' do
+          expect(results.first[:reading_date]).to eq('2023-09-11T01:05:02Z')
+        end
+      end
     end
   end
 end

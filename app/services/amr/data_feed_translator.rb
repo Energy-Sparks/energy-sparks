@@ -17,7 +17,7 @@ module Amr
     def translate_row_to_hash(row)
       data_feed_reading_hash = meter_details_from_row(row)
       data_feed_reading_hash[:amr_data_feed_config_id] = @config.id
-      data_feed_reading_hash[:reading_date] = fetch_from_row(:reading_date_index, row)
+      data_feed_reading_hash[:reading_date] = reading_date(row)
       data_feed_reading_hash[:reading_time] = fetch_from_row(:reading_time_index, row)
       data_feed_reading_hash[:postcode] = fetch_from_row(:postcode_index, row)
       data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
@@ -43,6 +43,19 @@ module Amr
         meter_serial_number: meter_serial_number,
         mpan_mprn: mpan_mprn
       }
+    end
+
+    def reading_date(row)
+      date_string = fetch_from_row(:reading_date_index, row)
+      return date_string unless @config.delayed_reading
+
+      begin
+        date = DateTime.strptime(date_string, @config.date_format)
+        date = date - 1.day
+        date.strftime(@config.date_format)
+      rescue ArgumentError
+        nil
+      end
     end
 
     def fetch_from_row(index_symbol, row)
