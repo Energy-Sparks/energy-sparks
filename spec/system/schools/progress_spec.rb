@@ -123,7 +123,7 @@ describe 'target progress report', type: :system do
       end
 
       it 'includes summary of the target dates' do
-        expect(page).to have_content("Your school has set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_s(:es_full)} and #{school_target.target_date.to_s(:es_full)}")
+        expect(page).to have_content("Your school has set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_fs(:es_full)} and #{school_target.target_date.to_fs(:es_full)}")
       end
 
       it 'shows the electricity progress report with expected data' do
@@ -283,7 +283,7 @@ describe 'target progress report', type: :system do
       end
 
       it 'includes summary of the target dates' do
-        expect(page).to have_content("Your school set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_s(:es_full)} and #{school_target.target_date.to_s(:es_full)}")
+        expect(page).to have_content("Your school set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_fs(:es_full)} and #{school_target.target_date.to_fs(:es_full)}")
       end
 
       it 'shows the electricity progress report with expected data' do
