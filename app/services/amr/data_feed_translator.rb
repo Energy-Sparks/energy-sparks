@@ -49,11 +49,16 @@ module Amr
       date_string = fetch_from_row(:reading_date_index, row)
       return date_string unless @config.delayed_reading
 
+      # a delayed reading config means the date/date-time column is when the readings
+      # where collected, rather than the date the energy was consumed. For now
+      # this only appears in one config where the readings are collected a day later
       begin
         date = DateTime.strptime(date_string, @config.date_format)
         date = date - 1.day
         date.strftime(@config.date_format)
       rescue ArgumentError
+        # return nil here and we should end up rejecting the data
+        # better to do this than load with incorrect date
         nil
       end
     end
