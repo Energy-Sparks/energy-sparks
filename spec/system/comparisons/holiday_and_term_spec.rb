@@ -37,7 +37,11 @@ describe 'holiday_and_term' do
       previous_period_gbp: 4000.0,
       tariff_has_changed: true,
       pupils_changed: true,
-      floor_area_changed: true
+      floor_area_changed: true,
+      current_period_end_date: '2023-04-14',
+      current_period_start_date: '2023-04-01',
+      current_period_type: 'easter',
+      truncated_current_period: false
     }
   end
 
@@ -52,7 +56,11 @@ describe 'holiday_and_term' do
       previous_period_gbp: 4000.0,
       tariff_has_changed: true,
       pupils_changed: true,
-      floor_area_changed: true
+      floor_area_changed: true,
+      current_period_end_date: '2023-04-14',
+      current_period_start_date: '2023-04-01',
+      current_period_type: 'easter',
+      truncated_current_period: false
     }
   end
 
@@ -175,6 +183,7 @@ describe 'holiday_and_term' do
           [
             I18n.t('analytics.benchmarking.configuration.column_headings.school'),
             I18n.t('activerecord.attributes.school.activation_date'),
+            I18n.t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
             I18n.t('comparisons.column_headings.previous_period'),
             I18n.t('comparisons.column_headings.current_period'),
             I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
@@ -193,6 +202,7 @@ describe 'holiday_and_term' do
             headers,
             ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
+             'Easter 2023',
              '2,000',
              '1,000',
              '-50&percnt;',
@@ -208,10 +218,11 @@ describe 'holiday_and_term' do
 
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            ['', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
             headers,
             [school.name,
              '2023-01-01',
+             'Easter 2023',
              '2,000',
              '1,000',
              '-50',
@@ -245,6 +256,7 @@ describe 'holiday_and_term' do
           [
             I18n.t('analytics.benchmarking.configuration.column_headings.school'),
             I18n.t('activerecord.attributes.school.activation_date'),
+            I18n.t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
             I18n.t('comparisons.column_headings.previous_period_unadjusted'),
             I18n.t('comparisons.column_headings.previous_period'),
             I18n.t('comparisons.column_headings.current_period'),
@@ -264,6 +276,7 @@ describe 'holiday_and_term' do
             headers,
             ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
+             'Easter 2023',
              '1,800',
              '2,000',
              '1,000',
@@ -280,10 +293,11 @@ describe 'holiday_and_term' do
 
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            ['', '', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
             headers,
             [school.name,
              '2023-01-01',
+             'Easter 2023',
              '1,800',
              '2,000',
              '1,000',
@@ -318,6 +332,7 @@ describe 'holiday_and_term' do
           [
             I18n.t('analytics.benchmarking.configuration.column_headings.school'),
             I18n.t('activerecord.attributes.school.activation_date'),
+            I18n.t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
             I18n.t('comparisons.column_headings.previous_period_unadjusted'),
             I18n.t('comparisons.column_headings.previous_period'),
             I18n.t('comparisons.column_headings.current_period'),
@@ -337,6 +352,7 @@ describe 'holiday_and_term' do
             headers,
             ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
+             'Easter 2023',
              '1,800',
              '2,000',
              '1,000',
@@ -353,10 +369,11 @@ describe 'holiday_and_term' do
 
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            ['', '', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
             headers,
             [school.name,
              '2023-01-01',
+             'Easter 2023',
              '1,800',
              '2,000',
              '1,000',
