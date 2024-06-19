@@ -41,7 +41,7 @@ describe Calendar do
   describe 'it knows when alert triggers are coming up' do
     it 'knows when the next holiday is' do
       today = Date.parse(autumn_term_half_term_holiday_start) - 1.week
-      expect(calendar.next_holiday(today: today).start_date.to_s(:db)).to eq autumn_term_half_term_holiday_start
+      expect(calendar.next_holiday(today: today).start_date.to_fs(:db)).to eq autumn_term_half_term_holiday_start
 
       today = Date.parse(random_before_holiday_start_date) - 1.week
       expect(calendar.next_holiday(today: today).start_date).to eq random_before_holiday.start_date

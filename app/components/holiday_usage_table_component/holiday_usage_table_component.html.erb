@@ -16,7 +16,7 @@
           <td><%= label %></td>
           <td>
             <% if period.present? %>
-              <%= t('analytics.from_and_to', from_date: period.start_date.to_s(:es_short), to_date: period.end_date.to_s(:es_short)) %>
+              <%= t('analytics.from_and_to', from_date: period.start_date.to_fs(:es_short), to_date: period.end_date.to_fs(:es_short)) %>
             <% end %>
           </td>
           <% if usage.present? %>
@@ -43,7 +43,7 @@
         <% current_holiday_row(holiday) do |label, period, usage, average_daily_usage| %>
           <td><%= label %></td>
           <td>
-            <%= t('analytics.from_and_to', from_date: period.start_date.to_s(:es_short), to_date: period.end_date.to_s(:es_short)) %>
+            <%= t('analytics.from_and_to', from_date: period.start_date.to_fs(:es_short), to_date: period.end_date.to_fs(:es_short)) %>
             <% if within_school_period?(period) %>
               <sup>*</sup>
             <% end %>
