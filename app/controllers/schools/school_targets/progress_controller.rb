@@ -91,7 +91,7 @@ module Schools
       def latest_progress
         if @school_target.expired?
           final_month = @school_target.target_date.prev_month.beginning_of_month
-          @progress.cumulative_performance_versus_synthetic_last_year[final_month]
+          @progress.cumulative_performance[final_month]
         else
           @progress.current_cumulative_performance_versus_synthetic_last_year
         end
