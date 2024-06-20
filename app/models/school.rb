@@ -698,6 +698,10 @@ class School < ApplicationRecord
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type: meter_type).any?
   end
 
+  def multiple_meters?(fuel_type)
+    meters.active.where(meter_type: fuel_type).count > 1
+  end
+
   private
 
   def valid_uk_postcode
