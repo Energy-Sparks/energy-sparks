@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe 'legacy redirects', type: :system do
-  context 'when accessing old school dashboard paths' do
-    let(:school) { create(:school) }
+  let(:school) { create(:school) }
 
+  context 'when accessing old school dashboard paths' do
     it 'redirects teacher dashboard links' do
       visit "/teachers/schools/#{school.slug}"
       expect(page).to have_current_path(school_path(school), ignore_query: true)
