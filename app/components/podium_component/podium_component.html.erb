@@ -50,14 +50,12 @@
     </div>
     <div class="row border-top grey">
       <% podium.low_to_high.each do |position| %>
-        <div class="col-4 text-center">
-          <h6>
-            <% if podium.current_school?(position) %>
-              <%= position.school.name %>
-            <% else %>
-              <%= link_to position.school.name, pupils_school_path(position.school) %>
-            <% end %>
-          </h6>
+        <div class="col-4 text-center px-3">
+          <% if podium.current_school?(position) %>
+            <%= position.school.name %>
+          <% else %>
+            <%= link_to position.school.name, pupils_school_path(position.school) %>
+          <% end %>
         </div>
       <% end %>
     </div>

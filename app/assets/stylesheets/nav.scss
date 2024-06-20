@@ -83,6 +83,12 @@
   }
 }
 
+.nav-tabs {
+  .nav-link.active {
+    font-weight: 600;
+  }
+}
+
 .tab-content.locales {
   padding: 10px;
   margin-bottom: 10px;

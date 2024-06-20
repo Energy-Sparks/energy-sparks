@@ -10,13 +10,16 @@
   <% Comparison::ReportGroup.by_position.each do |report_group| %>
     <div class="compare card mb-4">
       <div class="card-header">
-        <%= report_group.title %>
-        <%= admin_button edit_admin_comparisons_report_group_path(report_group) %>
+        <h5 class='p-0 m-0'>
+          <%= report_group.title %>
+          <%= admin_button edit_admin_comparisons_report_group_path(report_group) %>
+        </h5>
       </div>
       <div class="card-body pb-0">
         <div class="card-subtitle text-muted">
           <%= report_group.description %>
-          <%= admin_button edit_admin_comparisons_report_group_path(report_group) %>
+          <%= admin_button edit_admin_comparisons_report_group_path(report_group),
+                           classes: 'btn btn-xs align-text-top' %>
         </div>
         <ul class="fa-ul card-columns">
           <% report_group.reports.where(disabled: false).by_title.each do |report| %>
