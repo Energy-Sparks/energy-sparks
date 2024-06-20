@@ -145,7 +145,7 @@ header img {
     }
 
     i {
-      @include font(f-xl);
+      font-size: $f-xl;
     }
 
     .col-1 {
