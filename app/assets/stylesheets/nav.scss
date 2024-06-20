@@ -1,3 +1,9 @@
+// Original navigation css
+// Switch to using navigation.scss with navigation feature flag
+
+@import "colours";
+@import "fonts";
+
 .navbar {
   border-radius: 0;
   background: $dark-blue;

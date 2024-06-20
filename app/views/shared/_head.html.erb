@@ -25,6 +25,12 @@
 <%= stylesheet_link_tag 'https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css' %>
 <%= stylesheet_link_tag 'application', media: 'all' %>
 
+<% if Flipper.enabled?(:navigation, current_user, current_user&.school_group) %>
+  <%= stylesheet_link_tag 'navigation', media: 'all' %>
+<% else %>
+  <%= stylesheet_link_tag 'nav', media: 'all' %>
+<% end %>
+
 <%= javascript_importmap_tags %>
 
 <%= javascript_include_tag 'application_assets' %>

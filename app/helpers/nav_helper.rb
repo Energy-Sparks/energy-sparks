@@ -6,6 +6,13 @@ module NavHelper
     end
   end
 
+  def navigation_image_link
+    title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
+    link_to '/home-page', class: 'navbar-brand float-left', title: title do
+      image_tag("navigation-brand-transparent-#{I18n.locale}.png", class: 'd-inline-block align-top')
+    end
+  end
+
   def on_test_link
     if on_test?
       link_to 'Test', '/', class: 'nav-item px-1'
