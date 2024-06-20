@@ -16,7 +16,8 @@
   <% end %>
 <% end %>
 
-<%= render "schools/advice/#{fuel_type}_long_term/meter_breakdown_table",
+<%= render 'schools/advice/meter_breakdown/meter_breakdown_table',
+           fuel_type: fuel_type,
            school: school,
            analysis_dates: analysis_dates,
            meters_for_breakdown: meters_for_breakdown,
