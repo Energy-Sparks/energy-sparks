@@ -86,7 +86,6 @@ Rails.application.routes.draw do
   end
 
   namespace :comparisons do
-    resources :holiday_and_term, only: [:index], concerns: :unlisted
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_gas_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
@@ -119,6 +118,7 @@ Rails.application.routes.draw do
     resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
     resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
     resources :heating_vs_hot_water, only: [:index], concerns: :unlisted
+    resources :holiday_and_term, only: [:index], concerns: :unlisted
     resources :holiday_usage_last_year, only: [:index], concerns: :unlisted
     resources :hot_water_efficiency, only: [:index], concerns: :unlisted
     resources :recent_change_in_baseload, only: [:index], concerns: :unlisted
