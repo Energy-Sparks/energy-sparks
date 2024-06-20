@@ -100,6 +100,12 @@
         <li>Dates formatted like this <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b>
           (<code><%= @amr_data_feed_config.date_format %></code>)</li>
 
+        <% if @amr_data_feed_config.delayed_reading %>
+          <li><strong>Important:</strong> this configuration will adjust the dates in the uploaded file backwards by 1 day. This matches what the supplier provides.
+            But use caution if you are manually preparing data.
+          </li>
+        <% end %>
+
         <% if @amr_data_feed_config.row_per_reading %>
           <li>A reading field column labelled  <b><%= @amr_data_feed_config.reading_fields.first %></b></li>
           <% if @amr_data_feed_config.positional_index && @amr_data_feed_config.period_field %>
