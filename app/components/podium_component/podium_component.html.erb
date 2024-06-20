@@ -21,20 +21,18 @@
     <div class="row align-items-end border-bottom grey">
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">
-          <h5>
-            <% if podium.current_school?(position) %>
-              <% if podium.school_has_points? %>
-                <%= fa_icon('crown fa-2x') %>
-                <p class='h2'><%= position.ordinal %></p>
-              <% end %>
-            <% else %>
-              <p><%= position.ordinal %></p>
-              <% if (position.normalised_points * 149).to_i < 70 %>
-                <p class="mb-1"><strong><%= position.points %></strong></p>
-                <p class="text-uppercase"><%= t('components.podium.points') %></p>
-              <% end %>
+          <% if podium.current_school?(position) %>
+            <% if podium.school_has_points? %>
+              <%= fa_icon('crown fa-2x') %>
+              <p class='f2'><%= position.ordinal %></p>
             <% end %>
-          </h5>
+          <% else %>
+            <p><%= position.ordinal %></p>
+            <% if (position.normalised_points * 149).to_i < 70 %>
+              <p class="mb-1"><strong><%= position.points %></strong></p>
+              <p class="text-uppercase"><%= t('components.podium.points') %></p>
+            <% end %>
+          <% end %>
 
           <div class="bar <%= 'bar-current' if podium.current_school?(position) %>">
             <div class="bar-arrow"></div>
@@ -50,7 +48,7 @@
     </div>
     <div class="row border-top grey">
       <% podium.low_to_high.each do |position| %>
-        <div class="col-4 text-center px-3">
+        <div class="col-4 text-center px-3 small">
           <% if podium.current_school?(position) %>
             <%= position.school.name %>
           <% else %>

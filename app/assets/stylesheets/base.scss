@@ -34,7 +34,7 @@ body p {
   @include font(f6);
 }
 
-p.small {
+.small {
   @include font(f7);
 }
 
