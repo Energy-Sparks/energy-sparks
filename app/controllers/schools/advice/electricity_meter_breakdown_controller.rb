@@ -1,16 +1,6 @@
 module Schools
   module Advice
-    class ElectricityMeterBreakdownController < AdviceBaseController
-      def insights
-        @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
-        @meters_for_breakdown = sorted_meters_for_breakdown(@annual_usage_meter_breakdown)
-      end
-
-      def analysis
-        @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
-        @meters_for_breakdown = sorted_meters_for_breakdown(@annual_usage_meter_breakdown)
-      end
-
+    class ElectricityMeterBreakdownController < BaseMeterBreakdownController
       private
 
       def fuel_type
@@ -19,19 +9,6 @@ module Schools
 
       def advice_page_key
         :electricity_meter_breakdown
-      end
-
-      def sorted_meters_for_breakdown(annual_usage_meter_breakdown)
-        meters = @school.meters.where(mpan_mprn: annual_usage_meter_breakdown.meters).order(:mpan_mprn)
-        meters.index_by(&:mpan_mprn)
-      end
-
-      def aggregate_meter
-        aggregate_school.aggregated_electricity_meters
-      end
-
-      def usage_service
-        @usage_service ||= Schools::Advice::LongTermUsageService.new(@school, aggregate_school, fuel_type)
       end
     end
   end

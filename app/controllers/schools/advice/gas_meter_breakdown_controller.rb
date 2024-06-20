@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class GasMeterBreakdownController < AdviceBaseController
+    class GasMeterBreakdownController < BaseMeterBreakdownController
       private
 
       def fuel_type

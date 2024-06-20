@@ -2,4 +2,13 @@
 en:
   advice_pages:
     gas_meter_breakdown:
+      insights:
+        current_usage:
+          title: Your current gas usage by meter
+        what_is_a_meter_breakdown:
+          link: Learn more
+          text_html: |-
+            <p>
+            Your school has multiple gas meters. This analysis shows gas use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
+            </p>
       page_title: Gas use by meter
