@@ -16,11 +16,11 @@
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/meter_breakdown/meter_breakdown_table',
+<%= render 'schools/advice/meter_breakdown/usage_breakdown_table',
            fuel_type: fuel_type,
            school: school,
            analysis_dates: analysis_dates,
            meters_for_breakdown: meters_for_breakdown,
-           annual_usage_meter_breakdown: annual_usage_meter_breakdown %>
+           usage_breakdown: annual_usage_meter_breakdown %>
 
 <p><%= t('advice_pages.electricity_long_term.analysis.meter_breakdown.table_explanation') %></p>

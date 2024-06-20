@@ -10,9 +10,10 @@
            section_id: 'current',
            section_title: t("advice_pages.#{@advice_page.fuel_type}_meter_breakdown.insights.current_usage.title") %>
 
-<%= render 'schools/advice/meter_breakdown/meter_breakdown_table',
+<%= render 'schools/advice/meter_breakdown/usage_breakdown_table',
            fuel_type: @advice_page.fuel_type,
+           summary: true,
            school: @school,
            analysis_dates: @analysis_dates,
            meters_for_breakdown: @meters_for_breakdown,
-           annual_usage_meter_breakdown: @annual_usage_meter_breakdown %>
+           usage_breakdown: @annual_usage_meter_breakdown %>
