@@ -312,8 +312,6 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :analysis, controller: :analysis, only: [:index, :show]
-
       resources :progress, controller: :progress, only: [:index] do
         collection do
           get :electricity
@@ -731,6 +729,10 @@ Rails.application.routes.draw do
   # Maintain old scoreboard URL
   get '/schools/:name/scoreboard', to: redirect('/scoreboards')
 
+  # Old analysis pages
+  get '/schools/:name/analysis', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/analysis/:id', to: redirect('/schools/%{name}/advice')
+
   # Old teacher and management dashboards
   get '/teachers/schools/:name', to: redirect('/schools/%{name}')
   get '/management/schools/:name', to: redirect('/schools/%{name}')
@@ -740,4 +742,5 @@ Rails.application.routes.draw do
   # Old benchmark URLs
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
+
 end
