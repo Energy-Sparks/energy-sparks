@@ -118,6 +118,7 @@ Rails.application.routes.draw do
     resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
     resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
     resources :heating_vs_hot_water, only: [:index], concerns: :unlisted
+    resources :holiday_and_term, only: [:index], concerns: :unlisted
     resources :holiday_usage_last_year, only: [:index], concerns: :unlisted
     resources :hot_water_efficiency, only: [:index], concerns: :unlisted
     resources :recent_change_in_baseload, only: [:index], concerns: :unlisted
@@ -132,10 +133,6 @@ Rails.application.routes.draw do
     get '*key/unlisted', to: 'configurable_period#unlisted'
     get '*key', to: 'configurable_period#index', as: :configurable_period
   end
-
-  # redirect old benchmark URLs
-  get '/benchmarks', to: redirect('/compare')
-  get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
   get 'version', to: 'version#show'
 
@@ -399,7 +396,6 @@ Rails.application.routes.draw do
       resource :your_school_estate, only: [:edit, :update]
 
       resources :alerts, only: [:show]
-      resources :find_out_more, controller: :find_out_more
 
       resources :interventions do
         member do
@@ -445,9 +441,6 @@ Rails.application.routes.draw do
 
       resource :consents, only: [:show, :create]
     end
-
-    # Maintain old scoreboard URL
-    get '/scoreboard', to: redirect('/schools')
   end
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
@@ -718,17 +711,6 @@ Rails.application.routes.draw do
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
 
-  #redirect from old teacher dashboard
-  namespace :teachers do
-    get '/schools/:name', to: redirect('/management/schools/%{name}')
-  end
-
-  namespace :management do
-    resources :schools, only: :show do
-      resources :management_priorities, only: :index
-    end
-  end
-
   namespace :pupils do
     resource :session, only: [:create]
     resources :schools, only: :show do
@@ -736,4 +718,24 @@ Rails.application.routes.draw do
       get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
     end
   end
+
+  # LEGACY PATHS
+  # Old paths that (may) have been indexed by crawlers or used in comms/emails that
+  # we want to maintain and redirect.
+
+  # Old 'find out more' pages
+  get '/schools/:name/find_out_more', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/find_out_more/:id', to: redirect('/schools/%{name}/advice')
+  # Maintain old scoreboard URL
+  get '/schools/:name/scoreboard', to: redirect('/scoreboards')
+
+  # Old teacher and management dashboards
+  get '/teachers/schools/:name', to: redirect('/schools/%{name}')
+  get '/management/schools/:name', to: redirect('/schools/%{name}')
+  # Old management priorities list
+  get '/management/schools/:name/management_priorities', to: redirect('/schools/%{name}/advice/priorities')
+
+  # Old benchmark URLs
+  get '/benchmarks', to: redirect('/compare')
+  get '/benchmark', to: redirect(BenchmarkRedirector.new)
 end

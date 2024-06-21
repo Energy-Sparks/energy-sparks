@@ -1,7 +1,7 @@
 module Targets
   class SchoolTargetService
     DEFAULT_ELECTRICITY_TARGET = 5.0
-    DEFAULT_GAS_TARGET = 5.0
+    DEFAULT_GAS_TARGET = 10.0
     DEFAULT_STORAGE_HEATER_TARGET = 5.0
 
     def initialize(school)

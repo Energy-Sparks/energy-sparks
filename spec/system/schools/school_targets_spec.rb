@@ -87,7 +87,7 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
         expect(page).to have_content('We are calculating your progress')
         expect(school.has_current_target?).to be(true)
         expect(school.current_target.electricity).to be 15.0
-        expect(school.current_target.gas).to be 5.0
+        expect(school.current_target.gas).to be 10.0
         expect(school.current_target.storage_heaters).to be nil
       end
 
