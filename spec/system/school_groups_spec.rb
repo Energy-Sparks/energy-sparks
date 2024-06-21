@@ -223,7 +223,7 @@ describe 'school groups', :school_groups, type: :system do
             gas_recent_changes
             heating_control
             hot_water
-            solar_pv
+            solar_pv.has_solar_pv
             storage_heaters
             thermostatic_control
           ].each do |advice_page_key|

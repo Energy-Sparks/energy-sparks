@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '~> 3.2.2'
 
-gem 'rails', '7.0.8.1'
+gem 'rails', '~> 7.1.0'
 
 # Rails/Core
 gem 'bootsnap'
@@ -113,14 +113,15 @@ gem 'roo-xls'
 gem 'premailer-rails'
 
 # Feature flags
-gem "flipper-ui", "~> 1.3"
-gem "flipper-active_record", "~> 1.3"
+gem 'flipper-active_record', '~> 1.3'
+gem 'flipper-ui', '~> 1.3'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'byebug', platform: :mri
   gem 'climate_control'
+  gem 'debug'
   gem 'factory_bot_rails'
   gem 'fakefs', require: 'fakefs/safe'
   gem 'foreman'
