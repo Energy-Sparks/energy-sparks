@@ -1,0 +1,23 @@
+<!-- new nav goes in here -->
+<div class='float-left'>
+  <%= on_test_link %>
+</div>
+
+<div class='fixed-top'>
+  <nav class="navbar main">
+    <div class="container">
+      <%= navigation_image_link %>
+      <%= on_test_link %>
+      Hello
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+        <ul class="navbar-nav nowrap">
+          <%= render 'shared/common_nav_bar_menus' %>
+        </ul>
+      </div>
+      <%= locale_switcher_buttons %>
+    </div>
+  </nav>
+</div>
