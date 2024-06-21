@@ -17,8 +17,8 @@
 <% end %>
 
 <p><%= t('advice_pages.electricity_long_term.analysis.meter_breakdown.table_introduction',
-         start_date: annual_usage_meter_breakdown.start_date.to_s(:es_short),
-         end_date: annual_usage_meter_breakdown.end_date.to_s(:es_short)) %></p>
+         start_date: annual_usage_meter_breakdown.start_date.to_fs(:es_short),
+         end_date: annual_usage_meter_breakdown.end_date.to_fs(:es_short)) %></p>
 
 <table class="table table-sm table-with-totals-footer table-sorted">
   <thead class="thead-dark">
