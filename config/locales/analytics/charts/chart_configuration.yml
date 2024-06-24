@@ -945,6 +945,7 @@ en:
       relative_percent: percent
       relative_percent_0dp: percent
       timeofday: Time of day
+      values: values
       w: W
       "£": "£"
       "£_0dp": "£"
