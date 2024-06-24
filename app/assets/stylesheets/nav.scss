@@ -74,18 +74,20 @@
   }
 }
 
+.nav-tabs {
+  .nav-item {
+    .nav-link.active {
+      font-weight: 600;
+    }
+  }
+}
+
 .nav-tabs.locales {
   .nav-item {
     .nav-link.active {
       background: $light-grey;
       border-color: $light-grey;
     }
-  }
-}
-
-.nav-tabs {
-  .nav-link {
-    font-weight: 500;
   }
 }
 

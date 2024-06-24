@@ -16,13 +16,15 @@
     <%= icon %>
   </td>
   <td>
-    <strong>
-      <% if target %>
-        <%= message %><%= ": #{link_to(target, show_path)}".html_safe if linkable? %>
-      <% else %>
-        <%= link_to message, show_path if linkable? %>
-      <% end %>
-    </strong>
+    <h4 class='pt-1'>
+      <strong>
+        <% if target %>
+          <%= message %><%= ": #{link_to(target, show_path)}".html_safe if linkable? %>
+        <% else %>
+          <%= link_to message, show_path if linkable? %>
+        <% end %>
+      </strong>
+    </h4>
     <span class="text-muted"><%= nice_dates(observation.at) %></span>
   </td>
   <% if show_buttons? %>
