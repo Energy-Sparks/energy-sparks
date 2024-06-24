@@ -4,7 +4,13 @@ namespace :after_party do
     puts "Running deploy task 'complete_started_already_completed_programmes'"
 
     Programme.started.each do |programme|
-      programme.complete! if programme.all_activities_complete?
+      if programme.all_activities_complete?
+        puts "Setting programme '#{programme.programme_type.title}' to complete for school: #{programme.school.name}"
+        programme.ended_on = programme.started_on
+        programme.status = :completed
+        programme.add_observation
+        programme.save!
+      end
     end
 
     # Update task as completed.  If you remove the line below, the task will

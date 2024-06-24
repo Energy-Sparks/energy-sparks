@@ -79,6 +79,10 @@ class ProgrammeType < ApplicationRecord
     end
   end
 
+  def activity_types_for_school(school)
+    activity_types.ids & school.activity_types_in_academic_year.pluck(:id)
+  end
+
   def self.tx_resources
     active.order(:id)
   end
