@@ -21,8 +21,8 @@ class EnergyTariffFormTitleComponent < ViewComponent::Base
   end
 
   def dates
-    start_date = @energy_tariff&.start_date&.to_s(:es_compact)
-    end_date = @energy_tariff&.end_date&.to_s(:es_compact)
+    start_date = @energy_tariff&.start_date&.to_fs(:es_compact)
+    end_date = @energy_tariff&.end_date&.to_fs(:es_compact)
 
     if start_date && end_date
       I18n.t(

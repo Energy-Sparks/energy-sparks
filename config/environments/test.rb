@@ -59,7 +59,7 @@ Rails.application.configure do
   # config.action_view.annotate_rendered_view_with_filenames = true
 
   # Location customisations:
-  # config.active_support.deprecation = :raise TODO:
+  config.active_support.deprecation = :raise
   config.i18n.raise_on_missing_translations = true
   config.action_mailer.default_url_options = { host: 'localhost' }
   # Allows mailer previews to be viewed on production
