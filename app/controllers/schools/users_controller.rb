@@ -50,7 +50,7 @@ module Schools
       authorize! :manage_users, @school
       @user = @school.find_user_or_cluster_user_by_id(params[:id])
       if @user.has_other_schools?
-        @user.cluster_schools.delete(@school)
+        @user.remove_school(@school)
         @user.contacts.where(school: @school).delete_all
       else
         @user.destroy
