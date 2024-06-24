@@ -35,9 +35,11 @@ namespace :utility do
     abort("No S3 target bucket configured") if target_bucket.blank?
     abort("Pass in a source bucket to copy_from") if source_bucket.blank?
     s3_client = Aws::S3::Client.new
-    s3_client.list_objects_v2(bucket: source_bucket).contents.each do |object|
-      puts "Copying #{object.key} from #{source_bucket} to #{target_bucket}"
-      s3_client.copy_object(bucket: target_bucket, copy_source: source_bucket + '/' + object.key, key: object.key)
+    s3_client.list_objects_v2(bucket: source_bucket).each_page do |response|
+      response.contents.each do |object|
+        puts "Copying #{object.key} from #{source_bucket} to #{target_bucket}"
+        s3_client.copy_object(bucket: target_bucket, copy_source: source_bucket + '/' + object.key, key: object.key)
+      end
     end
   end
 

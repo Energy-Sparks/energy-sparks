@@ -40,7 +40,7 @@ RSpec.describe 'electricity intraday advice page', :aggregate_failures do
         let(:start_date) { end_date - 12.days }
 
         it 'says when available' do
-          expect(page).to have_content("available after #{(end_date + 1).to_s(:es_short)}")
+          expect(page).to have_content("available after #{(end_date + 1).to_fs(:es_short)}")
         end
       end
 

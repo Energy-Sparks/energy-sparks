@@ -208,7 +208,7 @@ RSpec.describe 'Baseload advice page', type: :system do
         it 'shows different message' do
           visit insights_school_advice_baseload_path(school)
           within '#current-baseload' do
-            expect(page).to have_content("#{start_date.to_s(:es_short)} - #{end_date.to_s(:es_short)}")
+            expect(page).to have_content("#{start_date.to_fs(:es_short)} - #{end_date.to_fs(:es_short)}")
           end
         end
       end

@@ -49,7 +49,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
 
         it 'displays not enough data message' do
           data_available_from = reading_start_date + 6.days
-          expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_s(:es_short)}")
+          expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_fs(:es_short)}")
         end
 
         it 'does not have other sections' do
@@ -62,7 +62,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         let(:reading_start_date) { 30.days.ago }
 
         it 'includes a summary of available data' do
-          expect(page).to have_content("Since #{reading_start_date.to_s(:es_short)}, 100&percnt; of your gas was used when the school was closed")
+          expect(page).to have_content("Since #{reading_start_date.to_fs(:es_short)}, 100&percnt; of your gas was used when the school was closed")
         end
 
         it 'previews the comparison with other schools' do
@@ -107,7 +107,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
 
         it 'displays not enough data message' do
           data_available_from = reading_start_date + 6.days
-          expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_s(:es_short)}")
+          expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_fs(:es_short)}")
         end
       end
 

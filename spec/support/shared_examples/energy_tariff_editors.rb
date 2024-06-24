@@ -223,13 +223,13 @@ RSpec.shared_examples 'a basic electricity tariff editor' do
       expect(page).not_to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
 
       energy_tariff_price = energy_tariff.energy_tariff_prices.first
-      expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
-      expect(energy_tariff_price.end_time.to_s(:time)).to eq('07:00')
+      expect(energy_tariff_price.start_time.to_fs(:time)).to eq('00:00')
+      expect(energy_tariff_price.end_time.to_fs(:time)).to eq('07:00')
       expect(energy_tariff_price.value.to_s).to eq('0.15')
       expect(energy_tariff_price.units).to eq('kwh')
       energy_tariff_price = energy_tariff.energy_tariff_prices.last
-      expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
-      expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
+      expect(energy_tariff_price.start_time.to_fs(:time)).to eq('07:00')
+      expect(energy_tariff_price.end_time.to_fs(:time)).to eq('00:00')
       expect(energy_tariff_price.value.to_s).to eq('0.25')
       expect(energy_tariff_price.units).to eq('kwh')
     end

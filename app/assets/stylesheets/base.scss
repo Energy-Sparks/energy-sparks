@@ -27,16 +27,22 @@ body {
   font-family: $default-font-family;
   font-weight: 500;
   font-size: $default-font-size;
-  margin-top: 18px;
   overflow-x: hidden;
 }
 
 div.application.container {
-  margin-top: 53px;
   padding-bottom: 30px;
 }
 
-div.application.container.sub-nav {
+.navigation-margin {
+  // TBD
+}
+
+.top-nav-margin {
+  margin-top: 53px;
+}
+
+.sub-nav-margin {
   margin-top: 100px;
 }
 

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :activity_type do
     activity_category
-    sequence(:name)                         {|n| "test activity_type name #{n}"}
+    sequence(:name, 'Test Activity Type AAAA1')
     score                                   { 25 }
     active                                  { true }
     sequence(:description)                  {|n| "generic description #{n}"}

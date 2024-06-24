@@ -14,11 +14,11 @@ module ApplicationHelper
   end
 
   def nice_dates(date)
-    date ? date.to_s(:es_full) : ''
+    date ? date.to_fs(:es_full) : ''
   end
 
   def short_dates(date)
-    date ? date.to_s(:es_short) : ''
+    date ? date.to_fs(:es_short) : ''
   end
 
   def nice_date_times_today(datetime)
