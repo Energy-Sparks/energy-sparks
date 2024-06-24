@@ -21,7 +21,7 @@ class ActivityCreator
   def process_programmes
     started_active_programmes.each do |programme|
       add_programme_activity(programme)
-      programme.complete! if completed_programme?(programme)
+      programme.complete! if programme.all_activities_complete?
     end
   end
 

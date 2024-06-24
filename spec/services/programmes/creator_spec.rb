@@ -61,6 +61,10 @@ describe Programmes::Creator do
         expect(programme.activities.any?).to be true
         expect(programme.activities.first).to eq activity
       end
+
+      it 'has a status of started' do
+        expect(programme).to be_started
+      end
     end
 
     context 'when school has multiple activities' do
@@ -77,6 +81,30 @@ describe Programmes::Creator do
       it 'recognises the most recent' do
         expect(programme.programme_activities.count).to be 1
         expect(programme.activities.first).to eq activities.first
+      end
+
+      it 'has a status of started' do
+        expect(programme).to be_started
+      end
+    end
+
+    context 'when school has completed all activities in programme this year' do
+      let!(:activities) do
+        programme_type.activity_types.each do |activity_type|
+          create(:activity, school: school, activity_type: activity_type, happened_on: Time.zone.now)
+        end
+      end
+
+      before do
+        service.create
+      end
+
+      it 'adds programme activity for each type' do
+        expect(programme.programme_activities.count).to eq(programme_type.activity_types.count)
+      end
+
+      it 'marks programme as completed' do
+        expect(programme).to be_completed
       end
     end
 
