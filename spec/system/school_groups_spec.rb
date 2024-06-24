@@ -23,16 +23,13 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'a public school group dashboard'
       it_behaves_like 'school group no dashboard notification'
       it_behaves_like 'shows the we are working with message'
+      it_behaves_like 'does not show the sub navigation menu'
 
-      describe 'chart updates' do
-        it 'shows a form to select default chart units' do
+      describe 'when accessing the chart updates' do
+        it 'redirects to sign in' do
           visit school_group_chart_updates_path(school_group)
           expect(page).to have_current_path('/users/sign_in', ignore_query: true)
         end
-      end
-
-      context 'does not show the sub navigation menu' do
-        it_behaves_like 'does not show the sub navigation menu'
       end
 
       describe 'showing recent usage tab' do
@@ -49,142 +46,52 @@ describe 'school groups', :school_groups, type: :system do
 
         it_behaves_like 'a page not showing the cluster column'
 
-        describe 'changes in metrics params' do
-          it 'shows intro text' do
-            expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
-          end
+        it 'displays introduction' do
+          expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
+        end
 
-          it 'shows expected table content for change when there are no metrics params' do
-            visit school_group_path(school_group, {})
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).not_to have_content('8,540')
-          end
+        it 'shows all the schools' do
+          expect(page).to have_content(school_1.name)
+          expect(page).to have_content(school_2.name)
+        end
 
-          it 'shows expected table content for change when there is an invalid metrics params' do
-            visit school_group_path(school_group, metric: 'something invalid')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).not_to have_content('8,540')
-          end
+        it_behaves_like 'a school group recent usage tab'
 
-          it 'shows expected table content for change when there are metrics params for change' do
-            visit school_group_path(school_group, metrics: 'change')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).not_to have_content('8,540')
-          end
+        it 'allows a csv download of recent data metrics' do
+          visit school_group_path(school_group)
 
-          it 'shows expected table content for usage when there are metrics params for usage' do
-            visit school_group_path(school_group, metric: 'usage')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).not_to have_content('-16%')
-            expect(page).to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).not_to have_content('8,540')
-          end
+          click_on 'Download as CSV'
+          header = page.response_headers['Content-Disposition']
+          expect(header).to match(/^attachment/)
+          filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
+          expect(header).to match filename
 
-          it 'shows expected table content for cost when there are metrics params for cost' do
-            visit school_group_path(school_group, metric: 'cost')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).not_to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).to have_content('£137')
-            expect(page).not_to have_content('8,540')
-          end
+          visit school_group_path(school_group, metric: 'usage')
+          click_on 'Download as CSV'
+          header = page.response_headers['Content-Disposition']
+          expect(header).to match(/^attachment/)
+          filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
+          expect(header).to match filename
 
-          it 'shows expected table content for co2 when there are metrics params for co2' do
-            visit school_group_path(school_group, metric: 'co2')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).not_to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).to have_content('8,540')
-          end
+          visit school_group_path(school_group, metric: 'cost')
+          click_on 'Download as CSV'
+          header = page.response_headers['Content-Disposition']
+          expect(header).to match(/^attachment/)
+          filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
+          expect(header).to match filename
 
-          it 'allows a csv download of recent data metrics' do
-            visit school_group_path(school_group)
-
-            click_on 'Download as CSV'
-            header = page.response_headers['Content-Disposition']
-            expect(header).to match(/^attachment/)
-            filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
-            expect(header).to match filename
-
-            visit school_group_path(school_group, metric: 'usage')
-            click_on 'Download as CSV'
-            header = page.response_headers['Content-Disposition']
-            expect(header).to match(/^attachment/)
-            filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
-            expect(header).to match filename
-
-            visit school_group_path(school_group, metric: 'cost')
-            click_on 'Download as CSV'
-            header = page.response_headers['Content-Disposition']
-            expect(header).to match(/^attachment/)
-            filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
-            expect(header).to match filename
-
-            visit school_group_path(school_group, metric: 'co2')
-            click_on 'Download as CSV'
-            header = page.response_headers['Content-Disposition']
-            expect(header).to match(/^attachment/)
-            filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
-            expect(header).to match filename
-          end
+          visit school_group_path(school_group, metric: 'co2')
+          click_on 'Download as CSV'
+          header = page.response_headers['Content-Disposition']
+          expect(header).to match(/^attachment/)
+          filename = "#{school_group.name}-recent-usage-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
+          expect(header).to match filename
         end
       end
 
       describe 'showing comparisons' do
         include_context 'school group comparisons'
+
         before do
           visit comparisons_school_group_path(school_group)
         end
@@ -204,7 +111,7 @@ describe 'school groups', :school_groups, type: :system do
           expect(page).to have_link('gas', href: '#gas-comparisons')
         end
 
-        it 'shows expected content' do
+        it 'shows expected comparisons' do
           %w[
             baseload
             electricity_long_term
@@ -396,6 +303,87 @@ describe 'school groups', :school_groups, type: :system do
           expect(page).to have_content(school_2.name)
           expect(page).to have_selector(:id, 'geo-json-map')
         end
+      end
+    end
+
+    context 'when school group is public but has non-public schools' do
+      let(:public) { true }
+      let!(:school_2) { create(:school, school_group: school_group, number_of_pupils: 20, floor_area: 300.0, data_enabled: true, visible: true, active: true, public: false) }
+
+      it_behaves_like 'a public school group dashboard'
+      it_behaves_like 'school group no dashboard notification'
+      it_behaves_like 'shows the we are working with message'
+
+      context 'does not show the sub navigation menu' do
+        it_behaves_like 'does not show the sub navigation menu'
+      end
+
+      describe 'showing recent usage tab' do
+        include_context 'school group recent usage'
+
+        before do
+          visit school_group_path(school_group)
+        end
+
+        it_behaves_like 'school dashboard navigation' do
+          let(:expected_path) { "/school_groups/#{school_group.slug}" }
+          let(:breadcrumb)    { 'Group Dashboard' }
+        end
+
+        it_behaves_like 'a page not showing the cluster column'
+
+        it 'shows intro text' do
+          expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
+        end
+
+        it 'only shows the visible schools' do
+          expect(page).to have_content(school_1.name)
+          expect(page).not_to have_content(school_2.name)
+        end
+
+        it_behaves_like 'a school group recent usage tab'
+
+        it 'filters CSV'
+      end
+
+      describe 'showing comparisons' do
+        include_context 'school group comparisons'
+
+        before do
+          visit comparisons_school_group_path(school_group)
+        end
+
+        it 'only shows the visible schools' do
+          expect(page).to have_content(school_1.name)
+          expect(page).not_to have_content(school_2.name)
+        end
+      end
+
+      describe 'showing priority actions' do
+        include_context 'school group priority actions'
+
+        before do
+          visit priority_actions_school_group_path(school_group)
+        end
+
+        it 'only shows the visible schools'
+      end
+
+      describe 'showing current_scores' do
+        include_context 'school group current scores'
+        before do
+          visit current_scores_school_group_path(school_group)
+        end
+
+        it 'shows all the schools'
+      end
+
+      describe 'showing map' do
+        before do
+          visit map_school_group_path(school_group)
+        end
+
+        it 'shows all the schools'
       end
     end
 

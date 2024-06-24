@@ -400,3 +400,92 @@ RSpec.shared_examples 'school group tabs not showing the cluster column' do
     it_behaves_like 'a page not showing the cluster column in the download'
   end
 end
+
+# TODO improve this to check
+RSpec.shared_examples 'a school group recent usage tab' do
+  it 'shows % changes in the table by default' do
+    visit school_group_path(school_group, {})
+    expect(page).to have_content('Electricity')
+    expect(page).to have_content('Gas')
+    expect(page).to have_content('Storage heaters')
+    expect(page).to have_content('School')
+    expect(page).to have_content('Last week')
+    expect(page).to have_content('Last year')
+    expect(page).to have_content('-16%')
+    expect(page).not_to have_content('910')
+    expect(page).not_to have_content('£137')
+    expect(page).not_to have_content('8,540')
+  end
+
+  describe 'when metrics params are included in url' do
+    it 'shows expected table content for change when there is an invalid params' do
+      visit school_group_path(school_group, metric: 'something invalid')
+      expect(page).to have_content('Electricity')
+      expect(page).to have_content('Gas')
+      expect(page).to have_content('Storage heaters')
+      expect(page).to have_content('School')
+      expect(page).to have_content('Last week')
+      expect(page).to have_content('Last year')
+      expect(page).to have_content('-16%')
+      expect(page).not_to have_content('910')
+      expect(page).not_to have_content('£137')
+      expect(page).not_to have_content('8,540')
+    end
+
+    it 'shows expected table content when % change is requested' do
+      visit school_group_path(school_group, metrics: 'change')
+      expect(page).to have_content('Electricity')
+      expect(page).to have_content('Gas')
+      expect(page).to have_content('Storage heaters')
+      expect(page).to have_content('School')
+      expect(page).to have_content('Last week')
+      expect(page).to have_content('Last year')
+      expect(page).to have_content('-16%')
+      expect(page).not_to have_content('910')
+      expect(page).not_to have_content('£137')
+      expect(page).not_to have_content('8,540')
+    end
+
+    it 'shows expected table content when usage is requested' do
+      visit school_group_path(school_group, metric: 'usage')
+      expect(page).to have_content('Electricity')
+      expect(page).to have_content('Gas')
+      expect(page).to have_content('Storage heaters')
+      expect(page).to have_content('School')
+      expect(page).to have_content('Last week')
+      expect(page).to have_content('Last year')
+      expect(page).not_to have_content('-16%')
+      expect(page).to have_content('910')
+      expect(page).not_to have_content('£137')
+      expect(page).not_to have_content('8,540')
+    end
+
+    it 'shows expected table content when cost is requested' do
+      visit school_group_path(school_group, metric: 'cost')
+      expect(page).to have_content('Electricity')
+      expect(page).to have_content('Gas')
+      expect(page).to have_content('Storage heaters')
+      expect(page).to have_content('School')
+      expect(page).to have_content('Last week')
+      expect(page).to have_content('Last year')
+      expect(page).not_to have_content('-16%')
+      expect(page).not_to have_content('910')
+      expect(page).to have_content('£137')
+      expect(page).not_to have_content('8,540')
+    end
+
+    it 'shows expected table content when co2 is requested' do
+      visit school_group_path(school_group, metric: 'co2')
+      expect(page).to have_content('Electricity')
+      expect(page).to have_content('Gas')
+      expect(page).to have_content('Storage heaters')
+      expect(page).to have_content('School')
+      expect(page).to have_content('Last week')
+      expect(page).to have_content('Last year')
+      expect(page).not_to have_content('-16%')
+      expect(page).not_to have_content('910')
+      expect(page).not_to have_content('£137')
+      expect(page).to have_content('8,540')
+    end
+  end
+end

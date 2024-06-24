@@ -13,6 +13,7 @@ class SchoolGroupsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
+    # TODO Should this be compare?
     if can?(:compare, @school_group)
       respond_to do |format|
         format.html do
