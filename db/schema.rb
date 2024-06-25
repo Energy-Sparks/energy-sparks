@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_19_153937) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_25_135831) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1525,7 +1525,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_19_153937) do
     t.bigint "default_procurement_route_gas_id"
     t.bigint "default_procurement_route_solar_pv_id"
     t.integer "group_type", default: 0
-    t.bigint "funder_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
@@ -1580,8 +1579,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_19_153937) do
     t.boolean "school_will_be_public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
+    t.bigint "funder_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
+    t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
     t.index ["school_id"], name: "index_school_onboardings_on_school_id"
     t.index ["scoreboard_id"], name: "index_school_onboardings_on_scoreboard_id"

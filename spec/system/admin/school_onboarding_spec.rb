@@ -26,6 +26,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
       default_country: 'wales'
     )
   end
+  let!(:funder) { create(:funder) }
 
   let(:last_email) { ActionMailer::Base.deliveries.last }
 
@@ -56,6 +57,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
       uncheck 'School will be public'
 
       select 'BANES', from: 'Group'
+      select funder.name, from: 'Funder'
       click_on 'Next'
 
       expect(page).to have_select('Template calendar', selected: 'BANES calendar')

@@ -9,6 +9,7 @@
 #  created_user_id          :bigint(8)
 #  dark_sky_area_id         :bigint(8)
 #  default_chart_preference :integer          default("default"), not null
+#  funder_id                :bigint(8)
 #  id                       :bigint(8)        not null, primary key
 #  notes                    :text
 #  school_group_id          :bigint(8)
@@ -26,6 +27,7 @@
 #
 #  index_school_onboardings_on_created_by_id          (created_by_id)
 #  index_school_onboardings_on_created_user_id        (created_user_id)
+#  index_school_onboardings_on_funder_id              (funder_id)
 #  index_school_onboardings_on_school_group_id        (school_group_id)
 #  index_school_onboardings_on_school_id              (school_id)
 #  index_school_onboardings_on_scoreboard_id          (scoreboard_id)
@@ -56,6 +58,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :scoreboard, optional: true
   belongs_to :created_user, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User', optional: true
+  belongs_to :funder, optional: true
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
 
