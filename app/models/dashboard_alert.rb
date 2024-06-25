@@ -33,7 +33,7 @@ class DashboardAlert < ApplicationRecord
   belongs_to :find_out_more, optional: true
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
 
-  attribute :dashboard, :string
+  # attribute :dashboard, :string
   enum dashboard: [:teacher, :pupil, :public, :management], _suffix: :dashboard
 
   validates :priority, numericality: true

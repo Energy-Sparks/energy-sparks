@@ -26,9 +26,7 @@ module EnergySparks
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Local customisations
-    config.autoload_lib(ignore: %w(assets tasks generators))
-    # Pull in folders without namespacing
-    config.eager_load_paths << Rails.root.join('app/models/areas')
+    config.autoload_lib(ignore: %w(generators))
     # For our application date helpers to use to optionally display times in configured zone
     config.display_timezone = 'London'
     config.middleware.use Rack::Attack
