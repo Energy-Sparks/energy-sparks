@@ -83,7 +83,7 @@ RSpec.describe 'sign in', type: :system do
 
         before do
           expire_cookies # kills session cookies
-          travel_back(3.weeks) if travel_forward
+          travel_to(3.weeks.from_now) if travel_forward
           visit root_path
         end
 
