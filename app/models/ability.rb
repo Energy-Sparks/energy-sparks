@@ -1,3 +1,89 @@
+# CANCAN DEFAULTS
+#
+# CanCan has some default aliases and matchers:
+#
+# :all matches any object
+# :manage matches any action
+# :read is an alias for [:index, :show]
+#
+# CUSTOM ALIASES
+#
+# We alias :create, :read, :update, :destroy to :crud
+#
+# CUSTOM OBJECTS
+#
+# We use some symbols to refer to things which don't otherwise have a model to refer to.
+# These are generally used for admin specific functionality and generally with just :manage or
+# :show as an action
+#
+# :admin_functions - Admin specific pages
+# :all_schools - All schools on site, include those that arenot visible
+# :funders - all funders
+# :geocoding - Geocoding/location objects on school details form
+# :parent_calendars - Parent calendars
+# :read_invisible_schools - whether to show invisible schools on school index page. Admin only
+#
+# CUSTOM CONTROLLER ACTIONS
+#
+# When we call `load_and_authorize_resource` in a controller CanCan will check whether the user can access
+# the controller action before it is called. This includes not only the CRUD methods but also any custom
+# method.
+#
+# So, for example, in order for any user to be able to access the ActivityType search page we need to grant:
+#
+# ```
+# can :search, ActivityType
+# ```
+#
+# So some of the actions given below actually map to controller actions. But others are custom actions used in
+# specific parts of the code, usually in controllers or templates to manage access to other fine-grained functionality
+#
+# SCHOOLS AND GROUP CUSTOM ACTIONS
+#
+# :change_data_enabled - can enable/disable data enabled features for a school. Admin only
+# :change_data_processing - can enabled/disable data processing. Admin only
+# :change_public - can make school public or private. Admin only
+# :change_visibility - can change visibility of school. Admin only
+# :configure - can update configuration for a school. Admin only
+# :download_school_data - can download school meter and related data
+# :expert_analyse - can access internal 'expert analysis' pages. Admin only
+# :manage_users - can manage users
+# :manage_solar_feed_configuration - can manage solar data feeds. Admin only
+# :manage_school_times - can manage school open/close times
+# :read_dashboard_menu - can see pupil/adult dashboard buttons on school pages.
+# :regenerate_school_data - can access functionality to regenerate a school. Admin only
+# :remove_school - can remove/archive a School. Admin only
+#
+# :show_management_dash - whether to show prompts and messages on dashboard (see Promptable), whether to
+# show print view, plus whether to show other data enabled features on school dashboards. Access to dashboard itself is
+# covered by :show
+#
+# :show_pupils_dash - can view pupil dashboard. Adult dashboard just uses :show
+# :start_programme - can start a programme for a school.
+# :suggest_activity - whether to show button to suggest next activity. Obsolete?
+# :validate_meters - can validate meter data for a school. Admin only
+# :view_advice_pages - can access old analysis pages. Admin only
+# :view_content_reports - can view admin only reports from overnight jobs
+# :view_dcc_data - can view DCC debug detail for school meters. Admin only
+# :view_target_data - can see debug for targets feature. Admin only
+#
+# SCHOOL GROUP ACTIONS
+#
+# :compare - can compare schools in this group. Used to add/remove links to compare functionality
+# But also used to control access to school group page with data.
+# :update_settings - can use manage settings (chart prefs, clusters) for school group. But also used to gate
+# access to viewing clusters on school group dashboard. Also used to decide whether to show sub navbar on some pages
+#
+# METERS
+#
+# :grant_consent - can grant consent for a meter. Admin only
+# :report_on - can view data report for a Meter. Admin only
+# :view_inventory - can view DCC meter inventory. Admin only
+# :view_meter_attributes - can view meter attributes for a Meter. Admin only
+# :view_tariff_reports - can view summary of tariffs for a meter. Admin only
+# :withdraw_consent - can withdrawn consent for a meter. Admin only
+#
+# Other objects and functionality is covered by the CanCan default operations, e.g. CRUD, show, index, manage
 class Ability
   include CanCan::Ability
 
@@ -5,7 +91,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     alias_action :create, :read, :update, :destroy, to: :crud
 
-    # all users can do these things
+    # All users can do these things
     can :read, Activity, school: { visible: true }
     can [:read, :recommended], ActivityCategory
     can [:read, :recommended], InterventionTypeGroup
