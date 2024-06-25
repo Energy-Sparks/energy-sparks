@@ -79,9 +79,9 @@ class ProgrammeType < ApplicationRecord
     end
   end
 
-  # provide a list of activity types a school has already completed this uear for this programme type
+  # provide a list of activity types a school has already completed this year for this programme type
   def activity_types_for_school(school)
-    activity_types.ids & school.activity_types_in_academic_year.pluck(:id)
+    activity_types & school.activity_types_in_academic_year
   end
 
   def self.tx_resources

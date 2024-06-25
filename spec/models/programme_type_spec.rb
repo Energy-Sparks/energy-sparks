@@ -39,4 +39,47 @@ RSpec.describe ProgrammeType, type: :model do
       end
     end
   end
+
+  describe '#activity_types_for_school' do
+    let!(:programme_type) { create(:programme_type_with_activity_types) }
+    let!(:school) { create(:school) }
+
+    context 'when no activities have been completed' do
+      it 'is empty' do
+        expect(programme_type.activity_types_for_school(school)).to be_empty
+      end
+    end
+
+    context 'when one activity has been completed' do
+      before do
+        create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.now)
+      end
+
+      it 'contains that activity type' do
+        expect(programme_type.activity_types_for_school(school)).to eq([programme_type.activity_types.first])
+      end
+    end
+
+    context 'when school has completed all activities in programme type' do
+      before do
+        programme_type.activity_types.each do |activity_type|
+          create(:activity, school: school, activity_type: activity_type, happened_on: Time.zone.now)
+        end
+      end
+
+      it 'contains all completed activity types for programme type' do
+        expect(programme_type.activity_types_for_school(school)).to eq(programme_type.activity_types)
+      end
+
+      context 'when an activity has been completed twice' do
+        before do
+          create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.now)
+        end
+
+        it 'contains all completed activity types for programme type' do
+          expect(programme_type.activity_types_for_school(school)).to eq(programme_type.activity_types)
+        end
+      end
+    end
+  end
 end

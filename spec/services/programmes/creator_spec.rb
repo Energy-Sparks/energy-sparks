@@ -89,13 +89,11 @@ describe Programmes::Creator do
     end
 
     context 'when school has completed all activities in programme this year' do
-      let!(:activities) do
+      before do
         programme_type.activity_types.each do |activity_type|
           create(:activity, school: school, activity_type: activity_type, happened_on: Time.zone.now)
         end
-      end
 
-      before do
         service.create
       end
 
