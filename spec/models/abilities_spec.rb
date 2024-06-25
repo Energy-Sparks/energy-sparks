@@ -36,7 +36,7 @@ describe Ability do
       let(:cluster_admin) { create(:school_admin, cluster_schools: [school]) }
 
 
-      %i[index show usage suggest_activity].each do |action|
+      %i[index show].each do |action|
         it { is_expected.to be_able_to(action, school) }
       end
 
@@ -87,7 +87,7 @@ describe Ability do
         it { is_expected.not_to be_able_to(:manage, thing.constantize.new) }
       end
 
-      %i[index show usage suggest_activity].each do |action|
+      %i[index show].each do |action|
         it { is_expected.to be_able_to(action, school) }
       end
 
@@ -117,11 +117,10 @@ describe Ability do
       let(:school) { create(:school, school_group: mygroup) }
       let(:user) { create(:user, role: :guest) }
 
-      %i[index show usage].each do |action|
+      %i[index show].each do |action|
         it { is_expected.to be_able_to(action, school) }
       end
 
-      it { is_expected.to be_able_to(:suggest_activity, school) }
       it { is_expected.to be_able_to(:show, school) }
       it { is_expected.to be_able_to(:read, ActivityCategory.new) }
       it { is_expected.to be_able_to(:show, ActivityType.new) }
