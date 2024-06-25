@@ -168,5 +168,4 @@ group :test do
   gem 'show_me_the_cookies'
   gem 'simplecov', require: false, group: :test
   gem 'test-prof'
-  gem 'timecop'
 end

@@ -6,8 +6,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
   describe '.csv_filename' do
     let(:frozen_time) { Time.zone.today }
 
-    before { Timecop.freeze(frozen_time) }
-    after { Timecop.return }
+    before { travel_to(frozen_time) }
 
     it 'generates expected name' do
       expect(service.csv_filename).to eq("funder-allocation-report-#{frozen_time.iso8601}.csv")

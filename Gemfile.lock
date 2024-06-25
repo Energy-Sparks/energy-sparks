@@ -705,7 +705,6 @@ GEM
     text-table (1.2.4)
     thor (1.3.1)
     tilt (2.3.0)
-    timecop (0.9.8)
     timeout (0.4.1)
     twilio-ruby (6.12.1)
       faraday (>= 0.9, < 3.0)
@@ -848,7 +847,6 @@ DEPENDENCIES
   terminal-notifier-guard
   terser
   test-prof
-  timecop
   twilio-ruby
   tzinfo-data
   view_component
