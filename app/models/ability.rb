@@ -105,8 +105,9 @@ class Ability
     can :compare, SchoolGroup, public: true
 
     can [:index, :read_dashboard_menu], School
-    # TODO: change to data_sharing: :public
-    can [:show, :show_pupils_dash], School, visible: true, public: true
+
+    # Anyone can view any visible school whose data sharing is set to public
+    can [:show, :show_pupils_dash], School, visible: true, data_sharing: :public
 
     can :live_data, Cad, visible: true, public: true
     can :read, Scoreboard, public: true
@@ -177,11 +178,10 @@ class Ability
       # Some group admins have been linked to schools, so that they can get alerts, so this
       # applies to both types of user currently
       if user.school.present?
-        # Allow users from schools in same group to access dashboards other schools in that group
-        # Any visible school in group
-        #
-        # TODO: change to any visible school with data sharing of public or with_group
-        can [:show, :show_pupils_dash], School, { school_group_id: user.school.school_group_id, visible: true }
+        # Extend default permission to see visible schools with public data to also add permission to
+        # view visible schools in the same group that have data sharing set to be 'within_group'
+        can [:show, :show_pupils_dash], School, { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
+
         # Can compare own school group, even if not public
         can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
         # Can see messages on school group dashboard for their group
@@ -227,9 +227,10 @@ class Ability
       school_scope = { id: user.school_id, visible: true }
       can [:show, :show_pupils_dash], School, school_scope
 
-      # they can also do these things for schools in same group
-      # TODO: change to visible with data_sharing of public or with_group
-      can [:show, :show_pupils_dash], School, { school_group_id: user.school.school_group_id, visible: true }
+      # Extend default permission to see visible schools with public data to also add permission to
+      # view visible schools in the same group that have data sharing set to be 'within_group'
+      can [:show, :show_pupils_dash], School, { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
+
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
 
@@ -244,24 +245,19 @@ class Ability
       # pupils can view management dashboard for their school and others in group
       if user.pupil?
         can :show_management_dash, School, id: user.school_id, visible: true
-        # TODO change to visible with data sharing of public or with_group
-        can :show_management_dash, School, { school_group_id: user.school.school_group_id, visible: true }
         can [:start, :read, :update, :create], TransportSurvey, related_school_scope
         can [:read, :create], TransportSurvey::Response, transport_survey: related_school_scope
       end
-      # pupils and volunteers can only read real cost data if their school is public
+      # pupils and volunteers can only read real cost data if their school is set to share data publicly
       if user.volunteer? || user.pupil?
-        can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true, public: true }
+        can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true, data_sharing: [:public, :within_group] }
       else
         # but staff can read it regardless
         can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true }
       end
       if user.staff? || user.volunteer?
         can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: { id: user.school_id, visible: true }
-        can [:show_management_dash], School, id: user.school_id, visible: true
-        # TODO: Can view dashboard stuff and start programme for any school in the same group?
-        # Should be show_management_dash only, and then for schools with data_sharing of public or with_group
-        can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
+        can [:show_management_dash, :start_programme], School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
