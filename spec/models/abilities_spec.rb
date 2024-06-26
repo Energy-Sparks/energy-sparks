@@ -239,23 +239,32 @@ describe Ability do
         end
       end
 
-      context 'is onboarding' do
-        context 'a school in their group' do
-          let(:school_onboarding) { create(:school_onboarding, school_group: school_group)}
+      context 'when completing onboarding' do
+        context 'with an onboarding that has not started' do
+          context 'when it is their group' do
+            let(:school_onboarding) { create(:school_onboarding, school_group: school_group)}
 
-          it { is_expected.to be_able_to(:manage, school_onboarding)}
+            it { is_expected.to be_able_to(:manage, school_onboarding)}
+          end
+
+          context 'when it is not their group' do
+            it { is_expected.not_to be_able_to(:manage, create(:school_onboarding, school_group: create(:school_group)))}
+          end
         end
 
-        context 'but not for their group' do
-          let(:school_onboarding) { create(:school_onboarding, school_group: create(:school_group)) }
+        context 'with an onboarding that has started' do
+          let(:school_onboarding) { create(:school_onboarding, school_group: school_group, school: create(:school, school_group: school_group))}
 
-          it { is_expected.not_to be_able_to(:manage, school_onboarding)}
-        end
+          context 'with a school in their group' do
+            it { is_expected.to be_able_to(:manage, school_onboarding)}
+          end
 
-        context 'for a different school' do
-          let(:school_onboarding) { create(:school_onboarding, school: create(:school)) }
+          context 'with a school in another group' do
+            let(:other_group) { create(:school_group) }
+            let(:school_onboarding) { create(:school_onboarding, school_group: other_group, school: create(:school, school_group: other_group)) }
 
-          it { is_expected.not_to be_able_to(:manage, school_onboarding) }
+            it { is_expected.not_to be_able_to(:manage, school_onboarding) }
+          end
         end
       end
     end
