@@ -122,7 +122,7 @@ RSpec.describe 'school adult dashboard', type: :system do
   context 'school with non-public data' do
     let!(:non_public_school) { create(:school, name: 'Non-public School', visible: true, data_sharing: :within_group, school_group: school_group)}
 
-    context 'as unknown user' do
+    context 'as a guest user' do
       it 'is listed on school page' do
         visit root_path
         click_on('View schools')
