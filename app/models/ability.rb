@@ -225,11 +225,11 @@ class Ability
     elsif user.staff? || user.volunteer? || user.pupil?
       # abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
-      can [:show, :show_pupils_dash], School, school_scope
+      can [:show, :show_pupils_dash, :show_management_dash], School, school_scope
 
       # Extend default permission to see visible schools with public data to also add permission to
       # view visible schools in the same group that have data sharing set to be 'within_group'
-      can [:show, :show_pupils_dash], School, { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
+      can [:show, :show_pupils_dash, :show_management_dash], School, { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
 
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
@@ -250,14 +250,14 @@ class Ability
       end
       # pupils and volunteers can only read real cost data if their school is set to share data publicly
       if user.volunteer? || user.pupil?
-        can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true, data_sharing: [:public, :within_group] }
+        can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true, data_sharing: :public }
       else
         # but staff can read it regardless
         can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true }
       end
       if user.staff? || user.volunteer?
         can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: { id: user.school_id, visible: true }
-        can [:show_management_dash, :start_programme], School, id: user.school_id, visible: true
+        can :start_programme, School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
