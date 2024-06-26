@@ -18,6 +18,7 @@
 #  name                   :string
 #  preferred_locale       :string           default("en"), not null
 #  pupil_password         :string
+#  pupil_password_old     :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -31,13 +32,13 @@
 #
 # Indexes
 #
-#  index_users_on_confirmation_token            (confirmation_token) UNIQUE
-#  index_users_on_email                         (email) UNIQUE
-#  index_users_on_reset_password_token          (reset_password_token) UNIQUE
-#  index_users_on_school_group_id               (school_group_id)
-#  index_users_on_school_id                     (school_id)
-#  index_users_on_school_id_and_pupil_password  (school_id,pupil_password) UNIQUE
-#  index_users_on_staff_role_id                 (staff_role_id)
+#  index_users_on_confirmation_token                (confirmation_token) UNIQUE
+#  index_users_on_email                             (email) UNIQUE
+#  index_users_on_reset_password_token              (reset_password_token) UNIQUE
+#  index_users_on_school_group_id                   (school_group_id)
+#  index_users_on_school_id                         (school_id)
+#  index_users_on_school_id_and_pupil_password_old  (school_id,pupil_password_old) UNIQUE
+#  index_users_on_staff_role_id                     (staff_role_id)
 #
 # Foreign Keys
 #
