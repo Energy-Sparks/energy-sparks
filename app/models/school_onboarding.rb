@@ -46,6 +46,8 @@
 #
 
 class SchoolOnboarding < ApplicationRecord
+  include EnumDataSharing
+
   validates :school_name, :contact_email, presence: true
 
   belongs_to :school, optional: true
