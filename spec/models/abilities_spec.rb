@@ -130,7 +130,7 @@ describe Ability do
       it_behaves_like 'they can view school group but not manage it'
     end
 
-    context 'when user is a school staff user' do
+    context 'when user is a staff user' do
       let(:school) { create(:school, school_group: school_group) }
       let(:school_group) { create(:school_group) }
       let(:user) { create(:staff, school: school) }
@@ -145,6 +145,43 @@ describe Ability do
 
       it_behaves_like 'they can view school group but not manage it'
 
+      it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
+    end
+
+    context 'when user is a volunteer' do
+      let(:school) { create(:school, school_group: school_group) }
+      let(:school_group) { create(:school_group) }
+      let(:user) { create(:volunteer, school: school) }
+
+      it_behaves_like 'a user who cannot manage site wide content'
+      it_behaves_like 'they can access the school dashboard and data'
+      it_behaves_like 'a user who can record activities for their school'
+      it_behaves_like 'a user who can set targets'
+      it_behaves_like 'a user who can manage tariffs', school_tariffs: false
+
+      it_behaves_like 'a user who cannot manage other schools, groups and users'
+
+      it_behaves_like 'they can view school group but not manage it'
+
+      it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
+    end
+
+    context 'with user is a pupil' do
+      let(:school) { create(:school, school_group: school_group) }
+      let(:school_group) { create(:school_group) }
+      let(:user) { create(:pupil, school: school) }
+
+      it_behaves_like 'a user who cannot manage site wide content'
+      it_behaves_like 'they can access the school dashboard and data'
+      it_behaves_like 'a user who can record activities for their school'
+
+      it { is_expected.not_to be_able_to(:manage, create(:school_target, school: school)) }
+
+      it_behaves_like 'a user who can manage tariffs', school_tariffs: false
+
+      it_behaves_like 'a user who cannot manage other schools, groups and users'
+
+      it_behaves_like 'they can view school group but not manage it'
       it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
     end
 
