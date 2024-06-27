@@ -7,6 +7,16 @@ shared_examples 'a user who cannot manage site wide content' do
   end
 end
 
+shared_examples 'they cannot access the school dashboard and data' do
+  %i[show].each do |action|
+    it { is_expected.not_to be_able_to(action, school) }
+  end
+  it { is_expected.not_to be_able_to(:show_pupils_dash, school)}
+  it { is_expected.not_to be_able_to(:download_school_data, school) }
+  it { is_expected.not_to be_able_to(:show_management_dash, school) }
+  it { is_expected.not_to be_able_to(:read_restricted_analysis, school) }
+end
+
 shared_examples 'they can access the school dashboard and data' do
   %i[index show].each do |action|
     it { is_expected.to be_able_to(action, school) }
@@ -198,16 +208,25 @@ describe Ability do
 
     context 'when user is a school admin' do
       let(:user) { create(:school_admin, school: school) }
-      let(:school) { create(:school, school_group: school_group) }
+      let(:school) { create(:school, school_group: school_group, visible: visible) }
+      let(:visible) { true }
       let(:school_group) { create(:school_group) }
 
       it_behaves_like 'a user who cannot manage site wide content'
 
-      it_behaves_like 'they can access the school dashboard and data'
+      context 'when school is visible' do
+        it_behaves_like 'they can access the school dashboard and data'
 
-      it 'allows access to restricted advice' do
-        expect(ability).to be_able_to(:read_restricted_analysis, school)
-        expect(ability).to be_able_to(:read_restricted_advice, school)
+        it 'allows access to restricted advice' do
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+          expect(ability).to be_able_to(:read_restricted_advice, school)
+        end
+      end
+
+      context 'when school is not visible' do
+        let(:visible) { false }
+
+        it_behaves_like 'they cannot access the school dashboard and data'
       end
 
       it_behaves_like 'a user who can record activities for their school'
@@ -223,16 +242,26 @@ describe Ability do
     end
 
     context 'when user is a staff user' do
-      let(:school) { create(:school, school_group: school_group) }
+      let(:school) { create(:school, school_group: school_group, visible: visible) }
+      let(:visible) { true }
       let(:school_group) { create(:school_group) }
       let(:user) { create(:staff, school: school) }
 
       it_behaves_like 'a user who cannot manage site wide content'
-      it_behaves_like 'they can access the school dashboard and data'
 
-      it 'allows access to restricted advice' do
-        expect(ability).to be_able_to(:read_restricted_analysis, school)
-        expect(ability).to be_able_to(:read_restricted_advice, school)
+      context 'when school is visible' do
+        it_behaves_like 'they can access the school dashboard and data'
+
+        it 'allows access to restricted advice' do
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+          expect(ability).to be_able_to(:read_restricted_advice, school)
+        end
+      end
+
+      context 'when school is not visible' do
+        let(:visible) { false }
+
+        it_behaves_like 'they cannot access the school dashboard and data'
       end
 
       it_behaves_like 'a user who can record activities for their school'
@@ -251,12 +280,27 @@ describe Ability do
     end
 
     context 'when user is a volunteer' do
-      let(:school) { create(:school, school_group: school_group) }
+      let(:school) { create(:school, school_group: school_group, visible: visible) }
+      let(:visible) { true }
       let(:school_group) { create(:school_group) }
       let(:user) { create(:volunteer, school: school) }
 
       it_behaves_like 'a user who cannot manage site wide content'
-      it_behaves_like 'they can access the school dashboard and data'
+
+      context 'when school is visible' do
+        it_behaves_like 'they can access the school dashboard and data'
+
+        it 'allows access to restricted advice' do
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+          expect(ability).to be_able_to(:read_restricted_advice, school)
+        end
+      end
+
+      context 'when school is not visible' do
+        let(:visible) { false }
+
+        it_behaves_like 'they cannot access the school dashboard and data'
+      end
 
       it 'allows access to restricted advice' do
         expect(ability).to be_able_to(:read_restricted_analysis, school)
@@ -279,11 +323,28 @@ describe Ability do
     end
 
     context 'with user is a pupil' do
-      let(:school) { create(:school, school_group: school_group) }
+      let(:school) { create(:school, school_group: school_group, visible: visible) }
+      let(:visible) { true }
       let(:school_group) { create(:school_group) }
       let(:user) { create(:pupil, school: school) }
 
       it_behaves_like 'a user who cannot manage site wide content'
+
+      context 'when school is visible' do
+        it_behaves_like 'they can access the school dashboard and data'
+      end
+
+      context 'when school is not visible' do
+        let(:visible) { false }
+
+        it_behaves_like 'they cannot access the school dashboard and data'
+      end
+
+      it 'allows access to restricted advice' do
+        expect(ability).to be_able_to(:read_restricted_analysis, school)
+        expect(ability).to be_able_to(:read_restricted_advice, school)
+      end
+
       it_behaves_like 'they can access the school dashboard and data'
 
       context 'when school does not have public data sharing' do
@@ -332,6 +393,9 @@ describe Ability do
       it { is_expected.to be_able_to(:show, create(:school_target)) }
 
       it { is_expected.not_to be_able_to(:download_school_data, school) }
+      it { is_expected.not_to be_able_to(:show_management_dash, school) }
+      it { is_expected.not_to be_able_to(:read_restricted_analysis, school) }
+
       it { is_expected.not_to be_able_to(:download_school_data, create(:school)) }
       it { is_expected.not_to be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
       it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}

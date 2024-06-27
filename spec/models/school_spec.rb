@@ -387,82 +387,18 @@ describe School do
     let(:user) { nil }
 
     let!(:school_group) { create(:school_group, name: 'School Group')}
-    let!(:other_school) { create(:school, name: 'Other School', visible: true, school_group: school_group)}
-
-    context 'Schools that are not visible' do
-      let!(:school)       { create(:school, name: 'School', visible: false, school_group: school_group)}
-
-      it 'disallows guest access' do
-        expect(ability).not_to be_able_to(:show, school)
-        expect(ability).not_to be_able_to(:show_pupils_dash, school)
-        expect(ability).not_to be_able_to(:show_management_dash, school)
-        expect(ability).not_to be_able_to(:read_restricted_analysis, school)
-      end
-
-      context 'as school admin' do
-        let!(:user) { create(:school_admin, school: school) }
-
-        it 'disallows access' do
-          expect(ability).not_to be_able_to(:show, school)
-          expect(ability).not_to be_able_to(:show_pupils_dash, school)
-          expect(ability).not_to be_able_to(:show_management_dash, school)
-          expect(ability).not_to be_able_to(:read_restricted_analysis, school)
-        end
-      end
-
-      context 'as admin' do
-        let(:user) { create(:admin) }
-
-        it 'can do anything' do
-          expect(ability).to be_able_to(:show, school)
-          expect(ability).to be_able_to(:show_pupils_dash, school)
-          expect(ability).to be_able_to(:show_management_dash, school)
-          expect(ability).to be_able_to(:read_restricted_analysis, school)
-        end
-      end
-    end
 
     context 'Schools that are visible' do
       let!(:school)       { create(:school, name: 'School', visible: true, school_group: school_group)}
 
-      it 'disallows guest access' do
-        expect(ability).to be_able_to(:show, school)
-        expect(ability).to be_able_to(:show_pupils_dash, school)
-        expect(ability).not_to be_able_to(:show_management_dash, school)
-
-        expect(ability).not_to be_able_to(:read_restricted_analysis, school)
-      end
-
-      context 'as school admin' do
-        let!(:user) { create(:school_admin, school: school) }
-
-        it 'disallows access' do
-          expect(ability).to be_able_to(:show, school)
-          expect(ability).to be_able_to(:show_pupils_dash, school)
-          expect(ability).to be_able_to(:show_management_dash, school)
-          expect(ability).to be_able_to(:read_restricted_analysis, school)
-        end
-      end
-
       context 'as related school admin' do
+        let!(:other_school) { create(:school, name: 'Other School', visible: true, school_group: school_group)}
+
         let!(:user) { create(:school_admin, school: other_school) }
 
         it 'allows access' do
-          expect(ability).to be_able_to(:show, school)
-          expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).not_to be_able_to(:show_management_dash, school)
           expect(ability).not_to be_able_to(:read_restricted_analysis, school)
-        end
-      end
-
-      context 'as admin' do
-        let(:user) { create(:admin) }
-
-        it 'can do anything' do
-          expect(ability).to be_able_to(:show, school)
-          expect(ability).to be_able_to(:show_pupils_dash, school)
-          expect(ability).to be_able_to(:show_management_dash, school)
-          expect(ability).to be_able_to(:read_restricted_analysis, school)
         end
       end
     end
@@ -480,6 +416,8 @@ describe School do
       end
 
       context 'as teacher from school in same group' do
+        let!(:other_school) { create(:school, name: 'Other School', visible: true, school_group: school_group)}
+
         let!(:user) { create(:staff, school: other_school) }
 
         it 'allows access' do
@@ -489,7 +427,9 @@ describe School do
       end
 
       context 'as pupil from school in same group' do
-        let!(:user)          { create(:pupil, school: other_school) }
+        let!(:other_school) { create(:school, name: 'Other School', visible: true, school_group: school_group)}
+
+        let!(:user) { create(:pupil, school: other_school) }
 
         it 'allows access' do
           expect(ability).to be_able_to(:show_management_dash, school)
