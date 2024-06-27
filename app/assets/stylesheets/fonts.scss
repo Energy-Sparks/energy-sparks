@@ -1,0 +1,90 @@
+/* Font size definitions */
+/* Other font definitions also found in common_chart_options.js.erb & live_data.js.erb */
+
+$f-xl: 60px;
+
+$f1: 48px; // over 10px bigger than old f1 - was 37.3
+$f2: 36px; // approx 5px bigger than old f2 - was 31.1
+$f3: 30px; // approx 4px bigger than old f3 - was 25.9
+$f4: 24px; // approx 3px bigger than old f4 - was 21.6
+$f5: 20px; // 2px bigger than old f5 - was 18
+$f6: 18px; // default - same as old f5
+$f7: 16px; // 1px bigger than old f6
+$f8: 14px; // slightly smaller than old f6
+$f9: 12px; // old f7 ish
+$f10: 10px; // old f8 - kept for responsive layout
+
+$default-font-family: 'Inter';
+$default-font-size: $f6;
+$default-font-weight: 400; // regular. medium is 500
+$header-font-family: 'Quicksand';
+$header-font-weight: 600;
+
+/* old
+$f-super-big: 60px;
+$f0: 50px;
+$f1: 37.3px;
+$f2: 31.1px;
+$f3: 25.9px;
+$f4: 21.6px;
+$f5: 18px; // default
+$f6: 15px;
+$f7: 12.5px;
+$f8: 10px;
+*/
+
+$fonts: (
+  f1: (
+    font-size: $f1, // 48
+    line-height: 58px,
+  ),
+  f2: (
+    font-size: $f2, // 36
+    line-height: 46px,
+  ),
+  f3: (
+    font-size: $f3, // 30
+    line-height: 40px,
+  ),
+  f4: (
+    font-size: $f4, // 24
+    line-height: 34px,
+  ),
+  f5: (
+    font-size: $f5, // 20
+    line-height: 30px,
+  ),
+  f6: (
+    font-size: $f6, // 18
+    line-height: 30px,
+  ),
+  f7: (
+    font-size: $f7, // 16
+    line-height: 26px,
+  ),
+  f8: (
+    font-size: $f8, // 14
+    line-height: 24px,
+  ),
+  f9: (
+    font-size: $f9, // 12
+    line-height: 24px,
+  ),
+  f10: (
+    font-size: $f10, // 10
+    line-height: 22px,
+  )
+);
+
+@mixin font($name) {
+  @each $property, $value in map-get($fonts, $name) {
+    #{$property}: #{$value};
+  }
+}
+
+@each $name, $font in $fonts {
+  .#{$name} {
+    @include font($name);
+  }
+}
+
