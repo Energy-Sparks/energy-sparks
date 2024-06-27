@@ -11,7 +11,7 @@
 <% if can?(:change_public, school) %>
   <%= link_to school.data_sharing.titleize,
               edit_school_configuration_path(school),
-              class: "badge badge-pill #{data_sharing_colour(school)}" %>
+              id: 'data-sharing-status', class: "badge badge-pill #{data_sharing_colour(school)}" %>
 <% end %>
 
 <% if can?(:change_data_processing, school) %>

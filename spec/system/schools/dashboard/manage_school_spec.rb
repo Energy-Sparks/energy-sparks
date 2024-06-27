@@ -130,14 +130,19 @@ RSpec.describe 'manage school', type: :system do
     end
 
     context 'with status toggles' do
-      it 'allows toggling of public/private' do
+      it 'links to the configuration page for data access settings' do
         visit school_path(school)
         click_on('Public')
+        expect(page).to have_select('Data Sharing', selected: 'Public')
+        select 'Within Group', from: 'Data Sharing'
+        click_on 'Update configuration'
+
+        within '#data-sharing-status' do
+          expect(page).to have_content('Within Group')
+        end
+
         school.reload
-        expect(school).not_to be_public
-        click_on('Public')
-        school.reload
-        expect(school).to be_public
+        expect(school.data_sharing_within_group?).to be true
       end
 
       it 'allows toggling visibility if consent granted' do
