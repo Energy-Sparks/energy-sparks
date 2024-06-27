@@ -1,17 +1,20 @@
+// Storm redesign scss
 /*
  *
  *= require trix
  */
+
+@import "colours";
+@import "fonts";
+@import "redesign/bootstrap-overrides"; // extra
 @import "bootstrap";
+
 @import "bootstrap-xl";
 @import "font-awesome";
-@import "fonts";
-@import "colours";
-
 @import "base";
 @import "links";
 @import "headers";
-@import "nav";
+@import "redesign/nav"; // switched
 @import "footer";
 @import "home";
 @import "site";

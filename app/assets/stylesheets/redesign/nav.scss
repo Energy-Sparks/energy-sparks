@@ -1,0 +1,45 @@
+
+nav.navbar-main {
+  background-color: $black;
+  color: $white;
+  font-family: 'Quicksand', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 30px;
+  padding: 0px;
+
+  img {
+    height: 60px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  .dropdown-menu {
+    background-color: $black;
+  }
+
+  .nav-item.dropdown.show .nav-link.dropdown-toggle {
+    color: $grey;
+  }
+
+  .dropdown-item:hover {
+    color: $black;
+  }
+
+  .navbar-toggler {
+    color: $navbar-dark-color;
+    border-color: $navbar-dark-toggler-border-color;
+  }
+
+  .navbar-toggler-icon {
+    background-image: escape-svg($navbar-dark-toggler-icon-bg);
+  }
+}
+
+// Site wide navigation styles
+
+// make dropdown scrollable if class is added
+
+.dropdown-menu.scrollable {
+  max-height: 85vh;
+  overflow-y: auto;
+}

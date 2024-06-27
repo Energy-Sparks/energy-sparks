@@ -47,10 +47,6 @@ body p {
   white-space: nowrap;
 }
 
-nav li {
-  @include font(f8);
-}
-
 .bg-positive {
   background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
 }

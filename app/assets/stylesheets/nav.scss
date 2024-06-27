@@ -1,9 +1,6 @@
 // Original navigation css
 // Switch to using navigation.scss with navigation feature flag
 
-@import "colours";
-@import "fonts";
-
 .navbar {
   border-radius: 0;
   background: $dark-blue;
@@ -164,4 +161,8 @@
 .my-3px {
   margin-top: 3px;
   margin-bottom: 3px;
+}
+
+nav li {
+  font-size: $f6;
 }
