@@ -198,13 +198,6 @@ class School < ApplicationRecord
   enum funding_status: [:state_school, :private_school]
   enum region: [:north_east, :north_west, :yorkshire_and_the_humber, :east_midlands, :west_midlands, :east_of_england, :london, :south_east, :south_west]
 
-  # Defined as Postgres Enum. Mapping is from ruby values to database values
-  enum :data_sharing, {
-    public: 'public',
-    within_group: 'within_group',
-    private: 'private'
-  }, prefix: true
-
   # active flag is a soft-delete, those with a removal date are deleted, others
   # are archived, with chance of returning if we receive funding
   scope :active,              -> { where(active: true) }
