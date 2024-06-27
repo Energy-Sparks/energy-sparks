@@ -184,9 +184,9 @@ RSpec.describe 'advice pages', type: :system do
     end
   end
 
-  context 'for a non-public school' do
+  context 'for a school with non-public analysis' do
     before do
-      school.update(public: false)
+      school.update(data_sharing: :within_group)
       sign_in(user) if user
       visit school_advice_path(school)
     end
