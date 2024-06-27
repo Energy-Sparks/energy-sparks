@@ -1,11 +1,15 @@
 <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
   <div class="card bg-light text-dark h-100" id="<%= identifier %>">
-    <input type="hidden" class="option" value="<%= identifier %>" />
+    <input type="hidden" class="option" value="<%= identifier %>">
     <div class="card-body p-1">
-      <div class="text-center option-content" style="font-size: 300%;"><a href="#" class="stretched-link text-decoration-none <%= action %>"><%= content %></a></div>
+      <div class="text-center option-content" style="font-size: 300%; line-height: 150%;">
+        <a href="#" class="stretched-link text-decoration-none <%= action %>"><%= content %></a>
+      </div>
     </div>
     <% unless label.blank? %>
-      <div class="card-footer text-muted text-center p-1 small option-label"><%= label %></div>
+      <div class="card-footer text-muted text-center p-1 small option-label">
+        <%= label %>
+      </div>
     <% end %>
   </div>
 </div>

@@ -61,9 +61,8 @@
 # show print view, plus whether to show other data enabled features on school dashboards. Access to dashboard itself is
 # covered by :show
 #
-# :show_pupils_dash - can view pupil dashboard. Adult dashboard just uses :show
+# :show_pupils_dash - can view pupil dashboard link. Adult dashboard just uses :show
 # :start_programme - can start a programme for a school.
-# :suggest_activity - whether to show button to suggest next activity. Obsolete?
 # :validate_meters - can validate meter data for a school. Admin only
 # :view_advice_pages - can access old analysis pages. Admin only
 # :view_content_reports - can view admin only reports from overnight jobs
@@ -100,12 +99,15 @@ class Ability
     can [:read, :search, :for_school], [ActivityType, InterventionType]
 
     can :read, SchoolGroup
+
+    # Allow anyone to compare schools in public school group. The actual schools that are shown
+    # are filtered based on whether user can :show the school
     can :compare, SchoolGroup, public: true
 
     can [:index, :read_dashboard_menu], School
-    can [
-      :show, :usage, :show_pupils_dash, :suggest_activity
-    ], School, visible: true, public: true
+
+    # Anyone can view any visible school whose data sharing is set to public
+    can [:show, :show_pupils_dash], School, visible: true, data_sharing: :public
 
     can :live_data, Cad, visible: true, public: true
     can :read, Scoreboard, public: true
@@ -155,7 +157,7 @@ class Ability
         # on that school
         school_scope = { id: user.school_id, visible: true }
         # This scope is used when checking for abilities on objects that are associated with a school.
-        # We check to ensure that the school is the same as associated with the user
+        # We check to ensure that the school is the same as that associated with the user
         related_school_scope = { school_id: user.school_id }
         # Calendars and CalendarEvents aren't associated with schools or groups, so check whether linked to the
         # school
@@ -173,21 +175,24 @@ class Ability
         can :manage, EnergyTariff, tariff_holder: user.school
       end
 
-      # Only school admins have a school
-      # allow users from schools in same group to access dashboards and see comparisons of other schools in that group
+      # Some group admins have been linked to schools, so that they can get alerts, so this
+      # applies to both types of user currently
       if user.school.present?
-        can [:show, :usage, :show_pupils_dash], School, { school_group_id: user.school.school_group_id, visible: true }
+        # Extend default permission to see visible schools with public data to also add permission to
+        # view visible schools in the same group that have data sharing set to be 'within_group'
+        can [:show, :show_pupils_dash], School, { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
+
+        # Can compare own school group, even if not public
         can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
+        # Can see messages on school group dashboard for their group
         can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
       end
 
       # Permissions for both school and group admins. These use the scopes defined above so work regardless of
       # type of user
       can [
-        :show, :usage, :show_pupils_dash,
-        :update, :manage_school_times, :suggest_activity, :manage_users,
-        :show_management_dash,
-        :read, :start_programme, :read_restricted_analysis, :read_restricted_advice
+        :show, :show_pupils_dash, :update, :manage_school_times, :manage_users,
+        :show_management_dash, :read, :start_programme, :read_restricted_analysis, :read_restricted_advice
       ], School, school_scope
 
       can :manage, [EstimatedAnnualConsumption, SchoolTarget, Activity, Contact, Observation, TransportSurvey], related_school_scope
@@ -220,16 +225,16 @@ class Ability
     elsif user.staff? || user.volunteer? || user.pupil?
       # abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
-      can [
-        :show, :usage, :show_pupils_dash, :suggest_activity
-      ], School, school_scope
-      # they can also do these things for schools in same group
-      can [
-        :show, :usage, :show_pupils_dash, :suggest_activity
-      ], School, { school_group_id: user.school.school_group_id, visible: true }
-      can [:show, :read, :index], Audit, school: { id: user.school_id, visible: true }
+      can [:show, :show_pupils_dash, :show_management_dash], School, school_scope
+
+      # Extend default permission to see visible schools with public data to also add permission to
+      # view visible schools in the same group that have data sharing set to be 'within_group'
+      can [:show, :show_pupils_dash, :show_management_dash], School, { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
+
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
+
+      can [:show, :read, :index], Audit, school: { id: user.school_id, visible: true }
 
       can :manage, [Activity, Observation], school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
@@ -240,21 +245,19 @@ class Ability
       # pupils can view management dashboard for their school and others in group
       if user.pupil?
         can :show_management_dash, School, id: user.school_id, visible: true
-        can :show_management_dash, School, { school_group_id: user.school.school_group_id, visible: true }
         can [:start, :read, :update, :create], TransportSurvey, related_school_scope
         can [:read, :create], TransportSurvey::Response, transport_survey: related_school_scope
       end
-      # pupils and volunteers can only read real cost data if their school is public
+      # pupils and volunteers can only read real cost data if their school is set to share data publicly
       if user.volunteer? || user.pupil?
-        can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true, public: true }
+        can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true, data_sharing: :public }
       else
         # but staff can read it regardless
         can [:read_restricted_analysis, :read_restricted_advice], School, { id: user.school_id, visible: true }
       end
       if user.staff? || user.volunteer?
         can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: { id: user.school_id, visible: true }
-        can [:show_management_dash], School, id: user.school_id, visible: true
-        can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
+        can :start_programme, School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
