@@ -2,17 +2,17 @@
 
 <header>
   <div class="row masthead" style="height: 600px;">
-    <div class="col-md-7">
+    <div class="col-7">
     </div>
-    <div class="col-md-5 masthead-content">
+    <div class="col-5 masthead-content">
       <div class="row pt-5">
-        <div class="col-md-12">
-          <h1 class="display-4"><strong><%= t('campaigns.find_out_more.title') %></strong></h1>
-      </div>
+        <div class="col">
+          <h1 class='text-white'><%= t('campaigns.find_out_more.title') %></h1>
+        </div>
       </div>
       <div class="row">
-        <div class="col-md-12 pr-5">
-          <h3><%= t('campaigns.find_out_more.sub_title') %></h3>
+        <div class="col pr-5">
+          <h3 class='text-white'><%= t('campaigns.find_out_more.sub_title') %></h3>
         </div>
       </div>
     </div>
@@ -24,17 +24,17 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="text-dark-blue"><%= t('campaigns.find_out_more.benefits.costs') %></h1>
+          <h2><%= t('campaigns.find_out_more.benefits.costs') %></h2>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h1 class="text-dark-blue"><%= t('campaigns.find_out_more.benefits.emissions') %></h1>
+          <h2><%= t('campaigns.find_out_more.benefits.emissions') %></h2>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h1 class="text-dark-blue"><%= t('campaigns.find_out_more.benefits.pupils') %></h1>
+          <h2><%= t('campaigns.find_out_more.benefits.pupils') %></h2>
         </div>
       </div>
       <div class="row">
@@ -59,11 +59,11 @@
     <div class="application container home-block">
       <div class="row">
         <div class="col-md-12 text-center">
-          <h1 class='text-white'>
+          <h2 class='text-white'>
             <%= t('campaigns.find_out_more.learn_why.title',
                   school_count: marketing_school_count,
                   mat_count: marketing_mat_count) %>
-          </h1>
+          </h2>
         </div>
       </div>
     </div>
@@ -75,17 +75,17 @@
     <div class="col-md-5">
       <div class="row">
         <div class="col-md-12">
-          <h1><%= t('campaigns.find_out_more.costs.title') %></h1>
+          <h2><%= t('campaigns.find_out_more.costs.title') %></h2>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('campaigns.find_out_more.costs.sub_title') %></h4>
+          <h5><%= t('campaigns.find_out_more.costs.sub_title') %></h5>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('campaigns.find_out_more.costs.bullets').html_safe %></h4>
+          <h5><%= t('campaigns.find_out_more.costs.bullets').html_safe %></h5>
         </div>
       </div>
       <div class="row">
@@ -121,17 +121,17 @@
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-12">
-          <h1><%= t('campaigns.find_out_more.tool.title') %></h1>
+          <h2><%= t('campaigns.find_out_more.tool.title') %></h2>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('campaigns.find_out_more.tool.sub_title_1') %></h4>
+          <h5><%= t('campaigns.find_out_more.tool.sub_title_1') %></h5>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('campaigns.find_out_more.tool.sub_title_2') %></h4>
+          <h5><%= t('campaigns.find_out_more.tool.sub_title_2') %></h5>
         </div>
       </div>
       <div class="row">
@@ -148,17 +148,17 @@
     <div class="col-md-5">
       <div class="row">
         <div class="col-md-12">
-          <h1><%= t('campaigns.find_out_more.pupils.title') %></h1>
+          <h2><%= t('campaigns.find_out_more.pupils.title') %></h2>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('campaigns.find_out_more.pupils.sub_title_1', activities_count: marketing_activity_count) %></h4>
+          <h5><%= t('campaigns.find_out_more.pupils.sub_title_1', activities_count: marketing_activity_count) %></h5>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('campaigns.find_out_more.pupils.sub_title_2') %></h4>
+          <h5><%= t('campaigns.find_out_more.pupils.sub_title_2') %></h5>
         </div>
       </div>
       <div class="row">
@@ -199,14 +199,14 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4><%= t('campaigns.find_out_more.emissions.sub_title_1') %></h4>
+          <h5><%= t('campaigns.find_out_more.emissions.sub_title_1') %></h5>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h4>
+          <h5>
             <%= t('campaigns.find_out_more.emissions.sub_title_2') %>
-          </h4>
+          </h5>
         </div>
       </div>
       <div class="row">
@@ -244,12 +244,12 @@
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-12">
-          <h1 class='text-dark-blue'><%= t('campaigns.find_out_more.final_prompt.question') %></h1>
+          <h2><%= t('campaigns.find_out_more.final_prompt.question') %></h2>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h1 class='text-dark-blue'><%= t('campaigns.find_out_more.final_prompt.booking') %></h1>
+          <h2><%= t('campaigns.find_out_more.final_prompt.booking') %></h2>
         </div>
       </div>
       <div class="row">
