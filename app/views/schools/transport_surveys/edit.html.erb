@@ -87,7 +87,7 @@
               <%= hidden_field_tag :passengers, '', class: 'selected' %>
               <h2 class="pb-0"><%= t('schools.transport_surveys.edit.steps.sharing_html',
                                      transport: '<span id="transport_type_name"></span>'.html_safe) %></h2>
-              <h2><small class="pb-4"><%= t('schools.transport_surveys.edit.steps.sharing_note') %></small></h2>
+              <p class="f4 pb-4"><%= t('schools.transport_surveys.edit.steps.sharing_note') %></p>
               <div class="container">
                 <div class="row">
                   <% TransportSurvey::Response.passengers_options.each do |passengers| %>

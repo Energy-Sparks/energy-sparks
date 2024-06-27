@@ -151,36 +151,36 @@ table.management-priorities {
 
   @media (min-width: 576px) and (max-width: 991.98px) {
     td {
-      font-size: $f7;
-      .btn {
-        font-size: $f7;
-        width: 80px;
-      }
-      .trix-content div {
-        font-size: $f7;
-      }
-    }
-    th {
-      font-size: $f5;
-    }
-    .h2 {
-      font-size: $f5;
-    }
-  }
-
-  @media (min-width: 300px) and (max-width: 575.99px) {
-    td {
       font-size: $f8;
       .btn {
         font-size: $f8;
         width: 80px;
       }
+      .trix-content div {
+        font-size: $f8;
+      }
     }
     th {
-      font-size: $f8;
+      font-size: $f6;
     }
     .h2 {
-      font-size: $f8;
+      font-size: $f6;
+    }
+  }
+
+  @media (min-width: 300px) and (max-width: 575.99px) {
+    td {
+      font-size: $f9;
+      .btn {
+        font-size: $f9;
+        width: 80px;
+      }
+    }
+    th {
+      font-size: $f9;
+    }
+    .h2 {
+      font-size: $f9;
     }
   }
 

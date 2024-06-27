@@ -3,13 +3,7 @@ module Comparisons
     private
 
     def set_headers(include_previous_period_unadjusted: true)
-      super()
-      @include_previous_period_unadjusted = include_previous_period_unadjusted
-      @electricity_colgroups = colgroups(fuel: false, holiday_name: true)
-      @electricity_headers = headers(fuel: false, holiday_name: true)
-      @heating_colgroups = colgroups(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted, holiday_name: true)
-      @heating_headers = headers(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted, holiday_name: true)
-      @period_type_string = I18n.t('comparisons.period_types.periods')
+      super(include_previous_period_unadjusted: include_previous_period_unadjusted, holiday_name: true)
     end
 
     def key
