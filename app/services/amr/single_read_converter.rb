@@ -80,6 +80,7 @@ module Amr
     def self.valid_time_string?(time_string)
       return false unless time_string.is_a?(String)
       # Regex matches time formats with and without leading zero (e.g. '1:30' & '01:30') from '0:00' to '23:59'
+      # As well as with optional secs, e.g. '00:30:00'
       time_string.match?(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9](:00)?$/)
     end
 
