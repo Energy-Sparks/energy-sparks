@@ -255,7 +255,7 @@ describe Ability do
       context 'with all schools' do
         [:show, :show_pupils_dash, :show_management_dash, :read_restricted_analysis].freeze.each do |permission|
           [true, false].freeze.each do |visibility|
-            School.data_sharings.each_keys do |data_sharing|
+            School.data_sharings.each_key do |data_sharing|
               it { is_expected.to be_able_to(permission, create(:school, visible: visibility, data_sharing: data_sharing)) }
             end
           end
