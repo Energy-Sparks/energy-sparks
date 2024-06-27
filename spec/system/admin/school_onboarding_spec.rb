@@ -54,8 +54,8 @@ RSpec.describe 'onboarding', :schools, type: :system do
       fill_in 'School name', with: school_name
       fill_in 'Contact email', with: 'oldfield@test.com'
 
-      expect(page).to have_select('Data sharing', selected: 'Public')
-      select 'Within Group', from: 'Data sharing'
+      expect(page).to have_select('Data Sharing', selected: 'Public')
+      select 'Within Group', from: 'Data Sharing'
 
       select 'BANES', from: 'Group'
       click_on 'Next'
