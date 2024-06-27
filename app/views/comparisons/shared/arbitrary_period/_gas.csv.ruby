@@ -1,17 +1,5 @@
 CSV.generate do |csv|
-  csv << [
-    "", "",
-    t('analytics.benchmarking.configuration.column_groups.kwh'),
-    @include_previous_period_unadjusted && "",
-    "",
-    "",
-    t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-    "",
-    "",
-    t('analytics.benchmarking.configuration.column_groups.gbp'),
-    "",
-    ""
-  ].select(&:itself)
+  csv << csv_colgroups(@heating_colgroups)
   csv << @heating_headers
   @results.each do |result|
     next if result.gas_previous_period_kwh.blank?

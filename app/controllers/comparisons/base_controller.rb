@@ -48,12 +48,12 @@ module Comparisons
       []
     end
 
-    def colgroups
-      header_groups.each { |group| group[:colspan] = group[:headers].length }
+    def colgroups(groups: nil)
+      (groups || header_groups).each { |group| group[:colspan] = group[:headers].count(&:itself) }
     end
 
-    def headers
-      header_groups.pluck(:headers).flatten
+    def headers(groups: nil)
+      (groups || header_groups).pluck(:headers).flatten.select(&:itself)
     end
 
     def set_headers

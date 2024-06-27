@@ -468,7 +468,7 @@ describe School do
     end
 
     context 'Schools that are not public' do
-      let!(:school)       { create(:school, name: 'School', visible: true, public: false, school_group: school_group)}
+      let!(:school)       { create(:school, name: 'School', visible: true, data_sharing: :within_group, school_group: school_group)}
 
       it 'disallows guest access' do
         expect(ability).not_to be_able_to(:show, school)
