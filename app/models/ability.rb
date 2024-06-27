@@ -112,9 +112,7 @@ class Ability
     can :live_data, Cad, visible: true, public: true
     can :read, Scoreboard, public: true
 
-    can :read, [FindOutMore, Observation, TransportSurvey, TransportSurvey::Response, ProgrammeType]
-
-    can [:show, :index], SchoolTarget
+    can :read, [FindOutMore, Observation, TransportSurvey, TransportSurvey::Response, ProgrammeType, SchoolTarget]
 
     can :manage, Location, school_id: user.school_id
 
