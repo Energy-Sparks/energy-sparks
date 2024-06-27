@@ -55,6 +55,7 @@ shared_examples 'a user who cannot manage other schools, groups and users' do
   it { is_expected.not_to be_able_to(:manage, Activity.new(school: create(:school))) }
   it { is_expected.not_to be_able_to(:download_school_data, create(:school)) }
   it { is_expected.not_to be_able_to(:show_management_dash, create(:school)) }
+  it { is_expected.not_to be_able_to(:read_restricted_analysis, create(:school)) }
   it { is_expected.not_to be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
   it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
 end

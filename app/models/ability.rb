@@ -229,7 +229,7 @@ class Ability
 
       # Extend default permission to see visible schools with public data to also add permission to
       # view visible schools in the same group that have data sharing set to be 'within_group'
-      can [:show, :show_pupils_dash, :show_management_dash], School, { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
+      can [:show, :show_pupils_dash], School, { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
 
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
