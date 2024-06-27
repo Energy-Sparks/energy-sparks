@@ -26,6 +26,7 @@ module EnergySparks
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Local customisations
+    config.active_support.cache_format_version = 7.0
     config.autoload_lib(ignore: %w(generators))
     # For our application date helpers to use to optionally display times in configured zone
     config.display_timezone = 'London'
