@@ -31,8 +31,6 @@ module Admin
         render :new
       end
     rescue => e
-      puts e
-      puts e.backtrace
       Rollbar.error(e)
       @errors = ["Error: #{e.message}"]
       @amr_uploaded_reading = AmrUploadedReading.new(amr_data_feed_config: @amr_data_feed_config)
