@@ -15,9 +15,7 @@ class SchoolGroupsController < ApplicationController
   def show
     if can?(:compare, @school_group)
       respond_to do |format|
-        format.html do
-          render 'recent_usage'
-        end
+        format.html {}
         format.csv do
           send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, include_cluster: include_cluster).export,
           filename: csv_filename_for('recent_usage')

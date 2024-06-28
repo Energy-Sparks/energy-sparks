@@ -13,17 +13,19 @@
     <div class="d-flex justify-content-between">
       <%= form_with url: school_group_path(@school_group), method: :get do |f| %>
         <div>
-          <label class="mr-2"><%= t("school_groups.show.change_units") %>:</label>
-          <% ['change', 'usage', 'cost', 'co2'].each do |metric| %>
+          <label class="mr-2"><%= t('school_groups.show.change_units') %>:</label>
+          <% %w[change usage cost co2].each do |metric| %>
             <div class="form-check form-check-inline">
-              <%= f.radio_button :metric, metric, onclick: 'this.form.submit();', class: 'form-check-input', checked: radio_button_checked_for(metric) %>
+              <%= f.radio_button :metric, metric, onclick: 'this.form.submit();', class: 'form-check-input',
+                                                  checked: radio_button_checked_for(metric) %>
               <%= f.label :metric, t("school_groups.show.metric.#{metric}"), value: metric, class: 'form-check-label' %>
             </div>
           <% end %>
         </div>
       <% end %>
       <div>
-        <%= link_to t('school_groups.download_as_csv'), school_group_path(@school_group, format: :csv), class: 'btn btn-sm btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to t('school_groups.download_as_csv'), school_group_path(@school_group, format: :csv),
+                    class: 'btn btn-sm btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     </div>
 
@@ -35,13 +37,19 @@
             <th></th>
           <% end %>
           <% if @fuel_types.include?(:electricity) %>
-            <th colspan="2" class="text-center"><%= fa_icon fuel_type_icon(:electricity) %> <%= t('common.electricity') %></th>
+            <th colspan="2" class="text-center">
+              <%= fa_icon fuel_type_icon(:electricity) %> <%= t('common.electricity') %>
+            </th>
           <% end %>
           <% if @fuel_types.include?(:gas) %>
-            <th colspan="2" class="text-center"><%= fa_icon fuel_type_icon(:gas) %> <%= t('common.gas') %></th>
+            <th colspan="2" class="text-center">
+              <%= fa_icon fuel_type_icon(:gas) %> <%= t('common.gas') %>
+            </th>
           <% end %>
           <% if @fuel_types.include?(:storage_heaters) %>
-            <th colspan="2" class="text-center"><%= fa_icon fuel_type_icon(:storage_heaters) %> <%= t('common.storage_heaters') %></th>
+            <th colspan="2" class="text-center">
+              <%= fa_icon fuel_type_icon(:storage_heaters) %> <%= t('common.storage_heaters') %>
+            </th>
           <% end %>
         </tr>
         <tr>
@@ -134,7 +142,7 @@
                 <% end %>
               <% end %>
             <% else %>
-              <% (@fuel_types.reject{|f| f == :solar_pv}.length * 2).times do %>
+              <% (@fuel_types.reject { |f| f == :solar_pv }.length * 2).times do %>
                 <td class="text-right" data-order="'0'">-</td>
               <% end %>
             <% end %>
