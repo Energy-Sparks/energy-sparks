@@ -72,7 +72,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @school_group.schools.visible.order(:name).each do |school| %>
+        <% @schools.order(:name).each do |school| %>
           <tr>
             <td>
               <%= link_to school.name, school_path(school) %>

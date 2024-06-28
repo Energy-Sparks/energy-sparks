@@ -3,7 +3,8 @@ class SchoolGroupsController < ApplicationController
   include Promptable
   include Scoring
 
-  before_action :find_school_group
+  load_resource
+
   before_action :redirect_unless_authorised, only: [:comparisons, :priority_actions, :current_scores]
   before_action :find_schools_and_partners
   before_action :build_breadcrumbs
@@ -124,7 +125,8 @@ class SchoolGroupsController < ApplicationController
   end
 
   def find_schools_and_partners
-    @schools = @school_group.schools.visible.by_name
+    # Rely on CanCan to filter the list of schools to those that can be shown to the current user
+    @schools = @school_group.schools.accessible_by(current_ability, :show).by_name
     @partners = @school_group.partners
   end
 
