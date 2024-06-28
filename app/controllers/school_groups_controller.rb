@@ -18,7 +18,11 @@ class SchoolGroupsController < ApplicationController
       respond_to do |format|
         format.html {}
         format.csv do
-          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, include_cluster: include_cluster).export,
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(
+            school_group: @school_group,
+            schools: @schools,
+            include_cluster: include_cluster
+          ).export,
           filename: csv_filename_for('recent_usage')
         end
       end
