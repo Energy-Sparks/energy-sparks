@@ -9,13 +9,9 @@
 <% end %>
 
 <% if can?(:change_public, school) %>
-  <% if school.data_sharing_public? %>
-    <%= link_to 'Public', school_public_path(school), class: 'badge badge-pill badge-success', method: :delete,
-                                                      data: { confirm: 'Are you sure?' } %>
-  <% else %>
-    <%= link_to 'Public', school_public_path(school), class: 'badge badge-pill badge-danger', method: :post,
-                                                      data: { confirm: 'Are you sure?' } %>
-  <% end %>
+  <%= link_to school.data_sharing.titleize,
+              edit_school_configuration_path(school),
+              id: 'data-sharing-status', class: "badge badge-pill #{data_sharing_colour(school)}" %>
 <% end %>
 
 <% if can?(:change_data_processing, school) %>

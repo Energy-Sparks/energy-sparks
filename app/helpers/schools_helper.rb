@@ -38,4 +38,15 @@ module SchoolsHelper
       polymorphic_path(path_segments, params.merge(anchor: alert_type.link_to_section))
     end
   end
+
+  def data_sharing_colour(school)
+    case school.data_sharing.to_sym
+    when :public
+      'badge-success'
+    when :private
+      'badge-danger'
+    else
+      'badge-warning'
+    end
+  end
 end
