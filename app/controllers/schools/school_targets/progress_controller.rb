@@ -93,7 +93,7 @@ module Schools
           final_month = @school_target.target_date.prev_month.beginning_of_month
           @progress.cumulative_performance[final_month]
         else
-          @progress.current_cumulative_performance_versus_synthetic_last_year
+          @progress.current_cumulative_performance
         end
       end
 
