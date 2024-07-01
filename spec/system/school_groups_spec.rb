@@ -559,6 +559,17 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'school group tabs showing the cluster column'
+
+    context 'when there are archived schools' do
+      before do
+        school_group.schools.first.update(active: false)
+      end
+
+      it 'doesnt show those schools' do
+        visit school_group_path(school_group)
+        expect(page).not_to have_content(school_group.schools.first.name)
+      end
+    end
   end
 
   context 'when logged in as a group admin for a different group' do
