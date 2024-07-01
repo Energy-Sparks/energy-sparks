@@ -13,14 +13,8 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(user)
-    host = ApplicationController.helpers.application_host_for(user.preferred_locale)
-    url = if host.nil?
-            subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
-            root_url(subdomain: subdomain).chomp('/')
-          else
-            "https://#{host}"
-          end
-    url + session.fetch(:user_return_to, '/')
+    subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
+    root_url(subdomain: subdomain).chomp('/') + session.fetch(:user_return_to, '/')
   end
 
   def switch_locale(*_args, &action)
