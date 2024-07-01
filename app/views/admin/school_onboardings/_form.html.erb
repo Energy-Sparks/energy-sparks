@@ -39,6 +39,13 @@
                  { class: 'form-control' } %>
   </div>
 
+  <h2>Funder</h2>
+  <div class="form-group">
+    <%= f.label :funder_id %>
+    <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id)),
+                 { include_blank: true }, { class: 'form-control' } %>
+  </div>
+
   <div class="actions">
     <%= f.submit 'Next', class: 'btn btn-primary' %>
   </div>
