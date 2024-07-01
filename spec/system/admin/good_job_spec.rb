@@ -15,7 +15,8 @@ RSpec.describe 'good_job', type: :system do
       (User.roles.keys - ['admin']).each do |role|
         user.update(role: role)
         sign_in(user)
-        expect { visit admin_good_job_path }.to raise_error(ActionController::RoutingError)
+        visit admin_good_job_path
+        expect(page).to have_text(/^Routing Error\nNo route matches/)
       end
     end
   end

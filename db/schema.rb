@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_26_160109) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -454,8 +454,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_26_160109) do
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id", "amr_data_feed_config_id"], name: "adfr_meter_id_config_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
-    t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
+    t.unique_constraint ["mpan_mprn", "reading_date"], name: "unique_meter_readings"
   end
 
   create_table "amr_reading_warnings", force: :cascade do |t|
@@ -492,8 +492,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_26_160109) do
     t.date "substitute_date"
     t.datetime "upload_datetime", precision: nil
     t.index ["meter_id", "one_day_kwh"], name: "index_amr_validated_readings_on_meter_id_and_one_day_kwh"
-    t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
+    t.unique_constraint ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings"
   end
 
   create_table "analysis_pages", force: :cascade do |t|
