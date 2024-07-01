@@ -45,7 +45,7 @@ a.nav-link.locale {
   @include font(f9);
   color: $dark-blue;
   background: $white;
-  padding: 0px 12px;
+  padding: 0px 12px !important;
   display:inline-block;
   border: 1px solid $dark-blue;
 
