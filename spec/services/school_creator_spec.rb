@@ -1,30 +1,34 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SchoolCreator, :schools, type: :service do
-  let(:service) { SchoolCreator.new(school) }
+  let(:service) { described_class.new(school) }
 
   let(:template_calendar) { create(:template_calendar, title: 'BANES calendar') }
-  let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
-  let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
-  let(:school_group)             { create(:school_group, name: 'BANES') }
-  let(:scoreboard)               { create(:scoreboard, name: 'BANES scoreboard') }
-  let(:weather_station)          { create(:weather_station, title: 'BANES weather') }
+  let(:solar_pv_area) { create(:solar_pv_tuos_area, title: 'BANES solar') }
+  let(:dark_sky_area) { create(:dark_sky_area, title: 'BANES dark sky weather') }
+  let(:school_group) { create(:school_group, name: 'BANES') }
+  let(:scoreboard) { create(:scoreboard, name: 'BANES scoreboard') }
+  let(:weather_station) { create(:weather_station, title: 'BANES weather') }
+  let(:funder) { create(:funder) }
 
   describe '#onboard_school!' do
-    let(:school)                    { build :school}
-    let(:onboarding_user)           { create :onboarding_user }
+    let(:school)                    { build(:school) }
+    let(:onboarding_user)           { create(:onboarding_user) }
 
     let(:school_onboarding) do
-      create :school_onboarding,
-        created_user: onboarding_user,
-        template_calendar: template_calendar,
-        solar_pv_tuos_area: solar_pv_area,
-        dark_sky_area: dark_sky_area,
-        school_group: school_group,
-        scoreboard: scoreboard,
-        weather_station: weather_station,
-        school_will_be_public: true,
-        data_sharing: :within_group
+      create(:school_onboarding,
+             created_user: onboarding_user,
+             template_calendar: template_calendar,
+             solar_pv_tuos_area: solar_pv_area,
+             dark_sky_area: dark_sky_area,
+             school_group: school_group,
+             scoreboard: scoreboard,
+             weather_station: weather_station,
+             school_will_be_public: true,
+             data_sharing: :within_group,
+             funder: funder)
     end
 
     it 'saves the school' do
@@ -42,6 +46,7 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.scoreboard).to eq(scoreboard)
       expect(school.configuration).not_to be_nil
       expect(school.weather_station).not_to be_nil
+      expect(school.funder).to eq(funder)
     end
 
     it 'converts the onboarding user to a school admin' do
@@ -115,8 +120,8 @@ describe SchoolCreator, :schools, type: :service do
 
   describe 'make_data_enabled!' do
     let(:visible) { true }
-    let(:school) { create :school, data_enabled: false, visible: visible }
-    let!(:school_onboarding) { create :school_onboarding, school: school}
+    let(:school) { create(:school, data_enabled: false, visible: visible) }
+    let!(:school_onboarding) { create(:school_onboarding, school: school) }
 
     it 'broadcasts message' do
       expect do
@@ -141,7 +146,7 @@ describe SchoolCreator, :schools, type: :service do
     end
 
     context 'when there is an activation date' do
-      let(:school) { create :school, data_enabled: false, visible: visible, activation_date: Time.zone.today - 1 }
+      let(:school) { create(:school, data_enabled: false, visible: visible, activation_date: Time.zone.today - 1) }
 
       it 'does not change the activation date' do
         service.make_data_enabled!
@@ -162,12 +167,12 @@ describe SchoolCreator, :schools, type: :service do
   end
 
   describe 'make_visible!' do
-    let(:school) { create :school, visible: false}
+    let(:school) { create(:school, visible: false) }
 
     context 'where the school has not been created via the onboarding process' do
       let!(:school_admin) { create(:school_admin, school: school) }
       let!(:staff) { create(:staff, school: school) }
-      let!(:consent_grant) { create :consent_grant, school: school }
+      let!(:consent_grant) { create(:consent_grant, school: school) }
 
       before do
         expect do
@@ -176,18 +181,18 @@ describe SchoolCreator, :schools, type: :service do
       end
 
       it 'completes the onboarding process' do
-        expect(school.visible).to eq(true)
+        expect(school.visible).to be(true)
       end
     end
 
     context 'where the school has been created as part of the onboarding process' do
-      let(:onboarding_user) { create :onboarding_user }
-      let!(:school_onboarding) { create :school_onboarding, school: school, created_user: onboarding_user}
-      let!(:consent_grant) { create :consent_grant, school: school }
+      let(:onboarding_user) { create(:onboarding_user) }
+      let!(:school_onboarding) { create(:school_onboarding, school: school, created_user: onboarding_user) }
+      let!(:consent_grant) { create(:consent_grant, school: school) }
 
       it 'sets visibility' do
         service.make_visible!
-        expect(school.visible).to eq(true)
+        expect(school.visible).to be(true)
       end
 
       it 'broadcasts message' do
@@ -199,13 +204,13 @@ describe SchoolCreator, :schools, type: :service do
   end
 
   describe '#process_new_school!' do
-    let(:school) { create :school }
-    let!(:alert_type) { create :alert_type }
+    let(:school) { create(:school) }
+    let!(:alert_type) { create(:alert_type) }
 
     it 'populates the default opening times' do
       service.process_new_school!
       expect(school.school_times.count).to eq(5)
-      expect(school.school_times.map(&:day)).to match_array(%w{monday tuesday wednesday thursday friday})
+      expect(school.school_times.map(&:day)).to match_array(%w[monday tuesday wednesday thursday friday])
     end
 
     it 'configures the school' do
@@ -215,14 +220,14 @@ describe SchoolCreator, :schools, type: :service do
 
     it 'does not create a new configuration if one exists' do
       configuration = Schools::Configuration.create(school: school)
-      service = SchoolCreator.new(school)
+      service = described_class.new(school)
       service.process_new_school!
       expect(school.configuration).to eq configuration
     end
   end
 
   describe '#process_new_configuration!' do
-    let(:school) { create :school, template_calendar: template_calendar}
+    let(:school) { create(:school, template_calendar: template_calendar) }
 
     it 'uses the calendar factory to create a calendar if there is one' do
       service.process_new_configuration!
@@ -237,19 +242,19 @@ describe SchoolCreator, :schools, type: :service do
   end
 
   describe 'with a group admin' do
-    let(:school)                    { build :school}
-    let(:onboarding_user)           { create :group_admin, school_group: school_group }
+    let(:school)                    { build(:school) }
+    let(:onboarding_user)           { create(:group_admin, school_group: school_group) }
 
     let(:school_onboarding) do
-      create :school_onboarding,
-        created_user: onboarding_user,
-        template_calendar: template_calendar,
-        solar_pv_tuos_area: solar_pv_area,
-        dark_sky_area: dark_sky_area,
-        school_group: school_group,
-        scoreboard: scoreboard,
-        weather_station: weather_station,
-        school_will_be_public: true
+      create(:school_onboarding,
+             created_user: onboarding_user,
+             template_calendar: template_calendar,
+             solar_pv_tuos_area: solar_pv_area,
+             dark_sky_area: dark_sky_area,
+             school_group: school_group,
+             scoreboard: scoreboard,
+             weather_station: weather_station,
+             school_will_be_public: true)
     end
 
     describe '#onboard_school!' do

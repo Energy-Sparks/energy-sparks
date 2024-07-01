@@ -9,7 +9,7 @@ class SchoolCreator
 
   def onboard_school!(onboarding)
     @school.assign_attributes(
-      onboarding.slice(:school_group, :template_calendar, :dark_sky_area, :scoreboard, :weather_station)
+      onboarding.slice(:school_group, :template_calendar, :dark_sky_area, :scoreboard, :weather_station, :funder)
     )
     if @school.valid?
       @school.transaction do
