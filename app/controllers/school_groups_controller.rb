@@ -132,7 +132,7 @@ class SchoolGroupsController < ApplicationController
 
   def find_schools_and_partners
     # Rely on CanCan to filter the list of schools to those that can be shown to the current user
-    @schools = @school_group.schools.accessible_by(current_ability, :show).by_name
+    @schools = @school_group.schools.active.accessible_by(current_ability, :show).by_name
     @partners = @school_group.partners
   end
 
