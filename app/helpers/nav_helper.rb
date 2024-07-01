@@ -16,7 +16,7 @@ module NavHelper
   def navigation_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image = I18n.locale == 'cy' ? 'nav-brand-transparent-cy.png' : 'nav-brand-transparent-en.png'
+      image = I18n.locale == 'cy' ? 'navigation-brand-transparent-cy.png' : 'navigation-brand-transparent-en.png'
       image_tag(image)
     end
   end
