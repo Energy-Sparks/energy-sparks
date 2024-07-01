@@ -98,7 +98,9 @@ describe 'target progress report', type: :system do
 
       context 'with a link to the expired target report' do
         context 'and an expired target for the same fuel' do
-          let!(:expired_target) { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday, electricity: 1) }
+          let!(:expired_target) do
+            create(:school_target, :with_progress_report, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday, electricity: 1)
+          end
 
           before { refresh }
 
