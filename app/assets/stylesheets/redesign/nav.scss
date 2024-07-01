@@ -18,11 +18,18 @@ nav.navbar-main {
   .dropdown-menu {
     @include font(f8); // design says f6!
     background-color: $white;
+    padding: 4px;
+  }
+
+  .collapse.show {
+    max-height: 70vh;
+    overflow-y: auto;
   }
 
   .dropdown-item {
     color: $dark;
-  }
+    padding: 4px 10px;
+   }
 
   .nav-item.dropdown.show
   .nav-link.dropdown-toggle,
@@ -38,7 +45,6 @@ nav.navbar-main {
   .navbar-toggler-icon {
     background-image: escape-svg($navbar-dark-toggler-icon-bg);
   }
-
 }
 
 a.nav-link.locale {
@@ -47,6 +53,7 @@ a.nav-link.locale {
   color: $dark-blue;
   background: $white;
   padding: 0px 12px !important;
+  margin-left: 4px;
   display:inline-block;
   border: 1px solid $dark-blue;
 

@@ -19,7 +19,7 @@
         </button>
       </div>
 
-      <div class="collapse navbar-collapse justify-content-end" id="main-nav">
+      <div class="navbar-collapse collapse justify-content-end" id="main-nav">
         <ul class="navbar-nav nowrap">
           <% if current_user && current_user.school && current_user.school.visible? %>
             <%= render 'shared/my_school_menu' if can?(:read, :my_school_menu) && current_user.school.visible? %>
