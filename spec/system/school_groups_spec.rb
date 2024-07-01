@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 describe 'school groups', :school_groups, type: :system do
+  let!(:school_group) { create(:school_group, public: public, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
   let(:public) { true }
-  let!(:template_calendar) { create :template_calendar, :with_previous_and_next_academic_years }
-  let!(:school_group)          { create(:school_group, public: public, default_template_calendar: template_calendar) }
 
   let!(:user)                  { create(:user) }
 
-  let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, floor_area: 200.0, data_enabled: true, visible: true, active: true) }
-  let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, floor_area: 300.0, data_enabled: true, visible: true, active: true) }
+  let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, floor_area: 200.0) }
+  let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, floor_area: 300.0) }
 
   before do
     allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return([:electricity, :gas, :storage_heaters])
@@ -17,23 +16,20 @@ describe 'school groups', :school_groups, type: :system do
   end
 
   context 'when not logged in' do
-    context 'when school group is public' do
+    context 'with a public school group' do
       let(:public) { true }
 
       it_behaves_like 'a public school group dashboard'
       it_behaves_like 'school group no dashboard notification'
       it_behaves_like 'shows the we are working with message'
 
-      describe 'chart updates' do
-        it 'shows a form to select default chart units' do
-          visit school_group_chart_updates_path(school_group)
-          expect(page).to have_current_path('/users/sign_in', ignore_query: true)
-        end
+      it 'prompts for login when visiting chart updates' do
+        visit school_group_chart_updates_path(school_group)
+        expect(page).to have_current_path('/users/sign_in', ignore_query: true)
       end
 
-      context 'does not show the sub navigation menu' do
-        it_behaves_like 'does not show the sub navigation menu'
-      end
+      it_behaves_like 'does not show the sub navigation menu'
+      it_behaves_like 'schools are filtered by permissions'
 
       describe 'showing recent usage tab' do
         include_context 'school group recent usage'
@@ -47,107 +43,98 @@ describe 'school groups', :school_groups, type: :system do
           let(:breadcrumb)    { 'Group Dashboard' }
         end
 
+        it 'shows intro text' do
+          expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
+        end
+
         it_behaves_like 'a page not showing the cluster column'
+        it_behaves_like 'a page with a recent usage table'
 
-        describe 'changes in metrics params' do
-          it 'shows intro text' do
-            expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
+        it 'shows expected default table content' do
+          visit school_group_path(school_group, {})
+          expect(page).to have_content(school_1.name)
+          expect(page).to have_content(school_2.name)
+          expect(page).to have_content('-16%')
+          expect(page).not_to have_content('910')
+          expect(page).not_to have_content('£137')
+          expect(page).not_to have_content('8,540')
+        end
+
+        describe 'when switching between metrics' do
+          let(:metric) { 'change' }
+
+          before do
+            visit school_group_path(school_group, metric: metric)
           end
 
-          it 'shows expected table content for change when there are no metrics params' do
-            visit school_group_path(school_group, {})
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).not_to have_content('8,540')
+          context 'with an invalid parameter' do
+            let(:metric) { 'something invalid' }
+
+            it_behaves_like 'a page with a recent usage table'
+            it 'shows defaults to % when param is invalid' do
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
           end
 
-          it 'shows expected table content for change when there is an invalid metrics params' do
-            visit school_group_path(school_group, metric: 'something invalid')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).not_to have_content('8,540')
+          context 'when % is requested' do
+            let(:metric) { 'change' }
+
+            it_behaves_like 'a page with a recent usage table'
+            it 'shows the right data' do
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
           end
 
-          it 'shows expected table content for change when there are metrics params for change' do
-            visit school_group_path(school_group, metrics: 'change')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).not_to have_content('8,540')
+          context 'when usage is requested' do
+            let(:metric) { 'usage' }
+
+            it_behaves_like 'a page with a recent usage table'
+            it 'shows the right data' do
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
           end
 
-          it 'shows expected table content for usage when there are metrics params for usage' do
-            visit school_group_path(school_group, metric: 'usage')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).not_to have_content('-16%')
-            expect(page).to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).not_to have_content('8,540')
+          context 'when cost is requested' do
+            let(:metric) { 'cost' }
+
+            it_behaves_like 'a page with a recent usage table'
+            it 'shows the right data' do
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
           end
 
-          it 'shows expected table content for cost when there are metrics params for cost' do
-            visit school_group_path(school_group, metric: 'cost')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).not_to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).to have_content('£137')
-            expect(page).not_to have_content('8,540')
-          end
+          context 'when co2 is requested' do
+            let(:metric) { 'co2' }
 
-          it 'shows expected table content for co2 when there are metrics params for co2' do
-            visit school_group_path(school_group, metric: 'co2')
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).not_to have_content('-16%')
-            expect(page).not_to have_content('910')
-            expect(page).not_to have_content('£137')
-            expect(page).to have_content('8,540')
+            it_behaves_like 'a page with a recent usage table'
+            it 'shows the right data' do
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).to have_content('8,540')
+            end
           end
 
           it 'allows a csv download of recent data metrics' do
@@ -223,7 +210,7 @@ describe 'school groups', :school_groups, type: :system do
             gas_recent_changes
             heating_control
             hot_water
-            solar_pv
+            solar_pv.has_solar_pv
             storage_heaters
             thermostatic_control
           ].each do |advice_page_key|
@@ -399,7 +386,7 @@ describe 'school groups', :school_groups, type: :system do
       end
     end
 
-    context 'when school group is private' do
+    context 'with a private school group' do
       let(:public) { false }
 
       it_behaves_like 'a private school group dashboard'
@@ -420,20 +407,22 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'does not show the sub navigation menu'
     end
 
-    context 'when school group is public' do
+    context 'with a public school group' do
       let(:public) { true }
 
       it_behaves_like 'a public school group dashboard'
       it_behaves_like 'school group dashboard notification'
       it_behaves_like 'visiting chart updates redirects to group page'
+      it_behaves_like 'schools are filtered by permissions', school_admin: true
     end
 
-    context 'when school group is private' do
+    context 'with a private school group' do
       let(:public) { false }
 
       it_behaves_like 'a public school group dashboard'
       it_behaves_like 'school group dashboard notification'
       it_behaves_like 'visiting chart updates redirects to group page'
+      it_behaves_like 'schools are filtered by permissions', school_admin: true
     end
 
     it_behaves_like 'school group tabs not showing the cluster column'
@@ -450,15 +439,16 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'does not show the sub navigation menu'
     end
 
-    context 'when school group is public' do
+    context 'with a public school group' do
       let(:public) { true }
 
       it_behaves_like 'a public school group dashboard'
       it_behaves_like 'school group no dashboard notification'
       it_behaves_like 'visiting chart updates redirects to group page'
+      it_behaves_like 'schools are filtered by permissions'
     end
 
-    context 'when school group is private' do
+    context 'with a private school group' do
       let(:public) { false }
 
       it_behaves_like 'a private school group dashboard'
@@ -503,16 +493,18 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'school group dashboard notification'
     end
 
-    context 'when school group is public' do
+    context 'with a public school group' do
       let(:public) { true }
 
       it_behaves_like 'a public school group dashboard'
+      it_behaves_like 'schools are filtered by permissions', admin: true
     end
 
-    context 'when school group is private' do
+    context 'with a private school group' do
       let(:public) { false }
 
       it_behaves_like 'a public school group dashboard'
+      it_behaves_like 'schools are filtered by permissions', admin: true
     end
 
     it_behaves_like 'school group tabs showing the cluster column'
@@ -552,24 +544,36 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'school group dashboard notification'
     end
 
-    context 'when school group is public' do
+    context 'with a public school group' do
       let(:public) { true }
 
       it_behaves_like 'a public school group dashboard'
+      it_behaves_like 'schools are filtered by permissions', admin: true
     end
 
-    context 'when school group is private' do
+    context 'with a private school group' do
       let(:public) { false }
 
       it_behaves_like 'a public school group dashboard'
+      it_behaves_like 'schools are filtered by permissions', admin: true
     end
 
     it_behaves_like 'school group tabs showing the cluster column'
+
+    context 'when there are archived schools' do
+      before do
+        school_group.schools.first.update(active: false)
+      end
+
+      it 'doesnt show those schools' do
+        visit school_group_path(school_group)
+        expect(page).not_to have_content(school_group.schools.first.name)
+      end
+    end
   end
 
   context 'when logged in as a group admin for a different group' do
-    let!(:school_group_2)     { create(:school_group, public: false) }
-    let!(:user)               { create(:group_admin, school_group: school_group_2) }
+    let!(:user) { create(:group_admin, school_group: create(:school_group)) }
 
     before do
       sign_in(user)
@@ -581,15 +585,16 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'does not show the sub navigation menu'
     end
 
-    context 'when school group is public' do
+    context 'with a public school group' do
       let(:public) { true }
 
       it_behaves_like 'a public school group dashboard'
       it_behaves_like 'school group no dashboard notification'
       it_behaves_like 'visiting chart updates redirects to group page'
+      it_behaves_like 'schools are filtered by permissions', admin: false
     end
 
-    context 'when school group is private' do
+    context 'with a private school group' do
       let(:public) { false }
 
       it_behaves_like 'a private school group dashboard'

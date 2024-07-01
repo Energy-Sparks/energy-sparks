@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   get "/robots.txt" => "robots_txts#show", as: :robots
-  get 'up', to: 'health#show'
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
   # old urls maintained to avoid breakage
   get 'for-teachers', to: redirect('/for-schools')

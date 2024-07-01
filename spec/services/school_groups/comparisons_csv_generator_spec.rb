@@ -7,7 +7,7 @@ RSpec.describe SchoolGroups::ComparisonsCsvGenerator do
 
   context 'with school group data' do
     it 'returns school comparisons data as a csv for a school group for all advice page keys' do
-      csv = SchoolGroups::ComparisonsCsvGenerator.new(school_group: school_group).export
+      csv = SchoolGroups::ComparisonsCsvGenerator.new(schools: school_group.schools).export
       expect(csv.lines.count).to eq(25)
       expect(csv.lines[0]).to eq("Fuel,Description,School,Category\n")
       expect(csv.lines[1]).to eq("Electricity,Baseload analysis,School 5,Exemplar\n")
@@ -37,7 +37,7 @@ RSpec.describe SchoolGroups::ComparisonsCsvGenerator do
     end
 
     it 'includes cluster when include_cluster is set' do
-      csv = SchoolGroups::ComparisonsCsvGenerator.new(school_group: school_group, include_cluster: true).export
+      csv = SchoolGroups::ComparisonsCsvGenerator.new(schools: school_group.schools, include_cluster: true).export
       expect(csv.lines.count).to eq(25)
       expect(csv.lines[0]).to eq("Fuel,Description,School,Cluster,Category\n")
       (csv.lines[1..19] + csv.lines[21..24]).each do |line|
@@ -47,7 +47,7 @@ RSpec.describe SchoolGroups::ComparisonsCsvGenerator do
     end
 
     it 'returns school comparisons data as a csv for a school group for a given set of advice page keys' do
-      csv = SchoolGroups::ComparisonsCsvGenerator.new(school_group: school_group, advice_page_keys: [:baseload, :gas_out_of_hours]).export
+      csv = SchoolGroups::ComparisonsCsvGenerator.new(schools: school_group.schools, advice_page_keys: [:baseload, :gas_out_of_hours]).export
       expect(csv.lines.count).to eq(13)
       expect(csv.lines[0]).to eq("Fuel,Description,School,Category\n")
       expect(csv.lines[1]).to eq("Electricity,Baseload analysis,School 5,Exemplar\n")
