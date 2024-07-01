@@ -21,9 +21,16 @@ module NavHelper
     end
   end
 
+  def expand_class
+    I18n.locale.to_s == 'en' ? 'lg' : 'xl'
+  end
+
+  def order_expand_class
+    "order-#{expand_class}-12"
+  end
+
   def navbar_expand_class
-    size = I18n.locale.to_s == 'en' ? 'lg' : 'xl'
-    "navbar-expand-#{size}"
+    "navbar-expand-#{expand_class}"
   end
 
   def other_locales

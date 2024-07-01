@@ -38,6 +38,7 @@ nav.navbar-main {
   .navbar-toggler-icon {
     background-image: escape-svg($navbar-dark-toggler-icon-bg);
   }
+
 }
 
 a.nav-link.locale {
@@ -56,6 +57,9 @@ a.nav-link.locale {
   }
 }
 
+.navbar-collapse {
+  margin-left: 10px;
+}
 
 // make dropdown scrollable if class is added
 .dropdown-menu.scrollable {

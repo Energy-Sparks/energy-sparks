@@ -8,9 +8,16 @@
         <% end %>
       </div>
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class='<%= order_expand_class %>'>
+        <% other_locales.excluding(:mirror).each do |locale| %>
+          <span class="navbar-text my-auto">
+            <%= link_to_locale(locale, class: 'nav-link locale') %>
+          </span>
+        <% end %>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
 
       <div class="collapse navbar-collapse justify-content-end" id="main-nav">
         <ul class="navbar-nav nowrap">
@@ -43,12 +50,6 @@
           </li>
 
           <%= render 'shared/manage_menu' if can?(:manage, :admin_functions) %>
-
-          <% other_locales.excluding(:mirror).each do |locale| %>
-            <li class="nav-item my-auto">
-              <%= link_to_locale(locale, class: 'nav-link locale') %>
-            </li>
-          <% end %>
         </ul>
       </div>
     </div>
