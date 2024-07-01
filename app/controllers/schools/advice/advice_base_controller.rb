@@ -5,11 +5,12 @@ module Schools
       include AdvicePageHelper
       include SchoolAggregation
       include DashboardAlerts
+      include SchoolInactive
 
       load_resource :school
       skip_before_action :authenticate_user!
       before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
-
+      before_action :school_inactive
       before_action :load_advice_pages
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]

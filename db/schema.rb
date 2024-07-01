@@ -10,11 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_19_100851) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "data_sharing", ["public", "within_group", "private"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -411,6 +415,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_100851) do
     t.boolean "enabled", default: true, null: false
     t.text "reading_time_field"
     t.boolean "convert_to_kwh", default: false
+    t.boolean "delayed_reading", default: false, null: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
@@ -1524,7 +1529,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_100851) do
     t.bigint "default_procurement_route_gas_id"
     t.bigint "default_procurement_route_solar_pv_id"
     t.integer "group_type", default: 0
-    t.bigint "funder_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
@@ -1579,8 +1583,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_100851) do
     t.boolean "school_will_be_public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
+    t.bigint "funder_id"
+    t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
+    t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
     t.index ["school_id"], name: "index_school_onboardings_on_school_id"
     t.index ["scoreboard_id"], name: "index_school_onboardings_on_scoreboard_id"
@@ -1709,6 +1716,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_100851) do
     t.integer "alternative_heating_water_source_heat_pump_percent", default: 0
     t.text "alternative_heating_water_source_heat_pump_notes"
     t.date "archived_date"
+    t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"

@@ -207,6 +207,7 @@ en:
       state_school: State School
     inactive:
       description: We are still in the process of setting up your school on Energy Sparks. You will get an email notification when your school's account is activated on Energy Sparks.
+      no_longer_available: This school is no longer available on Energy Sparks
       other_schools: other schools
       other_schools_html: In the meantine, take a look at how %{other_schools_link} are using Energy Sparks
       schools_in_area: schools in your area

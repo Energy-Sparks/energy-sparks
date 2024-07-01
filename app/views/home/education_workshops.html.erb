@@ -1,15 +1,11 @@
 <% content_for :page_title, t('education_workshops.title') %>
 
 <div class="application container">
-  <div class="row">
-    <div class="col">
-      <div class="d-flex justify-content-between align-items-center">
-        <p class="display-3"><strong><%= t('education_workshops.title') %></strong></p>
-      </div>
-    </div>
-  </div>
+  <h1><%= t('education_workshops.title') %></h1>
 
-  <%= render 'two_column_image_deck', column_one: 'for-schools/workshop-class.png', column_two: 'for-schools/workshop-activity.png' %>
+  <%= render 'two_column_image_deck',
+             column_one: 'for-schools/workshop-class.png',
+             column_two: 'for-schools/workshop-activity.png' %>
 
   <div class="row">
     <div class="col-md-12">

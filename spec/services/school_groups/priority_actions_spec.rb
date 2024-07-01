@@ -5,7 +5,6 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
 
   let(:school_1)  { create(:school, school_group: school_group, visible: true) }
   let(:school_2)  { create(:school, school_group: school_group, visible: true) }
-  let(:school_3)  { create(:school, school_group: school_group, visible: false) }
 
   let!(:alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
   let!(:alert_type_rating_low) do
@@ -86,26 +85,12 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
     )
   end
 
-  let!(:alert_school_3) do
-    create(:alert, :with_run,
-      alert_type: alert_type,
-      run_on: Time.zone.today, school: school_3,
-      rating: 8.0,
-      template_data: {
-        average_one_year_saving_£: '£9,000',
-        one_year_saving_co2: '9,900 kg CO2',
-        one_year_saving_kwh: '9,999 kWh'
-      }
-    )
-  end
-
-  let(:service) { SchoolGroups::PriorityActions.new(school_group) }
+  let(:service) { SchoolGroups::PriorityActions.new(school_group.schools) }
 
   before do
     # just run the services to set up rest of test data
     Alerts::GenerateContent.new(school_1).perform
     Alerts::GenerateContent.new(school_2).perform
-    Alerts::GenerateContent.new(school_3).perform
   end
 
   describe '#priority_actions' do
@@ -123,10 +108,6 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       end
     end
 
-    it 'only includes results for visible schools' do
-      expect(priority_actions[alert_type_rating_high].length).to eq 2
-    end
-
     it 'returns the expected values' do
       school_1_priority = OpenStruct.new(school: school_1, average_one_year_saving_gbp: 1000, one_year_saving_co2: 1100, one_year_saving_kwh: 1111)
       school_2_priority = OpenStruct.new(school: school_2, average_one_year_saving_gbp: 2000, one_year_saving_co2: 2200, one_year_saving_kwh: 2222)
@@ -142,10 +123,6 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       expect(total_savings).not_to have_key(alert_type_rating_medium)
       expect(total_savings).to have_key(alert_type_rating_high)
       expect(total_savings[alert_type_rating_high]).to be_a OpenStruct
-    end
-
-    it 'lists the schools' do
-      expect(total_savings[alert_type_rating_high].schools).to match_array([school_1, school_2])
     end
 
     it 'calculates correct gbp total' do

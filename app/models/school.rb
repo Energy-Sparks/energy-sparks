@@ -38,6 +38,7 @@
 #  created_at                                          :datetime         not null
 #  dark_sky_area_id                                    :bigint(8)
 #  data_enabled                                        :boolean          default(FALSE)
+#  data_sharing                                        :enum             default("public"), not null
 #  enable_targets_feature                              :boolean          default(TRUE)
 #  floor_area                                          :decimal(, )
 #  funder_id                                           :bigint(8)
@@ -99,6 +100,7 @@ class School < ApplicationRecord
   extend FriendlyId
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
+  include EnumDataSharing
 
   class ProcessDataError < StandardError; end
 
