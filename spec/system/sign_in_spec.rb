@@ -83,11 +83,9 @@ RSpec.describe 'sign in', type: :system do
 
         before do
           expire_cookies # kills session cookies
-          Timecop.travel(3.weeks) if travel_forward
+          travel_to(3.weeks.from_now) if travel_forward
           visit root_path
         end
-
-        after { Timecop.return }
 
         context 'with remember me checked' do
           let(:check_remember_me) { true }

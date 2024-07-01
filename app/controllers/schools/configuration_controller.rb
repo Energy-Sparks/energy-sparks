@@ -44,7 +44,8 @@ module Schools
         :funder_id,
         :region,
         :local_authority_area_id,
-        :country
+        :country,
+        :data_sharing
       )
     end
 

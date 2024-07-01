@@ -10,11 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_25_135831) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "data_sharing", ["public", "within_group", "private"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -450,8 +454,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_25_135831) do
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id", "amr_data_feed_config_id"], name: "adfr_meter_id_config_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
-    t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
+    t.unique_constraint ["mpan_mprn", "reading_date"], name: "unique_meter_readings"
   end
 
   create_table "amr_reading_warnings", force: :cascade do |t|
@@ -488,8 +492,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_25_135831) do
     t.date "substitute_date"
     t.datetime "upload_datetime", precision: nil
     t.index ["meter_id", "one_day_kwh"], name: "index_amr_validated_readings_on_meter_id_and_one_day_kwh"
-    t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
+    t.unique_constraint ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings"
   end
 
   create_table "analysis_pages", force: :cascade do |t|
@@ -1580,6 +1584,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_25_135831) do
     t.integer "default_chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.bigint "funder_id"
+    t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
@@ -1711,6 +1716,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_25_135831) do
     t.integer "alternative_heating_water_source_heat_pump_percent", default: 0
     t.text "alternative_heating_water_source_heat_pump_notes"
     t.date "archived_date"
+    t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"

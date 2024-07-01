@@ -136,7 +136,7 @@ RSpec.describe 'heating control advice page', type: :system do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
 
         it 'does not show the table' do
-          expect(page).not_to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html '))
+          expect(page).not_to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html'))
           expect(page).not_to have_css('#heating-start-times')
         end
       end

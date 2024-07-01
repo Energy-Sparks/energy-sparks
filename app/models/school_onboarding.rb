@@ -8,6 +8,7 @@
 #  created_by_id            :bigint(8)
 #  created_user_id          :bigint(8)
 #  dark_sky_area_id         :bigint(8)
+#  data_sharing             :enum             default("public"), not null
 #  default_chart_preference :integer          default("default"), not null
 #  funder_id                :bigint(8)
 #  id                       :bigint(8)        not null, primary key
@@ -47,6 +48,8 @@
 #
 
 class SchoolOnboarding < ApplicationRecord
+  include EnumDataSharing
+
   validates :school_name, :contact_email, presence: true
 
   belongs_to :school, optional: true

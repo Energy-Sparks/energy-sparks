@@ -161,10 +161,6 @@ class SchoolGroup < ApplicationRecord
     default_country == 'wales' ? [:en, :cy] : [:en]
   end
 
-  def categorise_schools
-    SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools
-  end
-
   def parent_tariff_holder
     SiteSettings.current
   end

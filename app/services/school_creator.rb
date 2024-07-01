@@ -75,6 +75,7 @@ private
 
   def copy_onboarding_details_to_school(onboarding)
     @school.update!(
+      data_sharing: onboarding.data_sharing,
       public: onboarding.school_will_be_public,
       chart_preference: onboarding.default_chart_preference
     )

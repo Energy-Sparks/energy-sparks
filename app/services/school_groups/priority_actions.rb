@@ -1,7 +1,7 @@
 module SchoolGroups
   class PriorityActions
-    def initialize(school_group)
-      @school_group = school_group
+    def initialize(schools)
+      @schools = schools
       @ratings_for_reporting = {}
     end
 
@@ -54,7 +54,7 @@ module SchoolGroups
       end
       for_rating.map do |priority|
         OpenStruct.new(
-          school: schools.find {|s| s.id == priority.school_id },
+          school: @schools.find {|s| s.id == priority.school_id },
           average_one_year_saving_gbp: average_one_year_saving_gbp(priority),
           one_year_saving_co2: one_year_saving_co2(priority),
           one_year_saving_kwh: one_year_saving_kwh(priority)
@@ -95,11 +95,7 @@ module SchoolGroups
     end
 
     def priorities
-      @priorities = ManagementPriority.for_school_group(@school_group)
-    end
-
-    def schools
-      @schools ||= @school_group.schools.visible
+      @priorities = ManagementPriority.for_schools(@schools)
     end
   end
 end

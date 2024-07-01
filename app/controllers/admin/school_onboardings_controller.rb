@@ -65,6 +65,7 @@ module Admin
     def school_onboarding_params
       params.require(:school_onboarding).permit(
         :contact_email,
+        :data_sharing,
         :funder_id,
         :notes,
         :school_group_id,
