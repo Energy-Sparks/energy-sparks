@@ -40,6 +40,12 @@ RSpec.shared_examples 'an advice page tab' do |tab:|
     end
   end
 
+  it 'shows 410 for an inactive school' do
+    school.update(active: false)
+    refresh
+    expect(page.status_code).to eq(410)
+  end
+
   context 'when restricted' do
     before do
       advice_page.update(restricted: true)

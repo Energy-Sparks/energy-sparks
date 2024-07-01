@@ -72,12 +72,8 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
         context 'and exporting detail' do
           before do
-            Timecop.freeze
+            freeze_time
             click_link('Export detail')
-          end
-
-          after do
-            Timecop.return
           end
 
           it 'shows csv contents' do
@@ -564,7 +560,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas) }
 
       before do
-        Timecop.freeze
+        freeze_time
         click_on 'Manage School Groups'
         within 'table' do
           click_on 'Manage'
@@ -573,8 +569,6 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           click_on 'Issues'
         end
       end
-
-      after { Timecop.return }
 
       it 'shows csv contents' do
         expect(page.body).to eq school_group.all_issues.by_updated_at.to_csv
