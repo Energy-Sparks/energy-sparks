@@ -44,7 +44,7 @@ RSpec.describe SchoolGroups::CsvGenerator do
     subject(:filename) { SchoolGroups::CsvGenerator.filename }
 
     it 'includes school-groups and time' do
-      Timecop.freeze do
+      freeze_time do
         expect(filename).to eq "school-groups-#{Time.zone.now.iso8601.parameterize}.csv"
       end
     end

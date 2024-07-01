@@ -164,4 +164,10 @@ RSpec.describe 'advice pages', type: :system do
       end
     end
   end
+
+  it 'shows 410 for an inactive school' do
+    school.update(active: false)
+    visit school_advice_path(school)
+    expect(page.status_code).to eq(410)
+  end
 end
