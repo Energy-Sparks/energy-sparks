@@ -50,7 +50,7 @@ class SchoolGroupsController < ApplicationController
   def priority_actions
     respond_to do |format|
       format.html do
-        service = SchoolGroups::PriorityActions.new(@school_group)
+        service = SchoolGroups::PriorityActions.new(@schools)
         @priority_actions = service.priority_actions
         @total_savings = sort_total_savings(service.total_savings)
       end
@@ -83,12 +83,12 @@ class SchoolGroupsController < ApplicationController
   def priority_actions_csv
     if params[:alert_type_rating_ids]
       SchoolGroups::SchoolsPriorityActionCsvGenerator.new(
-        school_group: @school_group,
+        schools: @schools,
         alert_type_rating_ids: params[:alert_type_rating_ids].map(&:to_i),
         include_cluster: include_cluster
       ).export
     else
-      SchoolGroups::PriorityActionsCsvGenerator.new(school_group: @school_group).export
+      SchoolGroups::PriorityActionsCsvGenerator.new(schools: @schools).export
     end
   end
 
