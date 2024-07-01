@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_25_110913) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1584,6 +1584,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_110913) do
     t.boolean "school_will_be_public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
+    t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"

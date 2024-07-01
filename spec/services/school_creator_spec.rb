@@ -23,7 +23,8 @@ describe SchoolCreator, :schools, type: :service do
         school_group: school_group,
         scoreboard: scoreboard,
         weather_station: weather_station,
-        school_will_be_public: true
+        school_will_be_public: true,
+        data_sharing: :within_group
     end
 
     it 'saves the school' do
@@ -47,6 +48,11 @@ describe SchoolCreator, :schools, type: :service do
       service.onboard_school!(school_onboarding)
       onboarding_user.reload
       expect(onboarding_user.role).to eq('school_admin')
+    end
+
+    it 'sets the data sharing enum' do
+      service.onboard_school!(school_onboarding)
+      expect(school_onboarding.school.data_sharing_within_group?).to be true
     end
 
     it 'sets the public flag' do
