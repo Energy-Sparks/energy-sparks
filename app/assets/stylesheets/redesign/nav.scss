@@ -2,29 +2,32 @@
 nav.navbar-main {
   background-color: $black;
   color: $white;
+  @include font(f8); // design says f6! Looks massive!
   font-family: $header-font-family;
-  @include font(f6);
-  font-weight: $default-font-weight;
-  line-height: 30px;
-  padding: 0px;
+  font-weight: 400 !important;
+
+  a {
+    font-weight: 400 !important;
+  }
 
   img {
-    height: 60px;
-    margin-top: 24px;
-    margin-bottom: 24px;
+    height: 45px; // design says 60
+    margin-bottom: 3px; // move it up a bit as text in logo isn't vertically central to logo
   }
 
   .dropdown-menu {
-    background-color: $black;
+    @include font(f8); // design says f6!
+    background-color: $white;
   }
 
-  .nav-item.dropdown.show .nav-link.dropdown-toggle,
+  .dropdown-item {
+    color: $dark;
+  }
+
+  .nav-item.dropdown.show
+  .nav-link.dropdown-toggle,
   .nav-link:hover {
     color: $yellow;
-  }
-
-  .dropdown-item:hover {
-    color: $black;
   }
 
   .navbar-toggler {
@@ -37,7 +40,22 @@ nav.navbar-main {
   }
 }
 
-// Site wide navigation styles
+a.nav-link.locale {
+  @extend .rounded-pill;
+  @include font(f9);
+  color: $dark-blue;
+  background: $white;
+  padding: 0px 12px;
+  display:inline-block;
+  border: 1px solid $dark-blue;
+
+  &:hover {
+    @include font(f9);
+    color: $black !important;
+    background: $grey;
+  }
+}
+
 
 // make dropdown scrollable if class is added
 .dropdown-menu.scrollable {
@@ -45,10 +63,11 @@ nav.navbar-main {
   overflow-y: auto;
 }
 
+// https://github.com/FortAwesome/font-awesome-sass/tree/master/assets/stylesheets/font-awesome
 .dropdown-toggle::after {
   border: none;
-  @include fa-icon-solid($fa-var-user);
-  font-size: inherit;
-  content: "\f078";
+
+  @extend .fa-solid;
+  content: fa-content($fa-var-chevron-down);
   vertical-align: 0;
 }

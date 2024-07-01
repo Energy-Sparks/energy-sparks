@@ -1,21 +1,23 @@
 module NavHelper
+  def on_test_link
+    if on_test?
+      link_to 'Test', '/', class: 'nav-item px-1'
+    end
+  end
+
   def navbar_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image_tag("nav-brand-transparent-#{I18n.locale}.png", class: 'd-inline-block align-top')
+      image = I18n.locale == 'cy' ? 'nav-brand-transparent-cy.png' : 'nav-brand-transparent-en.png'
+      image_tag(image, class: 'd-inline-block align-top')
     end
   end
 
   def navigation_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
-    link_to '/home-page', class: 'navbar-brand float-left', title: title do
-      image_tag("navigation-brand-transparent-#{I18n.locale}.png", class: 'd-inline-block align-top')
-    end
-  end
-
-  def on_test_link
-    if on_test?
-      link_to 'Test', '/', class: 'nav-item px-1'
+    link_to '/home-page', class: 'navbar-brand', title: title do
+      image = I18n.locale == 'cy' ? 'nav-brand-transparent-cy.png' : 'nav-brand-transparent-en.png'
+      image_tag(image)
     end
   end
 
@@ -28,15 +30,20 @@ module NavHelper
     I18n.available_locales - [I18n.locale]
   end
 
+  # rotate to the next locale - not used at the moment
+  def next_locale
+    idx = I18n.available_locales.index(I18n.locale)
+    I18n.available_locales.rotate(idx)[1]
+  end
+
   def locale_switcher_buttons
-    return '' unless EnergySparks::FeatureFlags.active?(:locale_switcher_buttons)
     li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: 'nav-item pl-3 pr-3 nav-lozenge my-3px') }
     tag.ul(safe_join(li_tags), class: 'navbar-nav navbar-expand')
   end
 
-  def link_to_locale(locale)
+  def link_to_locale(locale, **kwargs)
     secondary_presentation = request.params['secondary_presentation'] ? "/#{request.params['secondary_presentation']}" : ''
-    link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters) + secondary_presentation)
+    link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters) + secondary_presentation, **kwargs)
   end
 
   def sub_nav?

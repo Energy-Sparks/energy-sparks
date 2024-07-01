@@ -1,15 +1,18 @@
-<!-- new nav goes in here -->
-<div class='float-left'>
-  <%= on_test_link %>
-</div>
-
 <div class='fixed-top'>
-  <nav class="navbar navbar-expand-lg navbar-main">
+  <nav class="navbar <%= navbar_expand_class %> navbar-main">
     <div class="container">
       <%= navigation_image_link %>
-      <%= on_test_link %>
+      <div class='fixed-top'>
+        <% if on_test? %>
+          <%= link_to 'Test', '/', class: 'm-1 p-1 badge badge-warning' %>
+        <% end %>
+      </div>
 
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="main-nav">
         <ul class="navbar-nav nowrap">
           <% if current_user && current_user.school && current_user.school.visible? %>
             <%= render 'shared/my_school_menu' if can?(:read, :my_school_menu) && current_user.school.visible? %>
@@ -40,14 +43,14 @@
           </li>
 
           <%= render 'shared/manage_menu' if can?(:manage, :admin_functions) %>
+
+          <% other_locales.excluding(:mirror).each do |locale| %>
+            <li class="nav-item my-auto">
+              <%= link_to_locale(locale, class: 'nav-link locale') %>
+            </li>
+          <% end %>
         </ul>
       </div>
-
-      <%= locale_switcher_buttons %>
-
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
     </div>
   </nav>
 </div>
