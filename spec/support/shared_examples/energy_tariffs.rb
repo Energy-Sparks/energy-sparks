@@ -10,7 +10,7 @@ RSpec.shared_examples 'the user does not have access to the tariff editor' do
         expect(page).to have_current_path("/schools/#{current_user.school.slug}", ignore_query: true)
       end
     elsif current_user.group_admin?
-      expect(page).to have_current_path("/school_groups/#{current_user.school_group.slug}", ignore_query: true)
+      expect(page).to have_current_path("/school_groups/#{current_user.school_group.slug}/map", ignore_query: true)
     else
       expect(page).to have_current_path('/schools', ignore_query: true)
     end

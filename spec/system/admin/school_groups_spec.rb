@@ -211,7 +211,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "clicking 'View'" do
           before { click_link 'View' }
 
-          it { expect(page).to have_current_path(school_group_path(school_group)) }
+          it { expect(page).to have_content(school_group.name) }
         end
 
         it { expect(page).to have_link('Edit') }
