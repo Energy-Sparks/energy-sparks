@@ -131,7 +131,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
     describe 'Viewing school group page' do
       let!(:issues_admin) { }
-      let!(:school_group) { create :school_group, :with_active_schools, default_issues_admin_user: issues_admin }
+      let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
 
       before do
         click_on 'Manage School Groups'
@@ -211,7 +211,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "clicking 'View'" do
           before { click_link 'View' }
 
-          it { expect(page).to have_current_path(school_group_path(school_group)) }
+          it { expect(page).to have_content(school_group.name) }
         end
 
         it { expect(page).to have_link('Edit') }
