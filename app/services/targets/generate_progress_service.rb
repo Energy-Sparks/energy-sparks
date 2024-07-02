@@ -9,7 +9,7 @@ module Targets
 
     def cumulative_progress(fuel_type)
       target_progress = progress_report(fuel_type)
-      target_progress.present? ? fetch_latest_figures(target_progress.cumulative_performance_versus_synthetic_last_year) : nil
+      target_progress.present? ? fetch_latest_figures(target_progress.cumulative_performance) : nil
     end
 
     def current_monthly_target(fuel_type)
