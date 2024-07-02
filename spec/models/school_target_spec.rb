@@ -142,7 +142,6 @@ RSpec.describe SchoolTarget, type: :model do
         cumulative_usage_kwh: cumulative_usage_kwh,
         cumulative_performance: cumulative_performance,
         cumulative_performance_versus_synthetic_last_year: nil,
-        monthly_performance_versus_synthetic_last_year: monthly_performance,
         partial_months: partial_months,
         percentage_synthetic: percentage_synthetic
       )
@@ -166,8 +165,6 @@ RSpec.describe SchoolTarget, type: :model do
       expect(report.cumulative_targets_kwh).to eql(progress.cumulative_targets_kwh)
       expect(report.cumulative_usage_kwh).to eql(progress.cumulative_usage_kwh)
       expect(report.cumulative_performance).to eql(progress.cumulative_performance)
-      expect(report.cumulative_performance_versus_synthetic_last_year).to eql(progress.cumulative_performance_versus_synthetic_last_year)
-      expect(report.monthly_performance_versus_synthetic_last_year).to eql(progress.monthly_performance_versus_synthetic_last_year)
       expect(report.partial_months).to eql(progress.partial_months)
       expect(report.percentage_synthetic).to eql(progress.percentage_synthetic)
     end
