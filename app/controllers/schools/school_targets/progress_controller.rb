@@ -56,9 +56,7 @@ module Schools
           @recent_data = service.recent_data?
           @progress = service.progress
           @latest_progress = latest_progress
-          # the analytics can return a report with >12 months
-          # but we only want to report on a year at a time
-          @reporting_months = @progress.months[0..11]
+          @reporting_months = reporting_months(@progress)
           @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
           @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
         rescue => e
@@ -80,9 +78,7 @@ module Schools
       def render_school_target_expired
         @progress = @school_target.saved_progress_report_for(@fuel_type)
         @latest_progress = latest_progress
-        # the analytics can return a report with >12 months
-        # but we only want to report on a year at a time
-        @reporting_months = @progress.months[0..11]
+        @reporting_months = reporting_months(@progress)
         render :expired
       end
 
@@ -90,11 +86,28 @@ module Schools
       # latest current progress
       def latest_progress
         if @school_target.expired?
-          final_month = @school_target.target_date.prev_month.beginning_of_month
           @progress.cumulative_performance[final_month]
         else
-          @progress.current_cumulative_performance_versus_synthetic_last_year
+          @progress.current_cumulative_performance
         end
+      end
+
+      # The analytics can return a report with >12 months of data in it.
+      # e.g. if we've been continuing to generate a report for an expired target
+      # So we only want the first 12 months
+      #
+      # But a school might have had limited data at the start of its target period, e.g. if they
+      # had less than a year. So we might not have a full 12 months of progress
+      #
+      # So restrict the months reported on in the table to those that include the months up to
+      # the final month without assuming there's 12
+      def reporting_months(progress)
+        final_month_index = progress.months.find_index(final_month) || 11
+        progress.months[0..final_month_index]
+      end
+
+      def final_month
+        @school_target.target_date.prev_month.beginning_of_month
       end
 
       def bad_estimate?(type)
