@@ -18,7 +18,7 @@ FactoryBot.define do
 
       after(:build) do |target, evaluator|
         report = {
-          'fuel_type': 'electricity',
+          'fuel_type': evaluator.fuel_type.to_s,
           'months': ['2024-01-01'],
           'monthly_targets_kwh': [],
           'monthly_usage_kwh': [],

@@ -93,7 +93,7 @@ module Schools
       end
 
       # The analytics can return a report with >12 months of data in it.
-      # e.g. if we've been continuining to generate a report for an expired target
+      # e.g. if we've been continuing to generate a report for an expired target
       # So we only want the first 12 months
       #
       # But a school might have had limited data at the start of its target period, e.g. if they
