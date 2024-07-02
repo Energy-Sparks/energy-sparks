@@ -131,7 +131,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
     describe 'Viewing school group page' do
       let!(:issues_admin) { }
-      let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
+      let!(:school_group) { create :school_group, :with_active_schools, default_issues_admin_user: issues_admin }
 
       before do
         click_on 'Manage School Groups'
