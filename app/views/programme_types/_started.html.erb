@@ -1,11 +1,12 @@
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-12">
     <div class="row alert info-bar text-dark bg-positive" role="alert">
       <div class="col-md-1">
         <i class="fas fa-check fa-2x"></i>
       </div>
       <div class="col-md-8 align-self-center">
-        <%= t('programme_types.started.you_started_this_programme_on') %> <%= nice_dates(programme_type.programme_for_school(school).started_on) %>
+        <%= t('programme_types.started.you_started_this_programme_on') %>
+        <%= nice_dates(programme_type.programme_for_school(school).started_on) %>
       </div>
       <div class="col-md-3">
       </div>
