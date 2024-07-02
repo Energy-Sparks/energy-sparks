@@ -78,7 +78,6 @@ module Schools
       def render_school_target_expired
         @progress = @school_target.saved_progress_report_for(@fuel_type)
         @latest_progress = latest_progress
-        final_month_index = @progress.months.find_index(final_month) || 11
         @reporting_months = reporting_months(@progress)
         render :expired
       end
