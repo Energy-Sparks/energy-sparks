@@ -26,6 +26,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
       default_country: 'wales'
     )
   end
+  let!(:funder) { create(:funder) }
 
   let(:last_email) { ActionMailer::Base.deliveries.last }
 
@@ -53,9 +54,12 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
       fill_in 'School name', with: school_name
       fill_in 'Contact email', with: 'oldfield@test.com'
-      uncheck 'School will be public'
+
+      expect(page).to have_select('Data Sharing', selected: 'Public')
+      select 'Within Group', from: 'Data Sharing'
 
       select 'BANES', from: 'Group'
+      select funder.name, from: 'Funder'
       click_on 'Next'
 
       expect(page).to have_select('Template calendar', selected: 'BANES calendar')
@@ -71,7 +75,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
       click_on 'Send setup email'
 
       onboarding = SchoolOnboarding.first
-      expect(onboarding.school_will_be_public).to be_falsey
+      expect(onboarding.data_sharing_within_group?).to be true
       expect(onboarding.default_chart_preference).to eq 'carbon'
 
       email = ActionMailer::Base.deliveries.last

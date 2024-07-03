@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '7.0.8.1'
+gem 'rails', '~> 7.1.0'
 
 # Rails/Core
 gem 'bootsnap'
@@ -25,7 +25,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.11'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.13'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -110,8 +110,8 @@ gem 'roo-xls'
 gem 'premailer-rails'
 
 # Feature flags
-gem "flipper-ui", "~> 1.3"
-gem "flipper-active_record", "~> 1.3"
+gem 'flipper-active_record', '~> 1.3'
+gem 'flipper-ui', '~> 1.3'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -168,5 +168,4 @@ group :test do
   gem 'show_me_the_cookies'
   gem 'simplecov', require: false, group: :test
   gem 'test-prof'
-  gem 'timecop'
 end

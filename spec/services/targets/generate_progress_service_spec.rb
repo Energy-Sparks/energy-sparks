@@ -33,8 +33,8 @@ describe Targets::GenerateProgressService do
       cumulative_targets_kwh: cumulative_targets_kwh,
       cumulative_usage_kwh: cumulative_usage_kwh,
       cumulative_performance: cumulative_performance,
-      cumulative_performance_versus_synthetic_last_year: cumulative_performance,
-      monthly_performance_versus_synthetic_last_year: monthly_performance,
+      cumulative_performance_versus_synthetic_last_year: [],
+      monthly_performance_versus_synthetic_last_year: [],
       partial_months: partial_months,
       percentage_synthetic: percentage_synthetic
     )

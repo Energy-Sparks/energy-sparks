@@ -23,7 +23,7 @@ RSpec.describe SchoolGroups::CategoriseSchools, type: :service do
     create_advice_page_school_benchmarks
   end
 
-  subject!(:results) { SchoolGroups::CategoriseSchools.new(school_group: school_group).categorise_schools }
+  subject!(:results) { SchoolGroups::CategoriseSchools.new(schools: school_group.schools).categorise_schools }
 
   let(:expected_results) do
     { :electricity =>

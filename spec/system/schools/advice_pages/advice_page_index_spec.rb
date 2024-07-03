@@ -139,9 +139,9 @@ RSpec.describe 'advice pages', type: :system do
     end
   end
 
-  context 'for a non-public school' do
+  context 'for a non-public with non-public analysis' do
     before do
-      school.update(public: false)
+      school.update(data_sharing: :within_group)
       sign_in(user) if user
       visit school_advice_path(school)
     end
@@ -163,5 +163,11 @@ RSpec.describe 'advice pages', type: :system do
         expect(page).not_to have_link(login_text)
       end
     end
+  end
+
+  it 'shows 410 for an inactive school' do
+    school.update(active: false)
+    visit school_advice_path(school)
+    expect(page.status_code).to eq(410)
   end
 end

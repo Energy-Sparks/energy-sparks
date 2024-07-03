@@ -1,19 +1,7 @@
 # frozen_string_literal: true
 
 CSV.generate do |csv|
-  csv << [
-    '', '', '',
-    t('analytics.benchmarking.configuration.column_groups.kwh'),
-    '',
-    '',
-    t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-    '',
-    '',
-    t('analytics.benchmarking.configuration.column_groups.gbp'),
-    '',
-    ''
-  ]
-
+  csv << csv_colgroups(@colgroups)
   csv << @headers
   @results.each do |result|
     data = [result.school.name]

@@ -91,6 +91,14 @@ describe AmrUploadedReading, type: :system do
         end
       end
     end
+
+    context 'with delayed reading config' do
+      let!(:config) { create(:amr_data_feed_config, delayed_reading: true, number_of_header_rows: 1) }
+
+      it 'explains this to user' do
+        expect(page).to have_content('this configuration will adjust the dates in the uploaded file backwards by 1 day')
+      end
+    end
   end
 
   describe 'normal file format' do
