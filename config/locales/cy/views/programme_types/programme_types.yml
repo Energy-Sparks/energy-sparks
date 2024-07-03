@@ -14,7 +14,6 @@ cy:
       page_title: Rhaglenni
       title: Ein Rhaglenni Arbed Ynni
     prompt:
-      message_html:
     prompt_login:
       are_you_an_energy_sparks_user_html: Ydych chi'n ddefnyddiwr Sbarcynni?<br>Mewngofnodwch a chofrestrwch eich ysgol ar y rhaglen hon, neu cofnodwch eich cynnydd diweddar
       sign_in_now: Mewngofnodi nawr

@@ -31,14 +31,14 @@ RSpec.shared_examples 'a complete programme prompt' do |displayed: true, with_pr
   include_examples 'a standard prompt', displayed: displayed
 end
 
-RSpec.shared_examples 'a join programme prompt' do |displayed: true, programme:, activity_count: nil, completed: false|
+RSpec.shared_examples 'a join programme prompt' do |displayed: true, programme:, activity_count: nil, bonus_points: nil, completed: false|
   let(:incomplete) { "You've recently completed #{activity_count == 1 ? 'an activity that is' : "#{activity_count} activities that are"} part of the #{programme} programme. Do you want to enrol in the programme?" }
   let(:complete) do
-    message = "You've completed all the activities in the <strong>%{title}</strong> programme. "
-    if programme.bonus_points == 0
+    message = "You've completed all the activities in the #{programme} programme. "
+    if bonus_points == 0
       message += 'Mark it as complete?'
     else
-      message += "Mark it done to score #{programme.bonus_points} bonus points?"
+      message += "Mark it done to score #{bonus_points} bonus points?"
     end
     message
   end
