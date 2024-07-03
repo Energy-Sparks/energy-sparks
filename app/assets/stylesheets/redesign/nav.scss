@@ -53,7 +53,7 @@ nav.navbar-main {
 
 // locale button styles
 
-a.nav-link.locale {
+a.nav-link.lozenge {
   @extend .rounded-pill;
   @include font(f9);
   color: $dark-blue;
