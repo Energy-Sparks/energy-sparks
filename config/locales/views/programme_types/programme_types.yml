@@ -15,7 +15,9 @@ en:
       page_title: Programmes
       title: Our Energy Saving Programmes
     prompt:
-      completed_message_html: You've completed all the activities in this programme. Mark it done to score <strong>%{count}</strong> bonus points?
+      completed_message_html:
+        other: You've completed all the activities in this programme. Mark it done to score <strong>%{count}</strong> bonus points?
+        zero: You've completed all the activities in this programme. Mark it as complete?
       message_html:
         one: You've recently completed an activity that is part of this programme. Do you want to enroll in the programme?
         other: You've recently completed %{count} activities that are part of this programme. Do you want to enroll in the programme?

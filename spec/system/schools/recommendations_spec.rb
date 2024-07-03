@@ -85,6 +85,16 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
         it_behaves_like 'a join programme prompt', programme: 'Programme A', activity_count: 2
       end
+
+      context 'when all programme activities have been completed' do
+        let(:setup_data) do
+          programme_type.activity_types.each do |activity_type|
+            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+          end
+        end
+
+        it_behaves_like 'a join programme prompt', programme: 'Programme A', completed: true
+      end
     end
 
     context 'audit prompt' do
