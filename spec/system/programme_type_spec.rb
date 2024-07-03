@@ -52,7 +52,7 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
         click_on programme.title
       end
 
-      it { expect(page).to have_content("You've recently completed an activity that is part of this programme. Do you want to enroll in the programme?") }
+      it { expect(page).to have_content("You've recently completed an activity that is part of this programme. Do you want to enrol in the programme?") }
       it { expect(page).to have_link('Start') }
     end
 
