@@ -46,7 +46,8 @@ module Schools
       def aggregate_meter_adapter
         OpenStruct.new(
           mpan_mprn: aggregate_meter.mpan_mprn.to_s,
-          display_name: I18n.t("advice_pages.#{advice_page_key}.analysis.meter_breakdown.whole_school")
+          display_name: I18n.t("advice_pages.#{advice_page_key}.analysis.meter_breakdown.whole_school"),
+          has_readings?: true
         )
       end
 

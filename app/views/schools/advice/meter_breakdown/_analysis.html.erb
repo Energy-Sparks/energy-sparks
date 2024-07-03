@@ -1,0 +1,86 @@
+<%# i18n-tasks-use t('advice_pages.gas_meter_breakdown.analysis.sections')
+    i18n-tasks-use t('advice_pages.electricity_meter_breakdown.analysis.sections') %>
+<p><%= t("advice_pages.#{advice_page.key}.analysis.sections") %></p>
+
+<ul>
+  <li><%= link_to(t("advice_pages.#{advice_page.key}.analysis.recent_trend.title"), '#recent-trend') %></li>
+  <% if analysis_dates.one_years_data? %>
+    <li><%= link_to(t("advice_pages.#{advice_page.key}.analysis.long_term_trends.title"), '#long-term-trends') %></li>
+  <% end %>
+</ul>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'recent-trend',
+           section_title: t("advice_pages.#{advice_page.key}.analysis.recent_trend.title") %>
+
+<%= component 'chart', chart_type: "group_by_week_#{advice_page.key}_one_year".to_sym, school: @school do |c| %>
+  <% c.with_title do
+       t("advice_pages.#{advice_page.fuel_type}_long_term.charts.group_by_week_#{advice_page.key}_one_year.title")
+     end %>
+  <% c.with_subtitle do
+       t("advice_pages.#{advice_page.fuel_type}_long_term.charts.group_by_week_#{advice_page.key}_one_year.subtitle")
+     end %>
+  <% c.with_header do %>
+    <p>
+      <%= t("advice_pages.#{advice_page.fuel_type}_long_term.charts.group_by_week_#{advice_page.key}_one_year.header") %>
+    </p>
+  <% end %>
+<% end %>
+
+<%= render 'schools/advice/meter_breakdown/usage_breakdown_table',
+           fuel_type: advice_page.fuel_type,
+           school: school,
+           analysis_dates: analysis_dates,
+           meters_for_breakdown: meters_for_breakdown,
+           usage_breakdown: annual_usage_meter_breakdown %>
+
+<p><%= t("advice_pages.#{advice_page.fuel_type}_long_term.analysis.meter_breakdown.table_explanation") %></p>
+
+<%= component 'chart', chart_type: "group_by_month_#{advice_page.key}".to_sym, school: school do |c| %>
+  <% c.with_title do
+       t("advice_pages.#{advice_page.key}.charts.group_by_month_#{advice_page.key}.title",
+         fuel_type: I18n.t("analytics.common.#{advice_page.fuel_type}"))
+     end %>
+  <% c.with_subtitle do
+       t("advice_pages.#{advice_page.key}.charts.group_by_month_#{advice_page.key}.subtitle")
+     end %>
+  <% c.with_header do %>
+    <p>
+      <%= t("advice_pages.#{advice_page.fuel_type}_long_term.charts.group_by_week_#{advice_page.key}_one_year.header") %>
+    </p>
+  <% end %>
+<% end %>
+
+<% if analysis_dates.one_years_data? %>
+  <%= render 'schools/advice/section_title',
+             section_id: 'long-term-trends',
+             section_title: t("advice_pages.#{advice_page.key}.analysis.long_term_trends.title") %>
+
+  <p>
+    <%= t("advice_pages.#{advice_page.key}.analysis.long_term_trends.summary") %>
+  </p>
+
+  <%= component 'chart', chart_type: "group_by_year_#{advice_page.key}".to_sym, school: school do |c| %>
+    <% c.with_title do
+         t("advice_pages.#{advice_page.key}.charts.group_by_year_#{advice_page.key}.title",
+           fuel_type: I18n.t("analytics.common.#{advice_page.fuel_type}"))
+       end %>
+    <% c.with_subtitle do
+         t("advice_pages.#{advice_page.key}.charts.group_by_year_#{advice_page.key}.subtitle")
+       end %>
+    <% c.with_header do %>
+      <p>
+        <%= t("advice_pages.#{advice_page.fuel_type}_long_term.charts.group_by_week_#{advice_page.key}_one_year.header") %>
+      </p>
+    <% end %>
+  <% end %>
+
+  <%= render 'schools/advice/meter_breakdown_charts',
+             school: school,
+             meters: options_for_meter_select,
+             date_ranges_by_meter: date_ranges_by_meter,
+             chart_type: "group_by_month_#{advice_page.key}_unlimited".to_sym,
+             analysis_controls: true,
+             chart_title_key: "advice_pages.#{advice_page.key}.charts.group_by_week_#{advice_page.fuel_type}_unlimited.title",
+             chart_subtitle_key: "advice_pages.#{advice_page.key}.charts.group_by_week_#{advice_page.fuel_type}_unlimited.subtitle" %>
+<% end %>

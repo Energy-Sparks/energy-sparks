@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: b21c55a27deed980bfb958cb5202e4127b39d8fb
-  tag: 5.2.13
+  revision: a3cbbbce4f5445a17f280db5cf35d9555d14285a
+  branch: 4388-improve-meter-breakdown-pages
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.2)
@@ -891,4 +891,4 @@ DEPENDENCIES
   wisper-rspec
 
 BUNDLED WITH
-   2.5.14
+   2.5.10
