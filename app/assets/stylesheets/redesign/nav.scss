@@ -1,6 +1,5 @@
-
 nav.navbar-main {
-  background-color: $black;
+  background-color: $dark;
   color: $white;
   @include font(f8); // design says f6! Looks massive!
   font-family: $header-font-family;
@@ -17,23 +16,28 @@ nav.navbar-main {
 
   .dropdown-menu {
     @include font(f8); // design says f6!
-    background-color: $white;
+    background-color: $dark;
     padding: 4px;
   }
 
+  // Allow scroll on collapse
   .collapse.show {
-    max-height: 70vh;
+    max-height: 80vh;
     overflow-y: auto;
   }
 
   .dropdown-item {
-    color: $dark;
+    color: $white;
+    background-color: $dark;
     padding: 6px 10px;
    }
 
   .nav-item.dropdown.show
   .nav-link.dropdown-toggle,
-  .nav-link:hover {
+  .nav-link:hover,
+  .nav-link:focus,
+  .dropdown-item:hover,
+  .dropdown-item:focus {
     color: $yellow;
   }
 
@@ -46,6 +50,8 @@ nav.navbar-main {
     background-image: escape-svg($navbar-dark-toggler-icon-bg);
   }
 }
+
+// locale button styles
 
 a.nav-link.locale {
   @extend .rounded-pill;
@@ -64,16 +70,20 @@ a.nav-link.locale {
   }
 }
 
+// add slight left margin on collapse
+
 .navbar-collapse {
   margin-left: 10px;
 }
 
 // make dropdown scrollable if class is added
+
 .dropdown-menu.scrollable {
   max-height: 85vh;
   overflow-y: auto;
 }
 
+// change menu dropdown arrow
 // https://github.com/FortAwesome/font-awesome-sass/tree/master/assets/stylesheets/font-awesome
 .dropdown-toggle::after {
   border: none;
