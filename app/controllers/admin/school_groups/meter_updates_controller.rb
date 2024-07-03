@@ -24,7 +24,6 @@ module Admin
           @school_group.update(
             "default_#{field}_#{params[:meter_update_fuel_type]}_id": meter_update_params["#{field}_id"]&.to_i
           )
-          # binding.pry
           redirect_to(admin_school_group_meter_updates_path(@school_group),
                       notice: "#{field.titleize} for #{meters.count} #{meter_types.to_sentence} " \
                               "#{'meter'.pluralize(meters.count)} successfully updated for this school group.")
@@ -40,8 +39,8 @@ module Admin
       end
 
       def meter_update_params
-        # permit
-        params[params[:meter_update_fuel_type]].permit(:data_source_id, :procurement_route_id)
+        params.permit(electricity: {}, gas: {}, solar_pv: {})[params[:meter_update_fuel_type]]
+              .permit(:data_source_id, :procurement_route_id)
       end
     end
   end
