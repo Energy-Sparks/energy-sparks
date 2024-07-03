@@ -61,7 +61,7 @@ a.nav-link.lozenge {
   display:inline-block;
   border: 1px solid $dark-blue;
 
-  &:hover {
+  &:hover, &:focus {
     @include font(f9);
     color: $black !important;
     background: $grey;
