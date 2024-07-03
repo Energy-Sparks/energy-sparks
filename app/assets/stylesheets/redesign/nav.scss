@@ -15,22 +15,16 @@ nav.navbar-main {
   }
 
   .dropdown-menu {
-    @include font(f8); // design says f6!
+    font: inherit;
     background-color: $dark;
     padding: 4px;
-  }
 
-  // Allow scroll on collapse
-  .collapse.show {
-    max-height: 80vh;
-    overflow-y: auto;
+    .dropdown-item {
+      color: $white;
+      background-color: $dark;
+      padding: 6px 10px;
+    }
   }
-
-  .dropdown-item {
-    color: $white;
-    background-color: $dark;
-    padding: 6px 10px;
-   }
 
   .nav-item.dropdown.show
   .nav-link.dropdown-toggle,
@@ -49,9 +43,13 @@ nav.navbar-main {
   .navbar-toggler-icon {
     background-image: escape-svg($navbar-dark-toggler-icon-bg);
   }
-}
 
-// locale button styles
+  // Allow scroll on collapse
+  .collapse.show {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+}
 
 a.nav-link.lozenge {
   @extend .rounded-pill;
@@ -71,13 +69,11 @@ a.nav-link.lozenge {
 }
 
 // add slight left margin on collapse
-
 .navbar-collapse {
   margin-left: 10px;
 }
 
-// make dropdown scrollable if class is added
-
+// make dropdown scrollable if scrollable class is added
 .dropdown-menu.scrollable {
   max-height: 85vh;
   overflow-y: auto;
