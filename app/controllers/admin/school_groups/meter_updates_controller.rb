@@ -18,7 +18,6 @@ module Admin
       private
 
       def bulk_update(field)
-        # binding.pry
         meters = @school_group.meters.where(meter_type: meter_types)
         if meters.update_all("#{field}_id": meter_update_params["#{field}_id"]&.to_i)
           @school_group.update(
