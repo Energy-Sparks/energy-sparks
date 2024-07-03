@@ -16,7 +16,7 @@ module Schools
       private
 
       def redirect_if_single_meter
-        redirect_to school_advice_path(@school) if @school.meters.active.where(meter_type: fuel_type).count == 1
+        redirect_to school_advice_path(@school) unless @school.multiple_meters?(fuel_type)
       end
 
       def sorted_meters_for_breakdown(annual_usage_meter_breakdown)
