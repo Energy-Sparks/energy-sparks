@@ -56,6 +56,17 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
       it { expect(page).to have_link('Start') }
     end
 
+    context 'when user has several activities' do
+      before do
+        create(:activity, school: school, activity_type: programme.activity_types.first, happened_on: Date.yesterday)
+        create(:activity, school: school, activity_type: programme.activity_types.second, happened_on: Date.yesterday)
+        click_on programme.title
+      end
+
+      it { expect(page).to have_content("You've recently completed 2 activities that are part of this programme. Do you want to enrol in the programme?") }
+      it { expect(page).to have_link('Start') }
+    end
+
     context 'when user has completed all activities' do
       before do
         programme.activity_types.each do |activity_type|
