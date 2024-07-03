@@ -20,8 +20,6 @@ en:
         one: You've recently completed an activity that is part of this programme. Do you want to enroll in the programme?
         other: You've recently completed %{count} activities that are part of this programme. Do you want to enroll in the programme?
         zero: You can enrol your school in this programme
-      start: Start
-      you_can_enrol_your_school_in_this_programme: You can enrol your school in this programme
     prompt_login:
       are_you_an_energy_sparks_user_html: Are you an Energy Sparks user?<br>Sign in and enrol your school in this programme, or record your recent progress
       sign_in_now: Sign in now
