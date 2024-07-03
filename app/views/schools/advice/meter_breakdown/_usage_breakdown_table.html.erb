@@ -2,7 +2,7 @@
          start_date: usage_breakdown.start_date.to_fs(:es_short),
          end_date: usage_breakdown.end_date.to_fs(:es_short)) %></p>
 
-<table class="table table-sm table-with-totals-footer table-sorted">
+<table id="meter-breakdown<%= '-summary' if local_assigns[:summary] %>" class="table table-sm table-with-totals-footer table-sorted">
   <thead class="thead-dark">
     <th class="text-left"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.meter") %></th>
     <th class='no-sort'><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.name") %></th>
