@@ -330,6 +330,7 @@ en:
           zero: Well done, you've just completed the <strong>%{title}</strong> programme!
       join_programme:
         completed_message_html:
+          one: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus point?
           other: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus points?
           zero: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it as complete?
         message_html:

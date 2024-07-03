@@ -13,7 +13,6 @@ cy:
       introduction_2: Fel defnyddiwr Sbarcynni gallwch chi gofrestru ar unrhyw un o'n rhaglenni a chofnodi gweithgareddau i olrhain eich cynnydd a sgorio pwyntiau ar gyfer eich ysgol.
       page_title: Rhaglenni
       title: Ein Rhaglenni Arbed Ynni
-    prompt:
     prompt_login:
       are_you_an_energy_sparks_user_html: Ydych chi'n ddefnyddiwr Sbarcynni?<br>Mewngofnodwch a chofrestrwch eich ysgol ar y rhaglen hon, neu cofnodwch eich cynnydd diweddar
       sign_in_now: Mewngofnodi nawr
