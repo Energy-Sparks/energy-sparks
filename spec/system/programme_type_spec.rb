@@ -34,7 +34,7 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
     end
   end
 
-  shared_examples 'a user that has not yet enrolled to a programme' do
+  shared_examples 'a user that has not yet enrolled in a programme' do
     let!(:programme) { programme_4 }
 
     context 'user has not completed any activities' do
@@ -231,6 +231,7 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
 
     it_behaves_like 'a no active programmes prompt'
     it_behaves_like 'a user enrolling in a programme'
+    it_behaves_like 'a user that has not yet enrolled in a programme'
     it_behaves_like 'a user that is enrolled in a programme'
   end
 
@@ -242,7 +243,7 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
 
     it_behaves_like 'a no active programmes prompt'
     it_behaves_like 'a user enrolling in a programme'
-    it_behaves_like 'a user that has not yet enrolled to a programme'
+    it_behaves_like 'a user that has not yet enrolled in a programme'
     it_behaves_like 'a user that is enrolled in a programme'
   end
 end
