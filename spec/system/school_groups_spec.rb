@@ -386,6 +386,14 @@ describe 'school groups', :school_groups, type: :system do
       end
     end
 
+    context 'with a public school group with no active schools' do
+      before do
+        school_group.schools.update_all(active: false)
+      end
+
+      it_behaves_like 'a private school group dashboard'
+    end
+
     context 'with a private school group' do
       let(:public) { false }
 

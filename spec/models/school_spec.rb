@@ -480,7 +480,23 @@ describe School do
           target.update!(electricity: 5)
         end
 
-        let!(:expired_target) { create(:school_target, start_date: Date.yesterday.prev_year, school: subject, electricity: 5, gas: nil) }
+        let!(:expired_target) do
+          report = {
+            'fuel_type': 'electricity',
+            'months': ['2024-01-01'],
+            'monthly_targets_kwh': [],
+            'monthly_usage_kwh': [],
+            'monthly_performance': [],
+            'cumulative_targets_kwh': [],
+            'cumulative_usage_kwh': [],
+            'cumulative_performance': [],
+            'cumulative_performance_versus_synthetic_last_year': [],
+            'monthly_performance_versus_synthetic_last_year': [],
+            'partial_months': [],
+            'percentage_synthetic': []
+          }
+          create(:school_target, :with_progress_report, start_date: Date.yesterday.prev_year, school: subject, electricity: 5, gas: nil)
+        end
 
         it { expect(subject.has_expired_target_for_fuel_type?(:electricity)).to be true }
         it { expect(subject.has_expired_target_for_fuel_type?(:gas)).to be false }
@@ -669,8 +685,8 @@ describe School do
       it { expect(programme_types).to include(programme_type_1) }
       it { expect(programme_types.length).to be(1) }
 
-      it 'includes a count of activities completed in programme' do
-        expect(programme_types.first.activity_count).to be(2)
+      it 'includes a count of activity_types completed in programme' do
+        expect(programme_types.first.activity_type_count).to be(2)
       end
 
       context 'when school is already subscribed to programme type' do
@@ -698,8 +714,20 @@ describe School do
       end
 
       it 'includes activity counts' do
-        expect(programme_types.first.activity_count).to be(2)
-        expect(programme_types.second.activity_count).to be(1)
+        expect(programme_types.first.activity_type_count).to be(2)
+        expect(programme_types.second.activity_type_count).to be(1)
+      end
+    end
+
+    context 'when school has completed the same activity several times' do
+      before do
+        create_activity(programme_type_1.activity_types.first)
+        create_activity(programme_type_1.activity_types.first)
+        create_activity(programme_type_1.activity_types.first)
+      end
+
+      it 'includes a counts the activity types once' do
+        expect(programme_types.first.activity_type_count).to be(1)
       end
     end
 

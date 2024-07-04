@@ -358,7 +358,7 @@ class School < ApplicationRecord
   end
 
   def suggested_programme_types
-    ProgrammeType.active.with_school_activity_count(self)
+    ProgrammeType.active.with_school_activity_type_count(self)
       .merge(activities.in_academic_year(current_academic_year))
       .not_in(programme_types)
   end
@@ -531,7 +531,7 @@ class School < ApplicationRecord
   end
 
   def has_expired_target_for_fuel_type?(fuel_type)
-    has_expired_target? && expired_target.try(fuel_type).present?
+    has_expired_target? && expired_target.try(fuel_type).present? && expired_target.saved_progress_report_for(fuel_type).present?
   end
 
   def has_expired_target?
