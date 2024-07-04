@@ -63,6 +63,34 @@ shared_examples 'a meter breakdown page' do
           end
         end
       end
+
+      it 'includes the monthly meter breakdown chart' do
+        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_month_#{fuel_type}_meter_breakdown.title"))
+        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_month_#{fuel_type}_meter_breakdown.subtitle"))
+        expect(page).to have_css("#chart_wrapper_group_by_month_#{fuel_type}_meter_breakdown")
+      end
+
+      it 'does not include the long term trends' do
+        expect(page).not_to have_css("#chart_wrapper_group_by_year_#{fuel_type}_meter_breakdown")
+      end
+    end
+  end
+end
+
+shared_examples 'a meter breakdown page with a long term trend section' do
+  context 'when a school admin' do
+    before do
+      sign_in(create(:school_admin, school: school))
+      visit path
+      click_on 'Analysis'
+    end
+
+    context 'when on the Analysis tab' do
+      it 'includes the long term trend chart' do
+        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_year_#{fuel_type}_meter_breakdown.title"))
+        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_year_#{fuel_type}_meter_breakdown.subtitle"))
+        expect(page).to have_css("#chart_wrapper_group_by_year_#{fuel_type}_meter_breakdown")
+      end
     end
   end
 end
@@ -77,20 +105,30 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
 
   context 'with electricity' do
     let(:fuel_type) { :electricity }
+    let(:start_date) { 30.days.ago }
 
     let(:school) do
       school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
       create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
       create(:electricity_meter_with_validated_reading_dates,
-             school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
+             school: school, start_date: start_date, end_date: Time.zone.today, reading: 0.5)
       create(:electricity_meter_with_validated_reading_dates,
-             school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 1.0)
+             school: school, start_date: start_date, end_date: Time.zone.today, reading: 1.0)
       school
     end
 
+    let(:meters) { school.meters.active.electricity }
+
     it_behaves_like 'a meter breakdown page' do
       let(:path) { school_advice_electricity_meter_breakdown_path(school) }
-      let(:meters) { school.meters.active.electricity }
+    end
+
+    context 'when school has more than a year of data' do
+      let(:start_date) { 1.year.ago }
+
+      it_behaves_like 'a meter breakdown page with a long term trend section' do
+        let(:path) { school_advice_electricity_meter_breakdown_path(school) }
+      end
     end
 
     context 'when school has only a single meter' do
@@ -110,20 +148,30 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
 
   context 'with gas' do
     let(:fuel_type) { :gas }
+    let(:start_date) { 30.days.ago }
 
     let(:school) do
       school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
       create(:energy_tariff, :with_flat_price, meter_type: :gas, tariff_holder: school, start_date: nil, end_date: nil)
       create(:gas_meter_with_validated_reading_dates,
-             school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
+             school: school, start_date: start_date, end_date: Time.zone.today, reading: 0.5)
       create(:gas_meter_with_validated_reading_dates,
-             school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 1.0)
+             school: school, start_date: start_date, end_date: Time.zone.today, reading: 1.0)
       school
     end
 
+    let(:meters) { school.meters.active.gas }
+
     it_behaves_like 'a meter breakdown page' do
       let(:path) { school_advice_gas_meter_breakdown_path(school) }
-      let(:meters) { school.meters.active.gas }
+    end
+
+    context 'when school has more than a year of data' do
+      let(:start_date) { 1.year.ago }
+
+      it_behaves_like 'a meter breakdown page with a long term trend section' do
+        let(:path) { school_advice_gas_meter_breakdown_path(school) }
+      end
     end
 
     context 'when school has only a single meter' do
