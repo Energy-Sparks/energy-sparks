@@ -5,9 +5,6 @@ en:
       analysis:
         long_term_trends:
           summary: This section looks at longer term changes in gas use monitored by individual meters at your school.
-          title: Long term trends
-        recent_trend:
-          title: Recent trend
         sections: The following sections provide more analysis of the gas use by individual meters
       charts:
         group_by_month_gas_meter_breakdown:

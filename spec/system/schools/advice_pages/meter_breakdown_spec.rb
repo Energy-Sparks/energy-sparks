@@ -73,6 +73,15 @@ shared_examples 'a meter breakdown page' do
       it 'does not include the long term trends' do
         expect(page).not_to have_css("#chart_wrapper_group_by_year_#{fuel_type}_meter_breakdown")
       end
+
+      it 'links to additional analysis' do
+        expect(page).to have_link(I18n.t("advice_pages.#{fuel_type}_costs.analysis.meter_breakdown.title"))
+        if fuel_type == :electricity
+          expect(page).to have_link(I18n.t('advice_pages.baseload.analysis.meter_breakdown.title'))
+          expect(page).to have_link(I18n.t('advice_pages.baseload.analysis.seasonal_variation.title'))
+          expect(page).to have_link(I18n.t('advice_pages.baseload.analysis.weekday_variation.title'))
+        end
+      end
     end
   end
 end

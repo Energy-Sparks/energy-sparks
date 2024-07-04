@@ -3,15 +3,16 @@
 <p><%= t("advice_pages.#{advice_page.key}.analysis.sections") %></p>
 
 <ul>
-  <li><%= link_to(t("advice_pages.#{advice_page.key}.analysis.recent_trend.title"), '#recent-trend') %></li>
+  <li><%= link_to(t('advice_pages.analysis.recent_trend.title'), '#recent-trend') %></li>
   <% if analysis_dates.one_years_data? %>
-    <li><%= link_to(t("advice_pages.#{advice_page.key}.analysis.long_term_trends.title"), '#long-term-trends') %></li>
+    <li><%= link_to(t('advice_pages.analysis.long_term_trends.title'), '#long-term-trends') %></li>
   <% end %>
+  <li><%= link_to(t('advice_pages.analysis.additional_analysis.title'), '#additional-analysis') %></li>
 </ul>
 
 <%= render 'schools/advice/section_title',
            section_id: 'recent-trend',
-           section_title: t("advice_pages.#{advice_page.key}.analysis.recent_trend.title") %>
+           section_title: t('advice_pages.analysis.recent_trend.title') %>
 
 <%= component 'chart', chart_type: "group_by_week_#{advice_page.key}_one_year".to_sym, school: @school do |c| %>
   <% c.with_title do
@@ -54,7 +55,7 @@
 <% if analysis_dates.one_years_data? %>
   <%= render 'schools/advice/section_title',
              section_id: 'long-term-trends',
-             section_title: t("advice_pages.#{advice_page.key}.analysis.long_term_trends.title") %>
+             section_title: t('advice_pages.analysis.long_term_trends.title') %>
 
   <p>
     <%= t("advice_pages.#{advice_page.key}.analysis.long_term_trends.summary") %>
@@ -75,3 +76,48 @@
     <% end %>
   <% end %>
 <% end %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'additional-analysis',
+           section_title: t('advice_pages.analysis.additional_analysis.title') %>
+
+<p>
+ <%= t('advice_pages.analysis.additional_analysis.summary') %>
+</p>
+
+<ul>
+  <li>
+    <%= link_to t("advice_pages.#{advice_page.fuel_type}_costs.analysis.meter_breakdown.title"),
+                advice_page_path(school,
+                                 AdvicePage.find_by(key: "#{advice_page.fuel_type}_costs"),
+                                 :analysis,
+                                 anchor: 'cost-breakdown-by-meter') %>
+  </li>
+
+  <% if advice_page.fuel_type.to_sym == :electricity %>
+    <% baseload = AdvicePage.find_by(key: :baseload) %>
+    <li>
+      <%= link_to t('advice_pages.baseload.analysis.meter_breakdown.title'),
+                  advice_page_path(school,
+                                   baseload,
+                                   :analysis,
+                                   anchor: 'meter-breakdown') %>
+    </li>
+
+    <li>
+      <%= link_to t('advice_pages.baseload.analysis.seasonal_variation.title'),
+                  advice_page_path(school,
+                                   baseload,
+                                   :analysis,
+                                   anchor: 'seasonal-variation') %>
+    </li>
+    <li>
+      <%= link_to t('advice_pages.baseload.analysis.weekday_variation.title'),
+                  advice_page_path(school,
+                                   baseload,
+                                   :analysis,
+                                   anchor: 'weekday-variation') %>
+    </li>
+  <% end %>
+
+</ul>
