@@ -10,7 +10,7 @@ div.application.container {
 }
 
 .navigation-margin {
-  // TBD
+  margin-top: 70px;
 }
 
 .top-nav-margin {
@@ -44,10 +44,6 @@ body p {
 
 .nowrap {
   white-space: nowrap;
-}
-
-nav li {
-  @include font(f8);
 }
 
 .bg-positive {
