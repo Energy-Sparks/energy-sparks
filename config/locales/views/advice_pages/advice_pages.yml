@@ -72,12 +72,12 @@ en:
         electricity_costs: Tariffs and costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
-        electricity_meter_breakdown: Use by meter
+        electricity_meter_breakdown: Meter comparisons
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
         gas_costs: Tariffs and costs
         gas_long_term: Long term changes
-        gas_meter_breakdown: Use by meter
+        gas_meter_breakdown: Meter comparisons
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
         heating_control: Heating control

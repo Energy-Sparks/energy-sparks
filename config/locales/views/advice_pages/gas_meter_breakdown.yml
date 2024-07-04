@@ -4,11 +4,11 @@ en:
     gas_meter_breakdown:
       analysis:
         long_term_trends:
-          summary: This section looks at longer term changes in gas use by individual meters at your school.
+          summary: This section looks at longer term changes in gas use monitored by individual meters at your school.
           title: Long term trends
         recent_trend:
           title: Recent trend
-        sections: The following sections provide more background and analysis on gas use by individual meters
+        sections: The following sections provide more analysis of the gas use by individual meters
       charts:
         group_by_month_gas_meter_breakdown:
           subtitle: This chart shows a monthly breakdown of gas use by meter over the last twelve months
@@ -23,6 +23,7 @@ en:
           link: Learn more
           text_html: |-
             <p>
-            Your school has multiple gas meters. This analysis shows gas use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
+            Your school has multiple gas meters. Comparising gas use across meters will help you focus on
+            improving energy efficiency in certain parts of your school which may have different usage patterns.
             </p>
-      page_title: Gas use by meter
+      page_title: Comparison of gas use by meter

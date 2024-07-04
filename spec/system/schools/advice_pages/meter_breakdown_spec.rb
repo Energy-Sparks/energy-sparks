@@ -67,7 +67,7 @@ shared_examples 'a meter breakdown page' do
   end
 end
 
-RSpec.describe 'meter breakdown advice pages', :aggregate_failures do
+RSpec.describe 'meter comparison advice pages', :aggregate_failures do
   before do
     Flipper.enable :meter_breakdowns
     create(:advice_page, key: key, fuel_type: fuel_type)
