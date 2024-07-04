@@ -74,13 +74,4 @@
       </p>
     <% end %>
   <% end %>
-
-  <%= render 'schools/advice/meter_breakdown_charts',
-             school: school,
-             meters: options_for_meter_select,
-             date_ranges_by_meter: date_ranges_by_meter,
-             chart_type: "group_by_month_#{advice_page.key}_unlimited".to_sym,
-             analysis_controls: true,
-             chart_title_key: "advice_pages.#{advice_page.key}.charts.group_by_week_#{advice_page.fuel_type}_unlimited.title",
-             chart_subtitle_key: "advice_pages.#{advice_page.key}.charts.group_by_week_#{advice_page.fuel_type}_unlimited.subtitle" %>
 <% end %>

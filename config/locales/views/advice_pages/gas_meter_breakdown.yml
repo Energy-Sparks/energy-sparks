@@ -13,9 +13,6 @@ en:
         group_by_month_gas_meter_breakdown:
           subtitle: This chart shows a monthly breakdown of gas use by meter over the last twelve months
           title: Monthly gas consumption by meter
-        group_by_week_gas_unlimited:
-          subtitle: Gas use from %{start_date} to %{end_date} for %{meter}
-          title: Long term gas use for a single meter
         group_by_year_gas_meter_breakdown:
           subtitle: This chart shows the annual change in gas use by meter
           title: Annual gas consumption by meter

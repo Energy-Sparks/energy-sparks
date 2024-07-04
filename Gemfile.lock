@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: a3cbbbce4f5445a17f280db5cf35d9555d14285a
+  revision: 25f54654bad93d21b82daf936270f9db5ff516da
   branch: 4388-improve-meter-breakdown-pages
   specs:
     energy-sparks_analytics (1.2.1)

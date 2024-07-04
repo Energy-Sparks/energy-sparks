@@ -10,10 +10,6 @@ module Schools
       def advice_page_key
         :electricity_meter_breakdown
       end
-
-      def meters
-        @meters ||= aggregate_school.electricity_meters.select { |meter| meter.fuel_type == :electricity }
-      end
     end
   end
 end
