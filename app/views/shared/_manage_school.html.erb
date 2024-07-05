@@ -65,9 +65,6 @@
     <%= if can? :expert_analyse, school
           link_to t('manage_school_menu.expert_analysis'), admin_school_analysis_path(school), class: 'dropdown-item'
         end %>
-    <%= if can? :view_advice_pages, school
-          link_to t('manage_school_menu.old_analysis_pages'), school_analysis_index_path(school), class: 'dropdown-item'
-        end %>
     <%= if can? :remove_school, school
           link_to t('manage_school_menu.remove_school'), removal_admin_school_path(school), class: 'dropdown-item'
         end %>

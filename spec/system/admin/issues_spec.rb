@@ -4,7 +4,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
   let!(:school_group_issues_admin) { create(:admin, name: 'Group Issues Admin') }
   let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin)}
   let!(:school) { create(:school, school_group: school_group) }
-  let!(:gas_meter) { create(:gas_meter, school: school) }
+  let!(:gas_meter) { create(:gas_meter, name: nil, school: school) }
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:other_issues_admin) { create(:admin, name: 'Other Issues Admin') }
   let!(:issue) {}

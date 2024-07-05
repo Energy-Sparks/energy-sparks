@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :gas_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn)  { |n| n }
+    sequence(:mpan_mprn) { |n| n }
+    sequence(:name, 'Meter AAAAA1')
     meter_type            { :gas }
     active                { true }
     meter_system          { :nhh_amr }
@@ -65,7 +66,8 @@ FactoryBot.define do
 
   factory :electricity_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn)  { |n| "10#{sprintf('%011d', n)}" }
+    sequence(:mpan_mprn) { |n| "10#{sprintf('%011d', n)}" }
+    sequence(:name, 'Meter AAAAA1')
     meter_type            { :electricity }
     active                { true }
     meter_system          { :nhh_amr }
@@ -136,7 +138,8 @@ FactoryBot.define do
 
   factory :solar_pv_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn)  { |n| "71#{sprintf('%012d', n)}" }
+    sequence(:mpan_mprn) { |n| "71#{sprintf('%012d', n)}" }
+    sequence(:name, 'Meter AAAAA1')
     meter_type            { :solar_pv }
     active                { true }
     meter_system          { :nhh_amr }
