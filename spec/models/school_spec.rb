@@ -685,8 +685,8 @@ describe School do
       it { expect(programme_types).to include(programme_type_1) }
       it { expect(programme_types.length).to be(1) }
 
-      it 'includes a count of activities completed in programme' do
-        expect(programme_types.first.activity_count).to be(2)
+      it 'includes a count of activity_types completed in programme' do
+        expect(programme_types.first.activity_type_count).to be(2)
       end
 
       context 'when school is already subscribed to programme type' do
@@ -714,8 +714,20 @@ describe School do
       end
 
       it 'includes activity counts' do
-        expect(programme_types.first.activity_count).to be(2)
-        expect(programme_types.second.activity_count).to be(1)
+        expect(programme_types.first.activity_type_count).to be(2)
+        expect(programme_types.second.activity_type_count).to be(1)
+      end
+    end
+
+    context 'when school has completed the same activity several times' do
+      before do
+        create_activity(programme_type_1.activity_types.first)
+        create_activity(programme_type_1.activity_types.first)
+        create_activity(programme_type_1.activity_types.first)
+      end
+
+      it 'includes a counts the activity types once' do
+        expect(programme_types.first.activity_type_count).to be(1)
       end
     end
 

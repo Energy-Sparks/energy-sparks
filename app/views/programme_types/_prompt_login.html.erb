@@ -1,4 +1,4 @@
-<div class="col-md-9">
+<div class="col-md-12">
   <div class="row alert info-bar text-dark bg-light" role="alert">
     <div class="col-lg-1 d-none d-lg-block align-self-center">
       <i class="fas fa-play-circle fa-3x"></i>
@@ -7,7 +7,9 @@
       <%= t('programme_types.prompt_login.are_you_an_energy_sparks_user_html') %>
     </div>
     <div class="col-lg-4 col-sm-12">
-      <%= link_to t('programme_types.prompt_login.sign_in_now'), sign_in_and_redirect_path(url: programme_type_path(programme_type)), class: 'btn btn-primary' %>
+      <%= link_to t('programme_types.prompt_login.sign_in_now'),
+                  sign_in_and_redirect_path(url: programme_type_path(programme_type)),
+                  class: 'btn btn-primary' %>
     </div>
   </div>
 </div>
