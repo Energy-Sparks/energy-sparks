@@ -24,6 +24,7 @@ module Programmes
           programme.programme_activities.create!(activity_type: programme_type_activity_type.activity_type, activity: activity)
         end
       end
+      programme.complete! if programme.all_activities_complete?
     end
 
     def latest_activity_this_academic_year(activity_type)

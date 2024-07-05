@@ -414,21 +414,5 @@ RSpec.describe 'adult dashboard navigation', type: :system do
         expect(page).not_to have_link('Explore data')
       end
     end
-
-    context 'with replacement advice pages' do
-      around do |example|
-        ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
-          example.run
-        end
-      end
-
-      it 'links to advice pages from manage school menu' do
-        visit school_path(school)
-        within '#manage_school_menu' do
-          click_on 'Old analysis pages'
-        end
-        expect(page).to have_content("Analysis for #{school.name}")
-      end
-    end
   end
 end

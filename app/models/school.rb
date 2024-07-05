@@ -358,7 +358,7 @@ class School < ApplicationRecord
   end
 
   def suggested_programme_types
-    ProgrammeType.active.with_school_activity_count(self)
+    ProgrammeType.active.with_school_activity_type_count(self)
       .merge(activities.in_academic_year(current_academic_year))
       .not_in(programme_types)
   end
@@ -698,6 +698,10 @@ class School < ApplicationRecord
 
   def holds_tariffs_of_type?(meter_type)
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type: meter_type).any?
+  end
+
+  def multiple_meters?(fuel_type)
+    meters.active.where(meter_type: fuel_type).count > 1
   end
 
   private
