@@ -30,10 +30,12 @@ en:
           electricity_costs: Review how much your school has recently spent on electricity
           electricity_intraday: Explore how your electricity use varies during the day
           electricity_long_term: See long term trends in your electricity use
+          electricity_meter_breakdown: A summary of use across your electricity meters
           electricity_out_of_hours: How much of your electricity use is outside of school hours?
           electricity_recent_changes: How has your electricity use changed over the last few weeks?
           gas_costs: Review how much your school has recently spent on gas
           gas_long_term: See long term trends in your gas use
+          gas_meter_breakdown: A summary of use across your gas meters
           gas_out_of_hours: How much of your gas use is outside of school hours?
           gas_recent_changes: How has your gas use changed over the last few weeks?
           heating_control: Review your central heating timings and use of gas to heat the school

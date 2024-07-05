@@ -282,12 +282,14 @@ Rails.application.routes.draw do
          :electricity_costs,
          :electricity_long_term,
          :electricity_intraday,
+         :electricity_meter_breakdown,
          :electricity_out_of_hours,
          :electricity_recent_changes,
          :heating_control,
          :thermostatic_control,
          :gas_costs,
          :gas_long_term,
+         :gas_meter_breakdown,
          :gas_out_of_hours,
          :gas_recent_changes,
          :hot_water,
@@ -309,8 +311,6 @@ Rails.application.routes.draw do
           get :alerts
         end
       end
-
-      resources :analysis, controller: :analysis, only: [:index, :show]
 
       resources :progress, controller: :progress, only: [:index] do
         collection do
@@ -729,6 +729,10 @@ Rails.application.routes.draw do
   # Maintain old scoreboard URL
   get '/schools/:name/scoreboard', to: redirect('/scoreboards')
 
+  # Old analysis pages
+  get '/schools/:name/analysis', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/analysis/:id', to: redirect('/schools/%{name}/advice')
+
   # Old teacher and management dashboards
   get '/teachers/schools/:name', to: redirect('/schools/%{name}')
   get '/management/schools/:name', to: redirect('/schools/%{name}')
@@ -738,4 +742,5 @@ Rails.application.routes.draw do
   # Old benchmark URLs
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
+
 end
