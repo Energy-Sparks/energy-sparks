@@ -3,43 +3,51 @@
 module Comparisons
   module Shared
     class ArbitraryPeriodController < BaseController
+      include MultipleTableComparison
+
       private
 
-      def set_headers(include_previous_period_unadjusted: true)
+      def set_headers(include_previous_period_unadjusted: true, holiday_name: false)
         super()
         @include_previous_period_unadjusted = include_previous_period_unadjusted
-        @electricity_colgroups = colgroups(fuel: false)
-        @electricity_headers = headers(fuel: false)
-        @heating_colgroups = colgroups(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
-        @heating_headers = headers(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted)
+        electricity_groups = header_groups(fuel: false, holiday_name: holiday_name)
+        @electricity_colgroups = colgroups(groups: electricity_groups)
+        @electricity_headers = headers(groups: electricity_groups)
+        heating_groups = header_groups(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted,
+                                       holiday_name: holiday_name)
+        @heating_colgroups = colgroups(groups: heating_groups)
+        @heating_headers = headers(groups: heating_groups)
         @period_type_string = I18n.t('comparisons.period_types.periods')
       end
 
-      def headers(fuel: true, previous_period_unadjusted: false)
+      def header_groups(fuel: true, previous_period_unadjusted: false, holiday_name: false)
         [
-          t('analytics.benchmarking.configuration.column_headings.school'),
-          fuel && t('analytics.benchmarking.configuration.column_headings.fuel'),
-          t('activerecord.attributes.school.activation_date'),
-          previous_period_unadjusted && t('comparisons.column_headings.previous_period_unadjusted'),
-          t('comparisons.column_headings.previous_period'),
-          t('comparisons.column_headings.current_period'),
-          t('analytics.benchmarking.configuration.column_headings.change_pct'),
-          t('comparisons.column_headings.previous_period'),
-          t('comparisons.column_headings.current_period'),
-          t('analytics.benchmarking.configuration.column_headings.change_pct'),
-          t('comparisons.column_headings.previous_period'),
-          t('comparisons.column_headings.current_period'),
-          t('analytics.benchmarking.configuration.column_headings.change_pct')
-        ].select(&:itself)
-      end
-
-      def colgroups(fuel: true, previous_period_unadjusted: false)
-        [
-          { label: '', colspan: fuel ? 3 : 2 },
+          { label: '',
+            headers: [
+              t('analytics.benchmarking.configuration.column_headings.school'),
+              fuel && t('analytics.benchmarking.configuration.column_headings.fuel'),
+              t('activerecord.attributes.school.activation_date'),
+              holiday_name && t('analytics.benchmarking.configuration.column_headings.most_recent_holiday')
+            ] },
           { label: t('analytics.benchmarking.configuration.column_groups.kwh'),
-            colspan: previous_period_unadjusted ? 4 : 3 },
-          { label: t('analytics.benchmarking.configuration.column_groups.co2_kg'), colspan: 3 },
-          { label: t('analytics.benchmarking.configuration.column_groups.gbp'), colspan: 3 }
+            headers: [
+              previous_period_unadjusted && t('comparisons.column_headings.previous_period_unadjusted'),
+              t('comparisons.column_headings.previous_period'),
+              t('comparisons.column_headings.current_period'),
+              t('analytics.benchmarking.configuration.column_headings.change_pct')
+            ], },
+          { label: t('analytics.benchmarking.configuration.column_groups.co2_kg'),
+            headers: [
+              t('comparisons.column_headings.previous_period'),
+              t('comparisons.column_headings.current_period'),
+              t('analytics.benchmarking.configuration.column_headings.change_pct')
+            ] },
+          { label: t('analytics.benchmarking.configuration.column_groups.gbp'),
+            headers: [
+              t('comparisons.column_headings.previous_period'),
+              t('comparisons.column_headings.current_period'),
+              t('analytics.benchmarking.configuration.column_headings.change_pct')
+            ] }
         ]
       end
 
@@ -47,8 +55,13 @@ module Comparisons
         :total_energy_use
       end
 
-      def table_names
-        %i[total electricity gas storage_heater]
+      def table_configuration
+        {
+          total: I18n.t('comparisons.tables.total_usage'),
+          electricity: I18n.t('comparisons.tables.electricity_usage'),
+          gas: I18n.t('comparisons.tables.gas_usage'),
+          storage_heater: I18n.t('comparisons.tables.storage_heater_usage')
+        }
       end
 
       def create_charts(_results)

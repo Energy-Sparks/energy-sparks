@@ -16,7 +16,7 @@
 <% else %>
   <p>
     <%= t("advice_pages.#{fuel_type}_long_term.insights.comparison.less_than_a_year",
-          available_date: analysis_dates.date_when_one_years_data.to_s(:es_short)) %>
+          available_date: analysis_dates.date_when_one_years_data.to_fs(:es_short)) %>
   </p>
   <p>
     <%= t("advice_pages.#{fuel_type}_long_term.insights.comparison.less_than_a_year_well_managed",
@@ -27,6 +27,6 @@
 <% if school.school_group.present? %>
   <p>
     <%= t("advice_pages.#{fuel_type}_long_term.insights.comparison.more_detail_html",
-          link: compare_for_school_group_path("annual_#{fuel_type}_costs_per_pupil", school)) %>
+          link: compare_for_school_group_path(compare_benchmark_key_for(@advice_page.key.to_sym), school)) %>
   </p>
 <% end %>

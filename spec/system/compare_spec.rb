@@ -28,21 +28,17 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
-  shared_examples 'a benchmark list page' do |edit: false|
+  shared_examples 'a benchmark list page' do |feature_flag:, edit: false|
     it { expect(page).to have_content('Benchmark group name') }
     it { expect(page).to have_content('Benchmark description') }
-    it { expect(page).to have_link('Baseload per pupil') }
 
-    it 'allows report group to be edited', if: edit do
-      within first('div.compare') do
-        expect(page).to have_link('Edit')
-      end
+    it "#{edit ? 'allows' : 'does not allow'} report group to be edited" do
+      expect(first('div.compare').has_link?('Edit')).to be edit
     end
 
-    it 'does not allow report group to be edited', unless: edit do
-      within first('div.compare') do
-        expect(page).not_to have_link('Edit')
-      end
+    context 'when using new comparison', if: feature_flag do
+      it { expect(page).to have_link('Baseload per pupil', href: %r{^/comparisons/baseload_per_pupil?}) }
+      it { expect(page).to have_no_link(Comparison::Report.find_by(key: 'disabled_report').title) }
     end
   end
 
@@ -234,6 +230,7 @@ describe 'compare pages', :compare, type: :system do
     before do
       if display_new_comparison_pages
         create(:report, key: 'baseload_per_pupil', title: 'Baseload per pupil', introduction: 'intro html', public: true)
+        create(:report, key: 'disabled_report', title: 'Disabled Report', public: true, disabled: true)
       else
         expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
       end
@@ -353,7 +350,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
             it_behaves_like 'a filter summary', school_types_excluding: ['junior']
 
             context 'Changing options' do
@@ -400,7 +397,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
             it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
 
             context 'Changing options' do
@@ -447,7 +444,7 @@ describe 'compare pages', :compare, type: :system do
             end
 
             it_behaves_like 'a filter summary', school_types: ['primary']
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
 
             context 'Changing options' do
               before { click_on 'Change options' }
@@ -493,7 +490,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page'
+            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
             it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
 
             context 'Changing options' do
@@ -571,7 +568,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page', edit: feature_flag
+            it_behaves_like 'a benchmark list page', edit: feature_flag, feature_flag: feature_flag
             it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
             it_behaves_like 'a filter summary', funder: 'Grant Funder'
 
@@ -650,6 +647,36 @@ describe 'compare pages', :compare, type: :system do
       context 'when there are no unlisted schools' do
         it_behaves_like 'a results page with unlisted schools', unlisted_count: 0
       end
+    end
+  end
+
+  context 'when comparison report redirect is switched on', type: :request do
+    before do
+      Flipper.enable :comparison_reports_redirect
+      get old_compare_url
+    end
+
+    context 'with school groups' do
+      let!(:school_group) { create(:school_group) }
+      let!(:school_group_2) { create(:school_group) }
+
+      let(:old_compare_url) { "/compare/baseload_per_pupil?school_group_ids%5B%5D=#{school_group.id}&school_group_ids%5B%5D=#{school_group_2.id}&school_types%5B%5D=primary&school_types%5B%5D=secondary&search=groups" }
+
+      it 'redirects to the new report' do
+        expect(response).to redirect_to("/comparisons/baseload_per_pupil?school_group_ids%5B%5D=#{school_group.id}&school_group_ids%5B%5D=#{school_group_2.id}&school_types%5B%5D=primary&school_types%5B%5D=secondary&search=groups")
+      end
+
+      it { expect(response.status).to eq(302) }
+    end
+
+    context 'without school groups' do
+      let(:old_compare_url) { '/compare/baseload_per_pupil?school_types%5B%5D=primary&school_types%5B%5D=secondary&search=groups' }
+
+      it 'redirects to the new pages' do
+        expect(response).to redirect_to('/comparisons/baseload_per_pupil?school_types%5B%5D=primary&school_types%5B%5D=secondary&search=groups')
+      end
+
+      it { expect(response.status).to eq(302) }
     end
   end
 

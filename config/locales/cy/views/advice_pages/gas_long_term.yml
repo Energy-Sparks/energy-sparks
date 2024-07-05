@@ -57,6 +57,8 @@ cy:
         comparison:
           callout_footer: defnydd nwy blynyddol
           how_do_you_compare: Sut mae eich defnydd o nwy ar gyfer y 12 mis diwethaf yn cymharu ag ysgolion %{school_type} eraill ar Sbarcynni, sydd â nifer tebyg o ddisgyblion?
+          less_than_a_year: Gan fod gennym llai na blwyddyn o ddata ar gyfer eich ysgol nid ydym eto'n gallu meincnodi eich defnydd o nwy yn erbyn ysgolion eraill. Bydd y gymhariaeth hon ar gael ar %{available_date}.
+          less_than_a_year_well_managed: Bydd ysgol a reolir yn dda gyda'r un nifer o ddisgyblion yn defnyddio %{usage}kWh o nwy mewn blwyddyn.
           more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
           title: Sut ydych chi'n cymharu?
         current_usage:

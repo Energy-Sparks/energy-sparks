@@ -10,7 +10,7 @@ RSpec.shared_examples 'the user does not have access to the tariff editor' do
         expect(page).to have_current_path("/schools/#{current_user.school.slug}", ignore_query: true)
       end
     elsif current_user.group_admin?
-      expect(page).to have_current_path("/school_groups/#{current_user.school_group.slug}", ignore_query: true)
+      expect(page).to have_current_path("/school_groups/#{current_user.school_group.slug}/map", ignore_query: true)
     else
       expect(page).to have_current_path('/schools', ignore_query: true)
     end
@@ -72,8 +72,8 @@ RSpec.shared_examples 'a tariff editor index' do
 
     it 'displays the gas tariff' do
       within '#gas-tariffs-table' do
-        expect(page).to have_content(gas_tariff.start_date.to_s(:es_compact))
-        expect(page).to have_content(gas_tariff.end_date.to_s(:es_compact))
+        expect(page).to have_content(gas_tariff.start_date.to_fs(:es_compact))
+        expect(page).to have_content(gas_tariff.end_date.to_fs(:es_compact))
         expect(page).to have_link(gas_tariff.name)
         expect(page).to have_link('Edit')
         expect(page).to have_link('Delete') unless tariff_holder.site_settings?
@@ -82,8 +82,8 @@ RSpec.shared_examples 'a tariff editor index' do
 
     it 'displays the electricity tariff' do
       within '#electricity-tariffs-table' do
-        expect(page).to have_content(electricity_tariff.start_date.to_s(:es_compact))
-        expect(page).to have_content(electricity_tariff.end_date.to_s(:es_compact))
+        expect(page).to have_content(electricity_tariff.start_date.to_fs(:es_compact))
+        expect(page).to have_content(electricity_tariff.end_date.to_fs(:es_compact))
         expect(page).to have_link(electricity_tariff.name)
         expect(page).to have_link('Edit')
         expect(page).to have_link('Delete') unless tariff_holder.site_settings?
@@ -145,8 +145,8 @@ RSpec.shared_examples 'the user can create a tariff' do
     expect(energy_tariff.meters).to match_array([])
 
     energy_tariff_price = energy_tariff.energy_tariff_prices.first
-    expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.end_time.to_s(:time)).to eq('23:30')
+    expect(energy_tariff_price.start_time.to_fs(:time)).to eq('00:00')
+    expect(energy_tariff_price.end_time.to_fs(:time)).to eq('23:30')
     expect(energy_tariff_price.value).to eq(0.15)
     expect(energy_tariff_price.units).to eq('kwh')
 

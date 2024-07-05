@@ -1,0 +1,19 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link do
+       link_to t("advice_pages.#{@advice_page.fuel_type}_meter_breakdown.insights.what_is_a_meter_breakdown.link"),
+               learn_more_school_advice_gas_meter_breakdown_path(@school)
+     end %>
+  <%= t("advice_pages.#{@advice_page.fuel_type}_meter_breakdown.insights.what_is_a_meter_breakdown.text_html") %>
+<% end %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'current',
+           section_title: t("advice_pages.#{@advice_page.fuel_type}_meter_breakdown.insights.current_usage.title") %>
+
+<%= render 'schools/advice/meter_breakdown/usage_breakdown_table',
+           fuel_type: @advice_page.fuel_type,
+           summary: true,
+           school: @school,
+           analysis_dates: @analysis_dates,
+           meters_for_breakdown: @meters_for_breakdown,
+           usage_breakdown: @annual_usage_meter_breakdown %>

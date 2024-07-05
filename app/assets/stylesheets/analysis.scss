@@ -33,13 +33,13 @@ div.axis-controls label:hover {
   font-weight: bold;
 }
 
-div.analysis-chart, div.usage-chart{
+div.analysis-chart, div.usage-chart {
   height: 700px;
   width: 100%;
   text-align: center;
-  color: #999;
+  color: $dark-grey;
   line-height: 700px;
-  font-size: 14px;
+  font-size: $f7;
   margin: 0 auto;
   padding-bottom: 25px;
   padding-top: 10px;
@@ -68,7 +68,7 @@ div.popover {
 
 .table-success, .table-success > th, .table-success > td {
   background-color: $green !important;
-  color: #fff;
+  color: $white;
 }
 
 .table .thead-dark th {
@@ -101,14 +101,14 @@ div.popover {
 .highcharts-loading-inner,
 .highcharts-loading-inner:before,
 .highcharts-loading-inner:after {
-  background: #dfdfdf;
+  background: $light-grey;
   -webkit-animation: load1 1s infinite ease-in-out;
   animation: load1 1s infinite ease-in-out;
   width: 1em;
   height: 4em;
 }
 .highcharts-loading-inner {
-  color: #dfdfdf;
+  color: $light-grey;
   text-indent: -9999em;
   margin: 0 auto;
   top: 50%!important;
@@ -159,8 +159,8 @@ div.popover {
 }
 
 .highcharts-tooltip>span {
-    background: rgba(255,255,255,1);
-    border: 1px solid silver;
+    background: $white;
+    border: 1px solid $silver;
     border-radius: 3px;
     box-shadow: 1px 1px 2px #888;
     padding: 8px;
@@ -168,5 +168,5 @@ div.popover {
 }
 
 .highcharts-subtitle {
-  font-size: $f5;
+  font-size: $default-font-size;
 }

@@ -38,8 +38,7 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
   let!(:report) { create(:report, key: key) }
 
-  before do
-    create(:advice_page, key: advice_page_key)
+  let!(:alerts) do
     alert_run = create(:alert_generation_run, school: school)
 
     alert_type = create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark')
@@ -55,12 +54,24 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
     )
   end
 
+  before do
+    create(:advice_page, key: advice_page_key)
+  end
+
   context 'when viewing report' do
     before { visit "/comparisons/#{key}" }
 
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
+
+    it_behaves_like 'a school comparison report with multiple tables',
+      table_titles: [
+        I18n.t('comparisons.tables.total_usage'),
+        I18n.t('comparisons.tables.electricity_usage'),
+        I18n.t('comparisons.tables.gas_usage'),
+        I18n.t('comparisons.tables.storage_heater_usage')
+      ]
 
     context 'with a total table' do
       it_behaves_like 'a school comparison report with a table' do

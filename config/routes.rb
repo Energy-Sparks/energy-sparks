@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   get "/robots.txt" => "robots_txts#show", as: :robots
-  get 'up', to: 'health#show'
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
   # old urls maintained to avoid breakage
   get 'for-teachers', to: redirect('/for-schools')
@@ -94,17 +94,16 @@ Rails.application.routes.draw do
     resources :annual_energy_costs_per_floor_area, only: [:index], concerns: :unlisted
     resources :annual_energy_costs_per_pupil, only: [:index], concerns: :unlisted
     resources :annual_energy_costs, only: [:index], concerns: :unlisted
+    resources :annual_energy_use, only: [:index], concerns: :unlisted
     resources :annual_gas_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_heating_costs_per_floor_area, only: [:index], concerns: :unlisted
     resources :annual_storage_heater_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :baseload_per_pupil, only: [:index], concerns: :unlisted
-    resources :change_in_electricity_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
     resources :change_in_electricity_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
     resources :change_in_electricity_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
     resources :change_in_electricity_since_last_year, only: [:index], concerns: :unlisted
     resources :change_in_energy_since_last_year, only: [:index], concerns: :unlisted
     resources :change_in_energy_use_since_joined_energy_sparks, only: [:index], concerns: :unlisted
-    resources :change_in_gas_consumption_recent_school_weeks, only: [:index], concerns: :unlisted
     resources :change_in_gas_holiday_consumption_previous_holiday, only: [:index], concerns: :unlisted
     resources :change_in_gas_holiday_consumption_previous_years_holiday, only: [:index], concerns: :unlisted
     resources :change_in_gas_since_last_year, only: [:index], concerns: :unlisted
@@ -118,6 +117,8 @@ Rails.application.routes.draw do
     resources :heat_saver_march_2024, only: [:index], concerns: :unlisted
     resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
     resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
+    resources :heating_vs_hot_water, only: [:index], concerns: :unlisted
+    resources :holiday_and_term, only: [:index], concerns: :unlisted
     resources :holiday_usage_last_year, only: [:index], concerns: :unlisted
     resources :hot_water_efficiency, only: [:index], concerns: :unlisted
     resources :recent_change_in_baseload, only: [:index], concerns: :unlisted
@@ -132,10 +133,6 @@ Rails.application.routes.draw do
     get '*key/unlisted', to: 'configurable_period#unlisted'
     get '*key', to: 'configurable_period#index', as: :configurable_period
   end
-
-  # redirect old benchmark URLs
-  get '/benchmarks', to: redirect('/compare')
-  get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
   get 'version', to: 'version#show'
 
@@ -285,12 +282,14 @@ Rails.application.routes.draw do
          :electricity_costs,
          :electricity_long_term,
          :electricity_intraday,
+         :electricity_meter_breakdown,
          :electricity_out_of_hours,
          :electricity_recent_changes,
          :heating_control,
          :thermostatic_control,
          :gas_costs,
          :gas_long_term,
+         :gas_meter_breakdown,
          :gas_out_of_hours,
          :gas_recent_changes,
          :hot_water,
@@ -312,8 +311,6 @@ Rails.application.routes.draw do
           get :alerts
         end
       end
-
-      resources :analysis, controller: :analysis, only: [:index, :show]
 
       resources :progress, controller: :progress, only: [:index] do
         collection do
@@ -399,7 +396,6 @@ Rails.application.routes.draw do
       resource :your_school_estate, only: [:edit, :update]
 
       resources :alerts, only: [:show]
-      resources :find_out_more, controller: :find_out_more
 
       resources :interventions do
         member do
@@ -445,9 +441,6 @@ Rails.application.routes.draw do
 
       resource :consents, only: [:show, :create]
     end
-
-    # Maintain old scoreboard URL
-    get '/scoreboard', to: redirect('/schools')
   end
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
@@ -514,7 +507,7 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
-        resources :meter_updates, only: [:index] do
+        resources :meter_updates, only: [:index], param: :fuel_type do
           post :bulk_update_meter_data_source
           post :bulk_update_meter_procurement_route
         end
@@ -718,17 +711,6 @@ Rails.application.routes.draw do
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
 
-  #redirect from old teacher dashboard
-  namespace :teachers do
-    get '/schools/:name', to: redirect('/management/schools/%{name}')
-  end
-
-  namespace :management do
-    resources :schools, only: :show do
-      resources :management_priorities, only: :index
-    end
-  end
-
   namespace :pupils do
     resource :session, only: [:create]
     resources :schools, only: :show do
@@ -736,4 +718,29 @@ Rails.application.routes.draw do
       get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
     end
   end
+
+  # LEGACY PATHS
+  # Old paths that (may) have been indexed by crawlers or used in comms/emails that
+  # we want to maintain and redirect.
+
+  # Old 'find out more' pages
+  get '/schools/:name/find_out_more', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/find_out_more/:id', to: redirect('/schools/%{name}/advice')
+  # Maintain old scoreboard URL
+  get '/schools/:name/scoreboard', to: redirect('/scoreboards')
+
+  # Old analysis pages
+  get '/schools/:name/analysis', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/analysis/:id', to: redirect('/schools/%{name}/advice')
+
+  # Old teacher and management dashboards
+  get '/teachers/schools/:name', to: redirect('/schools/%{name}')
+  get '/management/schools/:name', to: redirect('/schools/%{name}')
+  # Old management priorities list
+  get '/management/schools/:name/management_priorities', to: redirect('/schools/%{name}/advice/priorities')
+
+  # Old benchmark URLs
+  get '/benchmarks', to: redirect('/compare')
+  get '/benchmark', to: redirect(BenchmarkRedirector.new)
+
 end

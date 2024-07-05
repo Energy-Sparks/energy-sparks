@@ -36,11 +36,11 @@ class ProgrammeType < ApplicationRecord
   scope :default_first, -> { order(default: :desc) }
   scope :featured, -> { active.default_first.by_title }
 
-  scope :with_school_activity_count, ->(school) {
+  scope :with_school_activity_type_count, ->(school) {
     joins(activity_types: :activities)
     .where(activity_types: { activities: { school: school } })
-    .select('programme_types.*, COUNT(activities.id) activity_count')
-    .group('programme_types.id').order(activity_count: :desc)
+    .select('programme_types.*, COUNT(distinct activity_types.id) activity_type_count')
+    .group('programme_types.id').order(activity_type_count: :desc)
   }
 
   scope :not_in, ->(programme_types) { where.not(id: programme_types) }
@@ -77,6 +77,18 @@ class ProgrammeType < ApplicationRecord
       activity = school.activities.find_by(activity_type_id: programme_type_activity_type.activity_type_id)
       [programme_type_activity_type.activity_type, activity]
     end
+  end
+
+  # Provide a list of activity types a school has already completed this year for this programme type
+  # regardless of having signed up to the programme
+  def activity_type_ids_for_school(school)
+    activity_types.pluck(:id) & school.activity_types_in_academic_year.pluck(:id)
+  end
+
+  # Has the provided school already completed all activity types this year?
+  # regardless of having signed up to the programme
+  def all_activity_types_completed_for_school?(school)
+    (activity_types.pluck(:id) - school.activity_types_in_academic_year.pluck(:id)).empty?
   end
 
   def self.tx_resources

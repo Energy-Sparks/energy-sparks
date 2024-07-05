@@ -6,6 +6,7 @@ class CompareController < ApplicationController
   before_action :benchmark_groups, only: [:benchmarks]
 
   before_action :set_school_groups, only: [:index]
+  before_action :comparison_reports_redirect, only: [:show]
   before_action :set_included_schools, only: [:benchmarks, :show]
   helper_method :index_params
 
@@ -13,7 +14,7 @@ class CompareController < ApplicationController
   def index
     # Count is of all available benchmarks for guest users only
     if Flipper.enabled?(:comparison_reports, current_user)
-      @benchmark_count = Comparison::Report.where(public: true).count
+      @benchmark_count = Comparison::Report.where(public: true, disabled: false).count
     else
       @benchmark_count = Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
     end
@@ -100,5 +101,11 @@ class CompareController < ApplicationController
   # Set list of school groups visible to this user
   def set_school_groups
     @school_groups = ComparisonService.new(current_user).list_school_groups.select(&:has_visible_schools?)
+  end
+
+  def comparison_reports_redirect
+    if Flipper.enabled?(:comparison_reports_redirect, current_user)
+      redirect_to controller: "comparisons/#{filter.delete(:benchmark)}", **filter
+    end
   end
 end

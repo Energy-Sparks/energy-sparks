@@ -49,20 +49,20 @@ describe 'configurable_period' do
         create(:alert, school: school, alert_generation_run: alert_run,
                        alert_type: AlertType.find_by(class_name: AlertConfigurablePeriodElectricityComparison.name),
                        variables: variables,
-                       custom_period: report.custom_period)
+                       comparison_report: report)
       end
       heating_usage_variables = variables.merge(previous_period_kwh_unadjusted: 1800.0)
       if gas
         create(:alert, school: school, alert_generation_run: alert_run,
                        alert_type: AlertType.find_by(class_name: AlertConfigurablePeriodGasComparison.name),
                        variables: heating_usage_variables,
-                       custom_period: report.custom_period)
+                       comparison_report: report)
       end
       if storage_heater # rubocop:disable Style/Next
         create(:alert, school: school, alert_generation_run: alert_run,
                        alert_type: AlertType.find_by(class_name: AlertConfigurablePeriodStorageHeaterComparison.name),
                        variables: heating_usage_variables,
-                       custom_period: report.custom_period)
+                       comparison_report: report)
       end
     end
   end
@@ -102,6 +102,14 @@ describe 'configurable_period' do
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { reports[0] }
     end
+
+    it_behaves_like 'a school comparison report with multiple tables',
+      table_titles: [
+        I18n.t('comparisons.tables.total_usage'),
+        I18n.t('comparisons.tables.electricity_usage'),
+        I18n.t('comparisons.tables.gas_usage'),
+        I18n.t('comparisons.tables.storage_heater_usage')
+      ]
 
     context 'with a total table' do
       it_behaves_like 'a school comparison report with a table' do

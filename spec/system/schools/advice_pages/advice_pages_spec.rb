@@ -81,7 +81,7 @@ RSpec.describe 'advice pages', type: :system do
         within '#page-nav' do
           click_on 'Energy use summary'
         end
-        expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_s(:es_short)}")
+        expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_fs(:es_short)}")
       end
     end
   end
@@ -184,9 +184,9 @@ RSpec.describe 'advice pages', type: :system do
     end
   end
 
-  context 'for a non-public school' do
+  context 'for a school with non-public analysis' do
     before do
-      school.update(public: false)
+      school.update(data_sharing: :within_group)
       sign_in(user) if user
       visit school_advice_path(school)
     end

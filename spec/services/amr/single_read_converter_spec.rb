@@ -647,6 +647,7 @@ module Amr
         valid_reading_times.each do |time_string|
           expect(Amr::SingleReadConverter).to be_valid_time_string(time_string)
         end
+        expect(Amr::SingleReadConverter).to be_valid_time_string('00:30:00')
       end
 
       it 'returns false if a time string is not in a format valid and usable by TimeOfDay parse' do

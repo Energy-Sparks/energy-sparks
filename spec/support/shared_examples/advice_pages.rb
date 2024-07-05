@@ -40,6 +40,12 @@ RSpec.shared_examples 'an advice page tab' do |tab:|
     end
   end
 
+  it 'shows 410 for an inactive school' do
+    school.update(active: false)
+    refresh
+    expect(page.status_code).to eq(410)
+  end
+
   context 'when restricted' do
     before do
       advice_page.update(restricted: true)
@@ -77,5 +83,19 @@ end
 RSpec.shared_examples 'an advice page showing electricity data warning' do
   it 'does show data warning' do
     expect(page).to have_content('We have not received data for your electricity usage for over thirty days')
+  end
+end
+
+RSpec.shared_examples 'an advice page with an alert notice' do |link: false|
+  it 'shows the notice' do
+    within('.alerts-component') do
+      expect(page).to have_content(expected_notice)
+    end
+  end
+
+  it 'has a link in the notice', if: link do
+    within('.alerts-component') do
+      expect(page).to have_link('View analysis')
+    end
   end
 end

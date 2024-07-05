@@ -2,7 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.1'
+ruby '~> 3.2.2'
+
+gem 'rails', '~> 7.1.0'
 
 # Rails/Core
 gem 'bootsnap'
@@ -15,7 +17,6 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'sprockets'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
-gem 'webpacker'
 gem 'wisper' # publish subscribe for ruby objects
 
 # Database/Data
@@ -26,20 +27,22 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.4'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '20230109-ruby32'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
-gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'update-gems-and-awesome-print'
+gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'
 
 # Assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'font-awesome-sass'
+gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sass-rails' # Use SCSS for stylesheets
-gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
+gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
+gem 'terser'
 
 # Pagination
 gem 'pagy'
@@ -70,9 +73,6 @@ gem 'view_component'
 gem 'handlebars_assets'
 # Template variables
 gem 'mustache', '~> 1.0'
-
-# User input
-gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'cancancan', '~> 3' # Use cancancan for authorization
@@ -113,14 +113,15 @@ gem 'roo-xls'
 gem 'premailer-rails'
 
 # Feature flags
-gem "flipper-ui", "~> 1.3"
-gem "flipper-active_record", "~> 1.3"
+gem 'flipper-active_record', '~> 1.3'
+gem 'flipper-ui', '~> 1.3'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'byebug', platform: :mri
   gem 'climate_control'
+  gem 'debug'
   gem 'factory_bot_rails'
   gem 'fakefs', require: 'fakefs/safe'
   gem 'foreman'
@@ -171,5 +172,4 @@ group :test do
   gem 'show_me_the_cookies'
   gem 'simplecov', require: false, group: :test
   gem 'test-prof'
-  gem 'timecop'
 end

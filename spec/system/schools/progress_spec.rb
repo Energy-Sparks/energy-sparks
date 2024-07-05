@@ -35,8 +35,8 @@ describe 'target progress report', type: :system do
       cumulative_targets_kwh: cumulative_targets_kwh,
       cumulative_usage_kwh: cumulative_usage_kwh,
       cumulative_performance: cumulative_performance,
-      cumulative_performance_versus_synthetic_last_year: cumulative_performance,
-      monthly_performance_versus_synthetic_last_year: monthly_performance,
+      cumulative_performance_versus_synthetic_last_year: [],
+      monthly_performance_versus_synthetic_last_year: [],
       partial_months: partial_months,
       percentage_synthetic: percentage_synthetic
     )
@@ -98,7 +98,9 @@ describe 'target progress report', type: :system do
 
       context 'with a link to the expired target report' do
         context 'and an expired target for the same fuel' do
-          let!(:expired_target) { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday, electricity: 1) }
+          let!(:expired_target) do
+            create(:school_target, :with_progress_report, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday, electricity: 1)
+          end
 
           before { refresh }
 
@@ -123,7 +125,7 @@ describe 'target progress report', type: :system do
       end
 
       it 'includes summary of the target dates' do
-        expect(page).to have_content("Your school has set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_s(:es_full)} and #{school_target.target_date.to_s(:es_full)}")
+        expect(page).to have_content("Your school has set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_fs(:es_full)} and #{school_target.target_date.to_fs(:es_full)}")
       end
 
       it 'shows the electricity progress report with expected data' do
@@ -283,7 +285,7 @@ describe 'target progress report', type: :system do
       end
 
       it 'includes summary of the target dates' do
-        expect(page).to have_content("Your school set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_s(:es_full)} and #{school_target.target_date.to_s(:es_full)}")
+        expect(page).to have_content("Your school set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_fs(:es_full)} and #{school_target.target_date.to_fs(:es_full)}")
       end
 
       it 'shows the electricity progress report with expected data' do

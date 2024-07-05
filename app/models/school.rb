@@ -23,6 +23,10 @@
 #  alternative_heating_oil                             :boolean          default(FALSE), not null
 #  alternative_heating_oil_notes                       :text
 #  alternative_heating_oil_percent                     :integer          default(0)
+#  alternative_heating_water_source_heat_pump          :boolean          default(FALSE), not null
+#  alternative_heating_water_source_heat_pump_notes    :text
+#  alternative_heating_water_source_heat_pump_percent  :integer          default(0)
+#  archived_date                                       :date
 #  bill_requested                                      :boolean          default(FALSE)
 #  bill_requested_at                                   :datetime
 #  calendar_id                                         :bigint(8)
@@ -34,6 +38,7 @@
 #  created_at                                          :datetime         not null
 #  dark_sky_area_id                                    :bigint(8)
 #  data_enabled                                        :boolean          default(FALSE)
+#  data_sharing                                        :enum             default("public"), not null
 #  enable_targets_feature                              :boolean          default(TRUE)
 #  floor_area                                          :decimal(, )
 #  funder_id                                           :bigint(8)
@@ -95,6 +100,7 @@ class School < ApplicationRecord
   extend FriendlyId
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
+  include EnumDataSharing
 
   class ProcessDataError < StandardError; end
 
@@ -196,8 +202,8 @@ class School < ApplicationRecord
   # are archived, with chance of returning if we receive funding
   scope :active,              -> { where(active: true) }
   scope :inactive,            -> { where(active: false) }
-  scope :deleted,             -> { inactive.where.not(removal_date: nil) }
   scope :archived,            -> { inactive.where(removal_date: nil) }
+  scope :deleted,             -> { inactive.where.not(removal_date: nil) }
   scope :visible,             -> { active.where(visible: true) }
   scope :not_visible,         -> { active.where(visible: false) }
   scope :process_data,        -> { active.where(process_data: true) }
@@ -352,7 +358,7 @@ class School < ApplicationRecord
   end
 
   def suggested_programme_types
-    ProgrammeType.active.with_school_activity_count(self)
+    ProgrammeType.active.with_school_activity_type_count(self)
       .merge(activities.in_academic_year(current_academic_year))
       .not_in(programme_types)
   end
@@ -525,7 +531,7 @@ class School < ApplicationRecord
   end
 
   def has_expired_target_for_fuel_type?(fuel_type)
-    has_expired_target? && expired_target.try(fuel_type).present?
+    has_expired_target? && expired_target.try(fuel_type).present? && expired_target.saved_progress_report_for(fuel_type).present?
   end
 
   def has_expired_target?
@@ -692,6 +698,10 @@ class School < ApplicationRecord
 
   def holds_tariffs_of_type?(meter_type)
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type: meter_type).any?
+  end
+
+  def multiple_meters?(fuel_type)
+    meters.active.where(meter_type: fuel_type).count > 1
   end
 
   private

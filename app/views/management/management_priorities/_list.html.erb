@@ -13,7 +13,7 @@
       <% management_priorities.each do |priority| %>
         <tr>
           <td scope="row">
-            <%= priority.management_priorities_title  %>
+            <%= priority.management_priorities_title %>
             <% if local_assigns[:show_debug] %>
               <%= link_to t('management.priorities.alert'), school_alert_path(school, priority.alert) %>
               <%= t('management.priorities.priority') %>: <%= priority.priority %>
@@ -34,7 +34,8 @@
     <% if local_assigns[:show_more] %>
       <tfoot>
         <tr>
-          <td colspan="5" class="text-right"><%= link_to t('management.priorities.more_opportunities'), management_school_management_priorities_path(school)  %></td>
+          <td colspan="5" class="text-right"><%= link_to t('management.priorities.more_opportunities'),
+                                                         priorities_school_advice_path(school) %></td>
         </tr>
       </tfoot>
     <% end %>

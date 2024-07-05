@@ -400,3 +400,47 @@ RSpec.shared_examples 'school group tabs not showing the cluster column' do
     it_behaves_like 'a page not showing the cluster column in the download'
   end
 end
+
+RSpec.shared_examples 'a page with a recent usage table' do
+  it 'has correct table header' do
+    within '.advice-table' do
+      expect(page).to have_content('Electricity')
+      expect(page).to have_content('Gas')
+      expect(page).to have_content('Storage heaters')
+      expect(page).to have_content('School')
+      expect(page).to have_content('Last week')
+      expect(page).to have_content('Last year')
+    end
+  end
+end
+
+RSpec.shared_examples 'schools are filtered by permissions' do |admin: false, school_admin: false|
+  let(:data_sharing) { :within_group }
+  let!(:filtered_school) { create(:school, school_group: school_group, data_sharing: data_sharing)}
+
+  before do
+    visit school_group_path(school_group)
+  end
+
+  context 'with data sharing set to within_group' do
+    it 'does not show the school', unless: admin || school_admin do
+      expect(page).not_to have_content(filtered_school.name)
+    end
+
+    it 'shows all the schools', if: admin || school_admin do
+      expect(page).to have_content(filtered_school.name)
+    end
+  end
+
+  context 'with data sharing set to private' do
+    let(:data_sharing) { :private }
+
+    it 'does not show the school', unless: admin do
+      expect(page).not_to have_content(filtered_school.name)
+    end
+
+    it 'shows all the schools', if: admin do
+      expect(page).to have_content(filtered_school.name)
+    end
+  end
+end

@@ -3,6 +3,36 @@ FactoryBot.define do
     attribute_type { :function_switch }
     input_data { 'heating_only' }
     association :meter, factory: :gas_meter
+    replaces { nil }
+
+    trait :replaced do
+      replaced_by { create(:meter_attribute) }
+    end
+
+    trait :deleted do
+      replaced
+      deleted_by { create(:admin) }
+    end
+
+    trait :heating_only do
+      attribute_type { 'function_switch' }
+      input_data { 'heating_only' }
+    end
+
+    trait :kitchen_only do
+      attribute_type { 'function_switch' }
+      input_data { 'kitchen_only' }
+    end
+
+    trait :hotwater_only do
+      attribute_type { 'function_switch' }
+      input_data { 'hotwater_only' }
+    end
+
+    trait :aggregation_switch do
+      attribute_type { 'aggregation_switch' }
+      input_data { 'ignore_start_date' }
+    end
   end
 
   factory :storage_heaters_attribute, class: 'MeterAttribute' do

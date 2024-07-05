@@ -21,7 +21,7 @@
 .advice-table {
   thead {
     background-color: $dark-blue !important;
-    color: white;
+    color: $white;
     th {
       border-bottom: 0px;
       border-top: 0px;
@@ -44,25 +44,10 @@
   }
 }
 
-.advice-priority-table {
-  margin-top: 10px !important;
-
-  td h4 {
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-
-  td h4 div.trix-content div {
-    font-size: inherit;
-  }
-
-  td h4 a div.trix-content div {
-    font-size: inherit;
-  }
-}
 .text-positive {
   color: $green;
 }
+
 .text-negative {
   color: $new-red;
 }
@@ -92,9 +77,13 @@
 .advice-page-benchmark-colored-label {
   @extend .advice-page-benchmark-label;
   font-weight: bold;
-  color: white;
+  color: $white;
   a {
     color: inherit;
     text-decoration: none;
   }
+}
+
+.advice-question-icon {
+  color: $bright-blue;
 }

@@ -49,7 +49,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
 
         it 'includes expected data' do
           expect(find('table.advice-table')).to have_content(
-            ["#{reading_start_date.to_s(:es_short)} - #{Time.zone.today.to_s(:es_short)}",
+            ["#{reading_start_date.to_fs(:es_short)} - #{Time.zone.today.to_fs(:es_short)}",
              '44,000',
              '9,200',
              '£4,400',
@@ -81,6 +81,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
 
         it 'includes the comparison' do
           expect(page).to have_css('#gas-comparison')
+          expect(page).to have_link('compare with other schools in your group', href: compare_path(benchmark: :annual_heating_costs_per_floor_area, school_group_ids: [school.school_group.id]))
         end
       end
     end

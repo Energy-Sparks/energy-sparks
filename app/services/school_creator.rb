@@ -9,7 +9,7 @@ class SchoolCreator
 
   def onboard_school!(onboarding)
     @school.assign_attributes(
-      onboarding.slice(:school_group, :template_calendar, :dark_sky_area, :scoreboard, :weather_station)
+      onboarding.slice(:school_group, :template_calendar, :dark_sky_area, :scoreboard, :weather_station, :funder)
     )
     if @school.valid?
       @school.transaction do
@@ -75,6 +75,7 @@ private
 
   def copy_onboarding_details_to_school(onboarding)
     @school.update!(
+      data_sharing: onboarding.data_sharing,
       public: onboarding.school_will_be_public,
       chart_preference: onboarding.default_chart_preference
     )

@@ -7,12 +7,12 @@
     margin-left: auto;
 
     &-body {
-      background-color: #fff9b2;
+      background-color: $light-yellow;
     }
 
     &-current {
       .bar-body {
-        background-color: #ffde4d;
+        background-color: $dark-yellow;
       }
     }
   }
@@ -21,4 +21,3 @@
     border-color: $grey;
   }
 }
-

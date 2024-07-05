@@ -144,3 +144,35 @@ RSpec.shared_context 'storage advice page' do
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)
   end
 end
+
+RSpec.shared_context 'displayable alert content' do
+  let(:template_data) { {} }
+  let(:template_data_cy) { {} }
+  let(:alert_text) { 'Expected alert content' }
+  let(:alert_text_cy) { 'Welsh alert content' }
+
+  before do
+    alert_type_rating = create(
+      :alert_type_rating,
+      alert_type: alert_type,
+      rating_from: 0,
+      rating_to: 10,
+      management_dashboard_alert_active: true,
+    )
+    create(
+      :alert_type_rating_content_version,
+      alert_type_rating: alert_type_rating,
+      management_dashboard_title_en: alert_text,
+      management_dashboard_title_cy: alert_text_cy,
+    )
+    create(:alert, :with_run,
+      alert_type: alert_type,
+      run_on: Time.zone.today,
+      school: school,
+      rating: 5.0,
+      template_data: template_data,
+      template_data_cy: template_data_cy
+    )
+    Alerts::GenerateContent.new(school).perform
+  end
+end

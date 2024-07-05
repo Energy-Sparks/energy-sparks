@@ -69,5 +69,15 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
         service.perform
       end
     end
+
+    context 'when an error it thrown' do
+      before do
+        allow(Alerts::GenerateContent).to receive(:new).and_raise
+      end
+
+      it 'does not raise' do
+        expect { service.perform }.not_to raise_error
+      end
+    end
   end
 end

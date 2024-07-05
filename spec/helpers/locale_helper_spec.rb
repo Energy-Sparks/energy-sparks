@@ -36,7 +36,7 @@ describe LocaleHelper do
     end
 
     it 'shows missing translations (might want to adjust this)' do
-      expect(helper.t_fuels_as_sentence([:wibble, :gas])).to eq('translation missing: en.common.wibble and gas')
+      expect { helper.t_fuels_as_sentence([:wibble, :gas]) }.to raise_error(I18n::MissingTranslationData)
     end
 
     it 'handles empty list' do

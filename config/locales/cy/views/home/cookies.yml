@@ -1,0 +1,58 @@
+cy:
+  cookie_banner:
+    accept: Derbyn
+    learn_more: Dysgu rhagor
+    notice: Rydym yn defnyddio rhai cwcis hanfodol i wneud i Sbarcynni weithio. Hoffem hefyd ddefnyddio cwcis dadansoddol fel y gallwn ddeall sut rydych yn defnyddio'r gwasanaeth a gwneud gwelliannau.
+    reject: Gwrthod
+  cookies:
+    analytics:
+      accepted_msg: Mae eich dewis cwcis wedi'i ddiweddaru. Rydych chi wedi derbyn cwcis dadansoddol
+      explain: Diweddaru neu newid eich dewis.
+      ga:
+        expires: 2 flynedd
+        purpose: Gwirio a ydych wedi ymweld â Sbarcynni o’r blaen. Mae hyn yn ein helpu i gyfrif faint o bobl sy'n ymweld â'n gwefan.
+      gid:
+        expires: 24 awr
+        purpose: Gwirio a ydych wedi ymweld â Sbarcynni o’r blaen. Mae hyn yn ein helpu i gyfrif faint o bobl sy'n ymweld â'n gwefan.
+      intro_html: |-
+        <p>
+        Gyda'ch caniatâd, rydym yn defnyddio cwcis Google Analytics i gasglu data am sut rydych yn defnyddio Sbarcynni. Mae'r wybodaeth hon yn ein helpu i wella ein gwasanaeth.
+        </p>
+        <p>
+        Ni chaniateir i Google ddefnyddio na rhannu ein data dadansoddeg ag unrhyw un.
+        </p>
+        <p>
+        Mae Google Analytics yn storio gwybodaeth ddienw am sut wnaethoch chi gyrraedd Sbarcynni, y tudalennau rydych yn ymweld â nhw ar Sbarcynni, a faint o amser rydych yn ei dreulio arnyn nhw.
+        </p>
+      question: Ydych chi am dderbyn cwcis dadansoddol?
+      rejected_msg: Mae eich dewis cwcis wedi'i ddiweddaru. Rydych chi wedi gwrthod cwcis dadansoddol
+      title: Cwcis Google Analytics (dewisol)
+    essential:
+      intro_html: |-
+        <p>Mae cwcis hanfodol yn cadw eich gwybodaeth yn ddiogel tra byddwch yn defnyddio Sbarcynni. Nid oes angen i ni ofyn am ganiatâd i'w defnyddio.
+        </p>
+      preference:
+        expires: 1 flwyddyn
+        purpose: Yn cadw eich gosodiadau caniatâd cwci
+      remember:
+        expires: Ar ôl 2 wythnos, neu pan fyddwch yn allgofnodi.
+        purpose: Fe'u defnyddir i'ch cadw wedi mewngofnodi am gyfnod hirach, os dewiswch "Aros wedi'ch mewngofnodi".
+      session:
+        expires: Pan fyddwch yn cau'r porwr.
+        purpose: Fe'u defnyddir i'ch cadw wedi mewngofnodi
+      title: Cwcis hanfodol
+    expires: Yn darfod
+    intro_html: |-
+      <p>
+        Ffeiliau bach yw cwcis sy’n cael eu cadw ar eich ffôn, llechen neu gyfrifiadur pan fyddwch chi’n ymweld â gwefan.
+      </p>
+      <p>
+        Rydym yn defnyddio cwcis i wneud i Sbarcynni weithio a chasglu gwybodaeth am sut rydych yn defnyddio ein gwasanaeth.
+      </p>
+      <p>
+        Am ragor o wybodaeth, ewch i <a href="https://allaboutcookies.org">allaboutcookies.org</a>. Neu
+       gwelwch ein <a href="%{privacy_and_cookie_policy}">polisi preifatrwydd a chwcis</a> manwl.
+      </p>
+    name: Enw
+    purpose: Pwrpas
+    title: Cwcis

@@ -51,6 +51,8 @@ RSpec.shared_examples 'a school comparison report' do |school_types: nil, school
     let(:alerts) {} # rubocop:disable Lint/EmptyBlock
 
     it 'works with no data' do
+      # TODO: seems like this might be brittle but want to ensure the test hasn't created any alerts
+      expect(Alert.count).to eq(0)
       expect(page).to have_content(expected_report.title)
     end
   end
@@ -84,6 +86,23 @@ RSpec.shared_examples 'a school comparison report with a chart' do
   it 'includes a chart' do
     within '#charts' do
       expect(page).to have_css("#chart_#{chart_name}")
+    end
+  end
+end
+
+RSpec.shared_examples 'a school comparison report with multiple tables' do |table_titles: nil|
+  it 'includes a table of contents' do
+    within '#table-list' do
+      expect(page).to have_css('li', count: table_titles.size)
+    end
+  end
+
+  it 'includes all table titles' do
+    index = 0
+    while index < table_titles.size
+      expect(page).to have_css("#report-table-#{index + 1}")
+      expect(page).to have_content(table_titles[index])
+      index += 1
     end
   end
 end

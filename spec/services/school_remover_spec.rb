@@ -86,34 +86,85 @@ describe SchoolRemover, :schools, type: :service do
   end
 
   describe '#remove_school!' do
-    it 'marks the school as inactive, sets removal date and deletes any school meter or school issues' do
-      service.remove_school!
-      expect(school.active).to be_falsey
-      expect(school.process_data).to be_falsey
-      expect(school.removal_date).to eq(Time.zone.today)
-      expect(electricity_meter.issues.count).to eq 0
-      expect(gas_meter.issues.count).to eq 0
-      expect(school.issues.count).to eq 0
+    context 'when archive flag is set to false (pure delete)' do
+      context 'when school is not visible' do
+        before do
+          service.remove_school!
+        end
+
+        it 'marks the school as inactive' do
+          expect(school.active).to be_falsey
+        end
+
+        it 'sets process_data to false' do
+          expect(school.process_data).to be_falsey
+        end
+
+        it 'sets the removal_date to today' do
+          expect(school.removal_date).to eq(Time.zone.today)
+        end
+
+        it 'deletes any school meter or school issues' do
+          expect(electricity_meter.issues.count).to eq 0
+          expect(gas_meter.issues.count).to eq 0
+          expect(school.issues.count).to eq 0
+        end
+      end
+
+      context 'when school is visiable' do
+        before do
+          school.update(visible: true)
+        end
+
+        it 'raises error' do
+          expect do
+            service.remove_school!
+          end.to raise_error(SchoolRemover::Error)
+        end
+      end
     end
 
-    it 'fails if school is visible' do
-      school.update(visible: true)
-      expect do
-        service.remove_school!
-      end.to raise_error(SchoolRemover::Error)
-    end
-
-    context 'when archive flag set true' do
+    context 'when archive flag set true (archive - soft delete)' do
       let(:archive) { true }
 
-      it 'marks the school as inactive but with no removal date or issue deletion' do
-        service.remove_school!
-        expect(school.active).to be_falsey
-        expect(school.process_data).to be_falsey
-        expect(school.removal_date).to be_nil
-        expect(electricity_meter.issues.count).to eq 1
-        expect(gas_meter.issues.count).to eq 1
-        expect(school.issues.count).to eq 3
+      context 'when school is not visible' do
+        before do
+          service.remove_school!
+        end
+
+        it 'marks the school as inactive' do
+          expect(school.active).to be_falsey
+        end
+
+        it 'sets process_data to false' do
+          expect(school.process_data).to be_falsey
+        end
+
+        it 'sets the removal_date to nil' do
+          expect(school.removal_date).to be_nil
+        end
+
+        it 'sets the archived_date to today' do
+          expect(school.archived_date).to eq(Time.zone.today)
+        end
+
+        it 'does not remove issues' do
+          expect(electricity_meter.issues.count).to eq 1
+          expect(gas_meter.issues.count).to eq 1
+          expect(school.issues.count).to eq 3
+        end
+      end
+
+      context 'when school is visiable' do
+        before do
+          school.update(visible: true)
+        end
+
+        it 'raises error' do
+          expect do
+            service.remove_school!
+          end.to raise_error(SchoolRemover::Error)
+        end
       end
     end
   end

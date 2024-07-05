@@ -5,10 +5,6 @@ module SchoolsHelper
     date.strftime('%A, %d %B %Y')
   end
 
-  def colours_for_supply(supply)
-    supply == 'electricity' ? %w(#3bc0f0 #232b49) : %w(#ffac21 #ff4500)
-  end
-
   def meter_display_name(mpan_mprn)
     return mpan_mprn if mpan_mprn == 'all'
     meter = Meter.find_by_mpan_mprn(mpan_mprn)
@@ -40,6 +36,17 @@ module SchoolsHelper
       polymorphic_url(path_segments, params.merge(anchor: alert_type.link_to_section))
     else
       polymorphic_path(path_segments, params.merge(anchor: alert_type.link_to_section))
+    end
+  end
+
+  def data_sharing_colour(school)
+    case school.data_sharing.to_sym
+    when :public
+      'badge-success'
+    when :private
+      'badge-danger'
+    else
+      'badge-warning'
     end
   end
 end

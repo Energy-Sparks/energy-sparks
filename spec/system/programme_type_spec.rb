@@ -8,6 +8,8 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
   let!(:programme_type_1) { create(:programme_type_with_activity_types)}
   let!(:programme_type_2) { create(:programme_type, active: false)}
   let!(:programme_type_3) { create(:programme_type)}
+  let(:bonus_points) { 10 }
+  let!(:programme_4) { create(:programme_type_with_activity_types, bonus_score: bonus_points)}
 
   shared_examples 'a user enrolling in a programme' do
     before do
@@ -29,6 +31,59 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
       end.to change(Programme, :count).from(0).to(1)
       expect(page).to have_content('You started this programme')
       expect(school.reload.programmes).not_to be_empty
+    end
+  end
+
+  shared_examples 'a user that has not yet enrolled in a programme' do
+    let!(:programme) { programme_4 }
+
+    context 'user has not completed any activities' do
+      before do
+        click_on programme.title
+      end
+
+      it { expect(page).to have_content('You can enrol your school in this programme') }
+      it { expect(page).to have_link('Start') }
+    end
+
+    context 'when user has completed one activity' do
+      before do
+        create(:activity, school: school, activity_type: programme.activity_types.first, happened_on: Date.yesterday)
+        click_on programme.title
+      end
+
+      it { expect(page).to have_content("You've recently completed an activity that is part of this programme. Do you want to enrol in the programme?") }
+      it { expect(page).to have_link('Start') }
+    end
+
+    context 'when user has several activities' do
+      before do
+        create(:activity, school: school, activity_type: programme.activity_types.first, happened_on: Date.yesterday)
+        create(:activity, school: school, activity_type: programme.activity_types.second, happened_on: Date.yesterday)
+        click_on programme.title
+      end
+
+      it { expect(page).to have_content("You've recently completed 2 activities that are part of this programme. Do you want to enrol in the programme?") }
+      it { expect(page).to have_link('Start') }
+    end
+
+    context 'when user has completed all activities' do
+      before do
+        programme.activity_types.each do |activity_type|
+          create(:activity, school: school, activity_type: activity_type, happened_on: Date.yesterday)
+        end
+        click_on programme.title
+      end
+
+      it { expect(page).to have_content("You've completed all the activities in this programme. Mark it done to score 10 bonus points?") }
+      it { expect(page).to have_link('Complete') }
+
+      context 'when programme has no bonus points' do
+        let(:bonus_points) { 0 }
+
+        it { expect(page).to have_content("You've completed all the activities in this programme. Mark it as complete?") }
+        it { expect(page).to have_link('Complete') }
+      end
     end
   end
 
@@ -142,7 +197,7 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
         expect(page).not_to have_css('i.fa-circle.text-success')
       end
 
-      it 'doesnt prompt to start' do
+      it 'does not prompt to start' do
         expect(page).not_to have_content('You can enrol your school in this programme')
       end
 
@@ -176,6 +231,7 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
 
     it_behaves_like 'a no active programmes prompt'
     it_behaves_like 'a user enrolling in a programme'
+    it_behaves_like 'a user that has not yet enrolled in a programme'
     it_behaves_like 'a user that is enrolled in a programme'
   end
 
@@ -187,6 +243,7 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
 
     it_behaves_like 'a no active programmes prompt'
     it_behaves_like 'a user enrolling in a programme'
+    it_behaves_like 'a user that has not yet enrolled in a programme'
     it_behaves_like 'a user that is enrolled in a programme'
   end
 end

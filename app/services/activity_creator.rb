@@ -21,7 +21,7 @@ class ActivityCreator
   def process_programmes
     started_active_programmes.each do |programme|
       add_programme_activity(programme)
-      programme.complete! if completed_programme?(programme)
+      programme.complete! if programme.all_activities_complete?
     end
   end
 
@@ -69,13 +69,5 @@ class ActivityCreator
 
   def programme_activities(programme)
     programme.programme_activities.where(activity_type: @activity.activity_type)
-  end
-
-  def completed_programme?(programme)
-    # Completed programme if all activity types for the programme type are in the list of completed  activities
-    # (extra completed activities are ignored - activity types may have been removed from programme..)
-    programme_type_activity_ids = programme.programme_type.activity_types.pluck(:id)
-    programme_activity_types = programme.activities.map(&:activity_type).pluck(:id)
-    (programme_type_activity_ids - programme_activity_types).empty?
   end
 end

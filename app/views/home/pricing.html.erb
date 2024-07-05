@@ -1,13 +1,7 @@
 <% content_for :page_title, t('marketing.pricing.title') %>
 
 <div class="application container header-fix">
-  <div class="row mt-2">
-    <div class="col">
-      <div class="d-flex justify-content-between align-items-center">
-        <h1 class="display-4"><strong><%= t('marketing.pricing.title') %></strong></h1>
-      </div>
-    </div>
-  </div>
+  <h1><%= t('marketing.pricing.title') %></h1>
 
   <div class="row mb-4">
       <div class="col-md-4">
@@ -19,7 +13,7 @@
               <%= t('marketing.pricing.note') %>
             </small>
           </div>
-          <div class="card-footer" style="border-top: none; background-color: white;">
+          <div class="card-footer plain">
             <div class="d-flex justify-content-end cta">
               <%= link_to t('enrol.enrol_now'), enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
             </div>
@@ -36,7 +30,7 @@
               <%= t('marketing.pricing.note') %>
             </small>
           </div>
-          <div class="card-footer" style="border-top: none; background-color: white;">
+          <div class="card-footer plain">
             <div class="d-flex justify-content-end cta">
               <%= link_to t('enrol.enrol_now'), enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
             </div>
@@ -53,7 +47,7 @@
               <%= t('marketing.pricing.note') %>
             </small>
           </div>
-          <div class="card-footer" style="border-top: none; background-color: white;">
+          <div class="card-footer plain">
             <div class="d-flex justify-content-end cta">
               <%= render 'home/marketing/book_demo_embed', label: t('marketing.book_a_demo') %>
             </div>
