@@ -81,6 +81,16 @@
                     label: t('.alternative_heating_sources.notes') %>
       </div>
 
+      <%= f.input :alternative_heating_water_source_heat_pump,
+                  label: t('.alternative_heating_sources.water_source_heat_pump.label'),
+                  input_html: { data: { reveals: '.school_alternative_water_source_heat_pump_fields' } } %>
+      <div class='school_alternative_water_source_heat_pump_fields' data-revealed-by=".school_alternative_heating_water_source_heat_pump">
+        <%= f.input :alternative_heating_water_source_heat_pump_percent,
+                    label: t('.alternative_heating_sources.water_source_heat_pump.percentage') %>
+        <%= f.input :alternative_heating_water_source_heat_pump_notes,
+                    label: t('.alternative_heating_sources.notes') %>
+      </div>
+
       <%= f.submit t('common.labels.save'), class: 'btn btn-primary pt-6' %>
     <% end %>
   </div>

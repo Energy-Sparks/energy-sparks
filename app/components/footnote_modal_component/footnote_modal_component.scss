@@ -1,8 +1,11 @@
 .footnote-modal-header {
-  background: #232b49 !important;
-  color: white;
+  background: $dark-blue !important;
+}
+
+.footnote-modal-header h3 {
+  color: $white;
 }
 
 .footnote-modal-close-button {
-  color: white;
+  color: $white;
 }

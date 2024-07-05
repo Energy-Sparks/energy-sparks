@@ -7,6 +7,7 @@
 #  convert_to_kwh          :boolean          default(FALSE)
 #  created_at              :datetime         not null
 #  date_format             :text             not null
+#  delayed_reading         :boolean          default(FALSE), not null
 #  description             :text             not null
 #  enabled                 :boolean          default(TRUE), not null
 #  expected_units          :string

@@ -65,7 +65,7 @@
                       units: :kwh, final_row: false %>
     <%= render 'row', title: t('schools.school_targets.progress.expired.overall_change_since_last_year'),
                       progress: @progress,
-                      data: @progress.monthly_performance_versus_synthetic_last_year,
+                      data: @progress.monthly_performance,
                       keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {},
                       units: :relative_percent, final_row: true %>
     </tbody>
@@ -96,7 +96,7 @@
                       partial_months: @progress.partial_months, percentage_synthetic: {},
                       units: :kwh, final_row: false %>
     <%= render 'row', title: t('schools.school_targets.progress.expired.overall_performance_since_last_year'),
-                      data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @reporting_months,
+                      data: @progress.cumulative_performance, keys: @reporting_months,
                       partial_months: @progress.partial_months, percentage_synthetic: {},
                       units: :relative_percent, final_row: true %>
     </tbody>

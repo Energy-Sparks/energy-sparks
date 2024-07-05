@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SchoolGroups::MeterReport do
   let(:frozen_time) { Time.zone.now }
-  before { Timecop.freeze(frozen_time) }
-  after { Timecop.return }
+  before { travel_to(frozen_time) }
 
   let(:school_group) { create :school_group, name: 'A Group' }
   let(:all_meters) { false }

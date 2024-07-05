@@ -1,14 +1,50 @@
----
-en:
+cy:
   components:
     observation:
       activity:
-        message: Cwblhawyd gweithgaredd
-      audit_activities_completed:
-        message: Wedi cwblhau pob gweithgaredd archwilio
+        compact_message_html:
+          one: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} pwynt</strong> ar ôl iddynt recordio "<a href="%{compact_path}">%{target}</a>"
+          two: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} bwynt</strong> ar ôl iddynt recordio "<a href="%{compact_path}">%{target}</a>"
+          many: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} pwynt</strong> ar ôl iddynt recordio "<a href="%{compact_path}">%{target}</a>"
+          other: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} o bwyntiau</strong> ar ôl iddynt recordio "<a href="%{compact_path}">%{target}</a>"
+        message: Wedi cwblhau gweithgaredd
       audit:
-        message: Wedi cael archwiliad ynni
+        compact_message_html: Mae <a href="%{school_path}">%{school}</a> <a href="%{compact_path}">wedi derbyn archwiliad ynni</a>
+        message: Wedi derbyn archwiliad ynni
+      audit_activities_completed:
+        compact_message_html:
+          one: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} pwynt</strong> ar ôl iddynt <a href="%{compact_path}">gwblhau pob gweithgaredd archwilio ynni</a>
+          two: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} bwynt</strong> ar ôl iddynt <a href="%{compact_path}">gwblhau pob gweithgaredd archwilio ynni</a>
+          many: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} pwynt</strong> ar ôl iddynt <a href="%{compact_path}">gwblhau pob gweithgaredd archwilio ynni</a>
+          other: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} o bwyntiau</strong> ar ôl iddynt <a href="%{compact_path}">gwblhau pob gweithgaredd archwilio ynni</a>
+        message: Wedi cwblhau pob gweithgaredd archwilio
+      intervention:
+        compact_message_html:
+          one: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} pwynt</strong> ar ôl iddynt recordio "<a href="%{compact_path}">%{message}</a>"
+          two: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} bwynt</strong> ar ôl iddynt recordio "<a href="%{compact_path}">%{message}</a>"
+          many: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} pwynt</strong> ar ôl iddynt recordio "<a href="%{compact_path}">%{message}</a>"
+          other: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} o bwyntiau</strong> ar ôl iddynt recordio "<a href="%{compact_path}">%{message}</a>"
       programme:
-        message: Wedi cwblhau'r rhaglen
+        compact_message_html:
+          one: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} pwynt</strong> ar ôl iddynt <a href="%{compact_path}">gwblhau rhaglen</a>
+          two: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} bwynt</strong> ar ôl iddynt <a href="%{compact_path}">gwblhau rhaglen</a>
+          many: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} pwynt</strong> ar ôl iddynt <a href="%{compact_path}">gwblhau rhaglen</a>
+          other: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} o bwyntiau</strong> ar ôl iddynt <a href="%{compact_path}">gwblhau rhaglen</a>
+        message: Wedi cwblhau rhaglen
+      school_target:
+        compact_message_html: Mae <a href="%{school_path}">%{school}</a> wedi dechrau gweithio tuag at ei <a href="%{compact_path}">darged arbed ynni</a>
+        message: Wedi dechrau gweithio tuag at darged arbed ynni
       temperature:
-        message: Tymheredd a gofnodwyd yn
+        compact_message_html:
+          one: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count}pwynt</strong> trwy <a href="%{compact_path}">gofnodi tymereddau dan do</a>
+          two: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} bwynt</strong> trwy <a href="%{compact_path}">gofnodi tymereddau dan do</a>
+          many: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} phwynt</strong> trwy <a href="%{compact_path}">gofnodi tymereddau dan do</a>
+          other: Mae <a href="%{school_path}">%{school}</a> wedi sgorio <strong>%{count} o bwyntiau</strong> trwy <a href="%{compact_path}">gofnodi tymereddau dan do</a>
+        message: Wedi recordio tymereddau dan do yn
+      transport_survey:
+        compact_message_html: Mae <a href="%{school_path}">%{school}</a> wedi dechrau <a href="%{compact_path}">arolwg trafnidiaeth</a>
+        message:
+          one: Wedi recordio ateb arolwg trafnidiaeth
+          two: Wedi recordio %{count} ateb arolwg trafnidiaeth
+          many: Wedi recordio %{count} ateb arolwg trafnidiaeth
+          other: Wedi recordio %{count} ateb arolwg trafnidiaeth

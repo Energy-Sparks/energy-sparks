@@ -1,0 +1,22 @@
+<%= component 'chart', chart_type: :group_by_week_gas_meter_breakdown_one_year, school: @school do |c| %>
+  <% c.with_title do
+       t('advice_pages.gas_long_term.charts.group_by_week_gas_meter_breakdown_one_year.title')
+     end %>
+  <% c.with_subtitle do
+       t('advice_pages.gas_long_term.charts.group_by_week_gas_meter_breakdown_one_year.subtitle')
+     end %>
+  <% c.with_header do %>
+    <p>
+      <%= t('advice_pages.gas_long_term.charts.group_by_week_gas_meter_breakdown_one_year.header') %>
+    </p>
+  <% end %>
+<% end %>
+
+<%= render 'schools/advice/meter_breakdown/usage_breakdown_table',
+           fuel_type: @advice_page.fuel_type,
+           school: @school,
+           analysis_dates: @analysis_dates,
+           meters_for_breakdown: @meters_for_breakdown,
+           usage_breakdown: @annual_usage_meter_breakdown %>
+
+<p><%= t('advice_pages.electricity_long_term.analysis.meter_breakdown.table_explanation') %></p>

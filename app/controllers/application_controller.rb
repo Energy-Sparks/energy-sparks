@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::Base
   include DefaultUrlOptionsHelper
-
-  protect_from_forgery with: :exception
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
@@ -84,10 +82,6 @@ class ApplicationController < ActionController::Base
 
   def pagy_locale
     @pagy_locale = I18n.locale.to_s
-  end
-
-  def header_fix_enabled
-    @header_fix_enabled = true
   end
 
   # user has signed in via devise "remember me" functionality

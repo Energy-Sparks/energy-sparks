@@ -10,7 +10,7 @@ describe 'Alert' do
     alert_1 = create(:alert, school: school, alert_type: gas_fuel_alert_type, created_at: Time.zone.today)
     alert_2 = create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Time.zone.today)
 
-    expect(Alert.without_exclusions).to eq([alert_1, alert_2])
+    expect(Alert.without_exclusions).to match_array([alert_1, alert_2])
 
     SchoolAlertTypeExclusion.create(school: school, alert_type: gas_fuel_alert_type)
     expect(Alert.without_exclusions).to eq([alert_2])

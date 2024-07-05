@@ -57,6 +57,7 @@ cy:
         electricity_targets: Cynnydd yn erbyn targed trydan
         gas_consumption_during_holiday: Defnydd nwy yn ystod y gwyliau presennol
         gas_targets: Cynnydd yn erbyn targed nwy
+        heat_saver_march_2024: Arbedwr Gwres Mawrth 2024
         heating_coming_on_too_early: Amser cychwyn gwres
         heating_in_warm_weather: Gwres a ddefnyddir mewn tywydd cynnes
         holiday_usage_last_year: Cost yr ynni a ddefnyddiwyd yn ystod y gwyliau sydd i ddod y llynedd
@@ -64,6 +65,7 @@ cy:
         jan_august_2022_2023_energy_comparison: Defnydd ynni Ionawr i Awst 2022 i 2023
         layer_up_powerdown_day_november_2022: Newid mewn ynni ar gyfer diwrnod cydio mewn siwmper/pŵeru i lawr 11 Tachwedd 2022 (o gymharu â 12 Tachwedd 2021)
         layer_up_powerdown_day_november_2023: Newid mewn ynni ar gyfer diwrnod cydio mewn siwmper pweru i lawr 24 Tachwedd 2023 (o gymharu â 17 Tachwedd 2023)
+        optimum_start_analysis: Dadansoddiad cychwyn gorau posib
         recent_change_in_baseload: Newid diweddar yn y llwyth sylfaenol
         seasonal_baseload_variation: Amrywiad llwyth sylfaenol tymhorol
         sept_nov_2021_2022_energy_comparison: Medi i Ragfyr 2021 yn erbyn defnydd ynni 2022
@@ -202,7 +204,7 @@ cy:
           last_year_saving_if_improve_to_exemplar: 'Cynilo os gwella i batrwm enghreifftiol y llynedd '
           last_year_saving_per_1c_reduction_in_thermostat: Arbed fesul gostyngiad o 1C mewn thermostat
           last_year_storage_heater_costs_£: Costau stôr-wresogydd y llynedd
-          last_year_storage_heater_kwh_pupil: Stôr-wresogydd y llynedd kWh/disgybl
+          last_year_storage_heater_kwh_pupil: kWh/disgybl stôr-wresogyddion y llynedd
           last_year_storage_heater_£: Stôr-wresogydd y llynedd £
           last_year_weekend_and_holiday_costs: Costau penwythnos a gwyliau llynedd
           layer_down_day: Diwrnod haenu i lawr
@@ -297,7 +299,7 @@ cy:
           unadjusted_kwh: Newid heb ei addasu (kWh)
           urn: URN
           variation_in_baseload_between_days_of_week: Amrywiad yn llwyth sylfaenol rhwng diwrnodau'r wythnos
-          w_floor_area: w/arwynebedd llawr
+          w_floor_area: W/arwynebedd llawr
           weekend: Penwythnos
           winter_baseload_kw: Llwyth sylfaenol y gaeaf kW
           year_before_joined: Blwyddyn cyn ymuno
@@ -538,7 +540,7 @@ cy:
           introduction_text_html: "<p>Mae’r meincnod hwn yn dangos sut mae ysgol yn gwneud cynnydd yn erbyn y targed y mae wedi’i osod ar gyfer eleni.</p>"
         footnotes:
           electricity:
-            change_rows_text: "<li>(*1) mae'r gymhariaeth wedi ei addasu oherwydd bod nifer y disgyblion wedi newid rhwng y ddau %{period_type_string} ar gyfer %{schools_to_sentence}.</li>"
+            change_rows_text: "<li>(*1) mae'r gymhariaeth wedi ei addasu oherwydd bod nifer y disgyblion wedi newid rhwng y ddau %{period_type_string}.</li>"
             infinite_decrease_school_names_text: "<li>(*3) ysgolion lle mae'r newid canrannol yn -Mae anfeidredd yn cael ei achosi gan fod y defnydd trydan yn y %{period_type_string} cyfredol yn sero ond yn y %{period_type_string} blaenorol roedd yn fwy na sero</li>"
             infinite_increase_school_names_text: "<li>(*2) ysgolion lle mae'r newid canrannol yn +Anfeidredd yn cael ei achosi gan fod y defnydd o drydan yn y %{period_type_string} blaenorol yn fwy na sero ond yn y %{period_type_string} sero cyfredol</li>"
           gas:

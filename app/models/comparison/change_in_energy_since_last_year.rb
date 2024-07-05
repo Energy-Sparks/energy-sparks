@@ -63,8 +63,8 @@ class Comparison::ChangeInEnergySinceLastYear < Comparison::View
     )
   end
 
-  def total_previous_period(unit: :kwh, mode: :strict)
-    return all_previous_period(unit: unit).sum(&:to_f)
+  def total_previous_period(unit: :kwh)
+    all_previous_period(unit: unit).sum(&:to_f)
   end
 
   # Override this. The underlying alert doesn't generate variables for

@@ -1,36 +1,40 @@
 h1, .trix-content h1 {
-  font-size: $f1;
+  @include font(f1);
+}
+
+h2, .trix-content h2 {
+  @include font(f2);
+}
+
+h3, .trix-content h3 {
+  @include font(f3);
+}
+
+h4, .trix-content h4 {
+  @include font(f4);
+}
+
+h5, .trix-content h5 {
+  @include font(f5);
+}
+
+h6, .trix-content h6 {
+  @include font(f6);
+}
+
+h1, .trix-content h1 {
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-h2, .trix-content h2 {
-  font-size: $f2;
-}
-
-h3, .trix-content h3 {
-  font-size: $f3;
-}
-
-h4, .trix-content h4 {
-  font-size: $f4;
-}
-
-h5, .trix-content h5 {
-  font-size: $f5;
-}
-
 h2,
-h3,
-.trix-content h2,
-.trix-content h3 {
+.trix-content h2 {
   padding-top: 10px;
   padding-bottom: 20px;
 }
 
-h4,
-h5,
-h6,
+h3, h4, h5, h6,
+.trix-content h3,
 .trix-content h4,
 .trix-content h5,
 .trix-content h6 {
@@ -45,86 +49,128 @@ h6,
   margin: 0px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  color: $dark-blue;
+  font-family: $header-font-family;
+  font-weight: $header-font-weight;
+}
+
+.trix-content div {
+  @include font(f6);
+}
+
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
   h1, .trix-content h1 {
-    font-size: $f6;
+    @include font(f4);
     padding-top: 5px;
     padding-bottom: 5px;
   }
 
   h2 {
-    font-size: $f7;
+    @include font(f5);
+  }
+
+  h3 {
+    @include font(f6);
+  }
+
+  h4 {
+    @include font(f7);
+  }
+
+  h5 {
+    @include font(f8);
   }
 
   .trix-content div {
-    font-size: $f7;
+    @include font(f8);
   }
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
   h1, .trix-content h1 {
-    font-size: $f5;
+    @include font(f3);
     padding-top: 10px;
     padding-bottom: 10px;
   }
 
   h2 {
-    font-size: $f6;
+    @include font(f4);
+  }
+
+  h3 {
+    @include font(f5);
+  }
+
+  h4 {
+    @include font(f6);
+  }
+
+  h5 {
+    @include font(f7);
   }
 
   .trix-content div {
-    font-size: $f6;
+    @include font(f7);
   }
 }
 
 // Medium devices (tablets, 768px and up) // max-width: 991.98px
 @media (min-width: 768px) and (max-width: 991.98px) {
   h1, .trix-content h1 {
-    font-size: $f4;
+    @include font(f2);
     padding-top: 10px;
     padding-bottom: 10px;
   }
 
   h2 {
-    font-size: $f5;
+    @include font(f3);
   }
 
-
-  .trix-content div {
-    font-size: $f5;
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  h1, .trix-content h1 {
-    font-size: $f3;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  h3 {
+    @include font(f4);
   }
 
-  h2 {
-    font-size: $f4;
+  h4 {
+    @include font(f5);
+  }
+
+  h5 {
+    @include font(f5);
   }
 
   .trix-content div {
-    font-size: $f5;
+    @include font(f6);
   }
 }
 
 // Large devices (desktops, 992px and up)
-// @media (min-width: 992px) and (max-width: 1199.98px) { ... }
-
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
+@media (min-width: 992px) and (max-width: 1199.98px) {
   h1, .trix-content h1 {
-    font-size: $f1;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    @include font(f2);
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  h2 {
+    @include font(f3);
+  }
+
+  h3 {
+    @include font(f4);
+  }
+
+  h4 {
+    @include font(f5);
+  }
+
+  h5 {
+    @include font(f5);
   }
 
   .trix-content div {
-    font-size: $f5;
+    @include font(f6);
   }
 }

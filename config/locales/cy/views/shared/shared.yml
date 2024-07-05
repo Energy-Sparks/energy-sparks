@@ -75,7 +75,6 @@ cy:
     manage_tariffs: Rheoli tariffau
     manage_users: Rheoli defnyddwyr
     meter_attributes: Priodweddau mesurydd
-    old_analysis_pages: Hen dudalennau dadansoddi
     remove_school: Tynnu'r ysgol
     review_targets: Adolygu targedau
     school_calendar: Calendr ysgol
@@ -116,6 +115,7 @@ cy:
     for_schools: Ar gyfer Ysgolion
     newsletters: Cylchlythyrau
     our_services: Ein gwasanaethau
+    pricing: Prisio
     training: Hyfforddiant
     videos: Fideos
   partners:

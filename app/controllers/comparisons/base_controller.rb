@@ -11,9 +11,11 @@ module Comparisons
     before_action :set_report
     before_action :set_results, only: [:index]
     before_action :set_unlisted_schools_count, only: [:index]
+    before_action :set_headers, only: [:index]
+
     helper_method :index_params
     helper_method :footnote_cache
-    before_action :set_headers, only: [:index]
+    helper_method :unlisted_message
 
     def index
       respond_to do |format|
@@ -42,12 +44,16 @@ module Comparisons
 
     private
 
-    def colgroups
+    def header_groups
       []
     end
 
-    def headers
-      []
+    def colgroups(groups: nil)
+      (groups || header_groups).each { |group| group[:colspan] = group[:headers].count(&:itself) }
+    end
+
+    def headers(groups: nil)
+      (groups || header_groups).pluck(:headers).flatten.select(&:itself)
     end
 
     def set_headers
@@ -162,6 +168,10 @@ module Comparisons
       filter = SchoolFilter.new(**school_params).filter
       filter = filter.accessible_by(current_ability, :show) unless include_invisible
       filter.pluck(:id)
+    end
+
+    def unlisted_message(count)
+      I18n.t('comparisons.unlisted.message', count: count)
     end
   end
 end

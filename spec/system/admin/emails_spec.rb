@@ -41,12 +41,12 @@ describe 'Emails', type: :system do
       it 'prevents the user from seeing the admin email preview page' do
         sign_in(group_admin)
         visit admin_mailer_previews_path
-        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}", ignore_query: true)
+        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}/map", ignore_query: true)
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}", ignore_query: true)
+        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}/map", ignore_query: true)
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}", ignore_query: true)
+        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}/map", ignore_query: true)
       end
     end
 

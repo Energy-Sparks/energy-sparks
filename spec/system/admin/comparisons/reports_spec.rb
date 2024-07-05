@@ -2,9 +2,8 @@
 
 require 'rails_helper'
 
-shared_examples 'a report page with valid attributes' do |action:|
+shared_examples 'a report page with valid attributes' do |action:, key:|
   before do
-    fill_in 'Key', with: 'New key'
     select 'Electricity', from: 'Report group'
     fill_in 'Title en', with: 'New title'
 
@@ -27,7 +26,7 @@ shared_examples 'a report page with valid attributes' do |action:|
   it { expect(page).to have_content("Report was successfully #{action}") }
 
   it do
-    expect(page).to have_selector(:table_row, { 'Key' => 'New key',
+    expect(page).to have_selector(:table_row, { 'Key' => key,
                                                 'Title' => 'New title',
                                                 'Group' => 'Electricity',
                                                 'Reporting period' =>
@@ -40,14 +39,12 @@ end
 
 shared_examples 'a report page with invalid attributes' do
   before do
-    fill_in 'Key', with: ''
     fill_in 'Title en', with: ''
 
     select 'Custom', from: 'Reporting period'
     click_on 'Save'
   end
 
-  it { expect(page).to have_content("Key *\ncan't be blank") }
   it { expect(page).to have_content("Title en\ncan't be blank") }
   it { expect(page).to have_content("Current label *\ncan't be blank") }
   it { expect(page).to have_content("Current start date *\ncan't be blank") }
@@ -62,7 +59,7 @@ end
 describe 'admin comparisons reports', :include_application_helper do
   let!(:admin)  { create(:admin) }
   let!(:report_group) { create(:report_group, title: 'Electricity') }
-  let!(:report) { create(:report, report_group: report_group) }
+  let!(:report) { create(:report, report_group: report_group, title: 'Original title') }
 
   describe 'when not logged in' do
     context 'when viewing the index' do
@@ -99,7 +96,7 @@ describe 'admin comparisons reports', :include_application_helper do
       it 'lists report' do
         within('table') do
           expect(page).to have_selector(:table_row,
-                                        { 'Key' => report.key,
+                                        { 'Key' => report.title.downcase.tr(' ', '_'),
                                           'Reporting period' => report.reporting_period.humanize,
                                           'Group' => report.report_group.title,
                                           'Title' => report.title,
@@ -118,7 +115,7 @@ describe 'admin comparisons reports', :include_application_helper do
         end
 
         it_behaves_like 'a report page with invalid attributes'
-        it_behaves_like 'a report page with valid attributes', action: 'updated'
+        it_behaves_like 'a report page with valid attributes', action: 'updated', key: 'original_title'
       end
 
       it { expect(page).to have_link('New') }
@@ -131,7 +128,7 @@ describe 'admin comparisons reports', :include_application_helper do
         end
 
         it_behaves_like 'a report page with invalid attributes'
-        it_behaves_like 'a report page with valid attributes', action: 'created'
+        it_behaves_like 'a report page with valid attributes', action: 'created', key: 'new_title'
       end
 
       it { expect(page).to have_link('Delete') }

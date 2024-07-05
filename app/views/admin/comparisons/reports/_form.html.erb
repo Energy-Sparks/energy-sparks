@@ -4,14 +4,13 @@
   <div class="col">
     <% url = report.new_record? ? admin_comparisons_reports_path : admin_comparisons_report_path(report) %>
     <%= simple_form_for(report, as: :report, url: url) do |f| %>
-      <%= f.input :key %>
       <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>
       <%= f.association :report_group, label_method: :title, value_method: :id, include_blank: false %>
       <%= f.input :reporting_period,
                   collection: Comparison::Report.reporting_periods.keys,
-                  label_method: ->(k) { k.humanize } %>
+                  label_method: :humanize %>
       <div class="custom_period">
         <div>
           <%= f.simple_fields_for :custom_period do |custom_period| %>
@@ -28,6 +27,7 @@
         <%= f.rich_text_area t_field(:notes, locale), as: :string %>
       <% end %>
       <%= f.input :public %>
+      <%= f.input :disabled %>
       <%= f.submit 'Save', class: 'btn btn-primary' %>
     <% end %>
   </div>

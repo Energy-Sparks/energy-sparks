@@ -1,7 +1,7 @@
 module SchoolGroups
   class CategoriseSchools
-    def initialize(school_group:)
-      @school_group = school_group
+    def initialize(schools:)
+      @schools = schools
     end
 
     def categorise_schools
@@ -33,7 +33,7 @@ module SchoolGroups
         INNER JOIN advice_pages ON advice_pages.id = advice_page_school_benchmarks.advice_page_id
         INNER JOIN schools ON schools.id = advice_page_school_benchmarks.school_id
         LEFT JOIN school_group_clusters ON school_group_clusters.id = schools.school_group_cluster_id
-        WHERE schools.school_group_id = #{@school_group.id}
+        WHERE schools.id IN (#{@schools.pluck(:id).join(',')})
         AND schools.active = true
         AND schools.visible = true
         ORDER BY advice_pages.key, schools.name;

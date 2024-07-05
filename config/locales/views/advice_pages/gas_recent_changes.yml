@@ -32,9 +32,6 @@ en:
         summary: This section gives a more detailed analysis of how your school’s gas consumption has changed recently. It can be particularly useful if trying to investigate a change in gas consumption or monitoring the impact of action taken in the school.
         title: Analysis
       insights:
-        how_do_you_compare:
-          summary_html: Compare your recent energy use <a href='%{comparison_link}'>against other schools in your group</a>.
-          title: How do you compare?
         link: Learn more
         next_steps: Try to ensure that you understand the causes of any significant changes in your gas consumption.
         summary: This page makes note of whether your gas use has increased or decreased recently.  Monitoring recent changes to your energy use can help you to assess the impacts of changes you have made, or quickly identify problems

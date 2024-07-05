@@ -1,41 +1,23 @@
-/* Font sizes */
-
-$f-super-big: 60px;
-$f0: 50px;
-$f1: 37.3px;
-$f2: 31.1px;
-$f3: 25.9px;
-$f4: 21.6px;
-$f5: 18px;
-$f6: 15px;
-$f7: 12.5px;
-$f8: 10px;
-
-$default-font-family: 'Quicksand', sans-serif;
-$default-font-size: $f5;
-
 body {
+  @include font(f6);
   font-family: $default-font-family;
-  font-weight: 500;
-  font-size: $default-font-size;
-  margin-top: 18px;
+  font-weight: $default-font-weight;
   overflow-x: hidden;
 }
 
-.f1 { font-size: $f1; }
-.f2 { font-size: $f2; }
-.f3 { font-size: $f3; }
-.f4 { font-size: $f4; }
-.f5 { font-size: $f5; }
-.f6 { font-size: $f6; }
-.f7 { font-size: $f7; }
-
 div.application.container {
-  margin-top: 53px;
   padding-bottom: 30px;
 }
 
-div.application.container.sub-nav {
+.navigation-margin {
+  margin-top: 70px;
+}
+
+.top-nav-margin {
+  margin-top: 53px;
+}
+
+.sub-nav-margin {
   margin-top: 100px;
 }
 
@@ -48,24 +30,20 @@ address {
   font-size: initial;
 }
 
-p.small {
-  font-size: $f6;
+body p {
+  @include font(f6);
+}
+
+.small {
+  @include font(f7);
 }
 
 .very-small {
-  font-size: $f7;
+  @include font(f8);
 }
 
 .nowrap {
   white-space: nowrap;
-}
-
-footer li {
-  font-size: $f6;
-}
-
-nav li {
-  font-size: $f6;
 }
 
 .bg-positive {
@@ -161,8 +139,8 @@ th.fixed-width-150 {
 
 div.meter-attributes {
   kbd {
-    color: black;
-    background-color: white;
+    color: $black;
+    background-color: $white;
   }
 }
 
@@ -175,7 +153,7 @@ div.meter-attributes {
 
 // imput fields with specified 'pattern' will highlight when invalid
 input:invalid {
-  color: red;
+  color: $new-red;
 }
 
 .funnel-image {
@@ -243,3 +221,50 @@ dl dt {
   background-color: transparent;
   padding: 0;
 }
+
+.bg-dark-blue {
+  background-color: $dark-blue;
+}
+
+.text-white {
+  color: $white;
+}
+
+.text-dark-blue {
+  color: $dark-blue;
+}
+
+.card .card-footer.plain {
+  border-top: none;
+  background-color: white;
+}
+
+// fuel colour styles
+
+@each $tag, $colour in $fuel-colours-light {
+  .bg-#{$tag}-light {
+    background-color: $colour;
+  }
+}
+
+@each $tag, $colour in $fuel-colours-dark {
+  .bg-#{$tag}-dark {
+    background-color: $colour;
+  }
+  .text-#{$tag} {
+    color: $colour;
+  }
+}
+
+@each $tag, $colour in $colours-comparison {
+  .bg-#{$tag} {
+    background-color: $colour !important;
+  }
+  .text-#{$tag} {
+    text-decoration: underline;
+    text-decoration-color: $colour;
+    text-decoration-thickness: 3px;
+    font-weight: bolder;
+  }
+}
+

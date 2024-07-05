@@ -27,7 +27,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
         expect(body).to include 'Modified readings (last 2 years)'
 
         within '.gappy-dates' do
-          expect(body).to include "15 days (#{(base_date + 1.day).to_s(:es_short)} to #{(base_date + 15.days).to_s(:es_short)})"
+          expect(body).to include "15 days (#{(base_date + 1.day).to_fs(:es_short)} to #{(base_date + 15.days).to_fs(:es_short)})"
         end
 
         within '.modified-dates' do
@@ -55,8 +55,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
 
     #### tests start here ####
 
-    before { Timecop.freeze(Time.zone.now) }
-    after { Timecop.return }
+    before { freeze_time }
 
     let(:school_group) { create :school_group }
     let(:to) { 'test@test.com' }
@@ -132,8 +131,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
   end
 
   describe '#issues_report' do
-    before { Timecop.freeze(Time.zone.now) }
-    after { Timecop.return }
+    before { travel_to(Time.zone.now) }
 
     let(:admin) { create(:admin) }
     let(:note) { create(:issue, issue_type: :note) }

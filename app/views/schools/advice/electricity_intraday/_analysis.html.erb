@@ -46,7 +46,7 @@
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.schooldays_chart_title') } %>
   <% c.with_subtitle do
        t("advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle.#{key_suffix}",
-         date: @analysis_dates.start_date.to_s(:es_short))
+         date: @analysis_dates.start_date.to_fs(:es_short))
      end %>
   <% c.with_footer do %>
     <p><%= t('advice_pages.electricity_intraday.analysis.charts.schooldays_chart_explanation_html') %></p>
@@ -61,7 +61,7 @@
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.holidays_chart_title') } %>
   <% c.with_subtitle do
        t("advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle.#{key_suffix}",
-         date: @analysis_dates.start_date.to_s(:es_short))
+         date: @analysis_dates.start_date.to_fs(:es_short))
      end %>
 <% end %>
 
@@ -73,7 +73,7 @@
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.weekends_chart_title') } %>
   <% c.with_subtitle do
        t("advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle.#{key_suffix}",
-         date: @analysis_dates.start_date.to_s(:es_short))
+         date: @analysis_dates.start_date.to_fs(:es_short))
      end %>
 <% end %>
 

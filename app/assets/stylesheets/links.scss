@@ -30,7 +30,7 @@ a.nav-link.active {
 a.badge.outline {
   outline: solid;
   outline-width: 1px;
-  outline-color: lightgray;
+  outline-color: $light-grey;
 }
 
 .btn,
@@ -41,7 +41,7 @@ a.badge.outline {
   color: $dark;
   background-image: linear-gradient($white, $light-grey);
   border-color: $grey;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   border-radius: 50rem !important;
 }
 
@@ -61,7 +61,7 @@ a.badge.outline {
 }
 
 .btn-dark-blue {
-  color: white;
+  color: $white;
   background-color: $dark-blue;
   background-image: none;
 }
@@ -79,7 +79,7 @@ a.badge.outline {
 
 .btn-group-xs > .btn, .btn-xs {
   padding: 1px 5px;
-  font-size: 12px;
+  font-size: $f9;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -97,7 +97,7 @@ a.badge.outline {
     outline: none;
     text-decoration: none;
     font-weight: bold;
-    color: white;
+    color: $white;
   }
 }
 
@@ -190,7 +190,7 @@ section.highlight {
   .btn:focus,
   .btn:active,
   .btn.active {
-    font-size: $f7;
+    @include font(f9);
   }
 }
 
@@ -201,6 +201,6 @@ section.highlight {
   .btn:focus,
   .btn:active,
   .btn.active {
-    font-size: $f7;
+    @include font(f9);
   }
 }

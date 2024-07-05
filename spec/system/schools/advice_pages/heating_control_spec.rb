@@ -96,7 +96,7 @@ RSpec.describe 'heating control advice page', type: :system do
       it 'includes expected data in table' do
         expect(page).to have_css('#heating-start-times')
         within('#heating-start-times') do
-          expect(page).to have_content(date.to_s(:es_full))
+          expect(page).to have_content(date.to_fs(:es_full))
           expect(page).to have_content('12')
           expect(page).to have_content('05:00')
           expect(page).to have_content('06:00')
@@ -118,7 +118,7 @@ RSpec.describe 'heating control advice page', type: :system do
         it 'includes expected data in table' do
           expect(page).to have_css('#heating-start-times')
           within('#heating-start-times') do
-            expect(page).to have_content(date.to_s(:es_full))
+            expect(page).to have_content(date.to_fs(:es_full))
             expect(page).to have_content('4')
             expect(page).to have_content('05:00')
             expect(page).to have_content('-')
@@ -136,7 +136,7 @@ RSpec.describe 'heating control advice page', type: :system do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
 
         it 'does not show the table' do
-          expect(page).not_to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html '))
+          expect(page).not_to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html'))
           expect(page).not_to have_css('#heating-start-times')
         end
       end

@@ -21,7 +21,6 @@
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
-#  funder_id                                :bigint(8)
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
 #  name                                     :string           not null
@@ -160,10 +159,6 @@ class SchoolGroup < ApplicationRecord
 
   def email_locales
     default_country == 'wales' ? [:en, :cy] : [:en]
-  end
-
-  def categorise_schools
-    SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools
   end
 
   def parent_tariff_holder

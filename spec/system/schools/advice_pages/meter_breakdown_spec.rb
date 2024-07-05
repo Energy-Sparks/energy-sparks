@@ -1,0 +1,143 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+shared_examples 'a meter breakdown advice page tab' do |tab:|
+  it_behaves_like 'an advice page tab', tab: tab do
+    let(:advice_page) { AdvicePage.find_by(key: key) }
+    let(:expected_page_title) { I18n.t("advice_pages.#{key}.page_title") }
+  end
+end
+
+shared_examples 'the meter breakdown is not available' do
+  let(:fuel_type) { :electricity }
+
+  it 'does not include a navbar link' do
+    visit school_advice_path(school)
+    expect(page).not_to have_content(I18n.t("advice_pages.#{key}.page_title"))
+  end
+
+  it 'redirects from the page' do
+    visit path
+    expect(page).to have_current_path(school_advice_path(school))
+  end
+end
+
+shared_examples 'a meter breakdown page' do
+  context 'when a school admin' do
+    before do
+      sign_in(create(:school_admin, school: school))
+      visit path
+    end
+
+    it_behaves_like 'a meter breakdown advice page tab', tab: 'Insights'
+
+    it 'includes a meter breakdown table' do
+      expect(page).to have_css('table#meter-breakdown-summary')
+      within 'table#meter-breakdown-summary' do
+        meters.each do |meter|
+          expect(page).to have_content(meter.mpan_mprn)
+          expect(page).to have_content(meter.name)
+        end
+      end
+    end
+
+    context 'when on the Analysis tab' do
+      before { click_on 'Analysis' }
+
+      it_behaves_like 'a meter breakdown advice page tab', tab: 'Analysis'
+
+      it 'includes the one year meter breakdown chart' do
+        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.title"))
+        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.subtitle"))
+        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.header"))
+        expect(page).to have_css("#chart_wrapper_group_by_week_#{fuel_type}_meter_breakdown_one_year")
+      end
+
+      it 'includes a meter breakdown table' do
+        expect(page).to have_css('table#meter-breakdown')
+        within 'table#meter-breakdown' do
+          meters.each do |meter|
+            expect(page).to have_content(meter.mpan_mprn)
+            expect(page).to have_content(meter.name)
+          end
+        end
+      end
+    end
+  end
+end
+
+RSpec.describe 'meter breakdown advice pages', :aggregate_failures do
+  before do
+    Flipper.enable :meter_breakdowns
+    create(:advice_page, key: key, fuel_type: fuel_type)
+  end
+
+  let(:key) { "#{fuel_type}_meter_breakdown".to_sym }
+
+  context 'with electricity' do
+    let(:fuel_type) { :electricity }
+
+    let(:school) do
+      school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
+      create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+      create(:electricity_meter_with_validated_reading_dates,
+             school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
+      create(:electricity_meter_with_validated_reading_dates,
+             school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 1.0)
+      school
+    end
+
+    it_behaves_like 'a meter breakdown page' do
+      let(:path) { school_advice_electricity_meter_breakdown_path(school) }
+      let(:meters) { school.meters.active.electricity }
+    end
+
+    context 'when school has only a single meter' do
+      let(:school) do
+        school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
+        create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+        create(:electricity_meter_with_validated_reading_dates,
+               school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
+        school
+      end
+
+      it_behaves_like 'the meter breakdown is not available' do
+        let(:path) { school_advice_electricity_meter_breakdown_path(school) }
+      end
+    end
+  end
+
+  context 'with gas' do
+    let(:fuel_type) { :gas }
+
+    let(:school) do
+      school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
+      create(:energy_tariff, :with_flat_price, meter_type: :gas, tariff_holder: school, start_date: nil, end_date: nil)
+      create(:gas_meter_with_validated_reading_dates,
+             school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
+      create(:gas_meter_with_validated_reading_dates,
+             school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 1.0)
+      school
+    end
+
+    it_behaves_like 'a meter breakdown page' do
+      let(:path) { school_advice_gas_meter_breakdown_path(school) }
+      let(:meters) { school.meters.active.gas }
+    end
+
+    context 'when school has only a single meter' do
+      let(:school) do
+        school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
+        create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+        create(:gas_meter_with_validated_reading_dates,
+               school: school, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
+        school
+      end
+
+      it_behaves_like 'the meter breakdown is not available' do
+        let(:path) { school_advice_gas_meter_breakdown_path(school) }
+      end
+    end
+  end
+end
