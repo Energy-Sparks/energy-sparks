@@ -16,6 +16,14 @@ module Schools
 
       private
 
+      def create_analysable
+        days_of_data = (analysis_end_date - analysis_start_date).to_i
+        OpenStruct.new(
+          enough_data?: days_of_data >= 7,
+          data_available_from: nil
+        )
+      end
+
       def redirect_if_single_meter
         redirect_to school_advice_path(@school) unless @school.multiple_meters?(fuel_type)
       end

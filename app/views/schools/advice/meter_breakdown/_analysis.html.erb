@@ -37,18 +37,20 @@
 
 <p><%= t("advice_pages.#{advice_page.fuel_type}_long_term.analysis.meter_breakdown.table_explanation") %></p>
 
-<%= component 'chart', chart_type: "group_by_month_#{advice_page.key}".to_sym, school: school do |c| %>
-  <% c.with_title do
-       t("advice_pages.#{advice_page.key}.charts.group_by_month_#{advice_page.key}.title",
-         fuel_type: I18n.t("analytics.common.#{advice_page.fuel_type}"))
-     end %>
-  <% c.with_subtitle do
-       t("advice_pages.#{advice_page.key}.charts.group_by_month_#{advice_page.key}.subtitle")
-     end %>
-  <% c.with_header do %>
-    <p>
-      <%= t("advice_pages.#{advice_page.fuel_type}_long_term.charts.group_by_week_#{advice_page.key}_one_year.header") %>
-    </p>
+<% if analysis_dates.months_of_data > 1 %>
+  <%= component 'chart', chart_type: "group_by_month_#{advice_page.key}".to_sym, school: school do |c| %>
+    <% c.with_title do
+         t("advice_pages.#{advice_page.key}.charts.group_by_month_#{advice_page.key}.title",
+           fuel_type: I18n.t("analytics.common.#{advice_page.fuel_type}"))
+       end %>
+    <% c.with_subtitle do
+         t("advice_pages.#{advice_page.key}.charts.group_by_month_#{advice_page.key}.subtitle")
+       end %>
+    <% c.with_header do %>
+      <p>
+        <%= t("advice_pages.#{advice_page.fuel_type}_long_term.charts.group_by_week_#{advice_page.key}_one_year.header") %>
+      </p>
+    <% end %>
   <% end %>
 <% end %>
 

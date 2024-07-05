@@ -9,7 +9,7 @@ shared_examples 'a meter breakdown advice page tab' do |tab:|
   end
 end
 
-shared_examples 'the meter breakdown is not available' do
+shared_examples 'the meter breakdown is not accessible' do
   let(:fuel_type) { :electricity }
 
   it 'does not include a navbar link' do
@@ -20,6 +20,21 @@ shared_examples 'the meter breakdown is not available' do
   it 'redirects from the page' do
     visit path
     expect(page).to have_current_path(school_advice_path(school))
+  end
+end
+
+shared_examples 'the meter breakdown is not yet available' do
+  it 'shows not enough data message' do
+    visit path
+    expect(page).to have_content(I18n.t('advice_pages.not_enough_data.title'))
+  end
+end
+
+shared_examples 'the monthly chart is not available' do
+  it 'does not include the chart' do
+    visit path
+    click_on 'Analysis'
+    expect(page).not_to have_css("#chart_wrapper_group_by_month_#{fuel_type}_meter_breakdown")
   end
 end
 
@@ -114,7 +129,7 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
 
   context 'with electricity' do
     let(:fuel_type) { :electricity }
-    let(:start_date) { 30.days.ago }
+    let(:start_date) { 90.days.ago }
 
     let(:school) do
       school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
@@ -130,6 +145,22 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
 
     it_behaves_like 'a meter breakdown page' do
       let(:path) { school_advice_electricity_meter_breakdown_path(school) }
+    end
+
+    context 'when school has less than a week of data' do
+      let(:start_date) { 1.day.ago }
+
+      it_behaves_like 'the meter breakdown is not yet available' do
+        let(:path) { school_advice_electricity_meter_breakdown_path(school) }
+      end
+    end
+
+    context 'when school has less than a month of data' do
+      let(:start_date) { 21.days.ago }
+
+      it_behaves_like 'the monthly chart is not available' do
+        let(:path) { school_advice_electricity_meter_breakdown_path(school) }
+      end
     end
 
     context 'when school has more than a year of data' do
@@ -149,7 +180,7 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
         school
       end
 
-      it_behaves_like 'the meter breakdown is not available' do
+      it_behaves_like 'the meter breakdown is not accessible' do
         let(:path) { school_advice_electricity_meter_breakdown_path(school) }
       end
     end
@@ -157,7 +188,7 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
 
   context 'with gas' do
     let(:fuel_type) { :gas }
-    let(:start_date) { 30.days.ago }
+    let(:start_date) { 90.days.ago }
 
     let(:school) do
       school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
@@ -173,6 +204,22 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
 
     it_behaves_like 'a meter breakdown page' do
       let(:path) { school_advice_gas_meter_breakdown_path(school) }
+    end
+
+    context 'when school has less than a week of data' do
+      let(:start_date) { 1.day.ago }
+
+      it_behaves_like 'the meter breakdown is not yet available' do
+        let(:path) { school_advice_gas_meter_breakdown_path(school) }
+      end
+    end
+
+    context 'when school has less than a month of data' do
+      let(:start_date) { 21.days.ago }
+
+      it_behaves_like 'the monthly chart is not available' do
+        let(:path) { school_advice_gas_meter_breakdown_path(school) }
+      end
     end
 
     context 'when school has more than a year of data' do
@@ -192,7 +239,7 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
         school
       end
 
-      it_behaves_like 'the meter breakdown is not available' do
+      it_behaves_like 'the meter breakdown is not accessible' do
         let(:path) { school_advice_gas_meter_breakdown_path(school) }
       end
     end
