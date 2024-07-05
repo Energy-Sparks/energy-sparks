@@ -119,7 +119,6 @@ gem 'flipper-ui', '~> 1.3'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', require: false # use bullet to optimise queries
-  gem 'byebug', platform: :mri
   gem 'climate_control'
   gem 'debug'
   gem 'factory_bot_rails'
@@ -128,7 +127,6 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'knapsack'
-  gem 'pry-rails'
   gem 'rails-controller-testing'
   gem 'rb-readline', require: false
   gem 'rspec-json_expectations'
@@ -154,8 +152,6 @@ group :development do
   gem 'fasterer'
   gem 'listen' # listen for file changes - what's this used by?
   gem 'overcommit'
-  gem 'pry' # last release 2013, still used?
-  gem 'pry-byebug'
   gem 'scout_apm'
   gem 'web-console'
   #  gem 'rack-mini-profiler'
