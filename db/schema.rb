@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_05_140445) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -282,11 +282,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
     t.decimal "pupil_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
     t.text "find_out_more_table_variable", default: "none"
-    t.string "analysis_title"
-    t.string "analysis_subtitle"
-    t.date "analysis_start_date"
-    t.date "analysis_end_date"
-    t.decimal "analysis_weighting", default: "5.0"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -332,7 +327,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
     t.boolean "public_dashboard_alert_active", default: false
     t.boolean "management_dashboard_alert_active", default: false
     t.boolean "management_priorities_active", default: false
-    t.boolean "analysis_active", default: false
     t.boolean "management_dashboard_table_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
@@ -1584,8 +1578,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
     t.boolean "school_will_be_public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
-    t.bigint "funder_id"
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
+    t.bigint "funder_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
