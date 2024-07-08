@@ -52,7 +52,11 @@ describe Meters::N3rgyMeteringService, type: :service do
   end
 
   describe '#status' do
-    let(:stub) { stub_request(:get, %r{^https://api-v2.data.n3rgy.com/find-mpxn/}) }
+    let(:stub) { stub_request(:get, %r{^https://n3rgy.test/find-mpxn/}) }
+
+    around do |example|
+      ClimateControl.modify(N3RGY_DATA_URL_V2: 'https://n3rgy.test') { example.run }
+    end
 
     it 'returns available' do
       stub.to_return(body: '{}')
