@@ -165,7 +165,6 @@ private
     @overview_charts = setup_energy_overview_charts(@school.configuration)
     @overview_data = Schools::ManagementTableService.new(@school).management_data
     @progress_summary = progress_service.progress_summary
-    @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
 
     # Setup management dashboard features if users has permission
     # to do that

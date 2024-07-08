@@ -1,0 +1,57 @@
+<div class='fixed-top'>
+  <nav class="navbar <%= navbar_expand_class %> navbar-main">
+    <div class="container">
+      <%= navigation_image_link %>
+      <div class='fixed-top'>
+        <% if on_test? %>
+          <%= link_to 'Test', '/', class: 'm-1 p-1 badge badge-warning' %>
+        <% end %>
+      </div>
+
+      <div class='<%= order_expand_class %>'>
+        <% other_locales.excluding(:mirror).each do |locale| %>
+          <span class="navbar-text my-auto">
+            <%= link_to_locale(locale, class: 'nav-link lozenge') %>
+          </span>
+        <% end %>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="navbar-collapse collapse justify-content-end" id="main-nav">
+        <ul class="navbar-nav nowrap">
+          <% if current_user && current_user.school && current_user.school.visible? %>
+            <%= render 'shared/my_school_menu' if can?(:read, :my_school_menu) && current_user.school.visible? %>
+          <% else %>
+            <%= render 'shared/our_schools_menu' %>
+          <% end %>
+
+          <% if can? :switch, School %>
+            <% if current_user && !current_user.cluster_schools_for_switching.blank? %>
+              <%= render 'shared/switch_schools' %>
+            <% end %>
+          <% end %>
+
+          <li class="nav-item">
+            <%= link_to t('common_nav_bar_menus.activities'), activity_categories_path, class: 'nav-link' %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to t('common_nav_bar_menus.actions'), intervention_type_groups_path, class: 'nav-link' %>
+          </li>
+
+          <%= render 'shared/our_services_menu' %>
+
+          <%= render 'shared/about_menu' %>
+
+          <li class="nav-item">
+            <%= link_to t('support_us.title'), support_us_path, class: 'nav-link' %>
+          </li>
+
+          <%= render 'shared/manage_menu' if can?(:manage, :admin_functions) %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>

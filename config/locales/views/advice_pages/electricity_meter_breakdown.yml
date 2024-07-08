@@ -1,0 +1,14 @@
+---
+en:
+  advice_pages:
+    electricity_meter_breakdown:
+      insights:
+        current_usage:
+          title: Your current electricity usage by meter
+        what_is_a_meter_breakdown:
+          link: Learn more
+          text_html: |-
+            <p>
+            Your school has multiple electricity meters. This analysis shows electricity use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
+            </p>
+      page_title: Electricity use by meter

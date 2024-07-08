@@ -114,6 +114,8 @@ describe ActivityCreator do
       activity = build(:activity, activity_type: activity_type, school: school)
       ActivityCreator.new(activity).process
 
+      programme.reload
+
       expect(programme.activities.count).to eq 1
       expect(programme.activities).to include(activity)
     end
