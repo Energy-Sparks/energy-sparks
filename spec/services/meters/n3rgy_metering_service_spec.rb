@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe Meters::N3rgyMeteringService, type: :service do
-  subject(:service) do
-    described_class.new(meter)
-  end
+  subject(:service) { described_class.new(meter) }
 
   let(:meter) { create(:electricity_meter, dcc_meter: true, consent_granted: true) }
 
@@ -50,6 +48,25 @@ describe Meters::N3rgyMeteringService, type: :service do
       it 'returns an empty array' do
         expect(service.available_data).to eq([])
       end
+    end
+  end
+
+  describe '#status' do
+    let(:stub) { stub_request(:get, %r{^https://api-v2.data.n3rgy.com/find-mpxn/}) }
+
+    it 'returns available' do
+      stub.to_return(status: 200, body: '{}')
+      expect(service.status).to eq(:available)
+    end
+
+    it 'handles not found' do
+      stub.to_return(status: 404)
+      expect(service.status).to eq(:unknown)
+    end
+
+    it 'handles not allowed' do
+      stub.to_return(status: 403)
+      expect(service.status).to eq(:consent_required)
     end
   end
 end
