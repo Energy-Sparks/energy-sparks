@@ -55,7 +55,7 @@ describe Meters::N3rgyMeteringService, type: :service do
     let(:stub) { stub_request(:get, %r{^https://api-v2.data.n3rgy.com/find-mpxn/}) }
 
     it 'returns available' do
-      stub.to_return(status: 200, body: '{}')
+      stub.to_return(body: '{}')
       expect(service.status).to eq(:available)
     end
 
