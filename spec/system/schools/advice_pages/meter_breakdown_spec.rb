@@ -24,16 +24,20 @@ shared_examples 'the meter breakdown is not accessible' do
 end
 
 shared_examples 'the meter breakdown is not yet available' do
+  before { visit path }
+
   it 'shows not enough data message' do
-    visit path
     expect(page).to have_content(I18n.t('advice_pages.not_enough_data.title'))
   end
 end
 
 shared_examples 'the monthly chart is not available' do
-  it 'does not include the chart' do
+  before do
     visit path
     click_on 'Analysis'
+  end
+
+  it 'does not include the chart' do
     expect(page).not_to have_css("#chart_wrapper_group_by_month_#{fuel_type}_meter_breakdown")
   end
 end
