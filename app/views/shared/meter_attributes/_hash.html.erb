@@ -13,12 +13,12 @@
   <% end %>
 
   <div class="<%= 'ml-5' unless field_name == 'root' %>">
-    <% field.structure.each do |key, structure| %>
-      <%= form.simple_fields_for field_name do |form| %>
+    <%= form.simple_fields_for field_name do |form| %>
+      <% field.structure.each do |key, structure| %>
         <%= render "shared/meter_attributes/#{structure.type}", value: value ? value[key.to_s] : nil,
                                                                 field: structure,
                                                                 field_name: key,
-                                                                form:,
+                                                                form: form,
                                                                 label: key %>
       <% end %>
     <% end %>
