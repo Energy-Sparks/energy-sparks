@@ -15,6 +15,7 @@ Disallow: /schools/scoreboard
 Disallow: /schools/*/analysis
 Disallow: /schools/*/find_out_more/*
 Disallow: /schools/*/chart.json
+Disallow: /schools/*/advice
 Disallow: /schools/*/advice/*
 Disallow: /pupils/schools/*/analysis
 Disallow: /benchmark
