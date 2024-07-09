@@ -61,11 +61,7 @@ module MultipleFuelComparisonView
 
   def field_names(period: :previous_period, unit: :kwh)
     unit = :gbp if unit == :£
-    field_names = []
-    fuel_types.each do |fuel_type|
-      field_names << field_name(fuel_type, period, unit)
-    end
-    field_names
+    fuel_types.map { |fuel_type| field_name(fuel_type, period, unit) }
   end
 
   private
