@@ -9,11 +9,20 @@ module Schools
       end
 
       def analysis
+        @analysis_dates = analysis_dates
         @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
         @meters_for_breakdown = sorted_meters_for_breakdown(@annual_usage_meter_breakdown)
       end
 
       private
+
+      def create_analysable
+        days_of_data = (analysis_end_date - analysis_start_date).to_i
+        OpenStruct.new(
+          enough_data?: days_of_data >= 7,
+          data_available_from: nil
+        )
+      end
 
       def redirect_if_single_meter
         redirect_to school_advice_path(@school) unless @school.multiple_meters?(fuel_type)

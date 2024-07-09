@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: b21c55a27deed980bfb958cb5202e4127b39d8fb
-  tag: 5.2.13
+  revision: e3a46a149aaeeefd95ce9dd1d0c7efabc542d468
+  tag: 5.2.14
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.2)
@@ -891,4 +891,4 @@ DEPENDENCIES
   wisper-rspec
 
 BUNDLED WITH
-   2.5.14
+   2.5.10
