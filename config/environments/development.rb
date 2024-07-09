@@ -74,7 +74,7 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
 
-    # Local customisations:
+  # Local customisations:
   # Store uploaded files on the local file system (see config/storage.yml for options)
   # To use amazon locally, set ACTIVE_STORAGE_SERVICE = amazon in your .env file
   # and ensure you have the AWS credentials set up in your .env file
