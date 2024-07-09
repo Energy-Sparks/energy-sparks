@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+ruby '~> 3.2.2'
+
 gem 'rails', '~> 7.1.0'
 
 # Rails/Core
@@ -17,8 +19,6 @@ gem 'sprockets'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
 gem 'wisper' # publish subscribe for ruby objects
 
-gem 's3_cache_store', github: 'tbhi/s3_cache_store', branch: 'fix-wrong-number-of-arguments'
-
 # Database/Data
 gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
@@ -27,12 +27,12 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.14'
-#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.0'
+# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
-gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'update-gems-and-awesome-print'
+gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'
 
 # Assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
@@ -41,6 +41,7 @@ gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sass-rails' # Use SCSS for stylesheets
+gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
 gem 'terser'
 
 # Pagination

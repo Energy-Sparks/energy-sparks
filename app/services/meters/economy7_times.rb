@@ -12,7 +12,7 @@ module Meters
     # https://www.electricityprices.org.uk/economy-7/
     # https://www.businessjuice.co.uk/energy-guides/economy-7-times/
     # https://sse.co.uk/help/energy/daylight-saving-time states economy 7 stays on GMT all year round?
-    DEFAULT_TIMES = (TimeOfDay.new(0, 0)..TimeOfDay.new(7, 0)).freeze
+    DEFAULT_TIMES = (TimeOfDay.new(0, 0)..TimeOfDay.new(7, 0))
 
     NIGHTTIME = { # there seems to be some ambiguity, varies between suppliers?
       10 => { times: TimeOfDay.new(23,  0)..TimeOfDay.new(7,  0), region: :eastern },

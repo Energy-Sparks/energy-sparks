@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::Base
   include DefaultUrlOptionsHelper
-
-  protect_from_forgery with: :exception
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code

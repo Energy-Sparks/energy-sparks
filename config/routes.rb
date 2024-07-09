@@ -332,12 +332,6 @@ Rails.application.routes.draw do
         end
       end
 
-      resource :prototypes, only: [:show] do
-        scope module: :prototypes do
-          resource :advice_pages,        only: [:show], controller: 'advice_pages'
-        end
-      end
-
       resources :estimated_annual_consumptions, except: [:show]
 
       resources :programmes, only: [:create]
