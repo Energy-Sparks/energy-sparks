@@ -1,0 +1,33 @@
+<nav class="navbar <%= navbar_expand_class %> navbar-second pupil">
+  <div class="container">
+
+    <% school = @school || @tariff_holder&.school %>
+
+    <div class="navbar-collapse collapse" id="nav-second">
+      <ul class="navbar-nav nowrap">
+
+        <% if school %>
+          <li class="navbar-text"><%= school.name %>:</li>
+          <% if can?(:show_pupils_dash?, school) %>
+            <li class="nav-item">
+              <%= link_to t('dashboards.pupil_dashboard'), pupils_school_path(school), class: 'nav-link' %>
+            </li>
+          <% end %>
+
+          <% if can?(:show, school) %>
+            <% params = user_signed_in? && current_user.pupil? ? { switch: true } : {} %>
+            <li class="nav-item">
+              <%= link_to t('dashboards.adult_dashboard'), school_path(school, params), class: 'nav-link' %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+    <div class='<%= order_expand_class %>'>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-second" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+  </div>
+</nav>

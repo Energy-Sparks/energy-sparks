@@ -1,7 +1,4 @@
-nav.navbar-main {
-  background-color: $dark;
-  color: $white;
-  @include font(f8); // design says f6! Looks massive!
+nav.navbar-es {
   font-family: $header-font-family;
   font-weight: 400 !important;
 
@@ -9,30 +6,13 @@ nav.navbar-main {
     font-weight: 400 !important;
   }
 
-  img {
-    height: 40px; // design says 60
-    margin-bottom: 4px; // move it up a bit as text in logo isn't vertically central to logo
-  }
-
   .dropdown-menu {
     font: inherit;
-    background-color: $dark;
     padding: 4px;
 
     .dropdown-item {
-      color: $white;
-      background-color: $dark;
       padding: 6px 10px;
     }
-  }
-
-  .nav-item.dropdown.show
-  .nav-link.dropdown-toggle,
-  .nav-link:hover,
-  .nav-link:focus,
-  .dropdown-item:hover,
-  .dropdown-item:focus {
-    color: $yellow;
   }
 
   .navbar-toggler {
@@ -48,6 +28,62 @@ nav.navbar-main {
   .collapse.show {
     max-height: 85vh;
     overflow-y: auto;
+  }
+}
+
+nav.navbar-top {
+  @extend .navbar-es;
+  @include font(f8); // design says f6
+  background-color: $dark;
+  color: $white;
+
+  img {
+    height: 40px; // design says 60
+    margin-bottom: 4px; // move it up a bit as text in logo isn't vertically central to logo
+  }
+
+  .dropdown-menu {
+    background-color: $dark;
+
+    .dropdown-item {
+      color: $white;
+      background-color: $dark;
+    }
+  }
+
+  .nav-item.dropdown.show
+  .nav-link.dropdown-toggle,
+  .nav-link:hover,
+  .nav-link:focus,
+  .dropdown-item:hover,
+  .dropdown-item:focus {
+    color: $yellow;
+  }
+}
+
+nav.navbar-second {
+  @extend .navbar-es;
+  @include font(f9); // design says f7
+  background-color: $dark-blue;
+  color: $white;
+  height: 40px; // design says 50
+
+  .dropdown-menu {
+    background-color: $dark;
+
+    .dropdown-item {
+      color: $white;
+      background-color: $dark;
+    }
+  }
+
+  .nav-item.dropdown.show
+  .nav-link.dropdown-toggle,
+  .nav-link:hover,
+  .nav-link:focus,
+  .dropdown-item:hover,
+  .dropdown-item:focus {
+    color: $yellow;
   }
 }
 
@@ -88,3 +124,4 @@ a.nav-link.lozenge {
   content: fa-content($fa-var-chevron-down);
   vertical-align: 0;
 }
+

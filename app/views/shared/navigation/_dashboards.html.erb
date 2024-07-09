@@ -1,0 +1,12 @@
+<% if school %>
+  <% if can?(:show_pupils_dash?, school) %>
+    <li class="nav-item"><%= link_to t('dashboards.pupil_dashboard'), pupils_school_path(school) %></li>
+  <% end %>
+
+  <% if can?(:show, school) %>
+    <% params = user_signed_in? && current_user.pupil? ? { switch: true } : {} %>
+    <li class="nav-item">
+      <%= link_to t('dashboards.adult_dashboard'), school_path(school, params) %>
+    </li>
+  <% end %>
+<% end %>
