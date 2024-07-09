@@ -180,5 +180,14 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
     it 'has a link to schools recent alerts' do
       expect(section).to have_link(href: "/schools/#{school.slug}/advice/alerts")
     end
+
+    context 'when school is not data enabled' do
+      let!(:school) { create :school, name: 'School Name', key_stages: [key_stage_1], data_enabled: false }
+
+      it 'does not have advice or alerts links' do
+        expect(section).not_to have_link(href: "/schools/#{school.slug}/advice")
+        expect(section).not_to have_link(href: "/schools/#{school.slug}/advice/alerts")
+      end
+    end
   end
 end
