@@ -67,7 +67,8 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
     end
 
     context 'join programme prompt' do
-      let(:programme_type) { create(:programme_type_with_activity_types, title: 'Programme A') }
+      let(:bonus_points) { 14 }
+      let(:programme_type) { create(:programme_type_with_activity_types, title: 'Programme A', bonus_score: bonus_points) }
 
       context 'when one programme activity has been completed' do
         let(:activity_type) { programme_type.activity_types.first }
@@ -84,6 +85,22 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
         end
 
         it_behaves_like 'a join programme prompt', programme: 'Programme A', activity_count: 2
+      end
+
+      context 'when all programme activities have been completed' do
+        let(:setup_data) do
+          programme_type.activity_types.each do |activity_type|
+            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+          end
+        end
+
+        it_behaves_like 'a join programme prompt', programme: 'Programme A', completed: true, bonus_points: 14
+
+        context 'when there are no bonus points' do
+          let(:bonus_points) { 0 }
+
+          it_behaves_like 'a join programme prompt', programme: 'Programme A', completed: true, bonus_points: 0
+        end
       end
     end
 
@@ -162,6 +179,15 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
     it 'has a link to schools recent alerts' do
       expect(section).to have_link(href: "/schools/#{school.slug}/advice/alerts")
+    end
+
+    context 'when school is not data enabled' do
+      let!(:school) { create :school, name: 'School Name', key_stages: [key_stage_1], data_enabled: false }
+
+      it 'does not have advice or alerts links' do
+        expect(section).not_to have_link(href: "/schools/#{school.slug}/advice")
+        expect(section).not_to have_link(href: "/schools/#{school.slug}/advice/alerts")
+      end
     end
   end
 end

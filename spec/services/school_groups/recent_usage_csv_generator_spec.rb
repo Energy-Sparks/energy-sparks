@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
   let(:school_group) { create(:school_group) }
-  let!(:school_1)    { create(:school, school_group: school_group, number_of_pupils: 10, floor_area: nil, data_enabled: true, visible: true, active: true, name: 'A school') }
-  let!(:school_2)    { create(:school, school_group: school_group, number_of_pupils: 20, floor_area: 300.0, data_enabled: true, visible: true, active: true, name: 'B school') }
+  let!(:school_1)    { create(:school, school_group: school_group, number_of_pupils: 10, floor_area: nil, name: 'A school') }
+  let!(:school_2)    { create(:school, school_group: school_group, number_of_pupils: 20, floor_area: 300.0, name: 'B school') }
   let!(:cluster)     { create(:school_group_cluster, name: 'A Cluster', school_group: school_group, schools: [school_1]) }
 
   include_context 'school group recent usage'
@@ -26,7 +26,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
   subject(:csv) { SchoolGroups::RecentUsageCsvGenerator.new(**params).export }
 
   context 'returning data' do
-    it 'returns data as a csv for all schools in a school group' do
+    it 'returns data as a csv for all requested schools in the school group' do
       expect(csv.lines.count).to eq(3)
 
       fuel_type_columns = []

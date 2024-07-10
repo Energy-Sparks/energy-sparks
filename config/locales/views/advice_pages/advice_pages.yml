@@ -7,6 +7,14 @@ en:
         benchmarking: Comparison with other schools
         change: Recent changes in your energy usage
         priority: Priority alerts
+    analysis:
+      additional_analysis:
+        summary: This section provides some links to other parts of our analysis that include comparisons of use between meters
+        title: Additional analysis
+      long_term_trends:
+        title: Long term trends
+      recent_trend:
+        title: Recent trend
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
@@ -24,6 +32,7 @@ en:
     fuel_type:
       electricity: electricity
       gas: gas
+      multiple: multiple
       other: other
       solar_pv: solar PV
       storage_heater: storage heater
@@ -71,10 +80,12 @@ en:
         electricity_costs: Tariffs and costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
+        electricity_meter_breakdown: Meter comparisons
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
         gas_costs: Tariffs and costs
         gas_long_term: Long term changes
+        gas_meter_breakdown: Meter comparisons
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
         heating_control: Heating control

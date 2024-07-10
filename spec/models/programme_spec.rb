@@ -110,8 +110,7 @@ describe 'Programme' do
   end
 
   describe '.recently_ended' do
-    before { Timecop.freeze }
-    after { Timecop.return }
+    before { freeze_time }
 
     let!(:ended_today) { create(:programme, ended_on: Time.zone.today) }
     let!(:ended_yesterday) { create(:programme, ended_on: 1.day.ago) }

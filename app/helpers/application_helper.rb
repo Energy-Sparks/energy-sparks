@@ -14,11 +14,11 @@ module ApplicationHelper
   end
 
   def nice_dates(date)
-    date ? date.to_s(:es_full) : ''
+    date ? date.to_fs(:es_full) : ''
   end
 
   def short_dates(date)
-    date ? date.to_s(:es_short) : ''
+    date ? date.to_fs(:es_short) : ''
   end
 
   def nice_date_times_today(datetime)
@@ -531,6 +531,6 @@ module ApplicationHelper
   end
 
   def admin_button(path, to: 'Edit', tag: nil, classes: nil)
-    admin_only(path, to: to, tag: tag, classes: classes || 'btn btn-xs align-text-top')
+    admin_only(path, to: to, tag: tag, classes: classes || 'btn btn-xs')
   end
 end

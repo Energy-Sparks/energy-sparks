@@ -102,7 +102,7 @@ module Alerts
 
       alert_type_run_result.error_messages.each do |error_message|
         AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date,
-                           information: error_message, alert_type: alert_type, report: report)
+                           information: error_message, alert_type: alert_type, comparison_report: report)
       end
 
       alert_type_run_result.reports.each do |alert_report|

@@ -1,7 +1,7 @@
 <% content_for :page_title, t('schools.index.page_title') %>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12">
     <h1><%= t('schools.index.title') %></h1>
   </div>
 </div>
@@ -15,42 +15,44 @@
   <p><%= t('schools.index.introduction_3') %>.</p>
   <p><%= t('schools.index.introduction_4') %>.</p>
 
-  <br/>
+  <br>
 
   <h2><%= t('schools.index.view_energy_sparks_schools_by_group') %></h2>
   <div class="row">
-    <% school_groups_left, school_groups_right = @school_groups.partition.with_index{|_,v| v.even?} %>
+    <% school_groups_left, school_groups_right = @school_groups.partition.with_index { |_, v| v.even? } %>
     <div class="col-lg-6">
       <% school_groups_left.each do |school_group| %>
         <%= render 'school_group', school_group: school_group %>
       <% end %>
     </div>
     <div class="col-lg-6">
-      <% school_groups_right.each do |school_group|  %>
+      <% school_groups_right.each do |school_group| %>
         <%= render 'school_group', school_group: school_group %>
       <% end %>
     </div>
   </div>
 
-  <br/>
-  <br/>
+  <br>
+  <br>
 
   <div class="all-schools">
     <h2><%= t('schools.index.view_all_energy_sparks_schools') %></h2>
     <div class="row">
       <div class="col-lg-12">
-        <%= render 'schools', schools: @schools, title: t('schools.index.a_to_z_of_all_energy_sparks_schools'), label: 'allSchools' %>
+        <%= render 'schools', schools: @schools, title: t('schools.index.a_to_z_of_all_energy_sparks_schools'),
+                              label: 'allSchools' %>
       </div>
     </div>
   </div>
 
-  <% if @schools_not_visible.any? && can?(:read_invisible_schools, School)%>
-    <br/>
-    <br/>
+  <% if @schools_not_visible.any? && can?(:read_invisible_schools, School) %>
+    <br>
+    <br>
     <h2><%= t('schools.index.not_visible_schools') %></h2>
     <div class="row">
       <div class="col-lg-12">
-        <%= render 'schools', schools: @schools_not_visible, title: t('schools.index.not_visible_schools'), label: 'invisibleSchools' %>
+        <%= render 'schools', schools: @schools_not_visible, title: t('schools.index.not_visible_schools'),
+                              label: 'invisibleSchools' %>
       </div>
     </div>
   <% end %>

@@ -38,6 +38,7 @@
 #  created_at                                          :datetime         not null
 #  dark_sky_area_id                                    :bigint(8)
 #  data_enabled                                        :boolean          default(FALSE)
+#  data_sharing                                        :enum             default("public"), not null
 #  enable_targets_feature                              :boolean          default(TRUE)
 #  floor_area                                          :decimal(, )
 #  funder_id                                           :bigint(8)
@@ -99,6 +100,7 @@ class School < ApplicationRecord
   extend FriendlyId
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
+  include EnumDataSharing
 
   class ProcessDataError < StandardError; end
 
@@ -235,8 +237,7 @@ class School < ApplicationRecord
   # combination of other scopes to define an engaged school
   scope :engaged, -> { active.with_recent_engagement.or(with_recently_logged_in_users).or(with_transport_survey).or(joined_programme) }
 
-  # schools that are not linked to a funder either directly or via their school group
-  scope :unfunded, -> { joins(:school_group).where('schools.funder_id is null AND school_groups.funder_id is null')}
+  scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
@@ -356,7 +357,7 @@ class School < ApplicationRecord
   end
 
   def suggested_programme_types
-    ProgrammeType.active.with_school_activity_count(self)
+    ProgrammeType.active.with_school_activity_type_count(self)
       .merge(activities.in_academic_year(current_academic_year))
       .not_in(programme_types)
   end
@@ -529,7 +530,7 @@ class School < ApplicationRecord
   end
 
   def has_expired_target_for_fuel_type?(fuel_type)
-    has_expired_target? && expired_target.try(fuel_type).present?
+    has_expired_target? && expired_target.try(fuel_type).present? && expired_target.saved_progress_report_for(fuel_type).present?
   end
 
   def has_expired_target?
@@ -696,6 +697,10 @@ class School < ApplicationRecord
 
   def holds_tariffs_of_type?(meter_type)
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type: meter_type).any?
+  end
+
+  def multiple_meters?(fuel_type)
+    meters.active.where(meter_type: fuel_type).count > 1
   end
 
   private

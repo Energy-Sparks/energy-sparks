@@ -41,7 +41,7 @@ a.badge.outline {
   color: $dark;
   background-image: linear-gradient($white, $light-grey);
   border-color: $grey;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   border-radius: 50rem !important;
 }
 
@@ -79,7 +79,7 @@ a.badge.outline {
 
 .btn-group-xs > .btn, .btn-xs {
   padding: 1px 5px;
-  font-size: 12px;
+  font-size: $f9;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -190,7 +190,7 @@ section.highlight {
   .btn:focus,
   .btn:active,
   .btn.active {
-    font-size: $f7;
+    @include font(f9);
   }
 }
 
@@ -201,6 +201,6 @@ section.highlight {
   .btn:focus,
   .btn:active,
   .btn.active {
-    font-size: $f7;
+    @include font(f9);
   }
 }

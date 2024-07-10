@@ -37,14 +37,9 @@
     <div class="form-group col-md-6">
       <%= f.label :scoreboard_id, 'Scoreboard' %>
       <%= f.select :scoreboard_id,
-                    options_from_collection_for_select(
-                      @scoreboards,
-                      'id',
-                      'name',
-                      @school&.scoreboard&.id
-                    ),
-                    {},
-                    { class: 'form-control' } %>
+                   options_from_collection_for_select(@scoreboards, 'id', 'name', @school&.scoreboard&.id),
+                   {},
+                   { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
@@ -53,6 +48,16 @@
       <%= f.select :funder_id,
                    options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id),
                    { include_blank: true },
+                   { class: 'form-control' } %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :data_sharing, 'Data Sharing' %>
+      <%= f.select :data_sharing,
+                   options_for_select(School.data_sharings.map { |k, _v| [k.titleize, k] }, school.data_sharing),
+                   { include_blank: false },
                    { class: 'form-control' } %>
     </div>
   </div>

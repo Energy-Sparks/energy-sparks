@@ -42,7 +42,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
         it 'includes expected sections' do
           data_available_from = reading_start_date + 89.days # TODO: not sure why this isn't 90 days
           expect(page).to have_content('Assuming we continue to regularly receive data we expect this analysis to be ' \
-                                       "available after #{data_available_from.to_s(:es_short)}")
+                                       "available after #{data_available_from.to_fs(:es_short)}")
         end
       end
 
@@ -59,7 +59,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
 
         it 'includes expected data' do
           expect(find('table.advice-table')).to have_content(
-            ["#{reading_start_date.to_s(:es_short)} - #{Time.zone.today.to_s(:es_short)}", '2,200', '360', '£220', '-']
+            ["#{reading_start_date.to_fs(:es_short)} - #{Time.zone.today.to_fs(:es_short)}", '2,200', '360', '£220', '-']
             .join(' ')
           )
           expect(page).to have_content('220kWh of electricity')

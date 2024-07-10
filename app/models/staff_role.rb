@@ -11,6 +11,7 @@
 class StaffRole < ApplicationRecord
   has_many :users
 
+  attribute :dashboard, :string
   enum dashboard: [:management, :teachers]
 
   def translated_title

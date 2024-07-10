@@ -39,7 +39,7 @@ div.analysis-chart, div.usage-chart {
   text-align: center;
   color: $dark-grey;
   line-height: 700px;
-  font-size: 14px;
+  font-size: $f7;
   margin: 0 auto;
   padding-bottom: 25px;
   padding-top: 10px;
@@ -168,5 +168,5 @@ div.popover {
 }
 
 .highcharts-subtitle {
-  font-size: $f5;
+  font-size: $default-font-size;
 }

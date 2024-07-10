@@ -29,12 +29,10 @@ describe 'unvalidated readings', type: :system do
 
   describe 'Downloading csv' do
     before do
-      Timecop.freeze
+      freeze_time
       fill_in 'List', with: reading.mpan_mprn
       click_on 'Download CSV'
     end
-
-    after { Timecop.return }
 
     let(:lines) { page.body.lines.collect(&:chomp) }
 

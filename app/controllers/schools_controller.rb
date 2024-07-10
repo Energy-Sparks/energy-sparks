@@ -12,8 +12,8 @@ class SchoolsController < ApplicationController
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
 
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage]
-  before_action :set_key_stages, only: [:new, :create, :edit, :update]
+  skip_before_action :authenticate_user!, only: [:index, :show]
+  before_action :set_key_stages, only: [:create, :edit, :update]
 
   before_action :check_aggregated_school_in_cache, only: [:show]
 
@@ -165,7 +165,6 @@ private
     @overview_charts = setup_energy_overview_charts(@school.configuration)
     @overview_data = Schools::ManagementTableService.new(@school).management_data
     @progress_summary = progress_service.progress_summary
-    @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
 
     # Setup management dashboard features if users has permission
     # to do that
