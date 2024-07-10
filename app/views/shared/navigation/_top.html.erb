@@ -7,7 +7,7 @@
       <% end %>
     </div>
 
-    <div class='<%= order_expand_class %>'>
+    <div class='ml-auto'>
       <% other_locales.excluding(:mirror).each do |locale| %>
         <span class="navbar-text my-auto">
           <%= link_to_locale(locale, class: 'nav-link lozenge') %>

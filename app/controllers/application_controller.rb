@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  helper_method :site_settings, :current_school_podium, :current_user_school, :current_school_group
+  helper_method :site_settings, :current_school_podium, :current_user_school, :current_school_group, :current_school
   before_action :update_trackable!
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -30,12 +30,12 @@ class ApplicationController < ActionController::Base
     @site_settings ||= SiteSettings.current
   end
 
+  def current_school
+    @school || @tariff_holder&.school
+  end
+
   def current_school_podium
-    @current_school_podium ||= if @school && @school&.scoreboard
-                                 podium_for(@school)
-                               elsif @tariff_holder && @tariff_holder&.school? && @tariff_holder&.scoreboard
-                                 podium_for(@tariff_holder)
-                               end
+    @current_school_podium ||= podium_for(current_school) if current_school&.scoreboard
   end
 
   def current_user_school

@@ -1,11 +1,9 @@
 <nav class="navbar <%= navbar_expand_class %> navbar-second <%= navbar_secondary_class %>">
   <div class="container">
 
-    <% school = @school || @tariff_holder&.school %>
-
-    <% if school %>
+    <% if current_school %>
       <ul class="navbar-nav nowrap">
-        <li class="navbar-text"><%= school.name %><span class=''>:</span>
+        <li><%= current_school.name %><span class=''>:</span>
         </li>
       </ul>
     <% end %>
@@ -18,21 +16,24 @@
 
     <div class="navbar-collapse collapse" id="nav-second">
       <ul class="navbar-nav nowrap">
-        <% if school %>
-          <% if can?(:show_pupils_dash?, school) %>
+        <% if current_school %>
+          <% if can?(:show_pupils_dash?, current_school) %>
             <li class="nav-item">
-              <%= link_to t('dashboards.pupil_dashboard'), pupils_school_path(school), class: 'nav-link' %>
+              <%= link_to t('dashboards.pupil_dashboard'), pupils_school_path(current_school), class: 'nav-link' %>
             </li>
           <% end %>
 
-          <% if can?(:show, school) %>
+          <% if can?(:show, current_school) %>
             <li class="nav-item">
               <%= link_to t('dashboards.adult_dashboard'),
-                          school_path(school, ({ switch: true } if current_user&.pupil?)),
+                          school_path(current_school, ({ switch: true } if current_user&.pupil?)),
                           class: 'nav-link' %>
             </li>
           <% end %>
         <% end %>
+
+        <%= render 'shared/navigation/podium',
+                   podium: current_school_podium, school: current_school %>
       </ul>
     </div>
   </div>

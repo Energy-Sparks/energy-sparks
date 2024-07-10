@@ -25,16 +25,12 @@ module NavHelper
     I18n.locale.to_s == 'en' ? 'lg' : 'xl'
   end
 
-  def order_expand_class
-    "order-#{expand_class}-12"
-  end
-
   def navbar_expand_class
     "navbar-expand-#{expand_class}"
   end
 
   def navbar_secondary_class
-    current_user&.pupil? ? 'pupil' : 'adult'
+    controller.controller_path == 'pupils/schools' ? 'pupil' : 'adult'
   end
 
   def other_locales

@@ -15,6 +15,10 @@
     }
   }
 
+  .navbar-brand {
+    //padding-left: 4px;
+  }
+
   .navbar-toggler {
     padding: 4px;
     color: $navbar-dark-color;
@@ -70,15 +74,15 @@ nav.navbar-second {
   @extend %navbar-es;
   @include font(f9); // design says f7
   min-height: 40px; // design says 50
-  padding: 4px 0;
+  padding: 4px 16px;
 
   .nav-link, .navbar-text {
     padding: 4px 8px;
   }
 
-  color: $white;
 
   &.adult {
+    color: $white;
     background-color: $dark-blue;
 
     .dropdown-menu {
@@ -105,15 +109,20 @@ nav.navbar-second {
   }
 
   &.pupil {
-    background-color: $dark-blue;
+    color: $yellow-very-dark;
+    background-color: $yellow-light;
 
     .dropdown-menu {
-      background-color: $dark;
+      background-color: $yellow-light;
 
       .dropdown-item {
-        color: $white;
-        background-color: $dark;
+        color: $yellow-very-dark;
+        background-color: $yellow-light;
       }
+    }
+
+    .nav-link {
+      color: $yellow-dark;
     }
 
     .nav-item.dropdown.show
@@ -122,7 +131,16 @@ nav.navbar-second {
     .nav-link:focus,
     .dropdown-item:hover,
     .dropdown-item:focus {
-      color: $yellow;
+      color: $white;
+    }
+
+    .navbar-toggler-icon {
+      background-image: escape-svg($navbar-light-toggler-icon-bg);
+    }
+
+    .navbar-toggler {
+      color: $navbar-light-color;
+      border-color: $navbar-light-toggler-border-color;
     }
   }
 }

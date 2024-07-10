@@ -146,25 +146,25 @@ module ApplicationHelper
     content_tag(:i, nil, class: content_class)
   end
 
-  def icon(style, name)
+  def icon(style, name, **kwargs)
     content_class = "#{style} fa-#{name}"
-    content_tag(:i, nil, class: content_class)
+    content_tag(:i, nil, class: content_class, **kwargs)
   end
 
-  def fa_icon(icon_type)
-    icon('fas', icon_type)
+  def fa_icon(icon_type, **kwargs)
+    icon('fas', icon_type, **kwargs)
   end
 
-  def fab_icon(icon_type)
-    icon('fab', icon_type)
+  def fab_icon(icon_type, **kwargs)
+    icon('fab', icon_type, **kwargs)
   end
 
-  def fal_icon(icon_type)
-    icon('fal', icon_type)
+  def fal_icon(icon_type, **kwargs)
+    icon('fal', icon_type, **kwargs)
   end
 
-  def far_icon(icon_type)
-    icon('far', icon_type)
+  def far_icon(icon_type, **kwargs)
+    icon('far', icon_type, **kwargs)
   end
 
   def alert_type_icon(alert_type, size = nil)
