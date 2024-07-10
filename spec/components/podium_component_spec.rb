@@ -33,7 +33,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
     it { expect(html).to have_css('i.fa-crown') }
 
     it 'shows ordinal' do
-      expect(html).to have_css('p.h2', text: ordinal)
+      expect(html).to have_css('p.f2', text: ordinal)
     end
   end
 
@@ -41,7 +41,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
     it { expect(html).not_to have_css('i.fa-crown') }
 
     it "doesn't show ordinal" do
-      expect(html).not_to have_css('p.h2', text: ordinal)
+      expect(html).not_to have_css('p.f2', text: ordinal)
     end
   end
 

@@ -66,7 +66,6 @@ module Admin
         :default_procurement_route_electricity_id,
         :default_procurement_route_gas_id,
         :default_procurement_route_solar_pv_id,
-        :funder_id
       )
     end
   end

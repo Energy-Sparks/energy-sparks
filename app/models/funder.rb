@@ -9,7 +9,6 @@
 #
 class Funder < ApplicationRecord
   has_many :schools
-  has_many :school_groups
 
   scope :with_schools,  -> { where.associated(:schools) }
   scope :by_name,       -> { order(name: :asc) }
@@ -17,13 +16,7 @@ class Funder < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   # Return counts of visible schools by funder
-  #
-  # Schools are either associated directly with a funder or indirectly via
-  # their school group. Uses a subquery to identify the schools for each
-  # funder then groups and counts them.
-  #
-  # Returns funders without any funded schools, but not schools without
-  # any source of funding. See Schools.unfunded.
+  # includes funders without any funded schools, but not schools without any source of funding. See Schools.unfunded.
   def self.funded_school_counts(visible: true, data_enabled: true)
     query = <<-SQL.squish
       SELECT funders.name, count(schools.id)

@@ -5,7 +5,6 @@ module Admin
     def index
       @standard_alert_types = AlertType.analytics.editable.order(:title)
       @system_alert_types = AlertType.system.editable.order(:title)
-      @analysis_alert_types = AlertType.analysis.editable.order(:title)
     end
 
     def show

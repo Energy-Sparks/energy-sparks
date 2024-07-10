@@ -69,4 +69,12 @@ class Programme < ApplicationRecord
 
     self.observations.programme.first_or_create(at: self.ended_on, points: points_for_completion)
   end
+
+  def all_activities_complete?
+    # Completed programme if all activity types for the programme type are in the list of completed  activities
+    # (extra completed activities are ignored - activity types may have been removed from programme..)
+    programme_type_activity_ids = programme_type.activity_types.pluck(:id)
+    programme_activity_types = activity_types_completed.pluck(:id)
+    (programme_type_activity_ids - programme_activity_types).empty?
+  end
 end

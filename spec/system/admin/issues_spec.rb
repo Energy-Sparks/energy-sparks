@@ -4,7 +4,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
   let!(:school_group_issues_admin) { create(:admin, name: 'Group Issues Admin') }
   let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin)}
   let!(:school) { create(:school, school_group: school_group) }
-  let!(:gas_meter) { create(:gas_meter, school: school) }
+  let!(:gas_meter) { create(:gas_meter, name: nil, school: school) }
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:other_issues_admin) { create(:admin, name: 'Other Issues Admin') }
   let!(:issue) {}
@@ -85,7 +85,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 let(:frozen_time) { Time.zone.now }
 
                 before do
-                  Timecop.freeze(frozen_time)
+                  travel_to(frozen_time)
                   fill_in 'Title', with: "#{issue_type} title"
                   fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                   select 'Gas', from: 'Fuel type'
@@ -94,8 +94,6 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   check 'Pinned'
                   click_button 'Save'
                 end
-
-                after { Timecop.return }
 
                 it 'creates new issue' do
                   expect(page).to have_content issue_type.capitalize.to_s
@@ -145,7 +143,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 let(:new_issue_type) { Issue.issue_types.keys.excluding(issue_type).first.capitalize }
 
                 before do
-                  Timecop.freeze(frozen_time)
+                  travel_to(frozen_time)
                   fill_in 'Title', with: "#{issue_type} title"
                   fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                   select 'Gas', from: 'Fuel type'
@@ -159,8 +157,6 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   end
                   click_button 'Save'
                 end
-
-                after { Timecop.return }
 
                 it 'saves new values' do
                   expect(page).to have_content new_issue_type

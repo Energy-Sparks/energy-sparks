@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   get "/robots.txt" => "robots_txts#show", as: :robots
-  get 'up', to: 'health#show'
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
   # old urls maintained to avoid breakage
   get 'for-teachers', to: redirect('/for-schools')
@@ -282,12 +282,14 @@ Rails.application.routes.draw do
          :electricity_costs,
          :electricity_long_term,
          :electricity_intraday,
+         :electricity_meter_breakdown,
          :electricity_out_of_hours,
          :electricity_recent_changes,
          :heating_control,
          :thermostatic_control,
          :gas_costs,
          :gas_long_term,
+         :gas_meter_breakdown,
          :gas_out_of_hours,
          :gas_recent_changes,
          :hot_water,
@@ -309,8 +311,6 @@ Rails.application.routes.draw do
           get :alerts
         end
       end
-
-      resources :analysis, controller: :analysis, only: [:index, :show]
 
       resources :progress, controller: :progress, only: [:index] do
         collection do
@@ -507,7 +507,7 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
-        resources :meter_updates, only: [:index] do
+        resources :meter_updates, only: [:index], param: :fuel_type do
           post :bulk_update_meter_data_source
           post :bulk_update_meter_procurement_route
         end
@@ -729,6 +729,10 @@ Rails.application.routes.draw do
   # Maintain old scoreboard URL
   get '/schools/:name/scoreboard', to: redirect('/scoreboards')
 
+  # Old analysis pages
+  get '/schools/:name/analysis', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/analysis/:id', to: redirect('/schools/%{name}/advice')
+
   # Old teacher and management dashboards
   get '/teachers/schools/:name', to: redirect('/schools/%{name}')
   get '/management/schools/:name', to: redirect('/schools/%{name}')
@@ -738,4 +742,5 @@ Rails.application.routes.draw do
   # Old benchmark URLs
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
+
 end

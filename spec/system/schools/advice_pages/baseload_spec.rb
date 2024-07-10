@@ -24,8 +24,6 @@ RSpec.describe 'Baseload advice page', type: :system do
       visit school_advice_path(school)
     end
 
-    it_behaves_like 'an advice page'
-
     context 'when viewing the learn more page' do
       before do
         visit learn_more_school_advice_baseload_path(school)

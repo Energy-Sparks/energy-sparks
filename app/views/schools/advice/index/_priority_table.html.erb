@@ -21,32 +21,24 @@
           </span>
         </td>
         <td>
-          <h4>
-            <% if priority.alert.advice_page.present? %>
-              <%= link_to priority.management_priorities_title,
-                          advice_page_path(school,
-                                           priority.alert.advice_page,
-                                           priority.alert.alert_type.advice_page_tab_for_link_to,
-                                           anchor: priority.alert.alert_type.link_to_section) %>
-            <% else %>
-              <%= priority.management_priorities_title %>
-            <% end %>
-          </h4>
+          <% if priority.alert.advice_page.present? %>
+            <%= link_to priority.management_priorities_title,
+                        advice_page_path(school,
+                                         priority.alert.advice_page,
+                                         priority.alert.alert_type.advice_page_tab_for_link_to,
+                                         anchor: priority.alert.alert_type.link_to_section) %>
+          <% else %>
+            <%= priority.management_priorities_title %>
+          <% end %>
         </td>
         <td data-order="<%= formatted_unit_to_num(priority.template_variables[:one_year_saving_kwh]) %>">
-          <h4>
-            <%= format_unit(formatted_unit_to_num(priority.template_variables[:one_year_saving_kwh]), :kwh) %>
-          </h4>
+          <%= format_unit(formatted_unit_to_num(priority.template_variables[:one_year_saving_kwh]), :kwh) %>
         </td>
         <td>
-          <h4>
-            <%= priority.template_variables[:average_one_year_saving_gbp] %>
-          </h4>
+          <%= priority.template_variables[:average_one_year_saving_gbp] %>
         </td>
         <td data-order="<%= formatted_unit_to_num(priority.template_variables[:one_year_saving_co2]) %>">
-          <h4>
-            <%= format_unit(formatted_unit_to_num(priority.template_variables[:one_year_saving_co2]), :co2) %>
-          </h4>
+          <%= format_unit(formatted_unit_to_num(priority.template_variables[:one_year_saving_co2]), :co2) %>
         </td>
       </tr>
     <% end %>

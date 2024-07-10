@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+ruby '~> 3.2.2'
+
 gem 'rails', '~> 7.1.0'
 
 # Rails/Core
@@ -25,12 +27,12 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '5.2.13'
-#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.0'
+# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
-gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'update-gems-and-awesome-print'
+gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'
 
 # Assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
@@ -39,6 +41,7 @@ gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sass-rails' # Use SCSS for stylesheets
+gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
 gem 'terser'
 
 # Pagination
@@ -116,7 +119,6 @@ gem 'flipper-ui', '~> 1.3'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', require: false # use bullet to optimise queries
-  # gem 'byebug', platform: :mri # not update since 2020 - can use debug gem instead?
   gem 'climate_control'
   gem 'debug'
   gem 'factory_bot_rails'
@@ -125,7 +127,6 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'knapsack'
-  # gem 'pry-rails' # project not currently maintained - does it give anything over default?
   gem 'rails-controller-testing'
   # gem 'rb-readline', require: false # not updated since 2017 - windows thing?
   gem 'rspec-json_expectations'
@@ -151,8 +152,6 @@ group :development do
   gem 'fasterer'
   gem 'listen' # listen for file changes - what's this used by?
   gem 'overcommit'
-  gem 'pry'
-  # gem 'pry-byebug'
   gem 'scout_apm'
   gem 'web-console'
   #  gem 'rack-mini-profiler'
@@ -169,5 +168,4 @@ group :test do
   gem 'show_me_the_cookies'
   gem 'simplecov', require: false, group: :test
   gem 'test-prof'
-  gem 'timecop'
 end
