@@ -304,7 +304,7 @@ describe 'compare pages', :compare, type: :system do
 
   ## tests start here ##
 
-  [true, false].each do |feature_flag|
+  [true].each do |feature_flag|
     context "when comparison report feature flag is #{feature_flag}" do
       let(:user) {}
       let(:all_school_types) { School.school_types.keys }

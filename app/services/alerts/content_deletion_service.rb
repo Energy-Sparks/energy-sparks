@@ -10,7 +10,6 @@ module Alerts
     def delete!
       ActiveRecord::Base.transaction do
         Alerts::DeleteContentGenerationRunService.new(older_than).delete!
-        Alerts::DeleteBenchmarkRunService.new(older_than).delete!
         Alerts::DeleteAlertGenerationRunService.new(older_than).delete!
       end
     end
