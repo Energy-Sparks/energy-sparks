@@ -1,7 +1,20 @@
 require 'rails_helper'
 
-class DummyMultipleFuelComparisonView < OpenStruct
+class DummyMultipleFuelComparisonView
   include MultipleFuelComparisonView
+
+  def initialize(**kwargs)
+    kwargs.each do |arg, value|
+      instance_variable_set("@#{arg}", value)
+      self.class.attr_reader(arg) unless arg == :fuel_types
+    end
+  end
+
+  private
+
+  def fuel_types
+    @fuel_types || super
+  end
 end
 
 describe MultipleFuelComparisonView do

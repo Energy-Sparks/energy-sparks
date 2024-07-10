@@ -237,8 +237,7 @@ class School < ApplicationRecord
   # combination of other scopes to define an engaged school
   scope :engaged, -> { active.with_recent_engagement.or(with_recently_logged_in_users).or(with_transport_survey).or(joined_programme) }
 
-  # schools that are not linked to a funder either directly or via their school group
-  scope :unfunded, -> { joins(:school_group).where('schools.funder_id is null AND school_groups.funder_id is null')}
+  scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
