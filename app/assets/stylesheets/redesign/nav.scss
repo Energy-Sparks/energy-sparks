@@ -70,11 +70,9 @@ nav.navbar-second {
   @extend %navbar-es;
   @include font(f9); // design says f7
   min-height: 40px; // design says 50
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 4px 0;
 
   .nav-link, .navbar-text {
-    color: $light-blue;
     padding: 4px 8px;
   }
 
@@ -90,6 +88,10 @@ nav.navbar-second {
         color: $white;
         background-color: $dark-blue;
       }
+    }
+
+    .nav-link {
+      color: $light-blue;
     }
 
     .nav-item.dropdown.show
