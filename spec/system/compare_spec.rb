@@ -28,7 +28,7 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
-  shared_examples 'a benchmark list page' do |feature_flag:, edit: false|
+  shared_examples 'a benchmark list page' do |edit: false|
     it { expect(page).to have_content('Benchmark group name') }
     it { expect(page).to have_content('Benchmark description') }
 
@@ -36,39 +36,29 @@ describe 'compare pages', :compare, type: :system do
       expect(first('div.compare').has_link?('Edit')).to be edit
     end
 
-    context 'when using new comparison', if: feature_flag do
+    context 'when linking to reports' do
       it { expect(page).to have_link('Baseload per pupil', href: %r{^/comparisons/baseload_per_pupil?}) }
       it { expect(page).to have_no_link(Comparison::Report.find_by(key: 'disabled_report').title) }
     end
   end
 
-  shared_examples 'a results page' do |display_new_comparison_pages: false, edit: false|
+  shared_examples 'a results page' do |edit: false|
     it { expect(page).to have_selector('h1', text: 'Baseload per pupil') }
     it { expect(page).to have_content('intro html') }
 
-    it 'allows report introduction to be edited', if: display_new_comparison_pages && edit do
+    it 'allows report introduction to be edited', if: edit do
       within('#intro') do
         expect(page).to have_link('Edit')
       end
     end
 
-    it 'does not allow report introduction to be edited', unless: display_new_comparison_pages && edit do
+    it 'does not allow report introduction to be edited', unless: edit do
       within('#intro') do
         expect(page).not_to have_link('Edit')
       end
     end
 
-    it 'includes tabular data', unless: display_new_comparison_pages do
-      within '#tables' do
-        expect(page).not_to have_content('Baseload per pupil')
-        expect(page).to have_content('table html')
-        expect(page).to have_content('Benchmark 2')
-        expect(page).to have_content('table composite 2 header')
-        expect(page).to have_content('table html')
-      end
-    end
-
-    it 'includes tabular data', if: display_new_comparison_pages do
+    it 'includes tabular data' do
       within '#tables' do
         expect(page).to have_selector(:table_row, {
           'School' => "#{school.name} [5]",
@@ -81,22 +71,7 @@ describe 'compare pages', :compare, type: :system do
       end
     end
 
-    it 'excludes fragments', unless: display_new_comparison_pages do
-      within '#tables' do
-        expect(page).not_to have_content('table text')
-        expect(page).not_to have_content('analytics html')
-        expect(page).not_to have_content('chart data')
-      end
-    end
-
-    it 'includes charts', unless: display_new_comparison_pages do
-      within '#charts' do
-        expect(page).to have_css('div#chart_config_name.analysis-chart')
-        expect(page).to have_content('chart html')
-      end
-    end
-
-    it 'includes charts', if: display_new_comparison_pages do
+    it 'includes charts' do
       within '#charts' do
         expect(page).to have_css('div#chart_comparison')
       end
@@ -226,79 +201,42 @@ describe 'compare pages', :compare, type: :system do
 
   ## contexts ##
 
-  shared_context 'index page context' do |display_new_comparison_pages: false|
+  shared_context 'index page context' do
     before do
-      if display_new_comparison_pages
-        create(:report, key: 'baseload_per_pupil', title: 'Baseload per pupil', introduction: 'intro html', public: true)
-        create(:report, key: 'disabled_report', title: 'Disabled Report', public: true, disabled: true)
-      else
-        expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
-      end
+      create(:report, key: 'baseload_per_pupil', title: 'Baseload per pupil', introduction: 'intro html', public: true)
+      create(:report, key: 'disabled_report', title: 'Disabled Report', public: true, disabled: true)
     end
   end
 
-  shared_context 'benchmarks page context' do |display_new_comparison_pages: false|
-    if display_new_comparison_pages
-      before do
-        create(:report_group, title: 'Benchmark group name', description: 'Benchmark description')
-      end
-    else
-      let!(:content_manager) { double(:content_manager) }
-
-      before do
-        BenchmarkResultSchoolGenerationRun.create!(school: school, benchmark_result_generation_run: BenchmarkResultGenerationRun.create!)
-        expect(Benchmarking::BenchmarkContentManager).to receive(:new).at_least(:once).and_return(content_manager)
-        expect(content_manager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
-      end
+  shared_context 'benchmarks page context' do
+    before do
+      create(:report_group, title: 'Benchmark group name', description: 'Benchmark description')
     end
   end
 
-  shared_context 'results page context' do |display_new_comparison_pages: false|
-    if display_new_comparison_pages
-      include_context 'with comparison report footnotes' do
-        let(:footnotes) { [tariff_changed_last_year] }
-      end
+  shared_context 'results page context' do
+    include_context 'with comparison report footnotes' do
+      let(:footnotes) { [tariff_changed_last_year] }
+    end
 
-      before do
-        create(:advice_page, key: :baseload)
+    before do
+      create(:advice_page, key: :baseload)
 
-        alert_run = create(:alert_generation_run, school: school)
-        create(:alert, alert_generation_run: alert_run, school: school,
-          alert_type: create(:alert_type, class_name: 'AlertElectricityBaseloadVersusBenchmark'),
-            variables: {
-              average_baseload_last_year_kw: 1.0,
-              average_baseload_last_year_gbp: 2.0,
-              one_year_baseload_per_pupil_kw: 3.0,
-              annual_baseload_percent: 4.0,
-              one_year_saving_versus_exemplar_gbp: 5.0
-            })
-        create(:alert, alert_generation_run: alert_run, school: school,
-          alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-            variables: {
-              electricity_economic_tariff_changed_this_year: true
-            })
-      end
-    else
-      let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, frequency: :weekly) }
-      let(:example_content) do
-        [
-          { type: :title, content: 'Baseload per pupil' },
-          { type: :html, content: 'intro html' },
-          { type: :chart, content: { title: 'chart title', config_name: 'config_name', x_axis: ['a school'] } },
-          { type: :html, content: 'chart html' },
-          { type: :table_composite, content: { header: ['table composite header'], rows: [[{ formatted: 'row 1', raw: 'row 1' }], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] } },
-          { type: :table_text, content: 'table text' },
-          { type: :html, content: 'table html' },
-          { type: :analytics_html, content: 'analytics html' },
-          { type: :title, content: 'Benchmark 2' },
-          { type: :table_composite, content: { header: ['table composite 2 header'], rows: [[{ formatted: 'row 1', raw: 'row 1' }], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] } },
-          { type: :html, content: 'table 2 html' },
-        ]
-      end
-
-      before do
-        expect(content_manager).to receive(:content).at_least(:once).and_return(example_content)
-      end
+      alert_run = create(:alert_generation_run, school: school)
+      create(:alert, alert_generation_run: alert_run, school: school,
+        alert_type: create(:alert_type, class_name: 'AlertElectricityBaseloadVersusBenchmark'),
+          variables: {
+            average_baseload_last_year_kw: 1.0,
+            average_baseload_last_year_gbp: 2.0,
+            one_year_baseload_per_pupil_kw: 3.0,
+            annual_baseload_percent: 4.0,
+            one_year_saving_versus_exemplar_gbp: 5.0
+          })
+      create(:alert, alert_generation_run: alert_run, school: school,
+        alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+          variables: {
+            electricity_economic_tariff_changed_this_year: true
+          })
     end
   end
 
@@ -319,11 +257,10 @@ describe 'compare pages', :compare, type: :system do
       let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { baseload_per_pupil: 'Baseload per pupil' } }] }
 
       before do
-        feature_flag ? Flipper.enable(:comparison_reports) : Flipper.disable(:comparison_reports)
         sign_in(user) if user
       end
 
-      include_context 'index page context', display_new_comparison_pages: feature_flag
+      include_context 'index page context'
 
       before { visit compare_index_path }
 
@@ -341,7 +278,7 @@ describe 'compare pages', :compare, type: :system do
           it_behaves_like 'a form filter', id: '#group', school_types_excluding: [] # show all
 
           context 'Benchmark page' do
-            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
+            include_context 'benchmarks page context'
 
             before do
               within '#group' do
@@ -350,7 +287,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
+            it_behaves_like 'a benchmark list page'
             it_behaves_like 'a filter summary', school_types_excluding: ['junior']
 
             context 'Changing options' do
@@ -361,11 +298,11 @@ describe 'compare pages', :compare, type: :system do
             end
 
             context 'results page' do
-              include_context 'results page context', display_new_comparison_pages: feature_flag
+              include_context 'results page context'
 
               before { click_on 'Baseload per pupil' }
 
-              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
+              it_behaves_like 'a results page'
               it_behaves_like 'a filter summary', school_types_excluding: ['junior']
 
               context 'Changing options' do
@@ -387,7 +324,7 @@ describe 'compare pages', :compare, type: :system do
           it_behaves_like 'a form filter', id: '#country', country: 'All countries'
 
           context 'Benchmark page' do
-            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
+            include_context 'benchmarks page context'
 
             before do
               within '#country' do
@@ -397,7 +334,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
+            it_behaves_like 'a benchmark list page'
             it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
 
             context 'Changing options' do
@@ -408,11 +345,11 @@ describe 'compare pages', :compare, type: :system do
             end
 
             context 'results page' do
-              include_context 'results page context', display_new_comparison_pages: feature_flag
+              include_context 'results page context'
 
               before { click_on 'Baseload per pupil' }
 
-              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
+              it_behaves_like 'a results page'
               it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
 
               context 'Changing options' do
@@ -434,7 +371,7 @@ describe 'compare pages', :compare, type: :system do
           it_behaves_like 'a form filter', id: '#type', school_type: []
 
           context 'Benchmark page' do
-            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
+            include_context 'benchmarks page context'
 
             before do
               within '#type' do
@@ -444,7 +381,7 @@ describe 'compare pages', :compare, type: :system do
             end
 
             it_behaves_like 'a filter summary', school_types: ['primary']
-            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
+            it_behaves_like 'a benchmark list page'
 
             context 'Changing options' do
               before { click_on 'Change options' }
@@ -454,11 +391,11 @@ describe 'compare pages', :compare, type: :system do
             end
 
             context 'results page' do
-              include_context 'results page context', display_new_comparison_pages: feature_flag
+              include_context 'results page context'
 
               before { click_on 'Baseload per pupil' }
 
-              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
+              it_behaves_like 'a results page'
               it_behaves_like 'a filter summary', school_types: ['primary']
 
               context 'Changing options' do
@@ -479,7 +416,7 @@ describe 'compare pages', :compare, type: :system do
           it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2'], school_groups: [], school_types_excluding: [] # show all
 
           context 'Benchmark page' do
-            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
+            include_context 'benchmarks page context'
 
             before do
               within '#groups' do
@@ -490,7 +427,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page', feature_flag: feature_flag
+            it_behaves_like 'a benchmark list page'
             it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
 
             context 'Changing options' do
@@ -514,11 +451,11 @@ describe 'compare pages', :compare, type: :system do
             end
 
             context 'results page' do
-              include_context 'results page context', display_new_comparison_pages: feature_flag
+              include_context 'results page context'
 
               before { click_on 'Baseload per pupil' }
 
-              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag
+              it_behaves_like 'a results page'
               it_behaves_like 'a filter summary', school_types_excluding: ['infant'], school_groups: ['Group 1', 'Group 2']
 
               context 'Changing options' do
@@ -553,7 +490,7 @@ describe 'compare pages', :compare, type: :system do
           it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2', 'Not Public']
 
           context 'Benchmark page' do
-            include_context 'benchmarks page context', display_new_comparison_pages: feature_flag
+            include_context 'benchmarks page context'
 
             before do
               within '#country' do
@@ -568,7 +505,7 @@ describe 'compare pages', :compare, type: :system do
               end
             end
 
-            it_behaves_like 'a benchmark list page', edit: feature_flag, feature_flag: feature_flag
+            it_behaves_like 'a benchmark list page', edit: true
             it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
             it_behaves_like 'a filter summary', funder: 'Grant Funder'
 
@@ -581,11 +518,11 @@ describe 'compare pages', :compare, type: :system do
             end
 
             context 'results page' do
-              include_context 'results page context', display_new_comparison_pages: feature_flag
+              include_context 'results page context'
 
               before { click_on 'Baseload per pupil' }
 
-              it_behaves_like 'a results page', display_new_comparison_pages: feature_flag, edit: true
+              it_behaves_like 'a results page', edit: true
               it_behaves_like 'a filter summary', country: 'Scotland', school_types_excluding: ['middle']
               it_behaves_like 'a filter summary', funder: 'Grant Funder'
 
@@ -603,10 +540,6 @@ describe 'compare pages', :compare, type: :system do
   end
 
   context 'when comparison report feature is switched on' do
-    before do
-      Flipper.enable :comparison_reports
-    end
-
     describe 'displaying unlisted schools on the results page' do
       # school should be the only school with results
       let!(:school)    { create(:school, name: 'Included school') }
@@ -615,8 +548,8 @@ describe 'compare pages', :compare, type: :system do
 
       let!(:unlisted_schools) { }
 
-      include_context 'index page context', display_new_comparison_pages: true
-      include_context 'results page context', display_new_comparison_pages: true
+      include_context 'index page context'
+      include_context 'results page context'
 
       before { visit comparisons_baseload_per_pupil_index_path }
 
@@ -652,7 +585,6 @@ describe 'compare pages', :compare, type: :system do
 
   context 'when comparison report redirect is switched on', type: :request do
     before do
-      Flipper.enable :comparison_reports_redirect
       get old_compare_url
     end
 
