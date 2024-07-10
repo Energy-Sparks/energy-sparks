@@ -26,9 +26,6 @@
             <i class="fa-li fas fa-check"></i>
             <% path = comparison_report_path(report, @filter) %>
             <%= path ? link_to(report.title, path) : report.title %>
-            <% if Flipper.enabled?(:comparison_reports_link_to_old, current_user) %>
-              <%= admin_link compare_path(report.key, @filter), to: 'current' %>
-            <% end %>
          </li>
         <% end %>
       </ul>
