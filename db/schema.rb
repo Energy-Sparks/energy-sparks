@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_05_140445) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_10_094741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -489,19 +489,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_05_140445) do
     t.index ["meter_id", "one_day_kwh"], name: "index_amr_validated_readings_on_meter_id_and_one_day_kwh"
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
     t.unique_constraint ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings"
-  end
-
-  create_table "analysis_pages", force: :cascade do |t|
-    t.bigint "content_generation_run_id"
-    t.bigint "alert_type_rating_content_version_id"
-    t.bigint "alert_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "category"
-    t.decimal "priority", default: "0.0"
-    t.index ["alert_id"], name: "index_analysis_pages_on_alert_id"
-    t.index ["alert_type_rating_content_version_id"], name: "index_analysis_pages_on_alert_type_rating_content_version_id"
-    t.index ["content_generation_run_id"], name: "index_analysis_pages_on_content_generation_run_id"
   end
 
   create_table "areas", force: :cascade do |t|
@@ -2026,9 +2013,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_05_140445) do
   add_foreign_key "amr_reading_warnings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_uploaded_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters", on_delete: :cascade
-  add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
-  add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
-  add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
   add_foreign_key "audits", "schools", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "alert_types", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "benchmark_result_school_generation_runs", on_delete: :cascade
