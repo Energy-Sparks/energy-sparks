@@ -33,6 +33,10 @@ module NavHelper
     "navbar-expand-#{expand_class}"
   end
 
+  def navbar_secondary_class
+    current_user&.pupil? ? 'pupil' : 'adult'
+  end
+
   def other_locales
     I18n.available_locales - [I18n.locale]
   end

@@ -1,4 +1,4 @@
-nav.navbar-es {
+%navbar-es {
   font-family: $header-font-family;
   font-weight: 400 !important;
 
@@ -16,26 +16,31 @@ nav.navbar-es {
   }
 
   .navbar-toggler {
+    padding: 4px;
     color: $navbar-dark-color;
     border-color: $navbar-dark-toggler-border-color;
   }
 
   .navbar-toggler-icon {
+    width: 1.2em;
+    height: 1.2em;
     background-image: escape-svg($navbar-dark-toggler-icon-bg);
   }
 
-  // Allow scroll on collapse
-  .collapse.show {
+  // Allow scroll on collapse and left margin
+  .collapsing, .collapse.show {
     max-height: 85vh;
     overflow-y: auto;
+    margin-left: 10px;
   }
 }
 
 nav.navbar-top {
-  @extend .navbar-es;
+  @extend %navbar-es;
   @include font(f8); // design says f6
   background-color: $dark;
   color: $white;
+  min-height: 70px; // design says 108
 
   img {
     height: 40px; // design says 60
@@ -62,28 +67,61 @@ nav.navbar-top {
 }
 
 nav.navbar-second {
-  @extend .navbar-es;
+  @extend %navbar-es;
   @include font(f9); // design says f7
-  background-color: $dark-blue;
+  min-height: 40px; // design says 50
+  padding-top: 4px;
+  padding-bottom: 4px;
+
+  .nav-link, .navbar-text {
+    color: $light-blue;
+    padding: 4px 8px;
+  }
+
   color: $white;
-  height: 40px; // design says 50
 
-  .dropdown-menu {
-    background-color: $dark;
+  &.adult {
+    background-color: $dark-blue;
 
-    .dropdown-item {
-      color: $white;
-      background-color: $dark;
+    .dropdown-menu {
+      background-color: $dark-blue;
+
+      .dropdown-item {
+        color: $white;
+        background-color: $dark-blue;
+      }
+    }
+
+    .nav-item.dropdown.show
+    .nav-link.dropdown-toggle,
+    .nav-link:hover,
+    .nav-link:focus,
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+      color: $yellow;
     }
   }
 
-  .nav-item.dropdown.show
-  .nav-link.dropdown-toggle,
-  .nav-link:hover,
-  .nav-link:focus,
-  .dropdown-item:hover,
-  .dropdown-item:focus {
-    color: $yellow;
+  &.pupil {
+    background-color: $dark-blue;
+
+    .dropdown-menu {
+      background-color: $dark;
+
+      .dropdown-item {
+        color: $white;
+        background-color: $dark;
+      }
+    }
+
+    .nav-item.dropdown.show
+    .nav-link.dropdown-toggle,
+    .nav-link:hover,
+    .nav-link:focus,
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+      color: $yellow;
+    }
   }
 }
 
@@ -102,11 +140,6 @@ a.nav-link.lozenge {
     color: $black !important;
     background: $grey;
   }
-}
-
-// add slight left margin on collapse
-.navbar-collapse {
-  margin-left: 10px;
 }
 
 // make dropdown scrollable if scrollable class is added
