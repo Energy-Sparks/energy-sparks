@@ -128,7 +128,6 @@ group :development, :test do
   gem 'guard-rubocop', require: false
   gem 'knapsack'
   gem 'rails-controller-testing'
-  # gem 'rb-readline', require: false # not updated since 2017 - windows thing?
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
   gem 'rubocop'
