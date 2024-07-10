@@ -12,7 +12,7 @@ module Schools
     def show
       @activities = ActivityType.active.live_data.sample(5)
       @actions = Recommendations::Actions.new(@school).based_on_energy_use
-      @daily_variation_url = insights_school_advice_electricity_intraday_path(school)
+      @daily_variation_url = insights_school_advice_electricity_intraday_path(@school)
       @timeout_interval = timeout_interval
       cache_power_consumption_service
     end
