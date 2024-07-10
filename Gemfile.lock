@@ -821,7 +821,6 @@ DEPENDENCIES
   climate_control
   closed_struct
   cocoon
-  database_cleaner
   debug
   devise
   dotenv-rails
