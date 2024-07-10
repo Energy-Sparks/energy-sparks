@@ -6,8 +6,6 @@
 
 Sitemap: https://energysparks.uk/sitemap.xml.gz
 
-Sitemap: https://energysparks.uk/sitemap.xml.gz
-
 User-agent: *
 Disallow: /admin/
 Disallow: /rails/*
@@ -15,6 +13,7 @@ Disallow: /schools/scoreboard
 Disallow: /schools/*/analysis
 Disallow: /schools/*/find_out_more/*
 Disallow: /schools/*/chart.json
+Disallow: /schools/*/advice
 Disallow: /schools/*/advice/*
 Disallow: /pupils/schools/*/analysis
 Disallow: /benchmark
