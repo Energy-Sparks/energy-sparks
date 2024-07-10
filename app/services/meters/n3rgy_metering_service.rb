@@ -21,9 +21,9 @@ module Meters
     def status
       api_client.find_mpxn(@meter.mpan_mprn)
       :available
-    rescue MeterReadingsFeeds::N3rgyDataApi::NotFound
+    rescue DataFeeds::N3rgy::NotFound
       :unknown
-    rescue MeterReadingsFeeds::N3rgyDataApi::NotAllowed
+    rescue DataFeeds::N3rgy::NotAllowed
       :consent_required
     end
 

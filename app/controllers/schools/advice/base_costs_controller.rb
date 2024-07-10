@@ -72,7 +72,7 @@ module Schools
       end
 
       def aggregate_meter_adapter
-        OpenStruct.new(mpan_mprn: aggregate_meter_mpan_mprn, name_or_mpan_mprn: aggregate_meter_label)
+        OpenStruct.new(mpan_mprn: aggregate_meter_mpan_mprn, name_or_mpan_mprn: aggregate_meter_label, has_readings?: true)
       end
 
       def options_for_meter_select

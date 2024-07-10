@@ -4,9 +4,9 @@
   <li class="nav-item">
     <a class="nav-link disabled" href="#">Jump to</a>
   </li>
-  <% ['Standard', 'System', 'Analysis'].each do |section| %>
+  <% %w[Standard System].each do |section| %>
     <li class="nav-item">
-      <%= link_to "#{section}", "##{section}", class: 'nav-link' %>
+      <%= link_to section.to_s, "##{section}", class: 'nav-link' %>
     </li>
   <% end %>
 </ul>
@@ -22,9 +22,3 @@
 </div>
 <h2>System</h2>
 <%= render 'table', alert_types: @system_alert_types, show_full: true %>
-
-<div class="nav-anchor">
-  <a name="Analysis"> </a>
-</div>
-<h2>Old Analysis Pages</h2>
-<%= render 'table', alert_types: @analysis_alert_types %>
