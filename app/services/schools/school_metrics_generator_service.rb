@@ -7,14 +7,12 @@ module Schools
     end
 
     def perform
-      # Relies on the benchmark run already existing, created in daily_regeneration.rake
-      @benchmark_result_generation_run = BenchmarkResultGenerationRun.latest
-      generate_metrics(@benchmark_result_generation_run)
+      generate_metrics
     end
 
     private
 
-    def generate_metrics(benchmark_result_generation_run)
+    def generate_metrics
       # Configuration school
       suppress_output { Schools::GenerateConfiguration.new(@school, @meter_collection).generate }
 
@@ -24,8 +22,7 @@ module Schools
       suppress_output do
         Alerts::GenerateAndSaveAlertsAndBenchmarks.new(
           school: @school,
-          aggregate_school: @meter_collection,
-          benchmark_result_generation_run: benchmark_result_generation_run
+          aggregate_school: @meter_collection
         ).perform
       end
       @logger.info 'Generated alerts & benchmarks'

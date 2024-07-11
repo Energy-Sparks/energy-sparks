@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_10_094741) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_10_110209) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -528,45 +528,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_094741) do
     t.datetime "updated_at", null: false
     t.boolean "involved_pupils", default: false, null: false
     t.index ["school_id"], name: "index_audits_on_school_id"
-  end
-
-  create_table "benchmark_result_errors", force: :cascade do |t|
-    t.bigint "benchmark_result_school_generation_run_id", null: false
-    t.bigint "alert_type_id", null: false
-    t.date "asof_date"
-    t.text "information"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["alert_type_id"], name: "index_benchmark_result_errors_on_alert_type_id"
-    t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_errors_index"
-  end
-
-  create_table "benchmark_result_generation_runs", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "benchmark_result_school_generation_runs", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "benchmark_result_generation_run_id"
-    t.integer "benchmark_result_error_count", default: 0
-    t.integer "benchmark_result_count", default: 0
-    t.index ["benchmark_result_generation_run_id"], name: "benchmark_result_school_generation_run_idx"
-    t.index ["school_id"], name: "index_benchmark_result_school_generation_runs_on_school_id"
-  end
-
-  create_table "benchmark_results", force: :cascade do |t|
-    t.bigint "alert_type_id", null: false
-    t.date "asof", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "benchmark_result_school_generation_run_id", null: false
-    t.json "results", default: {}
-    t.json "results_cy", default: {}
-    t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
-    t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_index"
   end
 
   create_table "cads", force: :cascade do |t|
@@ -2014,12 +1975,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_094741) do
   add_foreign_key "amr_uploaded_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters", on_delete: :cascade
   add_foreign_key "audits", "schools", on_delete: :cascade
-  add_foreign_key "benchmark_result_errors", "alert_types", on_delete: :cascade
-  add_foreign_key "benchmark_result_errors", "benchmark_result_school_generation_runs", on_delete: :cascade
-  add_foreign_key "benchmark_result_school_generation_runs", "benchmark_result_generation_runs", on_delete: :cascade
-  add_foreign_key "benchmark_result_school_generation_runs", "schools", on_delete: :cascade
-  add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
-  add_foreign_key "benchmark_results", "benchmark_result_school_generation_runs", on_delete: :cascade
   add_foreign_key "cads", "meters"
   add_foreign_key "cads", "schools", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years", on_delete: :restrict
