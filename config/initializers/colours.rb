@@ -5,7 +5,9 @@ module Colours
   LIGHT_YELLOW = '#fff9b2'.freeze
 
   # NEW YELLOWS (using in nav)
+  YELLOW_PALE = '#fdefc8'.freeze
   YELLOW_LIGHT = '#fcdc8b'.freeze
+  YELLOW_MEDIUM = '#f9b233'.freeze
   YELLOW_DARK = '#772d10'.freeze
   YELLOW_VERY_DARK = '#441504'.freeze
 

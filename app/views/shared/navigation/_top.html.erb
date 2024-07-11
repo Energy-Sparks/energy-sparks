@@ -7,11 +7,9 @@
       <% end %>
     </div>
 
-    <div class='ml-auto'>
+    <div class='<%= order_expand_class %>'>
       <% other_locales.excluding(:mirror).each do |locale| %>
-        <span class="navbar-text my-auto">
-          <%= link_to_locale(locale, class: 'nav-link lozenge') %>
-        </span>
+        <%= link_to_locale(locale, class: 'nav-link lozenge') %>
       <% end %>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-top" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

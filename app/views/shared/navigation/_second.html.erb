@@ -3,12 +3,11 @@
 
     <% if current_school %>
       <ul class="navbar-nav nowrap">
-        <li><%= current_school.name %><span class=''>:</span>
-        </li>
+        <li><%= current_school.name %>:</li>
       </ul>
     <% end %>
 
-    <div class='ml-auto'>
+    <div class='<%= order_expand_class %>'>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-second" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -31,9 +30,25 @@
             </li>
           <% end %>
         <% end %>
-
-        <%= render 'shared/navigation/podium',
-                   podium: current_school_podium, school: current_school %>
+      </ul>
+    </div>
+    <div class="my-auto ml-auto">
+      <ul class="navbar-nav">
+        <li class='nav-item my-auto'>
+          <%= render 'shared/navigation/podium',
+                     podium: current_school_podium, school: current_school %>
+        </li>
+        <div class="vr"></div>
+        <% if current_school %>
+          <%= render 'shared/manage_school', school: current_school if can? :update, current_school %>
+        <% end %>
+        <li class="nav-item">
+          <% if user_signed_in? %>
+            <%= link_to t('nav.sign_out'), destroy_user_session_path, method: :delete, class: 'nav-link' %>
+          <% else %>
+            <%= link_to t('nav.sign_in'), new_user_session_path, class: 'nav-link' %>
+          <% end %>
+        </li>
       </ul>
     </div>
   </div>

@@ -37,6 +37,17 @@
     overflow-y: auto;
     margin-left: 10px;
   }
+
+  .nav-link.lozenge {
+    @extend .rounded-pill;
+    @include font(f9);
+    padding: 0px 12px !important;
+    display:inline-block;
+
+    &:hover, &:focus {
+      @include font(f9);
+    }
+  }
 }
 
 nav.navbar-top {
@@ -48,7 +59,7 @@ nav.navbar-top {
 
   img {
     height: 40px; // design says 60
-    margin-bottom: 4px; // move it up a bit as text in logo isn't vertically central to logo
+    margin-bottom: 6px; // move it up a bit as text in logo isn't vertically central to logo
   }
 
   .dropdown-menu {
@@ -68,34 +79,49 @@ nav.navbar-top {
   .dropdown-item:focus {
     color: $yellow;
   }
+
+  .nav-link.lozenge {
+    margin-left: 4px;
+    color: $blue-dark;
+    background: $white;
+    border: 1px solid $blue-dark;
+
+    &:hover, &:focus {
+      color: $black !important;
+      background: $grey;
+    }
+  }
 }
 
 nav.navbar-second {
   @extend %navbar-es;
   @include font(f9); // design says f7
-  min-height: 40px; // design says 50
-  padding: 4px 16px;
+  min-height: 32px; // design says 50
+  padding: 2px 16px;
 
   .nav-link, .navbar-text {
     padding: 4px 8px;
   }
 
+  .nav-link.lozenge {
+    margin: 0 8px;
+  }
 
   &.adult {
     color: $white;
-    background-color: $dark-blue;
+    background-color: $blue-very-dark;
 
     .dropdown-menu {
-      background-color: $dark-blue;
+      background-color: $blue-very-dark;
 
       .dropdown-item {
         color: $white;
-        background-color: $dark-blue;
+        background-color: $blue-very-dark;
       }
     }
 
     .nav-link {
-      color: $light-blue;
+      color: $blue-medium;
     }
 
     .nav-item.dropdown.show
@@ -105,6 +131,16 @@ nav.navbar-second {
     .dropdown-item:hover,
     .dropdown-item:focus {
       color: $yellow;
+    }
+
+    .nav-link.lozenge {
+      color: $blue-dark;
+      background: $blue-medium;
+
+      &:hover, &:focus {
+        color: $black !important;
+        background: $grey;
+      }
     }
   }
 
@@ -131,7 +167,7 @@ nav.navbar-second {
     .nav-link:focus,
     .dropdown-item:hover,
     .dropdown-item:focus {
-      color: $white;
+      color: $yellow-medium;
     }
 
     .navbar-toggler-icon {
@@ -142,23 +178,16 @@ nav.navbar-second {
       color: $navbar-light-color;
       border-color: $navbar-light-toggler-border-color;
     }
-  }
-}
 
-a.nav-link.lozenge {
-  @extend .rounded-pill;
-  @include font(f9);
-  color: $dark-blue;
-  background: $white;
-  padding: 0px 12px !important;
-  margin-left: 4px;
-  display:inline-block;
-  border: 1px solid $dark-blue;
+    .nav-link.lozenge {
+      color: $yellow-dark;
+      background: $yellow-medium;
 
-  &:hover, &:focus {
-    @include font(f9);
-    color: $black !important;
-    background: $grey;
+      &:hover, &:focus {
+        color: $black !important;
+        background: $grey;
+      }
+    }
   }
 }
 
@@ -178,3 +207,12 @@ a.nav-link.lozenge {
   vertical-align: 0;
 }
 
+.vr {
+  display: inline-block;
+  align-self: stretch;
+  width: 1px;
+  min-height: 1em;
+  background-color: currentColor;
+  margin: 4px 8px;
+  opacity: 0.5;
+}
