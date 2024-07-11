@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_10_110209) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -282,11 +282,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
     t.decimal "pupil_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
     t.text "find_out_more_table_variable", default: "none"
-    t.string "analysis_title"
-    t.string "analysis_subtitle"
-    t.date "analysis_start_date"
-    t.date "analysis_end_date"
-    t.decimal "analysis_weighting", default: "5.0"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -332,7 +327,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
     t.boolean "public_dashboard_alert_active", default: false
     t.boolean "management_dashboard_alert_active", default: false
     t.boolean "management_priorities_active", default: false
-    t.boolean "analysis_active", default: false
     t.boolean "management_dashboard_table_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
@@ -497,19 +491,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
     t.unique_constraint ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings"
   end
 
-  create_table "analysis_pages", force: :cascade do |t|
-    t.bigint "content_generation_run_id"
-    t.bigint "alert_type_rating_content_version_id"
-    t.bigint "alert_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "category"
-    t.decimal "priority", default: "0.0"
-    t.index ["alert_id"], name: "index_analysis_pages_on_alert_id"
-    t.index ["alert_type_rating_content_version_id"], name: "index_analysis_pages_on_alert_type_rating_content_version_id"
-    t.index ["content_generation_run_id"], name: "index_analysis_pages_on_content_generation_run_id"
-  end
-
   create_table "areas", force: :cascade do |t|
     t.text "type", null: false
     t.text "title"
@@ -547,45 +528,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
     t.datetime "updated_at", null: false
     t.boolean "involved_pupils", default: false, null: false
     t.index ["school_id"], name: "index_audits_on_school_id"
-  end
-
-  create_table "benchmark_result_errors", force: :cascade do |t|
-    t.bigint "benchmark_result_school_generation_run_id", null: false
-    t.bigint "alert_type_id", null: false
-    t.date "asof_date"
-    t.text "information"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["alert_type_id"], name: "index_benchmark_result_errors_on_alert_type_id"
-    t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_errors_index"
-  end
-
-  create_table "benchmark_result_generation_runs", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "benchmark_result_school_generation_runs", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "benchmark_result_generation_run_id"
-    t.integer "benchmark_result_error_count", default: 0
-    t.integer "benchmark_result_count", default: 0
-    t.index ["benchmark_result_generation_run_id"], name: "benchmark_result_school_generation_run_idx"
-    t.index ["school_id"], name: "index_benchmark_result_school_generation_runs_on_school_id"
-  end
-
-  create_table "benchmark_results", force: :cascade do |t|
-    t.bigint "alert_type_id", null: false
-    t.date "asof", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "benchmark_result_school_generation_run_id", null: false
-    t.json "results", default: {}
-    t.json "results_cy", default: {}
-    t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
-    t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_index"
   end
 
   create_table "cads", force: :cascade do |t|
@@ -1584,8 +1526,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
     t.boolean "school_will_be_public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
-    t.bigint "funder_id"
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
+    t.bigint "funder_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
@@ -2032,16 +1974,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_160109) do
   add_foreign_key "amr_reading_warnings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_uploaded_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters", on_delete: :cascade
-  add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
-  add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
-  add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
   add_foreign_key "audits", "schools", on_delete: :cascade
-  add_foreign_key "benchmark_result_errors", "alert_types", on_delete: :cascade
-  add_foreign_key "benchmark_result_errors", "benchmark_result_school_generation_runs", on_delete: :cascade
-  add_foreign_key "benchmark_result_school_generation_runs", "benchmark_result_generation_runs", on_delete: :cascade
-  add_foreign_key "benchmark_result_school_generation_runs", "schools", on_delete: :cascade
-  add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
-  add_foreign_key "benchmark_results", "benchmark_result_school_generation_runs", on_delete: :cascade
   add_foreign_key "cads", "meters"
   add_foreign_key "cads", "schools", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years", on_delete: :restrict

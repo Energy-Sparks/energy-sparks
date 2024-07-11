@@ -3,21 +3,15 @@ class CompareController < ApplicationController
   skip_before_action :authenticate_user!
 
   before_action :filter
-  before_action :benchmark_groups, only: [:benchmarks]
 
   before_action :set_school_groups, only: [:index]
-  before_action :comparison_reports_redirect, only: [:show]
-  before_action :set_included_schools, only: [:benchmarks, :show]
+  before_action :set_included_schools, only: [:benchmarks]
   helper_method :index_params
 
   # filters
   def index
     # Count is of all available benchmarks for guest users only
-    if Flipper.enabled?(:comparison_reports, current_user)
-      @benchmark_count = Comparison::Report.where(public: true, disabled: false).count
-    else
-      @benchmark_count = Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
-    end
+    @benchmark_count = Comparison::Report.where(public: true, disabled: false).count
   end
 
   # pick benchmark
@@ -27,44 +21,13 @@ class CompareController < ApplicationController
     end
   end
 
-  # display results
+  # Redirect old urls
+  # TODO: what about if we dont have this report any more?
   def show
-    # user wouldn't be able to get here, but adding in case crawlers/bots hit the page
-    if @included_schools.empty?
-      render :no_schools
-    else
-      benchmark = filter[:benchmark].to_sym
-      @content = BenchmarkContentFilter.new(content_for_benchmark(benchmark))
-      @content.title ||= extract_title_from_benchmark(benchmark)
-    end
+    redirect_to controller: "comparisons/#{filter.delete(:benchmark)}", **filter
   end
 
   private
-
-  def filter
-    @filter ||=
-      params.permit(:search, :benchmark, :country, :school_type, :funder, school_group_ids: [], school_types: [])
-        .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
-        .to_hash.symbolize_keys
-  end
-
-  def index_params
-    filter.merge(anchor: filter[:search])
-  end
-
-  def latest_benchmark_run
-    @latest_benchmark_run ||= BenchmarkResultGenerationRun.latest
-  end
-
-  def content_manager
-    @content_manager ||= Benchmarking::BenchmarkContentManager.new(latest_benchmark_run.run_date)
-  end
-
-  def benchmark_groups
-    unless Flipper.enabled?(:comparison_reports, current_user)
-      @benchmark_groups ||= content_manager.structured_pages(user_type: user_type_hash)
-    end
-  end
 
   def set_included_schools
     @included_schools = included_schools
@@ -81,31 +44,19 @@ class CompareController < ApplicationController
     schools
   end
 
-  def fetch_benchmark_data
-    Alerts::CollateBenchmarkData.new(latest_benchmark_run).perform(@included_schools)
+  def filter
+    @filter ||=
+      params.permit(:search, :benchmark, :country, :school_type, :funder, school_group_ids: [], school_types: [])
+        .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
+        .to_hash.symbolize_keys
   end
 
-  def content_for_benchmark(benchmark)
-    content_manager.content(fetch_benchmark_data, benchmark, user_type: user_type_hash, online: true)
-    # rubocop:disable Lint/RescueException
-  rescue Exception => e
-    # rubocop:enable Lint/RescueException
-    Rollbar.error(e, benchmark: benchmark)
-    []
-  end
-
-  def extract_title_from_benchmark(benchmark)
-    benchmark_groups.find {|group| group[:benchmarks]}.dig(:benchmarks, benchmark)
+  def index_params
+    filter.merge(anchor: filter[:search])
   end
 
   # Set list of school groups visible to this user
   def set_school_groups
     @school_groups = ComparisonService.new(current_user).list_school_groups.select(&:has_visible_schools?)
-  end
-
-  def comparison_reports_redirect
-    if Flipper.enabled?(:comparison_reports_redirect, current_user)
-      redirect_to controller: "comparisons/#{filter.delete(:benchmark)}", **filter
-    end
   end
 end

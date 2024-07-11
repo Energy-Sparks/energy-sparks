@@ -2,7 +2,6 @@ module Schools
   class ContentReportsController < ApplicationController
     include DashboardAlerts
     include DashboardPriorities
-    include AnalysisPages
     load_and_authorize_resource :school
 
     def index
