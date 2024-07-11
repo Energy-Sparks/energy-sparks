@@ -77,6 +77,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
       onboarding = SchoolOnboarding.first
       expect(onboarding.data_sharing_within_group?).to be true
       expect(onboarding.default_chart_preference).to eq 'carbon'
+      expect(onboarding.funder).to eq funder
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Set up your school on Energy Sparks')
@@ -98,6 +99,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
       click_on 'Edit'
 
       fill_in 'School name', with: 'A new name'
+      select funder.name, from: 'Funder'
       click_on 'Next'
 
       select 'Oxford calendar', from: 'Template calendar'
@@ -111,6 +113,12 @@ RSpec.describe 'onboarding', :schools, type: :system do
       expect(onboarding.template_calendar).to eq(other_template_calendar)
       expect(onboarding.default_chart_preference).to eq 'cost'
       expect(onboarding.country).to eq 'scotland'
+      expect(onboarding.funder).to eq funder
+
+      # check form fields repopulating
+      visit admin_school_onboardings_path
+      click_on 'Edit'
+      expect(page).to have_select('Funder', selected: funder.name)
     end
 
     context 'when completing onboarding as admin without consents' do
