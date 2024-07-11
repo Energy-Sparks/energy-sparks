@@ -37,8 +37,6 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     let!(:dashboard_alert_2) { create(:dashboard_alert, alert: alert_2, content_version: content_version_1, content_generation_run: content_generation_run_2) }
     let!(:management_priority_1) { create(:management_priority, alert: alert_1, content_generation_run: content_generation_run_1) }
     let!(:management_priority_2) { create(:management_priority, alert: alert_2, content_generation_run: content_generation_run_2) }
-    let!(:analysis_page_1) { create(:analysis_page, alert: alert_1, content_generation_run: content_generation_run_1) }
-    let!(:analysis_page_2) { create(:analysis_page, alert: alert_2, content_generation_run: content_generation_run_2) }
     let!(:management_dashboard_table_1) { create(:management_dashboard_table, alert: alert_1, content_generation_run: content_generation_run_1) }
     let!(:management_dashboard_table_2) { create(:management_dashboard_table, alert: alert_2, content_generation_run: content_generation_run_2) }
     let!(:find_out_more_1) { create(:find_out_more, alert: alert_1, content_generation_run: content_generation_run_1) }
@@ -48,7 +46,6 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
       expect(ContentGenerationRun.count).to eq 2
       expect(DashboardAlert.count).to eq(2)
       expect(ManagementPriority.count).to eq(2)
-      expect(AnalysisPage.count).to eq(2)
       expect(ManagementDashboardTable.count).to eq(2)
       expect(FindOutMore.count).to eq(2)
       cv_ids = FindOutMore.all.pluck(:alert_type_rating_content_version_id)
@@ -62,7 +59,6 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
       expect { service.delete! }.to change(ContentGenerationRun, :count).from(2).to(1) &
                                     change(DashboardAlert, :count).from(2).to(1) &
                                     change(ManagementPriority, :count).from(2).to(1) &
-                                    change(AnalysisPage, :count).from(2).to(1) &
                                     change(ManagementDashboardTable, :count).from(2).to(1) &
                                     change(FindOutMore, :count).from(2).to(1) &
                                     not_change(AlertTypeRatingContentVersion.where(id: cv_ids), :count) &
