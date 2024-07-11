@@ -64,6 +64,30 @@ RSpec.describe 'gas recent changes advice page', type: :system do
         expected_end_date = end_date.to_fs(:es_full)
         expect(page).to have_content("Gas data is available from #{expected_start_date} to #{expected_end_date}")
       end
+
+      it 'does not shows meter filtering chart options for both charts' do
+        all('#chart-filter').each do |filters|
+          within filters do
+            expect(page).not_to have_select('Which meter?')
+          end
+        end
+      end
+
+      context 'when school has multiple meters' do
+        before do
+          create_list(:gas_meter, 2, school: school)
+          school.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_gas: true))
+          refresh
+        end
+
+        it 'shows meter filtering chart options for both charts' do
+          all('#chart-filter').each do |filters|
+            within filters do
+              expect(page).to have_select('Which meter?')
+            end
+          end
+        end
+      end
     end
 
     context "clicking the 'Learn More' tab" do
