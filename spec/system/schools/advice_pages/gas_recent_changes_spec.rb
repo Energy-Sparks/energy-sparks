@@ -76,7 +76,6 @@ RSpec.describe 'gas recent changes advice page', type: :system do
       context 'when school has multiple meters' do
         before do
           create_list(:gas_meter, 2, school: school)
-          school.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_gas: true))
           refresh
         end
 

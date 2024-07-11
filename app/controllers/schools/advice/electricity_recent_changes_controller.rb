@@ -9,7 +9,7 @@ module Schools
       end
 
       def analysis
-        @meters = @school.filterable_meters.electricity
+        @meters = @school.filterable_meters(:electricity)
         @chart_config = start_end_dates
       end
 

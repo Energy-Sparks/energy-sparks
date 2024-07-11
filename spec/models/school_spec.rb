@@ -757,4 +757,35 @@ describe School do
       it { expect(programme_types).to be_empty }
     end
   end
+
+  describe '#filterable_meters' do
+    let!(:gas_meters) { create_list(:gas_meter, 2, school: subject) }
+    let!(:electricity_meters) { create_list(:electricity_meter, 2, school: subject) }
+
+    before do
+      subject.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true, has_gas: true))
+    end
+
+    it 'returns gas meters' do
+      expect(subject.filterable_meters(:gas)).to match_array(gas_meters)
+    end
+
+    it 'returns electricity meters' do
+      expect(subject.filterable_meters(:electricity)).to match_array(electricity_meters)
+    end
+
+    context 'with solar' do
+      before do
+        subject.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_solar_pv: true))
+      end
+
+      it 'returns gas meters' do
+        expect(subject.filterable_meters(:gas)).to match_array(gas_meters)
+      end
+
+      it 'returns no electricity meters' do
+        expect(subject.filterable_meters(:electricity)).to be_empty
+      end
+    end
+  end
 end

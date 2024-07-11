@@ -56,7 +56,7 @@ RSpec.describe 'electricity recent changes advice page', type: :system do
 
       context 'when school has multiple meters' do
         before do
-          create_list(:electricity_meter, 2, meter_type: :electricity, school: school)
+          create_list(:electricity_meter, 2, school: school)
           school.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true))
           refresh
         end
