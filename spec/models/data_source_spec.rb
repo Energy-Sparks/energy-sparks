@@ -18,8 +18,7 @@ RSpec.describe DataSource, type: :model do
 
     let(:header) { 'School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
 
-    before { Timecop.freeze }
-    after { Timecop.return }
+    before { freeze_time }
 
     context 'with meters' do
       let(:admin_meter_status) { AdminMeterStatus.create(label: 'On Data Feed') }

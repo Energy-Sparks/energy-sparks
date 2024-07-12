@@ -1,3 +1,6 @@
+// Original navigation css
+// Switch to using redesign/nav.scss with navigation feature flag
+
 .navbar {
   border-radius: 0;
   background: $dark-blue;
@@ -16,7 +19,7 @@
   .navbar-brand:active,
   .navbar-brand.active {
     color: $white;
-    font-size: $f5;
+    font-size: $f6;
   }
 
   .navbar-nav {
@@ -25,7 +28,7 @@
 
   .navbar-toggle {
     color: $white;
-    font-size: $f8;
+    font-size: $f10;
     border-color: $white;
   }
 
@@ -74,6 +77,14 @@
   }
 }
 
+.nav-tabs {
+  .nav-item {
+    .nav-link.active {
+      font-weight: 600;
+    }
+  }
+}
+
 .nav-tabs.locales {
   .nav-item {
     .nav-link.active {
@@ -91,7 +102,7 @@
 
 @media (min-width: 992px) {
   .navbar-brand {
-    font-size: $f4;
+    font-size: $f5;
   }
 }
 
@@ -150,4 +161,8 @@
 .my-3px {
   margin-top: 3px;
   margin-bottom: 3px;
+}
+
+nav li {
+  font-size: $f8;
 }

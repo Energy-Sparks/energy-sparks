@@ -1,8 +1,8 @@
 module SchoolGroups
   class SchoolsPriorityActionCsvGenerator
-    def initialize(school_group:, alert_type_rating_ids: [], include_cluster: false)
+    def initialize(schools:, alert_type_rating_ids: [], include_cluster: false)
       @alert_type_rating_ids = alert_type_rating_ids
-      @school_group = school_group
+      @schools = schools
       @priority_actions = service.priority_actions
       @total_savings = sort_total_savings(service.total_savings)
       @include_cluster = include_cluster
@@ -41,7 +41,7 @@ module SchoolGroups
     end
 
     def service
-      @service ||= SchoolGroups::PriorityActions.new(@school_group)
+      @service ||= SchoolGroups::PriorityActions.new(@schools)
     end
 
     def headers

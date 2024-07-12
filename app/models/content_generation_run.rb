@@ -20,7 +20,6 @@ class ContentGenerationRun < ApplicationRecord
   has_many :dashboard_alerts, dependent: :delete_all
   has_many :find_out_mores, dependent: :delete_all
   has_many :management_priorities, dependent: :delete_all
-  has_many :analysis_pages, dependent: :delete_all
   has_many :management_dashboard_tables, dependent: :delete_all
 
   has_many :find_out_more_content_versions, through: :find_out_mores, source: :content_version

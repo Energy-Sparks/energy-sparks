@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Schools::SchoolMetricsGeneratorService, type: :service do
-  let!(:benchmark_run)    { BenchmarkResultGenerationRun.create! }
-
   let(:school)            { create(:school) }
   # this will create an empty meter collection as the school has no data
   let(:meter_collection)  { Amr::AnalyticsMeterCollectionFactory.new(school).validated }
@@ -22,14 +20,9 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
 
     context 'when running alerts and benchmarks' do
       it 'runs the service' do
-        expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school, aggregate_school: anything, benchmark_result_generation_run: benchmark_run).and_return(stub)
+        expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:perform).once
         service.perform
-      end
-
-      it 'stores school specific benchmarks' do
-        service.perform
-        expect(BenchmarkResultSchoolGenerationRun.last.benchmark_result_generation_run).to eq(benchmark_run)
       end
     end
 

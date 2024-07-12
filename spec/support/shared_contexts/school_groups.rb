@@ -98,7 +98,7 @@ end
 
 RSpec.shared_context 'school group comparisons' do
   before do
-    allow_any_instance_of(SchoolGroup).to receive(:categorise_schools).and_return({
+    allow_any_instance_of(SchoolGroups::CategoriseSchools).to receive(:categorise_schools).and_return({
         electricity: {
           baseload: {
             other_school: [

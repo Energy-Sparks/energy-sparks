@@ -3,15 +3,16 @@ module SchoolGroups
     METRIC_HEADERS = [:change, :usage, :cost, :co2].freeze
     METRICS = [:change, :usage, :cost_text, :co2].freeze
 
-    def initialize(school_group:, include_cluster: false)
+    def initialize(school_group:, schools: school_group.schools.visible, include_cluster: false)
       @school_group = school_group
+      @schools = schools
       @include_cluster = include_cluster
     end
 
     def export
       CSV.generate(headers: true) do |csv|
         csv << headers
-        @school_group.schools.visible.order(:name).each do |school|
+        @schools.order(:name).each do |school|
           recent_usage = school&.recent_usage
           row = []
           row << school.name

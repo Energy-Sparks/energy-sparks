@@ -28,9 +28,9 @@ describe 'Pupil dashboard' do
       expect(page).to have_content('Your school spent £2.00 on electricity last year!')
     end
 
-    context 'for non-public school' do
+    context 'for school with non-public data' do
       before do
-        school.update!(public: false)
+        school.update!(data_sharing: :within_group)
       end
 
       it 'prompts for login' do

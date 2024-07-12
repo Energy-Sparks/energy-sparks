@@ -95,7 +95,7 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-    # Local customisation below:
+  # Local customisation below:
   # Allows mailer previews to be viewed on production
   # See also: config/initializers/action_mailer.rb
   config.action_mailer.show_previews = true
@@ -117,7 +117,8 @@ Rails.application.configure do
   config.action_mailer.asset_host = ENV.fetch('ASSET_HOST'){ "https://#{ENV['APPLICATION_HOST']}" }
   config.active_storage.service = :amazon
   # session cookie has configurable name so that live and test logins are separated
-  config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME') { '_energy-sparks_session' }, domain: '.energysparks.uk'
+  config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME', '_energy-sparks_session'),
+                                      domain: ENV.fetch('SESSION_COOKIE_DOMAIN', '.energysparks.uk')
   config.cache_store = :file_store, "#{root}/tmp/cache/rails_cache_store"
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
@@ -125,7 +126,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = { api_key: ENV['MG_API_KEY'], domain: ENV['MG_DOMAIN'] }
   config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
-  config.ssl_options = { redirect: { exclude: -> request { /up/.match?(request.path) } } }
+  config.ssl_options = { redirect: { exclude: -> request { request.path == '/up' } } }
   config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY']
   config.active_record.encryption.deterministic_key = ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY']
   config.active_record.encryption.key_derivation_salt = ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT']

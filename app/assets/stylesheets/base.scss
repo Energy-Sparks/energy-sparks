@@ -1,32 +1,7 @@
-/* Font sizes */
-/* Other font definitions also found in common_chart_options.js.erb & live_data.js.erb */
-
-$f-super-big: 60px;
-$f0: 50px;
-$f1: 37.3px;
-$f2: 31.1px;
-$f3: 25.9px;
-$f4: 21.6px;
-$f5: 18px;
-$f6: 15px;
-$f7: 12.5px;
-$f8: 10px;
-
-$default-font-family: 'Quicksand', sans-serif;
-$default-font-size: $f5;
-
-.f1 { font-size: $f1; }
-.f2 { font-size: $f2; }
-.f3 { font-size: $f3; }
-.f4 { font-size: $f4; }
-.f5 { font-size: $f5; }
-.f6 { font-size: $f6; }
-.f7 { font-size: $f7; }
-
 body {
+  @include font(f6);
   font-family: $default-font-family;
-  font-weight: 500;
-  font-size: $default-font-size;
+  font-weight: $default-font-weight;
   overflow-x: hidden;
 }
 
@@ -35,19 +10,19 @@ div.application.container {
 }
 
 .navigation-margin {
-  // TBD
+  margin-top: 70px;
 }
 
 .top-nav-margin {
-  margin-top: 53px;
+  margin-top: 57px;
 }
 
 .sub-nav-margin {
   margin-top: 100px;
 }
 
-section.home.alerts {
-  padding-top: 30px;
+section.home.alerts .alert {
+  margin-bottom: 0px;
 }
 
 address {
@@ -55,24 +30,20 @@ address {
   font-size: initial;
 }
 
-p.small {
-  font-size: $f6;
+body p {
+  @include font(f6);
+}
+
+.small {
+  @include font(f7);
 }
 
 .very-small {
-  font-size: $f7;
+  @include font(f8);
 }
 
 .nowrap {
   white-space: nowrap;
-}
-
-footer li {
-  font-size: $f6;
-}
-
-nav li {
-  font-size: $f6;
 }
 
 .bg-positive {

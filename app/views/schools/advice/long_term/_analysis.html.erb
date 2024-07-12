@@ -36,6 +36,7 @@
 
 <% if multiple_meters %>
   <%= render "schools/advice/#{fuel_type}_long_term/meter_breakdown",
+             fuel_type: fuel_type,
              school: school,
              analysis_dates: analysis_dates,
              meters_for_breakdown: meters_for_breakdown,

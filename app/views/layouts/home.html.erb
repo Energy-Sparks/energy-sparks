@@ -5,19 +5,19 @@
   </head>
   <body>
     <% if Flipper.enabled?(:navigation, current_user, current_user&.school_group) %>
-      <%= render 'shared/navigation/top' %>
+      <%= render 'shared/navigation/main' %>
     <% else %>
       <div class='fixed-top'>
         <%= render 'shared/nav' %>
       </div>
     <% end %>
-    <% if flash.any? %>
-      <section class="home alerts">
-        <%= render 'shared/alerts' %>
-      </section>
-    <% end %>
     <!-- don't render application container as you do for the other pages -->
     <div class="<%= nav_margin_classes %>">
+      <% if flash.any? %>
+        <section class="home alerts">
+          <%= render 'shared/alerts' %>
+        </section>
+      <% end %>
       <%= yield %>
     </div>
     <%= render 'shared/cookie_banner' %>

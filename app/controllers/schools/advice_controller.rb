@@ -3,11 +3,12 @@ module Schools
     include NonPublicSchools
     include DashboardAlerts
     include DashboardPriorities
+    include SchoolInactive
 
     load_resource :school
     skip_before_action :authenticate_user!
     before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
-
+    before_action :school_inactive
     before_action :load_advice_pages
     before_action :set_tab_name
     before_action :set_content
