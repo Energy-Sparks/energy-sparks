@@ -117,7 +117,6 @@ gem 'flipper-active_record', '~> 1.3'
 gem 'flipper-ui', '~> 1.3'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'climate_control'
   gem 'debug'
@@ -142,7 +141,6 @@ group :development, :test do
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
