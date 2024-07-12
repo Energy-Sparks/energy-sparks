@@ -27,7 +27,7 @@
     <% end %>
     <% c.with_footer do %>
       <%= render 'shared/usage_controls', chart_config: @chart_config, period: :weekly, supply: :gas,
-                                          split_meters: false, meters: @meters %>
+                                          split_meters: true, meters: @meters %>
     <% end %>
   <% end %>
 
@@ -52,7 +52,7 @@
     <% end %>
     <% c.with_footer do %>
       <%= render 'shared/usage_controls', chart_config: @chart_config, period: :daily, supply: :gas,
-                                          split_meters: false, meters: @meters %>
+                                          split_meters: true, meters: @meters %>
       <br>
       <p><%= t('advice_pages.gas_recent_changes.analysis.expected_usage_patterns') %></p>
       <p><%= t('advice_pages.gas_recent_changes.analysis.optimal_start_control') %></p>
@@ -105,7 +105,7 @@
       <% more_detail_url = link_to(t('advice_pages.gas_recent_changes.analysis.see_more_detail'),
                                    'https://www.sustainabilityexchange.ac.uk/files/degree_days_for_energy_management_carbon_trust.pdf', target: '_blank', rel: 'noopener') %>
       <p><%= t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_explanation_html',
-               more_detail_url: more_detail_url) %></p>
+               more_detail_url:) %></p>
     <% end %>
   <% end %>
 </div>
