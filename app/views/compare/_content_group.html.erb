@@ -1,5 +1,0 @@
-<% if group.present? %>
-  <% group.each do |content| %>
-    <%= render "compare/content_types/#{content[:type]}", content: content[:content] %>
-  <% end %>
-<% end %>
