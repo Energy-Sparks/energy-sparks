@@ -491,19 +491,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153937) do
     t.unique_constraint ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings"
   end
 
-  create_table "analysis_pages", force: :cascade do |t|
-    t.bigint "content_generation_run_id"
-    t.bigint "alert_type_rating_content_version_id"
-    t.bigint "alert_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "category"
-    t.decimal "priority", default: "0.0"
-    t.index ["alert_id"], name: "index_analysis_pages_on_alert_id"
-    t.index ["alert_type_rating_content_version_id"], name: "index_analysis_pages_on_alert_type_rating_content_version_id"
-    t.index ["content_generation_run_id"], name: "index_analysis_pages_on_content_generation_run_id"
-  end
-
   create_table "areas", force: :cascade do |t|
     t.text "type", null: false
     t.text "title"
@@ -1539,8 +1526,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153937) do
     t.boolean "school_will_be_public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
-    t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.bigint "funder_id"
+    t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
