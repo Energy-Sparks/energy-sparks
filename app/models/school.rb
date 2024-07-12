@@ -463,11 +463,18 @@ class School < ApplicationRecord
     users.pupil.to_a.find {|user| user.pupil_password.casecmp?(pupil_password) }
   end
 
-  def filterable_meters
-    if has_solar_pv? || has_storage_heaters?
-      Meter.none
+  def filterable_meters(fuel_type)
+    case fuel_type
+    when :gas
+      active_meters.gas.real
+    when :electricity
+      if has_solar_pv? || has_storage_heaters?
+        Meter.none
+      else
+        active_meters.electricity.real
+      end
     else
-      active_meters.real
+      Meter.none
     end
   end
 
