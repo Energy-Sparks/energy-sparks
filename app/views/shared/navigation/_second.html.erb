@@ -56,8 +56,10 @@
           <%= render 'shared/manage_school', school: current_school if can? :update, current_school %>
         <% end %>
 
-        <% if current_user_school&.visible? && can?(:read, :my_school_menu) %>
+        <% if current_user_school&.visible? && Flipper.enabled?(:your_school_menu, current_user, current_user&.school_group) %>
           <%= render 'shared/navigation/your_school' %>
+        <% elsif current_user_school&.visible? && can?(:read, :my_school_menu) %>
+          <%= render 'shared/navigation/my_school' %>
         <% else %>
           <%= render 'shared/our_schools_menu' %>
         <% end %>
