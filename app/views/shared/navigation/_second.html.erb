@@ -1,11 +1,18 @@
 <nav class="navbar <%= navbar_expand_class %> navbar-second <%= navbar_secondary_class %>">
   <div class="container">
-    <% if current_school %>
-      <ul class="navbar-nav nowrap">
+    <ul class="navbar-nav nowrap">
+      <% if current_school %>
         <li class='font-weight-bold'><%= current_school.name %><span class="<%= navbar_hide_class %>">:</span></li>
-      </ul>
-    <% end %>
-
+      <% elsif current_user_school %>
+        <li class="nav-item">
+          <% if current_user.pupil? && can?(:show_pupils_dash, current_user_school) %>
+            <%= link_to 'Back to dashboard', pupils_school_path(current_user_school), class: 'nav-link' %>
+          <% elsif can?(:show, current_user_school) %>
+            <%= link_to 'Back to dashboard', school_path(current_user_school), class: 'nav-link' %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
     <div class='ml-auto'>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-second" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -27,14 +34,6 @@
                           class: 'nav-link dash' %>
             </li>
           <% end %>
-        <% elsif current_user_school %>
-          <li class="nav-item">
-            <% if current_user.pupil? && can?(:show_pupils_dash, current_user_school) %>
-              <%= link_to 'Back to dashboard', pupils_school_path(current_user_school), class: 'nav-link' %>
-            <% elsif can?(:show, current_user_school) %>
-              <%= link_to 'Back to dashboard', school_path(current_user_school), class: 'nav-link' %>
-            <% end %>
-          </li>
         <% end %>
       </ul>
 

@@ -1,5 +1,5 @@
 <div class='fixed-top'>
-  <% if Flipper.enabled?(:navigation, current_user, current_user&.school_group) %>
+  <% if Flipper.enabled?(:navigation, current_user, current_user_school_group) %>
     <%= render 'shared/navigation/top' %>
     <%= render 'shared/navigation/second' %>
   <% else %>
