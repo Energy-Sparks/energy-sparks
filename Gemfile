@@ -128,7 +128,6 @@ group :development, :test do
   gem 'guard-rubocop', require: false
   gem 'knapsack'
   gem 'rails-controller-testing'
-  gem 'rb-readline', require: false
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
   gem 'rubocop'
