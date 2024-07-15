@@ -51,8 +51,14 @@
           <% end %>
         </li>
         <div class="vr <%= navbar_hide_class %>"></div>
-        <% if current_school %>
-          <%= render 'shared/manage_school', school: current_school if can? :update, current_school %>
+
+        <% if request.path.starts_with?('/school_groups') && can?(:update_settings, current_school_group) %>
+          <%= render 'shared/navigation/manage_school_group' %>
+          <%= render 'shared/navigation/school_groups' %>
+        <% end %>
+
+        <% if current_school && can?(:update, current_school) %>
+          <%= render 'shared/manage_school', school: current_school %>
         <% end %>
 
         <% if current_user_school&.visible? && Flipper.enabled?(:your_school_menu, current_user, current_user&.school_group) %>
@@ -61,11 +67,6 @@
           <%= render 'shared/navigation/my_school' %>
         <% else %>
           <%= render 'shared/our_schools_menu' %>
-        <% end %>
-
-        <% if request.path.starts_with?('/school_groups') && can?(:update_settings, current_school_group) %>
-          <%= render 'shared/navigation/school_groups' %>
-          <%= render 'shared/navigation/manage_school_group' %>
         <% end %>
 
         <li class="nav-item nowrap">
