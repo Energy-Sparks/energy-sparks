@@ -239,12 +239,6 @@ GEM
     daru (0.2.2)
       backports
       packable (~> 1.3.9)
-    database_cleaner (2.0.2)
-      database_cleaner-active_record (>= 2, < 3)
-    database_cleaner-active_record (2.1.0)
-      activerecord (>= 5.a)
-      database_cleaner-core (~> 2.0.0)
-    database_cleaner-core (2.0.1)
     date (3.3.4)
     debug (1.9.2)
       irb (~> 1.10)
@@ -828,7 +822,6 @@ DEPENDENCIES
   climate_control
   closed_struct
   cocoon
-  database_cleaner
   debug
   devise
   dotenv-rails
