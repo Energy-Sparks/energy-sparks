@@ -4,8 +4,7 @@
       <% if school.visible? && podium.includes_school? %>
         <%= podium.school_position.points %> points
         <% if podium.school_position.recent_points > 0 %>
-           <%= fa_icon('arrow-up', 'data-toggle': 'tooltip', title: 'School has scored points in the last month') %>
-          <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
+          <%= fa_icon('arrow-up', 'data-toggle': 'tooltip', title: 'School has scored points in the last month') %>
         <% end %>
         <span>
          <%= fa_icon('crown') %>
