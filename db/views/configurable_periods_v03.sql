@@ -50,16 +50,16 @@ WITH electricity AS (
   WHERE alert_types.class_name='AlertConfigurablePeriodStorageHeaterComparison'
 ), benchmark AS (
   SELECT alert_generation_run_id, data.*
-  FROM alerts, alert_types, jsonb_to_record(variables) AS data(
-    solar_type text
-  )
-  WHERE alerts.alert_type_id = alert_types.id AND alert_types.class_name='AlertEnergyAnnualVersusBenchmark'
+  FROM alerts
+  JOIN alert_types ON alerts.alert_type_id = alert_types.id,
+    jsonb_to_record(variables) AS data(solar_type text)
+  WHERE alert_types.class_name='AlertEnergyAnnualVersusBenchmark'
 ), additional AS (
   SELECT alert_generation_run_id, school_id, data.*
-  FROM alerts, alert_types, jsonb_to_record(variables) AS data(
-    activation_date date
-    )
-  WHERE alerts.alert_type_id = alert_types.id AND alert_types.class_name='AlertAdditionalPrioritisationData'
+  FROM alerts
+  JOIN alert_types ON alerts.alert_type_id = alert_types.id,
+    jsonb_to_record(variables) AS data(activation_date date)
+  WHERE alert_types.class_name='AlertAdditionalPrioritisationData'
 ), latest_runs AS (
   SELECT id
   FROM (

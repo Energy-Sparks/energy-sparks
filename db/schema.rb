@@ -3902,18 +3902,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
           ), benchmark AS (
            SELECT alerts.alert_generation_run_id,
               data.solar_type
-             FROM alerts,
-              alert_types,
+             FROM (alerts
+               JOIN alert_types ON ((alerts.alert_type_id = alert_types.id))),
               LATERAL jsonb_to_record(alerts.variables) data(solar_type text)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))
+            WHERE (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text)
           ), additional AS (
            SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data.activation_date
-             FROM alerts,
-              alert_types,
+             FROM (alerts
+               JOIN alert_types ON ((alerts.alert_type_id = alert_types.id))),
               LATERAL jsonb_to_record(alerts.variables) data(activation_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
+            WHERE (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text)
           ), latest_runs AS (
            SELECT ranked.id
              FROM ( SELECT alert_generation_runs.id,
