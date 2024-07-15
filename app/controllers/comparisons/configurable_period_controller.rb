@@ -10,7 +10,7 @@ module Comparisons
 
     def load_data
       Comparison::ConfigurablePeriod.for_schools(@schools)
-                                    .where(custom_period_id: @report.custom_period.id)
+                                    .where(comparison_report_id: @report.id)
                                     .with_data_for_previous_period
                                     .by_total_percentage_change
     end

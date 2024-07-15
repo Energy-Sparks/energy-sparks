@@ -26,11 +26,11 @@ describe 'configurable_period' do
   end
 
   def create_alerts(school, activation_date, electricity: false, gas: false, storage_heater: false)
-    alert_run = create(:alert_generation_run, school: school)
-    create(:alert, school: school, alert_generation_run: alert_run,
+    alert_run = create(:alert_generation_run, school:)
+    create(:alert, school:, alert_generation_run: alert_run,
                    alert_type: AlertType.find_by(class_name: AlertAdditionalPrioritisationData.name),
-                   variables: { activation_date: activation_date })
-    create(:alert, school: school, alert_generation_run: alert_run,
+                   variables: { activation_date: })
+    create(:alert, school:, alert_generation_run: alert_run,
                    alert_type: AlertType.find_by(class_name: AlertEnergyAnnualVersusBenchmark.name),
                    variables: { solar_type: 'metered' })
     variables = {
@@ -44,25 +44,25 @@ describe 'configurable_period' do
       pupils_changed: true,
       floor_area_changed: true
     }
-    reports.each do |report|
+    reports.each do |comparison_report|
       if electricity
-        create(:alert, school: school, alert_generation_run: alert_run,
+        create(:alert, school:, alert_generation_run: alert_run,
                        alert_type: AlertType.find_by(class_name: AlertConfigurablePeriodElectricityComparison.name),
-                       variables: variables,
-                       comparison_report: report)
+                       variables:,
+                       comparison_report:)
       end
       heating_usage_variables = variables.merge(previous_period_kwh_unadjusted: 1800.0)
       if gas
-        create(:alert, school: school, alert_generation_run: alert_run,
+        create(:alert, school:, alert_generation_run: alert_run,
                        alert_type: AlertType.find_by(class_name: AlertConfigurablePeriodGasComparison.name),
                        variables: heating_usage_variables,
-                       comparison_report: report)
+                       comparison_report:)
       end
       if storage_heater # rubocop:disable Style/Next
-        create(:alert, school: school, alert_generation_run: alert_run,
+        create(:alert, school:, alert_generation_run: alert_run,
                        alert_type: AlertType.find_by(class_name: AlertConfigurablePeriodStorageHeaterComparison.name),
                        variables: heating_usage_variables,
-                       comparison_report: report)
+                       comparison_report:)
       end
     end
   end
@@ -71,7 +71,7 @@ describe 'configurable_period' do
     create(:advice_page, key: advice_page_key)
   end
 
-  self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration
+  self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration - don't leaks because of self?
     '',
     I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
     I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
