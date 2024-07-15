@@ -1,13 +1,12 @@
 <nav class="navbar <%= navbar_expand_class %> navbar-second <%= navbar_secondary_class %>">
   <div class="container">
-
     <% if current_school %>
       <ul class="navbar-nav nowrap">
-        <li><%= current_school.name %>:</li>
+        <li class='font-weight-bold'><%= current_school.name %><span class="<%= navbar_hide_class %>">:</span></li>
       </ul>
     <% end %>
 
-    <div class='<%= order_expand_class %>'>
+    <div class='ml-auto'>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-second" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -16,33 +15,59 @@
     <div class="navbar-collapse collapse" id="nav-second">
       <ul class="navbar-nav nowrap">
         <% if current_school %>
-          <% if can?(:show_pupils_dash?, current_school) %>
+          <% if can?(:show_pupils_dash, current_school) %>
             <li class="nav-item">
-              <%= link_to t('dashboards.pupil_dashboard'), pupils_school_path(current_school), class: 'nav-link' %>
+              <%= link_to t('dashboards.pupil_dashboard'), pupils_school_path(current_school), class: 'nav-link dash' %>
             </li>
           <% end %>
-
           <% if can?(:show, current_school) %>
             <li class="nav-item">
               <%= link_to t('dashboards.adult_dashboard'),
                           school_path(current_school, ({ switch: true } if current_user&.pupil?)),
-                          class: 'nav-link' %>
+                          class: 'nav-link dash' %>
             </li>
           <% end %>
+        <% elsif current_user_school %>
+          <li class="nav-item">
+            <% if current_user.pupil? && can?(:show_pupils_dash, current_user_school) %>
+              <%= link_to 'Back to dashboard', pupils_school_path(current_user_school), class: 'nav-link' %>
+            <% elsif can?(:show, current_user_school) %>
+              <%= link_to 'Back to dashboard', school_path(current_user_school), class: 'nav-link' %>
+            <% end %>
+          </li>
         <% end %>
       </ul>
-    </div>
-    <div class="my-auto ml-auto">
-      <ul class="navbar-nav">
+
+      <ul class="navbar-nav my-auto ml-auto">
         <li class='nav-item my-auto'>
-          <%= render 'shared/navigation/podium',
-                     podium: current_school_podium, school: current_school %>
+          <% if current_school %>
+            <%= render 'shared/navigation/podium',
+                       podium: current_school_podium, school: current_school %>
+          <% elsif current_user_school %>
+            <% if current_user.pupil? && can?(:show, current_school) %>
+              <%= link_to 'View adult dashboard', school_path(current_user_school), class: 'nav-link' %>
+            <% elsif can?(:show_pupils_dash, current_school) %>
+              <%= link_to 'View pupil dashboard', pupils_school_path(current_user_school), class: 'nav-link' %>
+            <% end %>
+          <% end %>
         </li>
-        <div class="vr"></div>
+        <div class="vr <%= navbar_hide_class %>"></div>
         <% if current_school %>
           <%= render 'shared/manage_school', school: current_school if can? :update, current_school %>
         <% end %>
-        <li class="nav-item">
+
+        <% if current_user_school&.visible? && can?(:read, :my_school_menu) %>
+          <%= render 'shared/navigation/your_school' %>
+        <% else %>
+          <%= render 'shared/our_schools_menu' %>
+        <% end %>
+
+        <% if request.path.starts_with?('/school_groups') && can?(:update_settings, current_school_group) %>
+          <%= render 'shared/navigation/school_groups' %>
+          <%= render 'shared/navigation/manage_school_group' %>
+        <% end %>
+
+        <li class="nav-item nowrap">
           <% if user_signed_in? %>
             <%= link_to t('nav.sign_out'), destroy_user_session_path, method: :delete, class: 'nav-link' %>
           <% else %>

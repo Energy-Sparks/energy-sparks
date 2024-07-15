@@ -33,6 +33,10 @@ module NavHelper
     "order-#{expand_class}-12"
   end
 
+  def navbar_hide_class
+    "d-none d-#{expand_class}-inline-block"
+  end
+
   def navbar_secondary_class
     controller.controller_path == 'pupils/schools' ? 'pupil' : 'adult'
   end

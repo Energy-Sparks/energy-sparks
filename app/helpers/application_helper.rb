@@ -148,7 +148,8 @@ module ApplicationHelper
 
   def icon(style, name, **kwargs)
     content_class = "#{style} fa-#{name}"
-    content_tag(:i, nil, class: content_class, **kwargs)
+    kwargs[:class] = kwargs[:class] ? "#{kwargs[:class]} #{content_class}" : content_class
+    content_tag(:i, nil, **kwargs)
   end
 
   def fa_icon(icon_type, **kwargs)
