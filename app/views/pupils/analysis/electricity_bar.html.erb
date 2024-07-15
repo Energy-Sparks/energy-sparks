@@ -31,7 +31,7 @@
     <%= t('pupils.analysis.compare_electricity_in_2_weeks') %>
   <% end %>
 
-  <% if @school.filterable_meters.electricity.count > 1 %>
+  <% if @school.filterable_meters(:electricity).count > 1 %>
     <%= render 'usage_link', school: @school, energy: :electricity, usage_config: {period: :weekly, split_meters: true} do %>
       <%= t('pupils.analysis.compare_electricity_use_by_meters') %>
     <% end %>

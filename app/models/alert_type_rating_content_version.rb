@@ -3,11 +3,6 @@
 # Table name: alert_type_rating_content_versions
 #
 #  alert_type_rating_id                  :bigint(8)        not null
-#  analysis_end_date                     :date
-#  analysis_start_date                   :date
-#  analysis_subtitle                     :string
-#  analysis_title                        :string
-#  analysis_weighting                    :decimal(, )      default(5.0)
 #  colour                                :integer          default("negative"), not null
 #  created_at                            :datetime         not null
 #  email_end_date                        :date
@@ -62,7 +57,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   translates :pupil_dashboard_title, backend: :action_text
   translates :management_dashboard_title, backend: :action_text
   translates :management_priorities_title, backend: :action_text
-  translates :analysis_title, type: :string, fallbacks: { cy: :en }
 
   translates :email_title, type: :string, fallbacks: { cy: :en }
   translates :email_content, backend: :action_text
@@ -83,7 +77,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     [
       :pupil_dashboard_alert,
       :management_dashboard_alert,
-      :management_priorities, :sms, :email, :analysis
+      :management_priorities, :sms, :email
     ]
   end
 
@@ -92,8 +86,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       :pupil_dashboard_title,
       :management_dashboard_title,
       :email_title, :email_content, :sms_content,
-      :management_priorities_title,
-      :analysis_title, :analysis_subtitle
+      :management_priorities_title
     ]
   end
 

@@ -142,7 +142,6 @@ class School < ApplicationRecord
   has_many :alert_generation_runs,                    inverse_of: :school
   has_many :subscription_generation_runs,             inverse_of: :school
   has_many :benchmark_result_school_generation_runs,  inverse_of: :school
-  has_many :analysis_pages, through: :content_generation_runs
 
   has_many :low_carbon_hub_installations, inverse_of: :school
   has_many :solar_edge_installations, inverse_of: :school
@@ -464,11 +463,18 @@ class School < ApplicationRecord
     users.pupil.to_a.find {|user| user.pupil_password.casecmp?(pupil_password) }
   end
 
-  def filterable_meters
-    if has_solar_pv? || has_storage_heaters?
-      Meter.none
+  def filterable_meters(fuel_type)
+    case fuel_type
+    when :gas
+      active_meters.gas.real
+    when :electricity
+      if has_solar_pv? || has_storage_heaters?
+        Meter.none
+      else
+        active_meters.electricity.real
+      end
     else
-      active_meters.real
+      Meter.none
     end
   end
 
@@ -477,14 +483,6 @@ class School < ApplicationRecord
       latest_content.management_priorities
     else
       ManagementPriority.none
-    end
-  end
-
-  def latest_analysis_pages
-    if latest_content
-      latest_content.analysis_pages
-    else
-      AnalysisPage.none
     end
   end
 
