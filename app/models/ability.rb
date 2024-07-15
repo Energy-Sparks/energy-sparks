@@ -51,6 +51,7 @@
 # :manage_solar_feed_configuration - can manage solar data feeds. Admin only
 # :manage_school_times - can manage school open/close times
 # :my_school_menu - can see 'my school' menu when logged in
+# :your_school_menu - can see 'your school' menu when logged in (navigation feature flag only)
 # :read_dashboard_menu - can see pupil/adult dashboard buttons on school pages.
 # :read_restricted_advice - can access tariff/costs pages.
 # :read_restricted_analysis - can access restricted analysis (costs). Obsolete?
@@ -124,6 +125,7 @@ class Ability
     if user.admin? || user.analytics?
       can :manage, :all
       cannot :read, :my_school_menu
+      can :read, :your_school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
         # Group users are associated with a school group. This scope is used when checking abilities
@@ -169,6 +171,7 @@ class Ability
         end
         # Show the my school menu
         can :read, :my_school_menu
+        can :read, :your_school_menu
         can :switch, School
         can :manage, EnergyTariff, tariff_holder: user.school
       end
@@ -261,6 +264,7 @@ class Ability
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
         can :manage, TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
+        can :read, [:my_school_menu]
       end
     elsif user.guest?
       # Users who are not yet signed in, or registered can begin onboarding

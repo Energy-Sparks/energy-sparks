@@ -1,5 +1,5 @@
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="school-list-menu" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('school_groups.sub_nav.dashboards') %></a>
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="school-list-menu" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= 'My schools' %></a>
     <div class="dropdown-menu scrollable" aria-labelledby="school-list-menu" id="dropdown-school-list-menu">
       <% current_school_group.schools.visible.order(:name).each do |school| %>
         <%= link_to school.name, school_path(school), class: 'dropdown-item' %>

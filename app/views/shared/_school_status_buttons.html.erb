@@ -35,5 +35,7 @@
 <% end %>
 
 <% if can?(:regenerate_school_data, school) %>
-  <%= link_to 'Regenerate', school_batch_runs_path(school), class: 'badge badge-pill badge-success' %>
+  <%= link_to school_batch_runs_path(school), class: 'badge badge-pill badge-warning' do %>
+    <%= fa_icon('arrows-rotate', 'data-toggle': 'tooltip', title: 'Regenerate') %>
+  <% end %>
 <% end %>

@@ -103,7 +103,7 @@ nav.navbar-top {
 
 nav.navbar-second {
   @extend %navbar-es;
-  @include font(f9); // design says f7
+  @include font(f8); // design says f7
   min-height: 32px; // design says 50
   padding: 2px 16px;
 
@@ -119,6 +119,10 @@ nav.navbar-second {
     margin-top: 0;
     padding-top: 6px;
     border:0;
+  }
+
+  .badge {
+    font-size: $f9;
   }
 
   &.adult {

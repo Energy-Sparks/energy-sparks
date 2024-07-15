@@ -3,14 +3,6 @@
     <ul class="navbar-nav nowrap">
       <% if current_school %>
         <li class='font-weight-bold'><%= current_school.name %><span class="<%= navbar_hide_class %>">:</span></li>
-      <% elsif current_user_school %>
-        <li class="nav-item">
-          <% if current_user.pupil? && can?(:show_pupils_dash, current_user_school) %>
-            <%= link_to 'Back to dashboard', pupils_school_path(current_user_school), class: 'nav-link' %>
-          <% elsif can?(:show, current_user_school) %>
-            <%= link_to 'Back to dashboard', school_path(current_user_school), class: 'nav-link' %>
-          <% end %>
-        </li>
       <% end %>
     </ul>
     <div class='ml-auto'>
@@ -34,6 +26,12 @@
                           class: 'nav-link dash' %>
             </li>
           <% end %>
+
+          <% if current_school.active %>
+            <li id="school-status-buttons" class="nav-item nowrap my-auto pl-2 d-none d-xl-inline-block">
+              <%= render 'shared/school_status_buttons', school: current_school %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
 
@@ -42,12 +40,6 @@
           <% if current_school %>
             <%= render 'shared/navigation/podium',
                        podium: current_school_podium, school: current_school %>
-          <% elsif current_user_school %>
-            <% if current_user.pupil? && can?(:show, current_school) %>
-              <%= link_to 'View adult dashboard', school_path(current_user_school), class: 'nav-link' %>
-            <% elsif can?(:show_pupils_dash, current_school) %>
-              <%= link_to 'View pupil dashboard', pupils_school_path(current_user_school), class: 'nav-link' %>
-            <% end %>
           <% end %>
         </li>
         <div class="vr <%= navbar_hide_class %>"></div>
@@ -61,12 +53,8 @@
           <%= render 'shared/manage_school', school: current_school %>
         <% end %>
 
-        <% if current_user_school&.visible? && Flipper.enabled?(:your_school_menu, current_user, current_user&.school_group) %>
+        <% if current_user_school&.visible? && can?(:read, :your_school_menu) %>
           <%= render 'shared/navigation/your_school' %>
-        <% elsif current_user_school&.visible? && can?(:read, :my_school_menu) %>
-          <%= render 'shared/navigation/my_school' %>
-        <% else %>
-          <%= render 'shared/our_schools_menu' %>
         <% end %>
 
         <li class="nav-item nowrap">
