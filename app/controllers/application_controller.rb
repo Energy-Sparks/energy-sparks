@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group, :current_school, :current_school_group
+  helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group, :current_school, :current_school_group, :current_user_default_school_group
   before_action :update_trackable!
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -31,11 +31,19 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school
-    @current_school ||= @school || (@tariff_holder if @tariff_holder&.school?)
+    @current_school ||= if @school&.persisted?
+                          @school
+                        elsif @tariff_holder&.school? && @tariff_holder&.persisted?
+                          @tariff_holder
+                        end
   end
 
   def current_school_group
-    @current_school_group ||= @school_group || (@tariff_holder if @tariff_holder&.school_group?)
+    @current_school_group ||= if @school_group&.persisted?
+                                @school_group
+                              elsif @tariff_holder&.school_group? && @tariff_holder&.persisted?
+                                @tariff_holder
+                              end
   end
 
   def current_school_podium
@@ -49,8 +57,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_school_group
-    # this is the opposite way round to #user.default_school_group - this is current_user&.school&.school_group) || current_user&.school_group
-    @current_user_school_group ||= current_user&.school_group || current_user&.school&.school_group
+    @current_user_school_group ||= current_user&.school_group
+  end
+
+  def current_user_default_school_group
+    @current_user_default_school_group ||= current_user&.default_school_group
   end
 
   def current_ip_address

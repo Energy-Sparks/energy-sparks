@@ -18,12 +18,6 @@
 
     <div class="navbar-collapse collapse justify-content-end" id="nav-top">
       <ul class="navbar-nav nowrap">
-        <% if can? :switch, School %>
-          <% if current_user && !current_user.cluster_schools_for_switching.blank? %>
-            <%= render 'shared/switch_schools' %>
-          <% end %>
-        <% end %>
-
         <li class="nav-item">
           <%= link_to t('common_nav_bar_menus.activities'), activity_categories_path, class: 'nav-link' %>
         </li>
