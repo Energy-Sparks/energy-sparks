@@ -83,7 +83,7 @@ module Schools
       return unless can?(:view_dcc_data, @school)
       service = Meters::N3rgyMeteringService.new(@meter)
       @known_to_n3rgy = service.available?
-      if @known_to_n3rgy && @meter.dcc_meter
+      if @known_to_n3rgy && @meter.dcc_meter?
         @n3rgy_status = service.status
         @n3rgy_consent_confirmed = service.consented?
         @available_cache_range = service.available_data if @n3rgy_consent_confirmed
