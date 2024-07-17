@@ -2,6 +2,10 @@ require 'rails_helper'
 
 module Amr
   describe SingleReadConverter do
+    subject(:converter) { described_class.new(amr_data_feed_config, readings) }
+
+    let(:amr_data_feed_config) { create(:amr_data_feed_config, row_per_reading: true) }
+
     let(:valid_reading_times) do
       [
         '00:00', '0:00',
@@ -184,12 +188,24 @@ module Amr
       end
 
       it 'converts a list of single readings per half hour into a day per reading format' do
-        expect(SingleReadConverter.new(readings).perform).to eq output
+        expect(converter.perform).to eq output
+      end
+
+      context 'with a data with missing readings' do
+        subject(:converter) { described_class.new(amr_data_feed_config, with_missing_readings) }
+
+        let(:with_missing_readings) do
+          readings << { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168314', :reading_date => '29 Aug 2019 00:30:00', :readings => ['1.6'], meter_id: 123 }
+        end
+
+        it 'drops the row' do
+          expect(converter.perform).to eq output
+        end
       end
     end
 
     context 'offset file format' do
-      let(:offset_readings) do
+      let(:readings) do
         [{ :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', :reading_date => '26 Aug 2019 00:00:00', :readings => ['13.3'] },
          { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', :reading_date => '26 Aug 2019 00:30:00', :readings => ['14.4'] },
          { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', :reading_date => '26 Aug 2019 01:00:00', :readings => ['15'] },
@@ -289,7 +305,7 @@ module Amr
                       ]
       end
 
-      let(:offset_output) do
+      let(:output) do
         [
           { amr_data_feed_config_id: 6, meter_id: nil, reading_date: Date.parse('26 Aug 2019'), mpan_mprn: '1710035168313', readings: [14.4, 15.0, 15.1, 15.0, 15.0, 15.0, 14.9, 15.1, 15.0, 15.1, 15.7, 19.6, 29.9, 29.7, 30.2, 29.6, 34.1, 34.4, 34.7, 33.5, 33.5, 33.4, 33.6, 34.5, 33.7, 34.0, 32.7, 34.2, 35.1, 33.0, 33.4, 32.6, 33.1, 37.6, 38.9, 37.7, 36.7, 32.9, 33.1, 31.1, 27.6, 23.3, 16.7, 16.6, 15.9, 15.6, 15.4, 15.2] },
           { amr_data_feed_config_id: 6, meter_id: nil, reading_date: Date.parse('27 Aug 2019'), mpan_mprn: '1710035168313', readings: [1.4, 1.3, 1.4, 1.3, 1.4, 1.3, 1.3, 1.4, 6.5, 2.3, 3.2, 1.8, 1.6, 2.0, 3.0, 2.0, 1.3, 1.7, 1.4, 1.1, 0.9, 1.2, 0.9, 1.7, 0.8, 0.8, 0.8, 1.2, 1.1, 1.7, 2.0, 2.8, 3.8, 1.6, 0.5, 0.7, 0.9, 1.2, 1.2, 1.2, 1.3, 1.3, 1.2, 1.2, 1.2, 1.3, 1.2, nil] },
@@ -297,21 +313,22 @@ module Amr
       end
 
       it 'converts a list of single readings per half hour into a day per reading format' do
-        expect(SingleReadConverter.new(offset_readings).perform).to eq offset_output
+        expect(converter.perform).to eq output
       end
     end
 
     context 'With reading dates in ISO 8601 format (produced by xlsx to csv conversion)' do
       let(:reading_date) { Time.zone.parse('26 Aug 2019') }
-      let(:readings_2) { 48.times.collect {|i| { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', :reading_date => (reading_date + ((i + 1) * 30).minutes).iso8601, :readings => [(i + 1).to_s] } } }
+      let(:readings) { 48.times.collect {|i| { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', :reading_date => (reading_date + ((i + 1) * 30).minutes).iso8601, :readings => [(i + 1).to_s] } } }
       let(:output) { [{ amr_data_feed_config_id: 6, meter_id: nil, reading_date: reading_date.to_date, mpan_mprn: '1710035168313', readings: 48.times.collect {|i| (i + 1) } }] }
 
       it 'converts a list of single readings per half hour into a day per reading format' do
-        expect(SingleReadConverter.new(readings_2).perform).to eq output
+        expect(converter.perform).to eq output
       end
     end
 
     context 'split date and time column file format' do
+      let(:amr_data_feed_config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
       let(:readings) do
         [
           { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', reading_time: '00:00', :reading_date => '26/08/2019', :readings => ['14.4'] }, # 1
@@ -413,7 +430,7 @@ module Amr
         ]
       end
 
-      let(:indexed_output) do
+      let(:output) do
         [
           { amr_data_feed_config_id: 6, meter_id: nil, reading_date: Date.parse('26 Aug 2019'), mpan_mprn: '1710035168313', readings: [14.4, 15.0, 15.1, 15.0, 15.0, 15.0, 14.9, 15.1, 15.0, 15.1, 15.7, 19.6, 29.9, 29.7, 30.2, 29.6, 34.1, 34.4, 34.7, 33.5, 33.5, 33.4, 33.6, 34.5, 33.7, 34.0, 32.7, 34.2, 35.1, 33.0, 33.4, 32.6, 33.1, 37.6, 38.9, 37.7, 36.7, 32.9, 33.1, 31.1, 27.6, 23.3, 16.7, 16.6, 15.9, 15.6, 15.4, 48.0] },
           { amr_data_feed_config_id: 6, meter_id: nil, reading_date: Date.parse('27 Aug 2019'), mpan_mprn: '1710035168313', readings: [15.2, 1.4, 1.3, 1.4, 1.3, 1.4, 1.3, 1.3, 1.4, 6.5, 2.3, 3.2, 1.8, 1.6, 2.0, 3.0, 2.0, 1.3, 1.7, 1.4, 1.1, 0.9, 1.2, 0.9, 1.7, 0.8, 0.8, 0.8, 1.2, 1.1, 1.7, 2.0, 2.8, 3.8, 1.6, 0.5, 0.7, 0.9, 1.2, 1.2, 1.2, 1.3, 1.3, 1.2, 1.2, 1.2, 1.3, 99.0] },
@@ -421,24 +438,26 @@ module Amr
       end
 
       it 'converts a list of single readings per half hour into a day per reading format' do
-        results = SingleReadConverter.new(readings, indexed: true).perform
-        expect(results).to eq indexed_output
+        results = converter.perform
+        expect(results).to eq output
       end
 
       it 'handles files with multiple mpans' do
         # create test data that consists of 2 days readings for 2 different meters
         two_meters_worth_of_readings = readings + readings.map {|r| { amr_data_feed_config_id: 6, mpan_mprn: '123456789012', reading_date: r[:reading_date], reading_time: r[:reading_time], readings: r[:readings] } }
 
-        results = SingleReadConverter.new(two_meters_worth_of_readings, indexed: true).perform
+        results = described_class.new(amr_data_feed_config, two_meters_worth_of_readings).perform
 
         # create expected output: 2 x 2 days readings for 2 meters
-        expected_results = indexed_output + indexed_output.map {|r| { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012', reading_date: r[:reading_date], readings: r[:readings] } }
+        expected_results = output + output.map {|r| { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012', reading_date: r[:reading_date], readings: r[:readings] } }
 
         expect(results).to eq expected_results
       end
     end
 
     context 'indexed file format' do
+      let(:amr_data_feed_config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
+
       let(:readings) do
         [{ :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', period: '1', :reading_date => '26/08/2019', :readings => ['14.4'] }, # 1
          { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', period: '2', :reading_date => '26/08/2019', :readings => ['15'] },
@@ -539,7 +558,7 @@ module Amr
                       ]
       end
 
-      let(:indexed_output) do
+      let(:output) do
         [
           { amr_data_feed_config_id: 6, meter_id: nil, reading_date: Date.parse('26 Aug 2019'), mpan_mprn: '1710035168313', readings: [14.4, 15.0, 15.1, 15.0, 15.0, 15.0, 14.9, 15.1, 15.0, 15.1, 15.7, 19.6, 29.9, 29.7, 30.2, 29.6, 34.1, 34.4, 34.7, 33.5, 33.5, 33.4, 33.6, 34.5, 33.7, 34.0, 32.7, 34.2, 35.1, 33.0, 33.4, 32.6, 33.1, 37.6, 38.9, 37.7, 36.7, 32.9, 33.1, 31.1, 27.6, 23.3, 16.7, 16.6, 15.9, 15.6, 15.4, 48.0] },
           { amr_data_feed_config_id: 6, meter_id: nil, reading_date: Date.parse('27 Aug 2019'), mpan_mprn: '1710035168313', readings: [15.2, 1.4, 1.3, 1.4, 1.3, 1.4, 1.3, 1.3, 1.4, 6.5, 2.3, 3.2, 1.8, 1.6, 2.0, 3.0, 2.0, 1.3, 1.7, 1.4, 1.1, 0.9, 1.2, 0.9, 1.7, 0.8, 0.8, 0.8, 1.2, 1.1, 1.7, 2.0, 2.8, 3.8, 1.6, 0.5, 0.7, 0.9, 1.2, 1.2, 1.2, 1.3, 1.3, 1.2, 1.2, 1.2, 1.3, 99.0] },
@@ -547,19 +566,18 @@ module Amr
       end
 
       it 'converts a list of single readings per half hour into a day per reading format' do
-        results = SingleReadConverter.new(readings, indexed: true).perform
-
-        expect(results).to eq indexed_output
+        results = converter.perform
+        expect(results).to eq output
       end
 
       it 'handles files with multiple mpans' do
         # create test data that consists of 2 days readings for 2 different meters
         two_meters_worth_of_readings = readings + readings.map {|r| { amr_data_feed_config_id: 6, mpan_mprn: '123456789012', reading_date: r[:reading_date], period: r[:period], readings: r[:readings] } }
 
-        results = SingleReadConverter.new(two_meters_worth_of_readings, indexed: true).perform
+        results = described_class.new(amr_data_feed_config, two_meters_worth_of_readings).perform
 
         # create expected output: 2 x 2 days readings for 2 meters
-        expected_results = indexed_output + indexed_output.map {|r| { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012', reading_date: r[:reading_date], readings: r[:readings] } }
+        expected_results = output + output.map {|r| { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012', reading_date: r[:reading_date], readings: r[:readings] } }
 
         expect(results).to eq expected_results
       end
@@ -569,7 +587,7 @@ module Amr
       let(:readings) { [{ :amr_data_feed_config_id => 6, :mpan_mprn => nil, reading_date: Date.parse('27 Aug 2019').to_s, readings: [15.2, 1.4, 1.3, 1.4, 1.3, 1.4, 1.3, 1.3, 1.4, 6.5, 2.3, 3.2, 1.8, 1.6, 2.0, 3.0, 2.0, 1.3, 1.7, 1.4, 1.1, 0.9, 1.2, 0.9, 1.7, 0.8, 0.8, 0.8, 1.2, 1.1, 1.7, 2.0, 2.8, 3.8, 1.6, 0.5, 0.7, 0.9, 1.2, 1.2, 1.2, 1.3, 1.3, 1.2, 1.2, 1.2, 1.3, 99.0] }] }
 
       it 'ignores row' do
-        results = SingleReadConverter.new(readings).perform
+        results = converter.perform
         expect(results).to be_empty
       end
     end
@@ -578,7 +596,7 @@ module Amr
       let(:readings) { [{ :amr_data_feed_config_id => 6, :mpan_mprn => '12345678', reading_date: nil, readings: [15.2, 1.4, 1.3, 1.4, 1.3, 1.4, 1.3, 1.3, 1.4, 6.5, 2.3, 3.2, 1.8, 1.6, 2.0, 3.0, 2.0, 1.3, 1.7, 1.4, 1.1, 0.9, 1.2, 0.9, 1.7, 0.8, 0.8, 0.8, 1.2, 1.1, 1.7, 2.0, 2.8, 3.8, 1.6, 0.5, 0.7, 0.9, 1.2, 1.2, 1.2, 1.3, 1.3, 1.2, 1.2, 1.2, 1.3, 99.0] }] }
 
       it 'ignores row' do
-        results = SingleReadConverter.new(readings).perform
+        results = converter.perform
         expect(results).to be_empty
       end
     end
@@ -587,11 +605,12 @@ module Amr
       let(:readings) { [{ :amr_data_feed_config_id => 6, :mpan_mprn => 'Primary school', :reading_date => '123456789012', :readings => ['01/01/2019'] }] }
 
       it 'kind of handles dodgy data' do
-        expect { SingleReadConverter.new(readings).perform }.to raise_error(ArgumentError)
+        expect { converter.perform }.to raise_error(ArgumentError)
       end
     end
 
     context 'more than 48 readings' do
+      let(:amr_data_feed_config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
       let(:readings) do
         data = []
         49.times { |idx| data << { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', period: (idx + 1).to_s, :reading_date => '25/08/2019', :readings => ['14.4'] } }
@@ -599,7 +618,7 @@ module Amr
         data
       end
 
-      subject(:results) { SingleReadConverter.new(readings, indexed: true).perform }
+      subject(:results) { converter.perform }
 
       it 'truncates after 48 readings' do
         expect(results.first[:readings].length).to be(48)

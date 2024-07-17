@@ -2,13 +2,12 @@ module Amr
   class SingleReadConverter
     class InvalidTimeStringError < StandardError; end
 
-    BLANK_THRESHOLD = 1
-
     # @param Array single_reading_array an array of readings
     # @param boolean indexed whether the array should be interpreted in HH order, rather than via timestamp.
-    def initialize(single_reading_array, indexed: false)
+    def initialize(amr_data_feed_config, single_reading_array)
+      @amr_data_feed_config = amr_data_feed_config
       @single_reading_array = single_reading_array
-      @indexed = indexed
+      @indexed = @amr_data_feed_config[:positional_index]
       @results_array = []
     end
 
@@ -91,7 +90,7 @@ module Amr
     end
 
     def reject_any_low_reading_days
-      @results_array.reject { |result| result[:readings].count(&:blank?) > BLANK_THRESHOLD }
+      @results_array.reject { |result| result[:readings].count(&:blank?) > @amr_data_feed_config.blank_threshold }
     end
 
     def last_reading_of_day?(reading_index)
