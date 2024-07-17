@@ -17,7 +17,7 @@ module Comparisons
       def load_data
         model.for_schools(@schools)
              .where.not(holiday_projected_usage_gbp: nil)
-             .where(holiday_start_date: Time.zone.today..)
+             .where('holiday_start_date <= :today AND holiday_end_date >= :today', today: Time.zone.today)
              .order(holiday_projected_usage_gbp: :desc)
       end
 
