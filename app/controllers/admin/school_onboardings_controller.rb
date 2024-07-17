@@ -21,8 +21,7 @@ module Admin
     end
 
     def create
-      @school_onboarding.uuid = SecureRandom.uuid
-      @school_onboarding.created_by = current_user
+      @school_onboarding.populate_default_values(current_user)
       if @school_onboarding.save
         redirect_to edit_admin_school_onboarding_configuration_path(@school_onboarding)
       else

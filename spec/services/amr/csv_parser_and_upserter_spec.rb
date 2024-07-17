@@ -153,7 +153,7 @@ module Amr
           importer.perform
 
           AmrDataFeedReading.all.find_each do |reading_record|
-            expect(reading_record.readings.count(&:blank?)).to be <= SingleReadConverter::BLANK_THRESHOLD
+            expect(reading_record.readings.count(&:blank?)).to be <= highlands_config.blank_threshold
           end
 
           expect(AmrDataFeedReading.count).to be 7
