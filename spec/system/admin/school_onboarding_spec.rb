@@ -94,7 +94,11 @@ RSpec.describe 'onboarding', :schools, type: :system do
     end
 
     it 'allows editing of an onboarding setup' do
-      onboarding = create :school_onboarding, :with_events
+      onboarding = create(:school_onboarding,
+                          school_group: school_group,
+                          weather_station: weather_station,
+                          scoreboard: scoreboard)
+
       click_on 'Manage school onboarding'
       click_on 'Edit'
 
@@ -119,6 +123,12 @@ RSpec.describe 'onboarding', :schools, type: :system do
       visit admin_school_onboardings_path
       click_on 'Edit'
       expect(page).to have_select('Funder', selected: funder.name)
+      click_on 'Next'
+      expect(page).to have_select('Template calendar', selected: 'Oxford calendar')
+      expect(page).to have_select('Country', selected: 'Scotland')
+      # unchanged
+      expect(page).to have_select('Weather Station', selected: onboarding.weather_station.title)
+      expect(page).to have_select('Scoreboard', selected: onboarding.scoreboard.name)
     end
 
     context 'when completing onboarding as admin without consents' do

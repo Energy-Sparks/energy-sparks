@@ -4,15 +4,6 @@ module Admin
       load_and_authorize_resource :school_onboarding, find_by: :uuid
 
       def edit
-        if @school_onboarding.school_group
-          @school_onboarding.template_calendar = @school_onboarding.school_group.default_template_calendar
-          @school_onboarding.solar_pv_tuos_area = @school_onboarding.school_group.default_solar_pv_tuos_area
-          @school_onboarding.dark_sky_area = @school_onboarding.school_group.default_dark_sky_area
-          @school_onboarding.weather_station = @school_onboarding.school_group.default_weather_station
-          @school_onboarding.scoreboard = @school_onboarding.school_group.default_scoreboard
-          @school_onboarding.default_chart_preference = @school_onboarding.school_group.default_chart_preference
-          @school_onboarding.country = @school_onboarding.school_group.default_country
-        end
       end
 
       def update

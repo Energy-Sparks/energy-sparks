@@ -73,6 +73,20 @@ class SchoolOnboarding < ApplicationRecord
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
   enum country: School.countries
 
+  def populate_default_values(user)
+    assign_attributes({
+      uuid: SecureRandom.uuid,
+      created_by: user,
+      template_calendar: school_group&.default_template_calendar,
+      solar_pv_tuos_area: school_group&.default_solar_pv_tuos_area,
+      dark_sky_area: school_group&.default_dark_sky_area,
+      weather_station: school_group&.default_weather_station,
+      scoreboard: school_group&.default_scoreboard,
+      default_chart_preference: school_group&.default_chart_preference,
+      country: school_group&.default_country
+    })
+  end
+
   def has_event?(event_name)
     events.where(event: event_name).any?
   end
