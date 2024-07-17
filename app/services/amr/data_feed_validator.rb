@@ -9,7 +9,7 @@ module Amr
       array_of_rows = handle_header(@array_of_rows)
       array_of_rows = sort_out_off_by_one_array(array_of_rows) if @config.handle_off_by_one && array_of_rows.size > 1
       array_of_rows = array_of_rows.reject { |row| invalid_row?(row) }
-      array_of_rows = array_of_rows.reject { |row| partial_row?(row) } unless @config.missing_readings_limit.nil?
+      array_of_rows = array_of_rows.reject { |row| partial_row?(row) } if should_reject_rows?
       array_of_rows = filter_column_rows_for(array_of_rows) if @config.column_row_filters.present? && headers_as_array
       array_of_rows
     end
@@ -81,6 +81,13 @@ module Amr
       # Reject if row has more than the allowed number of missing readings
       return true unless row.count > index_of_last_reading_field
       row[index_of_first_reading_field..index_of_last_reading_field].count(&:blank?) > @config.missing_readings_limit
+    end
+
+    # Don't apply the missing_readings_limit to reject partial rows for row_per_reading format
+    # That is done in SingleReadConverter for those configs
+    def should_reject_rows?
+      return false if @config.row_per_reading?
+      @config.missing_readings_limit.present?
     end
   end
 end

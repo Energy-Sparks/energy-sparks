@@ -5,10 +5,8 @@ describe Amr::DataFeedValidator do
 
   let(:header_row)   { header.split(',') }
 
-  let(:orsis_config) do
+  let(:amr_data_feed_config) do
     build(:amr_data_feed_config,
-      description: 'Orsis',
-      identifier: 'orsis',
       date_format: '%d/%m/%Y',
       mpan_mprn_field: 'MPAN',
       reading_date_field: 'DAY',
@@ -31,7 +29,7 @@ describe Amr::DataFeedValidator do
   end
 
   it 'filters rows' do
-    results = Amr::DataFeedValidator.new(orsis_config, @readings).perform
+    results = Amr::DataFeedValidator.new(amr_data_feed_config, @readings).perform
 
     expect(results.size).to eq(3)
     expect(results).to eq(@readings[0..2])
@@ -43,68 +41,79 @@ describe Amr::DataFeedValidator do
 
     # add a row that doesn't have all of the expected columns
     readings = @readings << ['Report generated', '2023-07-01', 'by John']
-    results = Amr::DataFeedValidator.new(orsis_config, readings).perform
+    results = Amr::DataFeedValidator.new(amr_data_feed_config, readings).perform
     expect(results.size).to eq(4)
   end
 
   context 'with empty files' do
     it 'handles empty files when header matches config' do
       only_header = [header_row]
-      results = Amr::DataFeedValidator.new(orsis_config, only_header).perform
+      results = Amr::DataFeedValidator.new(amr_data_feed_config, only_header).perform
       expect(results).to be_empty
     end
 
     it 'handles empty files when configuration says to skip rows' do
-      orsis_config.header_example = nil
-      orsis_config.number_of_header_rows = 1
+      amr_data_feed_config.header_example = nil
+      amr_data_feed_config.number_of_header_rows = 1
       only_header = [%w[to be skipped]]
-      results = Amr::DataFeedValidator.new(orsis_config, only_header).perform
+      results = Amr::DataFeedValidator.new(amr_data_feed_config, only_header).perform
       expect(results).to be_empty
     end
 
     it 'handles empty files when header row configured but it doesnt match what is provided' do
-      orsis_config.number_of_header_rows = 1
+      amr_data_feed_config.number_of_header_rows = 1
       only_header = [['sep=']]
-      results = Amr::DataFeedValidator.new(orsis_config, only_header).perform
+      results = Amr::DataFeedValidator.new(amr_data_feed_config, only_header).perform
       expect(results).to be_empty
     end
 
     # this caused a problem in live, a data file was set for a config that had multiple
     # header rows, but the file had a smaller header and no data
     it 'raises exception when configuration expects more header rows than is in data' do
-      orsis_config.number_of_header_rows = 2
+      amr_data_feed_config.number_of_header_rows = 2
       only_header = [['sep=']]
-      expect { Amr::DataFeedValidator.new(orsis_config, only_header).perform }.to raise_error Amr::DataFeedException
+      expect { Amr::DataFeedValidator.new(amr_data_feed_config, only_header).perform }.to raise_error Amr::DataFeedException
     end
   end
 
-  it 'removes partial rows if limit set' do
-    orsis_config.missing_readings_limit = 5
+  context 'with a missing readings limit set' do
+    it 'removes partial rows if limit set' do
+      amr_data_feed_config.missing_readings_limit = 5
 
-    results = Amr::DataFeedValidator.new(orsis_config, @readings).perform
+      results = Amr::DataFeedValidator.new(amr_data_feed_config, @readings).perform
 
-    expect(results.size).to eq(2)
-    expect(results.first).to eq(@readings.second)
-    expect(results.last).to eq(@readings.third)
-  end
+      expect(results.size).to eq(2)
+      expect(results.first).to eq(@readings.second)
+      expect(results.last).to eq(@readings.third)
+    end
 
-  it 'removes all partial rows' do
-    orsis_config.missing_readings_limit = 0
+    it 'removes all partial rows' do
+      amr_data_feed_config.missing_readings_limit = 0
 
-    results = Amr::DataFeedValidator.new(orsis_config, @readings).perform
+      results = Amr::DataFeedValidator.new(amr_data_feed_config, @readings).perform
 
-    expect(results.size).to eq(1)
-    expect(results).to eq([@readings.second])
-  end
+      expect(results.size).to eq(1)
+      expect(results).to eq([@readings.second])
+    end
 
-  it 'removes broken rows' do
-    orsis_config.missing_readings_limit = 2
+    it 'removes broken rows' do
+      amr_data_feed_config.missing_readings_limit = 2
 
-    @readings << ['2199989616188', 'broken row', '03/11/2020', '']
+      @readings << ['2199989616188', 'broken row', '03/11/2020', '']
 
-    results = Amr::DataFeedValidator.new(orsis_config, @readings).perform
+      results = Amr::DataFeedValidator.new(amr_data_feed_config, @readings).perform
 
-    expect(results.size).to eq(1)
-    expect(results).to eq([@readings.second])
+      expect(results.size).to eq(1)
+      expect(results).to eq([@readings.second])
+    end
+
+    context 'when config is row per reading' do
+      it 'does not remove the partial rows' do
+        amr_data_feed_config.missing_readings_limit = 2
+        amr_data_feed_config.row_per_reading = true
+        results = Amr::DataFeedValidator.new(amr_data_feed_config, @readings).perform
+        expect(results.size).to eq(3)
+      end
+    end
   end
 end
