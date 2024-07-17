@@ -110,6 +110,6 @@ class AmrDataFeedConfig < ApplicationRecord
   # formats can produce days with missing readings due to handling of 23:30-00:00 half-hour.
   def blank_threshold
     return nil unless row_per_reading?
-    return missing_readings_limit || BLANK_THRESHOLD
+    missing_readings_limit || BLANK_THRESHOLD
   end
 end

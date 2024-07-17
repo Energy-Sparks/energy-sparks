@@ -87,7 +87,7 @@ module Amr
     # That is done in SingleReadConverter for those configs
     def should_reject_rows?
       return false if @config.row_per_reading?
-      return @config.missing_readings_limit.present?
+      @config.missing_readings_limit.present?
     end
   end
 end
