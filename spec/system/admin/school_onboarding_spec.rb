@@ -50,7 +50,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
     it 'allows a new onboarding to be setup and sends an email to the school' do
       click_on 'Manage school onboarding'
-      click_on 'New Automatic School Setup'
+      click_on 'New School Onboarding'
 
       fill_in 'School name', with: school_name
       fill_in 'Contact email', with: 'oldfield@test.com'
@@ -247,7 +247,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
         let(:email_address) { 'different_address@email.com' }
 
         it 'saves' do
-          expect(page).to have_content('School onboardings in progress')
+          expect(page).to have_content('School onboardings currently in progress')
           expect(page).to have_content(email_address)
         end
 
