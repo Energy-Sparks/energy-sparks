@@ -22,6 +22,7 @@
 # Indexes
 #
 #  index_alert_types_on_advice_page_id  (advice_page_id)
+#  index_alert_types_on_class_name      (class_name)
 #
 
 class AlertType < ApplicationRecord

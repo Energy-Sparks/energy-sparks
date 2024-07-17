@@ -47,7 +47,7 @@ en:
           subtitle_html: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
           title: Gas consumption by week for the last 12 months
         group_by_week_gas_meter_breakdown_one_year:
-          header: Clicking on the chart columns allows you to drilldown to more detailed data, clicking on the legend allows you to add and remove meters.
+          header: Clicking on the chart columns allows you to drilldown to more detailed data. Clicking on the legend allows you to add and remove meters.
           subtitle: The chart below provides a weekly breakdown of the gas used by each underlying meter.
           title: Gas consumption by meter
         group_by_week_gas_unlimited:
