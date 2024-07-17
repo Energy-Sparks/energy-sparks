@@ -74,7 +74,7 @@ class SchoolOnboarding < ApplicationRecord
   enum country: School.countries
 
   def populate_default_values(user)
-    self.assign_attributes({
+    assign_attributes({
       uuid: SecureRandom.uuid,
       created_by: user,
       template_calendar: school_group&.default_template_calendar,
