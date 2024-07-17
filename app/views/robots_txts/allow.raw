@@ -33,3 +33,18 @@ Disallow: /
 
 User-agent: barkrowler
 Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: dotbot
+Disallow: /
+
+User-agent: rogerbot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
