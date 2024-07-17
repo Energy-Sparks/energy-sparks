@@ -57,6 +57,8 @@ class AmrDataFeedConfig < ApplicationRecord
   validates :identifier, :description, uniqueness: true
   validates_presence_of :identifier, :description
 
+  BLANK_THRESHOLD = 1
+
   def map_of_fields_to_indexes(header = nil)
     this_header = header || header_example
     header_array = this_header.split(',')
@@ -95,5 +97,19 @@ class AmrDataFeedConfig < ApplicationRecord
   def local_bucket_path
     path = ENV['AMR_CONFIG_LOCAL_FILE_BUCKET_PATH'] || 'tmp/amr_files_bucket'
     "#{path}/#{identifier}"
+  end
+
+  # Used in SingleReadConverter to determine whether to drop rows that have missing readings
+  #
+  # Only applicable to row_per_reading formats
+  #
+  # To preserve current loader behaviour this returns either the value of missing_readings_limit, to
+  # allow that to be configured, or a default of 1
+  #
+  # This can later be replaced with missing_reading_limit, but need to resolve how row_per_reading
+  # formats can produce days with missing readings due to handling of 23:30-00:00 half-hour.
+  def blank_threshold
+    return nil unless row_per_reading?
+    missing_readings_limit || BLANK_THRESHOLD
   end
 end

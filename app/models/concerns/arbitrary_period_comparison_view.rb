@@ -4,9 +4,7 @@ module ArbitraryPeriodComparisonView
   extend ActiveSupport::Concern
 
   def any_tariff_changed?
-    electricity_tariff_has_changed ||
-      gas_tariff_has_changed ||
-      storage_heater_tariff_has_changed
+    electricity_tariff_has_changed || gas_tariff_has_changed || storage_heater_tariff_has_changed
   end
 
   # For CSV export

@@ -9,7 +9,8 @@
 #
 # Indexes
 #
-#  index_alert_generation_runs_on_school_id  (school_id)
+#  index_alert_generation_runs_on_school_id                 (school_id)
+#  index_alert_generation_runs_on_school_id_and_created_at  (school_id,created_at DESC)
 #
 # Foreign Keys
 #
