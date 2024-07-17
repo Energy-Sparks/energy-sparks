@@ -67,7 +67,7 @@
 
         <% if can? :switch, School %>
           <% if current_user && !current_user.cluster_schools_for_switching.blank? %>
-            <%= render 'shared/switch_schools' %>
+            <%= render 'shared/navigation/my_schools' %>
           <% end %>
         <% end %>
 
