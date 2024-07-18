@@ -6,7 +6,7 @@ module Meters
       described_class.new([meter])
     end
 
-    let(:meter) { create(:electricity_meter, dcc_meter: true) }
+    let(:meter) { create(:electricity_meter, dcc_meter: :smets2) }
     let(:meter_review) { create(:meter_review, meters: [meter]) }
 
     before do

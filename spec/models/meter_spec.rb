@@ -88,10 +88,10 @@ describe 'Meter', :meters do
 
     context 'when finding meters for consent' do
       let(:meter_review) { create(:meter_review) }
-      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: true, meter_review: meter_review, mpan_mprn: 1_234_567_890_111) }
-      let(:electricity_meter_not_reviewed) { create(:electricity_meter, dcc_meter: true, mpan_mprn: 1_234_567_890_222, meter_review_id: nil, consent_granted: false) }
-      let(:electricity_meter_not_dcc) { create(:electricity_meter, dcc_meter: false, mpan_mprn: 1_234_567_890_333) }
-      let(:electricity_meter_consent_granted_already) { create(:electricity_meter, dcc_meter: true, consent_granted: true, mpan_mprn: 1_234_567_890_444) }
+      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: :smets2, meter_review: meter_review, mpan_mprn: 1_234_567_890_111) }
+      let(:electricity_meter_not_reviewed) { create(:electricity_meter, dcc_meter: :smets2, mpan_mprn: 1_234_567_890_222, meter_review_id: nil, consent_granted: false) }
+      let(:electricity_meter_not_dcc) { create(:electricity_meter, dcc_meter: :no, mpan_mprn: 1_234_567_890_333) }
+      let(:electricity_meter_consent_granted_already) { create(:electricity_meter, dcc_meter: :smets2, consent_granted: true, mpan_mprn: 1_234_567_890_444) }
 
       it 'awaiting_trusted_consent is only dcc meters with reviews' do
         expect(Meter.awaiting_trusted_consent).to match_array([electricity_meter_reviewed])
@@ -100,10 +100,10 @@ describe 'Meter', :meters do
 
     context 'when finding meters for review' do
       let(:meter_review) { create(:meter_review) }
-      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: true, meter_review: meter_review, mpan_mprn: 1_234_567_890_111) }
-      let(:electricity_meter_not_reviewed) { create(:electricity_meter, dcc_meter: true, mpan_mprn: 1_234_567_890_222, meter_review_id: nil, consent_granted: false) }
-      let(:electricity_meter_not_dcc) { create(:electricity_meter, dcc_meter: false, mpan_mprn: 1_234_567_890_333) }
-      let(:electricity_meter_consent_granted_already) { create(:electricity_meter, dcc_meter: true, consent_granted: true, mpan_mprn: 1_234_567_890_444) }
+      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: :smets2, meter_review: meter_review, mpan_mprn: 1_234_567_890_111) }
+      let(:electricity_meter_not_reviewed) { create(:electricity_meter, dcc_meter: :smets2, mpan_mprn: 1_234_567_890_222, meter_review_id: nil, consent_granted: false) }
+      let(:electricity_meter_not_dcc) { create(:electricity_meter, dcc_meter: :no, mpan_mprn: 1_234_567_890_333) }
+      let(:electricity_meter_consent_granted_already) { create(:electricity_meter, dcc_meter: :smets2, consent_granted: true, mpan_mprn: 1_234_567_890_444) }
 
       it 'returns a collection of reviewed meters' do
         expect(Meter.reviewed_dcc_meter).to match_array([electricity_meter_reviewed])

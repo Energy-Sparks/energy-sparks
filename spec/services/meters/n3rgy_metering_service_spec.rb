@@ -3,7 +3,11 @@ require 'rails_helper'
 describe Meters::N3rgyMeteringService, type: :service do
   subject(:service) { described_class.new(meter) }
 
-  let(:meter) { create(:electricity_meter, dcc_meter: true, consent_granted: true) }
+  let(:meter) { create(:electricity_meter, dcc_meter: :smets2, consent_granted: true) }
+
+  around do |example|
+    ClimateControl.modify(N3RGY_DATA_URL_V2: 'https://n3rgy.test') { example.run }
+  end
 
   describe '#available_data' do
     let(:stub) { instance_double('data-api-client') }
@@ -54,10 +58,6 @@ describe Meters::N3rgyMeteringService, type: :service do
   describe '#status' do
     let(:stub) { stub_request(:get, %r{^https://n3rgy.test/find-mpxn/}) }
 
-    around do |example|
-      ClimateControl.modify(N3RGY_DATA_URL_V2: 'https://n3rgy.test') { example.run }
-    end
-
     it 'returns available' do
       stub.to_return(body: '{}')
       expect(service.status).to eq(:available)
@@ -71,6 +71,25 @@ describe Meters::N3rgyMeteringService, type: :service do
     it 'handles not allowed' do
       stub.to_return(status: 403)
       expect(service.status).to eq(:consent_required)
+    end
+  end
+
+  describe '#type' do
+    let(:stub) { stub_request(:get, %r{^https://n3rgy.test/find-mpxn/}) }
+
+    it 'returns smets2' do
+      stub.to_return(body: '{"deviceId": "01-0A-00-00-00-00-FF-03"}')
+      expect(service.type).to eq(:smets2)
+    end
+
+    it 'returns other' do
+      stub.to_return(body: '{}')
+      expect(service.type).to eq(:other)
+    end
+
+    it 'returns no' do
+      stub.to_return(status: 404)
+      expect(service.type).to eq(:no)
     end
   end
 end

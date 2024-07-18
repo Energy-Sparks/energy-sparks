@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe DccMailer do
   let(:school_1)    { create(:school, name: 'Big School') }
   let(:school_2)    { create(:school, name: 'Little School') }
-  let(:meter_1)     { create(:electricity_meter, dcc_meter: false, school: school_1) }
-  let(:meter_2)     { create(:electricity_meter, dcc_meter: false, school: school_2) }
+  let(:meter_1)     { create(:electricity_meter, dcc_meter: :no, school: school_1) }
+  let(:meter_2)     { create(:electricity_meter, dcc_meter: :no, school: school_2) }
   let(:meter_ids)   { [meter_1.id, meter_2.id] }
 
   describe '#dcc_meter_status_email' do

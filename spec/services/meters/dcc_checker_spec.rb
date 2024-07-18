@@ -6,7 +6,7 @@ module Meters
       Meters::DccChecker.new([meter])
     end
 
-    let(:meter) { create(:electricity_meter, dcc_meter: false) }
+    let(:meter) { create(:electricity_meter) }
 
     before do
       allow(DataFeeds::N3rgy::DataApiClient).to receive(:production_client).and_return(n3rgy_data_api_client)
@@ -18,7 +18,7 @@ module Meters
       it 'sets timestamp' do
         expect(n3rgy_data_api_client).to receive(:find_mpxn).with(meter.mpan_mprn).and_raise(DataFeeds::N3rgy::NotFound.new)
         service.perform
-        expect(meter.reload.dcc_meter).to be_falsey
+        expect(meter.reload.dcc_meter).to eq('no')
         expect(meter.reload.dcc_checked_at).not_to be nil
       end
 
@@ -39,10 +39,8 @@ module Meters
       end
 
       it 'generates an email if status changed' do
-        expect(n3rgy_data_api_client).to receive(:find_mpxn).with(meter.mpan_mprn).and_return(true)
-        expect do
-          service.perform
-        end.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
+        expect(n3rgy_data_api_client).to receive(:find_mpxn).with(meter.mpan_mprn).and_return({})
+        expect { service.perform }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
       end
     end
   end

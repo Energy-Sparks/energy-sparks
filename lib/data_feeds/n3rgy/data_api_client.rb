@@ -21,7 +21,8 @@ module DataFeeds
       end
 
       def self.production_client
-        DataApiClient.new(api_key: ENV['N3RGY_API_KEY'], base_url: ENV['N3RGY_DATA_URL_V2'])
+        base_url = Rails.env.test? ? 'https://n3rgy.test' : ENV.fetch('N3RGY_DATA_URL_V2')
+        DataApiClient.new(api_key: ENV['N3RGY_API_KEY'], base_url:)
       end
 
       # Returns a paged list of MPxNs for which we have consent to access
