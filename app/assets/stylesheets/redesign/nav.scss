@@ -29,11 +29,30 @@
     background-image: escape-svg($navbar-dark-toggler-icon-bg);
   }
 
-  // Allow scroll on collapse and left margin
-  .collapsing, .collapse.show {
-    max-height: 85vh;
-    overflow-y: auto;
-    margin-left: 10px;
+  @mixin navbar-scroll {
+    // Allow scroll on collapse and left margin
+    .collapsing, .collapse.show {
+      max-height: 50vh;
+      overflow-y: auto;
+      margin-left: 10px;
+    }
+  }
+
+  // The Welsh and English navbars use different breakpoints (see navbar_expand_class helper)
+  // (due to equivalent Welsh menu items being longer and needing more space)
+
+  // For the English language site
+  @include media-breakpoint-down(md) {
+    &.navbar-expand-lg {
+      @include navbar-scroll;
+    }
+  }
+
+  // For the Welsh language site
+  @include media-breakpoint-down(lg) {
+    &.navbar-expand-xl {
+      @include navbar-scroll;
+    }
   }
 
   .nav-link.lozenge {
@@ -94,8 +113,8 @@ nav.navbar-top {
 nav.navbar-second {
   @extend %navbar-es;
   @include font(f8); // design says f7
-  min-height: 40px; // design says 50
-  padding: 2px 16px;
+  min-height: 42px; // design says 50
+  padding: 4px 16px;
 
   .nav-link, .navbar-text {
     padding: 4px 8px;

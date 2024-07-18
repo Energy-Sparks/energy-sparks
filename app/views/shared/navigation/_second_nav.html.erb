@@ -30,15 +30,17 @@
                        podium: current_school_podium, school: current_school %>
           <% end %>
         </li>
+      </ul>
 
+      <ul class="navbar-nav my-auto mx-auto">
         <% if current_school&.active %>
-          <li id="school-status-buttons" class="nav-item nowrap my-auto pl-2 d-none d-xl-inline-block">
+          <li id="school-status-buttons" class="nav-item nowrap my-auto mx-auto d-none d-xl-inline-block">
             <%= render 'shared/school_status_buttons', school: current_school %>
           </li>
         <% end %>
       </ul>
 
-      <ul class="navbar-nav my-auto ml-auto">
+      <ul class="navbar-nav my-auto">
         <%= render 'shared/navigation/dashboards' %>
 
         <% unless user_signed_in? %>
