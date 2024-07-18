@@ -56,7 +56,7 @@ module Admin
         @school_onboardings.order(:school_group_id).incomplete.each do |school_onboarding|
           last_event = school_onboarding.events.order(event: :desc).first
           last_event = last_event.event.to_s.humanize if last_event
-          csv << [school_onboarding.school_name, school_onboarding.school_group.name, school_onboarding.contact_email, school_onboarding.notes, last_event]
+          csv << [school_onboarding.school_name, school_onboarding.school_group&.name, school_onboarding.contact_email, school_onboarding.notes, last_event]
         end
       end
     end

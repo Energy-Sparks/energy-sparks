@@ -1,32 +1,47 @@
-<h1>School onboardings in progress</h1>
+<h1>School onboardings currently in progress</h1>
 
-<%= link_to 'New Automatic School Setup', new_admin_school_onboarding_path, class: 'btn' %>
+<%= link_to 'New School Onboarding', new_admin_school_onboarding_path, class: 'btn' %>
 <%= link_to 'Download as CSV', admin_school_onboardings_path(format: :csv), class: 'btn' %>
 
-<br/>
-<br/>
-
-<% @school_groups.each do |school_group| %>
-  <p><%= link_to school_group.name, "##{school_group.slug}" %></p>
-<% end %>
-
-<% @school_groups.each do |school_group| %>
-
-  <div class="nav-anchor">
-    <a name="<%= school_group.slug %>"> </a>
-  </div>
-  <br/>
-
-  <h3><%= school_group.name %></h3>
-
-  <%= link_to 'Download as CSV', admin_school_group_school_onboardings_path(school_group, format: :csv), class: 'btn' %>
-  <br/>
-  <br/>
-
-  <% if school_group.school_onboardings.incomplete.any? %>
-    <p>Schools onboarding: <%= school_group.school_onboardings.incomplete.count %>
-    <%= render 'admin/school_groups/onboarding_schools', school_group: school_group, anchor: '' %>
-  <% else %>
-    <p>No schools are onboarding for <%= school_group.name %></p>
+<div class="mt-4">
+  <p>
+    Quick links:
+  </p>
+  <ul>
+  <% @school_groups.each do |school_group| %>
+    <% if school_group.school_onboardings.incomplete.any? %>
+      <li><%= link_to school_group.name, "##{school_group.slug}" %></li>
+    <% end %>
   <% end %>
+  </ul>
+</div>
+
+<% @school_groups.each do |school_group| %>
+  <% next unless school_group.school_onboardings.incomplete.any? %>
+
+  <hr class="mt-4">
+
+  <div class="d-flex justify-content-between align-items-top">
+    <div>
+      <h2 id="<%= school_group.slug %>" class="scrollable"><%= school_group.name %></h2>
+    </div>
+    <div>
+      <%= link_to '#' do %>
+        <%= t('common.back_to_top') %>
+        <i class="fa fa-arrow-up" data-toggle="tooltip" title="<%= t('common.back_to_top') %>"></i>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-top">
+    <div>
+      <p>Schools onboarding: <%= school_group.school_onboardings.incomplete.count %>
+    </div>
+    <div>
+      <%= link_to 'Download as CSV', admin_school_group_school_onboardings_path(school_group, format: :csv),
+                  class: 'btn' %>
+    </div>
+  </div>
+
+  <%= render 'admin/school_groups/onboarding_schools', school_group: school_group, anchor: '' %>
 <% end %>
