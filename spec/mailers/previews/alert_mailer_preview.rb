@@ -14,7 +14,7 @@ class AlertMailerPreview < ActionMailer::Preview
   end
 
   def include_target_prompt_in_email?(school)
-    return Targets::SchoolTargetService.targets_enabled?(school) && Targets::SchoolTargetService.new(school).enough_data?
+    Targets::SchoolTargetService.targets_enabled?(school) && Targets::SchoolTargetService.new(school).enough_data?
   end
 
   def preview_existing_email
