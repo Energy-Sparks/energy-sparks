@@ -101,7 +101,7 @@ class Meter < ApplicationRecord
   # The Meter's meter sytem defaults to NHH AMR (Non Half-Hourly Automatic Meter Reading)
   # Other options are: NHH (Non Half-Hourly), HH (Half-Hourly), and SMETS2/smart (SMETS2 Smart Meters)
   enum meter_system: [:nhh_amr, :nhh, :hh, :smets2_smart]
-  enum :dcc_meter, (%w[no smets2 other].to_h { |v| [v, v] }), prefix: true
+  enum :dcc_meter, %w[no smets2 other].to_h { |v| [v, v] }, prefix: true
 
   delegate :area_name, to: :school
 
