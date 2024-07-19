@@ -172,16 +172,4 @@ class SchoolGroup < ApplicationRecord
   def scorable_calendar
     default_template_calendar
   end
-
-  def default_data_source_id(type)
-    send(:"default_data_source_#{type}_id")
-  end
-
-  def default_procurement_route_id(type)
-    send(:"default_procurement_route#{type}_id")
-  end
-
-  def admin_meter_statuses_id(type)
-    send(:"admin_meter_statuses#{type}_id")
-  end
 end

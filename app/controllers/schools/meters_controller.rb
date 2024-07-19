@@ -35,6 +35,8 @@ module Schools
       end
     end
 
+    def edit; end
+
     def create
       manager = MeterManagement.new(@meter)
       if @meter.save
@@ -45,8 +47,6 @@ module Schools
         render :index
       end
     end
-
-    def edit; end
 
     def update
       @meter.attributes = meter_params

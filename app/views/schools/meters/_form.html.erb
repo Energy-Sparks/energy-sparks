@@ -79,40 +79,21 @@
   </div>
 
   <div class="actions">
-    <% submit_label = action_name == 'edit' ? t('schools.meters.form.update_meter') : t('schools.meters.form.create_meter') %>
+    <% submit_label = if action_name == 'edit'
+                        t('schools.meters.form.update_meter')
+                      else
+                        t('schools.meters.form.create_meter')
+                      end %>
     <%= form.submit submit_label, class: 'btn btn-primary' %>
   </div>
 <% end %>
 
-<% def set_value(id, value)
-     "document.getElementById('#{id}').value=#{value || 'null'}".html_safe
-   end %>
-
-
-TODO 
 <script>
+  const defaults = <%= meter_defaults(@school, 'meter_data_source_id', 'meter_procurement_route_id',
+                                      'meter_admin_meter_statuses_id').to_json.html_safe # rubocop:disable Rails/OutputSafety %>
   $("input[type='radio'][name='meter[meter_type]']").change(function () {
-    switch($("input[type='radio'][name='meter[meter_type]']:checked").val()) {
-      <% %w[electricity gas solar_pv exported_solar_pv].each |type| %>
-        case '<%= type %>':
-
-          <% %w[meter_data_source_id meter_procurement_route_id meter_admin_meter_statuses_id].each |id| %>
-            <% value = @school&.school_group&.%>
-            document.getElementById('<%= id %>').value=#{value || 'null'}".html_safe
-          <%= set_value('meter_data_source_id', @school&.school_group&.default_data_source_electricity_id) %>
-        <%= set_value('meter_procurement_route_id', @school&.school_group&.default_procurement_route_electricity_id) %>
-        <%= set_value('meter_admin_meter_statuses_id', @school&.school_group&.admin_meter_statuses_electricity_id) %>
-        break;
-      case 'gas':
-        <%= set_value('meter_data_source_id', @school&.school_group&.default_data_source_gas_id) %>
-        <%= set_value('meter_procurement_route_id', @school&.school_group&.default_procurement_route_gas_id) %>
-        <%= set_value('meter_admin_meter_statuses_id', @school&.school_group&.admin_meter_statuses_gas_id) %>
-        break;
-      case 'solar_pv': case 'exported_solar_pv':
-        <%= set_value('meter_data_source_id', @school&.school_group&.default_data_source_solar_pv_id) %>)
-        <%= set_value('meter_procurement_route_id', @school&.school_group&.default_procurement_route_solar_pv_id) %>
-        <%= set_value('meter_admin_meter_statuses_id', @school&.school_group&.admin_meter_statuses_solar_pv_id) %>
-        break;
-    }
+    defaults[$("input[type='radio'][name='meter[meter_type]']:checked").val()].forEach((item) => {
+      document.getElementById(item.id).value = item.value
+    })
   })
 </script>
