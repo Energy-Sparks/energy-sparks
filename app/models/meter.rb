@@ -283,6 +283,10 @@ class Meter < ApplicationRecord
     dcc_meter_smets2? || dcc_meter_other?
   end
 
+  def t_dcc_meter
+    I18n.t("meter.dcc_meter.#{dcc_meter}")
+  end
+
   private
 
   def pseudo_mpan_mprn_not_changed
