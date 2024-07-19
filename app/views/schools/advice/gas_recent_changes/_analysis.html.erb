@@ -13,7 +13,6 @@
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-weeks',
                                            section_title: t('advice_pages.gas_recent_changes.analysis.compare_recent_weeks.title') %>
 
-<div class="charts">
   <%= component 'chart',
                 chart_type: :calendar_picker_gas_week_example_comparison_chart,
                 school: @school,
@@ -31,7 +30,7 @@
                                           split_meters: true, meters: @meters %>
     <% end %>
   <% end %>
-</div>
+
 
 <!--  COMPARISON OF GAS USE OVER 2 RECENT DAYS -->
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-days',
