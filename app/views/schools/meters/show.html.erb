@@ -65,7 +65,7 @@
         <dt class="col-sm-3"><%= t('schools.meters.show.data_source') %></dt>
         <dd class="col-sm-9">
           <% if @meter.data_source %>
-            <%= link_to(@meter.data_source.name, admin_data_source_path(@meter.data_source))
+            <%= link_to(@meter.data_source.name, admin_data_source_path(@meter.data_source)) %>
           <% else %>
             <%= t('common.labels.not_set') %>
           <% end %>
