@@ -23,6 +23,6 @@ module MetersHelper
       [type, id_values]
     end
     defaults[:exported_solar_pv] = defaults[:solar_pv]
-    defaults
+    defaults.to_json.html_safe
   end
 end

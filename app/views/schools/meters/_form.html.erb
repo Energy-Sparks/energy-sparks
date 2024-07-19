@@ -90,7 +90,7 @@
 
 <script>
   const defaults = <%= meter_defaults(@school, 'meter_data_source_id', 'meter_procurement_route_id',
-                                      'meter_admin_meter_statuses_id').to_json.html_safe # rubocop:disable Rails/OutputSafety %>
+                                      'meter_admin_meter_statuses_id') %>
   $("input[type='radio'][name='meter[meter_type]']").change(function () {
     defaults[$("input[type='radio'][name='meter[meter_type]']:checked").val()].forEach((item) => {
       document.getElementById(item.id).value = item.value
