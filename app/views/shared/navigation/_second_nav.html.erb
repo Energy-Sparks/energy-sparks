@@ -2,8 +2,8 @@
   <div class="container">
     <ul class="navbar-nav nowrap">
       <% if current_school %>
-        <li class='font-weight-bold'>
-          <%= link_to current_school.name, school_path(current_school), class: 'nav-link' %>
+        <li>
+          <%= link_to current_school.name, school_path(current_school), class: 'nav-link font-weight-bold' %>
         </li>
       <% elsif current_user_school %>
         <li class="nav-item">

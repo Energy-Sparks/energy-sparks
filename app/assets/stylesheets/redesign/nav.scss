@@ -1,9 +1,43 @@
+$togglers: (
+  "light": (
+    "icon": escape-svg($navbar-light-toggler-icon-bg),
+    "colour": $navbar-light-color,
+    "border": $navbar-light-toggler-border-color,
+  ),
+  "dark": (
+    "icon": escape-svg($navbar-dark-toggler-icon-bg),
+    "colour": $navbar-dark-color,
+    "border": $navbar-dark-toggler-border-color,
+  )
+);
+
+@mixin toggler($type) {
+  $colour: map-get($togglers, $type);
+
+  .navbar-toggler-icon {
+    background-image: map-get($colour, "icon");
+  }
+
+  .navbar-toggler {
+    color:  map-get($colour, "colour");
+    border-color: map-get($colour, "border");
+  }
+}
+
+@mixin navbar-scroll {
+  // Allow scroll on collapse and left margin
+  .collapsing, .collapse.show {
+    max-height: 50vh;
+    overflow-y: auto;
+    margin-left: 10px;
+  }
+}
+
 %navbar-es {
   font-family: $header-font-family;
-  font-weight: 400 !important;
 
-  a {
-    font-weight: 400 !important;
+  & a:link, a:hover, a:focus {
+    font-weight: 600;
   }
 
   .dropdown-menu {
@@ -18,24 +52,11 @@
   .navbar-toggler {
     padding: 4px;
     margin-left: 8px;
-
-    color: $navbar-dark-color;
-    border-color: $navbar-dark-toggler-border-color;
   }
 
   .navbar-toggler-icon {
     width: 1.2em;
     height: 1.2em;
-    background-image: escape-svg($navbar-dark-toggler-icon-bg);
-  }
-
-  @mixin navbar-scroll {
-    // Allow scroll on collapse and left margin
-    .collapsing, .collapse.show {
-      max-height: 50vh;
-      overflow-y: auto;
-      margin-left: 10px;
-    }
   }
 
   // The Welsh and English navbars use different breakpoints (see navbar_expand_class helper)
@@ -67,9 +88,55 @@
   }
 }
 
+@mixin navbar-colours($background, $background-lozenge, $foreground-lozenge, $foreground, $foreground-alt, $toggler) {
+  color: $foreground;
+  background-color: $background;
+
+  .dropdown-menu {
+    background-color: $background;
+
+    .dropdown-item {
+      color: $foreground;
+      background-color: $background;
+    }
+    .dropdown-divider {
+      border-top: 1px solid color-mix(in srgb, $foreground 50%, transparent);
+    }
+  }
+
+  .nav-link {
+    color: $foreground;
+
+    &.dash {
+      color: $foreground-alt;
+    }
+  }
+
+  .nav-item.dropdown.show
+  .nav-link.dropdown-toggle,
+  .nav-link:hover,
+  .nav-link:focus,
+  .dropdown-item:hover,
+  .dropdown-item:focus {
+    color: $foreground-alt;
+  }
+
+  .nav-link.lozenge {
+    color: $foreground-lozenge;
+    background: $background-lozenge;
+
+    &:hover, &:focus {
+      color: $black !important;
+      background: $grey;
+    }
+  }
+}
+
 nav.navbar-top {
   @extend %navbar-es;
   @include font(f8); // design says f6
+  @include toggler('dark');
+
   background-color: $dark;
   color: $white;
   min-height: 70px; // design says 108
@@ -113,6 +180,7 @@ nav.navbar-top {
 nav.navbar-second {
   @extend %navbar-es;
   @include font(f8); // design says f7
+
   min-height: 42px; // design says 50
   padding: 4px 16px;
 
@@ -135,101 +203,13 @@ nav.navbar-second {
   }
 
   &.adult {
-    color: $white;
-    background-color: $blue-very-dark;
-
-    .dropdown-menu {
-      background-color: $blue-very-dark;
-
-      .dropdown-item {
-        color: $white;
-        background-color: $blue-very-dark;
-      }
-
-      .dropdown-divider {
-        border-top: 1px solid color-mix(in srgb, $white 50%, transparent);
-      }
-    }
-
-    .nav-link {
-      color: $white;
-
-      &.dash {
-        color: $blue-medium;
-      }
-    }
-
-    .nav-item.dropdown.show
-    .nav-link.dropdown-toggle,
-    .nav-link:hover,
-    .nav-link:focus,
-    .dropdown-item:hover,
-    .dropdown-item:focus {
-      color: $blue-medium;
-    }
-
-    .nav-link.lozenge {
-      color: $blue-dark;
-      background: $blue-medium;
-
-      &:hover, &:focus {
-        color: $black !important;
-        background: $grey;
-      }
-    }
+    @include navbar-colours($background: $blue-very-dark, $background-lozenge: $blue-medium, $foreground-lozenge: $blue-dark, $foreground: $white, $foreground-alt: $blue-medium, $toggler: light);
+    @include toggler('dark');
   }
 
   &.pupil {
-    color: $yellow-very-dark;
-    background-color: $yellow-light;
-
-    .dropdown-menu {
-      background-color: $yellow-light;
-
-      .dropdown-item {
-        color: $yellow-very-dark;
-        background-color: $yellow-light;
-      }
-      .dropdown-divider {
-        border-top: 1px solid color-mix(in srgb, $yellow-very-dark 50%, transparent);
-      }
-    }
-
-    .nav-link {
-      color: $yellow-very-dark;
-
-      &.dash {
-        color: $yellow-dark;
-      }
-    }
-
-    .nav-item.dropdown.show
-    .nav-link.dropdown-toggle,
-    .nav-link:hover,
-    .nav-link:focus,
-    .dropdown-item:hover,
-    .dropdown-item:focus {
-      color: $yellow-dark;
-    }
-
-    .navbar-toggler-icon {
-      background-image: escape-svg($navbar-light-toggler-icon-bg);
-    }
-
-    .navbar-toggler {
-      color: $navbar-light-color;
-      border-color: $navbar-light-toggler-border-color;
-    }
-
-    .nav-link.lozenge {
-      color: $yellow-dark;
-      background: $yellow-medium;
-
-      &:hover, &:focus {
-        color: $black !important;
-        background: $grey;
-      }
-    }
+    @include navbar-colours($background: $yellow-light, $background-lozenge: $yellow-medium, $foreground-lozenge: $yellow-dark, $foreground: $yellow-very-dark, $foreground-alt: $yellow-dark, $toggler: dark);
+    @include toggler('light');
   }
 }
 
