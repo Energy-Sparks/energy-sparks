@@ -774,9 +774,9 @@ describe School do
       expect(subject.filterable_meters(:electricity)).to match_array(electricity_meters)
     end
 
-    context 'with solar' do
+    context 'with storage' do
       before do
-        subject.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_solar_pv: true))
+        subject.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true))
       end
 
       it 'returns gas meters' do

@@ -278,6 +278,13 @@ class Meter < ApplicationRecord
     issues&.where(issue_type: 'issue')&.status_open
   end
 
+  def has_solar_array?
+    return false unless electricity?
+    meter_attributes.where(
+      attribute_type: [:solar_pv_mpan_meter_mapping, :solar_pv], deleted_by: nil, replaced_by: nil
+    ).any?
+  end
+
   private
 
   def pseudo_mpan_mprn_not_changed

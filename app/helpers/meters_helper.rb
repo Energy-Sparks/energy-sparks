@@ -8,4 +8,13 @@ module MetersHelper
     return false if list_of_consented_mpans.empty?
     meter.consent_granted && !consented_in_n3rgy?(list_of_consented_mpans, meter)
   end
+
+  def options_for_meter_selection(meters)
+    options = []
+    meters.each do |meter|
+      options << [meter.display_name, meter.mpan_mprn]
+      options << ["#{meter.mpan_mprn} :mains_consume", "#{meter.mpan_mprn}|mains_consume"] if meter.has_solar_array?
+    end
+    options
+  end
 end

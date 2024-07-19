@@ -11,7 +11,13 @@ $(document).ready(function() {
 
     var meter = $(chartDiv).find("select[name='meter']").val();
     if (meter && meter != 'all') {
-      chartConfig.mpan_mprn = meter;
+      //chartConfig.mpan_mprn = meter;
+      var definitions = meter.split('|');
+      chartConfig.mpan_mprn = definitions[0];
+      if (definitions[1] != undefined) {
+        console.log('Setting sub meter');
+        chartConfig.sub_meter = definitions[1];
+      }
     }
 
     updateMeterSpecificChartState(chartDiv, chartConfig);

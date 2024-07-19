@@ -16,7 +16,8 @@
                  id="<%= period %>-datetimepicker1" data-target-input="nearest">
               <%= text_field_tag('first-date-picker', '', class: 'form-control datetimepicker-input',
                                                           data: { target: "##{period}-datetimepicker1" },
-                                                          onkeydown: 'return false') %>
+                                                          onkeydown: 'return false',
+                                                          autocomplete: 'off') %>
 
               <div class="input-group-append" data-target="#<%= period %>-datetimepicker1" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -37,7 +38,8 @@
                  id='<%= "#{period}-datetimepicker2" %>' data-target-input="nearest">
               <%= text_field_tag('second-date-picker', '', class: 'form-control datetimepicker-input',
                                                            data: { target: "##{period}-datetimepicker2" },
-                                                           onkeydown: 'return false') %>
+                                                           onkeydown: 'return false',
+                                                           autocomplete: 'off') %>
 
               <div class="input-group-append" data-target="##{period}-datetimepicker2" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -56,9 +58,10 @@
             <div class="form-group">
               <%= select_tag :meter,
                              content_tag(:option,
-                                         t('charts.usage.select_meter.all_meters'), value: 'all') +
-                                          options_from_collection_for_select(meters, :mpan_mprn, :display_name, nil),
-                                         class: 'form-control' %>
+                                         t('charts.usage.select_meter.all_meters'),
+                                         value: 'all') +
+                             options_for_select(options_for_meter_selection(meters)),
+                             class: 'form-control' %>
             </div>
           </div>
         </div>
