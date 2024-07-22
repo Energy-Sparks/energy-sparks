@@ -261,7 +261,6 @@ class Ability
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
         can :manage, TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
-        can :read, [:my_school_menu]
       end
     elsif user.guest?
       # Users who are not yet signed in, or registered can begin onboarding
