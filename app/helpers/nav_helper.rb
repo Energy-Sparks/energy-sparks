@@ -141,7 +141,7 @@ module NavHelper
     link_to link_text, link_path, class: nav_class
   end
 
-  def return_to_dashboard_path
+  def back_to_dashboard_path
     if current_user.pupil? && can?(:show_pupils_dash, current_user_school)
       pupils_school_path(current_user_school)
     elsif can?(:show, current_user_school)

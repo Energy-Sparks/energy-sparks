@@ -56,10 +56,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Used in navigation to determine current user's school group
+  # which is: user.school_group || user.school.school_group
   def current_user_school_group
-    @current_user_school_group ||= current_user&.school_group
+    @current_user_school_group ||= current_user&.school_group || current_user&.school&.school_group
   end
 
+  # Used in the comparision pages to determine current user's school group
+  # which is: user.school.school_group || user.school_group
   def current_user_default_school_group
     @current_user_default_school_group ||= current_user&.default_school_group
   end

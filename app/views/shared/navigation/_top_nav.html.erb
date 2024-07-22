@@ -3,14 +3,18 @@
     <%= navigation_image_link %>
     <div class='fixed-top'>
       <% if on_test? %>
+        <!-- Test server indicator -->
         <%= link_to 'Test', '/', class: 'm-1 p-1 badge badge-warning' %>
       <% end %>
     </div>
 
     <div class='<%= order_expand_class %>'>
+      <!-- Locale switcher -->
       <% other_locales.excluding(:mirror).each do |locale| %>
         <%= link_to_locale(locale, class: 'nav-link lozenge') %>
       <% end %>
+
+      <!-- Toggler icon - shown on collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-top" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -18,25 +22,34 @@
 
     <div class="navbar-collapse collapse justify-content-end" id="nav-top">
       <ul class="navbar-nav nowrap">
+        <!-- Pupil activities link -->
         <li class="nav-item">
           <%= link_to t('common_nav_bar_menus.activities'), activity_categories_path, class: 'nav-link' %>
         </li>
 
+        <!-- Adult actions link -->
         <li class="nav-item">
           <%= link_to t('common_nav_bar_menus.actions'), intervention_type_groups_path, class: 'nav-link' %>
         </li>
 
-        <%= render 'shared/our_schools_menu' %>
+        <!-- Our schools menu -->
+        <%= render 'shared/navigation/our_schools_menu' %>
 
-        <%= render 'shared/our_services_menu' %>
+        <!-- Our services menu -->
+        <%= render 'shared/navigation/our_services_menu' %>
 
-        <%= render 'shared/about_menu' %>
+        <!-- About menu -->
+        <%= render 'shared/navigation/about_menu' %>
 
+        <!-- Support us link -->
         <li class="nav-item">
           <%= link_to t('support_us.title'), support_us_path, class: 'nav-link' %>
         </li>
 
-        <%= render 'shared/manage_menu' if can?(:manage, :admin_functions) %>
+        <% if can?(:manage, :admin_functions) %>
+          <!-- Manage menu - admin only -->
+          <%= render 'shared/navigation/manage_menu' %>
+        <% end %>
       </ul>
     </div>
   </div>
