@@ -5,17 +5,14 @@
         <li>
           <%= link_to current_school.name, school_path(current_school), class: 'nav-link font-weight-bold' %>
         </li>
-      <% elsif current_user_school %>
+      <% elsif current_user_school && return_to_dashboard_path %>
         <li class="nav-item">
-          <% if current_user.pupil? && can?(:show_pupils_dash, current_user_school) %>
-            <%= link_to 'Back to dashboard', pupils_school_path(current_user_school), class: 'nav-link' %>
-          <% elsif can?(:show, current_user_school) %>
-            <%= link_to 'Back to dashboard', school_path(current_user_school), class: 'nav-link' %>
+          <%= link_to return_to_dashboard_path, class: 'nav-link' do %>
+            <%= fa_icon('chevron-left') %> Back to dashboard
           <% end %>
         </li>
       <% end %>
     </ul>
-
     <div class='ml-auto'>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-second" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -32,15 +29,15 @@
         </li>
       </ul>
 
-      <ul class="navbar-nav my-auto mx-auto">
+      <ul class="navbar-nav mx-auto">
         <% if current_school&.active %>
-          <li id="school-status-buttons" class="nav-item nowrap my-auto mx-auto d-none d-xl-inline-block">
+          <li id="school-status-buttons" class="nav-item nowrap d-none d-xl-inline-block nav-link">
             <%= render 'shared/school_status_buttons', school: current_school %>
           </li>
         <% end %>
       </ul>
 
-      <ul class="navbar-nav my-auto">
+      <ul class="navbar-nav">
         <%= render 'shared/navigation/dashboards' %>
 
         <% unless user_signed_in? %>

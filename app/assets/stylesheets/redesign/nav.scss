@@ -24,7 +24,6 @@ $togglers: (
     color:  map-get($colour, "colour");
     border-color: map-get($colour, "border");
     padding: 4px;
-    margin-left: 8px;
   }
 }
 
@@ -51,15 +50,32 @@ $togglers: (
     background-color: $background;
     font: inherit;
     padding: 4px;
+    margin-top: 0; // remove the gap between top of drowndown and navbar
+    border:0;
+
+    // make all drowndowns scrollable
+    max-height: 85vh;
+    overflow-y: auto;
 
     .dropdown-item {
       padding: 6px 10px;
       color: $foreground;
       background-color: $background;
     }
+
     .dropdown-divider {
       border-top: 1px solid color-mix(in srgb, $foreground 50%, transparent);
     }
+  }
+
+  // change menu dropdown arrow
+  // https://github.com/FortAwesome/font-awesome-sass/tree/master/assets/stylesheets/font-awesome
+  .dropdown-toggle::after {
+    border: none;
+
+    @extend .fa-solid;
+    content: fa-content($fa-var-chevron-down);
+    vertical-align: 0;
   }
 
   .nav-link {
@@ -83,6 +99,7 @@ $togglers: (
     @extend .rounded-pill;
     @include font(f9);
     padding: 0px 12px !important;
+    margin: 4px 8px;
     display:inline-block;
     color: $foreground-lozenge;
     background: $background-lozenge;
@@ -123,27 +140,18 @@ nav.navbar-top {
   }
 
   .nav-link.lozenge {
-    margin-left: 4px;
     border: 1px solid $blue-dark;
   }
 }
 
 nav.navbar-second {
   min-height: 42px; // design says 50
-  padding: 4px 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 
   .nav-link, .navbar-text {
-    padding: 4px 8px;
-  }
-
-  .nav-link.lozenge {
-    margin: 0 8px;
-  }
-
-  .dropdown-menu {
-    margin-top: 0;
-    padding-top: 6px;
-    border:0;
+    padding-top: 4px;
+    padding-bottom: 4px;
   }
 
   .badge {
@@ -159,22 +167,6 @@ nav.navbar-second {
     @include navbar($background: $yellow-light, $foreground: $yellow-very-dark, $background-lozenge: $yellow-medium, $foreground-lozenge: $yellow-dark, $hover: $yellow-dark);
     @include toggler('light');
   }
-}
-
-// make dropdown scrollable if scrollable class is added
-.dropdown-menu.scrollable {
-  max-height: 85vh;
-  overflow-y: auto;
-}
-
-// change menu dropdown arrow
-// https://github.com/FortAwesome/font-awesome-sass/tree/master/assets/stylesheets/font-awesome
-.dropdown-toggle::after {
-  border: none;
-
-  @extend .fa-solid;
-  content: fa-content($fa-var-chevron-down);
-  vertical-align: 0;
 }
 
 .vr {
