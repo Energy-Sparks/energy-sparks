@@ -13,7 +13,7 @@ module MetersHelper
     meter.consent_granted && !consented_in_n3rgy?(list_of_consented_mpans, meter)
   end
 
-  def meter_defaults(school, data_source_id, procurement_route_id, admin_meter_statuses_id)
+  def meter_defaults_json(school, data_source_id, procurement_route_id, admin_meter_statuses_id)
     defaults = %i[electricity gas solar_pv].to_h do |type|
       id_values = [data_source_id, procurement_route_id, admin_meter_statuses_id].zip(
         %i[default_data_source default_procurement_route admin_meter_statuses]
