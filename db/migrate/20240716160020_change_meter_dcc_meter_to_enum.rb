@@ -6,7 +6,7 @@ class ChangeMeterDccMeterToEnum < ActiveRecord::Migration[7.1]
         ALTER COLUMN dcc_meter DROP DEFAULT,
         ALTER COLUMN dcc_meter TYPE dcc_meter USING (
           CASE dcc_meter
-          WHEN TRUE  THEN 'smets2'::dcc_meter
+          WHEN TRUE THEN 'smets2'::dcc_meter
           ELSE 'no'::dcc_meter
           END
         ),
