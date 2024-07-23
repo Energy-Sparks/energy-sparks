@@ -53,7 +53,7 @@ $togglers: (
     margin-top: 0; // remove the gap between top of drowndown and navbar
     border:0;
 
-    // make all drowndowns scrollable
+    // make all dropdowns scrollable
     max-height: 85vh;
     overflow-y: auto;
 
@@ -130,7 +130,7 @@ $togglers: (
 }
 
 nav.navbar-top {
-  @include navbar($background: $dark, $foreground: $white, $background-lozenge: $white, $foreground-lozenge: $blue-dark, $hover: $yellow);
+  @include navbar($background: $dark, $foreground: $white, $background-lozenge: $white, $foreground-lozenge: $blue-dark, $hover: $yellow-medium);
   @include toggler('dark');
   min-height: 70px; // design says 108
 
