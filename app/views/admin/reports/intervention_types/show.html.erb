@@ -4,18 +4,19 @@
   <h1>Activity Type Recording Report</h1>
 
   <div>
-    <%= link_to "All activity types", admin_reports_activity_types_path, class: "btn btn-outline-dark font-weight-bold" %>
-    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to 'All activity types', admin_reports_activity_types_path, class: 'btn btn-outline-dark font-weight-bold' %>
+    <%= link_to 'All reports', admin_reports_path, class: 'btn btn-outline-dark font-weight-bold' %>
   </div>
 </div>
 
 <div class="row">
   <div class="col">
-    <% if !@activity_type.active %>
+    <% if !@intervention_type.active %>
       <p class="bg-warning">This activity is no longer active</p>
     <% end %>
     <p>
-    <strong>"<%= link_to @activity_type.name, admin_activity_type_path(@activity_type) %>"</strong> has been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
+    <strong>"<%= link_to @intervention_type.name, admin_intervention_type_path(@intervention_type) %>"</strong> has
+    been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
     </p>
   </div>
   <div class="col">
@@ -25,8 +26,6 @@
     </ul>
   </div>
 </div>
-
-
 
 <h2 id="recording-summary">Recording Summary</h2>
 
@@ -84,23 +83,17 @@
         </tr>
       </thead>
       <tbody>
-        <% @activities.each do |activity| %>
+        <% @observations.each do |observation| %>
           <tr>
-            <td><%= nice_dates(activity.created_at) %></td>
-            <td><%= nice_dates(activity.happened_on) %></td>
-            <td><%= link_to activity.school.name, school_timeline_path(activity.school) %></td>
-            <td><%= activity.observations.any? ? activity.points : '-' %></td>
+            <td><%= nice_dates(observation.created_at) %></td>
+            <td><%= nice_dates(observation.at) %></td>
+            <td><%= link_to observation.school.name, school_timeline_path(observation.school) %></td>
+            <td><%= observation.activity&.points || '-' %></td>
             <td>
-              <%= link_to school_activity_path(activity.school, activity) do %>
-                <% if activity.title.present? %>
-                  <span class="text-success"><%= activity.title %></span>
-                <% else %>
-                  <span class="text-muted"><%= activity.activity_type.name %></span>
-                <% end %>
-              <% end %>
+              <span class="text-success"><%= observation.intervention_type.name %></span>
             </td>
             <td>
-              <%= fa_icon('check-circle text-success') if activity.description_includes_images? %>
+              <%= fa_icon('check-circle text-success') if observation.description_includes_images? %>
             </td>
           </tr>
         <% end %>
@@ -111,29 +104,29 @@
 
 <h2 id="references">References</h2>
 
-<p>This activity is referenced from the following areas</p>
+<p>This intervention is referenced from the following areas</p>
 
 <div class="row">
   <div class="col col-md-3">
     <h3>Suggested Next Activity</h3>
     <ul>
-      <% @activity_type.suggested_from.each do |at| %>
-        <li><%= link_to at.name, edit_admin_activity_type_path(at) %></li>
+      <% @intervention_type.suggested_types.each do |intervention_type| %>
+        <li><%= link_to intervention_type.name, edit_admin_intervention_type_path(intervention_type) %></li>
       <% end %>
     </ul>
   </div>
   <div class="col col-md-3">
-    <h3>Programmes</h3>
+    <h3>Audits</h3>
     <ul>
-      <% @activity_type.programme_types.each do |programme_type| %>
-        <li><%= link_to programme_type.title, edit_admin_programme_type_path(programme_type) %></li>
+      <% @intervention_type.audits.each do |audit| %>
+        <li><%= link_to audit.title, school_audits_path(audit.school, audit) %></li>
       <% end %>
     </ul>
   </div>
   <div class="col col-md-6">
     <h3>Find Out More</h3>
     <ul>
-      <% @activity_type.referenced_from_find_out_mores.each do |alert_type_rating| %>
+      <% @intervention_type.alert_type_ratings.each do |alert_type_rating| %>
         <li>
           <%= link_to admin_alert_type_ratings_path(alert_type_rating.alert_type) do %>
             <%= alert_type_rating.alert_type.title %>

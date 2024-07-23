@@ -89,6 +89,14 @@ class Observation < ApplicationRecord
 
   before_validation :set_defaults, if: -> { observable_id }, on: :create
 
+  def description_includes_images?
+    if intervention?
+      description&.body&.to_trix_html&.include?('figure')
+    elsif activity?
+      description&.body&.to_trix_html&.include?('figure') || activity.description_includes_images?
+    end
+  end
+
   private
 
   def add_bonus_points_for_included_images
@@ -100,14 +108,6 @@ class Observation < ApplicationRecord
     return unless description_includes_images?
 
     self.points = (self.points || 0) + SiteSettings.current.photo_bonus_points
-  end
-
-  def description_includes_images?
-    if intervention?
-      description&.body&.to_trix_html&.include?('figure')
-    elsif activity?
-      description&.body&.to_trix_html&.include?('figure') || activity.description_includes_images?
-    end
   end
 
   def add_points_for_interventions
