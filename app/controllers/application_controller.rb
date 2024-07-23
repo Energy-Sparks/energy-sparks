@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group, :current_school, :current_school_group
+  helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group, :current_user_default_school_group, :current_school, :current_school_group
   before_action :update_trackable!
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -55,7 +55,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_school_group
-    @current_user_school_group ||= current_user&.default_school_group
+    @current_user_school_group ||= current_user&.school_group
+  end
+
+  def current_user_default_school_group
+    @current_user_default_school_group ||= current_user&.default_school_group
   end
 
   def current_ip_address

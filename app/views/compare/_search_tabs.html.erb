@@ -1,11 +1,11 @@
 <ul class="nav nav-tabs locales url-aware" id="compare-tabs" role="tablist">
-  <% if current_user_school_group %>
+  <% if current_user_default_school_group %>
     <li class="nav-item">
-      <a class="nav-link<%= ' active' if current_user_school_group %>" id="group-tab" data-toggle="tab" href="#group" role="tab" aria-controls="group-content"><%= t('compare.index.group.tab') %></a>
+      <a class="nav-link<%= ' active' if current_user_default_school_group %>" id="group-tab" data-toggle="tab" href="#group" role="tab" aria-controls="group-content"><%= t('compare.index.group.tab') %></a>
     </li>
   <% end %>
   <li class="nav-item">
-    <a class="nav-link<%= ' active' unless current_user_school_group %>" id="country-tab" data-toggle="tab" href="#country" role="tab" aria-controls="country-content"><%= t('compare.index.country.tab') %></a>
+    <a class="nav-link<%= ' active' unless current_user_default_school_group %>" id="country-tab" data-toggle="tab" href="#country" role="tab" aria-controls="country-content"><%= t('compare.index.country.tab') %></a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="type-tab" data-toggle="tab" href="#type" role="tab" aria-controls="type-content"><%= t('compare.index.type.tab') %></a>

@@ -152,6 +152,10 @@ class User < ApplicationRecord
   end
 
   def school_group_name
+    school_group&.name
+  end
+
+  def default_school_group_name
     default_school_group&.name
   end
 
@@ -218,7 +222,7 @@ class User < ApplicationRecord
       ]
       where.not(role: [:pupil, :admin]).order(:email).each do |user|
         csv << [
-          user.school_group_name || '',
+          user.default_school_group_name || '',
           user.school&.name || '',
           user.school&.school_type&.humanize || '',
           user.school&.funder&.name || '',
