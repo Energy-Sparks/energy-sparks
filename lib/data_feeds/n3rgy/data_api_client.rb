@@ -16,17 +16,19 @@ module DataFeeds
 
       def initialize(api_key: ENV.fetch('N3RGY_SANDBOX_API_KEY'),
                      base_url: ENV.fetch('N3RGY_SANDBOX_DATA_URL_V2'),
-                     connection: nil)
+                     connection: nil,
+                     cache: false)
         super()
         @api_key = api_key
         @base_url = base_url
         @connection = http_connection(connection)
+        @cache = cache
         @response_cache = {}
       end
 
-      def self.production_client
+      def self.production_client(cache: false)
         base_url = Rails.env.test? ? 'https://n3rgy.test' : ENV.fetch('N3RGY_DATA_URL_V2')
-        DataApiClient.new(api_key: ENV.fetch('N3RGY_API_KEY', nil), base_url:)
+        DataApiClient.new(api_key: ENV.fetch('N3RGY_API_KEY', nil), base_url:, cache:)
       end
 
       # Returns a paged list of MPxNs for which we have consent to access
@@ -120,10 +122,10 @@ module DataFeeds
       end
 
       def get_data(url, params = {}, cache: true)
-        response = if cache
-                     @connection.get(url, params)
+        response = if @cache && cache
+                     @response_cache[[url, params]] ||= @connection.get(url, params)
                    else
-                     @response_cache[[url, params]] || @connection.get(url, params)
+                     @connection.get(url, params)
                    end
         raise NotAuthorised, error_message(response) if response.status == 401
         raise NotAllowed, error_message(response) if response.status == 403

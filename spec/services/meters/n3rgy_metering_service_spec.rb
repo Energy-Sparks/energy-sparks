@@ -5,10 +5,6 @@ describe Meters::N3rgyMeteringService, type: :service do
 
   let(:meter) { create(:electricity_meter, dcc_meter: :smets2, consent_granted: true) }
 
-  around do |example|
-    ClimateControl.modify(N3RGY_DATA_URL_V2: 'https://n3rgy.test') { example.run }
-  end
-
   describe '#available_data' do
     let(:stub) { instance_double('data-api-client') }
 
@@ -90,6 +86,14 @@ describe Meters::N3rgyMeteringService, type: :service do
     it 'returns no' do
       stub.to_return(status: 404)
       expect(service.type).to eq(:no)
+    end
+
+    it 'caches' do
+      stub.to_return(status: 404)
+      service = described_class.new(meter, cache: true)
+      service.type
+      service.type
+      expect(stub).to have_been_requested.times(1)
     end
   end
 end

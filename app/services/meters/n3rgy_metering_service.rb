@@ -7,9 +7,9 @@ module Meters
     RETRY_INTERVAL = 2
     MAX_RETRIES = 4
 
-    def initialize(meter)
+    def initialize(meter, cache: false)
       @meter = meter
-      @api_client = DataFeeds::N3rgy::DataApiClient.production_client
+      @api_client = DataFeeds::N3rgy::DataApiClient.production_client(cache:)
     end
 
     def self.consented_meters

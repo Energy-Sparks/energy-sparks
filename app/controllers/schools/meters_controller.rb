@@ -25,7 +25,7 @@ module Schools
     end
 
     def show
-      set_n3rgy_status
+      @n3rgy = Meters::N3rgyMeteringService.new(@meter, cache: true) if can?(:view_dcc_data, @school)
       respond_to do |format|
         format.html
         format.csv do
@@ -83,12 +83,6 @@ module Schools
     end
 
     private
-
-    def set_n3rgy_status
-      return unless can?(:view_dcc_data, @school)
-
-      @n3rgy = Meters::N3rgyMeteringService.new(@meter)
-    end
 
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_meters') }]
