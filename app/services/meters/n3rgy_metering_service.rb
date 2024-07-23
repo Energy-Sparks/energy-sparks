@@ -9,6 +9,7 @@ module Meters
 
     def initialize(meter)
       @meter = meter
+      @api_client = DataFeeds::N3rgy::DataApiClient.production_client
     end
 
     def self.consented_meters
@@ -21,7 +22,7 @@ module Meters
     end
 
     def status
-      api_client.find_mpxn(@meter.mpan_mprn)
+      @api_client.find_mpxn(@meter.mpan_mprn)
       :available
     rescue DataFeeds::N3rgy::NotFound
       :unknown
@@ -30,14 +31,14 @@ module Meters
     end
 
     def available?
-      api_client.find_mpxn(@meter.mpan_mprn)
+      @api_client.find_mpxn(@meter.mpan_mprn)
       true
     rescue StandardError
       false
     end
 
     def type
-      device_id = api_client.find_mpxn(@meter.mpan_mprn)['deviceId']
+      device_id = @api_client.find_mpxn(@meter.mpan_mprn)['deviceId']
       device_id&.split('-')&.count == 8 ? :smets2 : :other
     rescue StandardError
       :no
@@ -47,14 +48,14 @@ module Meters
       return unless available?
 
       # need to be consented to call this successfully
-      api_client.utilities(@meter.mpan_mprn)
+      @api_client.utilities(@meter.mpan_mprn)
       true
     rescue StandardError
       false
     end
 
     def find_mpxn
-      api_client.find_mpxn(@meter.mpan_mprn)
+      @api_client.find_mpxn(@meter.mpan_mprn)
     rescue StandardError => e
       Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
       {}
@@ -63,7 +64,7 @@ module Meters
     def available_data
       return [] unless @meter.dcc_meter?
 
-      response = api_client.consumption(@meter.mpan_mprn, @meter.fuel_type)
+      response = @api_client.consumption(@meter.mpan_mprn, @meter.fuel_type)
       return [] if response.dig('availableCacheRange', 'start').blank? &&
                    response.dig('availableCacheRange', 'end').blank?
 
@@ -76,8 +77,8 @@ module Meters
     end
 
     def inventory
-      details = api_client.read_inventory(device_type, mpxns: @meter.mpan_mprn)
-      api_client.fetch_with_retry(details['uri'], RETRY_INTERVAL, MAX_RETRIES)
+      details = @api_client.read_inventory(device_type, mpxns: @meter.mpan_mprn)
+      @api_client.fetch_with_retry(details['uri'], RETRY_INTERVAL, MAX_RETRIES)
     rescue StandardError
       nil
     end
@@ -86,10 +87,6 @@ module Meters
 
     def device_type
       @meter.gas? ? 'GSME' : 'ESME'
-    end
-
-    def api_client
-      @api_client ||= DataFeeds::N3rgy::DataApiClient.production_client
     end
   end
 end

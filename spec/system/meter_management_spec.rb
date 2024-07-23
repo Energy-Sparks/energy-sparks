@@ -242,7 +242,6 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         stub_request(:get, 'https://n3rgy.test/mpxn/1234567890123').to_return(body: '{}')
         stub_request(:get, 'https://n3rgy.test/mpxn/1234567890123/utility/electricity/readingtype/consumption?granularity=halfhour&outputFormat=json')
           .to_return(body: { availableCacheRange: { start: Time.zone.today.to_s, end: Time.zone.today.to_s } }.to_json)
-        # allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
         click_on 'Manage meters'
       end
 

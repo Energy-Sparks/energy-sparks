@@ -17,7 +17,7 @@ module DataFeeds
       def initialize(api_key: ENV.fetch('N3RGY_SANDBOX_API_KEY'),
                      base_url: ENV.fetch('N3RGY_SANDBOX_DATA_URL_V2'),
                      connection: nil)
-        super
+        super()
         @api_key = api_key
         @base_url = base_url
         @connection = http_connection(connection)
@@ -107,7 +107,7 @@ module DataFeeds
       def fetch_with_retry(url, retry_interval = 0, max_retries = 0)
         retries ||= 0
         sleep(retry_interval)
-        get_data(url)
+        get_data(url, cache: false)
       rescue NotAllowed => e
         retry if (retries += 1) <= max_retries
         raise e
@@ -119,8 +119,12 @@ module DataFeeds
         date.strftime('%Y%m%d%H%M')
       end
 
-      def get_data(url, params = {})
-        response = @response_cache[[url, params]] || @connection.get(url, params)
+      def get_data(url, params = {}, cache: true)
+        response = if cache
+                     @connection.get(url, params)
+                   else
+                     @response_cache[[url, params]] || @connection.get(url, params)
+                   end
         raise NotAuthorised, error_message(response) if response.status == 401
         raise NotAllowed, error_message(response) if response.status == 403
         raise NotFound, error_message(response) if response.status == 404
