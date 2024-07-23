@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.shared_examples 'a meter with a non half hourly meter system' do |meter_type, meter_systems|
   meter_systems.each do |meter_system|
     it 'includes all energy tariffs that are enabled irrespective of applies to value but with the parent filtered by the meters meter_system (non_half_hourly)' do
-      meter.update(meter_system: meter_system, meter_type: meter_type)
+      meter.update(meter_system:, meter_type:)
       expect(meter.applies_to_for_meter_system).to eq(:non_half_hourly)
       expect(all_meter_attributes.size).to eq 9
       expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
@@ -15,18 +17,15 @@ RSpec.shared_examples 'a meter with a non half hourly meter system' do |meter_ty
       expect(all_meter_attributes[6].input_data['tariff_holder']).to eq 'meter'
       expect(all_meter_attributes[7].input_data['tariff_holder']).to eq 'meter'
       expect(all_meter_attributes[8].input_data['tariff_holder']).to eq 'meter'
-      expect(all_meter_attributes.map { |m| m.input_data['name'] }).to match_array(
-        [
-          energy_tariff_site_wide_electricity_both.name,
-          energy_tariff_site_wide_electricity_non_half_hourly.name,
-          energy_tariff_group_level_electricity_both.name,
-          energy_tariff_group_level_electricity_non_half_hourly.name,
-          energy_tariff_school_electricity_both.name,
-          energy_tariff_school_electricity_non_half_hourly.name,
-          meter_specific_electricity_both.name,
-          meter_specific_electricity_half_hourly.name,
-          meter_specific_electricity_non_half_hourly.name
-        ]
+      expect(all_meter_attributes.map { |m| m.input_data['name'] }).to contain_exactly(
+        energy_tariff_site_wide_electricity_both.name,
+        energy_tariff_site_wide_electricity_non_half_hourly.name,
+        energy_tariff_group_level_electricity_both.name,
+        energy_tariff_group_level_electricity_non_half_hourly.name,
+        energy_tariff_school_electricity_both.name,
+        energy_tariff_school_electricity_non_half_hourly.name,
+        meter_specific_electricity_both.name, meter_specific_electricity_half_hourly.name,
+        meter_specific_electricity_non_half_hourly.name
       )
     end
   end
@@ -35,7 +34,7 @@ end
 RSpec.shared_examples 'a meter with a half hourly meter system' do |meter_type, meter_systems|
   meter_systems.each do |meter_system|
     it 'includes all energy tariffs that are enabled irrespective of applies to value but with the parent filtered by the meters meter_system (non_half_hourly)' do
-      meter.update(meter_system: meter_system, meter_type: meter_type)
+      meter.update(meter_system:, meter_type:)
       expect(meter.applies_to_for_meter_system).to eq(:half_hourly)
       expect(all_meter_attributes.size).to eq 9
       expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
@@ -47,18 +46,16 @@ RSpec.shared_examples 'a meter with a half hourly meter system' do |meter_type, 
       expect(all_meter_attributes[6].input_data['tariff_holder']).to eq 'meter'
       expect(all_meter_attributes[7].input_data['tariff_holder']).to eq 'meter'
       expect(all_meter_attributes[8].input_data['tariff_holder']).to eq 'meter'
-      expect(all_meter_attributes.map { |m| m.input_data['name'] }).to match_array(
-        [
-          energy_tariff_site_wide_electricity_both.name,
-          energy_tariff_site_wide_electricity_half_hourly.name,
-          energy_tariff_group_level_electricity_both.name,
-          energy_tariff_group_level_electricity_half_hourly.name,
-          energy_tariff_school_electricity_both.name,
-          energy_tariff_school_electricity_half_hourly.name,
-          meter_specific_electricity_both.name,
-          meter_specific_electricity_half_hourly.name,
-          meter_specific_electricity_non_half_hourly.name
-        ]
+      expect(all_meter_attributes.map { |m| m.input_data['name'] }).to contain_exactly(
+        energy_tariff_site_wide_electricity_both.name,
+        energy_tariff_site_wide_electricity_half_hourly.name,
+        energy_tariff_group_level_electricity_both.name,
+        energy_tariff_group_level_electricity_half_hourly.name,
+        energy_tariff_school_electricity_both.name,
+        energy_tariff_school_electricity_half_hourly.name,
+        meter_specific_electricity_both.name,
+        meter_specific_electricity_half_hourly.name,
+        meter_specific_electricity_non_half_hourly.name
       )
     end
   end
@@ -82,35 +79,52 @@ describe 'Meter', :meters do
       let!(:exported_solar_pv_meter) { create(:exported_solar_pv_meter) }
 
       it 'main_meters is only real gas and electricity' do
-        expect(Meter.main_meter).to match_array([gas_meter, electricity_meter])
+        expect(Meter.main_meter).to contain_exactly(gas_meter, electricity_meter)
       end
     end
 
     context 'when finding meters for consent' do
       let(:meter_review) { create(:meter_review) }
-      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: :smets2, meter_review: meter_review, mpan_mprn: 1_234_567_890_111) }
-      let(:electricity_meter_not_reviewed) { create(:electricity_meter, dcc_meter: :smets2, mpan_mprn: 1_234_567_890_222, meter_review_id: nil, consent_granted: false) }
-      let(:electricity_meter_not_dcc) { create(:electricity_meter, dcc_meter: :no, mpan_mprn: 1_234_567_890_333) }
-      let(:electricity_meter_consent_granted_already) { create(:electricity_meter, dcc_meter: :smets2, consent_granted: true, mpan_mprn: 1_234_567_890_444) }
+      let(:electricity_meters_reviewed) do
+        [create(:electricity_meter, dcc_meter: :smets2, meter_review:),
+         create(:electricity_meter, dcc_meter: :other, meter_review:)]
+      end
+
+      before do
+        create(:electricity_meter, dcc_meter: :smets2, meter_review_id: nil, consent_granted: false)
+        create(:electricity_meter, dcc_meter: :no)
+        create(:electricity_meter, dcc_meter: :smets2, consent_granted: true)
+        create(:electricity_meter, dcc_meter: :other, consent_granted: true)
+      end
 
       it 'awaiting_trusted_consent is only dcc meters with reviews' do
-        expect(Meter.awaiting_trusted_consent).to match_array([electricity_meter_reviewed])
+        expect(Meter.awaiting_trusted_consent).to match_array(electricity_meters_reviewed)
       end
     end
 
     context 'when finding meters for review' do
       let(:meter_review) { create(:meter_review) }
-      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: :smets2, meter_review: meter_review, mpan_mprn: 1_234_567_890_111) }
-      let(:electricity_meter_not_reviewed) { create(:electricity_meter, dcc_meter: :smets2, mpan_mprn: 1_234_567_890_222, meter_review_id: nil, consent_granted: false) }
-      let(:electricity_meter_not_dcc) { create(:electricity_meter, dcc_meter: :no, mpan_mprn: 1_234_567_890_333) }
-      let(:electricity_meter_consent_granted_already) { create(:electricity_meter, dcc_meter: :smets2, consent_granted: true, mpan_mprn: 1_234_567_890_444) }
+      let(:electricity_meters_reviewed) do
+        [create(:electricity_meter, dcc_meter: :smets2, meter_review:),
+         create(:electricity_meter, dcc_meter: :other, meter_review:)]
+      end
+      let(:electricity_meters_not_reviewed) do
+        [create(:electricity_meter, dcc_meter: :smets2, meter_review_id: nil, consent_granted: false),
+         create(:electricity_meter, dcc_meter: :other, meter_review_id: nil, consent_granted: false)]
+      end
+
+      before do
+        create(:electricity_meter, dcc_meter: :no)
+        create(:electricity_meter, dcc_meter: :smets2, consent_granted: true)
+        create(:electricity_meter, dcc_meter: :other, consent_granted: true)
+      end
 
       it 'returns a collection of reviewed meters' do
-        expect(Meter.reviewed_dcc_meter).to match_array([electricity_meter_reviewed])
+        expect(Meter.reviewed_dcc_meter).to match_array(electricity_meters_reviewed)
       end
 
       it 'returns a collection of unreviewed meters' do
-        expect(Meter.unreviewed_dcc_meter).to match_array([electricity_meter_not_reviewed])
+        expect(Meter.unreviewed_dcc_meter).to match_array(electricity_meters_not_reviewed)
       end
     end
   end
@@ -134,7 +148,7 @@ describe 'Meter', :meters do
   describe 'valid?' do
     describe 'mpan_mprn' do
       context 'with an electricity meter' do
-        let(:attributes) {attributes_for(:electricity_meter)}
+        let(:attributes) { attributes_for(:electricity_meter) }
 
         it 'is valid with a 13 digit number' do
           meter = Meter.new(attributes.merge(mpan_mprn: 1_098_598_765_437))
@@ -190,7 +204,8 @@ describe 'Meter', :meters do
         end
 
         it 'validates meter type is not changed when there is an update' do
-          meter = Meter.new(attributes.merge(pseudo: true, mpan_mprn: 91_098_598_765_437, meter_type: 'electricity', school: school))
+          meter = Meter.new(attributes.merge(pseudo: true, mpan_mprn: 91_098_598_765_437, meter_type: 'electricity',
+                                             school:))
           meter.valid?
           expect(meter.errors[:meter_type]).to be_empty
           meter.save!
@@ -204,7 +219,8 @@ describe 'Meter', :meters do
         end
 
         it 'validates mpan mprn is not changed when there is an update' do
-          meter = Meter.new(attributes.merge(pseudo: true, mpan_mprn: 91_098_598_765_437, meter_type: 'electricity', school: school))
+          meter = Meter.new(attributes.merge(pseudo: true, mpan_mprn: 91_098_598_765_437, meter_type: 'electricity',
+                                             school:))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
           meter.save!
@@ -219,7 +235,7 @@ describe 'Meter', :meters do
       end
 
       context 'with a solar pv meter' do
-        let(:attributes) {attributes_for(:solar_pv_meter)}
+        let(:attributes) { attributes_for(:solar_pv_meter) }
 
         it 'is valid with a 14 digit number' do
           meter = Meter.new(attributes.merge(mpan_mprn: 12_345_678_901_234))
@@ -247,7 +263,7 @@ describe 'Meter', :meters do
       end
 
       context 'with an exported solar pv meter' do
-        let(:attributes) {attributes_for(:exported_solar_pv_meter)}
+        let(:attributes) { attributes_for(:exported_solar_pv_meter) }
 
         it 'is valid with a 14 digit number' do
           meter = Meter.new(attributes.merge(mpan_mprn: 61_098_598_765_437))
@@ -263,7 +279,7 @@ describe 'Meter', :meters do
       end
 
       context 'with a gas meter' do
-        let(:attributes) {attributes_for(:gas_meter)}
+        let(:attributes) { attributes_for(:gas_meter) }
 
         it 'is valid with a 10 digit number' do
           meter = Meter.new(attributes.merge(mpan_mprn: 1_098_598_765))
@@ -285,7 +301,8 @@ describe 'Meter', :meters do
       it 'returns which type of energy tariffs (half-hourly, non half-hourly, or both) a given meter applies to depending on the meter system set' do
         expect(build(:electricity_meter, meter_system: :nhh_amr).applies_to_for_meter_system).to eq(:non_half_hourly)
         expect(build(:electricity_meter, meter_system: :nhh).applies_to_for_meter_system).to eq(:non_half_hourly)
-        expect(build(:electricity_meter, meter_system: :smets2_smart).applies_to_for_meter_system).to eq(:non_half_hourly)
+        expect(build(:electricity_meter,
+                     meter_system: :smets2_smart).applies_to_for_meter_system).to eq(:non_half_hourly)
         expect(build(:electricity_meter, meter_system: :hh).applies_to_for_meter_system).to eq(:half_hourly)
       end
     end
@@ -303,27 +320,27 @@ describe 'Meter', :meters do
   describe 'correct_mpan_check_digit?' do
     it 'returns true if the check digit matches' do
       meter = Meter.new(meter_type: :electricity, mpan_mprn: 2_040_015_001_169)
-      expect(meter.correct_mpan_check_digit?).to eq(true)
+      expect(meter.correct_mpan_check_digit?).to be(true)
     end
 
     it 'returns true if the check digit matches ignoring prepended digit for electricity meters' do
       meter = Meter.new(meter_type: :electricity, mpan_mprn: 92_040_015_001_169)
-      expect(meter.correct_mpan_check_digit?).to eq(true)
+      expect(meter.correct_mpan_check_digit?).to be(true)
     end
 
     it 'returns true if the check digit matches ignoring 2 prepended digits for electricity meters' do
       meter = Meter.new(meter_type: :electricity, mpan_mprn: 992_040_015_001_169)
-      expect(meter.correct_mpan_check_digit?).to eq(true)
+      expect(meter.correct_mpan_check_digit?).to be(true)
     end
 
     it 'returns false if the check digit does not match' do
       meter = Meter.new(meter_type: :electricity, mpan_mprn: 2_040_015_001_165)
-      expect(meter.correct_mpan_check_digit?).to eq(false)
+      expect(meter.correct_mpan_check_digit?).to be(false)
     end
 
     it 'returns false if the mpan is short' do
       meter = Meter.new(meter_type: :electricity, mpan_mprn: 2_040_015_165)
-      expect(meter.correct_mpan_check_digit?).to eq(false)
+      expect(meter.correct_mpan_check_digit?).to be(false)
     end
   end
 
@@ -334,9 +351,9 @@ describe 'Meter', :meters do
       let(:base_date) { Time.zone.today - 1.year }
 
       before do
-        create(:amr_validated_reading, meter: meter, reading_date: base_date)
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 2.days)
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 4.days)
+        create(:amr_validated_reading, meter:, reading_date: base_date)
+        create(:amr_validated_reading, meter:, reading_date: base_date + 2.days)
+        create(:amr_validated_reading, meter:, reading_date: base_date + 4.days)
       end
 
       describe '#last_validated_reading' do
@@ -356,16 +373,16 @@ describe 'Meter', :meters do
       let(:base_date) { Time.zone.today - 2.years }
 
       before do
-        create(:amr_validated_reading, meter: meter, reading_date: base_date - 2.days, status: 'NOT_ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date - 1.day, status: 'ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date, status: 'ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 1.day, status: 'NOT_ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 2.days, status: 'NOT_ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 3.days, status: 'ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 4.days, status: 'NOT_ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 5.days, status: 'NOT_ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 6.days, status: 'NOT_ORIG')
-        create(:amr_validated_reading, meter: meter, reading_date: base_date + 7.days, status: 'ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date - 2.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date - 1.day, status: 'ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date, status: 'ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date + 1.day, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date + 2.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date + 3.days, status: 'ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date + 4.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date + 5.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date + 6.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter:, reading_date: base_date + 7.days, status: 'ORIG')
       end
 
       describe '#modified_validated_readings' do
@@ -391,31 +408,58 @@ describe 'Meter', :meters do
 
   describe '.all_meter_attributes' do
     let(:school_group)    { create(:school_group) }
-    let(:school)          { create(:school, school_group: school_group) }
-    let(:meter)           { create(:electricity_meter, school: school) }
+    let(:school)          { create(:school, school_group:) }
+    let(:meter)           { create(:electricity_meter, school:) }
 
     let(:all_meter_attributes) { meter.all_meter_attributes }
 
     context 'when there are tariffs stored as EnergyTariffs' do
-      let!(:energy_tariff_site_wide_electricity_both) { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, applies_to: :both) }
-      let!(:energy_tariff_site_wide_electricity_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, applies_to: :non_half_hourly) }
-      let!(:energy_tariff_site_wide_electricity_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, applies_to: :half_hourly) }
+      let!(:energy_tariff_site_wide_electricity_both) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, applies_to: :both)
+      end
+      let!(:energy_tariff_site_wide_electricity_non_half_hourly) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, applies_to: :non_half_hourly)
+      end
+      let!(:energy_tariff_site_wide_electricity_half_hourly) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, applies_to: :half_hourly)
+      end
 
-      let!(:energy_tariff_group_level_electricity_both) { create(:energy_tariff, :with_flat_price, tariff_holder: school_group, applies_to: :both) }
-      let!(:energy_tariff_group_level_electricity_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school_group, applies_to: :non_half_hourly) }
-      let!(:energy_tariff_group_level_electricity_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school_group, applies_to: :half_hourly) }
+      let!(:energy_tariff_group_level_electricity_both) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: school_group, applies_to: :both)
+      end
+      let!(:energy_tariff_group_level_electricity_non_half_hourly) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: school_group, applies_to: :non_half_hourly)
+      end
+      let!(:energy_tariff_group_level_electricity_half_hourly) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: school_group, applies_to: :half_hourly)
+      end
 
-      let!(:energy_tariff_school_electricity_both) { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :both) }
-      let!(:energy_tariff_school_electricity_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :non_half_hourly) }
-      let!(:energy_tariff_school_electricity_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :half_hourly) }
+      let!(:energy_tariff_school_electricity_both) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :both)
+      end
+      let!(:energy_tariff_school_electricity_non_half_hourly) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :non_half_hourly)
+      end
+      let!(:energy_tariff_school_electricity_half_hourly) do
+        create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :half_hourly)
+      end
 
       context 'and there are meter specific tariffs' do
-        let!(:meter_specific_electricity_both) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :both) }
-        let!(:meter_specific_electricity_both_disabled) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :both, enabled: false) }
-        let!(:meter_specific_electricity_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :half_hourly) }
-        let!(:meter_specific_electricity_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :non_half_hourly) }
+        let!(:meter_specific_electricity_both) do
+          create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :both)
+        end
+        let!(:meter_specific_electricity_both_disabled) do
+          create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :both,
+                                                   enabled: false)
+        end
+        let!(:meter_specific_electricity_half_hourly) do
+          create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :half_hourly)
+        end
+        let!(:meter_specific_electricity_non_half_hourly) do
+          create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :non_half_hourly)
+        end
 
-        it_behaves_like 'a meter with a non half hourly meter system', :electricity, [:nhh_amr, :nhh, :smets2_smart]
+        it_behaves_like 'a meter with a non half hourly meter system', :electricity, %i[nhh_amr nhh smets2_smart]
         it_behaves_like 'a meter with a half hourly meter system', :electricity, [:hh]
       end
 
