@@ -89,7 +89,7 @@ module Meters
     end
 
     def api_client
-      DataFeeds::N3rgy::DataApiClient.production_client
+      @api_client ||= DataFeeds::N3rgy::DataApiClient.production_client
     end
   end
 end
