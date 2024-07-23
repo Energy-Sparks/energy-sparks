@@ -55,13 +55,13 @@ describe User do
     end
   end
 
-  describe '#school_group_name' do
-    subject(:school_group_name) { user.school_group_name }
+  describe '#default_school_group_name' do
+    subject(:default_school_group_name) { user.default_school_group_name }
 
     context 'when user is a group admin with a school group (required)' do
       let(:user) { create(:group_admin) }
 
-      it { expect(school_group_name).to eq(user.school_group.name) }
+      it { expect(default_school_group_name).to eq(user.school_group.name) }
     end
 
     context 'when user is staff with a school' do
@@ -71,20 +71,20 @@ describe User do
       context 'when school has school group' do
         let(:school_group) { create :school_group }
 
-        it { expect(school_group_name).to eq(school_group.name) }
+        it { expect(default_school_group_name).to eq(school_group.name) }
       end
 
       context 'when school does not have school group' do
         let(:school) { create(:school) }
 
-        it { expect(school_group_name).to be_nil }
+        it { expect(default_school_group_name).to be_nil }
       end
     end
 
     context 'when user has no school group or school' do
       let(:user) { create(:admin) }
 
-      it { expect(school_group_name).to be_nil }
+      it { expect(default_school_group_name).to be_nil }
     end
   end
 

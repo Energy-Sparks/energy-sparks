@@ -37,7 +37,7 @@ describe MailchimpSubscriber do
 
     context 'without school but with school group' do
       let(:school) { nil }
-      let(:user) { create(:user, name: 'Harry', staff_role: staff_role, school_group: school_group) }
+      let(:user) { create(:group_admin, name: 'Harry', staff_role: staff_role, school_group: school_group) }
 
       it 'builds params' do
         params = MailchimpSubscriber.new(api).mailchimp_signup_params(user, list_with_interests)
