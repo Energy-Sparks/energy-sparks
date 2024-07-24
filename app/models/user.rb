@@ -50,7 +50,7 @@
 require 'securerandom'
 
 class User < ApplicationRecord
-  attribute :pupil_password, EncryptedField::Type.new
+  encrypts :pupil_password
 
   belongs_to :school, optional: true
   belongs_to :staff_role, optional: true
