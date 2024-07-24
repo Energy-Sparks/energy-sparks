@@ -33,13 +33,13 @@
         </li>
 
         <!-- Our schools menu -->
-        <%= render 'shared/navigation/our_schools_menu' %>
+        <%= render 'shared/navigation/top_nav/our_schools_menu' %>
 
         <!-- Our services menu -->
-        <%= render 'shared/navigation/our_services_menu' %>
+        <%= render 'shared/navigation/top_nav/our_services_menu' %>
 
         <!-- About menu -->
-        <%= render 'shared/navigation/about_menu' %>
+        <%= render 'shared/navigation/top_nav/about_menu' %>
 
         <!-- Support us link -->
         <li class="nav-item">
@@ -48,7 +48,7 @@
 
         <% if can?(:manage, :admin_functions) %>
           <!-- Manage menu - admin only -->
-          <%= render 'shared/navigation/manage_menu' %>
+          <%= render 'shared/navigation/top_nav/manage_menu' %>
         <% end %>
       </ul>
     </div>

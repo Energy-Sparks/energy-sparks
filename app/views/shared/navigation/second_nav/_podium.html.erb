@@ -1,5 +1,5 @@
 <% if podium&.school_has_points? && can?(:read, podium.scoreboard) %>
-  <div class="my-auto nowrap <%= navbar_hide_class %>">
+  <div id='mini-podium' class="my-auto nowrap <%= navbar_hide_class %>">
     <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link lozenge' do %>
       <% if school.visible? && podium.includes_school? %>
         <%= podium.school_position.points %> points

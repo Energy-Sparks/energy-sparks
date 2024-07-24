@@ -30,7 +30,7 @@
           <% if current_school %>
             <!-- Mini podium -->
             <!-- Context: any page scoped to school -->
-            <%= render 'shared/navigation/podium',
+            <%= render 'shared/navigation/second_nav/podium',
                        podium: current_school_podium, school: current_school %>
           <% end %>
         </li>
@@ -49,7 +49,7 @@
       <ul class="navbar-nav">
         <!-- Dashboard link(s) that user is currently not viewing -->
         <!-- Context: any school -->
-        <%= render 'shared/navigation/dashboards' %>
+        <%= render 'shared/navigation/second_nav/dashboards' %>
 
         <% unless user_signed_in? %>
           <!-- Enrol link -->
@@ -64,32 +64,32 @@
         <% if request.path.starts_with?('/school_groups') && can?(:update_settings, current_school_group) %>
           <!-- 'Manage group' menu -->
           <!-- Context: /school_groups path - show manage school group menu for users with permission to update settings for current school group -->
-          <%= render 'shared/navigation/manage_school_group_menu', school_group: current_school_group %>
+          <%= render 'shared/navigation/second_nav/manage_school_group_menu', school_group: current_school_group %>
         <% end %>
 
         <% if current_school && can?(:update, current_school) %>
           <!-- 'Manage school' menu -->
           <!-- Context: any page scoped to school - user must have permission to update school -->
-          <%= render 'shared/navigation/manage_school', school: current_school %>
+          <%= render 'shared/navigation/second_nav/manage_school', school: current_school %>
         <% end %>
 
         <% if current_user_school_group && can?(:update_settings, current_user_school_group) %>
           <!-- 'My schools' (for school group) menu -->
           <!-- Lists schools in school group -->
           <!-- Context: current user has associated school group -->
-          <%= render 'shared/navigation/school_group_schools_menu', school_group: current_user_school_group %>
+          <%= render 'shared/navigation/second_nav/school_group_schools_menu', school_group: current_user_school_group %>
         <% end %>
 
         <% if can?(:read, :my_school_menu) && current_user_school&.visible? %>
           <!-- 'My school' menu -->
           <!-- Context: current user has associated school and has permission to view the menu (currently admins can't!) -->
-          <%= render 'shared/navigation/my_school_menu' %>
+          <%= render 'shared/navigation/second_nav/my_school_menu' %>
         <% end %>
 
         <% if can? :switch, School && current_user&.cluster_schools_for_switching&.any? %>
           <!-- 'My schools' (cluster schools) menu -->
           <!-- Context: current user has cluser schools and has switch school permission -->
-          <%= render 'shared/navigation/my_schools' %>
+          <%= render 'shared/navigation/second_nav/my_schools_menu' %>
         <% end %>
 
         <li class="nav-item nowrap">
