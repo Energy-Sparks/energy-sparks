@@ -15,7 +15,9 @@ namespace :after_party do
 
       rich_text.body.fragment.find_all('action-text-attachment').each do |element|
         embed = find_embed_for_element(rich_text.embeds, element)
-        debugger if embed.nil? && element[:url].include?('/rails/active_storage')
+        if embed.nil? && element[:url].include?('/rails/active_storage')
+          puts "missing embed for ActionText::RichText id #{rich_text.id}?"
+        end
         next if embed.nil? # non active storage attachment
 
         old_url = element[:url]
@@ -24,7 +26,7 @@ namespace :after_party do
         element[:sgid] = embed.attachable_sgid
       end
 
-      puts "updating action-text-attachments in ActionText::RichText id #{rich_text.id} to #{rich_text.body.to_s}"
+      puts "updating action-text-attachments in ActionText::RichText id #{rich_text.id} to #{rich_text.body}"
       rich_text.update_column :body, rich_text.body.to_s
     end
 
