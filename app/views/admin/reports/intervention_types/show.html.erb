@@ -1,10 +1,11 @@
 <% content_for :page_title, 'Activity Type Recording Report' %>
 
 <div class="d-flex justify-content-between align-items-center">
-  <h1>Activity Type Recording Report</h1>
+  <h1>Intervention Type Recording Report</h1>
 
   <div>
-    <%= link_to 'All activity types', admin_reports_activity_types_path, class: 'btn btn-outline-dark font-weight-bold' %>
+    <%= link_to 'All intervention types', admin_reports_intervention_types_path,
+                class: 'btn btn-outline-dark font-weight-bold' %>
     <%= link_to 'All reports', admin_reports_path, class: 'btn btn-outline-dark font-weight-bold' %>
   </div>
 </div>
@@ -12,7 +13,7 @@
 <div class="row">
   <div class="col">
     <% if !@intervention_type.active %>
-      <p class="bg-warning">This activity is no longer active</p>
+      <p class="bg-warning">This intervention is no longer active</p>
     <% end %>
     <p>
     <strong>"<%= link_to @intervention_type.name, admin_intervention_type_path(@intervention_type) %>"</strong> has
@@ -33,7 +34,8 @@
   <div class="row">
     <div class="col">
       <p>
-        This activity has been recorded multiple times by some schools. The table below summarises how many times the activity has been recorded by each school.
+        This intervention has been recorded multiple times by some schools. The table below summarises how many times
+        the intervention has been recorded by each school.
       </p>
 
       <table class="table table-sm">
@@ -58,27 +60,19 @@
 <div class="row">
   <div class="col">
     <p>
-      The following table links to the summary of every time a school has recorded this
-      activity. Use the table headers to sort the results.
+      The following table links to the summary of every time a school has recorded this intervention. Use the table
+      headers to sort the results.
     </p>
-
     <p>
-      Activities with a <span class="text-success">Green link</span> are those where the school has provided a custom title. Others are shown as a <span class="text-muted">grey link</span> </p>
-    <p>
-
-    <p>
-      The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the activity includes
+      The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the intervention includes
       images provided by the user
     </p>
-
     <table class="table table-sm table-sorted">
       <thead>
         <tr>
           <th>Recorded</th>
           <th>Happened</th>
           <th>School</th>
-          <th>Score</th>
-          <th>Title</th>
           <th>Images?</th>
         </tr>
       </thead>
@@ -88,13 +82,7 @@
             <td><%= nice_dates(observation.created_at) %></td>
             <td><%= nice_dates(observation.at) %></td>
             <td><%= link_to observation.school.name, school_timeline_path(observation.school) %></td>
-            <td><%= observation.activity&.points || '-' %></td>
-            <td>
-              <span class="text-success"><%= observation.intervention_type.name %></span>
-            </td>
-            <td>
-              <%= fa_icon('check-circle text-success') if observation.description_includes_images? %>
-            </td>
+            <td><%= fa_icon('check-circle text-success') if observation.description_includes_images? %></td>
           </tr>
         <% end %>
       </tbody>
