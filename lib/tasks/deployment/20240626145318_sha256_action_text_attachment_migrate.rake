@@ -3,26 +3,33 @@ namespace :after_party do
   task sha256_action_text_attachment_migrate: :environment do
     puts "Running deploy task 'sha256_action_text_attachment_migrate'"
 
-    # https://discuss.rubyonrails.org/t/rails-6-1-7-gives-404-for-actiontext-attachments/80803
-    def refresh_trix(trix)
-      return unless trix.embeds.size.positive?
-
-      trix.body.fragment.find_all('action-text-attachment').each do |node|
-        embed = trix.embeds.find do |attachment|
-          attachment.filename.to_s == node['filename'] && attachment.byte_size.to_s == node['filesize']
-        end
-        next if embed.nil? # non active storage attachment
-
-        node.attributes['url'].value =
-          Rails.application.routes.url_helpers.rails_storage_redirect_url(embed.blob, only_path: true)
-        node.attributes['sgid'].value = embed.attachable_sgid
+    def find_embed_for_element(embeds, element)
+      embeds.find do |embed|
+        embed.blob[:filename] == element[:filename] && embed.byte_size.to_s == element[:filesize]
       end
-
-      trix.update_column :body, trix.body.to_s
     end
 
-    ActionText::RichText.where.not(body: nil).find_each do |trix|
-      refresh_trix(trix)
+    # https://discuss.rubyonrails.org/t/rails-6-1-7-gives-404-for-actiontext-attachments/80803
+    def update_action_text_attachments(rich_text)
+      return unless rich_text.embeds.size.positive?
+
+      rich_text.body.fragment.find_all('action-text-attachment').each do |element|
+        embed = find_embed_for_element(rich_text.embeds, element)
+        debugger if embed.nil? && element[:url].include?('/rails/active_storage')
+        next if embed.nil? # non active storage attachment
+
+        old_url = element[:url]
+        element[:url] = Rails.application.routes.url_helpers.rails_storage_redirect_url(embed.blob, only_path: true)
+        puts "changing #{old_url} to #{element[:url]}"
+        element[:sgid] = embed.attachable_sgid
+      end
+
+      puts "updating action-text-attachments in ActionText::RichText id #{rich_text.id} to #{rich_text.body.to_s}"
+      rich_text.update_column :body, rich_text.body.to_s
+    end
+
+    ActionText::RichText.where.not(body: nil).find_each do |rich_text|
+      update_action_text_attachments(rich_text)
     end
 
     # Update task as completed.  If you remove the line below, the task will
