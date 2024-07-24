@@ -113,12 +113,12 @@
 
     <%= render 'schools/advice/section_title', section_id: 'meter-charts', section_title: t('advice_pages.baseload.analysis.meter_charts.title') %>
 
-    <%= render 'schools/advice/meter_breakdown_charts',
+    <%= component 'meter_selection_chart',
         school: @school,
         meters: @meters,
         date_ranges_by_meter: @date_ranges_by_meter,
         chart_type: :baseload,
-        analysis_controls: true,
+        analysis_controls: false,
         chart_title_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title',
         chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
     %>

@@ -555,10 +555,6 @@ Rails.application.routes.draw do
       end
     end
 
-    namespace :emails do
-      resources :alert_mailers, only: :show
-    end
-
     resources :meter_attributes, only: :index
     resources :meter_reviews, only: :index
     resources :meter_statuses, except: :show
