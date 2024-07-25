@@ -42,6 +42,8 @@
 #
 
 class Observation < ApplicationRecord
+  include Description
+
   belongs_to :school
   has_many   :temperature_recordings
   has_many   :locations, through: :temperature_recordings
@@ -91,9 +93,9 @@ class Observation < ApplicationRecord
 
   def description_includes_images?
     if intervention?
-      description&.body&.to_trix_html&.include?('figure')
+      super
     elsif activity?
-      description&.body&.to_trix_html&.include?('figure') || activity.description_includes_images?
+      super || activity.description_includes_images?
     end
   end
 
