@@ -5,6 +5,7 @@ namespace :after_party do
 
     def find_embed_for_element(embeds, element)
       embeds.find do |embed|
+        # avoid using embed.filename as that sanitises it so they don't always match
         embed.blob[:filename] == element[:filename] && embed.byte_size.to_s == element[:filesize]
       end
     end
