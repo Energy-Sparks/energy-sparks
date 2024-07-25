@@ -49,6 +49,12 @@ class InterventionType < ApplicationRecord
 
   has_many :link_rewrites, as: :rewriteable
 
+  has_many :alert_type_rating_intervention_types, dependent: nil
+  has_many :alert_type_ratings, through: :alert_type_rating_intervention_types
+
+  has_many :audit_intervention_types, dependent: nil
+  has_many :audits, through: :audit_intervention_types
+
   accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
 
   accepts_nested_attributes_for :intervention_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
