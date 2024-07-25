@@ -81,7 +81,7 @@
           <tr>
             <td><%= nice_dates(observation.created_at) %></td>
             <td><%= nice_dates(observation.at) %></td>
-            <td><%= link_to observation.school.name, school_interventions_path(observation.school, observation) %></td>
+            <td><%= link_to observation.school.name, school_intervention_path(observation.school, observation) %></td>
             <td><%= fa_icon('check-circle text-success') if observation.description_includes_images? %></td>
           </tr>
         <% end %>
