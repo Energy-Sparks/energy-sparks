@@ -1,6 +1,7 @@
 class EncryptedField
   KEY = ActiveSupport::KeyGenerator.new(
-    Rails.application.secret_key_base
+    Rails.application.secret_key_base,
+    hash_digest_class: OpenSSL::Digest::SHA1
   ).generate_key(
     Rails.env.production? ? ENV.fetch('ENCRYPTED_FIELD_SALT') : 'vinegar',
     ActiveSupport::MessageEncryptor.key_len
