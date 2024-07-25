@@ -70,7 +70,7 @@
         <% if current_school && can?(:update, current_school) %>
           <!-- 'Manage school' menu -->
           <!-- Context: any page scoped to school - user must have permission to update school -->
-          <%= render 'shared/navigation/second_nav/manage_school', school: current_school %>
+          <%= render 'shared/navigation/second_nav/manage_school_menu', school: current_school %>
         <% end %>
 
         <% if current_user_school_group && can?(:update_settings, current_user_school_group) %>
@@ -86,7 +86,7 @@
           <%= render 'shared/navigation/second_nav/my_school_menu' %>
         <% end %>
 
-        <% if can? :switch, School && current_user&.cluster_schools_for_switching&.any? %>
+        <% if can?(:switch, School) && current_user&.cluster_schools_for_switching&.any? %>
           <!-- 'My schools' (cluster schools) menu -->
           <!-- Context: current user has cluser schools and has switch school permission -->
           <%= render 'shared/navigation/second_nav/my_schools_menu' %>

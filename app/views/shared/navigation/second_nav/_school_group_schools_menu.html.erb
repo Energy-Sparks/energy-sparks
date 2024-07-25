@@ -1,6 +1,6 @@
 <% if school_group.schools.visible.any? %>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="school-list-menu" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= 'My schools' %></a>
+  <li id="school-group-schools-menu" class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="school-list-menu" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('nav.my_schools') %></a>
     <div class="dropdown-menu" aria-labelledby="school-list-menu" id="dropdown-school-list-menu">
       <% school_group.schools.visible.order(:name).each do |school| %>
         <%= link_to school.name, school_path(school), class: 'dropdown-item' %>

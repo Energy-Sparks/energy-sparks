@@ -1,4 +1,4 @@
-<li class="nav-item dropdown" id="my_school_menu">
+<li class="nav-item dropdown" id="my-school-menu">
   <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= t('my_school_menu.my_school') %></a>
   <div class="dropdown-menu" aria-labelledby="my_school">
     <!--School -->
@@ -37,11 +37,13 @@
 
     <!-- Review targets -->
     <% if current_user_school.data_enabled? %>
-      <%= if Targets::SchoolTargetService.targets_enabled?(current_user_school) && can?(:manage,
-                                                                                        SchoolTarget) && Targets::SchoolTargetService.new(current_user_school).enough_data?
-            link_to t('my_school_menu.review_targets'), school_school_targets_path(current_user_school),
-                    class: 'dropdown-item'
-          end %>
+      <% if Targets::SchoolTargetService.targets_enabled?(current_user_school) &&
+              can?(:manage, SchoolTarget) &&
+              Targets::SchoolTargetService.new(current_user_school).enough_data? %>
+        <%= link_to t('my_school_menu.review_targets'),
+                    school_school_targets_path(current_user_school),
+                    class: 'dropdown-item' %>
+        <% end %>
     <% end %>
 
     <% if current_user_school&.school_group&.present? %>

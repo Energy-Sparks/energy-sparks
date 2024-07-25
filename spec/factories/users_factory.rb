@@ -9,6 +9,16 @@ FactoryBot.define do
       role { :school_admin }
       association :staff_role, factory: [:staff_role, :management]
       school
+
+      trait :with_cluster_schools do
+        transient do
+          count { 1 }
+        end
+
+        after(:build) do |user, evaluator|
+          user.cluster_schools = create_list(:school, evaluator.count, active: true, public: true)
+        end
+      end
     end
 
     factory :pupil do
