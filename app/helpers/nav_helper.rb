@@ -5,6 +5,7 @@ module NavHelper
     end
   end
 
+  # old nav
   def navbar_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
@@ -13,6 +14,7 @@ module NavHelper
     end
   end
 
+  # new nav
   def navigation_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
@@ -43,12 +45,6 @@ module NavHelper
 
   def other_locales
     I18n.available_locales - [I18n.locale]
-  end
-
-  # rotate to the next locale - not used at the moment
-  def next_locale
-    idx = I18n.available_locales.index(I18n.locale)
-    I18n.available_locales.rotate(idx)[1]
   end
 
   def locale_switcher_buttons
@@ -139,13 +135,5 @@ module NavHelper
     nav_class = 'btn btn-outline-dark rounded-pill font-weight-bold'
     nav_class += ' disabled' if current_page?(link_path)
     link_to link_text, link_path, class: nav_class
-  end
-
-  def back_to_dashboard_path
-    if current_user.pupil? && can?(:show_pupils_dash, current_user_school)
-      pupils_school_path(current_user_school)
-    elsif can?(:show, current_user_school)
-      school_path(current_user_school)
-    end
   end
 end

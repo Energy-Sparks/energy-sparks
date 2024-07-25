@@ -7,11 +7,11 @@
           <!-- Context: any page scoped to school -->
           <%= link_to current_school.name, school_path(current_school), class: 'nav-link font-weight-bold' %>
         </li>
-      <% elsif current_user_school && back_to_dashboard_path %>
+      <% elsif current_user_school %>
         <li class="nav-item">
           <!-- Back to dashboard link -->
           <!-- Context: a non-school scoped page -->
-          <%= link_to back_to_dashboard_path, class: 'nav-link' do %>
+          <%= link_to school_path(current_user_school), class: 'nav-link' do %>
             <%= fa_icon('chevron-left') %> Back to dashboard
           <% end %>
         </li>
