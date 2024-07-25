@@ -83,7 +83,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
           expect(nav).not_to have_link('Public')
           expect(nav).not_to have_link('Process data')
           expect(nav).not_to have_link('Data visible')
-          expect(nav).not_to have_css("i[class*='fa-arrows-rotate']")
+          expect(nav).not_to have_css('a i.fa-arrows-rotate')
         end
       end
 
@@ -97,7 +97,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
           expect(nav).to have_link('Public')
           expect(nav).to have_link('Process data')
           expect(nav).to have_link('Data visible')
-          expect(nav).to have_css("i[class*='fa-arrows-rotate']")
+          expect(nav).to have_css('a i.fa-arrows-rotate')
         end
       end
     end
