@@ -1,6 +1,10 @@
 ---
 en:
   meter:
+    dcc_meter:
+      'no': 'no'
+      other: other
+      smets2: SMETS2
     meter_system:
       hh: HH
       nhh: NHH

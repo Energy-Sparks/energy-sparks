@@ -650,6 +650,7 @@ Rails.application.routes.draw do
       resources :solar_panels, only: [:index]
       resources :engaged_schools, only: [:index]
       resources :community_use, only: [:index]
+      resources :intervention_types, only: [:index, :show]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
