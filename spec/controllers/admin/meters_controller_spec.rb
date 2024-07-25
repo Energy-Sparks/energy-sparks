@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Schools::MetersController, type: :controller do
+RSpec.describe Schools::MetersController do
   let(:valid_attributes) do
     {
-      mpan_mprn: 2199989617206,
+      mpan_mprn: 2_199_989_617_206,
       name: 'Test meter',
       meter_serial_number: '123',
       meter_type: :electricity
@@ -43,35 +45,22 @@ RSpec.describe Schools::MetersController, type: :controller do
     end
 
     describe 'PUT #update' do
-      context 'with valid attributes' do
-        let(:new_attributes) do
-          {
-            mpan_mprn: 2199989617206,
-            name: 'Test meter',
-            meter_serial_number: '123',
-            meter_type: :electricity,
-            dcc_meter: '0',
-            consent_granted: '0'
-          }
-        end
-      end
-
       context 'when editing DCC values' do
         let(:new_attributes) do
           {
-            mpan_mprn: 2199989617206,
+            mpan_mprn: 2_199_989_617_206,
             name: 'New name',
             meter_serial_number: '123',
             meter_type: :electricity,
-            dcc_meter: '1'
+            dcc_meter: :smets2
           }
         end
-        let(:meter) { create :electricity_meter, name: 'Original name', school: school, dcc_meter: false }
+        let(:meter) { create(:electricity_meter, name: 'Original name', school:, dcc_meter: :no) }
 
         it 'allows DCC registered meters to be activated' do
           put :update, params: { school_id: school.id, id: meter.id, meter: new_attributes }
           meter.reload
-          expect(meter.dcc_meter?).to eq true
+          expect(meter.dcc_meter?).to be true
         end
       end
     end

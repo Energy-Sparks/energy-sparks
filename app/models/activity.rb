@@ -26,6 +26,8 @@
 #
 
 class Activity < ApplicationRecord
+  include Description
+
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities
   belongs_to :activity_category, optional: true
@@ -56,9 +58,5 @@ class Activity < ApplicationRecord
 
   def points
     observations.sum(:points)
-  end
-
-  def description_includes_images?
-    description&.body&.to_trix_html&.include?('figure')
   end
 end

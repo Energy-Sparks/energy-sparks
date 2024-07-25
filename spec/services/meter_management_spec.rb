@@ -107,7 +107,7 @@ describe MeterManagement do
     end
 
     context 'for DCC meter' do
-      let!(:meter) { create(:electricity_meter_with_reading, dcc_meter: true) }
+      let!(:meter) { create(:electricity_meter_with_reading, dcc_meter: :smets2) }
 
       it 'sets meter active and consents' do
         expect_any_instance_of(Meters::DccGrantTrustedConsents).to receive(:perform).and_return(true)
@@ -132,7 +132,7 @@ describe MeterManagement do
       end
 
       context 'when meter has validated readings' do
-        let!(:meter) { create(:electricity_meter_with_validated_reading, dcc_meter: true, consent_granted: true) }
+        let!(:meter) { create(:electricity_meter_with_validated_reading, dcc_meter: :smets2, consent_granted: true) }
 
         it 'removes validated readings' do
           expect_any_instance_of(Meters::DccWithdrawTrustedConsents).to receive(:perform).and_return(true)

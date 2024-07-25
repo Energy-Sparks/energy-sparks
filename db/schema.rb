@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_16_160020) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "data_sharing", ["public", "within_group", "private"]
+  create_enum "dcc_meter", ["no", "smets2", "other"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -1220,7 +1221,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
     t.bigint "low_carbon_hub_installation_id"
     t.boolean "pseudo", default: false
     t.bigint "solar_edge_installation_id"
-    t.boolean "dcc_meter", default: false
+    t.enum "dcc_meter", default: "no", null: false, enum_type: "dcc_meter"
     t.boolean "consent_granted", default: false
     t.bigint "meter_review_id"
     t.datetime "dcc_checked_at", precision: nil

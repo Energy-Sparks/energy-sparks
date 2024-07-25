@@ -8,7 +8,7 @@
 #  created_at                     :datetime         not null
 #  data_source_id                 :bigint(8)
 #  dcc_checked_at                 :datetime
-#  dcc_meter                      :boolean          default(FALSE)
+#  dcc_meter                      :enum             default("no"), not null
 #  id                             :bigint(8)        not null, primary key
 #  low_carbon_hub_installation_id :bigint(8)
 #  meter_review_id                :bigint(8)
@@ -74,12 +74,12 @@ class Meter < ApplicationRecord
   scope :sub_meter, -> { where(pseudo: true, meter_type: SUB_METER_TYPES) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
-  scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review_id: nil) }
-  scope :reviewed_dcc_meter, -> { where(dcc_meter: true).where.not(meter_review_id: nil) }
-  scope :awaiting_trusted_consent, -> { where(dcc_meter: true, consent_granted: false).where.not(meter_review: nil) }
-  scope :not_dcc, -> { where(dcc_meter: false) }
-  scope :dcc, -> { where(dcc_meter: true) }
-  scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
+  scope :unreviewed_dcc_meter, -> { dcc.where(consent_granted: false, meter_review_id: nil) }
+  scope :reviewed_dcc_meter, -> { dcc.where.not(meter_review_id: nil) }
+  scope :awaiting_trusted_consent, -> { dcc.where(consent_granted: false).where.not(meter_review: nil) }
+  scope :not_dcc, -> { where(dcc_meter: :no) }
+  scope :dcc, -> { where(dcc_meter: %i[smets2 other]) }
+  scope :consented, -> { dcc.where(consent_granted: true) }
   scope :not_recently_checked, -> { where('dcc_checked_at is NULL OR dcc_checked_at < ?', 7.days.ago) }
   scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
   scope :data_source_known, -> { where.not(data_source: nil) }
@@ -101,6 +101,7 @@ class Meter < ApplicationRecord
   # The Meter's meter sytem defaults to NHH AMR (Non Half-Hourly Automatic Meter Reading)
   # Other options are: NHH (Non Half-Hourly), HH (Half-Hourly), and SMETS2/smart (SMETS2 Smart Meters)
   enum meter_system: [:nhh_amr, :nhh, :hh, :smets2_smart]
+  enum :dcc_meter, %w[no smets2 other].to_h { |v| [v, v] }, prefix: true
 
   delegate :area_name, to: :school
 
@@ -276,6 +277,14 @@ class Meter < ApplicationRecord
 
   def open_issues
     issues&.where(issue_type: 'issue')&.status_open
+  end
+
+  def dcc_meter?
+    dcc_meter_smets2? || dcc_meter_other?
+  end
+
+  def t_dcc_meter
+    I18n.t("meter.dcc_meter.#{dcc_meter}")
   end
 
   private

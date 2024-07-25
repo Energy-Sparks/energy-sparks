@@ -1,0 +1,127 @@
+<% content_for :page_title, 'Activity Type Recording Report' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Intervention Type Recording Report</h1>
+
+  <div>
+    <%= link_to 'All intervention types', admin_reports_intervention_types_path,
+                class: 'btn btn-outline-dark font-weight-bold' %>
+    <%= link_to 'All reports', admin_reports_path, class: 'btn btn-outline-dark font-weight-bold' %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <% if !@intervention_type.active %>
+      <p class="bg-warning">This intervention is no longer active</p>
+    <% end %>
+    <p>
+    <strong>"<%= link_to @intervention_type.name, admin_intervention_type_path(@intervention_type) %>"</strong> has
+    been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
+    </p>
+  </div>
+  <div class="col">
+    <ul>
+      <li><a href="#recording-summary">Recording summary</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="recording-summary">Recording Summary</h2>
+
+<% if @recorded > @school_count %>
+  <div class="row">
+    <div class="col">
+      <p>
+        This intervention has been recorded multiple times by some schools. The table below summarises how many times
+        the intervention has been recorded by each school.
+      </p>
+
+      <table class="table table-sm">
+        <thead>
+          <th>School</th>
+          <th>Count</th>
+        </thead>
+        <tbody>
+          <% @group_by_school.each do |row| %>
+            <tr>
+              <td><%= link_to row[0].name, school_path(row[0]) %></td>
+              <td><%= row[1] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <hr>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      The following table links to the summary of every time a school has recorded this intervention. Use the table
+      headers to sort the results.
+    </p>
+    <p>
+      The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the intervention includes
+      images provided by the user
+    </p>
+    <table class="table table-sm table-sorted">
+      <thead>
+        <tr>
+          <th>Recorded</th>
+          <th>Happened</th>
+          <th>School</th>
+          <th>Images?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @observations.each do |observation| %>
+          <tr>
+            <td><%= nice_dates(observation.created_at) %></td>
+            <td><%= nice_dates(observation.at) %></td>
+            <td><%= link_to observation.school.name, school_intervention_path(observation.school, observation) %></td>
+            <td><%= fa_icon('check-circle text-success') if observation.description_includes_images? %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h2 id="references">References</h2>
+
+<p>This intervention is referenced from the following areas</p>
+
+<div class="row">
+  <div class="col col-md-3">
+    <h3>Suggested Next Activity</h3>
+    <ul>
+      <% @intervention_type.suggested_types.each do |intervention_type| %>
+        <li><%= link_to intervention_type.name, edit_admin_intervention_type_path(intervention_type) %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col col-md-3">
+    <h3>Audits</h3>
+    <ul>
+      <% @intervention_type.audits.each do |audit| %>
+        <li><%= link_to audit.title, school_audits_path(audit.school, audit) %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col col-md-6">
+    <h3>Find Out More</h3>
+    <ul>
+      <% @intervention_type.alert_type_ratings.each do |alert_type_rating| %>
+        <li>
+          <%= link_to admin_alert_type_ratings_path(alert_type_rating.alert_type) do %>
+            <%= alert_type_rating.alert_type.title %>
+          <% end %>
+           - <%= alert_type_rating.description %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
