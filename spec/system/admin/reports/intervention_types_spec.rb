@@ -33,7 +33,8 @@ describe 'intervention type reports' do
     it 'displays the report' do
       expect(page).to have_content intervention_type.name
       expect(page).to have_content observation.school.name
-      expect(page).to have_link(observation.school.name, href: school_timeline_path(observation.school))
+      expect(page).to have_link(observation.school.name,
+                                href: school_interventions_path(observation.school, observation))
     end
 
     context 'when the activity has been recorded multiple times' do
