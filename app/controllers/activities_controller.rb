@@ -37,6 +37,7 @@ class ActivitiesController < ApplicationController
 
   def create
     respond_to do |format|
+      @activity.user = current_user
       if ActivityCreator.new(@activity).process
         format.html { redirect_to completed_school_activity_path(@school, @activity)}
         format.json { render :show, status: :created, location: @school }
