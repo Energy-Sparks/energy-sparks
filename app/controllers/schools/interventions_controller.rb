@@ -15,7 +15,8 @@ module Schools
     end
 
     def create
-      @observation = @school.observations.new(observation_params.merge(observation_type: :intervention))
+      @observation = @school.observations.new(observation_params.merge(observation_type: :intervention,
+                                                                       created_by: current_user))
       authorize! :create, @observation
       if @observation.save
         redirect_to completed_school_intervention_path(@school, @observation)
@@ -32,7 +33,7 @@ module Schools
 
     def update
       authorize! :update, @observation
-      if @observation.update(observation_params)
+      if @observation.update(observation_params.merge(updated_by: current_user))
         redirect_to school_interventions_path(@school)
       else
         render :edit

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe ActivitiesController, type: :controller do
-  let(:school) { create :school }
-  let(:different_school) { create :school }
-  let!(:activity_category) { create :activity_category }
-  let!(:activity_type) { create(:activity_type, name: 'One', activity_category: activity_category, data_driven: true) }
-  let(:activity_type2) { create(:activity_type, name: 'Two', activity_category: activity_category) }
+RSpec.describe ActivitiesController do
+  let(:school) { create(:school) }
+  let(:different_school) { create(:school) }
+  let!(:activity_category) { create(:activity_category) }
+  let!(:activity_type) { create(:activity_type, name: 'One', activity_category:, data_driven: true) }
+  let(:activity_type2) { create(:activity_type, name: 'Two', activity_category:) }
 
   let(:valid_attributes) do
     { school_id: school.id,
@@ -22,13 +24,13 @@ RSpec.describe ActivitiesController, type: :controller do
 
   describe 'GET #index' do
     it "assigns all school's activities as @activities" do
-      activity = create :activity, school_id: school.id
+      activity = create(:activity, school_id: school.id)
       get :index, params: { school_id: school.id }
       expect(assigns(:activities)).to include activity
     end
 
     it 'does not include activities from other schools' do
-      activity = create :activity, school_id: different_school.id
+      activity = create(:activity, school_id: different_school.id)
       get :index, params: { school_id: school.id }
       expect(assigns(:activities)).not_to include activity
     end
@@ -36,14 +38,14 @@ RSpec.describe ActivitiesController, type: :controller do
 
   describe 'GET #show' do
     it 'assigns the requested activity as @activity' do
-      activity = create :activity, school_id: school.id
+      activity = create(:activity, school_id: school.id)
       get :show, params: { school_id: school.id, id: activity.to_param }
       expect(assigns(:activity)).to eq(activity)
     end
 
     context 'when school specific description includes charts' do
       let(:embedded_chart) { '{{#chart}}daytype_breakdown_gas{{/chart}}' }
-      let(:activity) { create :activity, school_id: school.id }
+      let(:activity) { create(:activity, school_id: school.id) }
 
       before do
         activity.activity_type.update(school_specific_description: "Embedded chart: #{embedded_chart}")
@@ -59,7 +61,7 @@ RSpec.describe ActivitiesController, type: :controller do
 
     context 'when school specific description includes images' do
       let(:action_text_attachment) { '<action-text-attachment sgid="abc123" content-type="image/jpeg" url="http://test.com/rails/active_storage/blobs/pic.jpg" filename="pic.jpg" filesize="18205" width="350" height="450" previewable="true" presentation="gallery">' }
-      let(:activity) { create :activity, school_id: school.id }
+      let(:activity) { create(:activity, school_id: school.id) }
 
       before do
         activity.activity_type.update(school_specific_description: "Embedded image: #{action_text_attachment}")
@@ -77,24 +79,24 @@ RSpec.describe ActivitiesController, type: :controller do
       end
 
       it 'with data-driven activity, it shows the generic description' do
-        activity_type = create :activity_type, data_driven: true
-        activity = create :activity, school_id: school.id, activity_type: activity_type
+        activity_type = create(:activity_type, data_driven: true)
+        activity = create(:activity, school_id: school.id, activity_type:)
         get :show, params: { school_id: school.id, id: activity.to_param }
         expect(assigns(:activity_type_content).to_s).to include('generic description')
         expect(assigns(:activity_type_content).to_s).not_to include('school specific description')
       end
 
       it 'with non-data-driven activity, it shows the school specific description if present' do
-        activity_type = create :activity_type, data_driven: false
-        activity = create :activity, school_id: school.id, activity_type: activity_type
+        activity_type = create(:activity_type, data_driven: false)
+        activity = create(:activity, school_id: school.id, activity_type:)
         get :show, params: { school_id: school.id, id: activity.to_param }
         expect(assigns(:activity_type_content).to_s).not_to include('generic description')
         expect(assigns(:activity_type_content).to_s).to include('school specific description')
       end
 
       it 'with non-data-driven activity, it shows the description if school specific description not present' do
-        activity_type = create :activity_type, data_driven: false, school_specific_description: nil
-        activity = create :activity, school_id: school.id, activity_type: activity_type
+        activity_type = create(:activity_type, data_driven: false, school_specific_description: nil)
+        activity = create(:activity, school_id: school.id, activity_type:)
         get :show, params: { school_id: school.id, id: activity.to_param }
         expect(assigns(:activity_type_content).to_s).to include('generic description')
         expect(assigns(:activity_type_content).to_s).not_to include('school specific description')
@@ -107,15 +109,15 @@ RSpec.describe ActivitiesController, type: :controller do
       end
 
       it 'shows the school specific description if present' do
-        activity = create :activity, school_id: school.id
+        activity = create(:activity, school_id: school.id)
         get :show, params: { school_id: school.id, id: activity.to_param }
         expect(assigns(:activity_type_content).to_s).not_to include('generic description')
         expect(assigns(:activity_type_content).to_s).to include('school specific description')
       end
 
       it 'shows the generic description if school specific description not present, but does not make html safe' do
-        activity_type = create :activity_type, data_driven: false, school_specific_description: nil
-        activity = create :activity, school_id: school.id, activity_type: activity_type
+        activity_type = create(:activity_type, data_driven: false, school_specific_description: nil)
+        activity = create(:activity, school_id: school.id, activity_type:)
         get :show, params: { school_id: school.id, id: activity.to_param }
         expect(assigns(:activity_type_content).to_s).to include('generic description')
         expect(assigns(:activity_type_content).to_s).not_to include('school specific description')
@@ -154,15 +156,17 @@ RSpec.describe ActivitiesController, type: :controller do
     end
 
     it 'assigns the requested activity as @activity' do
-      activity = create :activity, school_id: school.id
+      activity = create(:activity, school_id: school.id)
       get :edit, params: { school_id: school.id, id: activity.to_param }
       expect(assigns(:activity)).to eq(activity)
     end
   end
 
   describe 'POST #create' do
+    let(:admin) { create(:admin) }
+
     before do
-      sign_in_user(:admin)
+      sign_in(admin)
     end
 
     context 'with invalid params' do
@@ -186,6 +190,7 @@ RSpec.describe ActivitiesController, type: :controller do
 
       it 'creates a new Activity' do
         expect(Activity.count).to be(1)
+        expect(Activity.first.user).to eq(admin)
       end
 
       it 'assigns a newly created activity as @activity' do
@@ -219,8 +224,10 @@ RSpec.describe ActivitiesController, type: :controller do
   end
 
   describe 'PUT #update' do
+    let(:admin) { create(:admin) }
+
     before do
-      sign_in_user(:admin)
+      sign_in(admin)
     end
 
     context 'with valid params' do
@@ -239,6 +246,7 @@ RSpec.describe ActivitiesController, type: :controller do
         expect(activity.description.to_plain_text).to eq new_attributes[:description]
         expect(activity.activity_type_id).to eq new_attributes[:activity_type_id]
         expect(activity.happened_on).to eq new_attributes[:happened_on]
+        expect(activity.updated_by).to eq admin
       end
 
       it 'assigns the requested activity as @activity' do
