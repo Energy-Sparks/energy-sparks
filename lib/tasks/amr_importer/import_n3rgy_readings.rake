@@ -7,7 +7,7 @@ namespace :amr do
     end_date = Date.parse(args[:end_date]) if args[:end_date].present?
 
     puts "#{DateTime.now.utc} #{config.description} start"
-    Meter.where(active: true, dcc_meter: true, consent_granted: true).each do |meter|
+    Meter.active.consented.each do |meter|
       Amr::N3rgyReadingsDownloadAndUpsert.new(
         meter: meter,
         config: config,
@@ -21,7 +21,7 @@ namespace :amr do
     config = AmrDataFeedConfig.n3rgy_api.first
 
     puts "#{DateTime.now.utc} #{config.description} reload start"
-    Meter.where(active: true, dcc_meter: true, consent_granted: true).each do |meter|
+    Meter.active.consented.each do |meter|
       Amr::N3rgyReadingsDownloadAndUpsert.new(meter: meter, config: config, reload: true).perform
     end
     puts "#{DateTime.now.utc} #{config.description} reload end"
