@@ -108,7 +108,7 @@ describe Programmes::Progress, type: :service do
     before do
       activity_types.first(2).each do |activity_type|
         activity = build(:activity, school: school, activity_type: activity_type, happened_on: Date.yesterday)
-        ActivityCreator.new(activity).process
+        ActivityCreator.new(activity, nil).process
       end
     end
 
