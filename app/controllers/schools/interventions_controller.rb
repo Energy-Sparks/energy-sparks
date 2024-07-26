@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Schools
   class InterventionsController < ApplicationController
-    skip_before_action :authenticate_user!, only: [:index, :show]
+    skip_before_action :authenticate_user!, only: %i[index show]
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
 
@@ -8,10 +10,23 @@ module Schools
       @interventions = @observations.intervention.visible.order('at DESC')
     end
 
+    def show
+      if @observation.observation_type == 'activity'
+        redirect_to school_activity_path(@school, @observation.activity_id), status: :moved_permanently
+      else
+        render :show
+      end
+    end
+
     def new
       @intervention_type = InterventionType.find(params[:intervention_type_id])
       @observation = @school.observations.new(intervention_type_id: @intervention_type.id)
       authorize! :create, @observation
+    end
+
+    def edit
+      authorize! :edit, @observation
+      @intervention_type = @observation.intervention_type
     end
 
     def create
@@ -24,11 +39,6 @@ module Schools
         @intervention_type = @observation.intervention_type
         render :new
       end
-    end
-
-    def edit
-      authorize! :edit, @observation
-      @intervention_type = @observation.intervention_type
     end
 
     def update
@@ -46,18 +56,9 @@ module Schools
       redirect_back fallback_location: school_interventions_path(@school)
     end
 
-    def show
-      if @observation.observation_type == 'activity'
-        redirect_to school_activity_path(@school, @observation.activity_id), :status => :moved_permanently
-      else
-        render :show
-      end
-    end
+    def completed; end
 
-    def completed
-    end
-
-  private
+    private
 
     def observation_params
       params.require(:observation).permit(:description, :at, :intervention_type_id, :involved_pupils, :pupil_count)
