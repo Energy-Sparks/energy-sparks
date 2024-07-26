@@ -95,7 +95,7 @@ RSpec.describe 'programme types', type: :system, include_application_helper: tru
       # this is because the Enroller relies on this currently
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
       Programmes::Enroller.new(programme_type_1).enrol(school)
-      ActivityCreator.new(activity).process
+      ActivityCreator.new(activity, nil).process
       click_on programme_type_1.title
     end
 

@@ -190,7 +190,6 @@ RSpec.describe ActivitiesController do
 
       it 'creates a new Activity' do
         expect(Activity.count).to be(1)
-        expect(Activity.first.user).to eq(admin)
       end
 
       it 'assigns a newly created activity as @activity' do

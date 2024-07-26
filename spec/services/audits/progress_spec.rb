@@ -73,7 +73,7 @@ describe Audits::Progress, type: :service do
     before do
       audit.activity_types.each do |activity_type|
         activity = build(:activity, school: school, activity_type: activity_type, happened_on: 2.days.ago)
-        ActivityCreator.new(activity).process
+        ActivityCreator.new(activity, nil).process
       end
     end
 

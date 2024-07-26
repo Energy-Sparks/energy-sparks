@@ -1,23 +1,24 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe 'viewing and recording action', type: :system do
-  before { SiteSettings.create!(audit_activities_bonus_points: 50) }
+describe 'viewing and recording action' do
+  before do
+    SiteSettings.create!(audit_activities_bonus_points: 50)
+    SiteSettings.current.update(photo_bonus_points:)
+    create(:national_calendar, title: 'England and Wales')
+  end
 
   let(:title)       { 'Changed boiler' }
   let(:summary)     { 'Old boiler bad, new boiler good' }
   let(:description) { 'How to change your boiler' }
   let(:photo_bonus_points) { nil }
-  let!(:intervention_type) { create :intervention_type, name: title, summary: summary, description: description }
-  let(:scoreboard) { create :scoreboard }
-  let(:school) { create_active_school(scoreboard: scoreboard) }
-  let!(:setup_data) { }
+  let!(:intervention_type) { create(:intervention_type, name: title, summary:, description:) }
+  let(:scoreboard) { create(:scoreboard) }
+  let(:school) { create_active_school(scoreboard:) }
+  let!(:setup_data) {}
 
-  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
-
-  before do
-    SiteSettings.current.update(photo_bonus_points: photo_bonus_points)
-    create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
-  end
+  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
 
   context 'as a public user' do
     it 'there is a top-level navigation item' do
@@ -58,7 +59,7 @@ describe 'viewing and recording action', type: :system do
     end
 
     context 'when logging in to record' do
-      let!(:staff) { create(:staff, school: school)}
+      let!(:staff) { create(:staff, school:) }
 
       before do
         visit intervention_type_path(intervention_type)
@@ -78,8 +79,8 @@ describe 'viewing and recording action', type: :system do
   end
 
   context 'as a group admin' do
-    let!(:group_admin)    { create(:group_admin)}
-    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group)}
+    let!(:group_admin)    { create(:group_admin) }
+    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group) }
 
     before do
       school.update(school_group: group_admin.school_group)
@@ -109,24 +110,26 @@ describe 'viewing and recording action', type: :system do
         click_on 'Record action'
         expect(page).to have_content('Congratulations!')
         expect(other_school.observations.count).to eq(1)
+        expect(other_school.observations.first.at).to eq(Time.zone.today)
+        expect(other_school.observations.first.created_by).to eq(group_admin)
       end
     end
 
     context 'when school is not in group' do
-      let(:school_not_in_group) { create(:school)}
+      let(:school_not_in_group) { create(:school) }
 
       it 'does not allow recording an intervention' do
         visit new_school_intervention_path(school_not_in_group, intervention_type_id: intervention_type.id)
         expect(page).to have_content('You are not authorized to access this page')
-        expect(page).not_to have_button('Record action')
+        expect(page).to have_no_button('Record action')
       end
     end
   end
 
   context 'as an admin' do
-    let(:admin)       { create(:admin)}
-    let!(:school_1)   { create(:school)}
-    let!(:school_2)   { create(:school)}
+    let(:admin)       { create(:admin) }
+    let!(:school_1)   { create(:school) }
+    let!(:school_2)   { create(:school) }
 
     before do
       sign_in(admin)
@@ -149,7 +152,7 @@ describe 'viewing and recording action', type: :system do
   end
 
   context 'as a school admin' do
-    let!(:school_admin)       { create(:school_admin, school: school)}
+    let!(:school_admin)       { create(:school_admin, school:) }
 
     before do
       sign_in(school_admin)
@@ -158,7 +161,7 @@ describe 'viewing and recording action', type: :system do
 
     context 'viewing an action' do
       it 'does not see prompt to login' do
-        expect(page).not_to have_link('Sign in to record action')
+        expect(page).to have_no_link('Sign in to record action')
       end
 
       it 'sees prompt to record it' do
@@ -168,7 +171,7 @@ describe 'viewing and recording action', type: :system do
     end
 
     context 'viewing a previously recorded action' do
-      let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school)}
+      let!(:observation) { create(:observation, :intervention, intervention_type:, school:) }
 
       before do
         refresh
@@ -185,7 +188,7 @@ describe 'viewing and recording action', type: :system do
     end
 
     context 'when requesting an incorrect url' do
-      let!(:observation) { create(:observation, :activity, school: school, activity: create(:activity, school: school))}
+      let!(:observation) { create(:observation, :activity, school:, activity: create(:activity, school:)) }
 
       it 'redirects to activity' do
         visit school_intervention_path(school, observation.id)
@@ -240,6 +243,7 @@ describe 'viewing and recording action', type: :system do
           expect(observation.intervention_type).to eq(intervention_type)
           expect(observation.points).to eq(intervention_type.score)
           expect(observation.at.to_date).to eq(today)
+          expect(observation.created_by).to eq(school_admin)
         end
 
         it_behaves_like 'a task completed page', points: 30, task_type: :action
@@ -259,19 +263,19 @@ describe 'viewing and recording action', type: :system do
         context 'site settings photo_bonus_points is nil' do
           let(:photo_bonus_points) { nil }
 
-          it { expect(page).not_to have_content('Adding a photo to document your action can score you')}
+          it { expect(page).to have_no_content('Adding a photo to document your action can score you') }
         end
 
         context 'site settings photo_bonus_points is set' do
           let(:photo_bonus_points) { 5 }
 
-          it { expect(page).to have_content('Adding a photo to document your action can score you 5 bonus points')}
+          it { expect(page).to have_content('Adding a photo to document your action can score you 5 bonus points') }
         end
 
         context 'site settings photo_bonus_points is 0' do
           let(:photo_bonus_points) { 0 }
 
-          it { expect(page).not_to have_content('Adding a photo to document your action can score you')}
+          it { expect(page).to have_no_content('Adding a photo to document your action can score you') }
         end
       end
 
@@ -287,7 +291,7 @@ describe 'viewing and recording action', type: :system do
       end
 
       context 'on the podium' do
-        let!(:other_school) { create :school, :with_points, score_points: 40, scoreboard: scoreboard }
+        let!(:other_school) { create(:school, :with_points, score_points: 40, scoreboard:) }
         let!(:time) { today }
 
         before do
@@ -306,7 +310,7 @@ describe 'viewing and recording action', type: :system do
         end
 
         context 'in first place' do
-          let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
+          let(:school) { create(:school, :with_points, score_points: 20, scoreboard:) }
 
           it 'records action' do
             expect(page).to have_content("Congratulations! You've just scored #{intervention_type.score} points")
@@ -315,7 +319,7 @@ describe 'viewing and recording action', type: :system do
         end
 
         context 'in second place' do
-          let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
+          let(:school) { create(:school, :with_points, score_points: 5, scoreboard:) }
 
           it 'records action' do
             expect(page).to have_content("Congratulations! You've just scored #{intervention_type.score} points")
@@ -326,7 +330,7 @@ describe 'viewing and recording action', type: :system do
 
       context 'with previous recordings' do
         before do
-          create_list(:observation, 10, :intervention, intervention_type: intervention_type, school: school)
+          create_list(:observation, 10, :intervention, intervention_type:, school:)
           refresh
         end
 
@@ -337,7 +341,7 @@ describe 'viewing and recording action', type: :system do
     end
 
     context 'editing an action' do
-      let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school)}
+      let!(:observation) { create(:observation, :intervention, intervention_type:, school:) }
 
       it 'can be updated' do
         visit school_path(school)
@@ -353,6 +357,7 @@ describe 'viewing and recording action', type: :system do
 
         observation.reload
         expect(observation.at.to_date).to eq(Date.new(2019, 6, 20))
+        expect(observation.updated_by).to eq(school_admin)
 
         click_on 'Changed boiler'
         expect(page).to have_content('We changed to a more efficient boiler')

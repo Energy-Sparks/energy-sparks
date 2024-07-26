@@ -12,7 +12,7 @@ describe Programmes::Progress, type: :service do
     let(:activity) { build(:activity, school: school, activity_type: activity_types.first, happened_on: Date.yesterday) }
 
     before do
-      ActivityCreator.new(activity).process
+      ActivityCreator.new(activity, nil).process
     end
 
     describe '#notification' do
