@@ -4,7 +4,7 @@ namespace :amr do
     start_date = Date.parse(args[:start_date]) if args[:start_date].present?
     end_date = Date.parse(args[:end_date]) if args[:end_date].present?
 
-    meters = Meter.where(active: true, dcc_meter: true, consent_granted: true)
+    meters = Meter.active.consented
 
     puts "#{DateTime.now.utc} import_n3rgy_tariffs start for #{meters.count} meters"
     meters.each do |meter|

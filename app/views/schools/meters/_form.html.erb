@@ -12,7 +12,7 @@
     <%= form.text_field :mpan_mprn, class: 'form-control', disabled: disabled_for_pseudo_meter?(meter) %>
   </div>
   <div class="form-group">
-    <%= form.label :name,  t('schools.meters.form.name') %>
+    <%= form.label :name, t('schools.meters.form.name') %>
     <%= form.text_field :name, class: 'form-control' %>
   </div>
   <div class="form-group">
@@ -28,8 +28,10 @@
     <% end %>
     <% Meter::CREATABLE_METER_TYPES.each do |meter_type| %>
       <div class="form-check">
-        <%= form.radio_button :meter_type, meter_type, class: "form-check-input", disabled: disabled_for_pseudo_meter?(meter) %>
-        <%= form.label "meter_type_#{meter_type.to_sym}", t("schools.meters.creatable_meter_types.#{meter_type}"),  class: "form-check-label col-form-label-sm" %>
+        <%= form.radio_button :meter_type, meter_type, class: 'form-check-input',
+                                                       disabled: disabled_for_pseudo_meter?(meter) %>
+        <%= form.label "meter_type_#{meter_type.to_sym}", t("schools.meters.creatable_meter_types.#{meter_type}"),
+                       class: 'form-check-label col-form-label-sm' %>
       </div>
     <% end %>
   </div>
@@ -37,19 +39,27 @@
   <% if current_user.admin? %>
     <div class="form-group">
       <%= form.label :meter_system, t('schools.meters.form.meter_system') %>
-      <%= form.select(:meter_system, Meter.meter_systems.keys.map { |meter_system| [I18n.t("meter.meter_system.#{meter_system}"), meter_system] }, { include_blank: false }, class: 'form-control') %>
+      <%= form.select(:meter_system, Meter.meter_systems.keys.map do |meter_system|
+                                       [I18n.t("meter.meter_system.#{meter_system}"), meter_system]
+                                     end, { include_blank: false }, class: 'form-control') %>
     </div>
     <div class="form-group">
       <%= form.label :data_source_id, t('schools.meters.form.data_source') %>
-      <%= form.select(:data_source_id, DataSource.all.order(:name).collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      <%= form.select(:data_source_id, DataSource.all.order(:name).collect do |d|
+                                         [d.name, d.id]
+                                       end, { include_blank: true }, class: 'form-control') %>
     </div>
     <div class="form-group">
       <%= form.label :procurement_route_id, t('schools.meters.form.procurement_route') %>
-      <%= form.select(:procurement_route_id, ProcurementRoute.all.order(:organisation_name).collect { |p| [ p.organisation_name, p.id ] }, { include_blank: true }, class: 'form-control') %>
+      <%= form.select(:procurement_route_id, ProcurementRoute.all.order(:organisation_name).collect do |p|
+                                               [p.organisation_name, p.id]
+                                             end, { include_blank: true }, class: 'form-control') %>
     </div>
     <div class="form-group">
       <%= form.label :admin_meter_status, 'Admin meter status' %>
-      <%= form.select(:admin_meter_statuses_id, AdminMeterStatus.all.order(:label).collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      <%= form.select(:admin_meter_statuses_id, AdminMeterStatus.all.order(:label).collect do |d|
+                                                  [d.label, d.id]
+                                                end, { include_blank: true }, class: 'form-control') %>
     </div>
   <% end %>
 
@@ -58,8 +68,9 @@
       <p class="alert alert-warning"><%= t('schools.meters.form.admin_only_features_for_n3rgy_integration') %></p>
 
       <div class="custom-control custom-checkbox">
-        <%= form.check_box :dcc_meter, class: 'custom-control-input'  %>
-        <%= form.label :dcc_meter, t('schools.meters.form.dcc_smart_meter'), class: "custom-control-label"  %>
+        <%= form.check_box :dcc_meter, { class: 'custom-control-input' }, checked_value = 'smets2',
+                           unchecked_value = 'no' %>
+        <%= form.label :dcc_meter, t('schools.meters.form.dcc_smart_meter'), class: 'custom-control-label' %>
         <small class="form-text text-muted">
           <%= t('schools.meters.form.leave_this_blank_message') %>
         </small>
@@ -68,29 +79,21 @@
   </div>
 
   <div class="actions">
-    <% submit_label = action_name == 'edit' ? t('schools.meters.form.update_meter') : t('schools.meters.form.create_meter') %>
-    <%= form.submit submit_label, class: 'btn btn-primary'%>
+    <% submit_label = if action_name == 'edit'
+                        t('schools.meters.form.update_meter')
+                      else
+                        t('schools.meters.form.create_meter')
+                      end %>
+    <%= form.submit submit_label, class: 'btn btn-primary' %>
   </div>
 <% end %>
 
 <script>
+  const defaults = <%= meter_defaults_json(@school, 'meter_data_source_id', 'meter_procurement_route_id',
+                                           'meter_admin_meter_statuses_id') %>
   $("input[type='radio'][name='meter[meter_type]']").change(function () {
-    switch($("input[type='radio'][name='meter[meter_type]']:checked").val()) {
-      case 'electricity':
-        document.getElementById('meter_data_source_id').value=<%= @school&.school_group&.default_data_source_electricity_id || 'null' %>
-        document.getElementById('meter_procurement_route_id').value=<%= @school&.school_group&.default_procurement_route_electricity_id || 'null' %>
-        document.getElementById('meter_admin_meter_statuses_id').value=<%= @school&.school_group&.admin_meter_statuses_electricity_id || 'null' %>
-        break;
-      case 'gas':
-        document.getElementById('meter_data_source_id').value=<%= @school&.school_group&.default_data_source_gas_id || 'null' %>
-        document.getElementById('meter_procurement_route_id').value=<%= @school&.school_group&.default_procurement_route_gas_id || 'null' %>
-        document.getElementById('meter_admin_meter_statuses_id').value=<%= @school&.school_group&.admin_meter_statuses_gas_id || 'null' %>
-        break;
-      case 'solar_pv': case 'exported_solar_pv':
-        document.getElementById('meter_data_source_id').value=<%= @school&.school_group&.default_data_source_solar_pv_id || 'null' %>
-        document.getElementById('meter_procurement_route_id').value=<%= @school&.school_group&.default_procurement_route_solar_pv_id || 'null' %>
-        document.getElementById('meter_admin_meter_statuses_id').value=<%= @school&.school_group&.admin_meter_statuses_solar_pv_id || 'null' %>
-        break;
-    }
+    defaults[$("input[type='radio'][name='meter[meter_type]']:checked").val()].forEach((item) => {
+      document.getElementById(item.id).value = item.value
+    })
   })
 </script>
