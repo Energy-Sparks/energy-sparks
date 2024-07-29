@@ -461,6 +461,7 @@ GEM
     momentjs-rails (2.29.4.1)
       railties (>= 3.1)
     msgpack (1.7.2)
+    multi_json (1.15.0)
     mustache (1.1.1)
     mutex_m (0.2.0)
     nenv (0.3.0)
@@ -605,7 +606,8 @@ GEM
     rexml (3.3.2)
       strscan
     rgeo (3.0.1)
-    rgeo-geojson (2.1.1)
+    rgeo-geojson (2.2.0)
+      multi_json (~> 1.15)
       rgeo (>= 1.0.0)
     rollbar (3.5.2)
     roo-xls (1.2.0)
