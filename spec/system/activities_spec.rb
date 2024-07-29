@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe 'viewing and recording activities', type: :system do
-  let!(:activity_category) { create(:activity_category)}
+describe 'viewing and recording activities' do
+  let!(:activity_category) { create(:activity_category) }
+  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
 
   let!(:subject)  { Subject.create(name: 'Science and Technology') }
   let!(:ks1)      { KeyStage.create(name: 'KS1') }
@@ -11,19 +14,20 @@ describe 'viewing and recording activities', type: :system do
 
   let(:activity_type_name) { 'Exciting activity' }
   let(:activity_description) { "It's An #{activity_type_name}" }
-  let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven, score: 25) }
-  let!(:programme) { }
+  let!(:activity_type) do
+    create(:activity_type, name: activity_type_name, activity_category:, description: activity_description,
+                           key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven, score: 25)
+  end
+  let!(:programme) {}
 
-  let!(:scoreboard) { create :scoreboard }
-  let(:school) { create_active_school(data_enabled: school_data_enabled, scoreboard: scoreboard) }
-  let!(:setup_data) { }
+  let!(:scoreboard) { create(:scoreboard) }
+  let(:school) { create_active_school(data_enabled: school_data_enabled, scoreboard:) }
+  let!(:setup_data) {}
 
   before do
     SiteSettings.create!(audit_activities_bonus_points: 50)
     create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
   end
-
-  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 
   context 'as a public user' do
     before do
@@ -46,7 +50,7 @@ describe 'viewing and recording activities', type: :system do
 
       it 'displays description' do
         expect(page).to have_content(activity_type.description.to_plain_text)
-        expect(page).not_to have_content(activity_type.school_specific_description.to_plain_text)
+        expect(page).to have_no_content(activity_type.school_specific_description.to_plain_text)
       end
 
       it 'displays navigation' do
@@ -64,7 +68,7 @@ describe 'viewing and recording activities', type: :system do
     end
 
     context 'when logging in to record' do
-      let!(:staff) { create(:staff, school: school)}
+      let!(:staff) { create(:staff, school:) }
 
       it 'redirects back to activity after login' do
         click_on 'Sign in to record activity'
@@ -80,7 +84,7 @@ describe 'viewing and recording activities', type: :system do
   end
 
   context 'as a teacher' do
-    let!(:staff) { create(:staff, school: school)}
+    let!(:staff) { create(:staff, school:) }
 
     before do
       sign_in(staff)
@@ -90,11 +94,11 @@ describe 'viewing and recording activities', type: :system do
     context 'viewing an activity type' do
       it 'sees school specific content' do
         expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
-        expect(page).not_to have_content(activity_type.description.to_plain_text)
+        expect(page).to have_no_content(activity_type.description.to_plain_text)
       end
 
       it 'does not see prompt to login' do
-        expect(page).not_to have_link('Sign in to record activity')
+        expect(page).to have_no_link('Sign in to record activity')
       end
 
       it 'sees prompt to record it' do
@@ -104,7 +108,7 @@ describe 'viewing and recording activities', type: :system do
     end
 
     context 'viewing a previously recorded activity' do
-      let!(:activity) { create(:activity, school: school, activity_type: activity_type) }
+      let!(:activity) { create(:activity, school:, activity_type:) }
 
       before do
         refresh
@@ -123,7 +127,7 @@ describe 'viewing and recording activities', type: :system do
         it 'shows school specific description' do
           visit school_activity_path(school, activity)
           expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
-          expect(page).not_to have_content(activity_type.description.to_plain_text)
+          expect(page).to have_no_content(activity_type.description.to_plain_text)
         end
       end
 
@@ -132,7 +136,7 @@ describe 'viewing and recording activities', type: :system do
 
         it 'shows generic description' do
           visit school_activity_path(school, activity)
-          expect(page).not_to have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to have_no_content(activity_type.school_specific_description.to_plain_text)
           expect(page).to have_content(activity_type.description.to_plain_text)
         end
 
@@ -142,7 +146,7 @@ describe 'viewing and recording activities', type: :system do
           it 'shows school specific description' do
             visit school_activity_path(school, activity)
             expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
-            expect(page).not_to have_content(activity_type.description.to_plain_text)
+            expect(page).to have_no_content(activity_type.description.to_plain_text)
           end
         end
       end
@@ -215,7 +219,7 @@ describe 'viewing and recording activities', type: :system do
       end
 
       context 'on the podium' do
-        let!(:other_school) { create :school, :with_points, score_points: 40, scoreboard: scoreboard }
+        let!(:other_school) { create(:school, :with_points, score_points: 40, scoreboard:) }
         let!(:time) { today }
 
         before do
@@ -234,7 +238,7 @@ describe 'viewing and recording activities', type: :system do
         end
 
         context 'in first place' do
-          let(:school) { create :school, :with_points, score_points: 20, scoreboard: scoreboard }
+          let(:school) { create(:school, :with_points, score_points: 20, scoreboard:) }
 
           it 'shows the activity completed page' do
             expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
@@ -243,7 +247,7 @@ describe 'viewing and recording activities', type: :system do
         end
 
         context 'in second place' do
-          let(:school) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
+          let(:school) { create(:school, :with_points, score_points: 5, scoreboard:) }
 
           it 'shows the activity completed page' do
             expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
@@ -254,7 +258,7 @@ describe 'viewing and recording activities', type: :system do
 
       context 'with previous recordings' do
         before do
-          create_list(:activity, 10, activity_type: activity_type, school: school)
+          create_list(:activity, 10, activity_type:, school:)
           refresh
         end
 
@@ -266,8 +270,8 @@ describe 'viewing and recording activities', type: :system do
   end
 
   context 'as a group admin' do
-    let!(:group_admin)    { create(:group_admin)}
-    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group)}
+    let!(:group_admin)    { create(:group_admin) }
+    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group) }
 
     before do
       school.update(school_group: group_admin.school_group)
@@ -282,7 +286,7 @@ describe 'viewing and recording activities', type: :system do
       end
 
       it 'uses the Activity Type Filter to check for appropriate schools' do
-        expect(ActivityTypeFilter).to receive(:new).with(school: school).and_call_original
+        expect(ActivityTypeFilter).to receive(:new).with(school:).and_call_original
         expect(ActivityTypeFilter).to receive(:new).with(school: other_school).and_call_original
         visit activity_type_path(activity_type)
       end
@@ -295,32 +299,33 @@ describe 'viewing and recording activities', type: :system do
       end
     end
 
-    context 'recording an activity' do
+    context 'when recording an activity' do
       it 'associates activity with correct school from group' do
         select other_school.name, from: :school_id
         click_on 'Record this activity'
         fill_in :activity_happened_on, with: Time.zone.today.strftime('%d/%m/%Y')
-        click_on 'Save activity'
+        expect { click_on 'Save activity' }.to change(other_school.activities, :count).by(1)
         expect(page).to have_content('Congratulations!')
-        expect(other_school.activities.count).to eq(1)
+        expect(other_school.activities.most_recent.first.happened_on).to eq(Time.zone.today)
+        expect(other_school.activities.most_recent.first.observations.first.created_by).to eq(group_admin)
       end
     end
 
     context 'when school is not in group' do
-      let(:school_not_in_group) { create(:school)}
+      let(:school_not_in_group) { create(:school) }
 
       it 'does not allow recording an activity' do
         visit new_school_activity_path(school_not_in_group, activity_type_id: activity_type.id)
         expect(page).to have_content('You are not authorized to access this page')
-        expect(page).not_to have_button('Save activity')
+        expect(page).to have_no_button('Save activity')
       end
     end
   end
 
   context 'as an admin' do
-    let(:admin)       { create(:admin)}
-    let!(:school_1)   { create(:school)}
-    let!(:school_2)   { create(:school)}
+    let(:admin)       { create(:admin) }
+    let!(:school_1)   { create(:school) }
+    let!(:school_2)   { create(:school) }
 
     before do
       sign_in(admin)
@@ -348,7 +353,7 @@ describe 'viewing and recording activities', type: :system do
   end
 
   context 'as a pupil' do
-    let(:pupil) { create(:pupil, school: school)}
+    let(:pupil) { create(:pupil, school:) }
 
     before do
       sign_in(pupil)
@@ -359,11 +364,11 @@ describe 'viewing and recording activities', type: :system do
       context 'when school is data enabled' do
         it 'sees school specific content' do
           expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
-          expect(page).not_to have_content(activity_type.description.to_plain_text)
+          expect(page).to have_no_content(activity_type.description.to_plain_text)
         end
 
         it 'does not see prompt to login' do
-          expect(page).not_to have_link('Sign in to record activity')
+          expect(page).to have_no_link('Sign in to record activity')
         end
 
         it 'sees prompt to record it' do
@@ -377,7 +382,7 @@ describe 'viewing and recording activities', type: :system do
 
         it 'sees generic content if school if activity is data driven' do
           visit activity_type_path(activity_type)
-          expect(page).not_to have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to have_no_content(activity_type.school_specific_description.to_plain_text)
           expect(page).to have_content(activity_type.description.to_plain_text)
         end
 
@@ -387,7 +392,7 @@ describe 'viewing and recording activities', type: :system do
           it 'sees school specific content' do
             visit activity_type_path(activity_type)
             expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
-            expect(page).not_to have_content(activity_type.description.to_plain_text)
+            expect(page).to have_no_content(activity_type.description.to_plain_text)
           end
         end
       end
