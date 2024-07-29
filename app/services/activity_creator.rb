@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 class ActivityCreator
-  def initialize(activity)
+  def initialize(activity, user)
     @activity = activity
+    @user = user
   end
 
   def process
-    if @activity.activity_type
-      @activity.activity_category = @activity.activity_type.activity_category
-    end
+    @activity.activity_category = @activity.activity_type.activity_category if @activity.activity_type
 
     if @activity.save
       process_programmes if started_active_programmes.any?
@@ -36,7 +37,8 @@ class ActivityCreator
       observation_type: :activity,
       activity: @activity,
       at: @activity.happened_on,
-      points: points
+      points:,
+      created_by: @user
     )
   end
 
