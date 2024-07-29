@@ -27,6 +27,7 @@ describe ActivityCreator do
     expect(observation.school).to eq(activity.school)
     expect(observation.at).to eq(activity.happened_on)
     expect(observation.points).to eq(50)
+    expect(observation.created_by).to eq(user)
   end
 
   it 'scores no points for a previous academic year' do
@@ -126,8 +127,6 @@ describe ActivityCreator do
   context 'creates an completed audit observation' do
     let(:activity_category) { create(:activity_category, name: 'Zebras') }
     let(:school) { create(:school) }
-
-    before { Observation.delete_all }
 
     it 'creates an observation for the activity with the points' do
       audit = create(:audit, :with_activity_and_intervention_types, school:)
