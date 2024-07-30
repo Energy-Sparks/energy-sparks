@@ -841,7 +841,7 @@ DEPENDENCIES
   foreman
   friendly_id
   geocoder
-  good_job (< 5)
+  good_job
   groupdate
   guard-rspec
   guard-rubocop
