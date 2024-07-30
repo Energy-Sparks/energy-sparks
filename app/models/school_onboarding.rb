@@ -64,6 +64,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :funder, optional: true
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
+  has_many :issues, as: :issueable, dependent: :destroy
 
   scope :by_name, -> { order(school_name: :asc) }
   scope :complete, -> { joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] }) }

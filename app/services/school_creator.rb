@@ -26,6 +26,7 @@ class SchoolCreator
         onboarding_service.record_event(onboarding, :school_details_created) do
           onboarding.update!(school: @school)
         end
+        onboarding.issues.find_each { |issue| issue.update(issueable_type: :School, issueable_id: @school.id) }
       end
     end
     @school

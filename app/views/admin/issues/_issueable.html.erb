@@ -1,9 +1,8 @@
 <% if issueable %>
-  <span class="badge bg-secondary text-white<%= " rounded" if local_assigns[:email] %>">
+  <span class="badge bg-secondary text-white<%= ' rounded' if local_assigns[:email] %>">
     <%= issueable_icon(issueable) %>
-    <%= link_to issueable.name,
-      polymorphic_url([:admin, issueable, Issue]),
-      class: 'text-white text-decoration-none'
-    %>
+    <%= link_to issue.issueable_name,
+                polymorphic_url([:admin, issueable, Issue]),
+                class: 'text-white text-decoration-none' %>
   </span>
 <% end %>
