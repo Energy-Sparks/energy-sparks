@@ -14,7 +14,7 @@
       <li class="page-item prev disabled"><a href="#" class="page-link"><%== pagy_t('pagy.nav.prev') %></a></li>
     <% end -%>
     <% pagy.series.each do |item| # series example: [1, :gap, 7, 8, "9", 10, 11, :gap, 36] -%>
-      <% if    item.is_a?(Integer) -%>
+      <% if item.is_a?(Integer) -%>
         <li class="page-item"><%== link.call(item) %></li>
       <% elsif item.is_a?(String) -%>
         <li class="page-item active"><%== link.call(item) %></li>
