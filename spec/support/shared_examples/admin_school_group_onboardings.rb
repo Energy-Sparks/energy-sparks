@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'admin school group onboardings' do
   before do
     setup_data
@@ -5,7 +7,11 @@ RSpec.shared_examples 'admin school group onboardings' do
   end
 
   context 'selectable actions' do
-    let(:school_group_onboardings) { 3.times.collect { create :school_onboarding, :with_school, school_group: school_group, created_by: admin } }
+    let(:school_group_onboardings) do
+      Array.new(3) do
+        create(:school_onboarding, :with_school, school_group:, created_by: admin)
+      end
+    end
     let(:setup_data) { school_group_onboardings }
 
     context 'for selected' do
@@ -30,7 +36,7 @@ RSpec.shared_examples 'admin school group onboardings' do
 
             it { expect(page).to have_current_path(@back) }
             it { expect(page).to have_content('School cannot be made visible as we dont have a record of consent') }
-            it { expect(page).not_to have_content('schools made visible') }
+            it { expect(page).to have_no_content('schools made visible') }
             it { expect(onboarding.reload.school).not_to be_visible }
           end
 
@@ -43,7 +49,6 @@ RSpec.shared_examples 'admin school group onboardings' do
             end
 
             after { Wisper.clear }
-
 
             it { expect(page).to have_content("#{school_group.name} schools made visible") }
             it { expect(onboarding.reload.school).to be_visible }
@@ -88,7 +93,7 @@ RSpec.shared_examples 'admin school group onboardings' do
           click_button 'Make selected visible'
         end
 
-        it { expect(page).not_to have_content('schools made visible') }
+        it { expect(page).to have_no_content('schools made visible') }
         it { expect(page).to have_content('Nothing selected') }
       end
 
@@ -97,12 +102,12 @@ RSpec.shared_examples 'admin school group onboardings' do
           click_button 'Send reminders to selected'
         end
 
-        it { expect(page).not_to have_content('schools reminders sent') }
+        it { expect(page).to have_no_content('schools reminders sent') }
         it { expect(page).to have_content('Nothing selected') }
       end
     end
 
-    context 'Checking all', js: true do
+    context 'Checking all', :js do
       before do
         check "check-all-#{school_group.id}"
       end
@@ -127,23 +132,23 @@ RSpec.shared_examples 'admin school group onboardings' do
     end
   end
 
-  context 'linking to issues' do
+  context 'when linking to issues' do
     context 'when there is an associated school' do
-      let(:setup_data) { create :school_onboarding, :with_school, school_group: school_group }
+      let(:setup_data) { create(:school_onboarding, :with_school, school_group:) }
 
-      it 'has issues link' do
+      it 'has a school issues link' do
         within 'table' do
-          expect(page).to have_link('Issues')
+          expect(page).to have_link('Issues', href: admin_school_issues_path(setup_data.school))
         end
       end
     end
 
-    context 'without an associated school' do
-      let(:setup_data) { create :school_onboarding, school_group: school_group }
+    context 'when without an associated school' do
+      let(:setup_data) { create(:school_onboarding, school_group:) }
 
-      it 'does not have issues link' do
+      it 'has a onboarding issues link' do
         within 'table' do
-          expect(page).not_to have_link('Issues')
+          expect(page).to have_link('Issues', href: admin_school_onboarding_issues_path(setup_data))
         end
       end
     end
