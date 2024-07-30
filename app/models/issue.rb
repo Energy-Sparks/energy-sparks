@@ -144,10 +144,6 @@ class Issue < ApplicationRecord
     issueable.is_a?(SchoolGroup) ? issueable : issueable.try(:school_group)
   end
 
-  def issueable_name
-    issueable.send({ SchoolOnboarding: :school_name }.fetch(issueable_type.to_sym, :name))
-  end
-
   private
 
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition

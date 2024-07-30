@@ -15,13 +15,13 @@
     <div class="clearfix">
       <span data-toggle="collapse" href="#issue-<%= issue.id %>" role="button" aria-expanded="true"
             aria-controls="issue-<%= issue.id %>"
-            class="badge badge-light toggler text-decoration-none<%= ' collapsed' unless expand %>">                                                                                                                                                                                                   end %>">
+            class="badge badge-light toggler text-decoration-none<%= ' collapsed' unless expand %>">
         <%= toggler %>
       </span>
       <span class="badge <%= issue.issue? ? 'badge-danger' : 'badge-warning' %>">
         <%= issue.issue_type.capitalize %>
       </span>
-      <%= render 'admin/issues/issueable', issueable: issue.try(:issueable), issue: issue %>
+      <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
       <%= render 'admin/issues/fuel_type', issue: issue %>
       <%= render 'admin/issues/meters', issue: issue %>
       <span class='float-right pb-2'>

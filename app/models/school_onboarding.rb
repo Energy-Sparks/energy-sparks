@@ -171,4 +171,8 @@ class SchoolOnboarding < ApplicationRecord
     return nil unless data_enabled_on.present?
     (data_enabled_on.to_date - onboarding_completed_on.to_date).to_i
   end
+
+  def name
+    school_name
+  end
 end
