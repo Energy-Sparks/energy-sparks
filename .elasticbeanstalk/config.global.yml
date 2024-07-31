@@ -1,0 +1,9 @@
+branch-defaults:
+  aws-eb-master:
+   environment: prod-4-0-9
+  aws-eb-test:
+    environment: test-4-0-9
+global:
+  application_name: energy-sparks
+  default_region: eu-west-2
+  profile: eb-cli

@@ -102,7 +102,7 @@ gem 'mobility', '~> 1.2.9'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
-gem 'good_job'
+gem 'good_job', '< 4'
 
 # Spreadsheet parsing
 # Switch to custom branch that incorporates some necessary bug fixes
@@ -128,7 +128,6 @@ group :development, :test do
   gem 'guard-rubocop', require: false
   gem 'knapsack'
   gem 'rails-controller-testing'
-  gem 'rb-readline', require: false
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
   gem 'rubocop'
@@ -162,7 +161,6 @@ end
 group :test do
   gem 'capybara'
   gem 'capybara-email'
-  gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'

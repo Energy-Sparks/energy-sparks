@@ -1,6 +1,5 @@
 class SchoolsController < ApplicationController
   include SchoolAggregation
-  include AnalysisPages
   include DashboardEnergyCharts
   include DashboardAlerts
   include DashboardTimeline

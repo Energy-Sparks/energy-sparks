@@ -50,7 +50,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
     it 'allows a new onboarding to be setup and sends an email to the school' do
       click_on 'Manage school onboarding'
-      click_on 'New Automatic School Setup'
+      click_on 'New School Onboarding'
 
       fill_in 'School name', with: school_name
       fill_in 'Contact email', with: 'oldfield@test.com'
@@ -94,7 +94,11 @@ RSpec.describe 'onboarding', :schools, type: :system do
     end
 
     it 'allows editing of an onboarding setup' do
-      onboarding = create :school_onboarding, :with_events
+      onboarding = create(:school_onboarding,
+                          school_group: school_group,
+                          weather_station: weather_station,
+                          scoreboard: scoreboard)
+
       click_on 'Manage school onboarding'
       click_on 'Edit'
 
@@ -119,6 +123,12 @@ RSpec.describe 'onboarding', :schools, type: :system do
       visit admin_school_onboardings_path
       click_on 'Edit'
       expect(page).to have_select('Funder', selected: funder.name)
+      click_on 'Next'
+      expect(page).to have_select('Template calendar', selected: 'Oxford calendar')
+      expect(page).to have_select('Country', selected: 'Scotland')
+      # unchanged
+      expect(page).to have_select('Weather Station', selected: onboarding.weather_station.title)
+      expect(page).to have_select('Scoreboard', selected: onboarding.scoreboard.name)
     end
 
     context 'when completing onboarding as admin without consents' do
@@ -237,7 +247,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
         let(:email_address) { 'different_address@email.com' }
 
         it 'saves' do
-          expect(page).to have_content('School onboardings in progress')
+          expect(page).to have_content('School onboardings currently in progress')
           expect(page).to have_content(email_address)
         end
 

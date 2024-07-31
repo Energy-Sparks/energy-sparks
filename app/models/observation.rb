@@ -7,6 +7,7 @@
 #  at                   :datetime         not null
 #  audit_id             :bigint(8)
 #  created_at           :datetime         not null
+#  created_by_id        :bigint(8)
 #  id                   :bigint(8)        not null, primary key
 #  intervention_type_id :bigint(8)
 #  involved_pupils      :boolean          default(FALSE), not null
@@ -19,29 +20,36 @@
 #  school_id            :bigint(8)        not null
 #  school_target_id     :bigint(8)
 #  updated_at           :datetime         not null
+#  updated_by_id        :bigint(8)
 #  visible              :boolean          default(TRUE)
 #
 # Indexes
 #
 #  index_observations_on_activity_id                        (activity_id)
 #  index_observations_on_audit_id                           (audit_id)
+#  index_observations_on_created_by_id                      (created_by_id)
 #  index_observations_on_intervention_type_id               (intervention_type_id)
 #  index_observations_on_observable_type_and_observable_id  (observable_type,observable_id)
 #  index_observations_on_programme_id                       (programme_id)
 #  index_observations_on_school_id                          (school_id)
 #  index_observations_on_school_target_id                   (school_target_id)
+#  index_observations_on_updated_by_id                      (updated_by_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (activity_id => activities.id) ON DELETE => nullify
 #  fk_rails_...  (audit_id => audits.id)
+#  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (intervention_type_id => intervention_types.id) ON DELETE => restrict
 #  fk_rails_...  (programme_id => programmes.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (school_target_id => school_targets.id)
+#  fk_rails_...  (updated_by_id => users.id)
 #
 
 class Observation < ApplicationRecord
+  include Description
+
   belongs_to :school
   has_many   :temperature_recordings
   has_many   :locations, through: :temperature_recordings
@@ -52,6 +60,8 @@ class Observation < ApplicationRecord
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true # to be removed when column is removed
   belongs_to :school_target, optional: true # to be removed when column is removed
+  belongs_to :created_by, optional: true, class_name: 'User'
+  belongs_to :updated_by, optional: true, class_name: 'User'
 
   # If adding a new observation type remember to also modify the timeline component
   # events: 3 has been removed
@@ -89,6 +99,14 @@ class Observation < ApplicationRecord
 
   before_validation :set_defaults, if: -> { observable_id }, on: :create
 
+  def description_includes_images?
+    if intervention?
+      super
+    elsif activity?
+      super || activity.description_includes_images?
+    end
+  end
+
   private
 
   def add_bonus_points_for_included_images
@@ -100,14 +118,6 @@ class Observation < ApplicationRecord
     return unless description_includes_images?
 
     self.points = (self.points || 0) + SiteSettings.current.photo_bonus_points
-  end
-
-  def description_includes_images?
-    if intervention?
-      description&.body&.to_trix_html&.include?('figure')
-    elsif activity?
-      description&.body&.to_trix_html&.include?('figure') || activity.description_includes_images?
-    end
   end
 
   def add_points_for_interventions

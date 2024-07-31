@@ -13,7 +13,6 @@
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-weeks',
                                            section_title: t('advice_pages.gas_recent_changes.analysis.compare_recent_weeks.title') %>
 
-<div class="charts">
   <%= component 'chart',
                 chart_type: :calendar_picker_gas_week_example_comparison_chart,
                 school: @school,
@@ -28,10 +27,10 @@
     <% end %>
     <% c.with_footer do %>
       <%= render 'shared/usage_controls', chart_config: @chart_config, period: :weekly, supply: :gas,
-                                          split_meters: false, meters: @meters %>
+                                          split_meters: true, meters: @meters %>
     <% end %>
   <% end %>
-</div>
+
 
 <!--  COMPARISON OF GAS USE OVER 2 RECENT DAYS -->
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-days',
@@ -53,7 +52,7 @@
     <% end %>
     <% c.with_footer do %>
       <%= render 'shared/usage_controls', chart_config: @chart_config, period: :daily, supply: :gas,
-                                          split_meters: false, meters: @meters %>
+                                          split_meters: true, meters: @meters %>
       <br>
       <p><%= t('advice_pages.gas_recent_changes.analysis.expected_usage_patterns') %></p>
       <p><%= t('advice_pages.gas_recent_changes.analysis.optimal_start_control') %></p>
@@ -106,7 +105,7 @@
       <% more_detail_url = link_to(t('advice_pages.gas_recent_changes.analysis.see_more_detail'),
                                    'https://www.sustainabilityexchange.ac.uk/files/degree_days_for_energy_management_carbon_trust.pdf', target: '_blank', rel: 'noopener') %>
       <p><%= t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_explanation_html',
-               more_detail_url: more_detail_url) %></p>
+               more_detail_url:) %></p>
     <% end %>
   <% end %>
 </div>

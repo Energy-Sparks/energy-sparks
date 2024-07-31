@@ -7,7 +7,7 @@ module Amr
     let!(:config)     { create(:amr_data_feed_config) }
     let!(:log)        { create(:amr_data_feed_import_log) }
     let!(:e_meter)    { create(:electricity_meter_with_reading, reading_count: 2, school: school, config: config) }
-    let!(:g_meter)    { create(:gas_meter_with_reading, school: school, dcc_meter: true) }
+    let!(:g_meter)    { create(:gas_meter_with_reading, school: school, dcc_meter: :smets2) }
 
     it 'builds an unvalidated meter collection' do
       amr_data = AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build

@@ -1,0 +1,66 @@
+<% content_for :page_title, 'Intervention Type Management Report' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Intervention Type Management Report</h1>
+  <div>
+    <%= link_to 'Recent interventions', admin_reports_interventions_path, class: 'btn btn-outline-dark font-weight-bold' %>
+    <%= link_to 'All reports', admin_reports_path, class: 'btn btn-outline-dark font-weight-bold' %>
+  </div>
+</div>
+
+<p>
+  This table provides some high-level insights into adult activities. Use the table header to sort the rows and click
+  on an individual intervention for more detail.
+</p>
+
+<p>
+  Those highlighted in <span class="bg-warning">yellow</span> have been marked as not active and are no longer visible
+  to users.
+</p>
+
+<p>
+  The <strong>Recorded</strong> columns reports the number of times the activity has ever been recorded, and
+  the number of unique schools that have recorded it.
+</p>
+
+<p>
+  The <strong>Referenced</strong> columns show how many types the activity is referenced as a "Suggested next activity"
+  via another activity, the number of programmes in which it is included, the number of times it is referenced from
+  "Find out more" pages, and the number of audits that reference it.
+</p>
+
+<table class="table table-sorted dataTable table-sm">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2">Recorded</th>
+      <th colspan="4">Referenced</th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>Category</th>
+      <th>Name</th>
+      <th>Count</th>
+      <th>Schools</th>
+      <th>Suggested</th>
+      <th>Find Out Mores</th>
+      <th>Audits</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @intervention_types.each do |intervention_type| %>
+      <tr class="<%= active(intervention_type.active) %>">
+        <td><%= intervention_type.intervention_type_group.name %></td>
+        <td><%= link_to intervention_type.name, admin_reports_intervention_type_path(intervention_type) %></td>
+        <td><%= intervention_type.observations.count %></td>
+        <td><%= intervention_type.observations.select(:school_id).distinct.count %></td>
+        <td><%= intervention_type.suggested_types.count %></td>
+        <td><%= intervention_type.alert_type_ratings.count %></td>
+        <td><%= intervention_type.audits.count %></td>
+        <td><%= link_to 'Report', admin_reports_intervention_type_path(intervention_type),
+                        class: 'btn btn-primary' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'consent_requests', type: :system do
   let!(:school)                { create(:school) }
-  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false) }
+  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: :smets2, consent_granted: false) }
 
   let!(:admin)                 { create(:admin) }
 

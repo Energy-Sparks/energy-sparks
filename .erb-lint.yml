@@ -16,3 +16,5 @@ linters:
         Enabled: false # erb-lint recommended
       Lint/UselessAssignment:
         Enabled: false # erb-lint recommended
+      Style/HashSyntax:
+        EnforcedShorthandSyntax: never # get ActionView::SyntaxErrorInTemplate without this
