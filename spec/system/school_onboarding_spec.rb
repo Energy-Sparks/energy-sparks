@@ -479,10 +479,11 @@ RSpec.describe 'onboarding', :schools, type: :system do
         visit new_onboarding_completion_path(onboarding)
 
         click_on 'Edit pupil account'
-        fill_in 'Pupil password', with: 'testtest2'
+        password = 'a valid password'
+        fill_in 'Pupil password', with: password
         click_on 'Update pupil account'
         pupil.reload
-        expect(pupil.pupil_password).to eq('testtest2')
+        expect(pupil.pupil_password).to eq(password)
       end
 
       it 'meters can be added' do
