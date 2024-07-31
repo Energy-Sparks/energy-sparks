@@ -4,11 +4,7 @@
     <%= render 'shared/head' %>
   </head>
   <body vocab="http://schema.org/">
-    <% if Flipper.enabled?(:navigation, current_user, current_user&.school_group) %>
-      <%= render 'shared/navigation/main' %>
-    <% else %>
-      <%= render 'shared/navigation' %>
-    <% end %>
+    <%= render 'shared/navigation' %>
     <div class="application container<%= nav_margin_classes %><%= conditional_application_container_classes %>">
       <%= render 'shared/breadcrumbs' %>
       <%= render 'shared/alerts' if flash.any? %>
