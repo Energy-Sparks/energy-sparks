@@ -105,12 +105,12 @@ Rails.application.configure do
   # Requires an encryption key in `ENV["RAILS_MASTER_KEY"]` or
   # `config/secrets.yml.key`.
   config.read_encrypted_secrets = true
-  if ENV['RAILS_SERVE_STATIC_FILES'].present?
-    # serve the assets from a different folder so they aren't served by NGINX
-    config.public_file_server.enabled = true
-    config.assets.prefix = "/static-assets"
-    config.public_file_server.headers = { 'Access-Control-Allow-Origin' => "https://#{ENV['APPLICATION_HOST']}" }
-  end
+  # if ENV['RAILS_SERVE_STATIC_FILES'].present?
+  #   # serve the assets from a different folder so they aren't served by NGINX
+  #   config.public_file_server.enabled = true
+  #   config.assets.prefix = "/static-assets"
+  #   config.public_file_server.headers = { 'Access-Control-Allow-Origin' => "https://#{ENV['APPLICATION_HOST']}" }
+  # end
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :terser
   config.action_controller.asset_host = ENV['ASSET_HOST'] if ENV['ASSET_HOST'].present?
