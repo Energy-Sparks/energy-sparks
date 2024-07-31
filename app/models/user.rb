@@ -144,12 +144,20 @@ class User < ApplicationRecord
     school.name if school
   end
 
-  def school_group_name
-    default_school_group.try(:name)
+  def default_school_group
+    if group_admin? && school_group
+      school_group
+    else
+      school&.school_group
+    end
   end
 
-  def default_school_group
-    school.try(:school_group) || school_group
+  def school_group_name
+    school_group&.name
+  end
+
+  def default_school_group_name
+    default_school_group&.name
   end
 
   def self.new_pupil(school, attributes)
@@ -214,16 +222,8 @@ class User < ApplicationRecord
         'Locked'
       ]
       where.not(role: [:pupil, :admin]).order(:email).each do |user|
-        school_group_name = if user.group_admin?
-                              user.school_group.name
-                            elsif user.school && user.school.school_group
-                              user.school_group_name
-                            else
-                              ''
-                            end
-
         csv << [
-          school_group_name,
+          user.default_school_group_name || '',
           user.school&.name || '',
           user.school&.school_type&.humanize || '',
           user.school&.funder&.name || '',
