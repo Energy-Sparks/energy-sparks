@@ -73,6 +73,7 @@ class User < ApplicationRecord
   validates :email, presence: true
 
   validates :pupil_password, presence: true, if: :pupil?
+  validates :pupil_password, length: { minimum: 12 }, if: :pupil?
   validate :pupil_password_unique, if: :pupil?
 
   validates :staff_role_id, :school_id, presence: true, if: :staff?
@@ -143,20 +144,12 @@ class User < ApplicationRecord
     school.name if school
   end
 
-  def default_school_group
-    if group_admin? && school_group
-      school_group
-    else
-      school&.school_group
-    end
-  end
-
   def school_group_name
-    school_group&.name
+    default_school_group.try(:name)
   end
 
-  def default_school_group_name
-    default_school_group&.name
+  def default_school_group
+    school.try(:school_group) || school_group
   end
 
   def self.new_pupil(school, attributes)
@@ -221,8 +214,16 @@ class User < ApplicationRecord
         'Locked'
       ]
       where.not(role: [:pupil, :admin]).order(:email).each do |user|
+        school_group_name = if user.group_admin?
+                              user.school_group.name
+                            elsif user.school && user.school.school_group
+                              user.school_group_name
+                            else
+                              ''
+                            end
+
         csv << [
-          user.default_school_group_name || '',
+          school_group_name,
           user.school&.name || '',
           user.school&.school_type&.humanize || '',
           user.school&.funder&.name || '',
