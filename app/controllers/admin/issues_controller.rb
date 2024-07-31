@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   class IssuesController < AdminController
     include Pagy::Backend
     load_and_authorize_resource :school, instance_name: 'issueable'
     load_and_authorize_resource :school_group, instance_name: 'issueable'
     load_and_authorize_resource :data_source, instance_name: 'issueable'
+    load_and_authorize_resource :school_onboarding, instance_name: 'issueable', find_by: :uuid
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
     load_and_authorize_resource :school # For school context menu if school available
 
@@ -21,9 +24,9 @@ module Admin
           @pagy, @issues = pagy(@issues.by_priority_order)
         end
         format.csv do
-          @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
+          @issues = @issueable.all_issues if @issueable.is_a?(SchoolGroup)
           send_data @issues.by_updated_at.to_csv,
-          filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
+                    filename: "#{"#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize}.csv"
         end
       end
     end
@@ -56,10 +59,8 @@ module Admin
 
     def resolve
       notice = 'was successfully resolved'
-      unless @issue.resolve!(updated_by: current_user)
-        notice = 'Can only resolve issues (and not notes).'
-      end
-      redirect_back_or_index notice: notice
+      notice = 'Can only resolve issues (and not notes).' unless @issue.resolve!(updated_by: current_user)
+      redirect_back_or_index notice:
     end
 
     def meter_issues
@@ -86,7 +87,8 @@ module Admin
     end
 
     def issue_params
-      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned, meter_ids: [])
+      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned,
+                                    meter_ids: [])
     end
   end
 end
