@@ -47,8 +47,9 @@ RSpec.describe 'onboarding', :schools, type: :system do
         expect(page).to have_content('Step 1: Create your school administrator account')
         fill_in 'Your name', with: 'A Teacher'
         select 'Headteacher', from: 'Role'
-        fill_in 'Password', with: 'testtest1', match: :prefer_exact
-        fill_in 'Password confirmation', with: 'testtest1'
+        password = 'testtesttest1'
+        fill_in 'Password', with: password, match: :prefer_exact
+        fill_in 'Password confirmation', with: password
         check :privacy
         click_on 'Create my account'
 
@@ -95,8 +96,9 @@ RSpec.describe 'onboarding', :schools, type: :system do
         expect(page).to have_content('Step 1: Create your school administrator account')
         fill_in 'Your name', with: 'A Teacher'
         select 'Headteacher', from: 'Role'
-        fill_in 'Password', with: 'testtest1', match: :prefer_exact
-        fill_in 'Password confirmation', with: 'testtest1'
+        password = 'testtesttest1'
+        fill_in 'Password', with: password, match: :prefer_exact
+        fill_in 'Password confirmation', with: password
         check :privacy
         click_on 'Create my account'
 
@@ -129,8 +131,9 @@ RSpec.describe 'onboarding', :schools, type: :system do
         expect(page).to have_content('I confirm agreement with the Energy Sparks')
         fill_in 'Your name', with: 'A Teacher'
         select 'Headteacher', from: 'Role'
-        fill_in 'Password', with: 'testtest1', match: :prefer_exact
-        fill_in 'Password confirmation', with: 'testtest1'
+        password = 'testtesttest1'
+        fill_in 'Password', with: password, match: :prefer_exact
+        fill_in 'Password confirmation', with: password
 
         check :privacy
         click_on 'Create my account'
