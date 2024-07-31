@@ -39,7 +39,7 @@ class MailchimpSubscriber
   def find_interests(user, list)
     ret = {}
     items = []
-    items << user.school_group_name if user.school_group_name
+    items << user.default_school_group_name if user.default_school_group_name
     items << user.staff_role.title if user.staff_role
     unless items.empty?
       list.categories.each do |category|

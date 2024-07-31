@@ -1,4 +1,4 @@
-<div class="tab-pane fade show <%= ' active' unless current_school_group %>" id="country" role="tabpanel" aria-labelledby="country-tab">
+<div class="tab-pane fade show <%= ' active' unless current_user_default_school_group %>" id="country" role="tabpanel" aria-labelledby="country-tab">
   <h4 class='my-2'><%= t('compare.index.country.title') %></h4>
   <div class="bg-light p-3 rounded border">
     <%= form_tag benchmarks_compare_index_path, method: :get do %>
@@ -7,7 +7,7 @@
         <% School.countries.keys.each do |country| %>
         <div class="form-check">
           <%= radio_button_tag('country', country, @filter[:country] == country, id: country, class: 'form-check-input') %>
-          <%= label_tag country, t('school_statistics.' + country), class: 'form-check-label' %>
+          <%= label_tag country, t("school_statistics.#{country}"), class: 'form-check-label' %>
         </div>
       <% end %>
       <div class="form-check pb-3">

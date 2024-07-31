@@ -31,7 +31,7 @@
 #
 class Issue < ApplicationRecord
   include CsvExportable
-  delegated_type :issueable, types: %w[School SchoolGroup DataSource]
+  delegated_type :issueable, types: %w[School SchoolGroup DataSource SchoolOnboarding]
   delegate :name, to: :issueable
 
   belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true

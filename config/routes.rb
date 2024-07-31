@@ -617,6 +617,7 @@ Rails.application.routes.draw do
       collection do
         get 'completed'
       end
+      concerns :issueable
     end
 
     resources :activations, only: :index

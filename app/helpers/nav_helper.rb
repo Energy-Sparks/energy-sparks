@@ -5,6 +5,7 @@ module NavHelper
     end
   end
 
+  # old nav
   def navbar_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
@@ -13,6 +14,7 @@ module NavHelper
     end
   end
 
+  # new nav
   def navigation_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
@@ -25,22 +27,24 @@ module NavHelper
     I18n.locale.to_s == 'en' ? 'lg' : 'xl'
   end
 
-  def order_expand_class
-    "order-#{expand_class}-12"
-  end
-
   def navbar_expand_class
     "navbar-expand-#{expand_class}"
   end
 
-  def other_locales
-    I18n.available_locales - [I18n.locale]
+  def order_expand_class
+    "order-#{expand_class}-12"
   end
 
-  # rotate to the next locale - not used at the moment
-  def next_locale
-    idx = I18n.available_locales.index(I18n.locale)
-    I18n.available_locales.rotate(idx)[1]
+  def navbar_hide_class
+    "d-none d-#{expand_class}-inline-block"
+  end
+
+  def navbar_secondary_class
+    controller.controller_path == 'pupils/schools' ? 'pupil' : 'adult'
+  end
+
+  def other_locales
+    I18n.available_locales - [I18n.locale]
   end
 
   def locale_switcher_buttons

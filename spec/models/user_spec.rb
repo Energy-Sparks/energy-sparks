@@ -23,53 +23,69 @@ describe User do
   end
 
   describe '#default_school_group' do
-    let(:school) { }
-    let(:school_group) { }
-    let(:user) { create(:user, school_group: school_group, school: school) }
-
     subject(:default_school_group) { user.default_school_group }
 
-    context 'User has school with a school group' do
-      let(:school) { create(:school, :with_school_group) }
+    context 'when user is a group admin with a school group (required)' do
+      let(:user) { create(:group_admin) }
 
-      it { expect(default_school_group).to eq(school.school_group) }
+      it { expect(default_school_group).to eq(user.school_group) }
     end
 
-    context "User doesn't have school but has a school group" do
-      let(:school_group) { create(:school_group) }
+    context 'when user is staff with a school' do
+      let(:school) { create(:school, school_group: school_group) }
+      let(:user) { create(:staff, school: school) }
 
-      it { expect(default_school_group).to eq(school_group) }
+      context 'when school has school group' do
+        let(:school_group) { create :school_group }
+
+        it { expect(default_school_group).to eq(school_group) }
+      end
+
+      context 'when school does not have school group' do
+        let(:school) { create(:school) }
+
+        it { expect(default_school_group).to be_nil }
+      end
     end
 
-    context 'User has school with no school group but has group' do
-      let(:school) { create(:school) }
-      let(:school_group) { create(:school_group) }
+    context 'when user has no school group or school' do
+      let(:user) { create(:admin) }
 
-      it { expect(default_school_group).to eq(school_group) }
-    end
-
-    context 'User has school with no school group and no group' do
-      let(:school) { create(:school) }
-
-      it { expect(default_school_group).to be_nil }
-    end
-
-    context 'User has no school or school group' do
       it { expect(default_school_group).to be_nil }
     end
   end
 
-  it 'returns school group name' do
-    user = create(:user)
-    expect(user.school_group_name).to be_nil
+  describe '#default_school_group_name' do
+    subject(:default_school_group_name) { user.default_school_group_name }
 
-    school_group = create(:school_group, name: 'Big Group')
-    user = create(:user, school_group: school_group)
-    expect(user.school_group_name).to eq('Big Group')
+    context 'when user is a group admin with a school group (required)' do
+      let(:user) { create(:group_admin) }
 
-    school = create(:school, name: 'Big School', school_group: school_group)
-    user = create(:user, school: school)
-    expect(user.school_group_name).to eq('Big Group')
+      it { expect(default_school_group_name).to eq(user.school_group.name) }
+    end
+
+    context 'when user is staff with a school' do
+      let(:school) { create(:school, school_group: school_group) }
+      let(:user) { create(:staff, school: school) }
+
+      context 'when school has school group' do
+        let(:school_group) { create :school_group }
+
+        it { expect(default_school_group_name).to eq(school_group.name) }
+      end
+
+      context 'when school does not have school group' do
+        let(:school) { create(:school) }
+
+        it { expect(default_school_group_name).to be_nil }
+      end
+    end
+
+    context 'when user has no school group or school' do
+      let(:user) { create(:admin) }
+
+      it { expect(default_school_group_name).to be_nil }
+    end
   end
 
   describe 'pupil validation' do
