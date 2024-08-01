@@ -18,8 +18,6 @@ class ChartData
     chart_manager = ChartManager.new(@aggregated_school)
     chart_config = customised_chart_config(chart_manager)
 
-    puts chart_config.inspect
-
     transformed_chart_type, transformed_chart_config = apply_transformations(@transformations, @original_chart_type, chart_config, chart_manager)
 
     allowed_operations = check_operations(transformed_chart_config)
@@ -81,7 +79,10 @@ private
 
   def customised_chart_config(chart_manager)
     chart_config = chart_manager.get_chart_config(@original_chart_type)
-    CustomisedChartConfig.new(chart_config).customise(@chart_config_overrides)
+    puts chart_config.inspect
+    x = CustomisedChartConfig.new(chart_config).customise(@chart_config_overrides)
+    puts x.inspect
+    x
   end
 
   def apply_transformations(transformations, original_chart_type, custom_chart_config, chart_manager)
