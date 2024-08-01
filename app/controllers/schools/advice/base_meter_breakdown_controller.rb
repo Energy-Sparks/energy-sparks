@@ -11,7 +11,7 @@ module Schools
       def analysis
         @analysis_dates = analysis_dates
         @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
-        @meters_for_breakdown = sorted_meters_for_breakdown(@annual_usage_meter_breakdown)
+        @meters_for_breakdown = sorted_meters_for_breakdown
       end
 
       private
@@ -28,9 +28,9 @@ module Schools
         redirect_to school_advice_path(@school) unless @school.multiple_meters?(fuel_type)
       end
 
-      def sorted_meters_for_breakdown(annual_usage_meter_breakdown)
+      def sorted_meters_for_breakdown
         meters = aggregate_school.underlying_meters(advice_page_fuel_type)
-        meters.index_by(&:mpan_mprn)
+        meters.sort_by(&:mpan_mprn).index_by(&:mpan_mprn)
       end
 
       def usage_service
