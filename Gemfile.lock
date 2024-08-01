@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 231a7ba084916e7cf782d87e968b9e2110af60ec
+  revision: 1f9490fc6979517acb9fd9b479a5b6bb67bdbc79
   branch: 4417-fix-availability-of-meter-breakdown-for-solar-and-storage-schools
   specs:
     energy-sparks_analytics (1.2.1)

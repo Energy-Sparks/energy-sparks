@@ -34,7 +34,7 @@ module MetersHelper
     options = []
     meters.each do |meter|
       options << [meter.display_name, meter.mpan_mprn]
-      options << ["#{meter.mpan_mprn} :mains_consume", "#{meter.mpan_mprn}>mains_consume"] if meter.has_solar_array?
+      options << ["#{meter.display_name} #{I18n.t('charts.usage.select_meter.sub_meters.mains_consume')}", "#{meter.display_name}>mains_consume"] if meter.has_solar_array?
     end
     options
   end

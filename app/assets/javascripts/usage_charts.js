@@ -10,11 +10,17 @@ $(document).ready(function() {
     var chartConfig = chartContainer.data('chart-config');
 
     var meter = $(chartDiv).find("select[name='meter']").val();
-    if (meter && meter != 'all') {
-      var definitions = meter.split('>');
-      chartConfig.mpan_mprn = definitions[0];
-      // will either be name of a sub meter type or undefined
-      chartConfig.sub_meter = definitions[1];
+    if (meter) {
+      if (meter == 'all') {
+        chartConfig.mpan_mprn = undefined;
+        chartConfig.sub_meter = undefined;
+      } else {
+        var definitions = meter.split('>');
+        chartConfig.mpan_mprn = definitions[0];
+        // will either be name of a sub meter type or undefined
+        chartConfig.sub_meter = definitions[1];
+        console.log(chartConfig.sub_meter);
+      }
     }
 
     updateMeterSpecificChartState(chartDiv, chartConfig);

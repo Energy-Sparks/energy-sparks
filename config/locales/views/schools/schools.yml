@@ -25,6 +25,8 @@ en:
           second: Compare to
       select_meter:
         all_meters: All Meters
+        sub_meters:
+          mains_consume: Without Solar
         title: Which meter?
       show:
         compare_message:
