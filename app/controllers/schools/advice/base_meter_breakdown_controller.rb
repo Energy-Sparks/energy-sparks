@@ -29,7 +29,7 @@ module Schools
       end
 
       def sorted_meters_for_breakdown(annual_usage_meter_breakdown)
-        meters = @school.meters.where(mpan_mprn: annual_usage_meter_breakdown.meters).order(:mpan_mprn)
+        meters = aggregate_school.underlying_meters(advice_page_fuel_type)
         meters.index_by(&:mpan_mprn)
       end
 
