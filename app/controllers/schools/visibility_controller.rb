@@ -13,6 +13,7 @@ module Schools
     def destroy
       authorize! :change_visibility, @school
       @school.update!(visible: false)
+      Rails.cache.delete(:schools_for_login_form) # cached in sessions controller
       redirect_back fallback_location: school_path(@school)
     end
   end
