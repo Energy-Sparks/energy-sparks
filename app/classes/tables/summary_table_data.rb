@@ -132,6 +132,7 @@ module Tables
     end
 
     def format_number(value, units, medium = :html)
+      return '' if value.nil?
       if Float(value)
         FormatEnergyUnit.format(units, value.to_f, medium, false, true, :target).html_safe
       end
