@@ -703,7 +703,7 @@ class School < ApplicationRecord
 
   def self.school_list_for_login_form
     query = <<-SQL.squish
-      SELECT schools.name, school_groups.name
+      SELECT schools.id, schools.name, school_groups.name
       FROM schools
       LEFT JOIN school_groups ON schools.school_group_id = school_groups.id
       WHERE schools.visible=TRUE
@@ -712,8 +712,9 @@ class School < ApplicationRecord
     sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)
     School.connection.select_all(sanitized_query).rows.map do |row|
       result = ActiveSupport::OrderedOptions.new
-      result.name = row[0]
-      result.school_group_name = row[1]
+      result.id = row[0]
+      result.name = row[1]
+      result.school_group_name = row[2]
       result
     end
   end

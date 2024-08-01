@@ -302,9 +302,17 @@ describe ApplicationHelper do
   end
 
   describe '#school_name_group' do
-    let(:school_group)          { create(:school_group, name: 'Some School Group') }
-    let(:school_with_group)     { create(:school, name: 'School One', school_group: school_group) }
-    let(:school_without_group)  { create(:school, name: 'School Two') }
+    let(:school_with_group) do
+      school = ActiveSupport::OrderedOptions.new
+      school.name = 'School One'
+      school.school_group_name = 'Some School Group'
+      school
+    end
+    let(:school_without_group) do
+      school = ActiveSupport::OrderedOptions.new
+      school.name = 'School Two'
+      school
+    end
 
     it 'handles school with group' do
       expect(helper.school_name_group(school_with_group)).to eq('School One (Some School Group)')
