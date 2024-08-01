@@ -191,11 +191,7 @@ class Meter < ApplicationRecord
   end
 
   def display_name
-    name.present? ? "#{display_meter_mpan_mprn} (#{name})" : display_meter_mpan_mprn
-  end
-
-  def display_meter_mpan_mprn
-    "#{mpan_mprn} - #{meter_type.to_s.humanize}"
+    mpan_mprn_and_name
   end
 
   def display_summary(display_name: true, display_data_source: true, display_inactive: false)
