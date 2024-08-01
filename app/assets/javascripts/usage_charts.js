@@ -19,7 +19,6 @@ $(document).ready(function() {
         chartConfig.mpan_mprn = definitions[0];
         // will either be name of a sub meter type or undefined
         chartConfig.sub_meter = definitions[1];
-        console.log(chartConfig.sub_meter);
       }
     }
 
