@@ -701,6 +701,23 @@ class School < ApplicationRecord
     meters.active.where(meter_type: fuel_type).count > 1
   end
 
+  def self.school_list_for_login_form
+    query = <<-SQL.squish
+      SELECT schools.name, school_groups.name
+      FROM schools
+      LEFT JOIN school_groups ON schools.school_group_id = school_groups.id
+      WHERE schools.visible=TRUE
+      ORDER BY schools.name;
+    SQL
+    sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)
+    School.connection.select_all(sanitized_query).rows.map do |row|
+      result = ActiveSupport::OrderedOptions.new
+      result.name = row[0]
+      result.school_group_name = row[1]
+      result
+    end
+  end
+
   private
 
   def valid_uk_postcode

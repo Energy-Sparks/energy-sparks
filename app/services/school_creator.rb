@@ -44,6 +44,7 @@ class SchoolCreator
       users = @school.users.reject(&:pupil?)
       onboarding_service.complete_onboarding(@school.school_onboarding, users)
     end
+    Rails.cache.delete(:schools_for_login_form) # cached in sessions controller
     broadcast(:school_made_visible, @school)
   end
 

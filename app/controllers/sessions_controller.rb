@@ -6,7 +6,10 @@ class SessionsController < Devise::SessionsController
   def load_school
     if params[:school].present?
       @school = School.find_by(slug: params[:school])
+    else
+      @schools = Rails.cache.fetch(:schools_for_login_form) do
+        School.school_list_for_login_form
+      end
     end
-    @schools = School.visible.order(:name)
   end
 end
