@@ -95,7 +95,7 @@
         <% end %>
         <% @energy_tariff.meters.each do |meter| %>
           <tr class="positive-row">
-            <td class="description"><%= meter.mpan_mprn_and_name %></td>
+            <td class="description"><%= meter.display_name %></td>
             <td class="value"></td>
           </tr>
         <% end %>
