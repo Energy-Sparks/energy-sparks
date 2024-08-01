@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'School Users', :schools, type: :system do
   let(:confirmation_token) { 'abc123' }
+  let(:valid_password) { 'valid password' }
 
   context 'when confirming new user without school' do
     let!(:user) { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: nil, email: 'foo@bar.com', name: 'Foo Bar') }
@@ -45,8 +46,8 @@ RSpec.describe 'School Users', :schools, type: :system do
 
     it 'allows newsletter to be subscribed (the default)' do
       expect_any_instance_of(MailchimpSubscriber).to receive(:subscribe).with(user)
-      fill_in :user_password, with: 'abcdef'
-      fill_in :user_password_confirmation, with: 'abcdef'
+      fill_in :user_password, with: valid_password
+      fill_in :user_password_confirmation, with: valid_password
       check 'privacy'
       click_button 'Complete registration'
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
@@ -54,8 +55,8 @@ RSpec.describe 'School Users', :schools, type: :system do
 
     it 'allows newsletter to be unsubscribed' do
       expect_any_instance_of(MailchimpSubscriber).not_to receive(:subscribe)
-      fill_in :user_password, with: 'abcdef'
-      fill_in :user_password_confirmation, with: 'abcdef'
+      fill_in :user_password, with: valid_password
+      fill_in :user_password_confirmation, with: valid_password
       check 'privacy'
       uncheck 'Subscribe to newsletters'
       click_button 'Complete registration'
@@ -63,8 +64,8 @@ RSpec.describe 'School Users', :schools, type: :system do
     end
 
     it 'allows alert to be subscribed (the default)' do
-      fill_in :user_password, with: 'abcdef'
-      fill_in :user_password_confirmation, with: 'abcdef'
+      fill_in :user_password, with: valid_password
+      fill_in :user_password_confirmation, with: valid_password
       check 'privacy'
       click_button 'Complete registration'
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
@@ -73,8 +74,8 @@ RSpec.describe 'School Users', :schools, type: :system do
     end
 
     it 'allows alert to be unsubscribed' do
-      fill_in :user_password, with: 'abcdef'
-      fill_in :user_password_confirmation, with: 'abcdef'
+      fill_in :user_password, with: valid_password
+      fill_in :user_password_confirmation, with: valid_password
       check 'privacy'
       uncheck 'Subscribe to school alerts'
       click_button 'Complete registration'
@@ -84,7 +85,7 @@ RSpec.describe 'School Users', :schools, type: :system do
 
     it 'reshows subscription check boxes after failed validation' do
       check 'privacy'
-      fill_in :user_password, with: 'abcdef'
+      fill_in :user_password, with: valid_password
       uncheck 'Subscribe to school alerts'
       uncheck 'Subscribe to newsletters'
       click_button 'Complete registration'
@@ -105,8 +106,8 @@ RSpec.describe 'School Users', :schools, type: :system do
 
     it 'allows password to be set' do
       expect(page).to have_content('Set your password')
-      fill_in :user_password, with: 'abcdef'
-      fill_in :user_password_confirmation, with: 'abcdef'
+      fill_in :user_password, with: valid_password
+      fill_in :user_password_confirmation, with: valid_password
       click_button 'Set my password'
       expect(page).to have_content('Your password has been changed successfully')
     end

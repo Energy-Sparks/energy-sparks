@@ -9,6 +9,14 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
   let(:all_params) { { podium: podium, classes: 'my-class', id: 'my-id' } }
   let(:params) { all_params }
 
+  # Avoids problem with showing national placing. National Scoreboard only runs from
+  # 1st Sept to 31st Jul.
+  around do |example|
+    travel_to Date.new(2024, 4, 1) do
+      example.run
+    end
+  end
+
   before do
     create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
   end

@@ -11,6 +11,14 @@ RSpec.describe 'scoreboards', :scoreboards do
     create(:school, :with_points, score_points: points, scoreboard: scoreboard, calendar: calendar)
   end
 
+  # Avoids problem with showing national placing. National Scoreboard only runs from
+  # 1st Sept to 31st Jul.
+  around do |example|
+    travel_to Date.new(2024, 4, 1) do
+      example.run
+    end
+  end
+
   describe 'with public scoreboards', :aggregate_failures do
     describe 'on the index page' do
       before do

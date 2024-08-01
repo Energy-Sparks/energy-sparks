@@ -16,28 +16,48 @@
           <td><%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %></td>
           <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
           <td><%= onboarding&.school&.funder&.name || onboarding&.funder&.name %></td>
-          <td class="wrap"><%= onboarding.contact_email %> <%= link_to fa_icon('edit'), edit_admin_school_onboarding_email_path(onboarding), class: "", title: "Change email address" if onboarding.has_only_sent_email_or_reminder? %></td>
+          <td class="wrap">
+            <%= onboarding.contact_email %>
+            <%= if onboarding.has_only_sent_email_or_reminder?
+                  link_to fa_icon('edit'),
+                          edit_admin_school_onboarding_email_path(onboarding), class: '', title: 'Change email address'
+                end %>
+          </td>
           <td class="nowrap" data-order="<%= onboarding.events.maximum(:created_at) %>">
-            <%= nice_date_times(onboarding.events.maximum(:created_at)) %><br />
-            <span class="badge badge-secondary"><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></span>
+            <%= nice_date_times(onboarding.events.maximum(:created_at)) %><br>
+            <span class="badge badge-secondary">
+              <%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %>
+            </span>
           </td>
           <td class="nowrap text-right">
-            <% if onboarding.school %>
-              <%= link_to issue_type_icons(onboarding.school.issues, label: 'Issues'), admin_school_issues_path(onboarding.school), class: 'btn btn-sm' %>
-            <% end %>
-            <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
+
+            <% if onboarding.school
+                 issues_path = admin_school_issues_path(onboarding.school)
+                 issues = onboarding.school.issues
+               else
+                 issues_path = admin_school_onboarding_issues_path(onboarding)
+                 issues = onboarding.issues
+               end %>
+            <%= link_to issue_type_icons(issues, label: 'Issues'), issues_path, class: 'btn btn-sm' %>
+            <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding),
+                        class: 'btn btn-warning btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>
               <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
             <% else %>
               <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
             <% end %>
-            <%= link_to 'Delete', admin_school_onboarding_path(onboarding), class: 'btn btn-sm', method: :delete, data: {confirm: 'Are you sure?'} %>
+            <%= link_to 'Delete', admin_school_onboarding_path(onboarding), class: 'btn btn-sm', method: :delete,
+                                                                            data: { confirm: 'Are you sure?' } %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
   <%= hidden_field_tag :anchor, anchor %>
-  <%= f.button :submit, "Make selected visible", data: {confirm: 'Are you sure?'}, formaction: make_visible_admin_school_group_school_onboardings_path(school_group) %>
-  <%= f.button :submit, "Send reminders to selected", data: {confirm: 'Are you sure?'}, formaction: reminders_admin_school_group_school_onboardings_url(school_group) %>
+  <%= f.button :submit, 'Make selected visible',
+               data: { confirm: 'Are you sure?' },
+               formaction: make_visible_admin_school_group_school_onboardings_path(school_group) %>
+  <%= f.button :submit, 'Send reminders to selected',
+               data: { confirm: 'Are you sure?' },
+               formaction: reminders_admin_school_group_school_onboardings_url(school_group) %>
 <% end %>

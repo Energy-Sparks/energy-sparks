@@ -245,18 +245,20 @@ describe School do
 
   describe 'authenticate_pupil' do
     let(:school) { create :school }
-    let!(:pupil) { create :pupil, pupil_password: 'testTest', school: school }
+    let(:valid_password) { 'three memorable Words 123' }
+    let!(:pupil) { create :pupil, pupil_password: valid_password, school: school }
 
     it 'selects pupils with the correct password' do
-      expect(school.authenticate_pupil('testTest')).to eq(pupil)
+      expect(school.authenticate_pupil(valid_password)).to eq(pupil)
     end
 
     it 'returns nothing if the password does not match' do
       expect(school.authenticate_pupil('barp')).to eq(nil)
+      expect(school.authenticate_pupil('three memorable words')).to eq(nil)
     end
 
     it 'is not case sensitive' do
-      expect(school.authenticate_pupil('testtest')).to eq(pupil)
+      expect(school.authenticate_pupil('three memorable words 123')).to eq(pupil)
     end
   end
 

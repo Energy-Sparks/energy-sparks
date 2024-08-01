@@ -102,7 +102,7 @@ gem 'mobility', '~> 1.2.9'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
-gem 'good_job', '< 4'
+gem 'good_job'
 
 # Spreadsheet parsing
 # Switch to custom branch that incorporates some necessary bug fixes
