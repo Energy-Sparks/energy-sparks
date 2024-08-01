@@ -8,7 +8,6 @@ class ChartData
     @aggregated_school = aggregated_school
     @original_chart_type = original_chart_type
     @chart_config_overrides = chart_config
-    puts @chart_config_overrides
     @transformations = transformations
     @provide_advice = provide_advice
     @report_exception = report_exception
@@ -79,10 +78,7 @@ private
 
   def customised_chart_config(chart_manager)
     chart_config = chart_manager.get_chart_config(@original_chart_type)
-    puts chart_config.inspect
-    x = CustomisedChartConfig.new(chart_config).customise(@chart_config_overrides)
-    puts x.inspect
-    x
+    CustomisedChartConfig.new(chart_config).customise(@chart_config_overrides)
   end
 
   def apply_transformations(transformations, original_chart_type, custom_chart_config, chart_manager)
