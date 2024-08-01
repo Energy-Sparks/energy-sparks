@@ -136,7 +136,7 @@ module Tables
       if Float(value)
         FormatEnergyUnit.format(units, value.to_f, medium, false, true, :target).html_safe
       end
-    rescue => e
+    rescue
       I18n.t("classes.tables.summary_table_data.#{value}", default: value)
     end
 
