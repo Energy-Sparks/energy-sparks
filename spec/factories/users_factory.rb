@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :user do
     sequence(:email) { |n| "user_#{n}@test.com" }
-    password         { 'testpass' }
-    confirmed_at     { Time.zone.now }
+    sequence(:password) { |n| "secure password phrase #{n}" }
+    confirmed_at { Time.zone.now }
 
     factory :school_admin do
       name { 'School manager' }
@@ -23,7 +23,7 @@ FactoryBot.define do
 
     factory :pupil do
       role { :pupil }
-      pupil_password { 'test' }
+      pupil_password { 'three memorable words' }
       school
     end
 

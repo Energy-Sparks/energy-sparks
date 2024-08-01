@@ -10,8 +10,9 @@ describe 'account confirmation' do
 
     current_email.click_link 'Confirm my account'
 
-    fill_in 'New password', with: 'testtest1'
-    fill_in 'Confirm new password', with: 'testtest1'
+    password = 'testtesttest1'
+    fill_in 'New password', with: password
+    fill_in 'Confirm new password', with: password
 
     click_on 'Complete registration'
 
