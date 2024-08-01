@@ -26,6 +26,10 @@ module MetersHelper
     defaults.to_json.html_safe
   end
 
+  def icon_and_display_name(meter)
+    "#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.display_name}".html_safe
+  end
+
   def options_for_meter_selection(meters)
     options = []
     meters.each do |meter|
