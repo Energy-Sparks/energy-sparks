@@ -333,7 +333,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_link('Public')
               expect(page).to have_link('Process data')
               expect(page).to have_link('Data visible')
-              expect(page).to have_link('Regenerate')
+              expect(page).to have_css('a i.fa-arrows-rotate')
             end
           end
 

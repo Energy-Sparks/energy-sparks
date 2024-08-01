@@ -4,8 +4,8 @@ RSpec.describe 'meter_reviews', type: :system do
   let!(:school)                { create(:school) }
   let!(:reviewed_school)       { create(:school) }
   let!(:other_school)          { create(:school) }
-  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false) }
-  let!(:dcc_meter_granted)     { create(:electricity_meter, school: reviewed_school, dcc_meter: true, consent_granted: true) }
+  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: :smets2, consent_granted: false) }
+  let!(:dcc_meter_granted)     { create(:electricity_meter, school: reviewed_school, dcc_meter: :smets2, consent_granted: true) }
   let!(:electricity_meter)     { create(:electricity_meter, school: other_school) }
 
   let!(:admin)                 { create(:admin) }
@@ -219,7 +219,7 @@ RSpec.describe 'meter_reviews', type: :system do
 
     context 'when viewing meters' do
       let(:meter_review) { create(:meter_review) }
-      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: true, meter_review: meter_review, mpan_mprn: 1234567890111, school: school) }
+      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: :smets2, meter_review: meter_review, mpan_mprn: 1234567890111, school: school) }
 
       it 'provides a link to meter reviews' do
         visit school_meters_path(school)

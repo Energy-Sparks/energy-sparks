@@ -11,24 +11,30 @@
 #  school_id            :bigint(8)        not null
 #  title                :string
 #  updated_at           :datetime         not null
+#  updated_by_id        :bigint(8)
 #
 # Indexes
 #
 #  index_activities_on_activity_category_id  (activity_category_id)
 #  index_activities_on_activity_type_id      (activity_type_id)
 #  index_activities_on_school_id             (school_id)
+#  index_activities_on_updated_by_id         (updated_by_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (activity_category_id => activity_categories.id) ON DELETE => restrict
 #  fk_rails_...  (activity_type_id => activity_types.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
+#  fk_rails_...  (updated_by_id => users.id)
 #
 
 class Activity < ApplicationRecord
+  include Description
+
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities
   belongs_to :activity_category, optional: true
+  belongs_to :updated_by, optional: true, class_name: 'User'
 
   has_many :programme_activities
   has_many :programmes, through: :programme_activities
@@ -56,9 +62,5 @@ class Activity < ApplicationRecord
 
   def points
     observations.sum(:points)
-  end
-
-  def description_includes_images?
-    description&.body&.to_trix_html&.include?('figure')
   end
 end
