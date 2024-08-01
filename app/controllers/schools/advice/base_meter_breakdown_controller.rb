@@ -5,7 +5,7 @@ module Schools
 
       def insights
         @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
-        @meters_for_breakdown = sorted_meters_for_breakdown(@annual_usage_meter_breakdown)
+        @meters_for_breakdown = sorted_meters_for_breakdown
       end
 
       def analysis
