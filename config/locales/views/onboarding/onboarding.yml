@@ -134,8 +134,8 @@ en:
       name_hint: This could be the name of a classroom or an eco-team
       name_placeholder: e.g. %{school_name} classroom password
       pupil_password: Pupil password
-      pupil_password_hint: Make it memorable and easy for pupils to type
-      pupil_password_placeholder: e.g. superenergysavers
+      pupil_password_hint: Make it memorable and easy for pupils to type. Must be at least 12 characters.
+      pupil_password_placeholder: ''
       title: 'Step 5: Create your pupil account'
       title_for_update: Update your pupil account
       update: Update pupil account
