@@ -57,9 +57,6 @@
             <%= label_tag :meter, t('charts.usage.select_meter.title') %>
             <div class="form-group">
               <%= select_tag :meter,
-                             content_tag(:option,
-                                         t('charts.usage.select_meter.all_meters'),
-                                         value: 'all') +
                              options_for_select(options_for_meter_selection(meters)),
                              class: 'form-control' %>
             </div>
