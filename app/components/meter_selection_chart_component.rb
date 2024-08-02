@@ -47,6 +47,6 @@ class MeterSelectionChartComponent < ViewComponent::Base
   end
 
   def displayable_meters
-    @meters.to_a.keep_if(&:has_readings?)
+    @meters.to_a
   end
 end

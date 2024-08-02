@@ -16,50 +16,15 @@ module Schools
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
         @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
         @analysis_dates = analysis_dates
-        @meters = options_for_meter_select
-        @date_ranges_by_meter = date_ranges_by_meter
+        meter_selection = Schools::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, date_window: 363)
+        @meters = meter_selection.meters_for_options
+        @date_ranges_by_meter = meter_selection.date_ranges_by_meter
       end
 
       private
 
       def aggregate_meter
         aggregate_school.aggregate_meter(advice_page_fuel_type)
-      end
-
-      # TODO
-      def aggregate_meter_label
-        I18n.t('advice_pages.electricity_costs.analysis.meter_breakdown.whole_school')
-      end
-
-      def aggregate_meter_mpan_mprn
-        aggregate_meter.mpan_mprn.to_s
-      end
-
-      def aggregate_meter_adapter
-        OpenStruct.new(mpan_mprn: aggregate_meter_mpan_mprn, display_name: aggregate_meter_label, has_readings?: true)
-      end
-
-      def options_for_meter_select
-        [aggregate_meter_adapter] + @school.meters.active.where(meter_type: advice_page_fuel_type).order(:mpan_mprn)
-      end
-
-      def date_ranges_by_meter
-        ranges_by_meter = aggregate_school.electricity_meters.each_with_object({}) do |analytics_meter, date_range_by_meter|
-          end_date = analytics_meter.amr_data.end_date
-          start_date = [end_date - 363, analytics_meter.amr_data.start_date].max
-          meter = @school.meters.find_by_mpan_mprn(analytics_meter.mpan_mprn)
-          date_range_by_meter[analytics_meter.mpan_mprn] = {
-            meter: meter,
-            start_date: start_date,
-            end_date: end_date
-          }
-        end
-        ranges_by_meter[aggregate_meter_mpan_mprn] = {
-          meter: nil,
-          start_date: [aggregate_meter.amr_data.end_date - 365, aggregate_meter.amr_data.start_date].max,
-          end_date: aggregate_meter.amr_data.end_date
-        }
-        ranges_by_meter
       end
 
       def create_analysable
