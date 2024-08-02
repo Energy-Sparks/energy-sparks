@@ -7,6 +7,15 @@
            section_id: 'last_twelve_months',
            section_title: section_title %>
 
+<%= component 'meter_selection_chart',
+              school: school,
+              meters: meters,
+              date_ranges_by_meter: date_ranges_by_meter,
+              chart_type: chart,
+              analysis_controls: true,
+              chart_title_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.title",
+              chart_subtitle_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html" %>
+
 <%= component 'chart', chart_type: chart, school: school do |c| %>
   <% c.with_title do %>
     <%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.title") %>
@@ -14,8 +23,8 @@
   <% start_date = analysis_dates.one_years_data? ? analysis_dates.end_date - 1.year : analysis_dates.start_date %>
   <% c.with_subtitle do
        t("advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html",
-         start_month_year: short_dates(start_date),
-         end_month_year: short_dates(analysis_dates.end_date))
+         start_date: short_dates(start_date),
+         end_date: short_dates(analysis_dates.end_date))
      end %>
 <% end %>
 
