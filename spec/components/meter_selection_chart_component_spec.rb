@@ -4,27 +4,27 @@ require 'rails_helper'
 
 RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpers: true do
   let(:school) { create(:school) }
+
+  let(:meter_collection) do
+    build(:meter_collection, :with_aggregate_meter, fuel_type: :electricity)
+  end
+
   let(:meters) do
-    create_list(:electricity_meter_with_validated_reading, 2, school: school)
+    build_list(:meter, 3, type: :electricity)
   end
-  let(:chart_type) { :baseload }
-  let(:date_ranges_by_meter) do
-    date_ranges_by_meter = {}
-    meters.each do |m|
-      date_ranges_by_meter[m.mpan_mprn] = {
-        meter: m,
-        start_date: Time.zone.today - 365,
-        end_date: Time.zone.today
-      }
+
+  before do
+    meters.each do |meter|
+      meter_collection.add_electricity_meter(meter)
     end
-    date_ranges_by_meter
   end
+
+  let(:meter_selection) { Charts::MeterSelection.new(school, meter_collection, :electricity, include_whole_school: false) }
+
   let(:params) do
     {
-      chart_type: chart_type,
-      school: school,
-      meters: meters,
-      date_ranges_by_meter: date_ranges_by_meter,
+      chart_type: :baseload,
+      meter_selection: meter_selection,
       chart_title_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title',
       chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
     }
@@ -54,37 +54,17 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
   describe '#chart_descriptions' do
     subject(:component) { described_class.new(**params) }
 
-    let(:meters) { [create(:electricity_meter)] }
-    let(:date_ranges_by_meter) do
-      {
-        meters.first.mpan_mprn => {
-          start_date: Date.parse('20190101'), end_date: Date.parse('20200101'), meter: meters.first
-        },
-        '456' => {
-          start_date: Date.parse('20180601'), end_date: Date.parse('20210601'), meter: nil
-        }
-      }
-    end
-
     it 'returns translated strings with default for unknown meter' do
       result = component.chart_descriptions
-      expect(result.size).to eq(2)
+      expect(result.size).to eq(3)
       expect(result[meters.first.mpan_mprn]).to eq("Electricity baseload from 01 Jan 2019 to 01 Jan 2020 for #{meters.first.name_or_mpan_mprn}")
       expect(result['456']).to eq('Electricity baseload from 01 Jun 2018 to 01 Jun 2021 for 456')
     end
   end
 
-  describe '#displayable_meters' do
+  describe '#meters' do
     subject(:component) { described_class.new(**params) }
 
-    it { expect(component.displayable_meters).to match_array(meters) }
-
-    context 'with meter with no readings' do
-      let(:meters) do
-        [create(:electricity_meter, school: school), create(:electricity_meter_with_validated_reading, school: school)]
-      end
-
-      it { expect(component.displayable_meters).to eq([meters.last]) }
-    end
+    it { expect(component.meters).to match_array(meter_selection.meter_selection_options) }
   end
 end

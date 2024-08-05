@@ -1,10 +1,11 @@
 <div class="charts">
   <%= render ChartComponent.new(
-                chart_type: chart_type,
-                school: school,
-                chart_config: chart_config,
-                html_class: 'usage-chart',
-                **chart_options) do |c| %>
+        chart_type: chart_type,
+        school: school,
+        chart_config: chart_config,
+        html_class: 'usage-chart',
+        **chart_options
+      ) do |c| %>
     <% c.with_title { t(chart_title_key) } %>
     <% c.with_subtitle { '' } %>
     <% c.with_header do %>
@@ -25,7 +26,7 @@
             <%= t('advice_pages.charts.controls.select_meter') %>
           </label>
           <%= select_tag :meter,
-                         options_from_collection_for_select(displayable_meters, :mpan_mprn, :display_name, meters.first.mpan_mprn),
+                         options_from_collection_for_select(meters, :mpan_mprn, :display_name, meters.first.mpan_mprn),
                          include_blank: false,
                          class: 'custom-select',
                          data: {
