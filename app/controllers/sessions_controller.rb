@@ -7,9 +7,7 @@ class SessionsController < Devise::SessionsController
     if params[:school].present?
       @school = School.find_by(slug: params[:school])
     else
-      @schools = Rails.cache.fetch(:schools_for_login_form) do
-        School.school_list_for_login_form
-      end
+      @schools = SchoolCreator.school_list_for_login_form
     end
   end
 end
