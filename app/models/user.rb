@@ -75,6 +75,7 @@ class User < ApplicationRecord
   validates :email, presence: true
 
   validates :pupil_password, presence: true, if: :pupil?
+  validates :pupil_password, length: { minimum: 12 }, if: :pupil?
   validate :pupil_password_unique, if: :pupil?
 
   validates :staff_role_id, :school_id, presence: true, if: :staff?

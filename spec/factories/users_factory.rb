@@ -23,7 +23,7 @@ FactoryBot.define do
 
     factory :pupil do
       role { :pupil }
-      pupil_password { 'test' }
+      pupil_password { 'three memorable words' }
       school
     end
 
