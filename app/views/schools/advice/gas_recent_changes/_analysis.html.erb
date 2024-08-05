@@ -12,7 +12,7 @@
 <!--  COMPARISON OF GAS USE OVER 2 RECENT WEEKS -->
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-weeks',
                                            section_title: t('advice_pages.gas_recent_changes.analysis.compare_recent_weeks.title') %>
-
+<div class="charts">
   <%= component 'chart',
                 chart_type: :calendar_picker_gas_week_example_comparison_chart,
                 school: @school,
@@ -30,7 +30,7 @@
                                           split_meters: true, meters: @meters %>
     <% end %>
   <% end %>
-
+</div>
 
 <!--  COMPARISON OF GAS USE OVER 2 RECENT DAYS -->
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-days',
@@ -88,24 +88,21 @@
 <%= render 'schools/advice/section_title', section_id: 'impact-of-temperature',
                                            section_title: t('advice_pages.gas_recent_changes.analysis.impact_of_temperature.title') %>
 
-<div class="xcharts">
-  <%= component 'chart',
-                chart_type: :last_2_weeks_gas_degreedays,
-                school: @school,
-                analysis_controls: true,
-                no_zoom: true,
-                chart_config: @chart_config,
-                axis_controls: false do |c| %>
-    <% c.with_title { t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_title') } %>
-    <% c.with_subtitle do
-         t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_subtitle_html',
-           start_date: short_dates(@chart_config[:last_reading] - 13.days), end_date: short_dates(@chart_config[:last_reading]))
-       end %>
-    <% c.with_footer do %>
-      <% more_detail_url = link_to(t('advice_pages.gas_recent_changes.analysis.see_more_detail'),
-                                   'https://www.sustainabilityexchange.ac.uk/files/degree_days_for_energy_management_carbon_trust.pdf', target: '_blank', rel: 'noopener') %>
-      <p><%= t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_explanation_html',
-               more_detail_url:) %></p>
-    <% end %>
+<%= component 'chart',
+              chart_type: :last_2_weeks_gas_degreedays,
+              school: @school,
+              analysis_controls: true,
+              no_zoom: true,
+              chart_config: @chart_config,
+              axis_controls: false do |c| %>
+  <% c.with_title { t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_title') } %>
+  <% c.with_subtitle do
+       t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_subtitle_html',
+         start_date: short_dates(@chart_config[:last_reading] - 13.days), end_date: short_dates(@chart_config[:last_reading]))
+     end %>
+  <% c.with_footer do %>
+    <% more_detail_url = link_to(t('advice_pages.gas_recent_changes.analysis.see_more_detail'),
+                                 'https://www.sustainabilityexchange.ac.uk/files/degree_days_for_energy_management_carbon_trust.pdf', target: '_blank', rel: 'noopener') %>
+    <p><%= t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_explanation_html', more_detail_url:) %></p>
   <% end %>
-</div>
+<% end %>
