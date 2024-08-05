@@ -1,8 +1,8 @@
-<h1>Report for meter <%= @meter.school.name %> <small class="text-muted"><%= @meter.display_name %></small></h1>
+<h1><%= icon_and_display_name(@meter) %> meter report</h1>
 <p><%= link_to 'School group meter report', admin_school_group_meter_report_path(@meter.school.school_group), class: 'btn btn-success' %></p>
 
 <p>
-  This report provides a calendar view of the validated meter readings for this meter. It includes all data, starting from the
+  This report provides a calendar view of the validated meter readings for this <strong><%= @meter.school.name %></strong> meter. It includes all data, starting from the
   first recorded reading (<%= nice_dates(@first_validated_reading_date) %>), up until the present day.
 </p>
 
