@@ -16,9 +16,7 @@ module Schools
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
         @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
         @analysis_dates = analysis_dates
-        meter_selection = Schools::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, date_window: 363)
-        @meters = meter_selection.meters_for_options
-        @date_ranges_by_meter = meter_selection.date_ranges_by_meter
+        @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, date_window: 363)
       end
 
       private

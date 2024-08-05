@@ -1,4 +1,4 @@
-module Schools
+module Charts
   # Encapsulates presenting a list of meters used to populate the options for a form/chart
   #
   # So:
@@ -10,19 +10,22 @@ module Schools
   #
   # So class works with a MeterCollection
   class MeterSelection
+    attr_reader :school
+
     # meter_collection - use to extract list of meters
     # fuel type - fuel type of meters to list
     # include_whole_school - whether to include the aggregate meter as the whole school
     # date_window: if provided specified number of days for calculating date ranges
-    def initialize(school, meter_collection, fuel_type, include_whole_school: true, date_window: nil, load_model: true)
+    def initialize(school, meter_collection, fuel_type, filter: nil, include_whole_school: true, date_window: nil, load_model: true)
       @school = school
       @meter_collection = meter_collection
       @fuel_type = fuel_type
       @include_whole_school = include_whole_school
       @date_window = date_window
+      @filter = filter
     end
 
-    def meters_for_options
+    def meter_selection_options
       @include_whole_school ? displayable_meters.prepend(aggregate_meter_adapter) : displayable_meters
     end
 
@@ -87,8 +90,9 @@ module Schools
                else
                  raise 'Unexpected fuel type'
                end
-      ap meters
-      meters.keep_if { |m| m.amr_data.any? }.sort_by(&:mpan_mprn)
+      meters = meters.keep_if { |m| m.amr_data.any? } # only show meters with readings
+      meters = meters.reject(&@filter) if @filter # apply optional filter
+      meters.sort_by(&:mpan_mprn)
     end
   end
 end

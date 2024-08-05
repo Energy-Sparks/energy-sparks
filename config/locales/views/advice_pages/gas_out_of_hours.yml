@@ -27,7 +27,7 @@ en:
         title: Analysis
         usage_by_day_of_week:
           daytype_breakdown_gas_tolerant_chart:
-            subtitle_html: This chart shows a breakdown of your gas consumption between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>
+            subtitle_html: This chart shows a breakdown of your gas consumption between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span>
             title: Gas usage breakdown
           gas_by_day_of_week_tolerant_chart:
             footer_html: |-

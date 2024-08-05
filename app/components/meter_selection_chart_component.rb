@@ -19,11 +19,11 @@ class MeterSelectionChartComponent < ViewComponent::Base
 
   attr_reader :chart_type, :school, :meters, :date_ranges_by_meter, :chart_title_key, :chart_subtitle_key, :chart_options
 
-  def initialize(chart_type:, school:, meters:, date_ranges_by_meter:, chart_title_key:, chart_subtitle_key:, **chart_options)
+  def initialize(chart_type:, meter_selection:, chart_title_key:, chart_subtitle_key:, **chart_options)
     @chart_type = chart_type
-    @school = school
-    @meters = meters
-    @date_ranges_by_meter = date_ranges_by_meter
+    @school = meter_selection.school
+    @meters = meter_selection.meter_selection_options
+    @date_ranges_by_meter = meter_selection.date_ranges_by_meter
     @chart_title_key = chart_title_key
     @chart_subtitle_key = chart_subtitle_key
     @chart_options = chart_options.except(:html_class, :chart_config)
