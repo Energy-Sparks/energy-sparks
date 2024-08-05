@@ -25,4 +25,19 @@ module MetersHelper
     defaults[:exported_solar_pv] = defaults[:solar_pv]
     defaults.to_json.html_safe
   end
+
+  def icon_and_display_name(meter)
+    "#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.display_name}".html_safe
+  end
+
+  # Used for building an array of options to be used to populate a meter selection box
+  def options_for_meter_selection(meters)
+    # all meters option
+    options = [[I18n.t('charts.usage.select_meter.all_meters'), 'all']]
+    meters.each do |meter|
+      options << [meter.display_name, meter.mpan_mprn]
+      options << ["#{meter.display_name} #{I18n.t('charts.usage.select_meter.sub_meters.mains_consume')}", "#{meter.mpan_mprn}>mains_consume"] if meter.has_solar_array?
+    end
+    options
+  end
 end

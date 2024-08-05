@@ -99,7 +99,7 @@ module Schools
                                                 input_data::text IN ('"kitchen_only"', '"hotwater_only"')
                                               SQL
                                             ).active.select(:meter_id)
-              )
+              ).order(:mpan_mprn)
       end
 
       def days_when_heating_on_warm_weather
