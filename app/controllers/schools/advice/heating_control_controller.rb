@@ -29,7 +29,7 @@ module Schools
 
         @multiple_meters = heating_control_service.multiple_meters?
         if @multiple_meters
-          @meters = heating_control_service.meters.sort_by(&:display_name)
+          @meters = heating_control_service.meters
           @date_ranges_by_meter = heating_control_service.date_ranges_by_meter
         end
       end

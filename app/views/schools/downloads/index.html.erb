@@ -9,16 +9,16 @@
 <h2><%= t('schools.downloads.index.meters') %></h2>
 <p><%= t('schools.downloads.index.download_the_data_for_each_active_meter') %></p>
 <ul>
-  <% @school.meters.active.each do |meter| %>
-    <li><%= link_to "#{meter.display_name}", school_meter_path(@school, meter, format: "csv")  %></li>
+  <% @school.meters.active.order(:mpan_mprn).each do |meter| %>
+    <li><%= link_to icon_and_display_name(meter), school_meter_path(@school, meter, format: "csv")  %></li>
   <% end %>
 </ul>
 
 <% if @school.meters.inactive.any? %>
 <p><%= t('schools.downloads.index.download_the_data_for_each_inactive_meter') %></p>
 <ul>
-  <% @school.meters.inactive.each do |meter| %>
-    <li><%= link_to "#{meter.display_name}", school_meter_path(@school, meter, format: "csv")  %></li>
+  <% @school.meters.inactive.order(:mpan_mprn).each do |meter| %>
+    <li><%= link_to "#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.display_name}".html_safe, school_meter_path(@school, meter, format: "csv")  %></li>
   <% end %>
 </ul>
 <% end %>
