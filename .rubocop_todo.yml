@@ -315,7 +315,7 @@ RSpec/ExpectInHook:
 # Offense count: 10
 # Configuration parameters: Include, CustomTransform, IgnoreMethods, SpecSuffixOnly.
 # Include: **/*_spec*rb*, **/spec/**/*
-RSpec/FilePath:
+Rails/FilePath:
   Exclude:
     - 'spec/components/energy_tariffs_table_component_spec.rb'
     - 'spec/controllers/admin/meters_controller_spec.rb'
