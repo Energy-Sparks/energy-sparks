@@ -1,14 +1,22 @@
 module Charts
-  # Encapsulates presenting a list of meters used to populate the options for a form/chart
+  # Encapsulates presenting a list of meters used to populate a select box for driving a MeterSelectionChartComponent
   #
-  # So:
-  #  - list of (displayable) meters
-  #  - set of date ranges and label for each meter, to populate, e.g. subtitles and other chart options
+  # Produces a list of objects that can be used to populate a select box using +options_from_collection_for_select+
   #
-  # We often need to display lists of meters from the analytics, e.g. synthetic meters created for storage heaters,
-  # aggregate meters, mains+self consume meters where there is solar
+  # Also produces a hash of meters to date ranges that can be used to produce chart titles and subtitles that describe
+  # the date ranges being shown on the chart.
   #
-  # So class works with a MeterCollection
+  # By default it will include all meters for the given fuel type that have readings. But supports options for
+  # further filtering of the list of meters via the +filter+ option. Any meter for which the filter returns true will
+  # be dropped from the list.
+  #
+  # Some charts include an option to show data for the entire school as well as individual meters. This can be configured
+  # via the +include_whole_school+ option.
+  #
+  # The date ranges produced by +date+ranges_by_meter+ can be restricted using +date_window+
+  #
+  # Currently this class uses the meters returned from a MeterCollection rather than querying for meters from
+  # the database.
   class MeterSelection
     attr_reader :school
 
@@ -16,13 +24,20 @@ module Charts
     # fuel type - fuel type of meters to list
     # include_whole_school - whether to include the aggregate meter as the whole school
     # date_window: if provided specified number of days for calculating date ranges
-    def initialize(school, meter_collection, fuel_type, filter: nil, include_whole_school: true, date_window: nil, load_model: true)
+    def initialize(school,
+                   meter_collection,
+                   fuel_type,
+                   filter: nil,
+                   include_whole_school: true,
+                   date_window: nil,
+                   whole_school_label_key: 'advice_pages.electricity_costs.analysis.meter_breakdown.whole_school')
       @school = school
       @meter_collection = meter_collection
       @fuel_type = fuel_type
       @include_whole_school = include_whole_school
       @date_window = date_window
       @filter = filter
+      @aggregate_meter_label = I18n.t(whole_school_label_key)
     end
 
     def meter_selection_options
@@ -31,22 +46,20 @@ module Charts
 
     def date_ranges_by_meter
       ranges_by_meter = {}
+      if @include_whole_school
+        ranges_by_meter[aggregate_meter.mpan_mprn] = {
+          meter: aggregate_meter_adapter,
+          start_date: start_date(aggregate_meter),
+          end_date: aggregate_meter.amr_data.end_date
+        }
+      end
       displayable_meters.each do |analytics_meter|
         end_date = analytics_meter.amr_data.end_date
         start_date = start_date(analytics_meter)
-        meter = @load_model ? @school.meters.find_by_mpan_mprn(analytics_meter.mpan_mprn) : nil
         ranges_by_meter[analytics_meter.mpan_mprn] = {
-          meter: meter, # may be nil if synthetic meter or not loading models
+          meter: analytics_meter,
           start_date: start_date,
           end_date: end_date
-        }
-      end
-      if @include_whole_school
-        ranges_by_meter[aggregate_meter_mpan_mprn] = {
-          meter: aggregate_meter,
-          label: aggregate_meter_label,
-          start_date: [aggregate_meter.amr_data.end_date - 365, aggregate_meter.amr_data.start_date].max,
-          end_date: aggregate_meter.amr_data.end_date
         }
       end
       ranges_by_meter
@@ -54,29 +67,8 @@ module Charts
 
     private
 
-    def start_date(meter)
-      earliest_date = meter.amr_data.start_date
-      return earliest_date unless @date_window.present?
-
-      desired_date = meter.amr_data.end_date - @date_window
-      desired_date < earliest_date ? earliest_date : desired_date
-    end
-
     def aggregate_meter
       @meter_collection.aggregate_meter(@fuel_type)
-    end
-
-    # TODO
-    def aggregate_meter_label
-      I18n.t('advice_pages.electricity_costs.analysis.meter_breakdown.whole_school')
-    end
-
-    def aggregate_meter_mpan_mprn
-      aggregate_meter.mpan_mprn.to_s
-    end
-
-    def aggregate_meter_adapter
-      OpenStruct.new(name_or_mpan_mprn: aggregate_meter_mpan_mprn, mpan_mprn: aggregate_meter_mpan_mprn, display_name: aggregate_meter_label)
     end
 
     def displayable_meters
@@ -93,6 +85,23 @@ module Charts
       meters = meters.keep_if { |m| m.amr_data.any? } # only show meters with readings
       meters = meters.reject(&@filter) if @filter # apply optional filter
       meters.sort_by(&:mpan_mprn)
+    end
+
+    def start_date(meter)
+      earliest_date = meter.amr_data.start_date
+      return earliest_date unless @date_window.present?
+
+      desired_date = meter.amr_data.end_date - @date_window
+      desired_date < earliest_date ? earliest_date : desired_date
+    end
+
+    # Used to override default labelling methods for aggregate meter
+    def aggregate_meter_adapter
+      adapter = ActiveSupport::OrderedOptions.new
+      adapter.name_or_mpan_mprn = aggregate_meter.mpan_mprn
+      adapter.mpan_mprn = aggregate_meter.mpan_mprn
+      adapter.display_name = @aggregate_meter_label
+      adapter
     end
   end
 end
