@@ -101,7 +101,7 @@
           <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_api_status') %></dt>
           <dd class="col-sm-9"><%= @n3rgy&.status.to_s.humanize %></dd>
           <dt class="col-sm-3"><%= t('schools.meters.show.available_cache_range') %></dt>
-          <dd class="col-sm-9"><%= @n3rgy&.available_data if @n3rgy&.consented? %></dd>
+          <dd class="col-sm-9"><%= @n3rgy&.available_data&.map(&:rfc2822) if @n3rgy&.consented? %></dd>
         </dl>
       <% else %>
         <p><%= t('schools.meters.show.not_configured_as_a_dcc_meter') %></p>

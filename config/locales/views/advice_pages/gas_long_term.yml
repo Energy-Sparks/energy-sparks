@@ -21,7 +21,7 @@ en:
         meter_breakdown:
           summary: Your school has multiple gas meters. The section below shows gas use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
           table_explanation: Having multiple meters can help you understand your energy use better, however, there is a significant standing charge for each meter of more than £1,000 per year, so there is potential for saving by consolidating meters.
-          table_introduction: The table below covers the most recent 12 months from %{start_date} to %{end_date}.
+          table_introduction: The table below covers usage between %{start_date} and %{end_date}.
           title: Gas consumption breakdown by meter
         recent_trend:
           title: Recent trend

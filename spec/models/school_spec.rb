@@ -245,18 +245,20 @@ describe School do
 
   describe 'authenticate_pupil' do
     let(:school) { create :school }
-    let!(:pupil) { create :pupil, pupil_password: 'testTest', school: school }
+    let(:valid_password) { 'three memorable Words 123' }
+    let!(:pupil) { create :pupil, pupil_password: valid_password, school: school }
 
     it 'selects pupils with the correct password' do
-      expect(school.authenticate_pupil('testTest')).to eq(pupil)
+      expect(school.authenticate_pupil(valid_password)).to eq(pupil)
     end
 
     it 'returns nothing if the password does not match' do
       expect(school.authenticate_pupil('barp')).to eq(nil)
+      expect(school.authenticate_pupil('three memorable words')).to eq(nil)
     end
 
     it 'is not case sensitive' do
-      expect(school.authenticate_pupil('testtest')).to eq(pupil)
+      expect(school.authenticate_pupil('three memorable words 123')).to eq(pupil)
     end
   end
 
@@ -774,9 +776,9 @@ describe School do
       expect(subject.filterable_meters(:electricity)).to match_array(electricity_meters)
     end
 
-    context 'with solar' do
+    context 'with storage' do
       before do
-        subject.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_solar_pv: true))
+        subject.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true))
       end
 
       it 'returns gas meters' do

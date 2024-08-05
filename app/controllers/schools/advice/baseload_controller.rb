@@ -44,7 +44,7 @@ module Schools
       end
 
       def options_for_meter_select
-        @school.meters.active.electricity.sort_by(&:mpan_mprn)
+        @school.meters.active.electricity.order(:mpan_mprn)
       end
 
       def set_economic_tariffs_change_caveats

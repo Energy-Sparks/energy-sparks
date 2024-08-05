@@ -90,12 +90,19 @@ describe User do
 
   describe 'pupil validation' do
     let(:school) { create(:school) }
-    let!(:existing_pupil) { create(:pupil, pupil_password: 'testtest', school: school) }
+    let!(:existing_pupil) { create(:pupil, pupil_password: 'three memorable words', school: school) }
+
+    it 'enforces minimum length' do
+      expect(build(:pupil, school: school, pupil_password: 'abc')).not_to be_valid
+      expect(build(:pupil, school: school, pupil_password: 'test')).not_to be_valid
+      expect(build(:pupil, school: school, pupil_password: 'testtesttest')).to be_valid
+      expect(build(:pupil, school: school, pupil_password: 'some memorable words')).to be_valid
+    end
 
     it 'checks for unique passwords within the school' do
-      expect(build(:pupil, school: school, pupil_password: 'testtest')).not_to be_valid
-      expect(build(:pupil, school: school, pupil_password: 'testtest123')).to be_valid
-      expect(build(:pupil, school: create(:school), pupil_password: 'testtest')).to be_valid
+      expect(build(:pupil, school: school, pupil_password: 'three memorable words')).not_to be_valid
+      expect(build(:pupil, school: school, pupil_password: 'three memorable words 123')).to be_valid
+      expect(build(:pupil, school: create(:school), pupil_password: 'three memorable words')).to be_valid
     end
   end
 
