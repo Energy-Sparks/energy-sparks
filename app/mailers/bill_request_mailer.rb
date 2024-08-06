@@ -10,7 +10,7 @@ class BillRequestMailer < LocaleMailer
   def notify_admin
     @school = params[:school]
     @consent_document = params[:consent_document]
-    environment_identifier = ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
+    environment_identifier = env
     @updated = params[:updated]
     prefix = "[energy-sparks-#{environment_identifier}]"
     subject = @updated ? "#{prefix} #{@school.name} has updated a bill" : "#{prefix} #{@school.name} has uploaded a bill"

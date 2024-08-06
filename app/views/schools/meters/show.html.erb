@@ -49,6 +49,9 @@
         <%= link_to t('schools.meters.show.inventory'), inventory_school_meter_path(@school, @meter),
                     class: 'btn btn-info btn-sm' %>
       <% end %>
+      <% if current_user.admin? %>
+        <%= link_to 'Reload', reload_school_meter_path(@school, @meter), class: 'btn btn-info btn-sm' %>
+      <% end %>
       <% if can?(:view_tariff_reports, @meter) %>
         <%= link_to t('schools.meters.show.tariff_report'), smart_meter_tariffs_school_energy_tariffs_path(@school),
                     class: 'btn btn-info btn-sm' %>

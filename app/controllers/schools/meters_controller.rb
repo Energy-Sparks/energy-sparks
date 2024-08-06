@@ -82,6 +82,10 @@ module Schools
       redirect_to school_meters_path(@school)
     end
 
+    def reload
+      current_user.admin? && N3rgyReloadJob.perform_later(@meter)
+    end
+
     private
 
     def set_breadcrumbs
