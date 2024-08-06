@@ -466,12 +466,12 @@ class School < ApplicationRecord
   def filterable_meters(fuel_type)
     case fuel_type
     when :gas
-      active_meters.gas.real
+      active_meters.gas.order(:mpan_mprn)
     when :electricity
-      if has_solar_pv? || has_storage_heaters?
+      if has_storage_heaters?
         Meter.none
       else
-        active_meters.electricity.real
+        active_meters.electricity.order(:mpan_mprn)
       end
     else
       Meter.none
@@ -699,6 +699,10 @@ class School < ApplicationRecord
 
   def multiple_meters?(fuel_type)
     meters.active.where(meter_type: fuel_type).count > 1
+  end
+
+  def self.school_list_for_login_form
+    School.left_joins(:school_group).select(:id, :name, 'school_groups.name as school_group_name').where(visible: true).order(:name)
   end
 
   private

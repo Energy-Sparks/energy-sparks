@@ -476,4 +476,28 @@ describe 'Meter', :meters do
       end
     end
   end
+
+  describe '#has_solar_array?' do
+    let!(:meter) { create(:electricity_meter) }
+
+    context 'with no array' do
+      it { expect(meter.has_solar_array?).to eq(false) }
+    end
+
+    context 'with metered solar' do
+      before do
+        create(:solar_pv_mpan_meter_mapping, meter: meter)
+      end
+
+      it { expect(meter.has_solar_array?).to eq(true) }
+    end
+
+    context 'with estimated solar' do
+      before do
+        create(:solar_pv_attribute, meter: meter)
+      end
+
+      it { expect(meter.has_solar_array?).to eq(true) }
+    end
+  end
 end

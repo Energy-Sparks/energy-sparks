@@ -191,11 +191,7 @@ class Meter < ApplicationRecord
   end
 
   def display_name
-    name.present? ? "#{display_meter_mpan_mprn} (#{name})" : display_meter_mpan_mprn
-  end
-
-  def display_meter_mpan_mprn
-    "#{mpan_mprn} - #{meter_type.to_s.humanize}"
+    mpan_mprn_and_name
   end
 
   def display_summary(display_name: true, display_data_source: true, display_inactive: false)
@@ -277,6 +273,13 @@ class Meter < ApplicationRecord
 
   def open_issues
     issues&.where(issue_type: 'issue')&.status_open
+  end
+
+  def has_solar_array?
+    return false unless electricity?
+    meter_attributes.where(
+      attribute_type: [:solar_pv_mpan_meter_mapping, :solar_pv], deleted_by: nil, replaced_by: nil
+    ).any?
   end
 
   def dcc_meter?
