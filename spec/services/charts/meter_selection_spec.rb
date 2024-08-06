@@ -24,7 +24,7 @@ describe Charts::MeterSelection do
       expect(selection.meter_selection_options.length).to eq(4)
 
       expect(selection.meter_selection_options.first.mpan_mprn).to eq(meter_collection.aggregate_meter(:electricity).mpan_mprn)
-      expect(selection.meter_selection_options.first.display_name).to eq(I18n.t('advice_pages.electricity_costs.analysis.meter_breakdown.whole_school'))
+      expect(selection.meter_selection_options.first.display_name).to eq(I18n.t('advice_pages.charts.whole_school'))
 
       expect(selection.meter_selection_options[1..]).to eq(meters.sort_by(&:mpan_mprn))
     end
