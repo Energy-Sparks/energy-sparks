@@ -49,6 +49,41 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
         expect(html).to have_selector(:meter, visible: :visible)
       end
     end
+
+    context 'when there is only a single meter' do
+      let(:meters) { [build(:meter, type: :electricity)] }
+
+      it 'still adds the expected chart, defaulting to first meter' do
+        expect(html).to have_selector('div', id: "chart_baseload_#{meters.first.mpan_mprn}") { |d| JSON.parse(d['data-chart-config'])['type'] == 'baseload' }
+      end
+
+      it 'adds the title' do
+        expect(html).to have_selector('h4', text: I18n.t(params[:chart_title_key]))
+      end
+
+      it 'does not add the form' do
+        expect(html).not_to have_selector('form#chart-filter')
+      end
+    end
+
+    context 'with header and footer slots' do
+      let(:html) do
+        render_inline described_class.new(**params) do |c|
+          c.with_header   { "<strong>I'm a header</strong>".html_safe }
+          c.with_footer   { "<small>I'm a footer</small>".html_safe }
+        end
+      end
+
+      it { expect(html).to have_selector('strong', text: "I'm a header") }
+      it { expect(html).to have_selector('small', text: "I'm a footer") }
+
+      context 'when theres a single meter' do
+        let(:meters) { [build(:meter, type: :electricity)] }
+
+        it { expect(html).to have_selector('strong', text: "I'm a header") }
+        it { expect(html).to have_selector('small', text: "I'm a footer") }
+      end
+    end
   end
 
   describe '#chart_descriptions' do
