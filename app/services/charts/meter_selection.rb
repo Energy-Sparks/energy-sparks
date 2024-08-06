@@ -24,6 +24,9 @@ module Charts
     # fuel type - fuel type of meters to list
     # include_whole_school - whether to include the aggregate meter as the whole school
     # date_window: if provided specified number of days for calculating date ranges
+    #
+    # i18n-tasks-use t('advice_pages.charts.the_whole_school')
+    # i18n-tasks-use t('advice_pages.charts.whole_school')
     def initialize(school,
                    meter_collection,
                    fuel_type,

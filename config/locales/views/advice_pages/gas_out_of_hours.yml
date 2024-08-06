@@ -22,6 +22,7 @@ en:
             time_of_use: Time of use
             total: Total
           table_introduction: The table below shows how much gas has been used when the school is open and closed on a school day as well as during weekends and holidays.
+          table_title: Whole school summary
           title: Last 12 months
         summary: This section gives a more detailed analysis of your school’s out of hours gas use and some things to look out for. For good energy management, you want most of your energy use to be when the school is open.
         title: Analysis

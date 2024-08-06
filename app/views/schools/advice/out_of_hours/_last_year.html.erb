@@ -7,7 +7,6 @@
            section_id: 'last_twelve_months',
            section_title: section_title %>
 
-
 <%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.title') %>
 <%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.subtitle_html') %>
 <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.title') %>
@@ -18,6 +17,10 @@
               analysis_controls: true,
               chart_title_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.title",
               chart_subtitle_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html" %>
+
+<% if meter_selection.underlying_meters.count > 1 %>
+  <h5><%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.table_title") %></h5>
+<% end %>
 
 <p><%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.table_introduction") %></p>
 
