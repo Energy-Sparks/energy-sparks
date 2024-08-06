@@ -52,6 +52,7 @@ shared_examples 'a meter breakdown page' do
     it_behaves_like 'a meter breakdown advice page tab', tab: 'Insights'
 
     it 'includes a meter breakdown table' do
+      expect(page).to have_content('The table below covers usage between')
       expect(page).to have_css('table#meter-breakdown-summary')
       within 'table#meter-breakdown-summary' do
         meters.each do |meter|

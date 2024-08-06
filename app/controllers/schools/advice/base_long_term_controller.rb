@@ -21,7 +21,7 @@ module Schools
         @multiple_meters = multiple_meters?
         if @multiple_meters
           @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
-          @meters_for_breakdown = sorted_meters_for_breakdown(@annual_usage_meter_breakdown)
+          @meters_for_breakdown = sorted_meters_for_breakdown
         end
       end
 
@@ -43,9 +43,9 @@ module Schools
         usage_service
       end
 
-      def sorted_meters_for_breakdown(annual_usage_meter_breakdown)
-        meters = @school.meters.where(mpan_mprn: annual_usage_meter_breakdown.meters).order(:mpan_mprn)
-        meters.index_by(&:mpan_mprn)
+      def sorted_meters_for_breakdown
+        meters = aggregate_school.underlying_meters(advice_page_fuel_type)
+        meters.sort_by(&:mpan_mprn).index_by(&:mpan_mprn)
       end
 
       def analysis_dates
