@@ -20,10 +20,16 @@ module Charts
   class MeterSelection
     attr_reader :school
 
-    # meter_collection - use to extract list of meters
-    # fuel type - fuel type of meters to list
-    # include_whole_school - whether to include the aggregate meter as the whole school
-    # date_window: if provided specified number of days for calculating date ranges
+    # @param School school the school whose data will be displayed
+    # @param MeterCollection meter_collection the aggregate school, used to find meters and data ranges
+    # @param Symbol fuel_type specifies the fuel type of the meters to be selected
+    # @param filter optional, a filter to be applied to list of meters, should return true for any to be dropped
+    # @param boolean include_whole_school specifies whether there should be a "Whole school" option included in list
+    # This will be based on the aggregate meter for the specified +fuel_type+
+    # @param Integer date_window optional, used to build date ranges for each meter for dynamically populating sub titles
+    # with date ranges
+    # @param String whole_school_title_key, i18n key used for the meter name for the aggregate meter, if included
+    # @param String whole_school_label_key, i18n key used for the display name for the aggregate meter, if included
     #
     # i18n-tasks-use t('advice_pages.charts.the_whole_school')
     # i18n-tasks-use t('advice_pages.charts.whole_school')

@@ -5,15 +5,13 @@
 #
 # Supports majority of same parameters as ChartComponents except +html_class+ which is
 # set to 'usage-chart'. This is used by selectors in usage_charts.js to drive the dynamic
-# chart behaviour
+# chart behaviour required for these charts to work
 #
-# New parameters:
+# The chart_subtitle_key should refer to an HTML template that includes markup that allows start date, end
+# date and meter name to be injected, e.g.:
 #
-# chart_title_key: i18n key for chart title
-# chart_subtitle_key i18n key for formatting dynamic subtitles as meter options are changed
-# meters - list of meters to be displayed
-# date_ranges_by_meter - hash of mpxn => { meter:, start_date:, end_date }
-# used to build the sub titles for each meter
+# This is a subtitle for meter <span class="meter">%{meter}</span>
+#  <span class="start-date">%{start_date}</span>-<span class="end-date">%{end_date}</span>
 class MeterSelectionChartComponent < ViewComponent::Base
   renders_one :header
   renders_one :footer
@@ -24,6 +22,12 @@ class MeterSelectionChartComponent < ViewComponent::Base
 
   attr_reader :chart_type, :chart_title_key, :chart_options
 
+  # @param Symbol chart_type the name of the chart to display
+  # @param Charts::MeterSelection meter_selection a meter selection instance that will be used to populate the
+  # list of meters and build the dynamic sub titles that are displayed when meters are selected
+  # @param String chart_title_key the I18n key for the chart title
+  # @param String chart_subtitle_key the I18n key used to build the subtitles
+  # @params chart_options all other ChartComponent options
   def initialize(chart_type:, meter_selection:, chart_title_key:, chart_subtitle_key:, **chart_options)
     @chart_type = chart_type
     @meter_selection = meter_selection
