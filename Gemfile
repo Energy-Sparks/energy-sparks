@@ -131,6 +131,7 @@ group :development, :test do
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
   gem 'rubocop'
+  gem 'rubocop-capybara'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
