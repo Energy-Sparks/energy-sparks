@@ -154,10 +154,12 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
   var dataPath = chartConfig.jsonUrl;
   var transformations = chartConfig.transformations;
   var noAdvice = chartConfig.no_advice;
+  var subMeter = chartConfig.sub_meter;
   var requestData = {
     chart_type: chartType,
     chart_y_axis_units: yAxisUnits,
     mpan_mprn: mpanMprn,
+    sub_meter: subMeter,
     transformations: transformations,
     series_breakdown: seriesBreakdown,
     date_ranges: dateRanges

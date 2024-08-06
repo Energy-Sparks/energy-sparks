@@ -12,6 +12,7 @@ class CustomisedChartConfig
 
     customise_y_axis(new_config, overrides)
     customise_meter_definition(new_config, overrides)
+    customised_sub_meter_definition(new_config, overrides)
     customise_series_breakdown(new_config, overrides)
     customise_timescale(new_config, overrides)
 
@@ -32,6 +33,12 @@ class CustomisedChartConfig
   def customise_meter_definition(new_config, overrides)
     if overrides[:mpan_mprn].present?
       new_config[:meter_definition] = overrides[:mpan_mprn].to_i
+    end
+  end
+
+  def customised_sub_meter_definition(new_config, overrides)
+    if overrides[:sub_meter_definition].present?
+      new_config[:sub_meter_definition] = overrides[:sub_meter_definition].to_sym
     end
   end
 

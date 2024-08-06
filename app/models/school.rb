@@ -466,12 +466,12 @@ class School < ApplicationRecord
   def filterable_meters(fuel_type)
     case fuel_type
     when :gas
-      active_meters.gas.real
+      active_meters.gas.order(:mpan_mprn)
     when :electricity
-      if has_solar_pv? || has_storage_heaters?
+      if has_storage_heaters?
         Meter.none
       else
-        active_meters.electricity.real
+        active_meters.electricity.order(:mpan_mprn)
       end
     else
       Meter.none
