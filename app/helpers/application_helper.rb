@@ -470,8 +470,8 @@ module ApplicationHelper
   end
 
   def school_name_group(school)
-    if school.school_group
-      "#{school.name} (#{school.school_group.name})"
+    if school.school_group_name
+      "#{school.name} (#{school.school_group_name})"
     else
       school.name
     end
