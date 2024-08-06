@@ -14,6 +14,7 @@ cy:
     breadcrumbs:
       root: Cyngor
     charts:
+      the_whole_school: yr ysgol gyfan
       whole_school: Ysgol gyfan
       controls:
         select_meter: Dewiswch fesurydd

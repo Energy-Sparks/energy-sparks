@@ -30,6 +30,7 @@ module Charts
                    filter: nil,
                    include_whole_school: true,
                    date_window: nil,
+                   whole_school_title_key: 'advice_pages.charts.the_whole_school',
                    whole_school_label_key: 'advice_pages.charts.whole_school')
       @school = school
       @meter_collection = meter_collection
@@ -37,7 +38,8 @@ module Charts
       @include_whole_school = include_whole_school
       @date_window = date_window
       @filter = filter
-      @aggregate_meter_label = I18n.t(whole_school_label_key)
+      @whole_school_title_key = whole_school_title_key
+      @whole_school_label_key = whole_school_label_key
     end
 
     def meter_selection_options
@@ -53,6 +55,10 @@ module Charts
           end_date: aggregate_meter.amr_data.end_date
         }
       end
+      # if single meter, then the underlying meters is the aggregate meter
+      # just return the range for aggregate adapter in this case so its labelled
+      # correctly as "the whole school"
+      return ranges_by_meter if @include_whole_school && underlying_meters.count == 1
       displayable_meters.each do |analytics_meter|
         end_date = analytics_meter.amr_data.end_date
         start_date = start_date(analytics_meter)
@@ -63,6 +69,10 @@ module Charts
         }
       end
       ranges_by_meter
+    end
+
+    def underlying_meters
+      @underlying_meters ||= displayable_meters
     end
 
     private
@@ -98,9 +108,9 @@ module Charts
     # Used to override default labelling methods for aggregate meter
     def aggregate_meter_adapter
       adapter = ActiveSupport::OrderedOptions.new
-      adapter.name_or_mpan_mprn = aggregate_meter.mpan_mprn
+      adapter.name_or_mpan_mprn = I18n.t(@whole_school_title_key)
       adapter.mpan_mprn = aggregate_meter.mpan_mprn
-      adapter.display_name = @aggregate_meter_label
+      adapter.display_name = I18n.t(@whole_school_label_key)
       adapter
     end
   end

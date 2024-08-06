@@ -62,9 +62,9 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
     end
   end
 
-  describe '#meters' do
+  describe '#meter_selection_options' do
     subject(:component) { described_class.new(**params) }
 
-    it { expect(component.meters).to match_array(meter_selection.meter_selection_options) }
+    it { expect(component.meter_selection_options).to match_array(meter_selection.meter_selection_options) }
   end
 end

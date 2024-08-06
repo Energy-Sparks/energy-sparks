@@ -85,4 +85,10 @@ describe Charts::MeterSelection do
       end
     end
   end
+
+  describe '#underlying_meters' do
+    it 'returns the original meters' do
+      expect(selection.underlying_meters).to eq(meters)
+    end
+  end
 end

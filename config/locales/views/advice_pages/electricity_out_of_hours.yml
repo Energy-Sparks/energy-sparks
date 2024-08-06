@@ -26,7 +26,7 @@ en:
         title: Analysis
         usage_by_day_of_week:
           daytype_breakdown_electricity_tolerant_chart:
-            subtitle_html: This chart shows a breakdown of your electricity consumption between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span>
+            subtitle_html: This chart shows a breakdown of your electricity consumption between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span> for <span class="meter">%{meter}</span>
             title: Electricity usage breakdown
           electricity_by_day_of_week_tolerant_chart:
             footer: There will be some electricity usage at weekends from appliances and devices left on, but the school should aim to minimise these. Schools with low weekend electricity consumption aim to switch as many appliances off as possible on a Friday afternoon, sometimes providing the caretaker or cleaning staff with a checklist as to what they should be turning off.
