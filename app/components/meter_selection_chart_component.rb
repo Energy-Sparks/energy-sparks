@@ -15,6 +15,9 @@
 # date_ranges_by_meter - hash of mpxn => { meter:, start_date:, end_date }
 # used to build the sub titles for each meter
 class MeterSelectionChartComponent < ViewComponent::Base
+  renders_one :header
+  renders_one :footer
+
   include ChartHelper
 
   delegate :school, :meter_selection_options, :underlying_meters, to: :@meter_selection
