@@ -528,6 +528,7 @@ Rails.application.routes.draw do
         concerns :issueable
       end
     end
+    resources :work_allocation, only: [:index]
 
     resources :help_pages do
       member do
