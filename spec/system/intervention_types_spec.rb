@@ -45,7 +45,7 @@ describe 'intervention types', type: :system do
     end
 
     it 'paginates search results' do
-      run_with_temporary_pagy_default(items: 1) do
+      run_with_temporary_pagy_default(limit: 1) do
         visit search_intervention_types_path
         fill_in 'query', with: 'intervention'
         click_on 'Search'
