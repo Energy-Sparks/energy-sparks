@@ -30,7 +30,7 @@ module Charts
                    filter: nil,
                    include_whole_school: true,
                    date_window: nil,
-                   whole_school_label_key: 'advice_pages.electricity_costs.analysis.meter_breakdown.whole_school')
+                   whole_school_label_key: 'advice_pages.charts.whole_school')
       @school = school
       @meter_collection = meter_collection
       @fuel_type = fuel_type

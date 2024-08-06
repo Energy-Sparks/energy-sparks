@@ -7,6 +7,11 @@
            section_id: 'last_twelve_months',
            section_title: section_title %>
 
+
+<%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.title') %>
+<%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.subtitle_html') %>
+<%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.title') %>
+<%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.subtitle_html') %>
 <%= component 'meter_selection_chart',
               meter_selection: meter_selection,
               chart_type: chart,
