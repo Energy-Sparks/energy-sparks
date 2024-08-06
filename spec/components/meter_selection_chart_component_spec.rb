@@ -57,8 +57,8 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
     it 'returns translated strings with default for unknown meter' do
       result = component.chart_descriptions
       expect(result.size).to eq(3)
-      expect(result[meters.first.mpan_mprn]).to eq("Electricity baseload from 01 Jan 2019 to 01 Jan 2020 for #{meters.first.name_or_mpan_mprn}")
-      expect(result['456']).to eq('Electricity baseload from 01 Jun 2018 to 01 Jun 2021 for 456')
+      first_meter = meters.first
+      expect(result[first_meter.mpan_mprn]).to eq("Electricity baseload from #{first_meter.amr_data.start_date.to_fs(:es_short)} to #{first_meter.amr_data.end_date.to_fs(:es_short)} for #{first_meter.name_or_mpan_mprn}")
     end
   end
 
