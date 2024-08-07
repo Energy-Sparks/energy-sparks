@@ -13,6 +13,7 @@
 # This is a subtitle for meter <span class="meter">%{meter}</span>
 #  <span class="start-date">%{start_date}</span>-<span class="end-date">%{end_date}</span>
 class MeterSelectionChartComponent < ViewComponent::Base
+  renders_one :title
   renders_one :header
   renders_one :footer
 
@@ -20,20 +21,22 @@ class MeterSelectionChartComponent < ViewComponent::Base
 
   delegate :school, :meter_selection_options, :underlying_meters, to: :@meter_selection
 
-  attr_reader :chart_type, :chart_title_key, :chart_options
+  attr_reader :chart_type, :chart_options
 
   # @param Symbol chart_type the name of the chart to display
   # @param Charts::MeterSelection meter_selection a meter selection instance that will be used to populate the
   # list of meters and build the dynamic sub titles that are displayed when meters are selected
-  # @param String chart_title_key the I18n key for the chart title
   # @param String chart_subtitle_key the I18n key used to build the subtitles
   # @params chart_options all other ChartComponent options
-  def initialize(chart_type:, meter_selection:, chart_title_key:, chart_subtitle_key:, **chart_options)
+  def initialize(chart_type:, meter_selection:, chart_subtitle_key:, **chart_options)
     @chart_type = chart_type
     @meter_selection = meter_selection
-    @chart_title_key = chart_title_key
     @chart_subtitle_key = chart_subtitle_key
     @chart_options = chart_options.except(:html_class, :chart_config)
+  end
+
+  def render?
+    @meter_selection.underlying_meters.any?
   end
 
   def configuration

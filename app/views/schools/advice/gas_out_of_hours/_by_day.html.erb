@@ -10,8 +10,10 @@
 <%= component 'meter_selection_chart',
              meter_selection: meter_selection,
              chart_type: :gas_by_day_of_week_tolerant,
-             chart_title_key: 'advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title',
              chart_subtitle_key: 'advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html' do |c| %>
+   <% c.with_title do %>
+     <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
+   <% end %>
    <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html') %>
    <% c.with_footer do %>
      <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html',

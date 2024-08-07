@@ -117,8 +117,9 @@
         meter_selection: @meter_selection,
         chart_type: :baseload,
         analysis_controls: false,
-        chart_title_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title',
-        chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
+        chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle' do |c|
     %>
+      <% c.with_title { I18n.t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title') } %>
+    <% end %>
 
   <% end %>

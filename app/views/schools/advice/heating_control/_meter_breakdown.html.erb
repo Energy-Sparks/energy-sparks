@@ -3,6 +3,8 @@
 <%= component 'meter_selection_chart',
     meter_selection: meter_selection,
     chart_type: :gas_heating_season_intraday_up_to_1_year,
-    chart_title_key: 'advice_pages.heating_control.analysis.meter_breakdown.chart_title',
-    chart_subtitle_key: 'advice_pages.heating_control.analysis.meter_breakdown.chart_subtitle_html'
-%>
+    chart_subtitle_key: 'advice_pages.heating_control.analysis.meter_breakdown.chart_subtitle_html' do |c| %>
+    <% c.with_title do %>
+      <%= t('advice_pages.heating_control.analysis.meter_breakdown.chart_title') %>
+    <% end %>
+<% end %>

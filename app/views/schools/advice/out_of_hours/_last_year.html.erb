@@ -15,8 +15,11 @@
               meter_selection: meter_selection,
               chart_type: chart,
               analysis_controls: true,
-              chart_title_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.title",
-              chart_subtitle_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html" %>
+              chart_subtitle_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html" do |c| %>
+  <% c.with_title do %>
+    <%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.title") %>
+  <% end %>
+<% end %>
 
 <% if meter_selection.underlying_meters.count > 1 %>
   <h5><%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.table_title") %></h5>

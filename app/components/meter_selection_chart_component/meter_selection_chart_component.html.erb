@@ -7,7 +7,9 @@
           html_class: 'usage-chart',
           **chart_options
         ) do |c| %>
-      <% c.with_title { t(chart_title_key) } %>
+      <% c.with_title do %>
+        <%= title %>
+      <% end %>
       <% c.with_subtitle { '' } %>
       <% c.with_header do %>
         <%= header %>
@@ -54,7 +56,9 @@
         chart_config: chart_config,
         **chart_options
       ) do |c| %>
-    <% c.with_title { t(chart_title_key) } %>
+    <% c.with_title do %>
+      <%= title %>
+    <% end if title? %>
     <% c.with_subtitle { sanitize chart_descriptions[meter_selection_options.first.mpan_mprn] } %>
     <% c.with_header do %>
       <%= header %>
