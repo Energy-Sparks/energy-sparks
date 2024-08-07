@@ -33,13 +33,13 @@ en:
           title: Annual electricity use comparison with other schools
         electricity_by_month_year:
           explanation: This chart can be a quick way to spot whether energy saving behaviour and lighting and equipment updates are having an impact on your electricity consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
-          subtitle_html: This chart shows the monthly %{fuel_type} consumption from %{start_date} to <span class='end-date'>%{end_date}</span>
-          subtitle_two_years_html: This chart shows the difference in %{fuel_type} consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
-          title: Monthly %{fuel_type} consumption comparison
-          title_two_years: Monthly %{fuel_type} consumption comparison over the last two years
+          subtitle_html: This chart shows the monthly electricity consumption from <span class='start-date'>%{start_date}</span> to <span class='end-date'>%{end_date}</span> for <span class='meter'>%{meter}</span>
+          subtitle_two_years_html: This chart shows the difference in electricity consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months for <span class='meter'>%{meter}</span>
+          title: Monthly electricity consumption comparison
+          title_two_years: Monthly electricity consumption comparison over the last two years
         electricity_longterm_trend:
           explanation: Unless the school has had additional buildings added, if you are managing your electricity consumption well this should show a downward trend; more modern ICT equipment, LED lighting and behaviour change all contribute to reducing electricity usage.
-          subtitle: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each full year of data we have for your school
+          subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each full year of data we have for <span class='meter'>%{meter}</span>
           title: Change in electricity consumption over the last few years
         group_by_week_electricity:
           explanation_html: |-
@@ -49,7 +49,7 @@ en:
             <p>
             The colouring on the graph also highlights electricity usage over holidays in red. Holiday usage is normally caused by appliances and computers being left on (called 'baseload'). The school should aim to reduce this baseload (which also occurs at weekends and overnight during school days) as this will have a big impact on a school's energy costs. Sometimes this can be achieved by switching appliances off on Fridays before weekends and holidays, and sometimes by replacing older electrical appliances with more efficient new ones.
             </p>
-          subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+          subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each week for <span class='meter'>%{meter}</span> between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
           title: Electricity consumption by week for the last 12 months
         group_by_week_electricity_meter_breakdown_one_year:
           header: Clicking on the chart columns allows you to drilldown to more detailed data. Clicking on the legend allows you to add and remove meters.
@@ -57,7 +57,7 @@ en:
           title: Electricity consumption by meter
         group_by_week_electricity_unlimited:
           explanation: This chart shows how your electricity consumption varies throughout the year over the long term. Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how electricity consumption generally increases in the winter and is lower in the summer. You can click on the chart to explore the data in more detail. As above, you should see a general downward trend.
-          subtitle: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for every week of data for your school
+          subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for every week of data for <span class='meter'>%{meter}</span>
           title: Electricity consumption by week for the last few years
         group_by_week_electricity_versus_benchmark:
           subtitle_html: This chart shows how your school’s electricity use compares against well managed and exemplar schools for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
