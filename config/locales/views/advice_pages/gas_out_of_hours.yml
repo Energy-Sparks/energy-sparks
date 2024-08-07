@@ -22,12 +22,13 @@ en:
             time_of_use: Time of use
             total: Total
           table_introduction: The table below shows how much gas has been used when the school is open and closed on a school day as well as during weekends and holidays.
+          table_title: Whole school summary
           title: Last 12 months
         summary: This section gives a more detailed analysis of your school’s out of hours gas use and some things to look out for. For good energy management, you want most of your energy use to be when the school is open.
         title: Analysis
         usage_by_day_of_week:
           daytype_breakdown_gas_tolerant_chart:
-            subtitle_html: This chart shows a breakdown of your gas consumption between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>
+            subtitle_html: This chart shows a breakdown of your gas consumption between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span>
             title: Gas usage breakdown
           gas_by_day_of_week_tolerant_chart:
             footer_html: |-
@@ -42,7 +43,7 @@ en:
                 <li>incorrect boiler settings</li>
               </ul>
               <p>By eliminating weekend gas consumption at your school you could save up to %{savings_gbp} (%{savings_kwh}kWh) per year.</p>
-            subtitle_html: This chart shows the total amount of gas used by your school between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, broken down by day of the week and time of use
+            subtitle_html: This chart shows the total amount of gas used by <span class="meter">%{meter}</span> between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span>, broken down by day of the week and time of use
             title: Gas use by day of the week
           subtitle: To understand why your school is using too much gas outside of school hours, first look at gas use by day of the week.
           title: Usage by day of week

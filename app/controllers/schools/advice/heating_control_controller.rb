@@ -29,8 +29,12 @@ module Schools
 
         @multiple_meters = heating_control_service.multiple_meters?
         if @multiple_meters
-          @meters = heating_control_service.meters
-          @date_ranges_by_meter = heating_control_service.date_ranges_by_meter
+          @meter_selection = Charts::MeterSelection.new(@school,
+                                                        aggregate_school,
+                                                        advice_page_fuel_type,
+                                                        filter: :non_heating_only?,
+                                                        date_window: 363,
+                                                        include_whole_school: false)
         end
       end
 

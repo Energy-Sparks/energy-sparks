@@ -64,7 +64,7 @@ module Schools
       end
 
       def aggregate_meter_label
-        I18n.t("advice_pages.#{advice_page_key}.analysis.meter_breakdown.whole_school")
+        I18n.t('advice_pages.charts.whole_school')
       end
 
       def aggregate_meter_mpan_mprn

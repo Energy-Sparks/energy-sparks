@@ -278,19 +278,6 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     end
   end
 
-  describe '#date_ranges_by_meter' do
-    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', fuel_type: :electricity, amr_data: double(start_date: Date.parse('20190101'), end_date: Date.parse('20200101'))) }
-    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', fuel_type: :electricity, amr_data: double(start_date: Date.parse('20180101'), end_date: Date.parse('20210101'))) }
-    let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
-
-    it 'returns date ranges' do
-      result = service.date_ranges_by_meter
-      expect(result.keys).to match_array(%w[meter1 meter2])
-      expect(result['meter1'][:start_date]).to eq(Date.parse('20190101'))
-      expect(result['meter1'][:end_date]).to eq(Date.parse('20200101'))
-    end
-  end
-
   describe '#calculate_rating_from_range' do
     let(:good) {0.0}
     let(:bad)  {0.5}

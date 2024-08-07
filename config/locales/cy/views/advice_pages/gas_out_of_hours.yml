@@ -26,7 +26,7 @@ cy:
         title: Dadansoddiad
         usage_by_day_of_week:
           daytype_breakdown_gas_tolerant_chart:
-            subtitle_html: Mae'r siart hwn yn dangos manylion o'ch defnydd o nwy rhwng <span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>
+            subtitle_html: Mae'r siart hwn yn dangos manylion o'ch defnydd o nwy rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>
             title: Manylion defnydd o nwy
           gas_by_day_of_week_tolerant_chart:
             footer_html: |-

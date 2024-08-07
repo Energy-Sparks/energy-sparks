@@ -25,7 +25,7 @@ cy:
         title: Dadansoddiad
         usage_by_day_of_week:
           daytype_breakdown_electricity_tolerant_chart:
-            subtitle_html: Mae'r siart hwn yn dangos manylion o'ch defnydd o drydan rhwng <span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>
+            subtitle_html: Mae'r siart hwn yn dangos manylion o'ch defnydd o drydan rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>
             title: Manylion defnydd trydan
           electricity_by_day_of_week_tolerant_chart:
             footer: Bydd rhywfaint o ddefnydd trydan ar benwythnosau o offer a dyfeisiau sy'n cael eu gadael ymlaen, ond dylai'r ysgol anelu at leihau'r rhain. Mae ysgolion sydd â defnydd isel o drydan ar benwythnosau yn anelu at ddiffodd cymaint o offer â phosibl ar brynhawn dydd Gwener, gan roi rhestr wirio weithiau i'r gofalwr neu'r staff glanhau o'r hyn y dylent fod yn ei ddiffodd.

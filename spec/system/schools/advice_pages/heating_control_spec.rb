@@ -44,6 +44,8 @@ RSpec.describe 'heating control advice page', type: :system do
         seasonal_analysis: seasonal_analysis
       )
 
+      allow(meter_collection).to receive(:heat_meters).and_return([build(:meter, type: :gas)])
+
       sign_in(user)
       visit school_advice_heating_control_path(school)
     end
