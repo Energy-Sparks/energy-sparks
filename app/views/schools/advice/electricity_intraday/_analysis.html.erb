@@ -42,6 +42,8 @@
            section_id: 'schooldays',
            section_title: t('advice_pages.electricity_intraday.analysis.schooldays.title') %>
 
+<%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle.since_html") %>
+<%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle.two_years_html") %>
 <%= component 'meter_selection_chart',
               chart_type: :intraday_line_school_days_reduced_data,
               meter_selection: @meter_selection,
@@ -56,6 +58,8 @@
 <%= render 'schools/advice/section_title', section_id: 'holidays',
                                            section_title: t('advice_pages.electricity_intraday.analysis.holidays.title') %>
 
+<%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle.since_html") %>
+<%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle.two_years_html") %>
 <%= component 'meter_selection_chart',
               chart_type: :intraday_line_holidays,
               meter_selection: @meter_selection,
@@ -67,6 +71,8 @@
 <%= render 'schools/advice/section_title', section_id: 'weekends',
                                            section_title: t('advice_pages.electricity_intraday.analysis.weekends.title') %>
 
+<%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle.since_html") %>
+<%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle.two_years_html") %>
 <%= component 'meter_selection_chart',
               chart_type: :intraday_line_weekends,
               meter_selection: @meter_selection,
@@ -78,6 +84,7 @@
 <%= render 'schools/advice/section_title', section_id: 'trends',
                                            section_title: t('advice_pages.electricity_intraday.analysis.trends.title') %>
 
+<%# i18n-tasks-use t('advice_pages.electricity_intraday.analysis.charts.trends_chart_subtitle_html') %>
 <%= component 'meter_selection_chart',
               chart_type: :intraday_line_school_last7days,
               meter_selection: @meter_selection,
