@@ -34,9 +34,13 @@ en:
           title: Annual gas use comparison with other schools
         gas_by_month_year:
           explanation: This chart can be a quick way to spot whether changes to heating and hot water control are having an impact on your gas consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
+          subtitle_html: This chart shows the monthly gas consumption from %{start_date} to <span class='end-date'>%{end_date}</span> for <span class='meter'>%{meter}</span>
+          subtitle_two_years_html: This chart shows the difference in gas consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months for <span class='meter'>%{meter}</span>
+          title: Monthly gas consumption comparison
+          title_two_years: Monthly gas consumption comparison over the last two years
         gas_longterm_trend:
           explanation: Reducing gas consumption can be achieved by turning your school's thermostat down, reducing out of hours usage, insulating your buildings or installing a new more efficient gas boiler.
-          subtitle: This chart, and the table below give the breakdown of gas consumption between school day open and closed, holidays and weekends for each full year of data we have for your school
+          subtitle_html: This chart, and the table below give the breakdown of gas consumption between school day open and closed, holidays and weekends for each full year of data we have for <span class='meter'>%{meter}</span>
           temp_compensation: There is no temperature compensation applied to this chart. You should expect the amount of gas used each year to vary and broadly follow degree days - the colder it is outside, the more gas should be used in the school.
           title: Change in gas consumption over the last few years
         group_by_week_gas:
@@ -44,7 +48,7 @@ en:
             <p>
             The amount of gas used throughout the year should follow closely with degree days - the colder it is outside, the more gas should be used in the school. You should expect consumption to be quite low between the Easter holidays and autumn half term as the heating can be switched off and gas only used for the hot water, kitchen, or to heat a swimming pool. Gas consumption should be low during the holidays - shown in red.
             </p>
-          subtitle_html: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+          subtitle_html: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for each week for <span class='meter'>%{meter}</span> between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
           title: Gas consumption by week for the last 12 months
         group_by_week_gas_meter_breakdown_one_year:
           header: Clicking on the chart columns allows you to drilldown to more detailed data. Clicking on the legend allows you to add and remove meters.
@@ -53,7 +57,7 @@ en:
         group_by_week_gas_unlimited:
           explanation: This chart shows how your gas consumption varies throughout the year over the long term. Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how gas consumption generally increases in the winter and is lower in the summer. You can click on the chart to explore the data in more detail.
           header: Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how gas consumption generally increases in the winter and is lower in the summer.
-          subtitle: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for every week of data for your school
+          subtitle_html: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for every week of data for <span class='meter'>%{meter}</span>
           title: Gas consumption by week for the last few years
       insights:
         comparison:

@@ -23,6 +23,7 @@ module Schools
           @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
           @meters_for_breakdown = sorted_meters_for_breakdown
         end
+        @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, date_window: 363)
       end
 
       private

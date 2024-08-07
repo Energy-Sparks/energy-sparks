@@ -5,9 +5,12 @@
 <p><%= t('advice_pages.gas_long_term.analysis.long_term_trends.summary') %></p>
 
 <% if analysis_dates.months_of_data > 23 %>
-  <%= component 'chart', chart_type: :gas_longterm_trend, school: school do |c| %>
+  <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_longterm_trend.subtitle_html') %>
+  <%= component 'meter_selection_chart',
+                chart_type: :gas_longterm_trend,
+                meter_selection: meter_selection,
+                chart_subtitle_key: 'advice_pages.gas_long_term.charts.gas_longterm_trend.subtitle_html'  do |c| %>
     <% c.with_title { t('advice_pages.gas_long_term.charts.gas_longterm_trend.title') } %>
-    <% c.with_subtitle { t('advice_pages.gas_long_term.charts.gas_longterm_trend.subtitle') } %>
     <% c.with_footer do %>
       <p><%= t('advice_pages.gas_long_term.charts.gas_longterm_trend.explanation') %></p>
       <p><%= t('advice_pages.gas_long_term.charts.gas_longterm_trend.temp_compensation') %></p>
@@ -15,9 +18,12 @@
   <% end %>
 <% end %>
 
-<%= component 'chart', chart_type: :group_by_week_gas_unlimited, school: school do |c| %>
+<%# i18n-tasks-use t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.subtitle_html') %>
+<%= component 'meter_selection_chart',
+              chart_type: :group_by_week_gas_unlimited,
+              meter_selection: meter_selection,
+              chart_subtitle_key: 'advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.subtitle_html' do |c| %>
   <% c.with_title { t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.title') } %>
-  <% c.with_subtitle { t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.subtitle') } %>
   <% c.with_header do %>
     <p><%= t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.header') %></p>
   <% end %>
