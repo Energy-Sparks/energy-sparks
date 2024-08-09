@@ -8,14 +8,17 @@ private
   end
 
   def prompt_for_target?
+    return false unless can?(:show_management_dash, @school)
     Targets::SchoolTargetService.targets_enabled?(@school) && can?(:manage, SchoolTarget) && !@school.has_target? && target_service.enough_data?
   end
 
   def prompt_to_review_target?
+    return false unless can?(:show_management_dash, @school)
     Targets::SchoolTargetService.targets_enabled?(@school) && can?(:manage, SchoolTarget) && target_service.prompt_to_review_target?
   end
 
   def prompt_to_set_new_target?
+    return false unless can?(:show_management_dash, @school)
     Targets::SchoolTargetService.targets_enabled?(@school) && can?(:manage, SchoolTarget) && @school.has_expired_target? && !@school.has_current_target?
   end
 

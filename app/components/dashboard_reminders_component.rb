@@ -1,16 +1,11 @@
 class DashboardRemindersComponent < ApplicationComponent
   include ApplicationHelper
 
-  delegate :can?, to: :helpers
-  delegate :user_signed_in?, to: :helpers
-
   attr_reader :school, :user
-
   renders_one :title
 
-  def initialize(school:, user:, heading: nil, id: nil, classes: '')
+  def initialize(school:, user:, id: nil, classes: '')
     super(id: id, classes: classes)
-    @heading = heading
     @school = school
     @user = user
   end
@@ -27,25 +22,24 @@ class DashboardRemindersComponent < ApplicationComponent
 
   def show_data_enabled_features?
     if user && user.admin?
-      # TODO
+      # TODO params[:no_data] ? false : true
       true
-      # params[:no_data] ? false : true
     else
       @school.data_enabled?
     end
   end
 
-  def show_standard_prompts?
-    return true if user && user.admin?
-    return true if can?(:show_management_dash, @school)
-    false
-  end
-
-  def can_manage_school?
-    can?(:show_management_dash, @school)
-  end
-
   def programmes_to_prompt
     @school.programmes.last_started
+  end
+
+  private
+
+  def ability
+    @ability ||= Ability.new(@user)
+  end
+
+  def can?(permission, context)
+    ability.can?(permission, context)
   end
 end
