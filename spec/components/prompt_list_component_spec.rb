@@ -39,15 +39,14 @@ RSpec.describe PromptListComponent, type: :component, include_application_helper
   end
 
   context 'with no prompts it does not render' do
-    let(:html) do
-      render_inline(described_class.new(**params)) do |c|
+    let(:component) do
+      described_class.new(**params) do |c|
         c.with_title { title }
         c.with_link { link }
       end
     end
 
-    it { expect(html).not_to have_text(title) }
-    it { expect(html).not_to have_link('Link text', href: 'href') }
+    it { expect(component.render?).to eq(false) }
   end
 
   context 'with no link' do
