@@ -11,7 +11,7 @@
 
   <div class="row">
     <div class="col-12 col-lg-6">
-      <%= render AdultRemindersComponent.new(school: @school, user: current_user) do |c| %>
+      <%= component 'adult_reminders', school: @school, user: current_user do |c| %>
         <% c.with_title { 'Reminders' } %>
       <% end %>
     </div>
@@ -19,25 +19,10 @@
     <%# add progress notice, @progress_summary %>
     <% unless @dashboard_alerts.empty? %>
       <div class="col-12 col-lg-6">
-        <%= component 'prompt_list' do |list| %>
-          <% list.with_title { t('advice_pages.index.alerts.title') } %>
-          <% list.with_link do %>
+        <%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, user: current_user do |c| %>
+          <% c.with_title { t('advice_pages.index.alerts.title') } %>
+          <% c.with_link do %>
             <%= link_to t('schools.show.view_more_alerts'), alerts_school_advice_path(@school) %>
-          <% end %>
-          <% @dashboard_alerts.each do |alert_content| %>
-            <%= list.with_prompt icon: alert_icon(alert_content.alert),
-                                 status: status_for_alert_colour(alert_content.colour) do |prompt| %>
-                <% if alert_content.alert.advice_page.present? %>
-                  <% prompt.with_link do %>
-                    <%= link_to t('advice_pages.index.alerts.view_analysis'),
-                                advice_page_path(@school,
-                                                 alert_content.alert.advice_page,
-                                                 alert_content.alert.alert_type.advice_page_tab_for_link_to,
-                                                 anchor: alert_content.alert.alert_type.link_to_section) %>
-                  <% end %>
-                <% end %>
-                <%= alert_content.send(:management_dashboard_title) %>
-            <% end %>
           <% end %>
         <% end %>
       </div>
