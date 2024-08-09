@@ -232,13 +232,13 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
   describe '#prompt_to_review_target?' do
     context 'with no target' do
       context 'with admin' do
-        it { expect(component.send(:prompt_to_review_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_review_target?)).to eq(nil) }
       end
 
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.send(:prompt_to_review_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_review_target?)).to eq(nil) }
       end
 
       context 'with other' do

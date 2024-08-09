@@ -28,7 +28,6 @@ module Targets
           return true if @school.configuration.enough_data_to_set_target_for_fuel_type?(fuel_type)
         end
       end
-      false
     end
 
     def refresh_target(target)
