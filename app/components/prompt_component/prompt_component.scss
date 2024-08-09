@@ -1,0 +1,20 @@
+.prompt-component {
+  border-radius: 8px;
+  background-color: $light !important;
+  &.negative {
+    background-color: $light-red !important;
+  }
+  &.positive {
+    background-color: $green !important;
+  }
+  &.neutral {
+    background-color: $electric-light !important;
+  }
+  div.row {
+    margin: 0.25rem 0.25rem;
+  }
+}
+
+.prompt-component-fa-stack {
+  font-size: $f5;
+}
