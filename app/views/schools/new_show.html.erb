@@ -16,13 +16,29 @@
       <% end %>
     </div>
 
-    <%# add progress notice, @progress_summary %>
     <% unless @dashboard_alerts.empty? %>
       <div class="col-12 col-lg-6">
         <%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, user: current_user do |c| %>
           <% c.with_title { t('advice_pages.index.alerts.title') } %>
           <% c.with_link do %>
             <%= link_to t('schools.show.view_more_alerts'), alerts_school_advice_path(@school) %>
+          <% end %>
+          <% if reportable_progress?(@progress_summary) && @progress_summary.any_passing_targets? %>
+            <%= c.with_prompt icon: 'tachometer-alt', status: :positive do |p| %>
+              <%= t('schools.show.making_progress',
+                    fuels: t_fuels_as_sentence(@progress_summary.passing_fuel_targets)) %>
+              <% p.with_link do %>
+                <%= link_to t('schools.show.review_progress'), school_school_targets_path(@school) %>
+              <% end %>
+            <% end %>
+          <% elsif reportable_progress?(@progress_summary) && @progress_summary.any_failing_targets? %>
+            <%= c.with_prompt icon: 'tachometer-alt', status: :negative do |p| %>
+              <%= t('schools.show.not_meeting_target',
+                    fuels: t_fuels_as_sentence(@progress_summary.failing_fuel_targets)) %>
+              <% p.with_link do %>
+                <%= link_to t('schools.show.review_progress'), school_school_targets_path(@school) %>
+              <% end %>
+            <% end %>
           <% end %>
         <% end %>
       </div>

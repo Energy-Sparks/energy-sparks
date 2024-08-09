@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
-class AlertsComponent < ApplicationComponent
+class AlertsComponent < PromptListComponent
   attr_reader :school, :show_links, :show_icons, :user
 
   include AdvicePageHelper
   include ApplicationHelper
-
-  renders_one :title
-  renders_one :link
 
   def initialize(school:, dashboard_alerts:, alert_types: nil, audience: :adult, show_links: true, show_icons: true, id: nil, classes: '', user: nil)
     super(id: id, classes: classes)
@@ -22,6 +19,10 @@ class AlertsComponent < ApplicationComponent
 
   def alerts
     @alerts ||= dashboard_alerts_for(@alert_types)
+  end
+
+  def render?
+    prompts? || alerts.any?
   end
 
   def content_field

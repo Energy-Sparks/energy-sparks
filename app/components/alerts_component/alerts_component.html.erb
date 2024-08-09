@@ -1,30 +1,35 @@
 <div id="<%= id %>" class="alerts-component <%= classes %>">
   <% if Flipper.enabled?(:new_dashboards_2024, user) %>
-    <%= component 'prompt_list' do |list| %>
-      <% if title? %>
-        <% list.with_title do %>
-          <%= title %>
-        <% end %>
-      <% end %>
-      <% if link? %>
-        <% list.with_link do %>
-          <%= link %>
-        <% end %>
-      <% end %>
-      <% alerts.each do |alert_content| %>
-        <%= list.with_prompt icon: alert_icon(alert_content.alert),
-                             status: status_for_alert_colour(alert_content.colour) do |prompt| %>
-            <% if alert_content.alert.advice_page.present? %>
-              <% prompt.with_link do %>
-                <%= link_to t('advice_pages.index.alerts.view_analysis'),
-                            advice_page_path(school,
-                                             alert_content.alert.advice_page,
-                                             alert_content.alert.alert_type.advice_page_tab_for_link_to,
-                                             anchor: alert_content.alert.alert_type.link_to_section) %>
-              <% end %>
+    <% if title? || link? %>
+      <div class="row">
+        <div class="col d-flex flex-wrap justify-content-between align-items-center">
+          <% if title? %>
+            <h3><%= title %></h3>
+          <% end %>
+          <% if link? %>
+            <div>
+              <%= link %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <% prompts.each do |prompt| %>
+      <%= prompt %>
+    <% end %>
+    <% alerts.each do |alert_content| %>
+      <%= component 'prompt', icon: alert_icon(alert_content.alert),
+                              status: status_for_alert_colour(alert_content.colour) do |prompt| %>
+          <% if alert_content.alert.advice_page.present? %>
+            <% prompt.with_link do %>
+              <%= link_to t('advice_pages.index.alerts.view_analysis'),
+                          advice_page_path(school,
+                                           alert_content.alert.advice_page,
+                                           alert_content.alert.alert_type.advice_page_tab_for_link_to,
+                                           anchor: alert_content.alert.alert_type.link_to_section) %>
             <% end %>
-            <%= alert_content.send(content_field) %>
-        <% end %>
+          <% end %>
+          <%= alert_content.send(content_field) %>
       <% end %>
     <% end %>
   <% else %>
