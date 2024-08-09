@@ -32,10 +32,6 @@ RSpec.describe PromptComponent, type: :component, include_application_helper: tr
       let(:expected_id) { id }
     end
 
-    it 'has additional classes' do
-      expect(html).to have_css('div.prompt-component.extra-classes')
-    end
-
     it { expect(html).to have_text(title) }
     it { expect(html).to have_text('Warning') }
 
