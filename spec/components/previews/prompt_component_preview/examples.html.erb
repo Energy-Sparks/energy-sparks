@@ -1,0 +1,151 @@
+<h1>Examples</h1>
+
+<ul>
+  <li><a href="#basic">Basic format</a></li>
+  <li><a href="#longer-text">Longer text</a></li>
+  <li><a href="#with-link">Link</a></li>
+  <li><a href="#icon">Icon</a></li>
+  <li><a href="#title">Title</a></li>
+  <li><a href="#pill">Pills</a></li>
+  <li><a href="#status">Status colours</a></li>
+  <li><a href="#all">All options</a></li>
+  <li><a href="#columns">Rendering within columns</a></li>
+</ul>
+
+<h4 id='basic'>Basic format</h4>
+<%= render PromptComponent.new do |c| %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='longer-text'>Longer text</h4>
+<%= render PromptComponent.new do |c| %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas aliquam sem ac fermentum feugiat. Curabitur in
+    nunc mi. Etiam magna ipsum, feugiat sed est et, pretium consequat odio. .statusesconubia nostra, per inceptos himenaeos.
+    Integer nisl nibh, tincidunt efficitur metus sed, facilisis semper ante. Nam tincidunt imperdiet ex.
+    Maecenas tempus porta mollis. Aliquam luctus enim sed ipsum suscipit, nec lacinia ante auctor. Etiam varius dui
+    et velit molestie, vel accumsan mauris interdum. Nunc efficitur nibh nec nulla rhoncus posuere. In quis lacus
+    cursus, ornare dolor eget, lacinia velit. Cras ac velit nec elit volutpat pulvinar.
+  </p>
+<% end %>
+
+<h4 id='with-link'>Link</h4>
+<%= render PromptComponent.new do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='icon'>Icon</h4>
+<%= render PromptComponent.new icon: 'bolt' do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='title'>Title</h4>
+<%= render PromptComponent.new do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <% c.with_title { 'This is the title' } %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='pill'>Pill</h4>
+<%= render PromptComponent.new do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <% c.with_pill do %>
+    <span class="badge badge-warning">Warning</span>
+  <% end %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<%= render PromptComponent.new do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <% c.with_title { 'Title and a pill' } %>
+  <% c.with_pill do %>
+    <span class="badge badge-warning">Warning</span>
+  <% end %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='status'>Status colours</h4>
+<% PromptComponent.statuses.each do |status| %>
+  <%= render PromptComponent.new status: status do |c| %>
+    <p>
+      <%= status %>
+    </p>
+  <% end %>
+<% end %>
+
+<h4 id='all'>All options</h4>
+
+<%= render PromptComponent.new status: :neutral, icon: 'calendar-alt' do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <% c.with_title { 'This is the title' } %>
+  <% c.with_pill do %>
+    <span class="badge badge-warning">Warning</span>
+  <% end %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='columns'>Rendering within columns</h4>
+
+<div class="row">
+  <div class="col-12 col-lg-6">
+    <%= render PromptComponent.new do |c| %>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+        odio in vestibulum. Duis a semper mi.
+      </p>
+    <% end %>
+    <%= render PromptComponent.new status: :neutral, icon: 'calendar-alt' do |c| %>
+      <% c.with_link { link_to 'This is the link', root_path } %>
+      <% c.with_title { 'This is the title' } %>
+      <% c.with_pill do %>
+        <span class="badge badge-warning">Warning</span>
+      <% end %>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+        odio in vestibulum. Duis a semper mi.
+      </p>
+    <% end %>
+  </div>
+  <div class="col-12 col-lg-6">
+    <%= render PromptComponent.new do |c| %>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+        odio in vestibulum. Duis a semper mi.
+      </p>
+    <% end %>
+    <%= render PromptComponent.new status: :neutral, icon: 'calendar-alt' do |c| %>
+      <% c.with_link { link_to 'This is the link', root_path } %>
+      <% c.with_title { 'This is the title' } %>
+      <% c.with_pill do %>
+        <span class="badge badge-warning">Warning</span>
+      <% end %>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+        odio in vestibulum. Duis a semper mi.
+      </p>
+    <% end %>
+  </div>
+</div>
