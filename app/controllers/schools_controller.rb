@@ -57,6 +57,8 @@ class SchoolsController < ApplicationController
 
     if params[:report] && @show_data_enabled_features
       render template: 'management/schools/report', layout: 'report'
+    elsif Flipper.enabled?(:new_dashboards_2024, current_user)
+      render :new_show, layout: 'dashboards'
     else
       render :show
     end

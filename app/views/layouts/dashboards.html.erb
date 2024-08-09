@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <%= render 'shared/head' %>
+  </head>
+  <body vocab="http://schema.org/">
+    <%= render 'shared/navigation' %>
+    <div class="container-fluid bg-light pb-3">
+      <div class="container<%= nav_margin_classes %>">
+        <%= render 'shared/breadcrumbs' %>
+        <%= render 'shared/alerts' if flash.any? %>
+        <%= yield :dashboard_header %>
+      </div>
+    </div>
+    <%= yield %>
+
+    <% if show_partner_footer?(@school) %>
+      <%= render 'shared/partners' %>
+    <% end %>
+    <%= render 'shared/cookie_banner' %>
+    <%= render 'shared/footer' %>
+  </body>
+  <%= render 'layouts/set_mobility_locale' %>
+</html>

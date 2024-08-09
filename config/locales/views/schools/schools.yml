@@ -591,6 +591,7 @@ en:
       energy_saving_opportunities: Energy saving opportunities
       find_out_more: Find out more
       find_training: Find training
+      insights_and_actions: Insights and actions
       making_progress: Well done, you are making progress towards achieving your target to reduce your %{fuels} usage!
       more_information: More information
       not_meeting_target: Unfortunately you are not meeting your target to reduce your %{fuels} usage
@@ -609,6 +610,7 @@ en:
       setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
       summary_of_recent_energy_usage: Summary of recent energy usage
       upload_energy_bill: Upload a bill
+      view_more_alerts: View more alerts
     timeline:
       no_events: No events to show
       title: What's been going on?
