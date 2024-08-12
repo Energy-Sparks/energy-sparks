@@ -83,7 +83,9 @@ module Schools
     end
 
     def reload
-      current_user.admin? && N3rgyReloadJob.perform_later(@meter, current_user.email)
+      return unless current_user.admin?
+
+      N3rgyReloadJob.perform_later(@meter, current_user.email)
       redirect_to school_meters_path(@school), notice: 'Reload queued'
     end
 
