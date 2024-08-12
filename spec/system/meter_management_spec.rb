@@ -87,24 +87,24 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
 
       before do
         allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
+        click_on 'Manage meters'
+        click_on meter.mpan_mprn.to_s
       end
 
       it 'the meter inventory button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Inventory')
+        expect(page).to have_no_selector(:link_or_button, 'Inventory')
       end
 
       it 'the tariff report button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Tariff Report')
+        expect(page).to have_no_selector(:link_or_button, 'Tariff Report')
       end
 
       it 'the attributes button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Attributes')
+        expect(page).to have_no_selector(:link_or_button, 'Attributes')
+      end
+
+      it 'the reload button is not shown' do
+        expect(page).to have_no_selector(:link_or_button, 'Reload')
       end
     end
 
