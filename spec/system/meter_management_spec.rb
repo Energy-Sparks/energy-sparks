@@ -280,7 +280,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         expect(page).to have_text('Reload queued')
         expect { perform_enqueued_jobs }.to change { ActionMailer::Base.deliveries.count }.by(1)
         expect(ActionMailer::Base.deliveries.last.subject).to \
-          eq("[energy-sparks-test] Reload of Meter Electricity meter for #{school.name} complete")
+          eq("[energy-sparks-unknown] Reload of Meter Electricity meter for #{school.name} complete")
         expect(ActionMailer::Base.deliveries.last.to).to eq([admin.email])
       end
     end
