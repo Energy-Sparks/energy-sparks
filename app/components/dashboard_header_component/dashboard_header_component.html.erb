@@ -1,6 +1,17 @@
-<div id='dashboard-header' class="row">
+<div id="<%= id %>" class="dashboard-header-component row <%= classes %>">
   <div class="col-12 col-md-9">
-    <h1>Welcome</h1>
+    <div class="row">
+      <div class="col">
+        <h1><%= t('schools.dashboards.header.title') %></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          <%= t('schools.dashboards.header.intro') %>
+        </p>
+      </div>
+    </div>
   </div>
   <div class="col-12 col-md-3 bg-white rounded">
     <div class="row">
