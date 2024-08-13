@@ -15,7 +15,7 @@ RSpec.describe DashboardHeaderComponent, type: :component do
     }
   end
 
-  let(:html) { render_inline(DashboardHeaderComponent.new(**params)) }
+  let(:html) { render_inline(described_class.new(**params)) }
 
   it_behaves_like 'an application component' do
     let(:expected_classes) { classes }
