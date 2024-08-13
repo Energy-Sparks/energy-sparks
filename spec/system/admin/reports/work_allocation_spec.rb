@@ -5,17 +5,6 @@ require 'rails_helper'
 describe 'work allocation' do
   let!(:admin) { create(:admin) }
 
-  def create_data_for_school_groups
-    school_groups = [create(:school_group, default_issues_admin_user: create(:admin)), create(:school_group)]
-
-    school_groups.each do |school_group|
-      create(:school_onboarding, created_by: admin, school_group:)
-      create(:school, visible: true, data_enabled: true, school_group:)
-      create(:school, visible: false, school_group:)
-      create(:school, active: false, school_group:)
-    end
-  end
-
   describe 'when logged in to the admin reports index' do
     before do
       school_group = create(:school_group, default_issues_admin_user: create(:admin))
