@@ -214,6 +214,16 @@ describe Tables::SummaryTableData do
     it 'shows savings' do
       expect(subject.by_fuel_type.second.savings).to eq('&pound;7.77')
     end
+
+    context 'when one value is missing' do
+      let(:template_data) do
+        { electricity: { year: { kwh: 12.3, co2: nil, £: 6.6611, savings_£: 7.77 } } }
+      end
+
+      it 'returns empty string' do
+        expect(subject.by_fuel_type.first.co2).to eq('')
+      end
+    end
   end
 
   describe 'percent change' do

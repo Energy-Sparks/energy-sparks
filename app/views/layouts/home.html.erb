@@ -5,7 +5,7 @@
   </head>
   <body>
     <% if Flipper.enabled?(:navigation, current_user, current_user&.school_group) %>
-      <%= render 'shared/navigation/main' %>
+      <%= render 'shared/navigation' %>
     <% else %>
       <div class='fixed-top'>
         <%= render 'shared/nav' %>

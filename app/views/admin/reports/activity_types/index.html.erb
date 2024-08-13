@@ -55,7 +55,7 @@
         <td><%= at.unique_school_count %></td>
         <td><%= at.suggested_from.count %></td>
         <td><%= at.programme_types.count %></td>
-        <td><%= AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", at.id).count %></td>
+        <td><%= at.referenced_from_find_out_mores.count %></td>
         <td><%= at.audits.count %></td>
         <td><%= link_to 'Report', admin_reports_activity_type_path(at), class: 'btn btn-primary' %></td>
       </tr>

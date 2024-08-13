@@ -4,8 +4,8 @@ RSpec.describe MeterReviewService do
   let!(:consent_statement) { create(:consent_statement, current: true) }
 
   let!(:school)                { create(:school) }
-  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false) }
-  let!(:dcc_meter_ignored)     { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: true) }
+  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: :smets2, consent_granted: false) }
+  let!(:dcc_meter_ignored)     { create(:electricity_meter, school: school, dcc_meter: :smets2, consent_granted: true) }
 
   let!(:admin)                 { create(:admin) }
 
@@ -15,7 +15,7 @@ RSpec.describe MeterReviewService do
     let!(:inactive) { create(:school, active: false) }
 
     it 'lists only active schools' do
-      create(:electricity_meter, school: inactive, dcc_meter: true, consent_granted: false)
+      create(:electricity_meter, school: inactive, dcc_meter: :smets2, consent_granted: false)
       expect(MeterReviewService.find_schools_needing_review).to match_array([school])
     end
   end
@@ -72,7 +72,7 @@ RSpec.describe MeterReviewService do
       end
 
       it 'raises error if meter not flagged as DCC' do
-        dcc_meter.update(dcc_meter: false)
+        dcc_meter.update(dcc_meter: :no)
         expect do
           service.complete_review!([dcc_meter])
         end.to raise_error(MeterReviewService::MeterReviewError)

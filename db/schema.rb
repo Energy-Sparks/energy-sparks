@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_29_105155) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "data_sharing", ["public", "within_group", "private"]
+  create_enum "dcc_meter", ["no", "smets2", "other"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -75,9 +76,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "activity_category_id"
     t.integer "pupil_count"
+    t.bigint "updated_by_id"
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id"
     t.index ["school_id"], name: "index_activities_on_school_id"
+    t.index ["updated_by_id"], name: "index_activities_on_updated_by_id"
   end
 
   create_table "activity_categories", force: :cascade do |t|
@@ -963,13 +966,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
     t.datetime "finished_at", precision: nil
     t.text "error"
     t.integer "error_event", limit: 2
+    t.text "error_backtrace", array: true
+    t.uuid "process_id"
+    t.interval "duration"
     t.index ["active_job_id", "created_at"], name: "index_good_job_executions_on_active_job_id_and_created_at"
+    t.index ["process_id", "created_at"], name: "index_good_job_executions_on_process_id_and_created_at"
   end
 
   create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "state"
+    t.integer "lock_type", limit: 2
   end
 
   create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1002,6 +1010,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
     t.text "job_class"
     t.integer "error_event", limit: 2
     t.text "labels", array: true
+    t.uuid "locked_by_id"
+    t.datetime "locked_at"
     t.index ["active_job_id", "created_at"], name: "index_good_jobs_on_active_job_id_and_created_at"
     t.index ["batch_callback_id"], name: "index_good_jobs_on_batch_callback_id", where: "(batch_callback_id IS NOT NULL)"
     t.index ["batch_id"], name: "index_good_jobs_on_batch_id", where: "(batch_id IS NOT NULL)"
@@ -1010,7 +1020,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
     t.index ["cron_key", "cron_at"], name: "index_good_jobs_on_cron_key_and_cron_at_cond", unique: true, where: "(cron_key IS NOT NULL)"
     t.index ["finished_at"], name: "index_good_jobs_jobs_on_finished_at", where: "((retried_good_job_id IS NULL) AND (finished_at IS NOT NULL))"
     t.index ["labels"], name: "index_good_jobs_on_labels", where: "(labels IS NOT NULL)", using: :gin
+    t.index ["locked_by_id"], name: "index_good_jobs_on_locked_by_id", where: "(locked_by_id IS NOT NULL)"
+    t.index ["priority", "created_at"], name: "index_good_job_jobs_for_candidate_lookup", where: "(finished_at IS NULL)"
     t.index ["priority", "created_at"], name: "index_good_jobs_jobs_on_priority_created_at_when_unfinished", order: { priority: "DESC NULLS LAST" }, where: "(finished_at IS NULL)"
+    t.index ["priority", "scheduled_at"], name: "index_good_jobs_on_priority_scheduled_at_unfinished_unlocked", where: "((finished_at IS NULL) AND (locked_by_id IS NULL))"
     t.index ["queue_name", "scheduled_at"], name: "index_good_jobs_on_queue_name_and_scheduled_at", where: "(finished_at IS NULL)"
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
   end
@@ -1220,7 +1233,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
     t.bigint "low_carbon_hub_installation_id"
     t.boolean "pseudo", default: false
     t.bigint "solar_edge_installation_id"
-    t.boolean "dcc_meter", default: false
+    t.enum "dcc_meter", default: "no", null: false, enum_type: "dcc_meter"
     t.boolean "consent_granted", default: false
     t.bigint "meter_review_id"
     t.datetime "dcc_checked_at", precision: nil
@@ -1289,13 +1302,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
     t.integer "pupil_count"
     t.string "observable_type"
     t.bigint "observable_id"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
+    t.index ["created_by_id"], name: "index_observations_on_created_by_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["observable_type", "observable_id"], name: "index_observations_on_observable_type_and_observable_id"
     t.index ["programme_id"], name: "index_observations_on_programme_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
     t.index ["school_target_id"], name: "index_observations_on_school_target_id"
+    t.index ["updated_by_id"], name: "index_observations_on_updated_by_id"
   end
 
   create_table "partners", force: :cascade do |t|
@@ -1935,6 +1952,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
   add_foreign_key "activities", "activity_types", on_delete: :restrict
   add_foreign_key "activities", "schools", on_delete: :cascade
+  add_foreign_key "activities", "users", column: "updated_by_id"
   add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
   add_foreign_key "activity_type_key_stages", "activity_types", on_delete: :cascade
@@ -2051,6 +2069,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_131438) do
   add_foreign_key "observations", "programmes", on_delete: :cascade
   add_foreign_key "observations", "school_targets"
   add_foreign_key "observations", "schools", on_delete: :cascade
+  add_foreign_key "observations", "users", column: "created_by_id"
+  add_foreign_key "observations", "users", column: "updated_by_id"
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
   add_foreign_key "programmes", "schools", on_delete: :cascade
   add_foreign_key "resource_files", "resource_file_types", on_delete: :restrict

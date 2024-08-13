@@ -72,11 +72,11 @@ module Schools
       end
 
       def aggregate_meter_adapter
-        OpenStruct.new(mpan_mprn: aggregate_meter_mpan_mprn, name_or_mpan_mprn: aggregate_meter_label, has_readings?: true)
+        OpenStruct.new(mpan_mprn: aggregate_meter_mpan_mprn, display_name: aggregate_meter_label, has_readings?: true)
       end
 
       def options_for_meter_select
-        [aggregate_meter_adapter] + @meters.sort_by(&:name_or_mpan_mprn)
+        [aggregate_meter_adapter] + @meters.order(:mpan_mprn)
       end
 
       def costs_service

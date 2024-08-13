@@ -264,7 +264,7 @@ describe 'compare pages', :compare, type: :system do
     before { visit compare_index_path }
 
     context 'when the logged in user has a school group' do
-      let(:user) { create(:user, school_group: school_group) }
+      let(:user) { create(:group_admin, school_group: school_group) }
 
       it_behaves_like 'an index page', tab: 'Your group'
 

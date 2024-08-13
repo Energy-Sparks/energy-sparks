@@ -3,6 +3,8 @@ class SchoolCreator
 
   class Error < StandardError; end
 
+  LOGIN_CACHE_KEY = :schools_for_login_form
+
   def initialize(school)
     @school = school
   end
@@ -26,6 +28,7 @@ class SchoolCreator
         onboarding_service.record_event(onboarding, :school_details_created) do
           onboarding.update!(school: @school)
         end
+        onboarding.issues.find_each { |issue| issue.update(issueable_type: :School, issueable_id: @school.id) }
       end
     end
     @school
@@ -43,6 +46,7 @@ class SchoolCreator
       users = @school.users.reject(&:pupil?)
       onboarding_service.complete_onboarding(@school.school_onboarding, users)
     end
+    self.class.expire_login_cache!
     broadcast(:school_made_visible, @school)
   end
 
@@ -62,6 +66,16 @@ class SchoolCreator
 
   def process_new_configuration!
     generate_calendar
+  end
+
+  def self.expire_login_cache!
+    Rails.cache.delete(LOGIN_CACHE_KEY) # cached in sessions controller
+  end
+
+  def self.school_list_for_login_form
+    Rails.cache.fetch(LOGIN_CACHE_KEY) do
+      School.school_list_for_login_form
+    end
   end
 
 private
