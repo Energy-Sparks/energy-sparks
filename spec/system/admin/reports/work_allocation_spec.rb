@@ -16,7 +16,7 @@ describe 'work allocation' do
     end
   end
 
-  describe 'when logged in to the admin index' do
+  describe 'when logged in to the admin reports index' do
     before do
       school_group = create(:school_group, default_issues_admin_user: create(:admin))
       create(:school_onboarding, created_by: admin, school_group:)
