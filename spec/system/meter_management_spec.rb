@@ -282,6 +282,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         expect(ActionMailer::Base.deliveries.last.subject).to \
           eq("[energy-sparks-unknown] Reload of Meter Electricity meter for #{school.name} complete")
         expect(ActionMailer::Base.deliveries.last.to).to eq([admin.email])
+        expect(ActionMailer::Base.deliveries.last.to_s).to include('0 records were imported and 0 were updated')
       end
     end
 

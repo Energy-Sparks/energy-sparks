@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 module Amr
   class N3rgyReadingsDownloadAndUpsert
     def initialize(
-        meter:,
-        config:,
-        override_start_date: nil,
-        override_end_date: nil,
-        reload: false
-      )
+      meter:,
+      config:,
+      override_start_date: nil,
+      override_end_date: nil,
+      reload: false
+    )
       @meter = meter
       @config = config
       @override_start_date = override_start_date
@@ -29,15 +31,15 @@ module Amr
       return if start_date > end_date
 
       import_log = create_import_log(start_date, end_date)
-      readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date).readings
-      N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings: readings, import_log: import_log).perform
+      readings = N3rgyDownloader.new(meter: @meter, start_date:, end_date:).readings
+      N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings:, import_log:).perform
       import_log
-    rescue => e
+    rescue StandardError => e
       msg = "Error downloading data for #{@meter.mpan_mprn} from #{start_date} to #{end_date} : #{e.message}"
-      import_log.update!(error_messages: msg) if import_log
+      import_log&.update!(error_messages: msg)
       Rails.logger.error msg
       Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, job: :n3rgy_download, meter_id: @meter.mpan_mprn, start_date: start_date, end_date: end_date)
+      Rollbar.error(e, job: :n3rgy_download, meter_id: @meter.mpan_mprn, start_date:, end_date:)
     end
 
     private
@@ -50,17 +52,19 @@ module Amr
       AmrDataFeedImportLog.create(
         amr_data_feed_config_id: @config.id,
         file_name: "N3rgy API import for #{@meter.mpan_mprn} for #{start_date} - #{end_date}",
-        import_time: DateTime.now.utc)
+        import_time: DateTime.now.utc,
+        records_imported: 0
+      )
     end
 
     def current_date_range_of_readings
-      if existing_n3rgy_readings.any?
-        first = DateTime.parse(existing_n3rgy_readings.minimum(:reading_date))
-        # Instead of using the maximum date, we now use 7 days prior to that
-        # so we're regularly refreshing the last 7 days of data.
-        last = DateTime.parse(existing_n3rgy_readings.maximum(:reading_date)) - 7.days
-        [n3rgy_first_reading_of_day(first), n3rgy_last_reading_of_day(last)]
-      end
+      return unless existing_n3rgy_readings.any?
+
+      first = DateTime.parse(existing_n3rgy_readings.minimum(:reading_date))
+      # Instead of using the maximum date, we now use 7 days prior to that
+      # so we're regularly refreshing the last 7 days of data.
+      last = DateTime.parse(existing_n3rgy_readings.maximum(:reading_date)) - 7.days
+      [n3rgy_first_reading_of_day(first), n3rgy_last_reading_of_day(last)]
     end
 
     def existing_n3rgy_readings
@@ -79,9 +83,7 @@ module Amr
       start = available_date_range.first
 
       # if the n3rgy start date is midnight, then we should wind back a day
-      if start == start.at_midnight
-        start = n3rgy_first_reading_of_day(start - 1)
-      end
+      start = n3rgy_first_reading_of_day(start - 1) if start == start.at_midnight
 
       # if set to reload, then just use dates from n3rgy
       return n3rgy_first_reading_of_day(start) if @reload
@@ -93,9 +95,7 @@ module Amr
       # also check that this isn't before the available date range
       # start new loading from the end of any existing readings if we have any
       current_range = current_date_range_of_readings
-      if current_range && current_range.first <= start && current_range.last > start
-        start = current_range.last
-      end
+      start = current_range.last if current_range && current_range.first <= start && current_range.last > start
 
       # ensure we're requesting the first reading of the day
       n3rgy_first_reading_of_day(start)
