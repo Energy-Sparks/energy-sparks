@@ -5,32 +5,25 @@
 
 <p><%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.subtitle') %></p>
 
-<% start_date = analysis_dates.one_years_data? ? analysis_dates.end_date - 1.year : analysis_dates.start_date %>
-
-<%= component 'chart', chart_type: :gas_by_day_of_week_tolerant, school: school do |c| %>
-  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
-  <% c.with_title do %>
-    <%= t('advice_pages.gas_out_of_hours.'\
-          'analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
-  <% end %>
-  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html' %>
-  <% c.with_subtitle do
-       t('advice_pages.gas_out_of_hours.'\
-         'analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html',
-         start_month_year: short_dates(start_date),
-         end_month_year: short_dates(analysis_dates.end_date))
-     end %>
-  <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html') %>
-  <% c.with_footer do %>
-    <%= t('advice_pages.gas_out_of_hours.'\
-          'analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html',
-          savings_kwh: format_unit((annual_usage_breakdown.total.kwh - annual_usage_breakdown.out_of_hours.kwh), :kwh),
-          savings_gbp: format_unit((annual_usage_breakdown.total.£ - annual_usage_breakdown.out_of_hours.£), :£)) %>
-  <% end %>
+<%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
+<%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html') %>
+<%= component 'meter_selection_chart',
+             meter_selection: meter_selection,
+             chart_type: :gas_by_day_of_week_tolerant,
+             chart_subtitle_key: 'advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html' do |c| %>
+   <% c.with_title do %>
+     <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
+   <% end %>
+   <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html') %>
+   <% c.with_footer do %>
+     <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html',
+           savings_kwh: format_unit((annual_usage_breakdown.total.kwh - annual_usage_breakdown.out_of_hours.kwh), :kwh),
+           savings_gbp: format_unit((annual_usage_breakdown.total.£ - annual_usage_breakdown.out_of_hours.£), :£)) %>
+   <% end %>
 <% end %>
 
 <% if @heating_model_available %>
-
+  <% start_date = analysis_dates.one_years_data? ? analysis_dates.end_date - 1.year : analysis_dates.start_date %>
   <%= render 'schools/advice/section_title',
              section_id: 'usage_through_the_school_day',
              section_title: t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.title') %>
