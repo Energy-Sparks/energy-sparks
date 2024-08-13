@@ -26,7 +26,7 @@ describe 'work allocation' do
       create(:school_group)
 
       sign_in(admin)
-      visit admin_path
+      visit admin_reports_path
       click_on 'Work allocation'
     end
 
