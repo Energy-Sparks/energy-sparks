@@ -30,7 +30,6 @@ en:
         meter_breakdown:
           select: Select an option to view costs for the whole school or a specific meter
           title: Cost breakdown
-          whole_school: Whole school
         summary: The following sections provide more background and analysis on your electricity costs
         tariff_note:
           good_estimate: The information below provides a good estimate of your annual costs for this meter based on meter tariff information which has been provided to Energy Sparks.

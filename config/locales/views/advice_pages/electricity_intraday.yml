@@ -19,8 +19,8 @@ en:
             one: Your recent school day electricity consumption
             other: Your school day electricity consumption over the last %{count} months
           holidays_chart_subtitle:
-            since: The graph compares the average electricity consumption for your school during the school holidays since %{date}
-            two_years: The graph compares the average electricity consumption for your school during the school holidays over the last 2 years
+            since_html: The graph compares the average electricity consumption for <span class='meter'>%{meter}</span> during the school holidays since <span class='start_date'>%{start_date}</span>
+            two_years_html: The graph compares the average electricity consumption for <span class='meter'>%{meter}</span> during the school holidays over the last 2 years
           holidays_chart_title: Daily variation in electricity use during school holidays
           schooldays_chart_explanation_html: |-
             <p>
@@ -30,15 +30,15 @@ en:
               It is useful in diagnosing what changes have happened over the last year which may have changed electricity consumption.
             </p>
           schooldays_chart_subtitle:
-            since: The chart shows the average electricity consumption for your school during the school day since %{date}
-            two_years: The chart shows the average electricity consumption for your school during the school day over the last 2 years
+            since_html: The chart shows the average electricity consumption for <span class='meter'>%{meter}</span> during the school day since <span class='start_date'>%{start_date}</span>
+            two_years_html: The chart shows the average electricity consumption for <span class='meter'>%{meter}</span> during the school day over the last 2 years
           schooldays_chart_title: Daily variation in electricity use during school days
           trends_chart_explanation: You can use this type of graph to understand how the schools electricity usage changes over time. You can click on the legend to add or remove lines from the graph to make it clearer.
-          trends_chart_subtitle: The graph shows how the electricity consumption for your school varies during the day over the last week
+          trends_chart_subtitle_html: The graph shows how the electricity consumption for <span class='meter'>%{meter}</span> varies during the day over the last week
           trends_chart_title: Daily variation in electricity use over the last 7 days
           weekends_chart_subtitle:
-            since: The graph compares the average electricity consumption for your school during the weekend since %{date}
-            two_years: The graph compares the average electricity consumption for your school during the weekend over the last 2 years
+            since_html: The graph compares the average electricity consumption for <span class='meter'>%{meter}</span> during the weekend since <span class='start_date'>%{start_date}</span>
+            two_years_html: The graph compares the average electricity consumption for <span class='meter'>%{meter}</span> during the weekend over the last 2 years
           weekends_chart_title: Daily variation in electricity use over the weekends
         comparison:
           title: How does your school compare?

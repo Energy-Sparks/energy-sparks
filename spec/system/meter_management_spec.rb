@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.shared_examples_for 'a listed meter' do |admin: true|
@@ -26,7 +28,9 @@ RSpec.shared_examples_for 'a listed meter' do |admin: true|
   end
 end
 
-RSpec.describe 'meter management', :include_application_helper, :meters, type: :system do
+RSpec.describe 'meter management', :include_application_helper, :meters do
+  include ActiveJob::TestHelper
+
   let(:school_name)     { 'Oldfield Park Infants' }
   let!(:school)         { create_active_school(name: school_name) }
   let!(:admin)          { create(:admin) }
@@ -77,30 +81,30 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
       end
 
       let!(:stub) do
-        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true,
-                                                        consented?: true, available_data: Time.zone.today..Time.zone.today)
+        instance_double(Meters::N3rgyMeteringService, status: :available, available?: true,
+                                                      consented?: true, available_data: Time.zone.today..Time.zone.today)
       end
 
       before do
         allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
+        click_on 'Manage meters'
+        click_on meter.mpan_mprn.to_s
       end
 
       it 'the meter inventory button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Inventory')
+        expect(page).to have_no_selector(:link_or_button, 'Inventory')
       end
 
       it 'the tariff report button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Tariff Report')
+        expect(page).to have_no_selector(:link_or_button, 'Tariff Report')
       end
 
       it 'the attributes button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Attributes')
+        expect(page).to have_no_selector(:link_or_button, 'Attributes')
+      end
+
+      it 'the reload button is not shown' do
+        expect(page).to have_no_selector(:link_or_button, 'Reload')
       end
     end
 
@@ -232,15 +236,11 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         create(:electricity_meter, dcc_meter: :smets2, name: 'Electricity meter', school:, mpan_mprn: 1_234_567_890_123)
       end
 
-      let!(:stub) do
-        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true, consented?: true, inventory: { device_id: 123_999 },
-                                                        available_data: Time.zone.today..Time.zone.today)
-      end
 
       before do
         stub_request(:get, 'https://n3rgy.test/find-mpxn/1234567890123').to_return(body: '{}')
         stub_request(:get, 'https://n3rgy.test/mpxn/1234567890123').to_return(body: '{}')
-        stub_request(:get, 'https://n3rgy.test/mpxn/1234567890123/utility/electricity/readingtype/consumption?granularity=halfhour&outputFormat=json')
+        stub_request(:get, %r{^https://n3rgy.test/mpxn/1234567890123/utility/electricity/readingtype/consumption?})
           .to_return(body: { availableCacheRange: { start: Time.zone.today.to_s, end: Time.zone.today.to_s } }.to_json)
         click_on 'Manage meters'
       end
@@ -272,12 +272,24 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         click_on 'Update Meter'
         expect(meter.reload.dcc_meter).to eq('smets2')
       end
+
+      it 'allows reloading the meter' do
+        create(:amr_data_feed_config, process_type: :n3rgy_api)
+        click_on meter.mpan_mprn.to_s
+        click_on 'Reload'
+        expect(page).to have_text('Reload queued')
+        expect { perform_enqueued_jobs }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        expect(ActionMailer::Base.deliveries.last.subject).to \
+          eq("[energy-sparks-unknown] Reload of Meter Electricity meter for #{school.name} complete")
+        expect(ActionMailer::Base.deliveries.last.to).to eq([admin.email])
+        expect(ActionMailer::Base.deliveries.last.to_s).to include('0 records were imported and 0 were updated')
+      end
     end
 
     context 'when creating meters' do
       let!(:stub) do
-        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true, consented?: true, inventory: { device_id: 123_999 },
-                                                        available_data: Time.zone.today..Time.zone.today)
+        instance_double(Meters::N3rgyMeteringService, status: :available, available?: true, consented?: true, inventory: { device_id: 123_999 },
+                                                      available_data: Time.zone.today..Time.zone.today)
       end
 
       before do
@@ -323,11 +335,11 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         click_on 'Deactivate'
 
         gas_meter.reload
-        expect(gas_meter.active).to eq(false)
+        expect(gas_meter.active).to be(false)
 
         click_on 'Activate'
         gas_meter.reload
-        expect(gas_meter.active).to eq(true)
+        expect(gas_meter.active).to be(true)
       end
 
       context 'with a school target' do

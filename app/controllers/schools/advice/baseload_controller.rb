@@ -11,9 +11,7 @@ module Schools
       end
 
       def analysis
-        @meters = options_for_meter_select
         @analysis_dates = analysis_dates
-
         @multiple_meters = baseload_service.multiple_electricity_meters?
         @average_baseload_kw = baseload_service.average_baseload_kw
         @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark
@@ -25,7 +23,7 @@ module Schools
         if @multiple_meters
           @baseload_meter_breakdown = baseload_service.baseload_meter_breakdown
           @baseload_meter_breakdown_total = baseload_service.meter_breakdown_table_total
-          @date_ranges_by_meter = baseload_service.date_ranges_by_meter
+          @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, include_whole_school: false)
         end
 
         # need at least a years worth of data for this analysis
@@ -41,10 +39,6 @@ module Schools
 
       def aggregate_meter
         @aggregate_meter ||= aggregate_school.aggregated_electricity_meters
-      end
-
-      def options_for_meter_select
-        @school.meters.active.electricity.order(:mpan_mprn)
       end
 
       def set_economic_tariffs_change_caveats
