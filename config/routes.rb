@@ -364,6 +364,7 @@ Rails.application.routes.draw do
           get :n3rgy_status
           put :activate
           put :deactivate
+          post :reload
         end
       end
 
