@@ -111,7 +111,7 @@ module Charts
       return earliest_date unless @date_window.present?
 
       desired_date = meter.amr_data.end_date - @date_window
-      desired_date < earliest_date ? earliest_date : desired_date
+      [desired_date, earliest_date].max
     end
 
     # Used to override default labelling methods for aggregate meter

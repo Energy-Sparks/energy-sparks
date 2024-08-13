@@ -82,6 +82,11 @@ module Schools
       redirect_to school_meters_path(@school)
     end
 
+    def reload
+      N3rgyReloadJob.perform_later(@meter, current_user.email)
+      redirect_to school_meters_path(@school), notice: 'Reload queued'
+    end
+
     private
 
     def set_breadcrumbs

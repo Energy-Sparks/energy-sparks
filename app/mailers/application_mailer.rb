@@ -14,4 +14,8 @@ class ApplicationMailer < ActionMailer::Base
   def user_emails(users)
     users.map(&:email)
   end
+
+  def env
+    ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
+  end
 end
