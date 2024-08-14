@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DashboardInsightsComponent, type: :component, include_url_helpers: true do
+RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :component do
   subject(:component) { described_class.new(**params) }
 
   let(:school) { create(:school) }
