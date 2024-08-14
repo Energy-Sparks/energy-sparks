@@ -701,6 +701,10 @@ class School < ApplicationRecord
     meters.active.where(meter_type: fuel_type).count > 1
   end
 
+  def self.school_list_for_login_form
+    School.left_joins(:school_group).select(:id, :name, 'school_groups.name as school_group_name').where(visible: true).order(:name)
+  end
+
   private
 
   def valid_uk_postcode

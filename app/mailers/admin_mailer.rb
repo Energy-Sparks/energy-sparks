@@ -75,10 +75,6 @@ class AdminMailer < ApplicationMailer
     end
   end
 
-  def env
-    ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
-  end
-
   def subject(title)
     "[energy-sparks-#{env}] Energy Sparks - #{title}"
   end

@@ -483,20 +483,6 @@ describe School do
         end
 
         let!(:expired_target) do
-          report = {
-            'fuel_type': 'electricity',
-            'months': ['2024-01-01'],
-            'monthly_targets_kwh': [],
-            'monthly_usage_kwh': [],
-            'monthly_performance': [],
-            'cumulative_targets_kwh': [],
-            'cumulative_usage_kwh': [],
-            'cumulative_performance': [],
-            'cumulative_performance_versus_synthetic_last_year': [],
-            'monthly_performance_versus_synthetic_last_year': [],
-            'partial_months': [],
-            'percentage_synthetic': []
-          }
           create(:school_target, :with_progress_report, start_date: Date.yesterday.prev_year, school: subject, electricity: 5, gas: nil)
         end
 
@@ -788,6 +774,20 @@ describe School do
       it 'returns no electricity meters' do
         expect(subject.filterable_meters(:electricity)).to be_empty
       end
+    end
+  end
+
+  describe '.school_list_for_login_form' do
+    let!(:school) { create(:school, :with_school_group) }
+    let!(:no_school_group) { create(:school) }
+
+    it 'returns all schools' do
+      schools = School.school_list_for_login_form
+      expect(schools.length).to eq(2)
+      expect(schools.first.name).to eq(school.name)
+      expect(schools.first.school_group_name).to eq(school.school_group.name)
+      expect(schools.last.name).to eq(no_school_group.name)
+      expect(schools.last.school_group_name).to eq(nil)
     end
   end
 end
