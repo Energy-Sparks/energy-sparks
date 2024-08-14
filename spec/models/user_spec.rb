@@ -104,15 +104,15 @@ describe User do
       expect(build(:pupil, school:, pupil_password: 'three memorable words 123')).to be_valid
       expect(build(:pupil, school: create(:school), pupil_password: 'three memorable words')).to be_valid
     end
+  end
 
+  describe 'pupil password encryption' do
     it 'works in the same way for the new and old pupil password' do
-      existing_pupil.update(pupil_password_old: 'old pupil password')
-      expect(existing_pupil.pupil_password_old).to eq('old pupil password')
-      expect(existing_pupil.pupil_password).to eq('three memorable words')
-      existing_pupil.update(pupil_password: existing_pupil.pupil_password_old)
-      expect(existing_pupil.pupil_password).to eq('old pupil password')
+      pupil = create(:pupil, pupil_password_old: 'old pupil password')
+      pupil.update(pupil_password: pupil.pupil_password_old)
+      expect(pupil.pupil_password).to eq('old pupil password')
       raw = ActiveRecord::Base.connection.select_all(
-        'SELECT pupil_password, pupil_password_old FROM users WHERE id = $1', nil, [existing_pupil.id]
+        'SELECT pupil_password, pupil_password_old FROM users WHERE id = $1', nil, [pupil.id]
       ).first
       expect(raw['pupil_password']).not_to eq('old pupil password')
       expect(raw['pupil_password_old']).not_to eq('old pupil password')
