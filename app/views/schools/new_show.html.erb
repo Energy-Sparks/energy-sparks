@@ -1,0 +1,47 @@
+<% content_for :dashboard_header do %>
+  <%= render 'shared/dashboards/header', school: @school %>
+<% end %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2><%= t('schools.show.insights_and_actions') %></h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <%= component 'adult_reminders', school: @school, user: current_user do |c| %>
+        <% c.with_title { 'Reminders' } %>
+      <% end %>
+    </div>
+
+    <% unless @dashboard_alerts.empty? %>
+      <div class="col-12 col-lg-6">
+        <%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, user: current_user do |c| %>
+          <% c.with_title { t('advice_pages.index.alerts.title') } %>
+          <% c.with_link do %>
+            <%= link_to t('schools.show.view_more_alerts'), alerts_school_advice_path(@school) %>
+          <% end %>
+          <% if reportable_progress?(@progress_summary) && @progress_summary.any_passing_targets? %>
+            <%= c.with_prompt icon: 'tachometer-alt', status: :positive do |p| %>
+              <%= t('schools.show.making_progress',
+                    fuels: t_fuels_as_sentence(@progress_summary.passing_fuel_targets)) %>
+              <% p.with_link do %>
+                <%= link_to t('schools.show.review_progress'), school_school_targets_path(@school) %>
+              <% end %>
+            <% end %>
+          <% elsif reportable_progress?(@progress_summary) && @progress_summary.any_failing_targets? %>
+            <%= c.with_prompt icon: 'tachometer-alt', status: :negative do |p| %>
+              <%= t('schools.show.not_meeting_target',
+                    fuels: t_fuels_as_sentence(@progress_summary.failing_fuel_targets)) %>
+              <% p.with_link do %>
+                <%= link_to t('schools.show.review_progress'), school_school_targets_path(@school) %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
