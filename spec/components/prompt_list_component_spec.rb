@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PromptListComponent, type: :component, include_application_helper: true do
+RSpec.describe PromptListComponent, include_application_helper: true, type: :component do
   let(:all_params) { { id: id, classes: classes } }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
@@ -46,7 +46,7 @@ RSpec.describe PromptListComponent, type: :component, include_application_helper
       end
     end
 
-    it { expect(component.render?).to eq(false) }
+    it { expect(component.render?).to be(false) }
   end
 
   context 'with no link' do
