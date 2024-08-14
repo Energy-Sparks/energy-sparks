@@ -2,10 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EnergySummaryTableComponent,
-               type: :component,
-               include_application_helper: true,
-               include_url_helpers: true do
+RSpec.describe EnergySummaryTableComponent, :include_application_helper, :include_url_helpers, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
