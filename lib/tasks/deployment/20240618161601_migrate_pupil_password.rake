@@ -3,7 +3,7 @@ namespace :after_party do
   task migrate_pupil_password: :environment do
     puts "Running deploy task 'migrate_pupil_password'"
 
-    User.find_each do |user|
+    User.pupil.find_each do |user|
       next if user.pupil_password_old.nil?
 
       user.pupil_password = user.pupil_password_old
