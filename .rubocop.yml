@@ -45,7 +45,7 @@ require:
   - rubocop-rails
   - rubocop-performance
   - rubocop-rspec
-# - rubocop-capybara
+  - rubocop-capybara
 # - rubocop-factory_bot
 
 Rails/DynamicFindBy:

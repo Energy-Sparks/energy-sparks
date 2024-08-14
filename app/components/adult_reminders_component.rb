@@ -2,9 +2,7 @@ class AdultRemindersComponent < DashboardRemindersComponent
   include SchoolProgress
 
   def show_standard_prompts?
-    return true if user && user.admin?
-    return true if can_manage_school?
-    false
+    user&.admin? || can_manage_school?
   end
 
   def can_manage_school?
@@ -21,7 +19,6 @@ class AdultRemindersComponent < DashboardRemindersComponent
 
   def prompt_for_training?
     return false if user && user.admin?
-    # binding.pry
     can_manage_school? && show_data_enabled_features? && user.confirmed_at > 30.days.ago
   end
 

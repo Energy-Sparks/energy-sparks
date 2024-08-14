@@ -47,7 +47,7 @@ describe 'activity types', type: :system do
 
     context 'when paginating' do
       around do |ex|
-        run_with_temporary_pagy_default(items: 1) do
+        run_with_temporary_pagy_default(limit: 1) do
           visit search_activity_types_path
           ex.run
         end

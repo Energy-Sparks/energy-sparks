@@ -14,9 +14,7 @@ class DashboardRemindersComponent < ApplicationComponent
     return unless check
     list.with_prompt id: id, status: status, icon: icon do |p|
       yield
-      if link
-        p.with_link { helpers.link_to I18n.t(link), path }
-      end
+      p.with_link { helpers.link_to I18n.t(link), path } if link
     end
   end
 
