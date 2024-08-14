@@ -1,0 +1,61 @@
+<div id="<%= id %>" class="energy-summary-table-component <%= classes %>">
+  <% if show_title? %>
+    <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
+  <% end %>
+
+  <div class="table-responsive-sm">
+    <table id="x" class="table management-overview">
+      <thead class="thead-dark">
+        <tr>
+          <th class="icon"></th>
+          <th class="text-left"></th>
+          <th class="text-left"></th>
+          <th class="text-right"><%= t('common.table.columns.use_kwh') %></th>
+          <th class="text-right"><%= t('common.table.columns.co2_kg') %></th>
+          <th class="text-right"><%= t('common.table.columns.cost_gbp') %></th>
+          <% if show_savings? %>
+            <th class="text-right"><%= t('schools.show.potential_savings') %></th>
+          <% end %>
+          <th class="text-right"><%= t('schools.show.percentage_change') %></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% overview_data.by_fuel_type.each do |data| %>
+        <tr class="<%= data.period_key %>">
+          <%# if showing the row for "Last week" show the fuel icon and name. Reduces clutter %>
+          <% if row_for_last_week?(data) %>
+            <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
+            <td class="text-left"><%= t("common.#{data.fuel_type}") %></td>
+          <% else %>
+            <td></td>
+            <td></td>
+          <% end %>
+          <td class="text-left"><%= data.period %></td>
+          <% if data.has_data %>
+            <td class="text-right <%= data.message_class %>"><%= data.usage %></td>
+            <td class="text-right <%= data.message_class %>"><%= data.co2 %></td>
+            <td class="text-right <%= data.message_class %>"><%= data.cost %></td>
+            <% if show_savings? %>
+              <td class="text-right <%= data.message_class %>"><%= data.savings %></td>
+            <% end %>
+            <td class="text-right"><%= up_downify(data.change, sanitize: false) %></td>
+          <% else %>
+            <td class="text-center <%= data.message_class %>" colspan='5'><%= data.message %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <% if footer? %>
+    <%= footer %>
+  <% else %>
+    <div class="text-right management-overview-caption">
+      <%= overview_data.date_ranges %>
+      <%= link_to_help_for_feature :management_summary_overview,
+                                   title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe,
+                                   user: user %>
+    </div>
+  <% end %>
+
+</div>

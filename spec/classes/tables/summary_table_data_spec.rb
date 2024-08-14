@@ -167,10 +167,12 @@ describe Tables::SummaryTableData do
 
     it 'gives annual data' do
       expect(subject.by_fuel_type.second.period).to eq('Last year')
+      expect(subject.by_fuel_type.second.period_key).to eq(:year)
     end
 
     it 'gives last week data' do
       expect(subject.by_fuel_type.first.period).to eq('Last week')
+      expect(subject.by_fuel_type.first.period_key).to eq(:workweek)
     end
   end
 
