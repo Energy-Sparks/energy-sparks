@@ -32,7 +32,7 @@ class EnergySummaryTableComponent < ApplicationComponent
   end
 
   def render?
-    return overview_data.present? if @user&.admin?
-    @school.data_enabled?
+    return false unless overview_data.present?
+    @user&.admin? || @school.data_enabled?
   end
 end
