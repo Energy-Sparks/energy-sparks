@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
-export $(< /opt/elasticbeanstalk/deployment/env)
+# /opt/elasticbeanstalk/deployment/env doesn't exist on a new instance
+export $(/opt/elasticbeanstalk/bin/get-config environment | jq -r 'to_entries | .[] | "\(.key)=\(.value)"')
 set -x
 EB_APP_STAGING_DIR="$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppStagingDir)"
 EB_APP_USER="$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)"
