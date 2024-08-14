@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AdultRemindersComponent, include_application_helper: true, type: :component do
+RSpec.describe AdultRemindersComponent, :include_application_helper, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
@@ -232,13 +232,13 @@ RSpec.describe AdultRemindersComponent, include_application_helper: true, type: 
   describe '#prompt_to_review_target?' do
     context 'with no target' do
       context 'with admin' do
-        it { expect(component.send(:prompt_to_review_target?)).to eq(nil) }
+        it { expect(component.send(:prompt_to_review_target?)).to be(nil) }
       end
 
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.send(:prompt_to_review_target?)).to eq(nil) }
+        it { expect(component.send(:prompt_to_review_target?)).to be(nil) }
       end
 
       context 'with other' do
