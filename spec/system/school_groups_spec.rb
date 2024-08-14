@@ -269,7 +269,7 @@ describe 'school groups', :school_groups, type: :system do
           expect(header).to match(/^attachment/)
           filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
           expect(header).to match filename
-          expect(page.source).to eq "Fuel,Description,School,Number of pupils,Floor area (m2),Energy (kWh),Cost (£),CO2 (kg)\nGas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0,£1000,1100\n"
+          expect(page.source).to eq "Fuel,Description,School,Number of pupils,Floor area (m2),Energy (kWh),Cost (£),CO2 (kg)\nGas,Spending too much money on heating,#{school_1.name},10,200.0,0,£1000,1100\n"
         end
 
         it 'displays list of actions' do

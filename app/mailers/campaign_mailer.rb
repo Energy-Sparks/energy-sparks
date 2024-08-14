@@ -13,10 +13,6 @@ class CampaignMailer < LocaleMailer
 
   private
 
-  def env
-    ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
-  end
-
   def notify_admin_subject(organisation, request_type)
     "[energy-sparks-#{env}] Campaign form: #{organisation} - #{request_type.to_s.humanize}"
   end

@@ -17,8 +17,4 @@ class SolarLoaderJobMailer < ApplicationMailer
   def subject(solar_feed_type, installation, status)
     "[energy-sparks-#{env}] #{solar_feed_type} Import for #{installation.school.name} #{status.to_s.humanize}"
   end
-
-  def env
-    ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
-  end
 end

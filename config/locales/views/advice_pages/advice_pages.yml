@@ -25,6 +25,8 @@ en:
     charts:
       controls:
         select_meter: Select a meter
+      the_whole_school: the whole school
+      whole_school: Whole school
     error:
       data_warning: We have not received data for your %{fuel_type} usage for over thirty days. As a result your analysis will be out of date and may not reflect recent changes in your school.
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.

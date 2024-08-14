@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AdultRemindersComponent, type: :component, include_application_helper: true do
+RSpec.describe AdultRemindersComponent, :include_application_helper, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
@@ -23,63 +23,63 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
 
   describe '#show_standard_prompts?' do
     context 'with admin' do
-      it { expect(component.show_standard_prompts?).to eq(true) }
+      it { expect(component.show_standard_prompts?).to be(true) }
     end
 
     context 'with school admin' do
       let!(:user) { create(:school_admin, school: school)}
 
-      it { expect(component.show_standard_prompts?).to eq(true) }
+      it { expect(component.show_standard_prompts?).to be(true) }
     end
 
     context 'with other' do
       let!(:user) { create(:school_admin) }
 
-      it { expect(component.show_standard_prompts?).to eq(false) }
+      it { expect(component.show_standard_prompts?).to be(false) }
     end
 
     context 'with guest' do
       let!(:user) { create(:guest) }
 
-      it { expect(component.show_standard_prompts?).to eq(false) }
+      it { expect(component.show_standard_prompts?).to be(false) }
     end
   end
 
   describe '#prompt_for_bill?' do
     context 'with admin' do
-      it { expect(component.prompt_for_bill?).to eq(false) }
+      it { expect(component.prompt_for_bill?).to be(false) }
     end
 
     context 'with bill requested' do
       let(:school) { create(:school, bill_requested: true) }
 
       context 'with admin' do
-        it { expect(component.prompt_for_bill?).to eq(true) }
+        it { expect(component.prompt_for_bill?).to be(true) }
       end
 
       context 'with school admin' do
         let(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.prompt_for_bill?).to eq(true) }
+        it { expect(component.prompt_for_bill?).to be(true) }
       end
 
       context 'with other' do
         let(:user) { create(:school_admin) }
 
-        it { expect(component.prompt_for_bill?).to eq(false) }
+        it { expect(component.prompt_for_bill?).to be(false) }
       end
 
       context 'with guest' do
         let(:user) { create(:guest) }
 
-        it { expect(component.prompt_for_bill?).to eq(false) }
+        it { expect(component.prompt_for_bill?).to be(false) }
       end
     end
   end
 
   describe '#prompt_for_training?' do
     context 'with admin' do
-      it { expect(component.prompt_for_training?).to eq(false) }
+      it { expect(component.prompt_for_training?).to be(false) }
     end
 
     context 'when school is data enabled' do
@@ -89,39 +89,39 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
         context 'when recently confirmed' do
           let!(:user) { create(:school_admin, confirmed_at: Time.zone.now, school: school)}
 
-          it { expect(component.prompt_for_training?).to eq(true) }
+          it { expect(component.prompt_for_training?).to be(true) }
         end
 
         context 'when confirmed some time ago' do
           let!(:user) { create(:school_admin, confirmed_at: 1.year.ago, school: school)}
 
-          it { expect(component.prompt_for_training?).to eq(false) }
+          it { expect(component.prompt_for_training?).to be(false) }
         end
       end
 
       context 'with other' do
         let!(:user) { create(:school_admin) }
 
-        it { expect(component.prompt_for_training?).to eq(false) }
+        it { expect(component.prompt_for_training?).to be(false) }
       end
 
       context 'with guest' do
         let!(:user) { create(:guest) }
 
-        it { expect(component.prompt_for_training?).to eq(false) }
+        it { expect(component.prompt_for_training?).to be(false) }
       end
     end
 
     context 'with other' do
       let!(:user) { create(:school_admin) }
 
-      it { expect(component.prompt_for_training?).to eq(false) }
+      it { expect(component.prompt_for_training?).to be(false) }
     end
 
     context 'with guest' do
       let!(:user) { create(:guest) }
 
-      it { expect(component.prompt_for_training?).to eq(false) }
+      it { expect(component.prompt_for_training?).to be(false) }
     end
   end
 
@@ -131,7 +131,7 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
     end
 
     context 'with admin' do
-      it { expect(component.prompt_for_contacts?).to eq(true) }
+      it { expect(component.prompt_for_contacts?).to be(true) }
     end
 
     context 'with contacts' do
@@ -142,26 +142,26 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.prompt_for_contacts?).to eq(false) }
+        it { expect(component.prompt_for_contacts?).to be(false) }
       end
     end
 
     context 'with school admin' do
       let!(:user) { create(:school_admin, school: school)}
 
-      it { expect(component.prompt_for_contacts?).to eq(true) }
+      it { expect(component.prompt_for_contacts?).to be(true) }
     end
 
     context 'with other' do
       let!(:user) { create(:school_admin) }
 
-      it { expect(component.prompt_for_contacts?).to eq(false) }
+      it { expect(component.prompt_for_contacts?).to be(false) }
     end
 
     context 'with guest' do
       let!(:user) { create(:guest) }
 
-      it { expect(component.prompt_for_contacts?).to eq(false) }
+      it { expect(component.prompt_for_contacts?).to be(false) }
     end
   end
 
@@ -171,7 +171,7 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
     end
 
     context 'with admin' do
-      it { expect(component.prompt_for_pupils?).to eq(true) }
+      it { expect(component.prompt_for_pupils?).to be(true) }
     end
 
     context 'with pupil login' do
@@ -182,75 +182,75 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.prompt_for_pupils?).to eq(false) }
+        it { expect(component.prompt_for_pupils?).to be(false) }
       end
     end
 
     context 'with school admin' do
       let!(:user) { create(:school_admin, school: school)}
 
-      it { expect(component.prompt_for_pupils?).to eq(true) }
+      it { expect(component.prompt_for_pupils?).to be(true) }
     end
 
     context 'with other' do
       let!(:user) { create(:school_admin) }
 
-      it { expect(component.prompt_for_pupils?).to eq(false) }
+      it { expect(component.prompt_for_pupils?).to be(false) }
     end
 
     context 'with guest' do
       let!(:user) { create(:guest) }
 
-      it { expect(component.prompt_for_pupils?).to eq(false) }
+      it { expect(component.prompt_for_pupils?).to be(false) }
     end
   end
 
   describe '#prompt_for_target?' do
     context 'with admin' do
-      it { expect(component.send(:prompt_for_target?)).to eq(true) }
+      it { expect(component.send(:prompt_for_target?)).to be(true) }
     end
 
     context 'with school admin' do
       let!(:user) { create(:school_admin, school: school)}
 
-      it { expect(component.send(:prompt_for_target?)).to eq(true) }
+      it { expect(component.send(:prompt_for_target?)).to be(true) }
     end
 
     context 'with other' do
       let!(:user) { create(:school_admin) }
 
-      it { expect(component.send(:prompt_for_target?)).to eq(false) }
+      it { expect(component.send(:prompt_for_target?)).to be(false) }
     end
 
     context 'with guest' do
       let!(:user) { create(:guest) }
 
-      it { expect(component.send(:prompt_for_target?)).to eq(false) }
+      it { expect(component.send(:prompt_for_target?)).to be(false) }
     end
   end
 
   describe '#prompt_to_review_target?' do
     context 'with no target' do
       context 'with admin' do
-        it { expect(component.send(:prompt_to_review_target?)).to eq(nil) }
+        it { expect(component.send(:prompt_to_review_target?)).to be_nil }
       end
 
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.send(:prompt_to_review_target?)).to eq(nil) }
+        it { expect(component.send(:prompt_to_review_target?)).to be_nil }
       end
 
       context 'with other' do
         let!(:user) { create(:school_admin) }
 
-        it { expect(component.send(:prompt_to_review_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_review_target?)).to be(false) }
       end
 
       context 'with guest' do
         let!(:user) { create(:guest) }
 
-        it { expect(component.send(:prompt_to_review_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_review_target?)).to be(false) }
       end
     end
 
@@ -263,25 +263,25 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
       end
 
       context 'with admin' do
-        it { expect(component.send(:prompt_to_review_target?)).to eq(true) }
+        it { expect(component.send(:prompt_to_review_target?)).to be(true) }
       end
 
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.send(:prompt_to_review_target?)).to eq(true) }
+        it { expect(component.send(:prompt_to_review_target?)).to be(true) }
       end
 
       context 'with other' do
         let!(:user) { create(:school_admin) }
 
-        it { expect(component.send(:prompt_to_review_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_review_target?)).to be(false) }
       end
 
       context 'with guest' do
         let!(:user) { create(:guest) }
 
-        it { expect(component.send(:prompt_to_review_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_review_target?)).to be(false) }
       end
     end
   end
@@ -289,25 +289,25 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
   describe '#prompt_to_set_new_target?' do
     context 'with no target' do
       context 'with admin' do
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
 
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
 
       context 'with other' do
         let!(:user) { create(:school_admin) }
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
 
       context 'with guest' do
         let!(:user) { create(:guest) }
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
     end
 
@@ -317,25 +317,25 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
       end
 
       context 'with admin' do
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
 
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
 
       context 'with other' do
         let!(:user) { create(:school_admin) }
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
 
       context 'with guest' do
         let!(:user) { create(:guest) }
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
     end
 
@@ -345,25 +345,25 @@ RSpec.describe AdultRemindersComponent, type: :component, include_application_he
       end
 
       context 'with admin' do
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(true) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(true) }
       end
 
       context 'with school admin' do
         let!(:user) { create(:school_admin, school: school)}
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(true) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(true) }
       end
 
       context 'with other' do
         let!(:user) { create(:school_admin) }
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
 
       context 'with guest' do
         let!(:user) { create(:guest) }
 
-        it { expect(component.send(:prompt_to_set_new_target?)).to eq(false) }
+        it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
     end
   end
