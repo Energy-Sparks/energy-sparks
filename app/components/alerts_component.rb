@@ -4,7 +4,6 @@ class AlertsComponent < PromptListComponent
   attr_reader :school, :show_links, :show_icons, :user
 
   include AdvicePageHelper
-  include ApplicationHelper
 
   def initialize(school:, dashboard_alerts:, alert_types: nil, audience: :adult, show_links: true, show_icons: true, id: nil, classes: '', user: nil)
     super(id: id, classes: classes)
