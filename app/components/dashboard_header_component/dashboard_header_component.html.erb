@@ -1,0 +1,33 @@
+<div id="<%= id %>" class="dashboard-header-component row <%= classes %>">
+  <div class="col-12 col-md-9">
+    <div class="row">
+      <div class="col">
+        <h1><%= t('schools.dashboards.header.title') %></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          <%= t('schools.dashboards.header.intro') %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-3 bg-white rounded">
+    <div class="row">
+      <div class="col">
+        <h4><%= school.name %></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <%= school.address %> <%= school.postcode %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <span class="badge badge-secondary"><%= t("common.school_types.#{school.school_type}") %></span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,8 +15,6 @@
 # text via content
 # link via slot
 class PromptComponent < ApplicationComponent
-  include ApplicationHelper
-
   renders_one :link
   renders_one :title
   renders_one :pill
