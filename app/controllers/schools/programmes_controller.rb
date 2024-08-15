@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Schools
   class ProgrammesController < ApplicationController
     load_and_authorize_resource :school
-    load_and_authorize_resource :programme, except: [:create]
 
     def create
       programme_type = ProgrammeType.find(params[:programme_type_id])
