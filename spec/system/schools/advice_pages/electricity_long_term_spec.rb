@@ -112,7 +112,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
 
         it 'includes expected charts' do
           expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.management_dashboard_group_by_week_electricity.title'))
-          expect(page).to have_css('#chart_management_dashboard_group_by_week_electricity')
+          expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
 
           expect(page).to have_css('#chart_wrapper_electricity_by_month_year_0_1')
           expect(page).to have_no_css('#chart_wrapper_group_by_week_electricity_versus_benchmark')

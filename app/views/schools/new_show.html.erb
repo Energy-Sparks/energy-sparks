@@ -1,0 +1,11 @@
+<% content_for :dashboard_header do %>
+  <%= component 'dashboard_header', school: @school %>
+<% end %>
+
+<div class="container">
+  <%= component 'dashboard_insights',
+                audience: :adult,
+                school: @school,
+                user: current_user,
+                progress_summary: @progress_summary %>
+</div>
