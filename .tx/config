@@ -281,6 +281,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_meter_breakdown-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/electricity_meter_breakdown.yml
+source_file  = config/locales/views/advice_pages/electricity_meter_breakdown.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_out_of_hours-yml]
 file_filter  = config/locales/<lang>/views/advice_pages/electricity_out_of_hours.yml
 source_file  = config/locales/views/advice_pages/electricity_out_of_hours.yml
@@ -305,6 +312,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-advice_pages-gas_long_term-yml]
 file_filter  = config/locales/<lang>/views/advice_pages/gas_long_term.yml
 source_file  = config/locales/views/advice_pages/gas_long_term.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-gas_meter_breakdown-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/gas_meter_breakdown.yml
+source_file  = config/locales/views/advice_pages/gas_meter_breakdown.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
