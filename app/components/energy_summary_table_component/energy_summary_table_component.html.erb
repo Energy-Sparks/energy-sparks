@@ -1,22 +1,28 @@
 <div id="<%= id %>" class="energy-summary-table-component <%= classes %>">
   <% if show_title? %>
-    <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
+    <h2>
+      <% if Flipper.enabled?(:new_dashboards_2024, user) %>
+        <%= t('schools.show.recent_energy_usage') %>
+      <% else %>
+        <%= t('schools.show.summary_of_recent_energy_usage') %>
+      <% end %>
+    </h2>
   <% end %>
 
-  <div class="table-responsive-sm">
-    <table id="x" class="table management-overview">
+  <div class="table-responsive">
+    <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th class="icon"></th>
+          <th class="icon <%= col(1) %>"></th>
           <th class="text-left"></th>
-          <th class="text-left"></th>
-          <th class="text-right"><%= t('common.table.columns.use_kwh') %></th>
-          <th class="text-right"><%= t('common.table.columns.co2_kg') %></th>
-          <th class="text-right"><%= t('common.table.columns.cost_gbp') %></th>
+          <th class="text-left <%= col(4) %>"></th>
+          <th class="text-right <%= col(1) %>"><%= t('common.table.columns.use_kwh') %></th>
+          <th class="text-right <%= col(1) %>"><%= t('common.table.columns.co2_kg') %></th>
+          <th class="text-right <%= col(1) %>"><%= t('common.table.columns.cost_gbp') %></th>
           <% if show_savings? %>
-            <th class="text-right"><%= t('schools.show.potential_savings') %></th>
+            <th class="text-right <%= col(1) %>"><%= t('schools.show.potential_savings') %></th>
           <% end %>
-          <th class="text-right"><%= t('schools.show.percentage_change') %></th>
+          <th class="text-right <%= col(1) %>"><%= t('schools.show.percentage_change') %></th>
         </tr>
       </thead>
       <tbody>
@@ -24,11 +30,22 @@
         <tr class="<%= data.period_key %>">
           <%# if showing the row for "Last week" show the fuel icon and name. Reduces clutter %>
           <% if row_for_last_week?(data) %>
-            <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
-            <td class="text-left"><%= t("common.#{data.fuel_type}") %></td>
+            <% if Flipper.enabled?(:new_dashboards_2024, user) %>
+              <td rowspan="2" class="align-middle icon <%= fuel_type_class(data.fuel_type) %>">
+                <%= fa_icon fuel_type_icon(data.fuel_type) %>
+              </td>
+              <td rowspan="2" class="align-middle text-left">
+                <%= t("common.#{data.fuel_type}") %>
+              </td>
+            <% else %>
+              <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
+              <td class="text-left"><%= t("common.#{data.fuel_type}") %></td>
+            <% end %>
           <% else %>
-            <td></td>
-            <td></td>
+            <% unless Flipper.enabled?(:new_dashboards_2024, user) %>
+              <td></td>
+              <td></td>
+            <% end %>
           <% end %>
           <td class="text-left"><%= data.period %></td>
           <% if data.has_data %>
@@ -40,7 +57,7 @@
             <% end %>
             <td class="text-right"><%= up_downify(data.change, sanitize: false) %></td>
           <% else %>
-            <td class="text-center <%= data.message_class %>" colspan='5'><%= data.message %></td>
+            <td class="text-center <%= no_data_message_class(data) %>" colspan='5'><%= data.message %></td>
           <% end %>
         </tr>
       <% end %>
@@ -50,11 +67,11 @@
   <% if footer? %>
     <%= footer %>
   <% else %>
-    <div class="text-right management-overview-caption">
+    <div class="<%= footer_classes %>">
       <%= overview_data.date_ranges %>
       <%= link_to_help_for_feature :management_summary_overview,
-                                   title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe,
-                                   user: user %>
+                                   title: footer_link,
+                                   user: user, css: 'strong' %>
     </div>
   <% end %>
 

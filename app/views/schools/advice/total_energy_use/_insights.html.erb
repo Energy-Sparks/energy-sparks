@@ -9,6 +9,7 @@
                                            section_title: advice_t('total_energy_use.insights.energy_use.title') %>
 
 <%= component 'energy_summary_table',
+              id: 'management-overview-table',
               school: @school, user: current_user,
               show_savings: false, show_title: false do |c| %>
   <%= c.with_footer do %>

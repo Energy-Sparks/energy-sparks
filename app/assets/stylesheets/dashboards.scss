@@ -193,10 +193,7 @@ table.management-priorities {
   }
 }
 
-.management-overview {
-  thead{
-    background-color: $grey;
-  }
+table {
   .fa-arrow-circle-down {
     color: $green;
   }
@@ -210,6 +207,21 @@ table.management-priorities {
 
 .management-overview-caption {
   margin-bottom: 40px;
+}
+
+.energy-summary-table-component td {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-caption {
+  @include font(f7);
+  a {
+    font-weight: bold;
+  }
+}
+
+.future-data {
+  color: $grey;
 }
 
 .old-data {

@@ -5,7 +5,7 @@
                                         show_data_enabled_features: @show_data_enabled_features %>
 <% end %>
 
-<%= component 'energy_summary_table', school: @school, user: current_user %>
+<%= component 'energy_summary_table', id: 'management-overview-table', school: @school, user: current_user %>
 
 <h3><%= t('schools.show.act_on_energy_usage') %></h3>
 

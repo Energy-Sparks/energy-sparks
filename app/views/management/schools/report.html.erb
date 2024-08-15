@@ -2,7 +2,7 @@
 
 <h2><%= t('schools.show.dashboard_title', school_name: @school.name) %></h2>
 
-<%= component 'energy_summary_table', school: @school, user: current_user %>
+<%= component 'energy_summary_table', id: 'management-overview-table', school: @school, user: current_user %>
 
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school,
                                       content_field: :management_dashboard_title %>
