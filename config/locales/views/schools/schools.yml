@@ -147,6 +147,14 @@ en:
         enable_alerts: Enable alerts
         enable_alerts_for: Enable alerts for %{user_name}
         sign_up_for_email_or_text_alerts: Sign up for email or text alerts
+    dashboards:
+      header:
+        intro: Find the latest information, alerts and links to further analysis of the energy performance at this school
+        title: Welcome
+      insights:
+        title: Insights and actions
+      reminders:
+        title: Reminders
     downloads:
       index:
         aggregated_meter_collection: Aggregated meter collection
@@ -609,6 +617,7 @@ en:
       setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
       summary_of_recent_energy_usage: Summary of recent energy usage
       upload_energy_bill: Upload a bill
+      view_more_alerts: View more alerts
     timeline:
       no_events: No events to show
       title: What's been going on?

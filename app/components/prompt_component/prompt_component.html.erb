@@ -1,0 +1,41 @@
+<div id="<%= id %>" class="prompt-component mb-2 <%= classes %>">
+  <%# Padding added to create space within div %>
+  <div class="row pt-4 pb-4">
+    <% if icon.present? %>
+      <%# Icon is hidden on smallest size, visible from sm and above as single column %>
+      <div class="d-none d-sm-block col-1">
+          <%# Use font-awesome stacking support. Additional class to override font size to match our default %>
+          <span class="prompt-component-fa-stack fa-stack fa-2x">
+            <i class="fa-solid fa-circle fa-stack-2x fa-inverse"></i>
+            <%= helpers.fa_icon(icon, class: 'fa-stack-1x') %>
+          </span>
+      </div>
+    <% end %>
+    <%# if no icon then use full width row %>
+    <%# Below md use full width, so text column wraps below icon. from md above use 2 cols %>
+    <div class="<%= icon.present? ? 'col-12 col-md-11' : 'col-12' %>">
+      <% if title? || pill? %>
+        <div class="row">
+          <div class="col">
+            <% if title? %>
+              <strong><%= title %></strong>
+            <% end %>
+            <% if pill? %>
+              <%= pill %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <div class="row">
+        <div class="col">
+          <%= content %>
+          <p>
+          <% if link %>
+            <%= link %>
+          <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
