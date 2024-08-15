@@ -147,6 +147,10 @@ en:
         enable_alerts: Enable alerts
         enable_alerts_for: Enable alerts for %{user_name}
         sign_up_for_email_or_text_alerts: Sign up for email or text alerts
+    dashboards:
+      header:
+        intro: Find the latest information, alerts and links to further analysis of the energy performance at this school
+        title: Welcome
     downloads:
       index:
         aggregated_meter_collection: Aggregated meter collection
