@@ -38,14 +38,26 @@ describe Programmes::Creator do
         expect(school.programmes.first.activities.any?).to be false
       end
 
-      it 'abandons an existing programme' do
+      it 'doesnt enrol twice' do
         service.create
+        expect(school.programmes.count).to be 1
+      end
+
+      it 'doesnt enrol twice when multiple programmes' do
+        programme_type_other = create(:programme_type)
+        school.programmes << create(:programme, programme_type: programme_type_other, started_on: Time.zone.now)
+        service.create
+        expect(school.programmes.count).to be 2
+      end
+
+      it 'abandons an existing programme' do
+        service.create(repeat: true)
         expect(school.programmes.order(:started_on).pluck(:status)).to eq %w[abandoned started]
       end
 
       it 'repeats an existing programme' do
         programme.complete!
-        service.create
+        service.create(repeat: true)
         expect(school.programmes.order(:started_on).pluck(:status)).to eq %w[completed started]
       end
     end
