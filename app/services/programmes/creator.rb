@@ -7,8 +7,13 @@ module Programmes
       @programme_type = programme_type
     end
 
-    def create
-      @school.programmes.where(programme_type: @programme_type).where.not(status: 'completed').update(status: 'abandoned')
+    def create(repeat: false)
+      if repeat
+        @school.programmes.where(programme_type: @programme_type).where.not(status: 'completed')
+               .update(status: 'abandoned')
+      elsif already_enrolled?
+        return
+      end
       programme = @school.programmes.create(programme_type: @programme_type, started_on: Time.zone.today)
       recognise_existing_progress(programme)
       programme
@@ -36,8 +41,8 @@ module Programmes
       @school.academic_year_for(activity.happened_on)
     end
 
-    def find_existing_programme
-      @school.programmes.where(programme_type: @programme_type).where.not(status: 'closed')
+    def already_enrolled?
+      @school.programmes.any? { |programme| programme.programme_type == @programme_type }
     end
   end
 end
