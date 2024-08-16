@@ -49,19 +49,25 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
     end
 
     it 'renders the table' do
-      expect(html).to have_content(I18n.t('classes.tables.summary_table_data.last_year'))
-      expect(html).to have_content('1,000')
-      expect(html).to have_content('£2,000')
-      expect(html).to have_content('500')
-      expect(html).to have_content('£330')
-      expect(html).to have_content('+11%')
+      expect(html).to have_selector(:table_row, [
+                                      '', # no fuel type here as on previous row
+                                      I18n.t('classes.tables.summary_table_data.last_year'),
+                                      '1,000',
+                                      '500',
+                                      '£2,000',
+                                      '£330',
+                                      '+11%'
+                                    ])
 
-      expect(html).to have_content(I18n.t('classes.tables.summary_table_data.last_week'))
-      expect(html).to have_content('100')
-      expect(html).to have_content('£200')
-      expect(html).to have_content('50')
-      expect(html).to have_content('£33')
-      expect(html).to have_content('-9.2%')
+      expect(html).to have_selector(:table_row, [
+                                      'Electricity',
+                                      I18n.t('classes.tables.summary_table_data.last_week'),
+                                      '100',
+                                      '50',
+                                      '£200',
+                                      '£33',
+                                      '-9.2%'
+                                    ])
     end
 
     it 'renders the table footer' do
@@ -81,10 +87,23 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
       end
 
       it 'does not show the savings' do
-        expect(html).to have_content('1,000')
-        expect(html).not_to have_content('£330')
-        expect(html).to have_content('100')
-        expect(html).not_to have_content('£33')
+        expect(html).to have_selector(:table_row, [
+                                        '', # no fuel type here as on previous row
+                                        I18n.t('classes.tables.summary_table_data.last_year'),
+                                        '1,000',
+                                        '500',
+                                        '£2,000',
+                                        '+11%'
+                                      ])
+
+        expect(html).to have_selector(:table_row, [
+                                        'Electricity',
+                                        I18n.t('classes.tables.summary_table_data.last_week'),
+                                        '100',
+                                        '50',
+                                        '£200',
+                                        '-9.2%'
+                                      ])
       end
     end
 
