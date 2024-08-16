@@ -16,6 +16,7 @@
   </thead>
   <tbody>
     <% meters_for_breakdown.each do |mpan_mprn, meter| %>
+      <% next unless usage_breakdown.meters.include?(mpan_mprn) %>
       <tr>
         <td class="text-left"><%= meter.mpan_mprn %></td>
         <td><%= meter.name %></td>
