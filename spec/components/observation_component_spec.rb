@@ -13,9 +13,9 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
   let(:observation) { }
 
   let(:show_actions) { true }
-  let(:compact) { false }
+  let(:style) { :full }
 
-  let(:all_params) { { observation: observation, show_actions: show_actions, compact: compact } }
+  let(:all_params) { { observation: observation, show_actions: show_actions, style: style } }
   let(:params) { all_params }
   let(:current_user) { create(:admin) }
 
@@ -46,8 +46,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it_behaves_like 'when show_actions is false'
 
-    context 'when compact is true' do
-      let(:compact) { true }
+    context 'when style is compact' do
+      let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
       it { expect(html).to have_content("#{observation.school.name} recorded \"#{observation.activity.display_name}\"") }
@@ -71,8 +71,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it_behaves_like 'when show_actions is false'
 
-    context 'when compact is true' do
-      let(:compact) { true }
+    context 'when style is compact' do
+      let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
       it { expect(html).to have_content("#{observation.school.name} ") }
@@ -96,8 +96,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it_behaves_like 'when show_actions is false'
 
-    context 'when compact is true' do
-      let(:compact) { true }
+    context 'when style is compact' do
+      let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
       it { expect(html).to have_content("#{observation.school.name} completed all energy audit activities") }
@@ -119,8 +119,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it_behaves_like 'when show_actions is false'
 
-    context 'when compact is true' do
-      let(:compact) { true }
+    context 'when style is compact' do
+      let(:style) { :compact }
 
       it { expect(html).to have_css("i.fa-#{observation.intervention_type.intervention_type_group.icon}") }
       it { expect(html).to have_link(observation.school.name, href: school_path(observation.school)) }
@@ -144,8 +144,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it_behaves_like 'when show_actions is false'
 
-    context 'when compact is true' do
-      let(:compact) { true }
+    context 'when style is compact' do
+      let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
       it { expect(html).to have_content("#{observation.school.name} completed a programme") }
@@ -167,8 +167,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it_behaves_like 'when show_actions is false'
 
-    context 'when compact is true' do
-      let(:compact) { true }
+    context 'when style is compact' do
+      let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-tachometer-alt') }
       it { expect(html).to have_content("#{observation.school.name} started working towards their energy saving target") }
@@ -191,8 +191,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it_behaves_like 'when show_actions is false'
 
-    context 'when compact is true' do
-      let(:compact) { true }
+    context 'when style is compact' do
+      let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-temperature-high') }
       it { expect(html).to have_content("#{observation.school.name} scored 5 points by recording indoor temperatures") }
@@ -214,8 +214,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
 
     it_behaves_like 'when show_actions is false'
 
-    context 'when compact is true' do
-      let(:compact) { true }
+    context 'when style is compact' do
+      let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-car') }
       it { expect(html).to have_content("#{observation.school.name} started a transport survey") }

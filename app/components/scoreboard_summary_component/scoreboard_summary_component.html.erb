@@ -42,14 +42,14 @@
       </div>
     </div>
     <div class="row mt-4 d-flex align-items-center">
-      <div class=" col-8 ">
+      <div class="col-8">
         <p>
           <%= t('components.scoreboard_summary.recent_activity_intro') %>
         </p>
       </div>
-      <div class=" col-2 "></div>
+      <div class="col-2"></div>
       <% if other_schools? %>
-        <div class=" col-2 ">
+        <div class="col-2">
           <p>
             <%= link_to t('components.scoreboard_summary.view_scoreboard'),
                         scoreboard_path(scoreboard),
@@ -58,28 +58,28 @@
         </div>
       <% end %>
     </div>
-    <div class=" row ">
-      <div class=" col ">
-        <%= component 'compact_timeline', observations: observations, classes: 'bg-white rounded p-4' %>
+    <div class="row">
+      <div class="col">
+        <%= component 'scoreboard_activity', podium: podium, observations: observations, classes: 'bg-white rounded p-4' %>
       </div>
     </div>
   <% else %>
     <% if title.present? %>
       <h3><%= title %></h3>
     <% end %>
-      <div class=" row ">
-        <div class=" col-lg card-deck actions ">
-          <div class=" card ">
-            <div class=" card-body ">
+      <div class="row">
+        <div class="col-lg card-deck actions">
+          <div class="card">
+            <div class="card-body">
                 <%= component 'podium', podium: podium %>
             </div>
           </div>
         </div>
 
-        <div class=" col-lg card-deck actions ">
-          <div class=" card ">
-            <div class=" card-body ">
-              <h4 class=" text-center "><%= timeline_title %></h4>
+        <div class="col-lg card-deck actions">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="text-center"><%= timeline_title %></h4>
               <%= component 'compact_timeline', observations: observations %>
             </div>
           </div>

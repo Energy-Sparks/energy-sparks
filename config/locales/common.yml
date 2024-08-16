@@ -19,6 +19,7 @@ en:
       actions: Actions
       activate: Activate
       active: Active
+      activity: Activity
       adult_actions: Adult actions
       are_you_sure: Are you sure?
       attributes: Attributes
@@ -48,6 +49,7 @@ en:
       no_label: 'No'
       not_applicable: N/A
       not_set: Not set
+      place: Place
       previous: Previous
       pupil_activities: Pupil activities
       remove: Remove

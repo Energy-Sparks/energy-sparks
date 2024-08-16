@@ -1,14 +1,14 @@
 class ObservationComponent < ViewComponent::Base
-  attr_reader :observation, :show_actions, :compact
+  attr_reader :observation, :show_actions, :style
 
-  def initialize(observation:, show_actions: false, compact: false)
+  def initialize(observation:, show_actions: false, style: :full)
     @observation = observation
     @show_actions = show_actions
-    @compact = compact
+    @style = style
   end
 
   def component
-    "ObservationComponent::#{observation.observation_type.camelize}".constantize.new(observation: observation, show_actions: show_actions, compact: compact)
+    "ObservationComponent::#{observation.observation_type.camelize}".constantize.new(observation: observation, show_actions: show_actions, style: style)
   end
 
   def call
@@ -16,19 +16,19 @@ class ObservationComponent < ViewComponent::Base
   end
 
   class ObservationBase < ViewComponent::Base
-    attr_reader :observation, :show_actions, :compact
+    attr_reader :observation, :show_actions, :style
 
     delegate :fa_icon, :nice_dates, :can?, to: :helpers
 
-    def initialize(observation:, show_actions: false, compact: false)
+    def initialize(observation:, show_actions: false, style: :full)
       @observation = observation
       @show_actions = show_actions
-      @compact = compact
+      @style = style
     end
 
-    def icon
-      size = compact ? 1 : 2
-      fa_icon("#{icon_name} fa-#{size}x")
+    def icon(classes: '')
+      size = [:compact, :description].include?(@style) ? 1 : 2
+      fa_icon("#{icon_name} fa-#{size}x #{classes}")
     end
 
     def school

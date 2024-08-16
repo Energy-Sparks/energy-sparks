@@ -7,38 +7,61 @@ en:
           one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> after they recorded "<a href="%{compact_path}">%{target}</a>"
           other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> after they recorded "<a href="%{compact_path}">%{target}</a>"
           zero: <a href="%{school_path}">%{school}</a> recorded "<a href="%{compact_path}">%{target}</a>"
+        description_html:
+          one: Scored <strong>%{count} point</strong> after they recorded "<a href="%{compact_path}">%{target}</a>"
+          other: Scored <strong>%{count} points</strong> after they recorded "<a href="%{compact_path}">%{target}</a>"
+          zero: Recorded "<a href="%{compact_path}">%{target}</a>"
         message: Completed an activity
       audit:
         compact_message_html: <a href="%{school_path}">%{school}</a> <a href="%{compact_path}">received an energy audit</a>
+        description_html: <a href="%{compact_path}">Received an energy audit</a>
         message: Received an energy audit
       audit_activities_completed:
         compact_message_html:
           one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> after they <a href="%{compact_path}">completed all energy audit activities</a>
           other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> after they <a href="%{compact_path}">completed all energy audit activities</a>
           zero: <a href="%{school_path}">%{school}</a> completed all energy audit activities</a>
+        description_html:
+          one: Scored <strong>%{count} point</strong> after they <a href="%{compact_path}">completed all energy audit activities</a>
+          other: Scored <strong>%{count} points</strong> after they <a href="%{compact_path}">completed all energy audit activities</a>
+          zero: Completed all energy audit activities</a>
         message: Completed all audit activities
       intervention:
         compact_message_html:
           one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> after they recorded "<a href="%{compact_path}">%{message}</a>"
           other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> after they recorded "<a href="%{compact_path}">%{message}</a>"
           zero: <a href="%{school_path}">%{school}</a> recorded "<a href="%{compact_path}">%{message}</a>"
+        description_html:
+          one: Scored <strong>%{count} point</strong> after they recorded "<a href="%{compact_path}">%{message}</a>"
+          other: Scored <strong>%{count} points</strong> after they recorded "<a href="%{compact_path}">%{message}</a>"
+          zero: Recorded "<a href="%{compact_path}">%{message}</a>"
       programme:
         compact_message_html:
           one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> after they <a href="%{compact_path}">completed a programme</a>
           other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> after they <a href="%{compact_path}">completed a programme</a>
           zero: <a href="%{school_path}">%{school}</a> <a href="%{compact_path}">completed a programme</a>
+        description_html:
+          one: Scored <strong>%{count} point</strong> after they <a href="%{compact_path}">completed a programme</a>
+          other: Scored <strong>%{count} points</strong> after they <a href="%{compact_path}">completed a programme</a>
+          zero: <a href="%{compact_path}">Completed a programme</a>
         message: Completed a programme
       school_target:
         compact_message_html: <a href="%{school_path}">%{school}</a> started working towards their <a href="%{compact_path}">energy saving target</a>
+        description_html: Started working towards their <a href="%{compact_path}">energy saving target</a>
         message: Started working towards an energy saving target
       temperature:
         compact_message_html:
           one: <a href="%{school_path}">%{school}</a> scored <strong>%{count} point</strong> by <a href="%{compact_path}">recording indoor temperatures</a>
           other: <a href="%{school_path}">%{school}</a> scored <strong>%{count} points</strong> by <a href="%{compact_path}">recording indoor temperatures</a>
           zero: <a href="%{school_path}">%{school}</a> <a href="%{compact_path}">recorded indoor temperatures</a>
+        description_html:
+          one: Scored <strong>%{count} point</strong> by <a href="%{compact_path}">recording indoor temperatures</a>
+          other: Scored <strong>%{count} points</strong> by <a href="%{compact_path}">recording indoor temperatures</a>
+          zero: <a href="%{compact_path}">Recorded indoor temperatures</a>
         message: Recorded indoor temperatures in
       transport_survey:
         compact_message_html: <a href="%{school_path}">%{school}</a> started a <a href="%{compact_path}">transport survey</a>
+        description_html: Started a <a href="%{compact_path}">transport survey</a>
         message:
           one: Recorded a transport survey response
           other: Recorded %{count} transport survey responses
