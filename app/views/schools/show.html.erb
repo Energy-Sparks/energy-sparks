@@ -5,15 +5,7 @@
                                         show_data_enabled_features: @show_data_enabled_features %>
 <% end %>
 
-<% if @overview_data %>
-  <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
-  <%= render 'management/schools/overview_data', overview_data: @overview_data %>
-  <div class="text-right management-overview-caption">
-    <%= @overview_data.date_ranges %>
-    <%= link_to_help_for_feature :management_summary_overview,
-                                 title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
-  </div>
-<% end %>
+<%= component 'energy_summary_table', id: 'management-overview-table', school: @school, user: current_user %>
 
 <h3><%= t('schools.show.act_on_energy_usage') %></h3>
 

@@ -3,9 +3,18 @@
 <% end %>
 
 <div class="container">
-  <%= component 'dashboard_insights',
-                audience: :adult,
-                school: @school,
-                user: current_user,
-                progress_summary: @progress_summary %>
+  <div class="row mt-4">
+    <div class="col">
+      <%= component 'energy_summary_table', school: @school, user: current_user %>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col">
+      <%= component 'dashboard_insights',
+                    audience: :adult,
+                    school: @school,
+                    user: current_user,
+                    progress_summary: @progress_summary %>
+    </div>
+  </div>
 </div>

@@ -2,31 +2,26 @@
 
 <h2><%= t('schools.show.dashboard_title', school_name: @school.name) %></h2>
 
-<% if @overview_data %>
-  <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
-  <%= render 'management/schools/overview_data', overview_data: @overview_data %>
-  <div class="text-right management-overview-caption">
-    <%= @overview_data.date_ranges %>
-  </div>
-<% end %>
+<%= component 'energy_summary_table', id: 'management-overview-table', school: @school, user: current_user %>
 
-<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school,
+                                      content_field: :management_dashboard_title %>
 
 <% @overview_charts.each_with_index do |(energy, chart_config), index| %>
-  <h2><%= t("management.schools.overview_charts.overview.#{energy.to_s}") %></h2>
+  <h2><%= t("management.schools.overview_charts.overview.#{energy}") %></h2>
   <%= component 'chart',
                 school: @school,
                 chart_type: chart_config[:chart],
                 no_zoom: true,
                 analysis_controls: false,
                 axis_controls: false,
-                chart_config: { y_axis_units: select_y_axis(@school, chart_config[:chart], chart_config[:units]) }
-  %>
+                chart_config: { y_axis_units: select_y_axis(@school, chart_config[:chart], chart_config[:units]) } %>
 <% end %>
 
 <% unless @management_priorities.empty? %>
   <h3><%= t('schools.show.energy_saving_opportunities') %></h3>
-  <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: false %>
+  <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school,
+                                                      show_more: false %>
 <% end %>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
