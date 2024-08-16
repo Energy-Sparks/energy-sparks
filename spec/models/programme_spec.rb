@@ -19,13 +19,10 @@ describe 'Programme' do
     let(:current_year) { true }
 
     before do
-      allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: current_year) }
       programme.complete!
     end
 
-    context 'when programme is completed within the same academic year' do
-      let(:current_year) { true }
-
+    context 'when programme is completed' do
       it 'marks programme as complete' do
         expect(programme).to be_completed
       end
