@@ -24,6 +24,6 @@ class PodiumComponent < ApplicationComponent
   end
 
   def title_class
-    Flipper.enabled?(:new_dashboards_2024, user) ? '' : 'text-center'
+    Flipper.enabled?(:new_dashboards_2024, user) ? 'mb-4' : 'text-center'
   end
 end
