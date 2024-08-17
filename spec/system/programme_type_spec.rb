@@ -117,7 +117,6 @@ RSpec.describe 'programme types', :include_application_helper do
       expect(page).to have_content('You started this programme')
       expect(page).to have_content('Current Progress')
       expect(page).to have_content(nice_dates(school.programmes.first.started_on))
-      expect(page).to have_link('Restart', href: school_programmes_path(school, programme_type_id: programme_type_1.id))
     end
 
     it 'indicates I have not completed some activities' do
@@ -135,6 +134,11 @@ RSpec.describe 'programme types', :include_application_helper do
       expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last))
     end
 
+    it 'allows restarting' do
+      click_on('Restart')
+      expect(school.programmes.order(:started_on).pluck(:status)).to eq %w[abandoned started]
+    end
+
     context 'when viewing the programme types index page' do
       before do
         click_on('View all programmes')
@@ -150,9 +154,7 @@ RSpec.describe 'programme types', :include_application_helper do
     end
 
     context 'after completing the programme' do
-      before do
-        travel_to(1.year.ago) { programme_type_1.programme_for_school(school).complete! }
-      end
+      before { programme_type_1.programme_for_school(school).complete! }
 
       context 'when viewing the programme types index page' do
         before do
@@ -162,12 +164,27 @@ RSpec.describe 'programme types', :include_application_helper do
         it 'shows a completion message' do
           expect(page).to have_content('You have already completed this programme')
           expect(page).to have_link('View', href: programme_type_path(programme_type_1))
-          visit programme_type_path(programme_type_1)
-          expect(page).to have_content('You completed this programme on')
-          expect(page).to have_link('Repeat', href: school_programmes_path(school, programme_type_id: programme_type_1))
         end
 
         it_behaves_like 'a no active programmes prompt', displayed: true
+      end
+
+      context 'when viewing the programme type page' do
+        before { visit programme_type_path(programme_type_1) }
+
+        it 'shows the programme completed' do
+          expect(page).to have_content('You completed this programme on')
+          expect(page).to have_no_selector(:link_or_button, 'Repeat')
+        end
+
+        it 'allows repetition' do
+          programme_type_1.programme_for_school(school).update(ended_on: 1.year.ago)
+          refresh
+          click_on('Repeat')
+          expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
+            eq %w[completed started]
+          expect(page).to have_content('You started this programme')
+        end
       end
     end
   end

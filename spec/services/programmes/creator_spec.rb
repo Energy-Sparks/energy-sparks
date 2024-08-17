@@ -1,13 +1,11 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 describe Programmes::Creator do
-  subject(:service) { described_class.new(school, programme_type) }
-
-  let(:calendar)        { create(:school_calendar, :with_academic_years, academic_year_count: 2) }
-  let(:school)          { create(:school, calendar:) }
+  let(:calendar)        { create(:school_calendar, :with_academic_years, academic_year_count: 2)}
+  let(:school)          { create(:school, calendar: calendar) }
   let(:programme_type)  { create(:programme_type_with_activity_types) }
+
+  let(:service) { Programmes::Creator.new(school, programme_type) }
 
   describe '#create' do
     let(:programme) { school.programmes.first }
@@ -49,21 +47,10 @@ describe Programmes::Creator do
         service.create
         expect(school.programmes.count).to be 2
       end
-
-      it 'abandons an existing programme' do
-        service.create(repeat: true)
-        expect(school.programmes.order(:started_on).pluck(:status)).to eq %w[abandoned started]
-      end
-
-      it 'repeats an existing programme' do
-        programme.complete!
-        service.create(repeat: true)
-        expect(school.programmes.order(:started_on).pluck(:status)).to eq %w[completed started]
-      end
     end
 
     context 'when school has recent activity in programme' do
-      let!(:activity) { create(:activity, school:, activity_type: programme_type.activity_types.first) }
+      let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first)}
 
       before do
         service.create
@@ -83,7 +70,7 @@ describe Programmes::Creator do
     context 'when school has multiple activities' do
       let!(:activities) do
         [1.hour.ago, 1.day.ago, 1.year.ago].map do |time|
-          create(:activity, school:, activity_type: programme_type.activity_types.first, happened_on: time)
+          create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: time)
         end
       end
 
@@ -104,7 +91,7 @@ describe Programmes::Creator do
     context 'when school has completed all activities in programme this year' do
       before do
         programme_type.activity_types.each do |activity_type|
-          create(:activity, school:, activity_type:, happened_on: Time.zone.now)
+          create(:activity, school: school, activity_type: activity_type, happened_on: Time.zone.now)
         end
 
         service.create
@@ -120,10 +107,7 @@ describe Programmes::Creator do
     end
 
     context 'when school recorded an activity last year' do
-      let!(:activity) do
-        create(:activity, school:, activity_type: programme_type.activity_types.first,
-                          happened_on: Time.zone.today.last_year)
-      end
+      let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.today.last_year)}
 
       before do
         service.create
