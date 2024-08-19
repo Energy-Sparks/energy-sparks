@@ -24,7 +24,7 @@ en:
         description_html:
           one: Scored <strong>%{count} point</strong> after they <a href="%{compact_path}">completed all energy audit activities</a>
           other: Scored <strong>%{count} points</strong> after they <a href="%{compact_path}">completed all energy audit activities</a>
-          zero: Completed all energy audit activities</a>
+          zero: Completed all energy audit activities
         message: Completed all audit activities
       intervention:
         compact_message_html:
