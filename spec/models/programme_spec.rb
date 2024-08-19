@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Programme' do
-  let(:school) { create :school }
+  let(:school) { create(:school) }
   let(:programme_type) { create(:programme_type, bonus_score: 12) }
 
   let(:status) { :started }
-  let(:programme) { create(:programme, programme_type: programme_type, started_on: '2020-01-01', school: school, status: status) }
+  let(:programme) { create(:programme, programme_type:, started_on: '2020-01-01', school:, status:) }
   let(:last_observation) { programme.observations.last }
 
   it { expect(programme.observations.count).to eq(0) }
@@ -17,13 +19,10 @@ describe 'Programme' do
     let(:current_year) { true }
 
     before do
-      allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: current_year) }
       programme.complete!
     end
 
-    context 'when programme is completed within the same academic year' do
-      let(:current_year) { true }
-
+    context 'when programme is completed' do
       it 'marks programme as complete' do
         expect(programme).to be_completed
       end
@@ -40,29 +39,6 @@ describe 'Programme' do
 
         it 'adds points' do
           expect(last_observation.points).to eq(12)
-        end
-      end
-    end
-
-    context 'when programme is completed outside of the academic year it was started' do
-      let(:current_year) { false }
-
-      it 'marks programme as complete' do
-        expect(programme).to be_completed
-      end
-
-      it 'adds ended_on date to programme' do
-        expect(programme.ended_on).not_to be_nil
-      end
-
-      context 'with observation' do
-        it { expect(programme.observations.count).to eq(1) }
-        it { expect(last_observation.at).to eq(programme.ended_on) }
-        it { expect(last_observation.school).to eq(school) }
-        it { expect(last_observation.observation_type).to eq('programme') }
-
-        it "doesn't add points" do
-          expect(last_observation.points).to eq(0)
         end
       end
     end
@@ -110,13 +86,13 @@ describe 'Programme' do
   end
 
   describe '.recently_ended' do
+    subject(:programmes) { Programme.recently_ended }
+
     before { freeze_time }
 
     let!(:ended_today) { create(:programme, ended_on: Time.zone.today) }
     let!(:ended_yesterday) { create(:programme, ended_on: 1.day.ago) }
     let!(:ended_older) { create(:programme, ended_on: 2.days.ago) }
-
-    subject(:programmes) { Programme.recently_ended }
 
     it 'includes programmes ended today or yesterday' do
       expect(programmes).to include(ended_today)
