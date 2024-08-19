@@ -108,9 +108,7 @@ class Podium
   end
 
   def points_to_overtake
-    return unless low_to_high.any?
-
-    low_to_high&.second&.points
+    next_school_position&.points
   end
 
   def current_school?(position)
