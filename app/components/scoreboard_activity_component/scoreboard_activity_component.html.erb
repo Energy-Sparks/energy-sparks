@@ -2,7 +2,9 @@
   <table class="table">
     <thead>
       <tr>
-        <th><%= t('common.labels.place') %></th>
+        <% if show_positions? %>
+          <th><%= t('common.labels.place') %></th>
+        <% end %>
         <th><%= t('common.school') %></th>
         <th><%= t('common.labels.activity') %></th>
       </tr>
@@ -10,9 +12,11 @@
     <tbody>
       <% observations.each do |observation| %>
         <tr>
-          <td>
-            <%= position(observation.school)&.ordinal %>
-          </td>
+          <% if show_positions? %>
+            <td>
+              <%= position(observation.school)&.ordinal || '-' %>
+            </td>
+          <% end %>
           <td>
             <%= link_to observation.school.name, school_path(observation.school) %>
           </td>

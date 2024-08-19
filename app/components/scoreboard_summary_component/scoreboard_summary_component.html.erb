@@ -60,7 +60,11 @@
     </div>
     <div class="row">
       <div class="col">
-        <%= component 'scoreboard_activity', podium: podium, observations: observations, classes: 'bg-white rounded p-4' %>
+        <%= component 'scoreboard_activity',
+                      podium: podium,
+                      observations: observations,
+                      show_positions: other_schools?,
+                      classes: 'bg-white rounded p-4' %>
       </div>
     </div>
   <% else %>

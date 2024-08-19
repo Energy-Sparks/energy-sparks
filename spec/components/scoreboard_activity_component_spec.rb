@@ -7,7 +7,7 @@ RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :compone
 
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-
+  let(:show_positions) { true }
   let!(:scoreboard) { create :scoreboard }
   let!(:school) { create :school, scoreboard: scoreboard }
   let!(:other_school) { create :school, scoreboard: scoreboard }
@@ -21,7 +21,8 @@ RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :compone
       observations: [observation],
       podium: podium,
       id: id,
-      classes: classes
+      classes: classes,
+      show_positions: show_positions
     }
   end
 
@@ -43,4 +44,16 @@ RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :compone
   end
 
   it { expect(html).to have_link(activity.display_name, href: school_activity_path(other_school, activity)) }
+
+  context 'when not showing positions' do
+    let(:show_positions) { false }
+
+    it 'displays the observations' do
+      expect(html).not_to have_content(I18n.t('common.labels.place'))
+      expect(html).to have_selector(:table_row, [
+                                      other_school.name,
+                                      "Scored 10 points after they recorded \"#{activity.display_name}\""
+                                    ])
+    end
+  end
 end
