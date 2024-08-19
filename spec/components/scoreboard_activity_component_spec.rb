@@ -1,0 +1,46 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :component do
+  subject(:component) { described_class.new(**params) }
+
+  let(:id) { 'custom-id' }
+  let(:classes) { 'extra-classes' }
+
+  let!(:scoreboard) { create :scoreboard }
+  let!(:school) { create :school, scoreboard: scoreboard }
+  let!(:other_school) { create :school, scoreboard: scoreboard }
+  let!(:activity) { create(:activity, school: other_school)}
+  let!(:observation) { create(:observation, :activity, activity: activity, school: other_school, points: 10) }
+
+  let(:podium) { Podium.create(school: school, scoreboard: scoreboard) }
+
+  let(:params) do
+    {
+      observations: [observation],
+      podium: podium,
+      id: id,
+      classes: classes
+    }
+  end
+
+  let(:html) do
+    render_inline(component)
+  end
+
+  it_behaves_like 'an application component' do
+    let(:expected_classes) { classes }
+    let(:expected_id) { id }
+  end
+
+  it 'displays the observations' do
+    expect(html).to have_selector(:table_row, [
+                                    '1st',
+                                    other_school.name,
+                                    "Scored 10 points after they recorded \"#{activity.display_name}\""
+                                  ])
+  end
+
+  it { expect(html).to have_link(activity.display_name, href: school_activity_path(other_school, activity)) }
+end

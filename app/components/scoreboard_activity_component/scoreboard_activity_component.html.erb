@@ -11,7 +11,7 @@
       <% observations.each do |observation| %>
         <tr>
           <td>
-            <%= position(observation.school).ordinal %>
+            <%= position(observation.school)&.ordinal %>
           </td>
           <td>
             <%= link_to observation.school.name, school_path(observation.school) %>
