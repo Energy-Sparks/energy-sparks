@@ -15,8 +15,7 @@
     <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.annual_change") %></th>
   </thead>
   <tbody>
-    <% meters_for_breakdown.each do |mpan_mprn, meter| %>
-      <% next unless usage_breakdown.meters.include?(mpan_mprn) %>
+    <% annual_usage_breakdown_meters.each do |mpan_mprn, meter| %>
       <tr>
         <td class="text-left"><%= meter.mpan_mprn %></td>
         <td><%= meter.name %></td>

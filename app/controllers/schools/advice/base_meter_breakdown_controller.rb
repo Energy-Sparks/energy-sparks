@@ -2,19 +2,25 @@ module Schools
   module Advice
     class BaseMeterBreakdownController < AdviceBaseController
       before_action :redirect_if_single_meter
+      before_action :set_meters_and_usage_breakdown
 
       def insights
-        @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
-        @meters_for_breakdown = sorted_meters_for_breakdown
       end
 
       def analysis
         @analysis_dates = analysis_dates
-        @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
-        @meters_for_breakdown = sorted_meters_for_breakdown
       end
 
       private
+
+      def set_meters_and_usage_breakdown
+        @meters_for_breakdown = sorted_meters_for_breakdown
+        @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
+        # only those meters included in the breakdown, will exclude any old/obsolete meters
+        @annual_usage_breakdown_meters = @meters_for_breakdown.select do |mpan_mprn, _|
+          @annual_usage_meter_breakdown.meters.include?(mpan_mprn)
+        end
+      end
 
       def create_analysable
         days_of_data = (analysis_end_date - analysis_start_date).to_i
