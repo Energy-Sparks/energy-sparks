@@ -164,7 +164,6 @@ private
     @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.management_dashboard, :management_dashboard_title)
     @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
     @overview_charts = setup_energy_overview_charts(@school.configuration)
-    @overview_data = Schools::ManagementTableService.new(@school).management_data
     @progress_summary = progress_service.progress_summary
 
     # Setup management dashboard features if users has permission

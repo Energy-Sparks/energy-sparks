@@ -8,9 +8,6 @@
     <li><%= link_to(t("#{locale_key_prefix}.comparison.title"), '#comparison') %></li>
     <li><%= link_to(t("#{locale_key_prefix}.long_term_trends.title"), '#long-term-trends') %></li>
   <% end %>
-  <% if multiple_meters %>
-    <li><%= link_to(t("#{locale_key_prefix}.meter_breakdown.title"), '#meter-breakdown') %></li>
-  <% end %>
 </ul>
 
 <%= render 'schools/advice/long_term/recent_trend',
@@ -33,13 +30,4 @@
   <%= render "schools/advice/#{fuel_type}_long_term/long_term_trend",
              meter_selection: @meter_selection,
              analysis_dates: analysis_dates %>
-<% end %>
-
-<% if multiple_meters %>
-  <%= render "schools/advice/#{fuel_type}_long_term/meter_breakdown",
-             fuel_type: fuel_type,
-             school: school,
-             analysis_dates: analysis_dates,
-             meters_for_breakdown: meters_for_breakdown,
-             annual_usage_meter_breakdown: annual_usage_meter_breakdown %>
 <% end %>

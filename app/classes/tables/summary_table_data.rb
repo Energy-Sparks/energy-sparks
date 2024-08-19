@@ -59,6 +59,7 @@ module Tables
 
     def summary_data_for(fuel_type, period)
       OpenStruct.new(
+        period_key: period,
         fuel_type: fuel_type,
         period: format_period(period),
         usage: format_number(fetch(fuel_type, period, :kwh), :kwh),
