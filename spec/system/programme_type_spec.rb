@@ -136,7 +136,8 @@ RSpec.describe 'programme types', :include_application_helper do
 
     it 'allows restarting' do
       click_on('Restart')
-      expect(school.programmes.order(:started_on).pluck(:status)).to eq %w[abandoned started]
+      expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
+        eq %w[abandoned started]
     end
 
     context 'when viewing the programme types index page' do
