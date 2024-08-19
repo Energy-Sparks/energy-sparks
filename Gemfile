@@ -97,7 +97,7 @@ gem 'oj'
 gem 'rollbar'
 
 # Internationalisation
-gem 'i18n-tasks', '~> 1.0.10'
+gem 'i18n-tasks', '~> 1.0.14'
 gem 'mobility', '~> 1.2.9'
 gem 'mobility-actiontext', '~> 1.1.1'
 
