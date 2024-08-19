@@ -173,7 +173,7 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
       rouge (>= 1.0.0)
-    better_html (2.0.2)
+    better_html (2.1.1)
       actionview (>= 6.0)
       activesupport (>= 6.0)
       ast (~> 2.0)
@@ -227,7 +227,7 @@ GEM
     closed_struct (1.0.0)
     cocoon (1.2.15)
     coderay (1.1.3)
-    concurrent-ruby (1.3.3)
+    concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
     crack (1.0.0)
       bigdecimal
@@ -368,7 +368,8 @@ GEM
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
     hashdiff (1.1.0)
-    highline (2.1.0)
+    highline (3.1.0)
+      reline
     html-table (1.7.0)
       structured_warnings (~> 0.4.0)
     htmlbeautifier (1.4.3)
@@ -378,10 +379,9 @@ GEM
       domain_name (~> 0.5)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
-    i18n-tasks (1.0.13)
+    i18n-tasks (1.0.14)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
-      better_html (>= 1.0, < 3.0)
       erubi
       highline (>= 2.0.0)
       i18n
@@ -449,7 +449,7 @@ GEM
     mini_mime (1.1.5)
     minimization (0.2.5)
       text-table (~> 1.2)
-    minitest (5.24.1)
+    minitest (5.25.1)
     mobility (1.2.9)
       i18n (>= 0.6.10, < 2)
       request_store (~> 1.0)
@@ -571,7 +571,7 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
-    rails-i18n (7.0.8)
+    rails-i18n (7.0.9)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
     railties (7.1.3.4)
@@ -841,7 +841,7 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop
   handlebars_assets
-  i18n-tasks (~> 1.0.10)
+  i18n-tasks (~> 1.0.14)
   image_processing (~> 1.13)
   importmap-rails
   jbuilder (~> 2.12)
