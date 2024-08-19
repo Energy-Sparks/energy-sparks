@@ -40,8 +40,8 @@ gem 'font-awesome-sass'
 gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
-gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
+gem 'sass-rails' # Use SCSS for stylesheets
 gem 'terser'
 
 # Pagination
@@ -131,9 +131,11 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-capybara'
+  gem 'rubocop-factory_bot'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
+  gem 'rubocop-rspec_rails'
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'webmock'

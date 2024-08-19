@@ -5,10 +5,14 @@
         <i class="fas fa-check fa-2x"></i>
       </div>
       <div class="col-md-8 align-self-center">
-        <%= t('programme_types.started.you_started_this_programme_on') %>
-        <%= nice_dates(programme_type.programme_for_school(school).started_on) %>
+        <%= t('programme_types.started.you_started_this_programme_on',
+              date: nice_dates(programme_type.programme_for_school(school).started_on)) %>
       </div>
       <div class="col-md-3">
+        <%= link_to t('programme_types.started.restart'),
+                    school_programmes_path(school, programme_type_id: @programme_type),
+                    method: :post, class: 'btn btn-info btn-sm' %>
+
       </div>
     </div>
   </div>
