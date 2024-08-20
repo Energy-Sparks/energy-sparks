@@ -41,7 +41,7 @@ cy:
                 <li>gosodiadau boeler anghywir</li>
 
               <p>Trwy ddileu'r defnydd o nwy ar y penwythnos yn eich ysgol gallech arbed hyd at %{savings_gbp} (%{savings_kwh}kWh) y flwyddyn.</p>
-            subtitle_html: Mae'r siart hwn yn dangos cyfanswm y nwy a ddefnyddwyd gan eich ysgol rhwng <span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>, wedi'i dadansoddi yn ôl diwrnod yr wythnos ac amser defnyddio
+            subtitle_html: Mae'r siart hwn yn dangos cyfanswm y nwy a ddefnyddwyd gan eich ysgol rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>, wedi'i dadansoddi yn ôl diwrnod yr wythnos ac amser defnyddio
             title: Defnydd nwy yn ôl diwrnod yr wythnos
           subtitle: Er mwyn deall pam mae eich ysgol yn defnyddio gormod o nwy y tu allan i oriau ysgol, edrychwch yn gyntaf ar ddefnydd nwy yn ôl diwrnod yr wythnos.
           title: Defnydd fesul diwrnod yr wythnos
