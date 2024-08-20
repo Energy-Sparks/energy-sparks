@@ -160,6 +160,8 @@ en:
         title: Learn more about your energy usage
       reminders:
         title: Reminders
+      timeline:
+        intro: A list of recent adult and pupil-lead activities at this school
     downloads:
       index:
         aggregated_meter_collection: Aggregated meter collection
