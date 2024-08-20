@@ -52,8 +52,7 @@ class Programme < ApplicationRecord
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
 
   def points_for_completion
-    # Only apply the bonus points if the programme is completed in the same academic year
-    school.academic_year_for(started_on)&.current? ? programme_type.bonus_score : 0
+    programme_type.bonus_score
   end
 
   def activity_types_completed
