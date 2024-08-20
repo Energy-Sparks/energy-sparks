@@ -48,11 +48,11 @@ RSpec.describe DashboardLoginComponent, :include_url_helpers, type: :component d
 
   it 'links to staff login form' do
     expect(html).to have_link(I18n.t('devise.sessions.new.log_in_with_your_email_address_and_password'),
-                href: new_user_session_path(role: :staff, school: school))
+                              href: new_user_session_path(role: :staff, school: school))
   end
 
   it 'links to pupil login form' do
     expect(html).to have_link(I18n.t('devise.sessions.new.log_in_with_your_pupil_password'),
-                href: new_user_session_path(role: :pupil, school: school))
+                              href: new_user_session_path(role: :pupil, school: school))
   end
 end
