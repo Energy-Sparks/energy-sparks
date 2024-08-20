@@ -1,4 +1,4 @@
-<% if compact %>
+<% if style == :compact %>
   <div class="row pb-1">
     <div class="col-1"><%= icon %></div>
     <div class="col-11">
@@ -11,6 +11,12 @@
                                         compact_path: compact_path).html_safe %>
     </div>
   </div>
+<% elsif style == :description %>
+  <%= icon(classes: 'fa-fw') %> <%= I18n.t(:description_html, scope: i18n_scope,
+                                                              target: target,
+                                                              message: message,
+                                                              count: observation.points || 0,
+                                                              compact_path: compact_path).html_safe %>
 <% else %>
   <td class="p-3 text-center">
     <%= icon %>

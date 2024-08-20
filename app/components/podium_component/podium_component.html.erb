@@ -1,6 +1,6 @@
-<div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
+<div id="<%= id %>" class="podium-component <%= classes %>">
   <% if podium.includes_school? && podium.school_has_points? %>
-    <h4 class="text-center">
+    <h4 class="<%= title_class %>">
       <% if national_podium.school_position %>
         <%= t('components.podium.full_position_html',
               position_ordinal: podium.school_position.ordinal,
@@ -16,13 +16,17 @@
         <% end %>
       </h4>
   <% else %>
-    <h4 class="text-center"><%= t('components.podium.no_points_this_year') %></h4>
-    <p class="text-center"><%= t('components.podium.complete_an_activity_html',
-                                 recommendations_path: school_recommendations_path(school)) %>.
-      <%= if podium.points_to_overtake
-            t('components.podium.points_needed_to_overtake', points: podium.points_to_overtake)
-          end %>
-    </p>
+    <h4 class="<%= title_class %>">
+      <%= t('components.podium.no_points_this_year') %>
+    </h4>
+    <% unless Flipper.enabled?(:new_dashboards_2024, user) %>
+      <p class="text-center"><%= t('components.podium.complete_an_activity_html',
+                                   recommendations_path: school_recommendations_path(school)) %>.
+        <%= if podium.points_to_overtake
+              t('components.podium.points_needed_to_overtake', points: podium.points_to_overtake)
+            end %>
+      </p>
+    <% end %>
   <% end %>
   <% if podium.school_has_points? || podium.positions.count > 1 %>
     <div class="row align-items-end border-bottom grey">
