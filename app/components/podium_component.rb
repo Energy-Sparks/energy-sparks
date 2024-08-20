@@ -1,18 +1,14 @@
 # frozen_string_literal: true
 
-class PodiumComponent < ViewComponent::Base
-  include ApplicationHelper
+class PodiumComponent < ApplicationComponent
+  attr_reader :podium, :id, :user
 
-  attr_reader :podium, :id
-
-  def initialize(podium: nil, classes: nil, id: nil)
+  def initialize(podium: nil, classes: nil, id: nil, user: nil)
+    super(id: id, classes: classes)
     @podium = podium
     @classes = classes
     @id = id
-  end
-
-  def classes
-    " #{@classes}"
+    @user = user
   end
 
   def school
@@ -25,5 +21,9 @@ class PodiumComponent < ViewComponent::Base
 
   def render?
     podium
+  end
+
+  def title_class
+    Flipper.enabled?(:new_dashboards_2024, user) ? 'mb-4' : 'text-center'
   end
 end

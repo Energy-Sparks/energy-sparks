@@ -56,6 +56,10 @@ describe Podium do
     it 'gives lowest scoring school as next highest school' do
       expect(podium.next_school_position.school).to eq(school_1)
     end
+
+    it 'returns points to overtake' do
+      expect(podium.points_to_overtake).to eq(1)
+    end
   end
 
   context 'when the school scores in the middle of the scoreboard' do
@@ -70,28 +74,41 @@ describe Podium do
     it 'returns the next highest school' do
       expect(podium.next_school_position.school).to eq(school_4)
     end
+
+    it 'returns points to overtake' do
+      expect(podium.points_to_overtake).to eq(4)
+    end
   end
 
   context 'when you are first on the scoreboard' do
+    let(:podium) { Podium.create(scoreboard: scoreboard, school: school_5) }
+
     it 'returns the 2 schools below you in lowest and middle scoring positions' do
-      podium = Podium.create(scoreboard: scoreboard, school: school_5)
       expect(podium.high_to_low[0].school).to eq(school_5)
       expect(podium.high_to_low[1].school).to eq(school_4)
       expect(podium.high_to_low[2].school).to eq(school_3)
     end
 
     it 'returns nothing for the next highest school' do
-      podium = Podium.create(scoreboard: scoreboard, school: school_5)
       expect(podium.next_school_position).to be_nil
+    end
+
+    it 'returns points to overtake' do
+      expect(podium.points_to_overtake).to be_nil
     end
   end
 
   context 'if you are last on the scoreboard' do
+    let(:podium) { Podium.create(scoreboard: scoreboard, school: school_1) }
+
     it 'returns the two next higher schools' do
-      podium = Podium.create(scoreboard: scoreboard, school: school_1)
       expect(podium.high_to_low[0].school).to eq(school_3)
       expect(podium.high_to_low[1].school).to eq(school_2)
       expect(podium.high_to_low[2].school).to eq(school_1)
+    end
+
+    it 'returns points to overtake' do
+      expect(podium.points_to_overtake).to eq(2)
     end
   end
 
