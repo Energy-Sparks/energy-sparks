@@ -10,4 +10,4 @@
   <%= t('schools.private.login_links_html', schools_path: schools_path) %>
 </p>
 
-<%= render 'shared/school_login_prompt', school: @school %>
+<%= component 'dashboard_login', school: @school %>

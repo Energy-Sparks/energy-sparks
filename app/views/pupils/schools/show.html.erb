@@ -61,6 +61,4 @@
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
 
-<% unless user_signed_in? %>
-  <%= render 'shared/school_login_prompt', school: @school %>
-<% end %>
+<%= component 'dashboard_login', school: @school, user: current_user %>
