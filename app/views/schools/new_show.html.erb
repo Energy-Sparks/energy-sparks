@@ -30,5 +30,11 @@
                   podium: current_school_podium,
                   user: current_user,
                   classes: 'mt-4 pt-4' %>
+
+    <%= component 'timeline',
+                  school: @school,
+                  observations: @observations,
+                  user: current_user,
+                  classes: 'mt-4' %>
   </div>
 </div>

@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col">
             <% if title.present? %>
-              <h2><%= title %></h2>
+              <h2 id="scoreboard-update"><%= title %></h2>
             <% end %>
           </div>
         </div>
@@ -36,37 +36,32 @@
         <%= component 'podium', podium: podium, user: user, classes: 'bg-white rounded p-4' %>
       </div>
     </div>
-    <div class="row mt-4">
-      <div class="col-12">
-        <h4><%= timeline_title %></h4>
-      </div>
-    </div>
-    <div class="row mt-4 d-flex align-items-center">
-      <div class="col-8">
+    <%= component 'titled_section', id: 'scoreboard-recent-activity' do |section| %>
+      <% section.with_title do %>
+        <h2><%= timeline_title %></h2>
+      <% end %>
+      <% section.with_intro do %>
         <p>
           <%= t('components.scoreboard_summary.recent_activity_intro') %>
         </p>
-      </div>
-      <div class="col-2"></div>
+      <% end %>
       <% if other_schools? %>
-        <div class="col-2">
+        <% section.with_link do %>
           <p>
             <%= link_to t('components.scoreboard_summary.view_scoreboard'),
                         scoreboard_path(scoreboard),
                         class: 'btn btn-outline-dark' %>
           </p>
-        </div>
+        <% end %>
       <% end %>
-    </div>
-    <div class="row">
-      <div class="col">
+      <% section.with_body do %>
         <%= component 'scoreboard_activity',
                       podium: podium,
                       observations: observations,
                       show_positions: other_schools?,
                       classes: 'bg-white rounded p-4' %>
-      </div>
-    </div>
+      <% end %>
+    <% end %>
   <% else %>
     <% if title.present? %>
       <h3><%= title %></h3>

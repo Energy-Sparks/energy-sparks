@@ -1,0 +1,26 @@
+<div id="<%= id %>" class="titled-section-component <%= classes %>">
+  <% if title? %>
+    <div class="row mt-4">
+      <div class="col-12">
+        <%= title %>
+      </div>
+    </div>
+  <% end %>
+  <% if intro? || link? %>
+    <div class="row mt-4">
+      <div class="col d-flex flex-wrap justify-content-between align-items-center">
+        <% if intro? %>
+          <div><%= intro %></div>
+        <% end %>
+        <% if link? %>
+          <div><%= link %></div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col">
+      <%= body %>
+    </div>
+  </div>
+</div>
