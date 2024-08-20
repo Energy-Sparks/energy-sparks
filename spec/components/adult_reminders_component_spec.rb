@@ -426,6 +426,66 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
                                    href: school_school_targets_path(school))
     }
 
+    context 'when bill requested' do
+      let(:school) { create(:school, bill_requested: true) }
+
+      it { expect(html).to have_content(I18n.t('schools.show.set_targets')) }
+
+      it {
+        expect(html).to have_link(I18n.t('schools.show.upload_energy_bill'),
+                                     href: school_consent_documents_path(school))
+      }
+    end
+
+    context 'when user should be prompted for training' do
+      let!(:user) { create(:school_admin, confirmed_at: Time.zone.now, school: school)}
+
+      it { expect(html).to have_content(I18n.t('schools.show.online_training_signup')) }
+
+      it {
+        expect(html).to have_link(I18n.t('schools.show.find_training'),
+                                     href: training_path)
+      }
+    end
+
+    context 'when there has been a recent audit' do
+      let!(:audit) { create(:audit, school: school) }
+
+      it {
+        expect(html).to have_link(I18n.t('common.labels.view_now'),
+                                     href: school_audit_path(school, audit))
+      }
+    end
+
+    context 'with target needing review' do
+      before do
+        create(:school_target, school: school)
+        service = instance_double(Targets::SchoolTargetService)
+        allow(service).to receive(:prompt_to_review_target?).and_return(true)
+        allow(Targets::SchoolTargetService).to receive(:new).and_return(service)
+      end
+
+      it { expect(html).to have_content(I18n.t('schools.show.revisit_targets')) }
+
+      it {
+        expect(html).to have_link(I18n.t('schools.show.review_target'),
+                                     href: school_school_targets_path(school))
+      }
+    end
+
+    context 'with expired target' do
+      before do
+        create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
+      end
+
+      it { expect(html).to have_content('Your school set a target to reduce its energy usage') }
+
+      it {
+        expect(html).to have_link(I18n.t('schools.show.review_progress'),
+                                     href: school_school_targets_path(school))
+      }
+    end
+
     it 'displays the default prompts' do
       within('#custom-id') do
         expect(html).to have_css('#add_pupils')
