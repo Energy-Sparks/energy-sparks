@@ -8,10 +8,14 @@
 <%= render 'schools/advice/section_title', section_id: 'energy-use',
                                            section_title: advice_t('total_energy_use.insights.energy_use.title') %>
 
-<% if @overview_data %>
-  <%= render 'management/schools/overview_data', overview_data: @overview_data, show_savings: false %>
-  <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
-             data_target: 'how-have-we-analysed-your-data-footnotes' %>
+<%= component 'energy_summary_table',
+              id: 'management-overview-table',
+              school: @school, user: current_user,
+              show_savings: false, show_title: false do |c| %>
+  <%= c.with_footer do %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+               data_target: 'how-have-we-analysed-your-data-footnotes' %>
+  <% end %>
 <% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'comparison',

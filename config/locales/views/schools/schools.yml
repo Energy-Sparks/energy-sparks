@@ -153,8 +153,15 @@ en:
         title: Welcome
       insights:
         title: Insights and actions
+      learn_more:
+        intro: Explore the data, get insights into reducing energy usage, and compare performance against other schools
+        learn_more: Learn more
+        opportunities: Energy saving opportunities
+        title: Learn more about your energy usage
       reminders:
         title: Reminders
+      timeline:
+        intro: A list of recent adult and pupil-lead activities at this school
     downloads:
       index:
         aggregated_meter_collection: Aggregated meter collection
@@ -590,8 +597,8 @@ en:
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
       add_estimate: Add an estimate
-      coming_soon: Coming Soon
-      configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore
+      coming_soon: Energy use analysis coming soon
+      configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore.
       create_pupil_account: Create a pupil account
       dashboard_title: Adult dashboard for %{school_name}
       download_data: Download your data

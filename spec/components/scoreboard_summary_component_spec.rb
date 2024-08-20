@@ -10,7 +10,7 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
   let(:all_params) { { podium: podium } }
   let(:params) { all_params }
 
-  subject(:component) { ScoreboardSummaryComponent.new(**params) }
+  subject(:component) { described_class.new(**params) }
 
   let(:html) do
     render_inline(component)

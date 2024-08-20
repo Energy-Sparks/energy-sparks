@@ -18,11 +18,6 @@ module Schools
         @estimated_savings_vs_exemplar = usage_service.estimated_savings(versus: :exemplar_school)
         @estimated_savings_vs_benchmark = usage_service.estimated_savings(versus: :benchmark_school)
 
-        @multiple_meters = multiple_meters?
-        if @multiple_meters
-          @annual_usage_meter_breakdown = usage_service.annual_usage_meter_breakdown
-          @meters_for_breakdown = sorted_meters_for_breakdown
-        end
         @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, date_window: 363)
       end
 
@@ -42,11 +37,6 @@ module Schools
 
       def create_analysable
         usage_service
-      end
-
-      def sorted_meters_for_breakdown
-        meters = aggregate_school.underlying_meters(advice_page_fuel_type)
-        meters.sort_by(&:mpan_mprn).index_by(&:mpan_mprn)
       end
 
       def analysis_dates
