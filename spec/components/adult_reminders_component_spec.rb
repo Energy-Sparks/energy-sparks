@@ -373,6 +373,10 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       render_inline(component)
     end
 
+    before do
+      SiteSettings.create!(message_for_no_pupil_accounts: true, message_for_no_contacts: true)
+    end
+
     it { expect(html).to have_content(I18n.t('schools.prompts.programme.choose_a_new_programme_message')) }
 
     it {
@@ -399,6 +403,28 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
 
       it { expect(html).not_to have_selector('#new_programme') }
     end
+
+
+    it { expect(html).to have_content(I18n.t('schools.show.setup_pupil_account')) }
+
+    it {
+      expect(html).to have_link(I18n.t('schools.show.create_pupil_account'),
+                                   href: new_school_pupil_path(school))
+    }
+
+    it { expect(html).to have_content(I18n.t('schools.show.setup_alert_contacts')) }
+
+    it {
+      expect(html).to have_link(I18n.t('schools.show.add_alert_contacts'),
+                                   href: school_contacts_path(school))
+    }
+
+    it { expect(html).to have_content(I18n.t('schools.show.set_targets')) }
+
+    it {
+      expect(html).to have_link(I18n.t('schools.show.set_target'),
+                                   href: school_school_targets_path(school))
+    }
 
     it 'displays the default prompts' do
       within('#custom-id') do
