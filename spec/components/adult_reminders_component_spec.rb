@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AdultRemindersComponent, :include_application_helper, type: :component do
+RSpec.describe AdultRemindersComponent, :include_application_helper, :include_url_helpers, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
@@ -373,12 +373,37 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, type: :comp
       render_inline(component)
     end
 
+    it { expect(html).to have_content(I18n.t('schools.prompts.programme.choose_a_new_programme_message')) }
+
+    it {
+      expect(html).to have_link(I18n.t('schools.prompts.programme.start_a_new_programme'),
+                                   href: programme_types_path)
+    }
+
+    it { expect(html).to have_content(I18n.t('schools.prompts.recommendations.message')) }
+
+    it {
+      expect(html).to have_link(I18n.t('common.labels.choose_activity'),
+                                  href: school_recommendations_path(school, scope: :adult))
+    }
+
+    context 'when school has an active programme' do
+      let!(:programme) { create(:programme, school: school) }
+
+      it { expect(html).to have_content('You have completed') }
+
+      it {
+        expect(html).to have_link(I18n.t('common.labels.view_now'),
+                                     href: programme_type_path(programme.programme_type))
+      }
+
+      it { expect(html).not_to have_selector('#new_programme') }
+    end
+
     it 'displays the default prompts' do
       within('#custom-id') do
         expect(html).to have_css('#add_pupils')
         expect(html).to have_css('#add_contacts')
-        expect(html).to have_css('#new_programme')
-        expect(html).to have_css('#choose_activity')
         expect(html).to have_css('#set_target')
       end
     end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PupilRemindersComponent, :include_application_helper, type: :component do
+RSpec.describe PupilRemindersComponent, :include_application_helper, :include_url_helpers, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
@@ -56,12 +56,38 @@ RSpec.describe PupilRemindersComponent, :include_application_helper, type: :comp
       render_inline(component)
     end
 
-    it 'displays the default prompts' do
-      within('#custom-id') do
-        expect(html).to have_css('#transport_surveys')
-        expect(html).to have_css('#new_programme')
-        expect(html).to have_css('#choose_activity')
-      end
+    it { expect(html).to have_content(I18n.t('pupils.schools.show.transport_surveys')) }
+
+    it {
+      expect(html).to have_link(I18n.t('pupils.schools.show.start_transport_survey'),
+                                   href: school_transport_surveys_path(school))
+    }
+
+    it { expect(html).to have_content(I18n.t('schools.prompts.programme.choose_a_new_programme_message')) }
+
+    it {
+      expect(html).to have_link(I18n.t('schools.prompts.programme.start_a_new_programme'),
+                                   href: programme_types_path)
+    }
+
+    it { expect(html).to have_content(I18n.t('schools.prompts.recommendations.message')) }
+
+    it {
+      expect(html).to have_link(I18n.t('common.labels.choose_activity'),
+                                  href: school_recommendations_path(school, scope: :pupil))
+    }
+
+    context 'when school has an active programme' do
+      let!(:programme) { create(:programme, school: school) }
+
+      it { expect(html).to have_content('You have completed') }
+
+      it {
+        expect(html).to have_link(I18n.t('common.labels.view_now'),
+                                     href: programme_type_path(programme.programme_type))
+      }
+
+      it { expect(html).not_to have_selector('#new_programme') }
     end
   end
 end
