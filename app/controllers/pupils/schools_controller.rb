@@ -20,6 +20,11 @@ module Pupils
       @show_data_enabled_features = show_data_enabled_features?
       setup_default_features
       setup_data_enabled_features if @show_data_enabled_features
+      if Flipper.enabled?(:new_dashboards_2024, current_user)
+        render :new_show, layout: 'dashboards'
+      else
+        render :show
+      end
     end
 
   private

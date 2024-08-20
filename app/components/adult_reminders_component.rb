@@ -33,10 +33,4 @@ class AdultRemindersComponent < DashboardRemindersComponent
   def recent_audit
     Audits::AuditService.new(@school).recent_audit
   end
-
-  private
-
-  def site_settings
-    @site_settings ||= SiteSettings.current
-  end
 end

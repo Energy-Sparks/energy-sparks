@@ -377,6 +377,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, type: :comp
       within('#custom-id') do
         expect(html).to have_css('#add_pupils')
         expect(html).to have_css('#add_contacts')
+        expect(html).to have_css('#new_programme')
         expect(html).to have_css('#choose_activity')
         expect(html).to have_css('#set_target')
       end
