@@ -4,6 +4,18 @@
   </div>
 <% end %>
 <div class="alert alert-primary">
-  Dates: <%= @equivalence.from_date.try(:strftime, '%d/%m/%Y')%> - <%= @equivalence.to_date.try(:strftime, '%d/%m/%Y')%>
+  Dates: <%= @equivalence.from_date.try(:strftime, '%d/%m/%Y') %> - <%= @equivalence.to_date.try(:strftime, '%d/%m/%Y') %>
 </div>
-<%= render 'pupils/schools/preview_equivalence', equivalence_content: @equivalence_content %>
+<%= component 'equivalence',
+              image_name: @equivalence_content.equivalence_type.image_name do |c| %>
+  <%= c.with_header do %>
+    <%= @equivalence_content.equivalence %>
+  <% end %>
+  <%= c.with_body do %>
+    <p>
+      <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                  pupils_school_analysis_path(@school),
+                  class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+    </p>
+  <% end %>
+<% end %>

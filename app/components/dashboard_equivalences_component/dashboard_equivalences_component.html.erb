@@ -1,0 +1,32 @@
+<div id="<%= id %>" class="equivalences-component <%= classes %>">
+  <div id="pupil_carousel" class="carousel slide pupil-dashboard" data-wrap="true" data-interval="false">
+    <div class="carousel-inner">
+      <% equivalences.each_with_index do |equivalence_content, index| %>
+        <%= component 'equivalence',
+                      image_name: equivalence_content.equivalence_type.image_name,
+                      classes: "carousel-item #{'active' if index.zero?}" do |c| %>
+          <%= c.with_header do %>
+            <%= equivalence_content.equivalence %>
+          <% end %>
+          <%= c.with_body do %>
+            <p>
+              <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                          pupils_school_analysis_path(school),
+                          class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+            </p>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+    <% if equivalences.length > 1 %>
+      <a class="carousel-control-prev" href="#pupil_carousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only"><%= t('common.labels.previous') %></span>
+      </a>
+      <a class="carousel-control-next" href="#pupil_carousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only"><%= t('common.labels.next') %></span>
+      </a>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div id="<%= id %>" class="equivalence-component <%= classes %>">
+  <div class="row illustration-background">
+    <div class="col-lg-6 equivalence-wrapper">
+      <% if header? %>
+        <%= header %>
+      <% else %>
+        <% if title? %>
+          <div><%= title %></div>
+        <% end %>
+        <% if equivalence? %>
+          <h1><%= equivalence %></h1>
+        <% end %>
+      <% end %>
+      <% if body? %>
+        <%= body %>
+      <% end %>
+    </div>
+    <div class="col-lg-6 illustration-wrapper">
+      <%= image_tag("equivalences/#{image_name}.svg") if show_image? %>
+    </div>
+  </div>
+</div>
