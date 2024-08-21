@@ -35,6 +35,11 @@ class EnergySummaryTableComponent < ApplicationComponent
     @user&.admin? || @school.data_enabled?
   end
 
+  # Bootstrap classes to allow th/td classes to be hidden on smallest mobile views
+  def hidden_on_mobile
+    'd-none d-sm-table-cell'
+  end
+
   def col(size = 1)
     "col-#{size}" if Flipper.enabled?(:new_dashboards_2024, user)
   end

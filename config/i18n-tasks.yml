@@ -161,6 +161,7 @@ ignore_unused:
   - 'intervention_types.errors.invalid_fuel_type.*'
   - 'onboarding_mailer.reminder_email.subject.*'
   - 'onboarding_mailer.reminder_email.paragraph_3.*'
+  - 'components.observation.*.description*'
   - 'components.observation.*.compact_message*'
   - 'components.observation.*.message*'
   - 'campaign_mailer.send_information.for_las.group_dashboard_html'

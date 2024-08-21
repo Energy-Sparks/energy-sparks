@@ -23,3 +23,21 @@
     </div>
   </div>
 </div>
+
+<div class="container-fluid bg-light pb-3">
+  <div class="container">
+    <%= component 'scoreboard_summary',
+                  podium: current_school_podium,
+                  user: current_user,
+                  classes: 'mt-4 pt-4' %>
+
+    <%= component 'timeline',
+                  school: @school,
+                  observations: @observations,
+                  user: current_user,
+                  classes: 'mt-4' %>
+
+    <%= component 'dashboard_login', school: @school, user: current_user %>
+
+  </div>
+</div>
