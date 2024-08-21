@@ -5,6 +5,16 @@
 <div class="container">
   <div class="row mt-4">
     <div class="col">
+      <%= component 'dashboard_equivalences',
+                    school: @school,
+                    user: current_user %>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row mt-4">
+    <div class="col">
       <%= component 'dashboard_insights',
                     audience: :pupil,
                     school: @school,
