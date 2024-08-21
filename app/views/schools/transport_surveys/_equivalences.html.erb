@@ -4,21 +4,19 @@
       <%= component 'equivalence',
                     image_name: equivalence[:svg],
                     classes: "carousel-item #{'active' if index.zero?}" do |c| %>
-        <%= c.with_title do %>
+        <% c.with_title do %>
           <%= t('schools.transport_surveys.show.summary_html', count: @transport_survey.total_responses,
                                                                carbon: @transport_survey.total_carbon.round(2)) %>
         <% end %>
-        <%= c.with_equivalence do %>
+        <% c.with_equivalence do %>
           <%= equivalence[:statement] %>
         <% end %>
-        <%= c.with_body do %>
-          <ul>
-            <% TransportSurvey::TransportType.categories.keys.each do |cat| %>
-              <li><%= t("schools.transport_surveys.show.percentages.#{cat}_html",
-                        amount: tag.strong("#{@transport_survey.percentage_per_category[cat].round}%")) %></li>
-            <% end %>
-          </ul>
-        <% end %>
+        <ul>
+          <% TransportSurvey::TransportType.categories.keys.each do |cat| %>
+            <li><%= t("schools.transport_surveys.show.percentages.#{cat}_html",
+                      amount: tag.strong("#{@transport_survey.percentage_per_category[cat].round}%")) %></li>
+          <% end %>
+        </ul>
       <% end %>
     <% end %>
   </div>

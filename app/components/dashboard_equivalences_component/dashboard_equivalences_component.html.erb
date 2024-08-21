@@ -5,20 +5,18 @@
         <%= component 'equivalence',
                       image_name: equivalence_content.equivalence_type.image_name,
                       classes: "carousel-item #{'active' if index.zero?}" do |c| %>
-          <%= c.with_header do %>
+          <% c.with_header do %>
             <%= equivalence_content.equivalence %>
           <% end %>
-          <%= c.with_body do %>
-            <p>
-              <% if show_data_enabled_features? %>
-                <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                            pupils_school_analysis_path(school),
-                            class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-              <% else %>
-                <%= t('pupils.schools.show.how_will_school_compare') %>
-              <% end %>
-            </p>
-          <% end %>
+          <p>
+            <% if show_data_enabled_features? %>
+              <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                          pupils_school_analysis_path(school),
+                          class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+            <% else %>
+              <%= t('pupils.schools.show.how_will_school_compare') %>
+            <% end %>
+          </p>
         <% end %>
       <% end %>
     </div>

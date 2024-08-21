@@ -11,9 +11,7 @@
           <h1><%= equivalence %></h1>
         <% end %>
       <% end %>
-      <% if body? %>
-        <%= body %>
-      <% end %>
+      <%= content %>
     </div>
     <div class="col-lg-6 illustration-wrapper">
       <%= image_tag("equivalences/#{image_name}.svg") if show_image? %>

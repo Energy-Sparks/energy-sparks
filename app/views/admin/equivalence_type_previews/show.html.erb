@@ -8,14 +8,12 @@
 </div>
 <%= component 'equivalence',
               image_name: @equivalence_content.equivalence_type.image_name do |c| %>
-  <%= c.with_header do %>
+  <% c.with_header do %>
     <%= @equivalence_content.equivalence %>
   <% end %>
-  <%= c.with_body do %>
-    <p>
-      <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                  pupils_school_analysis_path(@school),
-                  class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-    </p>
-  <% end %>
+  <p>
+    <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                pupils_school_analysis_path(@school),
+                class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+  </p>
 <% end %>

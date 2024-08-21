@@ -5,7 +5,6 @@ class EquivalenceComponent < ApplicationComponent
 
   renders_one :equivalence
   renders_one :title
-  renders_one :body
   renders_one :header
 
   def initialize(image_name:, id: nil, classes: '')
