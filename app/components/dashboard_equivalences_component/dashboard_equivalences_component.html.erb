@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="equivalences-component <%= classes %>">
+<div id="<%= id %>" class="dashboard-equivalences-component <%= classes %>">
   <div id="pupil_carousel" class="carousel slide pupil-dashboard" data-wrap="true" data-interval="false">
     <div class="carousel-inner">
       <% equivalences.each_with_index do |equivalence_content, index| %>
@@ -9,7 +9,7 @@
             <%= equivalence_content.equivalence %>
           <% end %>
           <p>
-            <% if show_data_enabled_features? %>
+            <% if data_enabled? %>
               <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
                           pupils_school_analysis_path(school),
                           class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>

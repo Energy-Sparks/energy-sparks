@@ -20,10 +20,10 @@ class DashboardEquivalencesComponent < ApplicationComponent
   # Either calculated. Or if school is not data enabled the defaults
   # Can we make these more equivalent in structure?
   def equivalences
-    @equivalences ||= show_data_enabled_features? ? setup_equivalences : default_equivalences
+    @equivalences ||= data_enabled? ? setup_equivalences : default_equivalences
   end
 
-  def show_data_enabled_features?
+  def data_enabled?
     @school.data_enabled?
   end
 
