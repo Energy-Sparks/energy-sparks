@@ -16,11 +16,11 @@
           <th class="icon <%= col(1) %>"></th>
           <th class="text-left"></th>
           <th class="text-left <%= col(4) %>"></th>
-          <th class="text-right <%= col(1) %>"><%= t('common.table.columns.use_kwh') %></th>
-          <th class="text-right <%= col(1) %>"><%= t('common.table.columns.co2_kg') %></th>
-          <th class="text-right <%= col(1) %>"><%= t('common.table.columns.cost_gbp') %></th>
+          <th class="<%= hidden_on_mobile %> text-right <%= col(1) %>"><%= t('common.table.columns.use_kwh') %></th>
+          <th class="<%= hidden_on_mobile %> text-right <%= col(1) %>"><%= t('common.table.columns.co2_kg') %></th>
+          <th class="<%= hidden_on_mobile %> text-right <%= col(1) %>"><%= t('common.table.columns.cost_gbp') %></th>
           <% if show_savings? %>
-            <th class="text-right <%= col(1) %>"><%= t('schools.show.potential_savings') %></th>
+            <th class="<%= hidden_on_mobile %> text-right <%= col(1) %>"><%= t('schools.show.potential_savings') %></th>
           <% end %>
           <th class="text-right <%= col(1) %>"><%= t('schools.show.percentage_change') %></th>
         </tr>
@@ -49,11 +49,11 @@
           <% end %>
           <td class="text-left"><%= data.period %></td>
           <% if data.has_data %>
-            <td class="text-right <%= data.message_class %>"><%= data.usage %></td>
-            <td class="text-right <%= data.message_class %>"><%= data.co2 %></td>
-            <td class="text-right <%= data.message_class %>"><%= data.cost %></td>
+            <td class="<%= hidden_on_mobile %> text-right <%= data.message_class %>"><%= data.usage %></td>
+            <td class="<%= hidden_on_mobile %> text-right <%= data.message_class %>"><%= data.co2 %></td>
+            <td class="<%= hidden_on_mobile %> text-right <%= data.message_class %>"><%= data.cost %></td>
             <% if show_savings? %>
-              <td class="text-right <%= data.message_class %>"><%= data.savings %></td>
+              <td class="<%= hidden_on_mobile %> text-right <%= data.message_class %>"><%= data.savings %></td>
             <% end %>
             <td class="text-right"><%= up_downify(data.change, sanitize: false) %></td>
           <% else %>
