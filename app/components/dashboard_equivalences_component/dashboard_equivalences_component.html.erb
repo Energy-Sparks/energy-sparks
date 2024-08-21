@@ -10,9 +10,13 @@
           <% end %>
           <%= c.with_body do %>
             <p>
-              <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                          pupils_school_analysis_path(school),
-                          class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+              <% if show_data_enabled_features? %>
+                <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                            pupils_school_analysis_path(school),
+                            class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+              <% else %>
+                <%= t('pupils.schools.show.how_will_school_compare') %>
+              <% end %>
             </p>
           <% end %>
         <% end %>
