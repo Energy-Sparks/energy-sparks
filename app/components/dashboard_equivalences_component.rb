@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DashboardEquivalencesComponent < ApplicationComponent
-  attr_reader :school
+  attr_reader :school, :user
 
   # EquivalencesComponent
   # Two panel view, separated by electricity and heating cards. Each has a carousel
@@ -31,10 +31,26 @@ class DashboardEquivalencesComponent < ApplicationComponent
     equivalences&.any?
   end
 
+  def single_fuel?
+    data_enabled? ? (electricity_and_solar.empty? || gas_and_storage_heaters.empty?) : false
+  end
+
+  def electricity_and_solar
+    @electricity_and_solar ||= equivalences_for_meter_types([:electricity, :solar_pv])
+  end
+
+  def gas_and_storage_heaters
+    @gas_and_storage_heaters ||= equivalences_for_meter_types([:gas, :storage_heaters])
+  end
+
+  def equivalences_for_meter_types(meter_types)
+    data_enabled? ? setup_equivalences(meter_types) : default_equivalences(meter_types)
+  end
+
   private
 
-  def setup_equivalences
-    equivalence_data = Equivalences::RelevantAndTimely.new(@school).equivalences
+  def setup_equivalences(meter_types = :all)
+    equivalence_data = Equivalences::RelevantAndTimely.new(@school).equivalences(meter_types: meter_types)
 
     equivalence_data.map do |equivalence|
       TemplateInterpolation.new(
@@ -51,9 +67,9 @@ class DashboardEquivalencesComponent < ApplicationComponent
   # Objects in the returned array has equivalent structure to that returned by `setup_equivalences`
   #
   # TODO: these could later be moved into the database to allow them to be managed better
-  def default_equivalences
+  def default_equivalences(meter_types = :all)
     scope = [:pupils, :default_equivalences]
-    [
+    all_defaults = [
       { meter_type: :electricity, avg: 'equivalence_1.measure_html', title: 'equivalence_1.equivalence', img: 'kettle' },
       { meter_type: :electricity, avg: 'equivalence_2.measure_html', title: 'equivalence_2.equivalence', img: 'onshore_wind_turbine' },
       { meter_type: :gas, avg: 'equivalence_3.measure_html', title: 'equivalence_3.equivalence', img: 'tree' },
@@ -70,5 +86,6 @@ class DashboardEquivalencesComponent < ApplicationComponent
       default_equivalence.equivalence_type.image_name = equivalence_config[:img]
       default_equivalence
     end
+    meter_types == :all ? all_defaults : all_defaults.select {|e| meter_types.include?(e.equivalence_type.meter_type)}
   end
 end
