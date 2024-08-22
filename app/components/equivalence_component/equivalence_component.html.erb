@@ -23,7 +23,9 @@
   <% else %>
     <div class="row">
       <div class="col text-center">
-        <h2>XXXX</h2>
+        <% if show_fuel_type? %>
+          <h2><%= t("common.#{fuel_type}") %></h2>
+        <% end %>
         <% if header? %>
           <%= header %>
         <% else %>
