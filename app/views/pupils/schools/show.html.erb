@@ -5,12 +5,12 @@
 <% end %>
 
 <% if @show_data_enabled_features %>
-  <%= component 'dashboard_equivalences', school: @school, user: current_user %>
+  <%= component 'dashboard_equivalences', school: @school, user: current_user, classes: 'illustration-background' %>
 
   <h2 class="mt-2"><%= t('pupils.schools.show.look_at_the_energy_use') %>:</h2>
   <%= render 'pupils/analysis/top_level', school: @school %>
 <% else %>
-  <%= component 'dashboard_equivalences', school: @school, user: current_user %>
+  <%= component 'dashboard_equivalences', school: @school, user: current_user, classes: 'illustration-background' %>
 
   <%= component 'info_bar',
                 status: :neutral,

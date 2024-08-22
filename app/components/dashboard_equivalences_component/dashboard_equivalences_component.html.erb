@@ -1,34 +1,85 @@
 <div id="<%= id %>" class="dashboard-equivalences-component <%= classes %>">
-  <div id="pupil_carousel" class="carousel slide pupil-dashboard" data-wrap="true" data-interval="false">
-    <div class="carousel-inner">
-      <% equivalences.each_with_index do |equivalence_content, index| %>
-        <%= component 'equivalence',
-                      image_name: equivalence_content.equivalence_type.image_name,
-                      classes: "carousel-item #{'active' if index.zero?}" do |c| %>
-          <% c.with_header do %>
-            <%= equivalence_content.equivalence %>
-          <% end %>
-          <p>
-            <% if data_enabled? %>
-              <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                          pupils_school_analysis_path(school),
-                          class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-            <% else %>
-              <%= t('pupils.schools.show.how_will_school_compare') %>
+  <% if Flipper.enabled?(:new_dashboards_2024, user) %>
+    <div class="row">
+      <div class="col-6">
+          <div id="pupil_left_carousel" class="row bg-light pt-3 rounded carousel slide pupil-dashboard" data-wrap="true" data-interval="false">
+            <div class="carousel-inner col">
+              <% electricity_and_solar.each_with_index do |equivalence_content, index| %>
+                <%= component 'equivalence',
+                              image_name: equivalence_content.equivalence_type.image_name,
+                              layout: :vertical,
+                              show_fuel: true,
+                              classes: "new carousel-item #{'active' if index.zero?}" do |c| %>
+                  <% c.with_header do %>
+                    <%= equivalence_content.equivalence %>
+                  <% end %>
+                  <p>
+                    <% if data_enabled? %>
+                      <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                                  pupils_school_analysis_path(school),
+                                  class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                    <% else %>
+                      <%= t('pupils.schools.show.how_will_school_compare') %>
+                    <% end %>
+                  </p>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <div class="row bg-light pb-3 rounded">
+              <div class="col">
+                <% if equivalences.length > 1 %>
+                  <a class="carousel-control-prev" href="#pupil_left_carousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only"><%= t('common.labels.previous') %></span>
+                  </a>
+                  <a class="carousel-control-next" href="#pupil_left_carousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only"><%= t('common.labels.next') %></span>
+                  </a>
+                <% end %>
+              </div>
+          </div>
+      </div>
+      <div class="col-6">
+      </div>
+    </div>
+  <% else %>
+    <div id="pupil_carousel" class="carousel slide pupil-dashboard" data-wrap="true" data-interval="false">
+      <div class="carousel-inner">
+        <% equivalences.each_with_index do |equivalence_content, index| %>
+          <%= component 'equivalence',
+                        image_name: equivalence_content.equivalence_type.image_name,
+                        classes: "carousel-item #{'active' if index.zero?}" do |c| %>
+            <% c.with_header do %>
+              <%= equivalence_content.equivalence %>
             <% end %>
-          </p>
+            <p>
+              <% if data_enabled? %>
+                <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                            pupils_school_analysis_path(school),
+                            class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+              <% else %>
+                <%= t('pupils.schools.show.how_will_school_compare') %>
+              <% end %>
+            </p>
+          <% end %>
         <% end %>
+      </div>
+      <% if equivalences.length > 1 %>
+        <div class="row pb-3 rounded">
+          <div class="col">
+            <a class="carousel-control-prev" href="#pupil_carousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only"><%= t('common.labels.previous') %></span>
+            </a>
+            <a class="carousel-control-next" href="#pupil_carousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only"><%= t('common.labels.next') %></span>
+            </a>
+          </div>
+        </div>
       <% end %>
     </div>
-    <% if equivalences.length > 1 %>
-      <a class="carousel-control-prev" href="#pupil_carousel" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only"><%= t('common.labels.previous') %></span>
-      </a>
-      <a class="carousel-control-next" href="#pupil_carousel" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only"><%= t('common.labels.next') %></span>
-      </a>
-    <% end %>
-  </div>
+  <% end %>
 </div>
