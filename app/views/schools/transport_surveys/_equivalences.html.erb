@@ -1,39 +1,23 @@
 <div class="illustration-background">
-  <div id="survey_carousel" class="carousel slide" data-wrap="true" data-interval="false">
-    <div class="carousel-inner">
-      <% @transport_survey.equivalences.each_with_index do |equivalence, index| %>
-        <%= component 'equivalence',
-                      image_name: equivalence[:svg],
-                      classes: "carousel-item #{'active' if index.zero?}" do |c| %>
-          <% c.with_title do %>
-            <%= t('schools.transport_surveys.show.summary_html', count: @transport_survey.total_responses,
-                                                                 carbon: @transport_survey.total_carbon.round(2)) %>
-          <% end %>
-          <% c.with_equivalence do %>
-            <%= equivalence[:statement] %>
-          <% end %>
-          <ul>
-            <% TransportSurvey::TransportType.categories.keys.each do |cat| %>
-              <li><%= t("schools.transport_surveys.show.percentages.#{cat}_html",
-                        amount: tag.strong("#{@transport_survey.percentage_per_category[cat].round}%")) %></li>
-            <% end %>
-          </ul>
+  <%= component 'equivalence_carousel', id: 'survey_carousel' do |carousel| %>
+    <% @transport_survey.equivalences.each_with_index do |equivalence, index| %>
+      <% carousel.with_equivalence image_name: equivalence[:svg],
+                                   classes: "carousel-item #{'active' if index.zero?}" do |e| %>
+
+        <% e.with_title do %>
+          <%= t('schools.transport_surveys.show.summary_html', count: @transport_survey.total_responses,
+                                                               carbon: @transport_survey.total_carbon.round(2)) %>
         <% end %>
+        <% e.with_equivalence do %>
+          <%= equivalence[:statement] %>
+        <% end %>
+        <ul>
+          <% TransportSurvey::TransportType.categories.keys.each do |cat| %>
+            <li><%= t("schools.transport_surveys.show.percentages.#{cat}_html",
+                      amount: tag.strong("#{@transport_survey.percentage_per_category[cat].round}%")) %></li>
+          <% end %>
+        </ul>
       <% end %>
-    </div>
-    <% if @transport_survey.equivalences.length > 1 %>
-      <div class="row pb-4">
-        <div class="col">
-          <a class="carousel-control-prev" href="#survey_carousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only"><%= t('common.labels.previous') %></span>
-          </a>
-          <a class="carousel-control-next" href="#survey_carousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only"><%= t('common.labels.next') %></span>
-          </a>
-        </div>
-      </div>
     <% end %>
-  </div>
+  <% end %>
 </div>

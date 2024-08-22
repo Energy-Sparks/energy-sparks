@@ -13,7 +13,7 @@ class EquivalenceComponent < ApplicationComponent
   renders_one :header
 
   def initialize(image_name:, show_fuel: false, layout: :horizontal, id: nil, classes: '')
-    super(id: id, classes: classes)
+    super(id: id, classes: "#{layout} #{classes}")
     @image_name = image_name
     @show_fuel = show_fuel
     @layout = layout.to_sym
