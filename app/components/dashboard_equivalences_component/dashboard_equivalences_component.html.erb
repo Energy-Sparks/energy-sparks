@@ -1,59 +1,61 @@
 <div id="<%= id %>" class="dashboard-equivalences-component <%= classes %>">
   <% if Flipper.enabled?(:new_dashboards_2024, user) %>
     <div class="row">
-      <div class="col-6">
-        <%= component 'equivalence_carousel',
-                      id: 'pupil_left_carousel',
-                      classes: 'row bg-light pt-3 rounded' do |carousel| %>
-          <% electricity_and_solar.each_with_index do |equivalence_content, index| %>
-            <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
-                                         fuel_type: equivalence_content.equivalence_type.meter_type,
-                                         show_fuel_type: true,
-                                         classes: "carousel-item #{'active' if index.zero?}",
-                                         layout: :vertical do |e| %>
-              <% e.with_header do %>
-                <%= equivalence_content.equivalence %>
-              <% end %>
-              <p>
-                <% if data_enabled? %>
-                  <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                              pupils_school_analysis_path(school),
-                              class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-                <% else %>
-                  <%= t('pupils.schools.show.how_will_school_compare') %>
-                <% end %>
-              </p>
-            <% end %>
-          <% end %>
-        <% end %>
-      </div>
-      <div class="col-6">
-        <%= component 'equivalence_carousel',
-                      id: 'pupil_right_carousel',
-                      classes: 'row bg-light pt-3 rounded' do |carousel| %>
-          <% gas_and_storage_heaters.each_with_index do |equivalence_content, index| %>
-            <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
-                                         fuel_type: equivalence_content.equivalence_type.meter_type,
-                                         show_fuel_type: true,
-                                         classes: "carousel-item #{'active' if index.zero?}",
-                                         layout: :vertical do |e| %>
-              <% e.with_header do %>
-                <%= equivalence_content.equivalence %>
-              <% end %>
-              <p>
-                <% if data_enabled? %>
-                  <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                              pupils_school_analysis_path(school),
-                              class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-                <% else %>
-                  <%= t('pupils.schools.show.how_will_school_compare') %>
-                <% end %>
-              </p>
-            <% end %>
-          <% end %>
-        <% end %>
 
+      <div class="col-12 <%= two_column_class %>">
+        <%= component 'equivalence_carousel',
+                      id: 'pupil-left-carousel',
+                      classes: 'row bg-light pt-3 rounded' do |carousel| %>
+          <% left_carousel_equivalences.each_with_index do |equivalence_content, index| %>
+            <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
+                                         fuel_type: equivalence_content.equivalence_type.meter_type,
+                                         show_fuel_type: true,
+                                         classes: equivalence_component_classes(index),
+                                         layout: equivalence_layout do |e| %>
+              <% e.with_header do %>
+                <%= equivalence_content.equivalence %>
+              <% end %>
+              <p>
+                <% if data_enabled? %>
+                  <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                              pupils_school_analysis_path(school),
+                              class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                <% else %>
+                  <%= t('pupils.schools.show.how_will_school_compare') %>
+                <% end %>
+              </p>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
+      <% unless single_fuel? %>
+        <div class="col-12 <%= two_column_class %>">
+          <%= component 'equivalence_carousel',
+                        id: 'pupil-right-carousel',
+                        classes: 'row bg-light pt-3 rounded' do |carousel| %>
+            <% gas_and_storage_heaters.each_with_index do |equivalence_content, index| %>
+              <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
+                                           fuel_type: equivalence_content.equivalence_type.meter_type,
+                                           show_fuel_type: true,
+                                           classes: equivalence_component_classes(index),
+                                           layout: equivalence_layout do |e| %>
+                <% e.with_header do %>
+                  <%= equivalence_content.equivalence %>
+                <% end %>
+                <p>
+                  <% if data_enabled? %>
+                    <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
+                                pupils_school_analysis_path(school),
+                                class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                  <% else %>
+                    <%= t('pupils.schools.show.how_will_school_compare') %>
+                  <% end %>
+                </p>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   <% else %>
     <%= component 'equivalence_carousel', id: 'pupil_carousel' do |carousel| %>

@@ -47,6 +47,28 @@ class DashboardEquivalencesComponent < ApplicationComponent
     data_enabled? ? setup_equivalences(meter_types) : default_equivalences(meter_types)
   end
 
+  # Decide which list of equivalences to show in the 1st (left) carousel
+  #
+  # If we only have a single fuel type, then just return everything the list
+  # will contain either the electricity or heating equivalences
+  #
+  # If we have multiple fuel types then use the electricity equivalences
+  def left_carousel_equivalences
+    single_fuel? ? equivalences : electricity_and_solar
+  end
+
+  def two_column_class
+    single_fuel? ? '' : 'col-lg-6'
+  end
+
+  def equivalence_layout
+    single_fuel? ? :horizontal : :vertical
+  end
+
+  def equivalence_component_classes(index)
+    "carousel-item #{'active' if index.zero?} #{'pl-2' if single_fuel?}"
+  end
+
   private
 
   def setup_equivalences(meter_types = :all)
