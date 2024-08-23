@@ -17,6 +17,7 @@ module Pupils
 
     def show
       authorize! :show_pupils_dash, @school
+      @audience = :pupil
       @show_data_enabled_features = show_data_enabled_features?
       setup_default_features
       setup_data_enabled_features if @show_data_enabled_features
