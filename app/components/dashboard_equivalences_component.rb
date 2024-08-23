@@ -61,6 +61,11 @@ class DashboardEquivalencesComponent < ApplicationComponent
     single_fuel? ? '' : 'col-lg-6'
   end
 
+  def two_column_margin(left = true)
+    return '' if single_fuel?
+    "m#{left ? 'r' : 'l'}-2"
+  end
+
   def equivalence_layout
     single_fuel? ? :horizontal : :vertical
   end

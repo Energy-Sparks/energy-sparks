@@ -1,11 +1,10 @@
 <div id="<%= id %>" class="dashboard-equivalences-component <%= classes %>">
   <% if Flipper.enabled?(:new_dashboards_2024, user) %>
     <div class="row">
-
       <div class="col-12 <%= two_column_class %>">
         <%= component 'equivalence_carousel',
                       id: 'pupil-left-carousel',
-                      classes: 'row bg-light pt-3 rounded' do |carousel| %>
+                      classes: "row bg-light pt-3 rounded #{two_column_margin(true)}" do |carousel| %>
           <% left_carousel_equivalences.each_with_index do |equivalence_content, index| %>
             <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
                                          fuel_type: equivalence_content.equivalence_type.meter_type,
@@ -32,7 +31,7 @@
         <div class="col-12 <%= two_column_class %>">
           <%= component 'equivalence_carousel',
                         id: 'pupil-right-carousel',
-                        classes: 'row bg-light pt-3 rounded' do |carousel| %>
+                        classes: "row bg-light pt-3 rounded #{two_column_margin(false)}" do |carousel| %>
             <% gas_and_storage_heaters.each_with_index do |equivalence_content, index| %>
               <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
                                            fuel_type: equivalence_content.equivalence_type.meter_type,
