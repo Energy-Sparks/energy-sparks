@@ -70,8 +70,8 @@ class DashboardEquivalencesComponent < ApplicationComponent
     single_fuel? ? :horizontal : :vertical
   end
 
-  def equivalence_component_classes(index)
-    "carousel-item #{'active' if index.zero?} #{'pl-2' if single_fuel?}"
+  def equivalence_component_classes
+    single_fuel? ? 'pl-2' : ''
   end
 
   private
@@ -105,7 +105,7 @@ class DashboardEquivalencesComponent < ApplicationComponent
     ].map do |equivalence_config|
       default_equivalence = ActiveSupport::OrderedOptions.new
       default_equivalence.equivalence = content_tag(:div, I18n.t(equivalence_config[:avg], scope: scope).html_safe)
-      default_equivalence.equivalence = default_equivalence.equivalence + content_tag(:h1,
+      default_equivalence.equivalence = default_equivalence.equivalence + content_tag(:h3,
                                                                                       I18n.t(equivalence_config[:title],
                                                                                       scope: scope).html_safe)
       default_equivalence.equivalence_type = ActiveSupport::OrderedOptions.new
