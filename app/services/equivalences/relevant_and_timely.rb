@@ -13,8 +13,12 @@ module Equivalences
       @school = school
     end
 
-    def equivalences
-      relevant_equivalences.select { |eq| in_date(eq) }
+    def equivalences(meter_types: :all)
+      if meter_types == :all
+        relevant_equivalences.select { |eq| in_date(eq) }
+      else
+        relevant_equivalences.select { |eq| in_date(eq) && meter_types.include?(eq.equivalence_type.meter_type.to_sym) }
+      end
     end
 
   private
