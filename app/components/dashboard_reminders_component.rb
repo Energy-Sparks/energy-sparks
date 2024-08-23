@@ -40,4 +40,8 @@ class DashboardRemindersComponent < ApplicationComponent
   def can?(permission, context)
     ability.can?(permission, context)
   end
+
+  def site_settings
+    @site_settings ||= SiteSettings.current
+  end
 end

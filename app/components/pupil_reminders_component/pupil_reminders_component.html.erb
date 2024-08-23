@@ -1,0 +1,81 @@
+<%= component 'prompt_list', id: id, classes: classes do |list| %>
+  <% if title? %>
+    <% list.with_title do %>
+      <%= title %>
+    <% end %>
+  <% end %>
+
+  <% if show_temperature_observations? %>
+    <% if temperature_observations.empty? %>
+      <% add_prompt(id: :enter_temperatures,
+                    list: list,
+                    status: :neutral,
+                    icon: 'temperature-high',
+                    link: 'pupils.schools.show.enter_temperatures',
+                    path: school_temperature_observations_path(school)) do %>
+          <p>
+            <%= t('pupils.schools.show.measure_temperatures') %>
+          </p>
+      <% end %>
+    <% else %>
+      <% add_prompt(id: :update_temperatures,
+                    list: list,
+                    status: :neutral,
+                    icon: 'temperature-high',
+                    link: 'pupils.schools.show.previous_temperatures',
+                    path: school_temperature_observations_path(school)) do %>
+          <p>
+            <%= t('pupils.schools.show.updating_temperatures') %>
+          </p>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% add_prompt(id: :transport_surveys,
+                list: list,
+                status: :neutral,
+                icon: 'car-alt',
+                link: 'pupils.schools.show.start_transport_survey',
+                path: school_transport_surveys_path(school)) do %>
+      <p>
+        <%= t('pupils.schools.show.transport_surveys') %>
+      </p>
+  <% end %>
+
+  <% if programmes_to_prompt.any? %>
+    <% programmes_to_prompt.each do |programme| %>
+      <% add_prompt(id: :programme_reminder,
+                    list: list,
+                    status: :neutral,
+                    icon: 'tasks',
+                    link: 'common.labels.view_now',
+                    path: programme_type_path(programme.programme_type)) do %>
+        <p>
+          <%= Programmes::Progress.new(programme).notification %>
+        </p>
+      <% end %>
+    <% end %>
+  <% else %>
+    <% add_prompt(id: :new_programme,
+                  list: list,
+                  status: :neutral,
+                  icon: 'tasks',
+                  link: 'schools.prompts.programme.start_a_new_programme',
+                  path: programme_types_path) do %>
+      <p>
+        <%= t('schools.prompts.programme.choose_a_new_programme_message') %>
+      </p>
+    <% end %>
+  <% end %>
+  <% add_prompt(id: :choose_activity,
+                list: list,
+                status: :neutral,
+                icon: 'clipboard-list',
+                link: 'common.labels.choose_activity',
+                path: school_recommendations_path(school, scope: :pupil)) do %>
+    <p>
+      <%= t('schools.prompts.recommendations.message') %>
+    </p>
+  <% end %>
+
+<% end %>
