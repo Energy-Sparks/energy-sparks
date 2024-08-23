@@ -42,10 +42,6 @@ class EquivalenceType < ApplicationRecord
     end
   end
 
-  def show_image?
-    image_name.to_sym != :no_image
-  end
-
 private
 
   def save_and_replace(content, to_replace)

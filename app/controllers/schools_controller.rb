@@ -51,6 +51,7 @@ class SchoolsController < ApplicationController
     # Not logged in, a guest, an admin, or any other user not directly linked to this school
     # OR an adult user for this school, or a pupil that is trying to view the adult dashboard
     authorize! :show, @school
+    @audience = :adult
     @show_data_enabled_features = show_data_enabled_features?
     setup_default_features
     setup_data_enabled_features if @show_data_enabled_features

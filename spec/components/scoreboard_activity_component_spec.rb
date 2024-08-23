@@ -39,7 +39,8 @@ RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :compone
     expect(html).to have_selector(:table_row, [
                                     '1st',
                                     other_school.name,
-                                    "Scored 10 points after they recorded \"#{activity.display_name}\""
+                                    '10',
+                                    "Recorded \"#{activity.display_name}\""
                                   ])
   end
 
@@ -52,7 +53,8 @@ RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :compone
       expect(html).not_to have_content(I18n.t('common.labels.place'))
       expect(html).to have_selector(:table_row, [
                                       other_school.name,
-                                      "Scored 10 points after they recorded \"#{activity.display_name}\""
+                                      '10',
+                                      "Recorded \"#{activity.display_name}\""
                                     ])
     end
   end

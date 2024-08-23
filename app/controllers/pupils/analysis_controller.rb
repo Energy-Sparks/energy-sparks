@@ -10,7 +10,7 @@ module Pupils
     before_action :set_breadcrumbs
 
     def index
-      render params[:category] || :index
+      render fuel_type || :index
     end
 
     def show
@@ -19,6 +19,12 @@ module Pupils
     end
 
     private
+
+    def fuel_type
+      fuel_type = params[:category]
+      fuel_type = 'solar' if fuel_type == 'solar_pv'
+      fuel_type
+    end
 
     def set_breadcrumbs
       @breadcrumbs = [

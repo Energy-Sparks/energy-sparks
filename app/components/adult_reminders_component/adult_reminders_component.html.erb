@@ -5,25 +5,47 @@
     <% end %>
   <% end %>
 
-  <% if show_standard_prompts? %>
-    <% messageable.each do |messageable| %>
-      <% add_prompt(id: "#{messageable.class.name.downcase}_dashboard_message",
-                    check: messageable.dashboard_message,
-                    list: list,
-                    status: :neutral,
-                    icon: 'info-circle') do %>
-        <%= messageable.dashboard_message.message %>
-      <% end %>
+  <% messageable.each do |messageable| %>
+    <% add_prompt(id: "#{messageable.class.name.downcase}_dashboard_message",
+                  check: messageable.dashboard_message,
+                  list: list,
+                  status: :negative,
+                  icon: 'info-circle') do %>
+      <%= messageable.dashboard_message.message %>
     <% end %>
   <% end %>
+
+  <% add_prompt(id: :add_pupils,
+                check: prompt_for_pupils?,
+                list: list,
+                status: :negative,
+                icon: 'exclamation-circle',
+                link: 'schools.show.create_pupil_account',
+                path: new_school_pupil_path(school)) do %>
+     <p>
+       <%= t('schools.show.setup_pupil_account') %>
+     </p>
+   <% end %>
+
+   <% add_prompt(id: :add_contacts,
+                 check: prompt_for_contacts?,
+                 list: list,
+                 status: :negative,
+                 icon: 'exclamation-circle',
+                 link: 'schools.show.add_alert_contacts',
+                 path: school_contacts_path(school)) do %>
+     <p>
+       <%= t('schools.show.setup_alert_contacts') %>
+     </p>
+   <% end %>
 
   <% add_prompt(id: :bill,
                 check: prompt_for_bill?,
                 list: list,
-                status: :neutral,
+                status: :negative,
                 icon: 'exclamation-circle',
                 link: 'schools.show.upload_energy_bill',
-                path: school_consent_documents_url(school)) do %>
+                path: school_consent_documents_path(school)) do %>
     <p>
       <%= t('schools.show.energy_bill_required') %>
     </p>
@@ -89,65 +111,29 @@
     </p>
   <% end %>
 
-  <% if show_standard_prompts? %>
-    <% if programmes_to_prompt.any? %>
-      <% programmes_to_prompt.each do |programme| %>
-        <% add_prompt(id: :programme_reminder,
-                      list: list,
-                      status: :neutral,
-                      icon: 'tasks',
-                      link: 'common.labels.view_now',
-                      path: programme_type_path(programme.programme_type)) do %>
-          <p>
-            <%= Programmes::Progress.new(programme).notification %>
-          </p>
-        <% end %>
-      <% end %>
-    <% else %>
-      <% add_prompt(id: :new_programme,
+  <% if programmes_to_prompt.any? %>
+    <% programmes_to_prompt.each do |programme| %>
+      <% add_prompt(id: :programme_reminder,
                     list: list,
                     status: :neutral,
                     icon: 'tasks',
-                    link: 'schools.prompts.programme.start_a_new_programme',
-                    path: programme_types_path) do %>
+                    link: 'common.labels.view_now',
+                    path: programme_type_path(programme.programme_type)) do %>
         <p>
-          <%= t('schools.prompts.programme.choose_a_new_programme_message') %>
+          <%= Programmes::Progress.new(programme).notification %>
         </p>
       <% end %>
     <% end %>
-    <% add_prompt(id: :choose_activity,
+  <% else %>
+    <% add_prompt(id: :new_programme,
                   list: list,
                   status: :neutral,
-                  icon: 'clipboard-list',
-                  link: 'common.labels.choose_activity',
-                  path: school_recommendations_path(school, scope: :adult)) do %>
+                  icon: 'tasks',
+                  link: 'schools.prompts.programme.start_a_new_programme',
+                  path: programme_types_path) do %>
       <p>
-        <%= t('schools.prompts.recommendations.message') %>
+        <%= t('schools.prompts.programme.choose_a_new_programme_message') %>
       </p>
     <% end %>
   <% end %>
-
-  <% add_prompt(id: :add_pupils,
-                check: prompt_for_pupils?,
-                list: list,
-                status: :neutral,
-                icon: 'exclamation-circle',
-                link: 'schools.show.create_pupil_account',
-                path: new_school_pupil_path(school)) do %>
-     <p>
-       <%= t('schools.show.setup_pupil_account') %>
-     </p>
-   <% end %>
-
-   <% add_prompt(id: :add_contacts,
-                 check: prompt_for_contacts?,
-                 list: list,
-                 status: :neutral,
-                 icon: 'exclamation-circle',
-                 link: 'schools.show.add_alert_contacts',
-                 path: school_contacts_path(school)) do %>
-     <p>
-       <%= t('schools.show.setup_alert_contacts') %>
-     </p>
-   <% end %>
 <% end %>

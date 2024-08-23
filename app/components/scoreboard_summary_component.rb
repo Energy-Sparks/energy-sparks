@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 class ScoreboardSummaryComponent < ApplicationComponent
-  attr_reader :podium, :user
+  attr_reader :podium, :user, :audience
 
   include ApplicationHelper
 
-  def initialize(podium:, title: nil, user: nil, id: nil, classes: '')
+  def initialize(podium:, title: nil, audience: :adult, user: nil, id: nil, classes: '')
     super(id: id, classes: classes)
     @podium = podium
     @title = title
     @user = user
+    @audience = audience
   end
 
   def title
