@@ -29,7 +29,7 @@ RSpec.describe DashboardLearnMoreComponent, :include_url_helpers, type: :compone
     it { expect(html).to have_content(I18n.t('schools.dashboards.learn_more.intro'))}
 
     it 'links to the analysis' do
-      expect(html).to have_link(I18n.t('schools.dashboards.learn_more.learn_more'),
+      expect(html).to have_link(I18n.t('schools.dashboards.learn_more.explore'),
                                 href: school_advice_path(school))
       expect(html).to have_link(I18n.t('schools.dashboards.learn_more.opportunities'),
                                 href: priorities_school_advice_path(school))
@@ -48,7 +48,7 @@ RSpec.describe DashboardLearnMoreComponent, :include_url_helpers, type: :compone
     it { expect(html).to have_content(I18n.t('schools.show.configuring_data_access'))}
 
     it 'does not link to the analysis' do
-      expect(html).not_to have_link(I18n.t('schools.dashboards.learn_more.learn_more'),
+      expect(html).not_to have_link(I18n.t('schools.dashboards.learn_more.explore'),
                                     href: school_advice_path(school))
       expect(html).not_to have_link(I18n.t('schools.dashboards.learn_more.opportunities'),
                                     href: priorities_school_advice_path(school))
