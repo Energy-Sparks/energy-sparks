@@ -1,0 +1,57 @@
+<div id="<%= id %>" class="equivalence-component <%= classes %>">
+  <% if horizontal? %>
+    <div class="row">
+      <%# add margin at small screen sizes to avoid text overlapping image %>
+      <div class="col-12 col-lg-6 mb-5 mb-sm-0 equivalence-wrapper">
+        <% if header? %>
+          <%= header %>
+        <% else %>
+          <% if title? %>
+            <div><%= title %></div>
+          <% end %>
+          <% if equivalence? %>
+            <h3><%= equivalence %></h3>
+          <% end %>
+        <% end %>
+        <%= content %>
+      </div>
+      <%# add margin at small screen sizes to avoid text overlapping image %>
+      <div class="col-12 col-lg-6 mt-5 mt-sm-0 d-flex justify-content-center illustration-wrapper">
+        <%= image_tag("equivalences/#{image_name}.svg") if show_image? %>
+      </div>
+    </div>
+  <% else %>
+    <div class="row">
+      <div class="col text-center">
+        <% if show_fuel_type? %>
+          <h2>
+            <span class="<%= fuel_type_class(fuel_type) %>">
+              <%= fa_icon(fuel_type_icon(fuel_type)) %>
+            </span>
+            <%= t("common.#{fuel_type}") %>
+          </h2>
+        <% end %>
+        <% if header? %>
+          <%= header %>
+        <% else %>
+          <% if title? %>
+            <div><%= title %></div>
+          <% end %>
+          <% if equivalence? %>
+            <h3><%= equivalence %></h3>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col d-flex justify-content-center illustration-wrapper">
+        <%= image_tag("equivalences/#{image_name}.svg") if show_image? %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <%= content %>
+      </div>
+    </div>
+  <% end %>
+</div>

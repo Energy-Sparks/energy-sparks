@@ -1,0 +1,37 @@
+.illustration-background {
+  padding-top: 20px;
+  background: linear-gradient(to right, $bluey-white 0%, $bluey-white 15%, $bluey-grey 50%, $bluey-white 85%, $bluey-white 100%);
+}
+
+.illustration-wrapper {
+  overflow: visible;
+
+  img {
+    height: 300px;
+  }
+}
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+  .illustration-wrapper {
+    img {
+      height: 200px;
+    }
+  }
+}
+
+@media (max-width: 991.98px) {
+  div.equivalence-wrapper {
+    height: 200px;
+  }
+}
+
+.equivalence-component.vertical {
+  .trix-content {
+    h1 {
+      font-size: $f3;
+      line-height: 34px;
+      padding-bottom: 10px;
+    }
+  }
+}

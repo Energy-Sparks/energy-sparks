@@ -20,7 +20,6 @@ class DashboardRemindersComponent < ApplicationComponent
 
   def show_data_enabled_features?
     if user && user.admin?
-      # TODO params[:no_data] ? false : true
       true
     else
       @school.data_enabled?
