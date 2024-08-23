@@ -21,7 +21,7 @@ class EquivalenceComponent < ApplicationComponent
   end
 
   def show_fuel_type?
-    @show_fuel_type && @fuel_type
+    @show_fuel_type && @fuel_type.present?
   end
 
   def horizontal?

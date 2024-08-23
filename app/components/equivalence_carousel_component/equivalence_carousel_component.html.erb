@@ -10,19 +10,25 @@
   <% if equivalences.length > 1 %>
     <div class="equivalence-carousel-controls row pb-3 rounded" style="width: 100%">
       <div class="col">
-        <a class="carousel-control-prev" href="#<%= id %>" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only"><%= t('common.labels.previous') %></span>
-        </a>
-        <ol class="carousel-indicators">
-          <% equivalences.size.times do |n| %>
-            <li data-target="#pupil_carousel" data-slide-to="<%= n %>" class="<%= 'active' if n.zero? %>"></li>
-          <% end %>
-        </ol>
-        <a class="carousel-control-next" href="#<%= id %>" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only"><%= t('common.labels.next') %></span>
-        </a>
+        <% if show_arrows? %>
+          <a class="carousel-control-prev" href="#<%= id %>" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only"><%= t('common.labels.previous') %></span>
+          </a>
+        <% end %>
+          <ol class="carousel-indicators">
+            <% if show_markers? %>
+              <% equivalences.size.times do |n| %>
+                <li data-target="#<%= id %>" data-slide-to="<%= n %>" class="<%= 'active' if n.zero? %>"></li>
+              <% end %>
+            <% end %>
+          </ol>
+        <% if show_arrows? %>
+          <a class="carousel-control-next" href="#<%= id %>" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only"><%= t('common.labels.next') %></span>
+          </a>
+        <% end %>
       </div>
     </div>
   <% end %>

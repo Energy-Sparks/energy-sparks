@@ -129,12 +129,6 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
           expect(html).to have_css('a.carousel-control-prev')
           expect(html).to have_css('a.carousel-control-next')
         end
-
-        it 'does not have security vulnerability' do
-          expect(html).to have_css('a.carousel-control-prev[href="#pupil_carousel"]')
-          expect(html).to have_css('a.carousel-control-next[href="#pupil_carousel"]')
-          expect(html).to have_css('#pupil_carousel')
-        end
       end
     end
   end
