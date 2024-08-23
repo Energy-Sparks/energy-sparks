@@ -82,8 +82,7 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
       it { expect(html).not_to have_content('Your school spent £2.00 on electricity last year!') }
 
       it {
-        expect(html).not_to have_link(I18n.t('pupils.schools.show.find_how_much_energy_used'),
-                                     href: pupils_school_analysis_path(school))
+        expect(html).not_to have_link(I18n.t('pupils.schools.show.find_how_much_energy_used'))
       }
 
       it_behaves_like 'an application component' do
@@ -99,7 +98,8 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
 
       it {
         expect(html).to have_link(I18n.t('pupils.schools.show.find_how_much_energy_used'),
-                                     href: pupils_school_analysis_path(school))
+                                     href: pupils_school_analysis_path(school,
+                                                                       category: equivalence_type.meter_type))
       }
 
 
