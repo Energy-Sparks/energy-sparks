@@ -21,30 +21,6 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
     }
   end
 
-  describe '#show_standard_prompts?' do
-    context 'with admin' do
-      it { expect(component.show_standard_prompts?).to be(true) }
-    end
-
-    context 'with school admin' do
-      let!(:user) { create(:school_admin, school: school)}
-
-      it { expect(component.show_standard_prompts?).to be(true) }
-    end
-
-    context 'with other' do
-      let!(:user) { create(:school_admin) }
-
-      it { expect(component.show_standard_prompts?).to be(false) }
-    end
-
-    context 'with guest' do
-      let!(:user) { create(:guest) }
-
-      it { expect(component.show_standard_prompts?).to be(false) }
-    end
-  end
-
   describe '#prompt_for_bill?' do
     context 'with admin' do
       it { expect(component.prompt_for_bill?).to be(false) }

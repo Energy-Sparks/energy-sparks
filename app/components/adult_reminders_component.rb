@@ -1,10 +1,6 @@
 class AdultRemindersComponent < DashboardRemindersComponent
   include SchoolProgress
 
-  def show_standard_prompts?
-    user&.admin? || can_manage_school?
-  end
-
   def can_manage_school?
     ability.can?(:show_management_dash, @school)
   end
