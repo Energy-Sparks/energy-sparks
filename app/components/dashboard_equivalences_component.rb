@@ -47,6 +47,10 @@ class DashboardEquivalencesComponent < ApplicationComponent
     data_enabled? ? setup_equivalences(meter_types) : default_equivalences(meter_types)
   end
 
+  def fuel_type_label(equivalence_content)
+    I18n.t("common.#{equivalence_content.equivalence_type.meter_type}").downcase
+  end
+
   # Decide which list of equivalences to show in the 1st (left) carousel
   #
   # If we only have a single fuel type, then just return everything the list

@@ -24,7 +24,12 @@
     <div class="row">
       <div class="col text-center">
         <% if show_fuel_type? %>
-          <h2><%= t("common.#{fuel_type}") %></h2>
+          <h2>
+            <span class="<%= fuel_type_class(fuel_type) %>">
+              <%= fa_icon(fuel_type_icon(fuel_type)) %>
+            </span>
+            <%= t("common.#{fuel_type}") %>
+          </h2>
         <% end %>
         <% if header? %>
           <%= header %>

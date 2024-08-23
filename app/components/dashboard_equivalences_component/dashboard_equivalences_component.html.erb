@@ -16,8 +16,10 @@
               <% end %>
               <p>
                 <% if data_enabled? %>
-                  <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                              pupils_school_analysis_path(school),
+                  <%= link_to t('pupils.analysis.explore_energy_data_html',
+                                fuel_type: fuel_type_label(equivalence_content)),
+                              pupils_school_analysis_path(school,
+                                                          category: equivalence_content.equivalence_type.meter_type),
                               class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
                 <% else %>
                   <%= t('pupils.schools.show.how_will_school_compare') %>
@@ -43,8 +45,10 @@
                 <% end %>
                 <p>
                   <% if data_enabled? %>
-                    <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                                pupils_school_analysis_path(school),
+                    <%= link_to t('pupils.analysis.explore_energy_data_html',
+                                  fuel_type: fuel_type_label(equivalence_content)),
+                                pupils_school_analysis_path(school,
+                                                            category: equivalence_content.equivalence_type.meter_type),
                                 class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
                   <% else %>
                     <%= t('pupils.schools.show.how_will_school_compare') %>
@@ -57,7 +61,7 @@
       <% end %>
     </div>
   <% else %>
-    <%= component 'equivalence_carousel', id: 'pupil_carousel' do |carousel| %>
+    <%= component 'equivalence_carousel', id: 'pupil_carousel', show_markers: false do |carousel| %>
       <% equivalences.each_with_index do |equivalence_content, index| %>
         <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
                                      classes: "carousel-item #{'active' if index.zero?}" do |e| %>
@@ -67,7 +71,8 @@
           <p>
             <% if data_enabled? %>
               <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
-                          pupils_school_analysis_path(school),
+                          pupils_school_analysis_path(school,
+                                                      category: equivalence_content.equivalence_type.meter_type),
                           class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
             <% else %>
               <%= t('pupils.schools.show.how_will_school_compare') %>
