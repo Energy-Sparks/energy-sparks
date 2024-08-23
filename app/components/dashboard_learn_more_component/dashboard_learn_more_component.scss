@@ -1,15 +1,7 @@
 .dashboard-learn-more-component.data-enabled {
   background: #f2f6fc;
-  img {
-    border-radius: 8px;
-  }
 }
 
 .dashboard-learn-more-component.data-disabled {
-  background: $light-grey;
-
-  img {
-    filter: grayscale(60%);
-    border-radius: 8px;
-  }
+  background: #f8f9fa; // Bootstrap 4 bg-light
 }
