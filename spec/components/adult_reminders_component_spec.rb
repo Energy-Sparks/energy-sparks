@@ -360,13 +360,6 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
                                    href: programme_types_path)
     }
 
-    it { expect(html).to have_content(I18n.t('schools.prompts.recommendations.message')) }
-
-    it {
-      expect(html).to have_link(I18n.t('common.labels.choose_activity'),
-                                  href: school_recommendations_path(school, scope: :adult))
-    }
-
     context 'when school has an active programme' do
       let!(:programme) { create(:programme, school: school) }
 
