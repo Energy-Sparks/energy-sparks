@@ -1,5 +1,5 @@
 <% content_for :dashboard_header do %>
-  <%= component 'dashboard_header', school: @school %>
+  <%= component 'dashboard_header', school: @school, audience: @audience %>
 <% end %>
 
 <div class="container">
@@ -16,7 +16,7 @@
   <div class="row mt-4">
     <div class="col">
       <%= component 'dashboard_insights',
-                    audience: :pupil,
+                    audience: @audience,
                     school: @school,
                     user: current_user,
                     progress_summary: @progress_summary %>
