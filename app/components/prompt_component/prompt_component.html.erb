@@ -4,11 +4,7 @@
     <% if icon.present? %>
       <%# Icon is hidden on smallest size, visible from sm and above as single column %>
       <div class="d-none d-sm-block col-1">
-          <%# Use font-awesome stacking support. Additional class to override font size to match our default %>
-          <span class="prompt-component-fa-stack fa-stack fa-2x">
-            <i class="fa-solid fa-circle fa-stack-2x fa-inverse"></i>
-            <%= helpers.fa_icon(icon, class: 'fa-stack-1x') %>
-          </span>
+        <%= component 'icon', name: icon, style: :circle, size: 'f5' %>
       </div>
     <% end %>
     <%# if no icon then use full width row %>
