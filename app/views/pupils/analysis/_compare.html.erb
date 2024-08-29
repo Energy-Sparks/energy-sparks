@@ -12,7 +12,7 @@
         <% c.with_usage_link period: :daily, link_text: t('pupils.analysis.compare_different_days') %>
       <% end %>
 
-      <% if @school.filterable_meters(fuel_type).count > 1 %>
+      <% if school.filterable_meters(fuel_type).count > 1 %>
         <%= component 'pupil_explore', school: school, icon: 'gauge', fuel_type: fuel_type do |c| %>
           <% c.with_usage_link period: :weekly, split_meters: true, link_text: t('pupils.analysis.compare_meters') %>
         <% end %>
