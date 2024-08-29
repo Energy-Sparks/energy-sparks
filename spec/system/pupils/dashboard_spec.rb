@@ -102,10 +102,6 @@ describe 'Pupil dashboard' do
       expect(page).to have_content('the average school')
       expect(page).to have_content('How will your school compare?')
     end
-
-    it 'shows message', pending: 'Need to decide approach for new design' do
-      expect(page).to have_content("We're setting up this school's energy data and will update this page when it is ready to explore")
-    end
   end
 
   context 'when viewing as guest user' do
