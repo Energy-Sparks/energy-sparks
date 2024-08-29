@@ -8,7 +8,7 @@
   <div class="row">
     <%# split to 2 column view on larger screens if we are displaying alerts %>
     <div class="col-12 <%= displaying_alerts? ? 'col-lg-6' : '' %>">
-      <%= component 'adult_reminders',
+      <%= component "#{audience}_reminders",
                     school: school,
                     user: user,
                     id: "#{audience}-reminders" do |c| %>

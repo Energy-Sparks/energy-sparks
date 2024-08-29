@@ -26,6 +26,7 @@
                 <thead>
                   <tr>
                     <th><%= t('common.labels.date') %></th>
+                    <th><%= t('programme_types.show.points') %></th>
                     <th><%= t('common.labels.activity') %></th>
                   </tr>
                 </thead>
@@ -33,6 +34,7 @@
                   <% observations.each do |observation| %>
                     <tr>
                       <td><%= observation.at.to_fs(:es_short) %></td>
+                      <td><%= observation.points || '-' %></td>
                       <td><%= component 'observation', observation: observation, show_actions: show_actions,
                                                        style: :description %></td>
                     </tr>

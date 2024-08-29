@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col">
+    <h2>Plain</h2>
+
+    <p>
+      The icons will automatically scale to the font size for the selection they are in but
+      can be resized using the <code>size</code> attribute which should be in
+      range <code>f1..f10</code> as defined in our fonts
+    </p>
+
+    <table class="table">
+      <tr>
+        <td>Default</td><td><%= render IconComponent.new(name: 'info-circle') %></td>
+      </tr>
+      <% %w[f1 f2 f3 f4 f5 f6].reverse.each do |size| %>
+        <tr>
+          <td>
+            <code>size: '<%= size %>'</code>
+          </td>
+          <td>
+            <%= render IconComponent.new(name: 'info-circle', size: size) %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <h2>Fixed Width</h2>
+
+    <p>
+      Adds the `fa-fw` class.
+    </p>
+
+    <table class="table">
+      <% %w[info-circle bolt clipboard].reverse.each do |name| %>
+        <tr>
+          <td>
+            <code>name: '<%= name %>', fixed_width: true</code>
+          </td>
+          <td><%= render IconComponent.new(name: name, fixed_width: true) %> text</td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="row" style="background-color: aliceblue;">
+  <div class="col">
+    <h2>Circle</h2>
+
+    <p>
+      Circle style has icon centered in a white circle.
+    </p>
+
+    <table class="table">
+      <% %w[f1 f2 f3 f4 f5 f6].reverse.each do |size| %>
+        <tr>
+          <td>
+            <code>style: :circle, size: '<%= size %>'</code>
+          </td>
+          <td>
+            <%= render IconComponent.new(name: 'bolt', size: size, style: :circle) %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <h2>Coloured by Fuel Type</h2>
+
+    <table class="table">
+      <% %i[electricity gas storage_heater solar_pv export_solar_pv].each do |fuel_type| %>
+        <tr>
+          <td><code>name: 'info-circle', fuel_type: :<%= fuel_type %></code></td>
+          <td><%= render IconComponent.new(name: 'info-circle', fuel_type: fuel_type) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <h2>With Icon Inferred From Fuel Type</h2>
+
+    <table class="table">
+      <% %i[electricity gas storage_heater solar_pv export_solar_pv].each do |fuel_type| %>
+        <tr>
+          <td><code>fuel_type: :<%= fuel_type %></code></td>
+          <td><%= render IconComponent.new(fuel_type: fuel_type) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
