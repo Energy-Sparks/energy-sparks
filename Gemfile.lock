@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 9ef19e63f24c4ec06d0d5d39fd6e8fdb5b1e279b
-  branch: 4448-update-benchmarking-and-equivalence-constants
+  revision: a7b86ba91c596d614da1d32a4604fc41c0595175
+  tag: 6.0.3
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.2)
