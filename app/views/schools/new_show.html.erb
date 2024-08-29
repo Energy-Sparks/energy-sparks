@@ -1,3 +1,5 @@
+<%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
+
 <% content_for :dashboard_header do %>
   <%= component 'dashboard_header', school: @school, audience: @audience %>
 <% end %>
