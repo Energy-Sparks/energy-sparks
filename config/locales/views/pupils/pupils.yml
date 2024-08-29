@@ -2,16 +2,22 @@
 en:
   pupils:
     analysis:
+      compare_different_days: The energy used in two different days
+      compare_different_weeks: The energy used in two different weeks
+      compare_electricity_across_schools: My school's energy use with other schools
       compare_electricity_in_2_weeks: compare the electricity used in two different weeks
       compare_electricity_on_2_days: compare the electricity used on two different days
       compare_electricity_use_by_meters: compare the electricity use by different meters
       compare_gas_in_2_weeks: compare the gas used in two different weeks
       compare_gas_on_2_days: compare the gas used on two different days
       compare_gas_use_by_meters: compare the gas use by different meters
+      compare_meters: The energy used by different meters
       electricity_and_solar_data_html: Here's the <strong>electricity and solar</strong> data for your school
       electricity_data_html: Here's the <strong>electricity</strong> data for your school
+      explore_all: Explore all %{fuel_type} data
       explore_data: Explore data
-      explore_energy_data_html: Explore the <strong>%{fuel_type}</strong> data for your school
+      explore_energy_data: Explore the energy data for your school
+      explore_energy_data_html: Explore the %{fuel_type} data for your school
       find_electricity_comparison: find out how my school's electricity use compares with other schools
       find_electricity_use_7days: find out how much electricity was used in the last 7 days
       find_electricity_use_last_year: find out how much electricity was used last year
@@ -33,12 +39,23 @@ en:
       find_when_gas_used_html: find out <strong>when</strong> the gas was used
       find_when_storage_heaters_used_html: find out <strong>when</strong> the storage heaters used electricity
       gas_data_html: Here's the <strong>gas</strong> data for your school
+      how_changed_long_term: How energy use has changed long term?
+      how_much: How much the energy cost?
+      how_much_baseload: How much energy was used by lights and appliances running all the time
+      how_much_co2: How much carbon dioxide was generated?
+      how_much_last_week: How much energy was used in the last 7 days?
+      how_much_last_year: How much energy was used last year?
+      how_much_solar: How much solar energy was generated?
       i_want_to: I want to…
       i_want_to_look_at: I want to look at…
+      i_would_like_to_compare: I would like to compare…
+      i_would_like_to_know: I would like to know…
+      i_would_like_to_see: I would like to see…
       live_energy_data: Live energy data
       look_at_energy_use: Let's look at the energy use data for your school
       review_energy_analysis: Review energy analysis
       storage_heater_data_html: Here's the <strong>storage heater</strong> data for your school
+      when: When the energy was used?
       without_storage_heaters: without storage heaters
     default_equivalences:
       equivalence_1:
