@@ -95,7 +95,11 @@ describe 'Pupil analysis' do
   shared_examples 'it has the right headings and navigation' do |fuel_type:|
     it { expect(page).to have_title(I18n.t('pupils.analysis.explore_energy_data_html', fuel_type: I18n.t("common.#{fuel_type}").downcase))}
     it { expect(page).to have_content(I18n.t('pupils.analysis.explore_energy_data_html', fuel_type: I18n.t("common.#{fuel_type}").downcase))}
-    it { expect(page).to have_link(I18n.t('pupils.analysis.explore_all', fuel_type: I18n.t("common.#{fuel_type}").downcase), href: pupils_school_analysis_path(school, category: fuel_type))}
+
+    it {
+      expect(page).to have_link(I18n.t('pupils.analysis.explore_all', fuel_type: I18n.t("common.#{fuel_type}").downcase),
+                                   href: pupils_school_analysis_path(school, category: fuel_type))
+    }
   end
 
   shared_examples 'it has a top-level how section' do |energy:|
@@ -140,7 +144,11 @@ describe 'Pupil analysis' do
     it { expect_chart_link(school, I18n.t('pupils.analysis.how_changed_long_term'), energy, 'Bar', 'Year')}
     it { expect_chart_link(school, I18n.t('pupils.analysis.compare_electricity_across_schools'), energy, 'Bar', 'Bench')}
     it { expect_usage_chart_link(school, I18n.t('pupils.analysis.compare_different_weeks'), period: :weekly, supply: fuel_type) }
-    it { expect(page).to have_no_link(I18n.t('pupils.analysis.compare_meters'), href: school_usage_path(school, period: :weekly, supply: fuel_type, split_meters: true)) }
+
+    it {
+      expect(page).to have_no_link(I18n.t('pupils.analysis.compare_meters'),
+                                      href: school_usage_path(school, period: :weekly, supply: fuel_type, split_meters: true))
+    }
 
     context 'with multiple electricity meters and no storage heaters' do
       let(:school) { create(:school, :with_fuel_configuration, has_storage_heaters: false) }
@@ -158,7 +166,11 @@ describe 'Pupil analysis' do
     it { expect_chart_link(school, I18n.t('pupils.analysis.how_much_last_week'), energy, 'Line', '7days')}
     it { expect_chart_link(school, I18n.t('pupils.analysis.how_much_baseload'), energy, 'Line', 'Base')}
     it { expect_usage_chart_link(school, I18n.t('pupils.analysis.compare_different_days'), period: :daily, supply: fuel_type) }
-    it { expect(page).to have_no_link(I18n.t('pupils.analysis.compare_meters'), href: school_usage_path(school, period: :daily, supply: fuel_type, split_meters: true)) }
+
+    it {
+      expect(page).to have_no_link(I18n.t('pupils.analysis.compare_meters'),
+                                      href: school_usage_path(school, period: :daily, supply: fuel_type, split_meters: true))
+    }
 
     context 'with multiple electricity meters and no storage heaters' do
       let(:school) { create(:school, :with_fuel_configuration, has_storage_heaters: false) }
@@ -226,7 +238,11 @@ describe 'Pupil analysis' do
       it { expect_chart_link(school, I18n.t('pupils.analysis.how_much_last_week'), 'Gas', 'Line') }
 
       it { expect_usage_chart_link(school, I18n.t('pupils.analysis.compare_different_days'), period: :daily, supply: :gas) }
-      it { expect(page).to have_no_link(I18n.t('pupils.analysis.compare_meters'), href: school_usage_path(school, period: :daily, supply: :gas, split_meters: true)) }
+
+      it {
+        expect(page).to have_no_link(I18n.t('pupils.analysis.compare_meters'),
+                                        href: school_usage_path(school, period: :daily, supply: :gas, split_meters: true))
+      }
 
       context 'with multiple electricity meters and no storage heaters' do
         let(:school) { create(:school, :with_fuel_configuration, has_storage_heaters: false) }
@@ -259,9 +275,20 @@ describe 'Pupil analysis' do
 
       it_behaves_like 'a bar charts category', energy: 'Electricity', fuel_type: :electricity
 
-      it { expect(page).to have_title(I18n.t('pupils.analysis.explore_energy_data_html', fuel_type: I18n.t('common.electricity_and_solar_pv').downcase))}
-      it { expect(page).to have_content(I18n.t('pupils.analysis.explore_energy_data_html', fuel_type: I18n.t('common.electricity_and_solar_pv').downcase))}
-      it { expect(page).to have_link(I18n.t('pupils.analysis.explore_all', fuel_type: I18n.t('common.electricity_and_solar_pv').downcase), href: pupils_school_analysis_path(school, category: :solar_pv))}
+      it {
+        expect(page).to have_title(I18n.t('pupils.analysis.explore_energy_data_html',
+                                      fuel_type: I18n.t('common.electricity_and_solar_pv').downcase))
+      }
+
+      it {
+        expect(page).to have_content(I18n.t('pupils.analysis.explore_energy_data_html',
+                                        fuel_type: I18n.t('common.electricity_and_solar_pv').downcase))
+      }
+
+      it {
+        expect(page).to have_link(I18n.t('pupils.analysis.explore_all', fuel_type: I18n.t('common.electricity_and_solar_pv').downcase),
+                                     href: pupils_school_analysis_path(school, category: :solar_pv))
+      }
     end
 
     context 'when viewing line charts' do
@@ -271,9 +298,20 @@ describe 'Pupil analysis' do
 
       it_behaves_like 'a line charts category', energy: 'Electricity', fuel_type: :electricity
 
-      it { expect(page).to have_title(I18n.t('pupils.analysis.explore_energy_data_html', fuel_type: I18n.t('common.electricity_and_solar_pv').downcase))}
-      it { expect(page).to have_content(I18n.t('pupils.analysis.explore_energy_data_html', fuel_type: I18n.t('common.electricity_and_solar_pv').downcase))}
-      it { expect(page).to have_link(I18n.t('pupils.analysis.explore_all', fuel_type: I18n.t('common.electricity_and_solar_pv').downcase), href: pupils_school_analysis_path(school, category: :solar_pv))}
+      it {
+        expect(page).to have_title(I18n.t('pupils.analysis.explore_energy_data_html',
+                                           fuel_type: I18n.t('common.electricity_and_solar_pv').downcase))
+      }
+
+      it {
+        expect(page).to have_content(I18n.t('pupils.analysis.explore_energy_data_html',
+                                        fuel_type: I18n.t('common.electricity_and_solar_pv').downcase))
+      }
+
+      it {
+        expect(page).to have_link(I18n.t('pupils.analysis.explore_all', fuel_type: I18n.t('common.electricity_and_solar_pv').downcase),
+                                     href: pupils_school_analysis_path(school, category: :solar_pv))
+      }
     end
   end
 
@@ -289,9 +327,20 @@ describe 'Pupil analysis' do
         click_on I18n.t('common.bar_charts')
       end
 
-      it { expect(page).to have_title(I18n.t('pupils.analysis.explore_energy_data_html', fuel_type: I18n.t('common.storage_heater').downcase))}
-      it { expect(page).to have_content(I18n.t('pupils.analysis.explore_energy_data_html', fuel_type: I18n.t('common.storage_heater').downcase))}
-      it { expect(page).to have_link(I18n.t('pupils.analysis.explore_all', fuel_type: I18n.t('common.storage_heater').downcase), href: pupils_school_analysis_path(school, category: :storage_heaters))}
+      it {
+        expect(page).to have_title(I18n.t('pupils.analysis.explore_energy_data_html',
+                                      fuel_type: I18n.t('common.storage_heater').downcase))
+      }
+
+      it {
+        expect(page).to have_content(I18n.t('pupils.analysis.explore_energy_data_html',
+                                        fuel_type: I18n.t('common.storage_heater').downcase))
+      }
+
+      it {
+        expect(page).to have_link(I18n.t('pupils.analysis.explore_all', fuel_type: I18n.t('common.storage_heater').downcase),
+                                     href: pupils_school_analysis_path(school, category: :storage_heaters))
+      }
     end
 
     it { expect_chart_link(school, I18n.t('common.line_graphs'), 'Storage Heaters', 'Line') }
