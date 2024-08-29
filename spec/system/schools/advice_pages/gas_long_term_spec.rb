@@ -8,16 +8,16 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
     school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
     create(:energy_tariff, :with_flat_price, tariff_holder: school, meter_type: :gas, start_date: nil, end_date: nil)
     create(:gas_meter_with_validated_reading_dates,
-           school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 10)
+           school:, start_date: reading_start_date, end_date: Time.zone.today, reading: 10)
     school
   end
 
   before { create(:advice_page, key: :gas_long_term, fuel_type: :gas) }
 
   shared_examples 'a gas long term advice page tab' do |tab:|
-    it_behaves_like 'an advice page tab', tab: tab do
+    it_behaves_like('an advice page tab', tab:) do
       let(:key) { :gas_long_term }
-      let(:advice_page) { AdvicePage.find_by(key: key) }
+      let(:advice_page) { AdvicePage.find_by(key:) }
       let(:expected_page_title) { 'Long term changes in gas consumption' }
       # also uses "school"
     end
@@ -25,7 +25,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
 
   context 'when a school admin' do
     before do
-      sign_in(create(:school_admin, school: school))
+      sign_in(create(:school_admin, school:))
       visit school_advice_gas_long_term_path(school)
     end
 
@@ -48,14 +48,17 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         end
 
         it 'includes expected data' do
-          expect(find('table.advice-table')).to have_content(
-            ["#{reading_start_date.to_fs(:es_short)} - #{Time.zone.today.to_fs(:es_short)}",
-             '44,000',
-             '9,200',
-             '£4,400',
-             '-'].join(' ')
+          expect(find('table.advice-table')).to have_selector(
+            :table_row,
+            {
+              'Period' => "#{reading_start_date.to_fs(:es_short)} - #{Time.zone.today.to_fs(:es_short)}",
+              'Usage (kWh)' => '44,000',
+              'CO2 (kg/CO2)' => '8,000',
+              'Cost (£)' => '£4,400',
+              'Change since previous year' => '-'
+            }
           )
-          expect(page).to have_content('170,000kWh of gas')
+          expect(page).to have_content('130,000kWh of gas')
         end
 
         it 'excludes the comparison' do
@@ -73,15 +76,22 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         end
 
         it 'includes expected data' do
-          expect(find('table.advice-table')).to \
-            have_content(['Last year', '170,000', '37,000', '£17,000', '-'].join(' '))
-          expect(page).to have_content("Exemplar\n<160,000 kWh")
-          expect(page).to have_content("Well managed\n<170,000 kWh")
+          expect(find('table.advice-table')).to have_selector(:table_row, {
+                                                                'Period' => 'Last year',
+                                                                'Usage (kWh)' => '170,000',
+                                                                'CO2 (kg/CO2)' => '32,000',
+                                                                'Cost (£)' => '£17,000',
+                                                                'Change since previous year' => '-'
+                                                              })
+          expect(page).to have_content("Exemplar\n<110,000 kWh")
+          expect(page).to have_content("Well managed\n<130,000 kWh")
         end
 
         it 'includes the comparison' do
           expect(page).to have_css('#gas-comparison')
-          expect(page).to have_link('compare with other schools in your group', href: compare_path(benchmark: :annual_heating_costs_per_floor_area, school_group_ids: [school.school_group.id]))
+          expect(page).to have_link('compare with other schools in your group',
+                                    href: compare_path(benchmark: :annual_heating_costs_per_floor_area,
+                                                       school_group_ids: [school.school_group.id]))
         end
       end
     end
