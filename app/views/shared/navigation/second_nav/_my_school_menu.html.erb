@@ -1,8 +1,13 @@
 <li class="nav-item dropdown" id="my-school-menu">
   <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= t('my_school_menu.my_school') %></a>
   <div class="dropdown-menu" aria-labelledby="my_school">
-    <!--School -->
+    <!-- School -->
     <%= link_to current_user_school.name, school_path(current_user_school), class: 'dropdown-item' %>
+
+    <!-- Energy analysis -->
+    <% if current_user_school.data_enabled? %>
+      <%= link_to t('my_school_menu.energy_analysis'), school_advice_path(current_user_school), class: 'dropdown-item' %>
+    <% end %>
 
     <!-- Electricity, solar, gas and storage heater usage -->
     <% if current_user_school.data_enabled? %>
@@ -29,10 +34,9 @@
       <% end %>
     <% end %>
 
-    <!-- Energy analysis -->
+    <!-- Energy audits -->
     <% if current_user_school.data_enabled? %>
       <%= link_to t('my_school_menu.energy_audits'), school_audits_path(current_user_school), class: 'dropdown-item' %>
-      <%= link_to t('my_school_menu.energy_analysis'), school_advice_path(current_user_school), class: 'dropdown-item' %>
     <% end %>
 
     <!-- Review targets -->
@@ -46,17 +50,9 @@
         <% end %>
     <% end %>
 
-    <% if current_user_school&.school_group&.present? %>
-      <!-- Compare schools -->
-      <%= link_to t('schools.school_group.compare_schools'),
-                  "#{compare_index_path(school_group_ids: [current_user_school.school_group.id])}#groups", class: 'dropdown-item' %>
-    <% end %>
-
-    <!-- Complete pupil activities -->
-    <%= link_to t('my_school_menu.complete_pupil_activities'), activity_categories_path, class: 'dropdown-item' %>
-
-    <!-- Energy saving actions -->
-    <%= link_to t('my_school_menu.energy_saving_actions'), intervention_type_groups_path, class: 'dropdown-item' %>
+    <!-- Recommendations page link -->
+    <%= link_to t('my_school_menu.recommended_activities'),
+                school_recommendations_path(current_user_school), class: 'dropdown-item' %>
 
     <!-- School programmes -->
     <%= link_to t('my_school_menu.school_programmes'), programme_types_path, class: 'dropdown-item' %>
@@ -85,6 +81,13 @@
     <!-- My school group -->
     <% if current_user_school_group %>
       <%= link_to t('my_school_menu.my_school_group'), school_group_path(current_user_school_group),
+                  class: 'dropdown-item' %>
+    <% end %>
+
+    <% if current_user_school&.school_group&.present? %>
+      <!-- Compare schools -->
+      <%= link_to t('schools.school_group.compare_schools'),
+                  "#{compare_index_path(school_group_ids: [current_user_school.school_group.id])}#groups",
                   class: 'dropdown-item' %>
     <% end %>
   </div>
