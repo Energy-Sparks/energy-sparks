@@ -10,7 +10,10 @@
       <% advice_pages.display_fuel_types.keys.each_with_index do |fuel_type, idx| %>
         <% if display_advice_page?(school, fuel_type) %>
           <% sort_by_label(advice_pages.where(fuel_type: fuel_type)).each do |ap| %>
-            <%= component 'prompt', icon: fuel_type_icon(fuel_type) do |p| %>
+            <%= component 'prompt',
+                          icon: fuel_type_icon(fuel_type),
+                          style: :compact,
+                          classes: fuel_type_background_class(fuel_type) do |p| %>
               <% p.with_title do %>
                 <%= translated_label(ap) %>
               <% end %>
@@ -25,7 +28,7 @@
               <% end %>
 
               <% p.with_link do %>
-                <%= link_to 'XXX', advice_page_path(school, ap) %>
+                <%= link_to t('schools.show.find_out_more'), advice_page_path(school, ap) %>
               <% end %>
 
               <% if ap.key == 'solar_pv' %>
