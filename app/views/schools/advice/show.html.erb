@@ -8,5 +8,10 @@
       <% end %>
     </div>
   </div>
-  <%= render 'schools/advice/index/page_list', school: @school, advice_pages: @advice_pages, advice_page_benchmarks: @advice_page_benchmarks %>
+
+  <% if Flipper.enabled?(:new_dashboards_2024, current_user) %>
+    <%= component 'advice_page_list', school: @school %>
+  <% else %>
+    <%= render 'schools/advice/index/page_list', school: @school, advice_pages: @advice_pages, advice_page_benchmarks: @advice_page_benchmarks %>
+  <% end %>
 <% end %>
