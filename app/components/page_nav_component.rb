@@ -90,9 +90,7 @@ class PageNavComponent < ViewComponent::Base
       args = { class: 'nav-link item' }
       args[:class] += " #{classes}" if classes
       args[:class] += ' current' if current_item?(href)
-      link_to(href, args) do
-        content_tag(:span, name) + content
-      end
+      link_to(name, href, args)
     end
 
     def render?

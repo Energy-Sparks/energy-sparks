@@ -2,17 +2,13 @@
   <%= component 'page_nav', name: t('advice_pages.nav.overview'),
                             icon: nil, href: school_advice_path(@school),
                             options: { user: current_user, match_controller: true } do |c| %>
-    <% c.with_section toggler: false, visible: @priority_count.positive? do |s| %>
-      <% s.with_item(name: t('advice_pages.index.alerts.title'),
-                     href: alerts_school_advice_path(@school), classes: 'border-bottom font-weight-normal') do |item| %>
-                     (<%= @priority_count %>)
-      <% end %>
-    <% end %>
     <% c.with_section toggler: false, visible: @alert_count.positive? do |s| %>
-      <% s.with_item(name: t('advice_pages.index.priorities.title'),
-                     href: priorities_school_advice_path(@school), classes: 'border-bottom font-weight-normal') do |item| %>
-                     (<%= @alert_count %>)
-      <% end %>
+      <% s.with_item(name: "#{t('advice_pages.index.alerts.title')} (#{@alert_count})",
+                     href: alerts_school_advice_path(@school), classes: 'border-bottom font-weight-normal') %>
+    <% end %>
+    <% c.with_section toggler: false, visible: @priority_count.positive? do |s| %>
+      <% s.with_item(name: "#{t('advice_pages.index.priorities.title')} (#{@priority_count})",
+                     href: priorities_school_advice_path(@school), classes: 'border-bottom font-weight-normal') %>
     <% end %>
     <% c.with_section(name: t('advice_pages.nav.sections.electricity'), icon: nil, classes: 'electric-section',
                       visible: @school.has_electricity?) do |s| %>
