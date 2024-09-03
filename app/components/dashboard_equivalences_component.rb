@@ -83,7 +83,7 @@ class DashboardEquivalencesComponent < ApplicationComponent
   def setup_equivalences(meter_types = :all)
     equivalence_data = Equivalences::RelevantAndTimely.new(@school).equivalences(meter_types: meter_types)
 
-    equivalence_data.map do |equivalence|
+    equivalence_data.shuffle.map do |equivalence|
       TemplateInterpolation.new(
         equivalence.content_version,
         with_objects: { equivalence_type: equivalence.content_version.equivalence_type },
