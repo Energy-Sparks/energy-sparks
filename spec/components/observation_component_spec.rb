@@ -153,7 +153,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :description }
 
       it { expect(html).to have_css("i.fa-#{observation.intervention_type.intervention_type_group.icon}") }
-      it { expect(html).to have_content("Scored #{observation.intervention_type.score} points after they recorded \"#{observation.intervention_type.name}\"") }
+      it { expect(html).to have_content("Recorded \"#{observation.intervention_type.name}\"") }
       it { expect(html).to have_link(observation.intervention_type.name, href: school_intervention_path(observation.school, observation)) }
     end
   end
@@ -248,7 +248,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :description }
 
       it { expect(html).to have_css('i.fa-temperature-high') }
-      it { expect(html).to have_content('Scored 5 points by recording indoor temperatures') }
+      it { expect(html).to have_content('Recorded indoor temperatures') }
     end
   end
 

@@ -32,13 +32,13 @@
           <% if row_for_last_week?(data) %>
             <% if Flipper.enabled?(:new_dashboards_2024, user) %>
               <td rowspan="2" class="align-middle icon <%= fuel_type_class(data.fuel_type) %>">
-                <%= fa_icon fuel_type_icon(data.fuel_type) %>
+                <%= component 'icon', fuel_type: data.fuel_type %>
               </td>
               <td rowspan="2" class="align-middle text-left">
                 <%= t("common.#{data.fuel_type}") %>
               </td>
             <% else %>
-              <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
+              <td class="icon"><%= component 'icon', fuel_type: data.fuel_type %></td>
               <td class="text-left"><%= t("common.#{data.fuel_type}") %></td>
             <% end %>
           <% else %>

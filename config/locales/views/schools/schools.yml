@@ -154,10 +154,10 @@ en:
       insights:
         title: Insights and actions
       learn_more:
-        intro: Explore the data, get insights into reducing energy usage, and compare performance against other schools
-        learn_more: Learn more
+        explore: Explore energy data
+        intro: View charts, get insights into reducing energy usage and compare performance against other schools
         opportunities: Energy saving opportunities
-        title: Learn more about your energy usage
+        title: Learn more about your energy use
       reminders:
         title: Reminders
       timeline:
