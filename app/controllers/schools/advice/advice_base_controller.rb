@@ -23,6 +23,7 @@ module Schools
       before_action :set_data_warning, only: [:insights, :analysis]
       before_action :set_page_subtitle, only: [:insights, :analysis]
       before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
+      before_action :set_counts, only: [:insights, :analysis, :learn_more]
       before_action :set_insights_next_steps, only: [:insights]
       before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
 
@@ -78,6 +79,11 @@ module Schools
           { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) },
           { name: @advice_page_title, href: advice_page_path(@school, @advice_page) },
         ]
+      end
+
+      def set_counts
+        @priority_count = @school.latest_management_priorities.count
+        @alert_count = @school.latest_dashboard_alerts.management_dashboard.count
       end
 
       def if_exists(key)

@@ -457,7 +457,7 @@ module ApplicationHelper
   end
 
   def toggler
-    (fa_icon('chevron-down') + fa_icon('chevron-right')).html_safe
+    (fa_icon('chevron-up', class: 'fa-fw') + fa_icon('chevron-down', class: 'fa-fw')).html_safe
   end
 
   def text_with_icon(text, icon)

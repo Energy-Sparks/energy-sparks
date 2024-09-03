@@ -8,18 +8,24 @@ class PageNavComponent < ViewComponent::Base
 
   attr_reader :name, :icon, :classes, :href, :options
 
-  def initialize(name: 'Menu', icon: 'home', href:, classes: nil, options: {})
+  def initialize(name: 'Menu', icon: 'home', href:, classes: nil, user: nil, options: {})
     @name = name
     @icon = icon
     @classes = classes
     @href = href
     @options = options
+    @user = options[:user]
   end
 
   def header
     args = { class: 'nav-link border-bottom' }
     args[:class] += " #{classes}" if classes
-    link_to(helpers.text_with_icon(name, icon), href, args)
+    text = icon.nil? ? name : helpers.text_with_icon(name, icon)
+    link_to(text, href, args)
+  end
+
+  def component_classes
+    Flipper.enabled?(:new_dashboards_2024, @user) ? 'rounded' : 'border rounded'
   end
 
   class SectionComponent < ViewComponent::Base
@@ -30,12 +36,13 @@ class PageNavComponent < ViewComponent::Base
 
     attr_reader :name, :icon, :visible, :classes, :options
 
-    def initialize(name: nil, icon: nil, visible: true, classes: nil, options: {})
+    def initialize(name: nil, icon: nil, visible: true, toggler: true, classes: nil, options: {})
       @name = name
       @classes = classes
       @icon = icon
       @visible = visible
       @options = options
+      @toggler = toggler
     end
 
     def id
@@ -43,7 +50,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def link_text
-      helpers.text_with_icon(name, icon) + content_tag(:span, helpers.toggler, class: 'pl-1 float-right')
+      helpers.text_with_icon(name, icon) + content_tag(:span, helpers.toggler, class: 'float-right')
     end
 
     def render?
@@ -51,7 +58,11 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: 'nav-link border-bottom small toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      if @toggler
+        args = { class: 'nav-link border-bottom toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      else
+        args = { class: '' }
+      end
       args[:class] += " #{classes}" if classes
       link_to(link_text, "##{id}", args)
     end
@@ -76,10 +87,12 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: 'nav-link border-bottom item small' }
+      args = { class: 'nav-link item' }
       args[:class] += " #{classes}" if classes
       args[:class] += ' current' if current_item?(href)
-      link_to(name, href, args)
+      link_to(href, args) do
+        content_tag(:span, name) + content
+      end
     end
 
     def render?
