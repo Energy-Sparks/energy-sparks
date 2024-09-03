@@ -1,0 +1,86 @@
+  <% content_for :page_title, "#{t('advice_pages.index.title')} | #{@school.name}" %>
+
+  <% content_for :dashboard_header do %>
+    <div class="row dashboard-header-component adult">
+      <div class="col-12 col-md-9">
+        <div class="row">
+          <div class="col">
+            <h1><%= t('advice_pages.index.title') %></h1>
+          </div>
+        </div>
+      </div>
+      <div id="dashboard-header-school" class="col-12 col-md-3 rounded">
+        <div class="row">
+          <div class="col">
+            <h4><%= @school.name %></h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <%= @school.address %> <%= @school.postcode %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <span class="badge badge-secondary"><%= t("common.school_types.#{@school.school_type}") %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="container">
+    <div class="row mt-2">
+      <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
+        <%= render 'schools/advice/nav', school: @school, advice_pages: @advice_pages %>
+      </div>
+      <div class="col-md-9 col-lg-9 col-xl-10">
+        <div class="row mt-4">
+          <div class="col">
+            <p>
+              Lorem ipsum
+            </p>
+          </div>
+        </div>
+
+        <% if @overview_charts&.any? %>
+          <%= render 'management/schools/overview_charts', overview_charts: @overview_charts %>
+        <% end %>
+
+        <% if @electricity_benchmarked_usage.present? || @gas_benchmarked_usage.present? %>
+          <% if @electricity_benchmarked_usage.present? %>
+            <h3><%= t('common.electricity') %></h3>
+            <p>
+              <%= t('advice_pages.electricity_long_term.insights.comparison.how_do_you_compare',
+                    school_type: t("common.school_types.#{@school.school_type}")) %>
+            </p>
+            <div class="col">
+              <%= component 'school_comparison',
+                            id: 'electricity-comparison',
+                            comparison: @electricity_benchmarked_usage do |c| %>
+                <% c.with_footer { advice_t('electricity_long_term.insights.comparison.callout_footer') } %>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if @gas_benchmarked_usage.present? %>
+            <h3><%= t('common.gas') %></h3>
+            <p>
+              <%= t('advice_pages.gas_long_term.insights.comparison.how_do_you_compare',
+                    school_type: t("common.school_types.#{@school.school_type}")) %>
+            </p>
+            <div class="col">
+              <%= component 'school_comparison',
+                            id: 'gas-comparison',
+                            comparison: @gas_benchmarked_usage do |c| %>
+                <% c.with_footer { advice_t('gas_long_term.insights.comparison.callout_footer') } %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+
+        <%= component 'advice_page_list', school: @school %>
+
+      </div>
+    </div>
+  </div>
