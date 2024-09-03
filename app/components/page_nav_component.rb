@@ -8,7 +8,7 @@ class PageNavComponent < ViewComponent::Base
 
   attr_reader :name, :icon, :classes, :href, :options
 
-  def initialize(name: 'Menu', icon: 'home', href:, classes: nil, user: nil, options: {})
+  def initialize(name: 'Menu', icon: 'home', href:, classes: nil, options: {})
     @name = name
     @icon = icon
     @classes = classes
