@@ -16,4 +16,8 @@ class AdvicePageListComponent < ApplicationComponent
   def advice_pages
     @advice_pages ||= AdvicePage.all
   end
+
+  def render?
+    advice_pages.any? && school.data_enabled?
+  end
 end
