@@ -69,10 +69,10 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           let(:categories) { [:car] }
           let(:journey_minutes) { 5 }
 
-          it { expect(page).to have_content("That's the same as charging 276 smart phones 📱!") }
+          it { expect(page).to have_content("That's the same as charging 310 smart phones 📱!") }
           it { expect(page).to have_content("That's the same as 1 veggie dinner 🥗!") }
-          it { expect(page).to have_content("That's the same as 50 hours of TV 📺!") }
-          it { expect(page).to have_content("That's the same as playing 10 hours of computer games 🎮!") }
+          it { expect(page).to have_content("That's the same as 56 hours of TV 📺!") }
+          it { expect(page).to have_content("That's the same as playing 11 hours of computer games 🎮!") }
           it { expect(page).not_to have_content('would absorb this amount of CO2 in 1 day 🌳!') }
           it { expect(page).not_to have_content('meat dinner') }
           it { expect(page).not_to have_content("That's Carbon Neutral 🌳!") }
@@ -112,12 +112,12 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           let(:journey_minutes) { 5 }
 
           it { expect(page).to have_content('1 tree would absorb this amount of CO2 in 1 day 🌳!') }
-          it { expect(page).to have_content("That's the same as charging 1381 smart phones 📱!") }
+          it { expect(page).to have_content("That's the same as charging 1550 smart phones 📱!") }
           it { expect(page).to have_content("That's the same as 2 meat dinners 🍲!") }
           it { expect(page).to have_content("That's the same as 5 veggie dinners 🥗!") }
-          it { expect(page).to have_content("That's the same as 249 hours of TV 📺!") }
-          it { expect(page).to have_content("That's the same as playing 50 hours of computer games 🎮!") }
-          it { expect(page).not_to have_content("That's Carbon Neutral 🌳!") }
+          it { expect(page).to have_content("That's the same as 279 hours of TV 📺!") }
+          it { expect(page).to have_content("That's the same as playing 56 hours of computer games 🎮!") }
+          it { expect(page).to have_no_content("That's Carbon Neutral 🌳!") }
 
           it { expect(page).to have_content('5 pupils and staff included in this survey generated 2.29kg carbon by travelling to school') }
           it { expect(page).to have_content('20% walked or cycled, generating zero CO2') }

@@ -8,16 +8,16 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
     school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
     create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
     create(:electricity_meter_with_validated_reading_dates,
-           school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
+           school:, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)
     school
   end
 
   before { create(:advice_page, key: :electricity_long_term) }
 
   shared_examples 'an electricity long term advice page tab' do |tab:|
-    it_behaves_like 'an advice page tab', tab: tab do
+    it_behaves_like('an advice page tab', tab:) do
       let(:key) { :electricity_long_term }
-      let(:advice_page) { AdvicePage.find_by(key: key) }
+      let(:advice_page) { AdvicePage.find_by(key:) }
       let(:expected_page_title) { 'Long term changes in electricity consumption' }
       # also uses "school"
     end
@@ -25,7 +25,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
 
   context 'when a school admin' do
     before do
-      sign_in(create(:school_admin, school: school))
+      sign_in(create(:school_admin, school:))
       visit school_advice_electricity_long_term_path(school)
     end
 
@@ -58,9 +58,15 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
         end
 
         it 'includes expected data' do
-          expect(find('table.advice-table')).to have_content(
-            ["#{reading_start_date.to_fs(:es_short)} - #{Time.zone.today.to_fs(:es_short)}", '2,200', '360', '£220', '-']
-            .join(' ')
+          expect(find('table.advice-table')).to have_selector(
+            :table_row,
+            {
+              'Period' => "#{reading_start_date.to_fs(:es_short)} - #{Time.zone.today.to_fs(:es_short)}",
+              'Usage (kWh)' => '2,200',
+              'CO2 (kg/CO2)' => '360',
+              'Cost (£)' => '£220',
+              'Change since previous year' => '-'
+            }
           )
           expect(page).to have_content('220kWh of electricity')
         end
@@ -80,14 +86,22 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
         end
 
         it 'includes expected data' do
-          expect(find('table.advice-table')).to have_content(['Last year', '8,700', '1,400', '£870', '-'].join(' '))
-          expect(page).to have_content("Exemplar\n<190 kWh")
+          expect(find('table.advice-table')).to have_selector(:table_row, {
+                                                                'Period' => 'Last year',
+                                                                'Usage (kWh)' => '8,700',
+                                                                'CO2 (kg/CO2)' => '1,400',
+                                                                'Cost (£)' => '£870',
+                                                                'Change since previous year' => '-'
+                                                              })
+          expect(page).to have_content("Exemplar\n<200 kWh")
           expect(page).to have_content("Well managed\n<220 kWh")
         end
 
         it 'includes the comparison' do
           expect(page).to have_css('#electricity-comparison')
-          expect(page).to have_link('compare with other schools in your group', href: compare_path(benchmark: :annual_electricity_costs_per_pupil, school_group_ids: [school.school_group.id]))
+          expect(page).to have_link('compare with other schools in your group',
+                                    href: compare_path(benchmark: :annual_electricity_costs_per_pupil,
+                                                       school_group_ids: [school.school_group.id]))
         end
       end
     end
