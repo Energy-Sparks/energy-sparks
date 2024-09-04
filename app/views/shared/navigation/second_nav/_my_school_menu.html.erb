@@ -34,11 +34,6 @@
       <% end %>
     <% end %>
 
-    <!-- Energy audits -->
-    <% if current_user_school.data_enabled? %>
-      <%= link_to t('my_school_menu.energy_audits'), school_audits_path(current_user_school), class: 'dropdown-item' %>
-    <% end %>
-
     <!-- Review targets -->
     <% if current_user_school.data_enabled? %>
       <% if Targets::SchoolTargetService.targets_enabled?(current_user_school) &&
