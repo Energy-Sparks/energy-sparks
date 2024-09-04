@@ -16,6 +16,8 @@ module Schools
     before_action :set_counts
     before_action :set_breadcrumbs
 
+    before_action :check_aggregated_school_in_cache, only: [:show]
+
     def show
       if Flipper.enabled?(:new_dashboards_2024, current_user)
         @overview_charts = setup_energy_overview_charts(@school.configuration)

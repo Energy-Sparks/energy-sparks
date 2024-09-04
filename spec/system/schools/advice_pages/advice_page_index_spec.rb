@@ -1,10 +1,22 @@
 require 'rails_helper'
 
-RSpec.describe 'advice pages', type: :system do
+RSpec.describe 'advice pages', :include_application_helper, type: :system do
+  include AdvicePageHelper
+
   let(:key) { 'baseload' }
   let!(:advice_page) { create(:advice_page, key: key) }
 
-  let(:school) { create(:school) }
+  let(:reading_start_date) { 1.year.ago }
+  let(:reading_end_date) { Time.zone.today }
+
+  let(:school) do
+    # creates a school with just an electricity meter, ensure fuel configuration matches
+    create(:school,
+           :with_basic_configuration_single_meter_and_tariffs,
+           has_gas: false,
+           has_solar_pv: false,
+           has_storage_heaters: false)
+  end
 
   context 'with new dashboard feature active' do
     let(:user) { nil }
@@ -20,6 +32,24 @@ RSpec.describe 'advice pages', type: :system do
     it { expect(page).to have_title(I18n.t('advice_pages.index.title')) }
     it { expect(page).to have_content(I18n.t('advice_pages.index.title')) }
     it { expect(page).to have_content(I18n.t('advice_pages.index.show.intro')) }
+    it { expect(page).to have_link(I18n.t('advice_pages.nav.overview'), href: school_advice_path(school)) }
+
+    # no links if no alerts or priorities to display
+    it { expect(page).not_to have_link(href: alerts_school_advice_path(school)) }
+    it { expect(page).not_to have_link(href: priorities_school_advice_path(school)) }
+
+    it 'shows links in navbar' do
+      within('#page-nav') do
+        expect(page).to have_link(I18n.t("advice_pages.nav.pages.#{key}"), advice_page_path(school, advice_page))
+      end
+    end
+
+    it 'shows the list of pages' do
+      within('#energy-explained') do
+        expect(page).to have_content(I18n.t("advice_pages.nav.pages.#{key}"))
+        expect(page).to have_content(I18n.t("advice_pages.index.show.page_summary.#{key}"))
+      end
+    end
 
     context 'when school has no public analysis' do
       let(:school) { create(:school, data_sharing: :within_group) }
@@ -82,11 +112,18 @@ RSpec.describe 'advice pages', type: :system do
     context 'with dashboard alerts' do
       include_context 'with dashboard alerts'
 
-      it { expect(page).to have_link('Recent alerts (2)', href: alerts_school_advice_path(school)) }
+      before do
+        visit school_advice_path(school) # reload to pickup alert content
+      end
+
+      it {
+        expect(page).to have_link("#{I18n.t('advice_pages.index.alerts.title')} (2)",
+                                     href: alerts_school_advice_path(school))
+      }
 
       context 'it shows the alerts' do
         before do
-          click_on 'Recent alerts (2)'
+          click_on "#{I18n.t('advice_pages.index.alerts.title')} (2)"
         end
 
         it 'displays the alert group' do
@@ -96,6 +133,37 @@ RSpec.describe 'advice pages', type: :system do
         it 'displays English alert text' do
           expect(page).to have_content('You can save £5,000 on heating in 1 year')
         end
+      end
+    end
+
+    context 'with management priorities' do
+      include_context 'with dashboard alerts'
+
+      before do
+        visit school_advice_path(school) # reload to pickup alert content
+      end
+
+      it {
+        expect(page).to have_link("#{I18n.t('advice_pages.index.priorities.title')} (2)",
+                                     href: priorities_school_advice_path(school))
+      }
+
+      context 'it shows the priorities' do
+        before do
+          click_on "#{I18n.t('advice_pages.index.priorities.title')} (2)"
+        end
+
+        it 'displays English alert text' do
+          expect(page).to have_content('Save on heating')
+          expect(page).to have_content('High baseload')
+        end
+      end
+    end
+
+    context 'with enough data to compare electricity' do
+      it 'shows the fuel comparison' do
+        expect(page).to have_css('#electricity-comparison')
+        expect(page).to have_content('How does your electricity use for the last 12 months compare to other Primary schools on Energy Sparks, with a similar number of pupils?')
       end
     end
   end

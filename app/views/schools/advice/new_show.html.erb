@@ -62,16 +62,7 @@
           <% end %>
         <% end %>
 
-        <%= component 'advice_page_list', school: @school %>
-
-        <%= component 'recommendations',
-                      recommendations: Recommendations::Activities.new(@school).based_on_energy_use(4),
-                      title: t('advice_pages.insights.recommendations.activities_title'), classes: 'pb-4' %>
-
-        <%= component 'recommendations',
-                      recommendations: Recommendations::Actions.new(@school).based_on_energy_use(4),
-                      title: t('advice_pages.insights.recommendations.actions_title'), classes: 'pb-4' %>
-
+        <%= component 'advice_page_list', id: 'energy-explained', school: @school %>
       </div>
     </div>
   </div>
