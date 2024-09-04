@@ -40,7 +40,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
 
     it 'shows links in navbar' do
       within('#page-nav') do
-        expect(page).to have_link(I18n.t("advice_pages.nav.pages.#{key}"), advice_page_path(school, advice_page))
+        expect(page).to have_link(I18n.t("advice_pages.nav.pages.#{key}"), href: advice_page_path(school, advice_page))
       end
     end
 
