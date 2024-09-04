@@ -15,11 +15,16 @@ class DashboardInsightsComponent < ApplicationComponent
   end
 
   def alerts
-    @alerts ||= setup_alerts(@school.latest_dashboard_alerts.management_dashboard, content_field)
+    latest_alerts = @school.latest_dashboard_alerts
+    @alerts ||= setup_alerts(adult? ? latest_alerts.management_dashboard : latest_alerts.pupil_dashboard, content_field)
   end
 
   def content_field
-    @audience == :adult ? :management_dashboard_title : :pupil_dashboard_title
+    adult? ? :management_dashboard_title : :pupil_dashboard_title
+  end
+
+  def adult?
+    @audience == :adult
   end
 
   def data_enabled?

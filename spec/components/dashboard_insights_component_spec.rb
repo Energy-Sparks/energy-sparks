@@ -10,13 +10,15 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
   let(:classes) { 'extra-classes' }
   let(:progress_summary) { nil }
   let(:user) { create(:school_admin, school: school)}
+  let(:audience) { :adult }
   let(:params) do
     {
       school: school,
       id: id,
       classes: classes,
       progress_summary: progress_summary,
-      user: user
+      user: user,
+      audience: audience
     }
   end
 
@@ -44,6 +46,16 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
 
     it 'displays the alert text' do
       expect(html).to have_content('You can save £5,000 on heating in 1 year')
+      expect(html).to have_content('Your baseload is high and is costing £5,000')
+    end
+
+    context 'with pupil audience' do
+      let(:audience) { :pupil }
+
+      it 'displays only the pupil alerts' do
+        expect(html).to have_content('You can save £5,000 on heating in 1 year')
+        expect(html).to have_no_content('Your baseload is high and is costing £5,000')
+      end
     end
 
     context 'with Welsh locale' do
