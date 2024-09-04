@@ -6,14 +6,15 @@
 class IconComponent < ViewComponent::Base
   include ApplicationHelper
 
-  attr_reader :style, :size, :fuel_type, :classes
+  attr_reader :style, :size, :fuel_type, :classes, :icon_set
 
-  def initialize(name: nil, size: 'f5', fuel_type: nil, fixed_width: false, style: :default, classes: '')
+  def initialize(name: nil, size: 'f5', fuel_type: nil, fixed_width: false, icon_set: 'fas', style: :default, classes: '')
     raise 'Unknown icon style' unless [:default, :circle].include?(style)
     @name = name
     @size = size
     @fuel_type = fuel_type
     @style = style
+    @icon_set = icon_set
     @classes = "#{classes} #{size} #{'fa-fw' if fixed_width}"
   end
 

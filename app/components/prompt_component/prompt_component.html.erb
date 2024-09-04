@@ -1,6 +1,6 @@
 <div id="<%= id %>" class="prompt-component mb-2 <%= classes %>">
   <%# Padding added to create space within div %>
-  <div class="row pt-4 pb-4">
+  <div class="row pt-3 pb-3">
     <% if icon.present? %>
       <%# Icon is hidden on smallest size, visible from sm and above as single column %>
       <div class="d-none d-sm-block col-1">
@@ -23,14 +23,25 @@
         </div>
       <% end %>
       <div class="row">
-        <div class="col">
-          <%= content %>
-          <p>
+        <% if style == :compact %>
+          <div class="col-12 col-md-10">
+            <%= content %>
+          </div>
           <% if link %>
-            <%= link %>
+            <div class="col col-md-2">
+              <%= link %>
+            </div>
           <% end %>
-          </p>
-        </div>
+        <% else %>
+          <div class="col">
+            <%= content %>
+            <p>
+            <% if link %>
+              <%= link %>
+            <% end %>
+            </p>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

@@ -18,7 +18,7 @@ describe User do
     expect(user.school_name).to be_nil
 
     school = create(:school, name: 'Big School')
-    user = create(:user, school: school)
+    user = create(:user, school:)
     expect(user.school_name).to eq('Big School')
   end
 
@@ -32,11 +32,11 @@ describe User do
     end
 
     context 'when user is staff with a school' do
-      let(:school) { create(:school, school_group: school_group) }
-      let(:user) { create(:staff, school: school) }
+      let(:school) { create(:school, school_group:) }
+      let(:user) { create(:staff, school:) }
 
       context 'when school has school group' do
-        let(:school_group) { create :school_group }
+        let(:school_group) { create(:school_group) }
 
         it { expect(default_school_group).to eq(school_group) }
       end
@@ -65,11 +65,11 @@ describe User do
     end
 
     context 'when user is staff with a school' do
-      let(:school) { create(:school, school_group: school_group) }
-      let(:user) { create(:staff, school: school) }
+      let(:school) { create(:school, school_group:) }
+      let(:user) { create(:staff, school:) }
 
       context 'when school has school group' do
-        let(:school_group) { create :school_group }
+        let(:school_group) { create(:school_group) }
 
         it { expect(default_school_group_name).to eq(school_group.name) }
       end
@@ -90,25 +90,38 @@ describe User do
 
   describe 'pupil validation' do
     let(:school) { create(:school) }
-    let!(:existing_pupil) { create(:pupil, pupil_password: 'three memorable words', school: school) }
+    let!(:existing_pupil) { create(:pupil, pupil_password: 'three memorable words', school:) }
 
     it 'enforces minimum length' do
-      expect(build(:pupil, school: school, pupil_password: 'abc')).not_to be_valid
-      expect(build(:pupil, school: school, pupil_password: 'test')).not_to be_valid
-      expect(build(:pupil, school: school, pupil_password: 'testtesttest')).to be_valid
-      expect(build(:pupil, school: school, pupil_password: 'some memorable words')).to be_valid
+      expect(build(:pupil, school:, pupil_password: 'abc')).not_to be_valid
+      expect(build(:pupil, school:, pupil_password: 'test')).not_to be_valid
+      expect(build(:pupil, school:, pupil_password: 'testtesttest')).to be_valid
+      expect(build(:pupil, school:, pupil_password: 'some memorable words')).to be_valid
     end
 
     it 'checks for unique passwords within the school' do
-      expect(build(:pupil, school: school, pupil_password: 'three memorable words')).not_to be_valid
-      expect(build(:pupil, school: school, pupil_password: 'three memorable words 123')).to be_valid
+      expect(build(:pupil, school:, pupil_password: 'three memorable words')).not_to be_valid
+      expect(build(:pupil, school:, pupil_password: 'three memorable words 123')).to be_valid
       expect(build(:pupil, school: create(:school), pupil_password: 'three memorable words')).to be_valid
+    end
+  end
+
+  describe 'pupil password encryption' do
+    it 'works in the same way for the new and old pupil password' do
+      pupil = create(:pupil, pupil_password_old: 'old pupil password')
+      pupil.update(pupil_password: pupil.pupil_password_old)
+      expect(pupil.pupil_password).to eq('old pupil password')
+      raw = ActiveRecord::Base.connection.select_all(
+        'SELECT pupil_password, pupil_password_old FROM users WHERE id = $1', nil, [pupil.id]
+      ).first
+      expect(raw['pupil_password']).not_to eq('old pupil password')
+      expect(raw['pupil_password_old']).not_to eq('old pupil password')
     end
   end
 
   describe 'staff roles as symbols' do
     it 'returns nil if no staff role' do
-      expect(User.new.staff_role_as_symbol).to be nil
+      expect(User.new.staff_role_as_symbol).to be_nil
     end
 
     it 'returns symbol if staff role' do
@@ -120,7 +133,7 @@ describe User do
 
   describe '#schools' do
     context 'for user without school' do
-      let(:user) { create(:user)}
+      let(:user) { create(:user) }
 
       it 'returns empty' do
         expect(user.schools).to eq([])
@@ -129,16 +142,16 @@ describe User do
 
     context 'for user with school' do
       let(:school)  { create(:school) }
-      let(:user)    { create(:user, school: school)}
+      let(:user)    { create(:user, school:) }
 
       it 'returns schools' do
-        expect(user.schools).to match_array([school])
+        expect(user.schools).to contain_exactly(school)
       end
     end
 
     context 'for group admin' do
       let(:school_group)    { create(:school_group) }
-      let(:user)            { create(:user, role: :group_admin, school_group: school_group)}
+      let(:user)            { create(:user, role: :group_admin, school_group:) }
 
       context 'without schools in group' do
         it 'returns empty' do
@@ -147,12 +160,12 @@ describe User do
       end
 
       context 'with schools in group' do
-        let(:school_1)        { create(:school, school_group: school_group) }
-        let(:school_2)        { create(:school, school_group: school_group) }
+        let(:school_1)        { create(:school, school_group:) }
+        let(:school_2)        { create(:school, school_group:) }
         let(:school_3)        { create(:school) }
 
         it 'returns schools from group' do
-          expect(user.schools).to match_array([school_1, school_2])
+          expect(user.schools).to contain_exactly(school_1, school_2)
         end
       end
     end
@@ -160,10 +173,10 @@ describe User do
     context 'for admin' do
       let(:school_1)        { create(:school) }
       let(:school_2)        { create(:school) }
-      let(:user)            { create(:user, role: :admin)}
+      let(:user)            { create(:user, role: :admin) }
 
       it 'returns all schools' do
-        expect(user.schools).to match_array([school_1, school_2])
+        expect(user.schools).to contain_exactly(school_1, school_2)
       end
     end
   end
@@ -172,9 +185,9 @@ describe User do
     let(:school)              { create(:school) }
     let(:school_2)            { create(:school) }
     let(:school_3)            { create(:school) }
-    let!(:school_admin)       { create(:school_admin, school: school) }
-    let!(:staff_user)         { create(:staff, school: school) }
-    let!(:pupil_user)         { create(:pupil, school: school) }
+    let!(:school_admin)       { create(:school_admin, school:) }
+    let!(:staff_user)         { create(:staff, school:) }
+    let!(:pupil_user)         { create(:pupil, school:) }
 
     context 'with users linked to other schools' do
       before do
@@ -186,10 +199,16 @@ describe User do
         expect(school.users.count).to eq(3)
         expect(school_2.cluster_users.count).to eq(1)
         expect(school_3.cluster_users.count).to eq(1)
-        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: school.users.pluck(:id))).to match_array([school_admin, staff_user])
-        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [school_admin.id])).to match_array([school_admin])
-        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [staff_user.id])).to match_array([staff_user])
-        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [pupil_user.id])).to match_array([])
+        expect(User.find_school_users_linked_to_other_schools(school_id: school,
+                                                              user_ids: school.users.pluck(:id))).to contain_exactly(
+                                                                school_admin, staff_user
+                                                              )
+        expect(User.find_school_users_linked_to_other_schools(school_id: school,
+                                                              user_ids: [school_admin.id])).to contain_exactly(school_admin)
+        expect(User.find_school_users_linked_to_other_schools(school_id: school,
+                                                              user_ids: [staff_user.id])).to contain_exactly(staff_user)
+        expect(User.find_school_users_linked_to_other_schools(school_id: school,
+                                                              user_ids: [pupil_user.id])).to be_empty
       end
     end
 
@@ -198,17 +217,21 @@ describe User do
         expect(school.users.count).to eq(3)
         expect(school_2.cluster_users.count).to eq(0)
         expect(school_3.cluster_users.count).to eq(0)
-        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: school.users.pluck(:id))).to match_array([])
-        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [school_admin.id])).to match_array([])
-        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [staff_user.id])).to match_array([])
-        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [pupil_user.id])).to match_array([])
+        expect(User.find_school_users_linked_to_other_schools(school_id: school,
+                                                              user_ids: school.users.pluck(:id))).to be_empty
+        expect(User.find_school_users_linked_to_other_schools(school_id: school,
+                                                              user_ids: [school_admin.id])).to be_empty
+        expect(User.find_school_users_linked_to_other_schools(school_id: school,
+                                                              user_ids: [staff_user.id])).to be_empty
+        expect(User.find_school_users_linked_to_other_schools(school_id: school,
+                                                              user_ids: [pupil_user.id])).to be_empty
       end
     end
   end
 
   describe 'welcome email' do
     let(:school) { create(:school) }
-    let(:user) { create(:staff, school: school, confirmed_at: nil) }
+    let(:user) { create(:staff, school:, confirmed_at: nil) }
 
     it 'sends welcome email after confirmation for school roles' do
       expect(user.confirmed?).to be(false)
@@ -230,8 +253,8 @@ describe User do
 
   describe '#admin_user_export_csv' do
     let!(:school_group) { create(:school_group) }
-    let!(:school)       { create(:school, school_group: school_group) }
-    let!(:user)         { create(:staff, school: school, confirmed_at: nil) }
+    let!(:school)       { create(:school, school_group:) }
+    let!(:user)         { create(:staff, school:, confirmed_at: nil) }
 
     let(:csv)           { User.admin_user_export_csv }
     let(:parsed)        { CSV.parse(csv) }
@@ -265,7 +288,7 @@ describe User do
     end
 
     context 'when exporting group admins' do
-      let!(:user) { create(:group_admin, school_group: school_group) }
+      let!(:user) { create(:group_admin, school_group:) }
 
       it 'includes the expected data' do
         expect(parsed[1]).to eq([school_group.name,
@@ -282,7 +305,7 @@ describe User do
     end
 
     context 'when there are pupil and admin users' do
-      let!(:pupil)    { create(:pupil, school: school) }
+      let!(:pupil)    { create(:pupil, school:) }
       let!(:admin)    { create(:admin) }
 
       it 'does not include those' do
@@ -292,7 +315,7 @@ describe User do
 
     context 'when the school has a funder and region' do
       let!(:funder) { create(:funder) }
-      let!(:school) { create(:school, school_group: school_group, funder: funder, region: :east_of_england)}
+      let!(:school) { create(:school, school_group:, funder:, region: :east_of_england) }
 
       it 'includes those fields' do
         expect(parsed[1]).to eq([school_group.name,

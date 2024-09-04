@@ -1,6 +1,8 @@
 .prompt-component {
   border-radius: 8px;
-  background-color: $light !important;
+  &.none {
+    background-color: $light !important;
+  }
   &.negative {
     background-color: $light-red !important;
   }

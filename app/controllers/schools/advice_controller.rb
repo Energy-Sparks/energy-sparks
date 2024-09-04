@@ -11,7 +11,7 @@ module Schools
     before_action :school_inactive
     before_action :load_advice_pages
     before_action :set_tab_name
-    before_action :set_content
+    before_action :set_counts
     before_action :set_breadcrumbs
 
     def show
@@ -50,7 +50,7 @@ module Schools
       @advice_pages = AdvicePage.all
     end
 
-    def set_content
+    def set_counts
       @priority_count = latest_management_priorities.count
       @alert_count = latest_dashboard_alerts.count
     end
