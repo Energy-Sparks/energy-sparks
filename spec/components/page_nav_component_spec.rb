@@ -29,6 +29,12 @@ RSpec.describe PageNavComponent, type: :component do
       it { expect(list_item).to have_link('Menu', href: 'link') }
       it { expect(list_item).to have_css('i.fa-home') }
     end
+
+    context 'with no icon' do
+      let(:header_params) { { href: 'link' } }
+
+      it { expect(list_item).to have_link('Menu', href: 'link') }
+    end
   end
 
   context 'Section' do
@@ -48,6 +54,12 @@ RSpec.describe PageNavComponent, type: :component do
       it { expect(list_item).to have_css('.bg-section') }
       it { expect(list_item).to have_css('.nav-link') }
       it { expect(list_item).to have_css('.toggler') }
+    end
+
+    context 'with toggling for section' do
+      let(:section_params) { { name: 'Section Name', toggler: false, visible: true, classes: 'bg-section' } }
+
+      it { expect(list_item).not_to have_css('.toggler') }
     end
 
     context 'with no name' do

@@ -19,12 +19,13 @@ class PromptComponent < ApplicationComponent
   renders_one :title
   renders_one :pill
 
-  attr_reader :icon
+  attr_reader :icon, :style
 
-  def initialize(id: nil, icon: nil, status: :none, classes: '')
+  def initialize(id: nil, icon: nil, status: nil, style: :full, classes: '')
     super(id: id, classes: "#{status} #{classes}")
     @icon = icon
     @status = status
+    @style = style
     validate
   end
 
@@ -33,7 +34,7 @@ class PromptComponent < ApplicationComponent
   end
 
   def validate
-    raise ArgumentError.new(self.class.status_error) unless self.class.statuses.include?(@status.to_sym)
+    raise ArgumentError.new(self.class.status_error) unless @status.nil? || self.class.statuses.include?(@status.to_sym)
   end
 
   def self.statuses
