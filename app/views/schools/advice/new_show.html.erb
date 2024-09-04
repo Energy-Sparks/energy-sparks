@@ -8,6 +8,13 @@
             <h1><%= t('advice_pages.index.title') %></h1>
           </div>
         </div>
+        <div class="row">
+          <div class="col">
+            <p>
+              Lorem ipsum
+            </p>
+          </div>
+        </div>
       </div>
       <div id="dashboard-header-school" class="col-12 col-md-3 rounded">
         <div class="row">
@@ -35,13 +42,6 @@
         <%= render 'schools/advice/nav', school: @school, advice_pages: @advice_pages %>
       </div>
       <div class="col-md-9 col-lg-9 col-xl-10">
-        <div class="row mt-4">
-          <div class="col">
-            <p>
-              Lorem ipsum
-            </p>
-          </div>
-        </div>
 
         <% if @overview_charts&.any? %>
           <%= render 'management/schools/overview_charts', overview_charts: @overview_charts %>
@@ -80,6 +80,14 @@
         <% end %>
 
         <%= component 'advice_page_list', school: @school %>
+
+        <%= component 'recommendations',
+                      recommendations: Recommendations::Activities.new(@school).based_on_energy_use(4),
+                      title: t('advice_pages.insights.recommendations.activities_title'), classes: 'pb-4' %>
+
+        <%= component 'recommendations',
+                      recommendations: Recommendations::Actions.new(@school).based_on_energy_use(4),
+                      title: t('advice_pages.insights.recommendations.actions_title'), classes: 'pb-4' %>
 
       </div>
     </div>
