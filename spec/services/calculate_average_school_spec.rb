@@ -16,7 +16,7 @@ describe CalculateAverageSchool, type: :service do
       unvalidated_data = Amr::AnalyticsMeterCollectionFactory.new(school).unvalidated_data
 
       s3 = Aws::S3::Client.new(stub_responses: true)
-      s3.stub_responses(:list_objects_v2, { contents: [{ key: "unvalidated-data-#{school.slug}" }] })
+      s3.stub_responses(:list_objects_v2, { contents: [{ key: "unvalidated-data-#{school.slug}.yaml.gz" }] })
       s3.stub_responses(:get_object, { body: EnergySparks::Gzip.gzip(YAML.dump(unvalidated_data)) })
       data = ClimateControl.modify UNVALIDATED_SCHOOL_CACHE_BUCKET: 'bucket' do
         described_class.perform(s3:)
