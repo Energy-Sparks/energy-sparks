@@ -18,7 +18,7 @@ describe Amr::ValidateAndPersistReadingsService, type: :service do
 
   describe '#perform' do
     before do
-      expect_any_instance_of(Amr::AnalyticsMeterCollectionFactory).to receive(:unvalidated).and_return(meter_collection)
+      expect_any_instance_of(MeterCollectionFactory).to receive(:build).and_return(meter_collection)
       expect_any_instance_of(AggregateDataService).to receive(:validate_meter_data).and_return(meter_collection)
       expect_any_instance_of(Amr::UpsertValidatedReadings).to receive(:perform)
     end
