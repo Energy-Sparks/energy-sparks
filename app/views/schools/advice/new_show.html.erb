@@ -25,59 +25,19 @@
       <%= render 'schools/advice/nav', school: @school, advice_pages: @advice_pages %>
     </div>
     <div class="col-md-9 col-lg-9 col-xl-10">
-
       <h2><%= t('schools.show.recent_energy_usage') %></h2>
 
-      <% if @overview_charts&.any? %>
-        <%= render 'management/schools/overview_charts', overview_charts: @overview_charts %>
-      <% end %>
+      <%= component 'dashboard_charts', school: @school %>
 
       <%= component 'advice_page_list', id: 'energy-explained', classes: 'mt-4 mb-4', school: @school %>
 
-      <div id='whats-next mt-4'>
-        <%= component 'titled_section' do |section| %>
-          <% section.with_title do %>
-            <h2><%= t('advice_pages.index.show.what_next') %></h2>
-          <% end %>
-          <% section.with_body do %>
-            <%= component 'prompt', icon: 'tasks', status: :none, style: :compact do |p| %>
-              <% p.with_title do %>
-                <%= t('advice_pages.insights.recommendations.actions_title') %>
-              <% end %>
-              <% p.with_link do %>
-                <%= link_to t('common.labels.choose_activity'), school_recommendations_path(@school, scope: :adult) %>
-              <% end %>
-              <%= t('schools.prompts.recommendations.message') %>
-            <% end %>
-            <%= component 'prompt', icon: 'tachometer-alt', status: :none, style: :compact do |p| %>
-              <% p.with_title do %>
-                <%= t('schools.show.set_target') %>
-              <% end %>
-              <% p.with_link do %>
-                <%= link_to t('schools.show.set_target'), school_school_targets_path %>
-              <% end %>
-              <%= t('schools.show.set_targets') %>
-            <% end %>
-            <%= component 'prompt', icon: 'bell', status: :none, style: :compact do |p| %>
-              <% p.with_title do %>
-                <%= t('schools.school_targets.achieving_your_targets.view_recent_alerts') %>
-              <% end %>
-              <% p.with_link do %>
-                <%= link_to t('common.labels.view_alerts'), alerts_school_advice_path(@school) %>
-              <% end %>
-              <%= t('schools.prompts.alerts.message') %>
-            <% end %>
-            <%= component 'prompt', icon: 'list', status: :none, style: :compact do |p| %>
-              <% p.with_title do %>
-                <%= t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities') %>
-              <% end %>
-              <% p.with_link do %>
-                <%= link_to t('common.labels.view_opportunities'), priorities_school_advice_path(@school) %>
-              <% end %>
-              <%= t('schools.prompts.opportunities.message') %>
-            <% end %>
-          <% end %>
-        <% end %>
+      <%= component 'advice_reminders',
+                    school: @school,
+                    user: current_user,
+                    alert_count: @alert_count,
+                    priority_count: @priority_count,
+                    id: 'whats-next',
+                    classes: 'mt-4' %>
       </div>
     </div>
   </div>

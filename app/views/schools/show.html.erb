@@ -60,7 +60,7 @@
 
 <% if @overview_charts && @overview_charts.any? %>
   <h3><%= t('schools.show.recent_energy_usage') %></h3>
-  <%= render 'management/schools/overview_charts', overview_charts: @overview_charts %>
+  <%= component 'dashboard_charts', school: @school %>
 <% elsif @show_data_enabled_features == false %>
   <h3><%= t('schools.show.recent_energy_usage') %></h3>
   <div class="chart-placeholder-image">

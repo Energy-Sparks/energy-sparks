@@ -3,7 +3,6 @@ module Schools
     include NonPublicSchools
     include DashboardAlerts
     include DashboardPriorities
-    include DashboardEnergyCharts
     include SchoolInactive
     include SchoolAggregation
 
@@ -20,7 +19,6 @@ module Schools
 
     def show
       if Flipper.enabled?(:new_dashboards_2024, current_user)
-        @overview_charts = setup_energy_overview_charts(@school.configuration)
         @audience = :adult
         if can_benchmark_electricity?
           @electricity_annual_usage = electricity_usage_service.annual_usage

@@ -1,0 +1,77 @@
+<div id="<%= id %> classes=" advice-reminders-component <%= classes %> ">
+  <%= component 'titled_section' do |section| %>
+    <% section.with_title do %>
+      <h2><%= t('advice_pages.index.show.what_next') %></h2>
+    <% end %>
+    <% section.with_body do %>
+      <%= component 'prompt', icon: 'tasks', status: :none, style: :compact do |p| %>#
+        <% p.with_title do %>
+          <%= t('advice_pages.insights.recommendations.actions_title') %>
+        <% end %>
+        <% p.with_link do %>
+          <%= link_to t('common.labels.choose_activity'), school_recommendations_path(school, scope: :adult) %>
+        <% end %>
+        <%= t('schools.prompts.recommendations.message') %>
+      <% end %>
+
+      <% if prompt_for_target? %>
+        <%= component 'prompt', icon: 'tachometer-alt', status: :none, style: :compact do |p| %>
+          <% p.with_title do %>
+            <%= t('schools.show.set_target') %>
+          <% end %>
+          <% p.with_link do %>
+            <%= link_to t('schools.show.set_target'), school_school_targets_path(school) %>
+          <% end %>
+          <%= t('schools.show.set_targets') %>
+        <% end %>
+      <% end %>
+
+      <% if prompt_to_review_target? %>
+        <%= component 'prompt', icon: 'tachometer-alt', status: :none, style: :compact do |p| %>
+          <% p.with_title do %>
+            <%= t('schools.show.review_target') %>
+          <% end %>
+          <% p.with_link do %>
+            <%= link_to t('schools.show.review_target'), school_school_targets_path(school) %>
+          <% end %>
+          <%= t('schools.show.revisit_targets') %>
+        <% end %>
+      <% end %>
+
+      <% if prompt_to_set_new_target? %>
+        <%= component 'prompt', icon: 'tachometer-alt', status: :none, style: :compact do |p| %>
+          <% p.with_title do %>
+            <%= t('schools.show.review_target') %>
+          <% end %>
+          <% p.with_link do %>
+            <%= link_to t('schools.show.review_progress'), school_school_targets_path(school) %>
+          <% end %>
+          <%= t('schools.show.set_new_target', target_date: I18n.l(school.expired_target.target_date, format: '%B %Y')) %>
+        <% end %>
+      <% end %>
+
+      <% if alert_count.positive? %>
+        <%= component 'prompt', icon: 'bell', status: :none, style: :compact do |p| %>
+          <% p.with_title do %>
+            <%= t('schools.school_targets.achieving_your_targets.view_recent_alerts') %>
+          <% end %>
+          <% p.with_link do %>
+            <%= link_to t('common.labels.view_alerts'), alerts_school_advice_path(school) %>
+          <% end %>
+          <%= t('schools.prompts.alerts.message') %>
+        <% end %>
+      <% end %>
+
+      <% if priority_count.positive? %>
+        <%= component 'prompt', icon: 'list', status: :none, style: :compact do |p| %>
+          <% p.with_title do %>
+            <%= t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities') %>
+          <% end %>
+          <% p.with_link do %>
+            <%= link_to t('common.labels.view_opportunities'), priorities_school_advice_path(@school) %>
+          <% end %>
+          <%= t('schools.prompts.opportunities.message') %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
