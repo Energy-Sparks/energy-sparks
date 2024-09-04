@@ -64,7 +64,7 @@
   <% end %>
 
   <% add_prompt(id: :audit,
-                check: last_audit,
+                check: last_audit&.tasks_remaining?,
                 list: list,
                 status: :neutral,
                 icon: 'laptop',
