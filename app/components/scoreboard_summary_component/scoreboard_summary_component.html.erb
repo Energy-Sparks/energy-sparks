@@ -36,7 +36,7 @@
         <%= component 'podium', podium: podium, user: user, classes: 'bg-white rounded p-4' %>
       </div>
     </div>
-    <%= component 'titled_section', id: 'scoreboard-recent-activity' do |section| %>
+    <%= component 'titled_section', id: 'scoreboard-recent-activity', classes: 'mt-4' do |section| %>
       <% section.with_title do %>
         <h2><%= timeline_title %></h2>
       <% end %>

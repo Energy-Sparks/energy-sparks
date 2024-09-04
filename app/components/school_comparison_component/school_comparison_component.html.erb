@@ -1,8 +1,8 @@
 <div
   id="<%= @id %>"
-  class="school-comparison-component-callout-row row mt-4">
+  class="school-comparison-component-callout-row row mt-2">
   <% categories.each do |category| %>
-    <div class="col-md-4 justify-content-center <%=category%> <%= responsive_classes(category) %>">
+    <div class="col-md-4 justify-content-center <%= category %> <%= responsive_classes(category) %>">
       <% if school_in_category?(category) %>
         <div class="school-comparison-component-callout-box">
           <div class="header">
@@ -11,9 +11,9 @@
             </small>
           </div>
           <div class="body m-2">
-            <h2>
+            <h4>
               <%= school_value %>
-            </h2>
+            </h4>
           </div>
           <div class="footer mb-2">
             <% if footer %>
