@@ -1,10 +1,10 @@
-.toggler.collapsed .fa-chevron-down,
-.toggler .fa-chevron-right {
+.toggler.collapsed .fa-chevron-up,
+.toggler .fa-chevron-down {
   display: none;
 }
 
-.toggler.collapsed .fa-chevron-right,
-.toggler .fa-chevron-down {
+.toggler.collapsed .fa-chevron-down,
+.toggler .fa-chevron-up {
   display: inline-block;
 }
 

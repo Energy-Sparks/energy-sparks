@@ -51,6 +51,12 @@ class DashboardEquivalencesComponent < ApplicationComponent
     I18n.t("common.#{equivalence_content.equivalence_type.meter_type}").downcase
   end
 
+  def analysis_category(equivalence_content)
+    fuel_type = equivalence_content.equivalence_type.meter_type
+    return :solar_pv if @school.has_solar_pv? && [:electricity, :solar_pv].include?(fuel_type.to_sym)
+    fuel_type
+  end
+
   # Decide which list of equivalences to show in the 1st (left) carousel
   #
   # If we only have a single fuel type, then just return everything the list
@@ -83,7 +89,7 @@ class DashboardEquivalencesComponent < ApplicationComponent
   def setup_equivalences(meter_types = :all)
     equivalence_data = Equivalences::RelevantAndTimely.new(@school).equivalences(meter_types: meter_types)
 
-    equivalence_data.map do |equivalence|
+    equivalence_data.shuffle.map do |equivalence|
       TemplateInterpolation.new(
         equivalence.content_version,
         with_objects: { equivalence_type: equivalence.content_version.equivalence_type },
