@@ -19,6 +19,7 @@ en:
         title: Priority actions
       show:
         how_do_you_compare: How does your school compare?
+        intro: Find advice, prioritised actions and alerts and explore our detailed analysis to help start reducing your energy use.
         not_applicable: No comparison
         not_available: Not enough data
         notice_html: |-
