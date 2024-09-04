@@ -13,6 +13,7 @@ describe CalculateAverageSchool, type: :service do
 
   describe '#calculate_school_averages' do
     it 'calculates' do
+      travel_to Time.zone.local(2024, 9, 4, 13, 0)
       unvalidated_data = Amr::AnalyticsMeterCollectionFactory.new(school).unvalidated_data
 
       s3 = Aws::S3::Client.new(stub_responses: true)
