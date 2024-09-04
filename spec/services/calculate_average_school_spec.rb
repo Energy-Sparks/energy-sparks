@@ -6,14 +6,13 @@ require 'rails_helper'
 
 describe CalculateAverageSchool, type: :service do
   let(:school) do
-    school = create(:school)
+    school = create(:school, number_of_pupils: 1)
     create(:electricity_meter_with_reading, readings: Array.new(48, 1), reading_count: 50, school:)
     school
   end
 
   describe '#calculate_school_averages' do
     it 'calculates' do
-      travel_to Time.zone.local(2024, 9, 4, 13, 0)
       unvalidated_data = Amr::AnalyticsMeterCollectionFactory.new(school).unvalidated_data
 
       s3 = Aws::S3::Client.new(stub_responses: true)
