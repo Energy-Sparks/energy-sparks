@@ -21,7 +21,6 @@ class CalculateAverageSchool
       fuel_types.each do |fuel_type|
         school_data = calc.calculate_average_school(school, fuel_type)
         (by_school_type[fuel_type][school_data[:school_type]] ||= []).push(school_data) if school_data
-        # debugger
       end
     end
     fuel_types.each do |fuel_type|
@@ -34,8 +33,6 @@ class CalculateAverageSchool
     end
 
     data
-    # calc.save_average_school_data_to_ruby_file(data, benchmark_type_config)
-    # calc.save_average_school_data_to_csv(data)
   end
 
   attr_reader :school_type_samples
@@ -47,17 +44,25 @@ class CalculateAverageSchool
 
   def school_generator
     bucket = ENV.fetch('UNVALIDATED_SCHOOL_CACHE_BUCKET', nil)
-    resp = @s3.list_objects_v2(bucket:, prefix: 'unvalidated-data-')
-    # debugger
-    resp.contents[..5].each do |content|
-      # yield content.key
+    self.class.s3_list_objects(@s3, bucket, 'unvalidated-data-') do |content|
       yaml = YAML.unsafe_load(EnergySparks::Gzip.gunzip(@s3.get_object(bucket:, key: content.key).body.read))
       Rails.logger.info("loaded #{content.key}")
-      Rails.logger.debug { "loaded #{content.key}" }
+      puts "loaded #{content.key}"
       meter_collection = build_meter_collection(yaml)
       AggregateDataService.new(meter_collection).validate_meter_data
       AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
       yield meter_collection
+    end
+  end
+
+  def self.s3_list_objects(s3_client, bucket, prefix)
+    continuation_token = nil
+    loop do
+      response = s3_client.list_objects_v2(bucket:, prefix:, continuation_token:)
+      response.contents.each { |content| yield content }
+      break unless response.is_truncated
+
+      continuation_token = response.next_continuation_token
     end
   end
 
