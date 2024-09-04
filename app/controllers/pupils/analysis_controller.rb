@@ -10,12 +10,17 @@ module Pupils
     before_action :set_breadcrumbs
 
     def index
-      render fuel_type || :index
+      if Flipper.enabled?(:new_dashboards_2024, current_user)
+        render :template => (fuel_type ? "pupils/analysis/new/#{fuel_type}" : 'pupils/analysis/new/index')
+      else
+        render fuel_type || :index
+      end
     end
 
     def show
       @chart_type = get_chart_config
       @fuel_type = params.require(:energy)
+      @category = get_category
     end
 
     private
@@ -31,6 +36,24 @@ module Pupils
         { name: I18n.t('dashboards.pupil_dashboard'), href: pupils_school_path(@school) },
         { name: I18n.t('pupils.analysis.explore_data') }
       ]
+    end
+
+    # Map the energy names in the URL back to a category
+    # These need to be rationalised in the future
+    def get_category
+      energy = params.require(:energy)
+      case energy
+      when 'Electricity+Solar PV'
+        :solar_pv
+      when 'Electricity'
+        if @school.has_solar_pv?
+          :solar_pv
+        else
+          :electricity
+        end
+      else
+        energy.downcase.to_sym
+      end
     end
 
     def get_chart_config

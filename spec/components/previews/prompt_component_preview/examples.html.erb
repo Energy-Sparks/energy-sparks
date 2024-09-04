@@ -9,6 +9,9 @@
   <li><a href="#pill">Pills</a></li>
   <li><a href="#status">Status colours</a></li>
   <li><a href="#all">All options</a></li>
+  <li><a href="#custom">Custom background colour</a></li>
+  <li><a href="#compact">Compact style</a></li>
+
   <li><a href="#columns">Rendering within columns</a></li>
 </ul>
 
@@ -93,9 +96,41 @@
   <% end %>
 <% end %>
 
-<h4 id='all'>All options</h4>
+<h4 id='all'>All options (link, title, pill, content)</h4>
 
 <%= render PromptComponent.new status: :neutral, icon: 'calendar-alt' do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <% c.with_title { 'This is the title' } %>
+  <% c.with_pill do %>
+    <span class="badge badge-warning">Warning</span>
+  <% end %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='custom'>Custom background colour</h4>
+
+<%= render PromptComponent.new classes: fuel_type_background_class(:gas), icon: 'calendar-alt' do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <% c.with_title { 'This is the title' } %>
+  <% c.with_pill do %>
+    <span class="badge badge-warning">Warning</span>
+  <% end %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='compact'>Compact Style</h4>
+
+<p>
+  With <code>:compact</code> style, content should be wrapped in an outer tag. Longer content will force the row to wrap
+</p>
+
+<%= render PromptComponent.new status: :neutral, style: :compact, icon: 'calendar-alt' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'This is the title' } %>
   <% c.with_pill do %>

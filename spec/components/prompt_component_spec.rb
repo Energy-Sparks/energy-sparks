@@ -3,15 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe PromptComponent, :include_application_helper, type: :component do
-  let(:all_params) { { id: id, status: :neutral, icon: icon, classes: classes } }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:params) { all_params }
+  let(:params) { { id: id, status: :neutral, icon: icon, classes: classes } }
   let(:content) { '<p>Content</p>' }
   let(:title) { 'Title' }
   let(:icon) { 'bolt' }
   let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning')}
   let(:link) { ActionController::Base.helpers.link_to 'Link text', 'href' }
+
+  shared_examples 'it displays all content' do
+    it { expect(html).to have_text(title) }
+    it { expect(html).to have_text('Warning') }
+
+    it { expect(html).to have_link('Link text', href: 'href') }
+    it { expect(html).to have_text(content) }
+
+    it 'has the icon' do
+      expect(html).to have_css('span.fa-stack')
+      within('span.fa-stack') do
+        expect(html).to have_css('i.fa-circle')
+        expect(html).to have_css("i.fa-#{icon}")
+      end
+    end
+  end
 
   context 'with all params' do
     let(:html) do
@@ -27,38 +42,56 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
       expect(html).to have_css('div.prompt-component.neutral')
     end
 
+    it_behaves_like 'it displays all content'
+
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_text(title) }
-    it { expect(html).to have_text('Warning') }
-
-    it { expect(html).to have_link('Link text', href: 'href') }
-    it { expect(html).to have_text(content) }
-
-    it 'has the icon' do
-      expect(html).to have_css('span.fa-stack')
-      within('span.fa-stack') do
-        expect(html).to have_css('i.fa-circle')
-        expect(html).to have_css("i.fa-#{icon}")
-      end
-    end
-
     context 'with unrecognised status' do
-      let(:params) { all_params.update(status: :unrecognised) }
+      let(:params) { { id: id, status: :unrecognised, icon: icon, classes: classes } }
 
       it { expect { html }.to raise_error(ArgumentError, 'Status must be: none, positive, negative or neutral') }
     end
 
+    context 'with no status' do
+      let(:params) { { id: id, status: nil, icon: icon, classes: classes } }
+
+      it_behaves_like 'it displays all content'
+
+      it_behaves_like 'an application component' do
+        let(:expected_classes) { classes }
+        let(:expected_id) { id }
+      end
+    end
+
     context 'with recognised statuses' do
-      [:positive, :negative, :neutral].each do |status|
-        let(:params) { all_params.update(status: status) }
+      [:none, :positive, :negative, :neutral].each do |status|
+        let(:params) { { id: id, status: status, icon: icon, classes: classes } }
         it "recognises #{status}" do
           expect { html }.not_to raise_error
         end
       end
+    end
+  end
+
+  context 'with compact style' do
+    let(:params) { { id: id, status: :neutral, icon: icon, classes: classes, style: :compact } }
+    let(:html) do
+      render_inline(described_class.new(**params)) do |c|
+        c.with_link { link }
+        c.with_title { title }
+        c.with_pill { pill }
+        content
+      end
+    end
+
+    it_behaves_like 'it displays all content'
+
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
     end
   end
 
