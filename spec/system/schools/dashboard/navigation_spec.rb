@@ -335,7 +335,7 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       it 'links to advice pages from review energy analysis' do
         visit school_path(school)
         click_on 'Review energy analysis'
-        expect(page).to have_content('Energy efficiency advice')
+        expect(page).to have_content(I18n.t('advice_pages.index.title'))
       end
 
       it 'links to advice pages from my school' do
@@ -343,7 +343,7 @@ RSpec.describe 'adult dashboard navigation', type: :system do
         within '#my_school_menu' do
           click_on 'Energy analysis'
         end
-        expect(page).to have_content('Energy efficiency advice')
+        expect(page).to have_content(I18n.t('advice_pages.index.title'))
       end
     end
   end
