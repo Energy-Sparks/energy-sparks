@@ -93,7 +93,7 @@ RSpec.describe 'advice pages', type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content('Energy efficiency advice')
+      expect(page).to have_content(I18n.t('advice_pages.index.title'))
       expect(page).to have_link('Energy use summary')
     end
 
@@ -106,7 +106,7 @@ RSpec.describe 'advice pages', type: :system do
         within '#page-nav' do
           click_on 'Energy use summary'
         end
-        expect(page).to have_content('Energy efficiency advice')
+        expect(page).to have_content(I18n.t('advice_pages.index.title'))
         expect(page).to have_content('Only an admin or staff user for this school can access this content')
       end
     end
@@ -121,7 +121,7 @@ RSpec.describe 'advice pages', type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content('Energy efficiency advice')
+      expect(page).to have_content(I18n.t('advice_pages.index.title'))
       within '#page-nav' do
         expect(page).to have_link('Energy use summary')
       end

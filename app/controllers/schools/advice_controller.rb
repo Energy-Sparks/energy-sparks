@@ -4,6 +4,7 @@ module Schools
     include DashboardAlerts
     include DashboardPriorities
     include SchoolInactive
+    include SchoolAggregation
 
     load_resource :school
     skip_before_action :authenticate_user!
@@ -14,8 +15,17 @@ module Schools
     before_action :set_counts
     before_action :set_breadcrumbs
 
+    before_action :check_aggregated_school_in_cache, only: [:show]
+
     def show
-      @advice_page_benchmarks = @school.advice_page_school_benchmarks
+      if Flipper.enabled?(:new_dashboards_2024, current_user)
+        @audience = :adult
+        @meter_collection = aggregate_school # for comparison overview component
+        render :new_show, layout: 'dashboards'
+      else
+        @advice_page_benchmarks = @school.advice_page_school_benchmarks
+        render :show
+      end
     end
 
     def priorities
