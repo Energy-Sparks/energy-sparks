@@ -41,9 +41,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
 
     context 'with electricity but not enough data' do
       let(:school) do
-        create(:school,
-                            :with_basic_configuration_single_meter_and_tariffs,
-                            reading_start_date: Time.zone.yesterday)
+        create(:school, :with_basic_configuration_single_meter_and_tariffs, reading_start_date: Time.zone.yesterday)
       end
 
       it { expect(component.can_benchmark_electricity?).to be(false) }
@@ -65,10 +63,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
 
     context 'with electricity but not enough data' do
       let(:school) do
-        create(:school,
-                            :with_basic_configuration_single_meter_and_tariffs,
-                            fuel_type: :gas,
-                            reading_start_date: Time.zone.yesterday)
+        create(:school, :with_basic_configuration_single_meter_and_tariffs, fuel_type: :gas, reading_start_date: Time.zone.yesterday)
       end
 
       it { expect(component.can_benchmark_gas?).to be(false) }
