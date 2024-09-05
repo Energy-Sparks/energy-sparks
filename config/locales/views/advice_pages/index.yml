@@ -19,6 +19,7 @@ en:
         title: Priority actions
       show:
         how_do_you_compare: How does your school compare?
+        intro: Find advice, prioritised actions and alerts and explore our detailed analysis to help start reducing your energy use.
         not_applicable: No comparison
         not_available: Not enough data
         notice_html: |-
@@ -47,4 +48,5 @@ en:
           thermostatic_control: Understand how well your gas use adapts to changing temperatures
           total_energy_use: A summary of your electricity and gas use
         title: Overview
+        what_next: What should you do next?
       title: Energy efficiency advice

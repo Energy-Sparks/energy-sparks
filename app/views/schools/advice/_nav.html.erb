@@ -10,6 +10,13 @@
       <% s.with_item(name: "#{t('advice_pages.index.priorities.title')} (#{@priority_count})",
                      href: priorities_school_advice_path(@school), classes: 'border-bottom font-weight-normal') %>
     <% end %>
+
+    <% c.with_section toggler: false,
+                      visible: Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) do |s| %>
+      <% s.with_item(name: t('manage_school_menu.review_targets'),
+                     href: school_school_targets_path(school), classes: 'border-bottom font-weight-normal') %>
+    <% end %>
+
     <% c.with_section(name: t('advice_pages.nav.sections.electricity'), icon: nil, classes: 'electric-section',
                       visible: @school.has_electricity?) do |s| %>
       <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, @school, :electricity)).each do |ap| %>
