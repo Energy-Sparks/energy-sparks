@@ -1,22 +1,11 @@
 <% content_for :page_title, "#{t('advice_pages.index.title')} | #{@school.name}" %>
 
 <% content_for :dashboard_header do %>
-  <div class="row dashboard-header-component adult">
-    <div class="col-12 col-md-9">
-      <div class="row">
-        <div class="col">
-          <h1><%= t('advice_pages.index.title') %></h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <p>
-            <%= t('advice_pages.index.show.intro') %>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= component 'dashboard_header',
+                title: 'advice_pages.index.title',
+                intro: 'advice_pages.index.show.intro',
+                show_school: false,
+                school: @school %>
 <% end %>
 
 <div class="container">
