@@ -49,14 +49,14 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
     end
 
     it 'displays links' do
-      expect(html).to have_link('View analysis')
+      expect(html).to have_link(I18n.t('schools.show.find_out_more'))
     end
 
     context 'without links' do
       let(:show_links) { false }
 
       it 'does not display links' do
-        expect(html).not_to have_link('View analysis')
+        expect(html).not_to have_link(I18n.t('schools.show.find_out_more'))
       end
     end
 
@@ -98,7 +98,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
     end
 
     it 'displays links' do
-      expect(html).to have_link('View analysis')
+      expect(html).to have_link(I18n.t('schools.show.find_out_more'))
     end
   end
 
@@ -117,7 +117,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
     end
 
     it 'displays links' do
-      expect(html).to have_link('View analysis')
+      expect(html).to have_link(I18n.t('schools.show.find_out_more'))
     end
   end
 end
