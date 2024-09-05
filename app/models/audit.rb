@@ -49,6 +49,18 @@ class Audit < ApplicationRecord
     intervention_types.where(id: school.observations.intervention.where(at: created_at..).pluck(:intervention_type_id))
   end
 
+  def activity_types_remaining
+    activity_types - completed_activity_types
+  end
+
+  def intervention_types_remaining
+    intervention_types - completed_intervention_types
+  end
+
+  def tasks_remaining?
+    activity_types_remaining.any? || intervention_types_remaining.any?
+  end
+
   def activities_completed?
     activity_type_ids = activity_types.pluck(:id)
     return if activity_type_ids.empty?

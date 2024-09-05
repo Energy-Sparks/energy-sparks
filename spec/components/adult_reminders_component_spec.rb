@@ -417,8 +417,8 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       }
     end
 
-    context 'when there has been a recent audit' do
-      let!(:audit) { create(:audit, school: school) }
+    context 'when there has been an audit with unfinished tasks' do
+      let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
 
       it {
         expect(html).to have_link(I18n.t('common.labels.view_now'),

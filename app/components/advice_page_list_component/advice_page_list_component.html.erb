@@ -9,6 +9,9 @@
     <% section.with_body do %>
       <% advice_pages.display_fuel_types.keys.each_with_index do |fuel_type, idx| %>
         <% if display_advice_page?(school, fuel_type) %>
+          <h4>
+            <%= t("advice_pages.nav.sections.#{fuel_type}") %>
+          </h4>
           <% sort_by_label(advice_pages.where(fuel_type: fuel_type)).each do |ap| %>
             <%= component 'prompt',
                           icon: fuel_type_icon(fuel_type),

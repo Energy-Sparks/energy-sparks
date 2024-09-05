@@ -88,4 +88,10 @@ module Colours
   # Transport survey chart:
   # app/javascript/packs/transport_surveys/charts.js
   # var colors = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"];
+
+  BLUE_PALE = '#f2f6fc'.freeze
+  YELLOW_PALE = '#fdefc8'.freeze
+  GREEN_PALE = '#f0fdf9'.freeze
+  PURPLE_LIGHT = '#e9d5ff'.freeze #need a pale purple
+  GREY_LIGHT = '#f6f6f6'.freeze
 end

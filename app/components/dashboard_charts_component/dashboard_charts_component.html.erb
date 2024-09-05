@@ -1,0 +1,45 @@
+<%= component 'titled_section', id: id, classes: classes do |section| %>
+  <% if title? %>
+    <% section.with_title do %>
+      <%= title %>
+    <% end %>
+  <% end %>
+  <% if intro? %>
+    <% section.with_intro do %>
+      <%= intro %>
+    <% end %>
+  <% end %>
+  <% section.with_body do %>
+    <ul class="nav nav-tabs locales" id="management-energy-overview" role="tablist">
+      <% charts.each_with_index do |(energy, chart_config), index| %>
+        <li class="nav-item">
+          <a class="nav-link <%= 'active' if index.zero? %>"
+             id="<%= energy %>-tab" data-toggle="tab"
+             href="#<%= energy %>-overview"
+             role="tab"
+             aria-controls="<%= energy %>-overview"
+             aria-selected="true">
+             <%= t("management.schools.overview_charts.overview.#{energy}") %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+    <div class="tab-content" id="management-energy-overview-tabs">
+      <% charts.each_with_index do |(energy, chart_config), index| %>
+        <div class="tab-pane fade show <%= 'active' if index.zero? %>"
+             id="<%= energy %>-overview"
+             role="tabpanel"
+             aria-labelledby="<%= energy %>-tab">
+            <%= component 'chart',
+                          school: school,
+                          chart_type: chart_config[:chart],
+                          no_zoom: true,
+                          fuel_type: energy,
+                          chart_config: default_chart_config(chart_config),
+                          autoload_chart: index.zero?,
+                          html_class: "analysis-chart #{energy}-overview-analysis-chart" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
