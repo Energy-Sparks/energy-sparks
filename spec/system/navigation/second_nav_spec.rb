@@ -213,26 +213,32 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     ## TODO: check menu contents (too fluid at the mo, so worth doing later)
   end
 
-  describe 'My schools menu (school group schools)' do
+  describe 'My school group menu' do
     before { visit home_page_path }
 
     context 'when logged out' do
       let(:user) { }
 
-      it { expect(nav).not_to have_css('#school-group-schools-menu') }
+      it { expect(nav).not_to have_css('#my-school-group-menu') }
     end
 
     context 'when user is a group admin for school group' do
       let(:user) { create(:group_admin, school_group: school_group) }
 
+      it 'links to group dashboard' do
+        expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
+      end
+
       context 'when school group has no schools' do
-        it { expect(nav).not_to have_css('#school-group-schools-menu') }
+        it { expect(nav).to have_css('#my-school-group-menu') }
+        it { expect(nav).not_to have_css('#my-school-group-menu div.dropdown-divider') }
       end
 
       context 'when school group has schools' do
         let(:school_group) { create(:school_group, :with_active_schools) }
 
-        it { expect(nav).to have_css('#school-group-schools-menu') }
+        it { expect(nav).to have_css('#my-school-group-menu') }
+        it { expect(nav).to have_css('#my-school-group-menu div.dropdown-divider') }
 
         it 'links to schools' do
           expect(nav).to have_link(school_group.schools.first.name)
@@ -243,7 +249,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     context 'when user has a school group but insufficient permissions' do
       let(:user) { create(:pupil, school_group: school_group) }
 
-      it { expect(nav).not_to have_css('#school-group-schools-menu') }
+      it { expect(nav).not_to have_css('#my-school-group-menu') }
     end
   end
 
