@@ -7,39 +7,110 @@ class CalculateAverageSchool
     benchmark: 0.2..0.4,
     exemplar: 0.1..0.25
   }.freeze
+  FUEL_TYPES = %i[electricity gas].freeze
 
+  # @return [Hash<Hash<Hash<Hash<Array>>>>]
+  #   { electricity: { primary: { schoolday: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                                            ..., },
+  #                                 holiday: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                                            ... },
+  #                                 weekend: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                                            ... } } } }
   def self.perform(s3: nil) # rubocop:disable Naming/MethodParameterName
     calc = new(s3 || Aws::S3::Client.new)
-    data = {}
-    fuel_types = %i[electricity gas]
-
-    by_school_type = fuel_types.index_with { {} }
-    calc.school_generator do |school|
-      fuel_types.each do |fuel_type|
-        school_data = calc.calculate_average_school(school, fuel_type)
-        (by_school_type[fuel_type][school_data[:school_type]] ||= []).push(school_data) if school_data
-      end
-    end
-    fuel_types.each do |fuel_type|
+    averages = {}
+    by_school_type = calc.calculate_averages_by_school_type
+    FUEL_TYPES.each do |fuel_type|
       RANGES.each_key do |type|
-        (data[fuel_type] ||= {})[type] = calc.average_by_type_within_rank_range(by_school_type[fuel_type], RANGES[type])
-        data[fuel_type][type].each_key do |school_type|
-          data[fuel_type][type][school_type][:samples] = calc.school_type_samples[school_type][fuel_type]
-        end
+        (averages[fuel_type] ||= {})[type] =
+          calc.average_by_type_within_rank_range(by_school_type[fuel_type], RANGES[type], fuel_type)
       end
     end
-
-    data
+    averages
   end
-
-  attr_reader :school_type_samples
 
   def initialize(s3_client)
     @s3 = s3_client
     @school_type_samples = {}
   end
 
-  def school_generator
+  # @return [Hash<Hash<Array<Hash<Array>>>>]
+  #   { electricity: { primary: [{ schoolday: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                                             ..., },
+  #                                  holiday: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                                             ... },
+  #                                  weekend: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                                             ... } }]
+  def calculate_averages_by_school_type
+    by_school_type = FUEL_TYPES.index_with { {} }
+    s3_school_generator do |school|
+      FUEL_TYPES.each do |fuel_type|
+        school_data = calculate_average_school(school, fuel_type)
+        (by_school_type[fuel_type][school.school_type.to_sym] ||= []) << school_data if school_data
+      end
+    end
+    by_school_type
+  end
+
+  # @return [Hash<Hash<Hash<Array>>>]
+  #   { primary: { schoolday: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                             ..., },
+  #                  holiday: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                             ... },
+  #                  weekend: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                             ... } }
+  def average_by_type_within_rank_range(by_school_type, rank_range, fuel_type)
+    averages = Hash.new do |h1, school_type|
+      h1[school_type] = Hash.new do |h2, day_type|
+        h2[day_type] = Hash.new do |h3, month|
+          h3[month] = []
+        end
+      end
+    end
+    by_school_type.each do |school_type, school_data_array|
+      group_by_half_hour(school_data_array).each do |day_type, month_data|
+        month_data.each do |month, half_hour_data|
+          half_hour_data.each do |half_hour, hh_kwh_x_n|
+            sample_range = index_range_from_rank_range(hh_kwh_x_n.length, rank_range)
+            to_average = hh_kwh_x_n.sort[sample_range]
+            next if to_average.blank?
+
+            averages[school_type][day_type][month][half_hour] = (to_average.sum / to_average.length).round(6)
+          end
+        end
+      end
+      averages[school_type][:samples] = @school_type_samples[school_type][fuel_type]
+    end
+    averages
+  end
+
+  private
+
+  def group_by_half_hour(school_data_array)
+    by_half_hour = Hash.new do |h1, day_type|
+      h1[day_type] = Hash.new do |h2, month|
+        h2[month] = Hash.new do |h3, half_hour|
+          h3[half_hour] = []
+        end
+      end
+    end
+    school_data_array.each do |school_data|
+      school_data.each do |day_type, month_data|
+        months_or_holidays = day_type == :holiday ? Holidays::MAIN_HOLIDAY_TYPES : 1..12
+        months_or_holidays.each do |month|
+          (0..47).each do |half_hour|
+            amr_x48 = month_data[month]
+            next if amr_x48.nil?
+
+            by_half_hour[day_type][month][half_hour] << amr_x48[half_hour]
+          end
+        end
+      end
+    end
+    by_half_hour
+  end
+
+  def s3_school_generator
     bucket = ENV.fetch('UNVALIDATED_SCHOOL_CACHE_BUCKET', nil)
     self.class.s3_list_objects(@s3, bucket, 'unvalidated-data-') do |content|
       yaml = YAML.unsafe_load(EnergySparks::Gzip.gunzip(@s3.get_object(bucket:, key: content.key).body.read))
@@ -56,13 +127,22 @@ class CalculateAverageSchool
     continuation_token = nil
     loop do
       response = s3_client.list_objects_v2(bucket:, prefix:, continuation_token:)
-      response.contents.each { |content| yield content }
+      response.contents[..5].each { |content| yield content } # rubocop:disable Style/ExplicitBlockArgument - rubocop performance advises using yield
       break unless response.is_truncated
 
       continuation_token = response.next_continuation_token
     end
   end
 
+  # @param school [MeterCollection]
+  # @param fuel_type [Symbol]
+  # @return [Hash]
+  #   { schoolday: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                            ..., },
+  #       holiday: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                            ... },
+  #       weekend: { month1 => array_of_averages_for_48_half_hour_periods,
+  #                            ... } }
   def calculate_average_school(school, fuel_type)
     school_type = school.school_type.to_sym
     return unless SCHOOL_TYPES.include?(school_type)
@@ -77,14 +157,6 @@ class CalculateAverageSchool
 
     end_date = meter.amr_data.end_date
     start_date = [end_date - 365, meter.amr_data.start_date].max
-    {
-      school_name: school.name,
-      school_type:,
-      monthly_data: calculate_monthly_average_profiles(school, meter, start_date, end_date)
-    }
-  end
-
-  def calculate_monthly_average_profiles(school, meter, start_date, end_date)
     collated_data = collate_data(school, meter, start_date, end_date)
     factor = normalising_factor(school, meter, start_date, end_date)
     average_data(collated_data, factor)
@@ -149,98 +221,13 @@ class CalculateAverageSchool
     data
   end
 
-  def group_by_school_types(school_averages)
-    by_type = {}
-
-    school_averages.each do |school_data|
-      by_type[school_data[:school_type]] ||= []
-      by_type[school_data[:school_type]].push(school_data)
-    end
-
-    by_type
-  end
-
-  def average_by_type_within_rank_range(by_school_type, rank_range)
-    data_by_type_then_month_then_half_hour = group_by_type_then_month_then_half_hour(by_school_type)
-
-    data = {}
-
-    data_by_type_then_month_then_half_hour.each do |school_type, data_type_data|
-      data[school_type] = {}
-      data_type_data.each do |daytype, months_data|
-        data[school_type][daytype] = {}
-        months_data.each do |month, half_hour_data|
-          data[school_type][daytype][month] = []
-          half_hour_data.each do |half_hour, hh_kwh_x_n|
-            sample_range = index_range_from_rank_range(hh_kwh_x_n.length, rank_range)
-
-            to_average = hh_kwh_x_n.sort[sample_range]
-
-            next if to_average.blank?
-
-            avg = to_average.sum / to_average.length
-
-            data[school_type][daytype][month][half_hour] = avg.round(6)
-          end
-        end
-      end
-    end
-
-    data
-  end
-
   def index_range_from_rank_range(length, rank_range)
     index_range_low  = (length * rank_range.first).to_i
     index_range_high = (length * rank_range.last).to_i
     index_range_low..index_range_high
   end
 
-  def group_by_type_then_month_then_half_hour(by_school_type)
-    data = group_by_type_then_month(by_school_type)
-
-    data_by_month_half_hour = Hash.new { |hash, key| hash[key] = Hash.new(&hash.default_proc) }
-
-    data.each do |school_type, data_type_data|
-      data_type_data.each do |daytype, schools_data|
-        schools_data.each do |school_data|
-          months_or_holidays = daytype == :holiday ? Holidays::MAIN_HOLIDAY_TYPES : 1..12
-          months_or_holidays.each do |month|
-            (0..47).each do |half_hour|
-              amr_x48 = school_data.dig(:amr_xN_x48, month)
-              next if amr_x48.nil?
-
-              unless data_by_month_half_hour[school_type][daytype][month][half_hour].is_a?(Array)
-                data_by_month_half_hour[school_type][daytype][month][half_hour] =
-                  []
-              end
-              data_by_month_half_hour[school_type][daytype][month][half_hour].push(amr_x48[half_hour])
-            end
-          end
-        end
-      end
-    end
-
-    data_by_month_half_hour
-  end
-
-  def group_by_type_then_month(by_school_type)
-    data = {}
-
-    by_school_type.each do |school_type, schools|
-      data[school_type] ||= {}
-      schools.each do |school|
-        school[:monthly_data].each do |month, amr_x48|
-          data[school_type][month] ||= []
-          data[school_type][month].push({ school_name: school[:school_name], amr_xN_x48: amr_x48 })
-        end
-      end
-    end
-
-    data
-  end
-
   def build_meter_collection(data, meter_attributes_overrides: {})
-    # pseudo_meter_overrides, _meter_overrides = split_pseudo_and_non_pseudo_override_attributes(meter_attributes_overrides)
     meter_attributes = data[:pseudo_meter_attributes]
 
     MeterCollectionFactory.new(
