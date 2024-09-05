@@ -8,6 +8,14 @@ describe Audit do
 
   let(:audit) { create(:audit, school: school, title: title) }
 
+  def complete_activity_type!(audit, activity_type, happened_on = Time.zone.today)
+    Activity.create!(happened_on: happened_on, school: audit.school, activity_type: activity_type, activity_category: activity_type.activity_category)
+  end
+
+  def complete_intervention_type!(audit, intervention_type, at = Time.zone.now)
+    Observation.create!(school: audit.school, observation_type: :intervention, intervention_type: intervention_type, at: at)
+  end
+
   context 'when no title' do
     let(:title) { '' }
 
@@ -62,8 +70,100 @@ describe Audit do
     end
   end
 
+  describe '#activity_types_remaining' do
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types) }
+
+    context 'when no activites are completed' do
+      it { expect(audit.activity_types_remaining).to eq(audit.activity_types) }
+    end
+
+    context 'when one activity has been completed' do
+      before do
+        complete_activity_type!(audit, audit.activity_types.first)
+      end
+
+      it { expect(audit.activity_types_remaining).not_to include(audit.activity_types.first) }
+    end
+
+    context 'when all activities have been completed' do
+      before do
+        audit.activity_types.each do |activity_type|
+          complete_activity_type!(audit, activity_type)
+        end
+      end
+
+      it { expect(audit.activity_types_remaining).to be_empty }
+    end
+  end
+
+  describe '#intervention_types_remaining' do
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types) }
+
+    context 'when no interventions are completed' do
+      it { expect(audit.intervention_types_remaining).to eq(audit.intervention_types) }
+    end
+
+    context 'when one intervention type has been completed' do
+      before do
+        complete_intervention_type!(audit, audit.intervention_types.first, audit.created_at)
+      end
+
+      it { expect(audit.intervention_types_remaining).not_to include(audit.intervention_types.first) }
+    end
+
+    context 'when all intervention types have been completed' do
+      before do
+        audit.intervention_types.each do |intervention_type|
+          complete_intervention_type!(audit, intervention_type)
+        end
+      end
+
+      it { expect(audit.intervention_types_remaining).to be_empty }
+    end
+  end
+
+  describe '#tasks_remaining?' do
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types) }
+
+    context 'when no tasks are completed' do
+      it { expect(audit.tasks_remaining?).to be true }
+    end
+
+    context 'when only activity_types are completed' do
+      before do
+        audit.activity_types.each do |activity_type|
+          complete_activity_type!(audit, activity_type)
+        end
+      end
+
+      it { expect(audit.tasks_remaining?).to be true }
+    end
+
+    context 'when only intervention_types are completed' do
+      before do
+        audit.intervention_types.each do |intervention_type|
+          complete_intervention_type!(audit, intervention_type)
+        end
+      end
+
+      it { expect(audit.tasks_remaining?).to be true }
+    end
+
+    context 'when all tasks are completed' do
+      before do
+        audit.activity_types.each do |activity_type|
+          complete_activity_type!(audit, activity_type)
+        end
+        audit.intervention_types.each do |intervention_type|
+          complete_intervention_type!(audit, intervention_type)
+        end
+      end
+
+      it { expect(audit.tasks_remaining?).to be false }
+    end
+  end
+
   describe '#activities_completed?' do
-    let(:activity_category) { create(:activity_category, name: 'Zebras') }
     let(:audit) { create(:audit, :with_activity_and_intervention_types) }
 
     context 'when no activites are completed' do
@@ -75,7 +175,7 @@ describe Audit do
 
       before do
         audit.activity_types.each do |activity_type|
-          Activity.create!(happened_on: completed_time, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          complete_activity_type!(audit, activity_type, completed_time)
         end
       end
 
@@ -98,7 +198,7 @@ describe Audit do
       before do
         audit.activity_types.each_with_index do |activity_type, i|
           completed_time = i == 0 ? '2022-06-24' : audit.created_at
-          Activity.create!(happened_on: completed_time, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          complete_activity_type!(audit, activity_type, completed_time)
         end
       end
 
@@ -109,7 +209,7 @@ describe Audit do
     context 'when not all activities are complete' do
       before do
         audit.activity_types[0...-1].each do |activity_type|
-          Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          complete_activity_type!(audit, activity_type, audit.created_at)
         end
       end
 
@@ -119,8 +219,6 @@ describe Audit do
   end
 
   describe 'create_activities_completed_observation!' do
-    let(:activity_category) { create(:activity_category, name: 'Zebras') }
-
     context 'with 3 activities, non complete' do
       let(:audit) { create(:audit, :with_activity_and_intervention_types) }
 
@@ -139,7 +237,7 @@ describe Audit do
 
         before do
           audit.activity_types.each do |activity_type|
-            Activity.create!(happened_on: audit.created_at + completed_timeframe, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+            Activity.create!(happened_on: audit.created_at + completed_timeframe, school: audit.school, activity_type: activity_type, activity_category: activity_type.activity_category)
           end
           audit.create_activities_completed_observation!
         end
