@@ -173,7 +173,7 @@ private
       @add_targets = prompt_for_target?
       @set_new_target = prompt_to_set_new_target?
       @review_targets = prompt_to_review_target?
-      @recent_audit = Audits::AuditService.new(@school).recent_audit
+      @last_audit = Audits::AuditService.new(@school).last_audit
       @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
     end
   end
