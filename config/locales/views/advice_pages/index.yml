@@ -4,7 +4,6 @@ en:
     index:
       alerts:
         title: Recent alerts
-        view_analysis: View analysis
       priorities:
         intro: Prioritise the following actions to reduce your costs and carbon dioxide emissions.
         table:
@@ -26,6 +25,9 @@ en:
           <p>Looking for suggestions of how to start reducing your energy usage?</p>
           <p>We've recommended some priority actions to help you make progress. Or explore our detailed analysis below.</p>
         notice_link: View prioritised actions
+        overview_charts:
+          intro: Use the tabs to switch between charts. Click on a chart to drill down into the data.
+          title: Overview charts
         page_summary:
           baseload: Understand how much energy your school uses to keep appliances running all the time
           electricity_costs: Review how much your school has recently spent on electricity
@@ -49,4 +51,4 @@ en:
           total_energy_use: A summary of your electricity and gas use
         title: Overview
         what_next: What should you do next?
-      title: Energy efficiency advice
+      title: Energy efficiency overview

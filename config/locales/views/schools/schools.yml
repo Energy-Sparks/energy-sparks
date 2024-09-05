@@ -71,7 +71,7 @@ en:
         actions_message_1_html: Add any number of adult energy saving actions. The full list can be explored from the public <a href='%{intervention_type_groups_path}'>energy saving action pages</a>
         actions_message_2: To add a custom action, choose "Other" from the appropriate category and include some notes for the user
         activities: Activities
-        activities_message_html: Add any number of pupil-lead activities. The full list can be explored from the public <a href='%{activity_categories_path}'>activity pages</a>
+        activities_message_html: Add any number of pupil-led activities. The full list can be explored from the public <a href='%{activity_categories_path}'>activity pages</a>
         activity_type: Activity Type
         add_a_custom_activity_message: To add a custom activity, choose "Other" from the appropriate category and include some notes for the user
         add_action: Add action
@@ -103,7 +103,7 @@ en:
           one: point
           other: points
         recommended_energy_saving_actions: Recommended energy saving actions
-        recommended_pupil_lead_activities: Recommended pupil-lead activities
+        recommended_pupil_lead_activities: Recommended pupil-led activities
         title: "%{school_name} Audits - %{audit_title}"
         view_all_audits: View all audits
         visibility_note_html: "<strong>Note</strong>: this audit is not visible to users"
@@ -161,7 +161,7 @@ en:
       reminders:
         title: Reminders
       timeline:
-        intro: A list of recent adult and pupil-lead activities at this school
+        intro: A list of recent adult and pupil-led activities at this school
     downloads:
       index:
         aggregated_meter_collection: Aggregated meter collection

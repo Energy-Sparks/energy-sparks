@@ -4,8 +4,11 @@ class DashboardChartsComponent < ApplicationComponent
 
   attr_reader :school
 
+  renders_one :title
+  renders_one :intro
+
   def initialize(school:, id: 'dashboard-charts', classes: '')
-    super(id: id, classes: classes)
+    super(id: id, classes: "dashboard-charts-component #{classes}")
     @school = school
   end
 
