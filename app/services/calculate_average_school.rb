@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# require File.join(Bundler.rubygems.find_name('energy-sparks_analytics').first.full_gem_path,
-#                   'test_support/school_factory')
-
 class CalculateAverageSchool
   SCHOOL_TYPES = %i[primary secondary special].freeze # missing mixed?
   RANGES = {
