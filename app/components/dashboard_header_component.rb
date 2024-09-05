@@ -1,6 +1,8 @@
 class DashboardHeaderComponent < ApplicationComponent
   attr_reader :school, :title, :intro
 
+  # i18n-tasks-use t('schools.dashboards.header.title')
+  # i18n-tasks-use t('schools.dashboards.header.intro')
   def initialize(school:,
                  audience: :adult,
                  title: 'schools.dashboards.header.title',
