@@ -29,8 +29,8 @@
   <%= render 'management/schools/prompt_training' %>
 <% end %>
 
-<% if @recent_audit %>
-  <%= render 'schools/prompt_audit', audit: @recent_audit %>
+<% if @last_audit %>
+  <%= render 'schools/prompt_audit', audit: @last_audit %>
 <% end %>
 
 <% if @add_targets %>

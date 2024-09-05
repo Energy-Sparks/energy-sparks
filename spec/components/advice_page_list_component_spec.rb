@@ -57,6 +57,8 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
         create(:school, :with_fuel_configuration, has_gas: false, has_solar_pv: false, has_storage_heaters: false)
       end
 
+      it { expect(html).to have_content(I18n.t('advice_pages.nav.sections.electricity')) }
+
       it_behaves_like 'a properly rended prompt' do
         let(:expected_path) { insights_school_advice_baseload_path(school) }
         let(:expected_page) { baseload }
@@ -71,6 +73,8 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
 
     context 'when school has gas' do
       let(:school) { create(:school, :with_fuel_configuration, has_solar_pv: false, has_storage_heaters: false) }
+
+      it { expect(html).to have_content(I18n.t('advice_pages.nav.sections.gas')) }
 
       it_behaves_like 'a properly rended prompt' do
         let(:expected_path) { insights_school_advice_heating_control_path(school) }
@@ -87,6 +91,8 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
     context 'when school has storage heaters' do
       let(:school) { create(:school, :with_fuel_configuration, has_solar_pv: false, has_gas: false) }
 
+      it { expect(html).to have_content(I18n.t('advice_pages.nav.sections.storage_heater')) }
+
       it_behaves_like 'a properly rended prompt' do
         let(:expected_path) { insights_school_advice_storage_heaters_path(school) }
         let(:expected_page) { storage_heaters }
@@ -101,6 +107,8 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
 
     context 'when school has solar' do
       let(:school) { create(:school, :with_fuel_configuration, has_storage_heaters: false, has_gas: false) }
+
+      it { expect(html).to have_content(I18n.t('advice_pages.nav.sections.solar_pv')) }
 
       it_behaves_like 'a properly rended prompt' do
         let(:expected_path) { insights_school_advice_baseload_path(school) }

@@ -4,7 +4,6 @@ en:
     index:
       alerts:
         title: Recent alerts
-        view_analysis: View analysis
       priorities:
         intro: We've identified the following opportunities to reduce your costs and carbon dioxide emissions.
         table:
