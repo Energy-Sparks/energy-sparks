@@ -1,5 +1,10 @@
 module Colours
 
+ # SASS variables are generated in colours.scss.erb
+  # for all values here. Examples as follows:
+  # $yellow-pale: #fdefc8;
+  # $blue-very-dark: #334375;
+
   ALL = {
     yellow: { # new yellows
       pale: '#fdefc8'.freeze,
@@ -14,8 +19,36 @@ module Colours
       medium: '#cbe4fc'.freeze, # used in nav so far
       dark: '#334375'.freeze, # paragraph text
       very_dark: '#192a52'.freeze  # new nav blue (adult) and headings
-    }
+    },
+
   }.freeze
+
+  # Colours::get(:yellow, :very_dark)
+  def self.get(colour, shade = nil)
+    ALL[colour][shade]
+  end
+
+  # Colours::yellow_very_dark
+  def self.method_missing(method_name, *args, &block)
+    color, shade = split_method_name(method_name)
+    if ALL[color] && ALL[color][shade]
+      ALL[color][shade]
+    else
+      super
+    end
+  end
+
+  def self.respond_to_missing?(method_name, include_private = false)
+    color, shade = split_method_name(method_name)
+    ALL.key?(color) && ALL[color].key?(shade) || super
+  end
+
+  private
+
+  def split_method_name(method_name)
+    method_name.to_s.split("_", 2).map(&:to_sym)
+  end
+
 
   # Old / Current colours
 
