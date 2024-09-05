@@ -1,17 +1,24 @@
 // Core colours for use across the application
 
-// Mappings to values found in initializers/colours.rb
+// Hex values found in initializers/colours.rb
+
+// This creates a scss variable for each colour of the format $colour-shade: #hexval;
+// e.g.:
+// $yellow-pale: #fdefc8;
+// New colours
+
+<% Colours::ALL.each do |colour, shades| %>
+  <% shades.each do |shade, hex| %>
+    $<%= colour.to_s.dasherize %>-<%= shade.to_s.dasherize %>: <%= hex %>;
+  <% end %>
+<% end %>
+
+// Old / current colours
+
 // Yellows
 $new-yellow: <%= Colours::NEW_YELLOW %>; // not used in the site but same colour is used in mailers & chart_data_values.rb
 $dark-yellow: <%= Colours::DARK_YELLOW %>; // podium
 $light-yellow: <%= Colours::LIGHT_YELLOW %>; // podium
-
-// New Yellows (using in nav)
-$yellow-pale: <%= Colours::YELLOW_PALE %>;
-$yellow-light: <%= Colours::YELLOW_LIGHT %>;
-$yellow-medium: <%= Colours::YELLOW_MEDIUM %>;
-$yellow-dark: <%= Colours::YELLOW_DARK %>;
-$yellow-very-dark: <%= Colours::YELLOW_VERY_DARK %>;
 
 // Oranges
 $dark-orange: <%= Colours::DARK_ORANGE %>;
@@ -24,11 +31,6 @@ $mid-blue: <%= Colours::MID_BLUE %>; // used in charts
 $light-blue: <%= Colours::LIGHT_BLUE %>;
 $lighter-light-blue: <%= Colours::LIGHTER_LIGHT_BLUE %>;
 $bluey-white: <%= Colours::BLUEY_WHITE %>; // used for background on pupil dashboards
-
-// New Blues (using in nav)
-$blue-very-dark: <%= Colours::BLUE_VERY_DARK %>; // new nav blue (adult) and headings
-$blue-dark: <%= Colours::BLUE_DARK %>; // paragraph text
-$blue-medium: <%= Colours::BLUE_MEDIUM %>; // used in nav so far
 
 // Greens
 $green: <%= Colours::GREEN %>;

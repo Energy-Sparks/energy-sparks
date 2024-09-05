@@ -1,15 +1,28 @@
 module Colours
+
+  ALL = {
+    yellow: { # new yellows
+      pale: '#fdefc8'.freeze,
+      light: '#fcdc8b'.freeze,
+      medium: '#f9b233'.freeze,
+      dark: '#772d10'.freeze,
+      very_dark: '#441504'.freeze
+    },
+    blue: { # new blues
+      pale: '#f2f6fc'.freeze,
+      light: '#344374'.freeze,
+      medium: '#cbe4fc'.freeze, # used in nav so far
+      dark: '#334375'.freeze, # paragraph text
+      very_dark: '#192a52'.freeze  # new nav blue (adult) and headings
+    }
+  }.freeze
+
+  # Old / Current colours
+
   # YELLOWS
   NEW_YELLOW = '#fcb43a'.freeze
   DARK_YELLOW = '#ffde4d'.freeze
   LIGHT_YELLOW = '#fff9b2'.freeze
-
-  # NEW YELLOWS (using in nav)
-  YELLOW_PALE = '#fdefc8'.freeze
-  YELLOW_LIGHT = '#fcdc8b'.freeze
-  YELLOW_MEDIUM = '#f9b233'.freeze
-  YELLOW_DARK = '#772d10'.freeze
-  YELLOW_VERY_DARK = '#441504'.freeze
 
   # ORANGES
   DARK_ORANGE = '#ff4500'.freeze
@@ -22,11 +35,6 @@ module Colours
   LIGHT_BLUE = '#97e6fc'.freeze
   LIGHTER_LIGHT_BLUE = '#cbf4ff'.freeze
   BLUEY_WHITE = '#fcffff'.freeze
-
-  # NEW BLUES (using in nav)
-  BLUE_VERY_DARK = '#192a52'.freeze
-  BLUE_DARK = '#334375'.freeze
-  BLUE_MEDIUM = '#cbe4fc'.freeze
 
   # GREENS
   GREEN = '#5cb85c'.freeze
