@@ -79,6 +79,9 @@ en:
     school_calendar: School calendar
     school_configuration: School configuration
     your_school_estate: Your school estate
+  my_school_group_menu:
+    group_dashboard: Group dashboard
+    my_school_group: My school group
   my_school_menu:
     complete_pupil_activities: Complete pupil activities
     download_our_data: Download our data
