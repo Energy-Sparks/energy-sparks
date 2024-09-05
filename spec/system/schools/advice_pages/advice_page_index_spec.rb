@@ -163,7 +163,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     context 'with enough data to compare electricity' do
       it 'shows the fuel comparison' do
         expect(page).to have_css('#electricity-comparison')
-        expect(page).to have_content('How does your electricity use for the last 12 months compare to other Primary schools on Energy Sparks, with a similar number of pupils?')
+        expect(page).to have_content(I18n.t('advice_pages.total_energy_use.insights.comparison.title'))
       end
     end
   end
