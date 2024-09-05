@@ -20,7 +20,7 @@ module Schools
     def show
       if Flipper.enabled?(:new_dashboards_2024, current_user)
         @audience = :adult
-        @meter_collection = aggregate_school
+        @meter_collection = aggregate_school # for comparison overview component
         render :new_show, layout: 'dashboards'
       else
         @advice_page_benchmarks = @school.advice_page_school_benchmarks
