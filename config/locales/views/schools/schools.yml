@@ -151,15 +151,11 @@ en:
       header:
         intro: Find the latest information, alerts and links to further analysis of the energy performance at this school
         title: Welcome
-      insights:
-        title: Insights and actions
       learn_more:
         explore: Explore energy data
         intro: View charts, get insights into reducing energy usage and compare performance against other schools
         opportunities: Energy saving opportunities
         title: Learn more about your energy use
-      reminders:
-        title: Reminders
       timeline:
         intro: A list of recent adult and pupil-led activities at this school
     downloads:
