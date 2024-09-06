@@ -102,30 +102,10 @@ a.badge.outline {
   }
 }
 
-div.activity_type {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $dark;
-  }
-}
-
 .highcharts-annotation a,
 .highcharts-annotation a:hover{
   color: inherit;
   text-decoration: inherit;
-}
-
-footer {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $white;
-  }
 }
 
 section.highlight {
