@@ -6,12 +6,14 @@
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'calendar-days', fuel_type: :storage_heaters do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'calendar-days', fuel_type: :storage_heaters,
+                                     classes: 'col-12 col-md-4' do |c| %>
         <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Week',
                              link_text: t('pupils.analysis.how_much_last_year') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: @school, icon: 'calendar', fuel_type: :storage_heaters do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'calendar', fuel_type: :storage_heaters,
+                                     classes: 'col-12 col-md-4' do |c| %>
         <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Year',
                              link_text: t('pupils.analysis.how_changed_long_term') %>
       <% end %>
@@ -25,7 +27,8 @@
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'scale-balanced', fuel_type: :storage_heaters do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'scale-balanced', fuel_type: :storage_heaters,
+                                     classes: 'col-12 col-md-4' do |c| %>
         <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Bench',
                              link_text: t('pupils.analysis.compare_electricity_across_schools') %>
       <% end %>

@@ -1,5 +1,9 @@
-.dashboard-learn-more-component.data-enabled {
-  background: #f2f6fc;
+.dashboard-learn-more-component.data-enabled.adult {
+  background: $blue-pale;
+}
+
+.dashboard-learn-more-component.data-enabled.pupil {
+  background: #f8f9fa;
 }
 
 .dashboard-learn-more-component.data-disabled {

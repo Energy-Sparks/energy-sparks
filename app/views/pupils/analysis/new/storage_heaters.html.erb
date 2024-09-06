@@ -7,15 +7,18 @@
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'chart-pie', fuel_type: :storage_heaters do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'chart-pie', fuel_type: :storage_heaters,
+                                     classes: 'col-12 col-md-4' do |c| %>
         <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Pie', link_text: t('common.pie_charts') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: @school, icon: 'chart-bar', fuel_type: :storage_heaters do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'chart-bar', fuel_type: :storage_heaters,
+                                     classes: 'col-12 col-md-4' do |c| %>
         <% c.with_category category: :storage_heaters_bar, link_text: t('common.bar_charts') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: @school, icon: 'chart-line', fuel_type: :storage_heaters do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'chart-line', fuel_type: :storage_heaters,
+                                     classes: 'col-12 col-md-4' do |c| %>
         <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Line', link_text: t('common.line_graphs') %>
       <% end %>
     </div>

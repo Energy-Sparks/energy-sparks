@@ -6,7 +6,7 @@
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'calendar-days', fuel_type: :gas do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'calendar-days', fuel_type: :gas, classes: 'col-12 col-md-4' do |c| %>
         <% c.with_chart_link energy: 'Gas', presentation: 'Line', link_text: t('pupils.analysis.how_much_last_week') %>
       <% end %>
     </div>
@@ -19,7 +19,7 @@
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'calendar-day', fuel_type: :gas do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'calendar-day', fuel_type: :gas, classes: 'col-12 col-md-4' do |c| %>
         <% c.with_usage_link period: :daily, link_text: t('pupils.analysis.compare_different_days') %>
       <% end %>
 

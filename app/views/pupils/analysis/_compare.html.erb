@@ -4,16 +4,18 @@
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: school, icon: 'calendar-week', fuel_type: fuel_type do |c| %>
+      <%= component 'pupil_explore', school: school, icon: 'calendar-week', fuel_type: fuel_type,
+                                     classes: 'col-12 col-md-4' do |c| %>
         <% c.with_usage_link period: :weekly, link_text: t('pupils.analysis.compare_different_weeks') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: school, icon: 'calendar-day', fuel_type: fuel_type do |c| %>
+      <%= component 'pupil_explore', school: school, icon: 'calendar-day', fuel_type: fuel_type,
+                                     classes: 'col-12 col-md-4' do |c| %>
         <% c.with_usage_link period: :daily, link_text: t('pupils.analysis.compare_different_days') %>
       <% end %>
 
       <% if school.filterable_meters(fuel_type).count > 1 %>
-        <%= component 'pupil_explore', school: school, icon: 'gauge', fuel_type: fuel_type do |c| %>
+        <%= component 'pupil_explore', school: school, icon: 'gauge', fuel_type: fuel_type, classes: 'col-12 col-md-4' do |c| %>
           <% c.with_usage_link period: :weekly, split_meters: true, link_text: t('pupils.analysis.compare_meters') %>
         <% end %>
       <% end %>
