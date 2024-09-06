@@ -23,20 +23,18 @@ module Colours
     teal_medium: '#88f7dd'.freeze,
     teal_dark: '#10bca2'.freeze,
 
-    off_white: '#f6f6f6'.freeze,
-    table_grey: '#c3c3c3'.freeze,
+    green_pale: '#f0fdf9'.freeze,
 
-    red: '#f8a0a0'.freeze,
+    grey_light: '#f6f6f6'.freeze,
+    table_grey: '#c3c3c3'.freeze, # unused
+
     red_light: '#fff1f1'.freeze,
+    red_medium: '#f8a0a0'.freeze,
 
     purple_light: '#e9d5ff'.freeze,
     purple: '#9333ea'.freeze
-  }.freeze
 
-  # Colours::get(:yellow_very_dark)
-  def self.get(colour)
-    ALL[colour]
-  end
+  }.freeze
 
   # Colours::yellow_very_dark
   def self.method_missing(method_name, *args, &block)
@@ -47,6 +45,11 @@ module Colours
   def self.respond_to_missing?(method_name, include_private = false)
     colour = method_name.to_sym
     ALL.key?(color) || super
+  end
+
+  # Colours::get(:yellow_very_dark)
+  def self.get(colour)
+    ALL[colour]
   end
 
   # Old / Current colours
@@ -129,9 +132,4 @@ module Colours
   # app/javascript/packs/transport_surveys/charts.js
   # var colors = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"];
 
-  BLUE_PALE = '#f2f6fc'.freeze
-  YELLOW_PALE = '#fdefc8'.freeze
-  GREEN_PALE = '#f0fdf9'.freeze
-  PURPLE_LIGHT = '#e9d5ff'.freeze #need a pale purple
-  GREY_LIGHT = '#f6f6f6'.freeze
 end
