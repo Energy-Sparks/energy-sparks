@@ -7,13 +7,13 @@ module Colours
 
   # new colours
   ALL = {
-    blue_pale: '#F2F6FC'.freeze,
+    blue_pale: '#F2F6FC'.freeze, # advice_page_list_component background colour
     blue_light: '#DCECFD'.freeze,
     blue_medium: '#cbe4fc'.freeze, # used in nav so far
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
 
-    yellow_pale: '#CBE4FC'.freeze,
+    yellow_pale: '#CBE4FC'.freeze, #advice_page_list_component background colour
     yellow_light: '#FCDC8B'.freeze,
     yellow_medium: '#f9b233'.freeze,
     yellow_dark: '#772d10'.freeze,
@@ -23,15 +23,15 @@ module Colours
     teal_medium: '#88f7dd'.freeze,
     teal_dark: '#10bca2'.freeze,
 
-    green_pale: '#f0fdf9'.freeze,
+    green_pale: '#f0fdf9'.freeze, # advice_page_list_component background colour
 
-    grey_light: '#f6f6f6'.freeze,
+    grey_light: '#f6f6f6'.freeze, # unused
     table_grey: '#c3c3c3'.freeze, # unused
 
     red_light: '#fff1f1'.freeze,
     red_medium: '#f8a0a0'.freeze,
 
-    purple_light: '#e9d5ff'.freeze,
+    purple_light: '#e9d5ff'.freeze, #advice_page_list_component background colour
     purple: '#9333ea'.freeze
 
   }.freeze

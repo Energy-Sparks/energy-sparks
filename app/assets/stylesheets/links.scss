@@ -1,3 +1,13 @@
+a,
+a:hover,
+a:focus,
+a:active,
+a.active {
+  color: $dark;
+  text-decoration: underline;
+  outline: none;
+}
+
 a.btn,
 a.btn:hover,
 a.btn:focus,
