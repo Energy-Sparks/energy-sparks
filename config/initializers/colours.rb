@@ -1,9 +1,12 @@
 module Colours
 
   ### New (redesign) colours ###
-  # Only use these colours for new features
-  # If a colour from the list that is in the sketch design, please
-  # add it in here and comment against where it is used if possible
+  # Use only these colours for new features
+  # If a colour found in the Sketch design is missing from the list below, please
+  # add it to ALL and comment against where it is used if possible
+  #
+  # Colours can be accessed in ruby as follows:
+  # Colours::yellow_very_dark or Colours:get(:yellow_very_dark)
   #
   # SASS variables for these colours are generated in colours.scss.erb
   # for all values here. Examples as follows:
@@ -11,8 +14,6 @@ module Colours
   # $yellow-pale: #fdefc8;
   # $blue-very-dark: #334375;
   #
-  # Colours can also be accessed in ruby as follows:
-  # Colours::yellow_very_dark or Colours:get(:yellow_very_dark)
 
   ALL = {
     blue_pale: '#f2f6fc'.freeze, # advice_page_list_component background colour
