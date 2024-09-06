@@ -39,7 +39,9 @@ class PupilExploreComponent < ApplicationComponent
     end
 
     def call
-      link_to @link_text, pupils_school_analysis_path(@school, category: @category)
+      link_to @link_text,
+              pupils_school_analysis_path(@school, category: @category),
+              class: 'stretched-link'
     end
   end
 
@@ -52,7 +54,9 @@ class PupilExploreComponent < ApplicationComponent
     end
 
     def call
-      link_to @link_text, pupils_school_analysis_tab_path(@school, @config)
+      link_to @link_text,
+              pupils_school_analysis_tab_path(@school, @config),
+              class: 'stretched-link'
     end
 
     def render?
@@ -70,7 +74,9 @@ class PupilExploreComponent < ApplicationComponent
     end
 
     def call
-      link_to @link_text, school_usage_path(@school, { supply: @supply || @fuel_type }.merge(@config))
+      link_to @link_text,
+              school_usage_path(@school, { supply: @supply || @fuel_type }.merge(@config)),
+              class: 'stretched-link'
     end
   end
 end
