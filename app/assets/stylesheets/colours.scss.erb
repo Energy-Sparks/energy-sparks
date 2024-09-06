@@ -1,19 +1,19 @@
 // Core colours for use across the application
 
-// Hex values found in initializers/colours.rb
+// The hex values for colours can be found in initializers/colours.rb
 
-// This creates a SASS variable for each colour of the format $colour-shade: #hexval;
+// The following creates a SASS variable for each colour found in the Colours::ALL hash
+// in initializers/colours.rb of the format $colour: #hexval;
 // e.g.:
 // $yellow-pale: #fdefc8;
 // $blue-very-dark: #334375;
-
-// New colours
-
 <% Colours::ALL.each do |name, hex| %>
   $<%= name.to_s.dasherize %>: <%= hex %>;
 <% end %>
 
-// Old / current colours
+// Old / current colour mappings ###
+// These are *not* to be used for new features as we're moving away
+// from these to the colours above using the new methods
 
 // Yellows
 $new-yellow: <%= Colours::NEW_YELLOW %>; // not used in the site but same colour is used in mailers & chart_data_values.rb

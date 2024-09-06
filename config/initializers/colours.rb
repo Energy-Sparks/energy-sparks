@@ -1,20 +1,28 @@
 module Colours
 
- # SASS variables are generated in colours.scss.erb
+  ### New (redesign) colours ###
+  # Only use these colours for new features
+  # If a colour from the list that is in the sketch design, please
+  # add it in here and comment against where it is used if possible
+  #
+  # SASS variables for these colours are generated in colours.scss.erb
   # for all values here. Examples as follows:
+  #
   # $yellow-pale: #fdefc8;
   # $blue-very-dark: #334375;
+  #
+  # Colours can also be accessed in ruby as follows:
+  # Colours::yellow_very_dark or Colours:get(:yellow_very_dark)
 
-  # new colours
   ALL = {
-    blue_pale: '#F2F6FC'.freeze, # advice_page_list_component background colour
-    blue_light: '#DCECFD'.freeze,
+    blue_pale: '#f2f6fc'.freeze, # advice_page_list_component background colour
+    blue_light: '#dcecfd'.freeze,
     blue_medium: '#cbe4fc'.freeze, # used in nav so far
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
 
-    yellow_pale: '#CBE4FC'.freeze, #advice_page_list_component background colour
-    yellow_light: '#FCDC8B'.freeze,
+    yellow_pale: '#cbe4fc'.freeze, #advice_page_list_component background colour
+    yellow_light: '#fcdc8b'.freeze,
     yellow_medium: '#f9b233'.freeze,
     yellow_dark: '#772d10'.freeze,
     yellow_very_dark: '#441504'.freeze,
@@ -36,7 +44,7 @@ module Colours
 
   }.freeze
 
-  # Colours::yellow_very_dark
+  # Usage: Colours::yellow_very_dark
   def self.method_missing(method_name, *args, &block)
     colour = method_name.to_sym
     ALL[colour] || super
@@ -47,12 +55,14 @@ module Colours
     ALL.key?(color) || super
   end
 
-  # Colours::get(:yellow_very_dark)
+  # Usage: Colours::get(:yellow_very_dark)
   def self.get(colour)
     ALL[colour]
   end
 
-  # Old / Current colours
+  ### Old / current colours ###
+  # These are *not* to be used for new features as we're moving away
+  # from them to the colours above
 
   # YELLOWS
   NEW_YELLOW = '#fcb43a'.freeze
