@@ -16,8 +16,8 @@ class CalculateAverageSchool
   #                                            ... },
   #                                 weekend: { month1 => array_of_averages_for_48_half_hour_periods,
   #                                            ... } } } }
-  def self.perform(s3: nil) # rubocop:disable Naming/MethodParameterName
-    calc = new(s3 || Aws::S3::Client.new)
+  def self.perform(s3: nil, logger: Rails.logger) # rubocop:disable Naming/MethodParameterName
+    calc = new(s3 || Aws::S3::Client.new, logger)
     averages = {}
     by_school_type = calc.calculate_averages_by_school_type
     FUEL_TYPES.each do |fuel_type|
@@ -29,9 +29,10 @@ class CalculateAverageSchool
     averages
   end
 
-  def initialize(s3_client)
+  def initialize(s3_client, logger)
     @s3 = s3_client
     @school_type_samples = {}
+    @logger = logger
   end
 
   # @return [Hash<Hash<Array<Hash<Array>>>>]
@@ -42,11 +43,16 @@ class CalculateAverageSchool
   #                                  weekend: { month1 => array_of_averages_for_48_half_hour_periods,
   #                                             ... } }]
   def calculate_averages_by_school_type
-    by_school_type = FUEL_TYPES.index_with { {} }
-    s3_school_generator do |school|
+    # by_school_type = FUEL_TYPES.index_with { {} }
+    by_school_type = Hash.new do |h1, fuel_type|
+      h1[fuel_type] = Hash.new do |h2, school_type|
+        h2[school_type] = []
+      end
+    end
+    db_school_generator do |school|
       FUEL_TYPES.each do |fuel_type|
         school_data = calculate_average_school(school, fuel_type)
-        (by_school_type[fuel_type][school.school_type.to_sym] ||= []) << school_data if school_data
+        by_school_type[fuel_type][school.school_type.to_sym] << school_data if school_data
       end
     end
     by_school_type
@@ -110,12 +116,21 @@ class CalculateAverageSchool
     by_half_hour
   end
 
+  def db_school_generator
+    School.process_data.order(:name).each do |school|
+      @logger.info("loading #{school.slug}")
+      yield AggregateSchoolService.new(school).aggregate_school
+      # AggregateDataService.new(meter_collection).validate_meter_data
+      # AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
+      # yield meter_collection
+    end
+  end
+
   def s3_school_generator
     bucket = ENV.fetch('UNVALIDATED_SCHOOL_CACHE_BUCKET', nil)
     self.class.s3_list_objects(@s3, bucket, 'unvalidated-data-') do |content|
       yaml = YAML.unsafe_load(EnergySparks::Gzip.gunzip(@s3.get_object(bucket:, key: content.key).body.read))
       Rails.logger.info("loaded #{content.key}")
-      puts "loaded #{content.key}"
       meter_collection = build_meter_collection(yaml)
       AggregateDataService.new(meter_collection).validate_meter_data
       AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
