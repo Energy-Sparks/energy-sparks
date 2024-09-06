@@ -168,11 +168,15 @@ class CalculateAverageSchool
 
     return if fuel_type == :gas && meter.amr_data.days < 350 # degreeday adjustment wont work otherwise
 
-    (@school_type_samples[school_type] ||= Hash.new(0))[fuel_type] += 1
-
     end_date = meter.amr_data.end_date
     start_date = [end_date - 365, meter.amr_data.start_date].max
-    collated_data = collate_data(school, meter, start_date, end_date)
+    begin
+      collated_data = collate_data(school, meter, start_date, end_date)
+    rescue StandardError => e
+      @logger.error(e)
+      return
+    end
+    (@school_type_samples[school_type] ||= Hash.new(0))[fuel_type] += 1
     factor = normalising_factor(school, meter, start_date, end_date)
     average_data(collated_data, factor)
   end
