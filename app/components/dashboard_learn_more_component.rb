@@ -28,6 +28,12 @@ class DashboardLearnMoreComponent < ApplicationComponent
   end
 
   def intro
-    data_enabled? ? I18n.t("components.dashboard_learn_more.#{audience}.intro") : I18n.t('schools.show.configuring_data_access')
+    if data_enabled?
+      I18n.t("components.dashboard_learn_more.#{audience}.intro")
+    elsif adult?
+      I18n.t('schools.show.configuring_data_access')
+    else
+      I18n.t('pupils.schools.show.setting_up')
+    end
   end
 end
