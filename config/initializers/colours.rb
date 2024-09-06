@@ -5,50 +5,49 @@ module Colours
   # $yellow-pale: #fdefc8;
   # $blue-very-dark: #334375;
 
+  # new colours
   ALL = {
-    yellow: { # new yellows
-      pale: '#fdefc8'.freeze,
-      light: '#fcdc8b'.freeze,
-      medium: '#f9b233'.freeze,
-      dark: '#772d10'.freeze,
-      very_dark: '#441504'.freeze
-    },
-    blue: { # new blues
-      pale: '#f2f6fc'.freeze,
-      light: '#344374'.freeze,
-      medium: '#cbe4fc'.freeze, # used in nav so far
-      dark: '#334375'.freeze, # paragraph text
-      very_dark: '#192a52'.freeze  # new nav blue (adult) and headings
-    },
+    blue_pale: '#F2F6FC'.freeze,
+    blue_light: '#DCECFD'.freeze,
+    blue_medium: '#cbe4fc'.freeze, # used in nav so far
+    blue_dark: '#334375'.freeze, # paragraph text
+    blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
 
+    yellow_pale: '#CBE4FC'.freeze,
+    yellow_light: '#FCDC8B'.freeze,
+    yellow_medium: '#f9b233'.freeze,
+    yellow_dark: '#772d10'.freeze,
+    yellow_very_dark: '#441504'.freeze,
+
+    teal_light: '#cbfcf0'.freeze,
+    teal_medium: '#88f7dd'.freeze,
+    teal_dark: '#10bca2'.freeze,
+
+    off_white: '#f6f6f6'.freeze,
+    table_grey: '#c3c3c3'.freeze,
+
+    red: '#f8a0a0'.freeze,
+    red_light: '#fff1f1'.freeze,
+
+    purple_light: '#e9d5ff'.freeze,
+    purple: '#9333ea'.freeze
   }.freeze
 
-  # Colours::get(:yellow, :very_dark)
-  def self.get(colour, shade = nil)
-    ALL[colour][shade]
+  # Colours::get(:yellow_very_dark)
+  def self.get(colour)
+    ALL[colour]
   end
 
   # Colours::yellow_very_dark
   def self.method_missing(method_name, *args, &block)
-    color, shade = split_method_name(method_name)
-    if ALL[color] && ALL[color][shade]
-      ALL[color][shade]
-    else
-      super
-    end
+    colour = method_name.to_sym
+    ALL[colour] || super
   end
 
   def self.respond_to_missing?(method_name, include_private = false)
-    color, shade = split_method_name(method_name)
-    ALL.key?(color) && ALL[color].key?(shade) || super
+    colour = method_name.to_sym
+    ALL.key?(color) || super
   end
-
-  private
-
-  def split_method_name(method_name)
-    method_name.to_s.split("_", 2).map(&:to_sym)
-  end
-
 
   # Old / Current colours
 

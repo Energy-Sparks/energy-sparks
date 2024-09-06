@@ -9,10 +9,8 @@
 
 // New colours
 
-<% Colours::ALL.each do |colour, shades| %>
-  <% shades.each do |shade, hex| %>
-    $<%= colour.to_s.dasherize %>-<%= shade.to_s.dasherize %>: <%= hex %>;
-  <% end %>
+<% Colours::ALL.each do |name, hex| %>
+  $<%= name.to_s.dasherize %>: <%= hex %>;
 <% end %>
 
 // Old / current colours
