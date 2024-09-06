@@ -1,6 +1,6 @@
 <%= render 'header', school: @school, fuel_type: :storage_heater, category: :storage_heaters, link: true %>
 
-<%= component 'titled_section' do |section| %>
+<%= component 'titled_section', classes: 'mt-2' do |section| %>
   <%= section.with_title do %>
     <h2><%= t('pupils.analysis.i_would_like_to_know') %></h2>
   <% end %>
@@ -21,7 +21,7 @@
   <% end %>
 <% end %>
 
-<%= component 'titled_section' do |section| %>
+<%= component 'titled_section', classes: 'mt-2' do |section| %>
   <%= section.with_title do %>
     <h2><%= t('pupils.analysis.i_would_like_to_compare') %></h2>
   <% end %>

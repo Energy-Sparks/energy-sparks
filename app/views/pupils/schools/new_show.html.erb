@@ -12,11 +12,10 @@
                     user: current_user %>
     </div>
   </div>
-  <div class="row mt-4 mb-4">
-    <div class="col">
-      <%= component 'dashboard_learn_more', school: @school, audience: :pupil, user: current_user %>
-    </div>
-  </div>
+  <%= component 'pupil_dashboard_learn_more',
+                classes: 'mt-4 mb-4',
+                school: @school,
+                user: current_user %>
 </div>
 
 <div class="container">
