@@ -2,7 +2,8 @@
 
 class PageNavComponent < ViewComponent::Base
   renders_many :sections, ->(**args) do
-    args[:options] = options
+    args[:options] ||= {}
+    args[:options] = options.merge(args[:options])
     SectionComponent.new(**args)
   end
 
