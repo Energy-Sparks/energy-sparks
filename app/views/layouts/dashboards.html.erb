@@ -15,7 +15,11 @@
     <%= yield %>
 
     <% if show_partner_footer?(@school) %>
-      <%= render 'shared/partners' %>
+      <div class="container-fluid bg-light ">
+        <div class="container">
+          <%= render 'shared/partners' %>
+        </div>
+      </div>
     <% end %>
     <%= render 'shared/cookie_banner' %>
     <%= render 'shared/footer' %>
