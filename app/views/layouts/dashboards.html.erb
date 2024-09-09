@@ -5,7 +5,7 @@
   </head>
   <body>
     <%= render 'shared/navigation' %>
-    <div class="container-fluid <%= @audience %> pb-2">
+    <div class="container-fluid <%= @audience || :adult %> pb-2">
       <div class="container<%= nav_margin_classes %>">
         <%= render 'shared/breadcrumbs' %>
         <%= render 'shared/alerts' if flash.any? %>
