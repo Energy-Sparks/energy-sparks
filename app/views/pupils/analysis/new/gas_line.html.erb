@@ -6,20 +6,20 @@
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'calendar-days', fuel_type: :gas do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'calendar-days', fuel_type: :gas, classes: 'col-12 col-md-4' do |c| %>
         <% c.with_chart_link energy: 'Gas', presentation: 'Line', link_text: t('pupils.analysis.how_much_last_week') %>
       <% end %>
     </div>
   <% end %>
 <% end %>
 
-<%= component 'titled_section' do |section| %>
+<%= component 'titled_section', classes: 'mt-2' do |section| %>
   <%= section.with_title do %>
     <h2><%= t('pupils.analysis.i_would_like_to_compare') %></h2>
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'calendar-day', fuel_type: :gas do |c| %>
+      <%= component 'pupil_explore', school: @school, icon: 'calendar-day', fuel_type: :gas, classes: 'col-12 col-md-4' do |c| %>
         <% c.with_usage_link period: :daily, link_text: t('pupils.analysis.compare_different_days') %>
       <% end %>
 
