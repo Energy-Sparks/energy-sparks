@@ -17,7 +17,7 @@
 
     <% c.with_section toggler: false,
                       visible: Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget),
-                      options: { match_controller: false } do |s| %>
+                      options: { match_controller: true } do |s| %>
       <% s.with_item(name: t('manage_school_menu.review_targets'),
                      href: school_school_targets_path(school), classes: 'section-link') %>
     <% end %>

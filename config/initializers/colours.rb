@@ -1,15 +1,74 @@
 module Colours
+
+  ### New (redesign) colours ###
+  # Use only these colours for new features
+  # If a colour found in the Sketch design is missing from the list below, please
+  # add it to ALL and comment against where it is used if possible
+  #
+  # Colours can be accessed in ruby as follows:
+  # Colours::yellow_very_dark or Colours:get(:yellow_very_dark)
+  #
+  # SASS variables for these colours are generated in colours.scss.erb
+  # for all values here. Examples as follows:
+  #
+  # $yellow-pale: #fdefc8;
+  # $blue-very-dark: #334375;
+  #
+
+  ALL = {
+    blue_pale: '#f2f6fc'.freeze, # advice_page_list_component background colour
+    blue_light: '#dcecfd'.freeze,
+    blue_medium: '#cbe4fc'.freeze, # used in nav so far
+    blue_dark: '#334375'.freeze, # paragraph text
+    blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
+
+    yellow_pale: '#cbe4fc'.freeze, #advice_page_list_component background colour
+    yellow_light: '#fcdc8b'.freeze,
+    yellow_medium: '#f9b233'.freeze,
+    yellow_dark: '#772d10'.freeze,
+    yellow_very_dark: '#441504'.freeze,
+
+    teal_light: '#cbfcf0'.freeze,
+    teal_medium: '#88f7dd'.freeze,
+    teal_dark: '#10bca2'.freeze,
+
+    green_pale: '#f0fdf9'.freeze, # advice_page_list_component background colour
+
+    grey_light: '#f6f6f6'.freeze, # unused
+    table_grey: '#c3c3c3'.freeze, # unused
+
+    red_light: '#fff1f1'.freeze,
+    red_medium: '#f8a0a0'.freeze,
+
+    purple_light: '#e9d5ff'.freeze, #advice_page_list_component background colour
+    purple: '#9333ea'.freeze
+
+  }.freeze
+
+  # Usage: Colours::yellow_very_dark
+  def self.method_missing(method_name, *args, &block)
+    colour = method_name.to_sym
+    ALL[colour] || super
+  end
+
+  def self.respond_to_missing?(method_name, include_private = false)
+    colour = method_name.to_sym
+    ALL.key?(color) || super
+  end
+
+  # Usage: Colours::get(:yellow_very_dark)
+  def self.get(colour)
+    ALL[colour]
+  end
+
+  ### Old / current colours ###
+  # These are *not* to be used for new features as we're moving away
+  # from them to the colours above
+
   # YELLOWS
   NEW_YELLOW = '#fcb43a'.freeze
   DARK_YELLOW = '#ffde4d'.freeze
   LIGHT_YELLOW = '#fff9b2'.freeze
-
-  # NEW YELLOWS (using in nav)
-  YELLOW_PALE = '#fdefc8'.freeze
-  YELLOW_LIGHT = '#fcdc8b'.freeze
-  YELLOW_MEDIUM = '#f9b233'.freeze
-  YELLOW_DARK = '#772d10'.freeze
-  YELLOW_VERY_DARK = '#441504'.freeze
 
   # ORANGES
   DARK_ORANGE = '#ff4500'.freeze
@@ -22,11 +81,6 @@ module Colours
   LIGHT_BLUE = '#97e6fc'.freeze
   LIGHTER_LIGHT_BLUE = '#cbf4ff'.freeze
   BLUEY_WHITE = '#fcffff'.freeze
-
-  # NEW BLUES (using in nav)
-  BLUE_VERY_DARK = '#192a52'.freeze
-  BLUE_DARK = '#334375'.freeze
-  BLUE_MEDIUM = '#cbe4fc'.freeze
 
   # GREENS
   GREEN = '#5cb85c'.freeze
@@ -89,9 +143,4 @@ module Colours
   # app/javascript/packs/transport_surveys/charts.js
   # var colors = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"];
 
-  BLUE_PALE = '#f2f6fc'.freeze
-  YELLOW_PALE = '#fdefc8'.freeze
-  GREEN_PALE = '#f0fdf9'.freeze
-  PURPLE_LIGHT = '#e9d5ff'.freeze #need a pale purple
-  GREY_LIGHT = '#f6f6f6'.freeze
 end

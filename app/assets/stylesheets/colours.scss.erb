@@ -1,17 +1,24 @@
 // Core colours for use across the application
 
-// Mappings to values found in initializers/colours.rb
+// The hex values for colours can be found in initializers/colours.rb
+
+// The following creates a SASS variable for each colour found in the Colours::ALL hash
+// in initializers/colours.rb of the format $colour: #hexval;
+// e.g.:
+// $yellow-pale: #fdefc8;
+// $blue-very-dark: #334375;
+<% Colours::ALL.each do |name, hex| %>
+  $<%= name.to_s.dasherize %>: <%= hex %>;
+<% end %>
+
+// Old / current colour mappings ###
+// These are *not* to be used for new features as we're moving away
+// from them to the colours above
+
 // Yellows
 $new-yellow: <%= Colours::NEW_YELLOW %>; // not used in the site but same colour is used in mailers & chart_data_values.rb
 $dark-yellow: <%= Colours::DARK_YELLOW %>; // podium
 $light-yellow: <%= Colours::LIGHT_YELLOW %>; // podium
-
-// New Yellows (using in nav)
-$yellow-pale: <%= Colours::YELLOW_PALE %>;
-$yellow-light: <%= Colours::YELLOW_LIGHT %>;
-$yellow-medium: <%= Colours::YELLOW_MEDIUM %>;
-$yellow-dark: <%= Colours::YELLOW_DARK %>;
-$yellow-very-dark: <%= Colours::YELLOW_VERY_DARK %>;
 
 // Oranges
 $dark-orange: <%= Colours::DARK_ORANGE %>;
@@ -24,11 +31,6 @@ $mid-blue: <%= Colours::MID_BLUE %>; // used in charts
 $light-blue: <%= Colours::LIGHT_BLUE %>;
 $lighter-light-blue: <%= Colours::LIGHTER_LIGHT_BLUE %>;
 $bluey-white: <%= Colours::BLUEY_WHITE %>; // used for background on pupil dashboards
-
-// New Blues (using in nav)
-$blue-very-dark: <%= Colours::BLUE_VERY_DARK %>; // new nav blue (adult) and headings
-$blue-dark: <%= Colours::BLUE_DARK %>; // paragraph text
-$blue-medium: <%= Colours::BLUE_MEDIUM %>; // used in nav so far
 
 // Greens
 $green: <%= Colours::GREEN %>;
@@ -84,12 +86,6 @@ $bg-negative: $new-red;
 $bg-positive-light: $light-turquoise;
 $bg-neutral-light: $lighter-light-blue;
 $bg-negative-light: $light-red;
-
-$blue-pale: <%= Colours::BLUE_PALE %>;
-$yellow-pale: <%= Colours::YELLOW_PALE %>;
-$green-pale: <%= Colours::GREEN_PALE %>;
-$purple-light: <%= Colours::PURPLE_LIGHT %>;
-$grey-light: <%= Colours::GREY_LIGHT %>;
 
 $fuel-colours-light: (
   "electric" : $electric-light,
