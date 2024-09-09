@@ -22,7 +22,7 @@ module Colours
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
 
-    yellow_pale: '#cbe4fc'.freeze, #advice_page_list_component background colour
+    yellow_pale: '#fdefc8'.freeze, #advice_page_list_component background colour
     yellow_light: '#fcdc8b'.freeze,
     yellow_medium: '#f9b233'.freeze,
     yellow_dark: '#772d10'.freeze,
