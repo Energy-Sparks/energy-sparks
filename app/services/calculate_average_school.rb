@@ -43,7 +43,6 @@ class CalculateAverageSchool
   #                                  weekend: { month1 => array_of_averages_for_48_half_hour_periods,
   #                                             ... } }]
   def calculate_averages_by_school_type
-    # by_school_type = FUEL_TYPES.index_with { {} }
     by_school_type = Hash.new do |h1, fuel_type|
       h1[fuel_type] = Hash.new do |h2, school_type|
         h2[school_type] = []
@@ -120,9 +119,6 @@ class CalculateAverageSchool
     School.process_data.order(:name).each do |school|
       @logger.info("loading #{school.slug}")
       yield AggregateSchoolService.new(school).aggregate_school
-      # AggregateDataService.new(meter_collection).validate_meter_data
-      # AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
-      # yield meter_collection
     end
   end
 
