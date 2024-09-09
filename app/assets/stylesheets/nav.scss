@@ -77,6 +77,39 @@
   }
 }
 
+.navbar {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    outline: none;
+    text-decoration: none;
+    font-weight: bold;
+    color: $white;
+  }
+}
+
+li.nav-item a.btn,
+li.nav-item a.btn:hover,
+li.nav-item a.btn:focus,
+li.nav-item a.btn:active {
+ // float: right;
+  margin-bottom: 3px;
+  color: $dark;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.sub-nav  {
+  li.nav-item a.btn,
+  li.nav-item a.btn:hover,
+  li.nav-item a.btn:focus,
+  li.nav-item a.btn:active {
+    margin-bottom: 0px;
+  }
+}
+
 .nav-tabs {
   .nav-item {
     .nav-link.active {

@@ -4,9 +4,8 @@ en:
     index:
       alerts:
         title: Recent alerts
-        view_analysis: View analysis
       priorities:
-        intro: Prioritise the following actions to reduce your costs and carbon dioxide emissions.
+        intro: We've identified the following opportunities to reduce your costs and carbon dioxide emissions.
         table:
           columns:
             co2_reduction: CO2 (kg)
@@ -16,15 +15,22 @@ en:
             kwh_saving: Energy (kWh)
             savings: Savings
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
-        title: Priority actions
+        table_title: Prioritised opportunities
+        title: Energy saving opportunities
       show:
         how_do_you_compare: How does your school compare?
+        intro_html: |-
+          <a href="#overview-charts">Review overview charts</a>, explore <a href="#detailed-analysis">our detailed analysis</a>,
+          <a href="#whats-next">start reducing energy use</a> and see how you <a href="#comparison">compare against other schools</a>
         not_applicable: No comparison
         not_available: Not enough data
         notice_html: |-
           <p>Looking for suggestions of how to start reducing your energy usage?</p>
           <p>We've recommended some priority actions to help you make progress. Or explore our detailed analysis below.</p>
         notice_link: View prioritised actions
+        overview_charts:
+          intro: Use the tabs to switch between charts. Click on a chart to drill down into the data.
+          title: Overview charts
         page_summary:
           baseload: Understand how much energy your school uses to keep appliances running all the time
           electricity_costs: Review how much your school has recently spent on electricity
@@ -47,4 +53,5 @@ en:
           thermostatic_control: Understand how well your gas use adapts to changing temperatures
           total_energy_use: A summary of your electricity and gas use
         title: Overview
-      title: Energy efficiency advice
+        what_next: What should you do next?
+      title: Energy efficiency overview

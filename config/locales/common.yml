@@ -64,7 +64,9 @@ en:
       update: Update
       upload: Upload
       view: View
+      view_alerts: View alerts
       view_now: View now
+      view_opportunities: View opportunities
       view_results: View results
       yes_label: 'Yes'
     line_graphs: Line graphs

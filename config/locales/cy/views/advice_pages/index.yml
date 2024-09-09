@@ -3,7 +3,6 @@ cy:
     index:
       alerts:
         title: Rhybuddion diweddar
-        view_analysis: Gweler dadansoddiad
       priorities:
         intro: Blaenoriaethwch y gweithredoedd canlynol i leihau eich costau ac allyriadau carbon deuocsid.
         table:

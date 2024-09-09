@@ -1,0 +1,6 @@
+---
+en:
+  components:
+    dashboard_header:
+      intro_html: <a href="#explore-energy-data">Explore the latest energy data</a>, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activity on your scoreboard</a>
+      title: Welcome

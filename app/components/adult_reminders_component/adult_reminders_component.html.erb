@@ -64,14 +64,14 @@
   <% end %>
 
   <% add_prompt(id: :audit,
-                check: recent_audit,
+                check: last_audit&.tasks_remaining?,
                 list: list,
                 status: :neutral,
-                icon: 'fa-laptop',
+                icon: 'laptop',
                 link: 'common.labels.view_now',
-                path: recent_audit ? school_audit_path(school, recent_audit) : nil) do %>
+                path: last_audit ? school_audit_path(school, last_audit) : nil) do %>
     <p>
-      <%= Audits::Progress.new(recent_audit).notification %>
+      <%= Audits::Progress.new(last_audit).notification %>
     </p>
   <% end %>
 

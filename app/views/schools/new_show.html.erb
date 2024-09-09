@@ -7,7 +7,10 @@
 <div class="container">
   <div class="row mt-4">
     <div class="col">
-      <%= component 'energy_summary_table', school: @school, user: current_user %>
+      <%= component 'energy_summary_table',
+                    id: 'explore-energy-data',
+                    school: @school,
+                    user: current_user %>
     </div>
   </div>
   <div class="row mt-4 mb-4">
@@ -18,6 +21,7 @@
   <div class="row mt-4">
     <div class="col">
       <%= component 'dashboard_insights',
+                    id: 'alerts-and-reminders',
                     audience: @audience,
                     school: @school,
                     user: current_user,
@@ -29,6 +33,7 @@
 <div class="container-fluid bg-light pb-3">
   <div class="container">
     <%= component 'scoreboard_summary',
+                  id: 'scoreboard-summary',
                   podium: current_school_podium,
                   user: current_user,
                   audience: @audience,
@@ -41,6 +46,5 @@
                   classes: 'mt-4' %>
 
     <%= component 'dashboard_login', school: @school, user: current_user %>
-
   </div>
 </div>

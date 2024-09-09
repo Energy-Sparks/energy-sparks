@@ -3,7 +3,12 @@
 }
 
 .page-nav-component a.nav-link.current {
-  font-weight: bolder;
+  font-weight: bolder !important;
+}
+
+.page-nav-component a.nav-link.section-link {
+  border-bottom: 1px solid #dee2e6 !important; // bootstrap border-bottom default
+  font-weight: normal;
 }
 
 @each $tag, $colour in $fuel-colours-light {
