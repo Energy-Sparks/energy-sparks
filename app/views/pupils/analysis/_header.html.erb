@@ -12,6 +12,10 @@
                   pupils_school_analysis_path(school,
                                               category: local_assigns[:category] || fuel_type),
                   class: 'btn btn-outline-dark' %>
+    <% else %>
+    <%= link_to t('pupils.analysis.explore_data'),
+                pupils_school_path(school),
+                class: 'btn btn-outline-dark' %>
     <% end %>
   </div>
 </div>

@@ -25,13 +25,13 @@ RSpec.describe DashboardLearnMoreComponent, :include_url_helpers, type: :compone
 
   shared_examples 'a data enabled panel' do
     it { expect(html).to have_css('.data-enabled')}
-    it { expect(html).to have_content(I18n.t('schools.dashboards.learn_more.title'))}
-    it { expect(html).to have_content(I18n.t('schools.dashboards.learn_more.intro'))}
+    it { expect(html).to have_content(I18n.t('components.dashboard_learn_more.adult.title'))}
+    it { expect(html).to have_content(I18n.t('components.dashboard_learn_more.adult.intro'))}
 
     it 'links to the analysis' do
-      expect(html).to have_link(I18n.t('schools.dashboards.learn_more.explore'),
+      expect(html).to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
                                 href: school_advice_path(school))
-      expect(html).to have_link(I18n.t('schools.dashboards.learn_more.opportunities'),
+      expect(html).to have_link(I18n.t('components.dashboard_learn_more.adult.opportunities'),
                                 href: priorities_school_advice_path(school))
     end
   end
@@ -48,9 +48,9 @@ RSpec.describe DashboardLearnMoreComponent, :include_url_helpers, type: :compone
     it { expect(html).to have_content(I18n.t('schools.show.configuring_data_access'))}
 
     it 'does not link to the analysis' do
-      expect(html).not_to have_link(I18n.t('schools.dashboards.learn_more.explore'),
+      expect(html).not_to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
                                     href: school_advice_path(school))
-      expect(html).not_to have_link(I18n.t('schools.dashboards.learn_more.opportunities'),
+      expect(html).not_to have_link(I18n.t('components.dashboard_learn_more.adult.opportunities'),
                                     href: priorities_school_advice_path(school))
     end
 

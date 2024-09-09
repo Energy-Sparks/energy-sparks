@@ -40,7 +40,7 @@ RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :compone
                                     '1st',
                                     other_school.name,
                                     '10',
-                                    "Recorded \"#{activity.display_name}\""
+                                    activity.display_name
                                   ])
   end
 
@@ -54,7 +54,7 @@ RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :compone
       expect(html).to have_selector(:table_row, [
                                       other_school.name,
                                       '10',
-                                      "Recorded \"#{activity.display_name}\""
+                                      activity.display_name
                                     ])
     end
   end
