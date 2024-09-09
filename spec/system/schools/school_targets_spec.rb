@@ -504,7 +504,7 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
 
     context 'with activities' do
       let!(:intervention_type)  { create(:intervention_type, name: 'Upgraded insulation') }
-      let!(:activity_type)      { create(:activity_type) }
+      let!(:activity_type)      { create(:activity_type, name: 'Did something cool') }
       let!(:intervention)       { create(:observation, :intervention, school: test_school, intervention_type: intervention_type, at: start_date + 1.day)}
       let!(:activity)           { create(:activity, school: test_school, activity_type: activity_type, happened_on: target_date - 1.day) }
 
@@ -514,8 +514,8 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
 
       it 'shows timeline' do
         expect(page).to have_content('A reminder of the energy saving activities and actions you recorded')
-        expect(page).to have_content('Completed an activity')
-        expect(page).to have_content('Upgraded insulation')
+        expect(page).to have_content(activity_type.name)
+        expect(page).to have_content(intervention_type.name)
       end
     end
 
@@ -570,6 +570,39 @@ end
 
 RSpec.describe 'school targets', type: :system do
   let!(:school) { create(:school) }
+
+  context 'with feature active' do
+    before do
+      Flipper.enable(:new_dashboards_2024)
+    end
+
+    context 'as a school admin' do
+      let!(:user) { create(:school_admin, school: school) }
+
+      include_examples 'managing targets' do
+        let(:test_school) { school }
+      end
+
+      context 'with targets disabled for school' do
+        before do
+          school.update!(enable_targets_feature: false)
+        end
+
+        it 'doesnt have a link to review targets' do
+          visit school_path(school)
+          expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
+          within '#my_school_menu' do
+            expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
+          end
+        end
+
+        it 'redirects from target page' do
+          visit school_school_targets_path(school)
+          expect(page).to have_current_path(school_path(school))
+        end
+      end
+    end
+  end
 
   context 'as a school admin' do
     let!(:user) { create(:school_admin, school: school) }
