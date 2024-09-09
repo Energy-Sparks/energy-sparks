@@ -16,8 +16,6 @@ module Schools
     before_action :set_breadcrumbs
     before_action :check_aggregated_school_in_cache, only: [:show]
 
-    before_action :check_aggregated_school_in_cache, only: [:show]
-
     def show
       if Flipper.enabled?(:new_dashboards_2024, current_user)
         @meter_collection = aggregate_school # for comparison overview component
