@@ -24,6 +24,18 @@ RSpec.describe 'advice pages', type: :system do
         expect(page).to have_content('Sorry, something has gone wrong')
         expect(page).to have_content('We encountered an error attempting to generate your analysis')
       end
+
+      context 'with feature active' do
+        before do
+          Flipper.enable(:new_dashboards_2024)
+        end
+
+        it 'shows the error page' do
+          visit learn_more_school_advice_total_energy_use_path(school)
+          expect(page).to have_content('Sorry, something has gone wrong')
+          expect(page).to have_content('We encountered an error attempting to generate your analysis')
+        end
+      end
     end
 
     context 'in test' do
@@ -49,6 +61,17 @@ RSpec.describe 'advice pages', type: :system do
       end
       expect(page).to have_content('Unable to run requested analysis')
     end
+
+    context 'with feature active' do
+      before do
+        Flipper.enable(:new_dashboards_2024)
+      end
+
+      it 'shows the error page' do
+        visit insights_school_advice_total_energy_use_path(school)
+        expect(page).to have_content('Unable to run requested analysis')
+      end
+    end
   end
 
   context 'when school doesnt have enough data' do
@@ -62,6 +85,18 @@ RSpec.describe 'advice pages', type: :system do
 
     before do
       allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:create_analysable).and_return(analysable)
+    end
+
+    context 'with new feature active' do
+      before do
+        Flipper.enable(:new_dashboards_2024)
+      end
+
+      it 'shows the not enough data page' do
+        visit insights_school_advice_total_energy_use_path(school)
+        expect(page).to have_content('Not enough data to run analysis')
+        expect(page).not_to have_content('Assuming we continue to regularly receive data')
+      end
     end
 
     it 'shows the not enough data page' do
