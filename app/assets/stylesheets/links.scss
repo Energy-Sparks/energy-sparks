@@ -3,7 +3,6 @@ a:hover,
 a:focus,
 a:active,
 a.active {
-  color: $dark;
   text-decoration: underline;
   outline: none;
 }
@@ -94,7 +93,6 @@ a.badge.outline {
   a:focus,
   a:active,
   a.active {
-    color: $dark;
     outline: none;
   }
 }
@@ -105,7 +103,6 @@ a.badge.outline {
   a:focus,
   a:active,
   a.active {
-    color: $dark;
     text-decoration: underline;
     outline: none;
     font-weight: normal;
@@ -124,7 +121,7 @@ section.highlight {
   a:focus,
   a:active,
   a.active {
-    color: $dark-blue;
+    color: $blue-very-dark;
     outline: none;
   }
 }
