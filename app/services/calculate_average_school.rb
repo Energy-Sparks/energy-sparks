@@ -16,13 +16,13 @@ class CalculateAverageSchool
   #                                            ... },
   #                                 weekend: { month1 => array_of_averages_for_48_half_hour_periods,
   #                                            ... } } } }
-  def self.perform(s3: nil, logger: Rails.logger) # rubocop:disable Naming/MethodParameterName
+  def self.perform(logger: Rails.logger)
     calc = new(logger)
-    averages = {}
+    averages = FUEL_TYPES.index_with { {} }
     by_school_type = calc.calculate_averages_by_school_type
     FUEL_TYPES.each do |fuel_type|
       RANGES.each_key do |type|
-        (averages[fuel_type] ||= {})[type] =
+        averages[fuel_type][type] =
           calc.average_by_type_within_rank_range(by_school_type[fuel_type], RANGES[type], fuel_type)
       end
     end
@@ -49,7 +49,7 @@ class CalculateAverageSchool
     end
     db_school_generator do |school|
       FUEL_TYPES.each do |fuel_type|
-        school_data = calculate_average_school(school, fuel_type)
+        school_data = calculate_school_average(school, fuel_type)
         by_school_type[fuel_type][school.school_type.to_sym] << school_data if school_data
       end
     end
@@ -115,7 +115,7 @@ class CalculateAverageSchool
   end
 
   def db_school_generator
-    School.data_enabled.order(:name).limit(25).each do |school|
+    School.data_enabled.order(:name).each do |school|
       @logger.info("loading #{school.slug}")
       yield AggregateSchoolService.new(school).aggregate_school
     end
@@ -130,17 +130,10 @@ class CalculateAverageSchool
   #                            ... },
   #       weekend: { month1 => array_of_averages_for_48_half_hour_periods,
   #                            ... } }
-  def calculate_average_school(school, fuel_type)
-    school_type = school.school_type.to_sym
-    return unless SCHOOL_TYPES.include?(school_type)
+  def calculate_school_average(school, fuel_type)
+    (meter = get_meter(school, fuel_type)) || return
 
-    meter = school.aggregate_meter(fuel_type)
-
-    return if meter.nil? || meter.amr_data.days < 50
-
-    return if fuel_type == :gas && meter.amr_data.days < 350 # degreeday adjustment wont work otherwise
-
-    end_date = meter.amr_data.end_date
+    end_date = me ter.amr_data.end_date
     start_date = [end_date - 365, meter.amr_data.start_date].max
     begin
       collated_data = collate_data(school, meter, start_date, end_date)
@@ -148,9 +141,21 @@ class CalculateAverageSchool
       @logger.error(e)
       return
     end
-    (@school_type_samples[school_type] ||= Hash.new(0))[fuel_type] += 1
+    (@school_type_samples[school.school_type.to_sym] ||= Hash.new(0))[fuel_type] += 1
     factor = normalising_factor(school, meter, start_date, end_date)
     average_data(collated_data, factor)
+  end
+
+  def get_meter(school, fuel_type)
+    return unless SCHOOL_TYPES.include?(school.school_type.to_sym)
+
+    meter = school.aggregate_meter(fuel_type)
+
+    return if meter.nil? || meter.amr_data.days < 50
+
+    return if fuel_type == :gas && meter.amr_data.days < 350 # degreeday adjustment wont work otherwise
+
+    meter
   end
 
   def normalising_factor(school, meter, start_date, end_date)
@@ -216,22 +221,5 @@ class CalculateAverageSchool
     index_range_low  = (length * rank_range.first).to_i
     index_range_high = (length * rank_range.last).to_i
     index_range_low..index_range_high
-  end
-
-  def build_meter_collection(data, meter_attributes_overrides: {})
-    meter_attributes = data[:pseudo_meter_attributes]
-
-    MeterCollectionFactory.new(
-      temperatures: data[:schedule_data][:temperatures],
-      solar_pv: data[:schedule_data][:solar_pv],
-      solar_irradiation: data[:schedule_data][:solar_irradiation],
-      grid_carbon_intensity: data[:schedule_data][:grid_carbon_intensity],
-      holidays: data[:schedule_data][:holidays]
-    ).build(
-      school_data: data[:school_data],
-      amr_data: data[:amr_data],
-      meter_attributes_overrides:,
-      pseudo_meter_attributes: meter_attributes
-    )
   end
 end
