@@ -2,13 +2,13 @@
   <%= component 'page_nav', name: t('advice_pages.nav.overview'),
                             icon: nil, href: school_advice_path(@school),
                             options: { user: current_user, match_controller: true } do |c| %>
-    <% c.with_section toggler: false, visible: @alert_count.positive?,
+    <% c.with_section toggler: false, visible: @alert_count&.positive?,
                       options: { match_controller: false } do |s| %>
       <% s.with_item(name: "#{t('advice_pages.index.alerts.title')} (#{@alert_count})",
                      href: alerts_school_advice_path(@school), classes: 'section-link') %>
     <% end %>
     <% c.with_section toggler: false,
-                      visible: @priority_count.positive?,
+                      visible: @priority_count&.positive?,
                       options: { match_controller: false }  do |s| %>
       <% s.with_item(name: "#{t('advice_pages.index.priorities.title')} (#{@priority_count})",
                      href: priorities_school_advice_path(@school),
