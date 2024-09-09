@@ -322,7 +322,10 @@ cy:
     prompts:
       audit:
         message_html: Rydych chi wedi cwblhau <strong>%{completed_activities_count}/%{total_activities_count}</strong> o'r gweithgareddau a <strong>%{completed_actions_count}/%{total_actions_count}</strong> o'r camau gweithredu o'ch archwiliad ynni diweddar
-        summary_html: Cwblhewch y lleill i sgorio <strong>%{remaining_points}</strong> o bwyntiau a <strong>%{bonus_points}</strong> o bwyntiau bonws ar gyfer cwblhau pob tasg archwilio
+        summary_html:
+          one: Cwblhewch y lleill i sgorio <strong>%{remaining_points}</strong> o bwyntiau a <strong>%{count}</strong> o bwyntiau bonws ar gyfer cwblhau pob tasg archwilio
+          other: Cwblhewch y lleill i sgorio <strong>%{remaining_points}</strong> o bwyntiau a <strong>%{count}</strong> o bwyntiau bonws ar gyfer cwblhau pob tasg archwilio
+          zero: Cwblhewch y lleill i sgorio <strong>%{remaining_points}</strong> o bwyntiau ar gyfer cwblhau pob tasg archwilio
       completed_programme:
         message_html:
           one: Da iawn, rydych newydd gwblhau'r rhaglen <strong>%{title}</strong> ac wedi ennill <strong>%{count}</strong> pwynt bonws!
