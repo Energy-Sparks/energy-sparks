@@ -5,7 +5,7 @@ en:
       alerts:
         title: Recent alerts
       priorities:
-        intro: Prioritise the following actions to reduce your costs and carbon dioxide emissions.
+        intro: We've identified the following opportunities to reduce your costs and carbon dioxide emissions.
         table:
           columns:
             co2_reduction: CO2 (kg)
@@ -15,7 +15,8 @@ en:
             kwh_saving: Energy (kWh)
             savings: Savings
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
-        title: Priority actions
+        table_title: Prioritised opportunities
+        title: Energy saving opportunities
       show:
         how_do_you_compare: How does your school compare?
         intro: Find advice, prioritised actions and alerts and explore our detailed analysis to help start reducing your energy use.

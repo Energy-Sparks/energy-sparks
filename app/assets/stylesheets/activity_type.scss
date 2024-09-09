@@ -1,3 +1,13 @@
+div.activity_type {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $dark;
+  }
+}
+
 .alert-type-activities {
   input[type="number"]{
     width: 3em;
