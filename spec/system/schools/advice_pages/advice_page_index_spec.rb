@@ -45,7 +45,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     end
 
     it 'shows the list of pages' do
-      within('#energy-explained') do
+      within('#detailed-analysis') do
         expect(page).to have_content(I18n.t("advice_pages.nav.pages.#{key}"))
         expect(page).to have_content(I18n.t("advice_pages.index.show.page_summary.#{key}"))
       end
