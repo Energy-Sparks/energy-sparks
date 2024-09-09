@@ -17,7 +17,7 @@ class CalculateAverageSchool
   #                                 weekend: { month1 => array_of_averages_for_48_half_hour_periods,
   #                                            ... } } } }
   def self.perform(s3: nil, logger: Rails.logger) # rubocop:disable Naming/MethodParameterName
-    calc = new(s3 || Aws::S3::Client.new, logger)
+    calc = new(logger)
     averages = {}
     by_school_type = calc.calculate_averages_by_school_type
     FUEL_TYPES.each do |fuel_type|
@@ -29,8 +29,7 @@ class CalculateAverageSchool
     averages
   end
 
-  def initialize(s3_client, logger)
-    @s3 = s3_client
+  def initialize(logger)
     @school_type_samples = {}
     @logger = logger
   end
@@ -116,32 +115,9 @@ class CalculateAverageSchool
   end
 
   def db_school_generator
-    School.process_data.order(:name).each do |school|
+    School.data_enabled.order(:name).limit(25).each do |school|
       @logger.info("loading #{school.slug}")
       yield AggregateSchoolService.new(school).aggregate_school
-    end
-  end
-
-  def s3_school_generator
-    bucket = ENV.fetch('UNVALIDATED_SCHOOL_CACHE_BUCKET', nil)
-    self.class.s3_list_objects(@s3, bucket, 'unvalidated-data-') do |content|
-      yaml = YAML.unsafe_load(EnergySparks::Gzip.gunzip(@s3.get_object(bucket:, key: content.key).body.read))
-      Rails.logger.info("loaded #{content.key}")
-      meter_collection = build_meter_collection(yaml)
-      AggregateDataService.new(meter_collection).validate_meter_data
-      AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
-      yield meter_collection
-    end
-  end
-
-  def self.s3_list_objects(s3_client, bucket, prefix)
-    continuation_token = nil
-    loop do
-      response = s3_client.list_objects_v2(bucket:, prefix:, continuation_token:)
-      response.contents[..5].each { |content| yield content } # rubocop:disable Style/ExplicitBlockArgument - rubocop performance advises using yield
-      break unless response.is_truncated
-
-      continuation_token = response.next_continuation_token
     end
   end
 
