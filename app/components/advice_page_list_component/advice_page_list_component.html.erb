@@ -1,7 +1,7 @@
-<div id="<%= id %>" class="advice-page-list-component <%= classes %>">
+<div class="advice-page-list-component <%= classes %>">
   <%= component 'titled_section' do |section| %>
     <% section.with_title do %>
-      <h2><%= t('components.advice_page_list.title') %></h2>
+      <h2 id="<%= id %>" class="scrollable-title"><%= t('components.advice_page_list.title') %></h2>
     <% end %>
     <% section.with_intro do %>
       <p><%= t('components.advice_page_list.intro') %></p>

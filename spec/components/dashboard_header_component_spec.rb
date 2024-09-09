@@ -22,8 +22,8 @@ RSpec.describe DashboardHeaderComponent, type: :component do
     let(:expected_id) { id }
   end
 
-  it { expect(html).to have_content(I18n.t('schools.dashboards.header.title')) }
-  it { expect(html).to have_content(I18n.t('schools.dashboards.header.intro')) }
+  it { expect(html).to have_content(I18n.t('components.dashboard_header.title')) }
+  it { expect(html).to have_content('Explore the latest energy data') }
   it { expect(html).to have_content(school.name) }
   it { expect(html).to have_content(school.address) }
   it { expect(html).to have_content(school.postcode) }
