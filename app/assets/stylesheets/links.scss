@@ -88,39 +88,6 @@ a.badge.outline {
   width: 100px;
 }
 
-.navbar {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    outline: none;
-    text-decoration: none;
-    font-weight: bold;
-    color: $white;
-  }
-}
-
-li.nav-item a.btn,
-li.nav-item a.btn:hover,
-li.nav-item a.btn:focus,
-li.nav-item a.btn:active {
- // float: right;
-  margin-bottom: 3px;
-  color: $dark;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.sub-nav  {
-  li.nav-item a.btn,
-  li.nav-item a.btn:hover,
-  li.nav-item a.btn:focus,
-  li.nav-item a.btn:active {
-    margin-bottom: 0px;
-  }
-}
-
 .card-deck.activities {
   a,
   a:hover,
@@ -145,30 +112,10 @@ li.nav-item a.btn:active {
   }
 }
 
-div.activity_type {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $dark;
-  }
-}
-
 .highcharts-annotation a,
 .highcharts-annotation a:hover{
   color: inherit;
   text-decoration: inherit;
-}
-
-footer {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $white;
-  }
 }
 
 section.highlight {
@@ -181,7 +128,6 @@ section.highlight {
     outline: none;
   }
 }
-
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
