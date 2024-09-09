@@ -5,8 +5,8 @@ class DashboardHeaderComponent < ApplicationComponent
   # i18n-tasks-use t('schools.dashboards.header.intro')
   def initialize(school:,
                  audience: :adult,
-                 title: 'schools.dashboards.header.title',
-                 intro: 'schools.dashboards.header.intro',
+                 title: 'components.dashboard_header.title',
+                 intro: 'components.dashboard_header.intro_html',
                  show_school: true,
                  id: nil, classes: '')
     super(id: id, classes: "#{classes} #{audience}")

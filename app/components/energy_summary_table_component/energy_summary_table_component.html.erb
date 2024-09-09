@@ -1,6 +1,6 @@
-<div id="<%= id %>" class="energy-summary-table-component <%= classes %>">
+<div class="energy-summary-table-component <%= classes %>">
   <% if show_title? %>
-    <h2>
+    <h2 id="<%= id %>" class="scrollable-title">
       <% if Flipper.enabled?(:new_dashboards_2024, user) %>
         <%= t('schools.show.recent_energy_usage') %>
       <% else %>
