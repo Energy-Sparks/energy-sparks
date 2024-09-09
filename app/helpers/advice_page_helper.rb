@@ -144,7 +144,7 @@ module AdvicePageHelper
   end
 
   def advice_pages_for_school_and_fuel(advice_pages, school, fuel_type)
-    if school.multiple_meters?(fuel_type) && Flipper.enabled?(:meter_breakdowns, current_user)
+    if school.multiple_meters?(fuel_type)
       advice_pages.where(fuel_type: fuel_type)
     else
       advice_pages.where(fuel_type: fuel_type, multiple_meters: false)
