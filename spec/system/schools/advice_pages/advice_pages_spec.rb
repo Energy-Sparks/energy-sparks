@@ -24,6 +24,18 @@ RSpec.describe 'advice pages', type: :system do
         expect(page).to have_content('Sorry, something has gone wrong')
         expect(page).to have_content('We encountered an error attempting to generate your analysis')
       end
+
+      context 'with feature active' do
+        before do
+          Flipper.enable(:new_dashboards_2024)
+        end
+
+        it 'shows the error page' do
+          visit learn_more_school_advice_total_energy_use_path(school)
+          expect(page).to have_content('Sorry, something has gone wrong')
+          expect(page).to have_content('We encountered an error attempting to generate your analysis')
+        end
+      end
     end
 
     context 'in test' do
@@ -48,6 +60,17 @@ RSpec.describe 'advice pages', type: :system do
         click_on 'Energy use summary'
       end
       expect(page).to have_content('Unable to run requested analysis')
+    end
+
+    context 'with feature active' do
+      before do
+        Flipper.enable(:new_dashboards_2024)
+      end
+
+      it 'shows the error page' do
+        visit insights_school_advice_total_energy_use_path(school)
+        expect(page).to have_content('Unable to run requested analysis')
+      end
     end
   end
 
