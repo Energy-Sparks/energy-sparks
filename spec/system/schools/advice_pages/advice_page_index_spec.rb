@@ -221,11 +221,11 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     before do
       Alerts::GenerateContent.new(school).perform
       visit school_advice_path(school)
-      click_on('Priority actions')
+      click_on(I18n.t('advice_pages.index.priorities.title'))
     end
 
     it 'has an active priorities tab' do
-      expect(page).to have_link('Priority actions', class: 'active')
+      expect(page).to have_link(I18n.t('advice_pages.index.priorities.title'), class: 'active')
     end
 
     it 'displays the priorities in a table' do

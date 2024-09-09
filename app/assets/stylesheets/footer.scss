@@ -1,4 +1,14 @@
 footer {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $white;
+  }
+}
+
+footer {
   color: $white;
   text-align: left;
   padding-top: 50px;

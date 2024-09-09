@@ -1,7 +1,7 @@
 <div id="<%= id %>" class="dashboard-insights-component <%= classes %>">
   <div class="row">
     <div class="col-12">
-      <h2><%= t('schools.dashboards.insights.title') %></h2>
+      <h2><%= t('components.dashboard_insights.title') %></h2>
     </div>
   </div>
 
@@ -12,7 +12,7 @@
                     school: school,
                     user: user,
                     id: "#{audience}-reminders" do |c| %>
-        <% c.with_title { t('schools.dashboards.reminders.title') } %>
+        <% c.with_title { t('components.dashboard_insights.reminders.title') } %>
       <% end %>
     </div>
 

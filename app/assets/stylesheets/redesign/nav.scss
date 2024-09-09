@@ -42,8 +42,9 @@ $togglers: (
   color: $foreground;
   background-color: $background;
 
-  & a:link, a:hover, a:focus {
+  & a:link, a:hover, a:focus, a:active {
     font-weight: 600;
+    text-decoration: none;
   }
 
   .dropdown-menu {
