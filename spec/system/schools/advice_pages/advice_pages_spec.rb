@@ -64,6 +64,18 @@ RSpec.describe 'advice pages', type: :system do
       allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:create_analysable).and_return(analysable)
     end
 
+    context 'with new feature active' do
+      before do
+        Flipper.enable(:new_dashboards_2024)
+      end
+
+      it 'shows the not enough data page' do
+        visit insights_school_advice_total_energy_use_path(school)
+        expect(page).to have_content('Not enough data to run analysis')
+        expect(page).not_to have_content('Assuming we continue to regularly receive data')
+      end
+    end
+
     it 'shows the not enough data page' do
       visit school_advice_path(school)
       within '#page-nav' do
