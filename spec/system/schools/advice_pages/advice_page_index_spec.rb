@@ -31,7 +31,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
 
     it { expect(page).to have_title(I18n.t('advice_pages.index.title')) }
     it { expect(page).to have_content(I18n.t('advice_pages.index.title')) }
-    it { expect(page).to have_content(I18n.t('advice_pages.index.show.intro')) }
+    it { expect(page.body).to include(I18n.t('advice_pages.index.show.intro_html')) }
     it { expect(page).to have_link(I18n.t('advice_pages.nav.overview'), href: school_advice_path(school)) }
 
     # no links if no alerts or priorities to display
@@ -45,10 +45,8 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     end
 
     it 'shows the list of pages' do
-      within('#detailed-analysis') do
-        expect(page).to have_content(I18n.t("advice_pages.nav.pages.#{key}"))
-        expect(page).to have_content(I18n.t("advice_pages.index.show.page_summary.#{key}"))
-      end
+      expect(page).to have_content(I18n.t("advice_pages.nav.pages.#{key}"))
+      expect(page).to have_content(I18n.t("advice_pages.index.show.page_summary.#{key}"))
     end
 
     context 'when school has no public analysis' do
