@@ -2,10 +2,10 @@
 
 <% content_for :dashboard_header do %>
   <%# i18n-tasks-use t('advice_pages.index.title') %>
-  <%# i18n-tasks-use t('advice_pages.index.show.intro') %>
+  <%# i18n-tasks-use t('advice_pages.index.show.intro_html') %>
   <%= component 'dashboard_header',
                 title: 'advice_pages.index.title',
-                intro: 'advice_pages.index.show.intro',
+                intro: 'advice_pages.index.show.intro_html',
                 show_school: false,
                 school: @school %>
 <% end %>
@@ -18,7 +18,7 @@
     <div class="col-md-9 col-lg-9 col-xl-10">
       <%= component 'dashboard_charts', school: @school do |c| %>
         <% c.with_title do %>
-          <h2><%= t('advice_pages.index.show.overview_charts.title') %></h2>
+          <h2 id="overview-charts" class="scrollable-title"><%= t('advice_pages.index.show.overview_charts.title') %></h2>
         <% end %>
         <% c.with_intro do %>
           <p>
@@ -27,7 +27,7 @@
         <% end %>
       <% end %>
 
-      <%= component 'advice_page_list', id: 'energy-explained', classes: 'mt-4 mb-4', school: @school %>
+      <%= component 'advice_page_list', id: 'detailed-analysis', classes: 'mt-4 mb-4', school: @school %>
 
       <%= component 'advice_reminders',
                     school: @school,
@@ -44,7 +44,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 offset-md-2 offset-xl-2 col-md-9 col-lg-9 col-xl-10">
-        <%= component 'comparison_overview', school: @school, meter_collection: @meter_collection %>
+        <%= component 'comparison_overview', id: 'comparison', school: @school, meter_collection: @meter_collection %>
       </div>
     </div>
   </div>
