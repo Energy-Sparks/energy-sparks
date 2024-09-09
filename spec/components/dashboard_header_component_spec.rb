@@ -23,7 +23,7 @@ RSpec.describe DashboardHeaderComponent, type: :component do
   end
 
   it { expect(html).to have_content(I18n.t('components.dashboard_header.title')) }
-  it { expect(html.body).to include(I18n.t('components.dashboard_header.intro_html')) }
+  it { expect(html).to have_content('Explore the latest energy data') }
   it { expect(html).to have_content(school.name) }
   it { expect(html).to have_content(school.address) }
   it { expect(html).to have_content(school.postcode) }
