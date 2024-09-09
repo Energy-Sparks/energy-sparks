@@ -3,7 +3,11 @@
 <div class="s-3"></div>
 <p>The requested reload for <%= @meter.mpan_mprn %> has completed.</p>
 <div class="s-3"></div>
-<p><%= @import_log.records_imported %> records were imported and <%= @import_log.records_updated %> were updated.</p>
+<% if @result.respond_to?(:records_imported) %>
+  <p><%= @result.records_imported %> records were imported and <%= @result.records_updated %> were updated.</p>
+<% else %>
+  <p>Error importing: <%= @result %></p>
+<% end %>
 <div class="s-3"></div>
 <ul>
   <li><%= link_to 'View the school meters', school_meters_url(@meter.school) %></li>
