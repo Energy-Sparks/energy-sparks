@@ -36,7 +36,7 @@ header img {
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
   .masthead-content {
-    background-color: $dark-blue;
+    background-color: $blue-very-dark;
   }
 
   .home-page .carousel-item {
@@ -73,7 +73,7 @@ header img {
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
   .masthead-content {
-    background-color: $dark-blue;
+    background-color: $blue-very-dark;
   }
 
   .home-page .carousel-item {
