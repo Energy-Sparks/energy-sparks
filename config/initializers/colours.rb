@@ -42,7 +42,10 @@ module Colours
 
     purple_light: '#e9d5ff'.freeze, # advice_page_list_component background colour
     purple_medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
-    purple_dark: '#9333ea'.freeze # called purple in the design
+    purple_dark: '#9333ea'.freeze, # called purple in the design
+
+    white: '#fffffff',
+    black: '#000000'
 
   }.freeze
 
