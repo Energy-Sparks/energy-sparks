@@ -196,7 +196,7 @@ class CalculateAverageSchool
     if school.holidays.day_type(date) == :holiday
       holiday_type = Holidays.holiday_type(date)
       holiday_type = AverageSchoolCalculator.remap_low_sample_holiday(holiday_type)
-      raise "Unknown holiday type for #{school.name} #{date}" if holiday_type.nil?
+      raise "Unknown holiday type for #{school.slug} #{date}" if holiday_type.nil?
 
       holiday_type
     else
