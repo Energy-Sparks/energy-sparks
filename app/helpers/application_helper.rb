@@ -201,12 +201,10 @@ module ApplicationHelper
       'bg-electric-light'
     when :gas
       'bg-gas-light'
-    when :solar_pv
+    when :solar_pv, :exported_solar_pv
       'bg-solar-light'
     when :storage_heater, :storage_heaters
       'bg-storage-light'
-    when :exported_solar_pv
-      'bg-solar-light'
     end
   end
 
@@ -216,12 +214,10 @@ module ApplicationHelper
       'text-electric'
     when :gas
       'text-gas'
-    when :solar_pv
+    when :solar_pv, :exported_solar_pv
       'text-solar'
     when :storage_heater, :storage_heaters
       'text-storage'
-    when :exported_solar_pv
-      'text-solar'
     end
   end
 

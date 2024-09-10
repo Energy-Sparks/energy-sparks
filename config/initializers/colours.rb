@@ -15,12 +15,13 @@ module Colours
   # $blue-very-dark: #334375;
   #
 
-  ALL = {
+  BASE = {
     blue_pale: '#f2f6fc'.freeze, # advice_page_list_component background colour
     blue_light: '#dcecfd'.freeze,
     blue_medium: '#cbe4fc'.freeze, # used in nav so far
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
+    blue_bright: '#007EFF'.freeze, # used for electricity in designs
 
     yellow_pale: '#fdefc8'.freeze, #advice_page_list_component background colour
     yellow_light: '#fcdc8b'.freeze,
@@ -28,11 +29,10 @@ module Colours
     yellow_dark: '#772d10'.freeze,
     yellow_very_dark: '#441504'.freeze,
 
+    teal_pale: '#f0fdf9'.freeze, # advice_page_list_component background colour
     teal_light: '#cbfcf0'.freeze,
     teal_medium: '#88f7dd'.freeze,
     teal_dark: '#10bca2'.freeze,
-
-    green_pale: '#f0fdf9'.freeze, # advice_page_list_component background colour
 
     grey_light: '#f6f6f6'.freeze, # unused
     table_grey: '#c3c3c3'.freeze, # unused
@@ -40,25 +40,60 @@ module Colours
     red_light: '#fff1f1'.freeze,
     red_medium: '#f8a0a0'.freeze,
 
-    purple_light: '#e9d5ff'.freeze, #advice_page_list_component background colour
-    purple: '#9333ea'.freeze
+    purple_light: '#e9d5ff'.freeze, # advice_page_list_component background colour
+    purple_medium: '#BE84F4'.freeze, # not in the design - it is the mid way point between the given dark and light
+    purple_dark: '#9333ea'.freeze # called purple in the design
 
   }.freeze
 
-  # Usage: Colours::yellow_very_dark
+
+  FUEL = {
+    electric: {
+      light: BASE[:blue_pale],
+      medium: BASE[:blue_medium],
+      dark: BASE[:blue_bright]
+    },
+    gas: {
+      light: BASE[:yellow_pale],
+      medium: BASE[:yellow_light],
+      dark: BASE[:yellow_medium]
+    },
+    storage: {
+      light: BASE[:purple_light],
+      medium: BASE[:purple_medium],
+      dark: BASE[:purple_dark]
+    },
+    solar: {
+      light: BASE[:teal_pale],
+      medium: BASE[:teal_medium],
+      dark: BASE[:teal_dark]
+    }
+  }.freeze
+
+  def self.base(method_name)
+    BASE[method_name.to_sym]
+  end
+
+  def self.fuel(method_name)
+    fuel, tone = method_name.split('_', 2).map(&:to_sym)
+    FUEL.dig(fuel, tone)
+  end
+
+  # Usage:
+  # Colours::yellow_very_dark
+  # Colours::gas_light
   def self.method_missing(method_name, *args, &block)
-    colour = method_name.to_sym
-    ALL[colour] || super
+    base(method_name) || fuel(method_name) || super
   end
 
   def self.respond_to_missing?(method_name, include_private = false)
-    colour = method_name.to_sym
-    ALL.key?(color) || super
+    BASE.key?(method_name) || fuel(method_name) || super
   end
 
-  # Usage: Colours::get(:yellow_very_dark)
+  # Usage:
+  # Colours::get(:yellow_very_dark)
   def self.get(colour)
-    ALL[colour]
+    base(colour) || fuel(color)
   end
 
   ### Old / current colours ###

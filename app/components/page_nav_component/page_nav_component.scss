@@ -11,24 +11,24 @@
   font-weight: normal;
 }
 
-@each $tag, $colour in $fuel-colours-light {
-  .page-nav-component a.nav-link.#{$tag}-item {
-    border-left: 1px solid $colour;
+@each $fuel, $tones in $fuel-colours {
+  .page-nav-component a.nav-link.#{$fuel}-item {
+    border-left: 1px solid map-get($tones, "light");
   }
 
-  .page-nav-component a.nav-link.#{$tag}-item:hover {
-    background-color: rgba($colour, 0.5);
+  .page-nav-component a.nav-link.#{$fuel}-item:hover {
+    background-color: rgba(map-get($tones, "light"), 0.5);
   }
 
-  .page-nav-component a.nav-link.#{$tag}-item.current {
-    background-color: rgba($colour, 0.5);
+  .page-nav-component a.nav-link.#{$fuel}-item.current {
+    background-color: rgba(map-get($tones, "light"), 0.5);
     font-weight: bolder;
   }
 }
 
-@each $tag, $colour in $fuel-colours-dark {
-  .page-nav-component a.#{$tag}-section {
-    background-color: $colour;
+@each $fuel, $tones in $fuel-colours {
+  .page-nav-component a.#{$fuel}-section {
+    background-color: map-get($tones, "dark");
     color: $white;
     font-weight: bold;
   }
