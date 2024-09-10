@@ -60,7 +60,7 @@ RSpec.describe 'total energy use advice page', type: :system do
 
       it 'has expected content' do
         expect(page).to have_content(I18n.t('advice_pages.total_energy_use.insights.intro.text'))
-        expect(page).to have_css('#management-overview-table')
+        expect(page).to have_css('.energy-summary-table-component')
         expect(page).to have_content('How does your electricity use for the last 12 months compare to other Primary schools on Energy Sparks, with a similar number of pupils?')
         expect(page).to have_content('How does your gas use for the last 12 months compare to other Primary schools on Energy Sparks, with a similar floor area?')
       end

@@ -148,14 +148,6 @@ en:
         enable_alerts_for: Enable alerts for %{user_name}
         sign_up_for_email_or_text_alerts: Sign up for email or text alerts
     dashboards:
-      header:
-        intro: Find the latest information, alerts and links to further analysis of the energy performance at this school
-        title: Welcome
-      learn_more:
-        explore: Explore energy data
-        intro: View charts, get insights into reducing energy usage and compare performance against other schools
-        opportunities: Energy saving opportunities
-        title: Learn more about your energy use
       timeline:
         intro: A list of recent adult and pupil-led activities at this school
     downloads:
@@ -601,7 +593,7 @@ en:
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
       add_estimate: Add an estimate
-      coming_soon: Energy use analysis coming soon
+      coming_soon: Energy data coming soon
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore.
       create_pupil_account: Create a pupil account
       dashboard_title: Adult dashboard for %{school_name}

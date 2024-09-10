@@ -19,7 +19,9 @@ en:
         title: Energy saving opportunities
       show:
         how_do_you_compare: How does your school compare?
-        intro: Find advice, prioritised actions and alerts and explore our detailed analysis to help start reducing your energy use.
+        intro_html: |-
+          <a href="#overview-charts">Review overview charts</a>, explore <a href="#detailed-analysis">our detailed analysis</a>,
+          <a href="#whats-next">start reducing energy use</a> and see how you <a href="#comparison">compare against other schools</a>
         not_applicable: No comparison
         not_available: Not enough data
         notice_html: |-

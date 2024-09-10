@@ -1,7 +1,7 @@
-<div id="<%= id %>" class="advice-page-list-component <%= classes %>">
+<div class="advice-page-list-component <%= classes %>">
   <%= component 'titled_section' do |section| %>
     <% section.with_title do %>
-      <h2><%= t('components.advice_page_list.title') %></h2>
+      <h2 id="<%= id %>" class="scrollable-title"><%= t('components.advice_page_list.title') %></h2>
     <% end %>
     <% section.with_intro do %>
       <p><%= t('components.advice_page_list.intro') %></p>
@@ -12,7 +12,7 @@
           <h4>
             <%= t("advice_pages.nav.sections.#{fuel_type}") %>
           </h4>
-          <% sort_by_label(advice_pages.where(fuel_type: fuel_type)).each do |ap| %>
+          <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, fuel_type)).each do |ap| %>
             <%= component 'prompt',
                           icon: fuel_type_icon(fuel_type),
                           style: :compact,
