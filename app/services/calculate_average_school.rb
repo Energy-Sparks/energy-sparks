@@ -133,7 +133,7 @@ class CalculateAverageSchool
   def calculate_school_average(school, fuel_type)
     (meter = get_meter(school, fuel_type)) || return
 
-    end_date = me ter.amr_data.end_date
+    end_date = meter.amr_data.end_date
     start_date = [end_date - 365, meter.amr_data.start_date].max
     begin
       collated_data = collate_data(school, meter, start_date, end_date)
