@@ -24,7 +24,7 @@ module Schools
         render 'not_enough_data' and return unless @analysable.enough_data?
         @analysis_dates = analysis_dates
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
-        render 'schools/advice/out_of_hours/no_usage' and return if @annual_usage_breakdown&.out_of_hours.kwh.zero?
+        render 'schools/advice/out_of_hours/no_usage' and return if @annual_usage_breakdown&.out_of_hours&.kwh&.zero?
       end
 
       def aggregate_meter
