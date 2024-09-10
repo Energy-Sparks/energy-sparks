@@ -1,0 +1,15 @@
+<%= render 'schools/advice/advice_page',
+           school: @school,
+           advice_pages: @advice_pages,
+           advice_page: @advice_page,
+           tab: @tab,
+           data_warning: @data_warning do %>
+  <h2>
+    <%= t('advice_pages.no_usage.title') %>
+  </h2>
+  <p>
+    <%= t('advice_pages.no_usage.message',
+          date: short_dates(@analysis_dates.start_date),
+          fuel_type: I18n.t("common.#{@advice_page.fuel_type}")) %>
+  </p>
+<% end %>

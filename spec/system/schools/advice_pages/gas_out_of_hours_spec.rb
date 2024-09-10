@@ -44,6 +44,24 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         expect(page).to have_content(I18n.t('advice_pages.insights.recommendations.title'))
       end
 
+      context 'with all zero readings' do
+        let(:reading_start_date) { 7.days.ago }
+
+        let(:school) do
+          create(:school, :with_basic_configuration_single_meter_and_tariffs,
+            fuel_type: :gas,
+            reading_start_date: reading_start_date,
+            reading_end_date: reading_end_date,
+            reading: 0.0,
+            calendar: create(:calendar, calendar_type: :school)) # create empty calendar initially, see nested tests
+        end
+
+        it 'displays the no usage message' do
+          expect(page).to have_content(I18n.t('advice_pages.no_usage.title'))
+          expect(page).to have_content(reading_start_date.to_fs(:es_short))
+        end
+      end
+
       context 'with very limited meter data' do
         let(:reading_start_date) { 1.day.ago }
 
