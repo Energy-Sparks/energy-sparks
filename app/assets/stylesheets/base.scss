@@ -241,19 +241,19 @@ dl dt {
 
 // fuel colour styles
 
-@each $tag, $colour in $fuel-colours-light {
-  .bg-#{$tag}-light {
-    background-color: $colour;
+@each $fuel, $tones in $fuel-colours {
+  .bg-#{$fuel}-light {
+    background-color: map-get($tones, "light");
   }
-}
 
-@each $tag, $colour in $fuel-colours-dark {
-  .bg-#{$tag}-dark {
-    background-color: $colour;
+  .bg-#{$fuel}-dark {
+    background-color: map-get($tones, "dark");
   }
-  .text-#{$tag} {
-    color: $colour;
+
+  .text-#{$fuel} {
+    color: map-get($tones, "dark");
   }
+
 }
 
 @each $tag, $colour in $colours-comparison {
@@ -267,4 +267,3 @@ dl dt {
     font-weight: bolder;
   }
 }
-
