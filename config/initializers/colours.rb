@@ -21,7 +21,7 @@ module Colours
     blue_medium: '#cbe4fc'.freeze, # used in nav so far
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
-    blue_bright: '#007EFF'.freeze, # used for electricity in designs
+    blue_bright: '#007eff'.freeze, # used for electricity in designs
 
     yellow_pale: '#fdefc8'.freeze, #advice_page_list_component background colour
     yellow_light: '#fcdc8b'.freeze,
@@ -41,7 +41,7 @@ module Colours
     red_medium: '#f8a0a0'.freeze,
 
     purple_light: '#e9d5ff'.freeze, # advice_page_list_component background colour
-    purple_medium: '#BE84F4'.freeze, # not in the design - it is the mid way point between the given dark and light
+    purple_medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
     purple_dark: '#9333ea'.freeze # called purple in the design
 
   }.freeze
