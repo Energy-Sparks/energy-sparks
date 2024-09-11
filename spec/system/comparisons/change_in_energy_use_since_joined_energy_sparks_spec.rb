@@ -3,7 +3,6 @@ require 'rails_helper'
 describe 'change_in_energy_use_since_joined_energy_sparks' do
   let!(:school) { create(:school) }
   let(:key) { :change_in_energy_use_since_joined_energy_sparks }
-  let(:advice_page_key) { :total_energy_use }
 
   let(:variables) do
     {
@@ -54,10 +53,6 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
     )
   end
 
-  before do
-    create(:advice_page, key: advice_page_key)
-  end
-
   context 'when viewing report' do
     before { visit "/comparisons/#{key}" }
 
@@ -77,7 +72,7 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_page_path(expected_school) }
         let(:table_name) { :total }
 
         let(:colgroups) do
