@@ -9,12 +9,8 @@
     font-weight: 600;
 
     &:hover, &.current {
-      background-color: $grey-light;
+      background-color: $grey-pale;
       border-radius: 5px;
-    }
-
-    &.header:hover {
-      background-color: $grey-light;
     }
 
     &.current {
@@ -23,7 +19,7 @@
   }
 
   li.section {
-    border-top: 1px solid $table-grey !important;
+    border-top: 1px solid $grey-medium !important;
   }
 
   @each $fuel, $tones in $fuel-colours {
@@ -43,6 +39,10 @@
 
     a.#{$fuel}-section {
       font-weight: 600;
+
+      &:hover {
+        background-color: transparent;
+      }
 
       i.fuel {  // icon colour for fuel icon
         color: map-get($tones, "dark");

@@ -17,11 +17,14 @@ module Colours
 
   BASE = {
     blue_pale: '#f2f6fc'.freeze, # advice_page_list_component background colour
-    blue_light: '#dcecfd'.freeze,
-    blue_medium: '#cbe4fc'.freeze, # used in nav so far
+    blue_light: '#cbe4fc'.freeze, # changed colour from design - is now blue medium from original design - used in nav
+
+    # blue_medium in the original design was #cbe4fc - which is not bold enough
+    # have now moved this up to blue_light, which wasn't quite dark enough either :-)
+    # derived new colour from monocromatics based on blue_very_dark https://colorkit.co/color/192a52/
+    blue_medium: '#3c64c3', #406bd1'.freeze, # changed colour - see above for why
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
-    blue_bright: '#007eff'.freeze, # used for electricity in designs
 
     yellow_pale: '#fdefc8'.freeze, #advice_page_list_component background colour
     yellow_light: '#fcdc8b'.freeze,
@@ -34,18 +37,16 @@ module Colours
     teal_medium: '#88f7dd'.freeze,
     teal_dark: '#10bca2'.freeze,
 
-    grey_light: '#f6f6f6'.freeze, # unused
-    table_grey: '#c3c3c3'.freeze, # unused
+    grey_pale: '#f6f6f6'.freeze, # off white from original designs
+    grey_medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
 
     red_light: '#fff1f1'.freeze,
     red_medium: '#f8a0a0'.freeze,
+    red_dark: '#f14141'.freeze, # https://www.w3schools.com/colors/colors_picker.asp
 
-    purple_light: '#e9d5ff'.freeze, # advice_page_list_component background colour
+    purple_pale: '#e9d5ff'.freeze, # renamed from purple light in original design
     purple_medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
     purple_dark: '#9333ea'.freeze, # called purple in the design
-
-    white: '#fffffff',
-    black: '#000000'
 
   }.freeze
 
@@ -53,8 +54,8 @@ module Colours
   FUEL = {
     electric: {
       light: BASE[:blue_pale],
-      medium: BASE[:blue_medium],
-      dark: BASE[:blue_bright]
+      medium: BASE[:blue_light],
+      dark: BASE[:blue_medium]
     },
     gas: {
       light: BASE[:yellow_pale],
@@ -62,7 +63,7 @@ module Colours
       dark: BASE[:yellow_medium]
     },
     storage: {
-      light: BASE[:purple_light],
+      light: BASE[:purple_pale],
       medium: BASE[:purple_medium],
       dark: BASE[:purple_dark]
     },
