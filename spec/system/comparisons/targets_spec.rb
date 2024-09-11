@@ -7,21 +7,21 @@ describe '*_targets' do
   let!(:expected_report) { create(:report, key: key) }
   let(:headers) do
     ['School',
+     'Target kWh consumption',
+     'kWh consumption since target set',
      'Percent above or below target since target set',
      'Percent above or below last year',
-     'kWh consumption since target set',
-     'Target kWh consumption',
      'Last year kWh consumption',
      'Start date for target']
   end
   let(:expected_table) do
     [headers,
-     [expected_school.name, '+4.78&percnt;', '-0.463&percnt;', '28,000', '26,800', '28,200', 'Friday 1 Mar 2024'],
+     [expected_school.name, '26,800', '28,000', '+4.78&percnt;', '-0.463&percnt;', '28,200', 'Friday 1 Mar 2024'],
      ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
   end
   let(:expected_csv) do
     [headers,
-     [expected_school.name, '4.78', '-0.463', '28,000', '26,800', '28,200', '2024-03-01']]
+     [expected_school.name, '26,800', '28,000', '4.78', '-0.463', '28,200', '2024-03-01']]
   end
   let(:variables) do
     {
