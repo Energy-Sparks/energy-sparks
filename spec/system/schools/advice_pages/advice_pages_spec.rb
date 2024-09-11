@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'advice pages', type: :system do
   include_context 'electricity advice page'
 
-  let(:key) { 'total_energy_use' }
+  let(:key) { 'baseload' }
   let(:learn_more) { 'here is some more explanation' }
   let(:expected_page_title) { 'Energy usage summary' }
 
@@ -20,7 +20,7 @@ RSpec.describe 'advice pages', type: :system do
       end
 
       it 'shows the error page' do
-        visit learn_more_school_advice_total_energy_use_path(school)
+        visit learn_more_school_advice_baseload_path(school)
         expect(page).to have_content('Sorry, something has gone wrong')
         expect(page).to have_content('We encountered an error attempting to generate your analysis')
       end
@@ -31,7 +31,7 @@ RSpec.describe 'advice pages', type: :system do
         end
 
         it 'shows the error page' do
-          visit learn_more_school_advice_total_energy_use_path(school)
+          visit learn_more_school_advice_baseload_path(school)
           expect(page).to have_content('Sorry, something has gone wrong')
           expect(page).to have_content('We encountered an error attempting to generate your analysis')
         end
@@ -44,7 +44,7 @@ RSpec.describe 'advice pages', type: :system do
       end
 
       it 'throws error' do
-        expect { visit learn_more_school_advice_total_energy_use_path(school) }.to raise_error(StandardError)
+        expect { visit learn_more_school_advice_baseload_path(school) }.to raise_error(StandardError)
       end
     end
   end
@@ -68,7 +68,7 @@ RSpec.describe 'advice pages', type: :system do
       end
 
       it 'shows the error page' do
-        visit insights_school_advice_total_energy_use_path(school)
+        visit insights_school_advice_baseload_path(school)
         expect(page).to have_content('Unable to run requested analysis')
       end
     end
@@ -93,7 +93,7 @@ RSpec.describe 'advice pages', type: :system do
       end
 
       it 'shows the not enough data page' do
-        visit insights_school_advice_total_energy_use_path(school)
+        visit insights_school_advice_baseload_path(school)
         expect(page).to have_content('Not enough data to run analysis')
         expect(page).not_to have_content('Assuming we continue to regularly receive data')
       end
@@ -164,7 +164,7 @@ RSpec.describe 'advice pages', type: :system do
 
     context 'basic navigation checks' do
       before do
-        visit learn_more_school_advice_total_energy_use_path(school)
+        visit learn_more_school_advice_baseload_path(school)
       end
 
       it 'shows the advice page' do
