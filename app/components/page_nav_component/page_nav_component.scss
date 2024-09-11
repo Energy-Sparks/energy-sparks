@@ -9,15 +9,16 @@
     font-weight: 600;
 
     &:hover, &.current {
+      background-color: $grey-light;
       border-radius: 5px;
     }
 
-    &.item:hover {
+    &.header:hover {
       background-color: $grey-light;
     }
 
     &.current {
-      font-weight: 600 !important;
+      font-weight: 800 !important;
     }
   }
 
@@ -34,6 +35,10 @@
       &:hover, &.current {
         background-color: map-get($tones, "medium");
       }
+    }
+
+    &.current {
+      font-weight: 600 !important;
     }
 
     a.#{$fuel}-section {
