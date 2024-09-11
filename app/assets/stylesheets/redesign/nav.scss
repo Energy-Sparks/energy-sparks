@@ -160,7 +160,7 @@ nav.navbar-second {
   }
 
   &.adult {
-    @include navbar($background: $blue-very-dark, $foreground: $white, $background-lozenge: $blue-medium, $foreground-lozenge: $blue-dark, $hover: $blue-medium);
+    @include navbar($background: $blue-very-dark, $foreground: $white, $background-lozenge: $blue-light, $foreground-lozenge: $blue-dark, $hover: $blue-light);
     @include toggler('dark');
   }
 
