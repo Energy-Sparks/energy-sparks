@@ -111,7 +111,7 @@ describe 'configurable_period' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
         let(:expected_school) { schools[0] }
-        let(:advice_page_path) { school_advice_page_path(expected_school) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :total }
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: true, unadjusted: false) }

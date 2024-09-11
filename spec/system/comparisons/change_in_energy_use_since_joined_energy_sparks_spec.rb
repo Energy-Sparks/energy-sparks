@@ -72,7 +72,7 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { school_advice_page_path(expected_school) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :total }
 
         let(:colgroups) do

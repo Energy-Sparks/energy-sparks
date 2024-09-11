@@ -70,7 +70,7 @@ describe 'annual_energy_costs_per_floor_area' do
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
-      let(:advice_page_path) { school_advice_page_path(expected_school) }
+      let(:advice_page_path) { school_advice_path(expected_school) }
       let(:headers) do
         [
           I18n.t('analytics.benchmarking.configuration.column_headings.school'),
