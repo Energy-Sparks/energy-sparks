@@ -157,7 +157,7 @@ describe 'heat_saver_march_2024' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :electricity }
 
         let(:colgroups) do
@@ -227,7 +227,7 @@ describe 'heat_saver_march_2024' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :gas }
 
         let(:colgroups) do
@@ -300,7 +300,7 @@ describe 'heat_saver_march_2024' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :storage_heater }
 
         let(:colgroups) do

@@ -204,7 +204,7 @@ describe 'configurable_period' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
         let(:expected_school) { schools[0] }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :electricity }
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: false, unadjusted: false) }
@@ -272,7 +272,7 @@ describe 'configurable_period' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
         let(:expected_school) { schools[0] }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :gas }
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: false, unadjusted: true) }
@@ -330,7 +330,7 @@ describe 'configurable_period' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
         let(:expected_school) { schools[0] }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :storage_heater }
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: false, unadjusted: true) }
