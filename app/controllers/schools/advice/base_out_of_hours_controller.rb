@@ -6,12 +6,14 @@ module Schools
       def insights
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
         @benchmarked_usage = benchmark_school(@annual_usage_breakdown)
+        @analysis_dates = analysis_dates
         unless @analysis_dates.one_years_data?
           @well_managed_percent = benchmark_value(:benchmark_school)
         end
       end
 
       def analysis
+        @analysis_dates = analysis_dates
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
         @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
         @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, date_window: 363)
