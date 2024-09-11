@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: afa3a7b08b21f9c102dd52ac9eb2e90902f0eab4
-  tag: 6.0.4
+  revision: 623cb4e63424bee4c6745044568d637ee558c3d7
+  branch: 470-summer-holiday-consumption-has-disappeared-from-out-of-hours-holiday-tables
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
