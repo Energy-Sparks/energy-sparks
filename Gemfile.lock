@@ -884,7 +884,6 @@ DEPENDENCIES
   rubocop-factory_bot
   rubocop-performance
   rubocop-rails
-  rubocop-rspec
   rubocop-rspec_rails
   sass-rails
   sassc!
