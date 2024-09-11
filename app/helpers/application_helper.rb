@@ -456,8 +456,8 @@ module ApplicationHelper
     (fa_icon('chevron-up', class: 'fa-fw') + fa_icon('chevron-down', class: 'fa-fw')).html_safe
   end
 
-  def text_with_icon(text, icon)
-    (icon ? "#{fa_icon(icon)} #{text}" : text).html_safe
+  def text_with_icon(text, icon, **kwargs)
+    (icon ? "#{fa_icon(icon, **kwargs)} #{text}" : text).html_safe
   end
 
   def component(name, *args, **kwargs, &block)
