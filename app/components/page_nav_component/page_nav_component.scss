@@ -1,35 +1,47 @@
-.page-nav-component a.nav-link.item:hover {
-  background-color: $light-grey;
-}
-
-.page-nav-component a.nav-link.current {
-  font-weight: bolder !important;
-}
-
-.page-nav-component a.nav-link.section-link {
-  border-bottom: 1px solid #dee2e6 !important; // bootstrap border-bottom default
-  font-weight: normal;
-}
-
-@each $fuel, $tones in $fuel-colours {
-  .page-nav-component a.nav-link.#{$fuel}-item {
-    border-left: 1px solid map-get($tones, "light");
+.page-nav-component {
+  i { // style the chevron
+    color: $blue-dark;
   }
 
-  .page-nav-component a.nav-link.#{$fuel}-item:hover {
-    background-color: rgba(map-get($tones, "light"), 0.5);
+  a.nav-link {
+    font-family: $header-font-family;
+    color: $blue-very-dark;
+    font-weight: 600;
+
+    &:hover, &.current {
+      border-radius: 5px;
+    }
+
+    &.item:hover {
+      background-color: $grey-light;
+    }
+
+    &.current {
+      font-weight: 600 !important;
+    }
   }
 
-  .page-nav-component a.nav-link.#{$fuel}-item.current {
-    background-color: rgba(map-get($tones, "light"), 0.5);
-    font-weight: bolder;
+  li.section {
+    border-top: 1px solid $table-grey !important;
   }
-}
 
-@each $fuel, $tones in $fuel-colours {
-  .page-nav-component a.#{$fuel}-section {
-    background-color: map-get($tones, "dark");
-    color: $white;
-    font-weight: bold;
+  @each $fuel, $tones in $fuel-colours {
+    a.nav-link.#{$fuel}-item {
+      font-family: $default-font-family;
+      color: $blue-dark;
+      font-weight: normal;
+
+      &:hover, &.current {
+        background-color: map-get($tones, "medium");
+      }
+    }
+
+    a.#{$fuel}-section {
+      font-weight: 600;
+
+      i.fuel {  // icon colour for fuel icon
+        color: map-get($tones, "dark");
+      }
+    }
   }
 }

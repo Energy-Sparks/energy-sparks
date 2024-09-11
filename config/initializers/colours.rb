@@ -12,7 +12,7 @@ module Colours
   # for all values here. Examples as follows:
   #
   # $yellow-pale: #fdefc8;
-  # $blue-very-dark: #334375;
+  # $blue-very-dark: #192a52;
   #
 
   BASE = {
