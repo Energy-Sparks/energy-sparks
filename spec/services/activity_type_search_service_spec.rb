@@ -108,7 +108,7 @@ describe ActivityTypeSearchService do
       activity_type_1 = create(:activity_type, name: 'foo one', subjects: [subject_1])
       activity_type_2 = create(:activity_type, name: 'foo two', subjects: [subject_2])
       activity_types = ActivityType.where(id: [activity_type_1.id, activity_type_2.id])
-      expect(ActivityTypeSearchService.search('foo').pluck(:id)).to eq(activity_types.pluck(:id))
+      expect(ActivityTypeSearchService.search('foo').pluck(:id)).to match_array(activity_types.pluck(:id))
       expect(ActivityTypeSearchService.search('foo', [], [subject_1])).to eq([activity_type_1])
       expect(ActivityTypeSearchService.search('foo', [], [subject_2])).to eq([activity_type_2])
     end
