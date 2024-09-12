@@ -1,13 +1,32 @@
 require 'rails_helper'
 
 describe 'Pupil dashboard' do
-  let!(:school) { create(:school) }
+  let!(:school) { create(:school, :with_fuel_configuration) }
 
   before do
     school.configuration.update(aggregate_meter_dates: {
       electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
       gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
     })
+  end
+
+  context 'when viewing index' do
+    before do
+      visit pupils_school_public_displays_path(school)
+    end
+
+    it 'displays title' do
+      expect(page).to have_title(I18n.t('pupils.public_displays.index.title'))
+      expect(page).to have_content(I18n.t('pupils.public_displays.index.title'))
+    end
+
+    [:electricity, :gas].each do |fuel_type|
+      it { expect(page).to have_link(href: pupils_school_public_displays_equivalences_path(school, fuel_type))}
+
+      [:out_of_hours, :last_week].each do |chart_type|
+        it { expect(page).to have_link(href: pupils_school_public_displays_charts_path(school, fuel_type, chart_type))}
+      end
+    end
   end
 
   context 'when viewing charts' do

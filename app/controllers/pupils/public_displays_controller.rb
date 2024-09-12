@@ -7,10 +7,10 @@ module Pupils
     include ActionView::Context
 
     skip_before_action :authenticate_user!
-    before_action :check_aggregated_school_in_cache
-    before_action :set_fuel_type
+    before_action :check_aggregated_school_in_cache, except: :index
+    before_action :set_fuel_type, except: :index
     before_action :check_fuel_type, only: :charts
-    before_action :set_analysis_dates
+    before_action :set_analysis_dates, except: :index
 
     layout 'public_displays'
 
