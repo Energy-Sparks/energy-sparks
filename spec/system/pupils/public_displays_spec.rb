@@ -20,10 +20,13 @@ describe 'Pupil dashboard' do
       expect(page).to have_content(I18n.t('pupils.public_displays.index.title'))
     end
 
-    [:electricity, :gas].each do |fuel_type|
+    fuel_types = %i[electricity gas]
+    chart_types = %i[out_of_hours last_week]
+
+    fuel_types.each do |fuel_type|
       it { expect(page).to have_link(href: pupils_school_public_displays_equivalences_path(school, fuel_type))}
 
-      [:out_of_hours, :last_week].each do |chart_type|
+      chart_types.each do |chart_type|
         it { expect(page).to have_link(href: pupils_school_public_displays_charts_path(school, fuel_type, chart_type))}
       end
     end
