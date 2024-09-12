@@ -1,6 +1,6 @@
 module Pupils
   class PublicDisplaysController < ApplicationController
-    load_and_authorize_resource :school
+    load_resource :school
 
     include SchoolAggregation
     include ActionView::Helpers::TagHelper
@@ -16,8 +16,7 @@ module Pupils
     end
 
     def equivalences
-      equivalences = equivalences_for_meter_types([params[:fuel_type].to_sym])
-      @equivalence_content = equivalences.sample
+      @equivalence = equivalence_for_meter_types([params[:fuel_type].to_sym])
     end
 
     def charts
@@ -25,29 +24,26 @@ module Pupils
 
     private
 
-    def equivalences_for_meter_types(meter_types)
-      @school.data_enabled? ? setup_equivalences(meter_types) : default_equivalences(meter_types)
+    def equivalence_for_meter_types(meter_types)
+      @school.data_enabled? ? choose_equivalence(meter_types) : default_equivalence(meter_types)
     end
 
-    def setup_equivalences(meter_types = :all)
-      equivalence_data = Equivalences::RelevantAndTimely.new(@school).equivalences(meter_types: meter_types)
+    def choose_equivalence(meter_types = :all)
+      equivalences = Equivalences::RelevantAndTimely.new(@school).equivalences(meter_types: meter_types)
+      equivalence = equivalences.sample
 
-      equivalence_data.shuffle.map do |equivalence|
-        TemplateInterpolation.new(
-          equivalence.content_version,
-          with_objects: { equivalence_type: equivalence.content_version.equivalence_type },
-        ).interpolate(
-          :equivalence,
-          with: equivalence.formatted_variables
-        )
-      end
+      return default_equivalence(meter_types) unless equivalence
+
+      TemplateInterpolation.new(
+        equivalence.content_version,
+        with_objects: { equivalence_type: equivalence.content_version.equivalence_type },
+      ).interpolate(
+        :equivalence,
+        with: equivalence.formatted_variables
+      )
     end
 
-    # Creates a list of default equivalences with the consumption for an "average" school.
-    # Objects in the returned array has equivalent structure to that returned by `setup_equivalences`
-    #
-    # TODO: these could later be moved into the database to allow them to be managed better
-    def default_equivalences(meter_types = :all)
+    def default_equivalence(meter_types = :all)
       scope = [:pupils, :default_equivalences]
       all_defaults = [
         { meter_type: :electricity, avg: 'equivalence_1.measure_html', title: 'equivalence_1.equivalence', img: 'kettle' },
@@ -66,7 +62,7 @@ module Pupils
         default_equivalence.equivalence_type.image_name = equivalence_config[:img]
         default_equivalence
       end
-      meter_types == :all ? all_defaults : all_defaults.select {|e| meter_types.include?(e.equivalence_type.meter_type)}
+      meter_types == :all ? all_defaults : all_defaults.select {|e| meter_types.include?(e.equivalence_type.meter_type)}.sample
     end
   end
 end
