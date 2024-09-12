@@ -15,13 +15,13 @@ module Colours
   # $blue-very-dark: #192a52;
   #
 
-  BASE = {
+  PALETTE = {
     blue_pale: '#f2f6fc'.freeze, # advice_page_list_component background colour
     blue_light: '#cbe4fc'.freeze, # changed colour from design - is now blue medium from original design - used in nav
 
     # blue_medium in the original design was #cbe4fc - which is not bold enough
     # have now moved this up to blue_light, which wasn't quite dark enough either :-)
-    # derived new colour from monocromatics based on blue_very_dark https://colorkit.co/color/192a52/
+    # derived new colour from monocromatics PALETTEd on blue_very_dark https://colorkit.co/color/192a52/
     blue_medium: '#3c64c3', #406bd1'.freeze, # changed colour - see above for why
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
@@ -50,54 +50,121 @@ module Colours
 
   }.freeze
 
-
-  FUEL = {
-    electric: {
-      light: BASE[:blue_pale],
-      medium: BASE[:blue_light],
-      dark: BASE[:blue_medium]
+  MAP = {
+    fuel: {
+      electric: {
+        light: PALETTE[:blue_pale],
+        medium: PALETTE[:blue_light],
+        dark: PALETTE[:blue_medium]
+      },
+      gas: {
+        light: PALETTE[:yellow_pale],
+        medium: PALETTE[:yellow_light],
+        dark: PALETTE[:yellow_medium]
+      },
+      storage: {
+        light: PALETTE[:purple_pale],
+        medium: PALETTE[:purple_medium],
+        dark: PALETTE[:purple_dark]
+      },
+      solar: {
+        light: PALETTE[:teal_pale],
+        medium: PALETTE[:teal_medium],
+        dark: PALETTE[:teal_dark]
+      },
     },
-    gas: {
-      light: BASE[:yellow_pale],
-      medium: BASE[:yellow_light],
-      dark: BASE[:yellow_medium]
+    polarity: {
+      positive: {
+        light: PALETTE[:teal_light],
+        dark: PALETTE[:teal_dark]
+      },
+      neutral: {
+        light: PALETTE[:grey_pale],
+        dark: PALETTE[:grey_medium]
+      },
+      negative: {
+        light: PALETTE[:red_light],
+        dark: PALETTE[:red_dark]
+      }
     },
-    storage: {
-      light: BASE[:purple_pale],
-      medium: BASE[:purple_medium],
-      dark: BASE[:purple_dark]
-    },
-    solar: {
-      light: BASE[:teal_pale],
-      medium: BASE[:teal_medium],
-      dark: BASE[:teal_dark]
+    comparison: {
+      exemplar_school: PALETTE[:teal_dark],
+      benchmark_school: PALETTE[:yellow_medium],
+      other_school: PALETTE[:red_dark]
     }
   }.freeze
 
-  def self.base(method_name)
-    BASE[method_name.to_sym]
+  FLAT_MAP = MAP.values.inject(&:merge).freeze
+
+  ## NB: This model relies on keys such as electric, positive etc being unique!
+
+  def self.palette(method_name)
+    PALETTE[method_name.to_sym]
   end
 
-  def self.fuel(method_name)
-    fuel, tone = method_name.split('_', 2).map(&:to_sym)
-    FUEL.dig(fuel, tone)
+  def self.map(method_name)
+    return FLAT_MAP[method_name.to_sym] if FLAT_MAP[method_name.to_sym]
+
+    key, tone = method_name.to_s.split('_', 2).map(&:to_sym)
+    FLAT_MAP.dig(key, tone)
+  end
+
+  def self.sass_variables(key)
+    group = key == :palette ? PALETTE : MAP[key]
+
+    group.map do |name, value|
+      if value.is_a?(String)
+        "$#{name.to_s.dasherize}: #{value};\n"
+      else
+        value.map { |tone, hex| "$#{name.to_s.dasherize}-#{tone.to_s.dasherize}: #{hex};\n" }.join
+      end
+    end.join
+  end
+
+  def sass_variable(name:, tone: nil, hex:)
+     label = "$#{name.dasherize}"
+     label += "-#{tone.dasherize}" if tone
+     "#{label}: #{hex};\n"
+  end
+
+  def self.sass_map(group)
+    output = "$colours-#{group.to_s.dasherize}: (\n"
+    MAP[group].each do |name, value|
+      key = name.to_s.dasherize
+      if value.is_a?(String)
+        output += "  #{key}: $#{key},\n"
+      else
+        output += "  #{key}: (\n"
+        value.each do |tone, hex|
+          tone_name = tone.to_s.dasherize
+          output += "    #{tone_name}: $#{key}-#{tone_name}" + ",\n"
+        end
+        output += "  ),\n"
+      end
+    end
+    output += ");\n"
   end
 
   # Usage:
   # Colours::yellow_very_dark
   # Colours::gas_light
+  # Colours::positive_light
+  # Colours::comparison_examplar_school
   def self.method_missing(method_name, *args, &block)
-    base(method_name) || fuel(method_name) || super
+    palette(method_name) || map(method_name) || super
   end
 
   def self.respond_to_missing?(method_name, include_private = false)
-    BASE.key?(method_name) || fuel(method_name) || super
+    PALETTE.key?(method_name) || map(method_name) || super
   end
 
   # Usage:
   # Colours::get(:yellow_very_dark)
+  # Colours::get(:gas_light)
+  # Colours::get(:positive_light)
+  # Colours::get(:comparison_examplar_school)
   def self.get(colour)
-    base(colour) || fuel(color)
+    palette(colour) || map(color)
   end
 
   ### Old / current colours ###

@@ -47,31 +47,31 @@ p {
 }
 
 .bg-positive {
-  background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
+  background-image: linear-gradient(to right, $positive-dark 0%, $positive-light 100%);
 }
 
 .bg-positive-dark {
-  background-color: $bg-positive;
+  background-color: $positive-dark;
 }
 
 .bg-positive-light {
-  background-color: $bg-positive-light;
+  background-color: $positive-light;
 }
 
 .bg-neutral {
-  background-image: linear-gradient(to right, $bg-neutral 0%, $bg-neutral-light 100%);
+  background-image: linear-gradient(to right, $neutral-dark 0%, $neutral-light 100%);
 }
 
 .bg-negative {
-  background-image: linear-gradient(to right, $bg-negative 0%, $bg-negative-light 100%);
+  background-image: linear-gradient(to right, $negative-dark 0%, $negative-light 100%);
 }
 
 .bg-negative-dark {
-  background-color: $bg-negative;
+  background-color: $negative-dark;
 }
 
 .bg-negative-light {
-  background-color: $bg-negative-light;
+  background-color: $negative-light;
 }
 
 .bg-light-blue {
@@ -241,7 +241,7 @@ dl dt {
 
 // fuel colour styles
 
-@each $fuel, $tones in $fuel-colours {
+@each $fuel, $tones in $colours-fuel {
   .bg-#{$fuel}-light {
     background-color: map-get($tones, "light");
   }
@@ -256,10 +256,13 @@ dl dt {
 
 }
 
+// Unused?
 @each $tag, $colour in $colours-comparison {
+  // bg-exemplar_school
   .bg-#{$tag} {
     background-color: $colour !important;
   }
+  // text-exemplar_school
   .text-#{$tag} {
     text-decoration: underline;
     text-decoration-color: $colour;
@@ -267,3 +270,4 @@ dl dt {
     font-weight: bolder;
   }
 }
+

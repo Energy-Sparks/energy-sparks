@@ -10,11 +10,10 @@
 
     &:hover, &.current {
       background-color: $grey-pale;
-      border-radius: 5px;
     }
 
     &.current {
-      font-weight: 800 !important;
+      font-weight: 700;
     }
   }
 
@@ -22,19 +21,20 @@
     border-top: 1px solid $grey-medium !important;
   }
 
-  @each $fuel, $tones in $fuel-colours {
+  @each $fuel, $tones in $colours-fuel {
     a.nav-link.#{$fuel}-item {
       font-family: $default-font-family;
       color: $blue-dark;
-      font-weight: normal;
+      font-weight: $default-font-weight;
 
       &:hover, &.current {
+        border-radius: 5px;
         background-color: map-get($tones, "medium");
       }
-    }
 
-    &.current {
-      font-weight: 600 !important;
+      &.current {
+        font-weight: 700 !important;
+      }
     }
 
     a.#{$fuel}-section {
