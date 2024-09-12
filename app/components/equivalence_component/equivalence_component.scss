@@ -35,3 +35,17 @@
     }
   }
 }
+
+// Used for public display version of equivalence
+// Force the text to match the header height and colours
+// so more readable from a distance
+.equivalence-component.public-displays.horizontal {
+  .trix-content div, div {
+    font-family: $header-font-family;
+    font-weight: $header-font-weight;
+    font-size: $f1;
+    color: $dark-blue;
+    line-height: 58px;
+    padding-bottom: 10px;
+  }
+}
