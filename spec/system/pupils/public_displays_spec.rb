@@ -3,6 +3,112 @@ require 'rails_helper'
 describe 'Pupil dashboard' do
   let!(:school) { create(:school) }
 
+  context 'when viewing charts' do
+    shared_examples 'a working chart page' do
+      it 'includes the chart' do
+        expect(page).to have_css("#chart_#{expected_chart}")
+      end
+
+      it 'shows the header'
+      it 'shows the date ranges'
+    end
+
+    context 'when school is data enabled' do
+      let!(:school) { create(:school, :with_fuel_configuration) }
+
+      before do
+        visit pupils_school_public_displays_charts_path(school, fuel_type, chart_type)
+      end
+
+      context 'with electricity' do
+        let(:fuel_type) { :electricity }
+
+        context 'with out of hours chart' do
+          let(:chart_type) { :out_of_hours }
+
+          it_behaves_like 'a working chart page' do
+            let(:expected_chart) { :pupil_dashboard_daytype_breakdown_electricity }
+          end
+        end
+
+        context 'with last week chart' do
+          let(:chart_type) { :last_week }
+
+          it_behaves_like 'a working chart page' do
+            let(:expected_chart) { :public_displays_electricity_weekly_comparison }
+          end
+        end
+      end
+
+      context 'with gas' do
+        let(:fuel_type) { :gas }
+
+        context 'with out of hours chart' do
+          let(:chart_type) { :out_of_hours }
+
+          it_behaves_like 'a working chart page' do
+            let(:expected_chart) { :pupil_dashboard_daytype_breakdown_gas }
+          end
+        end
+
+        context 'with last week chart' do
+          let(:chart_type) { :last_week }
+
+          it_behaves_like 'a working chart page' do
+            let(:expected_chart) { :public_displays_gas_weekly_comparison }
+          end
+        end
+      end
+    end
+
+    context 'when school does not have fuel type' do
+      let!(:school) { create(:school, :with_fuel_configuration, has_gas: false) }
+      let(:fuel_type) { :gas }
+      let(:chart_type) { :out_of_hours }
+
+      context 'when in production' do
+        before do
+          allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
+          visit pupils_school_public_displays_charts_path(school, :gas, :out_of_hours)
+        end
+
+        it 'shows an error message' do
+          expect(page).to have_content(I18n.t('chart_data_values.standard_error_message'))
+        end
+      end
+    end
+
+    context 'when school is not data enabled' do
+      let!(:school) { create(:school, :with_fuel_configuration, data_enabled: false) }
+
+      context 'when in production' do
+        before do
+          allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
+          visit pupils_school_public_displays_charts_path(school, :electricity, :out_of_hours)
+        end
+
+        it 'shows an error message' do
+          expect(page).to have_content(I18n.t('chart_data_values.standard_error_message'))
+        end
+      end
+    end
+
+    context 'when school is not public' do
+      let!(:school) { create(:school, data_sharing: :within_group) }
+
+      context 'when in production' do
+        before do
+          allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
+          visit pupils_school_public_displays_charts_path(school, :gas, :out_of_hours)
+        end
+
+        it 'shows an error message' do
+          expect(page).to have_content(I18n.t('chart_data_values.standard_error_message'))
+        end
+      end
+    end
+  end
+
   context 'when viewing equivalences' do
     context 'when school is data enabled' do
       let(:equivalence_type)          { create(:equivalence_type, time_period: :last_week, meter_type: :electricity)}

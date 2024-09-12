@@ -77,7 +77,7 @@ class ChartDataValues
     @annotations = annotations_configuration
 
     if @chart1_type == :column || @chart1_type == :bar
-      if @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
+      if @chart_type.match?(/^public_displays/) || @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
         usage_column
       else
         column_or_bar
@@ -133,6 +133,8 @@ class ChartDataValues
   end
 
   def work_out_best_colour(data_type)
+    puts 'HERE'
+    puts data_type
     from_hash = colour_lookup[data_type]
     return from_hash unless from_hash.nil?
 

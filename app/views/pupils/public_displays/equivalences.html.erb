@@ -1,7 +1,6 @@
 <div class="container-fluid">
   <%= component 'equivalence', image_name: @equivalence.equivalence_type.image_name,
                                fuel_type: @equivalence.equivalence_type.meter_type,
-                               show_fuel_type: true,
                                classes: 'pl-2 public-displays',
                                layout: :horizontal do |e| %>
     <% e.with_header do %>

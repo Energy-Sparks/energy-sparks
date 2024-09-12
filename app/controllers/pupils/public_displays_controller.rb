@@ -8,21 +8,66 @@ module Pupils
 
     skip_before_action :authenticate_user!
     before_action :check_aggregated_school_in_cache
-
+    before_action :set_fuel_type
     layout 'public_displays'
+
+    rescue_from StandardError do |exception|
+      Rollbar.error(exception, school: @school.name, school_id: @school.id)
+      raise unless Rails.env.production?
+      locale = LocaleFinder.new(params, request).locale
+      I18n.with_locale(locale) do
+        render 'error', status: :bad_request
+      end
+    end
 
     def index
       render 'index', layout: 'application'
     end
 
     def equivalences
-      @equivalence = equivalence_for_meter_types([params[:fuel_type].to_sym])
+      meter_types = case @fuel_type
+                    when :electricity
+                      [:electricity, :solar_pv]
+                    else
+                      [@fuel_type]
+                    end
+      @equivalence = equivalence_for_meter_types(meter_types)
     end
 
     def charts
+      raise 'Non-public data' unless @school.data_sharing_public?
+      raise 'Not data enabled' unless @school.data_enabled?
+      raise "Incorrect fuel type #{@fuel_type} #{params[:chart_type]}" unless @school.send("has_#{@fuel_type}?")
+      chart_type = params.require(:chart_type).to_sym
+      @chart = find_chart(@fuel_type, chart_type)
     end
 
     private
+
+    def set_fuel_type
+      @fuel_type = params.require(:fuel_type).to_sym
+    end
+
+    def find_chart(fuel_type, chart_type)
+      case fuel_type
+      when :electricity
+        case chart_type
+        when :out_of_hours
+          :pupil_dashboard_daytype_breakdown_electricity
+        else
+          :public_displays_electricity_weekly_comparison
+        end
+      when :gas
+        case chart_type
+        when :out_of_hours
+          :pupil_dashboard_daytype_breakdown_gas
+        else
+          :public_displays_gas_weekly_comparison
+        end
+      else
+        raise "Currently unsupported #{fuel_type} #{chart_type}"
+      end
+    end
 
     def equivalence_for_meter_types(meter_types)
       @school.data_enabled? ? choose_equivalence(meter_types) : default_equivalence(meter_types)
