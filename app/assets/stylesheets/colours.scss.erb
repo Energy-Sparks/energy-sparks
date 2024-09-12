@@ -7,30 +7,21 @@
 // e.g.:
 // $yellow-pale: #fdefc8;
 // $blue-very-dark: #334375;
-<% Colours::BASE.each do |colour, hex| %>
-  $<%= colour.to_s.dasherize %>: <%= hex %>;
-<% end %>
+<%= Colours::sass_variables :palette %>
 
-// The following creates a SASS variables each fuel type found in Colours::FUEL hash
-// Fuel Types. e.g.
+// The following creates a SASS variables for these keys found in Colours::MAP hash
+// e.g.:
 // $electric-dark: #007EFF;
-<% Colours::FUEL.each do |fuel, tones| %>
-  <% tones.each do |tone, hex| %>
-    $<%= "#{fuel}-#{tone}".dasherize %>: <%= hex %>;
-  <% end %>
-<% end %>
+// $positive-dark: #10bca2;
+// $exemplar-school: #10bca2;
+<%= Colours::sass_variables :fuel %>
+<%= Colours::sass_variables :polarity %>
+<%= Colours::sass_variables :comparison %>
 
-// The following creates a SASS map of all the fuel colours
-// So we can use it later to iterate on
-$fuel-colours: (
-<% Colours::FUEL.each do |fuel, tones| %>
-  <%= fuel.to_s.dasherize %>: (
-  <% tones.each do |tone, hex| %>
-    <%= tone.to_s.dasherize %>: $<%= "#{fuel}-#{tone}".dasherize %>,
-  <% end %>
-  ),
-<% end %>
-);
+// Create SASS maps for each of these keys found in Colours::MAP
+<%= Colours::sass_map :fuel %>
+<%= Colours::sass_map :polarity %>
+<%= Colours::sass_map :comparison %>
 
 // Old / current colour mappings ###
 // These are *not* to be used for new features as we're moving away
@@ -83,26 +74,7 @@ $white: <%= Colours::WHITE %>;
 // Shortcuts
 $text: $dark;
 
-// Positive / neutral / negative
-$bg-positive: $turquoise;
-$bg-neutral: $light-blue;
-$bg-negative: $new-red;
-
-$bg-positive-light: $light-turquoise;
-$bg-neutral-light: $lighter-light-blue;
-$bg-negative-light: $light-red;
-
 // Live Data
 $live-data-dark: $green;
 $live-data-light: $light-grey;
 
-// Comparisons
-$exemplar-school: $green;
-$benchmark-school: $light-orange;
-$other-school: $bg-negative;
-
-$colours-comparison: (
-  "exemplar_school": $exemplar-school,
-  "benchmark_school": $benchmark-school,
-  "other_school": $other-school
-);

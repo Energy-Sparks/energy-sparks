@@ -43,7 +43,6 @@ div#management-energy-overview-tabs {
   }
 }
 
-
 .timeline-border-left {
   border-left: 3px solid $dark;
 }
@@ -113,15 +112,15 @@ div#management-energy-overview-tabs {
 }
 
 .info-bar.bg-neutral div .btn {
-  border-color: $bg-neutral;
+  border-color: $neutral-dark;
 }
 
 .info-bar.bg-positive div .btn {
-  border-color: $bg-positive;
+  border-color: $positive-dark;
 }
 
 .info-bar.bg-negative div .btn {
-  border-color: $bg-negative;
+  border-color: $negative-dark;
 }
 
 div.management-energy-saving-actions {
@@ -217,12 +216,12 @@ table {
 }
 
 .future-data {
-  color: $grey;
+  color: $grey-medium;
 }
 
 .old-data {
   background: $white;
-  color: $bg-negative;
+  color: $negative-dark;
   sup {
     color: $black;
   }
