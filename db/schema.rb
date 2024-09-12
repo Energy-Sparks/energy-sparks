@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_29_105155) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_11_153230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -3143,33 +3143,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_29_105155) do
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
-  create_view "electricity_targets", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.current_year_percent_of_target_relative,
-      data.current_year_unscaled_percent_of_target_relative,
-      data.current_year_kwh,
-      data.current_year_target_kwh,
-      data.unscaled_target_kwh_to_date,
-      data.tracking_start_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.current_year_percent_of_target_relative,
-              data_1.current_year_unscaled_percent_of_target_relative,
-              data_1.current_year_kwh,
-              data_1.current_year_target_kwh,
-              data_1.unscaled_target_kwh_to_date,
-              data_1.tracking_start_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_unscaled_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, unscaled_target_kwh_to_date double precision, tracking_start_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityTargetAnnual'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
-  SQL
   create_view "gas_consumption_during_holidays", sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -3190,33 +3163,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_29_105155) do
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasHeatingHotWaterOnDuringHoliday'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
-  SQL
-  create_view "gas_targets", sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.current_year_percent_of_target_relative,
-      data.current_year_unscaled_percent_of_target_relative,
-      data.current_year_kwh,
-      data.current_year_target_kwh,
-      data.unscaled_target_kwh_to_date,
-      data.tracking_start_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.current_year_percent_of_target_relative,
-              data_1.current_year_unscaled_percent_of_target_relative,
-              data_1.current_year_kwh,
-              data_1.current_year_target_kwh,
-              data_1.unscaled_target_kwh_to_date,
-              data_1.tracking_start_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_unscaled_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, unscaled_target_kwh_to_date double precision, tracking_start_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasTargetAnnual'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs

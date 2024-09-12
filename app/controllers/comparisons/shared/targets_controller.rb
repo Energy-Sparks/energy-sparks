@@ -8,11 +8,10 @@ module Comparisons
       def headers
         [
           t('analytics.benchmarking.configuration.column_headings.school'),
+          t('schools.school_targets.target_table.target_reduction'),
+          t('schools.school_targets.target_table.current_progress'),
           t('analytics.benchmarking.configuration.column_headings.target_kwh_consumption'),
           t('analytics.benchmarking.configuration.column_headings.kwh_consumption_since_target_set'),
-          t('analytics.benchmarking.configuration.column_headings.percent_above_or_below_target_since_target_set'),
-          t('analytics.benchmarking.configuration.column_headings.percent_above_or_below_last_year'),
-          t('analytics.benchmarking.configuration.column_headings.last_year_kwh_consumption'),
           t('analytics.benchmarking.configuration.column_headings.start_date_for_target')
         ]
       end
