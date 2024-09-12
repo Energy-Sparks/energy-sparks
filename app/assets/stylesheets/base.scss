@@ -46,34 +46,6 @@ p {
   white-space: nowrap;
 }
 
-.bg-positive {
-  background-image: linear-gradient(to right, $positive-dark 0%, $positive-light 100%);
-}
-
-.bg-positive-dark {
-  background-color: $positive-dark;
-}
-
-.bg-positive-light {
-  background-color: $positive-light;
-}
-
-.bg-neutral {
-  background-image: linear-gradient(to right, $neutral-dark 0%, $neutral-light 100%);
-}
-
-.bg-negative {
-  background-image: linear-gradient(to right, $negative-dark 0%, $negative-light 100%);
-}
-
-.bg-negative-dark {
-  background-color: $negative-dark;
-}
-
-.bg-negative-light {
-  background-color: $negative-light;
-}
-
 .bg-light-blue {
   background-image: linear-gradient(to right, $light-blue 0%, $lighter-light-blue 100%);
 }
@@ -239,30 +211,52 @@ dl dt {
   background-color: white;
 }
 
+// polarity styles
+
+@each $polarity, $tones in $colours-polarity {
+  // e.g. .bg-positive
+  .bg-#{$polarity} {
+    background-image: linear-gradient(to right, map-get($tones, dark) 0%, map-get($tones, light) 100%);
+  }
+
+  // e.g. .bg-negative-dark
+  .bg-#{$polarity}-dark {
+    background-color: map-get($tones, dark);
+  }
+
+  // e.g. .bg-neutral-light
+  .bg-#{$polarity}-light {
+    background-color: map-get($tones, light);
+  }
+}
+
 // fuel colour styles
 
 @each $fuel, $tones in $colours-fuel {
+  // e.g. .bg-electric-light
   .bg-#{$fuel}-light {
     background-color: map-get($tones, "light");
   }
 
+  // e.g. .bg-gas-dark
   .bg-#{$fuel}-dark {
     background-color: map-get($tones, "dark");
   }
 
+  // e.g. .text-gas
   .text-#{$fuel} {
     color: map-get($tones, "dark");
   }
 
 }
 
-// Unused?
+// comparison styles - unused?
 @each $tag, $colour in $colours-comparison {
-  // bg-exemplar_school
+  // e.g. bg-exemplar_school
   .bg-#{$tag} {
     background-color: $colour !important;
   }
-  // text-exemplar_school
+  // e.g. text-exemplar_school
   .text-#{$tag} {
     text-decoration: underline;
     text-decoration-color: $colour;
