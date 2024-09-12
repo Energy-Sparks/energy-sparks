@@ -3,15 +3,13 @@
   &.none {
     background-color: $neutral-light !important;
   }
-  &.negative {
-    background-color: $negative-light !important;
+
+  @each $polarity, $tones in $colours-polarity {
+    &.#{$polarity} {
+      background-color: $map-get($tones, light) !important;
+    }
   }
-  &.positive {
-    background-color: $positive-light !important;
-  }
-  &.neutral {
-    background-color: $neutral-light !important;
-  }
+
   div.row {
     margin: 0.25rem 0.25rem;
   }
