@@ -73,7 +73,7 @@ class DashboardEquivalencesComponent < ApplicationComponent
 
   def two_column_margin(left = true)
     return '' if single_fuel?
-    "m#{left ? 'r' : 'l'}-2"
+    "m#{left ? 'r' : 'l'}-lg-2" # responsive margin same breakpoint as above
   end
 
   def equivalence_layout
