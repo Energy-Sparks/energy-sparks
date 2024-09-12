@@ -1,4 +1,14 @@
 <div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h1>
+        <%= t("pupils.public_displays.charts.#{@chart_type}.title", fuel_type: I18n.t("common.#{@fuel_type}").downcase) %>
+      </h1>
+      <h2>
+        <%= t("pupils.public_displays.charts.#{@chart_type}.intro") %>
+      </h2>
+    </div>
+  </div>
   <%= component 'chart',
                 school: @school,
                 chart_type: @chart,
@@ -6,4 +16,13 @@
                 no_zoom: true,
                 analysis_controls: false,
                 chart_config: create_chart_config(@school, @chart) %>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>
+        <% display_dates = @analysis_dates.transform_values { |d| short_dates(d) } %>
+        <%= t("pupils.public_displays.charts.#{@chart_type}.dates", **display_dates) %>
+      </h4>
+    </div>
+  </div>
 </div>

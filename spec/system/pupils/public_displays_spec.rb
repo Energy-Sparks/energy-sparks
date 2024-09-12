@@ -3,14 +3,28 @@ require 'rails_helper'
 describe 'Pupil dashboard' do
   let!(:school) { create(:school) }
 
+  before do
+    school.configuration.update(aggregate_meter_dates: {
+      electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
+      gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
+    })
+  end
+
   context 'when viewing charts' do
     shared_examples 'a working chart page' do
       it 'includes the chart' do
         expect(page).to have_css("#chart_#{expected_chart}")
       end
 
-      it 'shows the header'
-      it 'shows the date ranges'
+      it 'shows the title and intro' do
+        expect(page).to have_content(I18n.t("pupils.public_displays.charts.#{chart_type}.title",
+                                            fuel_type: I18n.t("common.#{fuel_type}").downcase))
+        expect(page).to have_content(I18n.t("pupils.public_displays.charts.#{chart_type}.intro"))
+      end
+
+      it 'shows the date ranges' do
+        expect(page).to have_content('Showing energy used')
+      end
     end
 
     context 'when school is data enabled' do

@@ -9,6 +9,9 @@ module Pupils
     skip_before_action :authenticate_user!
     before_action :check_aggregated_school_in_cache
     before_action :set_fuel_type
+    before_action :check_fuel_type, only: :charts
+    before_action :set_analysis_dates
+
     layout 'public_displays'
 
     rescue_from StandardError do |exception|
@@ -37,15 +40,35 @@ module Pupils
     def charts
       raise 'Non-public data' unless @school.data_sharing_public?
       raise 'Not data enabled' unless @school.data_enabled?
-      raise "Incorrect fuel type #{@fuel_type} #{params[:chart_type]}" unless @school.send("has_#{@fuel_type}?")
-      chart_type = params.require(:chart_type).to_sym
-      @chart = find_chart(@fuel_type, chart_type)
+      @chart_type = params.require(:chart_type).to_sym
+      @chart = find_chart(@fuel_type, @chart_type)
     end
 
     private
 
     def set_fuel_type
       @fuel_type = params.require(:fuel_type).to_sym
+    end
+
+    def check_fuel_type
+      raise "Incorrect fuel type #{@fuel_type} #{params[:chart_type]}" unless @school.send("has_#{@fuel_type}?")
+    end
+
+    def set_analysis_dates
+      aggregate_meter_dates = @school.configuration.aggregate_meter_dates
+      end_date = aggregate_meter_dates&.dig(@fuel_type.to_s, 'end_date')
+      return nil unless end_date
+
+      end_date = Date.parse(end_date)
+      last_full_week_start_date = end_date.prev_week.end_of_week
+      last_full_week_end_date = end_date.end_of_week - 1 # end of the week is Saturday
+
+      @analysis_dates = ActiveSupport::OrderedOptions.new.merge(
+        end_date: end_date,
+        start_date: end_date.prev_year.end_of_week,
+        last_start_date: last_full_week_start_date,
+        last_end_date: last_full_week_end_date,
+      )
     end
 
     def find_chart(fuel_type, chart_type)
