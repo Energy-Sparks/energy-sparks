@@ -13,13 +13,21 @@ module Schools
       end
 
       def analysis
+        @analysis_dates = analysis_dates
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
         @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
-        @analysis_dates = analysis_dates
         @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, date_window: 363)
       end
 
       private
+
+      def check_can_run_analysis
+        @analysable = create_analysable
+        render 'not_enough_data' and return unless @analysable.enough_data?
+        @analysis_dates = analysis_dates
+        @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
+        render 'schools/advice/out_of_hours/no_usage' and return if @annual_usage_breakdown&.out_of_hours&.kwh&.zero?
+      end
 
       def aggregate_meter
         aggregate_school.aggregate_meter(advice_page_fuel_type)

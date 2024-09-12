@@ -1,4 +1,4 @@
-<div class="chart-controls d-flex justify-content-between pt-4">
+<div class="chart-controls d-flex flex-wrap justify-content-between pt-4">
 
   <div>
     <div class="axis-controls" style='display: none;'>
@@ -24,7 +24,7 @@
 
   <div class='analysis-controls' style='display: none;'>
     <% if local_assigns[:analysis_controls] %>
-      <div class="d-flex align-items-center justify-content-between" role="group">
+      <div class="d-flex flex-wrap align-items-center justify-content-between" role="group">
         <span class="mr-2 align-bottom"><%= t('analysis_controls.explore') %></span>
         <div>
           <button class="btn btn-sm btn-outline-dark rounded-pill explore-button move_back" disabled>

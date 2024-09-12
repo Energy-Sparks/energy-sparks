@@ -78,11 +78,13 @@ describe Audit do
     end
 
     context 'when one activity has been completed' do
-      before do
-        complete_activity_type!(audit, audit.activity_types.first)
+      let!(:completed) do
+        type = audit.activity_types.first
+        complete_activity_type!(audit, type)
+        type
       end
 
-      it { expect(audit.activity_types_remaining).not_to include(audit.activity_types.first) }
+      it { expect(audit.activity_types_remaining).not_to include(completed) }
     end
 
     context 'when all activities have been completed' do
