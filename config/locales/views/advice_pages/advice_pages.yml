@@ -106,6 +106,9 @@ en:
       message: We don't currently have %{fuel_type} data for your school, so are unable to run this analysis
       title: Unable to run requested analysis
     no_recent_data: no recent data
+    no_usage:
+      message: Our data shows that since %{date} your school has not used any %{fuel_type} out of hours. At present we are unable to provide further analysis.
+      title: No usage to report
     not_enough_data:
       available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
       learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.
