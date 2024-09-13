@@ -133,8 +133,6 @@ class ChartDataValues
   end
 
   def work_out_best_colour(data_type)
-    puts 'HERE'
-    puts data_type
     from_hash = colour_lookup[data_type]
     return from_hash unless from_hash.nil?
 
