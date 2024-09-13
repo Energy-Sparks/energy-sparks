@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 1aae33759c60d9dff0c4a31488f4f943b195087f
+  revision: b0cc5548b3c22c6a328149e0a33414fbdb137ddb
   branch: 4497-add-big-screen-view-of-pupil-analysis
   specs:
     energy-sparks_analytics (1.2.1)
