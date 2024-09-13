@@ -6,7 +6,7 @@
 
   @each $polarity, $tones in $colours-polarity {
     &.#{$polarity} {
-      background-color: $map-get($tones, light) !important;
+      background-color: map-get($tones, light) !important;
     }
   }
 
