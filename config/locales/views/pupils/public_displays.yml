@@ -4,7 +4,7 @@ en:
     public_displays:
       charts:
         last_week:
-          dates: Showing energy used up to %{last_end_date}
+          dates: Showing energy used up to week ending %{last_end_date}
           intro: Chart shows the energy used for each day
           title: How much %{fuel_type} did your school use over the last two weeks?
         out_of_hours:
