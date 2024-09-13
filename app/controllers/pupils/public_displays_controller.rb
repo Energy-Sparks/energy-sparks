@@ -51,7 +51,17 @@ module Pupils
     end
 
     def check_fuel_type
-      raise "Incorrect fuel type #{@fuel_type} #{params[:chart_type]}" unless @school.send("has_#{@fuel_type}?")
+      method = case @fuel_type
+               when :electricity
+                 :has_electricity?
+               when :gas
+                 :has_gas?
+               when :storage_heaters
+                 :has_storage_heaters?
+               else
+                 :has_solar_pv?
+               end
+      raise "Incorrect fuel type #{@fuel_type} #{params[:chart_type]}" unless @school.send(method)
     end
 
     def set_analysis_dates
