@@ -20,10 +20,6 @@ module Comparisons
       :annual_energy_costs_per_pupil
     end
 
-    def advice_page_key
-      :total_energy_use
-    end
-
     def load_data
       columns = [:one_year_electricity_per_pupil_kwh, :one_year_gas_per_pupil_kwh, :one_year_storage_heater_per_pupil_kwh]
       Comparison::AnnualEnergyCostsPerUnit.for_schools(@schools).where_any_present(columns).by_total(columns)

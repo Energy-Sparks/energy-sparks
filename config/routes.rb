@@ -277,8 +277,7 @@ Rails.application.routes.draw do
     scope module: :schools do
 
       resource :advice, controller: 'advice', only: [:show] do
-        [:total_energy_use,
-         :baseload,
+        [:baseload,
          :electricity_costs,
          :electricity_long_term,
          :electricity_intraday,
@@ -720,6 +719,9 @@ Rails.application.routes.draw do
   # LEGACY PATHS
   # Old paths that (may) have been indexed by crawlers or used in comms/emails that
   # we want to maintain and redirect.
+
+  get '/schools/:name/advice/total_energy_use', to: redirect('/schools/%{name}/advice')
+  get '/schools/:name/advice/total_energy_use/:id', to: redirect('/schools/%{name}/advice')
 
   # Old 'find out more' pages
   get '/schools/:name/find_out_more', to: redirect('/schools/%{name}/advice')

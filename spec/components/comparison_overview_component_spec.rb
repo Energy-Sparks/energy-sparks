@@ -91,7 +91,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
     end
 
     it { expect(html).to have_content(I18n.t("school_groups.clusters.group_type.#{school.school_group.group_type}"))}
-    it { expect(html).to have_content(I18n.t('advice_pages.total_energy_use.insights.comparison.title')) }
+    it { expect(html).to have_content(I18n.t('components.comparison_overview.title')) }
 
     it {
       expect(html).to have_link(I18n.t('schools.schools.compare_schools',
