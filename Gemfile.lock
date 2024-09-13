@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: c22c4f222632f8d2fb75a6f33b979a2a5f15b261
-  tag: 6.0.5
+  revision: 898d47c837e5d8f65d4a14edadbdd0e69dd56391
+  branch: 4496-error-in-averageschoolgeneration-with-out-of-school-inset-day
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
