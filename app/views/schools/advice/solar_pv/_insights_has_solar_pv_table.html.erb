@@ -1,6 +1,3 @@
-<%= t('advice_pages.solar_pv.has_solar_pv.insights.the_table_below',
-      start_date: short_dates(@analysis_dates&.start_date), end_date: short_dates(@analysis_dates&.end_date)) %>
-
 <table class="mt-2 table table-sm advice-table table-with-totals">
   <thead>
     <th><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.category') %></th>
@@ -25,11 +22,8 @@
     </tr>
     <tr>
       <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.total_consumption') %></td>
-      <td class='text-right'>
-        <%= format_unit(@existing_benefits.annual_electricity_including_onsite_solar_pv_consumption_kwh, :kwh) %>
-      </td>
+      <td class='text-right'><%= format_unit(@existing_benefits.annual_electricity_including_onsite_solar_pv_consumption_kwh, :kwh) %></td>
     </tr>
   </tbody>
 </table>
-<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
-           data_target: 'how-have-we-analysed-your-data-footnotes' %>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
