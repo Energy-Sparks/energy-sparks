@@ -33,10 +33,6 @@ module Comparisons
       :change_in_energy_since_last_year
     end
 
-    def advice_page_key
-      :total_energy_use
-    end
-
     def load_data
       Comparison::ChangeInEnergySinceLastYear.for_schools(@schools).with_school_configuration.with_consistent_fuels_across_periods.by_total_percentage_change
     end
