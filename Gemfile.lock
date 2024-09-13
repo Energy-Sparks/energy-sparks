@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 60c8d2f2a7abb6067d8ed211254b19e541fa40cd
-  branch: use-week-not-workweek
+  revision: 3109817d483d9e361684d841c3bf3792cdd65144
+  tag: 6.0.7
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
