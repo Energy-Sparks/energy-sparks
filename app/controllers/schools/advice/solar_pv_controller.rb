@@ -2,6 +2,7 @@ module Schools
   module Advice
     class SolarPvController < AdviceBaseController
       before_action :load_dashboard_alerts, only: [:insights]
+      before_action :set_analysis_dates
 
       def insights
         if @school.has_solar_pv?
@@ -12,9 +13,7 @@ module Schools
       end
 
       def analysis
-        @analysis_dates = analysis_dates
         if @school.has_solar_pv?
-          @analysis_dates = analysis_dates
           @existing_benefits = build_existing_benefits
         else
           @potential_benefits_estimator = build_potential_benefits
@@ -81,6 +80,10 @@ module Schools
 
       def advice_page_key
         :solar_pv
+      end
+
+      def set_analysis_dates
+        @analysis_dates = analysis_dates
       end
     end
   end
