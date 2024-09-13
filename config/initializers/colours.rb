@@ -96,7 +96,7 @@ module Colours
 
   FLAT_MAP = MAP.values.inject(&:merge).freeze
 
-  ## NB: This model relies on keys such as electric, positive etc being unique!
+  ## NB: This model relies on the second level keys such as electric, positive etc being unique
 
   def self.palette(method_name)
     PALETTE[method_name.to_sym]
