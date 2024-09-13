@@ -21,7 +21,7 @@ module Colours
 
     # blue_medium in the original design was #cbe4fc - which is not bold enough
     # have now moved this up to blue_light, which wasn't quite dark enough either :-)
-    # derived new colour from monocromatics PALETTEd on blue_very_dark https://colorkit.co/color/192a52/
+    # derived new colour from monocromatics from blue_very_dark https://colorkit.co/color/192a52/
     blue_medium: '#3c64c3', #406bd1'.freeze, # changed colour - see above for why
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
