@@ -52,6 +52,7 @@ en:
               exported_solar_electricity: Exported solar electricity (not consumed onsite)
               photovoltaic_production: Photovoltaic production
               total_consumption: Total consumption
+          the_table_below: The table below shows solar PV consumed between %{start_date} and %{end_date}.
           title: What is solar PV?
           your_solar_energy_production: Your solar energy production
           your_solar_panels_have_reduced: Your solar panels have reduced your electricity consumption from the national grid by %{annual_saving_from_solar_pv_percent}
