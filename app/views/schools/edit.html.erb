@@ -1,11 +1,10 @@
-<div class="row justify-content-md-center">
-  <div class="col col-md-10 col-lg-8">
-    <h1><%= t('schools.school_details.editing') %></h1>
+<%= render 'schools/school_page_with_navigation', school: @school,
+  page_title: t('schools.school_details.editing') do %>
 
-    <%= render 'form', school: @school, submit_text: t('schools.school_details.update_school') %>
+  <%= render 'form', school: @school, submit_text: t('schools.school_details.update_school') %>
 
-    <div class="other-actions">
-      <%= link_to t('common.labels.back'), school_path(@school), class: 'btn btn-secondary' %>
-    </div>
+  <div class="other-actions">
+    <%= link_to t('common.labels.back'), school_path(@school), class: 'btn btn-secondary' %>
   </div>
-</div>
+
+<% end %>
