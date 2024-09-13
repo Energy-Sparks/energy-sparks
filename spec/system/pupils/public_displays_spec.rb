@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Pupil dashboard' do
+describe 'Pupil analysis public displays' do
   let!(:school) { create(:school, :with_fuel_configuration) }
 
   before do

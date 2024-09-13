@@ -41,11 +41,10 @@
 // so more readable from a distance
 .equivalence-component.public-displays.horizontal {
   .trix-content div, div {
+    @include font(f1);
     font-family: $header-font-family;
     font-weight: $header-font-weight;
-    font-size: $f1;
     color: $dark-blue;
-    line-height: 58px;
     padding-bottom: 10px;
   }
 }
