@@ -14,3 +14,12 @@ $link-hover-color: $dark;
 // We should consider a hover colour for links (we don't currently have this)
 // Although maybe slightly lighter rather than darker
 // $link-hover-color: $blue-very-dark;
+
+$primary:       $blue-medium;
+// $secondary:     $gray-600 !default; # keep boostrap default
+$success:       $teal-dark;
+// $info:          $cyan !default; # keep bootstrap default
+$warning:       $yellow-medium;
+$danger:        $red-dark;
+//$light:         $gray-100 !default; # bootstrap default
+//$dark:          $gray-800 !default; # bootstrap default

@@ -38,11 +38,13 @@ module Colours
     teal_dark: '#10bca2'.freeze,
 
     grey_pale: '#f6f6f6'.freeze, # off white from original designs
+    grey_light: '#DCDCDC'.freeze, # generated using: https://www.dannybrien.com/middle/
     grey_medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
 
-    red_light: '#fff1f1'.freeze,
-    red_medium: '#f8a0a0'.freeze,
-    red_dark: '#f14141'.freeze, # https://www.w3schools.com/colors/colors_picker.asp
+    red_pale: '#fff1f1'.freeze, # was red light in original design
+    red_light: '#fbc8c8'.freeze, # generated using: https://www.dannybrien.com/middle/
+    red_medium: '#f8a0a0'.freeze, # was "red" in original design
+    red_dark: '#f14141'.freeze, # generated using: https://www.w3schools.com/colors/colors_picker.asp
 
     purple_pale: '#e9d5ff'.freeze, # renamed from purple light in original design
     purple_medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
@@ -79,11 +81,11 @@ module Colours
         dark: PALETTE[:teal_dark]
       },
       neutral: {
-        light: PALETTE[:grey_pale],
+        light: PALETTE[:grey_light],
         dark: PALETTE[:grey_medium]
       },
       negative: {
-        light: PALETTE[:red_medium],
+        light: PALETTE[:red_light],
         dark: PALETTE[:red_dark]
       }
     },
