@@ -5,7 +5,7 @@ module Schools
     class BaseMeterBreakdownController < AdviceBaseController
       before_action :redirect_if_single_meter
       before_action :set_meters_and_usage_breakdown, only: %i[insights analysis]
-      before_action :set_analysis_dates
+      before_action :set_analysis_dates, only: %i[insights analysis]
 
       def insights; end
 
