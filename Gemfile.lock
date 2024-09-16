@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 7bf2ffdf9486855c7e3cc7c71be2ed62d53a9272
+  revision: 5ce7ee2fa5ff05a5bca76010aca641b3f9c785cb
   branch: 4449-reimplement-generation-of-average-school
   specs:
     energy-sparks_analytics (1.2.1)
