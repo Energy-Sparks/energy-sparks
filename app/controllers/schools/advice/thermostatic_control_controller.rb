@@ -3,7 +3,7 @@
 module Schools
   module Advice
     class ThermostaticControlController < AdviceBaseController
-      before_action :set_no_how_we_analysed_modal
+      before_action :set_no_how_we_analysed_modal, only: %i[insights analysis]
       before_action :set_analysis_dates, only: [:analysis]
 
       def insights
