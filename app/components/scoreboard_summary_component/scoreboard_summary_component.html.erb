@@ -9,7 +9,7 @@
             <% end %>
           </div>
         </div>
-        <% if podium.points_to_overtake && podium.school_position.position != 1 %>
+        <% if podium.points_to_overtake && podium&.school_position&.position != 1 %>
           <div class="row">
             <div class="col">
               <h4>

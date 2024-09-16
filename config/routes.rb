@@ -713,6 +713,9 @@ Rails.application.routes.draw do
     resources :schools, only: :show do
       get :analysis, to: 'analysis#index'
       get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
+      get 'public-displays', to: 'public_displays#index'
+      get 'public-displays/:fuel_type/equivalences', to: 'public_displays#equivalences', as: :public_displays_equivalences
+      get 'public-displays/:fuel_type/charts/:chart_type', to: 'public_displays#charts', as: :public_displays_charts
     end
   end
 
