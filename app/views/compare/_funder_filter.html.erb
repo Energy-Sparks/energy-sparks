@@ -1,6 +1,11 @@
 <div class="form-group mt-3">
   <label>Limit to funder (admin only option)</label>
   <div>
-    <%= select_tag :funder, options_for_select(Funder.with_schools.by_name.map {|funder| ["Funded by #{funder.name}", funder.id]}, @filter[:funder]), include_blank: 'All schools', class: 'form-control' %>
+    <%= select_tag :funder,
+                   options_for_select(
+                     Funder.with_schools.distinct.by_name
+                           .map { |funder| ["Funded by #{funder.name}", funder.id] }, @filter[:funder]
+                   ),
+                   include_blank: 'All schools', class: 'form-control' %>
   </div>
 </div>

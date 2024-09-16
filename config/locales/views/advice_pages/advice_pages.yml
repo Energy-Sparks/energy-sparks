@@ -96,7 +96,6 @@ en:
         solar_pv: Solar PV
         storage_heaters: Storage heaters
         thermostatic_control: Thermostatic control
-        total_energy_use: Energy use summary
       sections:
         electricity: Electricity
         gas: Gas
