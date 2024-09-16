@@ -16,7 +16,7 @@ module Colours
   #
 
   PALETTE = {
-    blue_pale: '#f2f6fc'.freeze, # advice_page_list_component background colour
+    blue_pale: '#f2f6fc'.freeze,
     blue_light: '#cbe4fc'.freeze, # changed colour from design - is now blue medium from original design - used in nav
 
     # blue_medium in the original design was #cbe4fc - which is not bold enough
@@ -26,13 +26,13 @@ module Colours
     blue_dark: '#334375'.freeze, # paragraph text
     blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
 
-    yellow_pale: '#fdefc8'.freeze, #advice_page_list_component background colour
+    yellow_pale: '#fdefc8'.freeze,
     yellow_light: '#fcdc8b'.freeze,
     yellow_medium: '#f9b233'.freeze,
     yellow_dark: '#772d10'.freeze,
     yellow_very_dark: '#441504'.freeze,
 
-    teal_pale: '#f0fdf9'.freeze, # advice_page_list_component background colour
+    teal_pale: '#f0fdf9'.freeze,
     teal_light: '#cbfcf0'.freeze,
     teal_medium: '#88f7dd'.freeze,
     teal_dark: '#10bca2'.freeze,
@@ -70,7 +70,7 @@ module Colours
         dark: PALETTE[:purple_dark]
       },
       solar: {
-        light: PALETTE[:teal_pale],
+        light: PALETTE[:teal_light],
         medium: PALETTE[:teal_medium],
         dark: PALETTE[:teal_dark]
       },
