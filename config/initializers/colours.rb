@@ -132,12 +132,11 @@ module Colours
     MAP[group].each do |name, value|
       key = name.to_s.dasherize
       if value.is_a?(String)
-        output += "  #{key}: $#{key},\n"
+        output += "  #{name}: $#{key},\n"
       else
-        output += "  #{key}: (\n"
+        output += "  #{name}: (\n"
         value.each do |tone, hex|
-          tone_name = tone.to_s.dasherize
-          output += "    #{tone_name}: $#{key}-#{tone_name}" + ",\n"
+          output += "    #{tone}: $#{key}-#{tone.to_s.dasherize}" + ",\n"
         end
         output += "  ),\n"
       end
