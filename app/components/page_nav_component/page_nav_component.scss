@@ -6,14 +6,14 @@
   a.nav-link {
     font-family: $header-font-family;
     color: $blue-very-dark;
-    font-weight: 600;
+    font-weight: $font-weight-semibold;
 
     &:hover, &.current {
       background-color: $grey-pale;
     }
 
     &.current {
-      font-weight: 700;
+      font-weight: bold;
     }
   }
 
@@ -24,7 +24,7 @@
   @each $fuel, $tones in $colours-fuel {
     a.nav-link.#{$fuel}-item {
       font-family: $default-font-family;
-      color: $blue-dark;
+      color: $blue-dark; // switch to $body-color when we've switch that over
       font-weight: $default-font-weight;
 
       &:hover, &.current {
@@ -33,12 +33,12 @@
       }
 
       &.current {
-        font-weight: 700 !important;
+        font-weight: bold !important;
       }
     }
 
     a.#{$fuel}-section {
-      font-weight: 600;
+      font-weight: $font-weight-semibold;
 
       &:hover {
         background-color: transparent;

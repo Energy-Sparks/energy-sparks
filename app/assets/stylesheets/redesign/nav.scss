@@ -43,7 +43,7 @@ $togglers: (
   background-color: $background;
 
   & a:link, a:hover, a:focus, a:active {
-    font-weight: 600;
+    font-weight: $font-weight-semibold;
     text-decoration: none;
   }
 

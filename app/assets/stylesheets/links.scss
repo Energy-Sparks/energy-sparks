@@ -40,7 +40,7 @@ a.badge.outline {
   color: $dark;
   background-image: linear-gradient($white, $light-grey);
   border-color: $grey;
-  font-weight: 600 !important;
+  font-weight: $font-weight-semibold !important;
   border-radius: 50rem !important;
 }
 
