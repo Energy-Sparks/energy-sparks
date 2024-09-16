@@ -216,17 +216,17 @@ dl dt {
 @each $polarity, $tones in $colours-polarity {
   // e.g. .bg-positive
   .bg-#{$polarity} {
-    background-image: linear-gradient(to right, map-get($tones, dark) 0%, map-get($tones, light) 100%);
+    background-image: linear-gradient(to right, map-get($tones, 'dark') 0%, map-get($tones, 'light') 100%);
   }
 
   // e.g. .bg-negative-dark
   .bg-#{$polarity}-dark {
-    background-color: map-get($tones, dark);
+    background-color: map-get($tones, 'dark');
   }
 
   // e.g. .bg-neutral-light
   .bg-#{$polarity}-light {
-    background-color: map-get($tones, light);
+    background-color: map-get($tones, 'light');
   }
 }
 
@@ -235,17 +235,17 @@ dl dt {
 @each $fuel, $tones in $colours-fuel {
   // e.g. .bg-electric-light
   .bg-#{$fuel}-light {
-    background-color: map-get($tones, "light");
+    background-color: map-get($tones, 'medium');
   }
 
   // e.g. .bg-gas-dark
   .bg-#{$fuel}-dark {
-    background-color: map-get($tones, "dark");
+    background-color: map-get($tones, 'dark');
   }
 
   // e.g. .text-gas
   .text-#{$fuel} {
-    color: map-get($tones, "dark");
+    color: map-get($tones, 'dark');
   }
 
 }

@@ -75,7 +75,7 @@ module Colours
     },
     polarity: {
       positive: {
-        light: PALETTE[:teal_light],
+        light: PALETTE[:teal_medium],
         dark: PALETTE[:teal_dark]
       },
       neutral: {
@@ -83,7 +83,7 @@ module Colours
         dark: PALETTE[:grey_medium]
       },
       negative: {
-        light: PALETTE[:red_light],
+        light: PALETTE[:red_medium],
         dark: PALETTE[:red_dark]
       }
     },
