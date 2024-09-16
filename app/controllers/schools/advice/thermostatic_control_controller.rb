@@ -1,13 +1,17 @@
+# frozen_string_literal: true
+
 module Schools
   module Advice
     class ThermostaticControlController < AdviceBaseController
+      before_action :set_no_how_we_analysed_modal
+      before_action :set_analysis_dates, only: [:analysis]
+
       def insights
         @heating_thermostatic_analysis = thermostatic_analysis_service.thermostatic_analysis
         @benchmark_thermostatic_control = thermostatic_analysis_service.benchmark_thermostatic_control
       end
 
       def analysis
-        @analysis_dates = analysis_dates
         @heating_thermostatic_analysis = thermostatic_analysis_service.thermostatic_analysis
       end
 

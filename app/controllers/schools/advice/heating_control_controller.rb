@@ -2,6 +2,7 @@ module Schools
   module Advice
     class HeatingControlController < AdviceBaseController
       before_action :load_dashboard_alerts, only: [:insights, :analysis]
+      before_action :set_no_how_we_analysed_modal
 
       def insights
         @last_week_start_times = heating_control_service.last_week_start_times

@@ -6,12 +6,12 @@ module Schools
       before_action :set_annual_usage_breakdown, only: [:insights, :analysis]
       before_action :set_usage_categories, only: [:insights, :analysis]
       before_action :set_heating_thermostatic_analysis, only: [:insights, :analysis]
+      before_action :set_no_how_we_analysed_modal, only: [:insights]
+      before_action :set_analysis_dates, only: [:analysis]
 
-      def insights
-      end
+      def insights; end
 
       def analysis
-        @analysis_dates = analysis_dates
         @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
       end
 

@@ -81,10 +81,6 @@ module Schools
       def advice_page_key
         :solar_pv
       end
-
-      def set_analysis_dates
-        @analysis_dates = analysis_dates
-      end
     end
   end
 end
