@@ -334,7 +334,6 @@ RSpec/ContextWording:
     - 'spec/system/schools/advice_pages/solar_pv_spec.rb'
     - 'spec/system/schools/advice_pages/storage_heaters_spec.rb'
     - 'spec/system/schools/advice_pages/thermostatic_control_spec.rb'
-    - 'spec/system/schools/advice_pages/total_energy_use_spec.rb'
     - 'spec/system/schools/audits_spec.rb'
     - 'spec/system/schools/cads_spec.rb'
     - 'spec/system/schools/consent_documents_spec.rb'
@@ -706,7 +705,6 @@ RSpec/NoExpectationExample:
 RSpec/OverwritingSetup:
   Exclude:
     - 'spec/services/alerts/fetch_content_spec.rb'
-    - 'spec/system/schools/advice_pages/total_energy_use_spec.rb'
 
 # Offense count: 1
 RSpec/PendingWithoutReason:
@@ -920,7 +918,6 @@ RSpec/VerifiedDoubles:
     - 'spec/system/home_spec.rb'
     - 'spec/system/mailchimp_signup_spec.rb'
     - 'spec/system/schools/advice_pages/baseload_spec.rb'
-    - 'spec/system/schools/advice_pages/total_energy_use_spec.rb'
     - 'spec/system/schools/live_data_spec.rb'
 
 # Offense count: 10

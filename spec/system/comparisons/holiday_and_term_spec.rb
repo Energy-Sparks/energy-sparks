@@ -25,7 +25,6 @@ describe 'holiday_and_term' do
                    variables: heating_usage_variables)
   end
   let(:key) { :holiday_and_term }
-  let(:advice_page_key) { :total_energy_use }
 
   let(:usage_variables) do
     {
@@ -70,10 +69,6 @@ describe 'holiday_and_term' do
     let(:footnotes) { [electricity_change_rows, gas_change_rows, tariff_changed_last_year] }
   end
 
-  before do
-    create(:advice_page, key: advice_page_key)
-  end
-
   context 'when viewing report' do
     before { visit "/comparisons/#{key}" }
 
@@ -93,7 +88,7 @@ describe 'holiday_and_term' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :total }
 
         let(:colgroups) do
@@ -168,7 +163,7 @@ describe 'holiday_and_term' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :electricity }
 
         let(:colgroups) do
@@ -241,7 +236,7 @@ describe 'holiday_and_term' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :gas }
 
         let(:colgroups) do
@@ -317,7 +312,7 @@ describe 'holiday_and_term' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :storage_heater }
 
         let(:colgroups) do

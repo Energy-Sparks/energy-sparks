@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: c0b489ffa51428c57f6292132a7a47f225f8cb69
-  branch: 4452-revise-school-target-comparison-reports
+  revision: 3109817d483d9e361684d841c3bf3792cdd65144
+  tag: 6.0.7
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)

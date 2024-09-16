@@ -3,3 +3,4 @@ en:
   components:
     comparison_overview:
       intro: Use our comparison tool to compare your energy use with others in your %{group_type}.
+      title: How do you compare?

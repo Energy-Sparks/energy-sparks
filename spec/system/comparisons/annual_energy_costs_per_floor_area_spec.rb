@@ -20,7 +20,6 @@ describe 'annual_energy_costs_per_floor_area' do
                    variables: additional_data_variables)
   end
   let(:key) { :annual_energy_costs_per_floor_area }
-  let(:advice_page_key) { :total_energy_use }
 
   let(:electricity_variables) do
     {
@@ -61,10 +60,6 @@ describe 'annual_energy_costs_per_floor_area' do
     let(:footnotes) { [tariff_changed_last_year] }
   end
 
-  before do
-    create(:advice_page, key: advice_page_key)
-  end
-
   context 'when viewing report' do
     before { visit "/comparisons/#{key}" }
 
@@ -75,7 +70,7 @@ describe 'annual_energy_costs_per_floor_area' do
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
       let(:expected_school) { school }
-      let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+      let(:advice_page_path) { school_advice_path(expected_school) }
       let(:headers) do
         [
           I18n.t('analytics.benchmarking.configuration.column_headings.school'),
