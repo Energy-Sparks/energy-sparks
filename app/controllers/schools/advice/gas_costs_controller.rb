@@ -3,8 +3,6 @@
 module Schools
   module Advice
     class GasCostsController < BaseCostsController
-      before_action :set_no_how_we_analysed_modal
-
       private
 
       def set_meters
