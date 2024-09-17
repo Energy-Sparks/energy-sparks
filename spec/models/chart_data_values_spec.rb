@@ -325,7 +325,7 @@ describe ChartDataValues do
 
       benchmark = gas_data[3]
       expect(benchmark[:y]).to be_within(0.1).of(16335.3)
-      expect(benchmark[:color]).to eq Colours.gas_middle
+      expect(benchmark[:color]).to eq Colours.gas_medium
     end
   end
 end

@@ -297,7 +297,7 @@ private
 
   def teachers_chart_colour(index)
     if @chart_type.match?(/_gas_/)
-      index.zero? ? Colours.gas_light : Colours.gas_light
+      index.zero? ? Colours.gas_dark : Colours.gas_light
     elsif @chart_type.match?(/_storage_/)
       index.zero? ? Colours.storage_dark : Colours.storage_light
     else
