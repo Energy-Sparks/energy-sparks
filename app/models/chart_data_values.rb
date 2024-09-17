@@ -577,7 +577,7 @@ private
       end
     when translated_series_item_for('Electricity')
       if benchmark_school_category?(category)
-        Colours.electric_middle
+        Colours.electric_medium
       else
         Colours.electric_light
       end
