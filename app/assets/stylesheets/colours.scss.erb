@@ -23,14 +23,17 @@
 <%= Colours::sass_map :polarity %>
 <%= Colours::sass_map :comparison %>
 
+// Get a colour from a generated map
+@function colour-get($hash, $name, $tone) {
+  @return map-get(map-get($hash, $name), $tone);
+}
+
 // Old / current colour mappings ###
 // These are *not* to be used for new features as we're moving away
 // from them to the colours above
 
 // Yellows
 $new-yellow: <%= Colours::NEW_YELLOW %>; // not used in the site but same colour is used in mailers & chart_data_values.rb
-$dark-yellow: <%= Colours::DARK_YELLOW %>; // podium
-$light-yellow: <%= Colours::LIGHT_YELLOW %>; // podium
 
 // Oranges
 $dark-orange: <%= Colours::DARK_ORANGE %>;
@@ -59,7 +62,6 @@ $turquoise: <%= Colours::TURQUOISE %>;
 $light-turquoise: <%= Colours::LIGHT_TURQUOISE %>;
 
 // Shades of grey
-$black: <%= Colours::BLACK %>;
 $dark: <%= Colours::DARK %>;
 $darker-grey: <%= Colours::DARKER_GREY %>;
 $dark-grey: <%= Colours::DARK_GREY %>;
@@ -69,7 +71,6 @@ $bluey-grey: <%= Colours::BLUEY_GREY %>; // used for background on pupil dashboa
 $light-grey: <%= Colours::LIGHT_GREY %>;
 $lighter-grey: <%= Colours::LIGHTER_GREY %>;
 $very-light-grey: <%= Colours::VERY_LIGHT_GREY %>;
-$white: <%= Colours::WHITE %>;
 
 // Shortcuts
 $text: $dark;
@@ -77,4 +78,3 @@ $text: $dark;
 // Live Data
 $live-data-dark: $green;
 $live-data-light: $light-grey;
-

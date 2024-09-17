@@ -111,16 +111,13 @@ div#management-energy-overview-tabs {
   border-width: 2px;
 }
 
-.info-bar.bg-neutral div .btn {
-  border-color: $neutral-dark;
-}
-
-.info-bar.bg-positive div .btn {
-  border-color: $positive-dark;
-}
-
-.info-bar.bg-negative div .btn {
-  border-color: $negative-dark;
+.info-bar {
+  @each $polarity, $tones in $colours-polarity {
+    // e.g. .bg-positive, .bg-neutral, .bg-negative
+    .bg-#{$polarity} div .btn {
+      border-color: map-get($tones, 'dark')
+    }
+  }
 }
 
 div.management-energy-saving-actions {
@@ -194,10 +191,10 @@ table.management-priorities {
 
 table {
   .fa-arrow-circle-down {
-    color: $green;
+    color: $positive-dark;
   }
   .fa-arrow-circle-up {
-    color: $new-red;
+    color: $negative-dark;
   }
   .icon {
     width: 10px;

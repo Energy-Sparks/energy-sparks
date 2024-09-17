@@ -50,6 +50,8 @@ module Colours
     purple_medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
     purple_dark: '#9333ea'.freeze, # called purple in the design
 
+    white: '#ffffff'.freeze,
+    black: '#000000'.freeze,
   }.freeze
 
   MAP = {
@@ -174,8 +176,6 @@ module Colours
 
   # YELLOWS
   NEW_YELLOW = '#fcb43a'.freeze
-  DARK_YELLOW = '#ffde4d'.freeze
-  LIGHT_YELLOW = '#fff9b2'.freeze
 
   # ORANGES
   DARK_ORANGE = '#ff4500'.freeze
