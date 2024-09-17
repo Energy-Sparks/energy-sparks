@@ -308,7 +308,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       describe 'Active schools tab' do
         context 'when there are active schools' do
           let(:school_onboarding) { create :school_onboarding, school_group: school_group }
-          let(:school) { create(:school, active: true, name: 'A School', school_group: school_group, school_onboarding: school_onboarding) }
+          let(:school) { create(:school, active: true, visible: false, name: 'A School', school_group: school_group, school_onboarding: school_onboarding) }
           let(:issues) { [create(:issue, issue_type: :note, school: school), create(:issue, issue_type: :issue, school: school)] }
           let(:setup_data) { [school, issues] }
 
