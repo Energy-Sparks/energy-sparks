@@ -183,10 +183,10 @@ class CalculateAverageSchool
     data = { schoolday: {}, holiday: {}, weekend: {} }
 
     (start_date..end_date).each do |date|
-      daytype = school.holidays.day_type(date)
+      day_type = school.holidays.day_type(date)
       month = month_or_holiday(school, date)
-      data[daytype][month] ||= []
-      data[daytype][month].push(meter.amr_data.days_kwh_x48(date))
+      data[day_type][month] ||= []
+      data[day_type][month].push(meter.amr_data.days_kwh_x48(date))
     end
 
     data
@@ -194,11 +194,8 @@ class CalculateAverageSchool
 
   def month_or_holiday(school, date)
     if school.holidays.day_type(date) == :holiday
-      holiday_type = Holidays.holiday_type(date)
-      holiday_type = AverageSchoolCalculator.remap_low_sample_holiday(holiday_type)
-      raise "Unknown holiday type for #{school.slug} #{date}" if holiday_type.nil?
-
-      holiday_type
+      holiday_type = school.holidays.holiday(date).type
+      AverageSchoolCalculator.remap_low_sample_holiday(holiday_type, date)
     else
       date.month
     end
