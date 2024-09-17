@@ -38,7 +38,7 @@ module Colours
     teal_dark: '#10bca2'.freeze,
 
     grey_pale: '#f6f6f6'.freeze, # off white from original designs
-    grey_light: '#DCDCDC'.freeze, # generated using: https://www.dannybrien.com/middle/
+    grey_light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
     grey_medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
 
     red_pale: '#fff1f1'.freeze, # was red light in original design
@@ -57,44 +57,44 @@ module Colours
   MAP = {
     fuel: {
       electric: {
-        light: PALETTE[:blue_pale],
-        medium: PALETTE[:blue_light],
-        dark: PALETTE[:blue_medium]
+        light: :blue_pale,
+        medium: :blue_light,
+        dark: :blue_medium
       },
       gas: {
-        light: PALETTE[:yellow_pale],
-        medium: PALETTE[:yellow_light],
-        dark: PALETTE[:yellow_medium]
+        light: :yellow_pale,
+        medium: :yellow_light,
+        dark: :yellow_medium
       },
       storage: {
-        light: PALETTE[:purple_pale],
-        medium: PALETTE[:purple_medium],
-        dark: PALETTE[:purple_dark]
+        light: :purple_pale,
+        medium: :purple_medium,
+        dark: :purple_dark
       },
       solar: {
-        light: PALETTE[:teal_light],
-        medium: PALETTE[:teal_medium],
-        dark: PALETTE[:teal_dark]
+        light: :teal_light,
+        medium: :teal_medium,
+        dark: :teal_dark
       },
     },
     polarity: {
       positive: {
-        light: PALETTE[:teal_medium],
-        dark: PALETTE[:teal_dark]
+        light: :teal_medium,
+        dark: :teal_dark
       },
       neutral: {
-        light: PALETTE[:grey_light],
-        dark: PALETTE[:grey_medium]
+        light: :grey_pale,
+        dark: :grey_medium
       },
       negative: {
-        light: PALETTE[:red_light],
-        dark: PALETTE[:red_dark]
+        light: :red_light,
+        dark: :red_dark
       }
     },
     comparison: {
-      exemplar_school: PALETTE[:teal_dark],
-      benchmark_school: PALETTE[:yellow_medium],
-      other_school: PALETTE[:red_dark]
+      exemplar_school: :teal_dark,
+      benchmark_school: :yellow_medium,
+      other_school: :red_dark
     }
   }.freeze
 
@@ -102,8 +102,18 @@ module Colours
 
   ## NB: This model relies on the second level keys such as electric, positive etc being unique
 
-  def self.palette(method_name)
+  def self.palette(method_name = nil)
     PALETTE[method_name.to_sym]
+  end
+
+  def self.palette_2d
+    palette_2d = {}
+    PALETTE.each do |key, hex|
+      colour, tone = key.to_s.split('_', 2) # Split the key into colour and tone
+      palette_2d[colour] ||= {}
+      palette_2d[colour][tone || 'default'] = hex
+    end
+    palette_2d
   end
 
   def self.map(method_name)
@@ -119,8 +129,10 @@ module Colours
     group.map do |name, value|
       if value.is_a?(String)
         "$#{name.to_s.dasherize}: #{value};\n"
+      elsif value.is_a?(Symbol)
+        "$#{name.to_s.dasherize}: #{PALETTE[value]};\n"
       else
-        value.map { |tone, hex| "$#{name.to_s.dasherize}-#{tone.to_s.dasherize}: #{hex};\n" }.join
+        value.map { |tone, palette_key| "$#{name.to_s.dasherize}-#{tone.to_s.dasherize}: #{PALETTE[palette_key]};\n" }.join
       end
     end.join
   end
@@ -135,7 +147,7 @@ module Colours
     output = "$colours-#{group.to_s.dasherize}: (\n"
     MAP[group].each do |name, value|
       key = name.to_s.dasherize
-      if value.is_a?(String)
+      if value.is_a?(Symbol)
         output += "  #{name}: $#{key},\n"
       else
         output += "  #{name}: (\n"

@@ -29,7 +29,7 @@
 
       &:hover, &.current {
         border-radius: 5px;
-        background-color: map-get($tones, "medium");
+        background-color: map-get($tones, "light");
       }
 
       &.current {

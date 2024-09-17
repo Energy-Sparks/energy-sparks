@@ -7,21 +7,21 @@
 // e.g.:
 // $yellow-pale: #fdefc8;
 // $blue-very-dark: #334375;
-<%= Colours::sass_variables :palette %>
+<%= Colours.sass_variables :palette %>
 
 // The following creates a SASS variables for these keys found in Colours::MAP hash
 // e.g.:
 // $electric-dark: #007EFF;
 // $positive-dark: #10bca2;
 // $exemplar-school: #10bca2;
-<%= Colours::sass_variables :fuel %>
-<%= Colours::sass_variables :polarity %>
-<%= Colours::sass_variables :comparison %>
+<%= Colours.sass_variables :fuel %>
+<%= Colours.sass_variables :polarity %>
+<%= Colours.sass_variables :comparison %>
 
 // Create SASS maps for each of these keys found in Colours::MAP
-<%= Colours::sass_map :fuel %>
-<%= Colours::sass_map :polarity %>
-<%= Colours::sass_map :comparison %>
+<%= Colours.sass_map :fuel %>
+<%= Colours.sass_map :polarity %>
+<%= Colours.sass_map :comparison %>
 
 // Get a colour from a generated map
 @function colour-get($hash, $name, $tone) {

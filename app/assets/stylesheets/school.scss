@@ -71,36 +71,20 @@ div.school-card-row {
   }
 }
 
-.electricity-light {
-  border: 2px solid $electric-light;
-}
+// used in _usage_control.html.erb
 
-.electricity-dark {
-  border: 2px solid $electric-dark;
-}
+.usage-controls {
+  @each $fuel, $tones in $colours-fuel {
+    //e.g. .electricity-light, .gas-light, .storage-light, .solar-light
+    .#{$fuel}-light {
+      border: 2px solid map-get($tones, 'light');
+    }
 
-.gas-light {
-  border: 2px solid $gas-light;
-}
-
-.gas-dark {
-  border: 2px solid $gas-dark;
-}
-
-.storage-light {
-  border: 2px solid $storage-light;
-}
-
-.storage-dark {
-  border: 2px solid $storage-dark;
-}
-
-.solar-light {
-  border: 2px solid $solar-light;
-}
-
-.solar-dark {
-  border: 2px solid $solar-dark;
+    //e.g. .electricity-dark, .gas-dark, .storage-dark, .solar-dark
+    .#{$fuel}-dark {
+      border: 2px solid map-get($tones, 'dark');
+    }
+  }
 }
 
 .live-data-light {

@@ -242,7 +242,7 @@ dl dt {
 @each $fuel, $tones in $colours-fuel {
   // e.g. .bg-electric-light, .bg-gas-light, .bg-storage-light, .bg-solar-light
   .bg-#{$fuel}-light {
-    background-color: map-get($tones, 'medium');
+    background-color: map-get($tones, 'light'); // was medium
   }
 
   // e.g. .bg-electric-dark, .bg-gas-dark, .bg-storage-dark, .bg-solar-dark
@@ -254,7 +254,6 @@ dl dt {
   .text-#{$fuel} {
     color: map-get($tones, 'dark');
   }
-
 }
 
 // comparison styles - unused?
