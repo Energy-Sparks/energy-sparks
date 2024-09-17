@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 8fa4450f200db6b5d3a6760978f330ec4c530b4c
-  tag: 6.0.8
+  revision: 3380d208dc6963344191b1832edc1629c10218b4
+  branch: 4492-dont-run-insulate-hot-water-pipes-alert-for-schools-with-swimming-pools
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
