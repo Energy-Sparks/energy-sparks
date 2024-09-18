@@ -10,14 +10,10 @@
       background-color: $yellow-light;
     }
 
-    .bar-current {
+    &.bar-current {
       .bar-body {
         background-color: $yellow-medium;
       }
     }
-  }
-
-  .grey {
-    border-color: $grey;
   }
 }
