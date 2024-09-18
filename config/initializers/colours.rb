@@ -95,7 +95,7 @@ module Colours
       exemplar_school: :teal_dark,
       benchmark_school: :yellow_medium,
       other_school: :red_dark
-    }
+    },
   }.freeze
 
   FLAT_MAP = MAP.values.inject(&:merge).freeze

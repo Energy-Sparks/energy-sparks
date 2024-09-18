@@ -72,7 +72,6 @@ div.school-card-row {
 }
 
 // used in _usage_control.html.erb
-
 .usage-controls {
   @each $fuel, $tones in $colours-fuel {
     //e.g. .electricity-light, .gas-light, .storage-light, .solar-light

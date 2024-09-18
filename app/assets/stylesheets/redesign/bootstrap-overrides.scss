@@ -23,3 +23,10 @@ $warning:       $yellow-medium;
 $danger:        $red-dark;
 //$light:         $gray-100 !default; # bootstrap default
 //$dark:          $gray-800 !default; # bootstrap default
+
+$theme-colors: (
+  "primary":    $primary,
+  "success":    $success,
+  "warning":    $warning,
+  "danger":     $danger,
+);

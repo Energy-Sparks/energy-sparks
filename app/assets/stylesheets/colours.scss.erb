@@ -24,8 +24,13 @@
 <%= Colours.sass_map :comparison %>
 
 // Get a colour from a generated map
-@function colour-get($hash, $name, $tone) {
-  @return map-get(map-get($hash, $name), $tone);
+// not used yet so need to check if working :-)
+@function colour-get($hash, $name, $tone = false) {
+  @if $tone {
+    @return map-get(map-get($hash, $name), $tone);
+  } @else {
+    @return map-get($hash, $name);
+  }
 }
 
 // Old / current colour mappings ###
