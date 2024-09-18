@@ -108,7 +108,6 @@ th.fixed-width-150 {
   max-width:1px;
 }
 
-
 div.meter-attributes {
   kbd {
     color: $black;
@@ -122,10 +121,9 @@ div.meter-attributes {
   display: block !important;
 }
 
-
 // imput fields with specified 'pattern' will highlight when invalid
 input:invalid {
-  color: $new-red;
+  color: $danger;
 }
 
 .funnel-image {
@@ -210,7 +208,6 @@ dl dt {
   border-top: none;
   background-color: white;
 }
-
 
 // polarity styles
 

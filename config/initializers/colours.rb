@@ -43,6 +43,15 @@ module Colours
       pale: '#f6f6f6'.freeze, # off white from original designs
       light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
       medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
+      '100': '#f8f9fa'.freeze, # bootstrap greys
+      '200': '#e9ecef'.freeze,
+      '300': '#dee2e6'.freeze,
+      '400': '#ced4da'.freeze,
+      '500': '#adb5bd'.freeze,
+      '600': '#6c757d'.freeze,
+      '700': '#495057'.freeze,
+      '800': '#343a40'.freeze,
+      '900': '#212529'.freeze,
     },
     red: {
       pale: '#fff1f1'.freeze, # was red light in original design
@@ -55,6 +64,7 @@ module Colours
       medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
       dark: '#9333ea'.freeze, # called purple in the design
     },
+    cyan: '#17a2b8'.freeze, # bootstrap colour
     white: '#ffffff'.freeze,
     black: '#000000'.freeze
   }.freeze
@@ -101,11 +111,20 @@ module Colours
       benchmark_school: :yellow_medium,
       other_school: :red_dark
     },
-
     tables: {
       table_header: {
         bg: :blue_dark,
       },
+    },
+    theme: {
+      primary: :blue_medium,
+      secondary: :grey_600, # bootstrap default
+      success: :teal_dark,
+      info: :cyan, # bootstrap default
+      warning: :yellow_medium,
+      danger: :red_dark,
+      light: :grey_100, # bootstrap default
+      dark: :grey_800 # bootstrap default
     },
     charts: {
       degree_days: :blue_very_dark, # was dark_blue
@@ -114,6 +133,7 @@ module Colours
 #      school_day_open:
 #      holiday:
 #      weekend:
+#      inset_day:
 
 #      heating_day:
 #      non_heating_day:
@@ -134,8 +154,8 @@ module Colours
   end
 
   # To make lookups faster:
-  FLAT_MAP = MAP.values.inject(&:merge).freeze
   FLAT_PALETTE = self.flatten_palette(PALETTE).freeze
+  FLAT_MAP = MAP.values.inject(&:merge).freeze
 
   def self.palette(method_name = nil)
     FLAT_PALETTE[method_name.to_sym]
