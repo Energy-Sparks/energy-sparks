@@ -1,16 +1,18 @@
 <h1>Palette</h1>
 <div>
-  <% Colours.palette_2d.each do |colour, tones| %>
-    <h3><%= colour %></h3>
-
-    <div class="row">
-      <% tones.each do |tone, hex| %>
-        <div style='background-color:<%= hex %>;' class='col-2 p-4 m-2 text-center'>
-          <%= colour %>_<%= tone %><br>
-          <%= hex %>
-        </div>
-      <% end %>
-    </div>
+  <% Colours::PALETTE.each do |name, shades| %>
+    <% if shades.is_a?(String) %>
+      <div class="row">
+        <%= render 'colour', name: name, hex: shades %>
+      </div>
+    <% else %>
+      <h3><%= name %></h3>
+      <div class="row">
+        <% shades.each do |shade, hex| %>
+          <%= render 'colour', name: "#{name}_#{shade}", hex: hex %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
 
@@ -18,21 +20,16 @@
 <div>
   <% Colours::MAP.each do |key, map| %>
     <h2><%= key %></h2>
-    <% map.each do |name, tones| %>
-      <h3><%= name %></h3>
-
-      <% if tones.is_a?(Symbol) %>
-        <div style='background-color:<%= Colours.palette(tones) %>;' class='col-2 p-4 m-2 text-center'>
-          <%= name %><br>
-          <%= tones %>
+    <% map.each do |name, shades| %>
+      <% if shades.is_a?(Symbol) %>
+        <div class="row">
+          <%= render 'colour', name: name, hex: Colours.palette(shades), map: shades %>
         </div>
       <% else %>
+        <h3><%= name %></h3>
         <div class="row">
-          <% tones.each do |tone, mapping| %>
-            <div style='background-color:<%= Colours.palette(mapping) %>;' class='col-2 p-4 m-2 text-center'>
-              <%= name %>_<%= tone %><br>
-              <%= mapping %>
-            </div>
+          <% shades.each do |shade, mapping| %>
+            <%= render 'colour', name: "#{name}_#{shade}", hex: Colours.palette(mapping), map: mapping %>
           <% end %>
         </div>
       <% end %>

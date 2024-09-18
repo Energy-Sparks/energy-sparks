@@ -16,42 +16,47 @@ module Colours
   #
 
   PALETTE = {
-    blue_pale: '#f2f6fc'.freeze,
-    blue_light: '#cbe4fc'.freeze, # changed colour from design - is now blue medium from original design - used in nav
-
-    # blue_medium in the original design was #cbe4fc - which is not bold enough
-    # have now moved this up to blue_light, which wasn't quite dark enough either :-)
-    # derived new colour from monocromatics from blue_very_dark https://colorkit.co/color/192a52/
-    blue_medium: '#3c64c3', #406bd1'.freeze, # changed colour - see above for why
-    blue_dark: '#334375'.freeze, # paragraph text
-    blue_very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
-
-    yellow_pale: '#fdefc8'.freeze,
-    yellow_light: '#fcdc8b'.freeze,
-    yellow_medium: '#f9b233'.freeze,
-    yellow_dark: '#772d10'.freeze,
-    yellow_very_dark: '#441504'.freeze,
-
-    teal_pale: '#f0fdf9'.freeze,
-    teal_light: '#cbfcf0'.freeze,
-    teal_medium: '#88f7dd'.freeze,
-    teal_dark: '#10bca2'.freeze,
-
-    grey_pale: '#f6f6f6'.freeze, # off white from original designs
-    grey_light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
-    grey_medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
-
-    red_pale: '#fff1f1'.freeze, # was red light in original design
-    red_light: '#fbc8c8'.freeze, # generated using: https://www.dannybrien.com/middle/
-    red_medium: '#f8a0a0'.freeze, # was "red" in original design
-    red_dark: '#f14141'.freeze, # generated using: https://www.w3schools.com/colors/colors_picker.asp
-
-    purple_pale: '#e9d5ff'.freeze, # renamed from purple light in original design
-    purple_medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
-    purple_dark: '#9333ea'.freeze, # called purple in the design
-
+    blue: {
+      pale: '#f2f6fc'.freeze,
+      light: '#cbe4fc'.freeze, # changed colour from design - is now blue medium from original design - used in nav
+      # blue_medium in the original design was #cbe4fc - which is not bold enough
+      # have now moved this up to blue_light, which wasn't quite dark enough either :-)
+      # derived new colour from monocromatics from blue_very_dark https://colorkit.co/color/192a52/
+      medium: '#3c64c3'.freeze, # changed colour - see above for why
+      dark: '#334375'.freeze, # paragraph text
+      very_dark: '#192a52'.freeze # new nav blue (adult) and headings
+    },
+    yellow: {
+      pale: '#fdefc8'.freeze,
+      light: '#fcdc8b'.freeze,
+      medium: '#f9b233'.freeze,
+      dark: '#772d10'.freeze,
+      very_dark: '#441504'.freeze
+    },
+    teal: {
+      pale: '#f0fdf9'.freeze,
+      light: '#cbfcf0'.freeze,
+      medium: '#88f7dd'.freeze,
+      dark: '#10bca2'.freeze
+    },
+    grey: {
+      pale: '#f6f6f6'.freeze, # off white from original designs
+      light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
+      medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
+    },
+    red: {
+      pale: '#fff1f1'.freeze, # was red light in original design
+      light: '#fbc8c8'.freeze, # generated using: https://www.dannybrien.com/middle/
+      medium: '#f8a0a0'.freeze, # was "red" in original design
+      dark: '#f14141'.freeze, # generated using: https://www.w3schools.com/colors/colors_picker.asp
+    },
+    purple: {
+      pale: '#e9d5ff'.freeze, # renamed from purple light in original design
+      medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
+      dark: '#9333ea'.freeze, # called purple in the design
+    },
     white: '#ffffff'.freeze,
-    black: '#000000'.freeze,
+    black: '#000000'.freeze
   }.freeze
 
   MAP = {
@@ -96,68 +101,79 @@ module Colours
       benchmark_school: :yellow_medium,
       other_school: :red_dark
     },
-  }.freeze
 
-  FLAT_MAP = MAP.values.inject(&:merge).freeze
+    tables: {
+      table_header: {
+        bg: :blue_dark,
+      },
+    },
+    charts: {
+      degree_days: :blue_very_dark, # was dark_blue
+      temperature: :blue_very_dark, # was dark_blue
+#      school_day_closed:
+#      school_day_open:
+#      holiday:
+#      weekend:
+
+#      heating_day:
+#      non_heating_day:
+#      y_rating:
+    }
+  }.freeze
 
   ## NB: This model relies on the second level keys such as electric, positive etc being unique
 
-  def self.palette(method_name = nil)
-    PALETTE[method_name.to_sym]
+  def self.flatten_palette(palette)
+    palette.each_with_object({}) do |(color, shades), flattened_palette|
+      if shades.is_a?(Hash)
+        shades.each { |shade, hex| flattened_palette["#{color}_#{shade}".to_sym] = hex }
+      else
+        flattened_palette[color] = shades
+      end
+    end
   end
 
-  def self.palette_2d
-    palette_2d = {}
-    PALETTE.each do |key, hex|
-      colour, tone = key.to_s.split('_', 2) # Split the key into colour and tone
-      palette_2d[colour] ||= {}
-      palette_2d[colour][tone || 'default'] = hex
-    end
-    palette_2d
+  # To make lookups faster:
+  FLAT_MAP = MAP.values.inject(&:merge).freeze
+  FLAT_PALETTE = self.flatten_palette(PALETTE).freeze
+
+  def self.palette(method_name = nil)
+    FLAT_PALETTE[method_name.to_sym]
   end
 
   def self.map(method_name)
     return FLAT_MAP[method_name.to_sym] if FLAT_MAP[method_name.to_sym]
 
-    key, tone = method_name.to_s.split('_', 2).map(&:to_sym)
-    FLAT_MAP.dig(key, tone)
+    key, shade = method_name.to_s.split('_', 2).map(&:to_sym)
+    FLAT_MAP.dig(key, shade)
   end
 
   def self.sass_variables(key)
-    group = key == :palette ? PALETTE : MAP[key]
+    group = key == :palette ? FLAT_PALETTE : MAP[key]
 
     group.map do |name, value|
       if value.is_a?(String)
         "$#{name.to_s.dasherize}: #{value};\n"
       elsif value.is_a?(Symbol)
-        "$#{name.to_s.dasherize}: #{PALETTE[value]};\n"
+        "$#{name.to_s.dasherize}: #{FLAT_PALETTE[value]};\n"
       else
-        value.map { |tone, palette_key| "$#{name.to_s.dasherize}-#{tone.to_s.dasherize}: #{PALETTE[palette_key]};\n" }.join
+        value.map { |shade, palette_key| "$#{name.to_s.dasherize}-#{shade.to_s.dasherize}: #{FLAT_PALETTE[palette_key]};\n" }.join
       end
     end.join
   end
 
-  def sass_variable(name:, tone: nil, hex:)
-     label = "$#{name.dasherize}"
-     label += "-#{tone.dasherize}" if tone
-     "#{label}: #{hex};\n"
-  end
-
   def self.sass_map(group)
-    output = "$colours-#{group.to_s.dasherize}: (\n"
-    MAP[group].each do |name, value|
-      key = name.to_s.dasherize
-      if value.is_a?(Symbol)
-        output += "  #{name}: $#{key},\n"
-      else
-        output += "  #{name}: (\n"
-        value.each do |tone, hex|
-          output += "    #{tone}: $#{key}-#{tone.to_s.dasherize}" + ",\n"
+    "$colours-#{group.to_s.dasherize}: (\n" +
+      MAP[group].map do |name, value|
+        key = name.to_s.dasherize
+        if value.is_a?(Symbol)
+          "  #{name}: $#{key},"
+        else
+          "  #{name}: (\n" +
+            value.map { |shade, _| "    #{shade}: $#{key}-#{shade.to_s.dasherize}," }.join("\n") +
+          "\n  ),"
         end
-        output += "  ),\n"
-      end
-    end
-    output += ");\n"
+      end.join("\n") + "\n);\n"
   end
 
   # Usage:
@@ -170,7 +186,7 @@ module Colours
   end
 
   def self.respond_to_missing?(method_name, include_private = false)
-    PALETTE.key?(method_name) || map(method_name) || super
+    FLAT_PALETTE.key?(method_name) || map(method_name) || super
   end
 
   # Usage:

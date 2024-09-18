@@ -1,0 +1,5 @@
+<div style='background-color:<%= hex %>;' class='border col-lg-2 col-4 p-4 m-2 text-center'>
+  <strong><%= name %></strong><br>
+  <%= "#{map}<br>".html_safe if local_assigns[:map] %>
+  <small><%= hex %></small>
+</div>
