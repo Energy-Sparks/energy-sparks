@@ -273,9 +273,8 @@ module Colours
 
   # Usage:
   # Colours.yellow_very_dark
-  # Colours.gas_light
   # Colours.positive_light
-  # Colours.comparison_examplar_school
+  # Colours.examplar_school
   def self.method_missing(method_name, *args, &block)
     hex(method_name.to_sym) || super
   end
