@@ -69,14 +69,13 @@ module Colours
   # CARBON_DARK = GREY
   # CARBON_LIGHT = LIGHT_GREY
 
-
   ### New (redesign) colours ###
   # Use only these colours for new features
   # If a colour found in the Sketch design is missing from the list below, please
   # add it and comment against where it is used if possible
   #
   # Colours can be accessed in ruby as follows:
-  # Colours::yellow_very_dark or Colours:hex(:yellow_very_dark)
+  # Colours.yellow_very_dark or Colours.hex(:yellow_very_dark)
   #
   # SASS variables for these colours are generated in colours.scss.erb
   # for all values here. Examples as follows:
@@ -201,10 +200,11 @@ module Colours
       non_heating_day: :teal_dark, # Colours::GREEN
       useful_hot_water_usage: :blue_medium, # Colours::MID_BLUE,
       wasted_hot_water_usage: :yellow_very_dark, # Colours::DARK_ORANGE,
+      # probably could do away with some of these :-)
       solar_pv: :yellow_dark, # Colours::LIGHT_ORANGE,
       electric: :electric_dark, #I18n.t('analytics.series_data_manager.series_name.electricity') => Colours.electric_dark, # Colours::ELECTRIC_DARK
       gas: :gas_dark, # I18n.t('analytics.series_data_manager.series_name.gas') => Colours.gas_dark, # Colours::GAS_DARK
-      storage_heaters: :storage_dark  # Colours::STORAGE_HEATER
+      storage_heaters: :storage_dark, # Colours::STORAGE_HEATER
       gbp: :blue_very_dark, # Colours::DARK_BLUE
       electricity_consumed_from_solar_pv: :teal_dark, # Colours::GREEN
       electricity_consumed_from_mains: :electric_dark, # Colours::ELECTRIC_DARK
@@ -214,14 +214,14 @@ module Colours
     }
   }.freeze
 
-  ## NB: This model relies on the second level keys such as electric, positive etc being unique
-
   def self.flatten_palette
-    PALETTE.values.inject(&:merge).each_with_object({}) do |(color, shades), flattened|
-      if shades.is_a?(Hash)
-        shades.each { |shade, hex| flattened["#{color}_#{shade}".to_sym] = hex.freeze }
-      else
-        flattened[color.to_sym] = shades.freeze
+    PALETTE.values.each_with_object({}) do |group, flattened|
+      group.each do |colour, shades|
+        if shades.is_a?(Hash)
+          shades.each { |shade, hex| flattened["#{colour}_#{shade}".to_sym] = hex.freeze }
+        else
+          flattened[colour.to_sym] = shades.freeze
+        end
       end
     end.freeze
   end
@@ -272,10 +272,10 @@ module Colours
   end
 
   # Usage:
-  # Colours::yellow_very_dark
-  # Colours::gas_light
-  # Colours::positive_light
-  # Colours::comparison_examplar_school
+  # Colours.yellow_very_dark
+  # Colours.gas_light
+  # Colours.positive_light
+  # Colours.comparison_examplar_school
   def self.method_missing(method_name, *args, &block)
     hex(method_name.to_sym) || super
   end

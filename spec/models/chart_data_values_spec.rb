@@ -165,26 +165,26 @@ describe ChartDataValues do
     it 'returns a hash with colours assigned to chart series names' do
       # pry
       expect(chart_data_values.colour_lookup).to eq(
-        { 'Degree Days' => '#232b49',
-          'Temperature' => '#232b49',
-          'School Day Closed' => '#3bc0f0',
-          'School Day Open' => '#5cb85c',
-          'Holiday' => '#ff4500',
-          'Weekend' => '#ffac21',
-          'Heating on in cold weather' => '#3bc0f0',
-          'Hot Water (& Kitchen)' => '#5cb85c',
-          'Hot Water Usage' => '#3bc0f0',
-          'Wasted Hot Water Usage' => '#ff4500',
-          'Solar PV (consumed onsite)' => '#ffac21',
-          'Electricity' => '#007eff',
-          'Gas' => '#ff8438',
-          'Storage heaters' => '#501e74',
-          '£' => '#232b49',
-          'Electricity consumed from solar pv' => '#5cb85c',
-          'Electricity consumed from mains' => '#007eff',
-          'Exported solar electricity (not consumed onsite)' => '#fcb43a',
-          'Solar irradiance (brightness of sunshine)' => '#ffb138',
-          'Rating' => '#232b49' }
+        { 'Degree Days' => Colours.degree_days,
+          'Temperature' => Colours.temperature,
+          'School Day Closed' => Colours.school_day_closed,
+          'School Day Open' => Colours.school_day_open,
+          'Holiday' => Colours.holiday,
+          'Weekend' => Colours.weekend,
+          'Heating on in cold weather' => Colours.heating_day,
+          'Hot Water (& Kitchen)' => Colours.non_heating_day,
+          'Hot Water Usage' => Colours.useful_hot_water_usage,
+          'Wasted Hot Water Usage' => Colours.wasted_hot_water_usage,
+          'Solar PV (consumed onsite)' => Colours.solar_pv,
+          'Electricity' => Colours.electric,
+          'Gas' => Colours.gas,
+          'Storage heaters' => Colours.storage_heaters,
+          '£' => Colours.gbp,
+          'Electricity consumed from solar pv' => Colours.electricity_consumed_from_solar_pv,
+          'Electricity consumed from mains' => Colours.electricity_consumed_from_mains,
+          'Exported solar electricity (not consumed onsite)' => Colours.exported_solar_electricity,
+          'Solar irradiance (brightness of sunshine)' => Colours.y2_solar_label,
+          'Rating' => Colours.y2_rating }
       )
     end
   end
