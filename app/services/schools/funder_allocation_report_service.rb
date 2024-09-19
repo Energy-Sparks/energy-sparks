@@ -16,7 +16,7 @@ module Schools
           'Country',
           'Pupils',
           '% FSM',
-          'Staff Users',
+          'Adult Users',
           'Local Authority Name', # (LAD22NM code)
           'Region name', # (RGN22NM)
           'Activities this year', # Number of activities recorded this academic year
@@ -74,7 +74,7 @@ module Schools
             country(school),
             school.number_of_pupils,
             school.percentage_free_school_meals,
-            school.staff.count + school.users.school_admin.count,
+            school.all_adult_school_users.count,
             local_authority_area(school),
             region(school),
             activities_this_academic_year(school),
