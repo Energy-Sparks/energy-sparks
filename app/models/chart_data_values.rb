@@ -128,7 +128,7 @@ class ChartDataValues
       '£' => Colours::DARK_BLUE,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => Colours::GREEN,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME_I18N_KEY}") => Colours.electric_dark,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME_I18N_KEY}") => Colours::GAS_LIGHT_LINE,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME_I18N_KEY}") => Colours.gas_light_line,
       I18n.t('analytics.series_data_manager.y2_solar_label') => Colours.gas_medium,
       I18n.t('analytics.series_data_manager.y2_rating') => Colours::DARK_BLUE
     }

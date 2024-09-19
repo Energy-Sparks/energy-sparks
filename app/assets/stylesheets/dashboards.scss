@@ -191,10 +191,10 @@ table.management-priorities {
 
 table {
   .fa-arrow-circle-down {
-    color: $positive-dark;
+    color: $success;
   }
   .fa-arrow-circle-up {
-    color: $negative-dark;
+    color: $danger;
   }
   .icon {
     width: 10px;
@@ -218,7 +218,7 @@ table {
 
 .old-data {
   background: $white;
-  color: $negative-dark;
+  color: $danger;
   sup {
     color: $black;
   }

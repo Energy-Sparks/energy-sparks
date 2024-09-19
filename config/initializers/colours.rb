@@ -79,7 +79,8 @@ module Colours
       gas: {
         light: :yellow_pale,
         medium: :yellow_light,
-        dark: :yellow_medium
+        dark: :yellow_medium,
+        light_line: :yellow_very_dark, # was #new_yellow # yellow very dark is not a good sub!
       },
       storage: {
         light: :purple_pale,
@@ -111,12 +112,8 @@ module Colours
       benchmark_school: :yellow_medium,
       other_school: :red_dark
     },
-    tables: {
-      table_header: {
-        bg: :blue_dark,
-      },
-    },
     theme: {
+      # Bootstrap defaults:
       primary: :blue_medium,
       secondary: :grey_600, # bootstrap default
       success: :teal_dark,
@@ -124,9 +121,11 @@ module Colours
       warning: :yellow_medium,
       danger: :red_dark,
       light: :grey_100, # bootstrap default
-      dark: :grey_800 # bootstrap default
-    },
-    charts: {
+      dark: :grey_800, # bootstrap default
+      ## Extras
+      thead_dark: :blue_very_dark, # was dark_blue
+      live_data_dark: :teal_dark, # was green
+      live_data_light: :grey_light, # was light_grey
       degree_days: :blue_very_dark, # was dark_blue
       temperature: :blue_very_dark, # was dark_blue
 #      school_day_closed:
@@ -265,27 +264,28 @@ module Colours
   WHITE = '#ffffff'.freeze
 
   # FUEL TYPES
-  ELECTRIC_DARK = '#007eff'.freeze # $electric-dark
-  ELECTRIC_LIGHT = '#93e1f6'.freeze # $electric-light
-  ELECTRIC_MIDDLE = '#02b8ff'.freeze # $electric-middle
-  ELECTRIC_DARK_LINE = DARK_BLUE
-  ELECTRIC_LIGHT_LINE = BRIGHT_BLUE
+  # ELECTRIC_DARK = '#007eff'.freeze # $electric-dark
+  # ELECTRIC_LIGHT = '#93e1f6'.freeze # $electric-light
+  # ELECTRIC_MIDDLE = '#02b8ff'.freeze # $electric-middle
+  # ELECTRIC_DARK_LINE = DARK_BLUE
+  # ELECTRIC_LIGHT_LINE = BRIGHT_BLUE
 
-  GAS_DARK = '#ff8438'.freeze # $gas-dark
-  GAS_MIDDLE = '#ffb138'.freeze # $gas-middle
-  GAS_LIGHT = '#ffdd4b'.freeze # gas-light
-  GAS_DARK_LINE = NEW_RED
-  GAS_LIGHT_LINE = NEW_YELLOW
+  # GAS_DARK = '#ff8438'.freeze # $gas-dark
+  # GAS_MIDDLE = '#ffb138'.freeze # $gas-middle
+  # GAS_LIGHT = '#ffdd4b'.freeze # gas-light
+  # GAS_DARK_LINE = NEW_RED
+  # GAS_LIGHT_LINE = NEW_YELLOW
 
-  STORAGE_DARK = '#7c3aff'.freeze # $storage-dark
-  STORAGE_LIGHT = '#e097fc'.freeze # $storage-light
-  STORAGE_HEATER = '#501e74'.freeze # not used in the main site
+  # STORAGE_DARK = '#7c3aff'.freeze # $storage-dark
+  # STORAGE_LIGHT = '#e097fc'.freeze # $storage-light
+  # STORAGE_HEATER = '#501e74'.freeze # not used in the main site
 
-  SOLAR_DARK = TURQUOISE
-  SOLAR_LIGHT = LIGHT_TURQUOISE
+  # SOLAR_DARK = TURQUOISE
+  # SOLAR_LIGHT = LIGHT_TURQUOISE
 
-  CARBON_DARK = GREY
-  CARBON_LIGHT = LIGHT_GREY
+  # CARBON_DARK = GREY
+  # CARBON_LIGHT = LIGHT_GREY
+
 
   # Other non-standard colour definitions can be found in:
   # assets/javascripts/common_chart_options.js

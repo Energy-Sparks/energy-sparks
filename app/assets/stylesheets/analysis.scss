@@ -67,12 +67,12 @@ div.popover {
 }
 
 .table-success, .table-success > th, .table-success > td {
-  background-color: $green !important;
+  background-color: $success !important;
   color: $white;
 }
 
 .table .thead-dark th {
-  background-color: $dark-blue !important;
+  background-color: $thead-dark !important;
 }
 
 .table-with-totals {
