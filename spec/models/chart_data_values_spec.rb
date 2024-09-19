@@ -165,7 +165,26 @@ describe ChartDataValues do
     it 'returns a hash with colours assigned to chart series names' do
       # pry
       expect(chart_data_values.colour_lookup).to eq(
-        { 'Degree Days' => '#232b49', 'Temperature' => '#232b49', 'School Day Closed' => '#3bc0f0', 'School Day Open' => '#5cb85c', 'Holiday' => '#ff4500', 'Weekend' => '#ffac21', 'Heating on in cold weather' => '#3bc0f0', 'Hot Water (& Kitchen)' => '#5cb85c', 'Hot Water Usage' => '#3bc0f0', 'Wasted Hot Water Usage' => '#ff4500', 'Solar PV (consumed onsite)' => '#ffac21', 'Electricity' => '#007eff', 'Gas' => '#ff8438', 'Storage heaters' => '#501e74', '£' => '#232b49', 'Electricity consumed from solar pv' => '#5cb85c', 'Electricity consumed from mains' => '#007eff', 'Exported solar electricity (not consumed onsite)' => '#fcb43a', 'Solar irradiance (brightness of sunshine)' => '#ffb138', 'Rating' => '#232b49' }
+        { 'Degree Days' => '#232b49',
+          'Temperature' => '#232b49',
+          'School Day Closed' => '#3bc0f0',
+          'School Day Open' => '#5cb85c',
+          'Holiday' => '#ff4500',
+          'Weekend' => '#ffac21',
+          'Heating on in cold weather' => '#3bc0f0',
+          'Hot Water (& Kitchen)' => '#5cb85c',
+          'Hot Water Usage' => '#3bc0f0',
+          'Wasted Hot Water Usage' => '#ff4500',
+          'Solar PV (consumed onsite)' => '#ffac21',
+          'Electricity' => '#007eff',
+          'Gas' => '#ff8438',
+          'Storage heaters' => '#501e74',
+          '£' => '#232b49',
+          'Electricity consumed from solar pv' => '#5cb85c',
+          'Electricity consumed from mains' => '#007eff',
+          'Exported solar electricity (not consumed onsite)' => '#fcb43a',
+          'Solar irradiance (brightness of sunshine)' => '#ffb138',
+          'Rating' => '#232b49' }
       )
     end
   end

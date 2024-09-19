@@ -1,36 +1,19 @@
-<h1>Palette</h1>
-<div>
-  <% Colours::PALETTE.each do |name, shades| %>
-    <% if shades.is_a?(String) %>
-      <div class="row">
-        <%= render 'colour', name: name, hex: shades %>
-      </div>
-    <% else %>
-      <h3><%= name %></h3>
-      <div class="row">
-        <% shades.each do |shade, hex| %>
-          <%= render 'colour', name: "#{name}_#{shade}", hex: hex %>
-        <% end %>
-      </div>
-    <% end %>
-  <% end %>
-</div>
+<h1>Colours</h1>
 
-<h1>Mappings</h1>
 <div>
-  <% Colours::MAP.each do |key, map| %>
+  <% Colours::PALETTE.each do |key, group| %>
     <h2><%= key %></h2>
-    <% map.each do |name, shades| %>
-      <% if shades.is_a?(Symbol) %>
-        <div class="row">
-          <%= render 'colour', name: name, hex: Colours.palette(shades), map: shades %>
-        </div>
-      <% else %>
+    <% group.each do |name, value| %>
+      <% if value.is_a?(Hash) %>
         <h3><%= name %></h3>
         <div class="row">
-          <% shades.each do |shade, mapping| %>
-            <%= render 'colour', name: "#{name}_#{shade}", hex: Colours.palette(mapping), map: mapping %>
+          <% value.each do |shade, mapping| %>
+            <%= render 'colour', name: "#{name}_#{shade}", map: mapping, hex: Colours.hex(mapping) %>
           <% end %>
+        </div>
+      <% else %>
+        <div class="row">
+          <%= render 'colour', name: name, map: value, hex: Colours.hex(value) %>
         </div>
       <% end %>
     <% end %>
