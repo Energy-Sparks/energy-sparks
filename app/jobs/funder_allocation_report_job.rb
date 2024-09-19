@@ -7,6 +7,7 @@ class FunderAllocationReportJob < ApplicationJob
 
   def perform(to:)
     funder_report = Schools::FunderAllocationReportService.new
-    AdminMailer.with(to: to, funder_report: funder_report).funder_allocation_report.deliver
+    Rails.root.join('tmp', funder_report.csv_filename).write(funder_report.csv) if Rails.env.development?
+    AdminMailer.with(to:, funder_report:).funder_allocation_report.deliver
   end
 end
