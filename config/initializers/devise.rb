@@ -270,5 +270,5 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
   # https://github.com/heartcombo/devise/issues/5644
-  config.secret_key = Rails.application.credentials.secret_key_base.
+  config.secret_key = Rails.application.credentials.secret_key_base
 end
