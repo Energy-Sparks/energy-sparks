@@ -115,6 +115,7 @@ module Colours
       },
       gray: {
         '100': '#f8f9fa'.freeze, # bootstrap greys
+        '600': '#6c757d'.freeze, # bootstrap greys
         '800': '#343a40'.freeze, # bootstrap greys
       },
       red: {
@@ -273,6 +274,7 @@ module Colours
 
   # Usage:
   # Colours.yellow_very_dark
+  # Colours.gas_light
   # Colours.positive_light
   # Colours.examplar_school
   def self.method_missing(method_name, *args, &block)
@@ -293,5 +295,4 @@ module Colours
   # Transport survey chart:
   # app/javascript/packs/transport_surveys/charts.js
   # var colors = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"];
-
 end
