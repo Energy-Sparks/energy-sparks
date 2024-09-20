@@ -178,7 +178,7 @@ module Colours
     theme: {
       # Bootstrap defaults:
       primary: :blue_medium,
-      secondary: :grey_600, # bootstrap default
+      secondary: :gray_600, # bootstrap default
       success: :teal_dark,
       info: :cyan, # bootstrap default
       warning: :yellow_medium,
