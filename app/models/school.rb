@@ -251,7 +251,8 @@ class School < ApplicationRecord
       .or(joined_programme(date_range))
   end
 
-  validates :urn, :name, :address, :postcode, :website, :school_type, presence: true, uniqueness: true
+  validates :name, :address, :postcode, :website, :school_type, presence: true
+  validates :urn, presence: true, uniqueness: true
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count,
             numericality: { greater_than: 0, allow_blank: true }
   validates :cooks_dinners_for_other_schools_count, presence: true, if: :cooks_dinners_for_other_schools?
@@ -277,9 +278,8 @@ class School < ApplicationRecord
 
   validates :weather_station, presence: true
 
-  accepts_nested_attributes_for :school_times, reject_if: proc { |attributes|
-    attributes['day'].blank?
-  }, allow_destroy: true
+  accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes['day'].blank? },
+                                               allow_destroy: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
@@ -585,8 +585,10 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes,
-                      school_target_attributes].each_with_object(global_pseudo_meter_attributes) do |pseudo_attributes, collection|
+    all_attributes = [school_group_pseudo_meter_attributes,
+                      pseudo_meter_attributes,
+                      school_target_attributes]
+                     .each_with_object(global_pseudo_meter_attributes) do |pseudo_attributes, collection|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes
