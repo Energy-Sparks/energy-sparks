@@ -270,5 +270,9 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
   # https://github.com/heartcombo/devise/issues/5644
-  config.secret_key = Rails.application.credentials.secret_key_base
+  config.secret_key = if Rails.env.production?
+                        ENV.fetch('SECRET_KEY_BASE')
+                      else
+                        'bf6b17badd5dc5e185dd55748f310833c6442be293e55c8088801b37be6a7d77fd8b210439baeade07b5c4c43752dbd65a56866513f127dfc130128e4721510b'
+                      end
 end
