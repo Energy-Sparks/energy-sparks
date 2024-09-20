@@ -5,7 +5,7 @@ Rails.application.config.after_initialize do
     signed_cookie_salt = Rails.application.config.action_dispatch.signed_cookie_salt
 
     key_generator = ActiveSupport::KeyGenerator.new(
-      ENV['SECRET_KEY_BASE'], iterations: 1000, hash_digest_class: OpenSSL::Digest::SHA1
+      ENV.fetch('SECRET_KEY_BASE', 'key'), iterations: 1000, hash_digest_class: OpenSSL::Digest::SHA1
     )
     key_len = ActiveSupport::MessageEncryptor.key_len
 

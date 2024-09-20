@@ -273,6 +273,6 @@ Devise.setup do |config|
   config.secret_key = if Rails.env.production?
                         ENV.fetch('SECRET_KEY_BASE')
                       else
-                        'bf6b17badd5dc5e185dd55748f310833c6442be293e55c8088801b37be6a7d77fd8b210439baeade07b5c4c43752dbd65a56866513f127dfc130128e4721510b'
+                        '4ab2fe0e211da787f17c1691aa39753ea90555dd1d99b27793ef30c9fd65663fda6f2292b1269695e1c4fff595c75b3631894ed1927c3926f2945e1bc896705b'
                       end
 end
