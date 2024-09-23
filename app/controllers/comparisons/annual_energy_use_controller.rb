@@ -38,10 +38,6 @@ module Comparisons
       :annual_energy_use
     end
 
-    def advice_page_key
-      :total_energy_use
-    end
-
     def load_data
       Comparison::AnnualEnergyUse.for_schools(@schools).with_data.sort_default
     end

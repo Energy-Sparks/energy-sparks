@@ -16,6 +16,44 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
     render_inline(component)
   end
 
+  context 'with feature active' do
+    before do
+      Flipper.enable(:new_dashboards_2024)
+    end
+
+    context 'when there is another school on the podium' do
+      let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+
+      it 'shows scoreboard activity' do
+        expect(html).to have_content('Recent activity on your scoreboard')
+      end
+    end
+
+    context 'when there is only 1 school on the podium' do
+      it 'shows energysparks activity' do
+        expect(html).to have_content('Recent activity across Energy Sparks')
+      end
+    end
+
+    context 'when school is not visible' do
+      let(:school) { create :school, scoreboard: scoreboard, visible: false }
+
+      context 'when there is another school on the podium' do
+        let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+
+        it 'shows scoreboard activity' do
+          expect(html).to have_content(I18n.t('components.scoreboard_summary.intro'))
+        end
+      end
+
+      context 'when there is only 1 school on the podium' do
+        it 'shows energysparks activity' do
+          expect(html).to have_content(I18n.t('components.scoreboard_summary.intro'))
+        end
+      end
+    end
+  end
+
   context 'when there is another school on the podium' do
     let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 

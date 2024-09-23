@@ -27,7 +27,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.3'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.9'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -40,8 +40,8 @@ gem 'font-awesome-sass'
 gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
-gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
+gem 'sass-rails' # Use SCSS for stylesheets
 gem 'terser'
 
 # Pagination
@@ -129,11 +129,6 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
-  gem 'rubocop'
-  gem 'rubocop-capybara'
-  gem 'rubocop-performance'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec'
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'webmock'
@@ -150,11 +145,14 @@ group :development do
   gem 'fasterer'
   gem 'listen' # listen for file changes - what's this used by?
   gem 'overcommit'
+  gem 'rubocop'
+  gem 'rubocop-capybara'
+  gem 'rubocop-factory_bot'
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec_rails'
   gem 'scout_apm'
   gem 'web-console'
-  #  gem 'rack-mini-profiler'
-  #  gem 'memory_profiler'
-  #  gem 'i18n-debug'
 end
 
 group :test do
