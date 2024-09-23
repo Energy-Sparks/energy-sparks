@@ -5,7 +5,7 @@ $(document).ready(function() { chart.render(); });
 const chart = ( function() {
 
   var chartId = 'transport_surveys_pie';
-  var colors = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"];
+  var colors = ["#10bca2", "#f14141", "#fdefc8", "#f9b233", "#7f93b8"];
 
   function render() {
     let chart_options = commonChartOptions();

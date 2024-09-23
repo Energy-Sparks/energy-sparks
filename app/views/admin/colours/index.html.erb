@@ -19,3 +19,17 @@
     <% end %>
   <% end %>
 </div>
+
+<div>
+  <h1>Common Chart Options Colours</h1>
+  <% Colours::COMMON_CHART_OPTIONS.each do |colour| %>
+    <%= render 'colour', name: colour, hex: colour %>
+  <% end %>
+</div>
+
+<div>
+  <h1>Transport Chart Colours</h1>
+  <% Colours::TRANSPORT_CHART_COLOURS.each do |colour| %>
+    <%= render 'colour', name: colour, hex: colour %>
+  <% end %>
+</div>

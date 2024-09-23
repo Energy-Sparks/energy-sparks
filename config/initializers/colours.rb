@@ -1,5 +1,4 @@
 module Colours
-
   ### Old / current colours ###
   # These are *not* to be used for new features as we're moving away
   # from them to the colours above
@@ -41,7 +40,7 @@ module Colours
   SILVER = '#c0c0c0'.freeze
   GREY = '#c4ccd4'.freeze
   BLUEY_GREY = '#E7EDF0'.freeze
-  LIGHT_GREY = '#e6e6e6'.freeze
+  # LIGHT_GREY = '#e6e6e6'.freeze # same as bootstrap gray_100
   LIGHTER_GREY = '#F1F3F5'.freeze
   VERY_LIGHT_GREY = '#f8f9fa'.freeze
   WHITE = '#ffffff'.freeze
@@ -87,13 +86,11 @@ module Colours
     palette: {
       blue: {
         pale: '#f2f6fc'.freeze,
-        light: '#cbe4fc'.freeze, # changed colour from design - is now blue medium from original design - used in nav
-        # blue_medium in the original design was #cbe4fc - which is not bold enough
-        # have now moved this up to blue_light, which wasn't quite dark enough either :-)
-        # derived new colour from monocromatics from blue_very_dark https://colorkit.co/color/192a52/
-        medium: '#3c64c3'.freeze, # changed colour - see above for why
+        light: '#cbe4fc'.freeze, # Blue medium from original design - used in nav. Blue light in original design is not distinct enough from this, so removed
+        medium: '#7f93b8'.freeze, # New colour - derived (half way colour between light and dark) using https://www.dannybrien.com/middle/
         dark: '#334375'.freeze, # paragraph text
-        very_dark: '#192a52'.freeze # new nav blue (adult) and headings
+        very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
+        bright: '#3c64c3'.freeze, # New colour - so we could have an inbetween brighter blue -  derived monocromatics from blue_very_dark https://colorkit.co/color/192a52/
       },
       yellow: {
         pale: '#fdefc8'.freeze,
@@ -135,15 +132,14 @@ module Colours
     },
     fuel: {
       electric: {
-        light: :blue_pale,
-        medium: :blue_light,
-        dark: :blue_medium
+        light: :blue_light,
+        medium: :blue_medium,
+        dark: :blue_bright
       },
       gas: {
         light: :yellow_pale,
         medium: :yellow_light,
         dark: :yellow_medium,
-        light_line: :yellow_very_dark, # was #new_yellow # yellow very dark is not a good sub!
       },
       storage: {
         light: :purple_pale,
@@ -175,9 +171,8 @@ module Colours
       benchmark_school: :yellow_medium,
       other_school: :red_dark
     },
-    theme: {
-      # Bootstrap defaults:
-      primary: :blue_medium,
+    bootstrap: {
+      primary: :blue_bright,
       secondary: :gray_600, # bootstrap default
       success: :teal_dark,
       info: :cyan, # bootstrap default
@@ -185,26 +180,30 @@ module Colours
       danger: :red_dark,
       light: :gray_100, # bootstrap default
       dark: :gray_800, # bootstrap default
-      ## Extras
+    },
+    theme: {
       thead_dark: :blue_very_dark, # Colours::DARK_BLUE
       live_data_dark: :teal_dark, # Colours::GREEN
       live_data_light: :grey_light, # Colours::LIGHT_GREY
+      adult_light: :blue_pale,
+      pupil_light: :yellow_pale # not used yet
     },
     charts: {
-      degree_days: :blue_very_dark, # Colours::DARK_BLUE
-      temperature: :blue_very_dark, # Colours::DARK_BLUE
+      degree_days: :blue_dark, # Colours::DARK_BLUE
+      temperature: :blue_dark, # Colours::DARK_BLUE
       school_day_closed: :blue_medium, # Colours::MID_BLUE,
       school_day_open: :teal_dark, # Colours::GREEN
-      holiday: :yellow_very_dark, # Colours::DARK_ORANGE,
-      weekend: :yellow_dark, # Colours::LIGHT_ORANGE,
+      holiday: :yellow_medium, # Colours::DARK_ORANGE,
+      weekend: :yellow_light, # Colours::LIGHT_ORANGE, # FIXME
       heating_day: :blue_medium, # Colours::MID_BLUE,
       non_heating_day: :teal_dark, # Colours::GREEN
-      useful_hot_water_usage: :blue_medium, # Colours::MID_BLUE,
-      wasted_hot_water_usage: :yellow_very_dark, # Colours::DARK_ORANGE,
+      useful_hot_water_usage: :blue_bright, # Colours::MID_BLUE,
+      wasted_hot_water_usage: :yellow_medium, # Colours::DARK_ORANGE, # FIXME
       # probably could do away with some of these :-)
-      solar_pv: :yellow_dark, # Colours::LIGHT_ORANGE,
-      electric: :electric_dark, #I18n.t('analytics.series_data_manager.series_name.electricity') => Colours.electric_dark, # Colours::ELECTRIC_DARK
+      solar_pv: :yellow_light, # Colours::LIGHT_ORANGE,
+      electric: :electric_dark, # I18n.t('analytics.series_data_manager.series_name.electricity') => Colours.electric_dark, # Colours::ELECTRIC_DARK
       gas: :gas_dark, # I18n.t('analytics.series_data_manager.series_name.gas') => Colours.gas_dark, # Colours::GAS_DARK
+      gas_light_line: :yellow_light, # was Colours::NEW_YELLOW # FIXME
       storage_heaters: :storage_dark, # Colours::STORAGE_HEATER
       gbp: :blue_very_dark, # Colours::DARK_BLUE
       electricity_consumed_from_solar_pv: :teal_dark, # Colours::GREEN
@@ -287,12 +286,14 @@ module Colours
 
   # Other non-standard colour definitions can be found in:
   # assets/javascripts/common_chart_options.js
-  # colors: ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
+  # !! Copied here so we can display them easily:
+  COMMON_CHART_OPTIONS = ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"].freeze
 
   # Admin areas / mailers e.g.:
   # controllers/admin/reports/amr_validated_readings_controller.rb
 
   # Transport survey chart:
   # app/javascript/packs/transport_surveys/charts.js
-  # var colors = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"];
+  # !! Copied here so we can display them easily:
+  TRANSPORT_CHART_COLOURS = ["#10bca2", "#f14141", "#fdefc8", "#f9b233", "#7f93b8"].freeze
 end

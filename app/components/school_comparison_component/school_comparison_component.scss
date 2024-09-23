@@ -1,7 +1,7 @@
 .school-comparison-component-callout-row {
   @each $tag, $colour in $colours-comparison {
     .#{$tag} {
-      background-color: $very-light-grey !important;
+      background-color: $light !important;
       border-bottom: 10px solid $colour;
     }
   }

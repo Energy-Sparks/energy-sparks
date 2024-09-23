@@ -2,19 +2,21 @@
 
 // The hex values for colours can be found in initializers/colours.rb
 
-// The following creates a SASS variable for each colour found in the Colours::PALETTE hash
-// in initializers/colours.rb of the format $colour: #hexval;
-// e.g.:
+// The following creates a SASS variable for colours grouped in the Colours::PALETTE hash
+// e.g.: Colours.sass_variables :palette
+// creates variables for the :palette group, such as:
 // $yellow-pale: #fdefc8;
 // $blue-very-dark: #334375;
+
+// Examples of variables bought in from fuel, polarity and comparison groups:
 // $electric-dark: #007EFF;
 // $positive-dark: #10bca2;
 // $exemplar-school: #10bca2;
-
 <%= Colours.sass_variables :palette %>
 <%= Colours.sass_variables :fuel %>
 <%= Colours.sass_variables :polarity %>
 <%= Colours.sass_variables :comparison %>
+<%= Colours.sass_variables :bootstrap %>
 <%= Colours.sass_variables :theme %>
 
 // Create SASS maps for each of these keys found in Colours::PALETTE hash
@@ -74,7 +76,6 @@ $grey: <%= Colours::GREY %>;
 $bluey-grey: <%= Colours::BLUEY_GREY %>; // used for background on pupil dashboards
 $light-grey: <%= Colours::LIGHT_GREY %>;
 $lighter-grey: <%= Colours::LIGHTER_GREY %>;
-$very-light-grey: <%= Colours::VERY_LIGHT_GREY %>;
 
 // Shortcuts
 $text: $dark;
