@@ -12,8 +12,8 @@ module Colours
 
   # BLUES
   # DARK_BLUE = '#232b49'.freeze
-  BRIGHT_BLUE = '#007bff'.freeze
-  MID_BLUE = '#3bc0f0'.freeze
+  # BRIGHT_BLUE = '#007bff'.freeze
+  # MID_BLUE = '#3bc0f0'.freeze
   LIGHT_BLUE = '#97e6fc'.freeze
   LIGHTER_LIGHT_BLUE = '#cbf4ff'.freeze
   BLUEY_WHITE = '#fcffff'.freeze
@@ -197,7 +197,7 @@ module Colours
       weekend: :yellow_light, # Colours::LIGHT_ORANGE, # FIXME
       heating_day: :blue_medium, # Colours::MID_BLUE,
       non_heating_day: :teal_dark, # Colours::GREEN
-      useful_hot_water_usage: :blue_bright, # Colours::MID_BLUE,
+      useful_hot_water_usage: :blue_medium, # Colours::MID_BLUE,
       wasted_hot_water_usage: :yellow_medium, # Colours::DARK_ORANGE, # FIXME
       # probably could do away with some of these :-)
       solar_pv: :yellow_light, # Colours::LIGHT_ORANGE,
