@@ -23,13 +23,13 @@
 <div>
   <h1>Default Chart Colours</h1>
   <% Colours::DEFAULT_CHART_COLOURS.each do |colour| %>
-    <%= render 'colour', name: colour, hex: colour %>
+    <%= render 'colour', hex: colour %>
   <% end %>
 </div>
 
 <div>
   <h1>Transport Chart Colours</h1>
   <% Colours::TRANSPORT_CHART_COLOURS.each do |colour| %>
-    <%= render 'colour', name: colour, hex: colour %>
+    <%= render 'colour', hex: colour %>
   <% end %>
 </div>
