@@ -14,16 +14,16 @@ module Colours
   # DARK_BLUE = '#232b49'.freeze
   # BRIGHT_BLUE = '#007bff'.freeze
   # MID_BLUE = '#3bc0f0'.freeze
-  LIGHT_BLUE = '#97e6fc'.freeze
-  LIGHTER_LIGHT_BLUE = '#cbf4ff'.freeze
-  BLUEY_WHITE = '#fcffff'.freeze
+  # LIGHT_BLUE = '#97e6fc'.freeze
+  # LIGHTER_LIGHT_BLUE = '#cbf4ff'.freeze
+  # BLUEY_WHITE = '#fcffff'.freeze
 
   # GREENS
   GREEN = '#5cb85c'.freeze
 
   # REDS
   # NEW_RED = '#ff3a5b'.freeze
-  LIGHT_RED = '#ff9b9c'.freeze
+  # LIGHT_RED = '#ff9b9c'.freeze
 
   # PURPLES / PINKS
   MID_PURPLE = '#B56CE2'.freeze
@@ -39,7 +39,7 @@ module Colours
   DARK_GREY = '#999999'.freeze
   SILVER = '#c0c0c0'.freeze
   GREY = '#c4ccd4'.freeze
-  BLUEY_GREY = '#e7edf0'.freeze
+  # BLUEY_GREY = '#e7edf0'.freeze
   LIGHT_GREY = '#e6e6e6'.freeze
   LIGHTER_GREY = '#f1f3f5'.freeze
   # VERY_LIGHT_GREY = '#f8f9fa'.freeze # same as bootstrap gray_100
