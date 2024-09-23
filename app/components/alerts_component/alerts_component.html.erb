@@ -20,8 +20,7 @@
     <% alerts.each do |alert_content| %>
       <%= component 'prompt', icon: alert_icon(alert_content.alert),
                               status: status_for_alert_colour(alert_content.colour) do |prompt| %>
-          <% if alert_content.alert.advice_page.present? ||
-                  alert_content.alert.alert_type.class_name == 'AlertEnergyAnnualVersusBenchmark' %>
+          <% if alert_content.alert.alert_type.find_out_more? %>
             <% prompt.with_link do %>
               <%= link_to t('schools.show.find_out_more'),
                           advice_page_path(school,

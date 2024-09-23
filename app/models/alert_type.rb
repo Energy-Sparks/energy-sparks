@@ -96,4 +96,8 @@ class AlertType < ApplicationRecord
   def worst_management_priority_rating
     ratings.where(management_priorities_active: true).order(:rating_from).last
   end
+
+  def find_out_more?
+    advice_page.present? || class_name == 'AlertEnergyAnnualVersusBenchmark'
+  end
 end
