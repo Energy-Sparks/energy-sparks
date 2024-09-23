@@ -11,7 +11,7 @@ module Colours
   LIGHT_ORANGE = '#ffac21'.freeze
 
   # BLUES
-  DARK_BLUE = '#232b49'.freeze
+  # DARK_BLUE = '#232b49'.freeze
   BRIGHT_BLUE = '#007bff'.freeze
   MID_BLUE = '#3bc0f0'.freeze
   LIGHT_BLUE = '#97e6fc'.freeze
@@ -22,7 +22,7 @@ module Colours
   GREEN = '#5cb85c'.freeze
 
   # REDS
-  NEW_RED = '#ff3a5b'.freeze
+  # NEW_RED = '#ff3a5b'.freeze
   LIGHT_RED = '#ff9b9c'.freeze
 
   # PURPLES / PINKS
@@ -33,17 +33,17 @@ module Colours
   LIGHT_TURQUOISE = '#a1ffe9'.freeze
 
   # Shades of grey - these need sorting
-  BLACK = '#000000'.freeze
+  # BLACK = '#000000'.freeze
   DARK = '#222222'.freeze
-  DARKER_GREY = '#6c757d'.freeze
+  DARKER_GREY = '#6c757d'.freeze # grey_600
   DARK_GREY = '#999999'.freeze
   SILVER = '#c0c0c0'.freeze
   GREY = '#c4ccd4'.freeze
-  BLUEY_GREY = '#E7EDF0'.freeze
-  # LIGHT_GREY = '#e6e6e6'.freeze # same as bootstrap gray_100
-  LIGHTER_GREY = '#F1F3F5'.freeze
-  VERY_LIGHT_GREY = '#f8f9fa'.freeze
-  WHITE = '#ffffff'.freeze
+  BLUEY_GREY = '#e7edf0'.freeze
+  LIGHT_GREY = '#e6e6e6'.freeze
+  LIGHTER_GREY = '#f1f3f5'.freeze
+  # VERY_LIGHT_GREY = '#f8f9fa'.freeze # same as bootstrap gray_100
+  # WHITE = '#ffffff'.freeze
 
   # FUEL TYPES
   # ELECTRIC_DARK = '#007eff'.freeze # $electric-dark
@@ -182,7 +182,7 @@ module Colours
       dark: :gray_800, # bootstrap default
     },
     theme: {
-      thead_dark: :blue_very_dark, # Colours::DARK_BLUE
+      bg_dark: :blue_very_dark, # # Colours::DARK_BLUE
       live_data_dark: :teal_dark, # Colours::GREEN
       live_data_light: :grey_light, # Colours::LIGHT_GREY
       adult_light: :blue_pale,
@@ -286,14 +286,13 @@ module Colours
 
   # Other non-standard colour definitions can be found in:
   # assets/javascripts/common_chart_options.js
-  # !! Copied here so we can display them easily:
-  COMMON_CHART_OPTIONS = ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"].freeze
+  DEFAULT_CHART_COLOURS = ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"].freeze
 
   # Admin areas / mailers e.g.:
   # controllers/admin/reports/amr_validated_readings_controller.rb
 
   # Transport survey chart:
   # app/javascript/packs/transport_surveys/charts.js
-  # !! Copied here so we can display them easily:
+  # !! Copied here so we can display colours easily:
   TRANSPORT_CHART_COLOURS = ["#10bca2", "#f14141", "#fdefc8", "#f9b233", "#7f93b8"].freeze
 end

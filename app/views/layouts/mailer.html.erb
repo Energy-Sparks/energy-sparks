@@ -4,9 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <%= stylesheet_link_tag 'application_mailer', media: 'all' %>
     <style>
-      .bg-black { background-color: <%= Colours::BLACK %>; }
-      .bg-dark-blue { background-color: <%= Colours::DARK_BLUE %>; }
-      .new-yellow { color: <%= Colours::NEW_YELLOW %>; }
+      .bg-black { background-color: <%= Colours.black %>; }
+      .bg-dark { background-color: <%= Colours.bg_dark %>; }
+      .yellow-medium { color: <%= Colours.yellow_medium %>; }
     </style>
   </head>
   <body class="bg-light">
@@ -23,7 +23,7 @@
             </div>
           </div>
           <div class="row">
-             <div class="col-12 bg-dark-blue">
+             <div class="col-12 bg-dark">
                <h4 class="ax-center text-white mt-2 mb-2"><strong><%= @title %></strong></h4>
             </div>
           </div>
@@ -35,7 +35,7 @@
           <div class="row">
             <div class="col-12 bg-black">
                <span class="ax-center text-white mt-2"><strong><%= t(:get_in_touch, scope: [:mailer]) %></strong></span>
-               <span class="ax-center text-white mt-2 mb-2"><strong><a href="mailto:hello@energysparks.uk" class="new-yellow">hello@energysparks.uk</a></strong></span>
+               <span class="ax-center text-white mt-2 mb-2"><strong><a href="mailto:hello@energysparks.uk" class="yellow-medium">hello@energysparks.uk</a></strong></span>
             </div>
           </div>
           <div class="row">
