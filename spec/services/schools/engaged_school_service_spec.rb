@@ -8,9 +8,11 @@ describe Schools::EngagedSchoolService, type: :service do
   let!(:school) { create(:school, :with_school_group) }
 
   describe '.list_engaged_schools' do
-    let!(:inactive)  { create(:school, :with_school_group, :with_points, active: false) }
-    let!(:school)    { create(:school, :with_school_group, :with_points, active: true) }
-
+    let!(:inactive) { create(:school, :with_school_group, :with_points, active: false) }
+    let!(:school) do
+      create(:school, :with_school_group, :with_points,
+             calendar: create(:calendar, :with_previous_and_next_academic_years))
+    end
     let(:engaged_schools) { described_class.list_engaged_schools }
 
     it 'returns active schools with recent activities' do
@@ -19,6 +21,14 @@ describe Schools::EngagedSchoolService, type: :service do
 
     it 'wraps schools in the service' do
       expect(engaged_schools.first.school).to eq school
+    end
+
+    context 'with the previous year' do
+      let(:engaged_schools) { described_class.list_engaged_schools(previous_year: true) }
+
+      it 'returns active schools with recent activities' do
+        expect(engaged_schools.count).to eq 0
+      end
     end
   end
 

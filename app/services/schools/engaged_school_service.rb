@@ -17,11 +17,6 @@ module Schools
                    else
                      current_year.start_date..
                    end
-
-      # scope :engaged, -> { active.with_recent_engagement.or(with_recently_logged_in_users).or(with_transport_survey).or(joined_programme) }
-      # scope :with_recent_engagement, -> { where(id: Observation.engagement.where('observations.created_at': date_range).select(:school_id)) }
-      # where('observations.created_at': date_range)
-
       School.engaged(date_range).joins(:school_group).order('school_groups.name asc, name asc').map do |school|
         EngagedSchoolService.new(school, date_range)
       end
