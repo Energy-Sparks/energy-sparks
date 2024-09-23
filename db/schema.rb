@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_05_174840) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_11_153230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1908,7 +1908,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_05_174840) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_group_id"], name: "index_users_on_school_group_id"
-    t.index ["school_id", "pupil_password_old"], name: "index_users_on_school_id_and_pupil_password_old", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
     t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
   end
