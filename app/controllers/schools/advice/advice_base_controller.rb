@@ -208,10 +208,6 @@ module Schools
       def set_analysis_dates
         @analysis_dates = analysis_dates
       end
-
-      def set_no_how_we_analysed_modal
-        @how_we_analysed_modal = false
-      end
     end
   end
 end

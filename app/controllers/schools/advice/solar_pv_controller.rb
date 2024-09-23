@@ -4,8 +4,7 @@ module Schools
   module Advice
     class SolarPvController < AdviceBaseController
       before_action :load_dashboard_alerts, only: [:insights]
-      before_action :set_analysis_dates, only: %i[analysis]
-      before_action :set_no_how_we_analysed_modal, only: [:insights]
+      before_action :set_analysis_dates, only: %i[insights analysis]
 
       def insights
         if @school.has_solar_pv?

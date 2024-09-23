@@ -3,7 +3,6 @@ module Schools
     class GasRecentChangesController < AdviceBaseController
       before_action :load_dashboard_alerts
       before_action :set_analysis_dates, only: [:insights]
-      before_action :set_no_how_we_analysed_modal, only: [:analysis]
 
       def insights
         @recent_usage = recent_changes_service.recent_usage

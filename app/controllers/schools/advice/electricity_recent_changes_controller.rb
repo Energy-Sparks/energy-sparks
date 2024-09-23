@@ -2,7 +2,6 @@ module Schools
   module Advice
     class ElectricityRecentChangesController < AdviceBaseController
       before_action :load_dashboard_alerts, only: [:insights]
-      before_action :set_no_how_we_analysed_modal, only: [:analysis]
 
       def insights
         @analysis_dates = analysis_dates

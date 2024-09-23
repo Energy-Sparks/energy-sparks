@@ -20,7 +20,7 @@
   <%= component 'recommendations', recommendations: @intervention_types,
                                    title: t('advice_pages.insights.recommendations.actions_title'), classes: 'pb-4' %>
 
-  <% if @how_we_analysed_modal != false %>
+  <% if @how_we_analysed_modal %>
     <%= component 'footnote_modal',
                   title: t('advice_pages.how_have_we_analysed_your_data.page_title'),
                   modal_id: 'how-have-we-analysed-your-data-footnotes' do |component| %>
