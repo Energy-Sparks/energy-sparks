@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 74af4c57b4b05f378d2cfe1ad21d9f8542bae787
-  tag: 6.0.9
+  revision: 40ed3d5248f0cb1c2e6bc3059c718978bbd428bd
+  tag: 6.0.10
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
@@ -281,8 +281,9 @@ GEM
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
     fakefs (2.5.0)
-    faraday (2.11.0)
+    faraday (2.12.0)
       faraday-net_http (>= 2.0, < 3.4)
+      json
       logger
     faraday-follow_redirects (0.3.0)
       faraday (>= 1, < 3)
@@ -656,7 +657,7 @@ GEM
       rubocop (~> 1.41)
     rubocop-factory_bot (2.26.1)
       rubocop (~> 1.61)
-    rubocop-performance (1.21.1)
+    rubocop-performance (1.22.1)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rails (2.26.1)
@@ -706,7 +707,7 @@ GEM
     scenic (1.8.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
-    scout_apm (5.3.8)
+    scout_apm (5.4.0)
       parser
     selenium-webdriver (4.23.0)
       base64 (~> 0.2)
