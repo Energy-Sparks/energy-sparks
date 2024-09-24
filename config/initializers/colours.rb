@@ -7,8 +7,8 @@ module Colours
   NEW_YELLOW = '#fcb43a'.freeze
 
   # ORANGES
-  DARK_ORANGE = '#ff4500'.freeze
-  LIGHT_ORANGE = '#ffac21'.freeze
+  # DARK_ORANGE = '#ff4500'.freeze
+  # LIGHT_ORANGE = '#ffac21'.freeze
 
   # BLUES
   # DARK_BLUE = '#232b49'.freeze
@@ -19,18 +19,18 @@ module Colours
   # BLUEY_WHITE = '#fcffff'.freeze
 
   # GREENS
-  GREEN = '#5cb85c'.freeze
+  # GREEN = '#5cb85c'.freeze
 
   # REDS
   # NEW_RED = '#ff3a5b'.freeze
   # LIGHT_RED = '#ff9b9c'.freeze
 
   # PURPLES / PINKS
-  MID_PURPLE = '#B56CE2'.freeze
+  # MID_PURPLE = '#B56CE2'.freeze
 
   # Turquoise
-  TURQUOISE = '#50e3c2'.freeze
-  LIGHT_TURQUOISE = '#a1ffe9'.freeze
+  # TURQUOISE = '#50e3c2'.freeze
+  # LIGHT_TURQUOISE = '#a1ffe9'.freeze
 
   # Shades of grey - these need sorting
   # BLACK = '#000000'.freeze
@@ -304,6 +304,6 @@ module Colours
 
   # Transport survey chart:
   # app/javascript/packs/transport_surveys/charts.js
-  # !! Copied here so we can display colours easily:
+  # !! Copied here so we can display colours at /admin/colours:
   TRANSPORT_CHART_COLOURS = ["#10bca2", "#f14141", "#fdefc8", "#f9b233", "#7f93b8"].freeze
 end

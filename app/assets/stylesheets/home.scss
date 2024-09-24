@@ -244,11 +244,6 @@ header img {
   background-image: linear-gradient(to right, $positive-dark 0%, $positive-light 100%);
 }
 
-section.highlight {
-  background: $dark-orange;
-  color: $white;
-}
-
 .mailchimp  {
   @media (min-width: 992px) and (max-width: 1599.98px) {
     .card-deck {
