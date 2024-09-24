@@ -211,6 +211,13 @@ module Colours
       exported_solar_electricity: :gas_light_line, # Colours::GAS_LIGHT_LINE
       y2_solar_label: :gas_medium, # Colours::GAS_MIDDLE,
       y2_rating: :blue_very_dark # Colours::DARK_BLUE
+    },
+    calendars: { # these are keyed on CalendarEventType#analytics_event_type
+      term_time: :yellow_light, # Colours::LIGHT_ORANGE
+      school_holiday: :teal_dark, # Colours::GREEN
+      bank_holiday: :blue_medium, # Colours::MID_BLUE
+      inset_day_in_school: :yellow_medium, # Colours::DARK_ORANGE
+      inset_day_out_of_school: :purple_medium # Colours::MID_PURPLE
     }
   }.freeze
 
