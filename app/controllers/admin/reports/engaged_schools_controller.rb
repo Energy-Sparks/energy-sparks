@@ -2,8 +2,9 @@ module Admin
   module Reports
     class EngagedSchoolsController < AdminController
       def index
+        @previous_year = params.key?(:previous_year)
         @engaged_schools = ::Schools::EngagedSchoolService
-                           .list_engaged_schools(previous_year: params.key?(:previous_year))
+                           .list_engaged_schools(previous_year: @previous_year)
 
         respond_to do |format|
           format.html do

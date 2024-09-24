@@ -44,6 +44,10 @@
     actual audit date
   </li>
   <li>We're looking at engagement since early September of the current English school year</li>
+  <li>
+    If viewing the previous year then user activity is shown since the start of the previous academic year and also
+    includes the current year since we only record the most recent user login.
+  </li>
 </ul>
 
 <p>
@@ -52,10 +56,15 @@
 </p>
 
 <div class="d-flex justify-content-end">
-  <%= link_to 'Previous Year', admin_reports_engaged_schools_path(previous_year: true),
-              class: 'btn btn-outline-dark font-weight-bold mr-2' %>
-  <%= link_to 'Download as CSV', admin_reports_engaged_schools_path(format: :csv),
-              class: 'btn btn-outline-dark font-weight-bold' %>
+  <% label, kwargs, csv_kwargs = if @previous_year
+                                   ['Current Year', {}, { previous_year: true }]
+                                 else
+                                   ['Previous Year', { previous_year: true }, {}]
+                                 end
+     classes = 'btn btn-outline-dark font-weight-bold' %>
+  <%= link_to label, admin_reports_engaged_schools_path(**kwargs), class: "#{classes} mr-2" %>
+  <%= link_to 'Download as CSV', admin_reports_engaged_schools_path(**csv_kwargs.merge(format: :csv)),
+              class: classes %>
 </div>
 
 <table class="table table-sorted table-sm">
