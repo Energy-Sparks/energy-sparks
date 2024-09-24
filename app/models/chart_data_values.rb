@@ -405,7 +405,7 @@ private
     line(colour_options: colour_options)
   end
 
-  def line(colour_options: [Colours::GREEN, Colours::LIGHT_ORANGE])
+  def line(colour_options: [Colours.teal_dark, Colours.yellow_medium])
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
       { name: data_type, color: colour_options[index], type: @chart1_type, data: data }

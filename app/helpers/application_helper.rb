@@ -129,11 +129,11 @@ module ApplicationHelper
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
-      class_for_alert_colour(:green)
+      class_for_alert_colour(:positive)
     elsif rating > 6
-      class_for_alert_colour(:yellow)
+      class_for_alert_colour(:neutral)
     else
-      class_for_alert_colour(:red)
+      class_for_alert_colour(:negative)
     end
   end
 
