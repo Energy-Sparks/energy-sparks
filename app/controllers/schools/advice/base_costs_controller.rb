@@ -62,13 +62,14 @@ module Schools
       end
 
       def set_next_steps
-        @advice_page_insights_next_steps = if @complete_tariff_coverage
-                                             nil
-                                           else
-                                             I18n.t(
-                                               "advice_pages.#{advice_page_key}.insights.next_steps_html", link: school_energy_tariffs_path(@school)
-                                             ).html_safe
-                                           end
+        @advice_page_insights_next_steps =
+          if @complete_tariff_coverage
+            nil
+          else
+            I18n.t(
+              "advice_pages.#{advice_page_key}.insights.next_steps_html", link: school_energy_tariffs_path(@school)
+            ).html_safe
+          end
       end
 
       def aggregate_meter_label
