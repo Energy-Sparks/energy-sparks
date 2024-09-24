@@ -2,6 +2,7 @@ div.school-card-row {
   padding-bottom: 30px;
 }
 
+/* UNUSED?
 .activity-card {
   border: 5px solid $green;
 
@@ -24,63 +25,46 @@ div.school-card-row {
     border-color: $green;
   }
 }
+*/
 
-.gas-card {
-  border: 5px solid $gas-light;
 
-  .card-header {
-    background-color: $white;
-    border-bottom: 0px;
-  }
+// e.g. .gas-card, .electric-card
+@each $fuel in (gas, electric) {
+  .#{$fuel}-card {
+    border: 5px solid colour-get($colours-fuel, $fuel, 'light');
 
-  .card-footer {
-    background-color: $white;
-    border-top: 0px;
-  }
+    .card-header {
+      background-color: $white;
+      border-bottom: 0px;
+    }
 
-  .card-body {
-    padding-top: 0px;
-  }
+    .card-footer {
+      background-color: $white;
+      border-top: 0px;
+    }
 
-  .btn {
-    background-color: $gas-dark;
-    border-color: $gas-dark;
-  }
-}
+    .card-body {
+      padding-top: 0px;
+    }
 
-.electricity-card {
-  border: 5px solid $electric-light;
-
-  .card-header {
-    background-color: $white;
-    border-bottom: 0px;
-  }
-
-  .card-footer {
-    background-color: $white;
-    border-top: 0px;
-  }
-
-  .card-body {
-    padding-top: 0px;
-  }
-
-  .btn {
-    background-color: $electric-dark;
-    border-color: $electric-dark;
+    .btn {
+      background-color: colour-get($colours-fuel, $fuel, 'dark');
+      border-color: colour-get($colours-fuel, $fuel, 'dark');
+    }
   }
 }
 
 // used in _usage_control.html.erb
 .usage-controls {
   @each $fuel, $tones in $colours-fuel {
+    $fuel-name: rename($fuel, 'electric', 'electricity');
     //e.g. .electricity-light, .gas-light, .storage-light, .solar-light
-    .#{$fuel}-light {
+    .#{$fuel-name}-light {
       border: 2px solid map-get($tones, 'light');
     }
 
     //e.g. .electricity-dark, .gas-dark, .storage-dark, .solar-dark
-    .#{$fuel}-dark {
+    .#{$fuel-name}-dark {
       border: 2px solid map-get($tones, 'dark');
     }
   }
@@ -110,7 +94,6 @@ div.school-card-row {
   .card-body {
     padding-top: 0px;
   }
-
 }
 
 .dashboard {
@@ -125,21 +108,6 @@ div.school-card-row {
       border-top: 0px;
     }
   }
-}
-
-#activity-cards {
-  padding-bottom: 60px;
-
-  .dashboard {
-    .card {
-      border: 5px solid $green;
-    }
-    .btn {
-      background-color: $green;
-      border-color: $green;
-    }
-  }
-
 }
 
 div.award {

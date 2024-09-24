@@ -12,27 +12,30 @@
 // $electric-dark: #007EFF;
 // $positive-dark: #10bca2;
 // $exemplar-school: #10bca2;
-<%= Colours.sass_variables :palette %>
-<%= Colours.sass_variables :fuel %>
-<%= Colours.sass_variables :polarity %>
-<%= Colours.sass_variables :comparison %>
-<%= Colours.sass_variables :bootstrap %>
-<%= Colours.sass_variables :theme %>
+<%= Colours.sass_variables :palette, :fuel, :polarity, :comparison, :bootstrap, :theme %>
 
 // Create SASS maps for each of these keys found in Colours::PALETTE hash
-<%= Colours.sass_map :fuel %>
-<%= Colours.sass_map :polarity %>
-<%= Colours.sass_map :comparison %>
+// These will be named: $colours-fuel etc
+<%= Colours.sass_maps :fuel, :polarity, :comparison %>
 
 // Get a colour from a generated map
 // not used yet so need to check if working :-)
-@function colour-get($hash, $name, $shade: false) {
+@function colour-get($map, $name, $shade: false) {
   @if $shade {
-    @return map-get(map-get($hash, $name), $shade);
+    @return map-get(map-get($map, $name), $shade);
   } @else {
-    @return map-get($hash, $name);
+    @return map-get($map, $name);
   }
 }
+
+@function rename($key, $old-name, $new-name) {
+  @if $key == $old-name {
+    @return $new-name;
+  } @else {
+    @return $old-name;
+  }
+}
+
 
 // Old / current colour mappings ###
 // These are *not* to be used for new features as we're moving away

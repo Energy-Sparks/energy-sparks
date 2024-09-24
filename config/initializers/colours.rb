@@ -253,29 +253,33 @@ module Colours
     colour.is_a?(String) ? colour : hex(colour)
   end
 
-  def self.sass_variables(group)
-    PALETTE[group].map do |name, shades|
-      # Handle the nested colour groups like blue, yellow, grey, etc.
-      if shades.is_a?(Hash)
-        shades.map { |shade, value| "$#{name.to_s.dasherize}-#{shade.to_s.dasherize}: #{hex(value)};\n" }.join
-      else
-        "$#{name.to_s.dasherize}: #{hex(shades)};\n"
-      end
+  def self.sass_variables(*groups)
+    groups.map do |group|
+      PALETTE[group].map do |name, shades|
+        # Handle the nested colour groups like blue, yellow, grey, etc.
+        if shades.is_a?(Hash)
+          shades.map { |shade, value| "$#{name.to_s.dasherize}-#{shade.to_s.dasherize}: #{hex(value)};\n" }.join
+        else
+          "$#{name.to_s.dasherize}: #{hex(shades)};\n"
+        end
+      end.join
     end.join
   end
 
-  def self.sass_map(group)
-    "$colours-#{group.to_s.dasherize}: (\n" +
-      PALETTE[group].map do |name, value|
-        key = name.to_s.dasherize
-        if value.is_a?(Hash)
-          "  #{name}: (\n" +
-            value.map { |shade, _| "    #{shade}: $#{key}-#{shade.to_s.dasherize}," }.join("\n") +
-          "\n  ),"
-        else
-          "  #{name}: $#{key},"
-        end
-      end.join("\n") + "\n);\n"
+  def self.sass_maps(*groups)
+    groups.map do |group|
+      "$colours-#{group.to_s.dasherize}: (\n" +
+        PALETTE[group].map do |name, value|
+          key = name.to_s.dasherize
+          if value.is_a?(Hash)
+            "  #{name}: (\n" +
+              value.map { |shade, _| "    #{shade}: $#{key}-#{shade.to_s.dasherize}," }.join("\n") +
+            "\n  ),"
+          else
+            "  #{name}: $#{key},"
+          end
+        end.join("\n") + "\n);\n"
+    end.join
   end
 
   # Usage:
