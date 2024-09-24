@@ -7,10 +7,10 @@ module Pupils
     include ActionView::Context
 
     skip_before_action :authenticate_user!
-    before_action :check_aggregated_school_in_cache, except: :index
     before_action :set_fuel_type, except: :index
     before_action :check_fuel_type, only: :charts
     before_action :set_analysis_dates, except: :index
+    after_action :allow_iframe, only: [:equivalences, :charts]
 
     layout 'public_displays'
 
@@ -141,6 +141,13 @@ module Pupils
         default_equivalence
       end
       meter_types == :all ? all_defaults : all_defaults.select {|e| meter_types.include?(e.equivalence_type.meter_type)}.sample
+    end
+
+    # Remove the X-Frame-Options header to allow embedding as frame.
+    # Remove X-XSS-Protection to avoid triggering browser XSS checks
+    def allow_iframe
+      response.headers.delete 'x-frame-options'
+      response.headers.delete 'x-xss-protection'
     end
   end
 end
