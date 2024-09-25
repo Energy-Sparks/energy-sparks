@@ -60,7 +60,7 @@ en:
         more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
         title: How do you compare?
       current_baseload:
-        calculation_dates: Calculation based on usage between %{start_date} and %{end_date}
+        calculation_dates: Calculation based on usage between %{start_date} and %{end_date}.
         last_week: Last week
         last_year: Last year
         tables:

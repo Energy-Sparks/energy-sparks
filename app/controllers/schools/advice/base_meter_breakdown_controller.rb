@@ -1,15 +1,15 @@
+# frozen_string_literal: true
+
 module Schools
   module Advice
     class BaseMeterBreakdownController < AdviceBaseController
       before_action :redirect_if_single_meter
-      before_action :set_meters_and_usage_breakdown, only: [:insights, :analysis]
+      before_action :set_meters_and_usage_breakdown, only: %i[insights analysis]
+      before_action :set_analysis_dates, only: %i[insights analysis]
 
-      def insights
-      end
+      def insights; end
 
-      def analysis
-        @analysis_dates = analysis_dates
-      end
+      def analysis; end
 
       private
 
