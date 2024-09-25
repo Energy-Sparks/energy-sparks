@@ -178,7 +178,7 @@ describe ChartDataValues do
           'Solar PV (consumed onsite)' => Colours.chart_solar_pv,
           'Electricity' => Colours.chart_electric,
           'Gas' => Colours.chart_gas,
-          'Storage heaters' => Colours.chart_storage_heaters,
+          'Storage heaters' => Colours.chart_storage_heater,
           '£' => Colours.chart_gbp,
           'Electricity consumed from solar pv' => Colours.chart_electricity_consumed_from_solar_pv,
           'Electricity consumed from mains' => Colours.chart_electricity_consumed_from_mains,
