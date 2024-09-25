@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   module Reports
     class EngagedSchoolsController < AdminController
@@ -13,7 +15,8 @@ module Admin
           end
           format.csv do
             send_data csv_report(@engaged_schools),
-                      filename: "engaged-schools-report-#{Time.zone.now.iso8601}".parameterize + '.csv'
+                      filename: "engaged-schools-report-#{Time.zone.now.iso8601.parameterize}" \
+                                "#{@previous_year ? '-previous-year' : ''}.csv"
           end
         end
       end
