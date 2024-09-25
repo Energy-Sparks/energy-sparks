@@ -65,6 +65,20 @@ module Schools
       redirect_to school_users_path(@school)
     end
 
+    def unlock
+      user = @school.find_user_or_cluster_user_by_id(params[:id])
+      authorize! :manage, :admin_functions
+      user.unlock_access!
+      redirect_to school_users_path(@school), notice: "User '#{user.email}' was successfully unlocked."
+    end
+
+    def lock
+      user = @school.find_user_or_cluster_user_by_id(params[:id])
+      authorize! :manage, :admin_functions
+      user.lock_access!(send_instructions: false)
+      redirect_to school_users_path(@school), notice: "User '#{user.email}' was successfully locked."
+    end
+
     private
 
     def set_breadcrumbs
