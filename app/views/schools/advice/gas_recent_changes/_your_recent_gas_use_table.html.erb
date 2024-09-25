@@ -5,18 +5,20 @@
     <th class="text-right"><%= t('common.table.columns.cost_gbp') %></th>
     <th class="text-right"><%= t('common.table.columns.co2_kg') %></th>
   </thead>
+  <%= if @recent_usage.previous_week
+        render 'your_recent_gas_use_table_row',
+               combined_usage_metric: @recent_usage.previous_week.combined_usage_metric,
+               period: @recent_usage.previous_week.date_range.map { |d| d.to_fs(:es_short) }.join(' - ')
+      end %>
   <%= render 'your_recent_gas_use_table_row',
-      combined_usage_metric: @recent_usage.previous_week.combined_usage_metric,
-      period: @recent_usage.previous_week.date_range.map { |d| d.to_fs(:es_short) }.join(' - ') if @recent_usage.previous_week
-  %>
-  <%= render 'your_recent_gas_use_table_row',
-      combined_usage_metric: @recent_usage.last_week.combined_usage_metric,
-      period: @recent_usage.last_week.date_range.map { |d| d.to_fs(:es_short) }.join(' - ')
-  %>
-  <%= render 'your_recent_gas_use_table_row',
-      combined_usage_metric: @recent_usage.change,
-      period: t('advice_pages.gas_recent_changes.insights.your_recent_gas_use.table.change') if @recent_usage.change
-  %>
+             combined_usage_metric: @recent_usage.last_week.combined_usage_metric,
+             period: @recent_usage.last_week.date_range.map { |d| d.to_fs(:es_short) }.join(' - ') %>
+  <%= if @recent_usage.change
+        render 'your_recent_gas_use_table_row',
+               combined_usage_metric: @recent_usage.change,
+               period: t('advice_pages.gas_recent_changes.insights.your_recent_gas_use.table.change')
+      end %>
 </table>
-<% @additional_notice_text = t('advice_pages.tables.notice.two_significant_figures') %>
-<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes',
+           additional_notice_text: t('advice_pages.tables.notice.two_significant_figures') %>

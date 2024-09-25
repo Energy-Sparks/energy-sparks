@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   module Reports
     class EngagedSchoolsController < AdminController
       def index
-        @engaged_schools = ::Schools::EngagedSchoolService.list_engaged_schools
+        @previous_year = params.key?(:previous_year)
+        @engaged_schools = ::Schools::EngagedSchoolService
+                           .list_engaged_schools(previous_year: @previous_year)
 
         respond_to do |format|
           format.html do
@@ -10,7 +14,9 @@ module Admin
             @percentage = percentage_engaged
           end
           format.csv do
-            send_data csv_report(@engaged_schools), filename: "engaged-schools-report-#{Time.zone.now.iso8601}".parameterize + '.csv'
+            send_data csv_report(@engaged_schools),
+                      filename: "engaged-schools-report-#{Time.zone.now.iso8601.parameterize}" \
+                                "#{@previous_year ? '-previous-year' : ''}.csv"
           end
         end
       end
@@ -18,7 +24,7 @@ module Admin
       private
 
       def percentage_engaged
-        sprintf('%.2f', @engaged_schools.size / @visible_schools.to_f * 100)
+        format('%.2f', @engaged_schools.size / @visible_schools.to_f * 100)
       end
 
       def csv_report(engaged_schools)

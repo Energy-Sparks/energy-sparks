@@ -204,6 +204,10 @@ module Schools
         )
         @intervention_types = intervention_type_filter.intervention_types.limit(4)
       end
+
+      def set_analysis_dates
+        @analysis_dates = analysis_dates
+      end
     end
   end
 end
