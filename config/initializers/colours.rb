@@ -35,7 +35,7 @@ module Colours
   # Shades of grey - these need sorting
   # BLACK = '#000000'.freeze
   DARK = '#222222'.freeze
-  DARKER_GREY = '#6c757d'.freeze # grey_600
+  # DARKER_GREY = '#6c757d'.freeze # grey_600
   DARK_GREY = '#999999'.freeze
   SILVER = '#c0c0c0'.freeze
   GREY = '#c4ccd4'.freeze
@@ -105,16 +105,6 @@ module Colours
         medium: '#88f7dd'.freeze,
         dark: '#10bca2'.freeze
       },
-      grey: {
-        pale: '#f6f6f6'.freeze, # off white from original designs
-        light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
-        medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
-      },
-      gray: {
-        '100': '#f8f9fa'.freeze, # bootstrap greys
-        '600': '#6c757d'.freeze, # bootstrap greys
-        '800': '#343a40'.freeze, # bootstrap greys
-      },
       red: {
         pale: '#fff1f1'.freeze, # was red light in original design
         light: '#fbc8c8'.freeze, # generated using: https://www.dannybrien.com/middle/
@@ -125,6 +115,35 @@ module Colours
         pale: '#e9d5ff'.freeze, # renamed from purple light in original design
         medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
         dark: '#9333ea'.freeze, # called purple in the design
+      },
+      grey: {
+        pale: '#f6f6f6'.freeze, # off white from original designs
+        light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
+        medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
+      },
+      gray: {
+        '100': '#f8f9fa'.freeze, # bootstrap greys. used for bg-light, btn-outline-light, btn-light etc
+        '600': '#6c757d'.freeze, # bootstrap greys. Used for bg-secondary, btn-outline-secondary etc
+        '800': '#343a40'.freeze, # bootstrap greys. used for bg-dark, btn-secondary etc
+      },
+      old: { # not to be used - here temporarily for viewing in palatte index
+        dark: '#222222'.freeze,
+        dark_grey: '#999999'.freeze,
+        silver: '#c0c0c0'.freeze,
+        grey: '#c4ccd4'.freeze,
+        light_grey: '#e6e6e6'.freeze,
+        lighter_grey: '#f1f3f5'.freeze
+      },
+      bs: { # not used - here temporarily for viewing in palatte index
+        gray_100: '#f8f9fa',
+        gray_200: '#e9ecef',
+        gray_300: '#dee2e6',
+        gray_400: '#ced4da',
+        gray_500: '#adb5bd',
+        gray_600: '#6c757d',
+        gray_700: '#495057',
+        gray_800: '#343a40',
+        gray_900: '#212529',
       },
       cyan: '#17a2b8'.freeze, # bootstrap colour
       white: '#ffffff'.freeze,
