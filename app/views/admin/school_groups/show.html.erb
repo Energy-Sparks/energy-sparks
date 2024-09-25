@@ -23,8 +23,8 @@
     <div class="card-deck">
       <div class="card">
         <div class="card-body">
-          <div>Active
-            <span class="float-right badge badge-success"><%= @school_group.schools.visible.count %></span>
+          <div>
+            Active <span class="float-right badge badge-success"><%= @school_group.schools.visible.count %></span>
           </div>
           <div>
             Active (with data visible)
@@ -123,3 +123,12 @@
     <% end %>
   </div>
 </div>
+
+<script>
+document.querySelectorAll('#school-group-schools-content a.btn.edit').forEach((element) => {
+  element.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.location.href = `${element.href}?redirect_back=${encodeURIComponent(window.location.pathname + window.location.hash)}`;
+  });
+});
+</script>
