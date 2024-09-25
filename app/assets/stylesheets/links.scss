@@ -29,7 +29,7 @@ a.nav-link.active {
 a.badge.outline {
   outline: solid;
   outline-width: 1px;
-  outline-color: $light-grey;
+  outline-color: $grey-light;
 }
 
 .btn,
@@ -38,7 +38,7 @@ a.badge.outline {
 .btn:active,
 .btn.active {
   color: $dark;
-  background-image: linear-gradient($white, $light-grey);
+  background-image: linear-gradient($white, $grey-light);
   border-color: $grey;
   font-weight: $font-weight-semibold !important;
   border-radius: 50rem !important;

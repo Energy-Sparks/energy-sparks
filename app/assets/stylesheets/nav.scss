@@ -121,8 +121,8 @@ li.nav-item a.btn:active {
 .nav-tabs.locales {
   .nav-item {
     .nav-link.active {
-      background: $light-grey;
-      border-color: $light-grey;
+      background: $grey-light;
+      border-color: $grey-light;
     }
   }
 }
@@ -130,7 +130,7 @@ li.nav-item a.btn:active {
 .tab-content.locales {
   padding: 10px;
   margin-bottom: 10px;
-  background-color: $light-grey;
+  background-color: $grey-light;
 }
 
 @media (min-width: 992px) {

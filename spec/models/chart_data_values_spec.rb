@@ -49,7 +49,7 @@ describe ChartDataValues do
       let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq Colours.gas_dark
+        expect(chart_data_values.series_data.first[:color]).to eq Colours.chart_gas_dark
       end
     end
 
@@ -57,7 +57,7 @@ describe ChartDataValues do
       let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq Colours.electric_dark
+        expect(chart_data_values.series_data.first[:color]).to eq Colours.chart_electric_dark
       end
     end
 
@@ -66,7 +66,7 @@ describe ChartDataValues do
       let(:chart_type) { :line }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq Colours.electric_dark
+        expect(chart_data_values.series_data.first[:color]).to eq Colours.chart_electric_dark
       end
     end
 
@@ -75,7 +75,7 @@ describe ChartDataValues do
       let(:chart_type) { :line }
 
       it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq Colours.gas_dark
+        expect(chart_data_values.series_data.first[:color]).to eq Colours.chart_gas_dark
       end
     end
 
@@ -165,26 +165,26 @@ describe ChartDataValues do
     it 'returns a hash with colours assigned to chart series names' do
       # pry
       expect(chart_data_values.colour_lookup).to eq(
-        { 'Degree Days' => Colours.degree_days,
-          'Temperature' => Colours.temperature,
-          'School Day Closed' => Colours.school_day_closed,
-          'School Day Open' => Colours.school_day_open,
-          'Holiday' => Colours.holiday,
-          'Weekend' => Colours.weekend,
-          'Heating on in cold weather' => Colours.heating_day,
-          'Hot Water (& Kitchen)' => Colours.non_heating_day,
-          'Hot Water Usage' => Colours.useful_hot_water_usage,
-          'Wasted Hot Water Usage' => Colours.wasted_hot_water_usage,
-          'Solar PV (consumed onsite)' => Colours.solar_pv,
-          'Electricity' => Colours.electric,
-          'Gas' => Colours.gas,
-          'Storage heaters' => Colours.storage_heaters,
-          '£' => Colours.gbp,
-          'Electricity consumed from solar pv' => Colours.electricity_consumed_from_solar_pv,
-          'Electricity consumed from mains' => Colours.electricity_consumed_from_mains,
-          'Exported solar electricity (not consumed onsite)' => Colours.exported_solar_electricity,
-          'Solar irradiance (brightness of sunshine)' => Colours.y2_solar_label,
-          'Rating' => Colours.y2_rating }
+        { 'Degree Days' => Colours.chart_degree_days,
+          'Temperature' => Colours.chart_temperature,
+          'School Day Closed' => Colours.chart_school_day_closed,
+          'School Day Open' => Colours.chart_school_day_open,
+          'Holiday' => Colours.chart_holiday,
+          'Weekend' => Colours.chart_weekend,
+          'Heating on in cold weather' => Colours.chart_heating_day,
+          'Hot Water (& Kitchen)' => Colours.chart_non_heating_day,
+          'Hot Water Usage' => Colours.chart_useful_hot_water_usage,
+          'Wasted Hot Water Usage' => Colours.chart_wasted_hot_water_usage,
+          'Solar PV (consumed onsite)' => Colours.chart_solar_pv,
+          'Electricity' => Colours.chart_electric,
+          'Gas' => Colours.chart_gas,
+          'Storage heaters' => Colours.chart_storage_heaters,
+          '£' => Colours.chart_gbp,
+          'Electricity consumed from solar pv' => Colours.chart_electricity_consumed_from_solar_pv,
+          'Electricity consumed from mains' => Colours.chart_electricity_consumed_from_mains,
+          'Exported solar electricity (not consumed onsite)' => Colours.chart_exported_solar_electricity,
+          'Solar irradiance (brightness of sunshine)' => Colours.chart_y2_solar_label,
+          'Rating' => Colours.chart_y2_rating }
       )
     end
   end
@@ -316,9 +316,9 @@ describe ChartDataValues do
 
     it 'has right series default colours' do
       expect(electricity_series[:name]).to eq 'Electricity'
-      expect(electricity_series[:color]).to eq Colours.electric_dark
+      expect(electricity_series[:color]).to eq Colours.chart_electric_dark
       expect(gas_series[:name]).to eq 'Gas'
-      expect(gas_series[:color]).to eq Colours.gas_dark
+      expect(gas_series[:color]).to eq Colours.chart_gas_dark
     end
 
     it 'overrides colours for benchmark and exemplar schools' do
@@ -328,11 +328,11 @@ describe ChartDataValues do
 
       exemplar = electricity_data[2]
       expect(exemplar[:y]).to be_within(0.1).of(32928.3)
-      expect(exemplar[:color]).to eq Colours.electric_light
+      expect(exemplar[:color]).to eq Colours.chart_electric_light
 
       benchmark = electricity_data[3]
       expect(benchmark[:y]).to be_within(0.1).of(47040.4)
-      expect(benchmark[:color]).to eq Colours.electric_medium
+      expect(benchmark[:color]).to eq Colours.chart_electric_middle
 
       gas_data = gas_series[:data]
       expect(gas_data[0]).to be_within(0.1).of(21031.1)
@@ -340,11 +340,11 @@ describe ChartDataValues do
 
       exemplar = gas_data[2]
       expect(exemplar[:y]).to be_within(0.1).of(15151.6)
-      expect(exemplar[:color]).to eq Colours.gas_light
+      expect(exemplar[:color]).to eq Colours.chart_gas_light
 
       benchmark = gas_data[3]
       expect(benchmark[:y]).to be_within(0.1).of(16335.3)
-      expect(benchmark[:color]).to eq Colours.gas_medium
+      expect(benchmark[:color]).to eq Colours.chart_gas_middle
     end
   end
 end

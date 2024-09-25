@@ -87,10 +87,10 @@ module Colours
       blue: {
         pale: '#f2f6fc'.freeze,
         light: '#cbe4fc'.freeze, # Blue medium from original design - used in nav. Blue light in original design is not distinct enough from this, so removed
-        medium: '#7f93b8'.freeze, # New colour - derived (half way colour between light and dark) using https://www.dannybrien.com/middle/
+        medium: '#83a4df'.freeze, # New colour - derived (half way colour between light and dark) using https://www.dannybrien.com/middle/
+        bright: '#3c64c3'.freeze, # New colour - so we could have an inbetween brighter blue -  derived monocromatics from blue_very_dark https://colorkit.co/color/192a52/
         dark: '#334375'.freeze, # paragraph text
         very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
-        bright: '#3c64c3'.freeze, # New colour - so we could have an inbetween brighter blue -  derived monocromatics from blue_very_dark https://colorkit.co/color/192a52/
       },
       yellow: {
         pale: '#fdefc8'.freeze,
@@ -120,54 +120,34 @@ module Colours
         pale: '#f6f6f6'.freeze, # off white from original designs
         light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
-      },
-      gray: {
-        '100': '#f8f9fa'.freeze, # bootstrap greys. used for bg-light, btn-outline-light, btn-light etc
-        '600': '#6c757d'.freeze, # bootstrap greys. Used for bg-secondary, btn-outline-secondary etc
-        '800': '#343a40'.freeze, # bootstrap greys. used for bg-dark, btn-secondary etc
-      },
-      old: { # not to be used - here temporarily for viewing in palatte index
-        dark: '#222222'.freeze,
-        dark_grey: '#999999'.freeze,
-        silver: '#c0c0c0'.freeze,
-        grey: '#c4ccd4'.freeze,
-        light_grey: '#e6e6e6'.freeze,
-        lighter_grey: '#f1f3f5'.freeze
-      },
-      bs: { # not used - here temporarily for viewing in palatte index
-        gray_100: '#f8f9fa',
-        gray_200: '#e9ecef',
-        gray_300: '#dee2e6',
-        gray_400: '#ced4da',
-        gray_500: '#adb5bd',
-        gray_600: '#6c757d',
-        gray_700: '#495057',
-        gray_800: '#343a40',
-        gray_900: '#212529',
+        '600': '#6c757d'.freeze, # bootstrap grey. Used for bg-secondary, btn-outline-secondary etc
+        '800': '#343a40'.freeze, # bootstrap grey. used for bg-dark, btn-secondary etc
       },
       cyan: '#17a2b8'.freeze, # bootstrap colour
       white: '#ffffff'.freeze,
-      black: '#000000'.freeze
+      black: '#000000'.freeze,
+
+      orig: { # not to be used - these colours are being phased out
+        dark: '#222222'.freeze,
+        dark_grey: '#999999'.freeze,
+        grey: '#c4ccd4'.freeze,
+      },
     },
     fuel: {
       electric: {
         light: :blue_light,
-        medium: :blue_medium,
         dark: :blue_bright
       },
       gas: {
         light: :yellow_pale,
-        medium: :yellow_light,
         dark: :yellow_medium,
       },
       storage: {
         light: :purple_pale,
-        medium: :purple_medium,
         dark: :purple_dark
       },
       solar: {
         light: :teal_light,
-        medium: :teal_medium,
         dark: :teal_dark
       },
     },
@@ -192,51 +172,73 @@ module Colours
     },
     bootstrap: {
       primary: :blue_bright,
-      secondary: :gray_600, # bootstrap default
+      secondary: :grey_600, # bootstrap default
       success: :teal_dark,
       info: :cyan, # bootstrap default
       warning: :yellow_medium,
       danger: :red_dark,
-      light: :gray_100, # bootstrap default
-      dark: :gray_800, # bootstrap default
+      light: :grey_pale,
+      dark: :grey_800, # bootstrap default
     },
     theme: {
-      bg_dark: :blue_very_dark, # # Colours::DARK_BLUE
-      live_data_dark: :teal_dark, # Colours::GREEN
-      live_data_light: :grey_light, # Colours::LIGHT_GREY
+      bg_dark: :blue_very_dark,
       adult_light: :blue_pale,
       pupil_light: :yellow_pale # not used yet
     },
     charts: {
-      degree_days: :blue_dark, # Colours::DARK_BLUE
-      temperature: :blue_dark, # Colours::DARK_BLUE
-      school_day_closed: :blue_medium, # Colours::MID_BLUE,
-      school_day_open: :teal_dark, # Colours::GREEN
-      holiday: :yellow_medium, # Colours::DARK_ORANGE,
-      weekend: :yellow_light, # Colours::LIGHT_ORANGE, # FIXME
-      heating_day: :blue_medium, # Colours::MID_BLUE,
-      non_heating_day: :teal_dark, # Colours::GREEN
-      useful_hot_water_usage: :blue_medium, # Colours::MID_BLUE,
-      wasted_hot_water_usage: :yellow_medium, # Colours::DARK_ORANGE, # FIXME
-      # probably could do away with some of these :-)
-      solar_pv: :yellow_light, # Colours::LIGHT_ORANGE,
-      electric: :electric_dark, # I18n.t('analytics.series_data_manager.series_name.electricity') => Colours.electric_dark, # Colours::ELECTRIC_DARK
-      gas: :gas_dark, # I18n.t('analytics.series_data_manager.series_name.gas') => Colours.gas_dark, # Colours::GAS_DARK
-      gas_light_line: :yellow_light, # was Colours::NEW_YELLOW # FIXME
-      storage_heaters: :storage_dark, # Colours::STORAGE_HEATER
-      gbp: :blue_very_dark, # Colours::DARK_BLUE
-      electricity_consumed_from_solar_pv: :teal_dark, # Colours::GREEN
-      electricity_consumed_from_mains: :electric_dark, # Colours::ELECTRIC_DARK
-      exported_solar_electricity: :gas_light_line, # Colours::GAS_LIGHT_LINE
-      y2_solar_label: :gas_medium, # Colours::GAS_MIDDLE,
-      y2_rating: :blue_very_dark # Colours::DARK_BLUE
+      chart: { # these are to be phased out / or bought in to the main palette
+        new_yellow: '#fcb43a'.freeze,
+        dark_orange: '#ff4500'.freeze,
+        light_orange: '#ffac21'.freeze,
+        dark_blue: '#232b49'.freeze,
+        bright_blue: '#007bff'.freeze,
+        mid_blue: '#3bc0f0'.freeze,
+        green: '#5cb85c'.freeze,
+        mid_purple: '#b56ce2'.freeze,
+        turquoise: '#50e3c2'.freeze,
+        light_turquoise: '#a1ffe9'.freeze,
+
+        electric_dark: '#007eff'.freeze,
+        electric_light: '#93e1f6'.freeze,
+        electric_middle: '#02b8ff'.freeze,
+        gas_dark: '#ff8438'.freeze,
+        gas_middle: '#ffb138'.freeze,
+        gas_light: '#ffdd4b'.freeze,
+        storage_dark: '#7c3aff'.freeze,
+        storage_light: '#e097fc'.freeze,
+        storage_heater: '#501e74'.freeze,
+
+        solar_dark: :chart_turquoise,
+        solar_light: :chart_light_turquoise,
+        degree_days: :chart_dark_blue,
+        temperature: :chart_dark_blue,
+        school_day_closed: :chart_mid_blue,
+        school_day_open: :chart_green,
+        holiday: :chart_dark_orange,
+        weekend: :chart_light_orange,
+        heating_day: :chart_mid_blue,
+        non_heating_day: :chart_green,
+        useful_hot_water_usage: :chart_mid_blue,
+        wasted_hot_water_usage: :chart_dark_orange,
+        solar_pv: :chart_light_orange,
+        electric: :chart_electric_dark,
+        gas: :chart_gas_dark,
+        gas_light_line: :chart_new_yellow,
+        storage_heaters: :chart_storage_heater,
+        gbp: :chart_dark_blue,
+        electricity_consumed_from_solar_pv: :chart_green,
+        electricity_consumed_from_mains: :chart_electric_dark,
+        exported_solar_electricity: :chart_gas_light_line,
+        y2_solar_label: :chart_gas_middle,
+        y2_rating: :chart_dark_blue
+      },
     },
     calendars: { # these are keyed on CalendarEventType#analytics_event_type
-      term_time: :yellow_light, # Colours::LIGHT_ORANGE
-      school_holiday: :teal_dark, # Colours::GREEN
-      bank_holiday: :blue_medium, # Colours::MID_BLUE
-      inset_day_in_school: :yellow_medium, # Colours::DARK_ORANGE
-      inset_day_out_of_school: :purple_medium # Colours::MID_PURPLE
+      term_time: :chart_light_orange,
+      school_holiday: :chart_green,
+      bank_holiday: :chart_mid_blue,
+      inset_day_in_school: :chart_dark_orange,
+      inset_day_out_of_school: :chart_mid_purple
     }
   }.freeze
 
@@ -324,5 +326,5 @@ module Colours
   # Transport survey chart:
   # app/javascript/packs/transport_surveys/charts.js
   # !! Copied here so we can display colours at /admin/colours:
-  TRANSPORT_CHART_COLOURS = ["#10bca2", "#f14141", "#fdefc8", "#f9b233", "#7f93b8"].freeze
+  TRANSPORT_CHART_COLOURS = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"].freeze
 end

@@ -4,12 +4,12 @@
   }
 
   input.badge-toggle-#{$color} + label {
-    border: 1px solid $light-grey;
+    border: 1px solid $grey-light;
     @extend .badge;
   }
 
   input.badge-pill-toggle-#{$color} + label {
-    border: 1px solid $light-grey;
+    border: 1px solid $grey-light;
     @extend .badge;
     @extend .badge-pill;
   }
