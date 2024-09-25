@@ -41,15 +41,15 @@
                             data: { confirm: t('common.confirm') },
                             class: 'btn btn-danger btn-sm')
                   end %>
-              <% if can?(:manage, :admin_functions) %>
-                <% if user.access_locked? %>
-                  <%= link_to t('schools.users.index.unlock'), unlock_school_user_path(@school, user),
-                              method: :post, class: 'btn btn-warning btn-sm' %>
-                <% else %>
-                  <%= link_to t('schools.users.index.lock'), lock_school_user_path(@school, user),
-                              method: :post, class: 'btn btn-warning btn-sm' %>
-                <% end %>
-              <% end %>
+              <%= if can?(:manage, :admin_functions)
+                    if user.access_locked?
+                      link_to t('schools.users.index.unlock'), unlock_school_user_path(@school, user),
+                              method: :post, class: 'btn btn-warning btn-sm'
+                    else
+                      link_to t('schools.users.index.lock'), lock_school_user_path(@school, user),
+                              method: :post, class: 'btn btn-warning btn-sm'
+                    end
+                  end %>
             </div>
           </td>
       </tr>
