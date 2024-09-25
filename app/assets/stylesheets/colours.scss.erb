@@ -12,7 +12,7 @@
 // $electric-dark: #007EFF;
 // $positive-dark: #10bca2;
 // $exemplar-school: #10bca2;
-<%= Colours.sass_variables :palette, :fuel, :polarity, :comparison, :bootstrap, :theme %>
+<%= Colours.sass_variables :palette, :fuel, :polarity, :comparison, :bootstrap, :theme, :old %>
 
 // Create SASS maps for each of these keys found in Colours::PALETTE hash
 // These will be named: $colours-fuel etc
@@ -41,11 +41,6 @@
 // from them to the colours above
 
 $dark-blue: $blue-dark; // something weird going on here
-
-// Shades of grey
-$dark: <%= Colours::DARK %>;
-$dark-grey: <%= Colours::DARK_GREY %>;
-$grey: <%= Colours::GREY %>;
 
 // Shortcuts
 $text: $dark;

@@ -1,78 +1,4 @@
 module Colours
-  ### Old / current colours ###
-  # These are *not* to be used for new features as we're moving away
-  # from them to the colours above
-
-  # YELLOWS
-  NEW_YELLOW = '#fcb43a'.freeze
-
-  # ORANGES
-  # DARK_ORANGE = '#ff4500'.freeze
-  # LIGHT_ORANGE = '#ffac21'.freeze
-
-  # BLUES
-  # DARK_BLUE = '#232b49'.freeze
-  # BRIGHT_BLUE = '#007bff'.freeze
-  # MID_BLUE = '#3bc0f0'.freeze
-  # LIGHT_BLUE = '#97e6fc'.freeze
-  # LIGHTER_LIGHT_BLUE = '#cbf4ff'.freeze
-  # BLUEY_WHITE = '#fcffff'.freeze
-
-  # GREENS
-  # GREEN = '#5cb85c'.freeze
-
-  # REDS
-  # NEW_RED = '#ff3a5b'.freeze
-  # LIGHT_RED = '#ff9b9c'.freeze
-
-  # PURPLES / PINKS
-  # MID_PURPLE = '#B56CE2'.freeze
-
-  # Turquoise
-  # TURQUOISE = '#50e3c2'.freeze
-  # LIGHT_TURQUOISE = '#a1ffe9'.freeze
-
-  # Shades of grey - these need sorting
-  # BLACK = '#000000'.freeze
-  DARK = '#222222'.freeze
-  # DARKER_GREY = '#6c757d'.freeze # grey_600
-  DARK_GREY = '#999999'.freeze
-  SILVER = '#c0c0c0'.freeze
-  GREY = '#c4ccd4'.freeze
-  # BLUEY_GREY = '#e7edf0'.freeze
-  LIGHT_GREY = '#e6e6e6'.freeze
-  LIGHTER_GREY = '#f1f3f5'.freeze
-  # VERY_LIGHT_GREY = '#f8f9fa'.freeze # same as bootstrap gray_100
-  # WHITE = '#ffffff'.freeze
-
-  # FUEL TYPES
-  # ELECTRIC_DARK = '#007eff'.freeze # $electric-dark
-  # ELECTRIC_LIGHT = '#93e1f6'.freeze # $electric-light
-  # ELECTRIC_MIDDLE = '#02b8ff'.freeze # $electric-middle
-  # ELECTRIC_DARK_LINE = DARK_BLUE
-  # ELECTRIC_LIGHT_LINE = BRIGHT_BLUE
-
-  # GAS_DARK = '#ff8438'.freeze # $gas-dark
-  # GAS_MIDDLE = '#ffb138'.freeze # $gas-middle
-  # GAS_LIGHT = '#ffdd4b'.freeze # gas-light
-  # GAS_DARK_LINE = NEW_RED
-  # GAS_LIGHT_LINE = NEW_YELLOW
-
-  # STORAGE_DARK = '#7c3aff'.freeze # $storage-dark
-  # STORAGE_LIGHT = '#e097fc'.freeze # $storage-light
-  # STORAGE_HEATER = '#501e74'.freeze # not used in the main site
-
-  # SOLAR_DARK = TURQUOISE
-  # SOLAR_LIGHT = LIGHT_TURQUOISE
-
-  # CARBON_DARK = GREY
-  # CARBON_LIGHT = LIGHT_GREY
-
-  ### New (redesign) colours ###
-  # Use only these colours for new features
-  # If a colour found in the Sketch design is missing from the list below, please
-  # add it and comment against where it is used if possible
-  #
   # Colours can be accessed in ruby as follows:
   # Colours.yellow_very_dark or Colours.hex(:yellow_very_dark)
   #
@@ -84,7 +10,7 @@ module Colours
 
   PALETTE = {
     palette: {
-      blue: {
+      blue: { # blue_pale etc
         pale: '#f2f6fc'.freeze,
         light: '#cbe4fc'.freeze, # Blue medium from original design - used in nav. Blue light in original design is not distinct enough from this, so removed
         medium: '#83a4df'.freeze, # New colour - derived (half way colour between light and dark) using https://www.dannybrien.com/middle/
@@ -92,31 +18,31 @@ module Colours
         dark: '#334375'.freeze, # paragraph text
         very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
       },
-      yellow: {
+      yellow: { # yellow_pale etc
         pale: '#fdefc8'.freeze,
         light: '#fcdc8b'.freeze,
         medium: '#f9b233'.freeze,
         dark: '#772d10'.freeze,
         very_dark: '#441504'.freeze
       },
-      teal: {
+      teal: { # teal_pale etc
         pale: '#f0fdf9'.freeze,
         light: '#cbfcf0'.freeze,
         medium: '#88f7dd'.freeze,
         dark: '#10bca2'.freeze
       },
-      red: {
+      red: { # red_pale etc
         pale: '#fff1f1'.freeze, # was red light in original design
         light: '#fbc8c8'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#f8a0a0'.freeze, # was "red" in original design
         dark: '#f14141'.freeze, # generated using: https://www.w3schools.com/colors/colors_picker.asp
       },
-      purple: {
+      purple: { # purple_pale etc
         pale: '#e9d5ff'.freeze, # renamed from purple light in original design
         medium: '#be84f4'.freeze, # not in the design - it is the mid way point between the given dark and light
         dark: '#9333ea'.freeze, # called purple in the design
       },
-      grey: {
+      grey: { # grey_pale etc
         pale: '#f6f6f6'.freeze, # off white from original designs
         light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
@@ -126,12 +52,11 @@ module Colours
       cyan: '#17a2b8'.freeze, # bootstrap colour
       white: '#ffffff'.freeze,
       black: '#000000'.freeze,
-
-      orig: { # not to be used - these colours are being phased out
-        dark: '#222222'.freeze,
-        dark_grey: '#999999'.freeze,
-        grey: '#c4ccd4'.freeze,
-      },
+    },
+    old: { # e.g. dark, dark_grey, grey # These colours are being phased out
+      dark: '#222222'.freeze,
+      dark_grey: '#999999'.freeze,
+      grey: '#c4ccd4'.freeze,
     },
     fuel: {
       electric: {
@@ -183,7 +108,6 @@ module Colours
     theme: {
       bg_dark: :blue_very_dark,
       adult_light: :blue_pale,
-      pupil_light: :yellow_pale # not used yet
     },
     charts: {
       chart: { # these are to be phased out / or bought in to the main palette
@@ -198,6 +122,8 @@ module Colours
         turquoise: '#50e3c2'.freeze,
         light_turquoise: '#a1ffe9'.freeze,
 
+        # Colour mappings used in chart_data_values.rb
+
         electric_dark: '#007eff'.freeze,
         electric_light: '#93e1f6'.freeze,
         electric_middle: '#02b8ff'.freeze,
@@ -207,7 +133,7 @@ module Colours
         storage_dark: '#7c3aff'.freeze,
         storage_light: '#e097fc'.freeze,
         storage_heater: '#501e74'.freeze,
-
+        gas_light_line: :chart_new_yellow,
         solar_dark: :chart_turquoise,
         solar_light: :chart_light_turquoise,
         degree_days: :chart_dark_blue,
@@ -223,8 +149,6 @@ module Colours
         solar_pv: :chart_light_orange,
         electric: :chart_electric_dark,
         gas: :chart_gas_dark,
-        gas_light_line: :chart_new_yellow,
-        storage_heaters: :chart_storage_heater,
         gbp: :chart_dark_blue,
         electricity_consumed_from_solar_pv: :chart_green,
         electricity_consumed_from_mains: :chart_electric_dark,
@@ -322,6 +246,7 @@ module Colours
 
   # Admin areas / mailers e.g.:
   # controllers/admin/reports/amr_validated_readings_controller.rb
+  AMR_COLOURS = ['#5cb85c', '#9c3367', '#67347f', '#501e74', '#935fb8', '#e676a3', '#e4558b', '#7a9fb1', '#5297c6', '#97c086', '#3f7d69', '#6dc691', '#8e8d6b', '#e5c07c', '#e9d889', '#e59757', '#f4966c', '#e5644e', '#cd4851', '#bd4d65', '#515749', '#e5644e', '#cd4851', '#bd4d65', '#515749'].freeze
 
   # Transport survey chart:
   # app/javascript/packs/transport_surveys/charts.js

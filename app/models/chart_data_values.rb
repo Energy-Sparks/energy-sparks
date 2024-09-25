@@ -122,7 +122,7 @@ class ChartDataValues
       I18n.t("analytics.series_data_manager.series_name.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => Colours.chart_solar_pv,
       I18n.t('analytics.series_data_manager.series_name.electricity') => Colours.chart_electric,
       I18n.t('analytics.series_data_manager.series_name.gas') => Colours.chart_gas,
-      I18n.t('analytics.series_data_manager.series_name.storage_heaters') => Colours.chart_storage_heaters,
+      I18n.t('analytics.series_data_manager.series_name.storage_heaters') => Colours.chart_storage_heater,
       '£' => Colours.chart_gbp,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => Colours.chart_electricity_consumed_from_solar_pv,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME_I18N_KEY}") => Colours.chart_electric_dark,
