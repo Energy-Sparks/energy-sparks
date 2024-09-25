@@ -32,6 +32,15 @@
 </div>
 
 <div>
+  <h1>Validated Meter Readings Colours</h1>
+  <div class="row">
+    <% Colours::AMR_COLOURS.each do |colour| %>
+      <%= render 'colour', hex: colour %>
+    <% end %>
+  </div>
+</div>
+
+<div>
   <h1>Transport Chart Colours</h1>
   <div class="row">
     <% Colours::TRANSPORT_CHART_COLOURS.each do |colour| %>

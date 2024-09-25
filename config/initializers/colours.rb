@@ -242,14 +242,14 @@ module Colours
 
   # Other non-standard colour definitions can be found in:
   # assets/javascripts/common_chart_options.js
-  DEFAULT_CHART_COLOURS = ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"].freeze
+  DEFAULT_CHART_COLOURS = ['#9c3367', '#67347f', '#935fb8', '#e676a3', '#e4558b', '#7a9fb1', '#5297c6', '#97c086', '#3f7d69', '#6dc691', '#8e8d6b', '#e5c07c', '#e9d889', '#e59757', '#f4966c', '#e5644e', '#cd4851', '#bd4d65', '#515749'].freeze
 
   # Admin areas / mailers e.g.:
   # controllers/admin/reports/amr_validated_readings_controller.rb
   AMR_COLOURS = ['#5cb85c', '#9c3367', '#67347f', '#501e74', '#935fb8', '#e676a3', '#e4558b', '#7a9fb1', '#5297c6', '#97c086', '#3f7d69', '#6dc691', '#8e8d6b', '#e5c07c', '#e9d889', '#e59757', '#f4966c', '#e5644e', '#cd4851', '#bd4d65', '#515749', '#e5644e', '#cd4851', '#bd4d65', '#515749'].freeze
 
   # Transport survey chart:
-  # app/javascript/packs/transport_surveys/charts.js
+  # app/javascript/transport_surveys/charts.js
   # !! Copied here so we can display colours at /admin/colours:
-  TRANSPORT_CHART_COLOURS = ["#5cb85c", "#ff3a5b", "#fff9b2", "#ffac21", "#3bc0f0"].freeze
+  TRANSPORT_CHART_COLOURS = ['#5cb85c', '#ff3a5b', '#fff9b2', '#ffac21', '#3bc0f0'].freeze
 end
