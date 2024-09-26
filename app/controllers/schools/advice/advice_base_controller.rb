@@ -12,14 +12,14 @@ module Schools
       before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
       before_action :school_inactive
       before_action :load_advice_pages
-      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
-      before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
+      before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
       before_action :set_page_title, only: [:insights, :analysis, :learn_more]
       before_action :set_counts, only: [:insights, :analysis, :learn_more]
       before_action :check_has_fuel_type, only: [:insights, :analysis]
+      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
       before_action :set_page_subtitle, only: [:insights, :analysis]
