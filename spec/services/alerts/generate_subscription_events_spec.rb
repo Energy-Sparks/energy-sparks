@@ -130,6 +130,36 @@ describe Alerts::GenerateSubscriptionEvents do
             expect(sms_and_email_contact.alert_subscription_events.count).to eq 1
           end
         end
+
+        context 'when batch emails are active' do
+          before do
+            Flipper.enable(:batch_send_weekly_alerts)
+          end
+
+          it 'creates events with no unsubscription id' do
+            expect { service.perform(weekly_alerts)}.to change { subscription_generation_run.alert_subscription_events.count }.by(4)
+
+            expect(email_contact.alert_subscription_events.count).to eq 1
+            expect(email_contact.alert_subscription_events.first.communication_type).to eq 'email'
+            expect(email_contact.alert_subscription_events.first.content_version).to eq content_version
+            expect(email_contact.alert_subscription_events.first.unsubscription_uuid).to be_nil
+            expect(sms_contact.alert_subscription_events.count).to eq 1
+            expect(sms_contact.alert_subscription_events.first.communication_type).to eq 'sms'
+            expect(sms_contact.alert_subscription_events.first.content_version).to eq content_version
+            expect(sms_and_email_contact.alert_subscription_events.count).to eq 2
+            expect(sms_and_email_contact.alert_subscription_events.pluck(:communication_type)).to match_array %w[sms email]
+          end
+
+          it 'ignores unsubscription records' do
+            create :alert_type_rating_unsubscription, contact: email_contact, alert_type_rating: alert_type_rating, scope: :email
+
+            expect { service.perform(weekly_alerts)}.to change { subscription_generation_run.alert_subscription_events.count }.by(4)
+
+            expect(email_contact.alert_subscription_events.count).to eq 1
+            expect(sms_contact.alert_subscription_events.count).to eq 1
+            expect(sms_and_email_contact.alert_subscription_events.count).to eq 2
+          end
+        end
       end
     end
   end

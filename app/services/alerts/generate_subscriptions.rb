@@ -11,7 +11,13 @@ module Alerts
         latest_alerts_with_frequency = latest_alerts.joins(:alert_type).where(alert_types: { frequency: subscription_frequency })
         Alerts::GenerateSubscriptionEvents.new(@school, subscription_generation_run: subscription_generation_run).perform(latest_alerts_with_frequency)
       end
-      Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
+      email_service = Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run)
+      if Flipper.enabled?(:batch_send_weekly_alerts)
+        email_service.batch_send
+      else
+        email_service.perform
+      end
+
       Alerts::GenerateSmsNotifications.new(subscription_generation_run: subscription_generation_run).perform
     end
   end
