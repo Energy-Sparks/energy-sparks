@@ -23,6 +23,8 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
     end
   end
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'when a school admin' do
     before do
       sign_in(create(:school_admin, school:))

@@ -21,6 +21,8 @@ RSpec.describe 'gas out of hours advice page', type: :system do
     end
   end
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as school admin' do
     before do
       sign_in(create(:school_admin, school: school))

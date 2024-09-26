@@ -30,6 +30,8 @@ RSpec.describe 'heating control advice page', type: :system do
     )
   end
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
