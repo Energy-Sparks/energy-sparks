@@ -39,7 +39,7 @@ module Schools
       # Generic action used to respond to HEAD requests
       # See routes.rb for routing
       def handle_head
-        return head(:ok)
+        head(:ok)
       end
 
       def show
