@@ -36,6 +36,12 @@ module Schools
         end
       end
 
+      # Generic action used to respond to HEAD requests
+      # See routes.rb for routing
+      def handle_head
+        head(:ok)
+      end
+
       def show
         redirect_to url_for([:insights, @school, :advice, advice_page_key])
       end
@@ -203,6 +209,10 @@ module Schools
           query: { exclude_if_done_this_year: true }
         )
         @intervention_types = intervention_type_filter.intervention_types.limit(4)
+      end
+
+      def set_analysis_dates
+        @analysis_dates = analysis_dates
       end
     end
   end

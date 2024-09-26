@@ -1,13 +1,21 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'School admin user management' do
   let(:school) { create(:school) }
-  let(:school_admin) { create(:school_admin, school: school) }
+  let(:school_admin) { create(:school_admin, school:) }
 
   describe 'as school admin' do
     before do
       sign_in(school_admin)
+      visit school_users_path(school)
+    end
+
+    it 'is present on the school menu' do
       visit school_path(school)
+      click_on 'Manage users'
+      expect(page).to have_selector(:link_or_button, 'New staff account')
     end
 
     describe 'for pupils' do
@@ -27,7 +35,7 @@ describe 'School admin user management' do
       end
 
       it 'can edit and delete pupils' do
-        pupil = create(:pupil, school: school)
+        pupil = create(:pupil, school:)
         click_on 'Manage users'
         within '.pupils' do
           click_on 'Edit'
@@ -48,15 +56,12 @@ describe 'School admin user management' do
     end
 
     describe 'for staff' do
-      let!(:teacher_role) { create :staff_role, :teacher, title: 'Teacher or teaching assistant' }
+      let!(:teacher_role) { create(:staff_role, :teacher, title: 'Teacher or teaching assistant') }
 
-      context 'it can create staff' do
+      context 'when creating staff' do
         before do
           click_on 'Manage users'
           click_on 'New staff account'
-
-          expect(page).to have_content('New staff account')
-
           fill_in 'Name', with: 'Mrs Jones'
           fill_in 'Email', with: 'mrsjones@test.com'
           select 'Teacher or teaching assistant', from: 'Role'
@@ -77,7 +82,7 @@ describe 'School admin user management' do
       end
 
       it 'can edit and delete staff' do
-        staff = create(:staff, school: school)
+        staff = create(:staff, school:)
         click_on 'Manage users'
         within '.staff' do
           click_on 'Edit'
@@ -98,8 +103,8 @@ describe 'School admin user management' do
       end
 
       it 'can edit alert contact' do
-        staff = create(:staff, school: school)
-        create(:contact, name: staff.name, user: staff, email_address: staff.email, school: school)
+        staff = create(:staff, school:)
+        create(:contact, name: staff.name, user: staff, email_address: staff.email, school:)
         click_on 'Manage users'
         within '.staff' do
           click_on 'Edit'
@@ -111,24 +116,24 @@ describe 'School admin user management' do
         within '.staff' do
           click_on 'Edit'
         end
-        expect(page).not_to have_checked_field('contact_auto_create_alert_contact')
+        expect(page).to have_no_checked_field('contact_auto_create_alert_contact')
         check 'Subscribe to school alerts'
         expect { click_on 'Update account' }.to change(Contact, :count).by(1)
       end
 
       it 'cannot edit alert contact if user is not yet confirmed' do
-        create(:staff, school: school, confirmed_at: nil)
+        create(:staff, school:, confirmed_at: nil)
         click_on 'Manage users'
         within '.staff' do
           click_on 'Edit'
         end
 
-        expect(page).not_to have_content 'Subscribe to school alerts'
+        expect(page).to have_no_content 'Subscribe to school alerts'
       end
 
       it 'can update contact email address if contact has user association' do
-        staff = create(:staff, school: school)
-        contact = create(:contact, name: staff.name, user: staff, email_address: staff.email, school: school)
+        staff = create(:staff, school:)
+        contact = create(:contact, name: staff.name, user: staff, email_address: staff.email, school:)
         click_on 'Manage users'
         within '.staff' do
           click_on 'Edit'
@@ -143,8 +148,8 @@ describe 'School admin user management' do
       end
 
       it 'can update contact when contact exists for that email without user association' do
-        staff = create(:staff, school: school)
-        contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school: school)
+        staff = create(:staff, school:)
+        contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
         click_on 'Manage users'
         within '.staff' do
           click_on 'Edit'
@@ -157,8 +162,8 @@ describe 'School admin user management' do
       end
 
       it 'can remove contact when contact exists for that email without user association' do
-        staff = create(:staff, school: school)
-        contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school: school)
+        staff = create(:staff, school:)
+        contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
         click_on 'Manage users'
         within '.staff' do
           click_on 'Edit'
@@ -170,8 +175,8 @@ describe 'School admin user management' do
       end
 
       it 'can promote staff user to school admin' do
-        staff = create(:staff, school: school)
-        create(:contact, name: staff.name, user: nil, email_address: staff.email, school: school)
+        staff = create(:staff, school:)
+        create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
         click_on 'Manage users'
         within '.staff' do
           expect(page).to have_content(staff.name)
@@ -186,9 +191,14 @@ describe 'School admin user management' do
         expect(staff.role).to eq('school_admin')
       end
 
+      it 'no lock if not an admin' do
+        click_on 'Manage users'
+        expect(page).to have_no_selector(:link_or_button, 'Lock')
+      end
+
       context 'when displaying users' do
         it 'shows preferred language' do
-          create(:staff, school: school, preferred_locale: :cy)
+          create(:staff, school:, preferred_locale: :cy)
           click_on 'Manage users'
           within '.staff' do
             expect(page).to have_content('Welsh')
@@ -202,9 +212,6 @@ describe 'School admin user management' do
         before do
           click_on 'Manage users'
           click_on 'New school admin account'
-
-          expect(page).to have_content('New school admin account')
-
           fill_in 'Name', with: 'Mrs Jones'
           fill_in 'Email', with: 'mrsjones@test.com'
           select 'Business manager', from: 'Role'
@@ -226,8 +233,8 @@ describe 'School admin user management' do
       end
 
       context 'when managing a user' do
-        let(:new_admin) { create(:school_admin, name: 'New admin', school: school) }
-        let!(:contact) { create(:contact_with_name_email, user: new_admin, school: school) }
+        let(:new_admin) { create(:school_admin, name: 'New admin', school:) }
+        let!(:contact) { create(:contact_with_name_email, user: new_admin, school:) }
 
         before do
           click_on 'Manage users'
@@ -276,7 +283,7 @@ describe 'School admin user management' do
               click_on 'Edit'
             end
           end
-          expect(page).not_to have_checked_field('contact_auto_create_alert_contact')
+          expect(page).to have_no_checked_field('contact_auto_create_alert_contact')
           check 'Subscribe to school alerts'
           expect { click_on 'Update account' }.to change(Contact, :count).by(1)
         end
@@ -348,10 +355,10 @@ describe 'School admin user management' do
 
         before do
           click_on 'Manage users'
-          expect(page).to have_content('Other admin')
         end
 
         it 'can edit fields' do
+          expect(page).to have_content('Other admin')
           within '.school_admin' do
             # this avoids problems with ambiguous matches in find/click_on
             # find the row for the new admin, using name set above
@@ -391,7 +398,7 @@ describe 'School admin user management' do
 
       context 'when displaying users' do
         it 'shows preferred language' do
-          create(:school_admin, school: school, preferred_locale: :cy)
+          create(:school_admin, school:, preferred_locale: :cy)
           click_on 'Manage users'
           within '.school_admin' do
             expect(page).to have_content('Welsh')
@@ -402,7 +409,7 @@ describe 'School admin user management' do
   end
 
   describe 'as an admin' do
-    let!(:staff) { create(:staff, school: school, confirmed_at: nil) }
+    let!(:staff) { create(:staff, school:, confirmed_at: nil) }
     let!(:admin) { create(:admin) }
 
     let(:deliveries)  { ActionMailer::Base.deliveries.count }
@@ -410,12 +417,12 @@ describe 'School admin user management' do
 
     before do
       sign_in(admin)
-      visit school_path(school)
+      visit school_users_path(school)
       click_on('Manage users')
     end
 
     it 'send confirmation email' do
-      expect(staff.confirmed?).to eq false
+      expect(staff.confirmed?).to be false
       click_on('Resend confirmation')
       # this is 2 as Devise will send one because the user we just created isnt
       # confirmed. So we're looking for 2 deliveries
@@ -424,6 +431,18 @@ describe 'School admin user management' do
       expect(email.subject).to eq 'Energy Sparks: confirm your account'
       expect(page).to have_content('Confirmation email sent')
       expect(page).to have_content('School admin accounts')
+    end
+
+    it 'can lock users' do
+      within('.staff') { click_on 'Lock' }
+      expect(staff.reload.locked_at).not_to be_nil
+    end
+
+    it 'can unlock users' do
+      staff.lock_access!(send_instructions: false)
+      refresh
+      within('.staff') { click_on 'Unlock' }
+      expect(staff.reload.locked_at).to be_nil
     end
   end
 end

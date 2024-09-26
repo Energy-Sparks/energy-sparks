@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module Schools
   module Advice
     class SolarPvController < AdviceBaseController
       before_action :load_dashboard_alerts, only: [:insights]
+      before_action :set_analysis_dates, only: %i[insights analysis]
 
       def insights
         if @school.has_solar_pv?
@@ -12,9 +15,7 @@ module Schools
       end
 
       def analysis
-        @analysis_dates = analysis_dates
         if @school.has_solar_pv?
-          @analysis_dates = analysis_dates
           @existing_benefits = build_existing_benefits
         else
           @potential_benefits_estimator = build_potential_benefits
@@ -60,6 +61,7 @@ module Schools
 
       def set_insights_next_steps
         return if @school.has_solar_pv?
+
         @advice_page_insights_next_steps = t("advice_pages.#{advice_page_key}.#{section_key}.insights.next_steps_html").html_safe
       end
 

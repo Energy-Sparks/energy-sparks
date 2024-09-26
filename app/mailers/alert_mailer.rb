@@ -7,15 +7,23 @@ class AlertMailer < LocaleMailer
   after_action :prevent_delivery_from_test
 
   def alert_email
-    @email_address = params[:email_address]
+    @batch_email = params[:users].present?
+
+    @email_addresses = @batch_email ? params[:users].map(&:email_address) : params[:email_address]
+
     @events = params[:events]
     @school = params[:school]
+    @target_prompt = params[:target_prompt]
+
     @unsubscribe_emails = User.where(school: @school, role: :school_admin).pluck(:email).join(', ')
     @alert_content = self.class.create_content(@events)
-    @target_prompt = params[:target_prompt]
     @title = @school.name
 
-    email = make_bootstrap_mail(to: @email_address)
+    email = if @batch_email
+              make_bootstrap_mail(cc: @email_addresses)
+            else
+              make_bootstrap_mail(to: @email_addresses)
+            end
     add_mg_email_tag(email, 'alerts')
   end
 

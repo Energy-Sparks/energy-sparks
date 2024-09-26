@@ -1896,7 +1896,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_11_153230) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "name"
-    t.string "pupil_password_old"
     t.bigint "staff_role_id"
     t.string "confirmation_token"
     t.datetime "confirmed_at", precision: nil
@@ -1909,7 +1908,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_11_153230) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_group_id"], name: "index_users_on_school_group_id"
-    t.index ["school_id", "pupil_password_old"], name: "index_users_on_school_id_and_pupil_password_old", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
     t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
   end
