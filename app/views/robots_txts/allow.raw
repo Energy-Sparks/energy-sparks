@@ -54,3 +54,6 @@ Disallow: /
 
 User-agent: YandexBot
 Disallow: /
+
+User-agent: SeekportBot
+Disallow: /
