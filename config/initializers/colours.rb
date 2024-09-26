@@ -47,6 +47,7 @@ module Colours
         light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
         '600': '#6c757d'.freeze, # bootstrap grey. Used for bg-secondary, btn-outline-secondary etc
+        dark: :grey_600, # put an alias in here as I think we could generate a grey here to replace grey_600 and to move old dark_greys over here too
         very_dark: '#222222'.freeze # from original designs - used in header
       },
       cyan: '#17a2b8'.freeze, # bootstrap colour (not in designs)
@@ -54,7 +55,7 @@ module Colours
       black: '#000000'.freeze,
     },
     old: { # Colours that are to be phased out
-      dark_grey: '#999999'.freeze,
+      dark_grey: '#999999'.freeze, # hope these can be replaced by grey-dark
     },
     fuel: {
       electric: {
@@ -95,7 +96,7 @@ module Colours
     },
     bootstrap: {
       primary: :blue_bright,
-      secondary: :grey_600, # bootstrap default
+      secondary: :grey_dark, # currently bootstrap grey-600 (default)
       success: :teal_dark,
       info: :cyan, # bootstrap default
       warning: :yellow_medium,
