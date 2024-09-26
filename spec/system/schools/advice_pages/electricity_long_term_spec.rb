@@ -27,7 +27,6 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
     let(:advice_page) { AdvicePage.find_by_key(:electricity_long_term) }
   end
 
-
   context 'when a school admin' do
     before do
       sign_in(create(:school_admin, school:))
