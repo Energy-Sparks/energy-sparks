@@ -73,7 +73,7 @@ RSpec.describe AlertMailer do
       context 'when locale is specified' do
         [:en, :cy].each do |locale|
           it "uses #{locale}" do
-            AlertMailer.with(email_address: email_address, school: school, events: [], locale: locale).alert_email.deliver_now
+            AlertMailer.with(users: users, school: school, events: [], locale: locale).alert_email.deliver_now
             expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: locale)
           end
         end

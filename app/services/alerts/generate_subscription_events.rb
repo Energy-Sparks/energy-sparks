@@ -29,8 +29,7 @@ module Alerts
       end
     end
 
-    # If batch feature lag is on, then always create all subscription events as we're
-    # disabling unsubscribe option
+    # If batch feature flag is on, then always create a subscription event as we're disabling unsubscribe option
     def first_or_create_alert_subscription_event(contact, alert, content_version, find_out_more, priority, communication_type)
       if Flipper.enabled?(:batch_send_weekly_alerts) || contact.alert_type_rating_unsubscriptions.active(Time.zone.today).where(alert_type_rating: content_version.alert_type_rating).empty?
         unsubscription_uuid = if Flipper.enabled?(:batch_send_weekly_alerts)
