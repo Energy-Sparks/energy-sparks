@@ -23,7 +23,10 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
     end
   end
 
-  it_behaves_like 'it responds to HEAD requests'
+  it_behaves_like 'it responds to HEAD requests' do
+    let(:advice_page) { AdvicePage.find_by_key(:electricity_long_term) }
+  end
+
 
   context 'when a school admin' do
     before do
