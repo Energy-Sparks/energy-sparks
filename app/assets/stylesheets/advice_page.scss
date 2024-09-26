@@ -20,7 +20,7 @@
 
 .advice-table {
   thead {
-    background-color: $bg-dark !important;
+    background-color: $header-dark !important;
     color: $white;
     th {
       border-bottom: 0px;
@@ -63,7 +63,7 @@
 .advice-page-benchmark-muted-label {
   @extend .advice-page-benchmark-label;
   font-weight: bold;
-  color: $grey;
+  color: $grey-medium;
 }
 
 .advice-page-benchmark-colored-label {

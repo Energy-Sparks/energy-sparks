@@ -39,7 +39,7 @@ a.badge.outline {
 .btn.active {
   color: $dark;
   background-image: linear-gradient($white, $grey-light);
-  border-color: $grey;
+  border-color: $grey-medium;
   font-weight: $font-weight-semibold !important;
   border-radius: 50rem !important;
 }

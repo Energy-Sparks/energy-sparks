@@ -108,7 +108,7 @@ $togglers: (
     &:hover, &:focus {
       @include font(f9);
       color: $black !important;
-      background: $grey;
+      background: $grey-medium;
     }
   }
 

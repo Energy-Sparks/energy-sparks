@@ -13,26 +13,26 @@ module Colours
       blue: { # blue_pale etc
         pale: '#f2f6fc'.freeze,
         light: '#cbe4fc'.freeze, # Blue medium from original design - used in nav. Blue light in original design is not distinct enough from this, so removed
-        medium: '#83a4df'.freeze, # New colour - derived (half way colour between light and dark) using https://www.dannybrien.com/middle/
-        bright: '#3c64c3'.freeze, # New colour - so we could have an inbetween brighter blue -  derived monocromatics from blue_very_dark https://colorkit.co/color/192a52/
+        medium: '#83a4df'.freeze, # new colour - derived (half way colour between light and dark) using https://www.dannybrien.com/middle/
+        bright: '#3c64c3'.freeze, # new colour - so we could have an inbetween brighter blue -  derived monocromatics from blue_very_dark https://colorkit.co/color/192a52/
         dark: '#334375'.freeze, # paragraph text
         very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
       },
       yellow: { # yellow_pale etc
-        pale: '#fdefc8'.freeze,
+        pale: '#fdefc8'.freeze, # not currently used
         light: '#fcdc8b'.freeze,
         medium: '#f9b233'.freeze,
-        dark: '#772d10'.freeze,
-        very_dark: '#441504'.freeze
+        dark: '#772d10'.freeze, # used in pupil menu
+        very_dark: '#441504'.freeze # used in pupil menu
       },
       teal: { # teal_pale etc
-        pale: '#f0fdf9'.freeze,
+        pale: '#f0fdf9'.freeze, # not currently used
         light: '#cbfcf0'.freeze,
         medium: '#88f7dd'.freeze,
         dark: '#10bca2'.freeze
       },
       red: { # red_pale etc
-        pale: '#fff1f1'.freeze, # was red light in original design
+        pale: '#fff1f1'.freeze, # was red light in original design. Not currently used
         light: '#fbc8c8'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#f8a0a0'.freeze, # was "red" in original design
         dark: '#f14141'.freeze, # generated using: https://www.w3schools.com/colors/colors_picker.asp
@@ -47,16 +47,14 @@ module Colours
         light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
         '600': '#6c757d'.freeze, # bootstrap grey. Used for bg-secondary, btn-outline-secondary etc
-        '800': '#343a40'.freeze, # bootstrap grey. used for bg-dark, btn-secondary etc
+        very_dark: '#222222'.freeze # from original designs - used in header
       },
-      cyan: '#17a2b8'.freeze, # bootstrap colour
+      cyan: '#17a2b8'.freeze, # bootstrap colour (not in designs)
       white: '#ffffff'.freeze,
       black: '#000000'.freeze,
     },
-    old: { # e.g. dark, dark_grey, grey # These colours are being phased out
-      dark: '#222222'.freeze,
+    old: { # Colours that are to be phased out
       dark_grey: '#999999'.freeze,
-      grey: '#c4ccd4'.freeze,
     },
     fuel: {
       electric: {
@@ -103,14 +101,15 @@ module Colours
       warning: :yellow_medium,
       danger: :red_dark,
       light: :grey_pale,
-      dark: :grey_800, # bootstrap default
+      dark: :grey_very_dark
     },
     theme: {
-      bg_dark: :blue_very_dark,
+      header_dark: :blue_very_dark,
       adult_light: :blue_pale,
     },
-    charts: {
-      chart: { # these are to be phased out / or bought in to the main palette
+    charts: { # these will be in the root namespace
+      # these are to be phased out / or bought in to the main palette
+      chart: {
         new_yellow: '#fcb43a'.freeze,
         dark_orange: '#ff4500'.freeze,
         light_orange: '#ffac21'.freeze,
@@ -122,8 +121,7 @@ module Colours
         turquoise: '#50e3c2'.freeze,
         light_turquoise: '#a1ffe9'.freeze,
 
-        # Colour mappings used in chart_data_values.rb
-
+        # Colours used in chart_data_values.rb
         electric_dark: '#007eff'.freeze,
         electric_light: '#93e1f6'.freeze,
         electric_middle: '#02b8ff'.freeze,

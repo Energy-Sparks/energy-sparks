@@ -16,13 +16,13 @@ div.pupil-chart-titles {
 }
 
 .explore-button:disabled {
-  color: $grey;
-  border-color: $grey;
+  color: $grey-medium;
+  border-color: $grey-medium;
 }
 
 .explore-button:hover:disabled {
-  color: $grey;
-  border-color: $grey;
+  color: $grey-medium;
+  border-color: $grey-medium;
 }
 
 .explore-button:hover {
@@ -72,7 +72,7 @@ div.popover {
 }
 
 .table .thead-dark th {
-  background-color: $bg-dark !important;
+  background-color: $header-dark !important;
 }
 
 .table-with-totals {
