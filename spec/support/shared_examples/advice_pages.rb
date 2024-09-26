@@ -16,6 +16,15 @@ RSpec.shared_examples 'an advice page' do
   end
 end
 
+RSpec.shared_examples 'it responds to HEAD requests' do
+  [:insights, :analysis, :learn_more].each do |action|
+    it "return :ok with HEAD request to #{action}" do
+      process :head, polymorphic_path([action, school, :advice, advice_page.key.to_sym])
+      expect(response).to have_http_status(:ok)
+    end
+  end
+end
+
 RSpec.shared_examples 'an advice page tab' do |tab:|
   it_behaves_like 'an advice page'
 

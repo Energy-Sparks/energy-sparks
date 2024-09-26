@@ -6,6 +6,8 @@ RSpec.describe 'Baseload advice page', type: :system do
 
   include_context 'electricity advice page'
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as a school admin' do
     let(:user)  { create(:school_admin, school: school) }
 

@@ -21,6 +21,10 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
     end
   end
 
+  it_behaves_like 'it responds to HEAD requests' do
+    let(:advice_page) { AdvicePage.find_by_key(:electricity_out_of_hours) }
+  end
+
   context 'as school admin' do
     before do
       sign_in(create(:school_admin, school: school))

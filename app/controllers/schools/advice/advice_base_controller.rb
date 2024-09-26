@@ -36,6 +36,12 @@ module Schools
         end
       end
 
+      # Generic action used to respond to HEAD requests
+      # See routes.rb for routing
+      def handle_head
+        head(:ok)
+      end
+
       def show
         redirect_to url_for([:insights, @school, :advice, advice_page_key])
       end

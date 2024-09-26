@@ -11,6 +11,8 @@ RSpec.describe 'solar pv advice page', :aggregate_failures do
     school.has_solar_pv? ? 'Solar PV generation' : 'Benefits of installing solar panels'
   end
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as school admin' do
     let(:user) { create(:school_admin, school:) }
 
