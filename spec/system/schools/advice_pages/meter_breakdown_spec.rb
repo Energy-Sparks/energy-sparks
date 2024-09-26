@@ -148,6 +148,10 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
 
     let(:meters) { school.meters.active.electricity }
 
+    it_behaves_like 'it responds to HEAD requests' do
+      let(:advice_page) { AdvicePage.find_by_key(key) }
+    end
+
     it_behaves_like 'a meter breakdown page' do
       let(:path) { school_advice_electricity_meter_breakdown_path(school) }
     end
@@ -206,6 +210,10 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
     end
 
     let(:meters) { school.meters.active.gas }
+
+    it_behaves_like 'it responds to HEAD requests' do
+      let(:advice_page) { AdvicePage.find_by_key(key) }
+    end
 
     it_behaves_like 'a meter breakdown page' do
       let(:path) { school_advice_gas_meter_breakdown_path(school) }

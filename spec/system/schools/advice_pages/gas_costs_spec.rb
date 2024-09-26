@@ -6,6 +6,8 @@ RSpec.describe 'gas costs advice page', type: :system do
 
   include_context 'gas advice page'
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 
