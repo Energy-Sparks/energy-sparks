@@ -22,14 +22,35 @@
           <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
           <td>
             <div class="btn-group nowrap">
-              <%= link_to(t('common.labels.edit'), edit_school_user_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
-              <%= link_to(t('common.labels.delete'), school_user_path(@school, user), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
-              <% if current_user.admin? && !user.confirmed? %>
-                <%= button_to t('schools.users.index.resend_confirmation'), admin_user_confirmation_path(user, school: true), class: 'btn btn-warning btn-sm' %>
-              <% end %>
-              <% if can?(:edit, user) && !user.school_admin? %>
-                <%= link_to(t('schools.users.index.make_school_admin'), make_school_admin_school_user_path(@school, user), method: :post, data: { confirm: t('common.confirm') }, class: 'btn btn-danger btn-sm') %>
-              <% end %>
+              <%= if can?(:edit, user)
+                    link_to(t('common.labels.edit'), edit_school_user_path(@school, user),
+                            class: 'btn btn-primary btn-sm')
+                  end %>
+              <%= if can?(:delete, user)
+                    link_to(t('common.labels.delete'), school_user_path(@school, user),
+                            method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger btn-sm')
+                  end %>
+              <%= unless user.confirmed?
+                    link_to(t('schools.users.index.resend_confirmation'),
+                            resend_confirmation_school_user_path(@school, user),
+                            class: 'btn btn-warning btn-sm', method: :post)
+                  end %>
+              <%= if can?(:edit, user) && !user.school_admin?
+                    link_to(t('schools.users.index.make_school_admin'),
+                            make_school_admin_school_user_path(@school, user),
+                            method: :post,
+                            data: { confirm: t('common.confirm') },
+                            class: 'btn btn-danger btn-sm')
+                  end %>
+              <%= if can?(:manage, :admin_functions)
+                    if user.access_locked?
+                      link_to t('schools.users.index.unlock'), unlock_school_user_path(@school, user),
+                              method: :post, class: 'btn btn-warning btn-sm'
+                    else
+                      link_to t('schools.users.index.lock'), lock_school_user_path(@school, user),
+                              method: :post, class: 'btn btn-warning btn-sm'
+                    end
+                  end %>
             </div>
           </td>
       </tr>

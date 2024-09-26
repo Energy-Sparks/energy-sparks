@@ -432,6 +432,9 @@ Rails.application.routes.draw do
       resources :users do
         member do
           post :make_school_admin
+          post :unlock
+          post :lock
+          post :resend_confirmation
         end
       end
       resources :cluster_admins, only: [:new, :create]
