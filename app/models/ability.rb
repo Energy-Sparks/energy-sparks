@@ -213,9 +213,8 @@ class Ability
         meter.amr_data_feed_readings.any?
       end
 
-      user_actions = %i[edit create update delete enable_alerts]
-      can user_actions, User, related_school_scope
-      can(user_actions, User) { |other_user| other_user.cluster_schools.include?(user.school) }
+      can :manage, User, related_school_scope
+      can(:manage, User) { |other_user| other_user.cluster_schools.include?(user.school) }
 
       cannot :delete, User do |other_user|
         user.id == other_user.id

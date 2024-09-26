@@ -427,6 +427,7 @@ Rails.application.routes.draw do
           post :make_school_admin
           post :unlock
           post :lock
+          post :resend_confirmation
         end
       end
       resources :cluster_admins, only: [:new, :create]

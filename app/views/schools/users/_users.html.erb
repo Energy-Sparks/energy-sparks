@@ -30,9 +30,10 @@
                     link_to(t('common.labels.delete'), school_user_path(@school, user),
                             method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger btn-sm')
                   end %>
-              <%= if current_user.admin? && !user.confirmed?
-                    button_to(t('schools.users.index.resend_confirmation'),
-                              admin_user_confirmation_path(user, school: true), class: 'btn btn-warning btn-sm')
+              <%= unless user.confirmed?
+                    link_to(t('schools.users.index.resend_confirmation'),
+                            resend_confirmation_school_user_path(@school, user),
+                            class: 'btn btn-warning btn-sm', method: :post)
                   end %>
               <%= if can?(:edit, user) && !user.school_admin?
                     link_to(t('schools.users.index.make_school_admin'),
