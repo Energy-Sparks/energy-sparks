@@ -129,11 +129,11 @@ module ApplicationHelper
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
-      class_for_alert_colour(:green)
+      class_for_alert_colour(:positive)
     elsif rating > 6
-      class_for_alert_colour(:yellow)
+      class_for_alert_colour(:neutral)
     else
-      class_for_alert_colour(:red)
+      class_for_alert_colour(:negative)
     end
   end
 
@@ -201,12 +201,10 @@ module ApplicationHelper
       'bg-electric-light'
     when :gas
       'bg-gas-light'
-    when :solar_pv
+    when :solar_pv, :exported_solar_pv
       'bg-solar-light'
     when :storage_heater, :storage_heaters
       'bg-storage-light'
-    when :exported_solar_pv
-      'bg-solar-light'
     end
   end
 
@@ -216,12 +214,10 @@ module ApplicationHelper
       'text-electric'
     when :gas
       'text-gas'
-    when :solar_pv
+    when :solar_pv, :exported_solar_pv
       'text-solar'
     when :storage_heater, :storage_heaters
       'text-storage'
-    when :exported_solar_pv
-      'text-solar'
     end
   end
 
@@ -460,8 +456,8 @@ module ApplicationHelper
     (fa_icon('chevron-up', class: 'fa-fw') + fa_icon('chevron-down', class: 'fa-fw')).html_safe
   end
 
-  def text_with_icon(text, icon)
-    (icon ? "#{fa_icon(icon)} #{text}" : text).html_safe
+  def text_with_icon(text, icon, **kwargs)
+    (icon ? "#{fa_icon(icon, **kwargs)} #{text}" : text).html_safe
   end
 
   def component(name, *args, **kwargs, &block)

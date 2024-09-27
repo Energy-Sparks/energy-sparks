@@ -3,7 +3,6 @@ a:hover,
 a:focus,
 a:active,
 a.active {
-  color: $dark;
   text-decoration: underline;
   outline: none;
 }
@@ -30,7 +29,7 @@ a.nav-link.active {
 a.badge.outline {
   outline: solid;
   outline-width: 1px;
-  outline-color: $light-grey;
+  outline-color: $grey-light;
 }
 
 .btn,
@@ -39,9 +38,9 @@ a.badge.outline {
 .btn:active,
 .btn.active {
   color: $dark;
-  background-image: linear-gradient($white, $light-grey);
-  border-color: $grey;
-  font-weight: 600 !important;
+  background-image: linear-gradient($white, $grey-light);
+  border-color: $grey-medium;
+  font-weight: $font-weight-semibold !important;
   border-radius: 50rem !important;
 }
 
@@ -51,18 +50,18 @@ a.badge.outline {
   border-color: $dark;
 }
 
+.btn-outline-dark:hover {
+  color: $white;
+}
+
 .btn.bg-positive {
   border-color: transparent;
   border: none;
 }
 
-.btn-outline-dark:hover {
-  color: $white;
-}
-
 .btn-dark-blue {
   color: $white;
-  background-color: $dark-blue;
+  background-color: $blue-dark;
   background-image: none;
 }
 
@@ -94,21 +93,7 @@ a.badge.outline {
   a:focus,
   a:active,
   a.active {
-    color: $dark;
     outline: none;
-  }
-}
-
-.table.timeline {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $dark;
-    text-decoration: underline;
-    outline: none;
-    font-weight: normal;
   }
 }
 
@@ -124,7 +109,7 @@ section.highlight {
   a:focus,
   a:active,
   a.active {
-    color: $dark-blue;
+    color: $blue-very-dark;
     outline: none;
   }
 }
