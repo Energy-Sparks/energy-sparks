@@ -552,7 +552,7 @@ private
     end
     if @chart_type.match?(/_gas_/)
       if benchmark_school_category?(category)
-        Colours.chart_gas_medium
+        Colours.chart_gas_middle
       else
         Colours.chart_gas_light
       end
