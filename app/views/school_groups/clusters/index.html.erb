@@ -1,12 +1,14 @@
-<% content_for :page_title, "#{@school_group.name} | #{t('school_groups.clusters.index.title').capitalize} %>
+<% content_for :page_title, "#{@school_group.name} | #{t('school_groups.clusters.index.title').capitalize}" %>
 
 <h1><%= @school_group.name %> <%= t('school_groups.clusters.index.title') %></h1>
 
-<p><%= t('school_groups.clusters.intro',
-         group_type: t("school_groups.clusters.group_type.#{@school_group.group_type}")) %></p>
+<p>
+  <%= t('school_groups.clusters.intro',
+          group_type: t("school_groups.clusters.group_type.#{@school_group.group_type}")) %>
+</p>
   <%= link_to t('school_groups.clusters.index.create_new'),
-              new_school_group_cluster_path(@school_group), class: 'btn btn-sm my-2' %>
-
+              new_school_group_cluster_path(@school_group),
+              class: 'btn btn-sm my-2' %>
   <% if @clusters.any? %>
     <% @clusters.by_name.each do |cluster| %>
       <%= simple_form_for [@school_group, cluster],
