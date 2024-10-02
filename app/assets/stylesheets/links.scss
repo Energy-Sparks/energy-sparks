@@ -1,57 +1,36 @@
-a,
-a:hover,
-a:focus,
-a:active,
-a.active {
-  text-decoration: underline;
-  outline: none;
+.btn-outline-dark {
+  background-color: $white;
+  border-color: $blue-very-dark;
+  color: $blue-very-dark;
+  @include hover-focus-active() {
+    background-color: $white !important;
+    border-color: $blue-very-dark !important;
+    color: $blue-very-dark !important;
+  }
 }
 
-a.btn,
-a.btn:hover,
-a.btn:focus,
-a.btn:active,
-a.btn.active,
-a.badge,
-a.badge:hover,
-a.badge:focus,
-a.badge:active,
-a.badge.active,
-a.nav-link,
-a.nav-link:hover,
-a.nav-link:focus,
-a.nav-link:active,
-a.nav-link.active {
-  text-decoration: none;
-  outline: none;
+// Assign default / not bootstrap styled buttons to be that of btn-outline-dark
+.btn,
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active {
+  &:not(.btn-primary):not(.btn-success):not(.btn-info):not(.btn-warning):not(.btn-danger):not(.btn-light):not(.btn-dark):not(.btn-outline-dark) {
+    @extend .btn-outline-dark;
+  }
+}
+
+.btn-primary {
+  @include hover-focus-active() {
+    border-color: $blue-dark;
+    color: $white;
+  }
 }
 
 a.badge.outline {
   outline: solid;
   outline-width: 1px;
   outline-color: $grey-light;
-}
-
-.btn,
-.btn:hover,
-.btn:focus,
-.btn:active,
-.btn.active {
-  color: $dark;
-  background-image: linear-gradient($white, $grey-light);
-  border-color: $grey-medium;
-  font-weight: $font-weight-semibold !important;
-  border-radius: 50rem !important;
-}
-
-.btn-outline-dark {
-  background-color: $white;
-  background-image: none !important;
-  border-color: $dark;
-}
-
-.btn-outline-dark:hover {
-  color: $white;
 }
 
 .btn.bg-positive {

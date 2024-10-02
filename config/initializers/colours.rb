@@ -96,7 +96,7 @@ module Colours
       other_school: :red_dark
     },
     bootstrap: {
-      primary: :blue_bright,
+      primary: :blue_very_dark,
       secondary: :grey_dark, # currently bootstrap grey-600 (default)
       success: :teal_dark,
       info: :cyan, # bootstrap default
