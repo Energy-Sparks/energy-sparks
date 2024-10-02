@@ -1,6 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe 'calendars', :calendar, type: :system do
+RSpec.describe 'calendars', :calendar do
+  include ActiveJob::TestHelper
+
   let!(:admin) { create(:admin) }
 
   let(:events) do
@@ -95,9 +97,12 @@ RSpec.describe 'calendars', :calendar, type: :system do
       end
 
       click_on 'Update dependent schools'
-      expect(page).to have_content("Resync completed for #{regional_calendar.title}")
-      expect(page).to have_content('Events deleted')
-      expect(page).to have_content('Events created')
+
+      perform_enqueued_jobs
+      content = ActionMailer::Base.deliveries.last.to_s
+      expect(content).to include("Resync completed for #{regional_calendar.title}")
+      expect(content).to include('Events deleted')
+      expect(content).to include('Events created')
 
       calendar.reload
       expect(calendar.calendar_events.count).to eq(1)
