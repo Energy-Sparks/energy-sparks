@@ -95,6 +95,15 @@ end
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
 
+RSpec::Matchers.define :round_to_two_digits do |expected_float|
+  match do |actual_float|
+    actual_float.round(2) == expected_float
+  end
+  failure_message do |actual_float|
+    "expected: #{expected_float}\nactual: #{actual_float}\nrounded: #{actual_float&.round(2)}\n"
+  end
+end
+
 require 'knapsack'
 Knapsack.tracker.config({ enable_time_offset_warning: ENV.key?('CI') })
 Knapsack::Adapters::RSpecAdapter.bind

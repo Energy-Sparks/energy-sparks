@@ -26,10 +26,6 @@ gem 'closed_struct'
 gem 'pg'
 gem 'scenic'
 
-# Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.10'
-# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
-
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
 gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'
@@ -56,6 +52,7 @@ gem 'aws-sdk-s3'
 gem 'eventbrite_sdk' # Eventbrite for training page
 gem 'faraday'
 gem 'faraday-follow_redirects'
+gem 'faraday-retry'
 gem 'MailchimpMarketing'
 gem 'mailgun_rails' # Email service
 gem 'twilio-ruby' # For SMS notifications
@@ -115,6 +112,17 @@ gem 'premailer-rails'
 # Feature flags
 gem 'flipper-active_record', '~> 1.3'
 gem 'flipper-ui', '~> 1.3'
+
+# from analytics
+gem 'benchmark-memory'
+gem 'chroma'
+gem 'hashdiff'
+gem 'html-table'
+gem 'interpolate'
+gem 'ruby-limiter'
+gem 'ruby-sun-times'
+gem 'structured_warnings'
+gem 'write_xlsx'
 
 group :development, :test do
   gem 'bullet', require: false # use bullet to optimise queries
