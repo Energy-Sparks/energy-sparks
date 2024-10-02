@@ -21,6 +21,13 @@
   <%= link_to key.to_s, '/', class: "btn btn-outline-#{key}" %>
 <% end %>
 
+<h4>Button group</h4>
+<span class='btn-group'>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= link_to "#{key} sm", '/', class: "btn btn-#{key} btn-sm" %>
+<% end %>
+</span>
+
 <h3>Badges</h1>
 
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
