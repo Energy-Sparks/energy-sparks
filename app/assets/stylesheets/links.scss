@@ -3,9 +3,8 @@
   border-color: $blue-very-dark;
   color: $blue-very-dark;
   @include hover-focus-active() {
-    background-color: $white !important;
-    border-color: $blue-very-dark !important;
-    color: $blue-very-dark !important;
+    background-color: $blue-very-dark !important;
+    color: $white !important;
   }
 }
 
@@ -15,7 +14,7 @@
 .btn:focus,
 .btn:active,
 .btn.active {
-  &:not(.btn-primary):not(.btn-success):not(.btn-info):not(.btn-warning):not(.btn-danger):not(.btn-light):not(.btn-dark):not(.btn-outline-dark) {
+  &:not(.btn-primary):not(.btn-success):not(.btn-info):not(.btn-warning):not(.btn-danger):not(.btn-light):not(.btn-dark):not(.btn-outline-success):not(.btn-outline-info):not(.btn-outline-warning):not(.btn-outline-danger):not(.btn-outline-light):not(.btn-outline-dark) {
     @extend .btn-outline-dark;
   }
 }
@@ -27,10 +26,13 @@
   }
 }
 
-a.badge.outline {
-  outline: solid;
-  outline-width: 1px;
-  outline-color: $grey-light;
+a.badge {
+  text-decoration: none;
+  .outline {
+    outline: solid;
+    outline-width: 1px;
+    outline-color: $grey-light;
+  }
 }
 
 .btn.bg-positive {
