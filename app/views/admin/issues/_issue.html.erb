@@ -35,7 +35,7 @@
         <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-primary btn-sm' %>
         <%= link_to 'Delete', polymorphic_path([:admin, @issueable, issue]),
                     method: :delete, data: { confirm: 'Are you sure?' },
-                    class: 'btn btn-ouline-danger btn-sm' %>
+                    class: 'btn btn-outline-danger btn-sm' %>
       </span>
     </div>
     <div class="collapse<%= ' show' if expand %>" id="issue-<%= issue.id %>">

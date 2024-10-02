@@ -1,3 +1,9 @@
+@each $color, $value in $theme-colors {
+  a.btn-outline-#{$color} {
+    background-color: $white;
+  }
+}
+
 .btn-outline-dark {
   background-color: $white;
   border-color: $blue-very-dark;
