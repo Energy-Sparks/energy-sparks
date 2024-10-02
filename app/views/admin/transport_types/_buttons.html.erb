@@ -3,7 +3,7 @@
     end %>
 <%= if can? :delete, transport_type
       link_to 'Delete', admin_transport_type_path(transport_type),
-        method: :delete,
-        data: { confirm: 'Are you sure?' },
-        class: "btn btn-outline-danger#{if transport_type.responses.any? ' disabled' end}"
+              method: :delete,
+              data: { confirm: 'Are you sure?' },
+              class: "btn btn-outline-danger#{' disabled' if transport_type.responses.any?}"
     end %>
