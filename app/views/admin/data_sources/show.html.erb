@@ -31,7 +31,7 @@
       <%= render 'email_report_button', data_source: @data_source, class: 'btn btn-sm' %>
       <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: 'btn btn-sm' %>
       <%= link_to 'Delete', admin_data_source_path(@data_source), method: :delete, data: { confirm: 'Are you sure?' },
-                                                                  class: 'btn btn-sm btn-danger' %>
+                                                                  class: 'btn btn-sm btn-outline-danger' %>
     </span>
   </div>
   <%= render 'data_source', data_source: @data_source %>
