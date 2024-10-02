@@ -2,18 +2,23 @@
 
 <h3>Buttons</h1>
 
-<%= link_to 'button unstyled', '/', class: 'btn' %>
+<%= link_to 'unstyled', '/', class: 'btn' %>
 <hr>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
-  <%= link_to key, '/', class: "btn btn-#{key} btn-sm" %>
+  <%= link_to "#{key} sm", '/', class: "btn btn-#{key} btn-sm" %>
 <% end %>
 <hr>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
-  <%= link_to key, '/', class: "btn btn-#{key}" %>
+  <%= link_to key.to_s, '/', class: "btn btn-#{key}" %>
 <% end %>
 <hr>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
-  <%= link_to key, '/', class: "btn btn-lg btn-#{key}" %>
+  <%= link_to "#{key} lg", '/', class: "btn btn-lg btn-#{key}" %>
+<% end %>
+
+<h4>Outline</h4>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= link_to key.to_s, '/', class: "btn btn-outline-#{key}" %>
 <% end %>
 
 <h3>Badges</h1>
