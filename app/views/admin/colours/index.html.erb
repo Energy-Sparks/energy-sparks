@@ -1,4 +1,40 @@
-<h1>Colours</h1>
+<h2>Styles</h2>
+
+<h3>Buttons</h1>
+
+<%= link_to 'button unstyled', '/', class: 'btn' %>
+<hr>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= link_to key, '/', class: "btn btn-#{key} btn-sm" %>
+<% end %>
+<hr>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= link_to key, '/', class: "btn btn-#{key}" %>
+<% end %>
+<hr>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= link_to key, '/', class: "btn btn-lg btn-#{key}" %>
+<% end %>
+
+<h3>Badges</h1>
+
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= tag.span(key, class: "badge badge-#{key}") %>
+<% end %>
+
+<h3>Badge pills</h1>
+
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= tag.span(key, class: "badge badge-#{key} badge-pill") %>
+<% end %>
+
+<h3>Links</h3>
+
+<h4><%= link_to 'header link', '/', class: '' %></h4>
+
+<%= link_to 'a link', '/', class: '' %>
+
+<h2>Colours</h2>
 
 <div>
   <% Colours::PALETTE.each do |key, group| %>
@@ -23,7 +59,7 @@
 </div>
 
 <div>
-  <h1>Default Chart Colours</h1>
+  <h2>Default Chart Colours</h2>
   <div class="row no-gutters">
     <% Colours::DEFAULT_CHART_COLOURS.each do |colour| %>
       <%= render 'colour', hex: colour %>
@@ -32,7 +68,7 @@
 </div>
 
 <div>
-  <h1>Validated Meter Readings Colours</h1>
+  <h2>Validated Meter Readings Colours</h2>
   <div class="row no-gutters">
     <% Colours::AMR_COLOURS.each do |colour| %>
       <%= render 'colour', hex: colour %>
@@ -41,7 +77,7 @@
 </div>
 
 <div>
-  <h1>Transport Chart Colours</h1>
+  <h2>Transport Chart Colours</h2>
   <div class="row no-gutters">
     <% Colours::TRANSPORT_CHART_COLOURS.each do |colour| %>
       <%= render 'colour', hex: colour %>
