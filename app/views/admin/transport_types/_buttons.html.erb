@@ -5,5 +5,5 @@
       link_to 'Delete', admin_transport_type_path(transport_type),
               method: :delete,
               data: { confirm: 'Are you sure?' },
-              class: "btn btn-outline-danger#{' disabled' if transport_type.responses.any?}"
+              class: "btn btn-danger#{' disabled' if transport_type.responses.any?}"
     end %>
