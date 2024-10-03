@@ -66,8 +66,7 @@ RSpec.describe AlertMailer do
 
       it 'send to right cc addresses' do
         AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
-        expect(email.cc).to match_array(users.map(&:email_address))
-        expect(email.to).to be_nil
+        expect(email.to).to match_array(users.map(&:email_address))
       end
 
       context 'when locale is specified' do

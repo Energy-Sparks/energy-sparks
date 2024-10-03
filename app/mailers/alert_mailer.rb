@@ -20,7 +20,7 @@ class AlertMailer < LocaleMailer
     @title = @school.name
 
     email = if @batch_email
-              make_bootstrap_mail(cc: @email_addresses)
+              make_bootstrap_mail(to: @email_addresses)
             else
               make_bootstrap_mail(to: @email_addresses)
             end
