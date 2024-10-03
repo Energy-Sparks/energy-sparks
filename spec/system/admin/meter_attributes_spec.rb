@@ -58,6 +58,19 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
     end
 
 
+    it 'displays a form for all attributes' do
+      visit admin_school_single_meter_attribute_path(school, gas_meter)
+      options = find('#type').all('option').collect(&:text)
+
+      options.each do |option|
+        puts option
+        select option, from: 'type'
+        click_on 'New attribute'
+        expect(page).to have_button('Create')
+        visit admin_school_single_meter_attribute_path(school, gas_meter)
+      end
+    end
+
     it 'allow the admin to manage the meter attributes' do
       visit school_path(school)
       click_on 'Meter attributes'
