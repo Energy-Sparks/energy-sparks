@@ -45,11 +45,7 @@ class SchoolsController < ApplicationController
     # OR an adult user for this school, or a pupil that is trying to view the adult dashboard
     authorize! :show, @school
     @audience = :adult
-    if params[:report] && show_data_enabled_features?
-      render template: 'management/schools/report', layout: 'report'
-    else
-      render :show
-    end
+    render :show
   end
 
   # GET /schools/1/edit
