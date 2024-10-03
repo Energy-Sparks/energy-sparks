@@ -19,17 +19,20 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
            has_storage_heaters: false)
   end
 
-  let(:meter_collection) do
-    AggregateSchoolService.new(school).aggregate_school
-  end
-
   let(:params) do
     {
       school: school,
-      meter_collection: meter_collection,
       id: id,
       classes: classes
     }
+  end
+
+  before do
+    create(:advice_page, key: :electricity_long_term, fuel_type: :electricity)
+    create(:advice_page, key: :gas_long_term, fuel_type: :gas)
+    meter_collection = AggregateSchoolService.new(school).aggregate_school
+    Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: school, aggregate_school: meter_collection).generate!
+    school.reload
   end
 
   describe '#can_benchmark_electricity?' do
@@ -47,7 +50,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
       it { expect(component.can_benchmark_electricity?).to be(false) }
     end
 
-    context 'with electricity enough data' do
+    context 'with electricity and enough data' do
       let(:school) { create(:school, :with_basic_configuration_single_meter_and_tariffs) }
 
       it { expect(component.can_benchmark_electricity?).to be(true) }
@@ -61,7 +64,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
       it { expect(component.can_benchmark_gas?).to be(false) }
     end
 
-    context 'with electricity but not enough data' do
+    context 'with gas but not enough data' do
       let(:school) do
         create(:school, :with_basic_configuration_single_meter_and_tariffs, fuel_type: :gas, reading_start_date: Time.zone.yesterday)
       end
@@ -69,7 +72,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
       it { expect(component.can_benchmark_gas?).to be(false) }
     end
 
-    context 'with electricity enough data' do
+    context 'with gas and enough data' do
       let(:school) do
         create(:school,
                             :with_basic_configuration_single_meter_and_tariffs,
