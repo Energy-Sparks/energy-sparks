@@ -41,7 +41,7 @@ class ComparisonOverviewComponent < ApplicationComponent
   #
   # Delays loading the meter collection from the Rails cache until we know we actually need it
   def existing_benchmark?(fuel_type)
-    advice_page = AdvicePage.find_by_key("#{fuel_type}_long_term".to_sym)
+    advice_page = AdvicePage.find_by_key("#{fuel_type}_long_term")
     @school.advice_page_school_benchmarks.where(advice_page:).any?
   end
 
