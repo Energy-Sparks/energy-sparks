@@ -19,11 +19,7 @@ class AlertMailer < LocaleMailer
     @alert_content = self.class.create_content(@events)
     @title = @school.name
 
-    email = if @batch_email
-              make_bootstrap_mail(to: @email_addresses)
-            else
-              make_bootstrap_mail(to: @email_addresses)
-            end
+    email = make_bootstrap_mail(to: @email_addresses)
     add_mg_email_tag(email, 'alerts')
   end
 
