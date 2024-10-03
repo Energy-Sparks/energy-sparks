@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 40ed3d5248f0cb1c2e6bc3059c718978bbd428bd
-  tag: 6.0.10
+  revision: c8a8bf82134f03bc4e69b56cfa59f44647ee699b
+  branch: 4498-marshfield-primary-school-out-of-hours-benchmark-error
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
