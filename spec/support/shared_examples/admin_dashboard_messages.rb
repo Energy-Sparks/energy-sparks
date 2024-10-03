@@ -6,7 +6,7 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
     context 'No message set' do
       it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
       it { expect(page).to have_link('Set message') }
-      it { expect(page).not_to have_link('Delete message') }
+      it { expect(page).not_to have_link('Delete') }
 
       context "Clicking on 'Set message'" do
         before { click_link 'Set message' }
@@ -61,11 +61,11 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
       let(:setup_data) { messageable.create_dashboard_message(message: message) }
 
       it { expect(page).to have_content message }
-      it { expect(page).to have_link('Edit message') }
-      it { expect(page).to have_link('Delete message') }
+      it { expect(page).to have_link('Edit') }
+      it { expect(page).to have_link('Delete') }
 
-      context "Clicking on 'Edit message'" do
-        before { click_link 'Edit message' }
+      context "Clicking on 'Edit'" do
+        before { click_link 'Edit' }
 
         it { expect(page).to have_field('Message', with: message) }
 
@@ -95,9 +95,9 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
         end
       end
 
-      context "Clicking on 'Delete message'" do
+      context "Clicking on 'Delete'" do
         before do
-          click_on 'Delete message'
+          click_on 'Delete'
         end
 
         it { expect(page).to have_content("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}") }
@@ -114,8 +114,8 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
   context 'when not permitted', unless: permitted do
     it 'panel is not shown' do
       expect(page).not_to have_content('Set message')
-      expect(page).not_to have_content('Edit message')
-      expect(page).not_to have_content('Delete message')
+      expect(page).not_to have_content('Edit')
+      expect(page).not_to have_content('Delete')
     end
   end
 end

@@ -276,29 +276,29 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           context 'delete a message' do
             it 'deletes a message' do
               expect(page).to have_content message
-              expect(page).to have_link('Edit message')
-              expect(page).to have_link('Delete message')
+              expect(page).to have_link('Edit')
+              expect(page).to have_link('Delete')
               expect(page).not_to have_link('Set message')
               accept_alert('Are you sure?') do
-                click_link 'Delete message'
+                click_link 'Delete'
               end
               expect(page).not_to have_content message
-              expect(page).not_to have_link('Edit message')
-              expect(page).not_to have_link('Delete message')
+              expect(page).not_to have_link('Edit')
+              expect(page).not_to have_link('Delete')
               expect(page).to have_link('Set message')
             end
 
             it 'declines to delete a message' do
               expect(page).to have_content message
-              expect(page).to have_link('Edit message')
-              expect(page).to have_link('Delete message')
+              expect(page).to have_link('Edit')
+              expect(page).to have_link('Delete')
               expect(page).not_to have_link('Set message')
               dismiss_confirm('Are you sure?') do
                 click_link 'Delete message'
               end
               expect(page).to have_content message
-              expect(page).to have_link('Edit message')
-              expect(page).to have_link('Delete message')
+              expect(page).to have_link('Edit')
+              expect(page).to have_link('Delete')
               expect(page).not_to have_link('Set message')
             end
           end
