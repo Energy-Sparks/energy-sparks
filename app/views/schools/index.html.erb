@@ -11,7 +11,7 @@
 <div class="col-md-12">
 
   <p><%= t('schools.index.introduction_1') %>.</p>
-  <p><%= t('schools.index.introduction_2', count: School.visible.count) %>.</p>
+  <p><%= t('schools.index.introduction_2', count: @schools.length) %>.</p>
   <p><%= t('schools.index.introduction_3') %>.</p>
   <p><%= t('schools.index.introduction_4') %>.</p>
 
