@@ -97,13 +97,13 @@ RSpec.describe 'calendars', :calendar do
       end
 
       click_on 'Update dependent schools'
+      expect(page).to have_content('Update job has been submitted. An email will be sent')
 
       perform_enqueued_jobs
-      content = ActionMailer::Base.deliveries.last.to_s
-      expect(content).to include("Resync completed for #{regional_calendar.title}")
-      expect(content).to include('Events deleted')
-      expect(content).to include('Events created')
-
+      mail = ActionMailer::Base.deliveries.last.to_s
+      expect(mail).to include("Resync completed for #{regional_calendar.title}")
+      expect(mail).to include('Events deleted')
+      expect(mail).to include('Events created')
       calendar.reload
       expect(calendar.calendar_events.count).to eq(1)
       expect(calendar.calendar_events.last.description).to eq('new description')
