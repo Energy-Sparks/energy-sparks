@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 9afc851ef71ae9027c12593ade6d39b21f9d4c70
-  branch: 4531-rtone-import-for-botley-school
+  revision: 5c0255d7bccf7af76365261312af145fe927b0a3
+  tag: 6.0.11
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
