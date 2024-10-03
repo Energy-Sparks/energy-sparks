@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 40ed3d5248f0cb1c2e6bc3059c718978bbd428bd
-  tag: 6.0.10
+  revision: 5c0255d7bccf7af76365261312af145fe927b0a3
+  tag: 6.0.11
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
@@ -441,7 +441,7 @@ GEM
       rest-client (>= 1.6.7)
     marcel (1.0.4)
     matrix (0.4.2)
-    memory_profiler (1.0.2)
+    memory_profiler (1.1.0)
     method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
