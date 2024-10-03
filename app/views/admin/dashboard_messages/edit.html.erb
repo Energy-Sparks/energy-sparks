@@ -10,6 +10,6 @@
    <%= link_to 'Delete', polymorphic_url([:admin, @messageable, :dashboard_message],
                                          redirect_back_params(params)), method: :delete,
                                                                         data: { confirm: 'Are you sure?' },
-                                                                        class: 'btn btn-outline-danger float-right' %>
+                                                                        class: 'btn btn-danger float-right' %>
   <% end %>
 <% end %>
