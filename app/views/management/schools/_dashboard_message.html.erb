@@ -1,8 +1,0 @@
-<% if messageable.try(:dashboard_message) %>
-  <%= component 'info_bar',
-      status: :neutral,
-      title: messageable.dashboard_message.message,
-      icon: fa_icon('info-circle fa-3x'),
-      buttons: { }
-  %>
-<% end %>
