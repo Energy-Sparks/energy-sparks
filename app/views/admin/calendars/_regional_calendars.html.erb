@@ -26,7 +26,7 @@
           <%= if calendar.calendars.count.zero? && can?(:destroy, calendar)
                 link_to 'Delete', calendar, method: :delete,
                                             data: { confirm: 'Are you sure?' },
-                                            class: 'btn btn-outline-danger'
+                                            class: 'btn btn-danger'
               end %>
           <%= if can?(:update, calendar)
                 link_to 'Edit', edit_admin_calendar_path(calendar),
