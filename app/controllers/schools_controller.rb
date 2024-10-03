@@ -1,11 +1,6 @@
 class SchoolsController < ApplicationController
   include SchoolAggregation
-  include DashboardEnergyCharts
-  include DashboardAlerts
-  include DashboardTimeline
-  include DashboardPriorities
   include NonPublicSchools
-  include SchoolProgress
   include Promptable
 
   load_and_authorize_resource except: [:show, :index]
