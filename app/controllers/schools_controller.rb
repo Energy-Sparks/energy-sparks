@@ -14,8 +14,6 @@ class SchoolsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :set_key_stages, only: [:create, :edit, :update]
 
-  before_action :check_aggregated_school_in_cache, only: [:show]
-
   # If this isn't a publicly visible school, then redirect away if user can't
   # view this school
   before_action only: [:show] do
@@ -52,14 +50,8 @@ class SchoolsController < ApplicationController
     # OR an adult user for this school, or a pupil that is trying to view the adult dashboard
     authorize! :show, @school
     @audience = :adult
-    @show_data_enabled_features = show_data_enabled_features?
-    setup_default_features
-    setup_data_enabled_features if @show_data_enabled_features
-
-    if params[:report] && @show_data_enabled_features
+    if params[:report] && show_data_enabled_features?
       render template: 'management/schools/report', layout: 'report'
-    elsif Flipper.enabled?(:new_dashboards_2024, current_user)
-      render :new_show, layout: 'dashboards'
     else
       render :show
     end
@@ -144,38 +136,6 @@ private
 
   def redirect_to_pupil_dash_if_not_data_enabled
     redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
-  end
-
-  def setup_default_features
-    @observations = setup_timeline(@school.observations)
-
-    # Setup management dashboard features if users has permission
-    # to do that
-    @show_standard_prompts = show_standard_prompts?(@school)
-    if can?(:show_management_dash, @school)
-      @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
-      @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
-      @prompt_training = @show_data_enabled_features && current_user.confirmed_at > 30.days.ago
-      @prompt_for_bill = @school.bill_requested && can?(:index, ConsentDocument)
-      @programmes_to_prompt = @school.programmes.last_started
-    end
-  end
-
-  def setup_data_enabled_features
-    @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.management_dashboard, :management_dashboard_title)
-    @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
-    @overview_charts = setup_energy_overview_charts(@school.configuration)
-    @progress_summary = progress_service.progress_summary
-
-    # Setup management dashboard features if users has permission
-    # to do that
-    if can?(:show_management_dash, @school)
-      @add_targets = prompt_for_target?
-      @set_new_target = prompt_to_set_new_target?
-      @review_targets = prompt_to_review_target?
-      @last_audit = Audits::AuditService.new(@school).last_audit
-      @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
-    end
   end
 
   def set_key_stages
