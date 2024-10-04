@@ -61,7 +61,7 @@
                                  else
                                    ['Previous Year', { previous_year: true }, {}]
                                  end
-     classes = 'btn btn-outline-dark font-weight-bold' %>
+     classes = 'btn btn-default' %>
   <%= link_to label, admin_reports_engaged_schools_path(**kwargs), class: "#{classes} mr-2" %>
   <%= link_to 'Download as CSV', admin_reports_engaged_schools_path(**csv_kwargs.merge(format: :csv)),
               class: classes %>

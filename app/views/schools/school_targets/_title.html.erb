@@ -11,15 +11,15 @@
   <div>
     <% if school_target.current? %>
       <% if can?(:manage, school_target) %>
-        <%= link_to t('schools.school_targets.title.revise_your_target'), edit_school_school_target_path(school_target.school, school_target), class: "btn btn-outline-dark font-weight-bold" %>
+        <%= link_to t('schools.school_targets.title.revise_your_target'), edit_school_school_target_path(school_target.school, school_target), class: "btn btn-default" %>
       <% end %>
     <% elsif school_target.school.has_current_target? %>
-      <%= link_to t('schools.school_targets.title.view_current_target'), school_school_targets_path(school_target.school), class: "btn btn-outline-dark font-weight-bold" %>
+      <%= link_to t('schools.school_targets.title.view_current_target'), school_school_targets_path(school_target.school), class: "btn btn-default" %>
     <% else %>
       <% if can?(:manage, school_target) %>
-        <%= link_to t('schools.school_targets.title.set_a_new_target'), new_school_school_target_path(school_target.school), class: "btn btn-outline-dark font-weight-bold" %>
+        <%= link_to t('schools.school_targets.title.set_a_new_target'), new_school_school_target_path(school_target.school), class: "btn btn-default" %>
       <% end %>
     <% end %>
-    <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to_help_for_feature :school_targets, css: "btn btn-default" %>
   </div>
 </div>

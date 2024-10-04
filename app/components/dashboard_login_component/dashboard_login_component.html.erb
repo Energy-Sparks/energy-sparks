@@ -10,7 +10,7 @@
         <div class="col">
           <%= link_to t('devise.sessions.new.log_in_with_your_email_address_and_password'),
                       new_user_session_path(role: :staff, school: school),
-                      class: 'btn btn-outline-dark' %>
+                      class: 'btn btn-default' %>
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@
         <div class="col">
           <%= link_to t('devise.sessions.new.log_in_with_your_pupil_password'),
                       new_user_session_path(role: :pupil, school: school),
-                      class: 'btn btn-outline-dark' %>
+                      class: 'btn btn-default' %>
         </div>
       </div>
     </div>
