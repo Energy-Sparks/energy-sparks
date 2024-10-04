@@ -45,14 +45,14 @@
 <% end %>
 </span>
 
-<h4>Button set</h4>
-<span class='btn-set'>
+<h4>Button group panel</h4>
+<span class='btn-group panel'>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
   <%= link_to key.to_s, '/', class: "btn btn-#{key}" %>
 <% end %>
 </span>
 <hr>
-<span class='btn-set'>
+<span class='btn-group panel'>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
   <%= link_to key.to_s, '/', class: "btn btn-outline-#{key}" %>
 <% end %>
