@@ -7,7 +7,7 @@
       <% if EnergySparks::FeatureFlags.active?(:intervention_type_search) %>
         <%= link_to t('intervention_type_groups.index.search'),
                     search_intervention_types_path,
-                    class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                    class: 'btn btn-default' %>
       <% end %>
     </div>
   </div>
@@ -32,7 +32,7 @@
           <%= link_to t('intervention_type_groups.index.view_all_actions',
                         count: intervention_type_group.intervention_types.active.count),
                       intervention_type_group_path(intervention_type_group),
-                      class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                      class: 'btn btn-default' %>
         </div>
       </div>
     </div>
