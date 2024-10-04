@@ -1,35 +1,35 @@
+.btn {
+  background-color: transparent;
+  @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
+}
+
 @each $color, $value in $theme-colors {
-  a.btn-outline-#{$color} {
-    background-color: $white;
+  @if $color != secondary { // secondary is same as default button design
+    .btn-#{$color} {
+      @include button-variant($value, $value);
+    }
+
+    @if $color != dark {
+      .btn-outline-#{$color} {
+        // background-color: $white;
+        @include button-outline-variant($value);
+      }
+    }
   }
 }
 
-.btn-outline-dark {
-  background-color: $white;
-  border-color: $blue-very-dark;
-  color: $blue-very-dark;
-  @include hover-focus-active() {
-    background-color: $blue-very-dark !important;
-    color: $white !important;
-  }
-}
-
-// Assign default / not bootstrap styled buttons to be that of btn-outline-dark
-.btn,
-.btn:hover,
-.btn:focus,
-.btn:active,
-.btn.active {
-  &:not(.btn-primary):not(.btn-success):not(.btn-info):not(.btn-warning):not(.btn-danger):not(.btn-light):not(.btn-dark):not(.btn-outline-success):not(.btn-outline-info):not(.btn-outline-warning):not(.btn-outline-danger):not(.btn-outline-light):not(.btn-outline-dark) {
-    @extend .btn-outline-dark;
-  }
-}
-
+// primary, secondary and success all break from the normal bootstrap styles
 .btn-primary {
-  @include hover-focus-active() {
-    border-color: $blue-dark;
-    color: $white;
-  }
+  @include button-variant($blue-very-dark, $blue-very-dark, $blue-dark, $blue-dark);
+}
+
+.btn-success {
+  @include button-variant($teal-medium, $teal-medium, $teal-dark, $teal-dark);
+}
+
+// button style used in lots of the site. Now the default button style - the classes need removing from the html
+.btn-outline-dark { // also default button design
+  @extend .btn;
 }
 
 a.badge {
@@ -56,18 +56,11 @@ a.badge {
   border: $btn-border-width solid transparent;
 }
 
-.btn-group {
+.btn-group, .btn-set {
   .btn {
     margin-left: 5px;
     margin-right: 5px;
   }
-}
-
-.btn-group-xs > .btn, .btn-xs {
-  padding: 1px 5px;
-  font-size: $f9;
-  line-height: 1.5;
-  border-radius: 3px;
 }
 
 .btn-fixed-width-100 {
