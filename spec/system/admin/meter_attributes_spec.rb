@@ -12,7 +12,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       sign_in(admin)
     end
 
-    context 'when analytics attributs are broken' do
+    context 'when analytics attributes are broken' do
       before do
         expect(MeterAttribute).to receive(:to_analytics).at_least(:once).and_raise(StandardError.new('There was an error'))
       end
@@ -63,7 +63,6 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       options = find('#type').all('option').collect(&:text)
 
       options.each do |option|
-        puts option
         select option, from: 'type'
         click_on 'New attribute'
         expect(page).to have_button('Create')
@@ -107,6 +106,40 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       expect(gas_meter.meter_attributes.active.size).to eq(0)
       new_attribute.reload
       expect(new_attribute.deleted_by).to eq(admin)
+    end
+
+    it 'allows creating and editing of storage heater attributes with nested time values' do
+      visit admin_school_single_meter_attribute_path(school, gas_meter)
+      select 'Storage heaters > Storage heater configuration'
+      click_on 'New attribute'
+
+      fill_in 'Start date', with: '01/01/2023'
+      fill_in 'End date', with: '01/02/2023'
+      fill_in 'Power kw', with: '150'
+      fill_in 'attribute_root_charge_start_time_hour', with: '3'
+      fill_in 'attribute_root_charge_start_time_minutes', with: '33'
+      fill_in 'attribute_root_charge_end_time_hour', with: '4'
+      fill_in 'attribute_root_charge_end_time_minutes', with: '44'
+      fill_in 'Reason', with: 'Testing'
+      click_on 'Create'
+
+      within '#database-meter-attributes-content' do
+        click_on 'Edit'
+      end
+
+      expect(page).to have_field('attribute_root_charge_start_time_hour', with: '3')
+      expect(page).to have_field('attribute_root_charge_start_time_minutes', with: '33')
+      expect(page).to have_field('attribute_root_charge_end_time_hour', with: '4')
+      expect(page).to have_field('attribute_root_charge_end_time_minutes', with: '44')
+
+      attribute = gas_meter.meter_attributes.first
+      expect(attribute.to_analytics).to eq({
+        start_date: Date.new(2023, 1, 1),
+        end_date: Date.new(2023, 2, 1),
+        power_kw: 150.0,
+        charge_start_time: TimeOfDay.new(3, 33),
+        charge_end_time: TimeOfDay.new(4, 44)
+      })
     end
 
     it 'allow the admin to manage school meter attributes' do
