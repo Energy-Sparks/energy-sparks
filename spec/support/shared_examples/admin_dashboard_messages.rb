@@ -5,14 +5,18 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
 
     context 'No message set' do
       it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
-      it { expect(page).to have_link('Set message') }
-      it { expect(page).not_to have_link('Delete') }
+      it { expect(page).to have_selector('#dashboard-message a', text: 'Set message') }
+      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Edit') }
+      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Delete') }
 
       context "Clicking on 'Set message'" do
         before { click_link 'Set message' }
 
         it { expect(page).to have_content("Dashboard Message for #{messageable.name}") }
+        it { expect(page).to have_field('Message', with: '') }
+        it { expect(page).to have_button('Save') }
         it { expect(page).to have_link('Back') }
+        it { expect(page).not_to have_link('Delete') }
 
         context 'and clicking link back' do
           before { click_link 'Back' }
@@ -20,8 +24,6 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
           it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
         end
 
-        it { expect(page).to have_field('Message', with: '') }
-        it { expect(page).not_to have_link('Delete') }
 
         context 'and saving a new message' do
           before do
@@ -61,11 +63,16 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
       let(:setup_data) { messageable.create_dashboard_message(message: message) }
 
       it { expect(page).to have_content message }
-      it { expect(page).to have_link('Edit') }
-      it { expect(page).to have_link('Delete') }
+
+      it { expect(page).to have_selector('#dashboard-message a', text: 'Edit') }
+      it { expect(page).to have_selector('#dashboard-message a', text: 'Delete') }
 
       context "Clicking on 'Edit'" do
-        before { click_link 'Edit' }
+        before do
+          within('#dashboard-message') do
+            click_link 'Edit'
+          end
+        end
 
         it { expect(page).to have_field('Message', with: message) }
 
@@ -80,9 +87,11 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
 
         it { expect(page).to have_link('Delete') }
 
-        context 'and deleting message' do
+        context "Clicking on 'Delete' and accepting", :js do
           before do
-            click_on 'Delete'
+            accept_alert 'Are you sure?' do
+              click_on 'Delete'
+            end
           end
 
           it { expect(page).to have_content("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}") }
@@ -93,11 +102,25 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
             it { expect(page).not_to have_content(message) }
           end
         end
+
+        context "Clicking on 'Delete' and declining", :js do
+          before do
+            dismiss_confirm 'Are you sure?' do
+              click_on 'Delete'
+            end
+          end
+
+          it { expect(page).to have_content(message) }
+        end
       end
 
-      context "Clicking on 'Delete'" do
+      context "Clicking on 'Delete' and accepting", :js do
         before do
-          click_on 'Delete'
+          accept_alert 'Are you sure?' do
+            within '#dashboard-message' do
+              click_on 'Delete'
+            end
+          end
         end
 
         it { expect(page).to have_content("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}") }
@@ -108,14 +131,29 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
           it { expect(page).not_to have_content(message) }
         end
       end
+
+      context "Clicking on 'Delete' and declining", :js do
+        before do
+          dismiss_confirm 'Are you sure?' do
+            within '#dashboard-message' do
+              click_on 'Delete'
+            end
+          end
+        end
+
+        it { expect(page).to have_content(message) }
+        it { expect(page).not_to have_selector('#dashboard-message a', text: 'Set message') }
+        it { expect(page).to have_selector('#dashboard-message a', text: 'Edit') }
+        it { expect(page).to have_selector('#dashboard-message a', text: 'Delete') }
+      end
     end
   end
 
   context 'when not permitted', unless: permitted do
     it 'panel is not shown' do
-      expect(page).not_to have_content('Set message')
-      expect(page).not_to have_content('Edit')
-      expect(page).not_to have_content('Delete')
+      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Set message') }
+      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Edit') }
+      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Delete') }
     end
   end
 end
