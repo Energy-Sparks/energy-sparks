@@ -89,7 +89,7 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
 
         context "Clicking on 'Delete' and accepting", :js do
           before do
-            accept_confirm 'Are you sure?' do
+            accept_alert 'Are you sure?' do
               click_on 'Delete'
             end
           end
@@ -116,7 +116,7 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
 
       context "Clicking on 'Delete' and accepting", :js do
         before do
-          accept_confirm 'Are you sure?' do
+          accept_alert 'Are you sure?' do
             within '#dashboard-message' do
               click_on 'Delete'
             end
