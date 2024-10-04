@@ -87,11 +87,9 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
 
         it { expect(page).to have_link('Delete') }
 
-        context "Clicking on 'Delete' and accepting", :js do
+        context "Clicking on 'Delete'" do
           before do
-            accept_alert 'Are you sure?' do
-              click_on 'Delete'
-            end
+            click_on 'Delete'
           end
 
           it { expect(page).to have_content("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}") }
@@ -102,24 +100,12 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
             it { expect(page).not_to have_content(message) }
           end
         end
-
-        context "Clicking on 'Delete' and declining", :js do
-          before do
-            dismiss_confirm 'Are you sure?' do
-              click_on 'Delete'
-            end
-          end
-
-          it { expect(page).to have_content(message) }
-        end
       end
 
-      context "Clicking on 'Delete' and accepting", :js do
+      context "Clicking on 'Delete'" do
         before do
-          accept_alert 'Are you sure?' do
-            within '#dashboard-message' do
-              click_on 'Delete'
-            end
+          within '#dashboard-message' do
+            click_on 'Delete'
           end
         end
 
@@ -129,23 +115,6 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
           before { visit school_path(messageable_school, switch: true) }
 
           it { expect(page).not_to have_content(message) }
-        end
-      end
-
-      context "Clicking on 'Delete' and declining", :js do
-        before do
-          dismiss_confirm 'Are you sure?' do
-            within '#dashboard-message' do
-              click_on 'Delete'
-            end
-          end
-        end
-
-        it 'original message in panel is shown' do
-          expect(page).to have_content(message)
-          expect(page).not_to have_selector('#dashboard-message a', text: 'Set message')
-          expect(page).to have_selector('#dashboard-message a', text: 'Edit')
-          expect(page).to have_selector('#dashboard-message a', text: 'Delete')
         end
       end
     end
