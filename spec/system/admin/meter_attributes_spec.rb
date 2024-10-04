@@ -58,7 +58,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
     end
 
 
-    it 'displays a form for all attributes' do
+    it 'is able to display a form for all meter attributes' do
       visit admin_school_single_meter_attribute_path(school, gas_meter)
       options = find('#type').all('option').collect(&:text)
 
@@ -108,7 +108,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       expect(new_attribute.deleted_by).to eq(admin)
     end
 
-    it 'allows creating and editing of storage heater attributes with nested time values' do
+    it 'allows creating and editing of an attribute with nested TimeOfDay values' do
       visit admin_school_single_meter_attribute_path(school, gas_meter)
       select 'Storage heaters > Storage heater configuration'
       click_on 'New attribute'
@@ -139,6 +139,36 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
         power_kw: 150.0,
         charge_start_time: TimeOfDay.new(3, 33),
         charge_end_time: TimeOfDay.new(4, 44)
+      })
+    end
+
+    it 'allows creating and editing of an attribute with nested TimeOfYear values' do
+      visit admin_school_single_meter_attribute_path(school, gas_meter)
+      select 'Meter correction > No heating in summer set missing to zero'
+      click_on 'New attribute'
+
+      fill_in 'attribute_root_start_toy_month', with: '6'
+      fill_in 'attribute_root_start_toy_day_of_month', with: '6'
+      fill_in 'attribute_root_end_toy_month', with: '8'
+      fill_in 'attribute_root_end_toy_day_of_month', with: '8'
+      fill_in 'Reason', with: 'Testing'
+      click_on 'Create'
+
+      within '#database-meter-attributes-content' do
+        click_on 'Edit'
+      end
+
+      expect(page).to have_field('attribute_root_start_toy_month', with: '6')
+      expect(page).to have_field('attribute_root_start_toy_day_of_month', with: '6')
+      expect(page).to have_field('attribute_root_end_toy_month', with: '8')
+      expect(page).to have_field('attribute_root_end_toy_day_of_month', with: '8')
+
+      attribute = gas_meter.meter_attributes.first
+      expect(attribute.to_analytics).to eq({
+        no_heating_in_summer_set_missing_to_zero: {
+          start_toy: TimeOfYear.new(6, 6),
+          end_toy: TimeOfYear.new(8, 8)
+        }
       })
     end
 

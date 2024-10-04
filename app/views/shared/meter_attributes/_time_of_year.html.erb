@@ -11,8 +11,8 @@
   </div>
   <div class="col-6">
     <%= form.simple_fields_for field_name do |f| %>
-      <%= form.input 'day_of_month', as: :integer, input_html: { value: value ? value['day_of_month'] : '' },
-                                     required: field.required?, min: 1, max: 31, label: 'day of month' %>
+      <%= f.input 'day_of_month', as: :integer, input_html: { value: value ? value['day_of_month'] : '' },
+                                  required: field.required?, min: 1, max: 31, label: 'day of month' %>
     <% end %>
   </div>
 </div>

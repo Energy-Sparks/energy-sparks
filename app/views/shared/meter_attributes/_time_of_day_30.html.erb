@@ -11,8 +11,8 @@
   </div>
   <div class="col-6">
     <%= form.simple_fields_for field_name do |f| %>
-      <%= form.input 'minutes', as: :integer, input_html: { value: value ? value['minutes'] : '' },
-                                required: field.required?, min: 0, max: 59, label: 'minutes' %>
+      <%= f.input 'minutes', as: :integer, input_html: { value: value ? value['minutes'] : '' },
+                             required: field.required?, min: 0, max: 59, label: 'minutes' %>
     <% end %>
   </div>
 </div>
