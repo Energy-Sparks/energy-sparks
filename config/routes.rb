@@ -665,6 +665,7 @@ Rails.application.routes.draw do
       resources :community_use, only: [:index]
       resources :intervention_types, only: [:index, :show]
       resources :work_allocation, only: [:index]
+      resources :user_logins, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
