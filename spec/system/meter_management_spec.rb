@@ -168,14 +168,13 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
   context 'as admin' do
     before do
       sign_in(admin)
-      visit root_path
-      click_on('View schools')
-      click_on('Oldfield Park Infants')
+      visit school_path(school)
     end
 
     context 'Manage meters page' do
       before do
         stub_request(:get, "https://n3rgy.test/find-mpxn/#{active_meter.mpan_mprn}")
+        find('#manage_school').click
         click_on 'Manage meters'
       end
 
