@@ -1,6 +1,7 @@
 <h1>User Logins</h1>
 <div>
   <% if @school_group %>
+    <h2><%= @school_group.name %></h2>
     <p><%= link_to 'Manage School Group Users', admin_school_group_users_path(@school_group) %></p>
     <table class="table table-sm">
       <tr>
