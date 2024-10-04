@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: c8a8bf82134f03bc4e69b56cfa59f44647ee699b
-  branch: 4498-marshfield-primary-school-out-of-hours-benchmark-error
+  revision: f4567e407ab1c377d4c2acb527c68cd50ba6cd2b
+  tag: 6.0.12
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
@@ -441,7 +441,7 @@ GEM
       rest-client (>= 1.6.7)
     marcel (1.0.4)
     matrix (0.4.2)
-    memory_profiler (1.0.2)
+    memory_profiler (1.1.0)
     method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)

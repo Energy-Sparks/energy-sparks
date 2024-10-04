@@ -159,6 +159,13 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     end
 
     context 'with enough data to compare electricity' do
+      before do
+        create(:advice_page, key: :electricity_long_term, fuel_type: :electricity)
+        meter_collection = AggregateSchoolService.new(school).aggregate_school
+        Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: school, aggregate_school: meter_collection).generate!
+        refresh
+      end
+
       it 'shows the fuel comparison' do
         expect(page).to have_css('#electricity-comparison')
         expect(page).to have_content(I18n.t('components.comparison_overview.title'))
