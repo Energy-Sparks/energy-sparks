@@ -45,6 +45,19 @@
 <% end %>
 </span>
 
+<h4>Button set</h4>
+<span class='btn-set'>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= link_to key.to_s, '/', class: "btn btn-#{key}" %>
+<% end %>
+</span>
+<hr>
+<span class='btn-set'>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= link_to key.to_s, '/', class: "btn btn-outline-#{key}" %>
+<% end %>
+</span>
+
 <h3>Badges</h1>
 
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
