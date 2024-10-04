@@ -27,6 +27,10 @@
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
   <%= link_to key.to_s, '/', class: "btn btn-outline-#{key}" %>
 <% end %>
+<hr>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <%= link_to key.to_s, '/', class: "btn btn-outline-#{key} disabled", disabled: true %>
+<% end %>
 
 <h4>Button group</h4>
 <span class='btn-group'>
