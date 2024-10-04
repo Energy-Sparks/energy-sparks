@@ -4,9 +4,15 @@
     <%= form.hint field.hint %>
   </div>
   <div class="col-6">
-    <%= form.input field_name + '[month]', as: :integer, input_html: {value: value ? value['month'] : ''},  required: field.required?, min: 1, max: 12, label: 'month'%>
+    <%= form.simple_fields_for field_name do |f| %>
+      <%= f.input 'month', as: :integer, input_html: { value: value ? value['month'] : '' }, required: field.required?,
+                           min: 1, max: 12, label: 'month' %>
+    <% end %>
   </div>
   <div class="col-6">
-    <%= form.input field_name + '[day_of_month]', as: :integer, input_html: {value: value ? value['day_of_month'] : ''}, required: field.required?, min: 1, max: 31, label: 'day of month' %>
+    <%= form.simple_fields_for field_name do |f| %>
+      <%= f.input 'day_of_month', as: :integer, input_html: { value: value ? value['day_of_month'] : '' },
+                                  required: field.required?, min: 1, max: 31, label: 'day of month' %>
+    <% end %>
   </div>
 </div>
