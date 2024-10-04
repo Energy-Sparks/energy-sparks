@@ -14,7 +14,7 @@
     <%= if can?(:start, TransportSurvey)
           header_nav_link t('schools.transport_surveys.header_nav.survey_today'),
                           start_school_transport_surveys_url(@school),
-                          class: 'btn-primary'
+                          class: 'btn-primary mb-1'
         end %>
     <%= header_nav_link t('schools.transport_surveys.header_nav.view_all'),
                         school_transport_surveys_url(@school) %>
