@@ -62,8 +62,8 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
     context 'a message is already set' do
       let(:setup_data) { messageable.create_dashboard_message(message: message) }
 
+      it { expect(page).not_to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
       it { expect(page).to have_content message }
-
       it { expect(page).to have_selector('#dashboard-message a', text: 'Edit') }
       it { expect(page).to have_selector('#dashboard-message a', text: 'Delete') }
 
@@ -89,7 +89,7 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
 
         context "Clicking on 'Delete' and accepting", :js do
           before do
-            accept_alert 'Are you sure?' do
+            accept_confirm 'Are you sure?' do
               click_on 'Delete'
             end
           end
@@ -116,7 +116,7 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
 
       context "Clicking on 'Delete' and accepting", :js do
         before do
-          accept_alert 'Are you sure?' do
+          accept_confirm 'Are you sure?' do
             within '#dashboard-message' do
               click_on 'Delete'
             end
@@ -141,19 +141,21 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
           end
         end
 
-        it { expect(page).to have_content(message) }
-        it { expect(page).not_to have_selector('#dashboard-message a', text: 'Set message') }
-        it { expect(page).to have_selector('#dashboard-message a', text: 'Edit') }
-        it { expect(page).to have_selector('#dashboard-message a', text: 'Delete') }
+        it 'original message in panel is shown' do
+          expect(page).to have_content(message)
+          expect(page).not_to have_selector('#dashboard-message a', text: 'Set message')
+          expect(page).to have_selector('#dashboard-message a', text: 'Edit')
+          expect(page).to have_selector('#dashboard-message a', text: 'Delete')
+        end
       end
     end
   end
 
   context 'when not permitted', unless: permitted do
     it 'panel is not shown' do
-      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Set message') }
-      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Edit') }
-      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Delete') }
+      expect(page).not_to have_selector('#dashboard-message a', text: 'Set message')
+      expect(page).not_to have_selector('#dashboard-message a', text: 'Edit')
+      expect(page).not_to have_selector('#dashboard-message a', text: 'Delete')
     end
   end
 end
