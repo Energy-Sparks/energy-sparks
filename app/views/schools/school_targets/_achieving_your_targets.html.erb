@@ -86,18 +86,18 @@
     <% if can?(:manage, Activity) %>
       <div class="card mb-2 text-center">
         <%= link_to t('schools.school_targets.achieving_your_targets.choose_another_activity'),
-                    activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                    activity_categories_path, class: 'btn btn-default' %>
       </div>
     <% end %>
     <% if can?(:create, Observation) %>
       <div class="card mb-2">
         <%= link_to t('schools.school_targets.achieving_your_targets.record_an_energy_saving_action'),
-                    intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                    intervention_type_groups_path, class: 'btn btn-default' %>
       </div>
     <% end %>
       <div class="card mb-2">
         <%= link_to t('schools.school_targets.achieving_your_targets.view_dashboard'), school_path(@school),
-                    class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                    class: 'btn btn-default' %>
       </div>
   </div>
 <% end %>

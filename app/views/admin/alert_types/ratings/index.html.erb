@@ -5,8 +5,8 @@
 
 <%= render 'admin/alert_types/apply_changes' %>
 
-<%= link_to "New content#{ ' rating range' if @alert_type.has_ratings?}", new_admin_alert_type_rating_path(@alert_type), class: 'btn btn-primary mb-3' %>
-
+<%= link_to "New content#{' rating range' if @alert_type.has_ratings?}",
+            new_admin_alert_type_rating_path(@alert_type), class: 'btn btn-primary mb-3' %>
 
 <table class="table table-striped">
   <thead>
@@ -28,19 +28,24 @@
         <% end %>
         <td><%= rating.description %></td>
         <td>
-          <span title="Pupil dashboard alert" class="<%='text-success' if rating.pupil_dashboard_alert_active? %>"><%= fa_icon('users fa-2x') %></span> &nbsp;
-          <span title="Manager dashboard alert" class="<%='text-success' if rating.management_dashboard_alert_active? %>"><%= fa_icon('briefcase fa-2x') %></span> &nbsp;
-          <span title="Management priorities" class="<%='text-success' if rating.management_priorities_active? %>"><%= fa_icon('table fa-2x') %></span> &nbsp;
-          <span title="Find out more" class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span> &nbsp;
-          <span title="SMS" class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span> &nbsp;
-          <span title="Email" class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span> &nbsp;
+          <span title="Pupil dashboard alert" class="<%= 'text-success' if rating.pupil_dashboard_alert_active? %>"><%= fa_icon('users fa-2x') %></span> &nbsp;
+          <span title="Manager dashboard alert" class="<%= 'text-success' if rating.management_dashboard_alert_active? %>"><%= fa_icon('briefcase fa-2x') %></span> &nbsp;
+          <span title="Management priorities" class="<%= 'text-success' if rating.management_priorities_active? %>"><%= fa_icon('table fa-2x') %></span> &nbsp;
+          <span title="Find out more" class="<%= 'text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span> &nbsp;
+          <span title="SMS" class="<%= 'text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span> &nbsp;
+          <span title="Email" class="<%= 'text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span> &nbsp;
         </td>
-        <td><%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn' %></td>
-        <td><%= link_to "Activity types (#{rating.activity_types.count})", admin_alert_type_rating_activity_types_path(@alert_type, rating), class: 'btn' %></td>
-        <td><%= link_to "Actions (#{rating.intervention_types.count})", admin_alert_type_rating_intervention_types_path(@alert_type, rating), class: 'btn' %></td>
+        <td><%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn btn-primary' %></td>
+        <td><%= link_to "Activity types (#{rating.activity_types.count})",
+                        admin_alert_type_rating_activity_types_path(@alert_type, rating), class: 'btn' %></td>
+        <td><%= link_to "Actions (#{rating.intervention_types.count})",
+                        admin_alert_type_rating_intervention_types_path(@alert_type, rating), class: 'btn' %></td>
         <% if @alert_type.class_name == "Alerts::System::ContentManaged" %>
           <td>
-            <%= link_to "Delete", admin_alert_type_rating_path(@alert_type, rating), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+            <%= link_to 'Delete', admin_alert_type_rating_path(@alert_type, rating),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: 'btn btn-danger' %>
           </td>
         <% end %>
       </tr>

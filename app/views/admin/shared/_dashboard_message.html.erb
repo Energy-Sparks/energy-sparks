@@ -1,11 +1,19 @@
-<div class="alert alert-info clearfix mb-2 d-flex">
+<div id='dashboard-message' class="alert alert-info clearfix mb-2 d-flex">
   <div class="pl-2 pr-3 justify-content-start"><%= fa_icon(:info) %></div>
   <div class="flex-grow-1">
-    <%= messageable.dashboard_message.try(:message) || "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" %>
+    <%= messageable.dashboard_message.try(:message) ||
+          "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" %>
   </div>
   <div class="justify-content-end">
-    <% edit_label = messageable.dashboard_message.try(:message) ? 'Edit message' : 'Set message' %>
-    <%= link_to edit_label, url_for([:edit, :admin, messageable, :dashboard_message]), class: 'btn btn-sm' %>
-    <%= link_to 'Delete message', polymorphic_url([:admin, messageable, :dashboard_message]), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-sm btn-danger' if messageable.dashboard_message.try(:message) %>
+    <% edit_label = messageable.dashboard_message.try(:message) ? 'Edit' : 'Set message' %>
+    <span class='btn-group'>
+    <%= link_to edit_label, url_for([:edit, :admin, messageable, :dashboard_message]), class: 'btn btn-primary btn-sm' %>
+    <%= if messageable.dashboard_message.try(:message)
+          link_to 'Delete',
+                  polymorphic_url([:admin, messageable, :dashboard_message]),
+                  method: :delete, data: { confirm: 'Are you sure?' },
+                  class: 'btn btn-sm btn-danger'
+        end %>
+    </span>
   </div>
 </div>
