@@ -1,6 +1,6 @@
 module IssuesHelper
   def issue_type_icon(issue_type, count = 0)
-    colour = count > 0 ? Issue.issue_type_classes[issue_type.to_sym] : ''
+    colour = count > 0 ? Issue.issue_type_classes[issue_type.to_sym] : 'grey-light'
     fa_icon("#{Issue.issue_type_image(issue_type)} text-#{colour}")
   end
 
