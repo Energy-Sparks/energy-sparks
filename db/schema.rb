@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_11_153230) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_07_110615) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -953,6 +953,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_11_153230) do
     t.datetime "enqueued_at", precision: nil
     t.datetime "discarded_at", precision: nil
     t.datetime "finished_at", precision: nil
+    t.datetime "jobs_finished_at"
   end
 
   create_table "good_job_executions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3931,18 +3932,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_11_153230) do
       data.current_year_kwh,
       data.current_year_target_kwh,
       data.tracking_start_date
-    FROM ( SELECT alerts.alert_generation_run_id,
+     FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.current_year_percent_of_target_relative,
               data_1.current_year_kwh,
               data_1.current_year_target_kwh,
               data_1.tracking_start_date
-            FROM alerts,
+             FROM alerts,
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, tracking_start_date date)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityTargetAnnual'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-            FROM alert_generation_runs
+             FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
@@ -3954,18 +3955,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_11_153230) do
       data.current_year_kwh,
       data.current_year_target_kwh,
       data.tracking_start_date
-    FROM ( SELECT alerts.alert_generation_run_id,
+     FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.current_year_percent_of_target_relative,
               data_1.current_year_kwh,
               data_1.current_year_target_kwh,
               data_1.tracking_start_date
-            FROM alerts,
+             FROM alerts,
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, tracking_start_date date)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasTargetAnnual'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-            FROM alert_generation_runs
+             FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
     WHERE (data.alert_generation_run_id = latest_runs.id);
   SQL
