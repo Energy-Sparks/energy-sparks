@@ -1,7 +1,7 @@
 .school-group-comparison-component-callout-row {
   @each $tag, $colour in $colours-comparison {
     .#{$tag} {
-      background-color: $very-light-grey !important;
+      background-color: $light !important;
       border-bottom: 10px solid $colour;
     }
   }
@@ -18,9 +18,9 @@
 }
 
 .school-group-comparison-component-callout-box {
-  border: 1px solid $light-grey;
+  border: 1px solid $grey-light;
   width: 50%;
-  box-shadow: 1px 1px $silver;
+  box-shadow: 1px 1px $grey-medium;
   margin-top: 10px;
   margin-bottom: 12px;
   background-color: $white;

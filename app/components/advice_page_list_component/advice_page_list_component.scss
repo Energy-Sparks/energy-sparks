@@ -1,32 +1,8 @@
 .advice-page-list-component {
-  .exemplar_school {
-    background-color: $exemplar-school;
-    color: $white;
-  }
-
-  .benchmark_school {
-    background-color: $benchmark-school;
-    color: $white;
-  }
-
-  .other_school {
-    background-color: $other-school;
-    color: $white;
-  }
-
-  .bg-electric-light {
-    background-color: $blue-pale;
-  }
-
-  .bg-gas-light {
-    background-color: $yellow-pale;
-  }
-
-  .bg-storage-light {
-    background-color: $purple-light;
-  }
-
-  .bg-solar-light {
-    background-color: $green-pale;
+  @each $tag, $colour in $colours-comparison {
+    .#{$tag} {
+      background-color: $colour;
+      color: $white;
+    }
   }
 }

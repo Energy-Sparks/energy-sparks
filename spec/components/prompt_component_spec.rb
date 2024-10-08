@@ -5,10 +5,10 @@ require 'rails_helper'
 RSpec.describe PromptComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:params) { { id: id, status: :neutral, icon: icon, classes: classes } }
+  let(:params) { { id: id, status: :neutral, icon: icon, classes: classes, fuel_type: :gas } }
   let(:content) { '<p>Content</p>' }
   let(:title) { 'Title' }
-  let(:icon) { 'bolt' }
+  let(:icon) { 'calendar' }
   let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning')}
   let(:link) { ActionController::Base.helpers.link_to 'Link text', 'href' }
 
@@ -19,12 +19,13 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
     it { expect(html).to have_link('Link text', href: 'href') }
     it { expect(html).to have_text(content) }
 
+    let(:icon_html) { html.css('span.fa-stack') }
+
     it 'has the icon' do
       expect(html).to have_css('span.fa-stack')
-      within('span.fa-stack') do
-        expect(html).to have_css('i.fa-circle')
-        expect(html).to have_css("i.fa-#{icon}")
-      end
+      expect(icon_html).to have_css('i.fa-circle')
+      expect(icon_html).to have_css("i.fa-#{icon}")
+      expect(icon_html).to have_css("i.fa-#{icon}")
     end
   end
 
@@ -64,6 +65,20 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
         let(:expected_classes) { classes }
         let(:expected_id) { id }
       end
+    end
+
+    context 'with fuel type' do
+      let(:icon) { :bolt }
+      let(:params) { { id: id, status: :neutral, fuel_type: :electricity } }
+
+      it_behaves_like 'it displays all content'
+    end
+
+    context 'with icon and fuel type' do
+      let(:icon) { :calendar }
+      let(:params) { { id: id, status: :neutral, icon: 'calendar', fuel_type: :electricity } }
+
+      it_behaves_like 'it displays all content'
     end
 
     context 'with recognised statuses' do

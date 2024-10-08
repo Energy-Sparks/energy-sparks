@@ -50,9 +50,17 @@ h3, h4, h5, h6,
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: $dark-blue;
   font-family: $header-font-family;
   font-weight: $header-font-weight;
+
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $blue-very-dark;
+    text-decoration: none;
+  }
 }
 
 .trix-content div {
