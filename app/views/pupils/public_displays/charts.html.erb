@@ -21,11 +21,14 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 d-flex justify-content-between align-items-center flex-wrap">
       <h4>
         <% display_dates = @analysis_dates.transform_values { |d| short_dates(d) } %>
         <%= t("pupils.public_displays.charts.#{@chart_type}.dates", **display_dates) %>
       </h4>
+      <div class="public-display-logo">
+        <%= image_tag('navigation-brand-transparent-en.png') %>
+      </div>
     </div>
   </div>
 </div>
