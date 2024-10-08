@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <div class="col-12">
       <h1>
@@ -9,14 +9,17 @@
       </h2>
     </div>
   </div>
-  <%= component 'chart',
-                school: @school,
-                chart_type: @chart,
-                axis_controls: false,
-                no_zoom: true,
-                analysis_controls: false,
-                chart_config: create_chart_config(@school, @chart) %>
-
+  <div class="row">
+    <div class="col-12 public-display-chart">
+      <%= component 'chart',
+                    school: @school,
+                    chart_type: @chart,
+                    axis_controls: false,
+                    no_zoom: true,
+                    analysis_controls: false,
+                    chart_config: create_chart_config(@school, @chart) %>
+    </div>
+  </div>
   <div class="row">
     <div class="col-12">
       <h4>
