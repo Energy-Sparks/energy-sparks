@@ -130,7 +130,7 @@ module Amr
               meter.update!(dcc_meter: :other)
               upserter.perform
               expect(Amr::N3rgyDownloader).to \
-                receive(:new).with(meter:, start_date: earliest, end_date: yesterday_last_reading - 1.day)
+                have_received(:new).with(meter:, start_date: earliest, end_date: yesterday_last_reading - 1.day)
             end
           end
         end
