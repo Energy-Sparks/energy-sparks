@@ -20,6 +20,10 @@ module Amr
       { :amr_data_feed_config_id => config.id, meter_id: meter_id, :mpan_mprn => mpan_mprn, :reading_date => reading_date, :readings => readings }
     end
 
+    def create_reading_for_period(config, mpan_mprn, reading_date, period, readings, meter_id: nil)
+      { :amr_data_feed_config_id => config.id, meter_id: meter_id, :mpan_mprn => mpan_mprn, :reading_date => reading_date, period: period, :readings => readings }
+    end
+
     # Matches the EDF format
     # So 26 Aug 2019 00:00 means usage from midnight to 00:30 on 26th August
     context 'with readings labelled at start of the half hour, with 00:00 for same day (%H:%M:%s)' do
@@ -53,7 +57,6 @@ module Amr
           48.times.collect do |hh|
             date = hh < 47 ? reading_date.strftime('%d %b %Y') : (reading_date + 1).strftime('%d %b %Y')
             date_time = hh < 47 ? "#{date} #{TimeOfDay.time_of_day_from_halfhour_index(hh + 1)}" : "#{date} 00:00"
-            puts date_time
             create_reading(config, mpan_mprn, date_time, [(hh + 1).to_s])
           end
         end
@@ -264,12 +267,11 @@ module Amr
       end
     end
 
-
     # TODO
     # Create separate specs for 00:00 formatted times and 00, 0 formatted times
     #
     # this is testing with times from 00:00 to 23:30
-    context 'split date and time column file format' do
+    context 'with split date and time column file format' do
       let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
       let(:readings) do
         [
@@ -397,7 +399,7 @@ module Amr
       end
     end
 
-    context 'indexed file format' do
+    context 'with numbered half-hourly periods (positional_index: true)' do
       let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
 
       let(:readings) do
@@ -553,12 +555,12 @@ module Amr
       end
     end
 
-    context 'more than 48 readings' do
+    context 'with more than 48 readings per day' do
       let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
       let(:readings) do
         data = []
-        49.times { |idx| data << { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', period: (idx + 1).to_s, :reading_date => '25/08/2019', :readings => ['14.4'] } }
-        48.times { |idx| data << { :amr_data_feed_config_id => 6, :mpan_mprn => '1710035168313', period: (idx + 1).to_s, :reading_date => '26/08/2019', :readings => ['7'] } }
+        49.times { |hh| data << create_reading_for_period(config, '1710035168313', '25/08/2019', (hh + 1).to_s, ['14.4']) }
+        48.times { |hh| data << create_reading_for_period(config, '1710035168313', '26/08/2019', (hh + 1).to_s, ['14.4']) }
         data
       end
 
