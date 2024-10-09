@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: a0462a50dedc7c1bfad06e70510ab1c6bed76425
-  branch: 4536-ridiculous-significant-figures-in-alert
+  revision: 76783ac84e39c819b0b32cca2c35dbdce44afaf6
+  tag: 6.0.13
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
