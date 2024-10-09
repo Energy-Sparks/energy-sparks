@@ -20,7 +20,7 @@ module Solar
     private
 
     def solar_edge_api
-      SolarEdgeAPI.new(@installation.api_key)
+      DataFeeds::SolarEdgeAPI.new(@installation.api_key)
     end
   end
 end

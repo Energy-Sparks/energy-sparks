@@ -51,7 +51,7 @@ class ScheduleDataManagerService
   def find_uk_grid_carbon_intensity
     cache_key = 'co2-feed'
     Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRY) do
-      uk_grid_carbon_intensity_data = GridCarbonIntensity.new
+      uk_grid_carbon_intensity_data = DataFeeds::GridCarbonIntensity.new
       DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
         uk_grid_carbon_intensity_data.add(date, values.map(&:to_f))
       end
