@@ -10,6 +10,12 @@ describe 'Pupil analysis public displays' do
     })
   end
 
+  shared_examples 'it has some basic branding' do
+    it 'shows the logo' do
+      expect(page).to have_css('.public-display-logo')
+    end
+  end
+
   context 'when viewing index' do
     before do
       visit pupils_school_public_displays_path(school)
@@ -47,6 +53,8 @@ describe 'Pupil analysis public displays' do
       it 'shows the date ranges' do
         expect(page).to have_content('Showing energy used')
       end
+
+      it_behaves_like 'it has some basic branding'
     end
 
     context 'when school is data enabled' do
@@ -63,7 +71,7 @@ describe 'Pupil analysis public displays' do
           let(:chart_type) { :out_of_hours }
 
           it_behaves_like 'a working chart page' do
-            let(:expected_chart) { :pupil_dashboard_daytype_breakdown_electricity }
+            let(:expected_chart) { :daytype_breakdown_electricity_tolerant }
           end
         end
 
@@ -83,7 +91,7 @@ describe 'Pupil analysis public displays' do
           let(:chart_type) { :out_of_hours }
 
           it_behaves_like 'a working chart page' do
-            let(:expected_chart) { :pupil_dashboard_daytype_breakdown_gas }
+            let(:expected_chart) { :daytype_breakdown_gas_tolerant }
           end
         end
 
@@ -143,6 +151,66 @@ describe 'Pupil analysis public displays' do
         end
       end
     end
+
+    context 'when data is out of date' do
+      let!(:school) { create(:school, :with_fuel_configuration) }
+
+      context 'with electricity' do
+        let(:fuel_type) { :electricity }
+
+        before do
+          school.configuration.update(aggregate_meter_dates: {
+            electricity: { start_date: Time.zone.today - 90.days, end_date: Time.zone.today - 31.days },
+            gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
+          })
+          visit pupils_school_public_displays_charts_path(school, fuel_type, chart_type)
+        end
+
+        context 'with out of hours chart' do
+          let(:chart_type) { :out_of_hours }
+
+          it_behaves_like 'a working chart page' do
+            let(:expected_chart) { :daytype_breakdown_electricity_tolerant }
+          end
+        end
+
+        context 'with last week chart' do
+          let(:chart_type) { :last_week }
+
+          it 'redirects to equivalences' do
+            expect(page).to have_current_path pupils_school_public_displays_equivalences_path(school, fuel_type), ignore_query: true
+          end
+        end
+      end
+
+      context 'with gas' do
+        let(:fuel_type) { :gas }
+
+        before do
+          school.configuration.update(aggregate_meter_dates: {
+            electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
+            gas: { start_date: Time.zone.today - 90.days, end_date: Time.zone.today - 31.days },
+          })
+          visit pupils_school_public_displays_charts_path(school, fuel_type, chart_type)
+        end
+
+        context 'with out of hours chart' do
+          let(:chart_type) { :out_of_hours }
+
+          it_behaves_like 'a working chart page' do
+            let(:expected_chart) { :daytype_breakdown_gas_tolerant }
+          end
+        end
+
+        context 'with last week chart' do
+          let(:chart_type) { :last_week }
+
+          it 'redirects to equivalences' do
+            expect(page).to have_current_path pupils_school_public_displays_equivalences_path(school, fuel_type), ignore_query: true
+          end
+        end
+      end
+    end
   end
 
   context 'when viewing equivalences' do
@@ -163,6 +231,8 @@ describe 'Pupil analysis public displays' do
         visit pupils_school_public_displays_equivalences_path(school, :electricity, locale: 'cy')
         expect(page).to have_content('Gwariodd eich ysgol £9.00 ar drydan y llynedd')
       end
+
+      it_behaves_like 'it has some basic branding'
     end
 
     context 'when there are no equivalences for the fuel type' do
@@ -173,6 +243,8 @@ describe 'Pupil analysis public displays' do
       it 'displays a default equivalence' do
         expect(page).to have_content('the average school')
       end
+
+      it_behaves_like 'it has some basic branding'
     end
 
     context 'when school is not data enabled' do
@@ -185,6 +257,8 @@ describe 'Pupil analysis public displays' do
       it 'displays a default equivalence' do
         expect(page).to have_content('the average school')
       end
+
+      it_behaves_like 'it has some basic branding'
     end
 
     context 'when school is not public' do
