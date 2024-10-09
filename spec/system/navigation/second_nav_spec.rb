@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'Navigation -> second nav', type: :system do
+RSpec.describe 'Navigation -> second nav' do
   let!(:user) {}
   let(:school_group) { create(:school_group) }
-  let(:school) { create(:school, school_group: school_group) }
+  let(:school) { create(:school, school_group:) }
   let(:school_with_points) { create(:school, :with_points, scoreboard: create(:scoreboard)) }
   let(:nav) { page.find(:css, 'nav.navbar-second') }
 
@@ -25,7 +27,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
       before { visit home_page_path }
 
       context 'when current user has a school' do
-        let(:user) { create(:user, school: school) }
+        let(:user) { create(:user, school:) }
 
         it 'shows back to dashboard link' do
           expect(nav).to have_link('Back to dashboard', href: school_path(school))
@@ -36,7 +38,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
         let(:user) { create(:user, school: nil) }
 
         it 'shows back to dashboard link' do
-          expect(nav).not_to have_link('Back to dashboard')
+          expect(nav).to have_no_link('Back to dashboard')
         end
       end
     end
@@ -56,14 +58,14 @@ RSpec.describe 'Navigation -> second nav', type: :system do
       context 'when school does not have points' do
         before { visit school_path(school) }
 
-        it { expect(nav).not_to have_css('#mini-podium') }
+        it { expect(nav).to have_no_css('#mini-podium') }
       end
     end
 
     context 'when on a page with a non-school context' do
       before { visit home_page_path }
 
-      it { expect(nav).not_to have_css('#mini-podium') }
+      it { expect(nav).to have_no_css('#mini-podium') }
     end
   end
 
@@ -79,11 +81,11 @@ RSpec.describe 'Navigation -> second nav', type: :system do
         it { expect(nav).to have_css('#school-status-buttons') }
 
         it 'does not display buttons' do
-          expect(nav).not_to have_link('Visible')
-          expect(nav).not_to have_link('Public')
-          expect(nav).not_to have_link('Process data')
-          expect(nav).not_to have_link('Data visible')
-          expect(nav).not_to have_css('a i.fa-arrows-rotate')
+          expect(nav).to have_no_link('Visible')
+          expect(nav).to have_no_link('Public')
+          expect(nav).to have_no_link('Process data')
+          expect(nav).to have_no_link('Data visible')
+          expect(nav).to have_no_css('a i.fa-arrows-rotate')
         end
       end
 
@@ -137,7 +139,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     before { visit home_page_path }
 
     context 'when user not signed in' do
-      let(:user) { }
+      let(:user) {}
 
       it { expect(nav).to have_link 'Enrol' }
     end
@@ -145,36 +147,36 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     context 'when user signed in' do
       let(:user) { create(:pupil) }
 
-      it { expect(nav).not_to have_link 'Enrol' }
+      it { expect(nav).to have_no_link 'Enrol' }
     end
   end
 
   describe 'Manage group menu' do
-    let(:manage_school_group_menu) { nav.find(:css, '#manage-school-group-menu') }
+    let(:manage_school_group_menu) { nav.find_by(id: 'manage-school-group-menu') }
 
     context 'when on a non school group page' do
       before { visit home_page_path }
 
-      it { expect(nav).not_to have_css('#manage-school-group-menu') }
+      it { expect(nav).to have_no_css('#manage-school-group-menu') }
     end
 
     context 'when on school group page' do
       before { visit school_group_path(school.school_group) }
 
       context 'when user is a school group admin for different school' do
-        let(:user) { create :group_admin, school_group: create(:school_group) }
+        let(:user) { create(:group_admin, school_group: create(:school_group)) }
 
-        it { expect(nav).not_to have_css('#manage-school-group-menu') }
+        it { expect(nav).to have_no_css('#manage-school-group-menu') }
       end
 
       context 'when user is a school group admin for that school' do
-        let(:user) { create :group_admin, school_group: school_group }
+        let(:user) { create(:group_admin, school_group:) }
 
         it { expect(nav).to have_css('#manage-school-group-menu') }
       end
 
       context 'when user is not a school group admin' do
-        it { expect(nav).not_to have_css('#manage-school-group-menu') }
+        it { expect(nav).to have_no_css('#manage-school-group-menu') }
       end
     end
 
@@ -185,14 +187,14 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     context 'when on a non school page' do
       before { visit home_page_path }
 
-      it { expect(nav).not_to have_css('#manage-school-menu') }
+      it { expect(nav).to have_no_css('#manage-school-menu') }
     end
 
     context 'when on a school page' do
       before { visit school_path(school) }
 
       context 'when user is a school admin for school' do
-        let(:user) { create(:school_admin, school: school) }
+        let(:user) { create(:school_admin, school:) }
 
         it { expect(nav).to have_css('#manage-school-menu') }
       end
@@ -200,13 +202,13 @@ RSpec.describe 'Navigation -> second nav', type: :system do
       context 'when user is a school admin for a different school' do
         let(:user) { create(:school_admin, school: create(:school)) }
 
-        it { expect(nav).not_to have_css('#manage-school-menu') }
+        it { expect(nav).to have_no_css('#manage-school-menu') }
       end
 
       context 'when user is logged out' do
-        let(:user) { }
+        let(:user) {}
 
-        it { expect(nav).not_to have_css('#manage-school-menu') }
+        it { expect(nav).to have_no_css('#manage-school-menu') }
       end
     end
 
@@ -217,13 +219,13 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     before { visit home_page_path }
 
     context 'when logged out' do
-      let(:user) { }
+      let(:user) {}
 
-      it { expect(nav).not_to have_css('#my-school-group-menu') }
+      it { expect(nav).to have_no_css('#my-school-group-menu') }
     end
 
     context 'when user is a group admin for school group' do
-      let(:user) { create(:group_admin, school_group: school_group) }
+      let(:user) { create(:group_admin, school_group:) }
 
       it 'links to group dashboard' do
         expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
@@ -231,7 +233,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
 
       context 'when school group has no schools' do
         it { expect(nav).to have_css('#my-school-group-menu') }
-        it { expect(nav).not_to have_css('#my-school-group-menu div.dropdown-divider') }
+        it { expect(nav).to have_no_css('#my-school-group-menu div.dropdown-divider') }
       end
 
       context 'when school group has schools' do
@@ -247,9 +249,9 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     end
 
     context 'when user has a school group but insufficient permissions' do
-      let(:user) { create(:pupil, school_group: school_group) }
+      let(:user) { create(:pupil, school_group:) }
 
-      it { expect(nav).not_to have_css('#my-school-group-menu') }
+      it { expect(nav).to have_no_css('#my-school-group-menu') }
     end
   end
 
@@ -257,19 +259,19 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     before { visit home_page_path }
 
     context 'when logged out' do
-      let(:user) { }
+      let(:user) {}
 
-      it { expect(nav).not_to have_css('#my-school-menu') }
+      it { expect(nav).to have_no_css('#my-school-menu') }
     end
 
     context 'when admin' do
-      let(:user) { create(:admin, school: school) }
+      let(:user) { create(:admin, school:) }
 
-      it { expect(nav).not_to have_css('#my-school-menu') }
+      it { expect(nav).to have_no_css('#my-school-menu') }
     end
 
-    [:pupil, :school_admin, :staff, :pupil].each do |user_type|
-      let(:user) { create(user_type, school: school) }
+    %i[pupil school_admin staff pupil].each do |user_type|
+      let(:user) { create(user_type, school:) }
 
       it "displays the menu for #{user_type}" do
         expect(page).to have_css('#my-school-menu')
@@ -283,16 +285,16 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     before { visit home_page_path }
 
     context 'when logged out' do
-      let(:user) { }
+      let(:user) {}
 
-      it { expect(nav).not_to have_css('#my-schools-menu') }
+      it { expect(nav).to have_no_css('#my-schools-menu') }
     end
 
     context 'when user is a school admin for school' do
-      let(:user) { create(:school_admin, school: school) }
+      let(:user) { create(:school_admin, school:) }
 
       context 'when school has no cluster schools' do
-        it { expect(nav).not_to have_css('#my-schools-menu') }
+        it { expect(nav).to have_no_css('#my-schools-menu') }
       end
 
       context 'when school has cluster schools' do
@@ -301,7 +303,8 @@ RSpec.describe 'Navigation -> second nav', type: :system do
         it { expect(nav).to have_css('#my-schools-menu') }
 
         it 'links to schools' do
-          expect(nav).to have_link(user.cluster_schools_for_switching.first.name)
+          expect(nav).to have_link(user.school.name)
+          expect(nav).to have_link(user.cluster_schools.first.name)
         end
       end
     end
@@ -311,7 +314,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     before { visit home_page_path }
 
     context 'when user signed out' do
-      let(:user) { }
+      let(:user) {}
 
       it { expect(nav).to have_link 'Sign In' }
     end
@@ -319,7 +322,7 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     context 'when user signed in' do
       let(:user) { create(:pupil) }
 
-      it { expect(nav).not_to have_link 'Sign In' }
+      it { expect(nav).to have_no_link 'Sign In' }
     end
   end
 
@@ -333,9 +336,9 @@ RSpec.describe 'Navigation -> second nav', type: :system do
     end
 
     context 'when user signed out' do
-      let(:user) { }
+      let(:user) {}
 
-      it { expect(nav).not_to have_link 'Sign Out' }
+      it { expect(nav).to have_no_link 'Sign Out' }
     end
   end
 end
