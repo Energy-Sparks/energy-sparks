@@ -81,7 +81,7 @@ module Amr
         end
 
         let(:expected_output) do
-          [create_reading(config, mpan_mprn, reading_date, create_hh_readings)]
+          [create_reading(config, mpan_mprn, reading_date.to_date, create_hh_readings)]
         end
 
         it 'converts a list of single readings per half hour into a day per reading format' do
