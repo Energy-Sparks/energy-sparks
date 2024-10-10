@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
-describe DataSources::PVLiveService, type: :service do
+describe DataFeeds::PVLiveService, type: :service do
   let(:service)     { described_class.new }
 
   let(:latitude)  { 0.513751e2 }
@@ -12,7 +12,7 @@ describe DataSources::PVLiveService, type: :service do
     let(:gsp_list) { JSON.parse(File.read('spec/fixtures/pv_live/gsp_list.json'), symbolize_names: true) }
 
     before do
-      expect_any_instance_of(DataSources::PVLiveAPI).to receive(:gsp_list).and_return(gsp_list)
+      expect_any_instance_of(DataFeeds::PVLiveAPI).to receive(:gsp_list).and_return(gsp_list)
     end
 
     it 'returns expected list of areas' do
@@ -34,7 +34,7 @@ describe DataSources::PVLiveService, type: :service do
     let(:end_date)   { Date.new(2021, 0o1, 0o2) }
 
     before do
-      expect_any_instance_of(DataSources::PVLiveAPI).to receive(:gsp).and_return(data)
+      expect_any_instance_of(DataFeeds::PVLiveAPI).to receive(:gsp).and_return(data)
     end
 
     it 'returns reformatted data' do

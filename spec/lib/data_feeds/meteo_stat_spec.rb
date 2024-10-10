@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../../../lib/dashboard/data_sources/weather/historic/meteostat'
-require_relative '../../../../lib/dashboard/data_sources/weather/historic/meteostat_api'
+require 'rails_helper'
 
 describe MeteoStat do
   let(:latitude)    { 123 }

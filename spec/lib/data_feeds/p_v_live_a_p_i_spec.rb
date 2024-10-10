@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 require 'faraday/adapter/test'
 
-describe DataSources::PVLiveAPI do
+describe DataFeeds::PVLiveAPI do
   let(:success)     { true }
   let(:status)      { 200 }
   let(:client)      { described_class.new }
@@ -15,7 +15,7 @@ describe DataSources::PVLiveAPI do
   end
 
   describe '#gsp_list' do
-    let(:expected_url) { "#{DataSources::PVLiveAPI::BASE_URL}/gsp_list" }
+    let(:expected_url) { "#{DataFeeds::PVLiveAPI::BASE_URL}/gsp_list" }
     let(:expected_params) { {} }
 
     context 'with success' do
@@ -58,7 +58,7 @@ describe DataSources::PVLiveAPI do
       it 'throws exception' do
         expect do
           client.gsp_list
-        end.to raise_error(DataSources::PVLiveAPI::ApiFailure)
+        end.to raise_error(DataFeeds::PVLiveAPI::ApiFailure)
       end
     end
 
@@ -70,13 +70,13 @@ describe DataSources::PVLiveAPI do
       it 'throws exception' do
         expect do
           client.gsp_list
-        end.to raise_error(DataSources::PVLiveAPI::ApiFailure)
+        end.to raise_error(DataFeeds::PVLiveAPI::ApiFailure)
       end
     end
   end
 
   describe '#gsp' do
-    let(:expected_url) { "#{DataSources::PVLiveAPI::BASE_URL}/gsp/0" }
+    let(:expected_url) { "#{DataFeeds::PVLiveAPI::BASE_URL}/gsp/0" }
     let(:expected_params) { { data_format: 'json', extra_fields: 'installedcapacity_mwp' } }
     let(:body) do
       {
