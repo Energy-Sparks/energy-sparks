@@ -17,7 +17,7 @@
             <th class="name">School group</th>
             <th class="name">Group admin</th>
             <th class="name">School name</th>
-            <th class="completed">Onboarding completed</th>
+            <th class="completed data-sort">Onboarding completed</th>
             <th class="visible">Visible?</th>
             <th class="processing">Process data?</th>
             <th class="enabled">Data visible?</th>
@@ -34,7 +34,7 @@
                 <td><%= link_to school_group.name, admin_school_group_path(school_group) %></td>
                 <td><%= school_group.default_issues_admin_user&.name %></td>
                 <td><%= link_to school.name, school_path(school) %></td>
-                <td>
+                <td data-sort="<%= school.school_onboarding.completed_on || 'nil' %>">
                     <% if school.school_onboarding.present? %>
                       <%= nice_dates(school.school_onboarding.completed_on) %>
                     <% else %>
