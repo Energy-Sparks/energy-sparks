@@ -70,6 +70,24 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
                                     ])
     end
 
+    context 'when school has solar pv' do
+      before do
+        allow(school).to receive(:has_solar_pv?).and_return(true)
+      end
+
+      it 'renders the table' do
+        expect(html).to have_selector(:table_row, [
+                                        'Electricity and Solar PV',
+                                        I18n.t('classes.tables.summary_table_data.last_week'),
+                                        '100',
+                                        '50',
+                                        '£200',
+                                        '£33',
+                                        '-9.2%'
+                                      ])
+      end
+    end
+
     it 'renders the table footer' do
       expect(html).to have_content('More information')
       expect(html).to have_link(href: help_path(help_page))
