@@ -20,7 +20,6 @@
 #
 module DataFeeds
   class LowCarbonHubMeterReadings
-    include Logging
     def initialize(username = ENV.fetch('ENERGYSPARKSRBEEUSERNAME', nil),
                    password = ENV.fetch('ENERGYSPARKSRBEEPASSWORD', nil))
       @rbee = RbeeSolarPV.new(username, password)
@@ -85,7 +84,7 @@ module DataFeeds
           meter_readings[date] =
             OneDayAMRReading.new(mpan_mprn, date, 'ORIG', nil, DateTime.now, Array.new(48, 0.0))
           message = "Warning: missing meter readings for #{mpan_mprn} on #{date}"
-          logger.warn message
+          Rails.logger.warn message
         end
       end
       meter_readings

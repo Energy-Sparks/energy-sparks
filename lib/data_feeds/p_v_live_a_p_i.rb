@@ -2,8 +2,6 @@
 
 module DataFeeds
   class PVLiveAPI
-    include Logging
-
     class ApiFailure < StandardError; end
 
     BASE_URL = 'https://api.solar.sheffield.ac.uk/pvlive/api/v4'

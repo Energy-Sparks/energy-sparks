@@ -4,12 +4,9 @@
 require 'net/http'
 require 'json'
 require 'date'
-require 'logger'
 
 module DataFeeds
   class UKGridCarbonIntensityFeed
-    include Logging
-
     attr_reader :day_readings
 
     def download(start_date, end_date)
@@ -30,7 +27,7 @@ module DataFeeds
       url = 'https://api.carbonintensity.org.uk/intensity/'
       url += "#{start_date.strftime('%Y-%m-%d')}T00:30Z/"
       url += "#{end_date.strftime('%Y-%m-%d')}T00:00Z/"
-      logger.info "URL = #{url}"
+      Rails.logger.debug "URL = #{url}"
       url
     end
 
@@ -49,8 +46,8 @@ module DataFeeds
         carbon = reading['intensity']['actual']
         if carbon.nil? # TODO(PH,8Apr2019) - consider making even more fault tolerant by interpolating, upstream the feed substitutes parameterised data if this fails
           carbon = reading['intensity']['forecast']
-          logger.warn "nil carbon intensity reading for #{datetime} using forecast #{carbon} instead" unless carbon.nil?
-          logger.error "No carbon intensity data for #{datetime} - will use parameterised data upstream" if carbon.nil?
+          Rails.logger.warn "nil carbon intensity reading for #{datetime} using forecast #{carbon} instead" unless carbon.nil?
+          Rails.logger.error "No carbon intensity data for #{datetime} - will use parameterised data upstream" if carbon.nil?
         end
         carbon /= 1000.0 unless carbon.nil? # 1000.0  = convert from g/kWh to kg/kWh
         data[datetime] = carbon
@@ -75,7 +72,7 @@ module DataFeeds
         end
         data = data.merge(extract_readings(web_data))
       end
-      logger.info "Got #{data.length} values"
+      Rails.logger.info "Got #{data.length} values"
       data
     end
 
@@ -89,7 +86,7 @@ module DataFeeds
 
         substitute_datetime = readings.keys.bsearch { |x, _| x >= datetime }
         readings[datetime] = readings[substitute_datetime]
-        logger.info "Missing reading at #{datetime} substituting #{readings[substitute_datetime]}"
+        Rails.logger.info "Missing reading at #{datetime} substituting #{readings[substitute_datetime]}"
       end
       readings
     end

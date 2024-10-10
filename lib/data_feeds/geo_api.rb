@@ -1,7 +1,5 @@
 module DataFeeds
   class GeoApi
-    include Logging
-
     class ApiFailure < StandardError; end
     class NotFound < StandardError; end
     class NotAllowed < StandardError; end
