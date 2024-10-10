@@ -1,11 +1,11 @@
 <h1>Manage CADs</h1>
 
 <div>
-  <%= link_to 'View live data', school_live_data_path(@school), class: 'btn btn-success' %>
+  <%= link_to 'View live data', school_live_data_path(@school), class: 'btn btn-secondary' %>
 </div>
 
-<br/>
-<br/>
+<br>
+<br>
 
 <h2>CADs</h2>
 
@@ -34,8 +34,8 @@
           <td><%= cad.refresh_interval %> secs</td>
           <td><%= y_n(cad.active) %></td>
           <td>
-            <%= link_to 'Test', school_cad_live_data_path(@school, cad), class: 'btn btn-success' %>
-            <%= link_to 'Edit', edit_school_cad_path(@school, cad), class: 'btn btn-success' %>
+            <%= link_to 'Test', school_cad_live_data_path(@school, cad), class: 'btn btn-primary' %>
+            <%= link_to 'Edit', edit_school_cad_path(@school, cad), class: 'btn btn-primary' %>
             <%= link_to 'Delete', school_cad_path(@school, cad), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           </td>
         </tr>
@@ -47,5 +47,5 @@
 <% end %>
 
 <div>
-  <%= link_to 'Add CAD', new_school_cad_path(@school), class: 'btn btn-success' %>
+  <%= link_to 'Add CAD', new_school_cad_path(@school), class: 'btn btn-primary' %>
 </div>
