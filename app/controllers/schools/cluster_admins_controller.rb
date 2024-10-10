@@ -11,7 +11,7 @@ module Schools
       user = User.find_by_email(user_params[:email])
       if user
         user.add_cluster_school(@school)
-        user.add_cluster_school(user.school)
+        user.add_cluster_school(user.school) unless user.school.nil?
         if user.save
           create_or_update_alert_contact(@school, user) if auto_create_alert_contact?
         end
