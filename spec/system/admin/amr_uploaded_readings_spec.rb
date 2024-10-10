@@ -60,7 +60,7 @@ describe AmrUploadedReading, type: :system do
     end
 
     context 'with row per reading config' do
-      let!(:config) { create(:amr_data_feed_config, row_per_reading: true, reading_fields: ['Reading']) }
+      let!(:config) { create(:amr_data_feed_config, :with_reading_time_field) }
 
       it 'explains this to user' do
         expect(page).to have_content('One row per half hour reading')
@@ -71,11 +71,11 @@ describe AmrUploadedReading, type: :system do
       end
 
       it 'explains the reading field column' do
-        expect(page).to have_content('A reading field column labelled Reading')
+        expect(page).to have_content('A reading field column labelled ' + config.reading_fields.first)
       end
 
       context 'with a positional index' do
-        let!(:config) { create(:amr_data_feed_config, row_per_reading: true, reading_fields: ['Reading'], positional_index: true, period_field: 'SettlementTime') }
+        let!(:config) { create(:amr_data_feed_config, :with_positional_index, period_field: 'SettlementTime') }
 
         it 'explains the index column' do
           expect(page).to have_content('A numbered half-hourly period in a column labelled SettlementTime, e.g. 1, 2, 3, 4')
@@ -83,7 +83,7 @@ describe AmrUploadedReading, type: :system do
       end
 
       context 'with a separate reading time column' do
-        let!(:config) { create(:amr_data_feed_config, row_per_reading: true, reading_fields: ['Reading'], reading_time_field: 'ReadingTime') }
+        let!(:config) { create(:amr_data_feed_config, :with_reading_time_field, reading_time_field: 'ReadingTime') }
 
         it 'explains the reading time column' do
           expect(page).to have_content('The reading times to specified in a separate column labelled ReadingTime')
@@ -102,7 +102,22 @@ describe AmrUploadedReading, type: :system do
   end
 
   describe 'normal file format' do
-    let!(:config) { create(:amr_data_feed_config) }
+    let!(:config) do
+      create(:amr_data_feed_config,
+        description: 'BANES',
+        mpan_mprn_field: 'M1_Code1',
+        reading_date_field: 'Date',
+        date_format: '%b %e %Y %I:%M%p',
+        number_of_header_rows: 1,
+        provider_id_field: 'ID',
+        total_field: 'Total',
+        meter_description_field: 'Location',
+        postcode_field: 'PostCode',
+        units_field: 'Units',
+        header_example: 'ID,Date,Location,Type,PostCode,Units,Total Units,[00:30],[01:00],[01:30],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00],M1_Code1,M1_Code2',
+        reading_fields: '[00:30],[01:00],[01:30],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00]'.split(',')
+      )
+    end
 
     before do
       sign_in(admin)

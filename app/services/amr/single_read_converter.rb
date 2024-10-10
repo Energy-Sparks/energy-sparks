@@ -7,7 +7,6 @@ module Amr
     def initialize(amr_data_feed_config, single_reading_array)
       @amr_data_feed_config = amr_data_feed_config
       @single_reading_array = single_reading_array
-      @indexed = @amr_data_feed_config[:positional_index]
       @results_array = []
     end
 
@@ -97,12 +96,47 @@ module Amr
       reading_index == -1
     end
 
+    # TODO refactor to clarify period, reading_time different paths
     def reading_index_of_record(reading_day, single_reading)
-      if @indexed
-        reading_row_index_for(single_reading)
+      if indexed_with_period?
+        index_from_period(single_reading)
+      elsif indexed_by_time?
+        index_from_time_field(single_reading)
+      elsif half_hourly_labelling_at_start? # single_reading has timestamp
+        index_from_timestamps_at_start_of_half_hour(single_reading)
       else
         reading_day_time_for(reading_day, single_reading)
       end
+    end
+
+    def indexed_with_period?
+      @amr_data_feed_config[:positional_index] && @amr_data_feed_config[:period_field]
+    end
+
+    def indexed_by_time?
+      @amr_data_feed_config[:positional_index] && @amr_data_feed_config[:reading_time_field]
+    end
+
+    def half_hourly_labelling_at_start?
+      @amr_data_feed_config.half_hourly_labelling&.to_sym == :start
+    end
+
+    # Periods are numbered 1-48
+    def index_from_period(single_reading)
+      return single_reading[:period].to_i - 1
+    end
+
+    # Reformat the reading time into %H:%M format and calculate index
+    def index_from_time_field(single_reading)
+      time_string = SingleReadConverter.convert_time_string_to_usable_time(single_reading[:reading_time])
+      TimeOfDay.parse(time_string).to_halfhour_index
+    end
+
+    # Parse the reading time stamp using configured format, then extract just the time to calculate index
+    def index_from_timestamps_at_start_of_half_hour(single_reading)
+      reading_day_time = Time.strptime(single_reading[:reading_date], @amr_data_feed_config.date_format)
+      time_string = reading_day_time.strftime('%H:%M')
+      TimeOfDay.parse(time_string).to_halfhour_index
     end
 
     def day_from_results(reading_day, mpan_mprn)
