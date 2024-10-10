@@ -39,12 +39,17 @@
 // Used for public display version of equivalence
 // Force the text to match the header height and colours
 // so more readable from a distance
-.equivalence-component.public-displays.horizontal {
+.equivalence-component.public-displays.vertical {
   .trix-content div, div {
     @include font(f1);
     font-family: $header-font-family;
     font-weight: $header-font-weight;
     color: $dark-blue;
     padding-bottom: 10px;
+  }
+  .illustration-wrapper {
+    img {
+      height: 500px;
+    }
   }
 }

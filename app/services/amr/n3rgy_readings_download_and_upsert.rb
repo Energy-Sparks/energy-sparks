@@ -111,6 +111,9 @@ module Amr
       # encountered a data problem at n3rgy where availableCacheRange had a future date
       end_date = DateTime.now if end_date >= Time.zone.today
 
+      # temporary n3rgy issue with other dcc meters where need to avoid last day of readings
+      end_date -= 1.day if @meter.dcc_meter == 'other'
+
       # force to midnight (last reading of previous day) to avoid loading partial data if
       # n3rgy have a few hours for today
       n3rgy_last_reading_of_day(end_date)
