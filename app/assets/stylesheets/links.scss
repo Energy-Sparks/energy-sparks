@@ -1,5 +1,5 @@
 .btn {
-  background-color: transparent;
+  background-color: $white;
   @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
 }
 
@@ -12,11 +12,10 @@
     .btn-#{$color} {
       @include button-variant($value, $value);
     }
-
-    .btn-outline-#{$color} {
-      // background-color: $white;
-      @include button-outline-variant($value);
-    }
+  }
+  .btn-outline-#{$color} {
+    background-color: $white;
+    @include button-outline-variant($value);
   }
 }
 
