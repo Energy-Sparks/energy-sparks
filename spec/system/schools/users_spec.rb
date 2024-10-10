@@ -455,7 +455,7 @@ describe 'School admin user management' do
       pupil.lock_access!(send_instructions: false)
       refresh
       within('.pupils') { click_on 'Unlock' }
-      expect(staff.reload.locked_at).to be_nil
+      expect(pupil.reload.locked_at).to be_nil
     end
   end
 end
