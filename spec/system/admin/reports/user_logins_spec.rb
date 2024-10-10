@@ -18,6 +18,7 @@ describe 'user logins' do
     end
 
     it 'displays a table' do
+      expect(page).to have_button('Show')
       expect(page).to have_selector(:table_row, {
                                       'School Name' => school.name,
                                       'Most recent adult login' => Time.current.to_s,
