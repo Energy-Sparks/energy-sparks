@@ -33,7 +33,7 @@
           <div class="btn-group">
             <%= link_to t('common.labels.edit'),
                         edit_calendar_calendar_event_path(calendar_event.calendar, calendar_event),
-                        class: 'btn btn-warning' %>
+                        class: 'btn btn-primary' %>
             <%= link_to t('common.labels.delete'),
                         calendar_calendar_event_path(calendar, calendar_event),
                         method: :delete, data: { confirm: t('common.confirm') },

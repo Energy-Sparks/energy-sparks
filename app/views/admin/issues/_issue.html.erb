@@ -30,9 +30,9 @@
                         method: :post, class: 'btn btn-primary btn-sm'
               end %>
         <% unless local_assigns[:single] %>
-          <%= link_to 'View', polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-secondary btn-sm' %>
+          <%= link_to 'View', polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-primary btn-sm' %>
         <% end %>
-        <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-primary btn-sm' %>
+        <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-secondary btn-sm' %>
         <%= link_to 'Delete', polymorphic_path([:admin, @issueable, issue]),
                     method: :delete, data: { confirm: 'Are you sure?' },
                     class: 'btn btn-danger btn-sm' %>
