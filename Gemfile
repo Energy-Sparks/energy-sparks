@@ -56,6 +56,7 @@ gem 'aws-sdk-s3'
 gem 'eventbrite_sdk' # Eventbrite for training page
 gem 'faraday'
 gem 'faraday-follow_redirects'
+gem 'faraday-retry'
 gem 'MailchimpMarketing'
 gem 'mailgun_rails' # Email service
 gem 'twilio-ruby' # For SMS notifications
