@@ -411,6 +411,7 @@ describe 'School admin user management' do
   describe 'as an admin' do
     let!(:staff) { create(:staff, school:, confirmed_at: nil) }
     let!(:admin) { create(:admin) }
+    let!(:pupil) { create(:pupil, school:) }
 
     let(:deliveries)  { ActionMailer::Base.deliveries.count }
     let(:email)       { ActionMailer::Base.deliveries.last }
@@ -442,6 +443,18 @@ describe 'School admin user management' do
       staff.lock_access!(send_instructions: false)
       refresh
       within('.staff') { click_on 'Unlock' }
+      expect(staff.reload.locked_at).to be_nil
+    end
+
+    it 'can lock pupils' do
+      within('.pupils') { click_on 'Lock' }
+      expect(pupil.reload.locked_at).not_to be_nil
+    end
+
+    it 'can unlock pupils' do
+      pupil.lock_access!(send_instructions: false)
+      refresh
+      within('.pupils') { click_on 'Unlock' }
       expect(staff.reload.locked_at).to be_nil
     end
   end
