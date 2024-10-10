@@ -4,7 +4,7 @@ FactoryBot.define do
     sequence(:identifier)         { |n| "data-config-#{n}" }
     sequence(:description)        { |n| "Data config #{n}" }
     number_of_header_rows         { 1 }
-    mpan_mprn_field               { 'MPAN' }
+    mpan_mprn_field               { 'MPRN' }
     reading_date_field            { 'Date' }
     date_format                   { '%Y-%m-%d' }
     header_example                do

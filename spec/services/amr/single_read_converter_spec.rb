@@ -106,7 +106,7 @@ module Amr
           # this is testing with timestamps from 2019-08-26T00:30:00Z to 2019-08-27T00:00:00Z.
           let(:readings) do
             48.times.collect do |i|
-              { :amr_data_feed_config_id => 6, :mpan_mprn => mpan_mprn, :reading_date => (reading_date + ((i + 1) * 30).minutes).iso8601, :readings => [(i + 1).to_s] }
+              { :amr_data_feed_config_id => config.id, :mpan_mprn => mpan_mprn, :reading_date => (reading_date + ((i + 1) * 30).minutes).iso8601, :readings => [(i + 1).to_s] }
             end
           end
 
