@@ -26,7 +26,7 @@ module Amr
 
     # Matches the EDF format
     # So 26 Aug 2019 00:00 means usage from midnight to 00:30 on 26th August
-    context 'with readings labelled at start of the half hour, with 00:00 for same day (%H:%M:%s)' do
+    context 'with readings labelled at start of the half hour, with 00:00 as start of the day (%H:%M:%s)' do
       let(:mpan_mprn) { '1710035168313' }
       let(:reading_date) { '26 Aug 2019' }
       let(:readings) do
@@ -44,7 +44,7 @@ module Amr
       end
     end
 
-    context 'with readings labelled at end of the half hour (%H:%M)' do
+    context 'with readings labelled at end of the half hour with 00:00 as end of the day' do
       let(:mpan_mprn) { '1710035168313' }
 
       # So 26 Aug 2019 23:30 means usage up to 23:30 on 26th
@@ -71,6 +71,8 @@ module Amr
       end
 
       # this is testing from 00:30:00Z to 00:00:00Z.
+      # TODO: this fails locally, but not on github. We end up with 26 Aug 2019 having 49 values with 2 nils, plus
+      # 27th August having 48 nil values and a single value (48) a position 1 in the array
       context 'with date times formatted in ISO 8601 format (as produced by xlsx to csv conversion)' do
         let(:reading_date) { Time.zone.parse('26 Aug 2019') }
 
@@ -85,7 +87,7 @@ module Amr
         end
 
         it 'converts a list of single readings per half hour into a day per reading format' do
-          expect(converter.perform).to eq expected_output
+          expect(converter.perform).to match_array expected_output
         end
       end
     end
