@@ -24,7 +24,13 @@ class DashboardLearnMoreComponent < ApplicationComponent
   end
 
   def title
-    data_enabled? ? I18n.t("components.dashboard_learn_more.#{audience}.title") : I18n.t('schools.show.coming_soon')
+    if !data_enabled?
+      I18n.t('schools.show.coming_soon')
+    elsif @school.has_solar_pv? && audience == :adult
+      I18n.t('components.dashboard_learn_more.adult.title_with_solar_pv')
+    else
+      I18n.t("components.dashboard_learn_more.#{audience}.title")
+    end
   end
 
   def intro
