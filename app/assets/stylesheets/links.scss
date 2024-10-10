@@ -64,6 +64,13 @@ a.badge {
   }
 }
 
+.btn-group-xs > .btn, .btn-xs {
+  padding: 1px 5px;
+  font-size: $f9;
+  line-height: 1.5;
+  border-radius: $btn-border-radius;
+}
+
 .btn-fixed-width-100 {
   width: 100px;
 }
