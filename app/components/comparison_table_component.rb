@@ -13,7 +13,8 @@ class ComparisonTableComponent < ViewComponent::Base
 
   attr_reader :notes, :footnotes, :headers, :colgroups, :report, :table_name, :index_params
 
-  def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [], advice_page_tab: :insights)
+  def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [],
+                 advice_page_tab: :insights, advice_page_anchor: nil)
     @report = report
     @advice_page = advice_page
     @table_name = table_name
@@ -21,6 +22,7 @@ class ComparisonTableComponent < ViewComponent::Base
     @headers = headers
     @colgroups = colgroups
     @advice_page_tab = advice_page_tab
+    @advice_page_anchor = advice_page_anchor
     @seen = {}
   end
 
@@ -33,6 +35,7 @@ class ComparisonTableComponent < ViewComponent::Base
   renders_many :rows, ->(**kwargs) do
     kwargs[:advice_page] = @advice_page
     kwargs[:advice_page_tab] = @advice_page_tab
+    kwargs[:advice_page_anchor] = @advice_page_anchor
     kwargs[:parent] = self
     RowComponent.new(**kwargs)
   end
@@ -66,16 +69,18 @@ class ComparisonTableComponent < ViewComponent::Base
   #
   # The variable columns are specified as additional slots
   class RowComponent < ViewComponent::Base
-    def initialize(advice_page: nil, advice_page_tab: :insights, classes: '', parent:)
+    def initialize(advice_page: nil, advice_page_tab: :insights, advice_page_anchor: nil,
+                   classes: '', parent:)
       @advice_page = advice_page
       @advice_page_tab = advice_page_tab
+      @advice_page_anchor = advice_page_anchor
       @classes = classes
       @parent = parent
     end
 
     # First column, showing school name and a link
     renders_one :school, ->(school:) do
-      link_to school.name, helpers.advice_page_path(school, @advice_page, @advice_page_tab)
+      link_to school.name, helpers.advice_page_path(school, @advice_page, @advice_page_tab, anchor: @advice_page_anchor)
     end
 
     # Footnote references

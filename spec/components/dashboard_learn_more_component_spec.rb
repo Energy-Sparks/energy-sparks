@@ -38,6 +38,12 @@ RSpec.describe DashboardLearnMoreComponent, :include_url_helpers, type: :compone
 
   context 'when school is data enabled' do
     it_behaves_like 'a data enabled panel'
+
+    context 'with solar pv' do
+      let(:school) { create(:school, :with_fuel_configuration, has_solar_pv: true) }
+
+      it { expect(html).to have_content(I18n.t('components.dashboard_learn_more.adult.title_with_solar_pv'))}
+    end
   end
 
   context 'when school is not data enabled' do

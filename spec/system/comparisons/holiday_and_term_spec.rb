@@ -70,7 +70,11 @@ describe 'holiday_and_term' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{key}" }
+    before do
+      create(:advice_page, key: :electricity_out_of_hours)
+      create(:advice_page, key: :gas_out_of_hours)
+      visit "/comparisons/#{key}"
+    end
 
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
@@ -163,7 +167,9 @@ describe 'holiday_and_term' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { school_advice_path(expected_school) }
+        let(:advice_page_path) do
+          "#{analysis_school_advice_electricity_out_of_hours_path(expected_school)}#holiday-usage"
+        end
         let(:table_name) { :electricity }
 
         let(:colgroups) do
@@ -236,7 +242,7 @@ describe 'holiday_and_term' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
         let(:expected_school) { school }
-        let(:advice_page_path) { school_advice_path(expected_school) }
+        let(:advice_page_path) { "#{analysis_school_advice_gas_out_of_hours_path(expected_school)}#holiday-usage" }
         let(:table_name) { :gas }
 
         let(:colgroups) do
