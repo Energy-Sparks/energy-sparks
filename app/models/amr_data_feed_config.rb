@@ -11,6 +11,7 @@
 #  description             :text             not null
 #  enabled                 :boolean          default(TRUE), not null
 #  expected_units          :string
+#  half_hourly_labelling   :enum
 #  handle_off_by_one       :boolean          default(FALSE)
 #  header_example          :text
 #  id                      :bigint(8)        not null, primary key

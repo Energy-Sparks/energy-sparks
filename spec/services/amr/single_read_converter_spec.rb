@@ -39,7 +39,9 @@ module Amr
       # Matches the EDF format
       # So 26 Aug 2019 00:00 means usage FROM midnight to 00:30am on the 26th August
       # So 26 Aug 2019 23:30 means usage FROM 23:30 to midnight on the 26th August
-      context 'with readings labelled at start of the half hour, so 00:00 is start of the day (%H:%M:%s)' do
+      context 'with readings labelled at start of the half hour, so 00:00 is start of the day (%H:%M:%s) and correct config' do
+        let(:config) { create(:amr_data_feed_config, row_per_reading: true, half_hourly_labelling: :start, date_format: '%d %b %Y %H:%M') }
+
         let(:mpan_mprn) { '1710035168313' }
         let(:reading_date) { '26 Aug 2019' }
         let(:readings) do
@@ -180,7 +182,7 @@ module Amr
     end
 
     context 'with numbered half-hourly periods (positional_index: true)' do
-      let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
+      let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true, period_field: 'Period') }
 
       let(:mpan_mprn) { '1710035168313' }
       let(:reading_date) { '26 Aug 2019' }
@@ -236,7 +238,7 @@ module Amr
       end
 
       context 'with fewer than 48 readings for a day' do
-        let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
+        let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true, period_field: 'Period') }
 
         let(:readings) do
           46.times.collect { |hh| create_reading_for_period(config, '1710035168313', '25/08/2019', (hh + 1).to_s, ['14.4']) }
@@ -249,7 +251,7 @@ module Amr
     end
 
     context 'with more than 48 readings per day' do
-      let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true) }
+      let(:config) { create(:amr_data_feed_config, row_per_reading: true, positional_index: true, period_field: 'Period') }
       let(:readings) do
         data = []
         49.times { |hh| data << create_reading_for_period(config, '1710035168313', '25/08/2019', (hh + 1).to_s, ['14.4']) }
