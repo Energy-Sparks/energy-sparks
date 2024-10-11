@@ -12,7 +12,7 @@ namespace :data_feeds do
   end
 
   def rake_process_carbon_feed(start_date, end_date)
-    data = UKGridCarbonIntensityFeed.new.download(start_date, end_date)
+    data = DataFeeds::UKGridCarbonIntensityFeed.new.download(start_date, end_date)
 
     data.each do |reading_date, carbon_intensity_x48|
       next if carbon_intensity_x48.size != 48
