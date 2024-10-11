@@ -92,6 +92,7 @@ module Amr
         Date.parse(single_reading[:reading_date])
       else
         reading_day_time = Time.zone.parse(single_reading[:reading_date])
+        raise Date::Error.new(single_reading[:reading_date]) if reading_day_time.nil?
         reading_day_time == reading_day_time.midnight ? (reading_day_time - 1.day).to_date : reading_day_time.to_date
       end
     end
