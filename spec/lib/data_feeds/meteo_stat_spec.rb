@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe MeteoStat do
+describe DataFeeds::MeteoStat do
   let(:latitude)    { 123 }
   let(:longitude)   { 456 }
 
@@ -25,7 +25,7 @@ describe MeteoStat do
     let(:temperature_json) { JSON.parse(File.read('spec/fixtures/meteostat/historic_temperatures.json')) }
 
     before do
-      expect_any_instance_of(MeteoStatApi).to receive(:historic_temperatures).exactly(api_call_count).times.and_return(temperature_json)
+      allow_any_instance_of(DataFeeds::MeteoStatApi).to receive(:historic_temperatures).exactly(api_call_count).times.and_return(temperature_json)
     end
 
     describe 'returns expected temperature data' do
@@ -65,9 +65,9 @@ describe MeteoStat do
       let(:find_2_json)        { JSON.parse(File.read('spec/fixtures/meteostat/find_station_2.json')) }
 
       before do
-        expect_any_instance_of(MeteoStatApi).to receive(:nearby_stations).and_return(nearest_json)
-        expect_any_instance_of(MeteoStatApi).to receive(:find_station).with('03354').and_return(find_1_json)
-        expect_any_instance_of(MeteoStatApi).to receive(:find_station).with('EGXN0').and_return(find_2_json)
+        allow_any_instance_of(DataFeeds::MeteoStatApi).to receive(:nearby_stations).and_return(nearest_json)
+        allow_any_instance_of(DataFeeds::MeteoStatApi).to receive(:find_station).with('03354').and_return(find_1_json)
+        allow_any_instance_of(DataFeeds::MeteoStatApi).to receive(:find_station).with('EGXN0').and_return(find_2_json)
       end
 
       it 'returns expected stations' do
@@ -78,7 +78,7 @@ describe MeteoStat do
 
     describe 'when no stations found' do
       before do
-        expect_any_instance_of(MeteoStatApi).to receive(:nearby_stations).and_return({})
+        allow_any_instance_of(DataFeeds::MeteoStatApi).to receive(:nearby_stations).and_return({})
       end
 
       it 'handles it' do

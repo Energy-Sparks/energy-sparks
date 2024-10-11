@@ -3,25 +3,25 @@
 require 'rails_helper'
 require 'faraday/adapter/test'
 
-describe DataFeeds::PVLiveAPI do
+describe DataFeeds::PvLiveApi do
   let(:success)     { true }
   let(:status)      { 200 }
   let(:client)      { described_class.new }
 
-  let(:response)    { double(success?: success, status: status, body: body.to_json) }
+  let(:response)    { instance_double(Faraday::Response, success?: success, status:, body: body.to_json) }
 
   before do
-    expect(Faraday).to receive(:get).with(expected_url, expected_params, {}).and_return(response)
+    allow(Faraday).to receive(:get).with(expected_url, expected_params, {}).and_return(response)
   end
 
   describe '#gsp_list' do
-    let(:expected_url) { "#{DataFeeds::PVLiveAPI::BASE_URL}/gsp_list" }
+    let(:expected_url) { "#{DataFeeds::PvLiveApi::BASE_URL}/gsp_list" }
     let(:expected_params) { {} }
 
     context 'with success' do
       let(:body) do
         {
-          "data": [
+          data: [
             [
               0,
               'NATIONAL',
@@ -29,7 +29,7 @@ describe DataFeeds::PVLiveAPI do
               '_0'
             ]
           ],
-          "meta": %w[
+          meta: %w[
             gsp_id
             gsp_name
             pes_id
@@ -46,48 +46,48 @@ describe DataFeeds::PVLiveAPI do
     context 'with error' do
       # they return a 200 error code with a JSON error document for errors
       let(:status)      { 200 }
-      let(:response)    { double(success?: success, status: status, body: body.to_json) }
+      let(:response)    { instance_double(Faraday::Response, success?: success, status:, body: body.to_json) }
 
       let(:body) do
         {
-          "error_code": nil,
-          "error_description": "Unknown url parameter(s): {'XXX'}"
+          error_code: nil,
+          error_description: "Unknown url parameter(s): {'XXX'}"
         }
       end
 
       it 'throws exception' do
         expect do
           client.gsp_list
-        end.to raise_error(DataFeeds::PVLiveAPI::ApiFailure)
+        end.to raise_error(DataFeeds::PvLiveApi::ApiFailure)
       end
     end
 
     context 'with 404' do
       let(:status)      { 404 }
-      let(:response)    { double(success?: success, status: status, body: body) }
+      let(:response)    { instance_double(Faraday::Response, success?: success, status:, body:) }
       let(:body)        { '<html>Some HTML</html>' }
 
       it 'throws exception' do
         expect do
           client.gsp_list
-        end.to raise_error(DataFeeds::PVLiveAPI::ApiFailure)
+        end.to raise_error(DataFeeds::PvLiveApi::ApiFailure)
       end
     end
   end
 
   describe '#gsp' do
-    let(:expected_url) { "#{DataFeeds::PVLiveAPI::BASE_URL}/gsp/0" }
+    let(:expected_url) { "#{DataFeeds::PvLiveApi::BASE_URL}/gsp/0" }
     let(:expected_params) { { data_format: 'json', extra_fields: 'installedcapacity_mwp' } }
     let(:body) do
       {
-        "data": [
+        data: [
           [
             0,
             '2021-10-11T13:30:00Z',
             4670.0
           ]
         ],
-        "meta": %w[
+        meta: %w[
           gsp_id
           datetime_gmt
           generation_mw

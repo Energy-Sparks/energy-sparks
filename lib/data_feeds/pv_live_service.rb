@@ -8,8 +8,8 @@ module DataFeeds
   # Provides higher level interface to PVLive API to support bulk downloads,
   # conversion of data into preferred structure, interpolation of missing values,
   # determination of nearest areas, etc
-  class PVLiveService
-    def initialize(pv_live_api = PVLiveAPI.new)
+  class PvLiveService
+    def initialize(pv_live_api = PvLiveApi.new)
       @pv_live_api = pv_live_api
       @yield_diff_criteria = 0.001
       @schools_timezone = TZInfo::Timezone.get('Europe/London')
@@ -57,7 +57,7 @@ module DataFeeds
         missing_on_day = 0
         days_data = []
         (0..23).each do |hour|
-          [0, 30].each do |minutes|
+          [0, 30].freeze.each do |minutes|
             dt = DateTime.new(date.year, date.month, date.day, hour, minutes, 0)
             if datetime_to_yield_hash.key?(dt)
               days_data.push(datetime_to_yield_hash[dt])

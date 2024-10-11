@@ -5,7 +5,7 @@
 # Handles both requests to the Solar Edge API and reformatting the
 # results to manage Energy Sparks expectations
 module DataFeeds
-  class SolarEdgeAPI
+  class SolarEdgeApi
     class ApiFailure < StandardError; end
     class NotFound < StandardError; end
     class NotAllowed < StandardError; end
@@ -65,8 +65,8 @@ module DataFeeds
 
       (start_date..end_date).each do |date|
         (0..23).each do |hour|
-          [0, 30].each_with_index do |mins30, hh_index|
-            [0, 15].each do |mins15|
+          [0, 30].freeze.each_with_index do |mins30, hh_index|
+            [0, 15].freeze.each do |mins15|
               dt = datetime_to_15_minutes(date, hour, mins30 + mins15)
               if dt_to_kwh.key?(dt)
                 readings[date][(hour * 2) + hh_index] += dt_to_kwh[dt]

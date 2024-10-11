@@ -2,17 +2,17 @@
 
 require 'rails_helper'
 
-describe DataFeeds::PVLiveService, type: :service do
+describe DataFeeds::PvLiveService, type: :service do
   let(:service)     { described_class.new }
 
-  let(:latitude)  { 0.513751e2 }
-  let(:longitude) { -0.236172e1 }
+  let(:latitude)  { 5.13751e1 }
+  let(:longitude) { -2.36172 }
 
   describe '#find_area' do
     let(:gsp_list) { JSON.parse(File.read('spec/fixtures/pv_live/gsp_list.json'), symbolize_names: true) }
 
     before do
-      expect_any_instance_of(DataFeeds::PVLiveAPI).to receive(:gsp_list).and_return(gsp_list)
+      allow_any_instance_of(DataFeeds::PvLiveApi).to receive(:gsp_list).and_return(gsp_list)
     end
 
     it 'returns expected list of areas' do
@@ -34,7 +34,7 @@ describe DataFeeds::PVLiveService, type: :service do
     let(:end_date)   { Date.new(2021, 0o1, 0o2) }
 
     before do
-      expect_any_instance_of(DataFeeds::PVLiveAPI).to receive(:gsp).and_return(data)
+      allow_any_instance_of(DataFeeds::PvLiveApi).to receive(:gsp).and_return(data)
     end
 
     it 'returns reformatted data' do

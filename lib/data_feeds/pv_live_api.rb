@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DataFeeds
-  class PVLiveAPI
+  class PvLiveApi
     class ApiFailure < StandardError; end
 
     BASE_URL = 'https://api.solar.sheffield.ac.uk/pvlive/api/v4'

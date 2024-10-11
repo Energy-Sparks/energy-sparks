@@ -6,12 +6,12 @@ require 'faraday/adapter/test'
 describe DataFeeds::GeoApi do
   let(:success)     { true }
   let(:status)      { 200 }
-  let(:response)    { double(success?: success, status: status, body: body.to_json) }
+  let(:response)    { instance_double(Faraday::Response, success?: success, status:, body: body.to_json) }
 
   describe '#login' do
-    let(:expected_headers)  { { 'Accept': 'application/json', 'Content-Type': 'application/json' } }
+    let(:expected_headers)  { { Accept: 'application/json', 'Content-Type': 'application/json' } }
     let(:expected_url)      { "#{DataFeeds::GeoApi::BASE_URL}/userapi/account/login" }
-    let(:expected_payload)  { { emailAddress: username, password: password }.to_json }
+    let(:expected_payload)  { { emailAddress: username, password: }.to_json }
     let(:body)              { { token: 'abc123' } }
 
     context 'with credentials' do
@@ -19,11 +19,11 @@ describe DataFeeds::GeoApi do
       let(:password) { 'myPass' }
 
       before do
-        expect(Faraday).to receive(:post).with(expected_url, expected_payload, expected_headers).and_return(response)
+        allow(Faraday).to receive(:post).with(expected_url, expected_payload, expected_headers).and_return(response)
       end
 
       it 'calls the login endpoint and returns token' do
-        token = described_class.new(username: username, password: password).login
+        token = described_class.new(username:, password:).login
         expect(token).to eq('abc123')
       end
 
@@ -32,7 +32,7 @@ describe DataFeeds::GeoApi do
 
         it 'raises error' do
           expect do
-            described_class.new(username: username, password: password).login
+            described_class.new(username:, password:).login
           end.to raise_error(DataFeeds::GeoApi::NotAuthorised)
         end
       end
@@ -44,7 +44,7 @@ describe DataFeeds::GeoApi do
 
       it 'raises error' do
         expect do
-          described_class.new(username: username, password: password).login
+          described_class.new(username:, password:).login
         end.to raise_error(DataFeeds::GeoApi::ApiFailure)
       end
     end
@@ -55,7 +55,7 @@ describe DataFeeds::GeoApi do
       "#{DataFeeds::GeoApi::BASE_URL}/supportapi/system/trigger-fastupdate/#{system_id}"
     end
     let(:expected_headers) do
-      { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': "Bearer #{token}" }
+      { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: "Bearer #{token}" }
     end
     let(:system_id)         { 'xyz987' }
     let(:body)              { '' }
@@ -64,11 +64,11 @@ describe DataFeeds::GeoApi do
       let(:token) { 'abc123' }
 
       before do
-        expect(Faraday).to receive(:get).with(expected_url, nil, expected_headers).and_return(response)
+        allow(Faraday).to receive(:get).with(expected_url, nil, expected_headers).and_return(response)
       end
 
       it 'calls the trigger fast update' do
-        ret = described_class.new(token: token).trigger_fast_update(system_id)
+        ret = described_class.new(token:).trigger_fast_update(system_id)
         expect(ret).to eq('')
       end
     end
@@ -78,7 +78,7 @@ describe DataFeeds::GeoApi do
 
       it 'raises error' do
         expect do
-          described_class.new(token: token).trigger_fast_update(system_id)
+          described_class.new(token:).trigger_fast_update(system_id)
         end.to raise_error DataFeeds::GeoApi::ApiFailure
       end
     end
