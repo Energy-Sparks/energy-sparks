@@ -29,17 +29,12 @@ module Amr
         # ignore rows that dont have necessary information
         next unless single_reading[:reading_date].present? && single_reading[:mpan_mprn].present?
 
-        reading_day = Date.parse(single_reading[:reading_date])
+        reading_day = parse_reading_date(single_reading)
 
         reading = single_reading[:readings].first.to_f
 
         reading_index = reading_index_of_record(reading_day, single_reading)
         next if reading_index.nil?
-
-        if last_reading_of_day?(reading_index)
-          reading_day = reading_day - 1.day
-          reading_index = 47
-        end
 
         this_day = day_from_results(reading_day, single_reading[:mpan_mprn])
 
@@ -92,11 +87,15 @@ module Amr
       @results_array.reject { |result| result[:readings].count(&:blank?) > @amr_data_feed_config.blank_threshold }
     end
 
-    def last_reading_of_day?(reading_index)
-      reading_index == -1
+    def parse_reading_date(single_reading)
+      if indexed_with_period? || indexed_by_time? || half_hourly_labelling_at_start?
+        Date.parse(single_reading[:reading_date])
+      else
+        reading_day_time = Time.parse(single_reading[:reading_date])
+        reading_day_time == reading_day_time.midnight ? (reading_day_time - 1.day).to_date : reading_day_time.to_date
+      end
     end
 
-    # TODO refactor to clarify period, reading_time different paths
     def reading_index_of_record(reading_day, single_reading)
       if indexed_with_period?
         index_from_period(single_reading)
@@ -143,19 +142,10 @@ module Amr
       @results_array.find { |result| result[:reading_date] == reading_day && result[:mpan_mprn] == mpan_mprn }
     end
 
-    def reading_day_time_for(reading_day, single_reading)
-      puts Time.zone
-      puts single_reading[:reading_date]
-      puts Time.parse(single_reading[:reading_date])
-      puts Time.parse(single_reading[:reading_date]).utc
-      reading_day_time = Time.parse(single_reading[:reading_date]).utc
-      puts "FIRST READING TIME"
-      puts reading_day
-      puts Time.parse(reading_day.strftime('%Y-%m-%d')).utc
-      puts Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
-      first_reading_time = Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
-
-      ((reading_day_time - first_reading_time) / 30.minutes).to_i
+    def reading_day_time_for(_reading_day, single_reading)
+      reading_day_time = Time.parse(single_reading[:reading_date])
+      time_string = reading_day_time == reading_day_time.midnight ? '23:30' : reading_day_time.advance(minutes: -30).strftime('%H:%M')
+      TimeOfDay.parse(time_string).to_halfhour_index
     end
 
     def reading_row_index_for(single_reading)
