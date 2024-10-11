@@ -3,6 +3,23 @@ require 'rails_helper'
 describe AmrDataFeedReading do
   let(:amr_data_feed_config) { create(:amr_data_feed_config) }
 
+  context 'when validating' do
+    it { expect(build(:amr_data_feed_config)).to be_valid }
+
+    context 'with positional index' do
+      it { expect(build(:amr_data_feed_config, positional_index: true, row_per_reading: false, period_field: nil)).not_to be_valid }
+      it { expect(build(:amr_data_feed_config, positional_index: true, row_per_reading: false, period_field: 'Period')).not_to be_valid }
+      it { expect(build(:amr_data_feed_config, positional_index: true, row_per_reading: true, period_field: nil)).not_to be_valid }
+      it { expect(build(:amr_data_feed_config, :with_positional_index)).to be_valid }
+    end
+
+    context 'with serial lookup' do
+      it { expect(build(:amr_data_feed_config, lookup_by_serial_number: true, msn_field: nil)).not_to be_valid }
+      it { expect(build(:amr_data_feed_config, :with_serial_number_lookup)).to be_valid }
+      it { expect(build(:amr_data_feed_config, msn_field: 'MSN')).to be_valid }
+    end
+  end
+
   describe '#array_of_reading_indexes' do
     it 'correctly identifies the indexes of the reading records' do
       expect(amr_data_feed_config.array_of_reading_indexes).to eq (3..3 + 47).to_a

@@ -58,7 +58,16 @@ class AmrDataFeedConfig < ApplicationRecord
   validates :identifier, :description, uniqueness: true
   validates_presence_of :identifier, :description
 
+  validates :row_per_reading, inclusion: [true], if: :positional_index
+  validate :period_or_time_field, if: :positional_index
+
+  validates_presence_of :msn_field, if: :lookup_by_serial_number
+
   BLANK_THRESHOLD = 1
+
+  def period_or_time_field
+    errors.add(:base, 'Must specify either period or time field') if positional_index && reading_time_field.blank? && period_field.blank?
+  end
 
   def map_of_fields_to_indexes(header = nil)
     this_header = header || header_example
