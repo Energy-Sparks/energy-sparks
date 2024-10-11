@@ -91,7 +91,7 @@ module Amr
       if indexed_with_period? || indexed_by_time? || half_hourly_labelling_at_start?
         Date.parse(single_reading[:reading_date])
       else
-        reading_day_time = Time.parse(single_reading[:reading_date])
+        reading_day_time = Time.zone.parse(single_reading[:reading_date])
         reading_day_time == reading_day_time.midnight ? (reading_day_time - 1.day).to_date : reading_day_time.to_date
       end
     end
@@ -143,7 +143,7 @@ module Amr
     end
 
     def reading_day_time_for(_reading_day, single_reading)
-      reading_day_time = Time.parse(single_reading[:reading_date])
+      reading_day_time = Time.zone.parse(single_reading[:reading_date])
       time_string = reading_day_time == reading_day_time.midnight ? '23:30' : reading_day_time.advance(minutes: -30).strftime('%H:%M')
       TimeOfDay.parse(time_string).to_halfhour_index
     end
