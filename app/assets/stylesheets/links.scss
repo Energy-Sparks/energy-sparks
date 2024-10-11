@@ -1,5 +1,5 @@
 .btn {
-  background-color: white;
+  background-color: $white;
   @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
 }
 
