@@ -144,6 +144,7 @@ module Amr
     end
 
     def reading_day_time_for(reading_day, single_reading)
+      puts Time.zone
       puts single_reading[:reading_date]
       puts Time.parse(single_reading[:reading_date])
       puts Time.parse(single_reading[:reading_date]).utc
