@@ -144,7 +144,14 @@ module Amr
     end
 
     def reading_day_time_for(reading_day, single_reading)
+      puts single_reading[:reading_date]
+      puts Time.parse(single_reading[:reading_date])
+      puts Time.parse(single_reading[:reading_date]).utc
       reading_day_time = Time.parse(single_reading[:reading_date]).utc
+      puts "FIRST READING TIME"
+      puts reading_day
+      puts Time.parse(reading_day.strftime('%Y-%m-%d')).utc
+      puts Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
       first_reading_time = Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
 
       ((reading_day_time - first_reading_time) / 30.minutes).to_i

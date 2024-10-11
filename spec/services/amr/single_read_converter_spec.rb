@@ -115,7 +115,7 @@ module Amr
           end
 
           it 'converts correctly' do
-            expect(converter.perform).to match_array expected_output
+            expect(converter.perform).to eq expected_output
           end
         end
       end
