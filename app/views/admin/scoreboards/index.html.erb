@@ -17,7 +17,7 @@
               <%= if can? :delete, scoreboard
                     link_to 'Delete', [:admin, scoreboard],
                             method: :delete, data: { confirm: 'Are you sure?' },
-                            class: 'btn btn-secondary'
+                            class: 'btn btn-danger'
                   end %>
             </div>
           </td>
