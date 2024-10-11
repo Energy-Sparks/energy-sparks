@@ -9,6 +9,10 @@ $link-hover-color: $blue-very-dark;
 $link-decoration: underline;
 
 $btn-font-family: $header-font-family;
-$btn-border-radius: 50rem;
-$btn-border-radius-sm: 50rem;
-$btn-border-radius-lg: 50rem;
+$btn-border-radius: 10rem;
+$btn-border-radius-sm: $btn-border-radius;
+$btn-border-radius-lg: $btn-border-radius;
+
+$custom-control-indicator-checked-bg: darken($teal-dark, 5%); // darkened slightly to match input accent color (base.scss)
+
+$tooltip-bg: $grey-very-dark;

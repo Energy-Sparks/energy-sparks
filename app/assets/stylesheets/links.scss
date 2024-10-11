@@ -1,5 +1,5 @@
 .btn {
-  background-color: $white;
+  background-color: transparent;
   @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
 }
 
@@ -12,10 +12,10 @@
     .btn-#{$color} {
       @include button-variant($value, $value);
     }
-  }
-  .btn-outline-#{$color} {
-    background-color: $white;
-    @include button-outline-variant($value);
+
+    .btn-outline-#{$color} {
+      @include button-outline-variant($value);
+    }
   }
 }
 
@@ -65,10 +65,9 @@ a.badge {
 }
 
 .btn-group-xs > .btn, .btn-xs {
-  padding: 1px 5px;
-  font-size: $f9;
-  line-height: 1.5;
-  border-radius: $btn-border-radius;
+  padding: 0px 5px;
+  @include font(f9);
+  border-radius: 30px;
 }
 
 .btn-fixed-width-100 {
