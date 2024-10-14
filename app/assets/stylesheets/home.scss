@@ -236,14 +236,6 @@ header img {
   padding-bottom: 0px;
 }
 
-.info-page > .btn {
-  background-image: none;
-}
-
-.btn.bg-positive {
-  background-image: linear-gradient(to right, $positive-dark 0%, $positive-light 100%);
-}
-
 .mailchimp  {
   @media (min-width: 992px) and (max-width: 1599.98px) {
     .card-deck {

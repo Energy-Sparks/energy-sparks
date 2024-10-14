@@ -29,6 +29,12 @@
   color: $teal-very-dark;
 }
 
+// used for overriding styles of google calendar button on pricing page
+.btn.btn-success {
+  @extend .btn;
+  @extend .btn-success;
+}
+
 a.badge {
   text-decoration: none;
   .outline {
@@ -38,18 +44,11 @@ a.badge {
   }
 }
 
-.btn.btn-rounded {
-  border-radius: $btn-border-radius;
-}
-
+// used for mailchimp
 .btn-dark-blue {
   color: $white;
   background-color: $blue-dark;
   background-image: none;
-}
-
-.btn-no-border {
-  border: $btn-border-width solid transparent;
 }
 
 .btn-group {
