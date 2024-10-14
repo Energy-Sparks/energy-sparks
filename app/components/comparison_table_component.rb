@@ -11,7 +11,7 @@ class ComparisonTableComponent < ViewComponent::Base
   include AdvicePageHelper
   include ComparisonsHelper
 
-  attr_reader :notes, :footnotes, :headers, :colgroups, :report, :table_name, :index_params
+  attr_reader :report, :table_name, :index_params, :headers, :colgroups
 
   def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [],
                  advice_page_tab: :insights, advice_page_anchor: nil)
