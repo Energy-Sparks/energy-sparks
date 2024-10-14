@@ -29,7 +29,8 @@ module Colours
         pale: '#f0fdf9'.freeze, # not currently used
         light: '#cbfcf0'.freeze,
         medium: '#88f7dd'.freeze,
-        dark: '#10bca2'.freeze
+        dark: '#10bca2'.freeze,
+        very_dark: '#124f49'.freeze # found in button design
       },
       red: { # red_pale etc
         pale: '#fff1f1'.freeze, # was red light in original design. Not currently used

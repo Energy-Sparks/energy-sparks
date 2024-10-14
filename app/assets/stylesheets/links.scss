@@ -26,6 +26,7 @@
 
 .btn-success {
   @include button-variant($teal-medium, $teal-medium, $teal-dark, $teal-dark);
+  color: $teal-very-dark;
 }
 
 a.badge {
@@ -37,9 +38,8 @@ a.badge {
   }
 }
 
-.btn.bg-positive {
-  border-color: transparent;
-  border: none;
+.btn.btn-rounded {
+  border-radius: $btn-border-radius;
 }
 
 .btn-dark-blue {

@@ -13,7 +13,8 @@
     });
     btns = document.getElementsByClassName('qxCTlb');
     Array.prototype.forEach.call(btns, function(btn) {
-      btn.classList.add('btn', 'bg-positive');
+      btn.style = '';
+      btn.classList.add('btn', 'btn-success', 'btn-rounded');
     });
   });
 })();
