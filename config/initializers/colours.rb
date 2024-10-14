@@ -78,7 +78,7 @@ module Colours
     },
     polarity: {
       positive: {
-        light: :teal_medium,
+        light: :teal_light,
         dark: :teal_dark
       },
       neutral: {
