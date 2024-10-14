@@ -57,3 +57,15 @@ Disallow: /
 
 User-agent: SeekportBot
 Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
