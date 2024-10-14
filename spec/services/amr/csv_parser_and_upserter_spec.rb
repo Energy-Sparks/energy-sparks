@@ -101,10 +101,6 @@ module Amr
       )
     end
 
-
-
-
-
     def write_file_and_expect_readings(csv, config, first_reading = '0.165', reading_count = 1)
       record_count = write_file_and_parse(csv, config)
       expect(AmrDataFeedReading.count).to be reading_count
