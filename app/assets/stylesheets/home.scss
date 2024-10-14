@@ -65,9 +65,7 @@ header img {
 
 .cta .btn {
   font-family: $header-font-family;
-  font-size: $f5;
-  padding: 10px;
-  line-height: 20px;
+  @include font(f5);
 }
 
 // Small devices (landscape phones, 576px and up)
