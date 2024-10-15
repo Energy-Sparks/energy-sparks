@@ -36,7 +36,7 @@ header img {
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
   .masthead-content {
-    background-color: $dark-blue;
+    background-color: $blue-very-dark;
   }
 
   .home-page .carousel-item {
@@ -73,7 +73,7 @@ header img {
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
   .masthead-content {
-    background-color: $dark-blue;
+    background-color: $blue-very-dark;
   }
 
   .home-page .carousel-item {
@@ -166,7 +166,7 @@ header img {
 }
 
 .funnels {
-  background-image: linear-gradient($lighter-grey, $white);
+  background-image: linear-gradient($grey-pale, $white);
 
   .card-footer {
     padding: 0.75rem 1.25rem;
@@ -175,7 +175,7 @@ header img {
   }
 
   .card {
-    border: 2px solid $grey;
+    border: 2px solid $grey-medium;
     border-radius: 0.7rem 0.7rem 0.3rem 0.3rem;
   }
 
@@ -226,7 +226,7 @@ header img {
 }
 
 .fa-li.fa-check {
-  color: $bg-positive;
+  color: $positive-dark;
   padding-bottom: 100px;
 }
 
@@ -241,12 +241,7 @@ header img {
 }
 
 .btn.bg-positive {
-  background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
-}
-
-section.highlight {
-  background: $dark-orange;
-  color: $white;
+  background-image: linear-gradient(to right, $positive-dark 0%, $positive-light 100%);
 }
 
 .mailchimp  {

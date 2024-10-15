@@ -473,6 +473,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :mailer_previews, only: [:index]
     resources :component_previews, only: [:index]
+    resources :colours, only: [:index]
+
     concerns :issueable
     resources :funders
     resources :users do

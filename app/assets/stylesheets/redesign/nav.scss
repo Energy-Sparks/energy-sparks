@@ -43,7 +43,7 @@ $togglers: (
   background-color: $background;
 
   & a:link, a:hover, a:focus, a:active {
-    font-weight: 600;
+    font-weight: $font-weight-semibold;
     text-decoration: none;
   }
 
@@ -108,7 +108,7 @@ $togglers: (
     &:hover, &:focus {
       @include font(f9);
       color: $black !important;
-      background: $grey;
+      background: $grey-medium;
     }
   }
 
@@ -160,7 +160,7 @@ nav.navbar-second {
   }
 
   &.adult {
-    @include navbar($background: $blue-very-dark, $foreground: $white, $background-lozenge: $blue-medium, $foreground-lozenge: $blue-dark, $hover: $blue-medium);
+    @include navbar($background: $blue-very-dark, $foreground: $white, $background-lozenge: $blue-light, $foreground-lozenge: $blue-dark, $hover: $blue-light);
     @include toggler('dark');
   }
 
