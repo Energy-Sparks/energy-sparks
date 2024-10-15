@@ -2,8 +2,6 @@ module Amr
   class UpsertValidatedReadingsForAMeter
     NAN_READINGS = Array.new(48, Float::NAN).freeze
 
-    attr_reader :rows_affected
-
     def initialize(dashboard_meter)
       @dashboard_meter = dashboard_meter
     end
@@ -16,7 +14,6 @@ module Amr
       return if validated_amr_data.empty?
 
       result = do_upsert(convert_to_hash(validated_amr_data))
-      @rows_affected = result.ntuples
 
       Rails.logger.info "Upserted: #{@dashboard_meter}"
       @dashboard_meter.amr_data = validated_amr_data
@@ -60,7 +57,7 @@ module Amr
         values,
         on_duplicate: :update,
         unique_by: [:meter_id, :reading_date],
-        returning: [])
+        returning: false)
       # Calling private method here, but means we can piggy-back off all the SQL creation
       insert = insert_all.send(:to_sql)
       where = <<-SQL.squish
@@ -70,7 +67,6 @@ module Amr
           amr_validated_readings.status IS DISTINCT FROM excluded.status OR
           amr_validated_readings.substitute_date IS DISTINCT FROM excluded.substitute_date OR
           amr_validated_readings.upload_datetime IS DISTINCT FROM excluded.upload_datetime
-        RETURNING "id"
       SQL
       "#{insert} #{where}"
     end
