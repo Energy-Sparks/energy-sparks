@@ -41,11 +41,11 @@
         <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
           <%= link_to t('schools.meters.index.report'),
                       admin_reports_amr_validated_reading_path(meter),
-                      class: 'btn btn-sm' %>
+                      class: 'btn btn-sm btn-secondary' %>
         <% end %>
         <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
           <%= link_to school_meter_path(@school, meter, format: 'csv'),
-                      class: 'btn btn-secondary btn-sm' do %>
+                      class: 'btn btn-sm btn-secondary' do %>
             <%= fa_icon('file-download') %>
           <% end %>
         <% end %>
@@ -56,17 +56,19 @@
       <div class="btn-group btn-group-sm" role="group">
         <%= if can?(:edit, meter)
               link_to t('common.labels.edit'), edit_school_meter_path(@school, meter),
-                      class: 'btn btn-sm'
+                      class: 'btn btn-sm btn-primary'
             end %>
         <%= if can?(:activate, meter)
               link_to t('common.labels.activate'),
-                      activate_school_meter_path(@school, meter), method: :put,
-                                                                  class: 'btn btn-sm'
+                      activate_school_meter_path(@school, meter),
+                      method: :put,
+                      class: 'btn btn-sm btn-warning'
             end %>
         <% if can? :delete, meter %>
           <%= link_to t('common.labels.delete'), school_meter_path(@school, meter),
                       method: :delete,
-                      data: { confirm: t('common.confirm') }, class: 'btn btn-sm' %>
+                      data: { confirm: t('common.confirm') },
+                      class: 'btn btn-sm btn-danger' %>
         <% else %>
           <button class="btn btn-sm"
                   disabled

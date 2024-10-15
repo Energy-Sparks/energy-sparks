@@ -12,8 +12,8 @@ module Colours
     palette: {
       blue: { # blue_pale etc
         pale: '#f2f6fc'.freeze,
-        light: '#dcecfd'.freeze, # did not use blue medium from original design as it is not distinct enough from light
-        medium: '#8ca8e0'.freeze, # new colour - derived from light and new bright using https://www.dannybrien.com/middle/
+        light: '#dcecfd'.freeze,
+        medium: '#8ca8e0'.freeze, # new colour - halfway point between light and bright using https://www.dannybrien.com/middle/
         bright: '#3c64c3'.freeze, # new colour - so we could have an inbetween brighter blue -  derived monocromatics from blue_very_dark https://colorkit.co/color/192a52/
         dark: '#334375'.freeze, # paragraph text
         very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
@@ -30,7 +30,7 @@ module Colours
         light: '#cbfcf0'.freeze,
         medium: '#88f7dd'.freeze,
         dark: '#10bca2'.freeze,
-        very_dark: '#124f49'.freeze # found in button design
+        very_dark: '#124f49'.freeze # text colour in teal button
       },
       red: { # red_pale etc
         pale: '#fff1f1'.freeze, # was red light in original design. Not currently used
@@ -47,7 +47,7 @@ module Colours
         pale: '#f6f6f6'.freeze, # off white from original designs
         light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
-        dark: '#8C8C8C'.freeze, # generated - midway point between pale and very dark
+        dark: '#8c8c8c'.freeze, # generated - midway point between pale and very dark
         very_dark: '#222222'.freeze # from original designs - used in header
       },
       cyan: '#17a2b8'.freeze, # bootstrap colour (not in designs)

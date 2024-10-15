@@ -37,14 +37,18 @@
     <td>
       <div class="btn-group btn-group-sm" role="group">
         <% if can?(:view_meter_attributes, meter) %>
-          <%= link_to t('common.labels.attributes'), admin_school_single_meter_attribute_path(@school, meter),
+          <%= link_to t('common.labels.attributes'),
+                      admin_school_single_meter_attribute_path(@school, meter),
                       class: 'btn btn-sm' %>
         <% end %>
         <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-          <%= link_to t('common.labels.report'), admin_reports_amr_validated_reading_path(meter), class: 'btn btn-sm' %>
+          <%= link_to t('common.labels.report'),
+                      admin_reports_amr_validated_reading_path(meter),
+                      class: 'btn btn-sm btn-secondary' %>
         <% end %>
         <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-          <%= link_to school_meter_path(@school, meter, format: 'csv'), class: 'btn btn-secondary btn-sm' do %>
+          <%= link_to school_meter_path(@school, meter, format: 'csv'),
+                      class: 'btn btn-secondary btn-sm' do %>
             <i class="fas fa-file-download"></i>
           <% end %>
         <% end %>
@@ -54,11 +58,14 @@
     <td>
       <div class="btn-group btn-group-sm" role="group">
         <%= if can?(:edit, meter)
-              link_to t('common.labels.edit'), edit_school_meter_path(@school, meter), class: 'btn btn-sm'
+              link_to t('common.labels.edit'),
+                      edit_school_meter_path(@school, meter),
+                      class: 'btn btn-sm btn-primary'
             end %>
         <%= if can?(:deactivate, meter)
-              link_to t('common.labels.deactivate'), deactivate_school_meter_path(@school, meter), method: :put,
-                                                                                                   class: 'btn btn-sm'
+              link_to t('common.labels.deactivate'), deactivate_school_meter_path(@school, meter),
+                      method: :put,
+                      class: 'btn btn-sm btn-warning'
             end %>
       </div>
     </td>
