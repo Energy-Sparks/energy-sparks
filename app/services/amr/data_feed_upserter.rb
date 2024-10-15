@@ -1,6 +1,7 @@
 module Amr
   class DataFeedUpserter
-    def initialize(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
+    def initialize(amr_data_feed_config, amr_data_feed_import_log, array_of_data_feed_reading_hashes)
+      @amr_data_feed_config = amr_data_feed_config
       @array_of_data_feed_reading_hashes = array_of_data_feed_reading_hashes
       @amr_data_feed_import_log = amr_data_feed_import_log
     end
