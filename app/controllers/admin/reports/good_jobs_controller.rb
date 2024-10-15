@@ -64,11 +64,12 @@ module Admin
           queue_name,
           serialized_params->>'job_class' as job_class,
           count(*),
-          AVG(finished_at - performed_at),
-          MIN(finished_at - performed_at),
-          MAX(finished_at - performed_at)
+          AVG(finished_at - performed_at) as average,
+          MIN(finished_at - performed_at) as minimum,
+          MAX(finished_at - performed_at) as maximum,
+          MAX(finished_at) as finished
           from good_jobs
-          where created_at >= NOW() - INTERVAL '7 days'
+          where created_at >= NOW() - INTERVAL '14 days'
           group by date_trunc('day', created_at), queue_name, serialized_params->>'job_class'
           order by date_trunc('day', created_at) desc
         SQL
