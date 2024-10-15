@@ -1,7 +1,7 @@
 .prompt-component {
   border-radius: 8px;
   &.none {
-    background-color: $neutral-light !important;
+    background-color: $grey-pale !important;
   }
 
   @each $polarity, $tones in $colours-polarity {
