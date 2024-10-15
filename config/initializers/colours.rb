@@ -12,8 +12,8 @@ module Colours
     palette: {
       blue: { # blue_pale etc
         pale: '#f2f6fc'.freeze,
-        light: '#cbe4fc'.freeze, # Blue medium from original design - used in nav. Blue light in original design is not distinct enough from this, so removed
-        medium: '#83a4df'.freeze, # new colour - derived (half way colour between light and dark) using https://www.dannybrien.com/middle/
+        light: '#dcecfd'.freeze, # did not use blue medium from original design as it is not distinct enough from light
+        medium: '#8ca8e0'.freeze, # new colour - derived from light and new bright using https://www.dannybrien.com/middle/
         bright: '#3c64c3'.freeze, # new colour - so we could have an inbetween brighter blue -  derived monocromatics from blue_very_dark https://colorkit.co/color/192a52/
         dark: '#334375'.freeze, # paragraph text
         very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
@@ -82,8 +82,8 @@ module Colours
         dark: :teal_dark
       },
       neutral: {
-        light: :grey_pale,
-        dark: :grey_medium
+        light: :blue_light,
+        dark: :blue_medium
       },
       negative: {
         light: :red_light,
