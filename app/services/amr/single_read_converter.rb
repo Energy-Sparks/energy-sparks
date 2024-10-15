@@ -136,7 +136,7 @@ module Amr
 
     # Periods are numbered 1-48
     def index_from_period(reading)
-      return reading[:period].to_i - 1
+      reading[:period].to_i - 1
     end
 
     # Reformat the reading time into %H:%M format and calculate index
