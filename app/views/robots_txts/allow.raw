@@ -17,14 +17,13 @@ Disallow: /schools/*/usage
 Disallow: /schools/*/advice
 Disallow: /schools/*/advice/*
 Disallow: /schools/*/school_targets
-Disallow: /schools/*/school_targets/*
 Disallow: /pupils/schools/*/analysis
 Disallow: /benchmark
 Disallow: /all_benchmarks
 Disallow: /users/sign_in
 Disallow: /activity_types/search
 Disallow: /compare/*
-Disallow: /comparisons/*
+Disallow: /comparisons
 
 User-agent: SemrushBot
 Disallow: /
