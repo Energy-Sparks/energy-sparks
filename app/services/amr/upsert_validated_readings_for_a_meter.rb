@@ -13,7 +13,7 @@ module Amr
       validated_amr_data = amr_data.delete_if {|_reading_date, one_day_read| is_nan?(one_day_read) }
       return if validated_amr_data.empty?
 
-      result = do_upsert(convert_to_hash(validated_amr_data))
+      do_upsert(convert_to_hash(validated_amr_data))
 
       Rails.logger.info "Upserted: #{@dashboard_meter}"
       @dashboard_meter.amr_data = validated_amr_data
