@@ -7,6 +7,8 @@ module Amr
     end
 
     def perform
+      log_changes(0, 0) and return if @array_of_data_feed_reading_hashes.empty?
+
       records_count_before = count_by_mpan
 
       add_import_log_id_and_dates_to_hash
@@ -15,12 +17,15 @@ module Amr
       inserted_count = count_by_mpan - records_count_before
       updated_count = result.rows.flatten.size - inserted_count
 
-      @amr_data_feed_import_log.update(records_imported: inserted_count, records_updated: updated_count)
-
-      Rails.logger.info "Updated #{updated_count} Inserted #{inserted_count}"
+      log_changes(inserted_count, updated_count)
     end
 
   private
+
+    def log_changes(inserted, updated)
+      @amr_data_feed_import_log.update(records_imported: inserted, records_updated: updated)
+      Rails.logger.info "Updated #{updated} Inserted #{inserted}"
+    end
 
     def count_by_mpan
       mpans = []
