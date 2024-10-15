@@ -36,7 +36,6 @@ div.analysis-chart, div.usage-chart {
   width: 100%;
   text-align: center;
   color: $grey-dark;
-  line-height: 700px;
   font-size: $f7;
   margin: 0 auto;
   padding-bottom: 25px;
@@ -44,7 +43,6 @@ div.analysis-chart, div.usage-chart {
 
   &.pie-chart {
     height: 550px;
-    line-height: 550px;
   }
 
   &.find-out-more {
@@ -56,6 +54,12 @@ div.analysis-chart, div.usage-chart {
 @media (max-width: 1024px) {
   div.analysis-chart {
     height: 500px;
+  }
+}
+
+div.public-display-chart {
+  div.analysis-chart {
+    height: 550px;
   }
 }
 

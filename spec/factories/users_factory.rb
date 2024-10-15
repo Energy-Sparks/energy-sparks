@@ -17,6 +17,7 @@ FactoryBot.define do
 
         after(:build) do |user, evaluator|
           user.cluster_schools = create_list(:school, evaluator.count, active: true, public: true)
+          user.cluster_schools << user.school
         end
       end
     end

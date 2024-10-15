@@ -41,10 +41,21 @@ module Pupils
       raise 'Non-public data' unless @school.data_sharing_public?
       raise 'Not data enabled' unless @school.data_enabled?
       @chart_type = params.require(:chart_type).to_sym
+
+      # avoid showing stale date on weekly comparion chart, issue temporary redirect
+      # ensures pages don't break in case of lagging data or a meter fault
+      if lagging_data?(@chart_type)
+        redirect_to pupils_school_public_displays_equivalences_path(@school, @fuel_type) and return
+      end
       @chart = find_chart(@fuel_type, @chart_type)
     end
 
     private
+
+    def lagging_data?(chart_type)
+      return false if chart_type == :out_of_hours
+      (Time.zone.today - @analysis_dates.end_date) > 30
+    end
 
     def set_fuel_type
       @fuel_type = params.require(:fuel_type).to_sym
@@ -86,14 +97,14 @@ module Pupils
       when :electricity
         case chart_type
         when :out_of_hours
-          :pupil_dashboard_daytype_breakdown_electricity
+          :daytype_breakdown_electricity_tolerant
         else
           :public_displays_electricity_weekly_comparison
         end
       when :gas
         case chart_type
         when :out_of_hours
-          :pupil_dashboard_daytype_breakdown_gas
+          :daytype_breakdown_gas_tolerant
         else
           :public_displays_gas_weekly_comparison
         end
