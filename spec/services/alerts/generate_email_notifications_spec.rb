@@ -133,7 +133,7 @@ describe Alerts::GenerateEmailNotifications do
     end
 
     it 'send to correct users' do
-      expect(email.cc).to contain_exactly(email_contact.email_address)
+      expect(email.to).to contain_exactly(email_contact.email_address)
     end
 
     it_behaves_like 'an alert email was sent'

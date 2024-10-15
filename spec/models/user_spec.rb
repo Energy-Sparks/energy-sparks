@@ -105,11 +105,14 @@ describe User do
       expect(build(:pupil, school: create(:school), pupil_password: 'three memorable words')).to be_valid
     end
 
-    it 'is encrypted' do
-      raw = ActiveRecord::Base.connection.select_all(
-        'SELECT pupil_password FROM users WHERE id = $1', nil, [existing_pupil.id]
-      ).first
-      expect(raw['pupil_password']).not_to eq(existing_pupil.pupil_password)
+    it 'reads an pre-encrypted password' do
+      ActiveRecord::Base.connection.exec_query(%q(
+        UPDATE users
+        SET pupil_password =
+          '{"p":"ANilTF3GyyDTX6jwp6ZVgZkWr5CvalAAQg==","h":{"iv":"ctFZW5HRkVHmIbJd","at":"v775E47MO8eqOU8zo9xwPw=="}}'
+        WHERE id = $1
+      ), nil, [existing_pupil.id])
+      expect(existing_pupil.reload.pupil_password).to eq('four memorable words here')
     end
   end
 
