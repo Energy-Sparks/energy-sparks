@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_10_131742) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_15_163950) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -418,6 +418,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_10_131742) do
     t.boolean "convert_to_kwh", default: false
     t.boolean "delayed_reading", default: false, null: false
     t.enum "half_hourly_labelling", enum_type: "half_hourly_labelling"
+    t.boolean "allow_merging", default: false, null: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
