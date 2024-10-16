@@ -83,13 +83,10 @@ en:
     group_dashboard: Group dashboard
     my_school_group: My school group
   my_school_menu:
-    complete_pupil_activities: Complete pupil activities
     download_our_data: Download our data
     electricity_and_solar_usage: Electricity and solar usage
     electricity_usage: Electricity usage
     energy_analysis: Energy analysis
-    energy_audits: Energy audits
-    energy_saving_actions: Energy saving actions
     gas_usage: Gas usage
     live_energy_data: Live energy data
     my_alerts: My alerts
@@ -124,8 +121,6 @@ en:
     videos: Videos
   partners:
     supports_in_partnership_with: Energy Sparks supports %{school_name} in partnership with
-  switch_schools_menu:
-    switch_school: Switch school
   terms_and_conditions:
     message_html: I confirm agreement with the Energy Sparks %{terms_and_conditions_link} and %{privacy_policy_link}
   timeline:
