@@ -174,6 +174,11 @@ dl dt {
   }
 }
 
+input, progress {
+  // had to darken slightly as the second accent colour (which is chosen by the browser) is either light or dark, depending on how dark the accent colour is.
+  accent-color: darken($teal-dark, 5%) !important;
+}
+
 .agreements {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -198,6 +203,10 @@ dl dt {
 
 .text-white {
   color: $white;
+}
+
+.text-grey-light {
+  color: $grey-light;
 }
 
 .text-dark-blue {

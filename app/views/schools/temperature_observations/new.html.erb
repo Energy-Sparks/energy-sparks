@@ -3,10 +3,10 @@
 <h3><%= t('schools.temperature_observations.new.enter_temperatures') %></h3>
 <p><%= t('schools.temperature_observations.new.leave_locations_blank') %></p>
 <%= simple_form_for([@school, @observation], url: school_temperature_observations_path(@school)) do |f| %>
-  <%= f.input :at, as: :tempus_dominus_date_time, default_date_time: Time.now, input_html: { class: "form-control form-control-lg", data: { max_date_time: h(Time.now.httpdate) }} %>
+  <%= f.input :at, as: :tempus_dominus_date_time, default_date_time: Time.now, input_html: { class: 'form-control form-control-lg', data: { max_date_time: h(Time.now.httpdate) } } %>
   <%= f.fields_for :temperature_recordings do |temperature_form| %>
     <%= render 'temperature_recording_fields', temperature_form: temperature_form %>
   <% end %>
 
-  <%= f.submit t('schools.temperature_observations.new.create_temperature_recordings'), class: 'btn btn-success' %>
+  <%= f.submit t('schools.temperature_observations.new.create_temperature_recordings'), class: 'btn btn-primary' %>
 <% end %>

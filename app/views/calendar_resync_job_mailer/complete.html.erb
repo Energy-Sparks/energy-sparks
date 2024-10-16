@@ -1,5 +1,5 @@
 <h1><%= t('calendars.resync.title', calendar_title: @resync_service.calendar.title) %></h1>
-<p><%= link_to t('common.labels.view'), calendar_url(@resync_service.calendar), class: 'btn btn-success' %></p>
+<p><%= link_to t('common.labels.view'), calendar_url(@resync_service.calendar), class: 'btn btn-secondary' %></p>
 
 <% if @resync_service.failures.any? %>
   <h3><%= t('calendars.resync.failed_to_resync') %></h3>
