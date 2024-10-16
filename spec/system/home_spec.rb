@@ -208,7 +208,7 @@ RSpec.describe 'home', type: :system do
       end
 
       it 'does have navigation options' do
-        expect(page).to have_css('#my_school_menu')
+        expect(page).to have_css('#my-school-menu')
         expect(page).to have_link('Pupil dashboard')
       end
     end
