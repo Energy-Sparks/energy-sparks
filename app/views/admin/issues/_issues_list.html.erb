@@ -32,8 +32,8 @@
           </div>
         </td>
         <td class="fit nowrap text-right">
-          <%= link_to 'View', polymorphic_path([:admin, issue.issueable, issue]), class: 'btn btn-sm' %>
-          <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-info btn-sm edit' %>
+          <%= link_to 'View', polymorphic_path([:admin, issue.issueable, issue]), class: 'btn btn-primary btn-sm' %>
+          <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-secondary btn-sm edit' %>
         </td>
       </tr>
     <% end %>

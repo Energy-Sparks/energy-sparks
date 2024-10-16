@@ -20,7 +20,7 @@
                                 fuel_type: fuel_type_label(equivalence_content)),
                               pupils_school_analysis_path(school,
                                                           category: analysis_category(equivalence_content)),
-                              class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                              class: 'btn btn-default' %>
                 <% else %>
                   <%= t('pupils.schools.show.how_will_school_compare') %>
                 <% end %>
@@ -49,7 +49,7 @@
                                   fuel_type: fuel_type_label(equivalence_content)),
                                 pupils_school_analysis_path(school,
                                                             category: equivalence_content.equivalence_type.meter_type),
-                                class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                                class: 'btn btn-default' %>
                   <% else %>
                     <%= t('pupils.schools.show.how_will_school_compare') %>
                   <% end %>
@@ -73,7 +73,7 @@
               <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
                           pupils_school_analysis_path(school,
                                                       category: equivalence_content.equivalence_type.meter_type),
-                          class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                          class: 'btn btn-default' %>
             <% else %>
               <%= t('pupils.schools.show.how_will_school_compare') %>
             <% end %>

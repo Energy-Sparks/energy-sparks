@@ -2,10 +2,16 @@
 // For a complete list of variables that can be overridden in Bootstrap 4.6,
 // see here: https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss
 
-//$base-font: map-get($fonts, f6);
-// $font-size-base: map-get($base-font, font-size);
-//$line-height-base: map-get($base-font, line-height);
+$headings-color: $blue-very-dark;
+$body-color: $blue-dark;
+$link-color: $blue-dark;
+$link-hover-color: $blue-very-dark;
+$link-decoration: underline;
+$tooltip-bg: $grey-very-dark;
 
-// $body-color: $blue-dark;
-// $link-color: $blue-dark;
-// $link-decoration: underline;
+$btn-font-family: $header-font-family;
+$btn-border-radius: 10rem;
+$btn-border-radius-sm: $btn-border-radius;
+$btn-border-radius-lg: $btn-border-radius;
+
+$custom-control-indicator-checked-bg: darken($teal-dark, 5%); // darkened slightly to match input accent color (base.scss)

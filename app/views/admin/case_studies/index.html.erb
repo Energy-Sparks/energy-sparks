@@ -20,12 +20,12 @@
         <td><%= case_study.description %></td>
         <td><%= case_study.position %></td>
         <td class="text-nowrap">
-          <%= t_attached_links(case_study, :file, " | ") %>
+          <%= t_attached_links(case_study, :file, ' | ') %>
         </td>
         <td>
           <div class="btn-group">
-            <%= link_to 'Edit', edit_admin_case_study_path(case_study), class: 'btn' %>
-            <%= link_to 'Delete', admin_case_study_path(case_study), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+            <%= link_to 'Edit', edit_admin_case_study_path(case_study), class: 'btn btn-primary' %>
+            <%= link_to 'Delete', admin_case_study_path(case_study), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           </div>
         </td>
       </tr>
@@ -37,4 +37,4 @@
   <p>There are no case studies</p>
 <% end %>
 
-<p><%= link_to 'New Case study', new_admin_case_study_path, class: 'btn'%></p>
+<p><%= link_to 'New Case study', new_admin_case_study_path, class: 'btn' %></p>

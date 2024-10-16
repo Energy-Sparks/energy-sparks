@@ -32,10 +32,10 @@ class SchoolsController < ApplicationController
   before_action :set_breadcrumbs
 
   def index
-    @schools = School.visible.by_name
+    @schools = School.visible.by_name.select(:name, :slug)
     @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)
-    @ungrouped_visible_schools = School.visible.without_group.by_name
-    @schools_not_visible = School.not_visible.by_name
+    @ungrouped_visible_schools = School.visible.without_group.by_name.select(:name, :slug)
+    @schools_not_visible = School.not_visible.by_name.select(:name, :slug)
   end
 
   def show

@@ -14,24 +14,27 @@ $f8: 14px; // slightly smaller than old f6
 $f9: 12px; // old f7 ish
 $f10: 10px; // old f8 - kept for responsive layout
 
+// The following Google fonts are currently available (See _head.html.erb) for:
+// Quicksand: 600, 700
+// Inter: 400, 600, 700
+
+// Font weights (these are not yet defined by the time this file is read!):
+// In bootstrap we have the following font weight variables that will work for us:
+// $font-weight-normal:          400 !default;
+// $font-weight-bold:            700 !default;
+
+// We also use semibold, this is in addition on the bootstrap variables:
+$font-weight-semibold: 600;
+
+// It may be that we need light (300) importing, but we don't have it at the moment.
+// Won't work (will likely default to 400 instead):
+// $font-weight-light:           300 !default;
+
 $default-font-family: 'Inter';
 $default-font-size: $f6;
-$default-font-weight: 400; // regular. medium is 500
+$default-font-weight: normal;
 $header-font-family: 'Quicksand';
-$header-font-weight: 600;
-
-/* old
-$f-super-big: 60px;
-$f0: 50px;
-$f1: 37.3px;
-$f2: 31.1px;
-$f3: 25.9px;
-$f4: 21.6px;
-$f5: 18px; // default
-$f6: 15px;
-$f7: 12.5px;
-$f8: 10px;
-*/
+$header-font-weight: $font-weight-semibold;
 
 $fonts: (
   f1: (
@@ -87,4 +90,3 @@ $fonts: (
     @include font($name);
   }
 }
-

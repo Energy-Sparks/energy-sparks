@@ -5,14 +5,14 @@
         <i class="fas fa-tasks fa-3x"></i>
       </div>
       <div class="col-lg-8 col-sm-12 align-self-center">
-        <%= t('intervention_types.prompt_score.complete_this_action_for_group_html', count: intervention_type.score) %><br />
+        <%= t('intervention_types.prompt_score.complete_this_action_for_group_html', count: intervention_type.score) %><br>
         <div class="pt-3 w-75">
           <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2 must-select disable-tooltip' %>
         </div>
       </div>
       <div class="col-lg-3 col-sm-12">
         <div class="d-none d-sm-block d-md-block d-lg-none pt-2"></div>
-        <%= f.submit t('intervention_types.prompt_score.record_this_action'), class: 'btn btn-light float-lg-right', 'data-toggle': 'tooltip', 'data-placement': 'bottom', title: t('activity_types.show.select_school') %>
+        <%= f.submit t('intervention_types.prompt_score.record_this_action'), class: 'btn float-lg-right', 'data-toggle': 'tooltip', 'data-placement': 'bottom', title: t('activity_types.show.select_school') %>
       </div>
     </div>
   <% end %>

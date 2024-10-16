@@ -473,6 +473,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :mailer_previews, only: [:index]
     resources :component_previews, only: [:index]
+    resources :styles, only: [:index]
+    get 'colours', to: 'styles#index'
+
     concerns :issueable
     resources :funders
     resources :users do
@@ -663,6 +666,7 @@ Rails.application.routes.draw do
       resources :community_use, only: [:index]
       resources :intervention_types, only: [:index, :show]
       resources :work_allocation, only: [:index]
+      resources :user_logins, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver

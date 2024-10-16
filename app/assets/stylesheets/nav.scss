@@ -3,9 +3,9 @@
 
 .navbar {
   border-radius: 0;
-  background: $dark-blue;
+  background: $header-dark;
   font-family: "Quicksand", Helvetica, Arial, sans-serif;
-  font-weight: 400;
+  font-weight: normal;
   border: none;
   padding: 1px;
 
@@ -34,9 +34,9 @@
 
   .navbar-toggle:hover,
   .navbar-toggle:focus {
-    background-color: $light-blue;
+    background-color: $blue-light;
     color: $white;
-    border-color: $light-blue;
+    border-color: $blue-light;
   }
 
   .nav-link {
@@ -46,7 +46,7 @@
   }
 
   .dropdown-menu {
-    background: $dark-blue;
+    background: $header-dark;
     right: 0;
     left: auto;
   }
@@ -113,7 +113,7 @@ li.nav-item a.btn:active {
 .nav-tabs {
   .nav-item {
     .nav-link.active {
-      font-weight: 600;
+      font-weight: $font-weight-semibold;
     }
   }
 }
@@ -121,8 +121,8 @@ li.nav-item a.btn:active {
 .nav-tabs.locales {
   .nav-item {
     .nav-link.active {
-      background: $light-grey;
-      border-color: $light-grey;
+      background: $grey-light;
+      border-color: $grey-light;
     }
   }
 }
@@ -130,7 +130,7 @@ li.nav-item a.btn:active {
 .tab-content.locales {
   padding: 10px;
   margin-bottom: 10px;
-  background-color: $light-grey;
+  background-color: $grey-light;
 }
 
 @media (min-width: 992px) {
@@ -177,10 +177,10 @@ li.nav-item a.btn:active {
 
 .nav-lozenge {
   white-space: nowrap;
-  background: $dark-blue;
-  background: linear-gradient(180deg, saturate($dark-blue, 5%), lighten($dark-blue, 10%));
+  background: $header-dark;
+  background: linear-gradient(180deg, saturate($header-dark, 5%), lighten($header-dark, 10%));
   border-radius: 25px;
-  border: 1px solid darken($dark-blue, 15%);
+  border: 1px solid darken($header-dark, 15%);
   padding: 5px;
 
   .nav-link {

@@ -47,14 +47,22 @@
               <td><%= link_to programme_type.title, admin_programme_type_path(programme_type) %></td>
               <td><%= programme_type.activity_types.count %></td>
               <td><%= programme_type.bonus_score %></td>
-              <td><%= link_to programme_type.programmes.started.count, admin_programme_type_programmes_path(programme_type) %></td>
+              <td><%= link_to programme_type.programmes.started.count,
+                              admin_programme_type_programmes_path(programme_type) %></td>
               <td><%= programme_type.programmes.completed.count %></td>
               <td><%= checkmark(programme_type.active) %></td>
               <td><%= programme_type.default ? 'Yes' : 'No' %></td>
-              <td><%= link_to 'Enrol schools', admin_programme_type_programmes_path(programme_type), class: 'btn btn-warning btn-sm nowrap' %></td>
-              <td><%= link_to 'Edit activities', admin_programme_type_activity_types_path(programme_type), class: 'btn btn-warning btn-sm nowrap' %></td>
-              <td><%= link_to 'Edit', edit_admin_programme_type_path(programme_type), class: 'btn btn-warning btn-sm' %></td>
-              <td><%= link_to 'Delete', admin_programme_type_path(programme_type), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
+              <td><%= link_to 'Enrol schools',
+                              admin_programme_type_programmes_path(programme_type),
+                              class: 'btn btn-warning btn-sm nowrap' %></td>
+              <td><%= link_to 'Edit activities',
+                              admin_programme_type_activity_types_path(programme_type),
+                              class: 'btn btn-warning btn-sm nowrap' %></td>
+              <td><%= link_to 'Edit', edit_admin_programme_type_path(programme_type),
+                              class: 'btn btn-warning btn-sm' %></td>
+              <td><%= link_to 'Delete', admin_programme_type_path(programme_type),
+                              method: :delete, data: { confirm: 'Are you sure?' },
+                              class: 'btn btn-danger btn-sm' %></td>
             </tr>
           <% end %>
         </tbody>
@@ -62,6 +70,6 @@
     <% else %>
       <p>There are no programme types</p>
     <% end %>
-    <%= link_to 'New Programme Type', new_admin_programme_type_path, class: 'btn btn-primary btn-sm'%>
+    <%= link_to 'New Programme Type', new_admin_programme_type_path, class: 'btn btn-primary btn-sm' %>
   </div>
 </div>

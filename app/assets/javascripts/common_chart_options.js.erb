@@ -12,7 +12,7 @@ Highcharts.setOptions({
 
 function commonChartOptions(clickListener){
   return {
-    colors: ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
+    colors: <%= Colours::DEFAULT_CHART_COLOURS.to_s %>,
     title: { text: null },
     exporting: {
       sourceWidth: 1278,
@@ -70,7 +70,7 @@ function commonChartOptions(clickListener){
       },
       column: {
         dataLabels: {
-          color: '<%= Colours::DARK_BLUE %>'
+          color: '<%= Colours.chart_dark_blue %>'
         },
         point: {
           events: {
@@ -133,13 +133,9 @@ function commonChartOptions(clickListener){
   };
 }
 
-function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
+function barColumnLine(chartData, highchartsChart, seriesData, chartConfig, $chartDiv) {
   var subChartType = chartData.chart1_subtype;
   var chartType = chartData.chart1_type;
-
-  //console.log(chartType + ': ' + subChartType);
-
-
 
   var xAxisCategories = chartData.x_axis_categories;
   var yAxisLabel = chartData.y_axis_label;
@@ -153,12 +149,14 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // BAR Charts
   if (chartType == 'bar') {
+    $chartDiv.addClass('bar-chart');
+
     if (chartData.uses_time_of_day) {
       //console.log('time of day set');
       highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
     }
 
-    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours::DARK_BLUE %>' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours.chart_dark_blue %>' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
 
     if (chartData.x_max_value) {
       highchartsChart.update({yAxis: { max: chartData.x_max_value }})
@@ -171,6 +169,8 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // LINE charts
   if (chartType == 'line') {
+    $chartDiv.addClass('line-chart');
+
     if (! y2AxisLabel) {
       highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
     }
@@ -178,12 +178,14 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // Column charts
   if (chartType == 'column') {
+    $chartDiv.addClass('column-chart');
+
     if (! noZoom) {
       highchartsChart.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  chartData.click_and_drag_message : chartData.pinch_and_zoom_message }});
     }
 
     if (subChartType == 'stacked') {
-      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours::DARK_BLUE %>' } } }]});
+      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours.chart_dark_blue %>' } } }]});
     } else {
 
       if(seriesData[0]['day_format'] && seriesData[0]['day_format']) {
@@ -198,7 +200,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // Handle Y2 axis
   if (y2AxisLabel) {
-    var colour = '<%= Colours::DARK_BLUE %>';
+    var colour = '<%= Colours.chart_dark_blue %>';
 
     //console.log('Y2 axis label' + y2AxisLabel);
 
