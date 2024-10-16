@@ -291,7 +291,7 @@ RSpec.describe 'onboarding', :schools do
       school_group = create(:school_group)
       school = create(:school, country: :england, school_group:)
       onboarding = create(:school_onboarding, :with_events, event_names: [:onboarding_complete], school:)
-      within('#navbarNavDropdown') do
+      within('#nav-top') do
         click_on 'Manage'
         click_on 'Reports'
       end
