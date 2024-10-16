@@ -25,6 +25,10 @@ footer li {
   @include font(f8);
 }
 
+footer h6 {
+  color: $white;
+}
+
 .btn-outline {
   color: $white;
   border: solid 2px white;
