@@ -6,7 +6,7 @@
 
 @import "colours";
 @import "fonts";
-@import "redesign/bootstrap-overrides"; // extra
+@import "bootstrap-overrides";
 @import "bootstrap";
 
 @import "bootstrap-xl";
@@ -14,9 +14,9 @@
 @import "base";
 @import "links";
 @import "headers";
-@import "redesign/nav"; // switched
-@import "redesign/nav-tabs"; // extra
-@import "footer";
+@import "nav";
+@import "nav-tabs";
+@import "redesign/footer"; // switched
 @import "home";
 @import "site";
 @import "school";
