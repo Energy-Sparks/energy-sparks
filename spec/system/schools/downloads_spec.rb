@@ -67,9 +67,8 @@ describe 'downloads', type: :system do
 
     before do
       sign_in(admin)
-      visit school_path(filtered_school)
-      # this is the in-page link
-      click_on 'Download your data'
+      visit school_meters_path(filtered_school)
+      click_on 'School downloads'
       expect(page).to have_content("Downloads for #{filtered_school.name}")
     end
 
