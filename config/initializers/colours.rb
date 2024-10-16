@@ -12,8 +12,8 @@ module Colours
     palette: {
       blue: { # blue_pale etc
         pale: '#f2f6fc'.freeze,
-        light: '#dcecfd'.freeze, # did not use blue medium from original design as it is not distinct enough from light
-        medium: '#8ca8e0'.freeze, # new colour - derived from light and new bright using https://www.dannybrien.com/middle/
+        light: '#dcecfd'.freeze,
+        medium: '#8ca8e0'.freeze, # new colour - halfway point between light and bright using https://www.dannybrien.com/middle/
         bright: '#3c64c3'.freeze, # new colour - so we could have an inbetween brighter blue -  derived monocromatics from blue_very_dark https://colorkit.co/color/192a52/
         dark: '#334375'.freeze, # paragraph text
         very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
@@ -29,7 +29,8 @@ module Colours
         pale: '#f0fdf9'.freeze, # not currently used
         light: '#cbfcf0'.freeze,
         medium: '#88f7dd'.freeze,
-        dark: '#10bca2'.freeze
+        dark: '#10bca2'.freeze,
+        very_dark: '#124f49'.freeze # text colour in teal button
       },
       red: { # red_pale etc
         pale: '#fff1f1'.freeze, # was red light in original design. Not currently used
@@ -46,17 +47,12 @@ module Colours
         pale: '#f6f6f6'.freeze, # off white from original designs
         light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
-        dark: :gray_600, # put an alias in here as I think we could generate a grey here to replace grey_600 and to move old dark_greys over here too
+        dark: '#8c8c8c'.freeze, # generated - midway point between pale and very dark
         very_dark: '#222222'.freeze # from original designs - used in header
       },
       cyan: '#17a2b8'.freeze, # bootstrap colour (not in designs)
       white: '#ffffff'.freeze,
       black: '#000000'.freeze,
-    },
-    old: { # Colours that are to be phased out
-      dark_grey: '#999999'.freeze, # hope these can be replaced by grey-dark
-      gray_600: '#6c757d'.freeze, # bootstrap grey 600. Used for bg-secondary, btn-outline-secondary etc
-
     },
     fuel: {
       electric: {
@@ -96,8 +92,8 @@ module Colours
       other_school: :red_dark
     },
     bootstrap: {
-      primary: :blue_bright,
-      secondary: :grey_dark, # currently bootstrap grey-600 (default)
+      primary: :blue_very_dark,
+      secondary: :grey_dark,
       success: :teal_dark,
       info: :cyan, # bootstrap default
       warning: :yellow_medium,

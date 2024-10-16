@@ -64,10 +64,8 @@ header img {
 }
 
 .cta .btn {
-  font-family: $default-font-family;
-  font-size: $f5;
-  padding: 10px;
-  line-height: 20px;
+  font-family: $header-font-family;
+  @include font(f5);
 }
 
 // Small devices (landscape phones, 576px and up)
@@ -155,8 +153,8 @@ header img {
 }
 
 .carousel-indicators li {
-  background: $dark-grey;
-  border:2px solid $dark-grey;
+  background: $grey-dark;
+  border:2px solid $grey-dark;
   border-radius: 6px;
 }
 
@@ -234,14 +232,6 @@ header img {
   padding-left: 50px;
   padding-right: 50px;
   padding-bottom: 0px;
-}
-
-.info-page > .btn {
-  background-image: none;
-}
-
-.btn.bg-positive {
-  background-image: linear-gradient(to right, $positive-dark 0%, $positive-light 100%);
 }
 
 .mailchimp  {

@@ -1,86 +1,72 @@
-a,
-a:hover,
-a:focus,
-a:active,
-a.active {
-  text-decoration: underline;
-  outline: none;
-}
-
-a.btn,
-a.btn:hover,
-a.btn:focus,
-a.btn:active,
-a.btn.active,
-a.badge,
-a.badge:hover,
-a.badge:focus,
-a.badge:active,
-a.badge.active,
-a.nav-link,
-a.nav-link:hover,
-a.nav-link:focus,
-a.nav-link:active,
-a.nav-link.active {
-  text-decoration: none;
-  outline: none;
-}
-
-a.badge.outline {
-  outline: solid;
-  outline-width: 1px;
-  outline-color: $grey-light;
-}
-
-.btn,
-.btn:hover,
-.btn:focus,
-.btn:active,
-.btn.active {
-  color: $dark;
-  background-image: linear-gradient($white, $grey-light);
-  border-color: $grey-medium;
-  font-weight: $font-weight-semibold !important;
-  border-radius: 50rem !important;
-}
-
-.btn-outline-dark {
+.btn {
   background-color: $white;
-  background-image: none !important;
-  border-color: $dark;
+  @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
 }
 
-.btn-outline-dark:hover {
-  color: $white;
+.btn-default { // also default button design
+  @extend .btn;
 }
 
-.btn.bg-positive {
-  border-color: transparent;
-  border: none;
+@each $color, $value in $theme-colors {
+  @if $color != secondary { // secondary is same as default button design
+    .btn-#{$color} {
+      @include button-variant($value, $value);
+    }
+
+    .btn-outline-#{$color} {
+      @include button-outline-variant($value);
+    }
+  }
 }
 
+// primary, secondary and success all break from the normal bootstrap styles
+.btn-primary {
+  @include button-variant($blue-very-dark, $blue-very-dark, $blue-dark, $blue-dark);
+}
+
+.btn-success {
+  @include button-variant($teal-medium, $teal-medium, $teal-dark, $teal-dark);
+  color: $teal-very-dark;
+}
+
+// used for overriding styles of google calendar button on pricing page
+.btn.btn-success {
+  @extend .btn;
+  @extend .btn-success;
+}
+
+a.badge {
+  text-decoration: none;
+  .outline {
+    outline: solid;
+    outline-width: 1px;
+    outline-color: $grey-light;
+  }
+}
+
+// used for mailchimp
 .btn-dark-blue {
   color: $white;
   background-color: $blue-dark;
   background-image: none;
 }
 
-.btn-no-border {
-  border: $btn-border-width solid transparent;
-}
-
 .btn-group {
-  .btn {
-    margin-left: 5px;
-    margin-right: 5px;
+   .btn {
+     margin-left: 5px;
+     margin-right: 5px;
+   }
+   &:not(.panel) {
+    .btn {
+      border-radius: $btn-border-radius !important;
+    }
   }
 }
 
 .btn-group-xs > .btn, .btn-xs {
-  padding: 1px 5px;
-  font-size: $f9;
-  line-height: 1.5;
-  border-radius: 3px;
+  padding: 0px 5px;
+  @include font(f9);
+  border-radius: 30px;
 }
 
 .btn-fixed-width-100 {

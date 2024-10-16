@@ -25,19 +25,17 @@ div.pupil-chart-titles {
   border-color: $grey-medium;
 }
 
-.explore-button:hover {
-  color: $white;
-}
-
-div.axis-controls label:hover {
-  font-weight: bold;
+div.axis-controls {
+  label:hover {
+    font-weight: bold;
+  }
 }
 
 div.analysis-chart, div.usage-chart {
   height: 700px;
   width: 100%;
   text-align: center;
-  color: $dark-grey;
+  color: $grey-dark;
   font-size: $f7;
   margin: 0 auto;
   padding-bottom: 25px;

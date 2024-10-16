@@ -23,7 +23,7 @@
 <div class="bg-light border rounded py-2 mb-2">
   <div class="col-12 clearfix">
     <span data-toggle="collapse" href="#data-source" role="button" aria-expanded="true" aria-controls="data-source" class="badge badge-light toggler text-decoration-none collapsed">
-      <%= fa_icon('chevron-down') %><%= fa_icon('chevron-right') %>
+      <%= toggler %>
     </span>
     <%= render 'admin/issues/issueable', issueable: @data_source %>
     <span class="badge badge-info"><%= @data_source.organisation_type.try(:humanize) %></span>
