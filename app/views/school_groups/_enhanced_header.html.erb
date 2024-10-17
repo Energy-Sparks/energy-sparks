@@ -37,7 +37,13 @@
   <div class='row'>
     <div class="col-md-12">
       <div class="container">
-        <%= render 'management/schools/dashboard_message', messageable: @school_group %>
+        <% if @school_group.try(:dashboard_message) %>
+          <%= component 'info_bar',
+                        status: :neutral,
+                        title: @school_group.dashboard_message.message,
+                        icon: fa_icon('info-circle fa-3x'),
+                        buttons: {} %>
+        <% end %>
       </div>
     </div>
   </div>

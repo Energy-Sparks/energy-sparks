@@ -36,7 +36,6 @@ cy:
       i_want_to_look_at: Rydyw i eisiau edrych ar…
       live_energy_data: Data ynni byw
       look_at_energy_use: Gad i ni edrych ar y data defnydd ynni ar gyfer dy ysgol
-      review_energy_analysis: Adolygu dadansoddiad ynni
       storage_heater_data_html: Dyma'r data <strong>stôr-wresogyddion</strong> ar gyfer eich ysgol
       without_storage_heaters: heb stôr-wresogyddion
     default_equivalences:

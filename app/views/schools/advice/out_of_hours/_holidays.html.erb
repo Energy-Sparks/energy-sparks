@@ -5,7 +5,7 @@
 
 <% alert_classes.each do |alert_class| %>
   <%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts,
-                          alert_types: alert_types_for_class(alert_class), show_links: false, show_icons: false %>
+                          alert_types: alert_types_for_class(alert_class), show_links: false %>
 <% end %>
 
 <% if analysis_dates.months_of_data >= 14 %>

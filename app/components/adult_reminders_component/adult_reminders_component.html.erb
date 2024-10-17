@@ -15,6 +15,7 @@
     <% end %>
   <% end %>
 
+  <%# i18n-tasks-use t("schools.show.create_pupil_account") %>
   <% add_prompt(id: :add_pupils,
                 check: prompt_for_pupils?,
                 list: list,
@@ -27,6 +28,7 @@
      </p>
    <% end %>
 
+   <%# i18n-tasks-use t("schools.show.add_alert_contacts") %>
    <% add_prompt(id: :add_contacts,
                  check: prompt_for_contacts?,
                  list: list,
@@ -39,6 +41,7 @@
      </p>
    <% end %>
 
+  <%# i18n-tasks-use t("schools.show.upload_energy_bill") %>
   <% add_prompt(id: :bill,
                 check: prompt_for_bill?,
                 list: list,
@@ -51,6 +54,7 @@
     </p>
   <% end %>
 
+  <%# i18n-tasks-use t("schools.show.find_training") %>
   <% add_prompt(id: :training,
                 check: prompt_for_training?,
                 list: list,
@@ -63,6 +67,7 @@
     </p>
   <% end %>
 
+  <%# i18n-tasks-use t("common.labels.view_now") %>
   <% add_prompt(id: :audit,
                 check: last_audit&.tasks_remaining?,
                 list: list,
@@ -75,6 +80,7 @@
     </p>
   <% end %>
 
+  <%# i18n-tasks-use t("schools.show.set_target") %>
   <% add_prompt(id: :set_target,
                 check: show_data_enabled_features? && prompt_for_target?,
                 list: list,
@@ -87,6 +93,7 @@
     </p>
   <% end %>
 
+  <%# i18n-tasks-use t("schools.show.review_target") %>
   <% add_prompt(id: :review_target,
                 check: show_data_enabled_features? && prompt_to_review_target?,
                 list: list,
@@ -99,6 +106,7 @@
     </p>
   <% end %>
 
+  <%# i18n-tasks-use t("schools.show.review_progress") %>
   <% add_prompt(id: :new_target,
                 check: show_data_enabled_features? && prompt_to_set_new_target?,
                 list: list,
@@ -125,6 +133,7 @@
       <% end %>
     <% end %>
   <% else %>
+    <%# i18n-tasks-use t("schools.prompts.programme.start_a_new_programme") %>
     <% add_prompt(id: :new_programme,
                   list: list,
                   status: :neutral,

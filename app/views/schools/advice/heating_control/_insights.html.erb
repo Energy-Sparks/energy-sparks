@@ -5,7 +5,7 @@
 
 <%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.controls.title') %>
 
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertHeatingSensitivityAdvice), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertHeatingSensitivityAdvice), show_links: false %>
 
 <%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html',
   estimated_saving: format_unit(@estimated_savings.£, :£),

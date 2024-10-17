@@ -32,7 +32,7 @@
   </li>
 </ul>
 
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertStorageHeaterOutOfHours), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertStorageHeaterOutOfHours), show_links: false %>
 
 <%= render 'schools/advice/section_title', section_id: 'electricity_use_for_the_last_12_months', section_title: t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.title') %>
 <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.advice_html') %>
@@ -148,7 +148,7 @@
 
 <%= render 'schools/advice/section_title', section_id: 'holiday-usage', section_title: t('advice_pages.storage_heaters.analysis.holiday_usage.title') %>
 
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertStorageHeaterHeatingOnDuringHoliday), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertStorageHeaterHeatingOnDuringHoliday), show_links: false %>
 
 <p><%= advice_t('storage_heaters.analysis.holiday_usage.table_intro') %></p>
 

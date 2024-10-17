@@ -16,8 +16,7 @@
 <%= component 'alerts', school: @school,
                         dashboard_alerts: @dashboard_alerts,
                         alert_types: alert_types_for_class(AlertElectricityPeakKWVersusBenchmark),
-                        show_links: false,
-                        show_icons: false %>
+                        show_links: false %>
 
 <%= render 'insights_your_current_peak_electricity_use_table',
            average_peak_kw: @average_peak_kw,
