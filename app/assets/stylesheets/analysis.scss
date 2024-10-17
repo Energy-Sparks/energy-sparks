@@ -16,28 +16,26 @@ div.pupil-chart-titles {
 }
 
 .explore-button:disabled {
-  color: $grey;
-  border-color: $grey;
+  color: $grey-medium;
+  border-color: $grey-medium;
 }
 
 .explore-button:hover:disabled {
-  color: $grey;
-  border-color: $grey;
+  color: $grey-medium;
+  border-color: $grey-medium;
 }
 
-.explore-button:hover {
-  color: $white;
-}
-
-div.axis-controls label:hover {
-  font-weight: bold;
+div.axis-controls {
+  label:hover {
+    font-weight: bold;
+  }
 }
 
 div.analysis-chart, div.usage-chart {
   height: 700px;
   width: 100%;
   text-align: center;
-  color: $dark-grey;
+  color: $grey-dark;
   font-size: $f7;
   margin: 0 auto;
   padding-bottom: 25px;
@@ -71,12 +69,12 @@ div.popover {
 }
 
 .table-success, .table-success > th, .table-success > td {
-  background-color: $green !important;
+  background-color: $success !important;
   color: $white;
 }
 
 .table .thead-dark th {
-  background-color: $dark-blue !important;
+  background-color: $header-dark !important;
 }
 
 .table-with-totals {
@@ -105,14 +103,14 @@ div.popover {
 .highcharts-loading-inner,
 .highcharts-loading-inner:before,
 .highcharts-loading-inner:after {
-  background: $light-grey;
+  background: $grey-light;
   -webkit-animation: load1 1s infinite ease-in-out;
   animation: load1 1s infinite ease-in-out;
   width: 1em;
   height: 4em;
 }
 .highcharts-loading-inner {
-  color: $light-grey;
+  color: $grey-light;
   text-indent: -9999em;
   margin: 0 auto;
   top: 50%!important;
@@ -164,9 +162,9 @@ div.popover {
 
 .highcharts-tooltip>span {
     background: $white;
-    border: 1px solid $silver;
+    border: 1px solid $grey-medium;
     border-radius: 3px;
-    box-shadow: 1px 1px 2px #888;
+    box-shadow: 1px 1px 2px $grey-dark;
     padding: 8px;
     z-index: 1;
 }

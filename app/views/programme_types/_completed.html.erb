@@ -13,7 +13,7 @@
                     .where(ended_on: ..school.current_academic_year.start_date).any? %>
           <%= link_to t('programme_types.completed.repeat'),
                       school_programmes_path(school, programme_type_id: @programme_type),
-                      method: :post, class: 'btn btn-info btn-sm' %>
+                      method: :post, class: 'btn btn-sm' %>
         <% end %>
       </div>
     </div>

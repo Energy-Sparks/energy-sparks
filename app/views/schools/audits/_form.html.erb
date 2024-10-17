@@ -1,4 +1,4 @@
-<%= simple_form_for([@school, audit], html: { id: :audit_form } ) do |f| %>
+<%= simple_form_for([@school, audit], html: { id: :audit_form }) do |f| %>
 
   <%= render 'shared/errors', subject: audit, subject_name: 'audit' %>
 
@@ -13,25 +13,27 @@
   <h2><%= t('schools.audits.form.report') %></h2>
 
   <% if audit.file.attached? %>
-    <%= t('schools.audits.form.current_file') %>: <%= link_to @audit.file.filename, url_for(@audit.file), target: '_blank' %>
+    <%= t('schools.audits.form.current_file') %>: <%= link_to @audit.file.filename, url_for(@audit.file),
+                                                              target: '_blank', rel: 'noopener' %>
     <%= f.hidden_field :file, value: f.object.file.signed_id %>
   <% else %>
     <%= t('schools.audits.form.no_file_attached_yet') %>
   <% end %>
 
-  <br/>
-  <br/>
+  <br>
+  <br>
 
   <%= f.file_field :file, direct_upload: true, label: false %>
-  <br/>
+  <br>
   <%= f.error :file, id: 'file_error' %>
-  <br/>
+  <br>
 
   <%= f.input :published %>
   <p class="small"><%= t('schools.audits.form.unpublished_audits_message') %>.</p>
 
   <%= f.input :involved_pupils %>
-  <p class="small"><%= t('schools.audits.form.audit_points_message_html', audit_points: Audits::AuditService::AUDIT_POINTS) %></p>
+  <p class="small"><%= t('schools.audits.form.audit_points_message_html',
+                         audit_points: Audits::AuditService::AUDIT_POINTS) %></p>
 
   <h2><%= t('schools.audits.form.activities') %></h2>
   <p class="small">
@@ -62,8 +64,8 @@
     </div>
   </div>
 
-  <br/>
-  <br/>
+  <br>
+  <br>
 
   <h2><%= t('common.labels.actions') %></h2>
 
@@ -95,14 +97,15 @@
     </div>
   </div>
 
-  <br/>
-  <br/>
+  <br>
+  <br>
 
   <p class="small">
     <%= t('schools.audits.form.audit_points_message') %>
   </p>
 
-  <%= f.submit @audit.persisted? ? t('common.labels.update') : t('common.labels.create'), class: 'btn btn-success' %>
+  <%= f.submit @audit.persisted? ? t('common.labels.update') : t('common.labels.create'), class: 'btn btn-primary' %>
 
-  <%= link_to t('common.labels.cancel'), @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: "btn btn-primary" %>
+  <%= link_to t('common.labels.cancel'),
+              @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: 'btn btn-secondary' %>
 <% end %>

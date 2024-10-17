@@ -75,7 +75,7 @@
     <h2>Coloured by Fuel Type</h2>
 
     <table class="table">
-      <% %i[electricity gas storage_heater solar_pv export_solar_pv].each do |fuel_type| %>
+      <% %i[electricity gas storage_heater solar_pv exported_solar_pv].each do |fuel_type| %>
         <tr>
           <td><code>name: 'info-circle', fuel_type: :<%= fuel_type %></code></td>
           <td><%= render IconComponent.new(name: 'info-circle', fuel_type: fuel_type) %></td>
@@ -90,7 +90,7 @@
     <h2>With Icon Inferred From Fuel Type</h2>
 
     <table class="table">
-      <% %i[electricity gas storage_heater solar_pv export_solar_pv].each do |fuel_type| %>
+      <% %i[electricity gas storage_heater solar_pv exported_solar_pv].each do |fuel_type| %>
         <tr>
           <td><code>fuel_type: :<%= fuel_type %></code></td>
           <td><%= render IconComponent.new(fuel_type: fuel_type) %></td>

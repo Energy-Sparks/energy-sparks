@@ -1,11 +1,12 @@
 <h1><%= @calendar.title %></h1>
-<p><%= link_to t('calendars.calendar_events.index.calendar_view'), calendar_path(@calendar), class: 'btn btn-success' %></p>
-<p><%= link_to t('calendars.calendar_events.index.add_new_event'), new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %></p>
+<p><%= link_to t('calendars.calendar_events.index.calendar_view'), calendar_path(@calendar), class: 'btn btn-secondary' %></p>
+<p><%= link_to t('calendars.calendar_events.index.add_new_event'), new_calendar_calendar_event_path(@calendar),
+               class: 'btn btn-primary' %></p>
 <p><%= t('calendars.calendar_events.index.calendar_events_list') %></p>
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <% @academic_years.each do |academic_year| %>
-      <a class="nav-item nav-link <%= 'active' if academic_year.current?  %>" id="nav-academic-year-<%= academic_year.start_date.year %>-tab" data-toggle="tab" href="#academic-year-<%= academic_year.start_date.year %>" role="tab" aria-controls="academic-year-<%= academic_year.start_date.year %>" aria-selected="<%= academic_year.current? %>">
+      <a class="nav-item nav-link <%= 'active' if academic_year.current? %>" id="nav-academic-year-<%= academic_year.start_date.year %>-tab" data-toggle="tab" href="#academic-year-<%= academic_year.start_date.year %>" role="tab" aria-controls="academic-year-<%= academic_year.start_date.year %>" aria-selected="<%= academic_year.current? %>">
         <%= academic_year.start_date.year %> - <%= academic_year.end_date.year %>
       </a>
     <% end %>
@@ -30,16 +31,21 @@
           </tr>
         </thead>
         <tbody>
-          <% @calendar_events.where(academic_year: academic_year).each do |calendar_event| %>
+          <% @calendar_events.where(academic_year: academic_year).find_each do |calendar_event| %>
             <tr scope="row">
-              <td><%= I18n.t(calendar_event.calendar_event_type.i18n_key("title")) %></td>
+              <td><%= I18n.t(calendar_event.calendar_event_type.i18n_key('title')) %></td>
               <td><%= nice_dates(calendar_event.start_date) %></td>
               <td><%= nice_dates(calendar_event.end_date) %></td>
               <td><%= nice_date_times(calendar_event.updated_at) %></td>
               <% if can? :manage, @calendar %>
                 <td><%= calendar_event_status(calendar_event) %></td>
               <% end %>
-              <td><div class="btn-group"><%= link_to t('common.labels.edit'), edit_calendar_calendar_event_path(calendar_event.calendar, calendar_event), class: 'btn btn-warning' %><%= link_to t('common.labels.delete'), calendar_calendar_event_path(@calendar, calendar_event), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %></div></td>
+              <td>
+                <div class="btn-group">
+                  <%= link_to t('common.labels.edit'), edit_calendar_calendar_event_path(calendar_event.calendar, calendar_event), class: 'btn btn-primary' %>
+                  <%= link_to t('common.labels.delete'), calendar_calendar_event_path(@calendar, calendar_event), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+                </div>
+              </td>
             </tr>
           <% end %>
         </tbody>

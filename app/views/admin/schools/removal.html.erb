@@ -4,7 +4,7 @@
 <% elsif @school.archived? %>
   <h1><%= @school.name %></h1>
   <p>This school has been archived.</p>
-  <%= link_to 'Reenable school', reenable_admin_school_path(@school), method: :post, class: 'btn btn-success' %>
+  <%= link_to 'Reenable school', reenable_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
 <% elsif @school_remover.school_ready? %>
   <h1>Removing <%= @school.name %></h1>
   <% if @school.users.any? %>
@@ -25,7 +25,7 @@
         <p>Locking a user account will prevent the user from logging in again. If they are
         linked to other schools, they'll still be able to login but will be removed from
         this school.</p>
-        <%= button_to 'Lock user accounts', deactivate_users_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+        <%= button_to 'Lock user accounts', deactivate_users_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
       </div>
     <% end %>
   <% end %>
@@ -49,14 +49,14 @@
     <div class="mt-4">
       <p>Archiving meters will mark them all as inactive. Validated data will be removed, but unvalidated
         data will remain linked to the meter.</p>
-      <%= button_to 'Archive meters', archive_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+      <%= button_to 'Archive meters', archive_meters_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
     </div>
     <div class="mt-4">
       <p>
         Deactivating and deleting meter data, will mark meters as inactive. Validated data will be removed and
         the unvalidated data will be unlinked from the meter.
       </p>
-      <%= button_to 'Deactivate all meters and delete data', delete_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+      <%= button_to 'Deactivate all meters and delete data', delete_meters_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
     </div>
   <% end %>
 
@@ -65,11 +65,11 @@
     <div class="mt-4">
       <p>Archiving a school will mark it as inactive and disable data processing. An archive school can be later
       re-enabled</p>
-      <%= button_to 'Archive school', archive_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+      <%= button_to 'Archive school', archive_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
     </div>
     <div class="mt-4">
       <p>Deleting a school will do the same, but also flag the school as deleted. A deleted school cannot be re-enabled.</p>
-      <%= button_to 'Delete school', delete_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+      <%= button_to 'Delete school', delete_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
     </div>
   <% end %>
 

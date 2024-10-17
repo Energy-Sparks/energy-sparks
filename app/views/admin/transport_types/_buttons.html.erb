@@ -1,2 +1,9 @@
-<%= link_to 'Edit', edit_admin_transport_type_path(transport_type), class: 'btn btn-info' if can? :edit, transport_type %>
-<%= link_to 'Delete', admin_transport_type_path(transport_type), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger#{' disabled' if transport_type.responses.any?}" if can? :delete, transport_type %>
+<%= if can? :edit, transport_type
+      link_to 'Edit', edit_admin_transport_type_path(transport_type), class: 'btn btn-primary'
+    end %>
+<%= if can? :delete, transport_type
+      link_to 'Delete', admin_transport_type_path(transport_type),
+              method: :delete,
+              data: { confirm: 'Are you sure?' },
+              class: "btn btn-danger#{' disabled' if transport_type.responses.any?}"
+    end %>

@@ -2,8 +2,8 @@
 
 <h1>Report for <%= @data_feed.title %> </h1>
 <h2><small class="text-muted"><%= @feed_type.to_s.humanize %></small></h2>
-<p><%= link_to 'All reports', admin_reports_path, class: 'btn btn-success' %></p>
-<p><%= link_to "Download all data as CSV", data_feed_path(@data_feed, format: "csv",) %></p>
+<p><%= link_to 'All reports', admin_reports_path, class: 'btn btn-secondary' %></p>
+<p><%= link_to 'Download all data as CSV', data_feed_path(@data_feed, format: 'csv') %></p>
 
 <h2>Missing days summary</h2>
 <p>Dates start at date of first recorded reading, <%= nice_dates @first_read.at %>, up until the present day.</p>
@@ -22,7 +22,7 @@
 
 <div class="row">
   <ul>
-    <% @missing_array.group_by{ |m| m[0].year }.each do |year| %>
+    <% @missing_array.group_by { |m| m[0].year }.each do |year| %>
       <h3><%= year[0] %></h3>
       <% year[1].each do |missing| %>
         <li><%= "#{nice_dates(missing[0])} #{missing[1]}" %></li>

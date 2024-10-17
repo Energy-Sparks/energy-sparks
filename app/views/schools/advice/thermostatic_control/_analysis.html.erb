@@ -20,7 +20,7 @@
 <%= render 'schools/advice/section_title', section_id: 'thermostatic_control_in_your_school', section_title: t('advice_pages.thermostatic_control.analysis.thermostatic_control_in_your_school') %>
 
 <% rating_value = AnalyseHeatingAndHotWater::HeatingModel.find_r2_rating(@heating_thermostatic_analysis.r2, :rating_value) %>
-<%= component 'notice', status: notice_status_for(rating_value) do |c| %>
+<%= component 'prompt', icon: :fire, fuel_type: :gas, status: notice_status_for(rating_value) do |c| %>
   <%=
     t('advice_pages.thermostatic_control.insights.thermostatic_control_r2_notice_html',
       r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2),

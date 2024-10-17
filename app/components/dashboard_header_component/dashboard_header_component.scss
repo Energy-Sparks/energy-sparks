@@ -1,5 +1,5 @@
 div.container-fluid.adult {
-  background: #f2f6fc;
+  background: $adult-light;
 }
 
 div.container-fluid.pupil {
@@ -12,7 +12,7 @@ div.dashboard-header-component h1 {
 
 div.dashboard-header-component.pupil {
   #dashboard-header-school {
-    background: #f8f9fa; // Bootstrap 4 bg-light
+    background: $light;
   }
 }
 

@@ -30,7 +30,7 @@ RSpec.shared_examples 'navigation' do
   end
 
   it 'has links to analysis' do
-    expect(page).to have_link('Review energy analysis')
+    expect(page).to have_link('Explore energy data')
   end
 
   context 'when school has partners' do
@@ -60,19 +60,6 @@ RSpec.shared_examples 'navigation' do
       visit school_path(test_school, switch: true)
       expect(page).to have_link('School Sponsor', href: 'http://example.org')
       expect(page).to have_link('Big Tech Co', href: 'https://example.com')
-    end
-  end
-
-  context 'when school in public group' do
-    before do
-      test_school.update(school_group: create(:school_group))
-    end
-
-    it 'links to compare schools' do
-      visit school_path(test_school, switch: true)
-      within('.application') do
-        expect(page).to have_link('Compare schools')
-      end
     end
   end
 end
@@ -139,25 +126,6 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       click_on(school_name, match: :first)
       expect(page.has_link?('Adult dashboard')).to be true
     end
-
-    it 'displays a printable version of the dashboard' do
-      visit school_path(school, switch: true)
-      click_on 'Print view'
-      expect(page).to have_content("Adult dashboard for #{school.name}")
-    end
-
-    context 'when school in private group' do
-      before do
-        school.update(school_group: create(:school_group, public: false))
-      end
-
-      it 'links to compare schools' do
-        visit school_path(school, switch: true)
-        within('.application') do
-          expect(page).to have_link('Compare schools')
-        end
-      end
-    end
   end
 
   context 'as staff' do
@@ -188,24 +156,9 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       expect(page).to have_link('Download our data')
     end
 
-    it "doesn't allow download of other schools data" do
-      other_school = create(:school)
-      visit school_path(other_school)
-      within '.dashboard-school-title' do
-        expect(page).to have_content(other_school.name)
-      end
-      expect(page).not_to have_link('Download your data')
-    end
-
     it 'displays my school menu on other pages' do
       visit home_page_path
       expect(page).to have_css('#my_school_menu')
-    end
-
-    it 'displays a printable report version of the page' do
-      visit school_path(school)
-      click_on 'Print view'
-      expect(page).to have_content("Adult dashboard for #{school.name}")
     end
 
     context 'and school is not data-enabled' do
@@ -226,19 +179,6 @@ RSpec.describe 'adult dashboard navigation', type: :system do
         expect(page).to have_link('Energy saving actions')
         expect(page).not_to have_link('Download our data')
         expect(page).not_to have_link('Review targets')
-      end
-    end
-
-    context 'when school in private group' do
-      before do
-        school.update(school_group: create(:school_group, public: false))
-      end
-
-      it 'links to compare schools' do
-        visit school_path(school, switch: true)
-        within('.application') do
-          expect(page).to have_link('Compare schools')
-        end
       end
     end
   end
@@ -271,24 +211,9 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       expect(page).to have_link('Download our data')
     end
 
-    it "doesn't allow download of other schools data" do
-      other_school = create(:school)
-      visit school_path(other_school)
-      within '.dashboard-school-title' do
-        expect(page).to have_content(other_school.name)
-      end
-      expect(page).not_to have_link('Download your data')
-    end
-
     it 'displays my school menu on other pages' do
       visit home_page_path
       expect(page).to have_css('#my_school_menu')
-    end
-
-    it 'displays a printable version of the dashboard' do
-      visit school_path(school, switch: true)
-      click_on 'Print view'
-      expect(page).to have_content("Adult dashboard for #{school.name}")
     end
 
     context 'and school is not data-enabled' do
@@ -312,19 +237,6 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       end
     end
 
-    context 'when school in private group' do
-      before do
-        school.update(school_group: create(:school_group, public: false))
-      end
-
-      it 'links to compare schools' do
-        visit school_path(school, switch: true)
-        within('.application') do
-          expect(page).to have_link('Compare schools')
-        end
-      end
-    end
-
     context 'with replacement advice pages' do
       around do |example|
         ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
@@ -334,7 +246,7 @@ RSpec.describe 'adult dashboard navigation', type: :system do
 
       it 'links to advice pages from review energy analysis' do
         visit school_path(school)
-        click_on 'Review energy analysis'
+        click_on 'Explore energy data'
         expect(page).to have_content(I18n.t('advice_pages.index.title'))
       end
 
@@ -362,57 +274,6 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       expect(page.has_content?('Energy Sparks schools across the UK')).to be true
       click_on(school_name, match: :first)
       expect(page.has_link?('Pupil dashboard')).to be true
-    end
-
-    it 'displays a printable report version of the page' do
-      visit school_path(school, switch: true)
-      click_on 'Print view'
-      expect(page).to have_content("Adult dashboard for #{school.name}")
-    end
-
-    it 'shows download link' do
-      visit school_path(school)
-      within '.dashboard-school-title' do
-        expect(page).to have_content(school.name)
-      end
-      expect(page).to have_link('Download your data')
-    end
-
-    context 'when school in private group' do
-      before do
-        school_group.update!(public: false)
-      end
-
-      it 'links to compare schools' do
-        visit school_path(school, switch: true)
-        within('.application') do
-          expect(page).to have_link('Compare schools')
-        end
-      end
-    end
-  end
-
-  context 'as admin' do
-    let(:user) { create(:admin) }
-
-    context 'and school is not data-enabled' do
-      before do
-        school.update!(data_enabled: false, school_group: create(:school_group))
-        visit school_path(school)
-      end
-
-      it 'overrides flag and shows data-enabled links' do
-        expect(page).to have_link('Compare schools')
-        expect(page).to have_link('Review energy analysis')
-        expect(page).to have_link('Download your data')
-      end
-
-      it 'shows link to user view' do
-        expect(page).to have_link('User view')
-        click_on('User view')
-        expect(page).to have_link('Admin view')
-        expect(page).not_to have_link('Explore data')
-      end
     end
   end
 end
