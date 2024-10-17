@@ -2,6 +2,7 @@
 #
 # Table name: amr_data_feed_configs
 #
+#  allow_merging           :boolean          default(FALSE), not null
 #  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
 #  convert_to_kwh          :boolean          default(FALSE)
