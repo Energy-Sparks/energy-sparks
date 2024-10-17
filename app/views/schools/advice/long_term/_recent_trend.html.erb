@@ -4,13 +4,13 @@
 
 <% if analysis_dates.one_years_data? %>
   <% if annual_usage.kwh < vs_exemplar.kwh %>
-    <%= component 'notice', status: :positive do %>
+    <%= component 'prompt', icon: :fire, fuel_type: :gas, status: :positive do %>
       <p><%= t("advice_pages.#{fuel_type}_long_term.analysis.comparison.assessment.low.title") %></p>
       <p><%= t("advice_pages.#{fuel_type}_long_term.analysis.comparison.assessment.low.percent_html",
                percent: format_unit(estimated_savings_vs_exemplar.percent.abs, :percent)) %></p>
     <% end %>
   <% else %>
-    <%= component 'notice', status: :negative do %>
+    <%= component 'prompt', icon: :fire, fuel_type: :gas, status: :negative do %>
       <p><%= t("advice_pages.#{fuel_type}_long_term.analysis.comparison.assessment.high.title") %></p>
       <p><%= t("advice_pages.#{fuel_type}_long_term.analysis.comparison.assessment.high.percent_html",
                percent: format_unit(estimated_savings_vs_exemplar.percent, :percent)) %></p>
