@@ -1,4 +1,4 @@
-<%= component 'notice', status: :neutral do |c| %>
+<%= component 'prompt', status: :none, icon: :lightbulb do |c| %>
   <% c.with_link { link_to t('advice_pages.storage_heaters.insights.link'), learn_more_school_advice_storage_heaters_path(@school) } %>
   <%= t('advice_pages.storage_heaters.insights.advice_html') %>
 <% end %>
