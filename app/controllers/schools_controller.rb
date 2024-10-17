@@ -3,6 +3,7 @@ class SchoolsController < ApplicationController
   include NonPublicSchools
   include Promptable
   include DashboardTimeline
+  include SchoolProgress
 
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
@@ -47,6 +48,7 @@ class SchoolsController < ApplicationController
     authorize! :show, @school
     @audience = :adult
     @observations = setup_timeline(@school.observations)
+    @progress_summary = progress_service.progress_summary if @school.data_enabled?
     render :show
   end
 
