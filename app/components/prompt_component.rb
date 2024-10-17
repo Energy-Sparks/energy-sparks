@@ -30,10 +30,6 @@ class PromptComponent < ApplicationComponent
     validate
   end
 
-  def icon_name
-    @icon.to_s.dasherize
-  end
-
   def render_icon?
     @fuel_type || @icon
   end

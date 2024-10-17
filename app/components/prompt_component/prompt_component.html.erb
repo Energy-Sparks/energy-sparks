@@ -4,7 +4,7 @@
     <% if render_icon? %>
       <%# Icon is hidden on smallest size, visible from sm and above as single column %>
       <div class="d-none d-sm-block col-1">
-        <%= component 'icon', fuel_type: fuel_type, name: icon_name, style: :circle, size: 'f5' %>
+        <%= component 'icon', fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
       </div>
     <% end %>
     <%# if no icon then use full width row %>
