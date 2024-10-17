@@ -24,7 +24,6 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
     it 'has the icon' do
       expect(html).to have_css('span.fa-stack')
       expect(icon_html).to have_css('i.fa-circle')
-      puts icon_html.inspect
       expect(icon_html).to have_css("i.fa-#{icon}")
     end
   end
