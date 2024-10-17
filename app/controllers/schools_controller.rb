@@ -2,6 +2,7 @@ class SchoolsController < ApplicationController
   include SchoolAggregation
   include NonPublicSchools
   include Promptable
+  include DashboardTimeline
 
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
@@ -45,6 +46,7 @@ class SchoolsController < ApplicationController
     # OR an adult user for this school, or a pupil that is trying to view the adult dashboard
     authorize! :show, @school
     @audience = :adult
+    @observations = setup_timeline(@school.observations)
     render :show
   end
 
