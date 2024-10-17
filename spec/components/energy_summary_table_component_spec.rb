@@ -139,7 +139,7 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
       end
 
       it 'does not show the title' do
-        expect(html).not_to have_content(I18n.t('schools.show.summary_of_recent_energy_usage'))
+        expect(html).not_to have_content(I18n.t('schools.show.recent_energy_usage'))
       end
     end
   end
