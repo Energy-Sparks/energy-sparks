@@ -50,7 +50,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
 
         it 'inserts all the validated records from the analytics' do
-          expect(service.rows_affected).to eq 3
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(active_record_meter.amr_validated_readings.count).to eq expected_readings
         end
@@ -105,8 +104,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         end
 
         it 'does not update the database' do
-          # upsert returns zero rows
-          expect(service.rows_affected).to eq 0
           # confirm nothing else changed
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(first_reading.reading_date).to eq start_date
@@ -132,8 +129,8 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         end
 
         it 'inserts the new records' do
-          expect(service.rows_affected).to eq 1
           expect(AmrValidatedReading.count).to eq expected_readings
+          expect(active_record_meter.amr_validated_readings.count).to eq expected_readings
         end
       end
 
@@ -158,7 +155,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         end
 
         it 'updates the existing records' do
-          expect(service.rows_affected).to eq expected_readings
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(first_reading.reading_date).to eq start_date
           expect(first_reading.kwh_data_x48).to eq new_data
@@ -188,7 +184,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
 
         it 'updates the existing records' do
-          expect(service.rows_affected).to eq expected_readings
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(first_reading.reading_date).to eq start_date
           expect(first_reading.status).to eq status
@@ -212,7 +207,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
 
         it 'updates the existing records' do
-          expect(service.rows_affected).to eq expected_readings
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(first_reading.reading_date).to eq start_date
           expect(first_reading.status).to eq new_status

@@ -3,12 +3,13 @@
 class TimelineComponent < ApplicationComponent
   include ApplicationHelper
 
-  attr_reader :observations, :show_actions, :id, :user, :school, :show_header
+  attr_reader :observations, :show_actions, :id, :user, :school, :show_header, :observation_style
 
   def initialize(observations:,
                  school: nil,
                  show_actions: false,
                  show_header: true,
+                 observation_style: :description,
                  classes: nil,
                  id: nil,
                  user: nil)
@@ -19,6 +20,7 @@ class TimelineComponent < ApplicationComponent
     @id = id
     @user = user
     @school = school
+    @observation_style = observation_style
   end
 
   def classes

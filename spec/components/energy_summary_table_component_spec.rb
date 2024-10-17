@@ -45,21 +45,13 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
 
   context 'when school is data enabled' do
     it 'renders the table title' do
-      expect(html).to have_content(I18n.t('schools.show.summary_of_recent_energy_usage'))
+      expect(html).to have_content(I18n.t('schools.show.recent_energy_usage'))
     end
 
     it 'renders the table' do
+      # first row has icon and fuel type
       expect(html).to have_selector(:table_row, [
-                                      '', # no fuel type here as on previous row
-                                      I18n.t('classes.tables.summary_table_data.last_year'),
-                                      '1,000',
-                                      '500',
-                                      '£2,000',
-                                      '£330',
-                                      '+11%'
-                                    ])
-
-      expect(html).to have_selector(:table_row, [
+                                      '',
                                       'Electricity',
                                       I18n.t('classes.tables.summary_table_data.last_week'),
                                       '100',
@@ -67,6 +59,15 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
                                       '£200',
                                       '£33',
                                       '-9.2%'
+                                    ])
+
+      expect(html).to have_selector(:table_row, [
+                                      I18n.t('classes.tables.summary_table_data.last_year'),
+                                      '1,000',
+                                      '500',
+                                      '£2,000',
+                                      '£330',
+                                      '+11%'
                                     ])
     end
 
@@ -89,7 +90,7 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
     end
 
     it 'renders the table footer' do
-      expect(html).to have_content('More information')
+      expect(html).to have_content(I18n.t('advice_pages.how_have_we_analysed_your_data.link_title'))
       expect(html).to have_link(href: help_path(help_page))
     end
 
@@ -105,22 +106,23 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
       end
 
       it 'does not show the savings' do
+        # first row has icon and fuel type
         expect(html).to have_selector(:table_row, [
-                                        '', # no fuel type here as on previous row
-                                        I18n.t('classes.tables.summary_table_data.last_year'),
-                                        '1,000',
-                                        '500',
-                                        '£2,000',
-                                        '+11%'
-                                      ])
-
-        expect(html).to have_selector(:table_row, [
+                                        '',
                                         'Electricity',
                                         I18n.t('classes.tables.summary_table_data.last_week'),
                                         '100',
                                         '50',
                                         '£200',
                                         '-9.2%'
+                                      ])
+
+        expect(html).to have_selector(:table_row, [
+                                        I18n.t('classes.tables.summary_table_data.last_year'),
+                                        '1,000',
+                                        '500',
+                                        '£2,000',
+                                        '+11%'
                                       ])
       end
     end
@@ -137,7 +139,7 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
       end
 
       it 'does not show the title' do
-        expect(html).not_to have_content(I18n.t('schools.show.summary_of_recent_energy_usage'))
+        expect(html).not_to have_content(I18n.t('schools.show.recent_energy_usage'))
       end
     end
   end

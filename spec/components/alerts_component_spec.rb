@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
   let(:school) { create(:school) }
   let(:show_links) { true }
-  let(:show_icons) { true }
   let(:advice_page) { create(:advice_page, key: :baseload) }
   let(:alert_type) { create(:alert_type, advice_page: advice_page) }
   let(:alert) { create(:alert, alert_type: alert_type) }
@@ -25,7 +24,6 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
       alert_types: [alert_type],
       school: school,
       show_links: show_links,
-      show_icons: show_icons,
       id: id,
       classes: classes
     }
@@ -67,18 +65,6 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
     it 'has 11 columns' do
       expect(html).to have_css('div.col-md-11')
     end
-
-    context 'without icons' do
-      let(:show_icons) { false }
-
-      it 'does not display icons' do
-        expect(html).not_to have_css('i.fa-fire')
-      end
-
-      it 'has 12 columns' do
-        expect(html).to have_css('div.col-md-12')
-      end
-    end
   end
 
   context 'with different audience' do
@@ -87,8 +73,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
         dashboard_alerts: dashboard_alerts,
         school: school,
         audience: :pupil,
-        show_links: show_links,
-        show_icons: show_icons
+        show_links: show_links
       }
     end
 
@@ -107,8 +92,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
       {
         dashboard_alerts: dashboard_alerts,
         school: school,
-        show_links: show_links,
-        show_icons: show_icons
+        show_links: show_links
       }
     end
 

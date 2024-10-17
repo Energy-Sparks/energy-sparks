@@ -89,6 +89,7 @@ module Amr
     end
 
     def reject_any_low_reading_days
+      return @results_array if @amr_data_feed_config.allow_merging
       @results_array.reject { |result| result[:readings].count(&:blank?) > @amr_data_feed_config.blank_threshold }
     end
 

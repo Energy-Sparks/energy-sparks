@@ -247,6 +247,24 @@ module Amr
         it 'rejects the row' do
           expect(converter.perform).to be_empty
         end
+
+        context 'with merging allowed' do
+          let(:config) { create(:amr_data_feed_config, :with_positional_index, allow_merging: true) }
+          let(:mpan_mprn) { '1710035168313' }
+          let(:reading_date) { '26 Aug 2019' }
+
+          let(:readings) do
+            44.times.collect { |hh| create_reading_for_period(config, mpan_mprn, reading_date, (hh + 1).to_s, [(hh + 1).to_s]) }
+          end
+
+          let(:expected_output) do
+            [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) {|i| i < 44 ? (i + 1).to_f : nil })]
+          end
+
+          it 'does not reject the row' do
+            expect(converter.perform).to eq(expected_output)
+          end
+        end
       end
     end
 
