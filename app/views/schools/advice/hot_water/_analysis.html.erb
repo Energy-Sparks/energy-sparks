@@ -1,4 +1,4 @@
-<%= component 'notice', status: :neutral do |c| %>
+<%= component 'prompt', status: :none, icon: :circle_exclamation do |c| %>
   <%= t('advice_pages.hot_water.analysis.summary_notice') %>
 <% end %>
 <br>
@@ -19,7 +19,7 @@
 
 <%= render 'schools/advice/section_title', section_id: 'hot_water_efficiency_improvement_options', section_title: t('advice_pages.hot_water.analysis.hot_water_efficiency_improvement_options') %>
 
-<%= component 'notice', status: :neutral do |c| %>
+<%= component 'prompt', status: :none, icon: :lightbulb do |c| %>
   <%= t('advice_pages.hot_water.analysis.hot_water_efficiency_improvement_options_notice_html') %>
 <% end %>
 <br />

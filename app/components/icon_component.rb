@@ -19,6 +19,12 @@ class IconComponent < ViewComponent::Base
   end
 
   def icon_name
-    @name || fuel_type_icon(@fuel_type)
+    dasherize_name || fuel_type_icon(@fuel_type)
+  end
+
+  private
+
+  def dasherize_name
+    @name&.to_s&.dasherize
   end
 end
