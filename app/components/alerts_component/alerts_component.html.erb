@@ -28,7 +28,7 @@
                                          alert_content.alert.advice_page,
                                          alert_content.alert.alert_type.advice_page_tab_for_link_to,
                                          anchor: alert_content.alert.alert_type.link_to_section) %>
-          <% end %>
+          <% end if show_links %>
         <% end %>
         <%= alert_content.send(content_field) %>
     <% end %>

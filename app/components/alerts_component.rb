@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
 class AlertsComponent < PromptListComponent
-  attr_reader :school, :show_links, :show_icons, :user
+  attr_reader :school, :show_links, :user
 
   include AdvicePageHelper
 
-  def initialize(school:, dashboard_alerts:, alert_types: nil, audience: :adult, show_links: true, show_icons: true, id: nil, classes: '', user: nil)
+  def initialize(school:, dashboard_alerts:, alert_types: nil, audience: :adult, show_links: true, id: nil, classes: '', user: nil)
     super(id: id, classes: classes)
     @school = school
     @dashboard_alerts = dashboard_alerts
     @alert_types = alert_types
     @show_links = show_links
-    @show_icons = show_icons
     @audience = audience
     @user = user
   end
