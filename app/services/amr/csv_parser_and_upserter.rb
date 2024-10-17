@@ -17,7 +17,7 @@ module Amr
         amr_reading_data = DataFileToAmrReadingData.new(@config, "#{@config.local_bucket_path}/#{@file_name}").perform
 
         if amr_reading_data.valid?
-          ProcessAmrReadingData.new(amr_data_feed_import_log).perform(amr_reading_data.valid_records, amr_reading_data.warnings)
+          ProcessAmrReadingData.new(@config, amr_data_feed_import_log).perform(amr_reading_data.valid_records, amr_reading_data.warnings)
         else
           amr_data_feed_import_log.update(error_messages: amr_reading_data.error_messages_joined, records_imported: 0, records_updated: 0)
         end
