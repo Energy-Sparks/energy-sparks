@@ -125,6 +125,7 @@ RSpec.describe 'meter_reviews', type: :system do
       it 'does not allow completion' do
         click_on 'Meter Reviews'
         expect(page).not_to have_link('Complete review')
+        expect(page).to have_link('Request consent')
       end
     end
 
