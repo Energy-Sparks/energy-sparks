@@ -1,18 +1,10 @@
 <nav class="navbar <%= navbar_expand_class %> navbar-top">
   <div class="container">
     <%= navigation_image_link %>
-    <div class='fixed-top'>
-      <% if on_test? %>
-        <!-- Test server indicator -->
-        <%= link_to 'Test', '/', class: 'm-1 p-1 badge badge-warning' %>
-      <% end %>
-    </div>
+    <%= render 'shared/navigation/top_nav/on_test' %>
 
     <div class='<%= order_expand_class %>'>
-      <!-- Locale switcher -->
-      <% other_locales.excluding(:mirror).each do |locale| %>
-        <%= link_to_locale(locale, class: 'nav-link lozenge') %>
-      <% end %>
+      <%= render 'shared/navigation/top_nav/locale_switcher' %>
 
       <!-- Toggler icon - shown on collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-top" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
