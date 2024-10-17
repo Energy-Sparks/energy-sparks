@@ -71,14 +71,10 @@ module Amr
   private
 
     def do_upsert
-      if @amr_data_feed_config.allow_merging
-        AmrDataFeedReading.upsert_all(@array_of_data_feed_reading_hashes,
-                                      unique_by: [:mpan_mprn, :reading_date],
-                                      on_duplicate: Arel.sql(ON_DUPLICATE_UPDATE_CLAUSE))
-      else
-        AmrDataFeedReading.upsert_all(@array_of_data_feed_reading_hashes,
-                                      unique_by: [:mpan_mprn, :reading_date])
-      end
+      on_duplicate = @amr_data_feed_config.allow_merging ? Arel.sql(ON_DUPLICATE_UPDATE_CLAUSE) : :update
+      AmrDataFeedReading.upsert_all(@array_of_data_feed_reading_hashes,
+                                    unique_by: [:mpan_mprn, :reading_date],
+                                    on_duplicate: on_duplicate)
     end
 
     def log_changes(inserted, updated)
