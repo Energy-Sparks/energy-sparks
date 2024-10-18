@@ -10,8 +10,9 @@ module Amr
 
     def import_all
       Rails.logger.info "Download all from S3 key pattern: #{@config.identifier}"
-      @s3_client.list_objects_v2(bucket: @bucket, prefix: @config.identifier, delimiter: '/').contents.each do |object|
-        AmrImportJob.perform_later(@config, @bucket, object.key)
+      @s3_client.list_objects_v2(bucket: @bucket, prefix: "#{@config.identifier}/").contents.each do |object|
+        # need to ignore application/x-directory objects ending with /
+        AmrImportJob.perform_later(@config, @bucket, object.key) unless object.key.end_with?('/')
       end
     end
 
@@ -19,7 +20,7 @@ module Amr
       filename = File.basename(key)
       get_file_from_s3(key, filename)
       CsvParserAndUpserter.new(@config, filename).perform
-      Rails.logger.info "Imported #{filename}"
+      Rails.logger.info "Imported #{key}"
       archive_file(key, filename)
     rescue StandardError => e
       Rails.logger.error "Exception: running import for #{@config.description}"

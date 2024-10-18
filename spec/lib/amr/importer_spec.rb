@@ -20,7 +20,7 @@ describe Amr::Importer do
   let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
 
   # responses from AWS API to stub out network calls in client
-  let(:list_of_objects) { { contents: [{ key: }] } }
+  let(:list_of_objects) { { contents: [{ key: }, { key: "#{thing_prefix}/" }] } }
   let(:object_data) { { key => { body: 'meter-readings!' } } }
 
   before do
@@ -39,7 +39,9 @@ describe Amr::Importer do
       expect(File.read(expected_local_file)).to eq('meter-readings!')
       instance_double(Amr::CsvParserAndUpserter, perform: nil)
     end
-    perform_enqueued_jobs { amr_importer.import_all }
+    amr_importer.import_all
+    expect(ActiveJob::Base.queue_adapter.enqueued_jobs.size).to eq(1)
+    perform_enqueued_jobs
     expect(File.exist?(expected_local_file)).to be false
   end
 
