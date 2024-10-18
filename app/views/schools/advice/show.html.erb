@@ -2,7 +2,7 @@
   <div class="row mt-4">
     <div class="col">
       <h2><%= t('advice_pages.index.show.title')%></h2>
-      <%= component 'notice', status: :neutral do |c| %>
+      <%= component 'prompt', status: :none do |c| %>
         <% c.with_link { link_to t('advice_pages.index.show.notice_link'), priorities_school_advice_path(@school) } %>
         <%= t('advice_pages.index.show.notice_html') %>
       <% end %>

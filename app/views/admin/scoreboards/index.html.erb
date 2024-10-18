@@ -10,8 +10,15 @@
           <td><%= scoreboard.description %></td>
           <td>
             <div class='btn-group'>
-              <%= link_to 'Edit', edit_admin_scoreboard_path(scoreboard), class: 'btn btn-info' if can? :edit, scoreboard %>
-              <%= link_to 'Delete', [:admin, scoreboard], method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' if can? :delete, scoreboard %>
+              <%= if can? :edit, scoreboard
+                    link_to 'Edit', edit_admin_scoreboard_path(scoreboard),
+                            class: 'btn btn-primary'
+                  end %>
+              <%= if can? :delete, scoreboard
+                    link_to 'Delete', [:admin, scoreboard],
+                            method: :delete, data: { confirm: 'Are you sure?' },
+                            class: 'btn btn-danger'
+                  end %>
             </div>
           </td>
         </tr>

@@ -30,7 +30,7 @@ address {
   font-size: initial;
 }
 
-body p {
+p {
   @include font(f6);
 }
 
@@ -46,36 +46,8 @@ body p {
   white-space: nowrap;
 }
 
-.bg-positive {
-  background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
-}
-
-.bg-positive-dark {
-  background-color: $bg-positive;
-}
-
-.bg-positive-light {
-  background-color: $bg-positive-light;
-}
-
-.bg-neutral {
-  background-image: linear-gradient(to right, $bg-neutral 0%, $bg-neutral-light 100%);
-}
-
-.bg-negative {
-  background-image: linear-gradient(to right, $bg-negative 0%, $bg-negative-light 100%);
-}
-
-.bg-negative-dark {
-  background-color: $bg-negative;
-}
-
-.bg-negative-light {
-  background-color: $bg-negative-light;
-}
-
 .bg-light-blue {
-  background-image: linear-gradient(to right, $light-blue 0%, $lighter-light-blue 100%);
+  background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
 }
 
 section.padded-section {
@@ -136,7 +108,6 @@ th.fixed-width-150 {
   max-width:1px;
 }
 
-
 div.meter-attributes {
   kbd {
     color: $black;
@@ -150,10 +121,9 @@ div.meter-attributes {
   display: block !important;
 }
 
-
 // imput fields with specified 'pattern' will highlight when invalid
 input:invalid {
-  color: $new-red;
+  color: $danger;
 }
 
 .funnel-image {
@@ -204,6 +174,11 @@ dl dt {
   }
 }
 
+input, progress {
+  // had to darken slightly as the second accent colour (which is chosen by the browser) is either light or dark, depending on how dark the accent colour is.
+  accent-color: darken($teal-dark, 5%) !important;
+}
+
 .agreements {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -222,16 +197,20 @@ dl dt {
   padding: 0;
 }
 
-.bg-dark-blue {
-  background-color: $dark-blue;
+.header-dark {
+  background-color: $header-dark;
 }
 
 .text-white {
   color: $white;
 }
 
+.text-grey-light {
+  color: $grey-light;
+}
+
 .text-dark-blue {
-  color: $dark-blue;
+  color: $blue-very-dark;
 }
 
 .card .card-footer.plain {
@@ -239,27 +218,58 @@ dl dt {
   background-color: white;
 }
 
+// polarity styles
+
+@each $polarity, $tones in $colours-polarity {
+  // e.g. .bg-positive, .bg-neutral, .bg-negative
+  .bg-#{$polarity} {
+    background-image: linear-gradient(to right, map-get($tones, 'dark') 0%, map-get($tones, 'light') 100%);
+  }
+
+  // e.g. .bg-positive-dark, .bg-neutral-dark, .bg-negative-dark
+  .bg-#{$polarity}-dark {
+    background-color: map-get($tones, 'dark');
+  }
+
+  // e.g. .bg-positive-light, .bg-neutral-light, .bg-negative-light
+  .bg-#{$polarity}-light {
+    background-color: map-get($tones, 'light');
+  }
+}
+
+@each $polarity, $tones in $colours-polarity {
+  // e.g. .text-positive, .text-neutral, .text-negative
+  .text-#{$polarity} {
+    color: map-get($tones, 'dark')
+  }
+}
+
 // fuel colour styles
+@each $fuel, $tones in $colours-fuel {
+  // e.g. .bg-electric-light, .bg-gas-light, .bg-storage-light, .bg-solar-light
+  .bg-#{$fuel}-light {
+    background-color: map-get($tones, 'light'); // was medium
+  }
 
-@each $tag, $colour in $fuel-colours-light {
-  .bg-#{$tag}-light {
-    background-color: $colour;
+  // e.g. .bg-electric-dark, .bg-gas-dark, .bg-storage-dark, .bg-solar-dark
+  .bg-#{$fuel}-dark {
+    background-color: map-get($tones, 'dark');
+  }
+
+  // e.g. .text-electric, .text-gas, .text-storage, .text-solar
+  .text-#{$fuel} {
+    color: map-get($tones, 'dark');
   }
 }
 
-@each $tag, $colour in $fuel-colours-dark {
-  .bg-#{$tag}-dark {
-    background-color: $colour;
-  }
-  .text-#{$tag} {
-    color: $colour;
-  }
-}
-
+// comparison styles - unused?
 @each $tag, $colour in $colours-comparison {
+  // e.g. .bg-exemplar_school, .bg-benchmark_school, .bg-other_school
   .bg-#{$tag} {
     background-color: $colour !important;
   }
+
+  // e.g. .text-exemplar_school, .text-benchmark_school, .text-other_school
   .text-#{$tag} {
     text-decoration: underline;
     text-decoration-color: $colour;

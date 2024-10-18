@@ -19,7 +19,7 @@ class PageNavComponent < ViewComponent::Base
   end
 
   def header
-    args = { class: 'nav-link border-bottom' }
+    args = { class: 'nav-link header' }
     args[:class] += " #{classes}" if classes
     text = icon.nil? ? name : helpers.text_with_icon(name, icon)
     link_to(text, href, args)
@@ -51,7 +51,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def link_text
-      helpers.text_with_icon(name, icon) + content_tag(:span, helpers.toggler, class: 'float-right')
+      helpers.text_with_icon(name, icon, class: 'fuel') + content_tag(:span, helpers.toggler, class: 'float-right')
     end
 
     def render?
@@ -60,7 +60,7 @@ class PageNavComponent < ViewComponent::Base
 
     def call
       if @toggler
-        args = { class: 'nav-link border-bottom toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+        args = { class: 'nav-link toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
       else
         args = { class: '' }
       end

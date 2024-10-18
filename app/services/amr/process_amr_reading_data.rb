@@ -1,12 +1,13 @@
 module Amr
   class ProcessAmrReadingData
-    def initialize(amr_data_feed_import_log)
+    def initialize(amr_data_feed_config, amr_data_feed_import_log)
+      @amr_data_feed_config = amr_data_feed_config
       @amr_data_feed_import_log = amr_data_feed_import_log
       @meter_data = Meter.hash_of_meter_data
     end
 
     def perform(valid_readings, warning_readings)
-      DataFeedUpserter.new(valid_readings, @amr_data_feed_import_log).perform
+      DataFeedUpserter.new(@amr_data_feed_config, @amr_data_feed_import_log, valid_readings).perform
       create_warnings(warning_readings) unless warning_readings.empty?
       @amr_data_feed_import_log
     end

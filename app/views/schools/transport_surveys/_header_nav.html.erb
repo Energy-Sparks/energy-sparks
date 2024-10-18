@@ -3,13 +3,20 @@
     <% if @transport_survey.today? %>
       <h1><%= t('schools.transport_surveys.title.today') %></h1>
     <% else %>
-      <h1><%= t('schools.transport_surveys.title.dated', date: nice_dates(@transport_survey.run_on)) %></h1>
+      <h1>
+        <%= t('schools.transport_surveys.title.dated', date: nice_dates(@transport_survey.run_on)) %>
+      </h1>
     <% end %>
   <% else %>
     <h1><%= t('schools.transport_surveys.title.default') %></h1>
   <% end %>
   <div>
-    <%= header_nav_link t('schools.transport_surveys.header_nav.survey_today'), start_school_transport_surveys_url(@school) if can?(:start, TransportSurvey) %>
-    <%= header_nav_link t('schools.transport_surveys.header_nav.view_all'), school_transport_surveys_url(@school) %>
+    <%= if can?(:start, TransportSurvey)
+          header_nav_link t('schools.transport_surveys.header_nav.survey_today'),
+                          start_school_transport_surveys_url(@school),
+                          class: 'btn-primary mb-1'
+        end %>
+    <%= header_nav_link t('schools.transport_surveys.header_nav.view_all'),
+                        school_transport_surveys_url(@school) %>
   </div>
 </div>

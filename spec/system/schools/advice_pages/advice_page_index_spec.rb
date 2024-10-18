@@ -18,6 +18,65 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
            has_storage_heaters: false)
   end
 
+  context 'as a guest user' do
+    context 'and school is data-enabled' do
+      describe 'serves a holding page until data is cached' do
+        before do
+          allow(AggregateSchoolService).to receive(:caching_off?).and_return(false, true)
+          allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+        end
+
+        # non-javascript version of test to check that right template is delivered
+        context 'displays the holding page template' do
+          it 'renders a loading page' do
+            visit school_advice_path(school)
+            expect(page).to have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
+            expect(page).to have_content("Once we've finished, we will re-direct you to the school dashboard")
+          end
+        end
+
+        context 'with a successful ajax load', :js do
+          it 'renders a loading page and then back to the dashboard page on success' do
+            visit school_advice_path(school)
+            expect(page).to have_title(I18n.t('advice_pages.index.title'))
+            # if redirect fails it will still be processing
+            expect(page).not_to have_content('processing')
+            expect(page).not_to have_content("we're having trouble processing your energy data today")
+          end
+        end
+
+        context 'with an ajax loading error', :js do
+          before do
+            allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_raise(StandardError, 'It went wrong')
+          end
+
+          it 'shows an error message', :errors_expected do
+            visit school_advice_path(school)
+            expect(page).to have_content("we're having trouble processing your energy data today")
+          end
+        end
+      end
+    end
+
+    context 'and school is not data-enabled' do
+      before do
+        school.update!(data_enabled: false)
+        visit school_advice_path(school)
+      end
+
+      describe 'it does not show a loading page' do
+        before do
+          allow(AggregateSchoolService).to receive(:caching_off?).and_return(false)
+          allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+        end
+
+        it 'and redirects to pupil dashboard' do
+          expect(page).to have_content("We're setting up this school's energy data and will update this page when it is ready to explore")
+        end
+      end
+    end
+  end
+
   context 'with new dashboard feature active' do
     let(:user) { nil }
     let(:dashboard_charts) { [] }

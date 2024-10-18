@@ -108,46 +108,71 @@ describe 'consent documents', type: :system do
         let(:email_body)  { email.html_part.decoded }
         let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
-        before do
-          allow_any_instance_of(School).to receive(:consent_up_to_date?).and_return(true)
+        context 'when consent is up to date' do
+          before do
+            allow_any_instance_of(School).to receive(:consent_up_to_date?).and_return(true)
+          end
+
+          context 'when bill uploaded' do
+            before do
+              visit school_consent_documents_path(school)
+              click_on 'Upload a bill'
+              attach_file('File', Rails.root + 'spec/fixtures/documents/fake-bill.pdf')
+              click_on 'Upload'
+              expect(school.consent_documents.count).to be(1)
+            end
+
+            it 'sends an email' do
+              expect(deliveries).to eq 1
+              expect(email.to).to contain_exactly('operations@energysparks.uk')
+              expect(email.subject).to include "#{school.name} has uploaded a bill"
+              expect(matcher).to have_link('View bill')
+              expect(matcher).to have_link('Perform review')
+            end
+          end
+
+          context 'when bill edited' do
+            before do
+              bill = create(:consent_document, school: school, description: 'Proof!', title: 'Our Energy Bill')
+              visit school_consent_document_path(school, bill)
+              click_on 'Edit'
+
+              fill_in :consent_document_title, with: 'Changed title'
+              fill_in_trix with: 'New description'
+
+              click_on 'Update'
+            end
+
+            it 'sends an email' do
+              expect(deliveries).to eq 1
+              expect(email.to).to contain_exactly('operations@energysparks.uk')
+              expect(email.subject).to include "#{school.name} has updated a bill"
+              expect(matcher).to have_link('View bill')
+              expect(matcher).to have_link('Perform review')
+            end
+          end
         end
 
-        context 'when bill uploaded' do
+        context 'when consent is not up to date' do
           before do
-            visit school_consent_documents_path(school)
-            click_on 'Upload a bill'
-            attach_file('File', Rails.root + 'spec/fixtures/documents/fake-bill.pdf')
-            click_on 'Upload'
-            expect(school.consent_documents.count).to be(1)
+            allow_any_instance_of(School).to receive(:consent_up_to_date?).and_return(false)
           end
 
-          it 'sends an email' do
-            expect(deliveries).to eq 1
-            expect(email.to).to contain_exactly('operations@energysparks.uk')
-            expect(email.subject).to include "#{school.name} has uploaded a bill"
-            expect(matcher).to have_link('View bill')
-            expect(matcher).to have_link('Perform review')
-          end
-        end
+          context 'when bill uploaded' do
+            before do
+              visit school_consent_documents_path(school)
+              click_on 'Upload a bill'
+              attach_file('File', Rails.root + 'spec/fixtures/documents/fake-bill.pdf')
+              click_on 'Upload'
+              expect(school.consent_documents.count).to be(1)
+            end
 
-        context 'when bill edited' do
-          before do
-            bill = create(:consent_document, school: school, description: 'Proof!', title: 'Our Energy Bill')
-            visit school_consent_document_path(school, bill)
-            click_on 'Edit'
-
-            fill_in :consent_document_title, with: 'Changed title'
-            fill_in_trix with: 'New description'
-
-            click_on 'Update'
-          end
-
-          it 'sends an email' do
-            expect(deliveries).to eq 1
-            expect(email.to).to contain_exactly('operations@energysparks.uk')
-            expect(email.subject).to include "#{school.name} has updated a bill"
-            expect(matcher).to have_link('View bill')
-            expect(matcher).to have_link('Perform review')
+            it 'sends an email' do
+              expect(deliveries).to eq 1
+              expect(email.to).to contain_exactly('operations@energysparks.uk')
+              expect(matcher).to have_link('View bill')
+              expect(matcher).to have_link('Request consent')
+            end
           end
         end
       end

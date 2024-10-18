@@ -300,9 +300,7 @@ RSpec.describe 'onboarding', :schools do
       expect(page).to have_content 'Schools recently onboarded'
 
       click_on onboarding.school_name
-      within('.dashboard-school-title') do
-        expect(page).to have_content(school.name)
-      end
+      expect(page).to have_content(school.name)
     end
   end
 end

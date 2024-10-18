@@ -26,12 +26,18 @@
             <tr scope="row">
               <td><%= link_to activity.display_name, school_activity_path(@school, activity) %></td>
               <td><span class="badge badge-secondary"><%= activity.activity_category.name %></span></td>
-              <td><%= activity.happened_on.strftime("%A, %d %B %Y") %></td>
+              <td><%= activity.happened_on.strftime('%A, %d %B %Y') %></td>
               <% if can? :manage, @activity %>
                 <td>
                   <div class="btn-group">
-                    <%= link_to t('activities.actions.edit'), edit_school_activity_path(@school, activity), class: 'btn btn-warning' %>
-                    <%= link_to t('activities.actions.delete'), school_activity_path(@school, activity), method: :delete, data: {confirm: t('activities.actions.are_you_sure')}, class: 'btn btn-danger' %>
+                    <%= link_to t('activities.actions.edit'),
+                                edit_school_activity_path(@school, activity),
+                                class: 'btn btn-primary' %>
+                    <%= link_to t('activities.actions.delete'),
+                                school_activity_path(@school, activity),
+                                method: :delete,
+                                data: { confirm: t('activities.actions.are_you_sure') },
+                                class: 'btn btn-danger' %>
                   </div>
                 </td>
               <% end %>
@@ -45,10 +51,13 @@
       </tbody>
     </table>
 
-  <%= link_to t('activities.choose_next_activity'), school_recommendations_path(@school, scope: :adult), class: 'btn btn-success' %>
-  <%= link_to t('activities.home'), school_path(@school), class: 'btn btn-secondary' %>
+  <%= link_to t('activities.choose_next_activity'),
+              school_recommendations_path(@school, scope: :adult),
+              class: 'btn btn-primary' %>
+  <%= link_to t('activities.home'), school_path(@school),
+              class: 'btn btn-secondary' %>
 
-  <% if !user_signed_in?  %>
+  <% if !user_signed_in? %>
     <p>
       <%= t('activities.sign_in_html', new_user_session_path: new_user_session_path) %>
     </p>

@@ -66,7 +66,7 @@
 <%= component 'alerts', school: @school,
                         dashboard_alerts: @dashboard_alerts,
                         alert_types: alert_types_for_class([AlertSchoolWeekComparisonGas, AlertWeekendGasConsumptionShortTerm]),
-                        show_links: false, show_icons: false %>
+                        show_links: false %>
 
 <%= component 'chart',
               chart_type: :last_7_days_intraday_gas,

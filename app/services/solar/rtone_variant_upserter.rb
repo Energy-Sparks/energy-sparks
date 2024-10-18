@@ -11,7 +11,7 @@ module Solar
     def perform
       Rails.logger.info "Upserting #{@readings.count} for #{@rtone_variant_installation.rtone_meter_id} at #{@rtone_variant_installation.school.name}"
 
-      Amr::DataFeedUpserter.new(data_feed_reading_array(@readings[:readings]), @import_log).perform
+      Amr::DataFeedUpserter.new(@rtone_variant_installation.amr_data_feed_config, @import_log, data_feed_reading_array(@readings[:readings])).perform
 
       Rails.logger.info "Upserted #{@import_log.records_updated} inserted #{@import_log.records_imported}for #{@rtone_variant_installation.rtone_meter_id} at #{@rtone_variant_installation.school.name}"
     end

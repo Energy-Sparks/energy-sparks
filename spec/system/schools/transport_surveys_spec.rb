@@ -174,7 +174,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           end
 
           it { expect(page).to have_content('Today\'s travel to school survey') }
-          it { expect(page).to have_content('Survey today') }
+          it { expect(page).not_to have_link('Survey today') }
           it { expect(page).to have_content('Javascript must be enabled to use this functionality') }
           it { expect(page).to have_link('View all transport surveys') }
           it { expect(page).not_to have_css('#survey_nav') }

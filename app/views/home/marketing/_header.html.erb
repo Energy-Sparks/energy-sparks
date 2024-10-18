@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-md-12 pt-5 text-center cta">
           <% if local_assigns[:school] %>
-            <%= link_to t('marketing.book_a_demo'), training_path, class: 'btn bg-positive' %>
+            <%= link_to t('marketing.book_a_demo'), training_path, class: 'btn btn-success' %>
           <% else %>
             <%= render 'home/marketing/book_demo_embed', label: t('marketing.book_a_demo') %>
           <% end %>

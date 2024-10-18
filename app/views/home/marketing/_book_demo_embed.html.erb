@@ -7,13 +7,14 @@
   window.addEventListener('load', function() {
     calendar.schedulingButton.load({
       url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2hxP60IqpJDhKRaMGs5juHqOiFhQ53jVYveruWxvvuZYhMUTxSi6okJoTWYz3AX2LzCDo4HT3C?gv=true',
-      color: '<%= Colours::TURQUOISE %>',
+      color: '<%= Colours.teal_medium %>',
       label: '<%= label %>',
       target,
     });
     btns = document.getElementsByClassName('qxCTlb');
     Array.prototype.forEach.call(btns, function(btn) {
-      btn.classList.add('btn', 'bg-positive');
+      btn.style = '';
+      btn.classList.add('btn', 'btn-success');
     });
   });
 })();

@@ -4,23 +4,23 @@
     <div class='legend-scale'>
       <ul class='legend-labels'>
         <li>
-          <span style='background:<%= Colours::MID_BLUE %>;'></span>
+          <span style='background:<%= Colours.bank_holiday %>;'></span>
           <div class="description"><%= t('calendars.legend.bank_holiday') %></div>
         </li>
         <li>
-          <span style='background:<%= Colours::LIGHT_ORANGE %>;'></span>
+          <span style='background:<%= Colours.term_time %>;'></span>
           <div class="description"><%= t('calendars.legend.term_time') %></div>
         </li>
         <li>
-          <span style='background:<%= Colours::GREEN %>;'></span>
+          <span style='background:<%= Colours.school_holiday %>;'></span>
           <div class="description"><%= t('calendars.legend.holiday') %></div>
         </li>
         <li>
-          <span style='background:<%= Colours::DARK_ORANGE %>;'></span>
+          <span style='background:<%= Colours.inset_day_in_school %>;'></span>
           <div class="description"><%= t('calendars.legend.inset_day') %><br>(<%= t('calendars.legend.in_school') %>)</div>
         </li>
         <li>
-          <span style='background:<%= Colours::MID_PURPLE %>;'></span>
+          <span style='background:<%= Colours.inset_day_out_of_school %>;'></span>
           <div class="description"><%= t('calendars.legend.inset_day') %><br>(<%= t('calendars.legend.out_school') %>)</div>
         </li>
       </ul>
