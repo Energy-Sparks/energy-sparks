@@ -28,10 +28,3 @@
   }
 }
 
-@function rename($key, $old-name, $new-name) {
-  @if $key == $old-name {
-    @return $new-name;
-  } @else {
-    @return $old-name;
-  }
-}
