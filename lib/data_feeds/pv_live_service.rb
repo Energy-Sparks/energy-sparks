@@ -124,16 +124,9 @@ module DataFeeds
 
     # check for sunrise (margin = hours after sunrise, before sunset test applied)
     def daytime?(datetime, latitude, longitude, margin_hours)
-      sun_times = SunTimes.new
-
-      sunrise = sun_times.rise(datetime, latitude, longitude)
-      sr_criteria = sunrise + (60 * 60 * margin_hours)
+      sr_criteria, ss_criteria = Utilities::SunTimes.criteria(datetime, latitude, longitude, margin_hours)
       sr_criteria_dt = DateTime.parse(sr_criteria.to_s) # crudely convert to datetime, avoid time as very slow on Windows
-
-      sunset = sun_times.set(datetime, latitude, longitude)
-      ss_criteria = sunset - (60 * 60 * margin_hours)
       ss_criteria_dt = DateTime.parse(ss_criteria.to_s) # crudely convert to datetime, avoid time as very slow on Windows
-
       datetime > sr_criteria_dt && datetime < ss_criteria_dt
     end
 
