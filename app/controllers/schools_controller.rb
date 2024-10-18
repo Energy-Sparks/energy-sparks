@@ -49,7 +49,7 @@ class SchoolsController < ApplicationController
     @audience = :adult
     @observations = setup_timeline(@school.observations)
     @progress_summary = progress_service.progress_summary if @school.data_enabled?
-    render :show
+    render :show, layout: 'dashboards'
   end
 
   # GET /schools/1/edit

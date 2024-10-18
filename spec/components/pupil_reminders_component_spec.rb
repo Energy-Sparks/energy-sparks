@@ -82,5 +82,28 @@ RSpec.describe PupilRemindersComponent, :include_application_helper, :include_ur
 
       it { expect(html).not_to have_selector('#new_programme') }
     end
+
+    it { expect(html).to have_content(I18n.t('pupils.schools.show.measure_temperatures'))}
+
+    it {
+      expect(html).to have_link(I18n.t('pupils.schools.show.enter_temperatures'),
+                                   href: new_school_temperature_observation_path(school, introduction: true))
+    }
+
+    context 'when school has temperatures' do
+      let!(:location) { create(:location, school: school, name: 'The Hall') }
+      let!(:observation) do
+        create(:observation, :temperature, school: school).tap do |obs|
+          create(:temperature_recording, observation: obs, location: location)
+        end
+      end
+
+      it { expect(html).to have_content(I18n.t('pupils.schools.show.updating_temperatures'))}
+
+      it {
+        expect(html).to have_link(I18n.t('pupils.schools.show.previous_temperatures'),
+                                     href: school_temperature_observations_path(school))
+      }
+    end
   end
 end

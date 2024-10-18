@@ -14,7 +14,7 @@
                     status: :neutral,
                     icon: 'temperature-high',
                     link: 'pupils.schools.show.enter_temperatures',
-                    path: school_temperature_observations_path(school)) do %>
+                    path: new_school_temperature_observation_path(school, introduction: true)) do %>
           <p>
             <%= t('pupils.schools.show.measure_temperatures') %>
           </p>
