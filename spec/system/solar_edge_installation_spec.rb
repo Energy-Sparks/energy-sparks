@@ -13,9 +13,9 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
 
   context 'as an admin' do
     before do
-      allow_any_instance_of(SolarEdgeAPI).to receive(:site_details).and_return({})
-      allow_any_instance_of(SolarEdgeAPI).to receive(:site_start_end_dates).and_return([Date.yesterday, Time.zone.today])
-      allow_any_instance_of(SolarEdgeAPI).to receive(:smart_meter_data).and_return({})
+      allow_any_instance_of(DataFeeds::SolarEdgeApi).to receive(:site_details).and_return({})
+      allow_any_instance_of(DataFeeds::SolarEdgeApi).to receive(:site_start_end_dates).and_return([Date.yesterday, Time.zone.today])
+      allow_any_instance_of(DataFeeds::SolarEdgeApi).to receive(:smart_meter_data).and_return({})
 
       sign_in(admin)
       visit school_meters_path(school)
