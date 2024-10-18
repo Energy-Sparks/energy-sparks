@@ -46,6 +46,11 @@ describe Amr::DataFeedValidator do
   end
 
   context 'with empty files' do
+    it 'handles completely empty files' do
+      results = Amr::DataFeedValidator.new(amr_data_feed_config, []).perform
+      expect(results).to be_empty
+    end
+
     it 'handles empty files when header matches config' do
       only_header = [header_row]
       results = Amr::DataFeedValidator.new(amr_data_feed_config, only_header).perform
