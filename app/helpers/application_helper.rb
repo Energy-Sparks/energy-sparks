@@ -534,4 +534,9 @@ module ApplicationHelper
   def email_with_wbr(email)
     email.gsub(/@/, '@<wbr>').html_safe
   end
+
+  def label_with_wbr(label)
+    return '' unless label.present?
+    label.gsub(%r{/}, '/<wbr>').html_safe
+  end
 end

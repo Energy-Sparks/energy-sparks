@@ -47,7 +47,7 @@
   </div>
 <% end %>
 
-<% colspan = current_user.admin? ? 16 : 11 %>
+<% colspan = current_user.admin? ? 15 : 10 %>
 <% first_colspan = current_user.admin? ? 6 : 2 %>
 
 <div class="table-responsive">
@@ -59,14 +59,12 @@
   <colgroup span="2"></colgroup>
   <thead>
     <tr>
-      <th></th>
       <th colspan="<%= first_colspan %>"></th>
       <th colspan="2"><%= t('schools.meters.index.readings') %></th>
       <th colspan="4"><%= t('schools.meters.index.validated_readings') %></th>
       <th colspan="1"></th>
     </tr>
     <tr>
-      <th scope="col"></th>
       <th scope="col"><%= t('schools.meters.index.meter') %></th>
       <th scope="col"><%= t('schools.meters.index.name') %></th>
       <% if current_user.admin? %>
@@ -75,12 +73,15 @@
         <th scope="col"><%= t('schools.meters.index.procurement_route') %></th>
         <th scope="col"><%= t('schools.meters.index.admin_meter_status') %></th>
       <% end %>
-      <th scope="col"><%= t('schools.meters.index.imported') %></th>
-      <th scope="col"><%= t('schools.meters.index.validated') %></th>
-      <th scope="col"><%= t('schools.meters.index.first') %></th>
-      <th scope="col"><%= t('schools.meters.index.latest') %></th>
-      <th scope="col"><%= t('schools.meters.index.zero_days') %></th>
-      <th scope="col"><%= t('schools.meters.index.large_gaps') %></th>
+      <th scope="col" class="text-right">
+        <%= current_user.admin? ? fa_icon(:database) : t('schools.meters.index.imported') %>
+      </th>
+      <th scope="col" class="text-right">
+        <%= current_user.admin? ? fa_icon('square-check') : t('schools.meters.index.validated') %></th>
+      <th scope="col" class="text-center"><%= t('schools.meters.index.first') %>-<%= t('schools.meters.index.latest') %>
+      </th>
+      <th scope="col" class="text-right"><%= t('schools.meters.index.zero_days') %></th>
+      <th scope="col" class="text-right"><%= t('schools.meters.index.large_gaps') %></th>
       <th scope="col"></th>
     </tr>
   </thead>
