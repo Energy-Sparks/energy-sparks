@@ -232,8 +232,8 @@ module DataFeeds
       # so missing date times can be spotted
       (start_date..end_date).each do |date|
         (0..23).each do |hour|
-          [0, 30].each_with_index do |mins30, hh_index|
-            [0, 10, 20].each do |mins10|
+          [0, 30].freeze.each_with_index do |mins30, hh_index|
+            [0, 10, 20].freeze.each do |mins10|
               dt = datetime_to_10_minutes(date, hour, mins30 + mins10)
               dt = adjust_to_bst(dt) if adjust_to_bst # raw data in UTC, convert to local time
               if raw_data.key?(dt)
@@ -309,8 +309,8 @@ module DataFeeds
       Digest::SHA1.hexdigest(hashed_password + format_datetime(datetime))
     end
 
-    def format_datetime(dt, replace_colons = ':')
-      dt.strftime('%Y-%m-%dT%H:%M:%S').gsub(':', replace_colons)
+    def format_datetime(datetime, replace_colons = ':')
+      datetime.strftime('%Y-%m-%dT%H:%M:%S').gsub(':', replace_colons)
     end
   end
 end

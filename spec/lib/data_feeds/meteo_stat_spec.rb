@@ -24,14 +24,12 @@ describe DataFeeds::MeteoStat do
     let(:end_date)    { Date.parse('20220206') }
     let(:temperature_json) { JSON.parse(File.read('spec/fixtures/meteostat/historic_temperatures.json')) }
 
-    before do
-      allow_any_instance_of(DataFeeds::MeteoStatApi).to receive(:historic_temperatures).exactly(api_call_count).times.and_return(temperature_json)
-    end
-
     describe 'returns expected temperature data' do
       let(:api_call_count) { 1 }
 
       it 'returns expected temperatures' do
+        expect_any_instance_of(DataFeeds::MeteoStatApi).to \
+          receive(:historic_temperatures).exactly(api_call_count).times.and_return(temperature_json)
         expect(described_class.new.historic_temperatures(latitude, longitude, start_date,
                                                          end_date)).to eq(expected_historic_temperatures)
       end
@@ -43,6 +41,8 @@ describe DataFeeds::MeteoStat do
       let(:end_date)    { Date.parse('20220206') }
 
       it 'requests 30 days at a time for 6 day span but shows 24 hours * 4 days missing' do
+        expect_any_instance_of(DataFeeds::MeteoStatApi).to \
+          receive(:historic_temperatures).exactly(api_call_count).times.and_return(temperature_json)
         data = described_class.new.historic_temperatures(latitude, longitude, start_date, end_date)
         expect(data[:missing].count).to eq(24 * 4)
       end

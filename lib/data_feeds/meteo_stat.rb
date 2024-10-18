@@ -56,7 +56,7 @@ module DataFeeds
           # an explicit timezone here
           dt = Time.zone.local(date.year, date.month, date.day, hour, 0, 0)
           missing.push(dt) unless temperatures.key?(dt) && time_exists?(dt)
-          [0, 30].each do |halfhour|
+          [0, 30].freeze.each do |halfhour|
             t = Time.zone.local(date.year, date.month, date.day, hour, halfhour, 0)
             dated_temperatures[date].push(interpolator.at(t.to_i).round(2))
           end

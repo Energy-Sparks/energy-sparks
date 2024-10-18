@@ -90,7 +90,7 @@ RSpec.describe 'live data', type: :system do
       end
 
       it 'returns html with reading' do
-        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('api is broken'))
+        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(DataFeeds::GeoApi::NotAuthorised.new('api is broken'))
 
         visit school_cad_live_data_path(school, school.cads.last)
 
@@ -121,7 +121,7 @@ RSpec.describe 'live data', type: :system do
       end
 
       it 'returns json error' do
-        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('api is broken'))
+        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(DataFeeds::GeoApi::NotAuthorised.new('api is broken'))
 
         visit school_cad_live_data_path(school, school.cads.last, format: :json)
 
