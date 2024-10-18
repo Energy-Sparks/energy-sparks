@@ -8,6 +8,8 @@ module Amr
 
     attr_reader :path_and_file_name, :config
 
+    ILLEGAL_QUOTING = 'Illegal quoting in line 1.'.freeze
+
     def initialize(config, path_and_file_name)
       @path_and_file_name = path_and_file_name
       @config = config
@@ -25,10 +27,18 @@ module Amr
         end
       CSV.parse(content, col_sep: @config.column_separator, row_sep: :auto)
     rescue CSV::MalformedCSVError, Roo::Error => e
-      raise Error, e.message
+      if ignorable_error?(e.message)
+        return []
+      else
+        raise Error, e.message
+      end
     end
 
     private
+
+    def ignorable_error?(error)
+      return config.identifier == 'energy-assets2' && error == ILLEGAL_QUOTING
+    end
 
     def clean_csv_data(path_and_file_name)
       data = StringIO.new
