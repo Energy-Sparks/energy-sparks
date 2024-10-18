@@ -4,6 +4,6 @@ class AmrImportJob < ApplicationJob
   queue_as :default
 
   def perform(config, bucket, filename)
-    Amr::Importer.new(config, bucket:).import(filename)
+    Amr::Importer.new(config, bucket).import(filename)
   end
 end
