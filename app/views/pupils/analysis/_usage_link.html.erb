@@ -1,9 +1,0 @@
-<div class="col-sm-6 col-lg-4 mb-4">
-  <div class="card <%= energy %>-dark <%= energy %>-card h-100">
-    <div class="card-body p-4 <%= 'text-center' if local_assigns[:centre] %>">
-      <%= link_to school_usage_path(@school, {supply: local_assigns[:supply] || energy}.merge(usage_config)), class: 'h2 stretched-link text-decoration-none' do %>
-        <%= yield %>
-      <% end %>
-    </div>
-  </div>
-</div>

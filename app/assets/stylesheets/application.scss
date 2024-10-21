@@ -2,16 +2,19 @@
  *
  *= require trix
  */
+
+@import "colours";
+@import "fonts";
+@import "bootstrap-overrides";
 @import "bootstrap";
+
 @import "bootstrap-xl";
 @import "font-awesome";
-@import "fonts";
-@import "colours";
-
 @import "base";
 @import "links";
 @import "headers";
 @import "nav";
+@import "nav-tabs";
 @import "footer";
 @import "home";
 @import "site";

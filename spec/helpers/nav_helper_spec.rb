@@ -1,18 +1,6 @@
 require 'rails_helper'
 
 describe NavHelper do
-  describe '#locale_switcher_buttons' do
-    it 'returns buttons for all available locales except the current locale' do
-      I18n.locale = 'en'
-      allow(helper).to receive(:url_for).and_return('http://cy.energysparks.uk/')
-      expect(helper.locale_switcher_buttons).to eq('<ul class="navbar-nav navbar-expand"><li class="nav-item pl-3 pr-3 nav-lozenge my-3px"><a href="http://cy.energysparks.uk/">Cymraeg</a></li></ul>')
-      I18n.locale = 'cy'
-      allow(helper).to receive(:url_for).and_return('http://energysparks.uk/')
-      expect(helper.locale_switcher_buttons).to eq('<ul class="navbar-nav navbar-expand"><li class="nav-item pl-3 pr-3 nav-lozenge my-3px"><a href="http://energysparks.uk/">English</a></li></ul>')
-      I18n.locale = 'en'
-    end
-  end
-
   describe '#locale_name_for' do
     it 'returns the name for a given locale' do
       I18n.locale = 'cy'

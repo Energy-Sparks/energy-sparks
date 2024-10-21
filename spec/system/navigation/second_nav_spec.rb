@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe 'Navigation -> second nav' do
   let!(:user) {}
   let(:school_group) { create(:school_group) }
-  let(:school) { create(:school, school_group:) }
+  let(:data_enabled) { true }
+  let(:school) { create(:school, school_group:, data_enabled: data_enabled) }
   let(:school_with_points) { create(:school, :with_points, scoreboard: create(:scoreboard)) }
   let(:nav) { page.find(:css, 'nav.navbar-second') }
 
   before do
-    Flipper.enable :navigation
     sign_in(user) if user
   end
 
@@ -68,8 +68,6 @@ RSpec.describe 'Navigation -> second nav' do
       it { expect(nav).to have_no_css('#mini-podium') }
     end
   end
-
-  # TODO: add missing translations for mini podium
 
   describe 'School status buttons' do
     context 'when on a school page' do
@@ -151,36 +149,58 @@ RSpec.describe 'Navigation -> second nav' do
     end
   end
 
-  describe 'Manage group menu' do
+  describe 'Manage school group menu' do
+    let(:path) { school_group_path(school.school_group) }
     let(:manage_school_group_menu) { nav.find_by(id: 'manage-school-group-menu') }
 
     context 'when on a non school group page' do
-      before { visit home_page_path }
+      let(:path) { visit home_page_path }
 
-      it { expect(nav).to have_no_css('#manage-school-group-menu') }
+      it_behaves_like 'a page without a manage school group menu'
     end
 
-    context 'when on school group page' do
-      before { visit school_group_path(school.school_group) }
+    context 'when on a school group page' do
+      let(:path) { school_group_path(school.school_group) }
+
+      context 'when user is a site admin' do
+        let(:user) { create(:admin) }
+
+        it_behaves_like 'a page with a manage school group menu'
+        it_behaves_like 'a page with a manage school group menu including admin links'
+      end
 
       context 'when user is a school group admin for different school' do
         let(:user) { create(:group_admin, school_group: create(:school_group)) }
 
-        it { expect(nav).to have_no_css('#manage-school-group-menu') }
+        it_behaves_like 'a page without a manage school group menu'
       end
 
-      context 'when user is a school group admin for that school' do
-        let(:user) { create(:group_admin, school_group:) }
+      context 'when user is a school group admin for own school' do
+        let(:user) { create(:group_admin, school_group: school_group) }
 
-        it { expect(nav).to have_css('#manage-school-group-menu') }
+        it_behaves_like 'a page with a manage school group menu'
+        it_behaves_like 'a page with a manage school group menu not including admin links'
+
+        it_behaves_like 'a page with a manage school group menu' do
+          let(:path) { map_school_group_path(school_group) }
+        end
+        it_behaves_like 'a page with a manage school group menu' do
+          let(:path) { comparisons_school_group_path(school_group) }
+        end
+        it_behaves_like 'a page with a manage school group menu' do
+          let(:path) { priority_actions_school_group_path(school_group) }
+        end
+        it_behaves_like 'a page with a manage school group menu' do
+          let(:path) { current_scores_school_group_path(school_group) }
+        end
       end
 
       context 'when user is not a school group admin' do
-        it { expect(nav).to have_no_css('#manage-school-group-menu') }
+        let(:path) { school_group_path(school.school_group) }
+
+        it_behaves_like 'a page without a manage school group menu'
       end
     end
-
-    ## TODO: check menu contents, but this is currently fluid, so should be done later
   end
 
   describe 'Manage school menu' do
@@ -212,7 +232,7 @@ RSpec.describe 'Navigation -> second nav' do
       end
     end
 
-    ## TODO: check menu contents (too fluid at the mo, so worth doing later)
+    ## NB: contents of this menu is checked in system/schools/dashboard/manage_school_spec.rb
   end
 
   describe 'My school group menu' do
@@ -276,8 +296,124 @@ RSpec.describe 'Navigation -> second nav' do
       it "displays the menu for #{user_type}" do
         expect(page).to have_css('#my-school-menu')
       end
+    end
 
-      ## TODO: check menu contents (too fluid at the mo, so worth doing later)
+    context 'when user is non-admin' do
+      let(:data_enabled) { }
+      let(:fuel_configuration) { {} }
+      let(:school_school_group) {}
+      let(:school) { create(:school, :with_fuel_configuration, **fuel_configuration, data_enabled: data_enabled, school_group: school_school_group, scoreboard: create(:scoreboard)) }
+      let(:user_school_group) {}
+      let(:user) { create(:staff, school: school, school_group: user_school_group) }
+
+      it 'has standard links' do
+        within '#my-school-menu' do
+          expect(page).to have_link(school.name)
+          expect(page).to have_link('Recommended activities', href: school_recommendations_path(school))
+          expect(page).to have_link('School programmes', href: programme_types_path)
+          expect(page).to have_link('Scoreboard')
+          expect(page).to have_link('My alerts')
+        end
+      end
+
+      describe 'school group link' do
+        context 'with school group' do
+          let(:user_school_group) { create(:school_group) }
+
+          it { expect(page).to have_link('My school group') }
+        end
+
+        context 'without school group' do
+          let(:user_school_group) { }
+
+          it { expect(page).not_to have_link('My school group') }
+        end
+      end
+
+      describe 'compare schools link' do
+        context 'when users school is in school group' do
+          let(:school_school_group) { create(:school_group) }
+
+          it 'has compare school link' do
+            within '#my-school-menu' do
+              expect(page).to have_link('Compare schools')
+            end
+          end
+        end
+
+        context 'when users school is not in school group' do
+          let(:school_school_group) { }
+
+          it 'does not have compare school link' do
+            within '#my-school-menu' do
+              expect(page).not_to have_link('Compare schools')
+            end
+          end
+        end
+      end
+
+      describe 'data enabled items' do
+        context 'when data enabled' do
+          let(:data_enabled) { true }
+
+          it 'has standard links' do
+            within '#my-school-menu' do
+              expect(page).to have_link('Energy analysis')
+              expect(page).to have_link('Review targets')
+              expect(page).to have_link('Download our data')
+            end
+          end
+
+          context 'when school has solar and electricity' do
+            let(:fuel_configuration) { { has_electricity: true, has_solar_pv: true } }
+
+            it { expect(page).to have_link('Electricity and solar usage') }
+            it { expect(page).not_to have_link('Electricity usage') }
+          end
+
+          context 'when school has electricity and no solar' do
+            let(:fuel_configuration) { { has_electricity: true, has_solar_pv: false } }
+
+            it { expect(page).not_to have_link('Electricity and solar usage') }
+            it { expect(page).to have_link('Electricity usage') }
+          end
+
+          context 'when school has gas and storage' do
+            let(:fuel_configuration) { { has_gas: true, has_storage_heaters: true } }
+
+            it 'has gas and storage heater links' do
+              expect(page).to have_link('Gas usage')
+              expect(page).to have_link('Storage heater usage')
+            end
+          end
+
+          context 'when school has no fuel types' do
+            let(:fuel_configuration) { { has_electricity: false, has_solar_pv: false, has_gas: false, has_storage_heaters: false } }
+
+            it 'has no fuel links' do
+              expect(page).not_to have_link('Electricity and solar usage')
+              expect(page).not_to have_link('Electricity usage')
+              expect(page).not_to have_link('Gas usage')
+              expect(page).not_to have_link('Storage heater usage')
+            end
+          end
+        end
+
+        context 'when not data enabled' do
+          let(:fuel_configuration) { { has_electricity: true, has_solar_pv: true, has_gas: true, has_storage_heaters: true } }
+          let(:data_enabled) { false }
+
+          it { expect(page).not_to have_link('Energy analysis') }
+          it { expect(page).not_to have_link('Download our data') }
+
+          it 'has no fuel links' do
+            expect(page).not_to have_link('Electricity and solar usage')
+            expect(page).not_to have_link('Electricity usage')
+            expect(page).not_to have_link('Gas usage')
+            expect(page).not_to have_link('Storage heater usage')
+          end
+        end
+      end
     end
   end
 
