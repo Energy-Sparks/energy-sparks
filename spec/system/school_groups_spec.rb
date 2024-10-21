@@ -28,7 +28,6 @@ describe 'school groups', :school_groups, type: :system do
         expect(page).to have_current_path('/users/sign_in', ignore_query: true)
       end
 
-      it_behaves_like 'does not show the sub navigation menu'
       it_behaves_like 'schools are filtered by permissions'
 
       describe 'showing recent usage tab' do
@@ -398,7 +397,6 @@ describe 'school groups', :school_groups, type: :system do
       let(:public) { false }
 
       it_behaves_like 'a private school group dashboard'
-      it_behaves_like 'does not show the sub navigation menu'
     end
   end
 
@@ -410,10 +408,6 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'does not show the sub navigation menu' do
-      it_behaves_like 'does not show the sub navigation menu'
-    end
 
     context 'with a public school group' do
       let(:public) { true }
@@ -442,10 +436,6 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'does not show the sub navigation menu' do
-      it_behaves_like 'does not show the sub navigation menu'
-    end
 
     context 'with a public school group' do
       let(:public) { true }
@@ -484,14 +474,6 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'shows the sub navigation menu' do
-      it_behaves_like 'shows the sub navigation menu'
-      it 'shows only the sub nav manage school links available to a group admin' do
-        visit school_group_path(school_group)
-        expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs'])
-      end
-    end
 
     context 'group chart settings page' do
       it_behaves_like 'allows access to chart updates page and editing of default chart preferences'
@@ -535,14 +517,6 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'shows the sub navigation menu' do
-      it_behaves_like 'shows the sub navigation menu'
-      it 'shows the sub nav manage school links available to an admin' do
-        visit school_group_path(school_group)
-        expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
-      end
-    end
 
     context 'group chart settings page' do
       it_behaves_like 'allows access to chart updates page and editing of default chart preferences'
@@ -588,10 +562,6 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'does not show the sub navigation menu' do
-      it_behaves_like 'does not show the sub navigation menu'
-    end
 
     context 'with a public school group' do
       let(:public) { true }

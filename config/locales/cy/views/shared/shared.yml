@@ -81,13 +81,10 @@ cy:
     school_configuration: Ffurfweddiad ysgol
     your_school_estate: Stad eich ysgol
   my_school_menu:
-    complete_pupil_activities: Gweithgareddau disgyblion cyflawn
     download_our_data: Lawrlwytho ein data
     electricity_and_solar_usage: Defnydd trydan a solar
     electricity_usage: Defnydd trydan
     energy_analysis: Dadansoddiad ynni
-    energy_audits: Archwiliadau ynni
-    energy_saving_actions: Camau arbed ynni
     gas_usage: Defnydd nwy
     live_energy_data: Data ynni byw
     my_alerts: Fy rhybuddion
@@ -120,8 +117,6 @@ cy:
     videos: Fideos
   partners:
     supports_in_partnership_with: Mae Sbarcynni yn cefnogi %{school_name} mewn partneriaeth â
-  switch_schools_menu:
-    switch_school: Newid ysgol
   terms_and_conditions:
     message_html: Rwy'n cadarnhau cytundeb gyda %{terms_and_conditions_link} a %{privacy_policy_link} Sbarcynni
   timeline:

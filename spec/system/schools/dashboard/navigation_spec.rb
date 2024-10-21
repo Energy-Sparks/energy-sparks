@@ -7,7 +7,7 @@ RSpec.shared_examples 'navigation' do
 
   it 'has link to pupil dashboard' do
     expect(page.has_link?('Pupil dashboard')).to be true
-    within('.sub-navbar') do
+    within('.navbar-second') do
       click_on('Pupil dashboard')
     end
     expect(page.has_title?('Pupil dashboard')).to be true
@@ -20,17 +20,14 @@ RSpec.shared_examples 'navigation' do
     end
 
     it 'does not show data-enabled links' do
-      within('.application') do
-        expect(page).not_to have_link('Compare schools')
-        expect(page).not_to have_link('Explore data')
-        expect(page).not_to have_link('Review energy analysis')
-        expect(page).not_to have_link('Print view')
-      end
+      expect(html).not_to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
+                                    href: school_advice_path(school))
     end
   end
 
   it 'has links to analysis' do
-    expect(page).to have_link('Explore energy data')
+    expect(html).to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
+                              href: school_advice_path(school))
   end
 
   context 'when school has partners' do
@@ -98,19 +95,6 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       expect(page).to have_content('Log in with your email address and password')
       expect(page).to have_content('Log in with your pupil password')
     end
-
-    context 'when school in private group' do
-      before do
-        school.update(school_group: create(:school_group, public: false))
-      end
-
-      it 'does not link to compare schools' do
-        visit school_path(school, switch: true)
-        within('.application') do
-          expect(page).not_to have_link('Compare schools')
-        end
-      end
-    end
   end
 
   context 'as pupil' do
@@ -142,44 +126,9 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       expect(page.has_link?('Pupil dashboard')).to be true
     end
 
-    it 'has my school menu' do
-      visit school_path(school)
-      expect(page).to have_css('#my_school_menu')
-      expect(page).to have_link('Electricity usage')
-      expect(page).to have_link('Gas usage')
-      expect(page).to have_link('Storage heater usage')
-      expect(page).to have_link('Energy analysis')
-      expect(page).to have_link('My alerts')
-      expect(page).to have_link('School programmes', href: programme_types_path)
-      expect(page).to have_link('Complete pupil activities', href: activity_categories_path)
-      expect(page).to have_link('Energy saving actions', href: intervention_type_groups_path)
-      expect(page).to have_link('Download our data')
-    end
-
     it 'displays my school menu on other pages' do
       visit home_page_path
-      expect(page).to have_css('#my_school_menu')
-    end
-
-    context 'and school is not data-enabled' do
-      before do
-        school.update!(data_enabled: false)
-        visit school_path(school)
-      end
-
-      it 'does not have data enabled features in my school menu' do
-        expect(page).to have_css('#my_school_menu')
-        expect(page).not_to have_link('Electricity usage')
-        expect(page).not_to have_link('Gas usage')
-        expect(page).not_to have_link('Storage heater usage')
-        expect(page).not_to have_link('Energy analysis')
-        expect(page).to have_link('My alerts')
-        expect(page).to have_link('School programmes')
-        expect(page).to have_link('Complete pupil activities')
-        expect(page).to have_link('Energy saving actions')
-        expect(page).not_to have_link('Download our data')
-        expect(page).not_to have_link('Review targets')
-      end
+      expect(page).to have_css('#my-school-menu')
     end
   end
 
@@ -197,62 +146,21 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       expect(page.has_link?('Pupil dashboard')).to be true
     end
 
-    it 'has my school menu' do
-      visit school_path(school)
-      expect(page).to have_css('#my_school_menu')
-      expect(page).to have_link('Electricity usage')
-      expect(page).to have_link('Gas usage')
-      expect(page).to have_link('Storage heater usage')
-      expect(page).to have_link('Energy analysis')
-      expect(page).to have_link('My alerts')
-      expect(page).to have_link('School programmes')
-      expect(page).to have_link('Complete pupil activities')
-      expect(page).to have_link('Energy saving actions')
-      expect(page).to have_link('Download our data')
-    end
-
     it 'displays my school menu on other pages' do
       visit home_page_path
-      expect(page).to have_css('#my_school_menu')
-    end
-
-    context 'and school is not data-enabled' do
-      before do
-        school.update!(data_enabled: false)
-        visit school_path(school)
-      end
-
-      it 'does not have data enabled features in my school menu' do
-        expect(page).to have_css('#my_school_menu')
-        expect(page).not_to have_link('Electricity usage')
-        expect(page).not_to have_link('Gas usage')
-        expect(page).not_to have_link('Storage heater usage')
-        expect(page).not_to have_link('Energy analysis')
-        expect(page).to have_link('My alerts')
-        expect(page).to have_link('School programmes')
-        expect(page).to have_link('Complete pupil activities')
-        expect(page).to have_link('Energy saving actions')
-        expect(page).not_to have_link('Download our data')
-        expect(page).not_to have_link('Review targets')
-      end
+      expect(page).to have_css('#my-school-menu')
     end
 
     context 'with replacement advice pages' do
-      around do |example|
-        ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
-          example.run
-        end
-      end
-
       it 'links to advice pages from review energy analysis' do
         visit school_path(school)
         click_on 'Explore energy data'
         expect(page).to have_content(I18n.t('advice_pages.index.title'))
       end
 
-      it 'links to advice pages from my school' do
+      it 'links to advice pages from my school menu' do
         visit school_path(school)
-        within '#my_school_menu' do
+        within '#my-school-menu' do
           click_on 'Energy analysis'
         end
         expect(page).to have_content(I18n.t('advice_pages.index.title'))

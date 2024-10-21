@@ -40,7 +40,7 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
   it 'has a link to review targets from my school menu' do
     unless user.admin?
       visit school_path(test_school)
-      within '#my_school_menu' do
+      within '#my-school-menu' do
         expect(page).to have_link('Review targets', href: school_school_targets_path(test_school))
       end
     end
@@ -591,7 +591,7 @@ RSpec.describe 'school targets', type: :system do
         it 'doesnt have a link to review targets' do
           visit school_path(school)
           expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
-          within '#my_school_menu' do
+          within '#my-school-menu' do
             expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
           end
         end
@@ -619,7 +619,7 @@ RSpec.describe 'school targets', type: :system do
       it 'doesnt have a link to review targets' do
         visit school_path(school)
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
-        within '#my_school_menu' do
+        within '#my-school-menu' do
           expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
         end
       end
@@ -646,7 +646,7 @@ RSpec.describe 'school targets', type: :system do
       it 'doesnt have a link to review targets' do
         visit school_path(school)
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
-        within '#my_school_menu' do
+        within '#my-school-menu' do
           expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
         end
       end
@@ -751,7 +751,7 @@ RSpec.describe 'school targets', type: :system do
 
       it 'doesnt have a link to review targets' do
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
-        within '#my_school_menu' do
+        within '#my-school-menu' do
           expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
         end
       end
