@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 530ada175f4134f769ec4e756583ad646e44afe2
-  tag: 6.0.14
+  revision: e5b5a695d1dacf1e2e535ddc35f58a8d99866efe
+  branch: 4565-add-meter-attribute-to-correct-overnight-solar-readings
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
