@@ -1,0 +1,32 @@
+@mixin footer {
+  font-family: $header-font-family;
+  color: $white;
+  & a:link, a:hover, a:focus, a:active, a:visited {
+    color: $white;
+    text-decoration: none;
+  }
+}
+
+footer {
+  .footer-top {
+    @include font(f9); // design says 16px (f7)
+    @include footer;
+    background-color: $grey-very-dark;
+    font-weight: $font-weight-semibold; // 600 // design says 500
+
+    h1 {
+      @include font(f6); // design says 24px (f4)
+      padding-top: 5px;
+      padding-bottom: 5px;
+      color: $white;
+      font-weight: $font-weight-bold; // 700
+    }
+  }
+
+  .footer-second {
+    @include font(f9); // design says 14px (f8)
+    @include footer;
+    background-color: $grey-darker;
+    font-weight: $font-weight-normal; // 400
+  }
+}

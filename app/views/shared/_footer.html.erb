@@ -1,5 +1,64 @@
 <% if Flipper.enabled?(:footer, current_user, current_user&.school_group) %>
-  <!-- new footer code to go here -->
+  <footer>
+    <div class="footer-top py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-2">
+            <h1>Quick Links</h1>
+            <ul class="list-unstyled">
+              <li><%= link_to t('common_nav_bar_menus.actions'), intervention_type_groups_path %></li>
+              <li><%= link_to t('common_nav_bar_menus.activities'), activity_categories_path %></li>
+              <li><%= link_to t('our_schools_menu.scoreboards'), scoreboards_path %></li>
+              <li><%= link_to t('our_schools_menu.compare_schools'), compare_index_path %></li>
+            </ul>
+          </div>
+          <div class="col-2">
+            <h1>Services</h1>
+          </div>
+          <div class="col-2">
+            <h1>Other Links</h1>
+          </div>
+          <div class="col-2">
+            <h1>Legal Terms</h1>
+            <ul class="list-unstyled">
+              <li><%= link_to t('footer.terms_and_conditions'), terms_and_conditions_path %></li>
+<!--              <li><%= link_to t('cookies.title'), cookies_path %></li> -->
+              <li><%= link_to t('about_menu.privacy_policy'), privacy_and_cookie_policy_path %></li>
+              <li><%= link_to t('footer.child_safeguarding_policy'), child_safeguarding_policy_path %></li>
+            </ul>
+          </div>
+          <div class="col-4">
+            <h1>Newsletter Signup</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-second py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-4">
+            <%= t('footer.cc_licence_notice_html') %>.
+          </div>
+          <div class="col-4">
+            <%= t('footer.registered_charity_notice') %>.
+          </div>
+          <div class="col-4">
+              <ul class="list-inline">
+                <li class="list-inline-item p-2">
+                  <a href="//twitter.com/EnergySparks" class=""><%= fab_icon('twitter fa-2x') %></a>
+                </li>
+                <li class="list-inline-item p-2">
+                  <a href="//www.facebook.com/EnergySparksUK/" class=""><%= fab_icon('facebook-square fa-2x') %></a>
+                </li>
+                <li class="list-inline-item p-2">
+                  <a href="//github.com/energy-sparks/energy-sparks" class=""><%= fab_icon('github fa-2x') %></a>
+                </li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 <% else %>
   <footer>
     <div class="footer-above">
