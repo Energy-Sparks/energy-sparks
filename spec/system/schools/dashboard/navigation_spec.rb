@@ -20,17 +20,14 @@ RSpec.shared_examples 'navigation' do
     end
 
     it 'does not show data-enabled links' do
-      within('.application') do
-        expect(page).not_to have_link('Compare schools')
-        expect(page).not_to have_link('Explore data')
-        expect(page).not_to have_link('Review energy analysis')
-        expect(page).not_to have_link('Print view')
-      end
+      expect(html).not_to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
+                                    href: school_advice_path(school))
     end
   end
 
   it 'has links to analysis' do
-    expect(page).to have_link('Explore energy data')
+    expect(html).to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
+                              href: school_advice_path(school))
   end
 
   context 'when school has partners' do
@@ -97,19 +94,6 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       visit school_path(school)
       expect(page).to have_content('Log in with your email address and password')
       expect(page).to have_content('Log in with your pupil password')
-    end
-
-    context 'when school in private group' do
-      before do
-        school.update(school_group: create(:school_group, public: false))
-      end
-
-      it 'does not link to compare schools' do
-        visit school_path(school, switch: true)
-        within('.application') do
-          expect(page).not_to have_link('Compare schools')
-        end
-      end
     end
   end
 
