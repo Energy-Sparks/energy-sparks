@@ -11,7 +11,6 @@ RSpec.describe 'Navigation -> second nav' do
   let(:nav) { page.find(:css, 'nav.navbar-second') }
 
   before do
-    Flipper.enable :navigation
     sign_in(user) if user
   end
 
@@ -69,8 +68,6 @@ RSpec.describe 'Navigation -> second nav' do
       it { expect(nav).to have_no_css('#mini-podium') }
     end
   end
-
-  # TODO: add missing translations for mini podium
 
   describe 'School status buttons' do
     context 'when on a school page' do
