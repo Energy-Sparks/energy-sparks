@@ -55,17 +55,19 @@ div.school-card-row {
 }
 
 // used in _usage_control.html.erb
+// these currently use chart fuel colours as opposed to site fuel colours
 .usage-controls {
   @each $fuel, $tones in $colours-fuel {
-    $fuel-name: rename($fuel, 'electric', 'electricity');
+    $fuel-name: if($fuel == 'electric', 'electricity', $fuel);
+
     //e.g. .electricity-light, .gas-light, .storage-light, .solar-light
     .#{$fuel-name}-light {
-      border: 2px solid map-get($tones, 'light');
+      border: 2px solid colour-get($colours-charts, 'chart', "#{$fuel}_light");
     }
 
     //e.g. .electricity-dark, .gas-dark, .storage-dark, .solar-dark
     .#{$fuel-name}-dark {
-      border: 2px solid map-get($tones, 'dark');
+      border: 2px solid colour-get($colours-charts, 'chart', "#{$fuel}_dark");
     }
   }
 }
