@@ -152,10 +152,6 @@ RSpec.describe 'adult dashboard navigation', type: :system do
     end
 
     context 'with replacement advice pages' do
-      before do
-        Flipper.disable(:new_dashboards_2024)
-      end
-
       it 'links to advice pages from review energy analysis' do
         visit school_path(school)
         click_on 'Explore energy data'
