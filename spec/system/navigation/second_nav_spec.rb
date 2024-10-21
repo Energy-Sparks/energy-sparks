@@ -152,36 +152,58 @@ RSpec.describe 'Navigation -> second nav' do
     end
   end
 
-  describe 'Manage group menu' do
+  describe 'Manage school group menu' do
+    let(:path) { school_group_path(school.school_group) }
     let(:manage_school_group_menu) { nav.find_by(id: 'manage-school-group-menu') }
 
     context 'when on a non school group page' do
-      before { visit home_page_path }
+      let(:path) { visit home_page_path }
 
-      it { expect(nav).to have_no_css('#manage-school-group-menu') }
+      it_behaves_like 'a page without a manage school group menu'
     end
 
-    context 'when on school group page' do
-      before { visit school_group_path(school.school_group) }
+    context 'when on a school group page' do
+      let(:path) { school_group_path(school.school_group) }
+
+      context 'when user is a site admin' do
+        let(:user) { create(:admin) }
+
+        it_behaves_like 'a page with a manage school group menu'
+        it_behaves_like 'a page with a manage school group menu including admin links'
+      end
 
       context 'when user is a school group admin for different school' do
         let(:user) { create(:group_admin, school_group: create(:school_group)) }
 
-        it { expect(nav).to have_no_css('#manage-school-group-menu') }
+        it_behaves_like 'a page without a manage school group menu'
       end
 
-      context 'when user is a school group admin for that school' do
-        let(:user) { create(:group_admin, school_group:) }
+      context 'when user is a school group admin for own school' do
+        let(:user) { create(:group_admin, school_group: school_group) }
 
-        it { expect(nav).to have_css('#manage-school-group-menu') }
+        it_behaves_like 'a page with a manage school group menu'
+        it_behaves_like 'a page with a manage school group menu not including admin links'
+
+        it_behaves_like 'a page with a manage school group menu' do
+          let(:path) { map_school_group_path(school_group) }
+        end
+        it_behaves_like 'a page with a manage school group menu' do
+          let(:path) { comparisons_school_group_path(school_group) }
+        end
+        it_behaves_like 'a page with a manage school group menu' do
+          let(:path) { priority_actions_school_group_path(school_group) }
+        end
+        it_behaves_like 'a page with a manage school group menu' do
+          let(:path) { current_scores_school_group_path(school_group) }
+        end
       end
 
       context 'when user is not a school group admin' do
-        it { expect(nav).to have_no_css('#manage-school-group-menu') }
+        let(:path) { school_group_path(school.school_group) }
+
+        it_behaves_like 'a page without a manage school group menu'
       end
     end
-
-    ## TODO: check menu contents, but this is currently fluid, so should be done later
   end
 
   describe 'Manage school menu' do
@@ -213,7 +235,7 @@ RSpec.describe 'Navigation -> second nav' do
       end
     end
 
-    ## TODO: check menu contents (too fluid at the mo, so worth doing later)
+    ## NB: contents of this menu is checked in system/schools/dashboard/manage_school_spec.rb
   end
 
   describe 'My school group menu' do
