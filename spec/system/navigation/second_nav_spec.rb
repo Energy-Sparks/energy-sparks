@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe 'Navigation -> second nav' do
   let!(:user) {}
   let(:school_group) { create(:school_group) }
-  let(:school) { create(:school, school_group:) }
+  let(:data_enabled) { true }
+  let(:school) { create(:school, school_group:, data_enabled: data_enabled) }
   let(:school_with_points) { create(:school, :with_points, scoreboard: create(:scoreboard)) }
   let(:nav) { page.find(:css, 'nav.navbar-second') }
 
@@ -276,8 +277,124 @@ RSpec.describe 'Navigation -> second nav' do
       it "displays the menu for #{user_type}" do
         expect(page).to have_css('#my-school-menu')
       end
+    end
 
-      ## TODO: check menu contents (too fluid at the mo, so worth doing later)
+    context 'when user is non-admin' do
+      let(:data_enabled) { }
+      let(:fuel_configuration) { {} }
+      let(:school_school_group) {}
+      let(:school) { create(:school, :with_fuel_configuration, **fuel_configuration, data_enabled: data_enabled, school_group: school_school_group, scoreboard: create(:scoreboard)) }
+      let(:user_school_group) {}
+      let(:user) { create(:staff, school: school, school_group: user_school_group) }
+
+      it 'has standard links' do
+        within '#my-school-menu' do
+          expect(page).to have_link(school.name)
+          expect(page).to have_link('Recommended activities', href: school_recommendations_path(school))
+          expect(page).to have_link('School programmes', href: programme_types_path)
+          expect(page).to have_link('Scoreboard')
+          expect(page).to have_link('My alerts')
+        end
+      end
+
+      describe 'school group link' do
+        context 'with school group' do
+          let(:user_school_group) { create(:school_group) }
+
+          it { expect(page).to have_link('My school group') }
+        end
+
+        context 'without school group' do
+          let(:user_school_group) { }
+
+          it { expect(page).not_to have_link('My school group') }
+        end
+      end
+
+      describe 'compare schools link' do
+        context 'when users school is in school group' do
+          let(:school_school_group) { create(:school_group) }
+
+          it 'has compare school link' do
+            within '#my-school-menu' do
+              expect(page).to have_link('Compare schools')
+            end
+          end
+        end
+
+        context 'when users school is not in school group' do
+          let(:school_school_group) { }
+
+          it 'does not have compare school link' do
+            within '#my-school-menu' do
+              expect(page).not_to have_link('Compare schools')
+            end
+          end
+        end
+      end
+
+      describe 'data enabled items' do
+        context 'when data enabled' do
+          let(:data_enabled) { true }
+
+          it 'has standard links' do
+            within '#my-school-menu' do
+              expect(page).to have_link('Energy analysis')
+              expect(page).to have_link('Review targets')
+              expect(page).to have_link('Download our data')
+            end
+          end
+
+          context 'when school has solar and electricity' do
+            let(:fuel_configuration) { { has_electricity: true, has_solar_pv: true } }
+
+            it { expect(page).to have_link('Electricity and solar usage') }
+            it { expect(page).not_to have_link('Electricity usage') }
+          end
+
+          context 'when school has electricity and no solar' do
+            let(:fuel_configuration) { { has_electricity: true, has_solar_pv: false } }
+
+            it { expect(page).not_to have_link('Electricity and solar usage') }
+            it { expect(page).to have_link('Electricity usage') }
+          end
+
+          context 'when school has gas and storage' do
+            let(:fuel_configuration) { { has_gas: true, has_storage_heaters: true } }
+
+            it 'has gas and storage heater links' do
+              expect(page).to have_link('Gas usage')
+              expect(page).to have_link('Storage heater usage')
+            end
+          end
+
+          context 'when school has no fuel types' do
+            let(:fuel_configuration) { { has_electricity: false, has_solar_pv: false, has_gas: false, has_storage_heaters: false } }
+
+            it 'has no fuel links' do
+              expect(page).not_to have_link('Electricity and solar usage')
+              expect(page).not_to have_link('Electricity usage')
+              expect(page).not_to have_link('Gas usage')
+              expect(page).not_to have_link('Storage heater usage')
+            end
+          end
+        end
+
+        context 'when not data enabled' do
+          let(:fuel_configuration) { { has_electricity: true, has_solar_pv: true, has_gas: true, has_storage_heaters: true } }
+          let(:data_enabled) { false }
+
+          it { expect(page).not_to have_link('Energy analysis') }
+          it { expect(page).not_to have_link('Download our data') }
+
+          it 'has no fuel links' do
+            expect(page).not_to have_link('Electricity and solar usage')
+            expect(page).not_to have_link('Electricity usage')
+            expect(page).not_to have_link('Gas usage')
+            expect(page).not_to have_link('Storage heater usage')
+          end
+        end
+      end
     end
   end
 
