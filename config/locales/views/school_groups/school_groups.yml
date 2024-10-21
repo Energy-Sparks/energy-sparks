@@ -221,7 +221,6 @@ en:
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters
-      dashboards: Dashboards
       edit_group: Edit group
       group_admin: Group admin
       manage_group: Manage Group
