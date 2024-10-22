@@ -22,21 +22,12 @@ describe Amr::Importer do
   # responses from AWS API to stub out network calls in client
   let(:list_of_objects) { { contents: [{ key: }, { key: "#{thing_prefix}/" }] } }
   let(:object_data) { { key => { body: 'meter-readings!' } } }
-  let(:stub_responses) { {} }
 
   before do
     FileUtils.mkdir_p config.local_bucket_path
     s3_client.stub_responses(:list_objects_v2, list_of_objects)
     s3_client.stub_responses(:get_object, lambda { |context|
       object_data[context.params[:key]] || 'NoSuchKey'
-    })
-    s3_client.stub_responses(:copy_object, lambda { |context|
-      stub_responses[:copy_object] = context.params.dup
-      nil
-    })
-    s3_client.stub_responses(:delete_object, lambda { |context|
-      stub_responses[:delete_object] = context.params.dup
-      nil
     })
     allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
   end
@@ -51,10 +42,12 @@ describe Amr::Importer do
     amr_importer.import_all
     expect(ActiveJob::Base.queue_adapter.enqueued_jobs.size).to eq(1)
     perform_enqueued_jobs
-    expect(File.exist?(expected_local_file)).to be false
-    expect(stub_responses[:copy_object]).to eq({ bucket:, copy_source: "#{bucket}/#{key}",
+    expect(s3_client.api_requests.pluck(:operation_name)).to \
+      eq([:list_objects_v2, :get_object, :copy_object, :delete_object])
+    expect(s3_client.api_requests[2][:params]).to eq({ bucket:, copy_source: "#{bucket}/#{key}",
                                                  key: "archive-this-path/#{thing_name}" })
-    expect(stub_responses[:delete_object]).to eq({ bucket:, key: })
+    expect(s3_client.api_requests[3][:params]).to eq({ bucket:, key: })
+    expect(File.exist?(expected_local_file)).to be false
   end
 
   it 'logs errors to Rollbar' do
