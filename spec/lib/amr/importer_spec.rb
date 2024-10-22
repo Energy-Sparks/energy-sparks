@@ -44,8 +44,8 @@ describe Amr::Importer do
     perform_enqueued_jobs
     expect(s3_client.api_requests.pluck(:operation_name)).to \
       eq([:list_objects_v2, :get_object, :copy_object, :delete_object])
-    expect(s3_client.api_requests[2][:params]).to eq({ bucket:, copy_source: "#{bucket}/#{key}",
-                                                 key: "archive-this-path/#{thing_name}" })
+    expect(s3_client.api_requests[2][:params]).to \
+      eq({ bucket:, copy_source: "#{bucket}/#{key}", key: "archive-this-path/#{thing_name}" })
     expect(s3_client.api_requests[3][:params]).to eq({ bucket:, key: })
     expect(File.exist?(expected_local_file)).to be false
   end
