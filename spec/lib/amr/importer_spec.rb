@@ -60,7 +60,7 @@ describe Amr::Importer do
   it 'logs errors to Rollbar' do
     e = StandardError.new
     expect_any_instance_of(Amr::CsvParserAndUpserter).to receive(:perform).and_raise(e)
-    expect(Rollbar).to receive(:error).with(e, job: :import_all, config: thing_prefix, key:)
+    expect(Rollbar).to receive(:error).with(e, job: :import_all, bucket:, config: thing_prefix, key:)
     perform_enqueued_jobs { amr_importer.import_all }
   end
 end
