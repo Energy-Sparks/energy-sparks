@@ -42,13 +42,18 @@ describe Amr::Importer do
     amr_importer.import_all
     expect(ActiveJob::Base.queue_adapter.enqueued_jobs.size).to eq(1)
     perform_enqueued_jobs
+    expect(s3_client.api_requests.pluck(:operation_name)).to \
+      eq([:list_objects_v2, :get_object, :copy_object, :delete_object])
+    expect(s3_client.api_requests[2][:params]).to \
+      eq({ bucket:, copy_source: "#{bucket}/#{key}", key: "archive-this-path/#{thing_name}" })
+    expect(s3_client.api_requests[3][:params]).to eq({ bucket:, key: })
     expect(File.exist?(expected_local_file)).to be false
   end
 
   it 'logs errors to Rollbar' do
     e = StandardError.new
     expect_any_instance_of(Amr::CsvParserAndUpserter).to receive(:perform).and_raise(e)
-    expect(Rollbar).to receive(:error).with(e, job: :import_all, config: thing_prefix, key:)
+    expect(Rollbar).to receive(:error).with(e, job: :import_all, bucket:, config: thing_prefix, key:)
     perform_enqueued_jobs { amr_importer.import_all }
   end
 end
