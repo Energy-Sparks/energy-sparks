@@ -10,11 +10,7 @@ module Pupils
     before_action :set_breadcrumbs
 
     def index
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        render :template => (fuel_type ? "pupils/analysis/new/#{fuel_type}" : 'pupils/analysis/new/index')
-      else
-        render fuel_type || :index
-      end
+      render fuel_type || :index
     end
 
     def show

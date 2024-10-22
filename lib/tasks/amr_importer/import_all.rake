@@ -5,7 +5,7 @@ namespace :amr do
     AmrDataFeedConfig.s3_folder.each do |config|
       begin
         FileUtils.mkdir_p config.local_bucket_path
-        Amr::Importer.new(config).import_all
+        Amr::Importer.new(config, ENV.fetch('AWS_S3_AMR_DATA_FEEDS_BUCKET')).import_all
       rescue => e
         puts "Exception: running import_all for #{config.description}: #{e.class} #{e.message}"
         puts e.backtrace.join("\n")

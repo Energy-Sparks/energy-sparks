@@ -190,7 +190,7 @@ RSpec.describe 'home', type: :system do
       end
 
       it 'does not have navigation options' do
-        expect(page).not_to have_css('#my_school_menu')
+        expect(page).not_to have_css('#my-school-menu')
         expect(page).not_to have_content('Dashboards')
       end
     end

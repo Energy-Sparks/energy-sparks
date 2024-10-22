@@ -4,29 +4,30 @@
     <%= render 'shared/head' %>
   </head>
   <body>
-    <div class="fixed-top">
-      <nav class="navbar <%= navbar_expand_class %> navbar-custom">
+    <div class='fixed-top'>
+      <nav class='navbar navbar-top'>
         <div class="container">
-          <%= navbar_image_link %>
-          <%= on_test_link %>
-          <%= locale_switcher_buttons %>
+          <%= navigation_image_link %>
+          <%= render 'shared/navigation/top_nav/on_test' %>
+
+          <div class='<%= order_expand_class %>'>
+            <%= render 'shared/navigation/top_nav/locale_switcher' %>
+          </div>
         </div>
       </nav>
+      <nav class='navbar navbar-second adult'></nav>
     </div>
-    <div class="application container">
+    <div class='application container navigation-margin'>
       <div>
         <h1>Energy Sparks is currently down for maintenance</h1>
-
         <p>
           We're sorry but Energy Sparks is currently available while we carry
           out some essential maintenance.
         </p>
-
         <p>
           Our team is currently working on updating the site and we expect
           the service to be available again in a couple of hours.
         </p>
-
       </div>
     </div>
     <!-- Footer -->
@@ -68,9 +69,10 @@
           </div>
         </div>
       </div>
-
     </footer>
 
-    <%= render 'shared/google_analytics', analytics_code: @analytics_code if Rails.env.production? && !@analytics_code.blank? %>
+    <%= if Rails.env.production? && @analytics_code.present?
+          render 'shared/google_analytics', analytics_code: @analytics_code
+        end %>
   </body>
 </html>

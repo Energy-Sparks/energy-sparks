@@ -540,7 +540,9 @@ RSpec.describe 'onboarding', :schools, type: :system do
       it 'school details can be edited' do
         visit new_onboarding_completion_path(onboarding)
 
-        click_on 'Edit school details'
+        within '#accordion' do
+          click_on 'Edit school details'
+        end
         fill_in 'School name', with: 'Correct school'
         click_on 'Update school details'
         school.reload
@@ -552,8 +554,9 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
         visit new_onboarding_completion_path(onboarding)
         expect(page).to have_content('You have not added any additional school accounts')
-        click_on 'Manage users'
-
+        within '#collapse-school-users' do
+          click_on 'Manage users'
+        end
         expect(page).to have_content('Manage your school accounts')
         click_on 'Add new account'
 

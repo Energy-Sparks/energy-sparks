@@ -357,13 +357,6 @@ cy:
           other: Cwblhewch y <strong>%{count}</strong> gweithgaredd olaf nawr i sgorio <strong>%{activity_types_uncompleted_scores}</strong> o bwyntiau
       recommendations:
         message: Cwblhewch un o'n gweithgareddau dan arweiniad disgyblion neu oedolion a argymhellir i ddechrau lleihau eich defnydd o ynni
-      recommendations_scoreboard:
-        message_html:
-          one: Da iawn, rydych wedi sgorio <strong>%{points}</strong> o bwyntiau hyd yn hyn ac rydych mewn safle <strong>%{position}</strong> ar y sgorfwrdd. Cwblhewch eich gweithgaredd nesaf i ddringo'n uwch i fyny'r sgorfwrdd!
-          two: Da iawn, rydych wedi sgorio <strong>%{points}</strong> o bwyntiau hyd yn hyn ac rydych mewn safle <strong>%{position}</strong> ar y sgorfwrdd. Cwblhewch eich gweithgaredd nesaf i ddringo'n uwch i fyny'r sgorfwrdd!
-          many: Da iawn, rydych wedi sgorio <strong>%{points}</strong> o bwyntiau hyd yn hyn ac rydych mewn safle <strong>%{position}</strong> ar y sgorfwrdd. Cwblhewch eich gweithgaredd nesaf i ddringo'n uwch i fyny'r sgorfwrdd!
-          other: Da iawn, rydych wedi sgorio <strong>%{points}</strong> o bwyntiau hyd yn hyn ac rydych mewn safle <strong>%{position}</strong> ar y sgorfwrdd. Cwblhewch eich gweithgaredd nesaf i ddringo'n uwch i fyny'r sgorfwrdd!
-        no_points_message: Nid ydych wedi sgorio unrhyw bwyntiau eleni. Cwblhewch eich gweithgaredd nesaf i fynd ar y sgorfwrdd!
       recommended_for_your_school:
         button: Gweld yr holl awgrymiadau
         message: Gweld ein gweithgareddau a gweithredoedd a argymhellir yn seiliedig ar raglenni eich ysgol a'n dadansoddiad o'ch data ynni

@@ -101,7 +101,6 @@ RSpec.shared_examples 'allows access to chart updates page and editing of defaul
   it 'shows a form to select default chart units' do
     visit school_group_chart_updates_path(school_group)
     expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Chart settings'])
-    expect(page).to have_selector(id: 'school-list-menu')
     expect(page).to have_selector(id: 'manage-school-group')
     expect(school_group.default_chart_preference).to eq('default')
     expect(school_group2.default_chart_preference).to eq('default')
@@ -120,66 +119,39 @@ RSpec.shared_examples 'allows access to chart updates page and editing of defaul
   end
 end
 
-RSpec.shared_examples 'shows the sub navigation menu' do
-  it 'shows the sub navigation menu' do
-    visit school_group_path(school_group)
-    expect(page).to have_selector(id: 'school-group-subnav')
-    expect(page).to have_selector(id: 'school-list-menu')
-    expect(school_group.schools.visible.count.positive?).to eq(true)
-    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
-    expect(page).to have_selector(id: 'manage-school-group')
+RSpec.shared_examples 'a page with a manage school group menu' do
+  before do
+    visit path
+  end
 
-    visit map_school_group_path(school_group)
-    expect(page).to have_selector(id: 'school-group-subnav')
-    expect(page).to have_selector(id: 'school-list-menu')
-    expect(school_group.schools.visible.count.positive?).to eq(true)
-    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
-    expect(page).to have_selector(id: 'manage-school-group')
+  it { expect(page).to have_selector(id: 'manage-school-group') }
+end
 
-    visit comparisons_school_group_path(school_group)
-    expect(page).to have_selector(id: 'school-group-subnav')
-    expect(page).to have_selector(id: 'school-list-menu')
-    expect(school_group.schools.visible.count.positive?).to eq(true)
-    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
-    expect(page).to have_selector(id: 'manage-school-group')
+RSpec.shared_examples 'a page without a manage school group menu' do
+  before do
+    visit path
+  end
 
-    visit priority_actions_school_group_path(school_group)
-    expect(page).to have_selector(id: 'school-group-subnav')
-    expect(page).to have_selector(id: 'school-list-menu')
-    expect(school_group.schools.visible.count.positive?).to eq(true)
-    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
-    expect(page).to have_selector(id: 'manage-school-group')
+  it { expect(page).not_to have_selector(id: 'manage-school-group') }
+end
 
-    visit current_scores_school_group_path(school_group)
-    expect(page).to have_selector(id: 'school-group-subnav')
-    expect(page).to have_selector(id: 'school-list-menu')
-    expect(school_group.schools.visible.count.positive?).to eq(true)
-    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
-    expect(page).to have_selector(id: 'manage-school-group')
+RSpec.shared_examples 'a page with a manage school group menu including admin links' do
+  before do
+    visit path
+  end
+
+  it 'shows standard items and admin links' do
+    expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
   end
 end
 
-RSpec.shared_examples 'does not show the sub navigation menu' do
-  it 'does not show the sub navigation menu' do
-    visit school_group_path(school_group)
-    expect(page).not_to have_selector(id: 'school-list-menu')
-    expect(page).not_to have_selector(id: 'manage-school-group')
+RSpec.shared_examples 'a page with a manage school group menu not including admin links' do
+  before do
+    visit path
+  end
 
-    visit map_school_group_path(school_group)
-    expect(page).not_to have_selector(id: 'school-list-menu')
-    expect(page).not_to have_selector(id: 'manage-school-group')
-
-    visit comparisons_school_group_path(school_group)
-    expect(page).not_to have_selector(id: 'school-list-menu')
-    expect(page).not_to have_selector(id: 'manage-school-group')
-
-    visit priority_actions_school_group_path(school_group)
-    expect(page).not_to have_selector(id: 'school-list-menu')
-    expect(page).not_to have_selector(id: 'manage-school-group')
-
-    visit current_scores_school_group_path(school_group)
-    expect(page).not_to have_selector(id: 'school-list-menu')
-    expect(page).not_to have_selector(id: 'manage-school-group')
+  it 'shows standard items but not admin links' do
+    expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs'])
   end
 end
 

@@ -82,7 +82,7 @@ RSpec.describe 'live data', type: :system do
 
       it 'links from pupil analysis page' do
         visit pupils_school_analysis_path(school)
-        within '.live-data-card' do
+        within '#live-data-link' do
           expect(page).to have_content('Live energy data')
           click_link 'Live energy data'
         end

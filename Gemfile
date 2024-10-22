@@ -9,7 +9,7 @@ gem 'rails', '~> 7.1.4'
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.13'
-gem 'jbuilder', '~> 2.12' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.13' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
