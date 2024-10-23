@@ -27,7 +27,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.14'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.15'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -56,6 +56,7 @@ gem 'aws-sdk-s3'
 gem 'eventbrite_sdk' # Eventbrite for training page
 gem 'faraday'
 gem 'faraday-follow_redirects'
+gem 'faraday-retry'
 gem 'MailchimpMarketing'
 gem 'mailgun_rails' # Email service
 gem 'twilio-ruby' # For SMS notifications
