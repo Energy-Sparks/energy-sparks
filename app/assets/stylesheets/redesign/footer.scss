@@ -6,16 +6,12 @@
     color: $white;
     text-decoration: none;
   }
-
-  a:hover, a:focus, a:active {
-    color: $yellow-medium;
-  }
 }
 
 footer {
   .footer-top {
-    @include font(f9); // design says 16px (f7)
     @include footer;
+    @include font(f9); // design says 16px (f7)
     background-color: $grey-very-dark;
     font-weight: $font-weight-semibold; // 600 // design says 500 - medium
 
@@ -27,21 +23,20 @@ footer {
       font-weight: $font-weight-bold; // 700
     }
 
-    .form-control {
-      font-size: $f9 !important;
+    a:hover, a:focus, a:active {
+      color: $yellow-medium;
     }
 
-    .btn {
-      font-size: $f9
+    .form-control, .btn {
+      font-size: $f9;
     }
   }
 
   .footer-second {
-    @include font(f9); // design says 14px (f8)
     @include footer;
+    @include font(f9); // design says 14px (f8)
     background-color: $grey-darker;
     font-weight: $font-weight-normal; // 400 - as per design
-    padding: 20px 0px;
 
     a:hover, a:focus, a:active {
       color: $grey-dark;
