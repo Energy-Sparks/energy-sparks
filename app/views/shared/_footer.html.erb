@@ -3,7 +3,7 @@
     <div class="footer-top py-4">
       <div class="container">
         <div class="row">
-          <div class="col-6 col-lg-2">
+          <div id='quick-links' class="col-6 col-lg-2">
             <h1><%= t('footer.quick_links') %></h1>
             <ul class="list-unstyled">
               <li><%= link_to t('common_nav_bar_menus.actions'), intervention_type_groups_path %></li>
@@ -13,7 +13,7 @@
               <li><%= link_to t('about_menu.contact'), contact_path %></li>
             </ul>
           </div>
-          <div class="col-6 col-lg-2">
+          <div id='services' class="col-6 col-lg-2">
             <h1><%= t('footer.services') %></h1>
             <ul class="list-unstyled">
               <li><%= link_to t('our_services_menu.energy_audits'), energy_audits_path %></li>
@@ -23,7 +23,7 @@
               <li><%= link_to t('our_services_menu.for_local_authorities'), for_local_authorities_path %></li>
             </ul>
           </div>
-          <div class="col-6 col-lg-2">
+          <div id='other-links' class="col-6 col-lg-2">
             <h1><%= t('footer.other_links') %></h1>
             <ul class="list-unstyled">
               <li><%= link_to t('about_menu.jobs'), jobs_path %></li><!-- 'Careers' in design -->
@@ -32,7 +32,7 @@
               <li><%= link_to t('about_menu.school_statistics'), school_statistics_path %></li>
             </ul>
           </div>
-          <div class="col-6 col-lg-2">
+          <div id='legal-terms' class="col-6 col-lg-2">
             <h1><%= t('footer.legal_terms') %></h1>
             <ul class="list-unstyled">
               <li><%= link_to t('footer.terms_and_conditions'), terms_and_conditions_path %></li>
@@ -41,7 +41,7 @@
               <li><%= link_to t('footer.child_safeguarding_policy'), child_safeguarding_policy_path %></li>
             </ul>
           </div>
-          <div class="col-12 col-lg-4">
+          <div id='newsletter-signup' class="col-12 col-lg-4">
             <h1><%= t('footer.newsletter_signup') %></h1>
             <%= form_with url: new_mailchimp_signup_path, method: :get, local: true do %>
               <div class="form-group">
