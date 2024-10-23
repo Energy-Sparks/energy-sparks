@@ -42,7 +42,7 @@
             </ul>
           </div>
           <div class="col-sm-12 col-lg-4">
-            <h1>Newsletter Signup</h1>
+            <h1><%= t('footer.newsletter_signup') %></h1>
             <%= form_with url: new_mailchimp_signup_path, method: :get, local: true do %>
               <div class="form-group">
                 <%= label_tag(:email_address, t('mailchimp.latest_news_title'), class: 'mb-0') %>
@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="footer-second py-4">
+    <div class="footer-second py-3">
       <div class="container">
         <div class="row d-flex align-items-center">
           <div class="col-md-4">
