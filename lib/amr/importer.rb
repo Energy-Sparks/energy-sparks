@@ -25,7 +25,7 @@ module Amr
     rescue StandardError => e
       Rails.logger.error "Exception: running import for #{@config.description}"
       Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, job: :import_all, config: @config.identifier, key:)
+      Rollbar.error(e, job: :import_all, bucket: @bucket, config: @config.identifier, key:)
     end
 
     private
@@ -42,8 +42,8 @@ module Amr
 
     def archive_file(key, filename)
       archived_key = "#{@config.s3_archive_folder}/#{filename}"
-      @s3_client.copy_object(bucket: @bucket, copy_source: key, key: archived_key)
-      @s3_client.delete_objects(bucket: @bucket, delete: { objects: [{ key: }] })
+      @s3_client.copy_object(bucket: @bucket, copy_source: "#{@bucket}/#{key}", key: archived_key)
+      @s3_client.delete_object(bucket: @bucket, key:)
       File.delete(local_filename_and_path(filename))
       Rails.logger.info "Archived #{key} to #{archived_key} and removed local file"
     end
