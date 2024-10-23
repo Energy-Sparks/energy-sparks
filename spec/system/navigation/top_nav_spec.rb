@@ -6,7 +6,6 @@ RSpec.describe 'Navigation -> top nav', type: :system do
   let(:user) {}
 
   before do
-    Flipper.enable :navigation
     sign_in(user) if user
     visit root_path(locale: locale)
   end
