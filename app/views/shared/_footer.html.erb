@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-6 col-lg-2">
-            <h1>Quick Links</h1>
+            <h1><%= t('footer.quick_links') %></h1>
             <ul class="list-unstyled">
               <li><%= link_to t('common_nav_bar_menus.actions'), intervention_type_groups_path %></li>
               <li><%= link_to t('common_nav_bar_menus.activities'), activity_categories_path %></li>
@@ -14,7 +14,7 @@
             </ul>
           </div>
           <div class="col-sm-6 col-lg-2">
-            <h1>Services</h1>
+            <h1><%= t('footer.services') %></h1>
             <ul class="list-unstyled">
               <li><%= link_to t('our_services_menu.energy_audits'), energy_audits_path %></li>
               <li><%= link_to t('our_services_menu.educational_workshops'), education_workshops_path %></li> <!-- is just 'Workshops' in design -->
@@ -24,19 +24,19 @@
             </ul>
           </div>
           <div class="col-sm-6 col-lg-2">
-            <h1>Other Links</h1>
+            <h1><%= t('footer.other_links') %></h1>
             <ul class="list-unstyled">
-              <li><%= link_to t('about_menu.jobs'), jobs_path %></li> <!-- 'Careers' in design -->
+              <li><%= link_to t('about_menu.jobs'), jobs_path %></li><!-- 'Careers' in design -->
               <li><%= link_to t('about_menu.datasets'), attribution_path %></li>
               <li><%= link_to t('about_menu.open_data'), datasets_path %></li>
               <li><%= link_to t('about_menu.school_statistics'), school_statistics_path %></li>
             </ul>
           </div>
           <div class="col-sm-6 col-lg-2">
-            <h1>Legal Terms</h1>
+            <h1><%= t('footer.legal_terms') %></h1>
             <ul class="list-unstyled">
               <li><%= link_to t('footer.terms_and_conditions'), terms_and_conditions_path %></li>
-              <li><%= link_to t('cookies.title'), cookies_path %></li>  <!-- missing from design? -->
+              <li><%= link_to t('cookies.title'), cookies_path %></li><!-- missing from design? -->
               <li><%= link_to t('about_menu.privacy_policy'), privacy_and_cookie_policy_path %></li>
               <li><%= link_to t('footer.child_safeguarding_policy'), child_safeguarding_policy_path %></li>
             </ul>
