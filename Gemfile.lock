@@ -1,14 +1,12 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 530ada175f4134f769ec4e756583ad646e44afe2
-  tag: 6.0.14
+  revision: d9d389d5dc0981b7617d0593dbb270fa0c9f96ba
+  tag: 6.0.15
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
       benchmark-memory (~> 0)
       chroma (~> 0)
-      faraday (~> 2)
-      faraday-retry (~> 2)
       hashdiff (~> 1)
       html-table (~> 1)
       interpolate (~> 0.3.0)
@@ -834,6 +832,7 @@ DEPENDENCIES
   fakefs
   faraday
   faraday-follow_redirects
+  faraday-retry
   fasterer
   flipper-active_record (~> 1.3)
   flipper-ui (~> 1.3)
