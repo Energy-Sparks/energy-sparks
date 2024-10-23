@@ -1,9 +1,14 @@
 @mixin footer {
   font-family: $header-font-family;
   color: $white;
-  & a:link, a:hover, a:focus, a:active, a:visited {
+
+  a:link, a:visited {
     color: $white;
     text-decoration: none;
+  }
+
+  a:hover, a:focus, a:active {
+    color: $yellow-medium;
   }
 }
 
@@ -12,7 +17,7 @@ footer {
     @include font(f9); // design says 16px (f7)
     @include footer;
     background-color: $grey-very-dark;
-    font-weight: $font-weight-semibold; // 600 // design says 500
+    font-weight: $font-weight-semibold; // 600 // design says 500 - medium
 
     h1 {
       @include font(f6); // design says 24px (f4)
@@ -21,12 +26,38 @@ footer {
       color: $white;
       font-weight: $font-weight-bold; // 700
     }
+
+    .form-control {
+      font-size: $f9 !important;
+    }
+
+    .btn {
+      font-size: $f9
+    }
   }
 
   .footer-second {
     @include font(f9); // design says 14px (f8)
     @include footer;
     background-color: $grey-darker;
-    font-weight: $font-weight-normal; // 400
+    font-weight: $font-weight-normal; // 400 - as per design
+    padding: 20px 0px;
+
+    a:hover, a:focus, a:active {
+      color: $grey-dark;
+    }
+
+    ul.list-inline {
+      li.list-inline-item {
+        margin-right: 0;
+
+        a:link, a:visited {
+          color: $grey-darker;
+        }
+        a:hover, a:focus, a:active {
+          color: $grey-dark;
+        }
+      }
+    }
   }
 }
