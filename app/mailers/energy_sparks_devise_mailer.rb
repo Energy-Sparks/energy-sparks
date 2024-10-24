@@ -40,7 +40,7 @@ class EnergySparksDeviseMailer < Devise::Mailer
   end
 
   def active_locales_for_devise(record)
-    (record&.school || record&.school_group)&.email_locales || [:en]
+    (record.school || record.school_group)&.email_locales || [:en]
   end
 
   def devise_mail_for_locale(action, opts, locale, &block)
