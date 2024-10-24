@@ -29,12 +29,6 @@
   color: $teal-very-dark;
 }
 
-// used for overriding styles of google calendar button on pricing page
-.btn.btn-success {
-  @extend .btn;
-  @extend .btn-success;
-}
-
 a.badge {
   text-decoration: none;
   .outline {
