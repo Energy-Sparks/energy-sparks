@@ -11,10 +11,10 @@ RSpec.describe 'Footer', type: :system do
       let(:block) { page.find(:css, 'footer .footer-top #quick-links') }
 
       it { expect(block).to have_content 'Quick Links' }
-      it { expect(block).to have_link 'Actions', href: intervention_type_groups_path }
       it { expect(block).to have_link 'Activities', href: activity_categories_path }
+      it { expect(block).to have_link 'Actions', href: intervention_type_groups_path }
+      it { expect(block).to have_link 'View schools', href: schools_path }
       it { expect(block).to have_link 'Scoreboards', href: scoreboards_path }
-      it { expect(block).to have_link 'Compare schools', href: compare_index_path }
       it { expect(block).to have_link 'Contact', href: contact_path }
     end
 
@@ -24,9 +24,10 @@ RSpec.describe 'Footer', type: :system do
       it { expect(block).to have_content 'Services' }
       it { expect(block).to have_link 'Energy audits', href: energy_audits_path }
       it { expect(block).to have_link 'Educational workshops', href: education_workshops_path }
-      it { expect(block).to have_link 'For Schools', href: for_schools_path }
-      it { expect(block).to have_link 'For Multi-Academy Trusts', href: for_multi_academy_trusts_path }
-      it { expect(block).to have_link 'For Local Authorities', href: for_local_authorities_path }
+      it { expect(block).to have_link 'Training', href: training_path }
+      it { expect(block).to have_link 'Find out more', href: find_out_more_path }
+      it { expect(block).to have_link 'Book a demo', href: book_demo_campaigns_path }
+      it { expect(block).to have_link 'Case studies', href: case_studies_path }
     end
 
     describe 'Other Links' do
@@ -34,9 +35,10 @@ RSpec.describe 'Footer', type: :system do
 
       it { expect(block).to have_content 'Other Links' }
       it { expect(block).to have_link 'Jobs', href: jobs_path }
+      it { expect(block).to have_link 'Blog', href: 'http://blog.energysparks.uk' }
+      it { expect(block).to have_link 'School statistics', href: school_statistics_path }
       it { expect(block).to have_link 'Datasets', href: attribution_path }
       it { expect(block).to have_link 'Open data', href: datasets_path }
-      it { expect(block).to have_link 'School statistics', href: school_statistics_path }
     end
 
     describe 'Legal Terms' do
