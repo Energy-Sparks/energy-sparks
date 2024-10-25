@@ -40,33 +40,45 @@
     <td class="text-right"><%= meter.gappy_validated_readings.count %></td>
     <td>
       <div class="btn-group btn-group-sm" role="group">
-        <% if can?(:view_meter_attributes, meter) %>
-          <%= link_to t('common.labels.attributes'),
-                      admin_school_single_meter_attribute_path(@school, meter),
-                      class: 'btn btn-sm' %>
-        <% end %>
-        <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-          <%= link_to school_meter_path(@school, meter, format: 'csv'),
-                      class: 'btn btn-sm btn-secondary' do %>
-            <%= fa_icon('file-download') %>
-          <% end %>
-        <% end %>
-        <%= render 'admin/issues/modal', meter: meter if current_user.admin? %>
         <%= if can?(:edit, meter)
               link_to t('common.labels.edit'), edit_school_meter_path(@school, meter),
                       class: 'btn btn-sm btn-primary'
             end %>
-        <%= if can?(:activate, meter)
-              link_to t('common.labels.activate'),
-                      activate_school_meter_path(@school, meter),
+        <% if can?(:view_meter_attributes, meter) %>
+          <%= link_to admin_school_single_meter_attribute_path(@school, meter),
+                      class: 'btn btn-sm', title: t('common.labels.attributes') do %>
+            <i class="fas fa-gear"></i>
+          <% end %>
+        <% end %>
+        <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
+          <%= link_to school_meter_path(@school, meter, format: 'csv'),
+                      class: 'btn btn-secondary btn-sm', title: t('schools.meters.index.readings') do %>
+            <i class="fas fa-file-download"></i>
+          <% end %>
+        <% end %>
+        <%= render 'admin/issues/modal', meter: meter if current_user.admin? %>
+        <% if can?(:activate, meter) %>
+          <%= link_to activate_school_meter_path(@school, meter),
                       method: :put,
-                      class: 'btn btn-sm btn-warning'
-            end %>
+                      class: 'btn btn-sm btn-warning', title: t('common.labels.activate') do %>
+                <% if current_user.admin? %>
+                  <i class="fas fa-play"></i>
+                <% else %>
+                  <% t('common.labels.activate') %>
+                <% end %>
+          <% end %>
+        <% end %>
         <% if can? :delete, meter %>
-          <%= link_to t('common.labels.delete'), school_meter_path(@school, meter),
+          <%= link_to school_meter_path(@school, meter),
                       method: :delete,
                       data: { confirm: t('common.confirm') },
-                      class: 'btn btn-sm btn-danger' %>
+                      class: 'btn btn-sm btn-danger', title: t('common.labels.delete') do %>
+                <% if current_user.admin? %>
+                  <i class="fas fa-trash"></i>
+                <% else %>
+                  <% t('common.labels.delete') %>
+                <% end %>
+          <% end %>
         <% else %>
           <button class="btn btn-sm"
                   disabled
