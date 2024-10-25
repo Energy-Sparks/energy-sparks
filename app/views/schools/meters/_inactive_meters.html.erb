@@ -29,7 +29,7 @@
     <td class="text-right"><%= meter.number_of_validated_readings %></td>
     <td class="fit text-right">
       <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-        <%= link_to admin_reports_amr_validated_reading_path(meter) do %>
+        <%= link_to admin_reports_amr_validated_reading_path(meter), title: t('schools.meters.index.report') do %>
             <%= short_dates meter.first_validated_reading %>-<%= short_dates meter.last_validated_reading %>
         <% end %>
       <% else %>
