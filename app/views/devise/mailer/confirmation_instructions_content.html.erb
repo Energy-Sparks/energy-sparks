@@ -7,9 +7,11 @@
 <div class="s-3"></div>
 <% key_suffix = defined?(reminder) && reminder ? '_reminder' : '' %>
 <% if @resource.school.present? %>
+  <%# i18n-tasks-use t('devise.mailer.confirmation_instructions.user_account_created_for_you_for') %>
   <p><%= t("devise.mailer.confirmation_instructions.user_account_created_for_you_for#{key_suffix}",
            resource_school_name: @resource.school.name) %>.</p>
 <% else %>
+  <%# i18n-tasks-use t('devise.mailer.confirmation_instructions.user_account_created_for_you_on') %>
   <p><%= t("devise.mailer.confirmation_instructions.user_account_created_for_you_on#{key_suffix}") %>.</p>
 <% end %>
 <div class="s-3"></div>

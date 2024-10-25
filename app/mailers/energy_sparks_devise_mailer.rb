@@ -13,12 +13,14 @@ class EnergySparksDeviseMailer < Devise::Mailer
 
   def confirmation_instructions_first_reminder(record, token, opts = {})
     opts[:reminder] = true
+    # i18n-tasks-use t('devise.mailer.confirmation_instructions_first_reminder.subject')
     opts[:subject_key] = :confirmation_instructions_first_reminder
     confirmation_instructions(record, token, opts)
   end
 
   def confirmation_instructions_final_reminder(record, token, opts = {})
     opts[:reminder] = true
+    # i18n-tasks-use t('devise.mailer.confirmation_instructions_final_reminder.subject')
     opts[:subject_key] = :confirmation_instructions_final_reminder
     confirmation_instructions(record, token, opts)
   end
