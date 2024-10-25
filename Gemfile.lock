@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: d9d389d5dc0981b7617d0593dbb270fa0c9f96ba
-  tag: 6.0.15
+  revision: 15ccbed6f3cbfc1a92a9e3ef6247f2d216a23944
+  branch: 20241025-migrate-validate-amr-data
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
