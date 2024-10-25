@@ -23,7 +23,7 @@ RSpec.describe 'Footer', type: :system do
 
       it { expect(block).to have_content 'Services' }
       it { expect(block).to have_link 'Energy audits', href: energy_audits_path }
-      it { expect(block).to have_link 'Educational workshops', href: education_workshops_path }
+      it { expect(block).to have_link 'Education workshops', href: education_workshops_path }
       it { expect(block).to have_link 'Training', href: training_path }
       it { expect(block).to have_link 'Find out more', href: find_out_more_path }
       it { expect(block).to have_link 'Book a demo', href: book_demo_campaigns_path }
@@ -106,6 +106,7 @@ RSpec.describe 'Footer', type: :system do
     it { expect(block).to have_content 'Energy Sparks is a registered charity in England and Wales, registration 1189273.' }
 
     it { expect(block).to have_link href: 'https://creativecommons.org/licenses/by/4.0/' }
+    it { expect(block).to have_link href: 'https://www.linkedin.com/company/energy-sparks/' }
     it { expect(block).to have_link href: 'https://x.com/EnergySparks' }
     it { expect(block).to have_link href: 'https://www.instagram.com/energysparksuk/' }
     it { expect(block).to have_link href: 'https://www.facebook.com/EnergySparksUK/' }

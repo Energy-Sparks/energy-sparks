@@ -1,6 +1,9 @@
 footer {
+  background-color: $grey-very-dark;
   font-family: $header-font-family;
   color: $white;
+  @include font(f9);
+  font-weight: $font-weight-semibold; // 600
 
   a:link, a:visited {
     color: $white;
@@ -8,16 +11,12 @@ footer {
   }
 
   .footer-top {
-    @include font(f9); // design says 16px (f7)
-    background-color: $grey-very-dark;
-    font-weight: $font-weight-semibold; // 600 // design says 500 - medium
-
     h1 {
-      @include font(f6); // design says 24px (f4)
+      @include font(f6);
       padding-top: 5px;
       padding-bottom: 5px;
       color: $white;
-      font-weight: $font-weight-bold; // 700 // design says 600 - semibold
+      font-weight: $font-weight-bold; // 700
     }
 
     a:hover, a:focus, a:active {
@@ -30,10 +29,6 @@ footer {
   }
 
   .footer-second {
-    @include font(f9); // design says 14px (f8)
-    background-color: $grey-darker;
-    font-weight: $font-weight-normal; // 400 - as per design
-
     a:hover, a:focus, a:active {
       color: $grey-dark;
     }
