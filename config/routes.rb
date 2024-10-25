@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get '/404', to: 'errors#page_not_found'
+  get '/500', to: 'errors#internal_server_error'
+  get '/422', to: 'errors#unprocessable_entity'
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 

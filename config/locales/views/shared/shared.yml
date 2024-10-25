@@ -47,6 +47,17 @@ en:
   dashboards:
     adult_dashboard: Adult dashboard
     pupil_dashboard: Pupil dashboard
+  errors:
+    '404':
+      description: Sorry, the page you are looking for does not exist
+      title: Page not found
+    '422':
+      description: Maybe you tried to change something you didn't have access to
+      title: The change you wanted was rejected
+    '500':
+      description: The Energy Sparks team have been notified
+      title: Sorry, something has gone wrong
+    resolution_html: Please continue to our <a href='/'>home page</a>
   footer:
     cc_licence_notice_html: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
     child_safeguarding_policy: Child safeguarding policy
