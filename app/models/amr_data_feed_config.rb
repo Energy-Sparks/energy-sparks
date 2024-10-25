@@ -57,8 +57,7 @@ class AmrDataFeedConfig < ApplicationRecord
 
   has_rich_text :notes
 
-  validates :identifier, :description, uniqueness: true
-  validates :identifier, :description, presence: true
+  validates :identifier, :description, uniqueness: true, presence: true
 
   validates :row_per_reading, inclusion: [true], if: :positional_index
   validate :period_or_time_field, if: :positional_index
@@ -70,8 +69,7 @@ class AmrDataFeedConfig < ApplicationRecord
   def period_or_time_field
     return unless positional_index && reading_time_field.blank? && period_field.blank?
 
-    errors.add(:base,
-               'Must specify either period or time field')
+    errors.add(:base, 'Must specify either period or time field')
   end
 
   def map_of_fields_to_indexes(header = nil)
