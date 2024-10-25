@@ -1,0 +1,15 @@
+<% status = response.status %>
+
+<% content_for page_title: t("errors.#{status}.title") %>
+
+<div class='container'>
+  <div class="row">
+    <div class="col text-center">
+      <h1 class='display-1'><strong><%= status %></strong></h1>
+      <p><strong><%= t("errors.#{status}.title") %></strong></p>
+      <br>
+      <p><%= t("errors.#{status}.description") %>.</p>
+      <p><%= t('errors.resolution_html') %>.</p>
+    </div>
+  </div>
+</div>

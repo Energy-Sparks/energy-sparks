@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def route_not_found
-    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    render 'errors/error', status: :not_found
   end
 
   def site_settings
