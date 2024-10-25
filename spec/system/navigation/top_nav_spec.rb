@@ -47,7 +47,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       expect(our_services).to have_link('Educational workshops')
       expect(our_services).to have_link('Pricing')
       expect(our_services).to have_link('Training')
-      expect(our_services).to have_link('Case Studies')
+      expect(our_services).to have_link('Case studies')
       expect(our_services).to have_link('Newsletters')
       expect(our_services).to have_link('Videos')
     end
