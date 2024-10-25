@@ -11,9 +11,5 @@
     <%= link_to t('our_services_menu.case_studies'), case_studies_path, class: 'dropdown-item' %>
     <%= link_to t('our_services_menu.newsletters'), newsletters_path, class: 'dropdown-item' %>
     <%= link_to t('our_services_menu.videos'), user_guide_youtube_path, class: 'dropdown-item' %>
-    <% unless Flipper.enabled?(:footer, current_user, current_user&.school_group) %>
-      <%= link_to t('about_menu.datasets'), attribution_path, class: 'dropdown-item' %>
-      <%= link_to t('about_menu.open_data'), datasets_path, class: 'dropdown-item' %>
-    <% end %>
   </div>
 </li>

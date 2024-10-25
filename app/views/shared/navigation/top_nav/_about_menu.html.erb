@@ -11,5 +11,9 @@
     <%= link_to t('about_menu.privacy_policy'), privacy_and_cookie_policy_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.child_safeguarding'), child_safeguarding_policy_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.school_statistics'), school_statistics_path, class: 'dropdown-item' %>
+    <% unless Flipper.enabled?(:footer, current_user, current_user&.school_group) %>
+      <%= link_to t('about_menu.datasets'), attribution_path, class: 'dropdown-item' %>
+      <%= link_to t('about_menu.open_data'), datasets_path, class: 'dropdown-item' %>
+    <% end %>
   </div>
 </li>
