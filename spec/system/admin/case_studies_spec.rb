@@ -8,7 +8,9 @@ describe 'Case studies', type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Admin'
-      click_on 'Case studies'
+      within '.application' do
+        click_on 'Case studies'
+      end
     end
 
     it 'allows the user to create, edit and delete a case study' do

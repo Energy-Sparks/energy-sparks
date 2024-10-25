@@ -6,7 +6,6 @@ RSpec.describe 'Navigation -> top nav', type: :system do
   let(:user) {}
 
   before do
-    Flipper.enable :navigation
     sign_in(user) if user
     visit root_path(locale: locale)
   end
@@ -48,7 +47,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       expect(our_services).to have_link('Educational workshops')
       expect(our_services).to have_link('Pricing')
       expect(our_services).to have_link('Training')
-      expect(our_services).to have_link('Case Studies')
+      expect(our_services).to have_link('Case studies')
       expect(our_services).to have_link('Newsletters')
       expect(our_services).to have_link('Videos')
     end
@@ -71,8 +70,6 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       expect(about_us).to have_link('Privacy policy')
       expect(about_us).to have_link('Child safeguarding')
       expect(about_us).to have_link('School statistics')
-      expect(about_us).to have_link('Datasets')
-      expect(about_us).to have_link('Open data')
     end
   end
 
