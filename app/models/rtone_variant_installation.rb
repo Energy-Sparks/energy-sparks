@@ -31,18 +31,18 @@ class RtoneVariantInstallation < ApplicationRecord
   belongs_to :amr_data_feed_config
   belongs_to :meter
 
-  enum rtone_component_type: [:prod, :in1, :out1, :in2]
+  enum :rtone_component_type, { prod: 0, in1: 1, out1: 2, in2: 3 }
 
-  validates_presence_of :school, :meter, :rtone_meter_id, :rtone_component_type, :username, :password
-  validates_uniqueness_of :rtone_meter_id, scope: :school
+  validates :school, :meter, :rtone_meter_id, :rtone_component_type, :username, :password, presence: true
+  validates :rtone_meter_id, uniqueness: { scope: :school }
 
   def display_name
     rtone_meter_id
   end
 
   def latest_electricity_reading
-    if meter&.amr_data_feed_readings&.any?
-      Date.parse(meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
-    end
+    return unless meter&.amr_data_feed_readings&.any?
+
+    Date.parse(meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
   end
 end

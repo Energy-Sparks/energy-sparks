@@ -22,5 +22,5 @@
 class AdvicePageSchoolBenchmark < ApplicationRecord
   belongs_to :school, inverse_of: :advice_page_school_benchmarks
   belongs_to :advice_page, inverse_of: :advice_page_school_benchmarks
-  enum benchmarked_as: [:other_school, :benchmark_school, :exemplar_school]
+  enum :benchmarked_as, { other_school: 0, benchmark_school: 1, exemplar_school: 2 }
 end

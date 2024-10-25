@@ -48,8 +48,9 @@ class AmrDataFeedConfig < ApplicationRecord
   scope :enabled,           -> { where(enabled: true) }
   scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
 
-  enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api, :n3rgy_api, :rtone_variant_api]
-  enum source_type: [:email, :manual, :api, :sftp]
+  enum :process_type, { s3_folder: 0, low_carbon_hub_api: 1, solar_edge_api: 2, n3rgy_api: 3,
+                        rtone_variant_api: 4 }
+  enum :source_type, { email: 0, manual: 1, api: 2, sftp: 3 }
 
   has_many :amr_data_feed_import_logs
   has_many :meters, -> { distinct }, through: :amr_data_feed_import_logs
@@ -57,24 +58,27 @@ class AmrDataFeedConfig < ApplicationRecord
   has_rich_text :notes
 
   validates :identifier, :description, uniqueness: true
-  validates_presence_of :identifier, :description
+  validates :identifier, :description, presence: true
 
   validates :row_per_reading, inclusion: [true], if: :positional_index
   validate :period_or_time_field, if: :positional_index
 
-  validates_presence_of :msn_field, if: :lookup_by_serial_number
+  validates :msn_field, presence: { if: :lookup_by_serial_number }
 
   BLANK_THRESHOLD = 1
 
   def period_or_time_field
-    errors.add(:base, 'Must specify either period or time field') if positional_index && reading_time_field.blank? && period_field.blank?
+    return unless positional_index && reading_time_field.blank? && period_field.blank?
+
+    errors.add(:base,
+               'Must specify either period or time field')
   end
 
   def map_of_fields_to_indexes(header = nil)
     this_header = header || header_example
     header_array = this_header.split(',')
     {
-      mpan_mprn_index:    header_array.find_index(mpan_mprn_field),
+      mpan_mprn_index: header_array.find_index(mpan_mprn_field),
       reading_date_index: header_array.find_index(reading_date_field),
       reading_time_index: header_array.find_index(reading_time_field),
       postcode_index: header_array.find_index(postcode_field),
@@ -121,6 +125,7 @@ class AmrDataFeedConfig < ApplicationRecord
   # formats can produce days with missing readings due to handling of 23:30-00:00 half-hour.
   def blank_threshold
     return nil unless row_per_reading?
+
     missing_readings_limit || BLANK_THRESHOLD
   end
 end
