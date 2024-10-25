@@ -424,7 +424,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
           staff = create(:staff, school: school, confirmed_at: nil)
           click_on 'Complete setup', match: :first
           email = ActionMailer::Base.deliveries.first
-          expect(email.subject).to eq('Energy Sparks: confirm your account')
+          expect(email.subject).to eq('Please confirm your account on Energy Sparks')
           expect(email.to).to include(staff.email)
         end
 
