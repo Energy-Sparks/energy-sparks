@@ -117,6 +117,8 @@ gem 'premailer-rails'
 gem 'flipper-active_record', '~> 1.3'
 gem 'flipper-ui', '~> 1.3'
 
+gem 'net-sftp'
+
 group :development, :test do
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'climate_control'
