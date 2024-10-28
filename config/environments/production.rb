@@ -123,7 +123,7 @@ Rails.application.configure do
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
   config.good_job.execution_mode = :external
-  config.good_job.on_thread_error = -> (exception) { Rollbar.error(exception, job: :on_thread_error) }
+  config.good_job.on_thread_error = -> (exception) { Rollbar.error(exception, from: :on_thread_error) }
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = { api_key: ENV['MG_API_KEY'], domain: ENV['MG_DOMAIN'] }
   config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
