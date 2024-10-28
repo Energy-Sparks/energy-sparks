@@ -21,7 +21,7 @@ RSpec.describe EnergySparksDeviseMailer do
 
     context 'when school has country of england' do
       it 'sends an email in en' do
-        expect(@email.subject).to eq('Energy Sparks: confirm your account')
+        expect(@email.subject).to eq('Please confirm your account on Energy Sparks')
       end
 
       it 'contains links to default site but not cy site' do
@@ -34,7 +34,7 @@ RSpec.describe EnergySparksDeviseMailer do
       let(:country) { 'wales' }
 
       it 'sends an email in en and cy' do
-        expect(@email.subject).to eq('Energy Sparks: confirm your account / Sbarcynni: cadarnhau eich cyfrif')
+        expect(@email.subject).to eq('Please confirm your account on Energy Sparks / Sbarcynni: cadarnhau eich cyfrif')
       end
 
       it 'contains links to default site and cy site' do
@@ -47,7 +47,7 @@ RSpec.describe EnergySparksDeviseMailer do
       let(:country) { 'england' }
 
       it 'sends an email in en only' do
-        expect(@email.subject).to eq('Energy Sparks: confirm your account')
+        expect(@email.subject).to eq('Please confirm your account on Energy Sparks')
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe EnergySparksDeviseMailer do
       let(:user)                { create(:group_admin, school_group: school_group) }
 
       it 'sends an email in en and cy' do
-        expect(@email.subject).to eq('Energy Sparks: confirm your account / Sbarcynni: cadarnhau eich cyfrif')
+        expect(@email.subject).to eq('Please confirm your account on Energy Sparks / Sbarcynni: cadarnhau eich cyfrif')
       end
     end
   end

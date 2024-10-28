@@ -76,7 +76,7 @@ describe 'School admin user management' do
           expect(staff.confirmed?).to be false
 
           email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eq('Energy Sparks: confirm your account')
+          expect(email.subject).to eq('Please confirm your account on Energy Sparks')
           expect(email.encoded).to match(school.name)
         end
       end
@@ -227,7 +227,7 @@ describe 'School admin user management' do
         it 'emails new user to confirm account' do
           click_on 'Create account'
           email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eq('Energy Sparks: confirm your account')
+          expect(email.subject).to eq('Please confirm your account on Energy Sparks')
           expect(email.encoded).to match(school.name)
         end
       end
@@ -429,7 +429,7 @@ describe 'School admin user management' do
       # confirmed. So we're looking for 2 deliveries
       expect(deliveries).to eq 2
       # check the email we just sent
-      expect(email.subject).to eq 'Energy Sparks: confirm your account'
+      expect(email.subject).to eq 'Please confirm your account on Energy Sparks'
       expect(page).to have_content('Confirmation email sent')
       expect(page).to have_content('School admin accounts')
     end
