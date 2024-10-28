@@ -44,7 +44,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       expect(our_services).to have_link('For Multi-Academy Trusts')
       expect(our_services).to have_link('For Local Authorities')
       expect(our_services).to have_link('Energy audits')
-      expect(our_services).to have_link('Educational workshops')
+      expect(our_services).to have_link('Education workshops')
       expect(our_services).to have_link('Pricing')
       expect(our_services).to have_link('Training')
       expect(our_services).to have_link('Case studies')

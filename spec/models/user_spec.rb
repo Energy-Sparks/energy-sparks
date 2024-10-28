@@ -244,7 +244,7 @@ describe User do
       expect(other_user.confirm).to be(true)
 
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq('Energy Sparks: confirm your account')
+      expect(email.subject).to eq('Please confirm your account on Energy Sparks')
     end
   end
 

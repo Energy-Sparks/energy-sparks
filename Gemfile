@@ -27,7 +27,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.15'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.16'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -116,6 +116,8 @@ gem 'premailer-rails'
 # Feature flags
 gem 'flipper-active_record', '~> 1.3'
 gem 'flipper-ui', '~> 1.3'
+
+gem 'net-sftp'
 
 group :development, :test do
   gem 'bullet', require: false # use bullet to optimise queries
