@@ -51,8 +51,13 @@ en:
     cc_licence_notice_html: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
     child_safeguarding_policy: Child safeguarding policy
     follow_energy_sparks: Follow Energy Sparks
+    legal_terms: Legal Terms
     more_information: More information
+    newsletter_signup: Newsletter Signup
+    other_links: Other Links
+    quick_links: Quick Links
     registered_charity_notice: Energy Sparks is a registered charity in England and Wales, registration 1189273
+    services: Services
     terms_and_conditions: Terms and conditions
   manage_menu:
     admin: Admin
@@ -109,8 +114,8 @@ en:
     scoreboards: Scoreboards
     view_schools: View schools
   our_services_menu:
-    case_studies: Case Studies
-    educational_workshops: Educational workshops
+    case_studies: Case studies
+    educational_workshops: Education workshops
     energy_audits: Energy audits
     for_local_authorities: For Local Authorities
     for_multi_academy_trusts: For Multi-Academy Trusts

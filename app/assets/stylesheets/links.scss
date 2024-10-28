@@ -29,6 +29,12 @@
   color: $teal-very-dark;
 }
 
+// used in the footer newsletter signup form
+.btn-outline-white {
+  background-color: transparent;
+  @include button-outline-variant($white, $yellow-medium, transparent, $yellow-medium);
+}
+
 a.badge {
   text-decoration: none;
   .outline {

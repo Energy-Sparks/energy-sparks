@@ -48,7 +48,7 @@ module Colours
         light: '#dcdcdc'.freeze, # generated using: https://www.dannybrien.com/middle/
         medium: '#c3c3c3'.freeze, # was called "table grey" in the original designs
         dark: '#8c8c8c'.freeze, # generated - midway point between pale and very dark
-        very_dark: '#222222'.freeze # from original designs - used in header
+        very_dark: '#222222'.freeze # from original designs - used in header and footer
       },
       cyan: '#17a2b8'.freeze, # bootstrap colour (not in designs)
       white: '#ffffff'.freeze,
