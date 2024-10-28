@@ -5,7 +5,7 @@
   </head>
   <body vocab="http://schema.org/">
     <%= render 'shared/navigation' %>
-    <div class="application container<%= nav_margin_classes %><%= conditional_application_container_classes %>">
+    <div class="application container navigation-margin<%= conditional_application_container_classes %>">
       <%= render 'shared/breadcrumbs' %>
       <%= render 'shared/alerts' if flash.any? %>
       <%= yield %>

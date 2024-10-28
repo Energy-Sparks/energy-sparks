@@ -19,7 +19,7 @@ module Solar
 
     def self.update_information(installation)
       begin
-        solar_edge_api = SolarEdgeAPI.new(installation.api_key)
+        solar_edge_api = DataFeeds::SolarEdgeApi.new(installation.api_key)
         installation.update(information: {
           site_details: solar_edge_api.site_details,
           dates: solar_edge_api.site_start_end_dates(installation.site_id)
@@ -31,7 +31,7 @@ module Solar
 
     def self.check(installation)
       begin
-        solar_edge_api = SolarEdgeAPI.new(installation.api_key)
+        solar_edge_api = DataFeeds::SolarEdgeApi.new(installation.api_key)
         solar_edge_api.site_details
         true
       rescue
@@ -57,7 +57,7 @@ module Solar
     private
 
     def solar_edge_api
-      @solar_edge_api ||= SolarEdgeAPI.new(@api_key)
+      @solar_edge_api ||= DataFeeds::SolarEdgeApi.new(@api_key)
     end
 
     def first_reading_date

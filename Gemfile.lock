@@ -1,14 +1,12 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: e5b5a695d1dacf1e2e535ddc35f58a8d99866efe
-  branch: 4565-add-meter-attribute-to-correct-overnight-solar-readings
+  revision: d2f1a8a3d5025d937cfe21ca6f11609252a71c7c
+  tag: 6.0.16
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
       benchmark-memory (~> 0)
       chroma (~> 0)
-      faraday (~> 2)
-      faraday-retry (~> 2)
       hashdiff (~> 1)
       html-table (~> 1)
       interpolate (~> 0.3.0)
@@ -149,17 +147,17 @@ GEM
     autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
     aws-eventstream (1.3.0)
-    aws-partitions (1.985.0)
-    aws-sdk-core (3.209.1)
+    aws-partitions (1.992.0)
+    aws-sdk-core (3.210.0)
       aws-eventstream (~> 1, >= 1.3.0)
-      aws-partitions (~> 1, >= 1.651.0)
+      aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.94.0)
-      aws-sdk-core (~> 3, >= 3.207.0)
+    aws-sdk-kms (1.95.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.167.0)
-      aws-sdk-core (~> 3, >= 3.207.0)
+    aws-sdk-s3 (1.169.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.10.0)
@@ -260,7 +258,7 @@ GEM
       dotenv (= 3.1.4)
       railties (>= 6.1)
     drb (2.2.1)
-    erb_lint (0.6.0)
+    erb_lint (0.7.0)
       activesupport
       better_html (>= 2.0.1)
       parser (>= 2.7.1.4)
@@ -326,7 +324,7 @@ GEM
       csv (>= 3.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    good_job (4.4.1)
+    good_job (4.4.2)
       activejob (>= 6.1.0)
       activerecord (>= 6.1.0)
       concurrent-ruby (>= 1.3.1)
@@ -403,7 +401,7 @@ GEM
     irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jbuilder (2.12.0)
+    jbuilder (2.13.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
@@ -793,7 +791,7 @@ GEM
       rubyzip (>= 1.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.7.0)
+    zeitwerk (2.7.1)
 
 PLATFORMS
   aarch64-linux
@@ -834,6 +832,7 @@ DEPENDENCIES
   fakefs
   faraday
   faraday-follow_redirects
+  faraday-retry
   fasterer
   flipper-active_record (~> 1.3)
   flipper-ui (~> 1.3)
@@ -849,7 +848,7 @@ DEPENDENCIES
   i18n-tasks (~> 1.0.14)
   image_processing (~> 1.13)
   importmap-rails
-  jbuilder (~> 2.12)
+  jbuilder (~> 2.13)
   jquery-rails
   knapsack
   listen

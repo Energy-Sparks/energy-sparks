@@ -3,10 +3,6 @@ require 'rails_helper'
 describe 'Pupil analysis' do
   let(:school) { create(:school, :with_fuel_configuration) }
 
-  before do
-    Flipper.enable :new_dashboards_2024
-  end
-
   context 'when visiting analysis index' do
     before do
       visit pupils_school_analysis_path(school)
