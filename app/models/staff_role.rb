@@ -12,7 +12,7 @@ class StaffRole < ApplicationRecord
   has_many :users
 
   attribute :dashboard, :string
-  enum dashboard: [:management, :teachers]
+  enum :dashboard, { management: 0, teachers: 1 }
 
   def translated_title
     I18n.t(i18n_key)
