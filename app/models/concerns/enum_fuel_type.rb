@@ -10,7 +10,7 @@ module EnumFuelType
   }.freeze
 
   included do
-    enum fuel_type: ENUM_FUEL_TYPES
+    enum fuel_type, ENUM_FUEL_TYPES
 
     scope :no_fuel, -> { where(fuel_type: nil) }
   end
