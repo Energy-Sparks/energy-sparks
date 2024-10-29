@@ -15,6 +15,6 @@ module EnumReportingPeriod
   }.freeze
 
   included do
-    enum reporting_period: ENUM_REPORTING_PERIODS
+    enum :reporting_period, ENUM_REPORTING_PERIODS
   end
 end
