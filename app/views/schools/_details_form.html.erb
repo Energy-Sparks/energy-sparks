@@ -65,15 +65,13 @@
 
 <h2 id="basic-details"><%= t('schools.school_details.basic_details') %></h2>
 <div class="form-group">
-  <p><%= t('schools.school_details.stage_of_education') %></p>
-
-  <% School.school_types.keys.each do |school_type| %>
-    <div class="form-check form-check-inline">
-      <%= f.radio_button :school_type, school_type, class: 'form-check-input' %>
-      <%= f.label "school_type_#{school_type.to_sym}",
-                  t("common.school_types.#{school_type}", default: school_type.humanize), class: 'form-check-label' %>
-    </div>
-  <% end %>
+  <% collection = School.school_types.keys.map do |type|
+       [t("common.school_types.#{type}", default: type.humanize), type]
+     end %>
+  <%= f.input :school_type, label: t('schools.school_details.stage_of_education'),
+                            as: :radio_buttons, collection: collection,
+                            item_wrapper_class: 'form-check form-check-inline',
+                            item_label_class: 'form-check-label' %>
 </div>
 
 <div class="form-group pt-2">
