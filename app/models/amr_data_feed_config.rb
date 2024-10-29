@@ -64,6 +64,8 @@ class AmrDataFeedConfig < ApplicationRecord
 
   validates :msn_field, presence: { if: :lookup_by_serial_number }
 
+  validate :no_nil_array_of_reading_indexes, if: :header_example
+
   BLANK_THRESHOLD = 1
 
   def period_or_time_field
@@ -125,5 +127,13 @@ class AmrDataFeedConfig < ApplicationRecord
     return nil unless row_per_reading?
 
     missing_readings_limit || BLANK_THRESHOLD
+  end
+
+  private
+
+  def no_nil_array_of_reading_indexes
+    return unless array_of_reading_indexes.include?(nil)
+
+    errors.add(:header_example, "can't find all reading_fields in header_example")
   end
 end
