@@ -22,7 +22,7 @@ class SchoolOnboardingEvent < ApplicationRecord
 
   scope :by_event_name, ->(event_name) { where(event: event_name).order(created_at: :asc) }
 
-  enum event: {
+  enum :event, {
     email_sent: 0,
     privacy_policy_agreed: 9,
     permission_given: 10,
@@ -42,6 +42,6 @@ class SchoolOnboardingEvent < ApplicationRecord
     reminder_sent: 90,
     activation_email_sent: 100,
     onboarded_email_sent: 101,
-    data_enabled_email_sent: 102,
+    data_enabled_email_sent: 102
   }
 end
