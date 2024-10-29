@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: d2f1a8a3d5025d937cfe21ca6f11609252a71c7c
-  tag: 6.0.16
+  revision: 229d585bbfe78ae8a0f13798a0300d483cb528ef
+  branch: 4581-set-minimum-solar-self-consumption-of-zero
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
