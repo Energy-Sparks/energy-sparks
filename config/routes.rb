@@ -85,8 +85,7 @@ Rails.application.routes.draw do
     get :unlisted, on: :collection
   end
 
-  get 'search/by_letter', to: 'search#by_letter'
-  get 'search/by_keyword', to: 'search#by_keyword'
+  get 'search', to: 'search#search'
 
   namespace :comparisons do
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index], concerns: :unlisted

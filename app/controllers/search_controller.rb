@@ -1,18 +1,16 @@
 class SearchController < ApplicationController
-  protect_from_forgery except: :by_letter
+  protect_from_forgery except: :search
 
   before_action :set_scope
 
-  def by_letter
-    @letter = search_params.fetch(:letter)
-    @results = @scope.by_letter(@letter).by_name
-    @count = @results.count
-    respond_to(&:js)
-  end
-
-  def by_keyword
-    @keyword = search_params.fetch(:keyword)
-    @results = @scope.by_keyword(@keyword).by_name
+  def search
+    @letter = search_params.fetch(:letter, nil)
+    @keyword = search_params.fetch(:keyword, nil)
+    if @keyword
+      @results = @scope.by_keyword(@keyword).by_name
+    else
+      @results = @scope.by_letter(@letter).by_name
+    end
     @count = @results.count
     respond_to(&:js)
   end

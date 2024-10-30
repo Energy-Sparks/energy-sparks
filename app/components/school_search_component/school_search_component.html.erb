@@ -21,7 +21,7 @@
            aria-labelledby="<%= label(tab, 'tab') %>">
         <div class="row mt-4">
           <div class="col-12 col-md-2">
-          <%= form_tag search_by_keyword_path,
+          <%= form_tag search_path,
                        method: :get,
                        remote: true,
                        onsubmit: "$(this).closest('#schools-content').find('.pagination').children('.page-item').removeClass('active');" do %>
@@ -35,7 +35,7 @@
                 <% ('A'..'Z').each do |letter| %>
                   <li class="page-item mr-1 <%= letter_status(tab, letter) %>">
                     <%= link_to letter,
-                                search_by_letter_path(letter: letter, scope: tab),
+                                search_path(letter: letter, scope: tab),
                                 class: 'page-link',
                                 title: letter_title(tab, letter),
                                 remote: true,
