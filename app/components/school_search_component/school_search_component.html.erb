@@ -23,8 +23,8 @@
           <div class="col-12 col-md-2">
           <%= form_tag search_path,
                        method: :get,
-                       remote: true,
-                       onsubmit: "$(this).closest('#schools-content').find('.pagination').children('.page-item').removeClass('active');" do %>
+                       class: label(tab, 'search'),
+                       remote: true do %>
 
             <div class="input-group mb-3">
               <%= text_field_tag :keyword, keyword, class: 'form-control', autocomplete: :off %>
@@ -39,16 +39,15 @@
           <% end %>
           </div>
           <div class="col-12 col-md-10">
-            <nav aria-label="<%= t("components.school_search.#{tab}.pagination")%>">
+            <nav aria-label="<%= t("components.school_search.#{tab}.pagination") %>">
               <ul class="pagination justify-content-start justify-content-md-end flex-wrap">
                 <% ('A'..'Z').each do |letter| %>
-                  <li class="page-item mr-1 <%= letter_status(tab, letter) %>">
+                  <li class="page-item mr-1 letter <%= letter_status(tab, letter) %>">
                     <%= link_to letter,
                                 search_path(letter: letter, scope: tab),
                                 class: 'page-link',
                                 title: letter_title(tab, letter),
-                                remote: true,
-                                onclick: "$(this).closest('.pagination').children('.page-item').removeClass('active');$(this).parent().addClass('active')" %>
+                                remote: true %>
                   </li>
                 <% end %>
               </ul>
