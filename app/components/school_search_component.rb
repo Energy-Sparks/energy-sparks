@@ -30,6 +30,8 @@ class SchoolSearchComponent < ApplicationComponent
     end
   end
 
+  # i18n-tasks-use t("components.search_results.schools.subtitle")
+  # i18n-tasks-use t("components.search_results.school_groups.subtitle")
   def letter_title(tab, letter)
     count = tab == :schools ? schools_by_letter[letter] : school_groups_by_letter[letter]
     I18n.t("components.search_results.#{tab}.subtitle", count: count)
