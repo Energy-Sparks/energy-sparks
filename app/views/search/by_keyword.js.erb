@@ -1,1 +1,1 @@
-$("#schools-results").html("<%= escape_javascript(render 'keyword', keyword: @keyword, results: @results, count: @count) %>")
+$("#<%= @tab.to_s.dasherize %>-results").html("<%= escape_javascript(render 'keyword', tab: @tab, keyword: @keyword, results: @results, count: @count) %>")

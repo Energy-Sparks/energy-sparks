@@ -1,6 +1,8 @@
 class SchoolSearchComponent < ApplicationComponent
   attr_reader :schools, :tab, :letter, :keyword
 
+  TABS = [:schools, :school_groups].freeze
+
   def initialize(tab: :schools,
                  schools: School.active,
                  school_groups: SchoolGroup.all,
@@ -18,12 +20,23 @@ class SchoolSearchComponent < ApplicationComponent
     @tab == tab
   end
 
-  def letter_status(letter)
-    if letter == @letter
+  def letter_status(tab, letter)
+    if tab == @tab && letter == @letter
       'active'
+    elsif tab == :schools
+      'disabled' unless schools_by_letter.key?(letter)
     else
-      'disabled' unless any_school?(letter)
+      'disabled' unless school_groups_by_letter.key?(letter)
     end
+  end
+
+  def letter_title(tab, letter)
+    count = tab == :schools ? schools_by_letter[letter] : school_groups_by_letter[letter]
+    I18n.t("components.search_results.#{tab}.subtitle", count: count)
+  end
+
+  def label(tab, suffix)
+    "#{tab.to_s.dasherize}-#{suffix}"
   end
 
   def by_letter
@@ -73,13 +86,5 @@ class SchoolSearchComponent < ApplicationComponent
 
   def school_groups_by_letter
     @school_groups_by_letter ||= @school_groups.group('substr(upper(name), 1, 1)').count
-  end
-
-  def any_school?(letter)
-    schools_by_letter.key?(letter)
-  end
-
-  def any_school_group?(letter)
-    school_groups_by_letter.key?(letter)
   end
 end

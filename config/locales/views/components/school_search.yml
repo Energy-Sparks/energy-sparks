@@ -1,0 +1,12 @@
+---
+en:
+  components:
+    school_search:
+      school_groups:
+        pagination: School group A-Z navigation
+        tab: Find School Groups
+        total: 'Total school groups: %{count}'
+      schools:
+        pagination: School A-Z navigation
+        tab: Find Schools
+        total: 'Total schools: %{count}'
