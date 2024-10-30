@@ -74,10 +74,15 @@
         <th scope="col"><%= t('schools.meters.index.admin_meter_status') %></th>
       <% end %>
       <th scope="col" class="text-right">
-        <%= current_user.admin? ? fa_icon(:database) : t('schools.meters.index.imported') %>
+        <span title="<%= t('schools.meters.index.imported') %>">
+          <%= current_user.admin? ? fa_icon(:database) : t('schools.meters.index.imported') %>
+        <span>
       </th>
       <th scope="col" class="text-right">
-        <%= current_user.admin? ? fa_icon('square-check') : t('schools.meters.index.validated') %></th>
+        <span title="<%= t('schools.meters.index.validated') %>">
+          <%= current_user.admin? ? fa_icon('square-check') : t('schools.meters.index.validated') %>
+        </span>
+      </th>
       <th scope="col" class="text-center"><%= t('schools.meters.index.first') %>-<%= t('schools.meters.index.latest') %>
       </th>
       <th scope="col" class="text-right"><%= t('schools.meters.index.zero_days') %></th>
