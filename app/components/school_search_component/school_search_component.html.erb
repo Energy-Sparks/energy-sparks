@@ -25,7 +25,16 @@
                        method: :get,
                        remote: true,
                        onsubmit: "$(this).closest('#schools-content').find('.pagination').children('.page-item').removeClass('active');" do %>
-            <%= text_field_tag :keyword, keyword, class: 'form-control', autocomplete: :off %>
+
+            <div class="input-group mb-3">
+              <%= text_field_tag :keyword, keyword, class: 'form-control', autocomplete: :off %>
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-outline-secondary school-search-button">
+                  <%= fa_icon('search') %>
+                </button>
+              </div>
+            </div>
+
             <%= hidden_field_tag :scope, tab %>
           <% end %>
           </div>
