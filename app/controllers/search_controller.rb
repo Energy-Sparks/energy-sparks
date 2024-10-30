@@ -1,27 +1,34 @@
 class SearchController < ApplicationController
   protect_from_forgery except: :by_letter
 
+  before_action :set_scope
+
   def by_letter
     @letter = search_params.fetch(:letter)
-    @schools = scope.where('substr(upper(name), 1, 1) = ?', @letter).order(:name)
-    @count = @schools.count
+    @results = @scope.by_letter(@letter).by_name
+    @count = @results.count
     respond_to(&:js)
   end
 
   def by_keyword
     @keyword = search_params.fetch(:keyword)
-    @schools = scope.where('name LIKE ?', "%#{@keyword}%").order(:name) # TODO
-    @count = @schools.count
+    @results = @scope.by_keyword(@keyword).by_name
+    @count = @results.count
     respond_to(&:js)
   end
 
   private
 
-  def scope
-    School.active # TODO
+  def set_scope
+    @tab = search_params.fetch(:scope).to_sym
+    @scope = if @tab == :schools
+               current_user_admin? ? School.active : School.visible
+             else
+               SchoolGroup.all
+             end
   end
 
   def search_params
-    params.permit(:letter, :keyword).with_defaults(letter: 'A')
+    params.permit(:letter, :keyword, :scope).with_defaults(letter: 'A', scope: :schools)
   end
 end

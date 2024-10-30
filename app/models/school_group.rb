@@ -95,6 +95,11 @@ class SchoolGroup < ApplicationRecord
   has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
+
+  scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
+  # TODO
+  scope :by_keyword, ->(keyword) { where('name LIKE ?', "%#{keyword}%").order(:name)}
+
   validates :name, presence: true
 
   enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2 }

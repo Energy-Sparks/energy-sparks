@@ -1,16 +1,10 @@
-<div class="row">
-  <div class="col-12 col-md-2">
-    <h3><%= letter %></h3>
-    <p><%= count %> schools</p>
-  </div>
-  <div class="col-12 col-md-10">
-    <% schools.each do |school| %>
-      <ul class="list-unstyled">
-        <li>
-          <%= link_to school.name, school_path(school) %>
-          - <span class="smaller"><%= school.school_group.name %></span>
-        </li>
-      </ul>
+<%= component 'search_results' do |c| %>
+  <% c.with_title { letter } %>
+  <% c.with_subtitle { t('components.search_results.schools.subtitle', count: count) } %>
+  <% results.each do |school| %>
+    <% c.with_result do %>
+      <%= link_to school.name, school_path(school) %>
+      - <span class="smaller"><%= school.school_group.name %></span>
     <% end %>
-  </div>
-</div>
+  <% end %>
+<% end %>
