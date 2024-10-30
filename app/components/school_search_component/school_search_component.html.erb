@@ -1,0 +1,53 @@
+<div id="<%= id %>" class="school-search-component mt-4">
+  <ul class="nav nav-tabs" id="search-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="schools-tab"
+         data-toggle="tab" href="#schools-content" role="tab" aria-controls="schools-content">Sort by school</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="school-groups-tab"
+         data-toggle="tab" href="#school-groups-content" role="tab" aria-controls="school-groups-content">Sort by group</a>
+    </li>
+    <li class="nav-item ml-auto">
+      <h6>Total schools: <%= schools_count %></h6>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="search-tabs-content">
+    <div class="tab-pane fade show active" id="schools-content" role="tabpanel" aria-labelledby="schools-tab">
+      <div class="row mt-4">
+        <div class="col-12 col-md-2">
+        <%= form_tag search_by_keyword_path,
+                     method: :get,
+                     remote: true,
+                     onsubmit: "$(this).closest('#schools-content').find('.pagination').children('.page-item').removeClass('active');" do %>
+          <%= text_field_tag :keyword, params[:keyword], placeholder: 'Search', class: 'form-control' %>
+        <% end %>
+        </div>
+        <div class="col-12 col-md-10">
+          <nav aria-label="School A-Z pagination">
+            <ul class="pagination justify-content-start justify-content-md-end flex-wrap">
+              <% ('A'..'Z').each do |letter| %>
+                <li class="page-item mr-1 <%= school_letter_status(letter) %>">
+                  <%= link_to letter,
+                              search_by_letter_path(letter: letter),
+                              class: 'page-link',
+                              title: schools_by_letter[letter],
+                              remote: true,
+                              onclick: "$(this).closest('.pagination').children('.page-item').removeClass('active');$(this).parent().addClass('active')" %>
+                </li>
+              <% end %>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <hr>
+
+      <div id="schools-results">
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="school-groups-content" role="tabpanel" aria-labelledby="school-groups-tab">
+    </div>
+  </div>
+</div>

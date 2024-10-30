@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-12 col-md-2">
+    <h3>Results</h3>
+    <p><%= count %> schools</p>
+  </div>
+  <div class="col-12 col-md-10">
+    <% schools.each do |school| %>
+      <ul class="list-unstyled">
+        <li>
+          <%= link_to school.name, school_path(school) %>
+          - <span class="smaller"><%= school.school_group.name %></span>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</div>
