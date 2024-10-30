@@ -1,19 +1,28 @@
 class SchoolSearchComponent < ApplicationComponent
   attr_reader :schools, :tab, :letter, :keyword
 
+  DEFAULT_TAB = :schools
   TABS = [:schools, :school_groups].freeze
 
-  def initialize(tab: :schools,
+  def initialize(tab: DEFAULT_TAB,
                  schools: School.active,
                  school_groups: SchoolGroup.all,
                  letter: 'A',
                  keyword: nil, id: nil, classes: '')
     super(id: id, classes: classes)
-    @tab = tab.to_sym
+    @tab = self.class.sanitize_tab(tab.to_sym)
     @letter = letter
     @keyword = keyword
     @schools = schools
     @school_groups = school_groups
+  end
+
+  def self.sanitize_tab(tab)
+    if SchoolSearchComponent::TABS.include?(tab)
+      tab
+    else
+      SchoolSearchComponent::DEFAULT_TAB
+    end
   end
 
   def tab_active?(tab)
@@ -41,22 +50,6 @@ class SchoolSearchComponent < ApplicationComponent
     "#{tab.to_s.dasherize}-#{suffix}"
   end
 
-  def by_letter
-    @by_letter ||= default_search_scope.by_letter(@letter).by_name
-  end
-
-  def by_keyword
-    @by_keyword ||= default_search_scope.by_keyword(@keyword).by_name
-  end
-
-  def default_search_scope
-    @scope = if @tab == :schools
-               @schools
-             else
-               @school_groups
-             end
-  end
-
   def default_results_title
     if @keyword
       I18n.t('components.search_results.keyword.title')
@@ -80,6 +73,24 @@ class SchoolSearchComponent < ApplicationComponent
 
   def school_groups_count
     @school_groups.count
+  end
+
+  private
+
+  def by_letter
+    @by_letter ||= default_search_scope.by_letter(@letter).by_name
+  end
+
+  def by_keyword
+    @by_keyword ||= default_search_scope.by_keyword(@keyword).by_name
+  end
+
+  def default_search_scope
+    @scope = if @tab == :schools
+               @schools
+             else
+               @school_groups
+             end
   end
 
   def schools_by_letter

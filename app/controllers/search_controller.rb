@@ -20,7 +20,7 @@ class SearchController < ApplicationController
   private
 
   def set_scope
-    @tab = search_params.fetch(:scope).to_sym
+    @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
     @scope = if @tab == :schools
                current_user_admin? ? School.active : School.visible
              else
@@ -29,6 +29,6 @@ class SearchController < ApplicationController
   end
 
   def search_params
-    params.permit(:letter, :keyword, :scope).with_defaults(letter: 'A', scope: :schools)
+    params.permit(:letter, :keyword, :scope).with_defaults(letter: 'A', scope: SchoolSearchComponent::DEFAULT_TAB)
   end
 end
