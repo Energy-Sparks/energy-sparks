@@ -1,5 +1,11 @@
 <%= component 'search_results' do |c| %>
-  <% c.with_title { I18n.t('components.search_results.keyword.title') } %>
+  <% c.with_title do %>
+    <% if keyword %>
+      <%= I18n.t('components.search_results.keyword.title') %>
+    <% else %>
+      <%= letter %>
+    <% end %>
+  <% end %>
   <% c.with_subtitle do %>
     <%= I18n.t("components.search_results.#{tab}.subtitle", count: count) %>
   <% end %>
