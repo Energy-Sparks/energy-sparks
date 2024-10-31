@@ -10,7 +10,7 @@ RSpec.describe 'heating control advice page', type: :system do
   let(:average_start_time_last_week) { TimeOfDay.new(4, 0) }
   let(:percentage_of_annual_gas) { 0.07 }
   let(:estimated_savings) { CombinedUsageMetric.new(kwh: 673, £: 1234, co2: 4567) }
-  let(:date) { Time.zone.today - 1}
+  let(:date) { Time.zone.today - 1 }
   let(:day) do
     OpenStruct.new(
       date: date,
@@ -20,7 +20,9 @@ RSpec.describe 'heating control advice page', type: :system do
       saving: CombinedUsageMetric.new(kwh: 100, £: 50, co2: 20)
     )
   end
-  let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: average_start_time_last_week) }
+  let(:last_week_start_times) do
+    Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: average_start_time_last_week)
+  end
 
   let(:seasonal_analysis) do
     OpenStruct.new(
@@ -76,20 +78,39 @@ RSpec.describe 'heating control advice page', type: :system do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
 
         it 'does not show that text' do
-          expect(page).not_to have_content('the average start time for your heating')
+          expect(page).to have_no_content('the average start time for your heating')
         end
       end
     end
 
+    def create_alert(run, class_name)
+      content_version = create(:alert_type_rating_content_version, management_dashboard_title: class_name)
+      create(:dashboard_alert, dashboard: :management,
+                               content_generation_run: run,
+                               content_version:,
+                               alert: create(:alert, school:, alert_type: create(:alert_type, class_name:)))
+    end
+
     context "clicking the 'Analysis' tab" do
-      before { click_on 'Analysis' }
+      before do
+        content_generation_run = create(:content_generation_run, school:)
+        create_alert(content_generation_run, AlertGasHeatingHotWaterOnDuringHoliday.name)
+        create_alert(content_generation_run, AlertImpendingHoliday.name)
+        click_on 'Analysis'
+      end
 
       it_behaves_like 'an advice page tab', tab: 'Analysis'
+
       it 'includes expected sections' do
-        expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.title'))
+        expect(page).to have_content <<~CONTENT
+          #{I18n.t('advice_pages.heating_control.analysis.heating_timings.title')}
+          Back to top
+          AlertGasHeatingHotWaterOnDuringHoliday
+          AlertImpendingHoliday
+        CONTENT
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.school_day_heating.title'))
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.seasonal_control.title'))
-        expect(page).not_to have_content(I18n.t('advice_pages.heating_control.analysis.meter_breakdown.title'))
+        expect(page).to have_no_content(I18n.t('advice_pages.heating_control.analysis.meter_breakdown.title'))
       end
 
       it 'includes expected charts' do
@@ -140,8 +161,8 @@ RSpec.describe 'heating control advice page', type: :system do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
 
         it 'does not show the table' do
-          expect(page).not_to have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html'))
-          expect(page).not_to have_css('#heating-start-times')
+          expect(page).to have_no_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html'))
+          expect(page).to have_no_css('#heating-start-times')
         end
       end
     end

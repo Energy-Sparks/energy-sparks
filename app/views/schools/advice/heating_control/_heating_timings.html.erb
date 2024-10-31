@@ -1,8 +1,17 @@
-<%= render 'schools/advice/section_title', section_id: 'heating-timings', section_title: t('advice_pages.heating_control.analysis.heating_timings.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'heating-timings',
+           section_title: t('advice_pages.heating_control.analysis.heating_timings.title') %>
+
+<%= render(AlertsComponent.new(school: school,
+                               dashboard_alerts: dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertGasHeatingHotWaterOnDuringHoliday))) %>
+<%= render(AlertsComponent.new(school: school,
+                               dashboard_alerts: dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertImpendingHoliday))) %>
 
 <%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html',
-  estimated_saving: format_unit(estimated_savings.£, :£),
-  percent: format_unit(percentage_of_annual_gas, :percent)) %>
+      estimated_saving: format_unit(estimated_savings.£, :£),
+      percent: format_unit(percentage_of_annual_gas, :percent)) %>
 
 <% if @last_week_start_times.average_start_time.present? %>
   <%= t('advice_pages.heating_control.analysis.heating_timings.intro_html') %>
@@ -63,5 +72,6 @@
       <% end %>
     </tbody>
   </table>
-  <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
+  <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+             data_target: 'how-have-we-analysed-your-data-footnotes' %>
 <% end %>
