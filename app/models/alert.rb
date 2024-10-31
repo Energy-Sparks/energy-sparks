@@ -39,7 +39,14 @@
 #  fk_rails_...  (comparison_report_id => comparison_reports.id)
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
-
+# Postgres autovacuum specific settings:
+# See: https://www.postgresql.org/docs/current/runtime-config-autovacuum.html
+# Applied using: ALTER TABLE amr_data_feed_readings SET (X = n)
+# autovacuum_vacuum_cost_delay = 0
+# autovacuum_analyze_scale_factor = 0
+# autovacuum_analyze_threshold = 50000
+# autovacuum_vacuum_scale_factor = 0
+# autovacuum_vacuum_threshold = 50000
 class Alert < ApplicationRecord
   include EnumReportingPeriod
   include AlertTypeWithComparisonReport
