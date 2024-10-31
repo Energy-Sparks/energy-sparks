@@ -57,13 +57,25 @@ RSpec.describe 'heating control advice page', type: :system do
     it_behaves_like 'an advice page tab', tab: 'Insights'
 
     context "clicking the 'Insights' tab" do
-      before { click_on 'Insights' }
+      before do
+        create(:content_generation_run, :with_dashboard_alerts, school:, class_names: [
+                 AlertHeatingSensitivityAdvice, AlertGasHeatingHotWaterOnDuringHoliday, AlertImpendingHoliday
+               ])
+        click_on 'Insights'
+      end
 
       it_behaves_like 'an advice page tab', tab: 'Insights'
       it 'includes expected sections' do
         expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.title'))
         expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.comparison.title'))
         expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.controls.title'))
+        expect(page).to have_content <<~CONTENT
+          #{I18n.t('advice_pages.heating_control.insights.controls.title')}
+          Back to top
+          AlertHeatingSensitivityAdvice
+          AlertGasHeatingHotWaterOnDuringHoliday
+          AlertImpendingHoliday
+        CONTENT
         expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.warm_weather.title'))
       end
 
@@ -83,19 +95,11 @@ RSpec.describe 'heating control advice page', type: :system do
       end
     end
 
-    def create_alert(run, class_name)
-      content_version = create(:alert_type_rating_content_version, management_dashboard_title: class_name)
-      create(:dashboard_alert, dashboard: :management,
-                               content_generation_run: run,
-                               content_version:,
-                               alert: create(:alert, school:, alert_type: create(:alert_type, class_name:)))
-    end
-
     context "clicking the 'Analysis' tab" do
       before do
-        content_generation_run = create(:content_generation_run, school:)
-        create_alert(content_generation_run, AlertGasHeatingHotWaterOnDuringHoliday.name)
-        create_alert(content_generation_run, AlertImpendingHoliday.name)
+        create(:content_generation_run, :with_dashboard_alerts, school:, class_names: [
+                 AlertGasHeatingHotWaterOnDuringHoliday, AlertImpendingHoliday
+               ])
         click_on 'Analysis'
       end
 
