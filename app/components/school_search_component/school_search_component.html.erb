@@ -21,7 +21,7 @@
            aria-labelledby="<%= label(tab, 'tab') %>">
         <div class="row mt-4">
           <div class="col-12 col-md-2">
-          <%= form_tag search_path,
+          <%= form_tag schools_path,
                        method: :get,
                        class: label(tab, 'search'),
                        remote: true do %>
@@ -44,7 +44,7 @@
                 <% ('A'..'Z').each do |letter| %>
                   <li class="page-item mr-1 letter <%= letter_status(tab, letter) %>">
                     <%= link_to letter,
-                                search_path(letter: letter, scope: tab),
+                                schools_path(letter: letter, scope: tab),
                                 class: 'page-link',
                                 title: letter_title(tab, letter),
                                 remote: true %>
