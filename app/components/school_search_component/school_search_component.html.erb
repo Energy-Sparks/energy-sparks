@@ -56,16 +56,14 @@
         </div>
         <hr>
         <div id="<%= label(tab, 'results') %>">
-          <% if tab_active?(tab) %>
-            <%= component 'search_results' do |c| %>
-              <% c.with_title { default_results_title } %>
-              <% c.with_subtitle { default_results_subtitle } %>
-              <% default_results.each do |result| %>
-                <% c.with_result do %>
-                  <%= link_to result.name, tab == :schools ? school_path(result) : school_group_path(result) %>
-                  <% if tab == :schools %>
-                    - <span class="smaller"><%= result.school_group.name %></span>
-                  <% end %>
+          <%= component 'search_results' do |c| %>
+            <% c.with_title { default_results_title(tab) } %>
+            <% c.with_subtitle { default_results_subtitle(tab) } %>
+            <% default_results(tab).each do |result| %>
+              <% c.with_result do %>
+                <%= link_to result.name, tab == :schools ? school_path(result) : school_group_path(result) %>
+                <% if tab == :schools %>
+                  - <span class="smaller"><%= result.school_group.name %></span>
                 <% end %>
               <% end %>
             <% end %>

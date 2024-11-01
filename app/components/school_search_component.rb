@@ -1,5 +1,5 @@
 class SchoolSearchComponent < ApplicationComponent
-  attr_reader :schools, :tab, :letter, :keyword
+  attr_reader :schools, :school_groups, :tab, :letter, :keyword
 
   DEFAULT_TAB = :schools
   TABS = [:schools, :school_groups].freeze
@@ -30,8 +30,10 @@ class SchoolSearchComponent < ApplicationComponent
   end
 
   def letter_status(tab, letter)
-    if tab == @tab && letter == @letter
-      'active'
+    if !tab_active?(tab) && letter == 'A'
+      'active' # Ensure A is active by default
+    elsif tab_active?(tab) && letter == @letter
+      'active' # Activate letter based on parameter
     elsif tab == :schools
       'disabled' unless schools_by_letter.key?(letter)
     else
@@ -50,21 +52,27 @@ class SchoolSearchComponent < ApplicationComponent
     "#{tab.to_s.dasherize}-#{suffix}"
   end
 
-  def default_results_title
-    if @keyword
+  def default_results_title(tab)
+    if tab_active?(tab) && @keyword
       I18n.t('components.search_results.keyword.title')
     else
-      @letter
+      tab_active?(tab) ? @letter : 'A'
     end
   end
 
-  def default_results_subtitle
-    count = @keyword ? by_keyword.count : by_letter.count
-    I18n.t('components.search_results.schools.subtitle', count: count)
+  def default_results_subtitle(tab)
+    count = default_results(tab).count
+    I18n.t("components.search_results.#{tab}.subtitle", count: count)
   end
 
-  def default_results
-    @keyword ? by_keyword : by_letter
+  def default_results(tab)
+    if tab_active?(tab) && @keyword
+      by_keyword
+    elsif tab_active?(tab)
+      by_letter
+    else
+      by_letter('A', tab)
+    end
   end
 
   def schools_count
@@ -77,20 +85,20 @@ class SchoolSearchComponent < ApplicationComponent
 
   private
 
-  def by_letter
-    @by_letter ||= default_search_scope.by_letter(@letter).by_name
+  def by_letter(letter = @letter, scope = @tab)
+    search_scope(scope).by_letter(letter).by_name
   end
 
   def by_keyword
-    @by_keyword ||= default_search_scope.by_keyword(@keyword).by_name
+    search_scope.by_keyword(@keyword).by_name
   end
 
-  def default_search_scope
-    @scope = if @tab == :schools
-               @schools
-             else
-               @school_groups
-             end
+  def search_scope(scope = @tab)
+    if scope == :schools
+      @schools
+    else
+      @school_groups
+    end
   end
 
   def schools_by_letter
