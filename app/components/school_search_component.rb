@@ -11,8 +11,8 @@ class SchoolSearchComponent < ApplicationComponent
                  keyword: nil, id: nil, classes: '')
     super(id: id, classes: classes)
     @tab = self.class.sanitize_tab(tab)
-    @letter = letter
-    @keyword = keyword
+    @letter = letter || 'A'
+    @keyword = keyword.present? ? keyword : nil
     @schools = schools
     @school_groups = school_groups
   end
