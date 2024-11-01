@@ -1,0 +1,13 @@
+<p class="small">
+  <%= link_to @school.name, school_path(@school) %>
+</p>
+<br>
+<p class="small">
+  <%= I18n.t('maps.school_features.school_type') %>: <%= @school.school_type.humanize %>
+</p>
+<p class="small">
+  <%= I18n.t('maps.school_features.fuel_types') %>: <%= Maps::SchoolFeatures.fuel_type_icons_html_for(@school).html_safe %>
+</p>
+<p class="small">
+  <%= I18n.t('maps.school_features.pupils') %>: <%= @school.number_of_pupils %>
+</p>
