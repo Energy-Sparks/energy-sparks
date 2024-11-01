@@ -33,7 +33,7 @@ function fireRequestForJson(mapDiv) {
   function makeMap() {
 
     // approx centre of full UK map
-    var center = [54.9, -2.1942];
+    var center = [54.90, -3.4936];
 
     // approx area for full UK map
     var maxBounds = [[61, 3], [49, -10]];
@@ -72,6 +72,8 @@ function fireRequestForJson(mapDiv) {
     return map;
   }
 
+  var map = makeMap();
+
   $.when(features).done(function() {
 
     // Add requested external GeoJSON to map
@@ -90,7 +92,6 @@ function fireRequestForJson(mapDiv) {
     });
     clusters.addLayers(markers);
 
-    var map = makeMap();
     map.addLayer(clusters);
 
     // bound the map to the markers, if present

@@ -46,6 +46,7 @@ class SchoolsController < ApplicationController
         @results = @scope.by_letter(@letter).by_name
       end
       @count = @results.count
+      @school_count = School.visible.count
     else
       @schools = School.visible.by_name.select(:name, :slug)
       @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)

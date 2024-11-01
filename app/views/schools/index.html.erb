@@ -1,7 +1,32 @@
-<% content_for :page_title, t('schools.index.page_title') %>
+<% content_for :page_title, t('schools.index.title') %>
 
 <% if Flipper.enabled?(:new_schools_page, current_user) %>
+  <div class="row">
+    <div class="col-12 col-md-7">
+
+      <div class="row">
+        <div class="col-8 mt-2 p-4">
+          <h1><%= t('schools.index.title') %></h1>
+
+          <p><%= t('schools.index.introduction_1') %>.</p>
+          <p><%= t('schools.index.introduction_2', count: @school_count) %>.</p>
+          <p><%= t('schools.index.introduction_3') %>.</p>
+          <p><%= t('schools.index.introduction_4') %>.</p>
+          <p>
+            <%= link_to t('schools.index.case_studies'), case_studies_path, class: 'btn btn-success' %>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-4 col-12 col-md-5">
+      <div class="map" id="geo-json-map"></div>
+    </div>
+  </div>
+
   <%= component 'school_search', letter: params[:letter], keyword: params[:keyword], tab: params[:scope] %>
+
 <% else %>
   <div class="row">
     <div class="col-md-12">

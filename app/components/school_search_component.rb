@@ -5,7 +5,7 @@ class SchoolSearchComponent < ApplicationComponent
   TABS = [:schools, :school_groups].freeze
 
   def initialize(tab: DEFAULT_TAB,
-                 schools: School.active,
+                 schools: School.visible,
                  school_groups: SchoolGroup.all,
                  letter: 'A',
                  keyword: nil, id: nil, classes: '')
