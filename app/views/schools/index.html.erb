@@ -1,6 +1,7 @@
 <% content_for :page_title, t('schools.index.page_title') %>
 
 <% if Flipper.enabled?(:new_schools_page, current_user) %>
+  <%= component 'school_search', letter: params[:letter], keyword: params[:keyword], tab: params[:tab] %>
 <% else %>
   <div class="row">
     <div class="col-md-12">

@@ -10,7 +10,7 @@ class SchoolSearchComponent < ApplicationComponent
                  letter: 'A',
                  keyword: nil, id: nil, classes: '')
     super(id: id, classes: classes)
-    @tab = self.class.sanitize_tab(tab.to_sym)
+    @tab = self.class.sanitize_tab(tab)
     @letter = letter
     @keyword = keyword
     @schools = schools
@@ -18,10 +18,11 @@ class SchoolSearchComponent < ApplicationComponent
   end
 
   def self.sanitize_tab(tab)
-    if SchoolSearchComponent::TABS.include?(tab)
-      tab
+    return DEFAULT_TAB unless tab
+    if TABS.include?(tab.to_sym)
+      tab.to_sym
     else
-      SchoolSearchComponent::DEFAULT_TAB
+      DEFAULT_TAB
     end
   end
 
