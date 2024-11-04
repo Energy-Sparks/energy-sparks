@@ -76,6 +76,7 @@ RSpec.describe 'heating control advice page', type: :system do
           AlertHeatingSensitivityAdvice
           AlertGasHeatingHotWaterOnDuringHoliday
           AlertImpendingHoliday
+          #{I18n.t('advice_pages.heating_control.holiday_notice')}
         CONTENT
         expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.warm_weather.title'))
       end

@@ -18,6 +18,9 @@
 <%= render(AlertsComponent.new(school: @school,
                                dashboard_alerts: @dashboard_alerts,
                                alert_types: alert_types_for_class(AlertImpendingHoliday))) %>
+<% if @heating_control_service.heating_on_in_last_weeks_holiday? %>
+  <%= render 'holiday_notice' %>
+<% end %>
 
 <%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html',
       estimated_saving: format_unit(@estimated_savings.£, :£),
