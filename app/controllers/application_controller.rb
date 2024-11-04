@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def route_not_found
-    render 'errors/error', status: :not_found
+    render 'errors/show', status: :not_found
   end
 
   def site_settings
