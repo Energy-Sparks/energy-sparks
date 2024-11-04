@@ -49,7 +49,7 @@ class SchoolsController < ApplicationController
       @school_count = School.visible.count
     else
       @schools = School.visible.by_name.select(:name, :slug)
-      @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)
+      @school_groups = SchoolGroup.with_visible_schools.by_name
       @ungrouped_visible_schools = School.visible.without_group.by_name.select(:name, :slug)
       @schools_not_visible = School.not_visible.by_name.select(:name, :slug)
     end
@@ -120,7 +120,7 @@ private
     @scope = if @tab == :schools
                current_user_admin? ? School.active : School.visible
              else
-               SchoolGroup.all
+               SchoolGroup.with_visible_schools
              end
   end
 

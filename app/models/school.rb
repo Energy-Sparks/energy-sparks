@@ -238,8 +238,7 @@ class School < ApplicationRecord
   scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
   scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  # TODO
-  scope :by_keyword, ->(keyword) { where('name LIKE ?', "%#{keyword}%")}
+  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
 
   def self.with_energy_tariffs
     joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'")

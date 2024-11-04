@@ -6,7 +6,7 @@ class SchoolSearchComponent < ApplicationComponent
 
   def initialize(tab: DEFAULT_TAB,
                  schools: School.visible,
-                 school_groups: SchoolGroup.all,
+                 school_groups: SchoolGroup.with_visible_schools,
                  letter: 'A',
                  keyword: nil, id: nil, classes: '')
     super(id: id, classes: classes)

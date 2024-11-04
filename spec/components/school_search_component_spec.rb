@@ -80,6 +80,12 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
 
       it { expect(component.school_groups_count).to eq(1) }
     end
+
+    context 'with visible schools' do
+      let(:school_groups) { SchoolGroup.with_visible_schools }
+
+      it { expect(component.school_groups_count).to eq(6) }
+    end
   end
 
   describe '#letter_title' do
