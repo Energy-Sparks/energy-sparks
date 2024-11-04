@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 672556302b0a50170214f073e97e7ff8576c52b8
-  tag: 6.0.18
+  revision: 1cbdd4eae159f5c8030959b7ef996b68aa5e0099
+  branch: 4576-ioerror-stream-closed-in-another-thread
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
