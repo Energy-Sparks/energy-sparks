@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get '/404', to: 'errors#not_found'
-  get '/500', to: 'errors#internal_server_error'
-  get '/422', to: 'errors#unprocessable_entity'
-
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 
@@ -764,4 +760,7 @@ Rails.application.routes.draw do
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
+  match "/:code", to: "errors#show", via: :all, constraints: {
+    code: /#{ErrorsController::CODES.join("|")}/
+  }
 end

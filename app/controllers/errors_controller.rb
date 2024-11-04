@@ -2,15 +2,13 @@ class ErrorsController < ApplicationController
   include ApplicationHelper
   skip_before_action :authenticate_user!
 
-  def not_found
-    render 'error', status: :not_found
-  end
+  CODES = %w[404 500 422].freeze
 
-  def internal_server_error
-    render 'error', status: :internal_server_error
-  end
-
-  def unprocessable_entity
-    render 'error', status: :unprocessable_entity
+  def show
+    code = CODES.include?(params[:code]) ? params[:code] : 500
+    respond_to do |format|
+      format.html { render status: code }
+      format.any { head code }
+    end
   end
 end
