@@ -70,6 +70,10 @@ en:
     registered_charity_notice: Energy Sparks is a registered charity in England and Wales, registration 1189273
     services: Services
     terms_and_conditions: Terms and conditions
+  maintenance:
+    progress: Our team is currently working on updating the site and we expect the service to be available again in a couple of hours
+    title: Energy Sparks is currently down for maintenance
+    unavailable: We're sorry but Energy Sparks is currently unavailable while we carry out some essential maintenance
   manage_menu:
     admin: Admin
     manage: Manage
