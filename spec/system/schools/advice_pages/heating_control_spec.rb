@@ -45,7 +45,8 @@ RSpec.describe 'heating control advice page', type: :system do
         estimated_savings: estimated_savings,
         enough_data_for_seasonal_analysis?: enough_data_for_seasonal_analysis,
         last_week_start_times: last_week_start_times,
-        seasonal_analysis: seasonal_analysis
+        seasonal_analysis: seasonal_analysis,
+        heating_on_in_last_weeks_holiday?: true
       )
 
       allow(meter_collection).to receive(:heat_meters).and_return([build(:meter, type: :gas)])
@@ -56,7 +57,7 @@ RSpec.describe 'heating control advice page', type: :system do
 
     it_behaves_like 'an advice page tab', tab: 'Insights'
 
-    context "clicking the 'Insights' tab" do
+    context "with clicking the 'Insights' tab" do
       before do
         create(:content_generation_run, :with_dashboard_alerts, school:, class_names: [
                  AlertHeatingSensitivityAdvice, AlertGasHeatingHotWaterOnDuringHoliday, AlertImpendingHoliday
@@ -86,7 +87,7 @@ RSpec.describe 'heating control advice page', type: :system do
         expect(page).to have_content('42')
       end
 
-      context 'and theres is no average start time' do
+      context 'and there\'s is no average start time' do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
 
         it 'does not show that text' do
@@ -95,7 +96,7 @@ RSpec.describe 'heating control advice page', type: :system do
       end
     end
 
-    context "clicking the 'Analysis' tab" do
+    context "when clicking the 'Analysis' tab" do
       before do
         create(:content_generation_run, :with_dashboard_alerts, school:, class_names: [
                  AlertGasHeatingHotWaterOnDuringHoliday, AlertImpendingHoliday
@@ -111,6 +112,7 @@ RSpec.describe 'heating control advice page', type: :system do
           Back to top
           AlertGasHeatingHotWaterOnDuringHoliday
           AlertImpendingHoliday
+          #{I18n.t('advice_pages.heating_control.holiday_notice')}
         CONTENT
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.school_day_heating.title'))
         expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.seasonal_control.title'))

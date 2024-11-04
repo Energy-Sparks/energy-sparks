@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: d2f1a8a3d5025d937cfe21ca6f11609252a71c7c
-  tag: 6.0.16
+  revision: e4e79a415ef8747d8a9f5aead31595da047a63ca
+  branch: 4017-rework-heating-on-advice-around-school-holidays
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.3)
