@@ -38,6 +38,43 @@ describe ConfirmationReminder do
     end
   end
 
+  shared_examples 'a confirmable user role' do
+    context 'when not confirmed' do
+      context 'when user has not yet received any email' do
+        # mimic when users are created during onboarding as we confirm them at the end of the process
+        let!(:user) { create(role, :skip_confirmed) }
+
+        it_behaves_like 'it ignores sending emails'
+      end
+
+      context 'when user has been sent confirmation' do
+        let!(:user) { create(role, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now) }
+
+        it_behaves_like 'it correctly sends emails'
+      end
+
+      context 'when school is archived' do
+        let!(:school) { create(:school, :archived) }
+        let!(:user) { create(role, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now, school: school) }
+
+        it_behaves_like 'it ignores sending emails'
+      end
+
+      context 'when school is deleted' do
+        let!(:school) { create(:school, :deleted) }
+        let!(:user) { create(role, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now, school: school) }
+
+        it_behaves_like 'it ignores sending emails'
+      end
+    end
+
+    context 'when user is confirmed' do
+      let!(:user) { create(role, confirmed_at: now, confirmation_token: 'token', confirmation_sent_at: now) }
+
+      it_behaves_like 'it ignores sending emails'
+    end
+  end
+
   context 'with group user' do
     context 'when not confirmed' do
       context 'when user has been sent confirmation' do
@@ -54,55 +91,21 @@ describe ConfirmationReminder do
     end
   end
 
-  context 'with adult school user' do
-    context 'when not confirmed' do
-      context 'when user has not yet received any email' do
-        # mimic when users are created during onboarding as we confirm them at the end of the process
-        let!(:user) { create(:school_admin, :skip_confirmed) }
-
-        it_behaves_like 'it ignores sending emails'
-      end
-
-      context 'when user has been sent confirmation' do
-        let!(:user) { create(:school_admin, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now) }
-
-        it_behaves_like 'it correctly sends emails'
-      end
-
-      context 'when school is archived' do
-        let!(:school) { create(:school, :archived) }
-        let!(:user) { create(:school_admin, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now, school: school) }
-
-        it_behaves_like 'it ignores sending emails'
-      end
-
-      context 'when school is deleted' do
-        let!(:school) { create(:school, :deleted) }
-        let!(:user) { create(:school_admin, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now, school: school) }
-
-        it_behaves_like 'it ignores sending emails'
+  [:staff, :school_admin, :volunteer].each do |role|
+    context "with #{role} school user role" do
+      it_behaves_like 'a confirmable user role' do
+        let(:role) { role }
       end
     end
+  end
 
-    context 'when user is confirmed' do
-      let!(:user) { create(:school_admin, confirmed_at: now, confirmation_token: 'token', confirmation_sent_at: now) }
+  # pupils have no email address, are auto confirmed at creation
+  # school_onboarding users become school admins when school is created during onboarding, auto confirmed before that
+  [:pupil, :onboarding_user].each do |role|
+    context "with #{role}" do
+      let!(:user) { create(role, confirmed_at: now) }
 
       it_behaves_like 'it ignores sending emails'
     end
-  end
-
-  # no email address, auto confirmed at creation
-  context 'with pupil' do
-    let!(:user) { create(:pupil, confirmed_at: now) }
-
-    it_behaves_like 'it ignores sending emails'
-  end
-
-
-  # auto confirmed during onboarding users become school admins when school is created during onboarding
-  context 'with onboarding_user' do
-    let!(:user) { create(:onboarding_user, confirmed_at: now) }
-
-    it_behaves_like 'it ignores sending emails'
   end
 end
