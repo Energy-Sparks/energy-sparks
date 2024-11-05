@@ -124,9 +124,6 @@ Rails.application.configure do
   # See https://github.com/bensheldon/good_job#configuration-options
   config.good_job.execution_mode = :external
   config.good_job.on_thread_error = -> (exception) { Rollbar.error(exception, from: :on_thread_error) }
-  # by default logs to stdout which systemd/rsyslogd sends to /var/log/worker.stdout.log but sometimes this stops
-  # updating so explicitly log to a file instead
-  config.good_job.logger = Logger.new('/var/log/good_jobs/good_jobs.log', 2, 10.megabytes)
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = { api_key: ENV['MG_API_KEY'], domain: ENV['MG_DOMAIN'] }
   config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
