@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
+# Send confirmation reminders to specific types of user accounts, ignoring deleted or archived schools
+#
+# Do not chase old accounts.
 module ConfirmationReminder
-  # Only send confirmations to these roles
   CONFIRMABLE_ROLES = [:staff, :school_admin, :group_admin, :volunteer].freeze
 
   def self.send
     now = Time.current
-    User.where(role: CONFIRMABLE_ROLES).where('confirmed_at IS NULL AND confirmation_sent_at IS NOT NULL').find_each do |user|
+    User.where(role: CONFIRMABLE_ROLES) # restrict to specific set of roles
+        .where('created_at >= ?', 31.days.ago) # ignore old accounts
+        .where('confirmed_at IS NULL AND confirmation_sent_at IS NOT NULL').find_each do |user|
       next if user.school && user.school.not_active?
       if should_send_reminder(now, user, 30.days)
         EnergySparksDeviseMailer.confirmation_instructions_final_reminder(user, user.confirmation_token).deliver_now

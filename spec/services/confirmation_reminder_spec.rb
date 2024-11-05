@@ -51,6 +51,12 @@ describe ConfirmationReminder do
         let!(:user) { create(role, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now) }
 
         it_behaves_like 'it correctly sends emails'
+
+        context 'with an account created a while ago' do
+          let!(:user) { create(role, created_at: 2.months.ago, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: 2.months.ago) }
+
+          it_behaves_like 'it ignores sending emails'
+        end
       end
 
       context 'when school is archived' do
