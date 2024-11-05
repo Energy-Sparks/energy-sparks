@@ -69,5 +69,11 @@ FactoryBot.define do
     trait :has_school_assigned do
       school
     end
+
+    trait :skip_confirmed do
+      after(:build) do |user, _evaluator|
+        user.skip_confirmation_notification!
+      end
+    end
   end
 end
