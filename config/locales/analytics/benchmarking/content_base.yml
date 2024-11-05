@@ -106,6 +106,7 @@ en:
           optimum_start_rating: Optimum start rating
           overnight_charging: Overnight charging
           payback_years: Payback (years)
+          percent_above_or_below_target_since_target_set: Percent above or below target since target set
           percent_increase_on_winter_baseload_over_summer: Percent increase on winter baseload over summer
           percentage_of_annual_heating_consumed_in_warm_weather: Percentage of annual heating consumed in warm weather
           percentage_of_gas_use_for_hot_water: Percentage of gas use for hot water
@@ -144,6 +145,7 @@ en:
           solar_self_consume: Self consumption (kWh)
           standard_deviation_of_start_time__hours_last_year: Standard deviation of start time - hours, last year
           start_date_for_target: Start date for target
+          storage_heaters: Storage heaters
           summer_baseload_kw: Summer baseload kW
           target_kwh_consumption: Target kWh consumption
           temperature_adjusted_kwh: Temperature adjusted change (kWh)

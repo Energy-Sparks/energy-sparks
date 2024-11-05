@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 5baabb6352788e7b925340177b8f72803a1c2b95
+  revision: 43c5b16a0ad894ffaa81195217520adfbe50c55d
   branch: 4411-tidy-up-analytics-benchmark-code
   specs:
     energy-sparks_analytics (1.2.1)
