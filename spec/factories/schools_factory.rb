@@ -30,6 +30,16 @@ FactoryBot.define do
       end
     end
 
+    trait :archived do
+      active { false }
+      removal_date { nil }
+    end
+
+    trait :deleted do
+      active { false }
+      removal_date { Date.new(2023, 1, 1) }
+    end
+
     trait :with_calendar do
       after(:create) do |school, _evaluator|
         school.update(calendar: create(:school_calendar))
