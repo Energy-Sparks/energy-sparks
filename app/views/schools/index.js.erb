@@ -1,0 +1,1 @@
+$("#<%= @tab.to_s.dasherize %>-results").html("<%= escape_javascript(render 'results', tab: @tab, letter: @letter, keyword: @keyword, results: @results, count: @count) %>")
