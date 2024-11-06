@@ -47,7 +47,7 @@ module Schools
       @logger.info 'Generated advice page benchmarks'
     rescue => e
       @logger.error "There was an error for #{@school.name} - #{e.message}"
-      Rollbar.error(e, job: :school_metric_genetator, school_id: @school.id, school: @school.name)
+      Rollbar.error(e, job: :school_metric_generator, school_id: @school.id, school: @school.name)
     end
 
     def suppress_output(&block)
@@ -59,14 +59,11 @@ module Schools
     end
 
     def _suppress_output
-      original_stdout = $stdout.clone
-      original_stderr = $stderr.clone
-      $stderr.reopen File.new('/dev/null', 'w')
-      $stdout.reopen File.new('/dev/null', 'w')
+      original_level = @logger.level
+      @logger.level = Logger::WARN
       yield
     ensure
-      $stdout.reopen original_stdout
-      $stderr.reopen original_stderr
+      @logger.level = original_level
     end
   end
 end
