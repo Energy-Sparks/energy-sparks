@@ -194,10 +194,13 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
 
     context 'with schools tab' do
       it { expect(html).to have_link('A', href: schools_path(letter: 'A', scope: :schools))}
+      it { expect(html).to have_link(a_school.name, href: school_path(a_school)) }
+      it { expect(html).to have_content(a_school.school_group.name)}
     end
 
     context 'with school groups' do
       it { expect(html).to have_link('A', href: schools_path(letter: 'A', scope: :school_groups))}
+      it { expect(html).to have_link(a_school_group.name, href: school_group_path(a_school_group)) }
     end
   end
 end
