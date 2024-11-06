@@ -1,7 +1,7 @@
 name: "Ruby on Rails CI"
 on:
   push:
-    branches: [ master, aws-eb-test, aws-eb-master ]
+    branches: [ aws-eb-test, aws-eb-master ]
   pull_request:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
