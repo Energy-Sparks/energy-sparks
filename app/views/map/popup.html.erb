@@ -5,7 +5,16 @@
   <%= I18n.t('maps.school_features.school_type') %>: <%= @school.school_type.humanize %>
 </p>
 <p class="small">
-  <%= I18n.t('maps.school_features.fuel_types') %>: <%= Maps::SchoolFeatures.fuel_type_icons_html_for(@school).html_safe %>
+  <%= I18n.t('maps.school_features.fuel_types') %>:
+  <% if @school.has_electricity? %>
+    &nbsp;<i class='fas fa-bolt'></i>
+  <% end %>
+  <% if @school.has_gas? %>
+    &nbsp;<i class='fas fa-fire'></i>
+  <% end %>
+  <% if @school.has_solar_pv? %>
+    &nbsp;<i class='fas fa-sun'></i>
+  <% end %>
 </p>
 <p class="small">
   <%= I18n.t('maps.school_features.pupils') %>: <%= @school.number_of_pupils %>

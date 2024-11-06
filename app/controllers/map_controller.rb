@@ -8,6 +8,7 @@ class MapController < ApplicationController
   end
 
   def popup
+    raise ActionController::RoutingError.new('Not Found') unless params[:id].present?
     @school = School.find(params[:id])
     render :popup, layout: false
   end

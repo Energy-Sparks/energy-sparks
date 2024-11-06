@@ -10,14 +10,6 @@ module Maps
       RGeo::GeoJSON.encode(geojson)
     end
 
-    def self.fuel_type_icons_html_for(school)
-      fuel_type_icons = ''
-      fuel_type_icons += "&nbsp;<i class='fas fa-bolt'></i>" if school.has_electricity?
-      fuel_type_icons += "&nbsp;<i class='fas fa-fire'></i>" if school.has_gas?
-      fuel_type_icons += "&nbsp;<i class='fas fa-sun'></i>" if school.has_solar_pv?
-      fuel_type_icons
-    end
-
     private
 
     def geojson
