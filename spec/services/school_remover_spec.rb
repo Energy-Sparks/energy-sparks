@@ -207,7 +207,16 @@ describe SchoolRemover, :schools, type: :service do
       end
     end
 
-    context
+    context 'when a user is not confirmed' do
+      let!(:unconfirmed) { create(:school_admin, school: school, confirmed_at: nil) }
+
+      it 'removes the unconfirmed user' do
+        remove
+        school.users.reload
+        expect(school.users.count).to eq(4)
+        expect(school.users).to be_all(&:access_locked?)
+      end
+    end
   end
 
   describe '#remove_meters!' do
