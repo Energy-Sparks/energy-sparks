@@ -33,7 +33,7 @@ class SchoolSearchComponent < ApplicationComponent
   def letter_status(tab, letter)
     if !tab_active?(tab) && letter == 'A'
       'active' # Ensure A is active by default
-    elsif tab_active?(tab) && letter == @letter && keyword.nil?
+    elsif tab_active?(tab) && letter == @letter && @keyword.nil?
       'active' # Activate letter based on parameter
     elsif tab == :schools
       'disabled' unless schools_by_letter.key?(letter)
