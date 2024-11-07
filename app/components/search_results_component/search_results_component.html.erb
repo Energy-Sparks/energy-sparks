@@ -1,0 +1,19 @@
+<div id="<%= id %>" class="row search-results-component">
+  <div class="col-12 col-md-2">
+    <h3>
+      <%= title %>
+    </h3>
+    <p>
+      <%= subtitle %>
+    </p>
+  </div>
+  <div class="col-12 col-md-10">
+    <% results.each do |result| %>
+      <ul class="list-unstyled">
+        <li>
+          <%= result %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</div>
