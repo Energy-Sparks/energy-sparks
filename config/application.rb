@@ -47,6 +47,7 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
+    config.exceptions_app = self.routes
     # Default good job execution mode configuration for test
     # See https://github.com/bensheldon/good_job#configuration-options
     config.active_job.queue_adapter = :good_job

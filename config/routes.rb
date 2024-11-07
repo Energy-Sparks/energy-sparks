@@ -760,4 +760,7 @@ Rails.application.routes.draw do
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
+  match "/:code", to: "errors#show", via: :all, constraints: {
+    code: /#{ErrorsController::CODES.join("|")}/
+  }
 end
