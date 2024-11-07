@@ -24,6 +24,15 @@ class Audit < ApplicationRecord
   has_one_attached :file
   has_rich_text :description
 
+  has_many :tasklist_tasks, as: :tasklist_source, dependent: :destroy
+  has_many :tasklist_activity_types, through: :tasklist_tasks, source: :task_source, source_type: 'ActivityType'
+  has_many :tasklist_intervention_types, through: :tasklist_tasks, source: :task_source, source_type: 'InterventionType'
+
+  # has_many :tasklist_completed_tasks, as: :tasklist_target, dependent: :destroy
+  has_many :completed_tasks, through: :tasklist_completed_tasks, source: :tasklist_task
+  has_many :completed_activity_types, through: :tasklist_completed_tasks, source: :activity_type
+  has_many :completed_intervention_types, through: :tasklist_completed_tasks, source: :intervention_type
+
   has_many :observations, as: :observable, dependent: :destroy
 
   validates_presence_of :school, :title, :file
@@ -41,20 +50,20 @@ class Audit < ApplicationRecord
   scope :published, -> { where(published: true) }
   scope :by_date,   -> { order(created_at: :desc) }
 
-  def completed_activity_types
+  def activity_types_completed
     activity_types.where(id: school.activities.where(happened_on: created_at..).pluck(:activity_type_id))
   end
 
-  def completed_intervention_types
+  def intervention_types_completed
     intervention_types.where(id: school.observations.intervention.where(at: created_at..).pluck(:intervention_type_id))
   end
 
   def activity_types_remaining
-    activity_types - completed_activity_types
+    activity_types - activity_types_completed
   end
 
   def intervention_types_remaining
-    intervention_types - completed_intervention_types
+    intervention_types - intervention_types_completed
   end
 
   def tasks_remaining?
