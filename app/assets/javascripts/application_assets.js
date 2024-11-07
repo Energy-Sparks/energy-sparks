@@ -69,3 +69,4 @@
 //= require date_picker_form_component
 //= require panel_switcher_component
 //= require carousels
+//= require school_search
