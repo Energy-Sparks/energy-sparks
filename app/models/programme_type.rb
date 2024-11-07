@@ -17,6 +17,7 @@ class ProgrammeType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   include TranslatableAttachment
+  include Tasklist::Source
 
   translates :title, type: :string, fallbacks: { cy: :en }
   translates :short_description, type: :string, fallbacks: { cy: :en }

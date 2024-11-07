@@ -24,14 +24,8 @@ class Audit < ApplicationRecord
   has_one_attached :file
   has_rich_text :description
 
-  has_many :tasklist_tasks, as: :tasklist_source, dependent: :destroy
-  has_many :tasklist_activity_types, through: :tasklist_tasks, source: :task_source, source_type: 'ActivityType'
-  has_many :tasklist_intervention_types, through: :tasklist_tasks, source: :task_source, source_type: 'InterventionType'
-
-  # has_many :tasklist_completed_tasks, as: :tasklist_target, dependent: :destroy
-  has_many :completed_tasks, through: :tasklist_completed_tasks, source: :tasklist_task
-  has_many :completed_activity_types, through: :tasklist_completed_tasks, source: :activity_type
-  has_many :completed_intervention_types, through: :tasklist_completed_tasks, source: :intervention_type
+  include Tasklist::Source
+  include Tasklist::Target
 
   has_many :observations, as: :observable, dependent: :destroy
 
