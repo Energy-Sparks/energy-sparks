@@ -14,21 +14,19 @@ module Schools
 
     def generate_metrics
       # Configuration school
-      suppress_output { Schools::GenerateConfiguration.new(@school, @meter_collection).generate }
+      Schools::GenerateConfiguration.new(@school, @meter_collection).generate
 
       @logger.info 'Generated configuration'
 
       # Generate alerts & benchmarks
-      suppress_output do
-        Alerts::GenerateAndSaveAlertsAndBenchmarks.new(
-          school: @school,
-          aggregate_school: @meter_collection
-        ).perform
-      end
+      Alerts::GenerateAndSaveAlertsAndBenchmarks.new(
+        school: @school,
+        aggregate_school: @meter_collection
+      ).perform
       @logger.info 'Generated alerts & benchmarks'
 
       # Generate equivalences
-      suppress_output { Equivalences::GenerateEquivalences.new(school: @school, aggregate_school: @meter_collection).perform }
+      Equivalences::GenerateEquivalences.new(school: @school, aggregate_school: @meter_collection).perform
 
       @logger.info 'Generated equivalences'
 
@@ -48,22 +46,6 @@ module Schools
     rescue => e
       @logger.error "There was an error for #{@school.name} - #{e.message}"
       Rollbar.error(e, job: :school_metric_generator, school_id: @school.id, school: @school.name)
-    end
-
-    def suppress_output(&block)
-      if Rails.env.production?
-        _suppress_output(&block)
-      else
-        yield
-      end
-    end
-
-    def _suppress_output
-      original_level = @logger.level
-      @logger.level = Logger::WARN
-      yield
-    ensure
-      @logger.level = original_level
     end
   end
 end
