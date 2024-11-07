@@ -59,11 +59,14 @@ module Schools
     end
 
     def _suppress_output
-      original_level = @logger.level
-      @logger.level = Logger::WARN
+      original_stdout = $stdout.clone
+      original_stderr = $stderr.clone
+      $stderr.reopen File.new('/dev/null', 'w')
+      $stdout.reopen File.new('/dev/null', 'w')
       yield
     ensure
-      @logger.level = original_level
+      $stdout.reopen original_stdout
+      $stderr.reopen original_stderr
     end
   end
 end
