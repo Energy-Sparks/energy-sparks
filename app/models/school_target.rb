@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: school_targets
@@ -34,10 +36,11 @@ class SchoolTarget < ApplicationRecord
   # for timeline entry
   has_many :observations, as: :observable, dependent: :destroy
 
-  validates_presence_of :school, :target_date, :start_date
+  validates :target_date, :start_date, presence: true
   validate :must_have_one_target
 
-  validates :electricity, :gas, :storage_heaters, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_blank: true
+  validates :electricity, :gas, :storage_heaters,
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_blank: true
 
   scope :by_date, -> { order(created_at: :desc) }
   scope :by_start_date, -> { order(start_date: :desc) }
@@ -45,8 +48,8 @@ class SchoolTarget < ApplicationRecord
   scope :currently_active, -> { where('start_date <= :now and :now <= target_date', now: Time.zone.today) }
 
   before_save :adjust_target_date
-  after_save :add_observation
   after_update :ensure_observation_date_is_correct
+  after_save :add_observation
 
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
@@ -91,9 +94,11 @@ class SchoolTarget < ApplicationRecord
 
   def saved_progress_report_for(fuel_type)
     fuel_type = :storage_heaters if fuel_type == :storage_heater
-    raise 'Invalid fuel type' unless [:electricity, :gas, :storage_heaters].include?(fuel_type)
-    report = self["#{fuel_type}_report".to_sym]
+    raise 'Invalid fuel type' unless %i[electricity gas storage_heaters].include?(fuel_type)
+
+    report = self[:"#{fuel_type}_report"]
     return nil unless report&.any?
+
     TargetsProgress.new(**reformat_saved_report(report))
   end
 
@@ -104,7 +109,7 @@ class SchoolTarget < ApplicationRecord
     report.symbolize_keys!
     report[:fuel_type] = report[:fuel_type].to_sym
     # reparse to Dates from yyyy-mm-dd format
-    report[:months].map! {|m| Date.strptime(m, '%Y-%m-%d')}
+    report[:months].map! { |m| Date.strptime(m, '%Y-%m-%d') }
     report
   end
 
@@ -116,23 +121,23 @@ class SchoolTarget < ApplicationRecord
   end
 
   def target_to_percent_reduction(target)
-    return (100.0 - target) / 100.0
+    (100.0 - target) / 100.0
   end
 
   def must_have_one_target
-    if electricity.blank? && gas.blank? && storage_heaters.blank?
-      errors.add :base, 'At least one target must be provided'
-    end
+    return unless electricity.blank? && gas.blank? && storage_heaters.blank?
+
+    errors.add :base, 'At least one target must be provided'
   end
 
   def adjust_target_date
-    self.target_date = self.start_date.next_year
+    self.target_date = start_date.next_year
   end
 
   def add_observation
     return if observations.school_target.any?
 
-    self.observations.school_target.create!(at: start_date, points: 0)
+    observations.school_target.create!(at: start_date, points: 10)
   end
 
   def ensure_observation_date_is_correct
