@@ -18,6 +18,6 @@ class TasklistCompletedTask < ApplicationRecord
   belongs_to :tasklist_target, polymorphic: true
   belongs_to :tasklist_task
 
-  has_one :activity_type, through: :tasklist_task, :source => :task_source, source_type: 'ActivityType'
-  has_one :intervention_type, through: :tasklist_task, :source => :task_source, source_type: 'InterventionType'
+  has_one :activity_type, through: :tasklist_task, source: :task_source, source_type: 'ActivityType'
+  has_one :intervention_type, through: :tasklist_task, source: :task_source, source_type: 'InterventionType'
 end

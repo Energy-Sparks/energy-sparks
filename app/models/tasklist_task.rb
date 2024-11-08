@@ -20,4 +20,7 @@
 class TasklistTask < ApplicationRecord
   belongs_to :tasklist_source, polymorphic: true
   belongs_to :task_source, polymorphic: true
+
+  # NEW - check works!
+  has_one :tasklist_completed_task, dependent: :destroy
 end
