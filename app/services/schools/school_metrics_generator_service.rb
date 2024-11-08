@@ -15,29 +15,22 @@ module Schools
     def generate_metrics
       # Configuration school
       Schools::GenerateConfiguration.new(@school, @meter_collection).generate
-
       @logger.info 'Generated configuration'
 
       # Generate alerts & benchmarks
-      Alerts::GenerateAndSaveAlertsAndBenchmarks.new(
-        school: @school,
-        aggregate_school: @meter_collection
-      ).perform
+      Alerts::GenerateAndSaveAlertsAndBenchmarks.new(school: @school, aggregate_school: @meter_collection).perform
       @logger.info 'Generated alerts & benchmarks'
 
       # Generate equivalences
       Equivalences::GenerateEquivalences.new(school: @school, aggregate_school: @meter_collection).perform
-
       @logger.info 'Generated equivalences'
 
       # Generate content
       Alerts::GenerateContent.new(@school).perform
-
       @logger.info 'Generated alert content'
 
       # Generate target progress
       Targets::GenerateProgressService.new(@school, @meter_collection).generate!
-
       @logger.info 'Generated target data'
 
       # Generate advice page benchmarks
