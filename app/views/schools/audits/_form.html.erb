@@ -110,8 +110,6 @@
 
   <%= f.submit @audit.persisted? ? t('common.labels.update') : t('common.labels.create'), class: 'btn btn-primary' %>
 
-  <%= link_to t('common.labels.cancel'), [@school, @audit.persisted? ? @audit : :audits], class: 'btn btn-secondary' %>
-
   <%= link_to t('common.labels.cancel'),
               @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: 'btn btn-secondary' %>
 <% end %>
