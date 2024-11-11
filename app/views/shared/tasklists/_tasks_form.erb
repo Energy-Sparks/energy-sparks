@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div id="audit-activity-types" class="sortThese">
+<div id="audit-activity-types" class="sort-list">
   <%= f.simple_fields_for :activity_type_tasks, @audit.activity_type_tasks do |tasklist_task| %>
     <%= render 'shared/tasklists/activity_type_task_fields', f: tasklist_task %>
   <% end %>
@@ -51,7 +51,7 @@
   </div>
 </div>
 
-<div id="audit-intervention-types" class="sortThese">
+<div id="audit-intervention-types" class="sort-list">
   <%= f.simple_fields_for :intervention_type_tasks, @audit.intervention_type_tasks do |tasklist_task| %>
     <%= render 'shared/tasklists/intervention_type_task_fields', f: tasklist_task %>
   <% end %>
@@ -62,10 +62,24 @@
 
 <script>
   $(document).ready(function() {
-    if ($("form").length) {
-      $('select.form-control.select2').select2({theme: 'bootstrap'});
-      $('.sortThese').sortable();
+    function updatePositions($list) {
+      $list.find('input.position').each(function(idx) {
+        $(this).val(idx);
+      });
     }
+
+    $('.sort-list').each(function() {
+      const $this = $(this);
+      $this.sortable();
+
+      const observer = new MutationObserver(function() {
+        updatePositions($this);
+      });
+
+      observer.observe($this[0], {
+        childList: true,
+        subtree: true
+      });
+    });
   });
 </script>
-
