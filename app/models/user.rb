@@ -221,12 +221,15 @@ class User < ApplicationRecord
         'School Group',
         'School',
         'School type',
+        'School active',
+        'School data enabled',
         'Funder',
         'Region',
         'Name',
         'Email',
         'Role',
         'Staff Role',
+        'Confirmed',
         'Locked'
       ]
       where.not(role: %i[pupil admin]).order(:email).each do |user|
@@ -234,12 +237,23 @@ class User < ApplicationRecord
           user.default_school_group_name || '',
           user.school&.name || '',
           user.school&.school_type&.humanize || '',
+          if user.school
+            user.school&.active? ? 'Yes' : 'No'
+          else
+            ''
+          end,
+          if user.school
+            user.school&.data_enabled? ? 'Yes' : 'No'
+          else
+            ''
+          end,
           user.school&.funder&.name || '',
           user.school&.region&.to_s&.titleize || '',
           user.name,
           user.email,
           user.role.titleize,
           user.staff_role&.title || '',
+          user.confirmed? ? 'Yes' : 'No',
           user.access_locked? ? 'Yes' : 'No'
         ]
       end
