@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: heat_saver_march_2024s
+# Table name: comparison_heat_saver_march_2024s
 #
 #  activation_date                               :date
 #  electricity_current_period_co2                :float
@@ -34,10 +34,10 @@
 #
 # Indexes
 #
-#  index_heat_saver_march_2024s_on_school_id  (school_id) UNIQUE
+#  index_comparison_heat_saver_march_2024s_on_school_id  (school_id) UNIQUE
 #
 class Comparison::HeatSaverMarch2024 < Comparison::View
   include MultipleFuelComparisonView
   include ArbitraryPeriodComparisonView
-  self.table_name = 'heat_saver_march_2024s'
+  self.table_name = 'comparison_heat_saver_march_2024s'
 end

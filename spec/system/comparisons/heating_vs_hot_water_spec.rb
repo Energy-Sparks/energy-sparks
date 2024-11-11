@@ -33,8 +33,6 @@ describe 'heating_vs_hot_water' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{key}" }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
@@ -58,6 +56,8 @@ describe 'heating_vs_hot_water' do
     end
 
     it 'has a custom unlisted message' do
+      Comparison::HeatingVsHotWater.refresh
+      visit "/comparisons/#{report.key}"
       expect(page).to have_content('2 schools could not be shown in this report as they do not have enough data to ' \
                                    'be analysed, or have swimming pools so their hot water usage cannot be ' \
                                    'accurately estimated.')
