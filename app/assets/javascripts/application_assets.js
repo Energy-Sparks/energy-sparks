@@ -3,6 +3,7 @@
 
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui/widgets/sortable
 
 // to support active storage direct upload
 //= require activestorage

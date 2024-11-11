@@ -19,8 +19,22 @@
 #
 class TasklistTask < ApplicationRecord
   belongs_to :tasklist_source, polymorphic: true
-  belongs_to :task_source, polymorphic: true
+  belongs_to :task_source, polymorphic: true, optional: true
+
+  # belongs_to :activity_type, class_name: 'ActivityType'
+  # belongs_to :intervention_type, class_name: 'InterventionType'
+
+  delegated_type :tasklist_source, types: %w[Audit ProgrammeType]
+  delegated_type :task_source, types: %w[ActivityType InterventionType]
 
   # NEW - check works!
   has_one :tasklist_completed_task, dependent: :destroy
+
+  validate :task_source_presence
+
+  private
+
+  def task_source_presence
+    errors.add(:base, "#{task_source_type} must exist") if task_source.blank?
+  end
 end

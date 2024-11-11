@@ -1,0 +1,71 @@
+<h2><%= t('schools.audits.form.activities') %></h2>
+<p class="small">
+  <%= t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path) %>.
+</p>
+
+<p class="small">
+  <%= t('schools.audits.form.add_a_custom_activity_message') %>.
+</p>
+
+<div class="row">
+  <div class="col-md-5 mb-3">
+    <label for="activity_type"><%= t('schools.audits.form.activity_type') %></label>
+  </div>
+  <div class="col-md-5 mb-3">
+    <label for="notes"><%= t('schools.audits.form.notes') %></label>
+  </div>
+  <div class="col-md-2 mb-3">
+  </div>
+</div>
+
+<div id="audit-activity-types" class="sortThese">
+  <%= f.simple_fields_for :activity_type_tasks, @audit.activity_type_tasks do |tasklist_task| %>
+    <%= render 'shared/tasklists/activity_type_task_fields', f: tasklist_task %>
+  <% end %>
+  <div class="links">
+    <%= link_to_add_association t('schools.audits.form.add_activity'), f, :activity_type_tasks, class: 'btn', partial: 'shared/tasklists/activity_type_task_fields' %>
+  </div>
+</div>
+
+<br>
+<br>
+
+<h2><%= t('common.labels.actions') %></h2>
+
+<p class="small">
+  <%= t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path) %>
+</p>
+
+<p class="small">
+  <%= t('schools.audits.form.actions_message_2') %>.
+</p>
+
+<div class="row">
+  <div class="col-md-5 mb-3">
+    <label for="firstName"><%= t('schools.audits.form.action_type') %></label>
+  </div>
+  <div class="col-md-5 mb-3">
+    <label for="lastName"><%= t('schools.audits.form.notes') %></label>
+  </div>
+  <div class="col-md-2 mb-3">
+  </div>
+</div>
+
+<div id="audit-intervention-types" class="sortThese">
+  <%= f.simple_fields_for :intervention_type_tasks, @audit.intervention_type_tasks do |tasklist_task| %>
+    <%= render 'shared/tasklists/intervention_type_task_fields', f: tasklist_task %>
+  <% end %>
+  <div class="links">
+    <%= link_to_add_association t('schools.audits.form.add_action'), f, :intervention_type_tasks, class: 'btn', partial: 'shared/tasklists/intervention_type_task_fields' %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    if ($("form").length) {
+      $('select.form-control.select2').select2({theme: 'bootstrap'});
+      $('.sortThese').sortable();
+    }
+  });
+</script>
+

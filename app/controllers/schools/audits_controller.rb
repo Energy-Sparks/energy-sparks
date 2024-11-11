@@ -48,7 +48,11 @@ module Schools
     end
 
     def audit_params
-      params.require(:audit).permit(:school_id, :title, :description, :file, :published, :involved_pupils, audit_activity_types_attributes: audit_activity_types_attributes, audit_intervention_types_attributes: audit_intervention_types_attributes)
+      params.require(:audit).permit(:school_id, :title, :description, :file, :published, :involved_pupils,
+          audit_activity_types_attributes: audit_activity_types_attributes, # being replaced
+          audit_intervention_types_attributes: audit_intervention_types_attributes, # being replaced
+          activity_type_tasks_attributes: tasks_attributes, # new
+          intervention_type_tasks_attributes: tasks_attributes) # new
     end
 
     def audit_activity_types_attributes
@@ -57,6 +61,10 @@ module Schools
 
     def audit_intervention_types_attributes
       [:id, :intervention_type_id, :intervention_type, :notes, :_destroy]
+    end
+
+    def tasks_attributes
+      [:id, :task_source_id, :task_source_type, :task_source, :tasklist_source_id, :tasklist_source_type, :position, :notes, :_destroy]
     end
   end
 end

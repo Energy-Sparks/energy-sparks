@@ -1,0 +1,24 @@
+<div class="nested-fields">
+  <div class="row">
+    <div class="col-md-5 mb-3">
+      <%= f.select(
+            :task_source_id,
+            grouped_options_for_select(
+              task_sources,
+              f.object.task_source_id
+            ),
+            { include_blank: true },
+            { class: 'form-control select2' }
+          ) %>
+      <%= f.hidden_field :task_source_type, value: task_source_type %>
+      <%= f.hidden_field :position %>
+      <%= f.error :task_source, id: 'task_source_error' %>
+    </div>
+    <div class="col-md-5 mb-3">
+      <%= f.text_area :notes, label: false, class: 'form-control select2' %>
+    </div>
+    <div class="col-md-2 mb-3">
+      <%= link_to_remove_association t('common.labels.remove'), f, class: 'btn' %>
+    </div>
+  </div>
+</div>
