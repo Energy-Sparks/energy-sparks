@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: seasonal_baseload_variations
+# Table name: comparison_seasonal_baseload_variations
 #
 #  alert_generation_run_id                       :bigint(8)
 #  annual_cost_gbpcurrent                        :float
@@ -13,7 +13,7 @@
 #
 # Indexes
 #
-#  index_seasonal_baseload_variations_on_school_id  (school_id) UNIQUE
+#  index_comparison_seasonal_baseload_variations_on_school_id  (school_id) UNIQUE
 #
 class Comparison::SeasonalBaseloadVariation < Comparison::View
 end

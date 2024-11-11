@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: configurable_periods
+# Table name: comparison_configurable_periods
 #
 #  activation_date                               :date
 #  comparison_report_id                          :bigint(8)
@@ -35,7 +35,7 @@
 #
 # Indexes
 #
-#  idx_on_school_id_comparison_report_id_44b9147042  (school_id,comparison_report_id) UNIQUE
+#  idx_on_school_id_comparison_report_id_7e281be411  (school_id,comparison_report_id) UNIQUE
 #
 class Comparison::ConfigurablePeriod < Comparison::View
   include MultipleFuelComparisonView

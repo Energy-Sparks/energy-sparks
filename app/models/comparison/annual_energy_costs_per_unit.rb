@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: annual_energy_costs_per_units
+# Table name: comparison_annual_energy_costs_per_units
 #
 #  electricity_economic_tariff_changed_this_year :boolean
 #  floor_area                                    :float
@@ -29,7 +29,7 @@
 #
 # Indexes
 #
-#  index_annual_energy_costs_per_units_on_school_id  (school_id) UNIQUE
+#  index_comparison_annual_energy_costs_per_units_on_school_id  (school_id) UNIQUE
 #
 class Comparison::AnnualEnergyCostsPerUnit < Comparison::View
   def pupil_kwhs

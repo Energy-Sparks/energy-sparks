@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: hot_water_efficiencies
+# Table name: comparison_hot_water_efficiencies
 #
 #  alert_generation_run_id                    :bigint(8)
 #  avg_gas_per_pupil_gbp                      :float
@@ -12,7 +12,7 @@
 #
 # Indexes
 #
-#  index_hot_water_efficiencies_on_school_id  (school_id) UNIQUE
+#  index_comparison_hot_water_efficiencies_on_school_id  (school_id) UNIQUE
 #
 class Comparison::HotWaterEfficiency < Comparison::View
   scope :with_data, -> { where.not(avg_gas_per_pupil_gbp: [nil, 0.0]) }

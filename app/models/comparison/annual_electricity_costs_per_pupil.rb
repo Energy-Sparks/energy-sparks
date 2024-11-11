@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: annual_electricity_costs_per_pupils
+# Table name: comparison_annual_electricity_costs_per_pupils
 #
 #  alert_generation_run_id                    :bigint(8)
 #  id                                         :bigint(8)
@@ -11,7 +11,7 @@
 #
 # Indexes
 #
-#  index_annual_electricity_costs_per_pupils_on_school_id  (school_id) UNIQUE
+#  idx_on_school_id_1d369f6529  (school_id) UNIQUE
 #
 class Comparison::AnnualElectricityCostsPerPupil < Comparison::View
   scope :with_data, -> { where.not(one_year_electricity_per_pupil_gbp: nil) }

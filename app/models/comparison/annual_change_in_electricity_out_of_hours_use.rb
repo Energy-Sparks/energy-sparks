@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: annual_change_in_electricity_out_of_hours_uses
+# Table name: comparison_annual_change_in_electricity_out_of_hours_uses
 #
 #  alert_generation_run_id           :bigint(8)
 #  economic_tariff_changed_this_year :boolean
@@ -17,7 +17,7 @@
 #
 # Indexes
 #
-#  idx_on_school_id_2553bedeaf  (school_id) UNIQUE
+#  idx_on_school_id_d6a1e1630d  (school_id) UNIQUE
 #
 module Comparison
   class AnnualChangeInElectricityOutOfHoursUse < Comparison::View

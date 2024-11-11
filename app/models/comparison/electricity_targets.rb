@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: electricity_targets
+# Table name: comparison_electricity_targets
 #
 #  alert_generation_run_id                 :bigint(8)
 #  current_year_kwh                        :float
@@ -12,7 +12,7 @@
 #
 # Indexes
 #
-#  index_electricity_targets_on_school_id  (school_id) UNIQUE
+#  index_comparison_electricity_targets_on_school_id  (school_id) UNIQUE
 #
 class Comparison::ElectricityTargets < Comparison::View
   scope :with_data, -> { where.not(current_year_kwh: nil, current_year_target_kwh: nil) }

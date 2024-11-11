@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: annual_energy_costs
+# Table name: comparison_annual_energy_costs
 #
 #  alert_generation_run_id       :bigint(8)
 #  floor_area                    :float
@@ -18,7 +18,7 @@
 #
 # Indexes
 #
-#  index_annual_energy_costs_on_school_id  (school_id) UNIQUE
+#  index_comparison_annual_energy_costs_on_school_id  (school_id) UNIQUE
 #
 class Comparison::AnnualEnergyCosts < Comparison::View
   scope :sort_default, -> { order('last_year_gbp DESC NULLS LAST') }

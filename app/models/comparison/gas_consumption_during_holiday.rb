@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: gas_consumption_during_holidays
+# Table name: comparison_gas_consumption_during_holidays
 #
 #  alert_generation_run_id     :bigint(8)
 #  holiday_end_date            :date
@@ -13,7 +13,7 @@
 #
 # Indexes
 #
-#  index_gas_consumption_during_holidays_on_school_id  (school_id) UNIQUE
+#  index_comparison_gas_consumption_during_holidays_on_school_id  (school_id) UNIQUE
 #
 class Comparison::GasConsumptionDuringHoliday < Comparison::View
 end

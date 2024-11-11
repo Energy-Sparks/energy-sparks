@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: baseload_per_pupils
+# Table name: comparison_baseload_per_pupils
 #
 #  alert_generation_run_id                       :bigint(8)
 #  annual_baseload_percent                       :float
@@ -14,7 +14,7 @@
 #
 # Indexes
 #
-#  index_baseload_per_pupils_on_school_id  (school_id) UNIQUE
+#  index_comparison_baseload_per_pupils_on_school_id  (school_id) UNIQUE
 #
 class Comparison::BaseloadPerPupil < Comparison::View
 end

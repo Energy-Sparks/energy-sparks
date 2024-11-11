@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: solar_pv_benefit_estimates
+# Table name: comparison_solar_pv_benefit_estimates
 #
 #  alert_generation_run_id                       :bigint(8)
 #  electricity_economic_tariff_changed_this_year :boolean
@@ -13,7 +13,7 @@
 #
 # Indexes
 #
-#  index_solar_pv_benefit_estimates_on_school_id  (school_id) UNIQUE
+#  index_comparison_solar_pv_benefit_estimates_on_school_id  (school_id) UNIQUE
 #
 class Comparison::SolarPvBenefitEstimate < Comparison::View
   scope :with_data, -> { where.not(optimum_kwp: nil) }

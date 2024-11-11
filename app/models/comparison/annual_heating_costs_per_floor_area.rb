@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: annual_heating_costs_per_floor_areas
+# Table name: comparison_annual_heating_costs_per_floor_areas
 #
 #  gas_economic_tariff_changed_this_year      :boolean
 #  gas_last_year_co2                          :float
@@ -14,7 +14,7 @@
 #
 # Indexes
 #
-#  index_annual_heating_costs_per_floor_areas_on_school_id  (school_id) UNIQUE
+#  idx_on_school_id_80be77e6f6  (school_id) UNIQUE
 #
 class Comparison::AnnualHeatingCostsPerFloorArea < Comparison::View
   scope :with_data, -> { where.not(gas_last_year_co2: nil) }

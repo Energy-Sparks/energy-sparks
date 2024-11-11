@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: electricity_peak_kw_per_pupils
+# Table name: comparison_electricity_peak_kw_per_pupils
 #
 #  alert_generation_run_id                        :bigint(8)
 #  average_school_day_last_year_kw                :float
@@ -15,7 +15,7 @@
 #
 # Indexes
 #
-#  index_electricity_peak_kw_per_pupils_on_school_id  (school_id) UNIQUE
+#  index_comparison_electricity_peak_kw_per_pupils_on_school_id  (school_id) UNIQUE
 #
 module Comparison
   class ElectricityPeakKwPerPupil < Comparison::View

@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: change_in_electricity_holiday_consumption_previous_years_holidays
+# Table name: comparison_change_in_electricity_holiday_consumption_previous_years_holidays
 #
 #  alert_generation_run_id    :bigint(8)
 #  current_period_end_date    :date
@@ -22,7 +22,7 @@
 #
 # Indexes
 #
-#  idx_on_school_id_c85aebb0ac  (school_id) UNIQUE
+#  idx_on_school_id_dd11f128c1  (school_id) UNIQUE
 #
 module Comparison
   class ChangeInElectricityHolidayConsumptionPreviousYearsHoliday < Comparison::View

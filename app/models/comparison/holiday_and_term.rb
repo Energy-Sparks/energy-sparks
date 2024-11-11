@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: holiday_and_terms
+# Table name: comparison_holiday_and_terms
 #
 #  activation_date                               :date
 #  electricity_current_period_co2                :float
@@ -46,7 +46,7 @@
 #
 # Indexes
 #
-#  index_holiday_and_terms_on_school_id  (school_id) UNIQUE
+#  index_comparison_holiday_and_terms_on_school_id  (school_id) UNIQUE
 #
 class Comparison::HolidayAndTerm < Comparison::View
   include MultipleFuelComparisonView

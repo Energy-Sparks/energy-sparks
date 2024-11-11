@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: solar_generation_summaries
+# Table name: comparison_solar_generation_summaries
 #
 #  alert_generation_run_id             :bigint(8)
 #  annual_electricity_kwh              :float
@@ -13,7 +13,7 @@
 #
 # Indexes
 #
-#  index_solar_generation_summaries_on_school_id  (school_id) UNIQUE
+#  index_comparison_solar_generation_summaries_on_school_id  (school_id) UNIQUE
 #
 class Comparison::SolarGenerationSummary < Comparison::View
   scope :with_data, -> { where.not(annual_solar_pv_kwh: nil) }

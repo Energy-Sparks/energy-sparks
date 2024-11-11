@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: holiday_usage_last_years
+# Table name: comparison_holiday_usage_last_years
 #
 #  alert_generation_run_id                          :bigint(8)
 #  holiday_start_date                               :date
@@ -18,7 +18,7 @@
 #
 # Indexes
 #
-#  index_holiday_usage_last_years_on_school_id  (school_id) UNIQUE
+#  index_comparison_holiday_usage_last_years_on_school_id  (school_id) UNIQUE
 #
 class Comparison::HolidayUsageLastYear < Comparison::View
   scope :with_data, -> { where.not(last_year_holiday_gas_gbp: nil) }

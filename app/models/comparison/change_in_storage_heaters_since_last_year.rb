@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: change_in_storage_heaters_since_last_years
+# Table name: comparison_change_in_storage_heaters_since_last_years
 #
 #  alert_generation_run_id                :bigint(8)
 #  current_year_co2                       :float
@@ -16,7 +16,7 @@
 #
 # Indexes
 #
-#  index_change_in_storage_heaters_since_last_years_on_school_id  (school_id) UNIQUE
+#  idx_on_school_id_5808ed6062  (school_id) UNIQUE
 #
 class Comparison::ChangeInStorageHeatersSinceLastYear < Comparison::View
 end

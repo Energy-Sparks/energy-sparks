@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: heating_vs_hot_waters
+# Table name: comparison_heating_vs_hot_waters
 #
 #  estimated_hot_water_gas_kwh    :float
 #  estimated_hot_water_percentage :float
@@ -10,7 +10,7 @@
 #
 # Indexes
 #
-#  index_heating_vs_hot_waters_on_school_id  (school_id) UNIQUE
+#  index_comparison_heating_vs_hot_waters_on_school_id  (school_id) UNIQUE
 #
 class Comparison::HeatingVsHotWater < Comparison::View
 end

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: change_in_energy_since_last_years
+# Table name: comparison_change_in_energy_since_last_years
 #
 #  electricity_current_period_co2     :float
 #  electricity_current_period_gbp     :float
@@ -32,7 +32,7 @@
 #
 # Indexes
 #
-#  index_change_in_energy_since_last_years_on_school_id  (school_id) UNIQUE
+#  idx_on_school_id_ef404854ff  (school_id) UNIQUE
 #
 class Comparison::ChangeInEnergySinceLastYear < Comparison::View
   include MultipleFuelComparisonView

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: change_in_energy_use_since_joined_energy_sparks
+# Table name: comparison_change_in_energy_use_since_joined_energy_sparks
 #
 #  activation_date                    :date
 #  activationyear_electricity_note    :text
@@ -30,7 +30,7 @@
 #
 # Indexes
 #
-#  idx_on_school_id_1573169d1a  (school_id) UNIQUE
+#  idx_on_school_id_f606257469  (school_id) UNIQUE
 #
 class Comparison::ChangeInEnergyUseSinceJoinedEnergySparks < Comparison::View
   include MultipleFuelComparisonView
