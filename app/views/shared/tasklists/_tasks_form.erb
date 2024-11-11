@@ -18,8 +18,8 @@
   </div>
 </div>
 
-<div id="audit-activity-types" class="sort-list">
-  <%= f.simple_fields_for :activity_type_tasks, @audit.activity_type_tasks do |tasklist_task| %>
+<div id="tasklist-activity-types" class="sort-list">
+  <%= f.simple_fields_for :activity_type_tasks, source.activity_type_tasks do |tasklist_task| %>
     <%= render 'shared/tasklists/activity_type_task_fields', f: tasklist_task %>
   <% end %>
   <div class="links">
@@ -51,14 +51,16 @@
   </div>
 </div>
 
-<div id="audit-intervention-types" class="sort-list">
-  <%= f.simple_fields_for :intervention_type_tasks, @audit.intervention_type_tasks do |tasklist_task| %>
+<div id="tasklist-intervention-types" class="sort-list">
+  <%= f.simple_fields_for :intervention_type_tasks, source.intervention_type_tasks do |tasklist_task| %>
     <%= render 'shared/tasklists/intervention_type_task_fields', f: tasklist_task %>
   <% end %>
   <div class="links">
     <%= link_to_add_association t('schools.audits.form.add_action'), f, :intervention_type_tasks, class: 'btn', partial: 'shared/tasklists/intervention_type_task_fields' %>
   </div>
 </div>
+<br>
+<br>
 
 <script>
   $(document).ready(function() {
