@@ -40,7 +40,7 @@ describe 'Jobs', type: :system do
 
   context 'when job is not found' do
     before do
-      visit serve_resource_path(id: 'unknown')
+      visit serve_resource_path(id: 'unknown', serve: :inline)
     end
 
     it_behaves_like 'a 404 error page'

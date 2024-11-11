@@ -38,7 +38,7 @@ RSpec.describe 'case_studies', type: :system do
 
   context 'when case study does not exist' do
     before do
-      case_study_download_path('unknown')
+      visit case_study_download_path('unknown')
     end
 
     it_behaves_like 'a 404 error page'
