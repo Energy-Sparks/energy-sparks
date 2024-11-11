@@ -13,5 +13,9 @@
 #  previous_out_of_hours_kwh         :float
 #  school_id                         :bigint(8)
 #
+# Indexes
+#
+#  idx_on_school_id_8d431723c5  (school_id) UNIQUE
+#
 class Comparison::AnnualChangeInStorageHeaterOutOfHoursUse < Comparison::View
 end

@@ -11,5 +11,9 @@
 #  id                          :bigint(8)
 #  school_id                   :bigint(8)
 #
+# Indexes
+#
+#  index_gas_consumption_during_holidays_on_school_id  (school_id) UNIQUE
+#
 class Comparison::GasConsumptionDuringHoliday < Comparison::View
 end

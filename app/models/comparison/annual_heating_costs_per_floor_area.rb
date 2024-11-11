@@ -12,6 +12,10 @@
 #  one_year_saving_versus_exemplar_gbpcurrent :float
 #  school_id                                  :bigint(8)
 #
+# Indexes
+#
+#  index_annual_heating_costs_per_floor_areas_on_school_id  (school_id) UNIQUE
+#
 class Comparison::AnnualHeatingCostsPerFloorArea < Comparison::View
   scope :with_data, -> { where.not(gas_last_year_co2: nil) }
   scope :sort_default, -> { order(one_year_gas_per_floor_area_normalised_gbp: :desc) }

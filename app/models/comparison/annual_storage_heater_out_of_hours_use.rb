@@ -12,6 +12,10 @@
 #  weekends_gbp             :float
 #  weekends_percent         :float
 #
+# Indexes
+#
+#  index_annual_storage_heater_out_of_hours_uses_on_school_id  (school_id) UNIQUE
+#
 class Comparison::AnnualStorageHeaterOutOfHoursUse < Comparison::View
   scope :with_data, -> { where.not(schoolday_open_percent: nil) }
   scope :sort_default, -> { order(schoolday_open_percent: :desc) }

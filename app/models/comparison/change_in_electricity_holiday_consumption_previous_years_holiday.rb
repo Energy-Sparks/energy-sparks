@@ -20,6 +20,10 @@
 #  tariff_has_changed         :boolean
 #  truncated_current_period   :boolean
 #
+# Indexes
+#
+#  idx_on_school_id_c85aebb0ac  (school_id) UNIQUE
+#
 module Comparison
   class ChangeInElectricityHolidayConsumptionPreviousYearsHoliday < Comparison::View
   end

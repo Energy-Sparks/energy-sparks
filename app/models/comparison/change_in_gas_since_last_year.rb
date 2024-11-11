@@ -14,5 +14,9 @@
 #  temperature_adjusted_percent           :float
 #  temperature_adjusted_previous_year_kwh :float
 #
+# Indexes
+#
+#  index_change_in_gas_since_last_years_on_school_id  (school_id) UNIQUE
+#
 class Comparison::ChangeInGasSinceLastYear < Comparison::View
 end

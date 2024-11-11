@@ -15,6 +15,10 @@
 #  previous_out_of_hours_kwh         :float
 #  school_id                         :bigint(8)
 #
+# Indexes
+#
+#  idx_on_school_id_2553bedeaf  (school_id) UNIQUE
+#
 module Comparison
   class AnnualChangeInElectricityOutOfHoursUse < Comparison::View
   end

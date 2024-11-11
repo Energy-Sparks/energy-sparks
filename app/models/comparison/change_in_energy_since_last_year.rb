@@ -30,6 +30,10 @@
 #  storage_heater_previous_period_gbp :float
 #  storage_heater_previous_period_kwh :float
 #
+# Indexes
+#
+#  index_change_in_energy_since_last_years_on_school_id  (school_id) UNIQUE
+#
 class Comparison::ChangeInEnergySinceLastYear < Comparison::View
   include MultipleFuelComparisonView
 

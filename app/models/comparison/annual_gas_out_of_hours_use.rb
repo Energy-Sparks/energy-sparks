@@ -15,6 +15,10 @@
 #  schoolday_open_percent                :float
 #  weekends_percent                      :float
 #
+# Indexes
+#
+#  index_annual_gas_out_of_hours_uses_on_school_id  (school_id) UNIQUE
+#
 class Comparison::AnnualGasOutOfHoursUse < Comparison::View
   scope :with_data, -> { where.not(schoolday_open_percent: nil) }
   scope :sort_default, -> { order(schoolday_open_percent: :desc) }

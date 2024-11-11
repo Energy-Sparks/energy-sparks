@@ -11,6 +11,10 @@
 #  optimum_payback_years                         :float
 #  school_id                                     :bigint(8)
 #
+# Indexes
+#
+#  index_solar_pv_benefit_estimates_on_school_id  (school_id) UNIQUE
+#
 class Comparison::SolarPvBenefitEstimate < Comparison::View
   scope :with_data, -> { where.not(optimum_kwp: nil) }
   scope :sort_default, -> { order(optimum_kwp: :desc) }

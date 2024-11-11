@@ -16,6 +16,10 @@
 #  last_year_holiday_type                           :text
 #  school_id                                        :bigint(8)
 #
+# Indexes
+#
+#  index_holiday_usage_last_years_on_school_id  (school_id) UNIQUE
+#
 class Comparison::HolidayUsageLastYear < Comparison::View
   scope :with_data, -> { where.not(last_year_holiday_gas_gbp: nil) }
   scope :sort_default, -> { order(last_year_holiday_gas_gbp: :desc) }

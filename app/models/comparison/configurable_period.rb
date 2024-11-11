@@ -33,6 +33,10 @@
 #  storage_heater_previous_period_kwh_unadjusted :float
 #  storage_heater_tariff_has_changed             :boolean
 #
+# Indexes
+#
+#  idx_on_school_id_comparison_report_id_44b9147042  (school_id,comparison_report_id) UNIQUE
+#
 class Comparison::ConfigurablePeriod < Comparison::View
   include MultipleFuelComparisonView
   include ArbitraryPeriodComparisonView

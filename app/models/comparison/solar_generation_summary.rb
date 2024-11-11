@@ -11,6 +11,10 @@
 #  id                                  :bigint(8)
 #  school_id                           :bigint(8)
 #
+# Indexes
+#
+#  index_solar_generation_summaries_on_school_id  (school_id) UNIQUE
+#
 class Comparison::SolarGenerationSummary < Comparison::View
   scope :with_data, -> { where.not(annual_solar_pv_kwh: nil) }
   scope :sort_default, -> { joins(:school).order('schools.name') }

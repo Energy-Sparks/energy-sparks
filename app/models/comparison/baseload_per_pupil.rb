@@ -12,5 +12,9 @@
 #  one_year_saving_versus_exemplar_gbp           :float
 #  school_id                                     :bigint(8)
 #
+# Indexes
+#
+#  index_baseload_per_pupils_on_school_id  (school_id) UNIQUE
+#
 class Comparison::BaseloadPerPupil < Comparison::View
 end

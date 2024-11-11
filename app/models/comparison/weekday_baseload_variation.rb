@@ -13,5 +13,9 @@
 #  percent_intraday_variation                    :float
 #  school_id                                     :bigint(8)
 #
+# Indexes
+#
+#  index_weekday_baseload_variations_on_school_id  (school_id) UNIQUE
+#
 class Comparison::WeekdayBaseloadVariation < Comparison::View
 end

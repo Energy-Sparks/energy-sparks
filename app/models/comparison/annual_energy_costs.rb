@@ -16,6 +16,10 @@
 #  school_id                     :bigint(8)
 #  school_type_name              :text
 #
+# Indexes
+#
+#  index_annual_energy_costs_on_school_id  (school_id) UNIQUE
+#
 class Comparison::AnnualEnergyCosts < Comparison::View
   scope :sort_default, -> { order('last_year_gbp DESC NULLS LAST') }
 end

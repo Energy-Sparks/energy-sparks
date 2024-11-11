@@ -44,6 +44,10 @@
 #  storage_heater_tariff_has_changed             :boolean
 #  storage_heater_truncated_current_period       :boolean
 #
+# Indexes
+#
+#  index_holiday_and_terms_on_school_id  (school_id) UNIQUE
+#
 class Comparison::HolidayAndTerm < Comparison::View
   include MultipleFuelComparisonView
   include ArbitraryPeriodComparisonView

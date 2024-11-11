@@ -20,6 +20,10 @@
 #  storage_heaters_last_year_gbp  :float
 #  storage_heaters_last_year_kwh  :float
 #
+# Indexes
+#
+#  index_annual_energy_uses_on_school_id  (school_id) UNIQUE
+#
 class Comparison::AnnualEnergyUse < Comparison::View
   self.table_name = 'annual_energy_uses'
 

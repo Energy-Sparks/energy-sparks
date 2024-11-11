@@ -12,6 +12,10 @@
 #  predicted_percent_increase_in_usage           :float
 #  school_id                                     :bigint(8)
 #
+# Indexes
+#
+#  index_recent_change_in_baseloads_on_school_id  (school_id) UNIQUE
+#
 class Comparison::RecentChangeInBaseload < Comparison::View
   scope :with_data, -> { where.not(predicted_percent_increase_in_usage: nil) }
   scope :sort_default, -> { order(predicted_percent_increase_in_usage: :desc) }

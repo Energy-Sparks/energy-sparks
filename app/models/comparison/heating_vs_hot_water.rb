@@ -8,5 +8,9 @@
 #  last_year_gas_kwh              :float
 #  school_id                      :bigint(8)
 #
+# Indexes
+#
+#  index_heating_vs_hot_waters_on_school_id  (school_id) UNIQUE
+#
 class Comparison::HeatingVsHotWater < Comparison::View
 end

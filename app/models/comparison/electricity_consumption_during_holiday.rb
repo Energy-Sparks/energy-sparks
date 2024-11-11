@@ -13,6 +13,10 @@
 #  id                          :bigint(8)
 #  school_id                   :bigint(8)
 #
+# Indexes
+#
+#  index_electricity_consumption_during_holidays_on_school_id  (school_id) UNIQUE
+#
 module Comparison
   class ElectricityConsumptionDuringHoliday < Comparison::View
   end

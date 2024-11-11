@@ -32,6 +32,10 @@
 #  storage_heater_previous_period_kwh_unadjusted :float
 #  storage_heater_tariff_has_changed             :boolean
 #
+# Indexes
+#
+#  index_heat_saver_march_2024s_on_school_id  (school_id) UNIQUE
+#
 class Comparison::HeatSaverMarch2024 < Comparison::View
   include MultipleFuelComparisonView
   include ArbitraryPeriodComparisonView

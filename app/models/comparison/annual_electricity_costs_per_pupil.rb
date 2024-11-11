@@ -9,6 +9,10 @@
 #  one_year_saving_versus_exemplar_gbpcurrent :float
 #  school_id                                  :bigint(8)
 #
+# Indexes
+#
+#  index_annual_electricity_costs_per_pupils_on_school_id  (school_id) UNIQUE
+#
 class Comparison::AnnualElectricityCostsPerPupil < Comparison::View
   scope :with_data, -> { where.not(one_year_electricity_per_pupil_gbp: nil) }
   scope :sort_default, -> { order(one_year_electricity_per_pupil_gbp: :desc) }

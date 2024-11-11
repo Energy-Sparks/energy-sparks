@@ -10,6 +10,10 @@
 #  id                                         :bigint(8)
 #  school_id                                  :bigint(8)
 #
+# Indexes
+#
+#  index_hot_water_efficiencies_on_school_id  (school_id) UNIQUE
+#
 class Comparison::HotWaterEfficiency < Comparison::View
   scope :with_data, -> { where.not(avg_gas_per_pupil_gbp: [nil, 0.0]) }
   scope :sort_default, -> { order(avg_gas_per_pupil_gbp: :desc) }

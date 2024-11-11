@@ -15,6 +15,10 @@
 #  school_id                                :bigint(8)
 #  start_time_standard_devation             :float
 #
+# Indexes
+#
+#  index_heating_coming_on_too_early_on_school_id  (school_id) UNIQUE
+#
 class Comparison::HeatingComingOnTooEarly < Comparison::View
   self.table_name = :heating_coming_on_too_early
 

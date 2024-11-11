@@ -28,6 +28,10 @@
 #  storage_heater_previous_period_gbp :float
 #  storage_heater_previous_period_kwh :float
 #
+# Indexes
+#
+#  idx_on_school_id_1573169d1a  (school_id) UNIQUE
+#
 class Comparison::ChangeInEnergyUseSinceJoinedEnergySparks < Comparison::View
   include MultipleFuelComparisonView
   include ArbitraryPeriodComparisonView

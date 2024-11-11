@@ -18,5 +18,9 @@
 #  tariff_has_changed         :boolean
 #  truncated_current_period   :boolean
 #
+# Indexes
+#
+#  idx_on_school_id_61540875f9  (school_id) UNIQUE
+#
 class Comparison::ChangeInGasHolidayConsumptionPreviousYearsHoliday < Comparison::View
 end

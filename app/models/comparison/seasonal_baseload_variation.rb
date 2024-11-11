@@ -11,5 +11,9 @@
 #  summer_kw                                     :float
 #  winter_kw                                     :float
 #
+# Indexes
+#
+#  index_seasonal_baseload_variations_on_school_id  (school_id) UNIQUE
+#
 class Comparison::SeasonalBaseloadVariation < Comparison::View
 end
