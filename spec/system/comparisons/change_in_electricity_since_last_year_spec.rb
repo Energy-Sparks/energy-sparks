@@ -29,10 +29,6 @@ describe 'change_in_electricity_since_last_year' do
   end
 
   context 'when viewing report' do
-    before do
-      visit comparisons_change_in_electricity_since_last_year_index_path
-    end
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
