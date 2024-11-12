@@ -39,24 +39,3 @@
     </div>
   </div>
 </div>
-<% if Flipper.enabled?(:download_footer_icons) %>
-  <script src="https://unpkg.com/modern-screenshot"></script>
-  <script>
-    const style = document.createElement('style');
-    // prevent hover color change
-    style.innerHTML = '.footer-second { a:hover { color: #222222 !important; } }'
-    document.head.appendChild(style);
-    document.querySelectorAll('.footer-second li.list-inline-item').forEach(element => {
-      console.log(element)
-      element.onclick = event => {
-        event.preventDefault()
-        modernScreenshot.domToPng(element).then(dataUrl => {
-          const link = document.createElement('a')
-          link.download = `${event.target.classList[event.target.classList.length-1]}.png`
-          link.href = dataUrl
-          link.click()
-        })
-      }
-    })
-  </script>
-<% end %>
