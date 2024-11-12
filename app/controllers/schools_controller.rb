@@ -10,6 +10,9 @@ class SchoolsController < ApplicationController
 
   skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :set_key_stages, only: [:create, :edit, :update]
+  before_action :set_search_scope, only: [:index]
+
+  protect_from_forgery except: :index
 
   # If this isn't a publicly visible school, then redirect away if user can't
   # view this school
@@ -34,10 +37,21 @@ class SchoolsController < ApplicationController
   before_action :set_breadcrumbs
 
   def index
-    @schools = School.visible.by_name.select(:name, :slug)
-    @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)
-    @ungrouped_visible_schools = School.visible.without_group.by_name.select(:name, :slug)
-    @schools_not_visible = School.not_visible.by_name.select(:name, :slug)
+    if Flipper.enabled?(:new_schools_page, current_user)
+      @letter = search_params.fetch(:letter, nil)
+      @keyword = search_params.fetch(:keyword, nil)
+      if @keyword
+        @results = @scope.by_keyword(@keyword).by_name
+      else
+        @results = @scope.by_letter(@letter).by_name
+      end
+      @count = @results.count
+    else
+      @schools = School.visible.by_name.select(:name, :slug)
+      @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)
+      @ungrouped_visible_schools = School.visible.without_group.by_name.select(:name, :slug)
+      @schools_not_visible = School.not_visible.by_name.select(:name, :slug)
+    end
   end
 
   def show
@@ -99,6 +113,19 @@ class SchoolsController < ApplicationController
   end
 
 private
+
+  def set_search_scope
+    @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
+    @scope = if @tab == :schools
+               current_user_admin? ? School.active : School.visible
+             else
+               SchoolGroup.all
+             end
+  end
+
+  def search_params
+    params.permit(:letter, :keyword, :scope).with_defaults(letter: 'A', scope: SchoolSearchComponent::DEFAULT_TAB)
+  end
 
   def set_breadcrumbs
     if action_name.to_sym == :edit
