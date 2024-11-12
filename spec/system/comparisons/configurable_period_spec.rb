@@ -18,7 +18,6 @@ describe 'configurable_period' do
     create_alerts(schools[4], Date.new(2023, 5, 1), electricity: true, gas: true)
     create_alerts(schools[5], Date.new(2023, 6, 1), electricity: true, storage_heater: true)
   end
-
   let!(:reports) { create_list(:report, 2, :with_custom_period) }
 
   include_context 'with comparison report footnotes' do
@@ -95,6 +94,7 @@ describe 'configurable_period' do
   context 'when viewing report' do
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { reports[0] }
+      let(:model) { Comparison::ConfigurablePeriod }
     end
 
     it_behaves_like 'a school comparison report with multiple tables',
@@ -105,11 +105,13 @@ describe 'configurable_period' do
                       I18n.t('comparisons.tables.storage_heater_usage')
                     ] do
       let(:expected_report) { reports[0] }
+      let(:model) { Comparison::ConfigurablePeriod }
     end
 
     context 'with a total table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
+        let(:model) { Comparison::ConfigurablePeriod }
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :total }
@@ -203,6 +205,7 @@ describe 'configurable_period' do
     context 'with an electricity table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
+        let(:model) { Comparison::ConfigurablePeriod }
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :electricity }
@@ -271,6 +274,7 @@ describe 'configurable_period' do
     context 'with a gas table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
+        let(:model) { Comparison::ConfigurablePeriod }
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :gas }
@@ -329,6 +333,7 @@ describe 'configurable_period' do
     context 'with a storage heater table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
+        let(:model) { Comparison::ConfigurablePeriod }
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :storage_heater }
@@ -376,6 +381,7 @@ describe 'configurable_period' do
 
     it_behaves_like 'a school comparison report with a chart' do
       let(:expected_report) { reports[0] }
+      let(:model) { Comparison::ConfigurablePeriod }
     end
   end
 end

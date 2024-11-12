@@ -76,6 +76,8 @@ describe 'annual_gas_out_of_hours_use' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end
