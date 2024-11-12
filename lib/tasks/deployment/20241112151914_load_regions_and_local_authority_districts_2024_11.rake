@@ -1,9 +1,9 @@
 namespace :after_party do
-  desc 'Deployment task: load_regions_and_local_authority_districts'
-  task load_regions_and_local_authority_districts: :environment do
-    puts "Running deploy task 'load_regions_and_local_authority_districts'"
+  desc 'Deployment task: load_regions_and_local_authority_districts_2024_11'
+  task load_regions_and_local_authority_districts_2024_11: :environment do
+    puts "Running deploy task 'load_regions_and_local_authority_districts_2024_11'"
 
-    file_name = File.join( File.expand_path(File.dirname(__FILE__)) , "schools-to-lads-2023-07.csv" )
+    file_name = File.join( File.expand_path(File.dirname(__FILE__)) , "schools-to-lads-2024-11.csv" )
     #id,RGN22NM,LAD22CD
     CSV.foreach( file_name, headers: true ) do |row|
       school = School.find_by_id(row[0])

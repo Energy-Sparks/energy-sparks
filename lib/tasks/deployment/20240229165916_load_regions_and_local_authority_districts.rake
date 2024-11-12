@@ -12,7 +12,7 @@ namespace :after_party do
         lad = LocalAuthorityArea.find_by_code(row[2])
         school.update!(region: region, local_authority_area: lad)
       else
-        $stderr.puts "Can't find school with id #{row[0]}"
+        puts "Can't find school with id #{row[0]}"
       end
     end
 
