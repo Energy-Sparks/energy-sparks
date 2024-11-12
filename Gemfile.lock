@@ -4,7 +4,7 @@ GIT
   tag: 6.1.1
   specs:
     energy-sparks_analytics (1.2.1)
-      activesupport (>= 6.0, < 7.3)
+      activesupport (>= 6.0, < 8.1)
       benchmark-memory (~> 0)
       chroma (~> 0)
       hashdiff (~> 1)
