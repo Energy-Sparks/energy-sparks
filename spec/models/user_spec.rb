@@ -261,12 +261,15 @@ describe User do
         expect(parsed[0]).to eq(['School Group',
                                  'School',
                                  'School type',
+                                 'School active',
+                                 'School data enabled',
                                  'Funder',
                                  'Region',
                                  'Name',
                                  'Email',
                                  'Role',
                                  'Staff Role',
+                                 'Confirmed',
                                  'Locked'])
       end
 
@@ -274,12 +277,15 @@ describe User do
         expect(parsed[1]).to eq([school_group.name,
                                  school.name,
                                  school.school_type.humanize,
+                                 'Yes',
+                                 'Yes',
                                  '',
                                  '',
                                  user.name,
                                  user.email,
                                  user.role.humanize,
                                  user.staff_role.title,
+                                 'No',
                                  'No'])
       end
     end
@@ -293,10 +299,13 @@ describe User do
                                  '',
                                  '',
                                  '',
+                                 '',
+                                 '',
                                  user.name,
                                  user.email,
                                  'Group Admin',
                                  '',
+                                 'Yes',
                                  'No'])
       end
     end
@@ -318,12 +327,15 @@ describe User do
         expect(parsed[1]).to eq([school_group.name,
                                  school.name,
                                  school.school_type.humanize,
+                                 'Yes',
+                                 'Yes',
                                  funder.name,
                                  'East Of England',
                                  user.name,
                                  user.email,
                                  user.role.humanize,
                                  user.staff_role.title,
+                                 'No',
                                  'No'])
       end
     end
