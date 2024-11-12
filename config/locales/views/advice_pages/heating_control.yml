@@ -41,6 +41,7 @@ en:
           header: You can drill-down to individual days by clicking on the bars on the chart.
           subtitle_html: This graph shows when the heating and hot water was on between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>, including when the heating was left on in warm weather.
           title: Seasonal control chart
+      holiday_notice: Try to turn off your heating and hot water during holiday periods. If school premises are used by the community during holidays, then adjust your timings to match just those days and times when the school needs to be heated
       insights:
         comparison:
           callout_footer: days

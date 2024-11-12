@@ -241,6 +241,8 @@ class School < ApplicationRecord
   # TODO
   scope :by_keyword, ->(keyword) { where('name LIKE ?', "%#{keyword}%")}
 
+  scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
+
   def self.with_energy_tariffs
     joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'")
       .group('schools.id').order('schools.name')
