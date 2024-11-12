@@ -5,7 +5,7 @@
 </div>
 
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
-  <%= render 'schools/times/form', f: f %>
+  <%= render 'schools/times/form', f: f, community_use: true %>
   <div class="actions">
     <%= f.submit t('schools.times.edit.save_school_times'), class: 'btn btn-primary' %>
   </div>
