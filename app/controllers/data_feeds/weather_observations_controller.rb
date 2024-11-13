@@ -11,12 +11,11 @@ module DataFeeds
       ordered_readings = @data_class.where(weather_station_id: weather_station_id).order(reading_date: :asc)
 
       @first_read = ordered_readings.first
-      @reading_summary = ordered_readings.group(:reading_date, @data_class_column_name).pluck(Arel.sql("reading_date, array_length(#{@data_class_column_name}, 1)")).to_h
-      @missing_array = get_missing_array(@first_read, @reading_summary)
+      @reading_summary = ordered_readings.group(:reading_date, @data_class_column_name).pluck(Arel.sql("reading_date, (select avg(n) from unnest(#{@data_class_column_name}) n)")).to_h
 
       respond_to do |format|
-        format.html { render 'data_feeds/generic/show' }
-        format.json { render 'data_feeds/generic/show' }
+        format.html { render 'data_feeds/generic/show_temperatures' }
+        format.json { render 'data_feeds/generic/show_temperatures' }
         format.csv  { send_data readings_to_csv(@data_class.download_for_area_id(weather_station_id), @csv_header), filename: "#{weather_station_id}-#{@title}.csv" }
       end
     end

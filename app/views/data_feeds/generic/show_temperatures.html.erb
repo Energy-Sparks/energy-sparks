@@ -1,0 +1,25 @@
+<h1>Report for <%= @title %></h1>
+
+<p><%= link_to 'All reports', admin_reports_path, class: 'btn' %></p>
+
+<h2>Weather data summary</h2>
+
+<% if @first_read.nil? %>
+  <strong>There are currently no readings for this location</strong>
+<% else %>
+  <p>Dates start at date of first recorded reading, <%= nice_dates @first_read.reading_date %>, up until the present day.</p>
+<% end %>
+
+<div id="calendar" class="calendar"></div>
+
+<div class='calendar-legend row'>
+  <div class='legend-scale vertical'>
+    <ul class='legend-labels'>
+      <li><span style='background:<%= Colours.hex(:red_medium) %>;'></span>Average Temperature > 20</li>
+      <li><span style='background:<%= Colours.hex(:yellow_medium) %>;'></span>Average Temperature > 15</li>
+      <li><span style='background:<%= Colours.hex(:teal_medium) %>;'></span>Average Temperature > 5</li>
+      <li><span style='background:<%= Colours.hex(:blue_medium) %>;'></span>Average Temperature &lt; 5</li>
+      <li><span style='background:<%= Colours.hex(:red_dark) %>;'></span>Missing day</li>
+    </ul>
+  </div>
+</div>
