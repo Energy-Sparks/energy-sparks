@@ -15,10 +15,12 @@
 <div class='calendar-legend row'>
   <div class='legend-scale vertical'>
     <ul class='legend-labels'>
-      <li><span style='background:<%= Colours.hex(:red_medium) %>;'></span>Average Temperature > 20</li>
-      <li><span style='background:<%= Colours.hex(:yellow_medium) %>;'></span>Average Temperature > 15</li>
-      <li><span style='background:<%= Colours.hex(:teal_medium) %>;'></span>Average Temperature > 5</li>
-      <li><span style='background:<%= Colours.hex(:blue_medium) %>;'></span>Average Temperature &lt; 5</li>
+      <li><span style='background:<%= Colours.hex(:red_medium) %>;'></span>Average Temperature > 20.0</li>
+      <li><span style='background:<%= Colours.hex(:yellow_medium) %>;'></span>
+        Average Temperature > <%= AnalyseHeatingAndHotWater::HeatingModelTemperatureSpace::BALANCE_POINT_TEMPERATURE %>
+      </li>
+      <li><span style='background:<%= Colours.hex(:teal_medium) %>;'></span>Average Temperature > 5.0</li>
+      <li><span style='background:<%= Colours.hex(:blue_medium) %>;'></span>Average Temperature &lt; 5.0</li>
       <li><span style='background:<%= Colours.hex(:red_dark) %>;'></span>Missing day</li>
     </ul>
   </div>
