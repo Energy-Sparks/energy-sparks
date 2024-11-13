@@ -12,6 +12,9 @@ RSpec.describe 'BetterHtml' do
       data = File.read(filename)
       expect do
         BetterHtml::BetterErb::ErubiImplementation.new(data, filename:).validate!
+      rescue StandardError
+        puts filename
+        raise
       end.not_to raise_exception
     end
   end
