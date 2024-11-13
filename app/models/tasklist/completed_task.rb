@@ -14,9 +14,10 @@
 #  index_tasklist_completed_tasks_on_tasklist_target   (tasklist_target_type,tasklist_target_id)
 #  index_tasklist_completed_tasks_on_tasklist_task_id  (tasklist_task_id)
 #
-class TasklistCompletedTask < ApplicationRecord
+class Tasklist::CompletedTask < ApplicationRecord
+  self.table_name = 'tasklist_completed_tasks'
   belongs_to :tasklist_target, polymorphic: true
-  belongs_to :tasklist_task
+  belongs_to :tasklist_task, class_name: 'Tasklist::Task'
 
   has_one :activity_type, through: :tasklist_task, source: :task_source, source_type: 'ActivityType'
   has_one :intervention_type, through: :tasklist_task, source: :task_source, source_type: 'InterventionType'

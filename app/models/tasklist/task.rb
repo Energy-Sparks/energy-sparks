@@ -17,7 +17,8 @@
 #  index_tasklist_tasks_on_task_source      (task_source_type,task_source_id)
 #  index_tasklist_tasks_on_tasklist_source  (tasklist_source_type,tasklist_source_id)
 #
-class TasklistTask < ApplicationRecord
+class Tasklist::Task < ApplicationRecord
+  self.table_name = 'tasklist_tasks'
   belongs_to :tasklist_source, polymorphic: true
   belongs_to :task_source, polymorphic: true, optional: true
 
