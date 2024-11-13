@@ -7,7 +7,7 @@ class DailyRegenerationOnFinishJob < ApplicationJob
     5
   end
 
-  def perform
+  def perform(*)
     Comparison::View.descendants.each(&:refresh)
   end
 end
