@@ -23,6 +23,14 @@ class WeatherObservation < ApplicationRecord
   scope :by_date, -> { order(:reading_date) }
   scope :since, ->(date) { where('reading_date >= ?', date) }
 
+  scope :between, ->(start_date, end_date) do
+    where('reading_date >= :start_date AND reading_date <= :end_date',
+          start_date: start_date,
+          end_date: end_date)
+  end
+
+  scope :any_zero_readings, -> { where('0.0 = ANY(temperature_celsius_x48)') }
+
   def self.download_all_data
     <<~QUERY
       SELECT station.title, obs.reading_date, obs.temperature_celsius_x48
