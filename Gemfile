@@ -120,6 +120,7 @@ gem 'flipper-ui', '~> 1.3'
 gem 'net-sftp'
 
 group :development, :test do
+  gem 'better_html'
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'climate_control'
   gem 'debug'
