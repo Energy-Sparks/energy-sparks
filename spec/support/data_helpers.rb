@@ -28,10 +28,6 @@ module EnergySparksDataHelpers
     CalendarEventType.all
   end
 
-  def amr_validated_reading_to_s(amr)
-    "#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
-  end
-
   def amr_data_feed_reading_to_s(meter, amr)
     # Sometimes the DB would return the timestamp with 5 digits of milisecond precision
     # i.e. it would return 1234.56789
