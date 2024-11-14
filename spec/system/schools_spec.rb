@@ -43,6 +43,7 @@ RSpec.describe 'Schools page' do
 
     it 'shows the right results', :js do
       expect(page).to have_content('1 school group')
+
       expect(page).to have_link(b_school_group.name, href: school_group_path(b_school_group))
       expect(page).not_to have_link(a_school_group.name, href: school_group_path(a_school_group))
       expect(page).not_to have_link(a_school.name, href: school_path(a_school))
@@ -183,7 +184,9 @@ RSpec.describe 'Schools page' do
 
     context 'when browsing by letter' do
       before do
-        click_on('B')
+        within('#school-groups-content') do
+          click_on('B')
+        end
       end
 
       it_behaves_like 'school group letter browse results'
