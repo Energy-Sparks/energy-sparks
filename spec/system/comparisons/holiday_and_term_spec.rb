@@ -73,7 +73,6 @@ describe 'holiday_and_term' do
     before do
       create(:advice_page, key: :electricity_out_of_hours)
       create(:advice_page, key: :gas_out_of_hours)
-      visit "/comparisons/#{key}"
     end
 
     it_behaves_like 'a school comparison report' do
@@ -81,12 +80,14 @@ describe 'holiday_and_term' do
     end
 
     it_behaves_like 'a school comparison report with multiple tables',
-      table_titles: [
-        I18n.t('comparisons.tables.total_usage'),
-        I18n.t('comparisons.tables.electricity_usage'),
-        I18n.t('comparisons.tables.gas_usage'),
-        I18n.t('comparisons.tables.storage_heater_usage')
-      ]
+                    table_titles: [
+                      I18n.t('comparisons.tables.total_usage'),
+                      I18n.t('comparisons.tables.electricity_usage'),
+                      I18n.t('comparisons.tables.gas_usage'),
+                      I18n.t('comparisons.tables.storage_heater_usage')
+                    ] do
+      let(:expected_report) { report }
+    end
 
     context 'with a total table' do
       it_behaves_like 'a school comparison report with a table' do
@@ -390,6 +391,8 @@ describe 'holiday_and_term' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end
