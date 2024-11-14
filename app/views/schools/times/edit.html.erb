@@ -1,18 +1,13 @@
 <%= render 'schools/school_page_with_navigation', school: @school,
-  page_title: t('schools.times.edit.title') do %>
+                                                  page_title: t('schools.times.edit.title') do %>
+  <h1><%= t('schools.times.edit.title') %></h1>
 
-<div class="alert alert-warning">
-  <%= t('schools.times.edit.introduction_message') %>
-</div>
-
-<%= form_for(@school, url: school_times_path(@school)) do |f| %>
-  <%= render 'schools/times/form', f: f, community_use: true %>
-  <div class="actions">
-    <%= f.submit t('schools.times.edit.save_school_times'), class: 'btn btn-primary' %>
+  <div class="alert alert-warning">
+    <%= t('schools.times.edit.introduction_message') %>
   </div>
 
   <%= form_for(@school, url: school_times_path(@school)) do |f| %>
-    <%= render 'schools/times/form', f: f %>
+    <%= render 'schools/times/form', f: f, community_use: true %>
     <div class="actions">
       <%= f.submit t('schools.times.edit.save_school_times'), class: 'btn btn-primary' %>
     </div>
@@ -79,5 +74,4 @@
         </div>
       </div>
     <% end %>
-
 <% end %>
