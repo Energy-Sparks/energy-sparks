@@ -3,6 +3,7 @@
                           options: { user: current_user, match_controller: true } do |c| %>
 
   <% c.with_section name: 'Settings',
+                    icon: 'gear',
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('manage_school_menu.edit_school_details'),
                    href: edit_school_path(school), classes: 'small') %>
@@ -17,6 +18,7 @@
   <% end %>
 
   <% c.with_section name: 'Users',
+                    icon: 'users',
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('manage_school_menu.manage_users'),
                    href: school_users_path(school), classes: 'small') %>
@@ -27,6 +29,7 @@
   <% end %>
 
   <% c.with_section name: 'Metering',
+                    icon: 'gauge',
                     options: { match_controller: false } do |s| %>
     <% if can? :index, Meter %>
       <% s.with_item(name: t('manage_school_menu.manage_meters'),
@@ -40,6 +43,7 @@
 
   <% if current_user.admin? %>
     <% c.with_section name: 'Admin',
+                      icon: 'lock',
                       options: { match_controller: false } do |s| %>
 
       <% if can? :configure, school %>
