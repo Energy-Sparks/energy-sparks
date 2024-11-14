@@ -3,10 +3,13 @@ namespace :tasklists do
   task import: [:environment] do
     puts "#{Time.zone.now} tasklists import start"
 
-    # Empty out existing tasks
-    Tasklist::Task.delete_all
-    Tasklist::CompletedTask.delete_all
+    # Empty out existing tasks. Leave programme intervention types behind, so these can be built up
+    puts "Removing audit tasks and programme tasks of type activity type"
+    Tasklist::Task.audits.destroy_all
+    Tasklist::Task.programme_types.activity_types.destroy_all
+    # Tasklist::CompletedTask.all automatically removed
 
+    puts "Importing audit activity_type and intervention_types. Marking them as completed"
     Audit.all.find_each do |audit|
       audit.audit_activity_types.each do |audit_activity_type|
         task = audit.tasklist_tasks.find_or_create_by!(
@@ -45,6 +48,8 @@ namespace :tasklists do
         end
       end
     end
+
+    puts "Importing propgramme activity_types. Marking them as completed"
 
     ProgrammeType.all.find_each do |programme_type|
       programme_type.programme_type_activity_types.each do |programme_type_activity_type|

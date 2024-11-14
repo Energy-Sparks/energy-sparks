@@ -64,7 +64,7 @@ module Schools
     end
 
     def tasks_attributes
-      [:id, :task_source_id, :task_source_type, :task_source, :tasklist_source_id, :tasklist_source_type, :position, :notes, :_destroy]
+      [:id, :task_template_id, :task_template_type, :task_template, :tasklist_template_id, :tasklist_template_type, :position, :notes, :_destroy]
     end
   end
 end

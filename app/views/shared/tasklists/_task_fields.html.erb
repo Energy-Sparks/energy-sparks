@@ -2,18 +2,18 @@
   <div class="row">
     <div class="col-md-5 mb-3">
       <%= f.select(
-            :task_source_id,
+            :task_template_id,
             grouped_options_for_select(
-              task_sources,
-              f.object.task_source_id
+              task_templates,
+              f.object.task_template_id
             ),
             { include_blank: true },
             { class: 'form-control select2' }
           ) %>
-      <%= f.hidden_field :task_source_type, value: task_source_type %>
+      <%= f.hidden_field :task_template_type, value: task_template_type %>
       <%= f.hidden_field :id %>
       <%= f.hidden_field :position, class: 'position' %>
-      <%= f.error :task_source, id: 'task_source_error' %>
+      <%= f.error :task_template, id: 'task_template_error' %>
     </div>
     <div class="col-md-5 mb-3">
       <%= f.text_area :notes, label: false, class: 'form-control select2' %>

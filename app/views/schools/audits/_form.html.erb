@@ -36,7 +36,7 @@
                          audit_points: Audits::AuditService::AUDIT_POINTS) %></p>
 
   <% if Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
-    <%= render 'shared/tasklists/tasks_form', source: @audit, f: f %>
+    <%= render 'shared/tasklists/tasks_form', tasklist_template: @audit, f: f %>
   <% end %>
   <% if !Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
     <h2><%= t('schools.audits.form.activities') %></h2>
@@ -113,7 +113,5 @@
 
   <%= link_to t('common.labels.cancel'),
               @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: 'btn btn-secondary' %>
-
-
 
 <% end %>

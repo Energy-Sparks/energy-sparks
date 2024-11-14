@@ -19,7 +19,7 @@
 </div>
 
 <div id="tasklist-activity-types" class="sort-list">
-  <%= f.simple_fields_for :activity_type_tasks, source.activity_type_tasks do |tasklist_task| %>
+  <%= f.simple_fields_for :activity_type_tasks, tasklist_template.activity_type_tasks do |tasklist_task| %>
     <%= render 'shared/tasklists/activity_type_task_fields', f: tasklist_task %>
   <% end %>
   <div class="links">
@@ -52,7 +52,7 @@
 </div>
 
 <div id="tasklist-intervention-types" class="sort-list">
-  <%= f.simple_fields_for :intervention_type_tasks, source.intervention_type_tasks do |tasklist_task| %>
+  <%= f.simple_fields_for :intervention_type_tasks, tasklist_template.intervention_type_tasks do |tasklist_task| %>
     <%= render 'shared/tasklists/intervention_type_task_fields', f: tasklist_task %>
   <% end %>
   <div class="links">

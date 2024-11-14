@@ -28,8 +28,7 @@ class Tasklist::Task < ApplicationRecord
   delegated_type :tasklist_template, types: %w[Audit ProgrammeType]
   delegated_type :task_template, types: %w[ActivityType InterventionType]
 
-  # NEW - check works!
-  has_one :tasklist_completed_task, dependent: :destroy, class_name: 'Tasklist::CompletedTask', foreign_key: 'tasklist_task_id'
+  has_many :tasklist_completed_tasks, dependent: :destroy, class_name: 'Tasklist::CompletedTask', foreign_key: 'tasklist_task_id'
 
   validate :task_template_presence
 

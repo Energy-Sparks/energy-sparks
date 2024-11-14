@@ -1,7 +1,7 @@
 <%= render 'shared/tasklists/task_fields',
-           task_sources: ActivityCategory.listed_with_activity_types.map { |category, types|
+           task_templates: ActivityCategory.listed_with_activity_types.map { |category, types|
              [category.name, types.map do |type|
                [type.name_with_key_stages, type.id]
              end]
            },
-           task_source_type: 'ActivityType', f: f %>
+           task_template_type: 'ActivityType', f: f %>
