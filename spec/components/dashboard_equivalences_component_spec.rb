@@ -45,6 +45,13 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
       let(:school) { create(:school, data_enabled: false) }
 
       it { expect(component.data_enabled?).to be false }
+
+      context 'with admin and school is processing data' do
+        let(:school) { create(:school, process_data: true) }
+        let(:user) { create(:admin) }
+
+        it { expect(component.data_enabled?).to be true }
+      end
     end
   end
 

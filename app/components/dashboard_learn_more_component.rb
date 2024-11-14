@@ -11,8 +11,7 @@ class DashboardLearnMoreComponent < ApplicationComponent
   end
 
   def data_enabled?
-    return true if user.present? && user.admin? && @school.process_data?
-    @school.data_enabled?
+    user&.admin? && @school.process_data? || @school.data_enabled?
   end
 
   def adult?
