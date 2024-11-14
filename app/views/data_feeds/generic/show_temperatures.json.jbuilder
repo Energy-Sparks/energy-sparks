@@ -3,7 +3,7 @@ json.calendar_events (@first_reading.reading_date.to_date..Time.zone.today).each
   json.startDate  the_date
   json.endDate    the_date
   if @reading_summary.key?(the_date)
-    json.name @reading_summary[the_date]
+    json.name @reading_summary[the_date].round(3)
     if @reading_summary[the_date] > 20.0
       json.color Colours.hex(:red_medium)
     elsif @reading_summary[the_date] > AnalyseHeatingAndHotWater::HeatingModelTemperatureSpace::BALANCE_POINT_TEMPERATURE
