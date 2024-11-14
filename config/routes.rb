@@ -272,6 +272,8 @@ Rails.application.routes.draw do
       end
     end
 
+    get :settings, to: 'schools#settings'
+
     concerns :tariff_holder
 
     scope module: :schools do
