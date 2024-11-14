@@ -1,5 +1,5 @@
 # rubocop:disable Lint/ParenthesesAsGroupedExpression
-json.calendar_events (@first_read.reading_date.to_date..Time.zone.today).each do |the_date|
+json.calendar_events (@first_reading.reading_date.to_date..Time.zone.today).each do |the_date|
   json.startDate  the_date
   json.endDate    the_date
   if @reading_summary.key?(the_date)

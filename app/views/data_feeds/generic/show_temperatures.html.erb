@@ -1,13 +1,13 @@
-<h1>Report for <%= @title %></h1>
+<h1><%= @weather_station.title %> Report</h1>
 
 <p><%= link_to 'All reports', admin_reports_path, class: 'btn' %></p>
 
-<h2>Weather data summary</h2>
+<h2>Temperature data summary</h2>
 
-<% if @first_read.nil? %>
+<% if @first_reading.nil? %>
   <strong>There are currently no readings for this location</strong>
 <% else %>
-  <p>Dates start at date of first recorded reading, <%= nice_dates @first_read.reading_date %>, up until the present day.</p>
+  <p>This report summarises the temperature data from <%= nice_dates(@first_reading.reading_date) %> up until the present day.</p>
 <% end %>
 
 <div id="calendar" class="calendar"></div>
