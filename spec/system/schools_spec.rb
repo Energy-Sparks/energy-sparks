@@ -133,7 +133,7 @@ RSpec.describe 'Schools page' do
       end
     end
 
-    context 'when browsing by letter' do
+    context 'when browsing by letter', :js do
       before do
         click_on('B')
       end
@@ -141,7 +141,7 @@ RSpec.describe 'Schools page' do
       it_behaves_like 'school letter browse results'
     end
 
-    context 'when searching by keyword' do
+    context 'when searching by keyword', :js do
       before do
         fill_in('schools-keyword', with: 'Primary')
         find('#schools-search-submit').click
@@ -181,7 +181,7 @@ RSpec.describe 'Schools page' do
       expect(page).not_to have_link(b_school.name, href: school_path(b_school))
     end
 
-    context 'when browsing by letter' do
+    context 'when browsing by letter', :js do
       before do
         click_on('B')
       end
@@ -189,7 +189,7 @@ RSpec.describe 'Schools page' do
       it_behaves_like 'school group letter browse results'
     end
 
-    context 'when searching by keyword' do
+    context 'when searching by keyword', :js do
       before do
         fill_in('school-groups-keyword', with: 'Academy')
         find('#school-groups-search-submit').click
