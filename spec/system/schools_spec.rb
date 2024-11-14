@@ -167,7 +167,7 @@ RSpec.describe 'Schools page' do
     end
   end
 
-  context 'with the school groups tab' do
+  context 'with the school groups tab', :js do
     before do
       visit schools_path
       click_on I18n.t('components.school_search.school_groups.tab')
@@ -184,7 +184,6 @@ RSpec.describe 'Schools page' do
     context 'when browsing by letter' do
       before do
         click_on('B')
-        sleep(2)
       end
 
       it_behaves_like 'school group letter browse results'
