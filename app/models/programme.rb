@@ -29,7 +29,7 @@ class Programme < ApplicationRecord
   has_many :activities, through: :programme_activities
   has_many :observations, as: :observable, dependent: :destroy
 
-  enum status: { started: 0, completed: 1, abandoned: 2 } do
+  enum :status, { started: 0, completed: 1, abandoned: 2 } do
     event :complete do
       after do
         self.update(ended_on: Time.zone.now)

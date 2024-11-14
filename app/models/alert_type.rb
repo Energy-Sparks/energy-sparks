@@ -26,9 +26,6 @@
 #
 
 class AlertType < ApplicationRecord
-  SUB_CATEGORIES = %i[hot_water heating baseload electricity_use solar_pv tariffs co2 boiler_control
-                      overview storage_heaters].freeze
-
   belongs_to :advice_page, optional: true
 
   has_many :alerts
@@ -38,7 +35,8 @@ class AlertType < ApplicationRecord
 
   enum :source, { analytics: 0, system: 1, analysis: 2 }
   enum :fuel_type, { electricity: 0, gas: 1, storage_heater: 2, solar_pv: 3 }, suffix: :fuel_type
-  enum :sub_category, SUB_CATEGORIES
+  enum :sub_category, { hot_water: 0, heating: 1, baseload: 2, electricity_use: 3, solar_pv: 4, tariffs: 5, co2: 6,
+                        boiler_control: 7, overview: 8, storage_heaters: 9 }
   enum :frequency, { termly: 0, weekly: 1, before_each_holiday: 2 }
   enum :group, { advice: 0, benchmarking: 1, change: 2, priority: 3 }
   enum :link_to, { insights_page: 0, analysis_page: 1, learn_more_page: 2 }

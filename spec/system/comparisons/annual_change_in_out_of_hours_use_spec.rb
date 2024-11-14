@@ -64,7 +64,6 @@ describe 'annual_change_in_*_out_of_hours_use' do
 
   before do
     create(:advice_page, key: advice_page_key)
-    visit "/comparisons/#{key}"
   end
 
   describe 'annual_change_in_electricity_out_of_hours_use' do

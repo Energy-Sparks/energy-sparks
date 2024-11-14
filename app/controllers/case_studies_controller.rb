@@ -11,7 +11,7 @@ class CaseStudiesController < ApplicationController
       file = resource.t_attached(:file, params[:locale])
       serve_from_storage(file, params[:serve])
     else
-      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+      route_not_found
     end
   end
 end

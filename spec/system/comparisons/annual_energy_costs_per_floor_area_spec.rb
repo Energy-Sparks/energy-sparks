@@ -61,14 +61,14 @@ describe 'annual_energy_costs_per_floor_area' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{key}" }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
+      let(:model) { Comparison::AnnualEnergyCostsPerUnit }
     end
 
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
+      let(:model) { Comparison::AnnualEnergyCostsPerUnit }
       let(:expected_school) { school }
       let(:advice_page_path) { school_advice_path(expected_school) }
       let(:headers) do
