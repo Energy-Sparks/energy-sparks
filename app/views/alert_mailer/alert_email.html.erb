@@ -28,7 +28,13 @@
 <% end %>
 
 <p>
-  <%= t('alert_mailer.alert_email.dashboard_and_analysis_message_html', school_url: school_url(@school, params: weekly_alert_utm_parameters), school_analysis_index_url: school_advice_url(@school, params: weekly_alert_utm_parameters)) %>.
+  <% key = Flipper.enabled?(:alert_email_2024) ? 'dashboard_and_analysis_message_2024_html' : 'dashboard_and_analysis_message_html' %>
+  <%= t("alert_mailer.alert_email.#{key}",
+        school_url: school_url(@school,
+        params: weekly_alert_utm_parameters),
+        school_analysis_index_url: school_advice_url(@school, params: weekly_alert_utm_parameters),
+        alerts_school_advice_url: alerts_school_advice_url(@school),
+        priorities_school_advice_url: priorities_school_advice_url(@school)) %>.
 </p>
 
 <%= link_to t('alert_mailer.alert_email.view_your_school_dashboard'), school_url(@school, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-3 mb-3 ax-right'%>
@@ -47,10 +53,26 @@
 <h3><%= t('alert_mailer.alert_email.latest_updates') %></h3>
 <div class="s-3"></div>
 
+
+<% dashboard_alert_groups(@alert_content).each do |alert_group| %>
+  <h3><%= t("advice_pages.alerts.groups.#{alert_group}") %></h3>
+    start AlertsComponent
+    <%= render AlertsComponent.new(school: @school,
+                                   dashboard_alerts: @alert_content,
+                                   alert_types: alert_types_for_group(alert_group),
+                                   show_links: true,
+                                   content_field: :email_content,
+                                   email: true) %>
+    end AlertsComponent
+<% end %>
+
+
 <% @alert_content.each do |alert_content| %>
   <div class="row">
-    <div class="col col-lg-12">
+    <div class="col col-lg-12" style=>
+      title
       <h4 class="mb-2 mt-2"><%= sanitize alert_content.email_title %></h4>
+      email content
       <%= alert_content.email_content %>
     </div>
   </div>
@@ -75,13 +97,14 @@
   <div class="s-5"></div>
 <% end %>
 
-<h3><%= t('alert_mailer.alert_email.need_more_help') %></h3>
-<div class="s-3"></div>
+<% unless Flipper.enabled?(:alert_email_2024) %>
+  <h3><%= t('alert_mailer.alert_email.need_more_help') %></h3>
+  <div class="s-3"></div>
 
-<%= t('alert_mailer.alert_email.need_more_help_message') %>.
+  <%= t('alert_mailer.alert_email.need_more_help_message') %>.
 
-<%= link_to t('alert_mailer.alert_email.book_an_audit'), energy_audits_url, class: 'btn btn-primary mt-3 mb-3 ax-right'%>
-
+  <%= link_to t('alert_mailer.alert_email.book_an_audit'), energy_audits_url, class: 'btn btn-primary mt-3 mb-3 ax-right'%>
+<% end %>
 <hr/>
 
 <h5><%= t('alert_mailer.alert_email.why_am_i_receiving_these_emails') %></h5>
@@ -90,8 +113,10 @@
 <p><%= t('alert_mailer.alert_email.you_have_been_signed_up') %>.</p>
 <div class="s-3"></div>
 
-<p><%= t('alert_mailer.alert_email.you_can_stop_receiving') %>.</p>
-<div class="s-3"></div>
+<% unless Flipper.enabled?(:alert_email_2024) %>
+  <p><%= t('alert_mailer.alert_email.you_can_stop_receiving') %>.</p>
+  <div class="s-3"></div>
+<% end %>
 
 <% if @unsubscribe_emails %>
   <p><%= t('alert_mailer.alert_email.if_you_wish_to_completely_unsubscribe') %>: <%= @unsubscribe_emails %></p>

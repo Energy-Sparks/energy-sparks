@@ -99,3 +99,52 @@
     </table>
   </div>
 </div>
+
+<div class="row">
+  <div class="col">
+    <h2>Email Footer Icons</h2>
+    <table class="table">
+      <% %i[linkedin x-twitter instagram facebook-square github].each do |name| %>
+        <tr>
+          <% args = { icon_set: 'fab', name: name, style: :circle, classes: 'footer download-icon' } %>
+          <td><code><%= args.inspect %></code></td>
+          <td><%= render IconComponent.new(**args) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <h2>Email Alert Icons</h2>
+    <table class="table">
+      <% [:electricity, :bolt, :gas, :fire, nil, :'calendar-alt'].each_slice(2) do |fuel_type, name| %>
+        <tr>
+          <% args = { fuel_type: fuel_type, name: name, style: :circle, size: 'f5', classes: 'download-icon' } %>
+          <td><code><%= args.inspect %></code></td>
+          <td><%= render IconComponent.new(**args) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<style>
+  .footer { color: <%= Colours.dark %>; }
+</style>
+<script src="https://unpkg.com/modern-screenshot"></script>
+<script>
+  document.querySelectorAll('.download-icon').forEach(element => {
+    console.log(element)
+    element.onclick = event => {
+      event.preventDefault()
+      modernScreenshot.domToPng(element).then(dataUrl => {
+        const link = document.createElement('a')
+        link.download = `${event.target.classList[event.target.classList.length-1]}.png`
+        link.href = dataUrl
+        link.click()
+      })
+    }
+  })
+</script>
