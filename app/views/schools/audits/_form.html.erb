@@ -35,74 +35,76 @@
   <p class="small"><%= t('schools.audits.form.audit_points_message_html',
                          audit_points: Audits::AuditService::AUDIT_POINTS) %></p>
 
-  <% if Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
+  <% if show_new_tasklists %>
     <%= render 'shared/tasklists/tasks_form', tasklist_template: @audit, f: f %>
   <% end %>
-  <% if !Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
-    <h2><%= t('schools.audits.form.activities') %></h2>
-    <p class="small">
-      <%= t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path) %>.
-    </p>
+  <% if show_old_tasklists %>
+    <div class='bg-secondary'>
+      <h2><%= t('schools.audits.form.activities') %></h2>
+      <p class="small">
+        <%= t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path) %>.
+      </p>
 
-    <p class="small">
-      <%= t('schools.audits.form.add_a_custom_activity_message') %>.
-    </p>
+      <p class="small">
+        <%= t('schools.audits.form.add_a_custom_activity_message') %>.
+      </p>
 
-    <div class="row">
-      <div class="col-md-5 mb-3">
-        <label for="activity_type"><%= t('schools.audits.form.activity_type') %></label>
+      <div class="row">
+        <div class="col-md-5 mb-3">
+          <label for="activity_type"><%= t('schools.audits.form.activity_type') %></label>
+        </div>
+        <div class="col-md-5 mb-3">
+          <label for="notes"><%= t('schools.audits.form.notes') %></label>
+        </div>
+        <div class="col-md-2 mb-3">
+        </div>
       </div>
-      <div class="col-md-5 mb-3">
-        <label for="notes"><%= t('schools.audits.form.notes') %></label>
+
+      <div id="audit-activity-types">
+        <%= f.simple_fields_for :audit_activity_types, @audit.audit_activity_types do |audit_activity_type| %>
+          <%= render 'audit_activity_type_fields', f: audit_activity_type %>
+        <% end %>
+        <div class="links">
+          <%= link_to_add_association t('schools.audits.form.add_activity'), f, :audit_activity_types, class: 'btn' %>
+        </div>
       </div>
-      <div class="col-md-2 mb-3">
+
+      <br>
+      <br>
+
+      <h2><%= t('common.labels.actions') %></h2>
+
+      <p class="small">
+        <%= t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path) %>
+      </p>
+
+      <p class="small">
+        <%= t('schools.audits.form.actions_message_2') %>.
+      </p>
+
+      <div class="row">
+        <div class="col-md-5 mb-3">
+          <label for="firstName"><%= t('schools.audits.form.action_type') %></label>
+        </div>
+        <div class="col-md-5 mb-3">
+          <label for="lastName"><%= t('schools.audits.form.notes') %></label>
+        </div>
+        <div class="col-md-2 mb-3">
+        </div>
       </div>
+
+      <div id="audit-intervention-types">
+        <%= f.simple_fields_for :audit_intervention_types, @audit.audit_intervention_types do |audit_intervention_type| %>
+          <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
+        <% end %>
+        <div class="links">
+          <%= link_to_add_association t('schools.audits.form.add_action'), f, :audit_intervention_types, class: 'btn' %>
+        </div>
+      </div>
+
+      <br>
+      <br>
     </div>
-
-    <div id="audit-activity-types">
-      <%= f.simple_fields_for :audit_activity_types, @audit.audit_activity_types do |audit_activity_type| %>
-        <%= render 'audit_activity_type_fields', f: audit_activity_type %>
-      <% end %>
-      <div class="links">
-        <%= link_to_add_association t('schools.audits.form.add_activity'), f, :audit_activity_types, class: 'btn' %>
-      </div>
-    </div>
-
-    <br>
-    <br>
-
-    <h2><%= t('common.labels.actions') %></h2>
-
-    <p class="small">
-      <%= t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path) %>
-    </p>
-
-    <p class="small">
-      <%= t('schools.audits.form.actions_message_2') %>.
-    </p>
-
-    <div class="row">
-      <div class="col-md-5 mb-3">
-        <label for="firstName"><%= t('schools.audits.form.action_type') %></label>
-      </div>
-      <div class="col-md-5 mb-3">
-        <label for="lastName"><%= t('schools.audits.form.notes') %></label>
-      </div>
-      <div class="col-md-2 mb-3">
-      </div>
-    </div>
-
-    <div id="audit-intervention-types">
-      <%= f.simple_fields_for :audit_intervention_types, @audit.audit_intervention_types do |audit_intervention_type| %>
-        <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
-      <% end %>
-      <div class="links">
-        <%= link_to_add_association t('schools.audits.form.add_action'), f, :audit_intervention_types, class: 'btn' %>
-      </div>
-    </div>
-
-    <br>
-    <br>
   <% end %>
 
   <p class="small">

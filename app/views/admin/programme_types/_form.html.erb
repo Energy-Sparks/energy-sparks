@@ -41,5 +41,9 @@
   <%= f.input :active %>
   <%= f.input :default %>
 
+  <% if Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
+    <%= render 'shared/tasklists/tasks_form', tasklist_template: programme_type, f: f %>
+  <% end %>
+
   <%= f.submit 'Save', class: 'btn btn-success' %>
 <% end %>

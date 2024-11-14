@@ -16,9 +16,16 @@
       <li>
         Editing a programme once schools have begun enrolling will impact their current progress. So take care with adding or removing activities once schools have engaged
       </li>
+      <% if show_old_tasklists %>
       <li>
         Schools are automatically marked as having completed a programme once they have completed all the activities currently listed against it.
       </li>
+      <% end %>
+      <% if show_new_tasklists %>
+      <li>
+        Schools are automatically marked as having completed a programme once they have completed all the activities and actions currently listed against it.
+      </li>
+      <% end %>
     </ul>
   </div>
 </div>
@@ -30,13 +37,21 @@
         <thead>
           <tr>
             <th>Title</th>
-            <th>Activities in Programme</th>
+            <% if show_old_tasklists %>
+              <th class='bg-secondary'>Activities in Programme</th>
+            <% end %>
+            <% if show_new_tasklists %>
+              <th>Activities in Programme</th>
+              <th>Actions in Programme</th>
+            <% end %>
             <th>Bonus score</th>
             <th>Schools enrolled</th>
             <th>Schools completed</th>
             <th>Active</th>
             <th>Default?</th>
+            <% if show_old_tasklists %>
             <th></th>
+            <% end %>
             <th></th>
             <th></th>
           </tr>
@@ -45,7 +60,13 @@
           <% @programme_types.each do |programme_type| %>
             <tr>
               <td><%= link_to programme_type.title, admin_programme_type_path(programme_type) %></td>
-              <td><%= programme_type.activity_types.count %></td>
+              <% if show_old_tasklists %>
+                <td class='bg-secondary'><%= programme_type.activity_types.count %></td>
+              <% end %>
+              <% if show_new_tasklists %>
+                <td><%= programme_type.tasklist_activity_types.count %></td>
+                <td><%= programme_type.tasklist_intervention_types.count %></td>
+              <% end %>
               <td><%= programme_type.bonus_score %></td>
               <td><%= link_to programme_type.programmes.started.count,
                               admin_programme_type_programmes_path(programme_type) %></td>
@@ -55,9 +76,11 @@
               <td><%= link_to 'Enrol schools',
                               admin_programme_type_programmes_path(programme_type),
                               class: 'btn btn-warning btn-sm nowrap' %></td>
+              <% if show_old_tasklists %>
               <td><%= link_to 'Edit activities',
                               admin_programme_type_activity_types_path(programme_type),
                               class: 'btn btn-warning btn-sm nowrap' %></td>
+              <% end %>
               <td><%= link_to 'Edit', edit_admin_programme_type_path(programme_type),
                               class: 'btn btn-warning btn-sm' %></td>
               <td><%= link_to 'Delete', admin_programme_type_path(programme_type),
