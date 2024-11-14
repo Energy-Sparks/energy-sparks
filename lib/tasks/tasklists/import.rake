@@ -4,19 +4,69 @@ namespace :tasklists do
     puts "#{Time.zone.now} tasklists import start"
 
     # Empty out existing tasks
+    Tasklist::Task.delete_all
+    Tasklist::CompletedTask.delete_all
 
+    Audit.all.find_each do |audit|
+      audit.audit_activity_types.each do |audit_activity_type|
+        task = audit.tasklist_tasks.find_or_create_by!(
+          task_template: audit_activity_type.activity_type,
+          position: audit_activity_type.position,
+          notes: audit_activity_type.notes)
 
+        ## latest activity for this activity_type completed since the audit was created
+        activity = audit.school.activities.where(
+          activity_type: audit_activity_type.activity_type, happened_on: audit.created_at..).order(happened_on: :asc).last
 
-    Audit.all.each do |audit|
+        if activity
+          audit.tasklist_completed_tasks.find_or_create_by!(
+            tasklist_task: task,
+            task_instance: activity,
+            happened_on: activity.happened_on
+          )
+        end
+      end
+
+      audit.audit_intervention_types.each do |audit_intervention_type|
+        task = audit.tasklist_tasks.find_or_create_by!(
+          task_template: audit_intervention_type.intervention_type,
+          position: audit_intervention_type.position,
+          notes: audit_intervention_type.notes)
+
+        ## latest observation for this intervention_type completed since the audit was created
+        observation = audit.school.observations.intervention.where(
+          intervention_type: audit_intervention_type.intervention_type, at: audit.created_at..).order(at: :asc).last
+        if observation
+          audit.tasklist_completed_tasks.find_or_create_by!(
+            tasklist_task: task,
+            task_instance: observation,
+            happened_on: observation.at
+          )
+        end
+      end
     end
 
-    ProgrammeType.all.each do |programme_type|
-    end
+    ProgrammeType.all.find_each do |programme_type|
+      programme_type.programme_type_activity_types.each do |programme_type_activity_type|
+        task = programme_type.tasklist_tasks.find_or_create_by!(
+          task_template: programme_type_activity_type.activity_type,
+          position: programme_type_activity_type.position,
+          notes: nil)
 
-    Programme.all.each do |programme|
+        # Find all records where this activity_type has been completed. Ensures we don't have any rougue entries
+        ProgrammeActivity.where(activity_type_id: programme_type_activity_type.activity_type).order(position: :asc).find_each do |programme_activity|
+          # only create one record per programme / activity / activity_type
+          if programme_activity.activity && programme_activity.programme # there are some activities / programmes referenced that don't exist!
+            programme_activity.programme.tasklist_completed_tasks.find_or_create_by(
+              tasklist_task: task,
+              task_instance: programme_activity.activity,
+              happened_on: programme_activity.activity.happened_on
+            )
+          end
+        end
+      end
     end
 
     puts "#{Time.zone.now} tasklists import end"
   end
 end
-

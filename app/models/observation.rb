@@ -55,7 +55,6 @@ class Observation < ApplicationRecord
   has_many   :locations, through: :temperature_recordings
 
   belongs_to :programme, optional: true # to be removed when column is removed
-
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true # to be removed when column is removed
@@ -63,11 +62,19 @@ class Observation < ApplicationRecord
   belongs_to :created_by, optional: true, class_name: 'User'
   belongs_to :updated_by, optional: true, class_name: 'User'
 
-  # If adding a new observation type remember to also modify the timeline component
-  # events: 3 has been removed
+  # If adding a new observation type remember to also modify the observation / timeline component
+  # The observable polymorphic relationship is to be used rather than adding a new foreign key to the table
+  # The plan is to move existing relationships programme, audit etc over to observable eventually
+  # Please consider moving to the new model when working on one of these areas (especially programme, audit, school_target as these are easiest)
+
+  # NB: events: 3 has been removed
   enum :observation_type, { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6,
                             audit_activities_completed: 7, transport_survey: 8 }
 
+  # When adding a new object to be observed, please use the observable polymorphic relationship
+  # rather than adding a new foreign key to the table
+  # The plan is to move existing relationships programme, audit etc over to observable eventually
+  # Please consider moving to the new model when working on one of these areas to be moved
   belongs_to :observable, polymorphic: true, optional: true
 
   validates :at, :school, presence: true

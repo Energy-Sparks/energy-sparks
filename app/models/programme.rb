@@ -23,7 +23,7 @@
 #
 
 class Programme < ApplicationRecord
-  include Tasklist::Target
+  include Tasklist::Instance
 
   belongs_to :programme_type
   belongs_to :school
