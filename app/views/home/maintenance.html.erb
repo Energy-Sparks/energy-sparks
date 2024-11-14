@@ -4,73 +4,32 @@
     <%= render 'shared/head' %>
   </head>
   <body>
-    <div class="fixed-top">
-      <nav class="navbar <%= navbar_expand_class %> navbar-custom">
+    <div class='fixed-top'>
+      <nav class='navbar navbar-top'>
         <div class="container">
-          <%= navbar_image_link %>
-          <%= on_test_link %>
-          <%= locale_switcher_buttons %>
-        </div>
-      </nav>
-    </div>
-    <div class="application container">
-      <div>
-        <h1>Energy Sparks is currently down for maintenance</h1>
+          <%= navigation_image_link %>
+          <%= render 'shared/navigation/top_nav/on_test' %>
 
-        <p>
-          We're sorry but Energy Sparks is currently available while we carry
-          out some essential maintenance.
-        </p>
-
-        <p>
-          Our team is currently working on updating the site and we expect
-          the service to be available again in a couple of hours.
-        </p>
-
-      </div>
-    </div>
-    <!-- Footer -->
-    <footer>
-      <div class="footer-above">
-        <div class="container">
-          <div class="row">
-            <div class="col-4">
-              <p class="small">
-                <%= t('footer.registered_charity_notice') %>.
-              </p>
-              <div class="row">
-                <div class="col-2">
-                  <%= fab_icon('creative-commons fa-2x') %>
-                </div>
-                <div class="col-10">
-                  <p class="small">
-                    <%= t('footer.cc_licence_notice_html') %>.
-                  </p>
-                </div>
-               </div>
-            </div>
-            <div class="col-5">
-            </div>
-            <div class="col-3">
-              <h6><%= t('footer.follow_energy_sparks') %></h6>
-              <ul class="list-inline">
-                <li class="list-inline-item p-2">
-                  <a href="//twitter.com/EnergySparks" class=""><%= fab_icon('twitter fa-2x') %></a>
-                </li>
-                <li class="list-inline-item p-2">
-                  <a href="//www.facebook.com/EnergySparksUK/" class=""><%= fab_icon('facebook-square fa-2x') %></a>
-                </li>
-                <li class="list-inline-item p-2">
-                  <a href="//github.com/BathHacked/energy-sparks" class=""><%= fab_icon('github fa-2x') %></a>
-                </li>
-              </ul>
-            </div>
+          <div class='<%= order_expand_class %>'>
+            <%= render 'shared/navigation/top_nav/locale_switcher' %>
           </div>
         </div>
+      </nav>
+      <nav class='navbar navbar-second adult'></nav>
+    </div>
+    <div class='application container navigation-margin'>
+      <div>
+        <h1><%= t 'maintenance.title' %></h1>
+        <p><%= t 'maintenance.unavailable' %>.</p>
+        <p><%= t 'maintenance.progress' %>.</p>
       </div>
-
+    </div>
+    <footer>
+      <%= render 'shared/footer/second' %>
     </footer>
 
-    <%= render 'shared/google_analytics', analytics_code: @analytics_code if Rails.env.production? && !@analytics_code.blank? %>
+    <%= if Rails.env.production? && @analytics_code.present?
+          render 'shared/google_analytics', analytics_code: @analytics_code
+        end %>
   </body>
 </html>

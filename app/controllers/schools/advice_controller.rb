@@ -9,6 +9,10 @@ module Schools
     load_resource :school
     skip_before_action :authenticate_user!
     before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
+    # Redirect guest / not logged in users to the pupil dashboard if not
+    # data enabled to offer a better initial user experience
+    before_action :redirect_to_pupil_dash_if_not_data_enabled, only: [:show]
+
     before_action :school_inactive
     before_action :load_advice_pages
     before_action :set_tab_name
@@ -18,7 +22,6 @@ module Schools
 
     def show
       if Flipper.enabled?(:new_dashboards_2024, current_user)
-        @meter_collection = aggregate_school # for comparison overview component
         render :new_show, layout: 'dashboards'
       else
         @advice_page_benchmarks = @school.advice_page_school_benchmarks
@@ -66,6 +69,14 @@ module Schools
 
     def load_advice_pages
       @advice_pages = AdvicePage.all
+    end
+
+    def not_signed_in?
+      !user_signed_in? || current_user.guest?
+    end
+
+    def redirect_to_pupil_dash_if_not_data_enabled
+      redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
     end
 
     def set_counts

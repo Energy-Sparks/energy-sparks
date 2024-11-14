@@ -294,6 +294,13 @@ Rails.application.routes.draw do
          :hot_water,
          :solar_pv,
          :storage_heaters].each do |page|
+
+          # Override Rails default behaviour of mapping HEAD request to a GET and send to a
+          # generic action method that returns OK with no content.
+          [:insights, :analysis, :learn_more].each do |action|
+            match "#{page}/#{action}", controller: "advice/#{page}", action: 'handle_head', via: :head
+          end
+
           resource page, controller: "advice/#{page}", only: [:show] do
             member do
               get :insights
@@ -425,6 +432,9 @@ Rails.application.routes.draw do
       resources :users do
         member do
           post :make_school_admin
+          post :unlock
+          post :lock
+          post :resend_confirmation
         end
       end
       resources :cluster_admins, only: [:new, :create]
@@ -463,6 +473,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :mailer_previews, only: [:index]
     resources :component_previews, only: [:index]
+    resources :styles, only: [:index]
+    get 'colours', to: 'styles#index'
+
     concerns :issueable
     resources :funders
     resources :users do
@@ -652,7 +665,9 @@ Rails.application.routes.draw do
       resources :engaged_schools, only: [:index]
       resources :community_use, only: [:index]
       resources :intervention_types, only: [:index, :show]
+      resources :missing_alert_contacts, only: [:index]
       resources :work_allocation, only: [:index]
+      resources :user_logins, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
@@ -746,4 +761,7 @@ Rails.application.routes.draw do
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
+  match "/:code", to: "errors#show", via: :all, constraints: {
+    code: /#{ErrorsController::CODES.join("|")}/
+  }
 end

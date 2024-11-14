@@ -104,18 +104,15 @@ describe User do
       expect(build(:pupil, school:, pupil_password: 'three memorable words 123')).to be_valid
       expect(build(:pupil, school: create(:school), pupil_password: 'three memorable words')).to be_valid
     end
-  end
 
-  describe 'pupil password encryption' do
-    it 'works in the same way for the new and old pupil password' do
-      pupil = create(:pupil, pupil_password_old: 'old pupil password')
-      pupil.update(pupil_password: pupil.pupil_password_old)
-      expect(pupil.pupil_password).to eq('old pupil password')
-      raw = ActiveRecord::Base.connection.select_all(
-        'SELECT pupil_password, pupil_password_old FROM users WHERE id = $1', nil, [pupil.id]
-      ).first
-      expect(raw['pupil_password']).not_to eq('old pupil password')
-      expect(raw['pupil_password_old']).not_to eq('old pupil password')
+    it 'reads an pre-encrypted password' do
+      ActiveRecord::Base.connection.exec_query(%q(
+        UPDATE users
+        SET pupil_password =
+          '{"p":"ANilTF3GyyDTX6jwp6ZVgZkWr5CvalAAQg==","h":{"iv":"ctFZW5HRkVHmIbJd","at":"v775E47MO8eqOU8zo9xwPw=="}}'
+        WHERE id = $1
+      ), nil, [existing_pupil.id])
+      expect(existing_pupil.reload.pupil_password).to eq('four memorable words here')
     end
   end
 
@@ -247,7 +244,7 @@ describe User do
       expect(other_user.confirm).to be(true)
 
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq('Energy Sparks: confirm your account')
+      expect(email.subject).to eq('Please confirm your account on Energy Sparks')
     end
   end
 
@@ -264,12 +261,15 @@ describe User do
         expect(parsed[0]).to eq(['School Group',
                                  'School',
                                  'School type',
+                                 'School active',
+                                 'School data enabled',
                                  'Funder',
                                  'Region',
                                  'Name',
                                  'Email',
                                  'Role',
                                  'Staff Role',
+                                 'Confirmed',
                                  'Locked'])
       end
 
@@ -277,12 +277,15 @@ describe User do
         expect(parsed[1]).to eq([school_group.name,
                                  school.name,
                                  school.school_type.humanize,
+                                 'Yes',
+                                 'Yes',
                                  '',
                                  '',
                                  user.name,
                                  user.email,
                                  user.role.humanize,
                                  user.staff_role.title,
+                                 'No',
                                  'No'])
       end
     end
@@ -296,10 +299,13 @@ describe User do
                                  '',
                                  '',
                                  '',
+                                 '',
+                                 '',
                                  user.name,
                                  user.email,
                                  'Group Admin',
                                  '',
+                                 'Yes',
                                  'No'])
       end
     end
@@ -321,12 +327,15 @@ describe User do
         expect(parsed[1]).to eq([school_group.name,
                                  school.name,
                                  school.school_type.humanize,
+                                 'Yes',
+                                 'Yes',
                                  funder.name,
                                  'East Of England',
                                  user.name,
                                  user.email,
                                  user.role.humanize,
                                  user.staff_role.title,
+                                 'No',
                                  'No'])
       end
     end

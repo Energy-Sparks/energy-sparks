@@ -5,15 +5,15 @@
   <% list.with_link do %>
     <% link_to 'More information', root_path %>
   <% end %>
-  <% list.with_prompt icon: 'bolt' do |prompt| %>
-    <%= prompt.with_title { 'Positive prompt' } %>
+  <% list.with_prompt icon: 'car' do |prompt| %>
+    <%= prompt.with_title { 'Prompt with icon' } %>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
       odio in vestibulum. Duis a semper mi.
     </p>
   <% end %>
-  <% list.with_prompt icon: 'fire' do |prompt| %>
-    <%= prompt.with_title { 'Negative prompt' } %>
+  <% list.with_prompt icon: 'house' do |prompt| %>
+    <%= prompt.with_title { 'Prompt with icon' } %>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
       odio in vestibulum. Duis a semper mi.
@@ -30,15 +30,15 @@
       <% list.with_link do %>
         <% link_to 'More information', root_path %>
       <% end %>
-      <% list.with_prompt icon: 'bolt', status: :positive do |prompt| %>
-        <%= prompt.with_title { 'Positive prompt' } %>
+      <% list.with_prompt fuel_type: :gas, status: :positive do |prompt| %>
+        <%= prompt.with_title { 'Positive prompt with fuel type' } %>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
           odio in vestibulum. Duis a semper mi.
         </p>
       <% end %>
-      <% list.with_prompt icon: 'fire', status: :negative do |prompt| %>
-        <%= prompt.with_title { 'Positive prompt' } %>
+      <% list.with_prompt icon: 'calendar-alt', status: :negative do |prompt| %>
+        <%= prompt.with_title { 'Negative prompt with icon' } %>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
           odio in vestibulum. Duis a semper mi.
@@ -52,15 +52,15 @@
       <% list.with_link do %>
         <% link_to 'More information', root_path %>
       <% end %>
-      <% list.with_prompt icon: 'calendar-alt', status: :none do |prompt| %>
-        <%= prompt.with_title { 'Positive prompt' } %>
+      <% list.with_prompt fuel_type: 'electricity', status: :none do |prompt| %>
+        <%= prompt.with_title { 'Prompt with status none and fuel type' } %>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
           odio in vestibulum. Duis a semper mi.
         </p>
       <% end %>
-      <% list.with_prompt icon: 'sun', status: :neutral do |prompt| %>
-        <%= prompt.with_title { 'Positive prompt' } %>
+      <% list.with_prompt icon: 'stop', status: :neutral do |prompt| %>
+        <%= prompt.with_title { 'Neutral prompt with icon' } %>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
           odio in vestibulum. Duis a semper mi.

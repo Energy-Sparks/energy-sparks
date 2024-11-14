@@ -50,10 +50,12 @@ class SchoolRemover
 
         if user.has_other_schools?
           user.remove_school(@school)
-        else
+        elsif user.confirmed?
           # Lock account if user is linked to only this school
           user.contacts.for_school(@school).first&.destroy unless @archive
           user.lock_access!(send_instructions: false)
+        else
+          user.destroy
         end
       end
     end

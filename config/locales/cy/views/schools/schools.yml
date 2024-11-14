@@ -357,13 +357,6 @@ cy:
           other: Cwblhewch y <strong>%{count}</strong> gweithgaredd olaf nawr i sgorio <strong>%{activity_types_uncompleted_scores}</strong> o bwyntiau
       recommendations:
         message: Cwblhewch un o'n gweithgareddau dan arweiniad disgyblion neu oedolion a argymhellir i ddechrau lleihau eich defnydd o ynni
-      recommendations_scoreboard:
-        message_html:
-          one: Da iawn, rydych wedi sgorio <strong>%{points}</strong> o bwyntiau hyd yn hyn ac rydych mewn safle <strong>%{position}</strong> ar y sgorfwrdd. Cwblhewch eich gweithgaredd nesaf i ddringo'n uwch i fyny'r sgorfwrdd!
-          two: Da iawn, rydych wedi sgorio <strong>%{points}</strong> o bwyntiau hyd yn hyn ac rydych mewn safle <strong>%{position}</strong> ar y sgorfwrdd. Cwblhewch eich gweithgaredd nesaf i ddringo'n uwch i fyny'r sgorfwrdd!
-          many: Da iawn, rydych wedi sgorio <strong>%{points}</strong> o bwyntiau hyd yn hyn ac rydych mewn safle <strong>%{position}</strong> ar y sgorfwrdd. Cwblhewch eich gweithgaredd nesaf i ddringo'n uwch i fyny'r sgorfwrdd!
-          other: Da iawn, rydych wedi sgorio <strong>%{points}</strong> o bwyntiau hyd yn hyn ac rydych mewn safle <strong>%{position}</strong> ar y sgorfwrdd. Cwblhewch eich gweithgaredd nesaf i ddringo'n uwch i fyny'r sgorfwrdd!
-        no_points_message: Nid ydych wedi sgorio unrhyw bwyntiau eleni. Cwblhewch eich gweithgaredd nesaf i fynd ar y sgorfwrdd!
       recommended_for_your_school:
         button: Gweld yr holl awgrymiadau
         message: Gweld ein gweithgareddau a gweithredoedd a argymhellir yn seiliedig ar raglenni eich ysgol a'n dadansoddiad o'ch data ynni
@@ -586,9 +579,7 @@ cy:
           other: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
     schools:
       compare_schools: Cymharu ysgolion
-      review_energy_analysis: Adolygu dadansoddiad ynni
     show:
-      act_on_energy_usage: Gweithredu ar y defnydd o ynni
       add_alert_contacts: Ychwanegu cysylltiadau rhybuddio
       add_consumption_estimate: Ychwanegwch amcangyfrif o'ch defnydd %{fuels} blynyddol fel y gallwn ddarparu adroddiad cynnydd manylach i'ch helpu i gyrraedd eich targedau
       add_estimate: Ychwanegu amcangyfrif
@@ -598,7 +589,6 @@ cy:
       dashboard_title: Dangosfwrdd oedolion ar gyfer %{school_name}
       download_data: Lawrlwytho'ch data
       energy_bill_required: Rydym angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd. Bydd hyn yn helpu i sicrhau y gallwn gasglu, prosesu ac arddangos data eich ysgol.
-      energy_saving_opportunities: Cyfleoedd arbed ynni
       find_out_more: Dysgu rhagor
       find_training: Dod o hyd i hyfforddiant
       making_progress: Da iawn, rydych yn gwneud cynnydd tuag at gyrraedd eich targed i leihau eich defnydd %{fuels}!
@@ -607,7 +597,6 @@ cy:
       online_training_signup: Newydd i Sbarcynni? Cofrestrwch ar gyfer un o'n cyrsiau hyfforddi ar-lein rhad ac am ddim sydd ar ddod i'ch helpu i gael y gorau o'r gwasanaeth.
       percentage_change: "% Newid"
       potential_savings: Arbedion posib
-      print_view: Gwedd argraffu
       recent_energy_usage: Defnydd diweddar o ynni
       review_progress: Adolygu cynnydd
       review_target: Adolygu eich targed
@@ -617,7 +606,6 @@ cy:
       set_targets: Gosodwch dargedau i leihau defnydd eich ysgol o ynni dros y flwyddyn nesaf. Bydd Sbarcynni yn rhoi cyfres o gamau a argymhellir i chi i'ch helpu i gyrraedd eich targedau a lleihau ôl troed carbon eich ysgol.
       setup_alert_contacts: Cofrestrwch ar gyfer rhybuddion e-bost neu neges destun Sbarcynni. Mae rhybuddion Sbarcynni yn rhoi rhybudd cynnar i chi o newidiadau yn nefnydd ynni eich ysgol ac yn amlygu problemau hirdymor gyda'ch defnydd o ynni gydag argymhellion penodol i arbed ynni.
       setup_pupil_account: Sefydlwch gyfrif disgybl ar gyfer eich ysgol i roi mynediad uniongyrchol i'ch disgyblion i'r dangosfwrdd disgyblion. Nid oes angen cyfeiriad e-bost ar gyfer cyfrif disgybl.
-      summary_of_recent_energy_usage: Crynodeb o ddefnydd ynni diweddar
       upload_energy_bill: Uwchlwytho bil
     timeline:
       no_events: Dim digwyddiadau i'w dangos

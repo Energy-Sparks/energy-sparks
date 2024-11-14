@@ -163,13 +163,6 @@ describe 'Audits', type: :system do
       expect(page).not_to have_content('Manage Audits')
     end
 
-    it 'displays a link to view audits' do
-      within '#my_school_menu' do
-        click_on 'Energy audits'
-      end
-      expect(page).to have_content('Energy audits')
-    end
-
     context 'with no audit' do
       before do
         visit school_audits_path(school)
@@ -254,7 +247,6 @@ describe 'Audits', type: :system do
       it 'shows audit in timeline' do
         visit school_path(school)
         expect(page).to have_content('Received an energy audit')
-        expect(page).to have_link(audit.title)
       end
     end
   end
@@ -269,25 +261,9 @@ describe 'Audits', type: :system do
       visit school_path(school)
     end
 
-    it 'displays a link to view audits' do
-      within '#my_school_menu' do
-        click_on 'Energy audits'
-      end
-      expect(page).to have_content('Energy audits')
-    end
-
     it 'shows audit in timeline' do
       visit school_path(school)
       expect(page).to have_content('Received an energy audit')
-      expect(page).to have_link(audit.title)
-    end
-
-    it 'lets me view an audit' do
-      within '#my_school_menu' do
-        click_on 'Energy audits'
-      end
-      click_on 'Our audit'
-      expect(page).to have_content('Description of the audit')
     end
   end
 
@@ -301,25 +277,9 @@ describe 'Audits', type: :system do
       visit school_path(school)
     end
 
-    it 'displays a link to view audits' do
-      within '#my_school_menu' do
-        click_on 'Energy audits'
-      end
-      expect(page).to have_content('Energy audits')
-    end
-
     it 'shows audit in timeline' do
       visit school_path(school)
       expect(page).to have_content('Received an energy audit')
-      expect(page).to have_link(audit.title)
-    end
-
-    it 'lets me view an audit' do
-      within '#my_school_menu' do
-        click_on 'Energy audits'
-      end
-      click_on 'Our audit'
-      expect(page).to have_content('Description of the audit')
     end
   end
 
@@ -333,7 +293,6 @@ describe 'Audits', type: :system do
     it 'shows audit in timeline' do
       visit school_path(school)
       expect(page).to have_content('Received an energy audit')
-      expect(page).not_to have_link(audit.title)
     end
 
     it 'does not let me view list of audits' do

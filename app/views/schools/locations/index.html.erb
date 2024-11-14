@@ -26,8 +26,8 @@
           <td><%= location.temperature_recordings.count %></td>
           <% if can? :manage, location %>
             <td>
-              <%= link_to 'Delete', school_location_path(@school, location), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
               <%= link_to 'Edit', edit_school_location_path(@school, location), class: 'btn btn-sm' %>
+              <%= link_to 'Delete', school_location_path(@school, location), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
             </td>
           <% end %>
         </tr>
@@ -38,4 +38,4 @@
   <p>There are no Locations</p>
 <% end %>
 
-<p><%= link_to 'Add new room or location', new_school_location_path(@school), class: 'btn btn-success' %></p>
+<p><%= link_to 'Add new room or location', new_school_location_path(@school), class: 'btn btn-primary' %></p>

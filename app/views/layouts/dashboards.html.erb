@@ -6,7 +6,7 @@
   <body>
     <%= render 'shared/navigation' %>
     <div class="container-fluid <%= @audience || :adult %> pb-2">
-      <div class="container<%= nav_margin_classes %>">
+      <div class="container navigation-margin">
         <%= render 'shared/breadcrumbs' %>
         <%= render 'shared/alerts' if flash.any? %>
         <%= yield :dashboard_header %>

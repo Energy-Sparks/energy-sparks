@@ -1,5 +1,5 @@
 <% if @agreed_capacity.percentage > 0.85 %>
-  <%= component 'notice', status: :negative do |c| %>
+  <%= component 'prompt', icon: :bolt, fuel_type: :electricity, status: :negative do |c| %>
     <%= t('advice_pages.electricity_costs.analysis.agreed_capacity_notice.nearing_agreed_capacity_html',
           kw: format_unit(@agreed_capacity.kw, :kw),
           agreed_limit_kw: format_unit(@agreed_capacity.agreed_limit_kw, :kw),

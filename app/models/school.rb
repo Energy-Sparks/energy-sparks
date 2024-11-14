@@ -104,7 +104,7 @@ class School < ApplicationRecord
 
   class ProcessDataError < StandardError; end
 
-  friendly_id :slug_candidates, use: [:finders, :slugged, :history]
+  friendly_id :slug_candidates, use: %i[finders slugged history]
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
 
@@ -188,14 +188,16 @@ class School < ApplicationRecord
 
   has_many :school_partners, -> { order(position: :asc) }
   has_many :partners, through: :school_partners
-  accepts_nested_attributes_for :school_partners, reject_if: proc {|attributes| attributes['position'].blank?}
+  accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
 
-  enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
+  enum :school_type, { primary: 0, secondary: 1, special: 2, infant: 3, junior: 4, middle: 5,
+                       mixed_primary_and_secondary: 6 }
 
-  enum chart_preference: [:default, :carbon, :usage, :cost]
-  enum country: [:england, :scotland, :wales]
-  enum funding_status: [:state_school, :private_school]
-  enum region: [:north_east, :north_west, :yorkshire_and_the_humber, :east_midlands, :west_midlands, :east_of_england, :london, :south_east, :south_west]
+  enum :chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
+  enum :country, { england: 0, scotland: 1, wales: 2 }
+  enum :funding_status, { state_school: 0, private_school: 1 }
+  enum :region, { north_east: 0, north_west: 1, yorkshire_and_the_humber: 2, east_midlands: 3,
+                  west_midlands: 4, east_of_england: 5, london: 6, south_east: 7, south_west: 8 }
 
   # active flag is a soft-delete, those with a removal date are deleted, others
   # are archived, with chance of returning if we receive funding
@@ -218,34 +220,53 @@ class School < ApplicationRecord
 
   scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
 
-  scope :with_energy_tariffs, -> { joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'").group('schools.id').order('schools.name') }
-  scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id))}
+  scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id)) }
 
   # includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
-  scope :with_recent_engagement, -> { where(id: Observation.engagement.recorded_since(AcademicYear.current.start_date).select(:school_id)) }
+  scope :with_recent_engagement,
+        ->(range) { where(id: Observation.engagement.recorded_since(range).select(:school_id)) }
 
   # have recently run a transport survey
-  scope :with_transport_survey, -> { where(id: TransportSurvey.recently_added(AcademicYear.current.start_date).select(:school_id))}
+  scope :with_transport_survey, ->(range) { where(id: TransportSurvey.recently_added(range).select(:school_id)) }
 
   # have recently started a programme that isn't the default programme
-  scope :joined_programme, -> { where(id: Programme.recently_started_non_default(AcademicYear.current.start_date).select(:school_id))}
+  scope :joined_programme, ->(range) { where(id: Programme.recently_started_non_default(range).select(:school_id)) }
 
   # TODO: cluster users, not just those directly linked
-  scope :with_recently_logged_in_users, -> { where(id: User.recently_logged_in(AcademicYear.current.start_date).select(:school_id))}
-
-  # combination of other scopes to define an engaged school
-  scope :engaged, -> { active.with_recent_engagement.or(with_recently_logged_in_users).or(with_transport_survey).or(joined_programme) }
+  scope :with_recently_logged_in_users, ->(date) { where(id: User.recently_logged_in(date).select(:school_id)) }
 
   scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
-  validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
-  validates_uniqueness_of :urn
-  validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
+  scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
+  # TODO
+  scope :by_keyword, ->(keyword) { where('name LIKE ?', "%#{keyword}%")}
+
+  scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
+
+  def self.with_energy_tariffs
+    joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'")
+      .group('schools.id').order('schools.name')
+  end
+
+  # combination of other scopes to define an engaged school
+  def self.engaged(date_range)
+    active
+      .with_recent_engagement(date_range)
+      .or(with_recently_logged_in_users(date_range.begin))
+      .or(with_transport_survey(date_range))
+      .or(joined_programme(date_range))
+  end
+
+  validates :name, :address, :postcode, :website, :school_type, presence: true
+  validates :urn, presence: true, uniqueness: true
+  validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count,
+            numericality: { greater_than: 0, allow_blank: true }
   validates :cooks_dinners_for_other_schools_count, presence: true, if: :cooks_dinners_for_other_schools?
   validates :country, inclusion: { in: countries }
   validates :funding_status, inclusion: { in: funding_statuses }
 
-  validates :percentage_free_school_meals, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
+  validates :percentage_free_school_meals,
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
   # simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
   # adjusted to use \A and \z
   validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
@@ -263,7 +284,8 @@ class School < ApplicationRecord
 
   validates :weather_station, presence: true
 
-  accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes['day'].blank? },
+                                               allow_destroy: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
@@ -333,8 +355,8 @@ class School < ApplicationRecord
   def slug_candidates
     [
       :name,
-      [:postcode, :name],
-      [:urn, :name]
+      %i[postcode name],
+      %i[urn name]
     ]
   end
 
@@ -344,6 +366,7 @@ class School < ApplicationRecord
 
   def academic_year_for(date)
     return nil unless calendar.present?
+
     calendar.academic_year_for(date)
   end
 
@@ -357,8 +380,8 @@ class School < ApplicationRecord
 
   def suggested_programme_types
     ProgrammeType.active.with_school_activity_type_count(self)
-      .merge(activities.in_academic_year(current_academic_year))
-      .not_in(programme_types)
+                 .merge(activities.in_academic_year(current_academic_year))
+                 .not_in(programme_types)
   end
 
   def national_calendar
@@ -405,9 +428,7 @@ class School < ApplicationRecord
     configuration && configuration.analysis_charts.present?
   end
 
-  def fuel_types_for_analysis
-    configuration.fuel_types_for_analysis
-  end
+  delegate :fuel_types_for_analysis, to: :configuration
 
   def has_solar_pv?
     configuration.has_solar_pv
@@ -421,13 +442,9 @@ class School < ApplicationRecord
     cads.active.any?
   end
 
-  def school_admin
-    users.school_admin
-  end
+  delegate :school_admin, to: :users
 
-  def staff
-    users.staff
-  end
+  delegate :staff, to: :users
 
   def all_school_admins
     school_admin + cluster_users
@@ -439,9 +456,7 @@ class School < ApplicationRecord
 
   def activation_users
     users = []
-    if school_onboarding && school_onboarding.created_user.present?
-      users << school_onboarding.created_user
-    end
+    users << school_onboarding.created_user if school_onboarding && school_onboarding.created_user.present?
     # also email admin, staff and group users
     users += all_adult_school_users.to_a
     users.uniq
@@ -460,7 +475,7 @@ class School < ApplicationRecord
   end
 
   def authenticate_pupil(pupil_password)
-    users.pupil.to_a.find {|user| user.pupil_password.casecmp?(pupil_password) }
+    users.pupil.to_a.find { |user| user.pupil_password.casecmp?(pupil_password) }
   end
 
   def filterable_meters(fuel_type)
@@ -576,12 +591,14 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    all_attributes = [school_group_pseudo_meter_attributes,
+                      pseudo_meter_attributes,
+                      school_target_attributes]
+                     .each_with_object(global_pseudo_meter_attributes) do |pseudo_attributes, collection|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes
       end
-      collection
     end
 
     all_attributes[:aggregated_electricity] ||= []
@@ -600,16 +617,14 @@ class School < ApplicationRecord
   end
 
   def pseudo_meter_attributes_to_analytics
-    all_pseudo_meter_attributes.inject({}) do |collection, (meter_type, attributes)|
+    all_pseudo_meter_attributes.each_with_object({}) do |(meter_type, attributes), collection|
       collection[meter_type.to_sym] = MeterAttribute.to_analytics(attributes)
-      collection
     end
   end
 
   def meter_attributes_to_analytics
-    meters.order(:mpan_mprn).inject({}) do |collection, meter|
+    meters.order(:mpan_mprn).each_with_object({}) do |meter, collection|
       collection[meter.mpan_mprn] = meter.meter_attributes_to_analytics
-      collection
     end
   end
 
@@ -621,6 +636,7 @@ class School < ApplicationRecord
     raise ProcessDataError, "#{name} cannot process data as it has no meter readings" if meters_with_readings.empty?
     raise ProcessDataError, "#{name} cannot process data as it has no floor area" if floor_area.blank?
     raise ProcessDataError, "#{name} cannot process data as it has no pupil numbers" if number_of_pupils.blank?
+
     update!(process_data: true)
   end
 
@@ -650,16 +666,17 @@ class School < ApplicationRecord
   end
 
   def self.status_counts
-    { active: self.visible.count, data_visible: self.data_visible.count, invisible: self.not_visible.count, removed: self.inactive.count }
+    { active: visible.count, data_visible: data_visible.count, invisible: not_visible.count,
+      removed: inactive.count }
   end
 
   def email_locales
-    country == 'wales' ? [:en, :cy] : [:en]
+    country == 'wales' ? %i[en cy] : [:en]
   end
 
   def subscription_frequency
     if holiday_approaching?
-      [:weekly, :termly, :before_each_holiday]
+      %i[weekly termly before_each_holiday]
     else
       [:weekly]
     end
@@ -670,11 +687,11 @@ class School < ApplicationRecord
   end
 
   def all_data_sources(meter_type)
-    meters.active.where(meter_type: meter_type).data_source_known.joins(:data_source).order('data_sources.name ASC').distinct.pluck('data_sources.name')
+    meters.active.where(meter_type:).data_source_known.joins(:data_source).order('data_sources.name ASC').distinct.pluck('data_sources.name')
   end
 
   def all_procurement_routes(meter_type)
-    meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order('procurement_routes.organisation_name ASC').distinct.pluck('procurement_routes.organisation_name')
+    meters.active.where(meter_type:).procurement_route_known.joins(:procurement_route).order('procurement_routes.organisation_name ASC').distinct.pluck('procurement_routes.organisation_name')
   end
 
   def school_group_cluster_name
@@ -682,7 +699,7 @@ class School < ApplicationRecord
   end
 
   def parent_tariff_holder
-    school_group.present? ? school_group : SiteSettings.current
+    school_group.presence || SiteSettings.current
   end
 
   def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
@@ -690,11 +707,13 @@ class School < ApplicationRecord
 
     applies_to_keys = [:both, applies_to].uniq
 
-    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }, applies_to: applies_to_keys).usable.map(&:meter_attribute)
+    energy_tariffs.where(meter_type:).where.missing(:meters).where(
+      applies_to: applies_to_keys
+    ).usable.map(&:meter_attribute)
   end
 
   def holds_tariffs_of_type?(meter_type)
-    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type: meter_type).any?
+    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type:).any?
   end
 
   def multiple_meters?(fuel_type)
@@ -702,7 +721,8 @@ class School < ApplicationRecord
   end
 
   def self.school_list_for_login_form
-    School.left_joins(:school_group).select(:id, :name, 'school_groups.name as school_group_name').where(visible: true).order(:name)
+    School.left_joins(:school_group).select(:id, :name,
+                                            'school_groups.name as school_group_name').where(visible: true).order(:name)
   end
 
   private

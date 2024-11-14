@@ -27,11 +27,11 @@ class Calendar < ApplicationRecord
 
   has_many    :schools
 
-  validates_presence_of :title
+  validates :title, presence: true
 
   delegate :terms, :holidays, :bank_holidays, :inset_days, :outside_term_time, to: :calendar_events
 
-  enum calendar_type: [:national, :regional, :school]
+  enum :calendar_type, { national: 0, regional: 1, school: 2 }
 
   scope :template, -> { regional }
 
@@ -40,7 +40,7 @@ class Calendar < ApplicationRecord
   end
 
   def academic_year_for(date)
-    academic_years.for_date(date).first || based_on && based_on.academic_year_for(date)
+    academic_years.for_date(date).first || (based_on && based_on.academic_year_for(date))
   end
 
   def terms_and_holidays
@@ -52,7 +52,7 @@ class Calendar < ApplicationRecord
   end
 
   def holiday_approaching?(today: Time.zone.today)
-    next_after_today = next_holiday(today: today)
+    next_after_today = next_holiday(today:)
     next_after_today.present? && (next_after_today.start_date - today <= 7)
   end
 end

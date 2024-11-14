@@ -2,7 +2,7 @@
   <h1>Manually load data</h1>
   <div>
     <%= link_to 'All data feed configurations', admin_amr_data_feed_configs_path,
-                class: 'btn btn-outline-dark font-weight-bold' %>
+                class: 'btn btn-default' %>
   </div>
 </div>
 
@@ -74,6 +74,16 @@
       <ul>
         <% if @amr_data_feed_config.row_per_reading %>
           <li>One <b>row per half hour reading</b></li>
+
+          <% if @amr_data_feed_config.half_hourly_labelling %>
+            <li>Half hourly readings are labelled at the <%= @amr_data_feed_config.half_hourly_labelling %> of the period</li>
+          <% end %>
+
+          <% if @amr_data_feed_config.allow_merging %>
+            <li>Partial days of readings are allowed and will be merged if updates are available. Warnings are still
+              given for more than <%= @amr_data_feed_config.blank_threshold %> missing readings.</li>
+          <% end %>
+
         <% else %>
           <li>One <b>row per day</b>, with all half-hourly periods in columns</li>
         <% end %>

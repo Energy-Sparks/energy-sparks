@@ -18,7 +18,6 @@
 #  name                   :string
 #  preferred_locale       :string           default("en"), not null
 #  pupil_password         :string
-#  pupil_password_old     :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -32,13 +31,12 @@
 #
 # Indexes
 #
-#  index_users_on_confirmation_token                (confirmation_token) UNIQUE
-#  index_users_on_email                             (email) UNIQUE
-#  index_users_on_reset_password_token              (reset_password_token) UNIQUE
-#  index_users_on_school_group_id                   (school_group_id)
-#  index_users_on_school_id                         (school_id)
-#  index_users_on_school_id_and_pupil_password_old  (school_id,pupil_password_old) UNIQUE
-#  index_users_on_staff_role_id                     (staff_role_id)
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_school_group_id       (school_group_id)
+#  index_users_on_school_id             (school_id)
+#  index_users_on_staff_role_id         (staff_role_id)
 #
 # Foreign Keys
 #
@@ -50,7 +48,6 @@
 require 'securerandom'
 
 class User < ApplicationRecord
-  attribute :pupil_password_old, EncryptedField::Type.new
   encrypts :pupil_password
 
   belongs_to :school, optional: true
@@ -69,7 +66,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :confirmable
 
-  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil, :group_admin, :analytics, :volunteer]
+  enum :role, { guest: 0, staff: 1, admin: 2, school_admin: 3, school_onboarding: 4, pupil: 5,
+                group_admin: 6, analytics: 7, volunteer: 8 }
 
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin], User.roles[:volunteer]]) }
 
@@ -101,11 +99,12 @@ class User < ApplicationRecord
   end
 
   def display_name
-    name.present? ? name : email
+    name.presence || email
   end
 
   def staff_role_as_symbol
     return nil unless staff_role
+
     staff_role.as_symbol
   end
 
@@ -129,18 +128,19 @@ class User < ApplicationRecord
 
   def remove_school(school_to_remove)
     cluster_schools.delete(school_to_remove)
-    if school == school_to_remove
-      if cluster_schools.any?
-        update!(school: cluster_schools.last)
-      else
-        update!(school: nil, role: :school_onboarding)
-      end
+    return unless school == school_to_remove
+
+    if cluster_schools.any?
+      update!(school: cluster_schools.last)
+    else
+      update!(school: nil, role: :school_onboarding)
     end
   end
 
   def schools
-    return School.visible.by_name if self.admin?
-    return school_group.schools.visible.by_name if self.school_group
+    return School.visible.by_name if admin?
+    return school_group.schools.visible.by_name if school_group
+
     [school].compact
   end
 
@@ -168,8 +168,8 @@ class User < ApplicationRecord
     new(
       attributes.merge(
         role: :pupil,
-        school: school,
-        email: "#{school.id}-#{SecureRandom.uuid}@pupils.#{ENV['APPLICATION_HOST']}",
+        school:,
+        email: "#{school.id}-#{SecureRandom.uuid}@pupils.#{ENV.fetch('APPLICATION_HOST', nil)}",
         password: SecureRandom.uuid,
         confirmed_at: Time.zone.now
       )
@@ -180,7 +180,7 @@ class User < ApplicationRecord
     new(
       attributes.merge(
         role: :staff,
-        school: school
+        school:
       )
     )
   end
@@ -189,7 +189,7 @@ class User < ApplicationRecord
     new(
       attributes.merge(
         role: :school_admin,
-        school: school
+        school:
       )
     )
   end
@@ -208,7 +208,11 @@ class User < ApplicationRecord
   end
 
   def after_confirmation
-    OnboardingMailer.with_user_locales(users: [self], school: school) { |mailer| mailer.welcome_email.deliver_now } if self.school.present?
+    return unless school.present?
+
+    OnboardingMailer.with_user_locales(users: [self], school:) do |mailer|
+      mailer.welcome_email.deliver_now
+    end
   end
 
   def self.admin_user_export_csv
@@ -217,32 +221,46 @@ class User < ApplicationRecord
         'School Group',
         'School',
         'School type',
+        'School active',
+        'School data enabled',
         'Funder',
         'Region',
         'Name',
         'Email',
         'Role',
         'Staff Role',
+        'Confirmed',
         'Locked'
       ]
-      where.not(role: [:pupil, :admin]).order(:email).each do |user|
+      where.not(role: %i[pupil admin]).order(:email).each do |user|
         csv << [
           user.default_school_group_name || '',
           user.school&.name || '',
           user.school&.school_type&.humanize || '',
+          if user.school
+            user.school&.active? ? 'Yes' : 'No'
+          else
+            ''
+          end,
+          if user.school
+            user.school&.data_enabled? ? 'Yes' : 'No'
+          else
+            ''
+          end,
           user.school&.funder&.name || '',
           user.school&.region&.to_s&.titleize || '',
           user.name,
           user.email,
           user.role.titleize,
           user.staff_role&.title || '',
+          user.confirmed? ? 'Yes' : 'No',
           user.access_locked? ? 'Yes' : 'No'
         ]
       end
     end
   end
 
-protected
+  protected
 
   def preferred_locale_presence_in_available_locales
     return if I18n.available_locales.include? preferred_locale&.to_sym
@@ -255,17 +273,18 @@ protected
   end
 
   def update_contact
-    if (contact = contact_for_school)
-      contact.populate_from_user(self)
-      contact.save
-    end
+    return unless (contact = contact_for_school)
+
+    contact.populate_from_user(self)
+    contact.save
   end
 
   def pupil_password_unique
     return if pupil_password.blank?
+
     existing_user = school.authenticate_pupil(pupil_password)
-    if existing_user && existing_user != self
-      errors.add(:pupil_password, "is already in use for '#{existing_user.name}'")
-    end
+    return unless existing_user && existing_user != self
+
+    errors.add(:pupil_password, "is already in use for '#{existing_user.name}'")
   end
 end

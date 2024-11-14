@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: storage_heater_consumption_during_holidays
+# Table name: comparison_storage_heater_consumption_during_holidays
 #
 #  alert_generation_run_id     :bigint(8)
 #  holiday_end_date            :date
@@ -10,6 +10,10 @@
 #  holiday_usage_to_date_gbp   :float
 #  id                          :bigint(8)
 #  school_id                   :bigint(8)
+#
+# Indexes
+#
+#  idx_on_school_id_43b0326934  (school_id) UNIQUE
 #
 class Comparison::StorageHeaterConsumptionDuringHoliday < Comparison::View
 end

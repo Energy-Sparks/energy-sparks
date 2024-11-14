@@ -265,14 +265,14 @@ en:
         active_meters: Active meters
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
-        admin_meter_status: Admin meter status
+        admin_meter_status: Meter status
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
-        data_source: Data source
-        first: First
+        data_source: Source
+        first: From
         imported: Imported
         inactive_meters: Inactive meters
-        large_gaps: Large gaps
-        latest: Latest
+        large_gaps: Gaps
+        latest: To
         manage_solar_api_feeds: Manage Solar API feeds
         meter: Meter
         meter_reviews: Completed DCC meter reviews
@@ -281,7 +281,7 @@ en:
         name: Name
         no_active_meters: No active meters
         only_admins_message: Only admins can delete meters with meter readings
-        procurement_route: Procurement route
+        procurement_route: Contract
         readings: Readings
         report: Report
         review_meters: Pending DCC meter reviews
@@ -364,11 +364,6 @@ en:
           other: Complete the final <strong>%{count}</strong> activities now to score <strong>%{activity_types_uncompleted_scores}</strong> points
       recommendations:
         message: Complete one of our recommended pupil or adult led activities to start reducing your energy usage
-      recommendations_scoreboard:
-        message_html:
-          one: Well done, you have scored <strong>%{points}</strong> points and you're in <strong>%{position}</strong> position on the scoreboard! Keep up the good work to help you stay top!
-          other: Well done, you have scored <strong>%{points}</strong> points so far and you're in <strong>%{position}</strong> position on the scoreboard. Complete your next activity to climb higher up the scoreboard!
-        no_points_message: You haven't scored any points this year. Complete your next activity to get on the scoreboard!
       recommended_for_your_school:
         button: View all suggestions
         message: View our recommended activities and actions based on your school's programmes and our analysis of your energy data
@@ -383,7 +378,7 @@ en:
       energy_usage:
         description: These suggestions are based on our analysis of your energy usage data
         title: Based on your energy usage
-      intro: Find your next energy saving activity to score points for your school, reduce your energy usage and learn more about energy and climate change
+      intro: Find your next energy saving activity to score points for your school, win prizes, reduce your energy usage and learn more about energy and climate change
       more_ideas:
         actions: Browse and search through our list of %{count} adult-led actions
         activities: Browse and search through our list of %{count} pupil-led activities
@@ -587,9 +582,7 @@ en:
           other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       compare_schools: Compare schools
-      review_energy_analysis: Review energy analysis
     show:
-      act_on_energy_usage: Act on energy usage
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
       add_estimate: Add an estimate
@@ -599,7 +592,6 @@ en:
       dashboard_title: Adult dashboard for %{school_name}
       download_data: Download your data
       energy_bill_required: We need you to provide a recent energy bill for your school to confirm your meter numbers. This will help ensure that we can collect, process and display your school data.
-      energy_saving_opportunities: Energy saving opportunities
       find_out_more: Find out more
       find_training: Find training
       making_progress: Well done, you are making progress towards achieving your target to reduce your %{fuels} usage!
@@ -608,7 +600,6 @@ en:
       online_training_signup: New to Energy Sparks? Sign up to one of our upcoming free online training courses to help you get the most from the service.
       percentage_change: "% Change"
       potential_savings: Potential savings
-      print_view: Print view
       recent_energy_usage: Recent energy usage
       review_progress: Review progress
       review_target: Review your target
@@ -618,7 +609,6 @@ en:
       set_targets: Set targets to reduce your school's energy consumption over the next year. Energy Sparks will provide you with a recommended set of steps to help you achieve your targets and reduce your school's carbon footprint.
       setup_alert_contacts: Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.
       setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
-      summary_of_recent_energy_usage: Summary of recent energy usage
       upload_energy_bill: Upload a bill
       view_more_alerts: View more alerts
     timeline:
@@ -643,7 +633,8 @@ en:
         introduction_message: Please note that while we will immediately save any changes made to your school opening hours or community use times, any of our energy analysis that relies on these time periods will only update overnight.
         save_school_times: Save school times
         title: School opening hours
-      message_1: Enter the times when the pupils are arriving and leaving the school. This should be when the school is fully operational with the majority of pupils in school. Breakfast clubs, after school clubs and any private lettings should be included in the Community Use times below.
+      message_1: Enter the times when the pupils are arriving and leaving the school. This should be when the school is fully operational with the majority of pupils in school.
+      message_1_community_use: Breakfast clubs, after school clubs and any private lettings should be included in the Community Use times below.
       message_2: While many schools will have a certain number of staff in the school outside of these times, keeping this definition consistent across all schools improves the support you receive from Energy Sparks.
       message_3: Times should be entered in 24 hour format.
       opening_time: Opening Time
@@ -680,6 +671,7 @@ en:
         could_not_decrypt: "(could not decrypt)"
         email: Email
         introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
+        lock: Lock
         make_school_admin: Make school admin
         name: Name
         new_pupil_account: New pupil account
@@ -699,6 +691,7 @@ en:
         staff_accounts: Staff accounts
         staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts
         title: School admin accounts
+        unlock: Unlock
       new:
         create_account: Create account
         introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed

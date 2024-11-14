@@ -4,13 +4,11 @@
   <% results.each do |row| %>
     <% c.with_row do |r| %>
       <% r.with_school school: row.school %>
-      <%= r.with_var change: true,
-                     val: row.current_year_percent_of_target_relative, unit: :relative_percent %>
-      <%= r.with_var change: true,
-                     val: row.current_year_unscaled_percent_of_target_relative, unit: :relative_percent %>
-      <%= r.with_var val: row.current_year_kwh, unit: :kwh %>
+      <%= r.with_var val: row.current_target, change: true,
+                     unit: { units: :relative_percent, options: { scale: false } } %>
+      <%= r.with_var val: row.current_year_percent_of_target_relative, change: true, unit: :relative_percent %>
       <%= r.with_var val: row.current_year_target_kwh, unit: :kwh %>
-      <%= r.with_var val: row.unscaled_target_kwh_to_date, unit: :kwh %>
+      <%= r.with_var val: row.current_year_kwh, unit: :kwh %>
       <%= r.with_var val: row.tracking_start_date, unit: :date %>
     <% end %>
   <% end %>

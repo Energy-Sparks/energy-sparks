@@ -1,4 +1,4 @@
-<%= component 'notice', status: warm_weather_on_days_status(warm_weather_on_days_rating) do %>
+<%= component 'prompt', icon: :fire, fuel_type: :gas, status: warm_weather_on_days_status(warm_weather_on_days_rating) do %>
  <p>
    <%= t('advice_pages.heating_control.analysis.seasonal_control.heating_on_in_warm_weather_days',
    days: seasonal_analysis.heating_on_in_warm_weather_days.to_i,

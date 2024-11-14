@@ -17,6 +17,7 @@ FactoryBot.define do
 
         after(:build) do |user, evaluator|
           user.cluster_schools = create_list(:school, evaluator.count, active: true, public: true)
+          user.cluster_schools << user.school
         end
       end
     end
@@ -67,6 +68,12 @@ FactoryBot.define do
 
     trait :has_school_assigned do
       school
+    end
+
+    trait :skip_confirmed do
+      after(:build) do |user, _evaluator|
+        user.skip_confirmation_notification!
+      end
     end
   end
 end

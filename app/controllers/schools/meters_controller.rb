@@ -29,8 +29,8 @@ module Schools
       respond_to do |format|
         format.html
         format.csv do
-          send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_METER),
-                    filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv"
+          send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL),
+                    filename: "#{@meter.mpan_mprn}-readings.csv"
         end
       end
     end

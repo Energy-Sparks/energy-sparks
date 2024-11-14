@@ -1,7 +1,7 @@
 <% active_meters.each do |meter| %>
-  <tr scope="row" class="<%='table-warning' if @invalid_mpan.include?(meter) %>">
-    <td title="<%= (meter.meter_type.to_s.humanize) %>"><%= fa_icon(fuel_type_icon(meter.meter_type)) %></td>
-    <td>
+  <tr scope="row" class="<%= 'table-warning' if @invalid_mpan.include?(meter) %>">
+    <td class="fit">
+      <%= fa_icon(fuel_type_icon(meter.meter_type)) %>
       <%= link_to meter.mpan_mprn, school_meter_path(@school, meter) %>
     </td>
     <td><%= meter.name %></td>
@@ -13,44 +13,65 @@
         <%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %>
       </td>
       <td>
-        <%= link_to meter.procurement_route.try(:organisation_name), admin_procurement_route_path(meter.procurement_route) if meter.procurement_route %>
+        <%= if meter.procurement_route
+              link_to label_with_wbr(meter.procurement_route.try(:organisation_name)),
+                      admin_procurement_route_path(meter.procurement_route)
+            end %>
       </td>
       <td>
         <% if meter.admin_meter_status.nil? && meter.admin_meter_status_label.present? %>
           <span data-toggle="tooltip" title="Default <%= meter.fuel_type.to_s.humanize.downcase %> admin meter status for this school's school group">
-            <%= meter.admin_meter_status_label %>
+            <%= label_with_wbr(meter.admin_meter_status_label) %>
           </span>
         <% else %>
-          <span><%= meter.admin_meter_status_label %></span>
+          <span><%= label_with_wbr(meter.admin_meter_status_label) %></span>
         <% end %>
       </td>
     <% end %>
-    <td><%= meter.amr_data_feed_readings.count %></td>
-    <td><%= meter.number_of_validated_readings %></td>
-    <td><%= short_dates meter.first_validated_reading %></td>
-    <td><%= short_dates meter.last_validated_reading %></td>
-    <td><%= meter.zero_reading_days.count %></td>
-    <td><%= meter.gappy_validated_readings.count %></td>
+    <td class="text-right"><%= meter.amr_data_feed_readings.count %></td>
+    <td class="text-right"><%= meter.number_of_validated_readings %></td>
+    <td class="fit text-right">
+      <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
+        <%= link_to admin_reports_amr_validated_reading_path(meter), title: t('schools.meters.index.report') do %>
+            <%= short_dates meter.first_validated_reading %>-<%= short_dates meter.last_validated_reading %>
+        <% end %>
+      <% else %>
+        <%= short_dates meter.first_validated_reading %>-<%= short_dates meter.last_validated_reading %>
+      <% end %>
+    </td>
+    <td class="text-right"><%= meter.zero_reading_days.count %></td>
+    <td class="text-right"><%= meter.gappy_validated_readings.count %></td>
     <td>
       <div class="btn-group btn-group-sm" role="group">
+        <%= if can?(:edit, meter)
+              link_to t('common.labels.edit'),
+                      edit_school_meter_path(@school, meter),
+                      class: 'btn btn-sm btn-primary'
+            end %>
         <% if can?(:view_meter_attributes, meter) %>
-          <%= link_to t('common.labels.attributes'), admin_school_single_meter_attribute_path(@school, meter), class: 'btn btn-sm' %>
+          <%= link_to admin_school_single_meter_attribute_path(@school, meter),
+                      class: 'btn btn-sm', title: t('common.labels.attributes') do %>
+            <i class="fas fa-gear"></i>
+          <% end %>
         <% end %>
         <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-          <%= link_to t('common.labels.report'), admin_reports_amr_validated_reading_path(meter), class: 'btn btn-sm' %>
-        <% end %>
-        <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-          <%= link_to school_meter_path(@school, meter, format: "csv"), class: 'btn btn-info btn-sm' do %>
+          <%= link_to school_meter_path(@school, meter, format: 'csv'),
+                      class: 'btn btn-secondary btn-sm', title: t('schools.meters.index.readings') do %>
             <i class="fas fa-file-download"></i>
           <% end %>
         <% end %>
         <%= render 'admin/issues/modal', meter: meter if current_user.admin? %>
-      </div>
-    </td>
-    <td>
-      <div class="btn-group btn-group-sm" role="group">
-        <%= link_to t('common.labels.edit'), edit_school_meter_path(@school, meter), class: 'btn btn-sm' if can?(:edit, meter) %>
-        <%= link_to t('common.labels.deactivate'), deactivate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm' if can?(:deactivate, meter) %>
+        <% if can?(:deactivate, meter) %>
+          <%= link_to deactivate_school_meter_path(@school, meter),
+                      method: :put,
+                      class: 'btn btn-sm btn-warning', title: t('common.labels.deactivate') do %>
+                <% if current_user.admin? %>
+                  <i class="fas fa-stop"></i>
+                <% else %>
+                  <% t('common.labels.deactivate') %>
+                <% end %>
+          <% end %>
+        <% end %>
       </div>
     </td>
   </tr>

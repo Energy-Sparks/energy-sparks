@@ -4,12 +4,12 @@ source 'https://rubygems.org'
 
 ruby '~> 3.2.2'
 
-gem 'rails', '~> 7.1.0'
+gem 'rails', '~> 7.1.4'
 
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.13'
-gem 'jbuilder', '~> 2.12' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.13' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
@@ -27,7 +27,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.0.7'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.1'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -56,6 +56,7 @@ gem 'aws-sdk-s3'
 gem 'eventbrite_sdk' # Eventbrite for training page
 gem 'faraday'
 gem 'faraday-follow_redirects'
+gem 'faraday-retry'
 gem 'MailchimpMarketing'
 gem 'mailgun_rails' # Email service
 gem 'twilio-ruby' # For SMS notifications
@@ -115,6 +116,8 @@ gem 'premailer-rails'
 # Feature flags
 gem 'flipper-active_record', '~> 1.3'
 gem 'flipper-ui', '~> 1.3'
+
+gem 'net-sftp'
 
 group :development, :test do
   gem 'bullet', require: false # use bullet to optimise queries

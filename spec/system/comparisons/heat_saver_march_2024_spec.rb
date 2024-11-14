@@ -64,19 +64,19 @@ describe 'heat_saver_march_2024' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{key}" }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
 
     it_behaves_like 'a school comparison report with multiple tables',
-      table_titles: [
-        I18n.t('comparisons.tables.total_usage'),
-        I18n.t('comparisons.tables.electricity_usage'),
-        I18n.t('comparisons.tables.gas_usage'),
-        I18n.t('comparisons.tables.storage_heater_usage')
-      ]
+                    table_titles: [
+                      I18n.t('comparisons.tables.total_usage'),
+                      I18n.t('comparisons.tables.electricity_usage'),
+                      I18n.t('comparisons.tables.gas_usage'),
+                      I18n.t('comparisons.tables.storage_heater_usage')
+                    ] do
+      let(:expected_report) { report }
+    end
 
     context 'with a total table' do
       it_behaves_like 'a school comparison report with a table' do
@@ -369,6 +369,8 @@ describe 'heat_saver_march_2024' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end

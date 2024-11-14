@@ -27,7 +27,7 @@ module Solar
 
         update_existing_meter_if_needed(meter)
 
-        Amr::DataFeedUpserter.new(data_feed_reading_array(readings_hash, meter.id, mpan_mprn), @amr_data_feed_import_log).perform
+        Amr::DataFeedUpserter.new(@amr_data_feed_config, @amr_data_feed_import_log, data_feed_reading_array(readings_hash, meter.id, mpan_mprn)).perform
         Rails.logger.info "Upserted #{@amr_data_feed_import_log.records_updated} inserted #{@amr_data_feed_import_log.records_imported}for #{@solar_edge_installation.site_id} at #{@solar_edge_installation.school.name}"
       end
     end

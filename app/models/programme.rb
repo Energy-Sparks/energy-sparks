@@ -29,7 +29,7 @@ class Programme < ApplicationRecord
   has_many :activities, through: :programme_activities
   has_many :observations, as: :observable, dependent: :destroy
 
-  enum status: { started: 0, completed: 1, abandoned: 2 } do
+  enum :status, { started: 0, completed: 1, abandoned: 2 } do
     event :complete do
       after do
         self.update(ended_on: Time.zone.now)
@@ -43,8 +43,9 @@ class Programme < ApplicationRecord
     end
   end
 
-  scope :recently_started, ->(date) { where('created_at > ?', date) }
-  scope :recently_started_non_default, ->(date) { recently_started(date).where.not(programme_type: ProgrammeType.default) }
+  scope :recently_started, ->(date_range) { where(created_at: date_range) }
+  scope :recently_started_non_default,
+        ->(date_range) { recently_started(date_range).where.not(programme_type: ProgrammeType.default) }
   scope :in_reverse_start_order, -> { started.order(started_on: :desc) }
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
   scope :last_started, -> { in_reverse_start_order.limit(1) }

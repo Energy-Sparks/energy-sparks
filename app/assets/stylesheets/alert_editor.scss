@@ -1,14 +1,14 @@
 
 select.colours option[value="negative"] {
-  background: $bg-negative;
+  background: $negative-dark;
 }
 
 select.colours option[value="neutral"] {
-  background: $bg-neutral;
+  background: $neutral-dark;
 }
 
 select.colours option[value="positive"] {
-  background: $bg-positive;
+  background: $positive-dark;
 }
 
 .width-400 {

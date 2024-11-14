@@ -19,7 +19,7 @@
 
 <%= render 'schools/advice/section_title', section_id: 'long_term_trends', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.long_term_trends') %>
 
-<%= component 'notice', status: :positive do |c| %>
+<%= component 'prompt', icon: :sun, fuel_type: :solar_pv, status: :positive do |c| %>
   <%= t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_panels_have_reduced', annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent, :percent)).html_safe %>
 <% end %>
 

@@ -26,7 +26,8 @@ class CalendarEventType < ApplicationRecord
   scope :outside_term_time, -> { where(term_time: false) }
   scope :bank_holiday,      -> { where(bank_holiday: true) }
 
-  enum analytics_event_type: [:term_time, :school_holiday, :bank_holiday, :inset_day_in_school, :inset_day_out_of_school]
+  enum :analytics_event_type, { term_time: 0, school_holiday: 1, bank_holiday: 2, inset_day_in_school: 3,
+                                inset_day_out_of_school: 4 }
 
   def i18n_key(field)
     "#{self.class.model_name.i18n_key}.#{title.parameterize.underscore}.#{field}"

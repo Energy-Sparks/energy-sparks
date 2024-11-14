@@ -11,7 +11,7 @@ describe Alerts::GenerateEmailNotifications do
   let!(:school_admin)        { create(:school_admin, school: school) }
   let!(:email_contact)       { create(:contact_with_name_email, school: school) }
 
-  let(:alert_type_rating_1) { create :alert_type_rating, alert_type: alert_1.alert_type, email_active: true }
+  let(:alert_type_rating_1) { create :alert_type_rating, alert_type: alert_1.alert_type, email_active: true, find_out_more_active: true }
   let(:alert_type_rating_2) { create :alert_type_rating, alert_type: alert_2.alert_type, email_active: true }
 
   let!(:content_version_1) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_1, email_title: 'You need to do something!', email_content: 'You really do'}
@@ -28,26 +28,11 @@ describe Alerts::GenerateEmailNotifications do
     end
   end
 
-  describe '#perform' do
-    before do
-      Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
-      Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
-      alert_subscription_event_1.reload
-      alert_subscription_event_2.reload
-    end
-
-    it 'sends email' do
+  shared_examples 'an email was sent' do
+    it 'sends email with correct subject' do
       expect(ActionMailer::Base.deliveries.count).to be 1
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to include('Energy Sparks alerts')
-    end
-
-    it 'records that emails were sent' do
-      expect(alert_subscription_event_1.status).to eq 'sent'
-      expect(alert_subscription_event_2.status).to eq 'sent'
-      expect(alert_subscription_event_1.email_id).not_to be_nil
-      expect(alert_subscription_event_1.email_id).to eq alert_subscription_event_2.email_id
-      expect(Email.find(alert_subscription_event_1.email_id).sent?).to be true
+      expect(email.subject).to include(email_subject)
     end
 
     context 'when alerts are re-run' do
@@ -61,42 +46,100 @@ describe Alerts::GenerateEmailNotifications do
         expect(Email.count).to be 1
       end
     end
+  end
 
-    context 'when generating email body' do
-      let(:email) { ActionMailer::Base.deliveries.last }
-      let(:email_body)  { email.html_part.decoded }
-      let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
+  shared_examples 'an alert email was sent' do
+    let(:email) { ActionMailer::Base.deliveries.last }
+    let(:email_body)  { email.html_part.decoded }
+    let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
-      let(:params) do
-        {
-          "utm_source": 'weekly-alert',
-          "utm_medium": 'email',
-          "utm_campaign": 'alerts'
-        }
-      end
+    let(:params) do
+      {
+        "utm_source": 'weekly-alert',
+        "utm_medium": 'email',
+        "utm_campaign": 'alerts'
+      }
+    end
 
-      it 'includes all alert content' do
-        expect(email_body).to include('You need to do something')
-        expect(email_body).to include('You need to fix something')
-        expect(email_body).not_to include('Find out more')
-      end
+    it 'includes all alert content' do
+      expect(email_body).to include('You need to do something')
+      expect(email_body).to include('You need to fix something')
+      expect(email_body).not_to include('Find out more')
+    end
 
-      it 'includes unsubscription links' do
-        expect(email_body).to include("Don't show me alerts like this")
-        expect(email_body).to include(alert_subscription_event_1.unsubscription_uuid)
-      end
+    it 'include unsubscription section' do
+      expect(email_body).to include('Why am I receiving these emails?')
+      expect(email_body).to include(school_admin.email)
+    end
 
-      it 'include unsubscription section' do
-        expect(email_body).to include('Why am I receiving these emails?')
-        expect(email_body).to include(school_admin.email)
-      end
+    it 'includes links to dashboard and analysis pages' do
+      expect(email_body).to include('Stay up to date')
+      expect(matcher).to have_link('school dashboard', href: school_url(school, params: params, host: 'localhost'))
+      expect(matcher).to have_link('detailed analysis', href: school_advice_url(school, params: params, host: 'localhost'))
+      expect(matcher).to have_link('View your school dashboard', href: school_url(school, params: params, host: 'localhost'))
+    end
 
-      it 'includes links to dashboard and analysis pages' do
-        expect(email_body).to include('Stay up to date')
-        expect(matcher).to have_link('school dashboard', href: school_url(school, params: params, host: 'localhost'))
-        expect(matcher).to have_link('detailed analysis', href: school_advice_url(school, params: params, host: 'localhost'))
-        expect(matcher).to have_link('View your school dashboard', href: school_url(school, params: params, host: 'localhost'))
-      end
+    it 'records that emails were sent' do
+      expect(alert_subscription_event_1.status).to eq 'sent'
+      expect(alert_subscription_event_2.status).to eq 'sent'
+      expect(alert_subscription_event_1.email_id).not_to be_nil
+      expect(alert_subscription_event_1.email_id).to eq alert_subscription_event_2.email_id
+      expect(Email.find(alert_subscription_event_1.email_id).sent?).to be true
+    end
+  end
+
+  describe '#perform' do
+    before do
+      Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
+      Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
+      alert_subscription_event_1.reload
+      alert_subscription_event_2.reload
+    end
+
+    let(:email) { ActionMailer::Base.deliveries.last }
+    let(:email_body) { email.html_part.decoded }
+
+    it_behaves_like 'an email was sent' do
+      let(:email_subject) { I18n.t('alert_mailer.alert_email.subject') }
+    end
+
+    it 'send to correct users' do
+      expect(email.to).to contain_exactly(email_contact.email_address)
+    end
+
+    it_behaves_like 'an alert email was sent'
+
+    it 'includes unsubscription links' do
+      expect(email_body).to include("Don't show me alerts like this")
+      expect(email_body).to include(alert_subscription_event_1.unsubscription_uuid)
+    end
+  end
+
+  describe '#batch_send' do
+    before do
+      Flipper.enable(:batch_send_weekly_alerts)
+
+      Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
+      Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).batch_send
+      alert_subscription_event_1.reload
+      alert_subscription_event_2.reload
+    end
+
+    let(:email) { ActionMailer::Base.deliveries.last }
+    let(:email_body) { email.html_part.decoded }
+
+    it_behaves_like 'an email was sent' do
+      let(:email_subject) { I18n.t('alert_mailer.alert_email.subject') }
+    end
+
+    it 'send to correct users' do
+      expect(email.to).to contain_exactly(email_contact.email_address)
+    end
+
+    it_behaves_like 'an alert email was sent'
+
+    it 'does not include unsubscription links' do
+      expect(email_body).not_to include("Don't show me alerts like this")
     end
   end
 

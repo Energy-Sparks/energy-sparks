@@ -4,7 +4,7 @@
   <h1>Good Job</h1>
 </div>
 <div>
-  <h3>Job Statistics for the last 7 days per queue and job class</h3>
+  <h3>Job Statistics for the last 14 days per queue and job class</h3>
   <table class="table">
     <thead>
       <tr>
@@ -15,6 +15,7 @@
         <th scope="col">Average completion time</th>
         <th scope="col">Minimum completion time</th>
         <th scope="col">Maximum completion time</th>
+        <th scope="col">Maximum finished time</th>
       </tr>
     </thead>
     <tbody>
@@ -24,9 +25,10 @@
           <td><%= row['queue_name'] %></td>
           <td><%= row['job_class'] %></td>
           <td><%= row['count'] %></td>
-          <td><%= row['avg'] %></td>
-          <td><%= row['min'] %></td>
-          <td><%= row['max'] %></td>
+          <td><%= row['average'] %></td>
+          <td><%= row['minimum'] %></td>
+          <td><%= row['maximum'] %></td>
+          <td><%= row['finished'] %></td>
         </tr>
       <% end %>
     </tbody>

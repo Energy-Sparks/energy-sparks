@@ -25,7 +25,7 @@ module Solar
     let(:upserter) { Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
 
     before do
-      expect(SolarEdgeAPI).to receive(:new).with(installation.api_key).and_return(api)
+      expect(DataFeeds::SolarEdgeApi).to receive(:new).with(installation.api_key).and_return(api)
     end
 
     it 'handles and log exceptions' do

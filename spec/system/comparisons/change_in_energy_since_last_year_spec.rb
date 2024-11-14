@@ -63,8 +63,6 @@ describe 'change_in_energy_since_last_year' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{key}" }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end

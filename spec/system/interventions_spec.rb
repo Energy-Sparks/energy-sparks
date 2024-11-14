@@ -345,7 +345,7 @@ describe 'viewing and recording action' do
 
       it 'can be updated' do
         visit school_path(school)
-        click_on 'View all events'
+        click_on 'All activities'
 
         within '.application' do
           click_on 'Edit'
@@ -365,8 +365,7 @@ describe 'viewing and recording action' do
 
       it 'can be deleted' do
         visit school_path(school)
-
-        click_on 'View all events'
+        click_on 'All activities'
         expect do
           click_on 'Delete'
         end.to change(Observation, :count).from(1).to(0)

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: weekday_baseload_variations
+# Table name: comparison_weekday_baseload_variations
 #
 #  alert_generation_run_id                       :bigint(8)
 #  annual_cost_gbpcurrent                        :float
@@ -12,6 +12,10 @@
 #  min_day_kw                                    :float
 #  percent_intraday_variation                    :float
 #  school_id                                     :bigint(8)
+#
+# Indexes
+#
+#  index_comparison_weekday_baseload_variations_on_school_id  (school_id) UNIQUE
 #
 class Comparison::WeekdayBaseloadVariation < Comparison::View
 end

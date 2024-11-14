@@ -29,7 +29,7 @@
     <% end %>
   <% end %>
   <% if podium.school_has_points? || podium.positions.count > 1 %>
-    <div class="row align-items-end border-bottom grey">
+    <div class="row align-items-end border-bottom border-secondary">
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">
           <% if podium.current_school?(position) %>

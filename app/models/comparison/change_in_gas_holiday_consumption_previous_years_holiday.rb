@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: change_in_gas_holiday_consumption_previous_years_holidays
+# Table name: comparison_change_in_gas_holiday_consumption_previous_years_holidays
 #
 #  alert_generation_run_id    :bigint(8)
 #  current_period_end_date    :date
@@ -17,6 +17,10 @@
 #  school_id                  :bigint(8)
 #  tariff_has_changed         :boolean
 #  truncated_current_period   :boolean
+#
+# Indexes
+#
+#  idx_on_school_id_a2d5e09d4c  (school_id) UNIQUE
 #
 class Comparison::ChangeInGasHolidayConsumptionPreviousYearsHoliday < Comparison::View
 end

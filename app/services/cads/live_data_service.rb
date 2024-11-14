@@ -16,7 +16,7 @@ module Cads
         result = power_for_type(data['power'], type)
       end
       result
-    rescue MeterReadingsFeeds::GeoApi::NotAuthorised, MeterReadingsFeeds::GeoApi::NotAllowed => e
+    rescue DataFeeds::GeoApi::NotAuthorised, DataFeeds::GeoApi::NotAllowed => e
       reset_token
       Rollbar.error(e, school_id: @cad.school.id, school: @cad.school.name, device_identifier: @cad.device_identifier)
     rescue => e
@@ -33,12 +33,12 @@ module Cads
     end
 
     def api
-      @api ||= MeterReadingsFeeds::GeoApi.new(token: token)
+      @api ||= DataFeeds::GeoApi.new(token: token)
     end
 
     def token
       Rails.cache.fetch(CACHE_KEY, expires_in: expiry) do
-        MeterReadingsFeeds::GeoApi.new(username: ENV['GEO_API_USERNAME'], password: ENV['GEO_API_PASSWORD']).login
+        DataFeeds::GeoApi.new(username: ENV['GEO_API_USERNAME'], password: ENV['GEO_API_PASSWORD']).login
       end
     end
 
