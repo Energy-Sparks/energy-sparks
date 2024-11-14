@@ -127,7 +127,7 @@ RSpec.describe 'Schools page' do
           visit schools_path
         end
 
-        it 'only shows visible schools' do
+        it 'shows visible schools' do
           expect(page).to have_link(invisible_school.name, href: school_path(invisible_school))
         end
       end

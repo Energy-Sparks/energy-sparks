@@ -25,7 +25,11 @@
     </div>
   </div>
 
-  <%= component 'school_search', letter: params[:letter], keyword: params[:keyword], tab: params[:scope] %>
+  <%= component 'school_search',
+                schools: @schools,
+                letter: params[:letter],
+                keyword: params[:keyword],
+                tab: params[:scope] %>
 
 <% else %>
   <div class="row">

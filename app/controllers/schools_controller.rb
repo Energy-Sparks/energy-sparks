@@ -117,8 +117,9 @@ private
 
   def set_search_scope
     @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
+    @schools = current_user_admin? ? School.active : School.visible
     @scope = if @tab == :schools
-               current_user_admin? ? School.active : School.visible
+               @schools
              else
                SchoolGroup.with_visible_schools
              end
