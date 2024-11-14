@@ -43,10 +43,6 @@ describe 'baseload_per_pupil' do
   end
 
   context 'when viewing report' do
-    before do
-      visit comparisons_baseload_per_pupil_index_path
-    end
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
@@ -72,6 +68,8 @@ describe 'baseload_per_pupil' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end

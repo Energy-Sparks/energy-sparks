@@ -39,7 +39,6 @@ describe '*_targets' do
 
   before do
     create(:advice_page, key: advice_page_key)
-    visit "/comparisons/#{key}"
   end
 
   describe 'electricity_targets' do

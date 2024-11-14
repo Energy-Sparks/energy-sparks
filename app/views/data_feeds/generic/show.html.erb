@@ -29,6 +29,6 @@
       <% year[1].each do |missing| %>
         <li><%= "#{nice_dates(missing[0])} #{missing[1]}" %></li>
       <% end %>
-    <% end %>
+    <% end if @missing_array %>
   </ul>
 </div>

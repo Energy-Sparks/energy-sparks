@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples 'a school comparison report' do |school_types: nil, school_types_excluding: nil, country: nil, school_groups: nil, funder: nil|
+  before do
+    visit "/comparisons/#{expected_report.key}"
+  end
+
   it 'has the expected page title' do
     expect(page).to have_content(expected_report.title)
   end
@@ -60,6 +64,12 @@ end
 
 RSpec.shared_examples 'a school comparison report with a table' do
   let(:table_name) { :table }
+  let(:model) { Comparison.const_get(expected_report.key.camelize) }
+
+  before do
+    model.refresh
+    visit "/comparisons/#{expected_report.key}"
+  end
 
   it 'links each row to the relevant advice page' do
     if defined?(advice_page_path)
@@ -82,6 +92,12 @@ end
 
 RSpec.shared_examples 'a school comparison report with a chart' do
   let(:chart_name) { :comparison }
+  let(:model) { Comparison.const_get(expected_report.key.camelize) }
+
+  before do
+    model.refresh
+    visit "/comparisons/#{expected_report.key}"
+  end
 
   it 'includes a chart' do
     within '#charts' do
@@ -91,6 +107,13 @@ RSpec.shared_examples 'a school comparison report with a chart' do
 end
 
 RSpec.shared_examples 'a school comparison report with multiple tables' do |table_titles: nil|
+  let(:model) { Comparison.const_get(expected_report.key.camelize) }
+
+  before do
+    model.refresh
+    visit "/comparisons/#{expected_report.key}"
+  end
+
   it 'includes a table of contents' do
     within '#table-list' do
       expect(page).to have_css('li', count: table_titles.size)

@@ -665,6 +665,7 @@ Rails.application.routes.draw do
       resources :engaged_schools, only: [:index]
       resources :community_use, only: [:index]
       resources :intervention_types, only: [:index, :show]
+      resources :missing_alert_contacts, only: [:index]
       resources :work_allocation, only: [:index]
       resources :user_logins, only: [:index]
       resource :unvalidated_readings, only: [:show]
