@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: annual_gas_out_of_hours_uses
+# Table name: comparison_annual_gas_out_of_hours_uses
 #
 #  alert_generation_run_id               :bigint(8)
 #  community_gbp                         :float
@@ -14,6 +14,10 @@
 #  schoolday_closed_percent              :float
 #  schoolday_open_percent                :float
 #  weekends_percent                      :float
+#
+# Indexes
+#
+#  index_comparison_annual_gas_out_of_hours_uses_on_school_id  (school_id) UNIQUE
 #
 class Comparison::AnnualGasOutOfHoursUse < Comparison::View
   scope :with_data, -> { where.not(schoolday_open_percent: nil) }
