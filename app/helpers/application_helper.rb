@@ -169,7 +169,9 @@ module ApplicationHelper
   end
 
   def alert_type_icon(alert_type, size = nil)
-    alert_type.fuel_type.nil? ? "calendar-alt #{size}" : "#{fuel_type_icon(alert_type.fuel_type)} #{size}"
+    icon = alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert_type.fuel_type)
+    icon += " #{size}" if size
+    icon
   end
 
   def alert_icon(alert, size = nil)

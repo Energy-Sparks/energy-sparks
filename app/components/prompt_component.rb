@@ -19,15 +19,14 @@ class PromptComponent < ApplicationComponent
   renders_one :title
   renders_one :pill
 
-  attr_reader :icon, :style, :fuel_type, :email
+  attr_reader :icon, :style, :fuel_type
 
-  def initialize(id: nil, icon: nil, fuel_type: nil, status: nil, style: :full, classes: '', email: false)
+  def initialize(id: nil, icon: nil, fuel_type: nil, status: nil, style: :full, classes: '')
     super(id: id, classes: "#{status} #{classes}")
     @icon = icon
     @fuel_type = fuel_type
     @status = status
     @style = style
-    @email = email
     validate
   end
 

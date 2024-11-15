@@ -136,7 +136,6 @@
 <script src="https://unpkg.com/modern-screenshot"></script>
 <script>
   document.querySelectorAll('.download-icon').forEach(element => {
-    console.log(element)
     element.onclick = event => {
       event.preventDefault()
       modernScreenshot.domToPng(element).then(dataUrl => {

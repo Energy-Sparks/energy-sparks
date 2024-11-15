@@ -3,13 +3,9 @@
   <div class="row pt-3 pb-3">
     <% if render_icon? %>
       <%# Icon is hidden on smallest size, visible from sm and above as single column %>
-        <div class="<%= 'd-none d-sm-block ' unless email %>col-1">
-          <% if email %>
-            <%= image_tag "email/fa-#{icon.strip}.png", class: 'px-4' %>
-          <% else %>
-            <%= component 'icon', fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
-          <% end %>
-        </div>
+      <div class="d-none d-sm-block col-1">
+        <%= component 'icon', fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
+      </div>
     <% end %>
     <%# if no icon then use full width row %>
     <%# Below md use full width, so text column wraps below icon. from md above use 2 cols %>

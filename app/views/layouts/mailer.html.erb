@@ -6,11 +6,8 @@
     <style>
       .dark { background-color: <%= Colours.dark %>; }
       .bg-header-dark { background-color: <%= Colours.header_dark %>; }
-      .yellow-medium { color: <%= Colours.yellow_medium %>; }
-
-      .negative { background-color: <%= Colours.negative_light %>; }
-      .positive { background-color: <%= Colours.positive_light %>; }
-      .prompt-component { border-radius: 8px; }
+      .body { color: <%= Colours.blue_dark %>; }
+      a { color: <%= Colours.blue_dark %>; text-decoration-line: underline; }
     </style>
   </head>
   <body class="bg-light">
@@ -32,7 +29,7 @@
           </div>
           <div class="row mt-4 mb-4">
             <div class="col-12">
-                  <%= yield %>
+              <%= yield %>
             </div>
           </div>
           <div class="row">

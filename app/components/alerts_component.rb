@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 class AlertsComponent < PromptListComponent
-  attr_reader :school, :show_links, :user, :email
+  attr_reader :school, :show_links, :user
 
   include AdvicePageHelper
 
-  def initialize(school:, dashboard_alerts:, alert_types: nil, audience: :adult, show_links: true, id: nil,
-                 classes: '', user: nil, content_field: nil, email: false)
+  def initialize(school:, dashboard_alerts:, alert_types: nil, audience: :adult, show_links: true, id: nil, classes: '', user: nil)
     super(id: id, classes: classes)
     @school = school
     @dashboard_alerts = dashboard_alerts
@@ -14,13 +13,9 @@ class AlertsComponent < PromptListComponent
     @show_links = show_links
     @audience = audience
     @user = user
-    @content_field = content_field
-    @email = email
-    # debugger
   end
 
   def alerts
-    # debugger
     @alerts ||= dashboard_alerts_for(@alert_types)
   end
 
@@ -29,8 +24,6 @@ class AlertsComponent < PromptListComponent
   end
 
   def content_field
-    return @content_field if @content_field
-
     @audience == :adult ? :management_dashboard_title : :pupil_dashboard_title
   end
 
