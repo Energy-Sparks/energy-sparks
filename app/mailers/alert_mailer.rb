@@ -22,11 +22,13 @@ class AlertMailer < LocaleMailer
     @alert_content = self.class.create_content(@events)
     @title = @school.name
 
-    subject = if Flipper.enabled?(:alert_email_2024)
-                I18n.t('alert_mailer.alert_email.subject_2024', school_name: @school.name)
-              else
-                default_i18n_subject
-              end
+    subject = I18n.with_locale(locale_param) do
+      if Flipper.enabled?(:alert_email_2024)
+        I18n.t('alert_mailer.alert_email.subject_2024', school_name: @school.name)
+      else
+        default_i18n_subject
+      end
+    end
     email = make_bootstrap_mail(to: @email_addresses, subject:)
     add_mg_email_tag(email, 'alerts')
   end
