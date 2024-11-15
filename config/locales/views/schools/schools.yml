@@ -583,6 +583,25 @@ en:
           other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       compare_schools: Compare schools
+    settings:
+      download_link: View
+      manage_link: Manage
+      metering:
+        manage_meters: View and manage your school electricity and gas meters
+        manage_tariffs: Manage current and historical energy tariffs for your school
+        school_downloads: Download copies of your meter data
+      settings:
+        add_community_use: Add community use times
+        edit_school_details: School address, pupil numbers, floor area and other settings
+        edit_school_times: Manage school opening hours and community use times
+        school_calendar: Manage your school calendar, including term times and inset days
+        your_school_estate: Add details about your school buildings and heating sources
+      users:
+        add_alert_contacts: Add alert subscribers
+        add_pupil_login: Missing pupil login
+        add_users: Add school users
+        manage_alert_contacts: Manage subscribers to weekly energy analysis alerts
+        manage_users: Manage school users and pupil logins
     show:
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
