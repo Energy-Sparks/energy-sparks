@@ -266,13 +266,15 @@ Rails.application.routes.draw do
   get 'analysis_page_finder/:urn/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
 
   resources :schools do
+    member do
+      get :settings
+    end
+
     resources :activities do
       member do
         get :completed
       end
     end
-
-    get :settings, to: 'schools#settings'
 
     concerns :tariff_holder
 

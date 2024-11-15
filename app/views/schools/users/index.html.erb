@@ -1,94 +1,89 @@
-<%= render 'schools/school_page_with_navigation', school: @school,
-                                                  page_title: t('manage_school_menu.manage_users') do %>
+<h2><%= t('schools.users.index.title') %></h2>
+<p><%= t('schools.users.index.introduction') %></p>
 
-  <h2><%= t('schools.users.index.title') %></h2>
-  <p><%= t('schools.users.index.introduction') %></p>
-
-  <div class="school_admin">
-    <% if @school_admins.any? %>
-      <%= render 'users', users: @school_admins %>
-    <% else %>
-      <p><%= t('schools.users.index.no_school_admin_accounts') %>.</p>
-    <% end %>
-  </div>
-
-  <%= link_to t('schools.users.index.new_school_admin_account'), new_school_user_path(@school, role: :school_admin),
-              class: 'btn btn-primary' %>
-  <%= link_to t('schools.users.index.add_existing_user_as_admin'), new_school_cluster_admin_path(@school),
-              class: 'btn btn-primary' %>
-
-  <h2 class="mt-4"><%= t('schools.users.index.staff_accounts') %></h2>
-  <p><%= t('schools.users.index.staff_accounts_have_access_message') %></p>
-
-  <div class="staff">
-    <% if @staff.any? %>
-      <%= render 'users', users: @staff %>
-    <% else %>
-      <p><%= t('schools.users.index.no_staff_accounts') %>.</p>
-    <% end %>
-  </div>
-
-  <%= link_to t('schools.users.index.new_staff_account'), new_school_user_path(@school, role: :staff),
-              class: 'btn btn-primary' %>
-
-  <h2 class="mt-4"><%= t('schools.users.index.pupil_accounts') %></h2>
-
-  <p>
-    <%= t('schools.users.index.pupil_accounts_message_1') %>
-    <%= t('schools.users.index.pupil_accounts_message_2') %>
-  </p>
-
-  <% if @pupils.any? %>
-    <table class="table table-condensed pupils">
-      <thead>
-        <tr>
-          <th><%= t('schools.users.index.name') %></th>
-          <th><%= t('schools.users.index.password') %></th>
-          <th></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @pupils.each do |user| %>
-          <tr>
-              <td><%= user.name %></td>
-              <td>
-                <%= begin
-                      user.pupil_password
-                    rescue StandardError
-                      t('schools.users.index.could_not_decrypt')
-                    end %>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <%= if can?(:edit, user)
-                        link_to(t('common.labels.edit'), edit_school_pupil_path(@school, user),
-                                class: 'btn btn-primary btn-sm')
-                      end %>
-                  <%= if can?(:delete, user)
-                        link_to(t('common.labels.delete'), school_user_path(@school, user),
-                                method: :delete, data: { confirm: t('common.confirm') },
-                                class: 'btn btn-danger btn-sm')
-                      end %>
-                  <%= if can?(:manage, :admin_functions)
-                        if user.access_locked?
-                          link_to t('schools.users.index.unlock'), unlock_school_user_path(@school, user),
-                                  method: :post, class: 'btn btn-warning btn-sm'
-                        else
-                          link_to t('schools.users.index.lock'), lock_school_user_path(@school, user),
-                                  method: :post, class: 'btn btn-warning btn-sm'
-                        end
-                      end %>
-                </div>
-              </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+<div class="school_admin">
+  <% if @school_admins.any? %>
+    <%= render 'users', users: @school_admins %>
   <% else %>
-    <p><%= t('schools.users.index.no_pupil_accounts') %>.</p>
+    <p><%= t('schools.users.index.no_school_admin_accounts') %>.</p>
   <% end %>
+</div>
 
-  <%= link_to t('schools.users.index.new_pupil_account'), new_school_pupil_path(@school), class: 'btn btn-primary' %>
+<%= link_to t('schools.users.index.new_school_admin_account'), new_school_user_path(@school, role: :school_admin),
+            class: 'btn btn-primary' %>
+<%= link_to t('schools.users.index.add_existing_user_as_admin'), new_school_cluster_admin_path(@school),
+            class: 'btn btn-primary' %>
 
+<h2 class="mt-4"><%= t('schools.users.index.staff_accounts') %></h2>
+<p><%= t('schools.users.index.staff_accounts_have_access_message') %></p>
+
+<div class="staff">
+  <% if @staff.any? %>
+    <%= render 'users', users: @staff %>
+  <% else %>
+    <p><%= t('schools.users.index.no_staff_accounts') %>.</p>
+  <% end %>
+</div>
+
+<%= link_to t('schools.users.index.new_staff_account'), new_school_user_path(@school, role: :staff),
+            class: 'btn btn-primary' %>
+
+<h2 class="mt-4"><%= t('schools.users.index.pupil_accounts') %></h2>
+
+<p>
+  <%= t('schools.users.index.pupil_accounts_message_1') %>
+  <%= t('schools.users.index.pupil_accounts_message_2') %>
+</p>
+
+<% if @pupils.any? %>
+  <table class="table table-condensed pupils">
+    <thead>
+      <tr>
+        <th><%= t('schools.users.index.name') %></th>
+        <th><%= t('schools.users.index.password') %></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @pupils.each do |user| %>
+        <tr>
+            <td><%= user.name %></td>
+            <td>
+              <%= begin
+                    user.pupil_password
+                  rescue StandardError
+                    t('schools.users.index.could_not_decrypt')
+                  end %>
+            </td>
+            <td>
+              <div class="btn-group">
+                <%= if can?(:edit, user)
+                      link_to(t('common.labels.edit'), edit_school_pupil_path(@school, user),
+                              class: 'btn btn-primary btn-sm')
+                    end %>
+                <%= if can?(:delete, user)
+                      link_to(t('common.labels.delete'), school_user_path(@school, user),
+                              method: :delete, data: { confirm: t('common.confirm') },
+                              class: 'btn btn-danger btn-sm')
+                    end %>
+                <%= if can?(:manage, :admin_functions)
+                      if user.access_locked?
+                        link_to t('schools.users.index.unlock'), unlock_school_user_path(@school, user),
+                                method: :post, class: 'btn btn-warning btn-sm'
+                      else
+                        link_to t('schools.users.index.lock'), lock_school_user_path(@school, user),
+                                method: :post, class: 'btn btn-warning btn-sm'
+                      end
+                    end %>
+              </div>
+            </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p><%= t('schools.users.index.no_pupil_accounts') %>.</p>
 <% end %>
+
+<%= link_to t('schools.users.index.new_pupil_account'), new_school_pupil_path(@school), class: 'btn btn-primary' %>

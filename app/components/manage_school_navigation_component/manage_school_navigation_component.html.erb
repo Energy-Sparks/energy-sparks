@@ -1,8 +1,8 @@
-<%= component 'page_nav', name: t('manage_school_menu.manage_school'),
-                          icon: nil, href: school_path(school),
+<%= component 'page_nav', name: t('advice_pages.nav.overview'),
+                          icon: nil, href: settings_school_path(school),
                           options: { user: current_user, match_controller: true } do |c| %>
 
-  <% c.with_section name: 'Settings',
+  <% c.with_section name: t('components.manage_school_navigation.settings'),
                     icon: 'gear',
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('manage_school_menu.edit_school_details'),
@@ -17,7 +17,7 @@
     <% end %>
   <% end %>
 
-  <% c.with_section name: 'Users',
+  <% c.with_section name: t('components.manage_school_navigation.settings'),
                     icon: 'users',
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('manage_school_menu.manage_users'),
@@ -28,7 +28,7 @@
     <% end %>
   <% end %>
 
-  <% c.with_section name: 'Metering',
+  <% c.with_section name: t('components.manage_school_navigation.metering'),
                     icon: 'gauge',
                     options: { match_controller: false } do |s| %>
     <% if can? :index, Meter %>
@@ -41,59 +41,57 @@
     <% end %>
   <% end %>
 
-  <% if current_user.admin? %>
-    <% c.with_section name: 'Admin',
-                      icon: 'lock',
-                      options: { match_controller: false } do |s| %>
+  <% c.with_section name: t('components.manage_school_navigation.admin'),
+                    icon: 'lock',
+                    visible: current_user.admin?,
+                    options: { match_controller: false } do |s| %>
 
-      <% if can? :configure, school %>
-        <% s.with_item(name: t('manage_school_menu.school_configuration'),
-                       href: edit_school_configuration_path(school), classes: 'small') %>
-      <% end %>
-      <% if can? :manage, SchoolMeterAttribute %>
-        <% s.with_item(name: t('manage_school_menu.meter_attributes'),
-                       href: admin_school_meter_attributes_path(school), classes: 'small') %>
-      <% end %>
-      <% if can? :manage, Audit %>
-        <% s.with_item(name: t('manage_school_menu.manage_audits'),
-                       href: school_audits_path(school), classes: 'small') %>
-      <% end %>
-      <% if can? :manage, SchoolPartner %>
-        <% s.with_item(name: t('manage_school_menu.manage_partners'),
-                       href: admin_school_partners_path(school), classes: 'small') %>
-      <% end %>
-      <% if can? :manage, Cad %>
-        <% s.with_item(name: t('manage_school_menu.manage_cads'),
-                       href: school_cads_path(school), classes: 'small') %>
-      <% end %>
-      <% if school.school_group && can?(:manage, school.school_group) %>
-        <% s.with_item(name: t('manage_school_menu.manage_school_group'),
-                       href: admin_school_group_path(school.school_group), classes: 'small') %>
-      <% end %>
-      <% if can? :manage, Issue %>
-        <% s.with_item(name: t('manage_school_menu.manage_issues'),
-                       href: admin_school_issues_path(school), classes: 'small') %>
-      <% end %>
-      <% if can? :view_content_reports, school %>
-        <% s.with_item(name: t('manage_school_menu.batch_reports'),
-                       href: school_reports_path(school), classes: 'small') %>
-      <% end %>
-      <% s.with_item(name: t('schools.meters.index.view_target_data'),
-                     href: admin_school_target_data_path(school), classes: 'small') %>
-      <% if Targets::SchoolTargetService.targets_enabled?(school) &&
-             can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
-        <% s.with_item(name: t('manage_school_menu.review_targets'),
-                       href: school_school_targets_path(school), classes: 'small') %>
-      <% end %>
-      <% if can? :expert_analyse, school %>
-        <% s.with_item(name: t('manage_school_menu.expert_analysis'),
-                       href: admin_school_analysis_path(school), classes: 'small') %>
-      <% end %>
-      <% if can? :remove_school, school %>
-        <% s.with_item(name: t('manage_school_menu.remove_school'),
-                       href: removal_admin_school_path(school), classes: 'small') %>
-      <% end %>
+    <% if can? :configure, school %>
+      <% s.with_item(name: t('manage_school_menu.school_configuration'),
+                     href: edit_school_configuration_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :manage, SchoolMeterAttribute %>
+      <% s.with_item(name: t('manage_school_menu.meter_attributes'),
+                     href: admin_school_meter_attributes_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :manage, Audit %>
+      <% s.with_item(name: t('manage_school_menu.manage_audits'),
+                     href: school_audits_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :manage, SchoolPartner %>
+      <% s.with_item(name: t('manage_school_menu.manage_partners'),
+                     href: admin_school_partners_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :manage, Cad %>
+      <% s.with_item(name: t('manage_school_menu.manage_cads'),
+                     href: school_cads_path(school), classes: 'small') %>
+    <% end %>
+    <% if school.school_group && can?(:manage, school.school_group) %>
+      <% s.with_item(name: t('manage_school_menu.manage_school_group'),
+                     href: admin_school_group_path(school.school_group), classes: 'small') %>
+    <% end %>
+    <% if can? :manage, Issue %>
+      <% s.with_item(name: t('manage_school_menu.manage_issues'),
+                     href: admin_school_issues_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :view_content_reports, school %>
+      <% s.with_item(name: t('manage_school_menu.batch_reports'),
+                     href: school_reports_path(school), classes: 'small') %>
+    <% end %>
+    <% s.with_item(name: t('schools.meters.index.view_target_data'),
+                   href: admin_school_target_data_path(school), classes: 'small') %>
+    <% if Targets::SchoolTargetService.targets_enabled?(school) &&
+           can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
+      <% s.with_item(name: t('manage_school_menu.review_targets'),
+                     href: school_school_targets_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :expert_analyse, school %>
+      <% s.with_item(name: t('manage_school_menu.expert_analysis'),
+                     href: admin_school_analysis_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :remove_school, school %>
+      <% s.with_item(name: t('manage_school_menu.remove_school'),
+                     href: removal_admin_school_path(school), classes: 'small') %>
     <% end %>
   <% end %>
-
 <% end %>

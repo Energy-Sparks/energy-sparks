@@ -114,6 +114,7 @@ class SchoolsController < ApplicationController
 
   def settings
     authorize! :manage_settings, @school
+    render :settings, layout: 'dashboards'
   end
 
 private

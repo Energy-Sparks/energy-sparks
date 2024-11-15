@@ -1,14 +1,25 @@
-<% content_for :page_title, "#{page_title} | #{school.name}" %>
-<h1><%= page_title %></h1>
+<% content_for :page_title, "#{t(page_title)} | #{school.name}" %>
 
 <% if Flipper.enabled?(:new_manage_school_pages, current_user) %>
-  <div class="row">
-    <div id="page-navigation" class="col-md-3 col-lg-3 col-xl-2">
-      <%= component 'manage_school_navigation', school: school, current_user: current_user %>
-    </div>
+  <% content_for :dashboard_header do %>
+    <%# i18n-tasks-use t('advice_pages.index.title') %>
+    <%# i18n-tasks-use t('advice_pages.index.show.intro_html') %>
+    <%= component 'dashboard_header',
+                  title: page_title,
+                  intro: nil,
+                  show_school: false,
+                  school: @school %>
+  <% end %>
 
-    <div id="page-body" class="col-md-9 col-lg-9 col-xl-10">
-      <%= yield %>
+  <div class="container">
+    <div class="row mt-2">
+      <div id="page-navigation" class="col-md-3 col-lg-3 col-xl-2">
+        <%= component 'manage_school_navigation', school: school, current_user: current_user %>
+      </div>
+
+      <div id="page-body" class="col-md-9 col-lg-9 col-xl-10">
+        <%= yield %>
+      </div>
     </div>
   </div>
 <% else %>

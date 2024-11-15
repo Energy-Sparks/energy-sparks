@@ -1,0 +1,8 @@
+---
+en:
+  components:
+    manage_school_navigation:
+      admin: Admin
+      metering: Metering
+      settings: Settings
+      users: Users
