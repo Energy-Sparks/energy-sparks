@@ -266,6 +266,7 @@ en:
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
         admin_meter_status: Meter status
+        completed_meter_reviews: Completed DCC meter reviews
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Source
         first: From
@@ -275,7 +276,7 @@ en:
         latest: To
         manage_solar_api_feeds: Manage Solar API feeds
         meter: Meter
-        meter_reviews: Completed DCC meter reviews
+        meter_reviews: Meter reviews
         meter_system: Meter system
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name

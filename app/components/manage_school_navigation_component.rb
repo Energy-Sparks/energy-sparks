@@ -1,8 +1,8 @@
 class ManageSchoolNavigationComponent < ApplicationComponent
   attr_reader :school, :current_user
 
-  def initialize(school:, current_user: nil, id: nil, classes: '')
-    super(id: id, classes: classes)
+  def initialize(school:, current_user: nil, classes: '')
+    super(id: 'page-nav', classes: classes)
     @school = school
     @current_user = current_user
   end

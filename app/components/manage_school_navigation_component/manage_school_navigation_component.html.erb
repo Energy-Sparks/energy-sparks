@@ -1,4 +1,5 @@
 <%= component 'page_nav', name: t('advice_pages.nav.overview'),
+                          classes: classes,
                           icon: nil, href: settings_school_path(school),
                           options: { user: current_user, match_controller: true } do |c| %>
 
@@ -35,10 +36,20 @@
       <% s.with_item(name: t('manage_school_menu.manage_meters'),
                      href: school_meters_path(school), classes: 'small') %>
     <% end %>
+    <% if can? :manage_solar_feed_configuration, School %>
+      <% s.with_item(name: t('schools.meters.index.manage_solar_api_feeds'),
+                     href: school_solar_feeds_configuration_index_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :manage, MeterReview %>
+      <% s.with_item(name: t('schools.meters.index.meter_reviews'),
+                     href: admin_school_meter_reviews_path(school), classes: 'small') %>
+    <% end %>
     <% if can? :manage, EnergyTariff %>
       <% s.with_item(name: t('manage_school_menu.manage_tariffs'),
                      href: school_energy_tariffs_path(school), classes: 'small') %>
     <% end %>
+    <% s.with_item(name: t('schools.meters.index.school_downloads'),
+                   href: school_downloads_path(school), classes: 'small') %>
   <% end %>
 
   <% c.with_section name: t('components.manage_school_navigation.admin'),
@@ -80,11 +91,6 @@
     <% end %>
     <% s.with_item(name: t('schools.meters.index.view_target_data'),
                    href: admin_school_target_data_path(school), classes: 'small') %>
-    <% if Targets::SchoolTargetService.targets_enabled?(school) &&
-           can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
-      <% s.with_item(name: t('manage_school_menu.review_targets'),
-                     href: school_school_targets_path(school), classes: 'small') %>
-    <% end %>
     <% if can? :expert_analyse, school %>
       <% s.with_item(name: t('manage_school_menu.expert_analysis'),
                      href: admin_school_analysis_path(school), classes: 'small') %>
