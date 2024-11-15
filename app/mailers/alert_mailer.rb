@@ -20,7 +20,6 @@ class AlertMailer < LocaleMailer
 
     @unsubscribe_emails = User.where(school: @school, role: :school_admin).pluck(:email).join(', ')
     @alert_content = self.class.create_content(@events)
-    # debugger
     @title = @school.name
 
     subject = if Flipper.enabled?(:alert_email_2024)

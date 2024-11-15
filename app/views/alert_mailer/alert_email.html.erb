@@ -72,19 +72,14 @@
     .neutral { background-color: <%= Colours.neutral_light %>; }
     .lh-md { line-height: 1.75; }
   </style>
-
-  <% dashboard_alert_groups(@alert_content).each do |alert_group| %>
-    <h4 class="py-4"><%= t("advice_pages.alerts.groups.#{alert_group}") %></h4>
-    <% alert_type_ids = alert_types_for_group(alert_group).map(&:id)
-       contents = @alert_content.select do |dashboard_alert|
-         alert_type_ids.include?(dashboard_alert.alert.alert_type_id)
-       end
-       contents.each do |alert_content| %>
+  <% dashboard_alert_groups(@alert_content).each do |group, alerts| %>
+    <h4 class="py-4"><%= t("advice_pages.alerts.groups.#{group}") %></h4>
+    <% alerts.each do |alert_content| %>
       <div class="row rounded-lg <%= status_for_alert_colour(alert_content.colour) %>">
-        <div class="col-1 py-3">
+        <div class="col-lg-1 py-3">
           <%= image_tag "email/fa-#{alert_type_icon(alert_content.alert.alert_type)}.png", class: 'px-4' %>
         </div>
-        <div class="col-10 py-4 text-lg lh-md">
+        <div class="col-lg-11 py-4 text-lg lh-md">
           <strong><%= sanitize alert_content.email_title %></strong>
           <%= alert_content.email_content %>
           <% path = find_out_more_path_from_alert_content(@school, alert_content, params: weekly_alert_utm_parameters,
@@ -102,7 +97,6 @@
       </div>
       <div class="s-2"></div>
     <% end %>
-    <div>
   <% end %>
 <% else %>
   <% @alert_content.each do |alert_content| %>
