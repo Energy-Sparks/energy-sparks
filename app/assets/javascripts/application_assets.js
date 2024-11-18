@@ -3,7 +3,6 @@
 
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/widgets/sortable
 
 // to support active storage direct upload
 //= require activestorage
@@ -71,3 +70,5 @@
 //= require panel_switcher_component
 //= require carousels
 //= require school_search
+//= require sortable.min
+//= require sort_list

@@ -1,6 +1,10 @@
 <div class="nested-fields">
-  <div class="row">
-    <div class="col-md-5 mb-3">
+  <div class="form-row p-2">
+    <div class="col-auto">
+      <%= render IconComponent.new(name: 'up-down-left-right') %>
+    </div>
+    <div class="col-md-5">
+      <span class="">
       <%= f.select(
             :task_template_id,
             grouped_options_for_select(
@@ -14,11 +18,12 @@
       <%= f.hidden_field :id %>
       <%= f.hidden_field :position, class: 'position' %>
       <%= f.error :task_template, id: 'task_template_error' %>
+      </span>
     </div>
-    <div class="col-md-5 mb-3">
+    <div class="col-md-5">
       <%= f.text_area :notes, label: false, class: 'form-control select2' %>
     </div>
-    <div class="col-md-2 mb-3">
+    <div class="col-auto">
       <%= link_to_remove_association t('common.labels.remove'), f, class: 'btn' %>
     </div>
   </div>

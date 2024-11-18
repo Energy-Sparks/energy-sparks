@@ -68,27 +68,3 @@
   <br>
   <br>
 <% end %>
-
-<script>
-  $(document).ready(function() {
-    function updatePositions($list) {
-      $list.find('input.position').each(function(idx) {
-        $(this).val(idx);
-      });
-    }
-
-    $('.sort-list').each(function() {
-      const $this = $(this);
-      $this.sortable();
-
-      const observer = new MutationObserver(function() {
-        updatePositions($this);
-      });
-
-      observer.observe($this[0], {
-        childList: true,
-        subtree: true
-      });
-    });
-  });
-</script>
