@@ -51,7 +51,9 @@
 <% else %>
   <h3><%= t('programme_types.show.activities') %></h3>
 <% end %>
-<% if show_old_tasklists %>
+<% if Flipper.enabled?(:tasklists, current_user) %>
+  <%= render 'shared/tasklists/tasklists', tasklist_template: @programme_type %>
+<% else %>
   <% @programme_type.activity_types_by_position.each_with_index do |activity_type, idx| %>
     <div class="row mt-4">
       <div class="col-sm-2 text-center align-self-center">
@@ -97,7 +99,4 @@
       </div>
     </div>
   <% end %>
-<% end %>
-<% if show_new_tasklists %>
-  <%= render 'shared/tasklists/tasklists', tasklist_template: @programme_type %>
 <% end %>
