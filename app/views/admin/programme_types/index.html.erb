@@ -16,17 +16,21 @@
       <li>
         Editing a programme once schools have begun enrolling will impact their current progress. So take care with adding or removing activities once schools have engaged
       </li>
-      <% if show_old_tasklists %>
-      <li>
-        Schools are automatically marked as having completed a programme once they have completed all the activities currently listed against it.
-      </li>
-      <% end %>
-      <% if show_new_tasklists %>
-      <li>
-        Schools are automatically marked as having completed a programme once they have completed all the activities and actions currently listed against it.
-      </li>
+      <% if Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
+        <li>
+          Schools are automatically marked as having completed a programme once they have completed all the activities and actions currently listed against it.
+        </li>
+      <% else %>
+        <li>
+          Schools are automatically marked as having completed a programme once they have completed all the activities currently listed against it.
+        </li>
       <% end %>
     </ul>
+    <% if Flipper.enabled?(:tasklists_parallel, current_user) %>
+      <%= render NoticeComponent.new(status: :negative) do %>
+        Actions can now also be added to a programme, but points won't be recorded against a school until this feature is fully switched on. Actions can be added by clicking 'edit'. When the feature is fully switched on, Activities will also be editable in the same place.
+      <% end %>
+    <% end %>
   </div>
 </div>
 
@@ -37,11 +41,8 @@
         <thead>
           <tr>
             <th>Title</th>
-            <% if show_old_tasklists %>
-              <th class='bg-secondary'>Activities in Programme</th>
-            <% end %>
-            <% if show_new_tasklists %>
-              <th>Activities in Programme</th>
+            <th>Activities in Programme</th>
+            <% if Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
               <th>Actions in Programme</th>
             <% end %>
             <th>Bonus score</th>
@@ -49,10 +50,10 @@
             <th>Schools completed</th>
             <th>Active</th>
             <th>Default?</th>
-            <% if show_old_tasklists %>
             <th></th>
+            <% if !Flipper.enabled?(:tasklists, current_user) %>
+              <th></th>
             <% end %>
-            <th></th>
             <th></th>
           </tr>
         </thead>
@@ -60,11 +61,13 @@
           <% @programme_types.each do |programme_type| %>
             <tr>
               <td><%= link_to programme_type.title, admin_programme_type_path(programme_type) %></td>
-              <% if show_old_tasklists %>
-                <td class='bg-secondary'><%= programme_type.activity_types.count %></td>
+              <% if !Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
+                <td><%= programme_type.activity_types.count %></td>
               <% end %>
-              <% if show_new_tasklists %>
-                <td><%= programme_type.tasklist_activity_types.count %></td>
+              <% if Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
+                <% if !Flipper.enabled?(:tasklists_parallel, current_user) %>
+                  <td><%= programme_type.tasklist_activity_types.count %></td>
+                <% end %>
                 <td><%= programme_type.tasklist_intervention_types.count %></td>
               <% end %>
               <td><%= programme_type.bonus_score %></td>
@@ -76,7 +79,7 @@
               <td><%= link_to 'Enrol schools',
                               admin_programme_type_programmes_path(programme_type),
                               class: 'btn btn-warning btn-sm nowrap' %></td>
-              <% if show_old_tasklists %>
+              <% unless Flipper.enabled?(:tasklists, current_user) %>
               <td><%= link_to 'Edit activities',
                               admin_programme_type_activity_types_path(programme_type),
                               class: 'btn btn-warning btn-sm nowrap' %></td>

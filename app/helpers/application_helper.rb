@@ -539,12 +539,4 @@ module ApplicationHelper
     return '' unless label.present?
     label.gsub(%r{/}, '/<wbr>').html_safe
   end
-
-  def show_old_tasklists
-    Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user)
-  end
-
-  def show_new_tasklists
-    !Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user)
-  end
 end

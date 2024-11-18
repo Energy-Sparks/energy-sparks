@@ -1,66 +1,73 @@
-<h2><%= t('schools.audits.form.activities') %></h2>
-<p class="small">
-  <%= t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path) %>.
-</p>
+<% if Flipper.enabled?(:tasklists, current_user) || !Flipper.enabled?(:tasklists_parallel, current_user) %>
 
-<p class="small">
-  <%= t('schools.audits.form.add_a_custom_activity_message') %>.
-</p>
+  <h2><%= t('schools.audits.form.activities') %></h2>
+  <p class="small">
+    <%= t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path) %>.
+  </p>
 
-<div class="row">
-  <div class="col-md-5 mb-3">
-    <label for="activity_type"><%= t('schools.audits.form.activity_type') %></label>
+  <p class="small">
+    <%= t('schools.audits.form.add_a_custom_activity_message') %>.
+  </p>
+
+  <div class="row">
+    <div class="col-md-5 mb-3">
+      <label for="activity_type"><%= t('schools.audits.form.activity_type') %></label>
+    </div>
+    <div class="col-md-5 mb-3">
+      <label for="notes"><%= t('schools.audits.form.notes') %></label>
+    </div>
+    <div class="col-md-2 mb-3">
+    </div>
   </div>
-  <div class="col-md-5 mb-3">
-    <label for="notes"><%= t('schools.audits.form.notes') %></label>
-  </div>
-  <div class="col-md-2 mb-3">
-  </div>
-</div>
 
-<div id="tasklist-activity-types" class="sort-list">
-  <%= f.simple_fields_for :activity_type_tasks, tasklist_template.activity_type_tasks do |tasklist_task| %>
-    <%= render 'shared/tasklists/activity_type_task_fields', f: tasklist_task %>
-  <% end %>
-  <div class="links">
-    <%= link_to_add_association t('schools.audits.form.add_activity'), f, :activity_type_tasks, class: 'btn', partial: 'shared/tasklists/activity_type_task_fields' %>
+  <div id="tasklist-activity-types" class="sort-list">
+    <%= f.simple_fields_for :activity_type_tasks, tasklist_template.activity_type_tasks do |tasklist_task| %>
+      <%= render 'shared/tasklists/activity_type_task_fields', f: tasklist_task %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association t('schools.audits.form.add_activity'), f, :activity_type_tasks, class: 'btn', partial: 'shared/tasklists/activity_type_task_fields' %>
+    </div>
   </div>
-</div>
 
-<br>
-<br>
+  <br>
+  <br>
 
-<h2><%= t('common.labels.actions') %></h2>
+<% end %>
 
-<p class="small">
-  <%= t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path) %>
-</p>
+<% if Flipper.enabled?(:tasklists, current_user) || (Flipper.enabled?(:tasklists_parallel, current_user) && tasklist_template.is_a?(ProgrammeType)) %>
 
-<p class="small">
-  <%= t('schools.audits.form.actions_message_2') %>.
-</p>
+  <h2><%= t('common.labels.actions') %></h2>
 
-<div class="row">
-  <div class="col-md-5 mb-3">
-    <label for="firstName"><%= t('schools.audits.form.action_type') %></label>
+  <p class="small">
+    <%= t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path) %>
+  </p>
+
+  <p class="small">
+    <%= t('schools.audits.form.actions_message_2') %>.
+  </p>
+
+  <div class="row">
+    <div class="col-md-5 mb-3">
+      <label for="firstName"><%= t('schools.audits.form.action_type') %></label>
+    </div>
+    <div class="col-md-5 mb-3">
+      <label for="lastName"><%= t('schools.audits.form.notes') %></label>
+    </div>
+    <div class="col-md-2 mb-3">
+    </div>
   </div>
-  <div class="col-md-5 mb-3">
-    <label for="lastName"><%= t('schools.audits.form.notes') %></label>
-  </div>
-  <div class="col-md-2 mb-3">
-  </div>
-</div>
 
-<div id="tasklist-intervention-types" class="sort-list">
-  <%= f.simple_fields_for :intervention_type_tasks, tasklist_template.intervention_type_tasks do |tasklist_task| %>
-    <%= render 'shared/tasklists/intervention_type_task_fields', f: tasklist_task %>
-  <% end %>
-  <div class="links">
-    <%= link_to_add_association t('schools.audits.form.add_action'), f, :intervention_type_tasks, class: 'btn', partial: 'shared/tasklists/intervention_type_task_fields' %>
+  <div id="tasklist-intervention-types" class="sort-list">
+    <%= f.simple_fields_for :intervention_type_tasks, tasklist_template.intervention_type_tasks do |tasklist_task| %>
+      <%= render 'shared/tasklists/intervention_type_task_fields', f: tasklist_task %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association t('schools.audits.form.add_action'), f, :intervention_type_tasks, class: 'btn', partial: 'shared/tasklists/intervention_type_task_fields' %>
+    </div>
   </div>
-</div>
-<br>
-<br>
+  <br>
+  <br>
+<% end %>
 
 <script>
   $(document).ready(function() {
