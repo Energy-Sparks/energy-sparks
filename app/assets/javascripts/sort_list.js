@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
     new Sortable(list, {
       animation: 150,
       multiDrag: true,
+      selectedClass: 'bg-light',
+      fallbackTolerance: 3, // So that we can select items on mobile
       handle: '.handle',
       ghostClass: 'bg-light'
     });
