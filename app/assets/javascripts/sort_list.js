@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     new Sortable(list, {
       animation: 150,
       multiDrag: true,
+      handle: '.handle',
       ghostClass: 'bg-light'
     });
 
