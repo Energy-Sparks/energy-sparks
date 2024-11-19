@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Comparison::Report, type: :model do
+RSpec.describe Comparison::Report do
   describe 'validations' do
     context 'with standard validations' do
-      subject(:report) { build :report }
+      subject(:report) { build(:report) }
 
       it { expect(report).to be_valid }
       it { expect(report).to validate_uniqueness_of(:key) }
@@ -15,14 +17,19 @@ RSpec.describe Comparison::Report, type: :model do
   end
 
   describe 'relationships' do
-    subject(:report) { create :report }
+    subject(:report) { create(:report) }
 
     it { expect(report).to belong_to(:report_group).optional(false) }
+
+    it 'destroys related alerts' do
+      create(:alert, comparison_report: report)
+      expect { report.destroy! }.to change(Alert, :count).by(-1)
+    end
   end
 
   describe '#key' do
     context 'when there is a title' do
-      subject(:report) { create :report, title: 'Lovely title' }
+      subject(:report) { create(:report, title: 'Lovely title') }
 
       it 'builds a key on create using :title' do
         expect(report.key).to eq('lovely_title')
@@ -42,7 +49,7 @@ RSpec.describe Comparison::Report, type: :model do
     end
 
     context 'when there is no title' do
-      subject(:report) { build :report, title: '' }
+      subject(:report) { build(:report, title: '') }
 
       it { expect(report).to validate_presence_of(:key) }
       it { expect(report).to validate_presence_of(:title) }
