@@ -57,6 +57,16 @@ en:
         view_our_analysis_html: <a href="%{href}">View our analysis</a>
         warm_weather:
           title: Leaving the heating on during warm weather
+      not_enough_data:
+        p1: When we have additional data for your school we will be able to provide you with detailed analysis which will
+        p1_li1: recommendations for how to adjust your heating timings
+        p1_li2: the seasonal variation in your gas consumption for heating and hot water
+        p1_li3: additional alerts and insights, including when your heating is coming on in warmer weather
+        p2: 'In the meantime you can use the rest of our analysis to help you monitor the gas used for heating and hot water:'
+        p2_li1_html: our <a href="%{gas_recent_changes_analysis_school_advice_path}#compare-recent-days">recent changes page</a> includes a chart that shows when you are using gas during the day, to help identify when your heating is coming on
+        p2_li2_html: the <a href="%{gas_recent_changes_analysis_school_advice_path}#impact-of-temperature">recent changes page</a> shows the impact of temperature on gas consumption, to help you identify if the heating timings are correct
+        p2_li3_html: our <a href="gas_out_of_hours_analysis_school_advice_path#usage_by_day_of_weekout">out of school hours analysis</a> shows when you are consuming gas over the school week, weekend and evening to help you adjust your heating timings
+        title: We have limited gas data for your school
       page_title: Heating control analysis
       tables:
         columns:
