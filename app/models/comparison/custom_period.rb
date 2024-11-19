@@ -27,8 +27,6 @@ module Comparison
     validates :previous_label, :previous_start_date, :previous_end_date, presence: true
     validates :max_days_out_of_date, :enough_days_data, presence: true
 
-    # Rails 7 comparison validations (imported to: app/validators/comparison_validator.rb)
-    # Basic rules. They could be more complex than this!
     validates :previous_end_date,
               comparison: { greater_than_or_equal_to: :previous_start_date,
                             message: 'must be greater or equal than previous start date' }
