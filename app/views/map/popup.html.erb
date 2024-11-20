@@ -1,0 +1,21 @@
+<p class="small">
+  <%= link_to @school.name, school_path(@school) %>
+</p>
+<p class="small">
+  <%= I18n.t('maps.school_features.school_type') %>: <%= @school.school_type.humanize %>
+</p>
+<p class="small">
+  <%= I18n.t('maps.school_features.fuel_types') %>:
+  <% if @school.has_electricity? %>
+    &nbsp;<%= render IconComponent.new(fuel_type: :electricity) %>
+  <% end %>
+  <% if @school.has_gas? %>
+    &nbsp;<%= render IconComponent.new(fuel_type: :gas) %>
+  <% end %>
+  <% if @school.has_solar_pv? %>
+    &nbsp;<%= render IconComponent.new(fuel_type: :solar_pv) %>
+  <% end %>
+</p>
+<p class="small">
+  <%= I18n.t('maps.school_features.pupils') %>: <%= @school.number_of_pupils %>
+</p>
