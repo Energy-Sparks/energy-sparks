@@ -11,12 +11,11 @@ RSpec.describe 'school alert subscription events', type: :system do
 
   before do
     sign_in(user)
-    visit root_path
+    service.perform(subscription_frequency: AlertType.frequencies.keys)
+    visit school_path(school)
   end
 
   it 'allows the user to view details of emails' do
-    service.perform(subscription_frequency: AlertType.frequencies.keys)
-    click_on(school.name)
     click_on('Batch reports')
     click_on('Email and SMS reports')
     click_on 'View'

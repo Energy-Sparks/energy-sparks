@@ -97,8 +97,8 @@ class SchoolGroup < ApplicationRecord
   scope :is_public, -> { where(public: true) }
 
   scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  # TODO
-  scope :by_keyword, ->(keyword) { where('name LIKE ?', "%#{keyword}%").order(:name)}
+  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
+  scope :with_visible_schools, -> { where("id IN (select distinct school_group_id from schools where visible='t')") }
 
   validates :name, presence: true
 

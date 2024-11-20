@@ -5,8 +5,8 @@ class SchoolSearchComponent < ApplicationComponent
   TABS = [:schools, :school_groups].freeze
 
   def initialize(tab: DEFAULT_TAB,
-                 schools: School.active,
-                 school_groups: SchoolGroup.all,
+                 schools: School.visible,
+                 school_groups: SchoolGroup.with_visible_schools,
                  letter: 'A',
                  keyword: nil, id: nil, classes: '')
     super(id: id, classes: classes)
@@ -33,7 +33,7 @@ class SchoolSearchComponent < ApplicationComponent
   def letter_status(tab, letter)
     if !tab_active?(tab) && letter == 'A'
       'active' # Ensure A is active by default
-    elsif tab_active?(tab) && letter == @letter
+    elsif tab_active?(tab) && letter == @letter && @keyword.nil?
       'active' # Activate letter based on parameter
     elsif tab == :schools
       'disabled' unless schools_by_letter.key?(letter)
