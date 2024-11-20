@@ -58,7 +58,7 @@ en:
         warm_weather:
           title: Leaving the heating on during warm weather
       not_enough_data:
-        p1: When we have additional data for your school we will be able to provide you with detailed analysis which will
+        p1: 'When we have additional data for your school we will be able to provide you with detailed analysis which will include:'
         p1_li1: recommendations for how to adjust your heating timings
         p1_li2: the seasonal variation in your gas consumption for heating and hot water
         p1_li3: additional alerts and insights, including when your heating is coming on in warmer weather

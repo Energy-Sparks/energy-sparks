@@ -12,6 +12,12 @@
       <li><%= t('advice_pages.heating_control.not_enough_data.p1_li3') %></li>
     </ul>
   </p>
+  <% if @analysable.data_available_from.present? %>
+    <p>
+      <%= t('advice_pages.not_enough_data.available_from',
+            available_from: @analysable.data_available_from.to_fs(:es_short)) %>
+    </p>
+  <% end %>
   <p>
     <%= t('advice_pages.heating_control.not_enough_data.p2') %>
     <ul>
