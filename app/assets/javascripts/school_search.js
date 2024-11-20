@@ -8,11 +8,11 @@ $(document).ready(function() {
   });
 
   //when we submit a search deselect the letters
-  $(document).on('submit','form.schools-search',function(){
+  $(document).on('submit','form#schools-search',function(){
     $(this).closest('#schools-content').find('.pagination').children('.page-item').removeClass('active');
   });
 
-  $(document).on('submit','form.school-groups-search',function(){
+  $(document).on('submit','form#school-groups-search',function(){
     $(this).closest('#school-groups-content').find('.pagination').children('.page-item').removeClass('active');
   });
 
