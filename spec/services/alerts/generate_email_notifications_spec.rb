@@ -7,7 +7,6 @@ describe Alerts::GenerateEmailNotifications do
 
   let(:school)               { create(:school) }
   let(:alert_generation_run) { create(:alert_generation_run, school: school) }
-  let(:alert_type)           { create(:alert_type, advice_page: create(:advice_page, key: :baseload)) }
   let(:alert_1)              { create(:alert, school: school, alert_generation_run: alert_generation_run) }
   let(:alert_2)              { create(:alert, school: school, alert_generation_run: alert_generation_run) }
   let!(:school_admin)        { create(:school_admin, school: school) }
@@ -100,8 +99,8 @@ describe Alerts::GenerateEmailNotifications do
     end
   end
 
-  def shared_before(method)
-    Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run:).perform([alert_1, alert_2])
+  def shared_before(method, alerts: [])
+    Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run:).perform([alert_1, alert_2] + alerts)
     described_class.new(subscription_generation_run:).send(method)
     alert_subscription_event_1.reload
     alert_subscription_event_2.reload
@@ -128,10 +127,19 @@ describe Alerts::GenerateEmailNotifications do
     end
   end
 
+  def create_email_alert(fuel_type)
+    alert_type = create(:alert_type, fuel_type:)
+    alert = create(:alert, school:, alert_generation_run:, alert_type:)
+    alert_type_rating = create(:alert_type_rating, alert_type:, email_active: true)
+    create(:alert_type_rating_content_version, alert_type_rating:)
+    alert
+  end
+
   describe '#batch_send' do
     before do
       flags.each { |flag| Flipper.enable(flag) }
-      shared_before :batch_send
+      alerts = %i[electricity storage_heater solar_pv].map { |fuel_type| create_email_alert(fuel_type) }
+      shared_before(:batch_send, alerts:)
     end
 
     let(:flags) { [:batch_send_weekly_alerts] }
@@ -170,6 +178,9 @@ describe Alerts::GenerateEmailNotifications do
         expect(matcher).to have_css('h4', text: 'Long term trends and advice')
         expect(matcher.first('.negative')).to have_text('You need to do something!')
         expect(matcher.first('.negative')).to have_css('img[src*="fa-fire"]')
+        expect(matcher.all('.negative')[2]).to have_css('img[src*="fa-bolt"]')
+        expect(matcher.all('.negative')[3]).to have_css('img[src*="fa-fire-alt"]')
+        expect(matcher.all('.negative')[4]).to have_css('img[src*="fa-sun"]')
       end
     end
   end
@@ -238,6 +249,7 @@ describe Alerts::GenerateEmailNotifications do
   end
 
   context 'when generating email content' do
+    let(:alert_type) { create(:alert_type, advice_page: create(:advice_page, key: :baseload)) }
     let(:alert_1) { create(:alert, school: school, alert_type: alert_type, alert_generation_run: alert_generation_run) }
 
     before do
