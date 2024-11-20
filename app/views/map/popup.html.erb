@@ -7,13 +7,13 @@
 <p class="small">
   <%= I18n.t('maps.school_features.fuel_types') %>:
   <% if @school.has_electricity? %>
-    &nbsp;<i class='fas fa-bolt'></i>
+    &nbsp;<%= render IconComponent.new(fuel_type: :electricity) %>
   <% end %>
   <% if @school.has_gas? %>
-    &nbsp;<i class='fas fa-fire'></i>
+    &nbsp;<%= render IconComponent.new(fuel_type: :gas) %>
   <% end %>
   <% if @school.has_solar_pv? %>
-    &nbsp;<i class='fas fa-sun'></i>
+    &nbsp;<%= render IconComponent.new(fuel_type: :solar_pv) %>
   <% end %>
 </p>
 <p class="small">
