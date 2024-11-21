@@ -1,44 +1,36 @@
+// NB: Not using cocooned inbuilt reindexing as couldn't get it working with Sortable
+
 document.addEventListener('DOMContentLoaded', function () {
-
   function reindex(list) {
-    let idx = 0; // Start the index at 0 for visible elements
+    let idx = 0;
 
-    list.querySelectorAll('input.position').forEach((input) => {
+    list.querySelectorAll('.cocooned-item').forEach((item) => {
+      const destroyField = item.querySelector('input[type="hidden"][name$="[_destroy]"]');
+      const positionField = item.querySelector('input.position');
 
-      // Find the hidden _destroy field for the current item
-      const destroyField = input.closest('.cocooned-item').querySelector('input[type="hidden"][name$="[_destroy]"]');
-
-      // Skip items marked for deletion (_destroy is set to "true")
-      if (destroyField && destroyField.value === 'true') {
-        return;
+      if (!destroyField || destroyField.value !== 'true') {
+        positionField.value = idx++;
       }
-      input.value = idx;
-      idx++;
-     });
+    });
   }
 
   document.querySelectorAll('.sort-list').forEach((list) => {
-    // Initialize Sortable
     new Sortable(list, {
       animation: 150,
       selectedClass: 'bg-light',
-      handle: '.handle',
       ghostClass: 'bg-light',
+      handle: '.handle',
       filter: '.links',
       preventOnFilter: true,
       onEnd: function () {
-        console.log('OnEnd triggered');
         reindex(list); // Update positions after sorting
       },
       onMove: function (evt) {
         return !evt.related.classList.contains('links'); // Prevent dragging "links" elements
       }
     });
-
     list.addEventListener('cocooned:after-remove', function () {
-      requestAnimationFrame(() => {
-        reindex(list);
-      });
+      reindex(list);
     });
   });
 });
