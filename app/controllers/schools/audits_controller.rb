@@ -48,13 +48,11 @@ module Schools
     end
 
     def audit_params
-      logger.info params.inspect
-
       params.require(:audit).permit(:school_id, :title, :description, :file, :published, :involved_pupils,
-          audit_activity_types_attributes: audit_activity_types_attributes, # being replaced
-          audit_intervention_types_attributes: audit_intervention_types_attributes, # being replaced
-          activity_type_tasks_attributes: tasks_attributes, # new
-          intervention_type_tasks_attributes: tasks_attributes) # new
+          audit_activity_types_attributes: audit_activity_types_attributes, # remove when tasklists feature flag removed
+          audit_intervention_types_attributes: audit_intervention_types_attributes, # remove when tasklists feature flag removed
+          activity_type_tasks_attributes: tasks_attributes,
+          intervention_type_tasks_attributes: tasks_attributes)
     end
 
     def audit_activity_types_attributes

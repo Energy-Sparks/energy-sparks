@@ -18,9 +18,8 @@
     </div>
   </div>
 
-  <div id="tasklist-<%= type %>s" class='sort-list' do>
-    <%= f.simple_fields_for "#{type}_tasks".to_sym,
-                            tasklist_template.tasklist_tasks.by_task_type(type.camelcase).positioned do |tasklist_task| %>
+  <div id="tasklist-<%= type %>s" class='sort-list'>
+    <%= f.simple_fields_for "#{type}_tasks" do |tasklist_task| %>
       <%= render 'shared/tasklists/task_fields',
                  f: tasklist_task,
                  task_templates: task_templates,
