@@ -20,7 +20,7 @@
 class Tasklist::Task < ApplicationRecord
   self.table_name = 'tasklist_tasks'
   belongs_to :tasklist_template, polymorphic: true, optional: false
-  belongs_to :task_template, polymorphic: true, optional: false
+  belongs_to :task_template, polymorphic: true, optional: false # added own validation
 
   scope :by_task_type, ->(type) { where(task_template_type: type) }
   scope :positioned, -> { order(position: :asc) }
@@ -38,6 +38,6 @@ class Tasklist::Task < ApplicationRecord
   private
 
   def task_template_presence
-    errors.add(:base, "#{task_template_type} must exist") if task_template.blank?
+    # errors.add(:base, "#{task_template_type} must exist") if task_template.blank?
   end
 end

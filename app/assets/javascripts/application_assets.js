@@ -62,7 +62,6 @@
 //= require live_data
 //= require gtag
 //= require cocoon
-//= require cocooned
 //= require loading
 //= require cookie_banner
 //= require init_bootstrap

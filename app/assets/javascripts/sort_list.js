@@ -1,14 +1,15 @@
-// NB: Not using cocooned inbuilt reindexing as couldn't get it working with Sortable
+// Configures how sorting is used and works with cocoon to update position field
+// after sorting
 
 document.addEventListener('DOMContentLoaded', function () {
   function reindex(list) {
     let idx = 0;
 
-    list.querySelectorAll('.cocooned-item').forEach((item) => {
+    list.querySelectorAll('.nested-fields').forEach((item) => {
       const destroyField = item.querySelector('input[type="hidden"][name$="[_destroy]"]');
       const positionField = item.querySelector('input.position');
 
-      if (!destroyField || destroyField.value !== 'true') {
+      if (!destroyField || destroyField.value !== '1') {
         positionField.value = idx++;
       }
     });
@@ -22,15 +23,23 @@ document.addEventListener('DOMContentLoaded', function () {
       handle: '.handle',
       filter: '.links',
       preventOnFilter: true,
-      onEnd: function () {
-        reindex(list); // Update positions after sorting
-      },
       onMove: function (evt) {
         return !evt.related.classList.contains('links'); // Prevent dragging "links" elements
       }
     });
-    list.addEventListener('cocooned:after-remove', function () {
+
+    // Update positions on initial load
+    reindex(list);
+
+    const observer = new MutationObserver(() => {
       reindex(list);
+    });
+
+    // Observe changes in the child list
+    observer.observe(list, {
+      childList: true,
+      subtree: true,
+      attributes: true
     });
   });
 });
