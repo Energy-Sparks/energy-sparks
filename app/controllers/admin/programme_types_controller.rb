@@ -44,7 +44,7 @@ module Admin
     end
 
     def tasks_attributes
-      [:id, :task_template_id, :task_template_type, :task_template, :tasklist_template_id, :tasklist_template_type, :position, :notes, :_destroy]
+      [:id, :task_template_id, :task_template, :task_template_type, :position, :notes, :_destroy]
     end
   end
 end
