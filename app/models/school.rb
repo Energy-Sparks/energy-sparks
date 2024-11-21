@@ -238,8 +238,7 @@ class School < ApplicationRecord
   scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
   scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  # TODO
-  scope :by_keyword, ->(keyword) { where('name LIKE ?', "%#{keyword}%")}
+  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
 
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
 

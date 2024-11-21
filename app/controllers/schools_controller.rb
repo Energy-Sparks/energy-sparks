@@ -46,9 +46,10 @@ class SchoolsController < ApplicationController
         @results = @scope.by_letter(@letter).by_name
       end
       @count = @results.count
+      @school_count = School.visible.count
     else
       @schools = School.visible.by_name.select(:name, :slug)
-      @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)
+      @school_groups = SchoolGroup.with_visible_schools.by_name
       @ungrouped_visible_schools = School.visible.without_group.by_name.select(:name, :slug)
       @schools_not_visible = School.not_visible.by_name.select(:name, :slug)
     end
@@ -116,10 +117,11 @@ private
 
   def set_search_scope
     @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
+    @schools = current_user_admin? ? School.active : School.visible
     @scope = if @tab == :schools
-               current_user_admin? ? School.active : School.visible
+               @schools
              else
-               SchoolGroup.all
+               SchoolGroup.with_visible_schools
              end
   end
 
