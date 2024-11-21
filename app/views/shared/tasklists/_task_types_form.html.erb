@@ -22,8 +22,8 @@
     <%= f.simple_fields_for "#{type}_tasks" do |tasklist_task| %>
       <%= render 'shared/tasklists/task_fields',
                  f: tasklist_task,
-                 task_templates: task_templates,
-                 task_template_type: type.camelcase %>
+                 task_sources: task_sources,
+                 task_source_type: type.camelcase %>
     <% end %>
     <div class="links">
       <%= link_to_add_association t('schools.audits.form.add_activity'), f,
@@ -31,8 +31,8 @@
                                                    partial: 'shared/tasklists/task_fields',
                                                    render_options: {
                                                      locals: {
-                                                       task_templates: task_templates,
-                                                       task_template_type: type.camelcase
+                                                       task_sources: task_sources,
+                                                       task_source_type: type.camelcase
                                                      }
                                                    } %>
     </div>

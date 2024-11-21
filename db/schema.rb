@@ -1794,29 +1794,29 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_08_150458) do
 
   create_table "tasklist_completed_tasks", force: :cascade do |t|
     t.bigint "tasklist_task_id", null: false
-    t.string "tasklist_instance_type", null: false
-    t.bigint "tasklist_instance_id", null: false
-    t.string "task_instance_type", null: false
-    t.bigint "task_instance_id", null: false
+    t.string "tasklist_target_type", null: false
+    t.bigint "tasklist_target_id", null: false
+    t.string "task_target_type", null: false
+    t.bigint "task_target_id", null: false
     t.datetime "happened_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["task_instance_type", "task_instance_id"], name: "index_tasklist_completed_tasks_on_task_instance"
-    t.index ["tasklist_instance_type", "tasklist_instance_id"], name: "index_tasklist_completed_tasks_on_tasklist_instance"
+    t.index ["task_target_type", "task_target_id"], name: "index_tasklist_completed_tasks_on_task_target"
+    t.index ["tasklist_target_type", "tasklist_target_id"], name: "index_tasklist_completed_tasks_on_tasklist_target"
     t.index ["tasklist_task_id"], name: "index_tasklist_completed_tasks_on_tasklist_task_id"
   end
 
   create_table "tasklist_tasks", force: :cascade do |t|
-    t.string "tasklist_template_type", null: false
-    t.bigint "tasklist_template_id", null: false
-    t.string "task_template_type", null: false
-    t.bigint "task_template_id", null: false
+    t.string "tasklist_source_type", null: false
+    t.bigint "tasklist_source_id", null: false
+    t.string "task_source_type", null: false
+    t.bigint "task_source_id", null: false
     t.integer "position", default: 0, null: false
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["task_template_type", "task_template_id"], name: "index_tasklist_tasks_on_task_template"
-    t.index ["tasklist_template_type", "tasklist_template_id"], name: "index_tasklist_tasks_on_tasklist_template"
+    t.index ["task_source_type", "task_source_id"], name: "index_tasklist_tasks_on_task_source"
+    t.index ["tasklist_source_type", "tasklist_source_id"], name: "index_tasklist_tasks_on_tasklist_source"
   end
 
   create_table "team_members", force: :cascade do |t|

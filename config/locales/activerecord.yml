@@ -8,6 +8,8 @@ en:
         name: Name
         school_specific_description: School specific description
         summary: Summary
+      activity_type_tasks:
+        task_source: Activity
       consent_grant:
         job_title: Job title
         name: Name
@@ -17,6 +19,8 @@ en:
         download_links: Download links
         name: Title
         summary: Summary
+      intervention_type_tasks:
+        task_source: Action
       school:
         activation_date: Activation date
         address: Address

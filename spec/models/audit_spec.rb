@@ -281,10 +281,10 @@ describe Audit do
           file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'documents', 'fake-bill.pdf'), 'application/pdf'),
           published: true,
           activity_type_tasks_attributes: [
-            { task_template_id: activity_type.id, task_template_type: 'ActivityType', position: 0, notes: 'Some notes' }
+            { task_source_id: activity_type.id, task_source_type: 'ActivityType', position: 0, notes: 'Some notes' }
           ],
           intervention_type_tasks_attributes: [
-            { task_template_id: intervention_type.id, task_template_type: 'InterventionType', position: 0, notes: 'Other notes' }
+            { task_source_id: intervention_type.id, task_source_type: 'InterventionType', position: 0, notes: 'Other notes' }
           ]
         }
       end

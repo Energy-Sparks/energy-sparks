@@ -13,7 +13,7 @@ namespace :tasklists do
     Audit.all.find_each do |audit|
       audit.audit_activity_types.each do |audit_activity_type|
         task = audit.tasklist_tasks.find_or_create_by!(
-          task_template: audit_activity_type.activity_type,
+          task_source: audit_activity_type.activity_type,
           position: audit_activity_type.position,
           notes: audit_activity_type.notes)
 
@@ -24,7 +24,7 @@ namespace :tasklists do
         if activity
           audit.tasklist_completed_tasks.find_or_create_by!(
             tasklist_task: task,
-            task_instance: activity,
+            task_target: activity,
             happened_on: activity.happened_on
           )
         end
@@ -32,7 +32,7 @@ namespace :tasklists do
 
       audit.audit_intervention_types.each do |audit_intervention_type|
         task = audit.tasklist_tasks.find_or_create_by!(
-          task_template: audit_intervention_type.intervention_type,
+          task_source: audit_intervention_type.intervention_type,
           position: audit_intervention_type.position,
           notes: audit_intervention_type.notes)
 
@@ -42,19 +42,19 @@ namespace :tasklists do
         if observation
           audit.tasklist_completed_tasks.find_or_create_by!(
             tasklist_task: task,
-            task_instance: observation,
+            task_target: observation,
             happened_on: observation.at
           )
         end
       end
     end
 
-    puts "Importing propgramme activity_types. Marking them as completed"
+    puts "Importing programme activity_types. Marking them as completed"
 
     ProgrammeType.all.find_each do |programme_type|
       programme_type.programme_type_activity_types.each do |programme_type_activity_type|
         task = programme_type.tasklist_tasks.find_or_create_by!(
-          task_template: programme_type_activity_type.activity_type,
+          task_source: programme_type_activity_type.activity_type,
           position: programme_type_activity_type.position,
           notes: nil)
 
@@ -64,7 +64,7 @@ namespace :tasklists do
           if programme_activity.activity && programme_activity.programme # there are some activities / programmes referenced that don't exist!
             programme_activity.programme.tasklist_completed_tasks.find_or_create_by(
               tasklist_task: task,
-              task_instance: programme_activity.activity,
+              task_target: programme_activity.activity,
               happened_on: programme_activity.activity.happened_on
             )
           end
