@@ -16,7 +16,7 @@
       <li>
         Editing a programme once schools have begun enrolling will impact their current progress. So take care with adding or removing activities once schools have engaged
       </li>
-      <% if Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
+      <% if Flipper.enabled?(:tasklists, current_user) %>
         <li>
           Schools are automatically marked as having completed a programme once they have completed all the activities and actions currently listed against it.
         </li>

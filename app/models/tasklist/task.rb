@@ -19,8 +19,11 @@
 #
 class Tasklist::Task < ApplicationRecord
   self.table_name = 'tasklist_tasks'
-  belongs_to :tasklist_template, polymorphic: true
-  belongs_to :task_template, polymorphic: true, optional: true
+  belongs_to :tasklist_template, polymorphic: true, optional: false
+  belongs_to :task_template, polymorphic: true, optional: false
+
+  scope :by_task_type, ->(type) { where(task_template_type: type) }
+  scope :positioned, -> { order(position: :asc) }
 
   # belongs_to :activity_type, class_name: 'ActivityType'
   # belongs_to :intervention_type, class_name: 'InterventionType'

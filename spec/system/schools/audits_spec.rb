@@ -45,94 +45,66 @@ describe 'Audits', type: :system do
       let!(:activity_type) { create(:activity_type) }
       let!(:intervention_type) { create(:intervention_type) }
 
-      it 'saves activities and interventions' do
-        activity_type
-        visit school_audits_path(school)
-        click_on('New audit')
-
-        fill_in 'Title', with: 'New audit'
-        attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
-
-        click_on 'Add activity'
-        within '#audit-activity-types' do
-          expect(page).to have_css('.nested-fields')
-          find(:xpath, "//option[contains(text(), '#{activity_type.name}')]").select_option
+      context 'with tasklists switched on' do
+        before do
+          Flipper.enable :tasklists
         end
 
-        click_on 'Add action'
-        within '#audit-intervention-types' do
-          expect(page).to have_css('.nested-fields')
-          find(:xpath, "//option[contains(text(), '#{intervention_type.name}')]").select_option
+        context 'when creating an audit' do
+          before do
+            visit school_audits_path(school)
+            click_on('New audit')
+
+            fill_in 'Title', with: 'New audit'
+            attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
+
+            click_on 'Add activity'
+            within '#tasklist-activity-types' do
+              find(:xpath, "//option[contains(text(), '#{activity_type.name}')]").select_option
+            end
+
+            click_on 'Add action'
+            within '#tasklist-intervention-types' do
+              find(:xpath, "//option[contains(text(), '#{intervention_type.name}')]").select_option
+            end
+
+            click_on('Create')
+          end
+
+          it 'saves' do
+            puts activity_type.name
+            puts intervention_type.name
+
+            # save_and_open_page
+            expect(page).to have_content('Audit created')
+            audit = Audit.last
+            expect(audit.title).to eq('New audit')
+            expect(audit.tasklist_intervention_types).to eq([intervention_type])
+            expect(audit.tasklist_activity_types).to eq([activity_type])
+          end
         end
-
-        click_on('Create')
-        expect(page).to have_content('Audit created')
-
-        audit = Audit.last
-        expect(audit.title).to eq('New audit')
-        expect(audit.intervention_types).to eq([intervention_type])
-        expect(audit.activity_types).to eq([activity_type])
       end
 
-      context 'when saving fails' do
-        before do
-          activity_type
-          visit school_audits_path(school)
-          click_on('New audit')
-        end
-
-        it 'shows title and file error messages' do
-          click_on('Create')
-          expect(page).to have_content("Title can't be blank")
-          expect(page).to have_content("File can't be blank")
-          within '.audit_title' do
-            expect(page).to have_content("can't be blank")
-          end
-          within '#file_error' do
-            expect(page).to have_content("can't be blank")
-          end
-        end
-
-        it 'shows activity type error message' do
-          click_on 'Add activity'
-          click_on('Create')
-          expect(page).to have_content('Audit activity types activity type must exist')
-          expect(page).to have_content("Audit activity types activity type can't be blank")
-          within '#audit-activity-types' do
-            expect(page).to have_content("must exist and can't be blank")
-          end
-        end
-
-        it 'shows intervention type error message' do
-          click_on 'Add action'
-          click_on('Create')
-          expect(page).to have_content('Audit intervention types intervention type must exist')
-          expect(page).to have_content("Audit intervention types intervention type can't be blank")
-          within '#audit-intervention-types' do
-            expect(page).to have_content("must exist and can't be blank")
-          end
-        end
-
-        it 'retains fields' do
-          activity_type
+      context 'with tasklists switched off' do
+        it 'saves activities and interventions' do
+          # activity_type
           visit school_audits_path(school)
           click_on('New audit')
 
+          fill_in 'Title', with: 'New audit'
+          attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
+
           click_on 'Add activity'
           within '#audit-activity-types' do
+            expect(page).to have_css('.nested-fields')
             find(:xpath, "//option[contains(text(), '#{activity_type.name}')]").select_option
           end
 
           click_on 'Add action'
           within '#audit-intervention-types' do
+            expect(page).to have_css('.nested-fields')
             find(:xpath, "//option[contains(text(), '#{intervention_type.name}')]").select_option
           end
-
-          click_on('Create')
-          expect(page).to have_content("can't be blank")
-
-          fill_in 'Title', with: 'New audit'
-          attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
 
           click_on('Create')
           expect(page).to have_content('Audit created')
@@ -141,6 +113,76 @@ describe 'Audits', type: :system do
           expect(audit.title).to eq('New audit')
           expect(audit.intervention_types).to eq([intervention_type])
           expect(audit.activity_types).to eq([activity_type])
+        end
+
+        context 'when saving fails' do
+          before do
+            activity_type
+            visit school_audits_path(school)
+            click_on('New audit')
+          end
+
+          it 'shows title and file error messages' do
+            click_on('Create')
+            expect(page).to have_content("Title can't be blank")
+            expect(page).to have_content("File can't be blank")
+            within '.audit_title' do
+              expect(page).to have_content("can't be blank")
+            end
+            within '#file_error' do
+              expect(page).to have_content("can't be blank")
+            end
+          end
+
+          it 'shows activity type error message' do
+            click_on 'Add activity'
+            click_on('Create')
+            expect(page).to have_content('Audit activity types activity type must exist')
+            expect(page).to have_content("Audit activity types activity type can't be blank")
+            within '#audit-activity-types' do
+              expect(page).to have_content("must exist and can't be blank")
+            end
+          end
+
+          it 'shows intervention type error message' do
+            click_on 'Add action'
+            click_on('Create')
+            expect(page).to have_content('Audit intervention types intervention type must exist')
+            expect(page).to have_content("Audit intervention types intervention type can't be blank")
+            within '#audit-intervention-types' do
+              expect(page).to have_content("must exist and can't be blank")
+            end
+          end
+
+          it 'retains fields' do
+            activity_type
+            visit school_audits_path(school)
+            click_on('New audit')
+
+            click_on 'Add activity'
+            within '#audit-activity-types' do
+              find(:xpath, "//option[contains(text(), '#{activity_type.name}')]").select_option
+            end
+
+            click_on 'Add action'
+            within '#audit-intervention-types' do
+              find(:xpath, "//option[contains(text(), '#{intervention_type.name}')]").select_option
+            end
+
+            click_on('Create')
+            expect(page).to have_content("can't be blank")
+
+            fill_in 'Title', with: 'New audit'
+            attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
+
+            click_on('Create')
+            expect(page).to have_content('Audit created')
+
+            audit = Audit.last
+            expect(audit.title).to eq('New audit')
+            expect(audit.intervention_types).to eq([intervention_type])
+            expect(audit.activity_types).to eq([activity_type])
+          end
         end
       end
     end

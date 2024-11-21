@@ -67,6 +67,7 @@ gem 'bootstrap-email'
 # Frontend
 gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout
 gem 'cocoon' # nested forms
+gem 'cocooned' # nested forms without jquery
 gem 'simple_form'
 gem 'sortablejs-rails'
 gem 'view_component'

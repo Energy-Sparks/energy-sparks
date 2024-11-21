@@ -1,0 +1,43 @@
+  <h2><%= title %></h2>
+  <p class="small">
+    <%= description %>.
+  </p>
+
+  <p class="small">
+    <%= custom %>.
+  </p>
+
+  <div class="row p-2">
+    <div class="col-md-5">
+      <label for="<%= type %>"><%= label %></label>
+    </div>
+    <div class="col-md-5">
+      <label for="notes"><%= t('schools.audits.form.notes') %></label>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+
+  <div id="tasklist-<%= type %>s" class="sort-list">
+    <%= cocooned_container reorderable: { startAt: 0 }, class: 'sort-list' do %>
+      <%= f.simple_fields_for "#{type}_tasks", tasklist_template.tasklist_tasks.by_task_type(type.camelcase).positioned do |tasklist_task| %>
+        <%= render 'shared/tasklists/task_fields',
+                   f: tasklist_task,
+                   task_templates: task_templates,
+                   task_template_type: type.camelcase %>
+      <% end %>
+      <div class="links">
+        <%= cocooned_add_item_link t('schools.audits.form.add_activity'), f,
+                                   "#{type}_tasks", class: 'btn',
+                                                    partial: 'shared/tasklists/task_fields',
+                                                    render_options: {
+                                                      locals: {
+                                                        task_templates: task_templates,
+                                                        task_template_type: type.camelcase
+                                                      }
+                                                    } %>
+      </div>
+    <% end %>
+  </div>
+  <br>
+  <br>

@@ -1,7 +1,0 @@
-<%= render 'shared/tasklists/task_fields',
-           task_templates: InterventionTypeGroup.listed_with_intervention_types.map { |category, types|
-             [category.name, types.map do |type|
-               [type.name, type.id]
-             end]
-           },
-           task_template_type: 'InterventionType', f: f %>

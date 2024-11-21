@@ -269,5 +269,34 @@ describe Audit do
         end
       end
     end
+
+    context 'with tasklists' do
+      let(:school) { create(:school) }
+      let(:activity_type) { create(:activity_type) }
+      let(:intervention_type) { create(:intervention_type) }
+
+      let(:audit_params) do
+        {
+          title: 'Test title',
+          file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'documents', 'fake-bill.pdf'), 'application/pdf'),
+          published: true,
+          activity_type_tasks_attributes: [
+            { task_template_id: activity_type.id, task_template_type: 'ActivityType', position: 0, notes: 'Some notes' }
+          ],
+          intervention_type_tasks_attributes: [
+            { task_template_id: intervention_type.id, task_template_type: 'InterventionType', position: 0, notes: 'Other notes' }
+          ]
+        }
+      end
+
+      context 'when creating an audit' do
+        it 'creates audit with tasklists' do
+          audit = school.audits.new(audit_params)
+          audit.save!
+
+          ## actually write the test
+        end
+      end
+    end
   end
 end

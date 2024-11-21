@@ -1,30 +1,32 @@
-<div class="nested-fields">
-  <div class="form-row p-2">
-    <div class="col-auto">
-      <%= render IconComponent.new(name: 'up-down-left-right', classes: 'handle') %>
+<%= cocooned_item do %>
+    <div class="row p-2">
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-1">
+            <%= render IconComponent.new(name: 'up-down-left-right', classes: 'handle') %>
+          </div>
+          <div class="col-11">
+            <%= f.select(
+                  :task_template_id,
+                  grouped_options_for_select(
+                    task_templates,
+                    f.object.task_template_id
+                  ),
+                  { include_blank: true },
+                  { class: 'form-control select2' }
+                ) %>
+            <%= f.hidden_field :task_template_type, value: task_template_type %>
+            <%= f.hidden_field :id %>
+            <%= f.text_field :position, class: 'position' %>
+            <%= f.error :task_template, id: 'task_template_error' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <%= f.text_area :notes, label: false, class: 'form-control select2' %>
+      </div>
+      <div class="col-md-2">
+        <%= cocooned_remove_item_link t('common.labels.remove'), f, class: 'btn' %>
+      </div>
     </div>
-    <div class="col-md-5">
-      <span class="">
-      <%= f.select(
-            :task_template_id,
-            grouped_options_for_select(
-              task_templates,
-              f.object.task_template_id
-            ),
-            { include_blank: true },
-            { class: 'form-control select2' }
-          ) %>
-      <%= f.hidden_field :task_template_type, value: task_template_type %>
-      <%= f.hidden_field :id %>
-      <%= f.hidden_field :position, class: 'position' %>
-      <%= f.error :task_template, id: 'task_template_error' %>
-      </span>
-    </div>
-    <div class="col-md-5">
-      <%= f.text_area :notes, label: false, class: 'form-control select2' %>
-    </div>
-    <div class="col-auto">
-      <%= link_to_remove_association t('common.labels.remove'), f, class: 'btn' %>
-    </div>
-  </div>
-</div>
+<% end %>
