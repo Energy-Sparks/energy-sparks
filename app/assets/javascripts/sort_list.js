@@ -1,21 +1,25 @@
-// Configures how sorting is used and works with cocoon to update position field
-// after sorting
+// Configures how sorting is used and updates position fields before form submission
 
 document.addEventListener('DOMContentLoaded', function () {
   function reindex(list) {
     let idx = 0;
-
     list.querySelectorAll('.nested-fields').forEach((item) => {
       const destroyField = item.querySelector('input[type="hidden"][name$="[_destroy]"]');
       const positionField = item.querySelector('input.position');
 
-      if (!destroyField || destroyField.value !== '1') {
+      if (destroyField.value !== 'true') {
         positionField.value = idx++;
       }
     });
   }
 
-  document.querySelectorAll('.sort-list').forEach((list) => {
+  const sortLists = document.querySelectorAll('.sort-list');
+  if (sortLists.length === 0) {
+    return;
+  }
+
+  // Initialize Sortable for each sort-list within the form
+  sortLists.forEach((list) => {
     new Sortable(list, {
       animation: 150,
       selectedClass: 'bg-light',
@@ -27,19 +31,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return !evt.related.classList.contains('links'); // Prevent dragging "links" elements
       }
     });
+  });
 
-    // Update positions on initial load
-    reindex(list);
+  const form = document.querySelector('form');
 
-    const observer = new MutationObserver(() => {
+  form.addEventListener('submit', function(e) {
+    // Reindex each sort-list before submitting the form
+    form.querySelectorAll('.sort-list').forEach((list) => {
       reindex(list);
-    });
-
-    // Observe changes in the child list
-    observer.observe(list, {
-      childList: true,
-      subtree: true,
-      attributes: true
     });
   });
 });

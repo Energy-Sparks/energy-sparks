@@ -291,10 +291,10 @@ describe Audit do
 
       context 'when creating an audit' do
         it 'creates audit with tasklists' do
-          audit = school.audits.new(audit_params)
-          audit.save!
+          audit = school.audits.create!(audit_params)
 
-          ## actually write the test
+          expect(audit.tasklist_activity_types.first).to eq activity_type
+          expect(audit.tasklist_intervention_types.first).to eq intervention_type
         end
       end
     end

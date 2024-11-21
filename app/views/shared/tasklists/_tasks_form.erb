@@ -11,7 +11,8 @@
         label: t('schools.audits.form.activity_type'),
         title: t('schools.audits.form.activities'),
         description: t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path),
-        custom: t('schools.audits.form.add_a_custom_activity_message') %>
+        custom: t('schools.audits.form.add_a_custom_activity_message'),
+        add_label: t('schools.audits.form.add_activity') %>
 <% end %>
 
 <% if Flipper.enabled?(:tasklists, current_user) || (Flipper.enabled?(:tasklists_parallel, current_user) && tasklist_source.is_a?(ProgrammeType)) %>
@@ -27,9 +28,6 @@
         label: t('schools.audits.form.action_type'),
         title: t('common.labels.actions'),
         description: t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path),
-        custom: t('schools.audits.form.actions_message_2') %>
-
+        custom: t('schools.audits.form.actions_message_2'),
+        add_label: t('schools.audits.form.add_action') %>
 <% end %>
-
-
-<%= tasklist_source.errors.inspect %>
