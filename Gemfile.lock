@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: e5150cbc0b95a7a4b241b09bfb06d6c1f7e94828
-  tag: 6.1.1
+  revision: 2dd15c51d582d90e46c8d16d67e30cb7bd7525c6
+  branch: 4645-error-from-comparison-view-refresh
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 8.1)
