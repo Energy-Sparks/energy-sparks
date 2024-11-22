@@ -42,9 +42,8 @@ describe 'Users' do
   end
 
   describe 'managing users' do
-    before { visit admin_users_path }
-
     it 'creates a user' do
+      visit admin_users_path
       click_on 'New User'
       email = 'random_user2948@example.com'
       fill_in 'Email', with: email
@@ -56,6 +55,7 @@ describe 'Users' do
     end
 
     it 'offers roles, but excluding Guest' do
+      visit admin_users_path
       click_on 'New User'
       expect(page).to have_select(:user_role, with_options: ['Staff', 'Admin', 'School Admin'])
       expect(page).to have_no_select(:user_role, with_options: ['Guest'])
@@ -66,7 +66,7 @@ describe 'Users' do
       let!(:user)             { create(:user, consent_grants: [consent_grant]) }
 
       it 'can be deleted but keeps consent grant' do
-        refresh
+        visit admin_users_path
         click_link 'Delete', href: admin_user_path(user)
         expect(page).to have_content('User was successfully destroyed')
         expect(User).not_to exist(user.id)
