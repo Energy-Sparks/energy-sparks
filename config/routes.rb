@@ -575,6 +575,7 @@ Rails.application.routes.draw do
     resources :programme_types do
       scope module: :programme_types do
         resource :activity_types, only: [:show, :update]
+        resource :tasks, only: [:edit, :update]
         resources :programmes, only: [:index, :create]
       end
     end

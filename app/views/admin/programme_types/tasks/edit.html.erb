@@ -1,0 +1,23 @@
+<h2>Editing Programme: "<%= @programme_type.title %>"</h2>
+
+<% if Flipper.enabled?(:tasklists_parallel, current_user) %>
+  <p>
+    Update the actions associated with this programme or go back to the list of
+    <%= link_to 'Programme Types', admin_programme_types_path %>
+  </p>
+  <p>
+    When the tasklists feature is fully switched on, you'll come here to edit both activities and actions
+  </p>
+<% else %>
+  <p>
+    Update the activities and actions associated with this programme or go back to the list of
+    <%= link_to 'Programme Types', admin_programme_types_path %>
+  </p>
+<% end %>
+
+<%= simple_form_for(@programme_type, url: admin_programme_type_tasks_path(@programme_type)) do |f| %>
+  <%= render 'shared/errors', subject: @programme_type, subject_name: 'programme' %>
+  <%= render 'shared/tasklists/tasks_form', tasklist_source: @programme_type, f: f %>
+  <%= f.submit 'Save', class: 'btn btn-primary', data:
+        { confirm: 'Note: adding or removing activities will impact currently enrolled schools. Are you sure?' } %>
+<% end %>

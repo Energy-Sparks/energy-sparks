@@ -28,7 +28,7 @@
     </ul>
     <% if Flipper.enabled?(:tasklists_parallel, current_user) %>
       <%= render NoticeComponent.new(status: :negative) do %>
-        Actions can now also be added to a programme, but points won't be recorded against schools until this feature is fully switched on. Actions can be added by clicking 'edit'. When the feature is fully switched on, activities will also be editable in the same place.
+        Actions can now also be added to a programme, but points won't be recorded against schools until this feature is fully switched on. Actions can be added by clicking 'Edit actions'. When the feature is fully switched on, there will be one button 'Edit activities and actions' to edit both in the same interface.
       <% end %>
     <% end %>
   </div>
@@ -51,9 +51,7 @@
             <th>Active</th>
             <th>Default?</th>
             <th></th>
-            <% if !Flipper.enabled?(:tasklists, current_user) %>
-              <th></th>
-            <% end %>
+            <th></th>
             <th></th>
           </tr>
         </thead>
@@ -79,11 +77,23 @@
               <td><%= link_to 'Enrol schools',
                               admin_programme_type_programmes_path(programme_type),
                               class: 'btn btn-warning btn-sm nowrap' %></td>
-              <% unless Flipper.enabled?(:tasklists, current_user) %>
-              <td><%= link_to 'Edit activities',
-                              admin_programme_type_activity_types_path(programme_type),
-                              class: 'btn btn-warning btn-sm nowrap' %></td>
-              <% end %>
+              <td class='nowrap'>
+                <% if !Flipper.enabled?(:tasklists, current_user) || Flipper.enabled?(:tasklists_parallel, current_user) %>
+                    <%= link_to 'Edit activities',
+                                admin_programme_type_activity_types_path(programme_type),
+                                class: 'btn btn-warning btn-sm nowrap' %>
+                <% end %>
+                <% if Flipper.enabled?(:tasklists, current_user) %>
+                    <%= link_to 'Edit activities & actions',
+                                edit_admin_programme_type_tasks_path(programme_type),
+                                class: 'btn btn-warning btn-sm nowrap' %>
+                <% end %>
+                <% if Flipper.enabled?(:tasklists_parallel, current_user) %>
+                    <%= link_to 'Edit actions',
+                                edit_admin_programme_type_tasks_path(programme_type),
+                                class: 'btn btn-warning btn-sm nowrap' %>
+                <% end %>
+              </td>
               <td><%= link_to 'Edit', edit_admin_programme_type_path(programme_type),
                               class: 'btn btn-warning btn-sm' %></td>
               <td><%= link_to 'Delete', admin_programme_type_path(programme_type),
