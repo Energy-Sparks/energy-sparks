@@ -11,20 +11,31 @@ describe 'programme type management', type: :system do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     end
 
-    let!(:programme_type) { create(:programme_type) }
+    let!(:programme_type) { create(:programme_type, title: 'Test Programme') }
     let!(:activity_type_tasks) { create_list(:tasklist_activity_type_task, 3, tasklist_source: programme_type) }
     let!(:intervention_type_tasks) { create_list(:tasklist_intervention_type_task, 3, tasklist_source: programme_type) }
 
     context 'editing tasks', :js do
       before do
-        driven_by(:selenium_chrome_headless)
         sign_in(admin)
         visit edit_admin_programme_type_tasks_path(programme_type)
       end
 
-      it 'displays existing tasks' do
-        programme_type.tasklist_tasks.each do |task|
-          expect(page).to have_content(task.task_source.name)
+      it 'lists tasks in order' do
+        expect(page).to have_css('#tasklist-activity-types .nested-fields', count: 3)
+
+        displayed_activity_types = all('#tasklist-activity-types .nested-fields')
+        activity_type_tasks.each_with_index do |task, idx|
+          expect(displayed_activity_types[idx]).to have_content(task.task_source.name)
+          expect(displayed_activity_types[idx]).to have_content(task.notes)
+        end
+
+        expect(page).to have_css('#tasklist-intervention-types .nested-fields', count: 3)
+
+        displayed_intervention_types = all('#tasklist-intervention-types .nested-fields')
+        intervention_type_tasks.each_with_index do |task, idx|
+          expect(displayed_intervention_types[idx]).to have_content(task.task_source.name)
+          expect(displayed_intervention_types[idx]).to have_content(task.notes)
         end
       end
 
@@ -40,30 +51,67 @@ describe 'programme type management', type: :system do
       end
 
       context 'when moving tasks' do
-        it 'lists tasks in order' do
-          expect(page).to have_css('#tasklist-activity-types .nested-fields', count: 3)
-
-          ordered_tasks = all('#tasklist-activity-types .nested-fields')
-
-          # Order is ONE, TWO, THREE
-          expect(ordered_tasks.first).to have_content(activity_type_tasks.first.notes)
-          expect(ordered_tasks[1]).to have_content(activity_type_tasks.second.notes)
-          expect(ordered_tasks.last).to have_content(activity_type_tasks.last.notes)
-        end
-
-        context 'moving last to first' do
+        context 'moving last activity to first' do
           before do
             handles = all('#tasklist-activity-types .nested-fields .handle')
             handles.last.click
             handles.last.drag_to(handles.first)
           end
 
-          it 'changes order to THREE, ONE, TWO' do
-            ordered_tasks = all('#tasklist-activity-types .nested-fields')
+          it 'changes activity order to THREE, ONE, TWO' do
+            displayed_activities = all('#tasklist-activity-types .nested-fields')
 
-            expect(ordered_tasks.first).to have_content(activity_type_tasks.last.notes)
-            expect(ordered_tasks[1]).to have_content(activity_type_tasks.first.notes)
-            expect(ordered_tasks.last).to have_content(activity_type_tasks[1].notes)
+            expect(displayed_activities.first).to have_content(activity_type_tasks.last.notes)
+            expect(displayed_activities[1]).to have_content(activity_type_tasks.first.notes)
+            expect(displayed_activities.last).to have_content(activity_type_tasks[1].notes)
+          end
+
+          context 'when saving' do
+            before do
+              click_on 'Save'
+              accept_alert
+              click_on programme_type.title
+            end
+
+            it 'saves new order' do
+              displayed_activities = page.all('ol.tasklist_activity_types li').map(&:text)
+
+              expect(displayed_activities.first).to have_content(activity_type_tasks.last.task_source.name)
+              expect(displayed_activities[1]).to have_content(activity_type_tasks.first.task_source.name)
+              expect(displayed_activities.last).to have_content(activity_type_tasks[1].task_source.name)
+            end
+          end
+        end
+
+        context 'moving last action to first' do
+          before do
+            handles = all('#tasklist-intervention-types .nested-fields .handle')
+            handles.last.click
+            handles.last.drag_to(handles.first)
+          end
+
+          it 'changes action order to THREE, ONE, TWO' do
+            displayed_actions = all('#tasklist-intervention-types .nested-fields')
+
+            expect(displayed_actions.first).to have_content(intervention_type_tasks.last.notes)
+            expect(displayed_actions[1]).to have_content(intervention_type_tasks.first.notes)
+            expect(displayed_actions.last).to have_content(intervention_type_tasks[1].notes)
+          end
+
+          context 'when saving' do
+            before do
+              click_on 'Save'
+              accept_alert
+              click_on programme_type.title
+            end
+
+            it 'saves new order' do
+              displayed_tasks = page.all('ol.tasklist_intervention_types li').map(&:text)
+
+              expect(displayed_tasks.first).to have_content(intervention_type_tasks.last.task_source.name)
+              expect(displayed_tasks[1]).to have_content(intervention_type_tasks.first.task_source.name)
+              expect(displayed_tasks.last).to have_content(intervention_type_tasks[1].task_source.name)
+            end
           end
         end
       end
