@@ -15,6 +15,9 @@ describe 'programme type management', type: :system do
     let!(:activity_type_tasks) { create_list(:tasklist_activity_type_task, 3, tasklist_source: programme_type) }
     let!(:intervention_type_tasks) { create_list(:tasklist_intervention_type_task, 3, tasklist_source: programme_type) }
 
+    let!(:activity_type) { create(:activity_type) }
+    let!(:intervention_type) { create(:intervention_type) }
+
     context 'editing tasks', :js do
       before do
         sign_in(admin)
@@ -39,14 +42,44 @@ describe 'programme type management', type: :system do
         end
       end
 
-      context 'when adding tasks' do
+      context 'when adding new tasks' do
         before do
           click_on 'Add activity'
           click_on 'Add action'
         end
 
-        it 'has a good explanation of a test' do
-          expect(page).to have_content('activity')
+        context 'without selecting tasks' do
+          before do
+            click_on 'Save'
+            accept_alert
+          end
+
+          it 'displays errors for fields' do
+            expect(page).to have_content('Activity must exist')
+            expect(page).to have_content('Action must exist')
+          end
+        end
+
+        context 'when selecting tasks' do
+          before do # select new activities and interventions not yet selected
+            select_task(:activity_type, activity_type.name, 3)
+            select_task(:intervention_type, intervention_type.name, 3)
+            click_on 'Save'
+            accept_alert
+            click_on programme_type.title
+          end
+
+          it 'saves new activity type' do
+            displayed_tasks = page.all('ol.tasklist_activity_types li').map(&:text)
+
+            expect(displayed_tasks.last).to have_content(activity_type.name)
+          end
+
+          it 'saves new intervention type' do
+            displayed_tasks = page.all('ol.tasklist_intervention_types li').map(&:text)
+
+            expect(displayed_tasks.last).to have_content(intervention_type.name)
+          end
         end
       end
 
@@ -61,9 +94,9 @@ describe 'programme type management', type: :system do
           it 'changes activity order to THREE, ONE, TWO' do
             displayed_tasks = all('#tasklist-activity-types .nested-fields')
 
-            expect(displayed_tasks.first).to have_content(activity_type_tasks.last.notes)
-            expect(displayed_tasks[1]).to have_content(activity_type_tasks.first.notes)
-            expect(displayed_tasks.last).to have_content(activity_type_tasks[1].notes)
+            expect(displayed_tasks[0]).to have_content(activity_type_tasks[2].notes)
+            expect(displayed_tasks[1]).to have_content(activity_type_tasks[0].notes)
+            expect(displayed_tasks[2]).to have_content(activity_type_tasks[1].notes)
           end
 
           context 'when saving' do
@@ -76,9 +109,9 @@ describe 'programme type management', type: :system do
             it 'saves new order' do
               displayed_tasks = page.all('ol.tasklist_activity_types li').map(&:text)
 
-              expect(displayed_tasks.first).to have_content(activity_type_tasks.last.task_source.name)
-              expect(displayed_tasks[1]).to have_content(activity_type_tasks.first.task_source.name)
-              expect(displayed_tasks.last).to have_content(activity_type_tasks[1].task_source.name)
+              expect(displayed_tasks[0]).to have_content(activity_type_tasks[2].task_source.name)
+              expect(displayed_tasks[1]).to have_content(activity_type_tasks[0].task_source.name)
+              expect(displayed_tasks[2]).to have_content(activity_type_tasks[1].task_source.name)
             end
           end
         end
@@ -93,9 +126,9 @@ describe 'programme type management', type: :system do
           it 'changes action order to THREE, ONE, TWO' do
             displayed_tasks = all('#tasklist-intervention-types .nested-fields')
 
-            expect(displayed_tasks.first).to have_content(intervention_type_tasks.last.notes)
-            expect(displayed_tasks[1]).to have_content(intervention_type_tasks.first.notes)
-            expect(displayed_tasks.last).to have_content(intervention_type_tasks[1].notes)
+            expect(displayed_tasks[0]).to have_content(intervention_type_tasks[2].notes)
+            expect(displayed_tasks[1]).to have_content(intervention_type_tasks[0].notes)
+            expect(displayed_tasks[2]).to have_content(intervention_type_tasks[1].notes)
           end
 
           context 'when saving' do
@@ -108,9 +141,9 @@ describe 'programme type management', type: :system do
             it 'saves new order' do
               displayed_tasks = page.all('ol.tasklist_intervention_types li').map(&:text)
 
-              expect(displayed_tasks.first).to have_content(intervention_type_tasks.last.task_source.name)
-              expect(displayed_tasks[1]).to have_content(intervention_type_tasks.first.task_source.name)
-              expect(displayed_tasks.last).to have_content(intervention_type_tasks[1].task_source.name)
+              expect(displayed_tasks[0]).to have_content(intervention_type_tasks[2].task_source.name)
+              expect(displayed_tasks[1]).to have_content(intervention_type_tasks[0].task_source.name)
+              expect(displayed_tasks[2]).to have_content(intervention_type_tasks[1].task_source.name)
             end
           end
         end
