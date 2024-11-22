@@ -4,6 +4,69 @@ describe 'programme type management', type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
+  context 'when tasklists feature is switched on' do
+    before do
+      Flipper.enable(:tasklists)
+      # enrolment only enabled if targets enabled...
+      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+    end
+
+    let!(:programme_type) { create(:programme_type) }
+    let!(:activity_type_tasks) { create_list(:tasklist_activity_type_task, 3, tasklist_source: programme_type) }
+    let!(:intervention_type_tasks) { create_list(:tasklist_intervention_type_task, 3, tasklist_source: programme_type) }
+
+    context 'editing tasks', :js do
+      before do
+        driven_by(:selenium_chrome_headless) # Or :selenium_chrome for debugging in a visible browser
+        sign_in(admin)
+        visit admin_programme_types_path
+        click_on 'Edit activities & actions'
+      end
+
+      it 'displays existing tasks' do
+        programme_type.tasklist_tasks.each do |task|
+          expect(page).to have_content(task.task_source.name)
+        end
+      end
+
+      context 'when adding tasks' do
+        before do
+          click_on 'add activity'
+          click_on 'add action'
+        end
+      end
+
+      context 'when moving tasks' do
+        it 'lists tasks in order' do
+          expect(page).to have_css('#tasklist-activity-types .nested-fields', count: 3)
+
+          ordered_tasks = all('#tasklist-activity-types .nested-fields')
+
+          # Order is ONE, TWO, THREE
+          expect(ordered_tasks.first).to have_content(activity_type_tasks.first.notes)
+          expect(ordered_tasks[1]).to have_content(activity_type_tasks.second.notes)
+          expect(ordered_tasks.last).to have_content(activity_type_tasks.last.notes)
+        end
+
+        context 'moving last to first' do
+          before do
+            handles = all('#tasklist-activity-types .nested-fields .handle')
+            handles.last.click
+            handles.last.drag_to(handles.first)
+          end
+
+          it 'changes order to THREE, ONE, TWO' do
+            ordered_tasks = all('#tasklist-activity-types .nested-fields')
+
+            expect(ordered_tasks.first).to have_content(activity_type_tasks.last.notes)
+            expect(ordered_tasks[1]).to have_content(activity_type_tasks.first.notes)
+            expect(ordered_tasks.last).to have_content(activity_type_tasks[1].notes)
+          end
+        end
+      end
+    end
+  end
+
   describe 'managing' do
     before do
       sign_in(admin)
@@ -51,36 +114,38 @@ describe 'programme type management', type: :system do
       expect(page).to have_content('There are no programme types')
     end
 
-    context 'manages order' do
-      let!(:activity_category)  { create(:activity_category)}
-      let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
-      let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
-      let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
+    context 'when tasklists is switched off' do
+      context 'manages order' do
+        let!(:activity_category)  { create(:activity_category)}
+        let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
+        let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
+        let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
 
-      it 'assigns activity types to programme types via a text box position' do
-        description = 'SPN1'
-        old_title = 'Super programme number 1'
+        it 'assigns activity types to programme types via a text box position' do
+          description = 'SPN1'
+          old_title = 'Super programme number 1'
 
-        programme_type = ProgrammeType.create(description: description, title: old_title)
+          programme_type = ProgrammeType.create(description: description, title: old_title)
 
-        visit current_path
+          visit current_path
 
-        click_on 'Edit activities'
+          click_on 'Edit activities'
 
-        expect(page.find_field('Turn off the light').value).to be_blank
-        expect(page.find_field('Turn down the heating').value).to be_blank
+          expect(page.find_field('Turn off the light').value).to be_blank
+          expect(page.find_field('Turn down the heating').value).to be_blank
 
-        fill_in 'Turn down the heating', with: '1'
-        fill_in 'Turn off the lights', with: '2'
+          fill_in 'Turn down the heating', with: '1'
+          fill_in 'Turn off the lights', with: '2'
 
-        click_on 'Update associated activity type', match: :first
-        click_on old_title
+          click_on 'Update associated activity type', match: :first
+          click_on old_title
 
-        expect(programme_type.activity_types).to match_array([activity_type_2, activity_type_1])
-        expect(programme_type.programme_type_activity_types.first.position).to eq(1)
-        expect(programme_type.programme_type_activity_types.second.position).to eq(2)
+          expect(programme_type.activity_types).to match_array([activity_type_2, activity_type_1])
+          expect(programme_type.programme_type_activity_types.first.position).to eq(1)
+          expect(programme_type.programme_type_activity_types.second.position).to eq(2)
 
-        expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating', 'Turn off the lights']
+          expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating', 'Turn off the lights']
+        end
       end
     end
 

@@ -270,7 +270,7 @@ describe Audit do
       end
     end
 
-    context 'with tasklists' do
+    context 'with tasks' do
       let(:school) { create(:school) }
       let(:activity_type) { create(:activity_type) }
       let(:intervention_type) { create(:intervention_type) }
@@ -290,7 +290,7 @@ describe Audit do
       end
 
       context 'when creating an audit' do
-        it 'creates audit with tasklists' do
+        it 'creates audit with tasks' do
           audit = school.audits.create!(audit_params)
 
           expect(audit.tasklist_activity_types.first).to eq activity_type
