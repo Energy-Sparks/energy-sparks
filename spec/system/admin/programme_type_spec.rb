@@ -59,11 +59,11 @@ describe 'programme type management', type: :system do
           end
 
           it 'changes activity order to THREE, ONE, TWO' do
-            displayed_activities = all('#tasklist-activity-types .nested-fields')
+            displayed_tasks = all('#tasklist-activity-types .nested-fields')
 
-            expect(displayed_activities.first).to have_content(activity_type_tasks.last.notes)
-            expect(displayed_activities[1]).to have_content(activity_type_tasks.first.notes)
-            expect(displayed_activities.last).to have_content(activity_type_tasks[1].notes)
+            expect(displayed_tasks.first).to have_content(activity_type_tasks.last.notes)
+            expect(displayed_tasks[1]).to have_content(activity_type_tasks.first.notes)
+            expect(displayed_tasks.last).to have_content(activity_type_tasks[1].notes)
           end
 
           context 'when saving' do
@@ -74,11 +74,11 @@ describe 'programme type management', type: :system do
             end
 
             it 'saves new order' do
-              displayed_activities = page.all('ol.tasklist_activity_types li').map(&:text)
+              displayed_tasks = page.all('ol.tasklist_activity_types li').map(&:text)
 
-              expect(displayed_activities.first).to have_content(activity_type_tasks.last.task_source.name)
-              expect(displayed_activities[1]).to have_content(activity_type_tasks.first.task_source.name)
-              expect(displayed_activities.last).to have_content(activity_type_tasks[1].task_source.name)
+              expect(displayed_tasks.first).to have_content(activity_type_tasks.last.task_source.name)
+              expect(displayed_tasks[1]).to have_content(activity_type_tasks.first.task_source.name)
+              expect(displayed_tasks.last).to have_content(activity_type_tasks[1].task_source.name)
             end
           end
         end
@@ -91,11 +91,11 @@ describe 'programme type management', type: :system do
           end
 
           it 'changes action order to THREE, ONE, TWO' do
-            displayed_actions = all('#tasklist-intervention-types .nested-fields')
+            displayed_tasks = all('#tasklist-intervention-types .nested-fields')
 
-            expect(displayed_actions.first).to have_content(intervention_type_tasks.last.notes)
-            expect(displayed_actions[1]).to have_content(intervention_type_tasks.first.notes)
-            expect(displayed_actions.last).to have_content(intervention_type_tasks[1].notes)
+            expect(displayed_tasks.first).to have_content(intervention_type_tasks.last.notes)
+            expect(displayed_tasks[1]).to have_content(intervention_type_tasks.first.notes)
+            expect(displayed_tasks.last).to have_content(intervention_type_tasks[1].notes)
           end
 
           context 'when saving' do
