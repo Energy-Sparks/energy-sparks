@@ -17,10 +17,9 @@ describe 'programme type management', type: :system do
 
     context 'editing tasks', :js do
       before do
-        driven_by(:selenium_chrome_headless) # Or :selenium_chrome for debugging in a visible browser
+        driven_by(:selenium_chrome_headless)
         sign_in(admin)
-        visit admin_programme_types_path
-        click_on 'Edit activities & actions'
+        visit edit_admin_programme_type_tasks_path(programme_type)
       end
 
       it 'displays existing tasks' do
@@ -31,8 +30,12 @@ describe 'programme type management', type: :system do
 
       context 'when adding tasks' do
         before do
-          click_on 'add activity'
-          click_on 'add action'
+          click_on 'Add activity'
+          click_on 'Add action'
+        end
+
+        it 'has a good explanation of a test' do
+          expect(page).to have_content('activity')
         end
       end
 
