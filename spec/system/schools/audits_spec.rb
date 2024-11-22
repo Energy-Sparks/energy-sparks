@@ -19,64 +19,125 @@ describe 'Audits', type: :system do
       expect(page).to have_content('New audit')
     end
 
-    it 'allows me to create, edit and delete an audit' do
-      visit school_audits_path(school)
-      click_on('New audit')
-      fill_in 'Title', with: 'New audit'
-      attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
-      click_on('Create')
-      expect(page).to have_content('Audit created')
-      expect(Observation.count).to be 1
-      expect(Observation.first.points).to be 0
-      expect(page).to have_content('New audit')
-      click_on('Edit')
-      fill_in_trix with: 'Summary of the audit'
-      check 'Involved pupils'
-      click_on('Update')
-      expect(Observation.first.points).to eql Audits::AuditService::AUDIT_POINTS
-      expect(page).to have_content('Summary of the audit')
-      click_on('Remove')
-      expect(page).to have_content('Audit was successfully deleted.')
-      expect(Audit.count).to be 0
-      expect(Observation.count).to be 0
+    def select_task(type, name, idx = 0)
+      within "#tasklist-#{type.to_s.dasherize}s" do
+        all_selects = all('select')
+
+        chosen_select = all_selects[idx]
+        chosen_select.find(:xpath, ".//option[contains(text(), '#{name}')]").select_option
+      end
     end
 
-    context 'when adding activities and interventions', js: true do
-      let!(:activity_type) { create(:activity_type) }
-      let!(:intervention_type) { create(:intervention_type) }
+    context 'with tasklists switched on' do
+      before do
+        Flipper.enable :tasklists
+      end
 
-      context 'with tasklists switched on' do
-        before do
-          Flipper.enable :tasklists
+      it 'allows me to create, edit and delete an audit' do
+        visit school_audits_path(school)
+        click_on('New audit')
+        fill_in 'Title', with: 'New audit'
+        attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
+        click_on('Create')
+        expect(page).to have_content('Audit created')
+        expect(Observation.count).to be 1
+        expect(Observation.first.points).to be 0
+        expect(page).to have_content('New audit')
+        click_on('Edit')
+        fill_in_trix with: 'Summary of the audit'
+        check 'Involved pupils'
+        click_on('Update')
+        expect(Observation.first.points).to eql Audits::AuditService::AUDIT_POINTS
+        expect(page).to have_content('Summary of the audit')
+        click_on('Remove')
+        expect(page).to have_content('Audit was successfully deleted.')
+        expect(Audit.count).to be 0
+        expect(Observation.count).to be 0
+      end
+
+      context 'when adding activities and interventions', js: true do
+        let!(:activity_type) { create(:activity_type) }
+        let!(:intervention_type) { create(:intervention_type) }
+
+        it 'saves activities and interventions' do
+          visit school_audits_path(school)
+          click_on('New audit')
+
+          fill_in 'Title', with: 'New audit'
+          attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
+
+          click_on 'Add activity'
+          select_task(:activity_type, activity_type.name)
+
+          click_on 'Add action'
+          select_task(:intervention_type, intervention_type.name)
+
+          click_on('Create')
+          expect(page).to have_content('Audit created')
+
+          audit = Audit.last
+          expect(audit.title).to eq('New audit')
+          expect(audit.tasklist_intervention_types).to eq([intervention_type])
+          expect(audit.tasklist_activity_types).to eq([activity_type])
         end
 
-        context 'when creating an audit' do
+        context 'when saving fails' do
           before do
+            activity_type
             visit school_audits_path(school)
             click_on('New audit')
+          end
+
+          it 'shows title and file error messages' do
+            click_on('Create')
+            expect(page).to have_content("Title can't be blank")
+            expect(page).to have_content("File can't be blank")
+            within '.audit_title' do
+              expect(page).to have_content("can't be blank")
+            end
+            within '#file_error' do
+              expect(page).to have_content("can't be blank")
+            end
+          end
+
+          it 'shows activity type error message' do
+            click_on 'Add activity'
+            click_on('Create')
+            expect(page).to have_content('Activity must exist')
+            within '#tasklist-activity-types' do
+              expect(page).to have_content('must exist')
+            end
+          end
+
+          it 'shows intervention type error message' do
+            click_on 'Add action'
+            click_on('Create')
+            expect(page).to have_content('Action must exist')
+            within '#tasklist-intervention-types' do
+              expect(page).to have_content('must exist')
+            end
+          end
+
+          it 'retains fields' do
+            activity_type
+            visit school_audits_path(school)
+            click_on('New audit')
+
+            click_on 'Add activity'
+            select_task(:activity_type, activity_type.name)
+
+            click_on 'Add action'
+            select_task(:intervention_type, intervention_type.name)
+
+            click_on('Create')
+            expect(page).to have_content("can't be blank")
 
             fill_in 'Title', with: 'New audit'
             attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
 
-            click_on 'Add activity'
-            within '#tasklist-activity-types' do
-              find(:xpath, "//option[contains(text(), '#{activity_type.name}')]").select_option
-            end
-
-            click_on 'Add action'
-            within '#tasklist-intervention-types' do
-              find(:xpath, "//option[contains(text(), '#{intervention_type.name}')]").select_option
-            end
-
             click_on('Create')
-          end
-
-          it 'saves' do
-            puts activity_type.name
-            puts intervention_type.name
-
-            # save_and_open_page
             expect(page).to have_content('Audit created')
+
             audit = Audit.last
             expect(audit.title).to eq('New audit')
             expect(audit.tasklist_intervention_types).to eq([intervention_type])
@@ -84,10 +145,36 @@ describe 'Audits', type: :system do
           end
         end
       end
+    end
 
-      context 'with tasklists switched off' do
+    context 'with tasklists switched off' do
+      it 'allows me to create, edit and delete an audit' do
+        visit school_audits_path(school)
+        click_on('New audit')
+        fill_in 'Title', with: 'New audit'
+        attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
+        click_on('Create')
+        expect(page).to have_content('Audit created')
+        expect(Observation.count).to be 1
+        expect(Observation.first.points).to be 0
+        expect(page).to have_content('New audit')
+        click_on('Edit')
+        fill_in_trix with: 'Summary of the audit'
+        check 'Involved pupils'
+        click_on('Update')
+        expect(Observation.first.points).to eql Audits::AuditService::AUDIT_POINTS
+        expect(page).to have_content('Summary of the audit')
+        click_on('Remove')
+        expect(page).to have_content('Audit was successfully deleted.')
+        expect(Audit.count).to be 0
+        expect(Observation.count).to be 0
+      end
+
+      context 'when adding activities and interventions', js: true do
+        let!(:activity_type) { create(:activity_type) }
+        let!(:intervention_type) { create(:intervention_type) }
+
         it 'saves activities and interventions' do
-          # activity_type
           visit school_audits_path(school)
           click_on('New audit')
 
@@ -185,11 +272,6 @@ describe 'Audits', type: :system do
           end
         end
       end
-    end
-
-    context 'adding recommendations' do
-      it 'allows me to add, edit and delete an activity'
-      it 'allows me to add, edit and delete an action'
     end
   end
 
