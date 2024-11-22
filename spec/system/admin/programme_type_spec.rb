@@ -4,6 +4,64 @@ describe 'programme type management', type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
+  context 'when tasklists_parallel feature is switched on' do
+    let!(:programme_type) do
+      create(:programme_type, title: 'Test Programme',
+        activity_types: create_list(:activity_type, 3)) # old way
+    end
+
+    # new way
+    let!(:activity_type_tasks) { create_list(:tasklist_activity_type_task, 2, tasklist_source: programme_type) }
+    let!(:intervention_type_tasks) { create_list(:tasklist_intervention_type_task, 2, tasklist_source: programme_type) }
+
+    before do
+      Flipper.enable(:tasklists_parallel)
+    end
+
+    context 'when viewing programme type admin index' do
+      before do
+        sign_in(admin)
+        visit root_path
+        click_on 'Admin'
+        click_on 'Programme Types'
+      end
+
+      it 'displays a count of activities' do
+        expect(page).to have_selector(:table_row, { 'Activities in Programme' => 3 })
+      end
+
+      it 'displays a count of actions' do
+        expect(page).to have_selector(:table_row, { 'Actions in Programme' => 2 })
+      end
+
+      it 'has a button to edit activities (old way)' do
+        expect(page).to have_link('Edit activities')
+      end
+
+      context 'when clicking Edit activities button' do
+        before do
+          click_on 'Edit activities'
+        end
+
+        it { expect(page).not_to have_css('#tasklist-activity-types') }
+        it { expect(page).not_to have_css('#tasklist-intervention-types') }
+      end
+
+      it 'has a button to edit actions (new way)' do
+        expect(page).to have_link('Edit actions')
+      end
+
+      context 'when clicking Edit actions button' do
+        before do
+          click_on 'Edit actions'
+        end
+
+        it { expect(page).not_to have_css('#tasklist-activity-types') }
+        it { expect(page).to have_css('#tasklist-intervention-types') }
+      end
+    end
+  end
+
   context 'when tasklists feature is switched on' do
     before do
       Flipper.enable(:tasklists)
@@ -17,6 +75,35 @@ describe 'programme type management', type: :system do
 
     let!(:activity_type) { create(:activity_type) }
     let!(:intervention_type) { create(:intervention_type) }
+
+    context 'viewing programme type admin index' do
+      before do
+        sign_in(admin)
+        visit root_path
+        click_on 'Admin'
+        click_on 'Programme Types'
+      end
+
+      it 'displays a count of activities' do
+        expect(page).to have_selector(:table_row, { 'Activities in Programme' => 3 })
+      end
+
+      it 'displays a count of actions' do
+        expect(page).to have_selector(:table_row, { 'Actions in Programme' => 3 })
+      end
+
+      it 'there should be a button to edit activities & actions' do
+        expect(page).to have_link('Edit activities & actions')
+      end
+
+      context 'when clicking Edit activities and actions button' do
+        before do
+          click_on 'Edit activities & actions'
+        end
+
+        it { expect(page).to have_content('Update the activities and actions') }
+      end
+    end
 
     context 'editing tasks', :js do
       before do
@@ -198,7 +285,7 @@ describe 'programme type management', type: :system do
       expect(page).to have_content('There are no programme types')
     end
 
-    context 'when tasklists is switched off' do
+    context 'when tasklists feature is switched off' do
       context 'manages order' do
         let!(:activity_category)  { create(:activity_category)}
         let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
