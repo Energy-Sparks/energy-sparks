@@ -22,8 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
   sortLists.forEach((list) => {
     new Sortable(list, {
       animation: 150,
-      selectedClass: 'bg-light',
-      ghostClass: 'bg-light',
+      ghostClass: 'sortable-hide',
       handle: '.handle',
       filter: '.links',
       preventOnFilter: true,
