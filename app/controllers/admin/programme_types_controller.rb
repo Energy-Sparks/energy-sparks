@@ -38,13 +38,7 @@ module Admin
 
     def programme_type_params
       translated_params = t_params(ProgrammeType.mobility_attributes + ProgrammeType.t_attached_attributes)
-      params.require(:programme_type).permit(translated_params, :title, :description, :short_description, :document_link, :active, :default, :bonus_score,
-        activity_type_tasks_attributes: tasks_attributes,
-        intervention_type_tasks_attributes: tasks_attributes)
-    end
-
-    def tasks_attributes
-      [:id, :task_source_id, :task_source, :task_source_type, :position, :notes, :_destroy]
+      params.require(:programme_type).permit(translated_params, :title, :description, :short_description, :document_link, :active, :default, :bonus_score)
     end
   end
 end

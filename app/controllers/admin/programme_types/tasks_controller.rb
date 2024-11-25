@@ -8,7 +8,7 @@ module Admin
 
       def update
         if @programme_type.update(tasklist_source_params)
-          redirect_to admin_programme_types_path, notice: 'Programme type updated'
+          redirect_to admin_programme_types_path, notice: 'Programme type tasks updated'
         else
           render :edit
         end
