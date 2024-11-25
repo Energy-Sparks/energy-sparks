@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_08_150458) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_21_155221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1908,7 +1908,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_08_150458) do
     t.string "unlock_token"
     t.string "preferred_locale", default: "en", null: false
     t.string "pupil_password"
+    t.bigint "created_by_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["created_by_id"], name: "index_users_on_created_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_group_id"], name: "index_users_on_school_group_id"
@@ -2128,6 +2130,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_08_150458) do
   add_foreign_key "users", "school_groups", on_delete: :restrict
   add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict
+  add_foreign_key "users", "users", column: "created_by_id"
   add_foreign_key "weather_observations", "weather_stations", on_delete: :cascade
 
   create_view "comparison_annual_change_in_electricity_out_of_hours_uses", materialized: true, sql_definition: <<-SQL
