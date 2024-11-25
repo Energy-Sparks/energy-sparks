@@ -106,10 +106,32 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
                          href: admin_school_issues_path(school))
           expect(html).to have_link(I18n.t('manage_school_menu.batch_reports'),
                          href: school_reports_path(school))
-          expect(html).to have_link(I18n.t('manage_school_menu.expert_analysis'),
-                         href: admin_school_analysis_path(school))
           expect(html).to have_link(I18n.t('manage_school_menu.remove_school'),
                          href: removal_admin_school_path(school))
+        end
+      end
+
+      context 'when showing expert analysis' do
+        context 'when school has gas' do
+          let(:school) { create(:school, :with_fuel_configuration) }
+
+          it 'links to the analysis' do
+            within('#admin') do
+              expect(html).to have_link(I18n.t('manage_school_menu.expert_analysis'),
+                             href: admin_school_analysis_path(school))
+            end
+          end
+        end
+
+        context 'when school does not have gas' do
+          let(:school) { create(:school, :with_fuel_configuration, has_gas: false) }
+
+          it 'links to the analysis' do
+            within('#admin') do
+              expect(html).not_to have_link(I18n.t('manage_school_menu.expert_analysis'),
+                             href: admin_school_analysis_path(school))
+            end
+          end
         end
       end
     end

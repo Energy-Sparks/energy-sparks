@@ -87,7 +87,7 @@
     <% end %>
     <% s.with_item(name: t('schools.meters.index.view_target_data'),
                    href: admin_school_target_data_path(school), classes: 'small') %>
-    <% if can? :expert_analyse, school %>
+    <% if can?(:expert_analyse, school) && school.has_gas? %>
       <% s.with_item(name: t('manage_school_menu.expert_analysis'),
                      href: admin_school_analysis_path(school), classes: 'small') %>
     <% end %>
