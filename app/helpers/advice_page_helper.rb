@@ -183,13 +183,12 @@ module AdvicePageHelper
     AlertType.where(class_name: class_names)
   end
 
-  # alert type groups have a specific order here
   def dashboard_alert_groups(dashboard_alerts)
-    %w[priority change benchmarking advice].select { |group| dashboard_alerts_for_group(dashboard_alerts, group).any? }
-  end
-
-  def dashboard_alerts_for_group(dashboard_alerts, group)
-    dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
+    # alert type groups have a specific order here
+    %w[priority change benchmarking advice].filter_map do |group|
+      alerts = dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
+      [group, alerts] if alerts.any?
+    end
   end
 
   def t_weekday(week_day)
