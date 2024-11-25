@@ -20,4 +20,5 @@
   <%= render 'shared/tasklists/tasks_form', tasklist_source: @programme_type, f: f %>
   <%= f.submit 'Save', class: 'btn btn-primary', data:
         { confirm: 'Note: adding or removing activities will impact currently enrolled schools. Are you sure?' } %>
+  <%= link_to t('common.labels.cancel'), admin_programme_types_path, class: 'btn btn-secondary' %>
 <% end %>
