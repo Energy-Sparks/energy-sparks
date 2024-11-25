@@ -43,6 +43,8 @@ class Comparison::Report < ApplicationRecord
 
   belongs_to :custom_period, class_name: 'Comparison::CustomPeriod', optional: true, autosave: true, dependent: :destroy
   belongs_to :report_group, class_name: 'Comparison::ReportGroup'
+  has_many :alerts, inverse_of: :comparison_report, dependent: :delete_all
+  has_many :alert_errors, inverse_of: :comparison_report, dependent: :delete_all
 
   scope :by_title, ->(order = :asc) { i18n.order(title: order) }
 

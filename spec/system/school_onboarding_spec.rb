@@ -208,7 +208,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
             expect(page).to have_content('Do you want to complete onboarding for Oldfield Park Infants using this school group admin account?')
           end
 
-          it 'allows them to complete onboarding', js: true do
+          it 'allows them to complete onboarding' do
             click_on 'Yes, use this account'
 
             # School details
@@ -236,6 +236,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
             expect(page).to have_content('extra+user@example.org')
             expect(page).to have_content('Headteacher')
+            expect(User.find_by(email: 'extra+user@example.org').created_by).to eq(existing_user)
 
             click_on 'Continue'
 
