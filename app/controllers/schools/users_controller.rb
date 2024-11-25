@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class UsersController < ApplicationController
     include AlertContactCreator
@@ -20,19 +22,19 @@ module Schools
       authorize! :create, @user
     end
 
+    def edit
+      @user = @school.find_user_or_cluster_user_by_id(params[:id])
+      authorize! :edit, @user
+    end
+
     def create
       authorize! :manage_users, @school
-      @user = User.new(user_params.merge(school: @school))
+      @user = User.new(user_params.merge(school: @school, created_by: current_user))
       if @user.save
         redirect_to school_users_path(@school)
       else
         render :new
       end
-    end
-
-    def edit
-      @user = @school.find_user_or_cluster_user_by_id(params[:id])
-      authorize! :edit, @user
     end
 
     def update

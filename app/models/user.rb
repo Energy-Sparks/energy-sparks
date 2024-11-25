@@ -6,6 +6,7 @@
 #  confirmation_token     :string
 #  confirmed_at           :datetime
 #  created_at             :datetime         not null
+#  created_by_id          :bigint(8)
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
 #  email                  :string           default(""), not null
@@ -32,6 +33,7 @@
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_created_by_id         (created_by_id)
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_school_group_id       (school_group_id)
@@ -40,6 +42,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (staff_role_id => staff_roles.id) ON DELETE => restrict
@@ -53,8 +56,10 @@ class User < ApplicationRecord
   belongs_to :school, optional: true
   belongs_to :staff_role, optional: true
   belongs_to :school_group, optional: true
+  belongs_to :created_by, class_name: :User, optional: true
   has_many :contacts
   has_many :consent_grants, inverse_of: :user, dependent: :nullify
+  has_many :users_created, class_name: :User, inverse_of: :created_by, dependent: :nullify
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
   has_many :issues_admin_for, class_name: 'SchoolGroup', inverse_of: :default_issues_admin_user,

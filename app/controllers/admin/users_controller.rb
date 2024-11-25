@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class UsersController < AdminController
     include ApplicationHelper
@@ -8,7 +10,7 @@ module Admin
       @search_users = find_users
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
       respond_to do |format|
-        format.html { }
+        format.html {}
         format.csv { send_data User.admin_user_export_csv, filename: 'users.csv' }
       end
     end
@@ -22,6 +24,7 @@ module Admin
     end
 
     def create
+      @user.created_by = current_user
       if @user.save
         redirect_to admin_users_path, notice: 'User was successfully created.'
       else
@@ -50,22 +53,24 @@ module Admin
       redirect_to admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
     end
 
-  private
+    private
 
     def find_users
       if params[:search].present?
         search = params[:search]
         if search['email'].present?
           return User.where('email ILIKE ?', "%#{search['email']}%").where.not(role: :pupil).limit(50)
-        else
-          return []
         end
+
+        return []
+
       end
       []
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
+      params.require(:user)
+            .permit(:name, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
     end
 
     def set_schools_options
@@ -75,7 +80,7 @@ module Admin
 
     def school_users
       users = {}
-      SchoolGroup.all.order(:name).each do |school_group|
+      SchoolGroup.order(:name).each do |school_group|
         users[school_group] = {}
         school_group.schools.by_name.each do |school|
           users[school_group][school] = (school.users + school.cluster_users).uniq.sort_by(&:email)

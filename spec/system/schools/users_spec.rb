@@ -74,6 +74,7 @@ describe 'School admin user management' do
           expect(staff.email).to eq('mrsjones@test.com')
           expect(staff.staff_role).to eq(teacher_role)
           expect(staff.confirmed?).to be false
+          expect(staff.created_by).to eq(school_admin)
 
           email = ActionMailer::Base.deliveries.last
           expect(email.subject).to eq('Please confirm your account on Energy Sparks')
