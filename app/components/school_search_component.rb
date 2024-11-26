@@ -4,6 +4,8 @@ class SchoolSearchComponent < ApplicationComponent
   DEFAULT_TAB = :schools
   TABS = [:schools, :school_groups].freeze
 
+  # i18n-tasks-use t("components.school_search.schools.total")
+  # i18n-tasks-use t("components.school_search.schools.total_for_admins")
   def initialize(tab: DEFAULT_TAB,
                  schools: School.visible,
                  school_groups: SchoolGroup.with_visible_schools,
