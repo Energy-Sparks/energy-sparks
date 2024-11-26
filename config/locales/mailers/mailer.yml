@@ -20,6 +20,9 @@ en:
       stay_up_to_date: Stay up to date
       subject: Energy Sparks alerts
       subject_2024: "%{school_name} weekly alerts"
+      take_action_around_the_school: Take action around the school
+      take_action_choose: Choose activity
+      take_action_message: Complete one of our recommended pupil or adult led activities to start reducing your energy usage
       title: Your weekly alerts
       view_your_progress_report: View your progress report
       view_your_school_dashboard: View your school dashboard

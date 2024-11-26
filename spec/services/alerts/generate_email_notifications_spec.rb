@@ -172,6 +172,7 @@ describe Alerts::GenerateEmailNotifications do
         expect(matcher).to have_link('full list of alerts', href: alerts_school_advice_url(school, params:))
         expect(matcher).to have_link('priority actions', href: priorities_school_advice_url(school, params:))
         expect(matcher).to have_link('detailed analysis', href: school_advice_url(school, params:))
+        expect(matcher).to have_link('Choose activity', href: school_recommendations_url(school, params:))
       end
 
       it 'has the new alerts list' do
