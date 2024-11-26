@@ -18,5 +18,3 @@ linters:
         Enabled: false # erb-lint recommended
       Rails/OutputSafety:
         Enabled: false # erb-lint recommended
-      Style/HashSyntax:
-        EnforcedShorthandSyntax: never # get ActionView::SyntaxErrorInTemplate without this
