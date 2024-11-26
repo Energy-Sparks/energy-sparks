@@ -55,7 +55,8 @@
   <h3><%= t('alert_mailer.alert_email.take_action_around_the_school') %></h3>
   <div class="s-3"></div>
   <%= t('alert_mailer.alert_email.take_action_message') %>.
-  <%= link_to t('alert_mailer.alert_email.take_action_choose'), school_recommendations_url(@school),
+  <%= link_to t('alert_mailer.alert_email.take_action_choose'),
+              school_recommendations_url(@school, params: weekly_alert_utm_parameters),
               class: 'btn btn-primary mt-3 mb-3 ax-right' %>
 <% else %>
   <h3><%= t('alert_mailer.alert_email.get_your_pupils_involved') %></h3>
