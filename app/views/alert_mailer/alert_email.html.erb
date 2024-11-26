@@ -51,13 +51,19 @@
 
 <div class="s-3"></div>
 
-<h3><%= t('alert_mailer.alert_email.get_your_pupils_involved') %></h3>
-<div class="s-3"></div>
-
-<%= t('alert_mailer.alert_email.education_workshops_message') %>.
-
-<%= link_to t('alert_mailer.alert_email.book_a_workshop'), education_workshops_url,
-            class: 'btn btn-primary mt-3 mb-3 ax-right' %>
+<% if Flipper.enabled?(:alert_email_2024) %>
+  <h3><%= t('alert_mailer.alert_email.take_action_around_the_school') %></h3>
+  <div class="s-3"></div>
+  <%= t('alert_mailer.alert_email.take_action_message') %>.
+  <%= link_to t('alert_mailer.alert_email.take_action_choose'), school_recommendations_url(@school),
+              class: 'btn btn-primary mt-3 mb-3 ax-right' %>
+<% else %>
+  <h3><%= t('alert_mailer.alert_email.get_your_pupils_involved') %></h3>
+  <div class="s-3"></div>
+  <%= t('alert_mailer.alert_email.education_workshops_message') %>.
+  <%= link_to t('alert_mailer.alert_email.book_a_workshop'), education_workshops_url,
+              class: 'btn btn-primary mt-3 mb-3 ax-right' %>
+<% end %>
 
 <div class="s-3"></div>
 
