@@ -14,6 +14,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_08_150458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
+  enable_extension "pgstattuple"
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
@@ -654,6 +655,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_08_150458) do
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
     t.index ["key"], name: "index_comparison_reports_on_key", unique: true
     t.index ["report_group_id"], name: "index_comparison_reports_on_report_group_id"
+  end
+
+  create_table "completed_todos", force: :cascade do |t|
+    t.bigint "todo_id", null: false
+    t.string "completable_type", null: false
+    t.bigint "completable_id", null: false
+    t.string "recording_type", null: false
+    t.bigint "recording_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["completable_type", "completable_id"], name: "index_completed_todos_on_completable"
+    t.index ["recording_type", "recording_id"], name: "index_completed_todos_on_recording"
+    t.index ["todo_id"], name: "index_completed_todos_on_todo_id"
   end
 
   create_table "configurations", force: :cascade do |t|
@@ -1791,33 +1805,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_08_150458) do
     t.string "version", null: false
   end
 
-  create_table "tasklist_completed_tasks", force: :cascade do |t|
-    t.bigint "tasklist_task_id", null: false
-    t.string "tasklist_target_type", null: false
-    t.bigint "tasklist_target_id", null: false
-    t.string "task_target_type", null: false
-    t.bigint "task_target_id", null: false
-    t.datetime "happened_on"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["task_target_type", "task_target_id"], name: "index_tasklist_completed_tasks_on_task_target"
-    t.index ["tasklist_target_type", "tasklist_target_id"], name: "index_tasklist_completed_tasks_on_tasklist_target"
-    t.index ["tasklist_task_id"], name: "index_tasklist_completed_tasks_on_tasklist_task_id"
-  end
-
-  create_table "tasklist_tasks", force: :cascade do |t|
-    t.string "tasklist_source_type", null: false
-    t.bigint "tasklist_source_id", null: false
-    t.string "task_source_type", null: false
-    t.bigint "task_source_id", null: false
-    t.integer "position", default: 0, null: false
-    t.text "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["task_source_type", "task_source_id"], name: "index_tasklist_tasks_on_task_source"
-    t.index ["tasklist_source_type", "tasklist_source_id"], name: "index_tasklist_tasks_on_tasklist_source"
-  end
-
   create_table "team_members", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -1835,6 +1822,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_08_150458) do
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_temperature_recordings_on_location_id"
     t.index ["observation_id"], name: "index_temperature_recordings_on_observation_id"
+  end
+
+  create_table "todos", force: :cascade do |t|
+    t.string "assignable_type", null: false
+    t.bigint "assignable_id", null: false
+    t.string "task_type", null: false
+    t.bigint "task_id", null: false
+    t.integer "position", default: 0, null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignable_type", "assignable_id"], name: "index_todos_on_assignable"
+    t.index ["task_type", "task_id"], name: "index_todos_on_task"
   end
 
   create_table "topics", force: :cascade do |t|

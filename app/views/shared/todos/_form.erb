@@ -1,8 +1,8 @@
-<% if Flipper.enabled?(:tasklists, current_user) || !Flipper.enabled?(:tasklists_parallel, current_user) %>
+<% if Flipper.enabled?(:todos, current_user) || !Flipper.enabled?(:todos_parallel, current_user) %>
 
-  <%= render 'shared/tasklists/task_types_form', f: f,
-        tasklist_source: tasklist_source,
-        task_sources: ActivityCategory.listed_with_activity_types.map { |category, types|
+  <%= render 'shared/todos/task_type_form', f: f,
+        assignable: assignable,
+        tasks: ActivityCategory.listed_with_activity_types.map { |category, types|
              [category.name, types.map do |type|
                [type.name_with_key_stages, type.id]
              end]
@@ -15,11 +15,11 @@
         add_label: t('schools.audits.form.add_activity') %>
 <% end %>
 
-<% if Flipper.enabled?(:tasklists, current_user) || (Flipper.enabled?(:tasklists_parallel, current_user) && tasklist_source.is_a?(ProgrammeType)) %>
+<% if Flipper.enabled?(:todos, current_user) || (Flipper.enabled?(:todos_parallel, current_user) && assignable.is_a?(ProgrammeType)) %>
 
-  <%= render 'shared/tasklists/task_types_form', f: f,
-        tasklist_source: tasklist_source,
-        task_sources: InterventionTypeGroup.listed_with_intervention_types.map { |category, types|
+  <%= render 'shared/todos/task_type_form', f: f,
+        assignable: assignable,
+        tasks: InterventionTypeGroup.listed_with_intervention_types.map { |category, types|
              [category.name, types.map do |type|
                [type.name, type.id]
              end]

@@ -22,23 +22,23 @@
   </div>
 </div>
 
-<div id="tasklist-<%= type.dasherize %>s" class='admin-tasklist sort-list'>
-  <%= f.simple_fields_for "#{type}_tasks" do |tasklist_task| %>
-    <%= render 'shared/tasklists/task_fields',
-               f: tasklist_task,
-               task_sources: task_sources,
-               task_source_type: type.camelcase %>
+<div id="<%= type.dasherize %>-todos" class='admin-todos sort-list'>
+  <%= f.simple_fields_for "#{type}_todos" do |todo| %>
+    <%= render 'shared/todos/fields',
+               f: todo,
+               tasks: tasks,
+               task_type: type.camelcase %>
   <% end %>
   <div class="links">
     <%= link_to_add_association add_label,
                                 f,
-                                "#{type}_tasks",
+                                "#{type}_todos",
                                 class: 'btn',
-                                partial: 'shared/tasklists/task_fields',
+                                partial: 'shared/todos/fields',
                                 render_options: {
                                   locals: {
-                                    task_sources: task_sources,
-                                    task_source_type: type.camelcase
+                                    tasks: tasks,
+                                    task_type: type.camelcase
                                   }
                                 } %>
   </div>

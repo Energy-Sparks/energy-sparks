@@ -1,6 +1,6 @@
-module TasksHelper
+module TodosHelper
   def select_task(type, name, idx = 0)
-    within "#tasklist-#{type.to_s.dasherize}s" do
+    within "##{type.to_s.dasherize}-todos" do
       all_selects = all('select')
 
       chosen_select = all_selects[idx]
@@ -10,5 +10,5 @@ module TasksHelper
 end
 
 RSpec.configure do |config|
-  config.include TasksHelper
+  config.include TodosHelper
 end

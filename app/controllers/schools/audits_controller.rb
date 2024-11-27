@@ -49,10 +49,10 @@ module Schools
 
     def audit_params
       params.require(:audit).permit(:school_id, :title, :description, :file, :published, :involved_pupils,
-          audit_activity_types_attributes: audit_activity_types_attributes, # remove when tasklists feature flag removed
-          audit_intervention_types_attributes: audit_intervention_types_attributes, # remove when tasklists feature flag removed
-          activity_type_tasks_attributes: tasks_attributes,
-          intervention_type_tasks_attributes: tasks_attributes)
+          audit_activity_types_attributes: audit_activity_types_attributes, # remove when todos feature flag removed
+          audit_intervention_types_attributes: audit_intervention_types_attributes, # remove when todos feature flag removed
+          activity_type_todos_attributes: todos_attributes,
+          intervention_type_todos_attributes: todos_attributes)
     end
 
     def audit_activity_types_attributes
@@ -63,8 +63,8 @@ module Schools
       [:id, :intervention_type_id, :intervention_type, :notes, :_destroy]
     end
 
-    def tasks_attributes
-      [:id, :task_source_id, :task_source, :task_source_type, :position, :notes, :_destroy]
+    def todos_attributes
+      [:id, :task_id, :task, :task_type, :position, :notes, :_destroy]
     end
   end
 end

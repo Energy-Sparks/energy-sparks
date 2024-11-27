@@ -35,8 +35,8 @@
   <p class="small"><%= t('schools.audits.form.audit_points_message_html',
                          audit_points: Audits::AuditService::AUDIT_POINTS) %></p>
 
-  <% if Flipper.enabled?(:tasklists, current_user) %>
-    <%= render 'shared/tasklists/tasks_form', tasklist_source: @audit, f: f %>
+  <% if Flipper.enabled?(:todos, current_user) %>
+    <%= render 'shared/todos/form', assignable: @audit, f: f %>
   <% else %>
     <h2><%= t('schools.audits.form.activities') %></h2>
     <p class="small">

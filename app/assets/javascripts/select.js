@@ -4,8 +4,8 @@ $(document).ready(function() {
 
   $('select.form-control.select2').select2({theme: 'bootstrap'});
 
-  // Switch on select2 after cocoon insert. Needed for tasklists
-  $('.admin-tasklist').on('cocoon:after-insert', function(e, insertedItem) {
+  // Switch on select2 after cocoon insert. Needed for todos
+  $('.admin-todos').on('cocoon:after-insert', function(e, insertedItem) {
     $(insertedItem).find('select.form-control.select2').select2({theme: 'bootstrap'});
   });
 

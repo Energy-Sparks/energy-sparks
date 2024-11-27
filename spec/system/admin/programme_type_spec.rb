@@ -4,18 +4,18 @@ describe 'programme type management', type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
-  context 'when tasklists_parallel feature is switched on' do
+  context 'when todos_parallel feature is switched on' do
     let!(:programme_type) do
       create(:programme_type, title: 'Test Programme',
         activity_types: create_list(:activity_type, 3)) # old way
     end
 
     # new way
-    let!(:activity_type_tasks) { create_list(:tasklist_activity_type_task, 2, tasklist_source: programme_type) }
-    let!(:intervention_type_tasks) { create_list(:tasklist_intervention_type_task, 2, tasklist_source: programme_type) }
+    let!(:activity_type_todos) { create_list(:activity_type_todo, 2, assignable: programme_type) }
+    let!(:intervention_type_todos) { create_list(:intervention_type_todo, 2, assignable: programme_type) }
 
     before do
-      Flipper.enable(:tasklists_parallel)
+      Flipper.enable(:todos_parallel)
     end
 
     context 'when viewing programme type admin index' do
@@ -43,8 +43,8 @@ describe 'programme type management', type: :system do
           click_on 'Edit activities'
         end
 
-        it { expect(page).not_to have_css('#tasklist-activity-types') }
-        it { expect(page).not_to have_css('#tasklist-intervention-types') }
+        it { expect(page).not_to have_css('#activity-type-todos') }
+        it { expect(page).not_to have_css('#intervention-type-todos') }
       end
 
       it 'has a button to edit actions (new way)' do
@@ -56,22 +56,22 @@ describe 'programme type management', type: :system do
           click_on 'Edit actions'
         end
 
-        it { expect(page).not_to have_css('#tasklist-activity-types') }
-        it { expect(page).to have_css('#tasklist-intervention-types') }
+        it { expect(page).not_to have_css('#activity-type-todos') }
+        it { expect(page).to have_css('#intervention-type-todos') }
       end
     end
   end
 
-  context 'when tasklists feature is switched on' do
+  context 'when todos feature is switched on' do
     before do
-      Flipper.enable(:tasklists)
+      Flipper.enable(:todos)
       # enrolment only enabled if targets enabled...
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     end
 
     let!(:programme_type) { create(:programme_type, title: 'Test Programme') }
-    let!(:activity_type_tasks) { create_list(:tasklist_activity_type_task, 3, tasklist_source: programme_type) }
-    let!(:intervention_type_tasks) { create_list(:tasklist_intervention_type_task, 3, tasklist_source: programme_type) }
+    let!(:activity_type_todos) { create_list(:activity_type_todo, 3, assignable: programme_type) }
+    let!(:intervention_type_todos) { create_list(:intervention_type_todo, 3, assignable: programme_type) }
 
     let!(:activity_type) { create(:activity_type) }
     let!(:intervention_type) { create(:intervention_type) }
@@ -108,24 +108,24 @@ describe 'programme type management', type: :system do
     context 'editing tasks', :js do
       before do
         sign_in(admin)
-        visit edit_admin_programme_type_tasks_path(programme_type)
+        visit edit_admin_programme_type_todos_path(programme_type)
       end
 
       it 'lists tasks in order' do
-        expect(page).to have_css('#tasklist-activity-types .nested-fields', count: 3)
+        expect(page).to have_css('#activity-type-todos .nested-fields', count: 3)
 
-        displayed_activity_types = all('#tasklist-activity-types .nested-fields')
-        activity_type_tasks.each_with_index do |task, idx|
-          expect(displayed_activity_types[idx]).to have_content(task.task_source.name)
-          expect(displayed_activity_types[idx]).to have_content(task.notes)
+        displayed_activity_types = all('#activity-type-todos .nested-fields')
+        activity_type_todos.each_with_index do |todo, idx|
+          expect(displayed_activity_types[idx]).to have_content(todo.task.name)
+          expect(displayed_activity_types[idx]).to have_content(todo.notes)
         end
 
-        expect(page).to have_css('#tasklist-intervention-types .nested-fields', count: 3)
+        expect(page).to have_css('#intervention-type-todos .nested-fields', count: 3)
 
-        displayed_intervention_types = all('#tasklist-intervention-types .nested-fields')
-        intervention_type_tasks.each_with_index do |task, idx|
-          expect(displayed_intervention_types[idx]).to have_content(task.task_source.name)
-          expect(displayed_intervention_types[idx]).to have_content(task.notes)
+        displayed_intervention_types = all('#intervention-type-todos .nested-fields')
+        intervention_type_todos.each_with_index do |todo, idx|
+          expect(displayed_intervention_types[idx]).to have_content(todo.task.name)
+          expect(displayed_intervention_types[idx]).to have_content(todo.notes)
         end
       end
 
@@ -157,33 +157,33 @@ describe 'programme type management', type: :system do
           end
 
           it 'saves new activity type' do
-            displayed_tasks = page.all('ol.tasklist_activity_types li').map(&:text)
+            displayed_tasks = page.all('#activity-type-tasks li').map(&:text)
 
             expect(displayed_tasks.last).to have_content(activity_type.name)
           end
 
           it 'saves new intervention type' do
-            displayed_tasks = page.all('ol.tasklist_intervention_types li').map(&:text)
+            displayed_tasks = page.all('#intervention-type-tasks li').map(&:text)
 
             expect(displayed_tasks.last).to have_content(intervention_type.name)
           end
         end
       end
 
-      context 'when moving tasks' do
+      context 'when moving todos' do
         context 'moving last activity to first' do
           before do
-            handles = all('#tasklist-activity-types .nested-fields .handle')
+            handles = all('#activity-type-todos .nested-fields .handle')
             handles.last.click
             handles.last.drag_to(handles.first)
           end
 
           it 'changes activity order to THREE, ONE, TWO' do
-            displayed_tasks = all('#tasklist-activity-types .nested-fields')
+            displayed_todos = all('#activity-type-todos .nested-fields')
 
-            expect(displayed_tasks[0]).to have_content(activity_type_tasks[2].notes)
-            expect(displayed_tasks[1]).to have_content(activity_type_tasks[0].notes)
-            expect(displayed_tasks[2]).to have_content(activity_type_tasks[1].notes)
+            expect(displayed_todos[0]).to have_content(activity_type_todos[2].notes)
+            expect(displayed_todos[1]).to have_content(activity_type_todos[0].notes)
+            expect(displayed_todos[2]).to have_content(activity_type_todos[1].notes)
           end
 
           context 'when saving' do
@@ -194,28 +194,28 @@ describe 'programme type management', type: :system do
             end
 
             it 'saves new order' do
-              displayed_tasks = page.all('ol.tasklist_activity_types li').map(&:text)
+              displayed_tasks = page.all('#activity-type-tasks li').map(&:text)
 
-              expect(displayed_tasks[0]).to have_content(activity_type_tasks[2].task_source.name)
-              expect(displayed_tasks[1]).to have_content(activity_type_tasks[0].task_source.name)
-              expect(displayed_tasks[2]).to have_content(activity_type_tasks[1].task_source.name)
+              expect(displayed_tasks[0]).to have_content(activity_type_todos[2].task.name)
+              expect(displayed_tasks[1]).to have_content(activity_type_todos[0].task.name)
+              expect(displayed_tasks[2]).to have_content(activity_type_todos[1].task.name)
             end
           end
         end
 
         context 'moving last action to first' do
           before do
-            handles = all('#tasklist-intervention-types .nested-fields .handle')
+            handles = all('#intervention-type-todos .nested-fields .handle')
             handles.last.click
             handles.last.drag_to(handles.first)
           end
 
           it 'changes action order to THREE, ONE, TWO' do
-            displayed_tasks = all('#tasklist-intervention-types .nested-fields')
+            displayed_todos = all('#intervention-type-todos .nested-fields')
 
-            expect(displayed_tasks[0]).to have_content(intervention_type_tasks[2].notes)
-            expect(displayed_tasks[1]).to have_content(intervention_type_tasks[0].notes)
-            expect(displayed_tasks[2]).to have_content(intervention_type_tasks[1].notes)
+            expect(displayed_todos[0]).to have_content(intervention_type_todos[2].notes)
+            expect(displayed_todos[1]).to have_content(intervention_type_todos[0].notes)
+            expect(displayed_todos[2]).to have_content(intervention_type_todos[1].notes)
           end
 
           context 'when saving' do
@@ -226,11 +226,11 @@ describe 'programme type management', type: :system do
             end
 
             it 'saves new order' do
-              displayed_tasks = page.all('ol.tasklist_intervention_types li').map(&:text)
+              displayed_tasks = page.all('#intervention-type-tasks li').map(&:text)
 
-              expect(displayed_tasks[0]).to have_content(intervention_type_tasks[2].task_source.name)
-              expect(displayed_tasks[1]).to have_content(intervention_type_tasks[0].task_source.name)
-              expect(displayed_tasks[2]).to have_content(intervention_type_tasks[1].task_source.name)
+              expect(displayed_tasks[0]).to have_content(intervention_type_todos[2].task.name)
+              expect(displayed_tasks[1]).to have_content(intervention_type_todos[0].task.name)
+              expect(displayed_tasks[2]).to have_content(intervention_type_todos[1].task.name)
             end
           end
         end
@@ -285,7 +285,7 @@ describe 'programme type management', type: :system do
       expect(page).to have_content('There are no programme types')
     end
 
-    context 'when tasklists feature is switched off' do
+    context 'when todos feature is switched off' do
       context 'manages order' do
         let!(:activity_category)  { create(:activity_category)}
         let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }

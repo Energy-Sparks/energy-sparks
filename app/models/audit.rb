@@ -24,8 +24,8 @@ class Audit < ApplicationRecord
   has_one_attached :file
   has_rich_text :description
 
-  include Tasklist::Source
-  include Tasklist::Target
+  include Todos::Assignable
+  include Todos::Completable
 
   has_many :observations, as: :observable, dependent: :destroy
 

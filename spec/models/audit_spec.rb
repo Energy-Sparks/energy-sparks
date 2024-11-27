@@ -270,7 +270,7 @@ describe Audit do
       end
     end
 
-    context 'with tasks' do
+    context 'with Todos' do
       let(:school) { create(:school) }
       let(:activity_type) { create(:activity_type) }
       let(:intervention_type) { create(:intervention_type) }
@@ -280,11 +280,11 @@ describe Audit do
           title: 'Test title',
           file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'documents', 'fake-bill.pdf'), 'application/pdf'),
           published: true,
-          activity_type_tasks_attributes: [
-            { task_source_id: activity_type.id, task_source_type: 'ActivityType', position: 0, notes: 'Some notes' }
+          activity_type_todos_attributes: [
+            { task_id: activity_type.id, task_type: 'ActivityType', position: 0, notes: 'Some notes' }
           ],
-          intervention_type_tasks_attributes: [
-            { task_source_id: intervention_type.id, task_source_type: 'InterventionType', position: 0, notes: 'Other notes' }
+          intervention_type_todos_attributes: [
+            { task_id: intervention_type.id, task_type: 'InterventionType', position: 0, notes: 'Other notes' }
           ]
         }
       end
@@ -293,8 +293,8 @@ describe Audit do
         it 'creates audit with tasks' do
           audit = school.audits.create!(audit_params)
 
-          expect(audit.tasklist_activity_types.first).to eq activity_type
-          expect(audit.tasklist_intervention_types.first).to eq intervention_type
+          expect(audit.activity_type_tasks.first).to eq activity_type
+          expect(audit.intervention_type_tasks.first).to eq intervention_type
         end
       end
     end

@@ -19,9 +19,9 @@ describe 'Audits', type: :system do
       expect(page).to have_content('New audit')
     end
 
-    context 'with tasklists switched on' do
+    context 'with todos switched on' do
       before do
-        Flipper.enable :tasklists
+        Flipper.enable :todos
       end
 
       it 'allows me to create, edit and delete an audit' do
@@ -68,8 +68,8 @@ describe 'Audits', type: :system do
 
           audit = Audit.last
           expect(audit.title).to eq('New audit')
-          expect(audit.tasklist_intervention_types).to eq([intervention_type])
-          expect(audit.tasklist_activity_types).to eq([activity_type])
+          expect(audit.intervention_type_tasks).to eq([intervention_type])
+          expect(audit.activity_type_tasks).to eq([activity_type])
         end
 
         context 'when saving fails' do
@@ -95,7 +95,7 @@ describe 'Audits', type: :system do
             click_on 'Add activity'
             click_on('Create')
             expect(page).to have_content('Activity must exist')
-            within '#tasklist-activity-types' do
+            within '#activity-type-todos' do
               expect(page).to have_content('must exist')
             end
           end
@@ -104,7 +104,7 @@ describe 'Audits', type: :system do
             click_on 'Add action'
             click_on('Create')
             expect(page).to have_content('Action must exist')
-            within '#tasklist-intervention-types' do
+            within '#intervention-type-todos' do
               expect(page).to have_content('must exist')
             end
           end
@@ -131,14 +131,14 @@ describe 'Audits', type: :system do
 
             audit = Audit.last
             expect(audit.title).to eq('New audit')
-            expect(audit.tasklist_intervention_types).to eq([intervention_type])
-            expect(audit.tasklist_activity_types).to eq([activity_type])
+            expect(audit.intervention_type_tasks).to eq([intervention_type])
+            expect(audit.activity_type_tasks).to eq([activity_type])
           end
         end
       end
     end
 
-    context 'with tasklists switched off' do
+    context 'with todos switched off' do
       it 'allows me to create, edit and delete an audit' do
         visit school_audits_path(school)
         click_on('New audit')
