@@ -2,6 +2,8 @@ module Todos
   module Assignable
     extend ActiveSupport::Concern
 
+    # For models which can have todos assigned to them, such as audit and programme_type
+
     included do
       has_many :todos, as: :assignable, dependent: :destroy, class_name: 'Todo', inverse_of: :assignable
 

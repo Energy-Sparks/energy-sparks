@@ -2,6 +2,8 @@ module Todos
   module Completable
     extend ActiveSupport::Concern
 
+    # For models which can have todos completed against them, such as audit and programme
+
     included do
       has_many :completed_todos, as: :completable, dependent: :destroy, class_name: 'CompletedTodo'
       has_many :completed_tasks, through: :completed_todos, source: :todo, class_name: 'Todo'

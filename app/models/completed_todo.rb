@@ -19,8 +19,8 @@
 #
 class CompletedTodo < ApplicationRecord
   belongs_to :todo, class_name: 'Todo'
-  belongs_to :completable, polymorphic: true
-  belongs_to :recording, polymorphic: true
+  belongs_to :completable, polymorphic: true # such as Audit or Programme
+  belongs_to :recording, polymorphic: true # such as ActivityType or InterventionType
 
   has_one :activity_type, through: :todo, source: :task, source_type: 'ActivityType'
   has_one :intervention_type, through: :todo, source: :task, source_type: 'InterventionType'
