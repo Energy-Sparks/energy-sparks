@@ -172,8 +172,10 @@ RSpec.describe 'manage school', type: :system do
         create(:gas_meter, :with_unvalidated_readings, school: school)
         school.update(process_data: false)
         visit school_path(school)
+        expect(page).not_to have_link(href: school_batch_runs_path(school))
         click_on('Process data')
         expect(page).to have_content "#{school.name} will now process data"
+        expect(page).to have_link(href: school_batch_runs_path(school))
         school.reload
         expect(school.process_data).to eq(true)
         click_on('Process data')
