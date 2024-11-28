@@ -1,20 +1,25 @@
 class SchoolSearchComponent < ApplicationComponent
-  attr_reader :schools, :school_groups, :tab, :letter, :keyword
+  attr_reader :schools, :school_groups, :tab, :letter, :keyword, :schools_total_key
 
   DEFAULT_TAB = :schools
   TABS = [:schools, :school_groups].freeze
 
+  # i18n-tasks-use t("components.school_search.schools.total")
+  # i18n-tasks-use t("components.school_search.schools.total_for_admins")
   def initialize(tab: DEFAULT_TAB,
                  schools: School.visible,
                  school_groups: SchoolGroup.with_visible_schools,
                  letter: 'A',
-                 keyword: nil, id: nil, classes: '')
+                 keyword: nil,
+                 schools_total_key: 'components.school_search.schools.total',
+                 id: nil, classes: '')
     super(id: id, classes: classes)
     @tab = self.class.sanitize_tab(tab)
     @letter = letter || 'A'
     @keyword = keyword.present? ? keyword : nil
     @schools = schools
     @school_groups = school_groups
+    @schools_total_key = schools_total_key
   end
 
   def self.sanitize_tab(tab)
