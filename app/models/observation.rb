@@ -66,6 +66,7 @@ class Observation < ApplicationRecord
   # instead of adding a new foreign key / relationship. The goal is to transition existing relationships
   # (e.g., programme, audit, school_target) to `observable` over time.
   # Prioritize using the new model when working in these areas, as they are the easiest to migrate.
+  # If adding a new observation type, remember to also modify the timeline component
 
   # NB: events: 3 has been removed
   enum :observation_type, { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6,
