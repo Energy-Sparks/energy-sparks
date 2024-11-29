@@ -33,7 +33,7 @@ module Audits
     end
 
     def completed_activities_count
-      audit.completed_activity_types.count
+      audit.activity_types_completed.count
     end
 
     def total_activities_count
@@ -41,7 +41,7 @@ module Audits
     end
 
     def completed_actions_count
-      audit.completed_intervention_types.count
+      audit.intervention_types_completed.count
     end
 
     def total_actions_count

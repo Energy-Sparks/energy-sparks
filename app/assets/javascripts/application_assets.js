@@ -70,3 +70,5 @@
 //= require panel_switcher_component
 //= require carousels
 //= require school_search
+//= require sortable.min
+//= require sort_list
