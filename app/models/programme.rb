@@ -23,6 +23,8 @@
 #
 
 class Programme < ApplicationRecord
+  include Todos::Completable
+
   belongs_to :programme_type
   belongs_to :school
   has_many :programme_activities

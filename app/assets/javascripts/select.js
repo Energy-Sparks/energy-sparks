@@ -4,6 +4,11 @@ $(document).ready(function() {
 
   $('select.form-control.select2').select2({theme: 'bootstrap'});
 
+  // Switch on select2 after cocoon insert. Needed for todos
+  $('.admin-todos').on('cocoon:after-insert', function(e, insertedItem) {
+    $(insertedItem).find('select.form-control.select2').select2({theme: 'bootstrap'});
+  });
+
   // When using select2 with bootstrap tabs
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     changeSelect();
