@@ -400,9 +400,44 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-components-advice_page_list-yml]
+file_filter  = config/locales/<lang>/views/components/advice_page_list.yml
+source_file  = config/locales/views/components/advice_page_list.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-components-breadcrumbs-yml]
 file_filter  = config/locales/<lang>/views/components/breadcrumbs.yml
 source_file  = config/locales/views/components/breadcrumbs.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-comparison_overview-yml]
+file_filter  = config/locales/<lang>/views/components/comparison_overview.yml
+source_file  = config/locales/views/components/comparison_overview.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-dashboard_header-yml]
+file_filter  = config/locales/<lang>/views/components/dashboard_header.yml
+source_file  = config/locales/views/components/dashboard_header.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-dashboard_insights-yml]
+file_filter  = config/locales/<lang>/views/components/dashboard_insights.yml
+source_file  = config/locales/views/components/dashboard_insights.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-learn_more-yml]
+file_filter  = config/locales/<lang>/views/components/learn_more.yml
+source_file  = config/locales/views/components/learn_more.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -428,6 +463,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-components-school_search-yml]
+file_filter  = config/locales/<lang>/views/components/school_search.yml
+source_file  = config/locales/views/components/school_search.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-components-scoreboard_summary-yml]
 file_filter  = config/locales/<lang>/views/components/scoreboard_summary.yml
 source_file  = config/locales/views/components/scoreboard_summary.yml
@@ -435,9 +477,9 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
-[o:energy-sparks:p:energy-sparks:r:views-components-timeline-yml]
-file_filter  = config/locales/<lang>/views/components/timeline.yml
-source_file  = config/locales/views/components/timeline.yml
+[o:energy-sparks:p:energy-sparks:r:views-components-search_results-yml]
+file_filter  = config/locales/<lang>/views/components/search_results.yml
+source_file  = config/locales/views/components/search_results.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -631,6 +673,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-pupils-public_displays-yml]
+file_filter  = config/locales/<lang>/views/pupils/public_displays.yml
+source_file  = config/locales/views/pupils/public_displays.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-pupils-pupils-yml]
 file_filter  = config/locales/<lang>/views/pupils/pupils.yml
 source_file  = config/locales/views/pupils/pupils.yml
@@ -700,3 +749,4 @@ source_file  = config/locales/views/terms_and_conditions/terms_and_conditions.ym
 source_lang  = en
 type         = YML
 minimum_perc = 100
+
