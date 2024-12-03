@@ -24,4 +24,6 @@ class CompletedTodo < ApplicationRecord
 
   has_one :activity_type, through: :todo, source: :task, source_type: 'ActivityType'
   has_one :intervention_type, through: :todo, source: :task, source_type: 'InterventionType'
+
+  validates :completable, uniqueness: { scope: :todo_id, message: 'can only be completed once' }
 end

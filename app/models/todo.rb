@@ -31,4 +31,20 @@ class Todo < ApplicationRecord
   delegated_type :task, types: %w[ActivityType InterventionType]
 
   has_many :completed_todos, dependent: :destroy, class_name: 'CompletedTodo', foreign_key: 'todo_id'
+
+  def completed_todos_for(completable:)
+    completed_todos.where(completable: completable)
+  end
+
+  def completed_todo_for(completable:)
+    completed_todos_for(completable: completable).last
+  end
+
+  def complete!(completable:, recording:)
+    if (completed_todo = completed_todo_for(completable:))
+      completed_todo.update(recording: recording)
+    else
+      completed_todos_for(completable: completable).create!(recording: recording)
+    end
+  end
 end

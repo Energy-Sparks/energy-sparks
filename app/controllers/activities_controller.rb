@@ -36,13 +36,21 @@ class ActivitiesController < ApplicationController
   def edit; end
 
   def create
-    respond_to do |format|
-      if ActivityCreator.new(@activity, current_user).process
-        format.html { redirect_to completed_school_activity_path(@school, @activity) }
-        format.json { render :show, status: :created, location: @school }
+    if Flipper.enabled?(:todos, current_user)
+      if TaskCreator.new(@activity, current_user).process
+        redirect_to completed_school_activity_path(@school, @activity)
       else
-        format.html { render :new }
-        format.json { render json: @activity.errors, status: :unprocessable_entity }
+        render :new
+      end
+    else
+      respond_to do |format|
+        if ActivityCreator.new(@activity, current_user).process
+          format.html { redirect_to completed_school_activity_path(@school, @activity) }
+          format.json { render :show, status: :created, location: @school }
+        else
+          format.html { render :new }
+          format.json { render json: @activity.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -62,6 +70,7 @@ class ActivitiesController < ApplicationController
   end
 
   def destroy
+    ## need to check completed todo is also removed here!!
     @activity.observations.each { |observation| ObservationRemoval.new(observation).process }
     @activity.destroy
     respond_to do |format|
