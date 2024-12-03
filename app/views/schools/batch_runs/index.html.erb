@@ -2,29 +2,37 @@
 
 <h1>Regenerate data for <%= @school.name %></h1>
 
-<%= simple_form_for [@school, School.new], url: school_batch_runs_path(@school) do |f| %>
-  <%= f.submit 'Start regeneration', class: 'btn' %>
+<% if @school.process_data? %>
+  <%= simple_form_for [@school, School.new], url: school_batch_runs_path(@school) do |f| %>
+    <%= f.submit 'Start regeneration', class: 'btn' %>
+  <% end %>
+<% else %>
+  <%= render(PromptComponent.new(icon: :warning, status: :negative)) do %>
+    <p>Cannot regenerate a school that has not been set to process data. Check school configuration before enabling.</p>
+  <% end %>
 <% end %>
 
-<br/>
+<br>
 
-<h2>Previous runs</h2>
+<% if @school_batch_runs.any? %>
+  <h2>Previous runs</h2>
 
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th>Date</th>
-    <th>Status</th>
-    <th>Action</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @school_batch_runs.each do |run| %>
+  <table class="table table-striped">
+    <thead>
     <tr>
-      <td><%= nice_date_times(run.created_at) %></td>
-      <td><%= run.status %></td>
-      <td><%= link_to 'View', school_batch_run_path(@school, run), class: 'btn' %></td>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Action</th>
     </tr>
-  <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+    <% @school_batch_runs.each do |run| %>
+      <tr>
+        <td><%= nice_date_times(run.created_at) %></td>
+        <td><%= run.status %></td>
+        <td><%= link_to 'View', school_batch_run_path(@school, run), class: 'btn' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
