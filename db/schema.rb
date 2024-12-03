@@ -656,6 +656,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_21_155221) do
     t.index ["report_group_id"], name: "index_comparison_reports_on_report_group_id"
   end
 
+  create_table "completed_todos", force: :cascade do |t|
+    t.bigint "todo_id", null: false
+    t.string "completable_type", null: false
+    t.bigint "completable_id", null: false
+    t.string "recording_type", null: false
+    t.bigint "recording_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["completable_type", "completable_id"], name: "index_completed_todos_on_completable"
+    t.index ["recording_type", "recording_id"], name: "index_completed_todos_on_recording"
+    t.index ["todo_id"], name: "index_completed_todos_on_todo_id"
+  end
+
   create_table "configurations", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.json "analysis_charts", default: {}, null: false
@@ -1808,6 +1821,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_21_155221) do
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_temperature_recordings_on_location_id"
     t.index ["observation_id"], name: "index_temperature_recordings_on_observation_id"
+  end
+
+  create_table "todos", force: :cascade do |t|
+    t.string "assignable_type", null: false
+    t.bigint "assignable_id", null: false
+    t.string "task_type", null: false
+    t.bigint "task_id", null: false
+    t.integer "position", default: 0, null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignable_type", "assignable_id"], name: "index_todos_on_assignable"
+    t.index ["task_type", "task_id"], name: "index_todos_on_task"
   end
 
   create_table "topics", force: :cascade do |t|

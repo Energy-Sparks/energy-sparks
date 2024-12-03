@@ -68,6 +68,7 @@ gem 'bootstrap-email'
 gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout
 gem 'cocoon' # nested forms
 gem 'simple_form'
+gem 'sortablejs-rails'
 gem 'view_component'
 
 # JS Templating

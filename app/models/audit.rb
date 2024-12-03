@@ -24,6 +24,9 @@ class Audit < ApplicationRecord
   has_one_attached :file
   has_rich_text :description
 
+  include Todos::Assignable
+  include Todos::Completable
+
   has_many :observations, as: :observable, dependent: :destroy
 
   validates_presence_of :school, :title, :file
@@ -41,20 +44,20 @@ class Audit < ApplicationRecord
   scope :published, -> { where(published: true) }
   scope :by_date,   -> { order(created_at: :desc) }
 
-  def completed_activity_types
+  def activity_types_completed
     activity_types.where(id: school.activities.where(happened_on: created_at..).pluck(:activity_type_id))
   end
 
-  def completed_intervention_types
+  def intervention_types_completed
     intervention_types.where(id: school.observations.intervention.where(at: created_at..).pluck(:intervention_type_id))
   end
 
   def activity_types_remaining
-    activity_types - completed_activity_types
+    activity_types - activity_types_completed
   end
 
   def intervention_types_remaining
-    intervention_types - completed_intervention_types
+    intervention_types - intervention_types_completed
   end
 
   def tasks_remaining?

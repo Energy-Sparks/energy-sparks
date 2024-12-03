@@ -4,6 +4,7 @@ en:
     alert_email:
       book_a_workshop: Book a workshop
       book_an_audit: Book an audit
+      dashboard_and_analysis_message_2024_html: Your <a href='%{school_url}'>school dashboard</a> always shows a summary of your recent alerts and energy consumption. For a <a href='%{alerts_school_advice_url}'>full list of alerts</a> and our suggested <a href='%{priorities_school_advice_url}'>priority actions</a>, view our <a href='%{school_analysis_index_url}'>detailed analysis</a>
       dashboard_and_analysis_message_html: Your <strong><a href='%{school_url}'>school dashboard</a></strong> always shows your latest alerts and our <strong><a href='%{school_analysis_index_url}'>detailed analysis</a></strong> of your energy usage will provide further insights
       do_not_show_me_alerts_like_this: Don't show me alerts like this
       education_workshops_message: Energy Sparks offers in-person and virtual half day education workshops and assemblies to participating schools across the UK
@@ -18,6 +19,10 @@ en:
       set_a_new_target: Set a new target
       stay_up_to_date: Stay up to date
       subject: Energy Sparks alerts
+      subject_2024: "%{school_name} weekly alerts"
+      take_action_around_the_school: Take action around the school
+      take_action_choose: Choose activity
+      take_action_message: Complete one of our recommended pupil or adult led activities to start reducing your energy usage
       title: Your weekly alerts
       view_your_progress_report: View your progress report
       view_your_school_dashboard: View your school dashboard

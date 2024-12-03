@@ -128,13 +128,8 @@ describe AdvicePageHelper do
 
     describe '.dashboard_alert_groups' do
       it 'returns list of groups with alerts' do
-        expect(helper.dashboard_alert_groups(dashboard_alerts)).to eq(%w[change advice])
-      end
-    end
-
-    describe '.dashboard_alerts_for_group' do
-      it 'returns alerts for group' do
-        expect(helper.dashboard_alerts_for_group(dashboard_alerts, 'change')).to eq([dashboard_alert_change])
+        expect(helper.dashboard_alert_groups(dashboard_alerts)).to \
+          eq([['change', [dashboard_alert_change]], ['advice', [dashboard_alert_advice]]])
       end
     end
 
