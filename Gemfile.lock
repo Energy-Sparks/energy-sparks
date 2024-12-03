@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 83819a51636efcc7aef59677dae36d892e963f57
+  revision: c0025315d47062347cb4350dfc8f25b29d0e7f1a
   branch: 4483-the-seasonal-control-page-seems-to-suggest-that-glenmoor-academy-is-using-a-lot-of-heating-in-warmer-weather-it-flags-up-days-in
   specs:
     energy-sparks_analytics (1.2.1)
