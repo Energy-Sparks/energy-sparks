@@ -30,16 +30,18 @@ module Schools
     end
 
     def create
-      @observation = @school.observations.new(observation_params.merge(observation_type: :intervention,
-                                                                       created_by: current_user))
-      authorize! :create, @observation
       if Flipper.enabled?(:todos, current_user)
-        if TaskCreator.new(@observation, current_user).process
+        @observation = @school.observations.intervention.new(observation_params)
+        if TaskRecorder.new(@observation, current_user).process
           redirect_to completed_school_intervention_path(@school, @observation)
         else
           render :new
         end
       else
+        @observation = @school.observations.new(observation_params.merge(observation_type: :intervention,
+                                                                         created_by: current_user))
+        authorize! :create, @observation
+
         if @observation.save
           redirect_to completed_school_intervention_path(@school, @observation)
         else

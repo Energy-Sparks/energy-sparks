@@ -90,12 +90,19 @@ class Audit < ApplicationRecord
     self.observations.create!(observation_type: :audit_activities_completed, points: SiteSettings.current.audit_activities_bonus_points)
   end
 
-  ## NB: using same bonus score and observation as just activities being completed as above!!
+  ## NB: using same bonus score and observation as just activities being completed as above!
   def complete!
+    # I think we should raise here too if the site has no bonus points set
     return unless SiteSettings.current.audit_activities_bonus_points
-    return unless todos_completed?
-    return if observations.audit_activities_completed.any? # Only one audit activities completed observation is permitted per audit
+    # There is no flag on audit to say all tasks are completed, apart from observation being present
+    # So halt here if observation is present
+    return if observations.audit_activities_completed.any?
 
-    self.observations.create!(observation_type: :audit_activities_completed, points: SiteSettings.current.audit_activities_bonus_points)
+    # NEW FEATURE. Don't allow audit observation to be created if no tasks are assigned to audit.
+    # Need to check this is the right thing to do.
+    return unless todos.any?
+    return unless todos_completed?
+
+    self.observations.audit_activities_completed.create!(points: SiteSettings.current.audit_activities_bonus_points)
   end
 end

@@ -37,7 +37,7 @@ class ActivitiesController < ApplicationController
 
   def create
     if Flipper.enabled?(:todos, current_user)
-      if TaskCreator.new(@activity, current_user).process
+      if TaskRecorder.new(@activity, current_user).process
         redirect_to completed_school_activity_path(@school, @activity)
       else
         render :new

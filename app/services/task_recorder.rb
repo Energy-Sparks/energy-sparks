@@ -1,13 +1,12 @@
-class TaskRecording
-  SUPPORTED_MODELS = [Activity, Observation].freeze
+class TaskRecorder
+  SUPPORTED_MODELS = %w(Activity Observation).freeze
 
   def self.new(recording, user)
-    unless SUPPORTED_MODELS.include?(recording.class)
-      raise ArgumentError, "Unsupported recordable type: #{recording.class.name}"
-    end
+    subclass_name = recording.class.to_s
+    raise ArgumentError, "Unsupported recording type: #{recording.class.name}" unless SUPPORTED_MODELS.include?(subclass_name)
 
-    subclass = const_get(recording.class.name)
-    subclass.new(recording, user)
+    subclass = const_get(subclass_name)
+    subclass.allocate.tap { |object| object.send(:initialize, recording, user) }
   end
 
   def initialize(recording, user)
@@ -18,6 +17,7 @@ class TaskRecording
 
   def process
     if @recording.save
+      after_save
       completables.each do |completable|
         # mark todos as completed for given programme or audit
         mark_todos_completed(completable)
@@ -56,17 +56,9 @@ class TaskRecording
     completables.map(:assignable)
   end
 
-  class Observation < TaskRecording
-    def observation
-      @recording
-    end
+  def after_save; end
 
-    def task
-      @task ||= observation.intervention_type
-    end
-  end
-
-  class Activity < TaskRecording
+  class Activity < TaskRecorder
     def activity
       @recording
     end
@@ -75,9 +67,42 @@ class TaskRecording
       @task ||= activity.activity_type
     end
 
-    def initialize
-      super
-      activity.activity_category = activity.activity_type.activity_category if activity.activity_type
+    def initialize(recording, user)
+      super(recording, user)
+      unless task
+        raise ArgumentError, 'Activity recordings must have an associated activity type'
+      end
+
+      activity.activity_category = activity.activity_type.activity_category
+    end
+
+    def after_save
+      activity.observations.activity.create!(
+        school: activity.school,
+        at: activity.happened_on,
+        created_by: @user
+      )
+    end
+  end
+
+  class Observation < TaskRecorder
+    def observation
+      @recording
+    end
+
+    def task
+      @task ||= observation.intervention_type
+    end
+
+    def initialize(recording, user)
+      super(recording, user)
+
+      unless task
+        raise ArgumentError, 'Observation recordings must have an associated intervention type'
+      end
+
+      observation.created_by = @user
+      observation.at ||= Time.zone.now
     end
   end
 end
