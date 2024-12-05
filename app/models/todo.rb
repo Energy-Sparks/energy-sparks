@@ -33,37 +33,24 @@ class Todo < ApplicationRecord
   has_many :completed_todos, dependent: :destroy, class_name: 'CompletedTodo', foreign_key: 'todo_id'
 
   def completed_todos_for(completable:)
-    completed_todos.where(completable: completable)
-  end
-
-  def completed_todo_for(completable:)
-    completed_todos_for(completable: completable).last
+    completed_todos.where(completable: completable) # order?
   end
 
   def complete!(completable:, recording:)
-    if (completed_todo = completed_todo_for(completable:))
+    if (completed_todo = completed_todos_for(completable:).last)
       completed_todo.update(recording: recording)
     else
       completed_todos_for(completable: completable).create!(recording: recording)
     end
   end
 
-  def latest_recording_for_completable(completable)
-    case completable.class
-    when Audit
-      ## For audit - consider all recordings made after audit created
-      task_scope(completable.school).since(completable.created_at).by_date(:desc).first
-    when Programme
-      ## For programme, consider all recordings made in this academic year for school
-      task_scope(completable.school).in_academic_year_for(completable.school, Time.zone.now).by_date(:desc).first
-    else
-      raise StandardError, 'Unsupported completable type'
-    end
+  def latest_recording(completable:)
+    tasks_for(school: completable.school).in_academic_year_for(completable.school, Time.zone.now).by_date(:desc).first
   end
 
   private
 
-  def task_scope(school)
+  def task_for(school:)
     case task_type
     when 'Activity'
       school.activities.where(activity_type: task)

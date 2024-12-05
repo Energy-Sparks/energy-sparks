@@ -65,9 +65,13 @@ module Todos
         end
       end
 
+      def latest_recording(todo)
+        todo.latest_recording(completable: self)
+      end
+
       def recognise_existing_progress!
         assignable.todos.each do |todo|
-          recording = todo.latest_recording_for_completable(self)
+          recording = latest_recording(todo)
           if recording.present?
             todo.complete!(self, recording)
           end
