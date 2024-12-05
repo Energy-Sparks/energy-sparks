@@ -9,7 +9,6 @@
   <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.subtitle_html') %>
   <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_longterm_trend.subtitle_html') %>
   <% suffix = :_academic_year if Flipper.enabled?(:school_academic_year_comparisons) %>
-  <%= :"#{fuel_type}_longterm_trend#{suffix}" %>
   <%= component 'meter_selection_chart',
                 chart_type: :"#{fuel_type}_longterm_trend#{suffix}",
                 meter_selection: meter_selection,
