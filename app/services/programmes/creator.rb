@@ -18,7 +18,7 @@ module Programmes
       programme = @school.programmes.create(programme_type: @programme_type, started_on: Time.zone.today)
 
       if Flipper.enabled?(:todos)
-        programme.recognise_existing_progress!
+        programme.complete_todos_this_academic_year!
       else
         recognise_existing_progress(programme)
       end
@@ -26,7 +26,6 @@ module Programmes
     end
 
     private
-
 
     def recognise_existing_progress(programme)
       @programme_type.programme_type_activity_types.each do |programme_type_activity_type|

@@ -69,7 +69,7 @@ module Todos
         todo.latest_recording(completable: self)
       end
 
-      def recognise_existing_progress!
+      def complete_todos_this_academic_year!
         assignable.todos.each do |todo|
           recording = latest_recording(todo)
           if recording.present?
