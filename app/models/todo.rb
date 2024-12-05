@@ -31,4 +31,33 @@ class Todo < ApplicationRecord
   delegated_type :task, types: %w[ActivityType InterventionType]
 
   has_many :completed_todos, dependent: :destroy, class_name: 'CompletedTodo', foreign_key: 'todo_id'
+
+  def completed_todos_for(completable:)
+    completed_todos.where(completable: completable) # order?
+  end
+
+  def complete!(completable:, recording:)
+    if (completed_todo = completed_todos_for(completable:).last)
+      completed_todo.update(recording: recording)
+    else
+      completed_todos_for(completable: completable).create!(recording: recording)
+    end
+  end
+
+  def latest_recording(completable:)
+    tasks_for(school: completable.school).in_academic_year_for(completable.school, Time.zone.now).by_date(:desc).first
+  end
+
+  private
+
+  def task_for(school:)
+    case task_type
+    when 'Activity'
+      school.activities.where(activity_type: task)
+    when 'Observation'
+      school.observations.intervention.where(intervention_type: task)
+    else
+      raise StandardError, 'Unsupported task type'
+    end
+  end
 end

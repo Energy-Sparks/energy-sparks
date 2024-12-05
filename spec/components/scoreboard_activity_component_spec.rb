@@ -11,8 +11,9 @@ RSpec.describe ScoreboardActivityComponent, :include_url_helpers, type: :compone
   let!(:scoreboard) { create :scoreboard }
   let!(:school) { create :school, scoreboard: scoreboard }
   let!(:other_school) { create :school, scoreboard: scoreboard }
-  let!(:activity) { create(:activity, school: other_school)}
-  let!(:observation) { create(:observation, :activity, activity: activity, school: other_school, points: 10) }
+  let!(:activity_type) { create :activity_type, score: 10 }
+  let!(:activity) { create(:activity, school: other_school, activity_type:) }
+  let!(:observation) { create(:observation, :activity, activity: activity, school: other_school) }
 
   let(:podium) { Podium.create(school: school, scoreboard: scoreboard) }
 
