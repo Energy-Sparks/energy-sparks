@@ -23,10 +23,6 @@ module Todos
         assignable.todos
       end
 
-      def school
-        self.school
-      end
-
       # def tasks(task_type = nil)
       #   scope = task_type.nil? ? todos : todos.where(task_type: task_type.to_s)
       #   scope.map(&:task).uniq
