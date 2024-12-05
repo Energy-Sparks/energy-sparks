@@ -4,7 +4,7 @@ module DataFeeds
   class PvLiveApi
     class ApiFailure < StandardError; end
 
-    BASE_URL = 'https://api.solar.sheffield.ac.uk/pvlive/api/v4'
+    BASE_URL = 'https://api.pvlive.uk/pvlive/api/v4'
 
     def gsp_list
       get_data('/gsp_list')
