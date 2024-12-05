@@ -12,12 +12,12 @@
         <div class="col-lg-1 py-3">
           <%= image_tag "email/fa-#{alert_type_icon(alert_content.alert.alert_type)}.png", class: 'px-4' %>
         </div>
-        <div class="col-lg-11 py-4 text-lg lh-md">
+        <div class="col-lg-11 py-4 text-sm lh-base">
           <strong><%= sanitize alert_content.email_title %></strong>
           <%= alert_content.email_content %>
           <% path = find_out_more_path_from_alert_content(school, alert_content, params: weekly_alert_utm_parameters,
                                                                                  mailer: true) %>
-          <%= link_to(t('alert_mailer.alert_email.find_out_more'), path, class: 'my-4') if path %>
+          <%= link_to(t('alert_mailer.alert_email.find_out_more'), path, class: 'text my-4') if path %>
         </div>
       </div>
       <div class="s-2"></div>
