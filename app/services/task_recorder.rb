@@ -18,6 +18,13 @@ class TaskRecorder
   def process
     if @recording.save
       after_save
+
+      # This is how activity creator logic works i.e. go through all subscribed programmes,
+      # regardless of if activity_type or intervention_type is part of it or not.
+      # It is probably less complicated than the alternative,
+      # which would be find programme types or audits with task_id in,
+      # then find the school's audits and programmes for these audit or programme_type
+
       completables.each do |completable|
         # mark todos as completed for given programme or audit
         mark_todos_completed(completable)
@@ -102,7 +109,7 @@ class TaskRecorder
       end
 
       observation.created_by = @user
-      observation.at ||= Time.zone.now
+      # observation.at ||= Time.zone.now # this is set in the controller
     end
   end
 end

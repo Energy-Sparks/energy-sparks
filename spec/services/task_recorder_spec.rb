@@ -137,4 +137,10 @@ describe TaskRecorder do
       end
     end
   end
+
+  describe 'recording todo progress' do
+    context 'when there is an audit containing activity' do
+      it 'works'
+    end
+  end
 end

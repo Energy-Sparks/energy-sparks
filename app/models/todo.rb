@@ -47,4 +47,30 @@ class Todo < ApplicationRecord
       completed_todos_for(completable: completable).create!(recording: recording)
     end
   end
+
+  def latest_recording_for_completable(completable)
+    case completable.class
+    when Audit
+      ## For audit - consider all recordings made after audit created
+      task_scope(completable.school).since(completable.created_at).by_date(:desc).first
+    when Programme
+      ## For programme, consider all recordings made in this academic year for school
+      task_scope(completable.school).in_academic_year_for(completable.school, Time.zone.now).by_date(:desc).first
+    else
+      raise StandardError, 'Unsupported completable type'
+    end
+  end
+
+  private
+
+  def task_scope(school)
+    case task_type
+    when 'Activity'
+      school.activities.where(activity_type: task)
+    when 'Observation'
+      school.observations.intervention.where(intervention_type: task)
+    else
+      raise StandardError, 'Unsupported task type'
+    end
+  end
 end

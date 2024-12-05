@@ -23,6 +23,10 @@ module Todos
         assignable.todos
       end
 
+      def school
+        self.school
+      end
+
       # def tasks(task_type = nil)
       #   scope = task_type.nil? ? todos : todos.where(task_type: task_type.to_s)
       #   scope.map(&:task).uniq
@@ -36,8 +40,25 @@ module Todos
         completed_todos.pluck(:todo_id)
       end
 
+      def nothing_todo?
+        all_todo_ids.none?
+      end
+
       def todos_complete?
+        ## new feature! Don't say all the todos are complete if there aren't any? Check this is required behaviour
+        return false if nothing_todo?
+
         (all_todo_ids - completed_todo_ids).empty?
+      end
+
+      def recognise_existing_progress!
+        assignable.todos.each do |todo|
+          recording = todo.latest_recording_for_completable(self)
+          if recording.present?
+            todo.complete!(self, recording)
+          end
+        end
+        self.complete! if todos_complete?
       end
 
       def complete!
