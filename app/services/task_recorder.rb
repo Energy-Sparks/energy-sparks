@@ -13,6 +13,9 @@ class TaskRecorder
     @recording = recording
     @user = user
     @school = recording.school
+    unless task
+      raise ArgumentError, 'Recording must have an associated task'
+    end
   end
 
   def process
@@ -27,29 +30,16 @@ class TaskRecorder
 
       completables.each do |completable|
         # mark todos as completed for given programme or audit
-        mark_todos_completed(completable)
-        # mark programme or audit as complete if all tasks complete
-        # add observation for both
-        completable.complete! if completable.todos_complete?
+        completable.task_complete!(task)
+
+        # mark programme or audit as complete if tasks available and complete
+        completable.complete! if completable.completable?
       end
     end
     @recording.persisted?
   end
 
   private
-
-  def mark_todos_completed(completable)
-    # bail if programme_type or audit doesn't include task
-    # return unless completable.assignable.tasks.include?(task)
-
-    # find all todos for task for programme type or audit
-    todos = Todo.where(task: task, assignable: completable.assignable)
-
-    # mark all matching todos done for programe or audit (really should be only one per programme or audit)
-    todos.each do |todo|
-      todo.complete!(completable: completable, recording: @recording)
-    end
-  end
 
   def task
     raise NoMethodError, 'Implement in subclass!'
@@ -76,9 +66,6 @@ class TaskRecorder
 
     def initialize(recording, user)
       super(recording, user)
-      unless task
-        raise ArgumentError, 'Activity recordings must have an associated activity type'
-      end
 
       activity.activity_category = activity.activity_type.activity_category
     end
@@ -103,10 +90,6 @@ class TaskRecorder
 
     def initialize(recording, user)
       super(recording, user)
-
-      unless task
-        raise ArgumentError, 'Observation recordings must have an associated intervention type'
-      end
 
       observation.created_by = @user
       # observation.at ||= Time.zone.now # this is set in the controller

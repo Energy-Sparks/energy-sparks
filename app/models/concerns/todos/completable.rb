@@ -36,8 +36,16 @@ module Todos
         completed_todos.pluck(:todo_id)
       end
 
+      def has_todos?
+        all_todo_ids.any?
+      end
+
       def nothing_todo?
         all_todo_ids.none?
+      end
+
+      def completable?
+        has_todos? && todos_complete?
       end
 
       def todos_complete?
@@ -47,6 +55,16 @@ module Todos
         (all_todo_ids - completed_todo_ids).empty?
       end
 
+      def task_complete!(task)
+        todos = Todo.where(task: task, assignable: assignable)
+        return unless todos.any?
+
+        # mark all matching todos done for programe or audit (really should be only one per programme or audit)
+        todos.each do |todo|
+          todo.complete!(completable: completable, recording: @recording)
+        end
+      end
+
       def recognise_existing_progress!
         assignable.todos.each do |todo|
           recording = todo.latest_recording_for_completable(self)
@@ -54,7 +72,7 @@ module Todos
             todo.complete!(self, recording)
           end
         end
-        self.complete! if todos_complete?
+        self.complete! if completable?
       end
 
       def complete!
