@@ -29,7 +29,8 @@ class AmrReadingData
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
   validate :any_valid_readings?
 
-  def initialize(reading_data:, date_format:, missing_reading_threshold: 0, today: Time.zone.today)
+  def initialize(amr_data_feed_config: nil, reading_data:, date_format:, missing_reading_threshold: 0, today: Time.zone.today)
+    @amr_data_feed_config = @amr_data_feed_config
     @reading_data = reading_data
     @date_format = date_format
     @missing_reading_threshold = missing_reading_threshold
