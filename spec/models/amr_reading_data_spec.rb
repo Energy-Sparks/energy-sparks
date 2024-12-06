@@ -207,6 +207,17 @@ describe AmrReadingData do
         it_behaves_like 'it is valid'
       end
 
+      context 'when format is row per reading and merged is allowed' do
+        let(:amr_data_feed_config) do
+          create(:amr_data_feed_config,
+            row_per_reading: true,
+            date_format: date_format,
+            allow_merging: true)
+        end
+
+        it_behaves_like 'it is valid'
+      end
+
       context 'with missing as nil' do
         let(:missing_readings) { Array.new(47, 0.0) << nil }
 
