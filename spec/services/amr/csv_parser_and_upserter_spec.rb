@@ -1,79 +1,11 @@
 require 'rails_helper'
-require 'fileutils'
 
 describe Amr::CsvParserAndUpserter do
-  let!(:highlands_config) do
-    create(:amr_data_feed_config,
-      description: 'Highlands',
-      date_format: '%e %b %Y %H:%M:%S',
-      mpan_mprn_field: 'MPR',
-      reading_date_field: 'ReadDatetime',
-      reading_fields: ['kWh'],
-      header_example: 'MPR,ReadDatetime,kWh,ReadType',
-      row_per_reading: true,
-      number_of_header_rows: 2,
-      identifier: 'amr_highlands'
-    )
-  end
+  subject(:service) { described_class.new(config, file_name) }
 
-  # row per reading, valid
-  # row per reading, shifted?
-  context 'highlands with real files' do
-    it 'imports a csv' do
-      ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
-        expect(AmrDataFeedReading.count).to be 0
-        importer = described_class.new(highlands_config, 'example.csv')
-        importer.perform
-
-        AmrDataFeedReading.all.find_each do |reading_record|
-          expect(reading_record.readings.any?(&:blank?)).to be false
-        end
-
-        expect(AmrDataFeedReading.count).to be 10
-        expect(importer.inserted_record_count).to be 10
-      end
-    end
-
-    it 'imports a csv where the times are shifted by half an hour' do
-      ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
-        expect(AmrDataFeedReading.count).to be 0
-        importer = described_class.new(highlands_config, 'example-offset.csv')
-        importer.perform
-
-        AmrDataFeedReading.all.find_each do |reading_record|
-          expect(reading_record.readings.count(&:blank?)).to be <= highlands_config.blank_threshold
-        end
-
-        expect(AmrDataFeedReading.count).to be 7
-        expect(importer.inserted_record_count).to be 7
-      end
-    end
-
-    it 'record exception when file is truncated' do
-      ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
-        expect(AmrDataFeedReading.count).to be 0
-        importer = described_class.new(highlands_config, 'empty.csv')
-        importer.perform
-
-        expect(AmrDataFeedReading.count).to be 0
-        expect(importer.inserted_record_count).to be 0
-        expect(AmrDataFeedImportLog.last.error_messages).not_to be_nil
-      end
-    end
-
-    it 'record exception when file is invalid' do
-      ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
-        expect(AmrDataFeedReading.count).to be 0
-
-        e = StandardError.new
-        expect_any_instance_of(Amr::DataFileToAmrReadingData).to receive(:perform).and_raise(e)
-
-        importer = described_class.new(highlands_config, 'empty.csv')
-        expect { importer.perform }.to raise_error StandardError
-
-        expect(AmrDataFeedReading.count).to be 0
-        expect(importer.inserted_record_count).to be 0
-      end
+  around do |example|
+    ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures/amr_data' do
+      example.run
     end
   end
 
@@ -84,7 +16,7 @@ describe Amr::CsvParserAndUpserter do
     end
 
     it 'updates the correct number of records' do
-      expect(service.upserted_record_count).to eq updated
+      expect(service.updated_record_count).to eq updated
     end
 
     it 'records a log' do
@@ -142,7 +74,7 @@ describe Amr::CsvParserAndUpserter do
 
     it 'does not update the database' do
       expect(service.inserted_record_count).to eq 0
-      expect(service.upserted_record_count).to eq 0
+      expect(service.updated_record_count).to eq 0
       expect(AmrDataFeedReading.count).to eq 0
     end
 
@@ -159,9 +91,27 @@ describe Amr::CsvParserAndUpserter do
     end
   end
 
-  context 'with row per day files' do
-    subject(:service) { described_class.new(config, file_name) }
+  shared_examples 'it handles empty files' do
+    context 'with empty file' do
+      let(:file_name) { 'empty.csv' }
 
+      it_behaves_like 'it rejects the file'
+    end
+
+    context 'with Microsoft Excel annotation' do
+      let(:file_name) { 'empty-msft.csv' }
+
+      it_behaves_like 'it rejects the file'
+    end
+
+    context 'with a header' do
+      let(:file_name) { 'empty-with-header.csv' }
+
+      it_behaves_like 'it rejects the file'
+    end
+  end
+
+  context 'with row per day files' do
     let(:valid_reading_times) do
       48.times.map do |hh|
         TimeOfDay.time_of_day_from_halfhour_index(hh).to_s
@@ -181,18 +131,24 @@ describe Amr::CsvParserAndUpserter do
       )
     end
 
-    around do |example|
-      FakeFS.deactivate!
-      ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures/amr_data' do
-        example.run
-      end
-      # FakeFS.activate!
-    end
+    it_behaves_like 'it handles empty files'
 
     context 'with valid file' do
       let(:file_name) { 'valid.csv' }
 
       it_behaves_like 'it successfully processes the file'
+
+      context 'when reloaded' do
+        it 'upserts the data' do
+          service.perform
+          expect(service.inserted_record_count).to eq 1
+          expect(service.updated_record_count).to eq 0
+
+          service.perform
+          expect(service.inserted_record_count).to eq 0
+          expect(service.updated_record_count).to eq 1
+        end
+      end
     end
 
     context 'with valid file and no header expected' do
@@ -203,24 +159,6 @@ describe Amr::CsvParserAndUpserter do
       end
 
       it_behaves_like 'it successfully processes the file'
-    end
-
-    context 'with empty files' do
-      let(:file_name) { 'empty.csv' }
-
-      it_behaves_like 'it rejects the file'
-
-      context 'with Microsoft Excel annotation' do
-        let(:file_name) { 'empty-msft.csv' }
-
-        it_behaves_like 'it rejects the file'
-      end
-
-      context 'with a header' do
-        let(:file_name) { 'empty-with-header.csv' }
-
-        it_behaves_like 'it rejects the file'
-      end
     end
 
     context 'with file with problems for all rows' do
@@ -286,6 +224,69 @@ describe Amr::CsvParserAndUpserter do
       let(:file_name) { 'valid.csv' }
 
       it_behaves_like 'it rejects the file'
+    end
+  end
+
+  context 'with row per reading files' do
+    let!(:config) do
+      create(:amr_data_feed_config,
+        identifier: 'row-per-reading',
+        row_per_reading: true,
+        half_hourly_labelling: :end,
+        number_of_header_rows: 2,
+        date_format: '%e %b %Y %H:%M:%S',
+        mpan_mprn_field: 'MPR',
+        reading_date_field: 'ReadDatetime',
+        reading_fields: ['kWh'],
+        header_example: 'MPR,ReadDatetime,kWh,ReadType'
+      )
+    end
+
+    it_behaves_like 'it handles empty files'
+
+    context 'with valid file' do
+      let(:file_name) { 'valid.csv' }
+
+      it_behaves_like 'it successfully processes the file'
+
+      it 'does not have any blank readings' do
+        service.perform
+        AmrDataFeedReading.all.find_each do |reading_record|
+          expect(reading_record.readings.any?(&:blank?)).to be false
+        end
+      end
+    end
+
+    context 'with partially valid files' do
+      context 'when missing readings for some rows' do
+        let(:file_name) { 'some-missing-readings.csv' }
+
+        # no warnings here as filtered by SingleReadConverter
+        # due to missing readings limit
+        it_behaves_like 'it successfully processes the file' do
+          let(:inserted) { 1 }
+        end
+
+        context 'with increased missing readings limit' do
+          before do
+            config.update!(missing_readings_limit: 10)
+          end
+
+          it_behaves_like 'it successfully processes the file' do
+            let(:inserted) { 2 }
+          end
+        end
+
+        context 'when set to merge' do
+          before do
+            config.update!(allow_merging: true, half_hourly_labelling: :start)
+          end
+
+          it_behaves_like 'it successfully processes the file' do
+            let(:inserted) { 2 }
+          end
+        end
+      end
     end
   end
 end
