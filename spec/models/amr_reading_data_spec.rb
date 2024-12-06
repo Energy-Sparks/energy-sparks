@@ -2,8 +2,10 @@ require 'rails_helper'
 
 describe AmrReadingData do
   subject(:amr_reading_data) do
-    AmrReadingData.new(reading_data: reading_data, date_format: date_format)
+    AmrReadingData.new(amr_data_feed_config: amr_data_feed_config, reading_data: reading_data)
   end
+
+  let(:amr_data_feed_config) { create(:amr_data_feed_config, date_format: date_format) }
 
   let(:date_format) { '%Y-%m-%d' }
   let(:reading_data) { [] }
@@ -194,9 +196,12 @@ describe AmrReadingData do
         let(:warning_type) { :missing_readings }
       end
 
-      context 'when missing threshold is higher' do
-        subject(:amr_reading_data) do
-          described_class.new(reading_data: reading_data, date_format: date_format, missing_reading_threshold: 1)
+      context 'when format is row per reading and missing threshold is higher' do
+        let(:amr_data_feed_config) do
+          create(:amr_data_feed_config,
+            row_per_reading: true,
+            date_format: date_format,
+            missing_readings_limit: 1)
         end
 
         it_behaves_like 'it is valid'
