@@ -68,7 +68,7 @@ module Admin
       def validated_reading_hash(status, substitute_date)
         description = "#{status} #{@amr_types[status][:name]}"
         description = description + " (with #{substitute_date.strftime('%d/%m/%Y')})" if substitute_date
-        colour = @colour_hash[status].to_s
+        colour = @colour_hash.key?(status) ? @colour_hash[status].to_s : Colours.grey_dark
         { description: description, colour: colour }
       end
     end
