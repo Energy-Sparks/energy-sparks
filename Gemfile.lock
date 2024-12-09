@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 8cd9bd58b4c8470278d3f9822e75be464c69e410
+  revision: c670751f9547d2fa99636ae4111f22d06635d6d4
   branch: 4619-academic-year-comparisons-on-long-term-usage-pages
   specs:
     energy-sparks_analytics (1.2.1)
