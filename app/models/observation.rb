@@ -92,7 +92,6 @@ class Observation < ApplicationRecord
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
   }
-  scope :since, ->(range) { where(at: range) }
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
   scope :recorded_since, ->(range) { where(created_at: range) }

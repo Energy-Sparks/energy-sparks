@@ -30,12 +30,13 @@ class TaskRecorder
 
       completables.each do |completable|
         # mark todos as completed for given programme or audit
-        completable.task_complete!(task)
+        completable.task_complete!(task: task, recording: @recording)
 
         # mark programme or audit as complete if tasks available and complete
         completable.complete! if completable.completable?
       end
     end
+
     @recording.persisted?
   end
 
@@ -47,10 +48,6 @@ class TaskRecorder
 
   def completables
     @school.programmes.completable + @school.audits.completable
-  end
-
-  def assignables
-    completables.map(:assignable)
   end
 
   def after_save; end

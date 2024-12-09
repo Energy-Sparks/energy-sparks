@@ -18,43 +18,41 @@
 #  index_todos_on_task        (task_type,task_id)
 #
 class Todo < ApplicationRecord
-  belongs_to :assignable, polymorphic: true, optional: false
-  belongs_to :task, polymorphic: true, optional: false
+  belongs_to :assignable, polymorphic: true
+  belongs_to :task, polymorphic: true
+  has_many :completed_todos, dependent: :destroy
+
+  scope :activity_types, -> { where(task_type: 'ActivityType') }
+  scope :intervention_types, -> { where(task_type: 'InterventionType') }
 
   scope :by_task_type, ->(type) { where(task_type: type) }
   scope :positioned, -> { order(position: :asc) }
 
-  # belongs_to :activity_type, class_name: 'ActivityType'
-  # belongs_to :intervention_type, class_name: 'InterventionType'
-
   delegated_type :assignable, types: %w[Audit ProgrammeType]
   delegated_type :task, types: %w[ActivityType InterventionType]
 
-  has_many :completed_todos, dependent: :destroy, class_name: 'CompletedTodo', foreign_key: 'todo_id'
-
-  def completed_todos_for(completable:)
-    completed_todos.where(completable: completable) # order?
-  end
-
+  # todo.complete!(completable: Programme/Audit, recording: Activity/Obervation)
   def complete!(completable:, recording:)
-    if (completed_todo = completed_todos_for(completable:).last)
-      completed_todo.update(recording: recording)
-    else
-      completed_todos_for(completable: completable).create!(recording: recording)
-    end
+    # there should only ever be one, but first to be safe!
+    completed_todos.for(completable: completable).first_or_initialize.update!(recording: recording)
   end
 
-  def latest_recording(completable:)
-    tasks_for(school: completable.school).in_academic_year_for(completable.school, Time.zone.now).by_date(:desc).first
+  # todo.complete?(completable: Programme/Audit)
+  def complete_for?(completable:)
+    completed_todos.for(completable: completable).any?
+  end
+
+  def latest_recording_for(completable:)
+    recordings_for(school: completable.school).in_academic_year_for(completable.school, Time.zone.now).by_date(:desc).first
   end
 
   private
 
-  def task_for(school:)
+  def recordings_for(school:)
     case task_type
-    when 'Activity'
+    when 'ActivityType'
       school.activities.where(activity_type: task)
-    when 'Observation'
+    when 'InterventionType'
       school.observations.intervention.where(intervention_type: task)
     else
       raise StandardError, 'Unsupported task type'

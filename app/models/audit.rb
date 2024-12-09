@@ -20,12 +20,12 @@
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 class Audit < ApplicationRecord
+  include Todos::Assignable
+  include Todos::Completable
+
   belongs_to :school, inverse_of: :audits
   has_one_attached :file
   has_rich_text :description
-
-  include Todos::Assignable
-  include Todos::Completable
 
   has_many :observations, as: :observable, dependent: :destroy
 
@@ -90,18 +90,19 @@ class Audit < ApplicationRecord
     self.observations.create!(observation_type: :audit_activities_completed, points: SiteSettings.current.audit_activities_bonus_points)
   end
 
+  def completed?
+    observations.audit_activities_completed.any?
+  end
+
   ## NB: using same bonus score and observation as just activities being completed as above!
   def complete!
     # I think we should raise here too if the site has no bonus points set
     return unless SiteSettings.current.audit_activities_bonus_points
     # There is no flag on audit to say all tasks are completed, apart from observation being present
     # So halt here if observation is present
-    return if observations.audit_activities_completed.any?
-
-    # NEW FEATURE. Don't allow audit observation to be created if no tasks are assigned to audit.
-    # Need to check this is the right thing to do.
-    return unless todos.any?
-    return unless todos_completed?
+    return if completed?
+    # Are there todos and are they complete?
+    return unless completable?
 
     self.observations.audit_activities_completed.create!(points: SiteSettings.current.audit_activities_bonus_points)
   end
