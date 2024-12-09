@@ -125,7 +125,6 @@ group :development, :test do
   gem 'climate_control'
   gem 'debug'
   gem 'factory_bot_rails'
-  gem 'fakefs', require: 'fakefs/safe'
   gem 'foreman'
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false

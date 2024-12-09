@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe AmrReadingData do
   subject(:amr_reading_data) do
-    AmrReadingData.new(amr_data_feed_config: amr_data_feed_config, reading_data: reading_data)
+    described_class.new(amr_data_feed_config: amr_data_feed_config, reading_data: reading_data)
   end
 
   let(:amr_data_feed_config) { create(:amr_data_feed_config, date_format: date_format) }
