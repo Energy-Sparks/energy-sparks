@@ -1,12 +1,12 @@
 module Amr
   class CsvParserAndUpserter
-    attr_reader :inserted_record_count, :upserted_record_count
+    attr_reader :inserted_record_count, :updated_record_count
 
     def initialize(config_to_parse_file, file_name_to_import)
       @file_name = file_name_to_import
       @config = config_to_parse_file
       @inserted_record_count = 0
-      @upserted_record_count = 0
+      @updated_record_count = 0
     end
 
     def perform
