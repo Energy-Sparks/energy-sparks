@@ -61,7 +61,7 @@ cy:
         more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
         title: Sut ydych chi'n cymharu?
       current_baseload:
-        calculation_dates: 'Cyfrifiad yn seiliedig ar ddefnydd rhwng %{start_date} a %{end_date} '
+        calculation_dates: Cyfrifiad yn seiliedig ar ddefnydd rhwng %{start_date} a %{end_date}.
         last_week: Wythnos ddiwethaf
         last_year: Y llynedd
         tables:
