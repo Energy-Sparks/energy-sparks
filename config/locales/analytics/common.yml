@@ -78,8 +78,8 @@ en:
         gas: Gas
         gascarbon: Carbon Intensity of Gas (kg/kWh)
         gridcarbon: Carbon Intensity of Electricity Grid (kg/kWh)
-        heating_day: Heating on in cold weather
-        heating_day_warm_weather: Heating on in warm weather
+        heating_day: Heating on in colder weather
+        heating_day_warm_weather: Heating on in warmer weather
         holiday: Holiday
         holiday_heating: Heating On Holidays
         holiday_hot_water_kitchen: Hot water/kitchen only On Holidays

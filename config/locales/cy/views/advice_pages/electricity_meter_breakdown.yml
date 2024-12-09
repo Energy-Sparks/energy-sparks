@@ -1,0 +1,25 @@
+cy:
+  advice_pages:
+    electricity_meter_breakdown:
+      analysis:
+        long_term_trends:
+          summary: Mae’r adran hon yn edrych ar newidiadau tymor hwy yn y defnydd o drydan sy’n cael ei fonitro gan fesuryddion unigol yn eich ysgol.
+        sections: Mae'r adrannau canlynol yn rhoi mwy o ddadansoddiad o'r defnydd o drydan gan fesuryddion unigol
+      charts:
+        group_by_month_electricity_meter_breakdown:
+          subtitle: Mae'r siart hwn yn dangos dadansoddiad misol o'r defnydd o drydan fesul mesurydd dros y deuddeg mis diwethaf
+          title: Defnydd misol o drydan fesul mesurydd
+        group_by_year_electricity_meter_breakdown:
+          subtitle: Mae'r siart hwn yn dangos y newid blynyddol yn y defnydd o drydan fesul mesurydd
+          title: Defnydd blynyddol o drydan fesul mesurydd
+      insights:
+        current_usage:
+          title: Eich defnydd presennol o drydan fesul mesurydd
+        what_is_a_meter_breakdown:
+          link: Dysgu rhagor
+          text_html: |-
+            <p>
+            Mae gan eich ysgol sawl mesurydd trydan. Bydd cymharu defnydd trydan ar draws mesuryddion yn eich helpu i ganolbwyntio ar
+            wella effeithlonrwydd ynni mewn rhai rhannau o'ch ysgol a all fod â phatrymau defnydd gwahanol.
+            </p>
+      page_title: Cymariaethau o ddefnydd trydan fesul mesurydd
