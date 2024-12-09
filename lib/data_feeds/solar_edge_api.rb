@@ -12,7 +12,9 @@ module DataFeeds
     class NotAuthorised < StandardError; end
 
     BASE_URL = 'https://monitoringapi.solaredge.com'
-
+    # Maximum number of days that can be requested for 15 minute period data
+    # API docs say "one month"
+    MAX_WINDOW_SIZE = 25
     def initialize(api_key = ENV.fetch('ENERGYSPARKSSOLAREDGEAPIKEY', nil))
       @api_key = api_key
     end
@@ -103,8 +105,8 @@ module DataFeeds
 
     def raw_meter_readings(meter_id, start_date, end_date)
       data = {}
-      (start_date..end_date).each_slice(28) do |twenty_eight_days| # api limit of 1 month
-        raw_data = raw_meter_readings_28_days_max(meter_id, twenty_eight_days.first, twenty_eight_days.last)
+      (start_date..end_date).each_slice(MAX_WINDOW_SIZE) do |window| # api limit of 1 month
+        raw_data = raw_meter_readings_windowed(meter_id, window.first, window.last)
         converted_data = convert_raw_meter_data(raw_data)
         converted_data.each do |solar_edge_key, values|
           data[solar_edge_key] ||= {}
@@ -114,7 +116,7 @@ module DataFeeds
       data
     end
 
-    def raw_meter_readings_28_days_max(meter_id, start_date, end_date)
+    def raw_meter_readings_windowed(meter_id, start_date, end_date)
       params = {
         timeUnit: 'QUARTER_OF_AN_HOUR',
         startTime: solar_edge_url_time(start_date),
@@ -125,13 +127,13 @@ module DataFeeds
 
     def raw_production_meter_readings(meter_id, start_date, end_date)
       data = []
-      (start_date..end_date).each_slice(28) do |twenty_eight_days| # api limit of 1 month
-        data.push(raw_production_meter_readings_28_days_max(meter_id, twenty_eight_days.first, twenty_eight_days.last))
+      (start_date..end_date).each_slice(MAX_WINDOW_SIZE) do |window| # api limit of 1 month
+        data.push(raw_production_meter_readings_windowed(meter_id, window.first, window.last))
       end
       data.flatten
     end
 
-    def raw_production_meter_readings_28_days_max(meter_id, start_date, end_date)
+    def raw_production_meter_readings_windowed(meter_id, start_date, end_date)
       params = {
         timeUnit: 'QUARTER_OF_AN_HOUR',
         startDate: start_date,

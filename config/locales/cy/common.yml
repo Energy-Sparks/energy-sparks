@@ -20,6 +20,7 @@ cy:
       actions: Gweithredoedd
       activate: Gweithredu
       active: Gweithredol
+      activity: Gweithgaredd
       adult_actions: Gweithredoedd oedolion
       are_you_sure: Ydych chi'n siŵr?
       attributes: Priodweddau
@@ -27,9 +28,11 @@ cy:
       cancel: Canslo
       choose_activity: Dewiswch weithgaredd
       close: Cau
+      complete: Cwblhau
       continue: Parhau
       create: Creu
       created: Crëwyd
+      date: Dyddiad
       deactivate: Dadweithredu
       delete: Dileu
       disable: Analluogi
@@ -48,6 +51,7 @@ cy:
       no_label: 'Na'
       not_applicable: Amh
       not_set: Heb ei osod
+      place: Lle
       previous: Blaenorol
       pupil_activities: Gweithgareddau disgyblion
       remove: Tynnu
@@ -61,7 +65,9 @@ cy:
       update: Diweddaru
       upload: Uwchlwytho
       view: Gweld
+      view_alerts: Gweld rhybuddion
       view_now: Gweld nawr
+      view_opportunities: Gweld cyfleoedd
       view_results: Gweld canlyniadau
       yes_label: 'Ie'
     line_graphs: Graffiau llinell
