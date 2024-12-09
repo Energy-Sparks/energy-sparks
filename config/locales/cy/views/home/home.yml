@@ -2,7 +2,7 @@ cy:
   case_studies:
     download: Lawrlwytho
     more_case_studies: Rhagor o astudiaethau achos
-    title: Astudiaethau achos
+    title: Astudiaethau Achos
   home:
     carousel:
       message_1: Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd.
@@ -32,9 +32,11 @@ cy:
     title: Rydym yn helpu ysgolion i ddod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd.
   mailchimp:
     continue: Parhau
+    example: 'ee: hello@example.com'
     latest_news_title: Cael y newyddion diweddaraf gan Sbarcynni yn eich mewnflwch
     more_newsletters: Rhagor o gylchlythyrau
     never_share_your_email_promise: Ni fyddwn byth yn rhannu eich e-bost ag unrhyw un arall
+    signup_now: Cofrestrwch nawr
     title_html: Cadw yn gyfoes&hellip;
     your_email_address: Eich cyfeiriad e-bost
   newsletters:
