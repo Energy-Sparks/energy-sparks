@@ -1,0 +1,17 @@
+cy:
+  components:
+    search_results:
+      keyword:
+        title: Canlyniadau
+      school_groups:
+        subtitle:
+          one: 1 grŵp ysgol
+          two: '%{count} grŵp ysgol'
+          many: '%{count} grŵp ysgol'
+          other: '%{count} grŵp ysgol'
+      schools:
+        subtitle:
+          one: 1 ysgol
+          two: '%{count} ysgol'
+          many: '%{count} ysgol'
+          other: '%{count} ysgol'
