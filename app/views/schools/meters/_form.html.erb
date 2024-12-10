@@ -75,6 +75,12 @@
           <%= t('schools.meters.form.leave_this_blank_message') %>
         </small>
       </div>
+
+      <div class="form-group">
+        <%= form.label(:readings_api, 'Perse Metering') %>
+        <%= form.select(:readings_api, [['None', nil], ['Half Hourly', :perse_half_hourly]], { include_blank: true },
+                        class: 'form-control') %>
+      </div>
     <% end %>
   </div>
 

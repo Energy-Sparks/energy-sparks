@@ -80,6 +80,7 @@ module Amr
     def log_changes(inserted, updated)
       @amr_data_feed_import_log.update(records_imported: inserted, records_updated: updated)
       Rails.logger.info "Updated #{updated} Inserted #{inserted}"
+      @amr_data_feed_import_log
     end
 
     def count_by_mpan

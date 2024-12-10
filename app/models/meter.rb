@@ -19,6 +19,7 @@
 #  name                           :string
 #  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
+#  readings_api                   :enum
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  updated_at                     :datetime         not null
@@ -105,6 +106,7 @@ class Meter < ApplicationRecord
   # Other options are: NHH (Non Half-Hourly), HH (Half-Hourly), and SMETS2/smart (SMETS2 Smart Meters)
   enum :meter_system, { nhh_amr: 0, nhh: 1, hh: 2, smets2_smart: 3 }
   enum :dcc_meter, %w[no smets2 other].to_h { |v| [v, v] }, prefix: true
+  enum :readings_api, { perse_half_hourly: 'perse_half_hourly' }, prefix: true
 
   delegate :area_name, to: :school
 
