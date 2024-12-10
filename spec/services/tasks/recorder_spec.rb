@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-describe TaskRecorder do
+describe Tasks::Recorder do
   let(:user) { create :user }
   let(:recording) {}
 
   before { SiteSettings.current.update(photo_bonus_points: 0) }
 
-  subject(:task_recorder) { TaskRecorder.new(recording, user) }
+  subject(:task_recorder) { Tasks::Recorder.new(recording, user) }
 
   describe '.new' do
     context 'with a unsupported recording' do
@@ -19,7 +19,7 @@ describe TaskRecorder do
       let(:recording) { build(:activity) }
 
       it { expect { task_recorder }.not_to raise_error }
-      it { expect(task_recorder).to be_a(TaskRecorder::Activity) }
+      it { expect(task_recorder).to be_a(Tasks::Recorder::Activity) }
     end
 
     context 'with an observation to record' do
@@ -27,7 +27,7 @@ describe TaskRecorder do
         let(:recording) { build(:observation, :intervention) }
 
         it { expect { task_recorder }.not_to raise_error }
-        it { expect(task_recorder).to be_a(TaskRecorder::Observation) }
+        it { expect(task_recorder).to be_a(Tasks::Recorder::Observation) }
       end
 
       context 'with a non-intervention observation' do
@@ -140,7 +140,7 @@ describe TaskRecorder do
 
   shared_examples 'a completable when recording progress' do
     let(:user) { create :user }
-    subject(:task_recorder) { TaskRecorder.new(recording, user) }
+    subject(:task_recorder) { Tasks::Recorder.new(recording, user) }
 
     let!(:is_completable) { true }
 
@@ -236,7 +236,7 @@ describe TaskRecorder do
 
     let(:activity_type_tasks) { create_list(:activity_type, 3) }
     let(:intervention_type_tasks) { create_list(:intervention_type, 3) }
-    let(:task_recorder) { TaskRecorder.new(recording, user) }
+    let(:task_recorder) { Tasks::Recorder.new(recording, user) }
 
     context 'when completable is a programme' do
       let!(:assignable) { create(:programme_type, active: is_completable, activity_type_tasks:, intervention_type_tasks:) }

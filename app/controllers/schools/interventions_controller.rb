@@ -32,7 +32,7 @@ module Schools
     def create
       if Flipper.enabled?(:todos, current_user)
         @observation = @school.observations.intervention.new(observation_params)
-        if TaskRecorder.new(@observation, current_user).process
+        if Tasks::Recorder.new(@observation, current_user).process
           redirect_to completed_school_intervention_path(@school, @observation)
         else
           render :new

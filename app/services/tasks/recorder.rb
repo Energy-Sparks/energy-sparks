@@ -1,4 +1,4 @@
-class TaskRecorder
+class Tasks::Recorder
   SUPPORTED_MODELS = %w(Activity Observation).freeze
 
   def self.new(recording, user)
@@ -52,7 +52,7 @@ class TaskRecorder
 
   def after_save; end
 
-  class Activity < TaskRecorder
+  class Activity < Tasks::Recorder
     def activity
       @recording
     end
@@ -76,7 +76,7 @@ class TaskRecorder
     end
   end
 
-  class Observation < TaskRecorder
+  class Observation < Tasks::Recorder
     def observation
       @recording
     end
