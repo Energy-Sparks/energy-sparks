@@ -52,6 +52,30 @@ class AmrDataFeedReading < ApplicationRecord
 
   CSV_HEADER_DATA_FEED_READING = 'School URN,Name,Mpan Mprn,Meter Type,Reading Date,Reading Date Format,Record Last Updated,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30,00:00'.freeze
 
+  PARSED_DATE = <<~SQL.squish.freeze.squish
+    CASE
+    WHEN reading_date ~ '\\d{1,2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{2}' THEN to_date(reading_date, 'DD-MON-YY')
+    WHEN date_format='%d-%b-%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+    WHEN date_format='%d-%m-%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+    WHEN date_format='%d-%m-%Y' THEN to_date(reading_date, 'DD-MM-YYYY')
+    WHEN date_format='%d/%m/%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+    WHEN date_format='%d/%m/%Y' THEN to_date(reading_date, 'DD/MM/YYYY')
+    WHEN date_format='%d/%m/%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+    WHEN date_format='%d/%m/%y' THEN to_date(reading_date, 'DD/MM/YY')
+    WHEN date_format='%Y-%m-%d' AND reading_date~'\\d{2}/\\d{2}/\\d{4}' THEN to_date(reading_date, 'DD/MM/YYYY')
+    WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD')
+    WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD ')
+    WHEN date_format='%y-%m-%d' THEN to_date(reading_date, 'YY-MM-DD ')
+    WHEN date_format='"%d-%m-%Y"' THEN to_date(reading_date, '"DD-MM-YYYY"')
+    WHEN date_format='%d/%m/%Y %H:%M:%S' THEN to_date(reading_date, 'DD/MM/YYYY HH24:MI::SS')
+    WHEN date_format='%H:%M:%S %a %d/%m/%Y' THEN to_date(reading_date, 'HH24:MI::SS Dy DD/MM/YYYY')
+    WHEN date_format='%e %b %Y %H:%M:%S' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+    WHEN date_format='%e %b %Y %H:%M:%S' THEN to_date(reading_date, 'DD Mon YYYY HH24:MI::SS')
+    WHEN date_format='%b %e %Y %I:%M%p' THEN to_date(reading_date, 'Mon DD YYYY HH12:MIam')
+    ELSE NULL
+    END parsed_date
+  SQL
+
   def self.download_all_data
     <<~QUERY
       SELECT s.urn,
@@ -89,6 +113,19 @@ class AmrDataFeedReading < ApplicationRecord
     QUERY
   end
 
+  def self.meter_loading_report(mpxn)
+    query = <<~QUERY
+      SELECT amr_data_feed_import_logs.file_name, reading_date, identifier, amr_uploaded_readings.imported AS manual_import, amr_data_feed_configs.id as config_id, #{PARSED_DATE}
+      FROM amr_data_feed_readings
+      JOIN amr_data_feed_import_logs ON amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id
+      JOIN amr_data_feed_configs ON amr_data_feed_configs.id = amr_data_feed_readings.amr_data_feed_config_id
+      LEFT JOIN amr_uploaded_readings ON amr_uploaded_readings.file_name = amr_data_feed_import_logs.file_name
+      WHERE mpan_mprn = '#{mpxn}'
+      ORDER BY parsed_date DESC NULLS LAST
+    QUERY
+    ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
+  end
+
   def self.build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
     amr_data_feed_config_ids = amr_data_feed_config_ids.reject { |id| id.blank? || id.zero? }
     amr_data_feed_config_ids = AmrDataFeedConfig.all.pluck(:id) if amr_data_feed_config_ids.empty?
@@ -99,27 +136,7 @@ class AmrDataFeedReading < ApplicationRecord
     <<~QUERY
       SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
         SELECT mpan_mprn, meter_id, identifier, amr_data_feed_configs.description, reading_date,
-        CASE
-          WHEN reading_date ~ '\\d{1,2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{2}' THEN to_date(reading_date, 'DD-MON-YY')
-          WHEN date_format='%d-%b-%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
-          WHEN date_format='%d-%m-%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
-          WHEN date_format='%d-%m-%Y' THEN to_date(reading_date, 'DD-MM-YYYY')
-          WHEN date_format='%d/%m/%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
-          WHEN date_format='%d/%m/%Y' THEN to_date(reading_date, 'DD/MM/YYYY')
-          WHEN date_format='%d/%m/%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
-          WHEN date_format='%d/%m/%y' THEN to_date(reading_date, 'DD/MM/YY')
-          WHEN date_format='%Y-%m-%d' AND reading_date~'\\d{2}/\\d{2}/\\d{4}' THEN to_date(reading_date, 'DD/MM/YYYY')
-          WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD')
-          WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD ')
-          WHEN date_format='%y-%m-%d' THEN to_date(reading_date, 'YY-MM-DD ')
-          WHEN date_format='"%d-%m-%Y"' THEN to_date(reading_date, '"DD-MM-YYYY"')
-          WHEN date_format='%d/%m/%Y %H:%M:%S' THEN to_date(reading_date, 'DD/MM/YYYY HH24:MI::SS')
-          WHEN date_format='%H:%M:%S %a %d/%m/%Y' THEN to_date(reading_date, 'HH24:MI::SS Dy DD/MM/YYYY')
-          WHEN date_format='%e %b %Y %H:%M:%S' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
-          WHEN date_format='%e %b %Y %H:%M:%S' THEN to_date(reading_date, 'DD Mon YYYY HH24:MI::SS')
-          WHEN date_format='%b %e %Y %I:%M%p' THEN to_date(reading_date, 'Mon DD YYYY HH12:MIam')
-          ELSE NULL
-        END parsed_date
+        #{PARSED_DATE}
         FROM amr_data_feed_readings
         JOIN amr_data_feed_configs ON amr_data_feed_configs.id = amr_data_feed_readings.amr_data_feed_config_id
         WHERE mpan_mprn IN (#{list_of_mpans}) AND amr_data_feed_readings.amr_data_feed_config_id IN (#{list_of_amr_data_feed_config_ids})
