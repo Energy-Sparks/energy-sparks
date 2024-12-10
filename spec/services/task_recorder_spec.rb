@@ -252,7 +252,7 @@ describe TaskRecorder do
         it_behaves_like 'a completable when recording progress'
       end
 
-      context 'when ask is an intervention type' do
+      context 'when task is an intervention type' do
         let(:task) { create(:intervention_type) }
         let(:existing_recording) { create(:observation, :intervention, intervention_type: task, school:) }
         let(:recording) { build(:observation, :intervention, intervention_type: task, school:) }
@@ -275,7 +275,7 @@ describe TaskRecorder do
         it_behaves_like 'a completable when recording progress'
       end
 
-      context 'when ask is an intervention type' do
+      context 'when task is an intervention type' do
         let(:task) { create(:intervention_type) }
         let(:existing_recording) { create(:observation, :intervention, intervention_type: task, school:) }
         let(:recording) { build(:observation, :intervention, intervention_type: task, school:) }
