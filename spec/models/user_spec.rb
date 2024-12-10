@@ -340,4 +340,17 @@ describe User do
       end
     end
   end
+
+  describe '#destroy' do
+    it 'allow deletion when there are linked observations' do
+      user = create(:user)
+      obs1 = create(:observation, :intervention, created_by: user)
+      obs2 = create(:observation, :intervention, created_by: create(:user), updated_by: user)
+      user.destroy
+      obs1.reload
+      expect(obs1.created_by).to be_nil
+      obs2.reload
+      expect(obs2.updated_by).to be_nil
+    end
+  end
 end
