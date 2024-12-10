@@ -55,6 +55,7 @@ class AmrDataFeedReading < ApplicationRecord
   PARSED_DATE = <<~SQL.squish.freeze.squish
     CASE
     WHEN reading_date ~ '\\d{1,2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{2}' THEN to_date(reading_date, 'DD-MON-YY')
+    WHEN date_format='%d %b %Y %H:%M:%S' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d-%b-%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d-%m-%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d-%m-%Y' THEN to_date(reading_date, 'DD-MM-YYYY')
@@ -114,16 +115,7 @@ class AmrDataFeedReading < ApplicationRecord
   end
 
   def self.meter_loading_report(mpxn)
-    query = <<~QUERY
-      SELECT amr_data_feed_import_logs.file_name, reading_date, identifier, amr_uploaded_readings.imported AS manual_import, amr_data_feed_configs.id as config_id, #{PARSED_DATE}
-      FROM amr_data_feed_readings
-      JOIN amr_data_feed_import_logs ON amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id
-      JOIN amr_data_feed_configs ON amr_data_feed_configs.id = amr_data_feed_readings.amr_data_feed_config_id
-      LEFT JOIN amr_uploaded_readings ON amr_uploaded_readings.file_name = amr_data_feed_import_logs.file_name
-      WHERE mpan_mprn = '#{mpxn}'
-      ORDER BY parsed_date DESC NULLS LAST
-    QUERY
-    ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
+    AmrDataFeedReading.where(mpan_mprn: mpxn).joins(:amr_data_feed_import_log, :amr_data_feed_config, 'LEFT JOIN amr_uploaded_readings ON amr_uploaded_readings.file_name = amr_data_feed_import_logs.file_name').select(:created_at, :reading_date, 'amr_data_feed_import_logs.file_name', :amr_data_feed_import_log_id, :amr_data_feed_config_id, 'amr_data_feed_configs.identifier', 'amr_uploaded_readings.imported', PARSED_DATE).order(parsed_date: :desc)
   end
 
   def self.build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)

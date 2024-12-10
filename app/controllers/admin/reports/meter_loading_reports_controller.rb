@@ -1,8 +1,9 @@
 module Admin
   module Reports
     class MeterLoadingReportsController < AdminController
+      include Pagy::Backend
       def index
-        @results = run_report
+        @pagy, @results = pagy(run_report, limit: 30)
       end
 
       private

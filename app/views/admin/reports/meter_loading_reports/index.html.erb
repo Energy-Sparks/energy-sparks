@@ -1,7 +1,7 @@
 <h1>Meter Loading Report</h1>
 
 <p>
-  Find the most recent 30 days of readings for a meter to identify the source of each reading.
+  View the most readings for a meter to identify the source of each reading.
 </p>
 
 <%= simple_form_for admin_reports_meter_loading_reports_path, method: :get, html: { class: 'form' } do |f| %>
@@ -25,8 +25,13 @@
 </p>
 
 <% if @results.any? %>
+  <div class="d-flex justify-content-center pt-4">
+    <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
+  </div>
+
   <table class="table advice-table mt-4">
     <thead>
+      <th>Loaded</th>
       <th>Reading date</th>
       <th>File name</th>
       <th>Load Type</th>
@@ -36,17 +41,18 @@
     <tbody>
       <% @results.each do |result| %>
         <tr>
-          <td><%= result['parsed_date'] %></td>
-          <td><%= result['file_name'] %></td>
+          <td><%= result.created_at.iso8601 %></td>
+          <td><%= result.parsed_date %></td>
+          <td><%= result.file_name %></td>
           <td>
-            <% if result['manual_import'] %>
+            <% if result.imported %>
               Manual
             <% else %>
-              <%= link_to 'Automated', s3_csv_download_url(result['identifier'], result['file_name']) %>
+              <%= link_to 'Automated', s3_csv_download_url(result.identifier, result.file_name) %>
             <% end %>
           </td>
-          <td><%= link_to result['identifier'], admin_amr_data_feed_config_path(id: result['config_id']) %></td>
-          <td><%= result['reading_date'] %></td>
+          <td><%= link_to result.identifier, admin_amr_data_feed_config_path(id: result.amr_data_feed_config_id) %></td>
+          <td><%= result.reading_date %></td>
         </tr>
       <% end %>
     </tbody>
