@@ -54,6 +54,7 @@ class InterventionType < ApplicationRecord
 
   has_many :audit_intervention_types, dependent: nil
   has_many :audits, through: :audit_intervention_types
+  has_many :todos, as: :task, dependent: :destroy
 
   accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
 

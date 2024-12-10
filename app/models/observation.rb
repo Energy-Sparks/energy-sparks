@@ -104,7 +104,9 @@ class Observation < ApplicationRecord
   has_rich_text :description
 
   before_validation :set_defaults, if: -> { observable_id }, on: :create
+  before_save :add_points_for_activities, if: :activity?
   before_save :add_points_for_interventions, if: :intervention?
+
   before_save :add_bonus_points_for_included_images, if: proc { |observation|
     observation.activity? || observation.intervention?
   }
@@ -119,6 +121,14 @@ class Observation < ApplicationRecord
 
   private
 
+  def add_points_for_activities
+    self.points = activity.activity_type.score_when_recorded_at(school, at)
+  end
+
+  def add_points_for_interventions
+    self.points = intervention_type.score_when_recorded_at(school, at)
+  end
+
   def add_bonus_points_for_included_images
     # Only add bonus points if the site wide photo bonus points is set to non zero
     return unless SiteSettings.current.photo_bonus_points&.nonzero?
@@ -128,10 +138,6 @@ class Observation < ApplicationRecord
     return unless description_includes_images?
 
     self.points = (points || 0) + SiteSettings.current.photo_bonus_points
-  end
-
-  def add_points_for_interventions
-    self.points = intervention_type.score_when_recorded_at(school, at)
   end
 
   def reject_temperature_recordings(attributes)
