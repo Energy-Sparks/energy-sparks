@@ -93,3 +93,39 @@ RSpec.shared_examples 'a completable' do
     pending 'writing the spec'
   end
 end
+
+RSpec.shared_examples 'a destroyed assignable' do
+  it { expect { assignable.reload }.to raise_error ActiveRecord::RecordNotFound }
+  it { expect { completable.reload }.to raise_error ActiveRecord::RecordNotFound }
+  it { expect { todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+  it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+  it { expect { task.reload }.not_to raise_error }
+  it { expect { recording.reload }.not_to raise_error }
+end
+
+RSpec.shared_examples 'a destroyed todo' do
+  it { expect { assignable.reload }.not_to raise_error }
+  it { expect { completable.reload }.not_to raise_error }
+  it { expect { todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+  it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+  it { expect { task.reload }.not_to raise_error }
+  it { expect { recording.reload }.not_to raise_error }
+end
+
+RSpec.shared_examples 'a destroyed completed todo' do
+  it { expect { assignable.reload }.not_to raise_error }
+  it { expect { completable.reload }.not_to raise_error }
+  it { expect { todo.reload }.not_to raise_error }
+  it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+  it { expect { task.reload }.not_to raise_error }
+  it { expect { recording.reload }.not_to raise_error }
+end
+
+RSpec.shared_examples 'a destroyed recording' do
+  it { expect { assignable.reload }.not_to raise_error }
+  it { expect { completable.reload }.not_to raise_error }
+  it { expect { todo.reload }.not_to raise_error }
+  it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+  it { expect { task.reload }.not_to raise_error }
+  it { expect { recording.reload }.to raise_error ActiveRecord::RecordNotFound }
+end

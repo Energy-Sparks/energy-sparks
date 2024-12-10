@@ -61,6 +61,7 @@ class Observation < ApplicationRecord
   belongs_to :school_target, optional: true # to be removed when column is removed
   belongs_to :created_by, optional: true, class_name: 'User'
   belongs_to :updated_by, optional: true, class_name: 'User'
+  has_many :completed_todos, as: :recording, dependent: :destroy
 
   # When adding a new observation type, use the polymorphic `observable` relationship
   # instead of adding a new foreign key / relationship. The goal is to transition existing relationships
