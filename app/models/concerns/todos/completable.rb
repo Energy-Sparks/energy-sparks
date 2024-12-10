@@ -5,7 +5,7 @@ module Todos
     # For models which can have todos completed against them, such as audit and programme
 
     included do
-      has_many :completed_todos, as: :completable, dependent: :destroy, class_name: 'CompletedTodo'
+      has_many :completed_todos, as: :completable, dependent: :destroy
       has_many :completed_tasks, through: :completed_todos, source: :todo, class_name: 'Todo'
       has_many :completed_activity_types, through: :completed_todos, source: :activity_type
       has_many :completed_intervention_types, through: :completed_todos, source: :intervention_type
@@ -20,8 +20,12 @@ module Todos
     #   scope.map(&:task).uniq
     # end
 
-    def available_todo_ids
-      available_todos.ids
+    def assignable_todos
+      assignable.todos
+    end
+
+    def assignable_todo_ids
+      assignable_todos.ids
     end
 
     def completed_todo_ids
@@ -29,11 +33,11 @@ module Todos
     end
 
     def has_todos?
-      available_todo_ids.any?
+      assignable_todo_ids.any?
     end
 
     def nothing_todo?
-      available_todo_ids.none?
+      assignable_todo_ids.none?
     end
 
     def completable?
@@ -41,7 +45,7 @@ module Todos
     end
 
     def todos_complete?
-      (available_todo_ids - completed_todo_ids).empty?
+      (assignable_todo_ids - completed_todo_ids).empty?
     end
 
     def task_complete!(task:, recording:)
@@ -79,10 +83,6 @@ module Todos
 
     def complete!
       raise NoMethodError, 'Implement complete!'
-    end
-
-    def available_todos
-      assignable.todos
     end
   end
 end

@@ -299,4 +299,12 @@ describe Audit do
       end
     end
   end
+
+  it_behaves_like 'an assignable' do
+    subject(:assignable) { create(:programme_type) }
+  end
+
+  it_behaves_like 'a completable' do
+    subject(:completable) { create(:audit) }
+  end
 end
