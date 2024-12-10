@@ -65,6 +65,9 @@ class User < ApplicationRecord
   has_many :issues_admin_for, class_name: 'SchoolGroup', inverse_of: :default_issues_admin_user,
                               foreign_key: :default_issues_admin_user_id, dependent: nil
 
+  has_many :observations_created, class_name: 'Observation', inverse_of: :created_by, dependent: :nullify
+  has_many :observations_updated, class_name: 'Observation', inverse_of: :updated_by, dependent: :nullify
+
   has_and_belongs_to_many :cluster_schools, class_name: 'School', join_table: :cluster_schools_users
 
   # Include default devise modules. Others available are:
