@@ -5,6 +5,7 @@ describe 'meter loading report' do
   let!(:reading)     { create(:amr_data_feed_reading, reading_date: '2024-12-25') }
 
   before do
+    allow_any_instance_of(S3Helper).to receive(:s3_csv_download_url).and_return('https://example.org')
     sign_in(admin)
     visit root_path
     click_on('Reports')
@@ -18,7 +19,7 @@ describe 'meter loading report' do
     click_on 'Search'
 
     expect(page).to have_content(reading.reading_date)
-    expect(page).to have_link(reading.amr_data_feed_import_log.file_name)
+    expect(page).to have_link(reading.amr_data_feed_import_log.file_name, href: 'https://example.org')
     expect(page).to have_link(reading.amr_data_feed_config.identifier, href: admin_amr_data_feed_config_path(reading.amr_data_feed_config))
   end
 end
