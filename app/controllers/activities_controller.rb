@@ -70,7 +70,6 @@ class ActivitiesController < ApplicationController
   end
 
   def destroy
-    ## need to check completed todo is also removed here!!
     @activity.observations.each { |observation| ObservationRemoval.new(observation).process }
     @activity.destroy
     respond_to do |format|

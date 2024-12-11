@@ -289,7 +289,8 @@ describe 'viewing and recording activities' do
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          it_behaves_like 'a task completed page with programme complete message', pending: 'todos frontend'
+          # pending todos frontend
+          # it_behaves_like 'a task completed page with programme complete message'
 
           context 'when viewing the activity' do
             before do
@@ -318,7 +319,8 @@ describe 'viewing and recording activities' do
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          it_behaves_like 'a task completed page with programme complete message', pending: 'todos frontend'
+          # Pending todos frontend
+          # it_behaves_like 'a task completed page with programme complete message'
 
           context 'when viewing the activity' do
             before do

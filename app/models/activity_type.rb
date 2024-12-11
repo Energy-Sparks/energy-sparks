@@ -55,7 +55,6 @@ class ActivityType < ApplicationRecord
   has_and_belongs_to_many :subjects, join_table: :activity_type_subjects
   has_and_belongs_to_many :topics, join_table: :activity_type_topics
   has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
-  has_many :todos, as: :task, dependent: :destroy
 
   scope :active, -> { where(active: true) }
   scope :not_custom, -> { where(custom: false) }
@@ -89,6 +88,7 @@ class ActivityType < ApplicationRecord
   has_many :audits, through: :audit_activity_types
 
   has_many :todos, as: :task, inverse_of: :task, dependent: :destroy
+
 
   has_many :link_rewrites, as: :rewriteable
 

@@ -3,10 +3,6 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
 
-  config.before(:example, :pending) do |example|
-    pending(example.metadata[:pending])
-  end
-
   # This switches off the puma debug in the test run
   Capybara.server = :puma, { Silent: true }
   # this changes the default from http://www.example.com to http://example.com which works better with rack-test and
