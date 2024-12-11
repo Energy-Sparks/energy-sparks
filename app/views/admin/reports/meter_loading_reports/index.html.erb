@@ -9,19 +9,18 @@
   <%= f.submit :Search, class: 'btn btn-primary' %>
 <% end %>
 
-<ul>
-  <li>Reading date - date of reading as interpreted by the system</li>
-  <li>File name - the name of the latest file to provide readings on this date. For feeds that send partial readings, the
-  data might have been compiled from several CSV files.</li>
-  <li>Load type - whether this was a manual or automated upload. Downloads of CSV files are only available for automated uploads</li>
+<ul class="mt-4">
+  <li>Loaded - timestamp of when the reading was loaded. Most recently loaded reading will be used in preference to any earlier readings</li>
+  <li>Reading date - date of reading as interpreted by the system. (Blanks may be a formatting issue and not an actual bug)</li>
+  <li>File name - the name of the latest file to provide readings on this date. For feeds that send partial readings, the data might have been compiled from several CSV files. In which case this is the most recent file that contributed readings for this date</li>
+  <li>Load type - whether this was a manual upload, automated api request or automated load from an emailed CSV or FTP server. Downloads of CSV files are only available for automated loads</li>
   <li>Config - the data feed config used to load the data</li>
-  <li>Original date - the reading date as provided in the CSV file. Useful in case there are date format issues in the CSV files</li>
+  <li>Original date - the reading date as provided in the CSV file. Useful in case there are date formatting issues in the reading date</li>
 </ul>
 
 <p>
   Note: some automated feeds send files with the same name. We only store the latest version of each file, so its possible that
-  the linked to CSV file may contain different data if the supplier resent a file with the same name. Or, for a manual upload, an admin used the same
-  CSV file name to upload the data. We also only store downloadable CSV files for automated uploads.
+  the linked to CSV file may contain different data if the supplier has resent a file with the same name.
 </p>
 
 <% if @results.any? %>
@@ -43,12 +42,22 @@
         <tr>
           <td><%= result.created_at.iso8601 %></td>
           <td><%= result.parsed_date %></td>
-          <td><%= result.file_name %></td>
+          <td>
+            <% if result.imported || result.source_type == 2 %>
+              result.file_name
+            <% else %>
+              <%= link_to result.file_name, s3_csv_download_url(result.identifier, result.file_name) %>
+            <% end %>
+
+            <%= result.file_name %>
+          </td>
           <td>
             <% if result.imported %>
               Manual
+            <% elsif result.source_type == 2 %>
+              API
             <% else %>
-              <%= link_to 'Automated', s3_csv_download_url(result.identifier, result.file_name) %>
+              <%= link_to 'Data Feed', s3_csv_download_url(result.identifier, result.file_name) %>
             <% end %>
           </td>
           <td><%= link_to result.identifier, admin_amr_data_feed_config_path(id: result.amr_data_feed_config_id) %></td>

@@ -58,6 +58,7 @@ class AmrDataFeedReading < ApplicationRecord
     WHEN date_format='%d %b %Y %H:%M:%S' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d-%b-%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d-%m-%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+    WHEN date_format='%Y%m%d' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d-%m-%Y' THEN to_date(reading_date, 'DD-MM-YYYY')
     WHEN date_format='%d/%m/%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d/%m/%Y' THEN to_date(reading_date, 'DD/MM/YYYY')
@@ -115,7 +116,23 @@ class AmrDataFeedReading < ApplicationRecord
   end
 
   def self.meter_loading_report(mpxn)
-    AmrDataFeedReading.where(mpan_mprn: mpxn).joins(:amr_data_feed_import_log, :amr_data_feed_config, 'LEFT JOIN amr_uploaded_readings ON amr_uploaded_readings.file_name = amr_data_feed_import_logs.file_name').select(:created_at, :reading_date, 'amr_data_feed_import_logs.file_name', :amr_data_feed_import_log_id, :amr_data_feed_config_id, 'amr_data_feed_configs.identifier', 'amr_uploaded_readings.imported', PARSED_DATE).order(parsed_date: :desc)
+    AmrDataFeedReading.where(mpan_mprn: mpxn).joins(
+      :amr_data_feed_import_log,
+      :amr_data_feed_config,
+      'LEFT JOIN amr_uploaded_readings ON amr_uploaded_readings.file_name = amr_data_feed_import_logs.file_name'
+    ).select(
+      :created_at,
+      :reading_date,
+      'amr_data_feed_import_logs.file_name',
+      :amr_data_feed_import_log_id,
+      :amr_data_feed_config_id,
+      'amr_data_feed_configs.identifier',
+      'amr_data_feed_configs.source_type', 'amr_uploaded_readings.imported',
+      PARSED_DATE
+    ).order(
+      parsed_date: :desc,
+      created_at: :desc
+    )
   end
 
   def self.build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)

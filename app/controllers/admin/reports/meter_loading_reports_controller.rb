@@ -12,7 +12,7 @@ module Admin
         if params[:mpxn].present?
           AmrDataFeedReading.meter_loading_report(params[:mpxn])
         else
-          []
+          AmrDataFeedReading.none
         end
       end
     end
