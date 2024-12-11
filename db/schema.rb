@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_10_115749) do
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "half_hourly_labelling", ["start", "end"]
-  create_enum "meter_readings_api", ["perse_half_hourly"]
+  create_enum "meter_perse_api", ["half_hourly"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -1260,7 +1260,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_10_115749) do
     t.bigint "admin_meter_statuses_id"
     t.bigint "procurement_route_id"
     t.integer "meter_system", default: 0
-    t.enum "readings_api", enum_type: "meter_readings_api"
+    t.enum "perse_api", enum_type: "meter_perse_api"
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
