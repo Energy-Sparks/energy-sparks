@@ -18,16 +18,91 @@ describe 'Todo' do
     it { expect(todo).to have_delegated_type(:task) }
 
     context 'when safely destroying' do
-      let(:todo) { create(:todo, assignable:, task:) }
+      context 'when there is a completed todo' do
+        let!(:todo) { create(:todo, assignable:, task:) }
+        let!(:completed_todo) { create :completed_todo, todo:, completable:, recording: }
 
-      let!(:completed_todo) { create :completed_todo, todo:, completable:, recording: }
+        context 'when removing assignable (programme_type or audit)' do
+          before do
+            completed_todo.todo.assignable.destroy
+          end
 
-      context 'when removing assignable (programme_type or audit)' do
-        before do
-          completed_todo.todo.assignable.destroy
+          context 'when assignable is a programme_type' do
+            let(:assignable) { create(:programme_type) }
+            let(:completable) { create(:programme, programme_type: assignable) }
+
+            context 'when task is an activity_type' do
+              let(:task) { create(:activity_type) }
+              let(:recording) { create(:activity_without_creator, activity_type: task)}
+
+              it_behaves_like 'a destroyed assignable'
+            end
+
+            context 'when task is an intervention_type' do
+              let(:task) { create(:intervention_type) }
+              let(:recording) { create(:observation, :intervention, intervention_type: task)}
+
+              it_behaves_like 'a destroyed assignable'
+            end
+          end
+
+          context 'when assignable is an audit' do
+            let(:assignable) { create(:audit) }
+            let(:completable) { assignable }
+
+            context 'when task is an activity_type' do
+              let(:task) { create(:activity_type) }
+              let(:recording) { create(:activity_without_creator, activity_type: task)}
+
+              it_behaves_like 'a destroyed assignable'
+            end
+
+            context 'when task is an intervention_type' do
+              let(:task) { create(:intervention_type) }
+              let(:recording) { create(:observation, :intervention, intervention_type: task)}
+
+              it_behaves_like 'a destroyed assignable'
+            end
+          end
         end
 
-        context 'when assignable is a programme_type' do
+        context 'when removing completable (programme or audit)' do
+          let(:task) { create(:activity_type) }
+          let(:recording) { create(:activity_without_creator, activity_type: task)}
+
+          before do
+            completed_todo.completable.destroy
+          end
+
+          context 'when completable is a programme' do
+            let(:assignable) { create(:programme_type) }
+            let(:completable) { create(:programme, programme_type: assignable) }
+
+            it { expect { assignable.reload }.not_to raise_error }
+            it { expect { completable.reload }.to raise_error ActiveRecord::RecordNotFound }
+            it { expect { todo.reload }.not_to raise_error }
+            it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+            it { expect { task.reload }.not_to raise_error }
+          end
+
+          context 'when completable is an audit' do
+            let(:assignable) { create(:audit) }
+            let(:completable) { assignable }
+
+            it { expect { assignable.reload }.to raise_error ActiveRecord::RecordNotFound }
+            it { expect { completable.reload }.to raise_error ActiveRecord::RecordNotFound }
+
+            it { expect { todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+            it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
+            it { expect { task.reload }.not_to raise_error }
+          end
+        end
+
+        context 'when removing todo' do
+          before do
+            completed_todo.todo.destroy
+          end
+
           let(:assignable) { create(:programme_type) }
           let(:completable) { create(:programme, programme_type: assignable) }
 
@@ -35,160 +110,106 @@ describe 'Todo' do
             let(:task) { create(:activity_type) }
             let(:recording) { create(:activity_without_creator, activity_type: task)}
 
-            it_behaves_like 'a destroyed assignable'
+            it_behaves_like 'a destroyed todo'
           end
 
           context 'when task is an intervention_type' do
             let(:task) { create(:intervention_type) }
             let(:recording) { create(:observation, :intervention, intervention_type: task)}
 
-            it_behaves_like 'a destroyed assignable'
+            it_behaves_like 'a destroyed todo'
           end
         end
 
-        context 'when assignable is an audit' do
-          let(:assignable) { create(:audit) }
-          let(:completable) { assignable }
+        context 'when removing completed todo' do
+          let(:assignable) { create(:programme_type) }
+          let(:completable) { create(:programme, programme_type: assignable) }
+
+          before do
+            completed_todo.destroy
+          end
 
           context 'when task is an activity_type' do
             let(:task) { create(:activity_type) }
             let(:recording) { create(:activity_without_creator, activity_type: task)}
 
-            it_behaves_like 'a destroyed assignable'
+            it_behaves_like 'a destroyed completed todo'
           end
 
           context 'when task is an intervention_type' do
             let(:task) { create(:intervention_type) }
             let(:recording) { create(:observation, :intervention, intervention_type: task)}
 
-            it_behaves_like 'a destroyed assignable'
+            it_behaves_like 'a destroyed completed todo'
           end
         end
-      end
 
-      context 'when removing completable (programme or audit)' do
-        let(:task) { create(:activity_type) }
-        let(:recording) { create(:activity_without_creator, activity_type: task)}
-
-        before do
-          completed_todo.completable.destroy
-        end
-
-        context 'when completable is a programme' do
+        context 'when removing recording' do
           let(:assignable) { create(:programme_type) }
           let(:completable) { create(:programme, programme_type: assignable) }
 
-          it { expect { assignable.reload }.not_to raise_error }
-          it { expect { completable.reload }.to raise_error ActiveRecord::RecordNotFound }
-          it { expect { todo.reload }.not_to raise_error }
-          it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
-          it { expect { task.reload }.not_to raise_error }
+          before do
+            recording.destroy
+          end
+
+          context 'when task is an activity_type' do
+            let(:task) { create(:activity_type) }
+            let(:recording) { create(:activity_without_creator, activity_type: task)}
+
+            it_behaves_like 'a destroyed recording'
+          end
+
+          context 'when task is an intervention_type' do
+            let(:task) { create(:intervention_type) }
+            let(:recording) { create(:observation, :intervention, intervention_type: task)}
+
+            it_behaves_like 'a destroyed recording'
+          end
         end
 
-        context 'when completable is an audit' do
-          let(:assignable) { create(:audit) }
-          let(:completable) { assignable }
+        context 'when removing task' do
+          let(:assignable) { create(:programme_type) }
+          let(:completable) { create(:programme, programme_type: assignable) }
 
-          it { expect { assignable.reload }.to raise_error ActiveRecord::RecordNotFound }
-          it { expect { completable.reload }.to raise_error ActiveRecord::RecordNotFound }
+          context 'when task is an activity_type' do
+            let(:task) { create(:activity_type) }
+            let(:recording) { create(:activity_without_creator, activity_type: task)}
 
-          it { expect { todo.reload }.to raise_error ActiveRecord::RecordNotFound }
-          it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
-          it { expect { task.reload }.not_to raise_error }
-        end
-      end
+            it 'foreign key constraint on activities prevents deletion' do
+              expect { task.destroy }.to raise_error(ActiveRecord::InvalidForeignKey)
+            end
+          end
 
-      context 'when removing todo' do
-        before do
-          completed_todo.todo.destroy
-        end
+          context 'when task is an intervention_type' do
+            let(:task) { create(:intervention_type) }
+            let(:recording) { create(:observation, :intervention, intervention_type: task)}
 
-        let(:assignable) { create(:programme_type) }
-        let(:completable) { create(:programme, programme_type: assignable) }
-
-        context 'when task is an activity_type' do
-          let(:task) { create(:activity_type) }
-          let(:recording) { create(:activity_without_creator, activity_type: task)}
-
-          it_behaves_like 'a destroyed todo'
-        end
-
-        context 'when task is an intervention_type' do
-          let(:task) { create(:intervention_type) }
-          let(:recording) { create(:observation, :intervention, intervention_type: task)}
-
-          it_behaves_like 'a destroyed todo'
-        end
-      end
-
-      context 'when removing completed todo' do
-        let(:assignable) { create(:programme_type) }
-        let(:completable) { create(:programme, programme_type: assignable) }
-
-        before do
-          completed_todo.destroy
-        end
-
-        context 'when task is an activity_type' do
-          let(:task) { create(:activity_type) }
-          let(:recording) { create(:activity_without_creator, activity_type: task)}
-
-          it_behaves_like 'a destroyed completed todo'
-        end
-
-        context 'when task is an intervention_type' do
-          let(:task) { create(:intervention_type) }
-          let(:recording) { create(:observation, :intervention, intervention_type: task)}
-
-          it_behaves_like 'a destroyed completed todo'
+            it 'foreign key constraint on observations prevents deletion' do
+              expect { task.destroy }.to raise_error(ActiveRecord::InvalidForeignKey)
+            end
+          end
         end
       end
+    end
 
-      context 'when removing recording' do
-        let(:assignable) { create(:programme_type) }
-        let(:completable) { create(:programme, programme_type: assignable) }
-
-        before do
-          recording.destroy
-        end
-
-        context 'when task is an activity_type' do
-          let(:task) { create(:activity_type) }
-          let(:recording) { create(:activity_without_creator, activity_type: task)}
-
-          it_behaves_like 'a destroyed recording'
-        end
-
-        context 'when task is an intervention_type' do
-          let(:task) { create(:intervention_type) }
-          let(:recording) { create(:observation, :intervention, intervention_type: task)}
-
-          it_behaves_like 'a destroyed recording'
-        end
-      end
+    context 'when there is not a completed todo' do
+      let!(:todo) { create(:todo, assignable:, task:) }
 
       context 'when removing task' do
         let(:assignable) { create(:programme_type) }
-        let(:completable) { create(:programme, programme_type: assignable) }
+
+        before { task.destroy }
 
         context 'when task is an activity_type' do
           let(:task) { create(:activity_type) }
-          let(:recording) { create(:activity_without_creator, activity_type: task)}
 
-          # not sure if this is required behaviour or not but it keeps the database intact
-          it 'foreign key constraint on activities prevents deletion' do
-            expect { task.destroy }.to raise_error(ActiveRecord::InvalidForeignKey)
-          end
+          it { expect { todo.reload }.to raise_error ActiveRecord::RecordNotFound }
         end
 
         context 'when task is an intervention_type' do
           let(:task) { create(:intervention_type) }
-          let(:recording) { create(:observation, :intervention, intervention_type: task)}
 
-          # not sure if this is required behaviour or not but it keeps the database in tact
-          it 'foreign key constraint on observations prevents deletion' do
-            expect { task.destroy }.to raise_error(ActiveRecord::InvalidForeignKey)
-          end
+          it { expect { todo.reload }.to raise_error ActiveRecord::RecordNotFound }
         end
       end
     end
