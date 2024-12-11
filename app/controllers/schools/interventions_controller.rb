@@ -35,6 +35,7 @@ module Schools
         if Tasks::Recorder.new(@observation, current_user).process
           redirect_to completed_school_intervention_path(@school, @observation)
         else
+          @intervention_type = @observation.intervention_type
           render :new
         end
       else

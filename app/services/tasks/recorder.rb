@@ -13,6 +13,7 @@ class Tasks::Recorder
     @recording = recording
     @user = user
     @school = recording.school
+    after_initialize
   end
 
   def process
@@ -47,6 +48,8 @@ class Tasks::Recorder
     @school.programmes.completable + @school.audits.completable
   end
 
+  def after_initialize; end
+
   def after_save; end
 
   class Activity < Tasks::Recorder
@@ -58,10 +61,8 @@ class Tasks::Recorder
       @task ||= activity.activity_type
     end
 
-    def initialize(recording, user)
-      super(recording, user)
-
-      activity.activity_category = activity.activity_type.activity_category
+    def after_initialize
+      activity.activity_category = activity.activity_type&.activity_category
     end
 
     def after_save
@@ -82,11 +83,8 @@ class Tasks::Recorder
       @task ||= observation.intervention_type
     end
 
-    def initialize(recording, user)
-      super(recording, user)
-
+    def after_initialize
       observation.created_by = @user
-      # observation.at ||= Time.zone.now # this is set in the controller
     end
   end
 end

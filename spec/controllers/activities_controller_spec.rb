@@ -169,77 +169,36 @@ RSpec.describe ActivitiesController do
       sign_in(admin)
     end
 
-    context 'when todos feature flag is switched off' do
-      context 'with invalid params' do
-        before do
-          post :create, params: { school_id: school.id, activity: invalid_attributes }
-        end
-
-        it 'assigns a newly created but unsaved activity as @activity' do
-          expect(assigns(:activity)).to be_a_new(Activity)
-        end
-
-        it "re-renders the 'new' template" do
-          expect(response).to render_template('new')
-        end
+    context 'with invalid params', toggle_feature: :todos do
+      before do
+        post :create, params: { school_id: school.id, activity: invalid_attributes }
       end
 
-      context 'with valid params' do
-        before do
-          post :create, params: { school_id: school.id, activity: valid_attributes }
-        end
+      it 'assigns a newly created but unsaved activity as @activity' do
+        expect(assigns(:activity)).to be_a_new(Activity)
+      end
 
-        it 'creates a new Activity' do
-          expect(Activity.count).to be(1)
-        end
-
-        it 'assigns a newly created activity as @activity' do
-          expect(assigns(:activity)).to be_a(Activity)
-          expect(assigns(:activity)).to be_persisted
-        end
-
-        it 'redirects to the activity completed' do
-          expect(response).to redirect_to(completed_school_activity_path(school, Activity.last))
-        end
+      it "re-renders the 'new' template" do
+        expect(response).to render_template('new')
       end
     end
 
-    context 'when todos feature flag is switched on' do
+    context 'with valid params', toggle_feature: :todos do
       before do
-        Flipper.enable :todos
+        post :create, params: { school_id: school.id, activity: valid_attributes }
       end
 
-      context 'with invalid params' do
-        before do
-          post :create, params: { school_id: school.id, activity: invalid_attributes }
-        end
-
-        it 'assigns a newly created but unsaved activity as @activity' do
-          expect(assigns(:activity)).to be_a_new(Activity)
-        end
-
-        it "re-renders the 'new' template" do
-          expect(response).to render_template('new')
-        end
+      it 'creates a new Activity' do
+        expect(Activity.count).to be(1)
       end
 
-      context 'with valid params' do
-        before do
-          post :create, params: { school_id: school.id, activity: valid_attributes }
-        end
+      it 'assigns a newly created activity as @activity' do
+        expect(assigns(:activity)).to be_a(Activity)
+        expect(assigns(:activity)).to be_persisted
+      end
 
-        it 'creates a new Activity' do
-          expect(Activity.count).to be(1)
-        end
-
-        it 'assigns a newly created activity as @activity' do
-          expect(assigns(:activity)).to be_a(Activity)
-          expect(assigns(:activity)).to be_persisted
-        end
-
-        it 'redirects to the activity completed' do
-          expect(response).to redirect_to(completed_school_activity_path(school, Activity.last))
-        end
+      it 'redirects to the activity completed' do
+        expect(response).to redirect_to(completed_school_activity_path(school, Activity.last))
       end
     end
   end
