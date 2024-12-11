@@ -277,16 +277,26 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         expect(meter.reload.dcc_meter).to eq('smets2')
       end
 
-      it 'allows reloading the meter' do
-        create(:amr_data_feed_config, process_type: :n3rgy_api)
-        click_on meter.mpan_mprn.to_s
-        click_on 'Reload'
+      def expect_meter_reload
         expect(page).to have_text('Reload queued')
         expect { perform_enqueued_jobs }.to change { ActionMailer::Base.deliveries.count }.by(1)
         expect(ActionMailer::Base.deliveries.last.subject).to \
           eq("[energy-sparks-unknown] Reload of Meter Electricity meter for #{school.name} complete")
         expect(ActionMailer::Base.deliveries.last.to).to eq([admin.email])
         expect(ActionMailer::Base.deliveries.last.to_s).to include('0 records were imported and 0 were updated')
+      end
+      it 'allows reloading the meter' do
+        create(:amr_data_feed_config, process_type: :n3rgy_api)
+        click_on meter.mpan_mprn.to_s
+        expect { click_on 'Reload' }.to have_enqueued_job(N3rgyReloadJob)
+        expect_meter_reload
+      end
+
+      it 'allows reloading the meter with Perse' do
+        meter.update!(perse_api: :half_hourly)
+        click_on meter.mpan_mprn.to_s
+        expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
+        expect_meter_reload
       end
     end
 
@@ -369,7 +379,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       end
 
       it 'has Perse details' do
-        stub_request(:get, 'https://n3rgy.test/find-mpxn/1')
+        stub_request(:get, "https://n3rgy.test/find-mpxn/#{gas_meter.mpan_mprn}")
         click_on gas_meter.mpan_mprn.to_s
         expect(page).to have_content('Perse API None')
       end

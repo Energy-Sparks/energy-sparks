@@ -10,7 +10,7 @@
 </div>
 
 <div class="mb-2 alert alert-secondary row">
-  <div class="col-md-5">
+  <div>
     <% if @meter.amr_validated_readings.any? %>
       <%= link_to "#{fa_icon('file-download')} #{t('schools.meters.show.download_readings')}".html_safe,
                   school_meter_path(@school, @meter, format: 'csv'), class: 'btn btn-secondary btn-sm' %>
@@ -38,8 +38,6 @@
     <% if current_user.admin? %>
       <%= render 'admin/issues/modal', label: t('schools.meters.meter_issues.button_label'), meter: @meter %>
     <% end %>
-  </div>
-  <div class="col-md-7">
     <% if @meter.dcc_meter? %>
       <% if @meter.can_withdraw_consent? && can?(:withdraw_consent, @meter) %>
         <%= link_to t('schools.meters.show.withdraw_consent'),
@@ -68,7 +66,6 @@
     <% end %>
   </div>
 </div>
-
 <div>
   <h3><%= t('schools.meters.show.basic_information') %></h3>
   <dl class="row">
