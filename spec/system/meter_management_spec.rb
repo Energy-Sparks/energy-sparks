@@ -45,7 +45,9 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
   end
   let!(:setup_data) {}
 
-  context 'as school admin' do
+  before { create(:amr_data_feed_config, identifier: 'perse-half-hourly-api') }
+
+  context 'when a school admin' do
     before do
       sign_in(school_admin)
       visit root_path
@@ -106,6 +108,11 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       it 'the reload button is not shown' do
         expect(page).to have_no_selector(:link_or_button, 'Reload')
       end
+
+      it 'does not admin only sections' do
+        expect(page).to have_no_text('DCC (SMETS2) information')
+        expect(page).to have_no_text('Perse Metering')
+      end
     end
 
     context 'Manage meters page' do
@@ -165,7 +172,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
     end
   end
 
-  context 'as admin' do
+  context 'when an admin' do
     before do
       sign_in(admin)
       visit school_path(school)
@@ -233,7 +240,6 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       let!(:meter) do
         create(:electricity_meter, dcc_meter: :smets2, name: 'Electricity meter', school:, mpan_mprn: 1_234_567_890_123)
       end
-
 
       before do
         stub_request(:get, 'https://n3rgy.test/find-mpxn/1234567890123').to_return(body: '{}')
@@ -360,6 +366,12 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       it 'does not show the CSV download button if no readings' do
         expect(gas_meter.amr_validated_readings.empty?).to be true
         expect(page).to have_no_content('CSV')
+      end
+
+      it 'has Perse details' do
+        stub_request(:get, 'https://n3rgy.test/find-mpxn/1')
+        click_on gas_meter.mpan_mprn.to_s
+        expect(page).to have_content('Perse API None')
       end
     end
 
