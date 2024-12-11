@@ -13,9 +13,6 @@ class Tasks::Recorder
     @recording = recording
     @user = user
     @school = recording.school
-    unless task
-      raise ArgumentError, 'Recording must have an associated task'
-    end
   end
 
   def process

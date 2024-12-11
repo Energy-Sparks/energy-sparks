@@ -23,18 +23,10 @@ describe Tasks::Recorder do
     end
 
     context 'with an observation to record' do
-      context 'when observation is an intervention' do
-        let(:recording) { build(:observation, :intervention) }
+      let(:recording) { build(:observation, :intervention) }
 
-        it { expect { task_recorder }.not_to raise_error }
-        it { expect(task_recorder).to be_a(Tasks::Recorder::Observation) }
-      end
-
-      context 'with a non-intervention observation' do
-        let(:recording) { build(:observation, :activity) }
-
-        it { expect { task_recorder }.to raise_error(ArgumentError) }
-      end
+      it { expect { task_recorder }.not_to raise_error }
+      it { expect(task_recorder).to be_a(Tasks::Recorder::Observation) }
     end
   end
 
