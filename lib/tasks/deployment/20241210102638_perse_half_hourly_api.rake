@@ -8,7 +8,7 @@ namespace :after_party do
       process_type: 'other_api',
       source_type: 'api',
       description: 'Perse Half-Hourly Meter API',
-      date_format: 'N/A',
+      date_format: '%Y-%m-%d',
       mpan_mprn_field: 'N/A',
       reading_date_field: 'N/A',
       reading_fields: []
