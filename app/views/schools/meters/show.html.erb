@@ -127,14 +127,14 @@
   <div>
     <h3>Perse Metering</h3>
     <dl class="row">
-      <dt class="col-sm-3">Perse Metering</dt>
-      <dd class="col-sm-9"><%= { nil: 'None', perse_half_hourly: 'Half Hourly' }[@meter.readings_api] %></dd>
+      <dt class="col-sm-3">Perse API</dt>
+      <dd class="col-sm-9"><%= { nil: 'None', 'perse_half_hourly' => 'Half Hourly' }[@meter.readings_api] %></dd>
       <dt class="col-sm-3">Latest reading</dt>
       <% date = AmrDataFeedReading.where(
            amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'perse-half-hourly-api'),
            meter: @meter
          ).order(:reading_date).last&.reading_date %>
-      <dd class="col-sm-9"><%= date %></dd>
+      <dd class="col-sm-9"><%= date || 'None' %></dd>
     </dl>
   </div>
 <% end %>
