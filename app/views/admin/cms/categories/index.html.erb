@@ -1,0 +1,40 @@
+<h1>Categories</h1>
+
+<div class="row">
+  <div class="col">
+    <p><%= link_to 'New Category', new_admin_cms_category_path, class: 'btn' %></p>
+  </div>
+</div>
+
+<div class="row">
+ <div class="col">
+   <table class="table table-striped">
+     <thead>
+       <tr>
+         <th>Title</th>
+         <th>Published?</th>
+         <th>Actions</th>
+       </tr>
+     </thead>
+     <tbody>
+       <% @categories.each do |category| %>
+        <tr>
+          <td><%= link_to category.title, edit_admin_cms_category_path(category) %></td>
+          <td><%= fa_icon(category.published? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
+          <td>
+            <%= link_to 'Edit', edit_admin_cms_category_path(category), class: 'btn' %>
+            <% if category.published? %>
+            <%= link_to 'Hide', hide_admin_cms_category_path(category), method: :put, class: 'btn',
+                                                                        data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
+            <%# = link_to 'View', help_path(help_page), class: "btn" %>
+            <% else %>
+            <%= link_to 'Publish', publish_admin_cms_category_path(category), method: :put, class: 'btn',
+                                                                              data: { confirm: 'Note this will make the page public, are you sure?' } %>
+            <% end %>
+          </td>
+        </tr>
+       <% end %>
+     </tbody>
+   </table>
+ </div>
+</div>

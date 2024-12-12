@@ -86,6 +86,11 @@ Rails.application.routes.draw do
     get :unlisted, on: :collection
   end
 
+  scope module: 'cms', path: 'support' do
+    resources :categories, only: [:index, :show]
+    resources :pages, only: [:show]
+  end
+
   namespace :comparisons do
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_gas_out_of_hours_use, only: [:index], concerns: :unlisted
@@ -138,6 +143,7 @@ Rails.application.routes.draw do
   get 'version', to: 'version#show'
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
+
 
   resources :help, controller: 'help_pages', only: [:show]
 
@@ -496,6 +502,27 @@ Rails.application.routes.draw do
       resources :footnotes, except: [:show]
       resources :reports, except: [:show]
       resources :report_groups, except: [:show]
+    end
+
+    namespace :cms do
+      resources :categories, except: [:show] do
+        member do
+          put :publish
+          put :hide
+        end
+      end
+      resources :pages, except: [:show] do
+        member do
+          put :publish
+          put :hide
+        end
+      end
+      resources :sections, except: [:show] do
+        member do
+          put :publish
+          put :hide
+        end
+      end
     end
 
     resources :case_studies

@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col">
+    <% url = if page.new_record?
+               admin_cms_pages_path
+             else
+               admin_cms_page_path(page)
+             end %>
+    <%= simple_form_for(page, as: :page, url: url) do |f| %>
+      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+        <%= f.input t_field(:title, locale), as: :string %>
+      <% end %>
+      <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+        <div class="description-trix-editor-<%= locale %> form-group">
+          <%= f.label t_field(:description, locale), 'Description', class: 'form-label' %>
+          <%= f.rich_text_area t_field(:description, locale), class: '' %>
+        </div>
+      <% end %>
+
+      <%= f.select :category_id, options_for_select(Cms::Category.by_title.map do |c|
+            [c.title, c.id]
+          end), { include_blank: 'Choose category' }, { class: 'form-control' } %>
+
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <%= f.check_box :published, class: 'form-check-input' %>
+          <%= f.label :published, class: 'form-check-label' %>
+        </div>
+      </div>
+
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>
