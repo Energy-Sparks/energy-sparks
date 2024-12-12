@@ -24,4 +24,8 @@ class CompletedTodo < ApplicationRecord
 
   has_one :activity_type, through: :todo, source: :task, source_type: 'ActivityType'
   has_one :intervention_type, through: :todo, source: :task, source_type: 'InterventionType'
+
+  validates :completable_id, uniqueness: { scope: :todo_id }
+
+  scope :for, ->(completable:) { where(completable: completable).order(created_at: :desc) }
 end

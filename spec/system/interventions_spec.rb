@@ -151,8 +151,8 @@ describe 'viewing and recording action' do
     end
   end
 
-  context 'as a school admin' do
-    let!(:school_admin)       { create(:school_admin, school:) }
+  context 'as a school admin', toggle_feature: :todos do
+    let!(:school_admin) { create(:school_admin, school:) }
 
     before do
       sign_in(school_admin)

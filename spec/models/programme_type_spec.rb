@@ -121,4 +121,8 @@ RSpec.describe ProgrammeType, type: :model do
       end
     end
   end
+
+  it_behaves_like 'an assignable' do
+    subject(:assignable) { create(:programme_type) }
+  end
 end

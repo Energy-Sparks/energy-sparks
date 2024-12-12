@@ -31,13 +31,11 @@ class ActivityCreator
   end
 
   def create_activity_observation
-    points = @activity.activity_type.score_when_recorded_at(@activity.school, @activity.happened_on)
     Observation.create!(
       school: @activity.school,
       observation_type: :activity,
       activity: @activity,
       at: @activity.happened_on,
-      points:,
       created_by: @user
     )
   end
