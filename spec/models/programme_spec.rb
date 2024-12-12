@@ -105,6 +105,6 @@ describe 'Programme' do
   end
 
   it_behaves_like 'a completable' do
-    subject(:completable) { create(:programme) }
+    subject(:completable) { create(:programme, school:) }
   end
 end

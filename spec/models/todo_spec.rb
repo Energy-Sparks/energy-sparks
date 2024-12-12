@@ -291,102 +291,10 @@ describe 'Todo' do
     end
   end
 
-  shared_examples 'a completable getting latest recording for todo' do
-    subject(:recording) { todo.latest_recording_for(completable: completable) }
-
-    context 'when todo task is an activity type' do
-      let(:activity_type) { create(:activity_type) }
-      let!(:todo) { create(:todo, assignable: assignable, task: activity_type) }
-
-      context 'when school has a recording for task' do
-        let!(:activity) { create(:activity, activity_type: activity_type, school: school) }
-
-        it 'returns latest recorded task for completable' do
-          expect(recording).to eq(activity)
-        end
-      end
-
-      context 'when school has multiple recordings for task' do
-        let!(:older) { create(:activity, activity_type:, school:, happened_on: 3.days.ago) }
-        let!(:newer) { create(:activity, activity_type:, school:, happened_on: 2.days.ago) }
-        let!(:created_last) { create(:activity, activity_type:, school:, happened_on: 4.days.ago) }
-
-        it 'returns latest recorded task for completable' do
-          expect(recording).to eq(newer)
-        end
-      end
-
-      context "when recording is not in school's academic year" do
-        let!(:old) { create(:activity, activity_type:, school:, happened_on: 3.years.ago) }
-
-        it 'returns nothing' do
-          expect(recording).to be_nil
-        end
-      end
-
-      context "when school doesn't have a recording for task" do
-        it 'returns nothing' do
-          expect(recording).to be_nil
-        end
-      end
-
-      context 'when a different school has a recording for the task' do
-        let!(:other) { create(:activity, activity_type:, school: create(:school)) }
-
-        it 'returns nothing' do
-          expect(recording).to be_nil
-        end
-      end
-    end
-
-    context 'when todo task is an intervention type' do
-      let(:intervention_type) { create(:intervention_type) }
-      let!(:todo) { create(:todo, assignable: assignable, task: intervention_type) }
-
-      context 'when school has a recording for task' do
-        let!(:observation) { create(:observation, :intervention, intervention_type:, school:) }
-
-        it 'returns latest recorded task for completable' do
-          expect(recording).to eq(observation)
-        end
-      end
-
-      context 'when school has multiple recordings for task' do
-        let!(:older) { create(:observation, :intervention, intervention_type:, school:, at: 3.days.ago) }
-        let!(:newer) { create(:observation, :intervention, intervention_type:, school:, at: 2.days.ago) }
-        let!(:created_last) { create(:observation, :intervention, intervention_type:, school:, at: 4.days.ago) }
-
-        it 'returns latest recorded task for completable' do
-          expect(recording).to eq(newer)
-        end
-      end
-
-      context "when recording is not in school's academic year" do
-        let!(:older) { create(:observation, :intervention, intervention_type:, school:, at: 3.years.ago) }
-
-        it 'returns nothing' do
-          expect(recording).to be_nil
-        end
-      end
-
-      context "when school doesn't have a recording for task" do
-        it 'returns nothing' do
-          expect(recording).to be_nil
-        end
-      end
-
-      context 'when a different school has a recording for the task' do
-        let!(:observation) { create(:observation, :intervention, intervention_type:, school: create(:school)) }
-
-        it 'returns nothing' do
-          expect(recording).to be_nil
-        end
-      end
-    end
-  end
-
   describe '#latest_recording_for' do
     let(:school) { create(:school) }
+
+    subject(:recording) { todo.latest_recording_for(completable: completable) }
 
     context 'when completable is a programme' do
       let(:assignable) { create(:programme_type) }

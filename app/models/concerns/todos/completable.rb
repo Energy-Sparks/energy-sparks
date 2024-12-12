@@ -58,15 +58,11 @@ module Todos
       end
     end
 
-    def latest_recording_for(todo)
-      todo.latest_recording_for(completable: self)
-    end
-
     def complete_todos_this_academic_year!
       assignable.todos.each do |todo|
-        recording = latest_recording_for(todo)
+        recording = todo.latest_recording_for(completable: self)
         if recording.present?
-          todo.complete!(self, recording)
+          todo.complete!(completable: self, recording: recording)
         end
       end
       self.complete! if completable?
