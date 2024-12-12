@@ -68,18 +68,21 @@
       <p class="alert alert-warning"><%= t('schools.meters.form.admin_only_features_for_n3rgy_integration') %></p>
 
       <div class="custom-control custom-checkbox">
+        <%= form.label :dcc_meter, t('schools.meters.form.dcc_smart_meter'), class: 'custom-control-label' %>
         <%= form.check_box :dcc_meter, { class: 'custom-control-input' }, checked_value = 'smets2',
                            unchecked_value = 'no' %>
-        <%= form.label :dcc_meter, t('schools.meters.form.dcc_smart_meter'), class: 'custom-control-label' %>
         <small class="form-text text-muted">
           <%= t('schools.meters.form.leave_this_blank_message') %>
         </small>
       </div>
 
-      <div class="form-group">
+      <div>
         <%= form.label(:perse_api, 'Perse API') %>
         <%= form.select(:perse_api, [['None', nil], ['Half Hourly', :half_hourly]], { include_blank: true },
                         class: 'form-control') %>
+        <small class="form-text text-muted">
+          Setting this will enable loading reading data from Perse
+        </small>
       </div>
     <% end %>
   </div>
