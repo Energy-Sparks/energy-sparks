@@ -10,5 +10,8 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
-      - dependency-name: "energy-sparks_analytics"
-      - dependency-name: "statsample"
+      # seems like once dependabot has opened a PR for a new minor version it won't do others even if they're security
+      # updates - so ignore new versions (they need manual intervention anyway)
+      - dependency-name: "rails"
+        versions: [">= 7.2.0"]
+    open-pull-requests-limit: 10 # default 5
