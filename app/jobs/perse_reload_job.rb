@@ -4,7 +4,7 @@ class PerseReloadJob < ApplicationJob
   queue_as :default
 
   def perform(meter, notify_email)
-    result = Amr::PerseUpsert.perform(meter)
+    result = Amr::PerseUpsert.perform(meter, reload: true)
     N3rgyReloadJobMailer.with(to: notify_email, meter:, result:).complete.deliver
   end
 end

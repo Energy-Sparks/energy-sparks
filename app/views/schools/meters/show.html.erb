@@ -131,8 +131,7 @@
         <% config = AmrDataFeedConfig.find_by(identifier: 'perse-half-hourly-api') %>
         <% if config %>
           <dt class="col-sm-3">Latest reading</dt>
-          <dd class="col-sm-9"><%= AmrDataFeedReading.where(amr_data_feed_config: config, meter: @meter)
-                                                     .order(:reading_date).last&.reading_date || 'None' %></dd>
+          <dd class="col-sm-9"><%= Amr::PerseUpsert.latest_reading_date(config, @meter) || 'None' %></dd>
         </dl>
         <% end %>
     </div>

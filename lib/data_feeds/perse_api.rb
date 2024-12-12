@@ -18,15 +18,5 @@ module DataFeeds
       EnergySparks::Log.exception(e, mpan:, from_date:, status: e&.response_status, body: e&.response_body)
       {}
     end
-
-    def self.meter_history_readings(mpan, from_date)
-      meter_history_realtime_data(mpan, from_date)['data']
-        &.select { |data| data_ok(data) }
-        &.map { |data| [data['Date'], (1..48).map { |i| data["P#{i}"].to_f }] } || []
-    end
-
-    def self.data_ok(data)
-      data['MeasurementQuantity'] == 'AI' && (1..48).all? { |i| data["UT#{i}"] == 'A' }
-    end
   end
 end

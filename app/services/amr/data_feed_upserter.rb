@@ -55,7 +55,7 @@ module Amr
     end
 
     def perform
-      log_changes(0, 0) and return if @array_of_data_feed_reading_hashes.empty?
+      return log_changes(0, 0) if @array_of_data_feed_reading_hashes.empty?
 
       records_count_before = count_by_mpan
 
