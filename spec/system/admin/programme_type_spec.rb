@@ -4,7 +4,7 @@ describe 'programme type management', type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
-  context 'when todos_parallel feature is switched on' do
+  context with_feature: :todos_parallel do
     let!(:programme_type) do
       create(:programme_type, title: 'Test Programme',
         activity_types: create_list(:activity_type, 3)) # old way
@@ -13,10 +13,6 @@ describe 'programme type management', type: :system do
     # new way
     let!(:activity_type_todos) { create_list(:activity_type_todo, 2, assignable: programme_type) }
     let!(:intervention_type_todos) { create_list(:intervention_type_todo, 2, assignable: programme_type) }
-
-    before do
-      Flipper.enable(:todos_parallel)
-    end
 
     context 'when viewing programme type admin index' do
       before do
@@ -62,9 +58,8 @@ describe 'programme type management', type: :system do
     end
   end
 
-  context 'when todos feature is switched on' do
+  context with_feature: :todos do
     before do
-      Flipper.enable(:todos)
       # enrolment only enabled if targets enabled...
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     end

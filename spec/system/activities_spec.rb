@@ -160,7 +160,7 @@ describe 'viewing and recording activities' do
         visit activity_type_path(activity_type)
       end
 
-      context 'with todos feature switched off' do
+      context without_feature: :todos do
         before do
           click_on 'Record this activity'
         end
@@ -272,9 +272,8 @@ describe 'viewing and recording activities' do
         end
       end
 
-      context 'with todos feature switched on' do
+      context with_feature: :todos do
         before do
-          Flipper.enable(:todos)
           click_on 'Record this activity'
         end
 
