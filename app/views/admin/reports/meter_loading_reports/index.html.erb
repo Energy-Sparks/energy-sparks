@@ -44,12 +44,10 @@
           <td><%= result.parsed_date %></td>
           <td>
             <% if result.imported || result.source_type == 2 %>
-              result.file_name
+              <%= result.file_name %>
             <% else %>
               <%= link_to result.file_name, s3_csv_download_url(result.identifier, result.file_name) %>
             <% end %>
-
-            <%= result.file_name %>
           </td>
           <td>
             <% if result.imported %>
