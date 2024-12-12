@@ -8,14 +8,14 @@ module Schools
     def perform
       meter_collection = validate_and_persist_readings
       continue = run_aggregation(meter_collection)
-      remove_meter_collection_from_cache
       if continue
         cache_meter_collection(meter_collection)
         regenerate_school_metrics(meter_collection)
-        true
+        return true
       else
         @logger.error('Unable to continue with regeneration')
-        false
+        remove_meter_collection_from_cache
+        return false
       end
     end
 
