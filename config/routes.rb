@@ -86,6 +86,7 @@ Rails.application.routes.draw do
     get :unlisted, on: :collection
   end
 
+  get '/support', to: redirect('/support/categories')
   scope module: 'cms', path: 'support' do
     resources :categories, only: [:index, :show]
     resources :pages, only: [:show]
