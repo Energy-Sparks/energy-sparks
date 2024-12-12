@@ -51,7 +51,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def link_text
-      helpers.text_with_icon(name, icon, class: 'fuel') + content_tag(:span, helpers.toggler, class: 'float-right')
+      helpers.text_with_icon(name, icon, class: 'fuel fa-fw') + content_tag(:span, helpers.toggler, class: 'float-right')
     end
 
     def render?
