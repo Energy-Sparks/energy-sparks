@@ -8,13 +8,7 @@
           <h1><%= @page.title %></h1>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <p>
-            <%= @page.description %>
-          </p>
-        </div>
-      </div>
+      <%= render 'cms/search' %>
     </div>
   </div>
 <% end %>
@@ -26,8 +20,22 @@
     </div>
 
     <div id="page-body" class="col-md-5 col-lg-5 col-xl-7">
+
+      <%= render PromptComponent.new(status: :none) do |c| %>
+        <% c.with_title { 'Audience' } %>
+        <%= @page.audience %>
+      <% end %>
+
+      <div class="row">
+        <div class="col">
+          <p>
+            <%= @page.description %>
+          </p>
+        </div>
+      </div>
+
       <% @page.sections.published.positioned.each do |section| %>
-        <h3 id="<%= section.slug %>"><%= section.title %></h3>
+        <h3 id="<%= section.slug %>" class="scrollable-title"><%= section.title %></h3>
         <%= section.body %>
       <% end %>
     </div>

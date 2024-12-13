@@ -30,5 +30,9 @@ module Cms
 
     belongs_to :category, class_name: 'Cms::Category'
     has_many :sections, class_name: 'Cms::Section', dependent: :restrict_with_error
+
+    def audience
+      'School and group admins'
+    end
   end
 end
