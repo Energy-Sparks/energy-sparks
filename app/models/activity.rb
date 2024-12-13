@@ -39,6 +39,7 @@ class Activity < ApplicationRecord
   has_many :programme_activities
   has_many :programmes, through: :programme_activities
   has_many :observations
+  has_many :completed_todos, as: :recording, dependent: :destroy
 
   validates_presence_of :school, :activity_type, :activity_category, :happened_on
 

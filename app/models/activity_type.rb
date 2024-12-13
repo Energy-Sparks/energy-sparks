@@ -87,6 +87,8 @@ class ActivityType < ApplicationRecord
   has_many :audit_activity_types
   has_many :audits, through: :audit_activity_types
 
+  has_many :todos, as: :task, inverse_of: :task, dependent: :destroy
+
   has_many :link_rewrites, as: :rewriteable
 
   accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
