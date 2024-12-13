@@ -15,11 +15,6 @@ module Todos
       scope :completable, -> { raise NoMethodError, 'Implement completable scope in subclass!' }
     end
 
-    # def tasks(task_type = nil)
-    #   scope = task_type.nil? ? todos : todos.where(task_type: task_type.to_s)
-    #   scope.map(&:task).uniq
-    # end
-
     def assignable_todos
       assignable.todos
     end
