@@ -3,6 +3,7 @@ cy:
     alert_email:
       book_a_workshop: Archebu gweithdy
       book_an_audit: Archebu archwiliad
+      dashboard_and_analysis_message_2024_html: Mae eich <a href='%{school_url}'>dangosfwrdd ysgol</a> bob amser yn dangos crynodeb o'ch rhybuddion diweddar a'ch defnydd o ynni. I gael <a href='%{alerts_school_advice_url}'>rhestr lawn o rybuddion</a> a'n <a href='%{priorities_school_advice_url}'>camau gweithredu blaenoriaeth a awgrymir</a>, edrychwch ar ein <a href='%{school_analysis_index_url}'>dadansoddiad manwl</a>
       dashboard_and_analysis_message_html: Mae <strong><a href='%{school_url}'>dangosfwrdd eich ysgol</a></strong> bob amser yn dangos eich rhybuddion diweddaraf a bydd ein <strong><a href='%{school_analysis_index_url}'>dadansoddiad manwl</a></strong> o'ch defnydd o ynni yn rhoi mewnwelediad pellach
       do_not_show_me_alerts_like_this: Peidio â dangos rhybuddion fel hyn i fi
       education_workshops_message: Mae Sbarcynni yn cynnig gweithdai addysg hanner diwrnod personol a rhithwir a gwasanaethau i ysgolion sy'n cymryd rhan ledled y DU
@@ -17,6 +18,10 @@ cy:
       set_a_new_target: Gosod targed newydd
       stay_up_to_date: Cadwch yn gyfoes
       subject: Rhybuddion Sbarcynni
+      subject_2024: "Rhybuddion wythnosol %{school_name}"
+      take_action_around_the_school: Gweithredwch o amgylch yr ysgol
+      take_action_choose: Dewiswch weithgaredd
+      take_action_message: Cwblhewch un o'n gweithgareddau dan arweiniad disgyblion neu oedolion a argymhellir i ddechrau lleihau eich defnydd o ynni
       title: Eich rhybuddion wythnosol
       view_your_progress_report: Gweld eich adroddiad cynnydd
       view_your_school_dashboard: Gweld dangosfwrdd eich ysgol

@@ -171,7 +171,7 @@ describe ChartDataValues do
           'School Day Open' => Colours.chart_school_day_open,
           'Holiday' => Colours.chart_holiday,
           'Weekend' => Colours.chart_weekend,
-          'Heating on in cold weather' => Colours.chart_heating_day,
+          'Heating on in colder weather' => Colours.chart_heating_day,
           'Hot Water (& Kitchen)' => Colours.chart_non_heating_day,
           'Hot Water Usage' => Colours.chart_useful_hot_water_usage,
           'Wasted Hot Water Usage' => Colours.chart_wasted_hot_water_usage,

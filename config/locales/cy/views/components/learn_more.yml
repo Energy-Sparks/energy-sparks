@@ -1,0 +1,12 @@
+cy:
+  components:
+    dashboard_learn_more:
+      adult:
+        explore: Archwilio data ynni
+        intro: Gweld siartiau, cael cipolwg ar leihau'r defnydd o ynni a chymharu perfformiad yn erbyn ysgolion eraill
+        opportunities: Cyfleoedd arbed ynni
+        title: Dysgu rhagor am eich defnydd o ynni
+        title_with_solar_pv: Dysgu rhagor am eich defnydd o ynni a'ch cynhyrchiant
+      pupil:
+        intro: Dysgu rhagor am sut mae'ch ysgol yn defnyddio ynni gan ddefnyddio'r siartiau hyn
+        title: Archwiliwch y data ynni ar gyfer eich ysgol
