@@ -10,7 +10,7 @@
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>
       <%= render 'admin/shared/locale_tabs', f: f, field: :body do |locale| %>
-        <div class="description-trix-editor-<%= locale %> form-group">
+        <div class="body-trix-editor-<%= locale %> form-group">
           <%= f.label t_field(:body, locale), 'Body', class: 'form-label' %>
           <%= f.rich_text_area t_field(:body, locale), class: '' %>
         </div>
@@ -18,7 +18,7 @@
 
       <%= f.select :page_id, options_for_select(Cms::Page.by_title.map do |p|
             [p.title, p.id]
-          end), { include_blank: 'Choose page' }, { class: 'form-control' } %>
+          end, section.page_id), { include_blank: 'Choose page' }, { class: 'form-control' } %>
 
       <div class="form-group">
         <div class="form-check form-check-inline">

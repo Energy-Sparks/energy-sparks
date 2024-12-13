@@ -1,0 +1,10 @@
+<div style="position: sticky; top: 100px;">
+  <h4>Go to section</h4>
+  <ul>
+    <% page.sections.published.positioned.each do |section| %>
+      <li>
+        <a href="#<%= section.slug %>"><%= section.title %></a>
+      </li>
+    <% end %>
+  </ul>
+</div>

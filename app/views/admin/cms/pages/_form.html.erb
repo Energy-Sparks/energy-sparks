@@ -10,15 +10,12 @@
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>
       <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
-        <div class="description-trix-editor-<%= locale %> form-group">
-          <%= f.label t_field(:description, locale), 'Description', class: 'form-label' %>
-          <%= f.rich_text_area t_field(:description, locale), class: '' %>
-        </div>
+        <%= f.input t_field(:description, locale), as: :string %>
       <% end %>
 
       <%= f.select :category_id, options_for_select(Cms::Category.by_title.map do |c|
             [c.title, c.id]
-          end), { include_blank: 'Choose category' }, { class: 'form-control' } %>
+          end, page.category_id), { include_blank: 'Choose category' }, { class: 'form-control' } %>
 
       <div class="form-group">
         <div class="form-check form-check-inline">

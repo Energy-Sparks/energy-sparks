@@ -17,7 +17,7 @@ module Cms
     friendly_id :title, use: %i[finders slugged history]
 
     translates :title, type: :string, fallbacks: { cy: :en }
-    translates :description, backend: :action_text
+    translates :description, type: :string, fallbacks: { cy: :en }
 
     has_many :pages, class_name: 'Cms::Page', dependent: :restrict_with_error
   end

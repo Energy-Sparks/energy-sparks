@@ -8,6 +8,13 @@
           <h1><%= @category.title %></h1>
         </div>
       </div>
+      <div class="row">
+        <div class="col">
+          <p>
+            <%= @category.description %>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>
@@ -19,14 +26,6 @@
     </div>
 
     <div id="page-body" class="col-md-8 col-lg-8 col-xl-9">
-      <div class="row">
-        <div class="col">
-          <p>
-            <%= @category.description %>
-          </p>
-        </div>
-      </div>
-
       <% @category.pages.published.by_title.each do |page| %>
         <h3><%= link_to page.title, page_path(page) %></h3>
 
