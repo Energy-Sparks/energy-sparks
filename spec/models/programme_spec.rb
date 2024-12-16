@@ -103,4 +103,8 @@ describe 'Programme' do
       expect(programmes).not_to include(ended_older)
     end
   end
+
+  it_behaves_like 'a completable' do
+    subject(:completable) { create(:programme, school:) }
+  end
 end
