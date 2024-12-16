@@ -20,12 +20,12 @@
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 class Audit < ApplicationRecord
+  include Todos::Assignable
+  include Todos::Completable
+
   belongs_to :school, inverse_of: :audits
   has_one_attached :file
   has_rich_text :description
-
-  include Todos::Assignable
-  include Todos::Completable
 
   has_many :observations, as: :observable, dependent: :destroy
 
@@ -43,6 +43,11 @@ class Audit < ApplicationRecord
 
   scope :published, -> { where(published: true) }
   scope :by_date,   -> { order(created_at: :desc) }
+  scope :completable, -> { published }
+
+  def assignable
+    self
+  end
 
   def activity_types_completed
     activity_types.where(id: school.activities.where(happened_on: created_at..).pluck(:activity_type_id))
@@ -83,5 +88,22 @@ class Audit < ApplicationRecord
     return if observations.audit_activities_completed.any? # Only one audit activities completed observation is permitted per audit
 
     self.observations.create!(observation_type: :audit_activities_completed, points: SiteSettings.current.audit_activities_bonus_points)
+  end
+
+  def completed?
+    observations.audit_activities_completed.any?
+  end
+
+  ## NB: using same bonus score and observation as just activities being completed as above!
+  def complete!
+    # I think we should raise here too if the site has no bonus points set
+    return unless SiteSettings.current.audit_activities_bonus_points
+    # There is no flag on audit to say all tasks are completed, apart from observation being present
+    # So halt here if observation is present
+    return if completed?
+    # Are there todos and are they complete?
+    return unless completable?
+
+    self.observations.audit_activities_completed.create!(points: SiteSettings.current.audit_activities_bonus_points)
   end
 end
