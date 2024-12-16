@@ -64,6 +64,10 @@
                     class: 'btn btn-secondary btn-sm' %>
       <% end %>
     <% end %>
+    <% if can?(:reload, @meter) && !@meter.dcc_meter? && @meter.perse_api %>
+      <%= link_to 'Reload', reload_school_meter_path(@school, @meter),
+                  method: :post, class: 'btn btn-secondary btn-sm' %>
+    <% end %>
   </div>
 </div>
 <div>
