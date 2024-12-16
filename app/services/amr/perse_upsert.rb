@@ -41,7 +41,7 @@ module Amr
     end
 
     private_class_method def self.to_f_if_not_nil(item)
-      # not sure these would ever be nil because of the data check above bur just to make sure
+      # not sure these would ever be nil because of the data check above bur just to make sure we don't turn a nil into a 0
       item.nil? ? nil : item.to_f
     end
   end
