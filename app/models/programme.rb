@@ -54,6 +54,12 @@ class Programme < ApplicationRecord
   scope :recently_ended, ->(date: 1.day.ago) { where('ended_on >= ?', date) }
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
 
+  scope :completable, -> { started.active }
+
+  def assignable
+    programme_type
+  end
+
   def points_for_completion
     programme_type.bonus_score
   end

@@ -169,7 +169,7 @@ RSpec.describe ActivitiesController do
       sign_in(admin)
     end
 
-    context 'with invalid params' do
+    context 'with invalid params', toggle_feature: :todos do
       before do
         post :create, params: { school_id: school.id, activity: invalid_attributes }
       end
@@ -183,7 +183,7 @@ RSpec.describe ActivitiesController do
       end
     end
 
-    context 'with valid params' do
+    context 'with valid params', toggle_feature: :todos do
       before do
         post :create, params: { school_id: school.id, activity: valid_attributes }
       end
