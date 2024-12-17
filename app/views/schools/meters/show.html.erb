@@ -54,17 +54,13 @@
                     inventory_school_meter_path(@school, @meter),
                     class: 'btn btn-secondary btn-sm' %>
       <% end %>
-      <% if can?(:reload, @meter) %>
-        <%= link_to 'Reload', reload_school_meter_path(@school, @meter),
-                    method: :post, class: 'btn btn-secondary btn-sm' %>
-      <% end %>
       <% if can?(:view_tariff_reports, @meter) %>
         <%= link_to t('schools.meters.show.tariff_report'),
                     smart_meter_tariffs_school_energy_tariffs_path(@school),
                     class: 'btn btn-secondary btn-sm' %>
       <% end %>
     <% end %>
-    <% if can?(:reload, @meter) && !@meter.dcc_meter? && @meter.perse_api %>
+    <% if can?(:reload, @meter) && (@meter.dcc_meter? || @meter.perse_api) %>
       <%= link_to 'Reload', reload_school_meter_path(@school, @meter),
                   method: :post, class: 'btn btn-secondary btn-sm' %>
     <% end %>
