@@ -285,6 +285,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         expect(ActionMailer::Base.deliveries.last.to).to eq([admin.email])
         expect(ActionMailer::Base.deliveries.last.to_s).to include('0 records were imported and 0 were updated')
       end
+
       it 'allows reloading the meter' do
         create(:amr_data_feed_config, process_type: :n3rgy_api)
         click_on meter.mpan_mprn.to_s
@@ -292,11 +293,27 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         expect_meter_reload
       end
 
-      it 'allows reloading the meter with Perse' do
-        meter.update!(perse_api: :half_hourly)
-        click_on meter.mpan_mprn.to_s
-        expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
-        expect_meter_reload
+      context 'with Perse' do
+        around do |example|
+          stub_request(:get, ->(uri) { uri.path == '/meterhistory/v2/realtime-data' })
+          meter.update!(perse_api: :half_hourly)
+          ClimateControl.modify PERSE_API_URL: 'http://example.com', PERSE_API_KEY: 'key' do
+            example.run
+          end
+        end
+
+        it 'allows reloading the meter with Perse' do
+          click_on meter.mpan_mprn.to_s
+          expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
+          expect_meter_reload
+        end
+
+        it 'allows reloading the meter with Perse and no DCC' do
+          meter.update!(dcc_meter: :no)
+          click_on meter.mpan_mprn.to_s
+          expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
+          expect_meter_reload
+        end
       end
     end
 
