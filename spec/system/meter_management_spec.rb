@@ -295,9 +295,9 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
 
       context 'with Perse' do
         around do |example|
-          stub_request(:get, ->(uri) { uri.path == '/meterhistory/v2/realtime-data' })
+          stub_request(:get, ->(uri) { uri.host == 'perse' })
           meter.update!(perse_api: :half_hourly)
-          ClimateControl.modify PERSE_API_URL: 'http://example.com', PERSE_API_KEY: 'key' do
+          ClimateControl.modify PERSE_API_URL: 'http://perse', PERSE_API_KEY: 'key' do
             example.run
           end
         end
