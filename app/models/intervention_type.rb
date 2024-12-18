@@ -95,6 +95,10 @@ class InterventionType < ApplicationRecord
     school.observations.where(intervention_type: self).where(at: academic_year.start_date..academic_year.end_date).count
   end
 
+  def public_type
+    'action'
+  end
+
   private
 
   def copy_searchable_attributes

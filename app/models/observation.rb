@@ -49,6 +49,7 @@
 
 class Observation < ApplicationRecord
   include Description
+  include Todos::Recording
 
   belongs_to :school
   has_many   :temperature_recordings
@@ -118,6 +119,10 @@ class Observation < ApplicationRecord
     elsif activity?
       super || activity.description_includes_images?
     end
+  end
+
+  def happened_on
+    at.to_date
   end
 
   private

@@ -37,6 +37,12 @@ class Todo < ApplicationRecord
     completed_todos.for(completable: completable).first_or_initialize.update!(recording: recording)
   end
 
+  # todo.recording_for(completable: Programme/Audit)
+  # Returns recording for todo item
+  def recording_for(completable:)
+    completed_todos.for(completable: completable).last&.recording
+  end
+
   # todo.complete?(completable: Programme/Audit)
   def complete_for?(completable:)
     completed_todos.for(completable: completable).any?

@@ -17,5 +17,22 @@ module Todos
       accepts_nested_attributes_for :activity_type_todos, allow_destroy: true
       accepts_nested_attributes_for :intervention_type_todos, allow_destroy: true
     end
+
+    def enrolled?(user:)
+      return unless user&.school
+
+      completable_for(school: user.school).exists?
+    end
+
+    def completable_for(school:)
+      case self.class.to_s
+      when 'ProgrammeType'
+        school.programmes.active.where(programme_type: self).last
+      when 'Audit'
+        self
+      else
+        raise StandardError, 'Unsupported completable type'
+      end
+    end
   end
 end

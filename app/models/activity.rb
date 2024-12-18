@@ -30,6 +30,7 @@
 
 class Activity < ApplicationRecord
   include Description
+  include Todos::Recording
 
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities
@@ -63,5 +64,9 @@ class Activity < ApplicationRecord
 
   def points
     observations.sum(:points)
+  end
+
+  def recorded_on
+    happened_on
   end
 end
