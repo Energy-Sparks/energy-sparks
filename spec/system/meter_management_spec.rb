@@ -45,7 +45,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
   end
   let!(:setup_data) {}
 
-  before { create(:amr_data_feed_config, identifier: 'perse-half-hourly-api') }
+  around do |example|
+    create(:amr_data_feed_config, identifier: 'perse-half-hourly-api')
+    example.run
+  end
 
   context 'when a school admin' do
     before do
@@ -295,7 +298,12 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
 
       context 'with Perse' do
         around do |example|
-          stub_request(:get, ->(uri) { uri.host == 'perse' })
+          travel_to(Date.new(2024, 12, 10))
+          create(:amr_data_feed_reading, # make sure we're doing a full reload
+                 amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'perse-half-hourly-api'),
+                 reading_date: '2024-12-10',
+                 meter: meter)
+          stub_request(:get, 'http://perse/meterhistory/v2/realtime-data?MPAN=1234567890123&fromDate=2023-10-10')
           meter.update!(perse_api: :half_hourly)
           ClimateControl.modify PERSE_API_URL: 'http://perse', PERSE_API_KEY: 'key' do
             example.run
