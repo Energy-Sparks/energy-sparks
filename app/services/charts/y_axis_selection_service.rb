@@ -37,7 +37,7 @@ module Charts
     private
 
     def chart_config
-      @chart_config ||= ChartManager.build_chart_config(ChartManager::STANDARD_CHART_CONFIGURATION[@chart_name])
+      @chart_config ||= ChartManager.build_chart_config(ChartManager::STANDARD_CHART_CONFIGURATION.fetch(@chart_name))
     end
   end
 end
