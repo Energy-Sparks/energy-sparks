@@ -17,6 +17,7 @@
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
+#  perse_api                      :enum
 #  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
@@ -105,6 +106,7 @@ class Meter < ApplicationRecord
   # Other options are: NHH (Non Half-Hourly), HH (Half-Hourly), and SMETS2/smart (SMETS2 Smart Meters)
   enum :meter_system, { nhh_amr: 0, nhh: 1, hh: 2, smets2_smart: 3 }
   enum :dcc_meter, %w[no smets2 other].to_h { |v| [v, v] }, prefix: true
+  enum :perse_api, { half_hourly: 'half_hourly' }, prefix: true
 
   delegate :area_name, to: :school
 

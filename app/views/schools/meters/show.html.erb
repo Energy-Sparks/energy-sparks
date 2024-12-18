@@ -10,7 +10,7 @@
 </div>
 
 <div class="mb-2 alert alert-secondary row">
-  <div class="col-md-5">
+  <div>
     <% if @meter.amr_validated_readings.any? %>
       <%= link_to "#{fa_icon('file-download')} #{t('schools.meters.show.download_readings')}".html_safe,
                   school_meter_path(@school, @meter, format: 'csv'), class: 'btn btn-secondary btn-sm' %>
@@ -38,8 +38,6 @@
     <% if current_user.admin? %>
       <%= render 'admin/issues/modal', label: t('schools.meters.meter_issues.button_label'), meter: @meter %>
     <% end %>
-  </div>
-  <div class="col-md-7">
     <% if @meter.dcc_meter? %>
       <% if @meter.can_withdraw_consent? && can?(:withdraw_consent, @meter) %>
         <%= link_to t('schools.meters.show.withdraw_consent'),
@@ -56,74 +54,85 @@
                     inventory_school_meter_path(@school, @meter),
                     class: 'btn btn-secondary btn-sm' %>
       <% end %>
-      <% if can?(:reload, @meter) %>
-        <%= link_to 'Reload', reload_school_meter_path(@school, @meter),
-                    method: :post, class: 'btn btn-secondary btn-sm' %>
-      <% end %>
       <% if can?(:view_tariff_reports, @meter) %>
         <%= link_to t('schools.meters.show.tariff_report'),
                     smart_meter_tariffs_school_energy_tariffs_path(@school),
                     class: 'btn btn-secondary btn-sm' %>
       <% end %>
     <% end %>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-5">
-    <h3><%= t('schools.meters.show.basic_information') %></h3>
-    <dl class="row">
-      <% if current_user.admin? %>
-        <dt class="col-sm-3"><%= t('schools.meters.show.data_source') %></dt>
-        <dd class="col-sm-9">
-          <% if @meter.data_source %>
-            <%= link_to(@meter.data_source.name, admin_data_source_path(@meter.data_source)) %>
-          <% else %>
-            <%= t('common.labels.not_set') %>
-          <% end %>
-          </dd>
-      <% end %>
-      <dt class="col-sm-3">MPAN/MPRN</dt>
-      <dd class="col-sm-9"><%= @meter.mpan_mprn %></dd>
-      <dt class="col-sm-3"><%= t('schools.meters.show.serial_number') %></dt>
-      <dd class="col-sm-9"><%= @meter.meter_serial_number %></dd>
-      <dt class="col-sm-3"><%= t('common.labels.type') %></dt>
-      <dd class="col-sm-9"><%= @meter.meter_type.capitalize %></dd>
-      <dt class="col-sm-3"><%= t('common.labels.status') %></dt>
-      <dd class="col-sm-9"><%= @meter.active ? t('common.labels.active') : t('common.labels.inactive') %></dd>
-      <dt class="col-sm-3"><%= t('common.labels.created') %></dt>
-      <dd class="col-sm-9"><%= nice_date_times @meter.created_at %></dd>
-      <dt class="col-sm-3"><%= t('common.labels.last_updated') %></dt>
-      <dd class="col-sm-9"><%= nice_date_times @meter.updated_at %></dd>
-    </dl>
-  </div>
-  <div class="col-md-7">
-    <% if current_user.admin? %>
-      <h3><%= t('schools.meters.show.dcc_information') %></h3>
-      <% if @meter.dcc_meter? %>
-        <dl class="row">
-          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
-          <dd class="col-sm-9"><%= "#{@n3rgy&.available?} (#{@meter.t_dcc_meter})" %></dd>
-          <dt class="col-sm-3"><%= t('schools.meters.show.user_consented') %>?</dt>
-          <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
-          <dt class="col-sm-3"><%= t('schools.meters.show.dcc_consented') %>?</dt>
-          <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
-          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_consent_confirmed') %>?</dt>
-          <dd class="col-sm-9"><%= @n3rgy&.consented? %></dd>
-          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_api_status') %></dt>
-          <dd class="col-sm-9"><%= @n3rgy&.status.to_s.humanize %></dd>
-          <dt class="col-sm-3"><%= t('schools.meters.show.available_cache_range') %></dt>
-          <dd class="col-sm-9"><%= @n3rgy&.available_data&.map(&:rfc2822) if @n3rgy&.consented? %></dd>
-        </dl>
-      <% else %>
-        <p><%= t('schools.meters.show.not_configured_as_a_dcc_meter') %></p>
-        <dl class="row">
-          <dt class="col-sm-3"><%= t('schools.meters.show.dcc_last_checked') %></dt>
-          <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
-          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
-          <dd class="col-sm-9"><%= @n3rgy&.available? %></dd>
-        </dl>
-      <% end %>
+    <% if can?(:reload, @meter) && (@meter.dcc_meter? || @meter.perse_api) %>
+      <%= link_to 'Reload', reload_school_meter_path(@school, @meter),
+                  method: :post, class: 'btn btn-secondary btn-sm' %>
     <% end %>
   </div>
 </div>
+<div>
+  <h3><%= t('schools.meters.show.basic_information') %></h3>
+  <dl class="row">
+    <% if current_user.admin? %>
+      <dt class="col-sm-3"><%= t('schools.meters.show.data_source') %></dt>
+      <dd class="col-sm-9">
+        <% if @meter.data_source %>
+          <%= link_to(@meter.data_source.name, admin_data_source_path(@meter.data_source)) %>
+        <% else %>
+          <%= t('common.labels.not_set') %>
+        <% end %>
+        </dd>
+    <% end %>
+    <dt class="col-sm-3">MPAN/MPRN</dt>
+    <dd class="col-sm-9"><%= @meter.mpan_mprn %></dd>
+    <dt class="col-sm-3"><%= t('schools.meters.show.serial_number') %></dt>
+    <dd class="col-sm-9"><%= @meter.meter_serial_number %></dd>
+    <dt class="col-sm-3"><%= t('common.labels.type') %></dt>
+    <dd class="col-sm-9"><%= @meter.meter_type.capitalize %></dd>
+    <dt class="col-sm-3"><%= t('common.labels.status') %></dt>
+    <dd class="col-sm-9"><%= @meter.active ? t('common.labels.active') : t('common.labels.inactive') %></dd>
+    <dt class="col-sm-3"><%= t('common.labels.created') %></dt>
+    <dd class="col-sm-9"><%= nice_date_times @meter.created_at %></dd>
+    <dt class="col-sm-3"><%= t('common.labels.last_updated') %></dt>
+    <dd class="col-sm-9"><%= nice_date_times @meter.updated_at %></dd>
+  </dl>
+</div>
+<% if current_user.admin? %>
+  <div>
+    <h3><%= t('schools.meters.show.dcc_information') %></h3>
+    <% if @meter.dcc_meter? %>
+      <dl class="row">
+        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
+        <dd class="col-sm-9"><%= "#{@n3rgy&.available?} (#{@meter.t_dcc_meter})" %></dd>
+        <dt class="col-sm-3"><%= t('schools.meters.show.user_consented') %>?</dt>
+        <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
+        <dt class="col-sm-3"><%= t('schools.meters.show.dcc_consented') %>?</dt>
+        <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
+        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_consent_confirmed') %>?</dt>
+        <dd class="col-sm-9"><%= @n3rgy&.consented? %></dd>
+        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_api_status') %></dt>
+        <dd class="col-sm-9"><%= @n3rgy&.status.to_s.humanize %></dd>
+        <dt class="col-sm-3"><%= t('schools.meters.show.available_cache_range') %></dt>
+        <dd class="col-sm-9"><%= @n3rgy&.available_data&.map(&:rfc2822) if @n3rgy&.consented? %></dd>
+      </dl>
+    <% else %>
+      <p><%= t('schools.meters.show.not_configured_as_a_dcc_meter') %></p>
+      <dl class="row">
+        <dt class="col-sm-3"><%= t('schools.meters.show.dcc_last_checked') %></dt>
+        <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
+        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
+        <dd class="col-sm-9"><%= @n3rgy&.available? %></dd>
+      </dl>
+    <% end %>
+  </div>
+  <div>
+    <h3>Perse Metering</h3>
+      <dl class="row">
+        <dt class="col-sm-3">Perse API</dt>
+        <dd class="col-sm-9">
+          <%= options_for_perse_api.to_h(&:reverse)[@meter.perse_api] %>
+        </dd>
+        <% config = AmrDataFeedConfig.find_by(identifier: 'perse-half-hourly-api') %>
+        <% if config %>
+          <dt class="col-sm-3">Latest reading</dt>
+          <dd class="col-sm-9"><%= Amr::PerseUpsert.latest_reading_date(config, @meter) || 'None' %></dd>
+        </dl>
+        <% end %>
+    </div>
+<% end %>

@@ -247,7 +247,7 @@ en:
       edit:
         edit_meter: Edit meter
       form:
-        admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
+        admin_only_features_for_n3rgy_integration: Admin only features for n3rgy and Perse integration
         create_meter: Create Meter
         data_source: Data source
         dcc_smart_meter: DCC Smart Meter
