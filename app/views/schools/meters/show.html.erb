@@ -126,7 +126,7 @@
       <dl class="row">
         <dt class="col-sm-3">Perse API</dt>
         <dd class="col-sm-9">
-          <%= { nil => 'None', 'half_hourly' => 'Half Hourly' }[@meter.perse_api] %>
+          <%= options_for_perse_api.to_h(&:reverse)[@meter.perse_api] %>
         </dd>
         <% config = AmrDataFeedConfig.find_by(identifier: 'perse-half-hourly-api') %>
         <% if config %>

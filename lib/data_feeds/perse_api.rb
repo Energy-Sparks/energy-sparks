@@ -7,7 +7,7 @@ module DataFeeds
                                                          'api_key' => ENV.fetch('PERSE_API_KEY') }) do |f|
         f.response :json
         f.response :raise_error
-        # f.response :logger
+        f.response :logger if Rails.env.development?
       end
     end
 

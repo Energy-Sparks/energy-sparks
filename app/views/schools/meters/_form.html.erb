@@ -78,7 +78,7 @@
 
       <div>
         <%= form.label(:perse_api, 'Perse API') %>
-        <%= form.select(:perse_api, [['None', nil], ['Half Hourly', :half_hourly]], { include_blank: true },
+        <%= form.select(:perse_api, options_for_perse_api, { include_blank: true },
                         class: 'form-control') %>
         <small class="form-text text-muted">
           Setting this will enable loading readings data from Perse
