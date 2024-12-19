@@ -143,13 +143,11 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     it 'returns usage by years' do
       result = service.annual_average_baseloads
       expect(round_floats(result)).to eq(
-        round_floats(
-          [
-            { year: '2020/2021', partial: true, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 },
-            { year: '2019/2020', partial: false, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 },
-            { year: '2018/2019', partial: true, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 }
-          ]
-        )
+        [
+          { year: '2020/2021', partial: true, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 },
+          { year: '2019/2020', partial: false, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 },
+          { year: '2018/2019', partial: true, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 }
+        ]
       )
     end
   end
