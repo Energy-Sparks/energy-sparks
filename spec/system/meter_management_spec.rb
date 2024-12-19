@@ -322,6 +322,11 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
           expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
           expect_meter_reload
         end
+
+        it 'shows the last reading' do
+          click_on meter.mpan_mprn.to_s
+          expect(page).to have_text("Perse Metering\nPerse API Half Hourly Latest reading 2024-12-10\n")
+        end
       end
     end
 
