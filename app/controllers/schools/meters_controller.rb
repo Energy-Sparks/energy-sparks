@@ -83,7 +83,8 @@ module Schools
     end
 
     def reload
-      N3rgyReloadJob.perform_later(@meter, current_user.email)
+      job = @meter.perse_api ? PerseReloadJob : N3rgyReloadJob
+      job.perform_later(@meter, current_user.email)
       redirect_to school_meters_path(@school), notice: 'Reload queued'
     end
 
@@ -114,7 +115,7 @@ module Schools
 
     def meter_params
       params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :data_source_id,
-                                    :procurement_route_id, :admin_meter_statuses_id, :meter_system)
+                                    :procurement_route_id, :admin_meter_statuses_id, :meter_system, :perse_api)
     end
   end
 end
