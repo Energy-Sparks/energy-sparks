@@ -93,7 +93,7 @@ en:
           percentage_of_total: "% of total baseload"
           potential_saving_co2: CO2 reduction (kg)
           potential_saving_gbp: Potential saving (£)
-          year: Year
+          year: Academic Year
         labels:
           all_meters: All meters
       what_is_baseload_html: |-
