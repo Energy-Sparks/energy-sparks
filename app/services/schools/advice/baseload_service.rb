@@ -59,23 +59,15 @@ module Schools
         baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, nil)
         baseload_analysis = baseload_service.baseload_analysis
         Periods::FixedAcademicYear.enumerator(start_date, end_date).map do |period_start, period_end|
-          scale_to_year = baseload_analysis.scale_to_year(period_start, period_end)
+          scale_to_year = Baseload::BaseloadAnalysis.scale_to_year(period_start, period_end)
           average_baseload_kw = baseload_analysis.average_baseload_kw(period_start, period_end)
           { year: academic_year(period_start, period_end),
+            partial: [period_start.month, period_start.day] != [9, 1] || [period_end.month, period_end.day] != [8, 31],
             baseload: average_baseload_kw,
             baseload_usage_gbp:
               baseload_analysis.baseload_economic_cost_date_range_£(period_start, period_end, :£) * scale_to_year,
             baseload_usage_co2: average_baseload_kw * 365 * 24 * baseload_service.co2_per_kwh }
         end
-        # (start_date.year..end_date.year).map do |year|
-        #   end_of_year = Date.new(year).end_of_year
-        #   baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_year)
-        #   {
-        #     year: year,
-        #     baseload: baseload_service.average_baseload_kw(period: :year),
-        #     baseload_usage: baseload_service.annual_baseload_usage
-        #   }
-        # end
       end
 
       def academic_year(start_date, end_date)
