@@ -36,8 +36,4 @@ pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 if ENV["RAILS_ENV"] == "production"
   # import no longer works - https://github.com/puma/puma/issues/1632
   _load_from '/opt/elasticbeanstalk/config/private/pumaconf.rb'
-else
-  before_fork { GoodJob.shutdown }
-  on_worker_boot { GoodJob.restart }
-  on_worker_shutdown { GoodJob.shutdown }
 end
