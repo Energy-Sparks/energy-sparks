@@ -1,7 +1,6 @@
 require_relative "boot"
 
 require "rails/all"
-require_relative "../lib/rack/x_robots_tag"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -15,7 +14,7 @@ module EnergySparks
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w(assets tasks))
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -31,6 +30,7 @@ module EnergySparks
     # For our application date helpers to use to optionally display times in configured zone
     config.display_timezone = 'London'
     config.middleware.use Rack::Attack
+    require_relative '../lib/rack/x_robots_tag'
     config.middleware.use Rack::XRobotsTag
     # uploaded SVG files are served as octet stream by default for security
     # this will remove them from the list of binary file types, but is a slight risk
