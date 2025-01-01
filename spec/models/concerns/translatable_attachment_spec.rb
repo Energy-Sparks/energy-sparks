@@ -4,11 +4,7 @@ require 'rails_helper'
 
 describe TranslatableAttachment do
   class TranslatableDummy < ApplicationRecord
-    establish_connection(
-      adapter: 'sqlite3',
-      database: ':memory:'
-    )
-
+    establish_connection(adapter: 'sqlite3', database: ':memory:')
     connection.create_table(:translatable_dummies)
 
     include TranslatableAttachment
