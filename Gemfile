@@ -165,5 +165,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'
   gem 'simplecov', require: false, group: :test
+  gem 'sqlite3'
   gem 'test-prof'
 end
