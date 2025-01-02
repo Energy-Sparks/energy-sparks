@@ -37,7 +37,7 @@ module Marketing
 
     def process_remaining_contacts
       @audience.each do |category, contacts|
-        updated_audience[category] = updated_audience[category] + contacts.map {|c| process_contact(c) }
+        updated_audience[category] = updated_audience[category] + contacts.values.map {|c| process_contact(c) }
       end
     end
 
@@ -101,8 +101,49 @@ module Marketing
       existing_contact[:tags].split(',').reject {|t| t.match?(/FSM/) }
     end
 
-    # TODO: may need to work before/after schema changes?
-    def process_contact(contact)
+    # Code checks for the fields we are using in the revised Mailchimp schema first
+    # and uses those values, otherwise older fields are mapped.
+    #
+    # This is to allow for migration to be re-run before we tidy up and remove some of
+    # the old fields.
+    def process_contact(existing_contact)
+      contact = ActiveSupport::OrderedOptions.new
+      contact.email_address = existing_contact[:email_address]
+      contact.contact_source = 'Organic'
+      contact.locale = 'en'
+      contact.tags = existing_contact.tags
+
+      # If this is present then we're updating an existing contact that should
+      # have Newsletter set already
+      # TODO naming
+      contact.interests = existing_contact[:interests] || 'Newsletter'
+
+      # Build combined name field if possible
+      if existing_contact[:name].present?
+        contact.name = existing_contact[:name]
+      else
+        contact.name = existing_contact[:first_name] + (existing_contact[:last_name].present? ? " #{existing_contact[:last_name]}" : '')
+      end
+
+      # TODO: there are some historical fields, may need to rename those and check all of them? This is likely to be the current User type field
+      contact.staff_role = existing_contact[:staff_role] || existing_contact.user_type
+      contact.school = existing_contact[:school] || existing_contact[:school_or_organisation]
+
+      if existing_contact[:school_group].present?
+        contact.school_group = existing_contact[:school_group]
+      else
+        # Local authority and Mats is the current fields, but not all groups present
+        # use the "other" fields present on the mailchimp form if a user has added them
+        # otherwise fall back to current field which might be set as "Other"
+        contact.school_group = if existing_contact[:other_mat].present?
+                                 existing_contact[:other_mat]
+                               elsif existing_contact[:other_la].present?
+                                 existing_contact[:other_la]
+                               else
+                                 existing_contact[:local_authority_and_mats]
+                               end
+      end
+      contact
     end
 
     def in_mailchimp_audience?(user)

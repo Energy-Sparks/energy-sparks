@@ -182,15 +182,65 @@ describe Marketing::MailchimpCsvExporter do
 
   context 'when contacts are not Users' do
     context 'with a pre-migration contact' do
-      it 'populates the fields correctly'
+      let(:subscribed) do
+        [create_contact('user@example.org', first_name: 'John', last_name: 'Smith', school_or_organisation: 'DfE', user_type: 'School management', other_la: 'bhcc', other_mat: 'Unity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
+      end
 
-      context 'with existing groups' do
-        it 'preserves the groups'
+      let(:contact) do
+        service.updated_audience[:subscribed].first
+      end
+
+      before do
+        service.perform
+      end
+
+      it 'retains the contact' do
+        expect(service.updated_audience[:subscribed].length).to eq(1)
+      end
+
+      it 'populates the fields correctly' do
+        expect(contact.email_address).to eq('user@example.org')
+        expect(contact.name).to eq 'John Smith'
+        expect(contact.contact_source).to eq 'Organic'
+        expect(contact.confirmed_date).to be_nil
+        expect(contact.user_role).to be_nil
+        expect(contact.locale).to eq 'en'
+        expect(contact.interests).to eq 'Newsletter'
+        expect(contact.tags).to eq 'trustee,external support'
+
+        expect(contact.staff_role).to eq 'School management'
+        expect(contact.school).to eq 'DfE'
+        expect(contact.school_group).to eq 'Unity Schools Partnership'
       end
     end
 
     context 'with a post-migration contact' do
-      it 'populates the fields correctly'
+      let(:subscribed) do
+        [create_contact('user@example.org', name: 'John Smith', first_name: 'John', last_name: 'XSmith', school: 'DfE', user_type: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'XDfE', user_type: 'School management', other_la: 'Xbhcc', other_mat: 'XUnity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
+      end
+
+      let(:contact) do
+        service.updated_audience[:subscribed].first
+      end
+
+      before do
+        service.perform
+      end
+
+      it 'populates the fields correctly' do
+        expect(contact.email_address).to eq('user@example.org')
+        expect(contact.name).to eq 'John Smith'
+        expect(contact.contact_source).to eq 'Organic'
+        expect(contact.confirmed_date).to be_nil
+        expect(contact.user_role).to be_nil
+        expect(contact.locale).to eq 'en'
+        expect(contact.interests).to eq 'Newsletter'
+        expect(contact.tags).to eq 'trustee,external support'
+
+        expect(contact.staff_role).to eq 'School management'
+        expect(contact.school).to eq 'DfE'
+        expect(contact.school_group).to eq 'Unity Schools Partnership'
+      end
     end
   end
 
