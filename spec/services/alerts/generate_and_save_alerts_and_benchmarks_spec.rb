@@ -135,6 +135,7 @@ module Alerts
       end
 
       it 'handles custom period reports' do
+        travel_to(Date.new(2024, 12, 1))
         report = create(:report, :with_custom_period)
         report.custom_period.update(current_start_date: 1.day.ago,
                                     previous_end_date: 2.days.ago,
