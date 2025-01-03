@@ -44,8 +44,8 @@ describe Marketing::MailchimpCsvExporter do
 
     it 'populates cluster admin fields', if: cluster_admin do
       expect(contact.user_role).to eq 'Cluster admin'
-      expect(contact.staff_role).to be_nil
-      expect(contact.alert_subscriber).to be_nil
+      expect(contact.staff_role).to eq user.staff_role.title
+      expect(contact.alert_subscriber).to eq 'No'
       expect(contact.school_status).to be_nil
       expect(contact.school).to be_nil
       expect(contact.scoreboard).to eq user.school.school_group.default_scoreboard.name
@@ -58,7 +58,7 @@ describe Marketing::MailchimpCsvExporter do
     it 'populates group admin fields', if: group_admin do
       expect(contact.user_role).to eq user.role.humanize
       expect(contact.staff_role).to be_nil
-      expect(contact.alert_subscriber).to be_nil
+      expect(contact.alert_subscriber).to eq 'No'
       expect(contact.school_status).to be_nil
       expect(contact.school).to be_nil
       expect(contact.scoreboard).to eq user.school_group.default_scoreboard.name
@@ -173,6 +173,19 @@ describe Marketing::MailchimpCsvExporter do
       let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard)) }
 
       it_behaves_like 'it correctly creates a contact', group_admin: true
+
+      context 'when subscribed to alerts' do
+        let!(:user) do
+          school_group = create(:school_group, :with_default_scoreboard, :with_active_schools)
+          user = create(:group_admin, school_group: school_group)
+          user.contacts << create(:contact_with_name_email_phone, school: school_group.schools.first)
+          user
+        end
+
+        it 'uses correct status' do
+          expect(contact.alert_subscriber).to eq 'Yes'
+        end
+      end
     end
 
     context 'with a cluster admin' do
@@ -183,6 +196,14 @@ describe Marketing::MailchimpCsvExporter do
 
       it 'adds tags for each cluster school' do
         expect(contact.tags.split(',')).to match_array(user.cluster_schools.map(&:slug))
+      end
+
+      context 'when subscribed to alerts' do
+        let!(:user) { create(:school_admin, :with_cluster_schools, :subscribed_to_alerts, school: school) }
+
+        it 'uses correct status' do
+          expect(contact.alert_subscriber).to eq 'Yes'
+        end
       end
     end
 
@@ -204,7 +225,7 @@ describe Marketing::MailchimpCsvExporter do
 
     context 'with a pre-migration contact' do
       let(:subscribed) do
-        [create_contact('user@example.org', first_name: 'John', last_name: 'Smith', school_or_organisation: 'DfE', user_type: 'School management', other_la: 'bhcc', other_mat: 'Unity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
+        [create_contact('user@example.org', first_name: 'John', last_name: 'Smith', school_or_organisation: 'DfE', user_type: 'School management', other_la: 'bhcc', other_mat: 'Unity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support,FSM30')]
       end
 
       it 'retains the contact' do
@@ -219,11 +240,13 @@ describe Marketing::MailchimpCsvExporter do
         expect(contact.user_role).to be_nil
         expect(contact.locale).to eq 'en'
         expect(contact.interests).to eq 'Newsletter'
-        expect(contact.tags).to eq 'trustee,external support'
-
         expect(contact.staff_role).to eq 'School management'
         expect(contact.school).to eq 'DfE'
         expect(contact.school_group).to eq 'Unity Schools Partnership'
+      end
+
+      it 'copies tags, stripping free school meal tags' do
+        expect(contact.tags).to eq 'trustee,external support'
       end
     end
 

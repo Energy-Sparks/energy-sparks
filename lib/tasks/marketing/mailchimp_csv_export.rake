@@ -39,7 +39,7 @@ namespace :marketing do
 
     service.updated_audience.each do |category,contacts|
       CSV.open("#{args.dir}/updated-#{category}.csv", "w") do |csv|
-        csv << headers
+        csv << headers.map(&:humanize)
         contacts.each do |contact|
           csv << headers.map { |f| contact[f] }
         end
@@ -47,7 +47,7 @@ namespace :marketing do
     end
 
     CSV.open("#{args.dir}/new-nonsubscribed.csv", "w") do |csv|
-      csv << headers
+      csv << headers.map(&:humanize)
       service.new_nonsubscribed.each do |contact|
         csv << headers.map { |f| contact[f] }
       end

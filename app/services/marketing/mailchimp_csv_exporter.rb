@@ -94,12 +94,15 @@ module Marketing
       end
 
       if user.group_admin?
+        contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
         contact.scoreboard = user.school_group&.default_scoreboard&.name
         contact.school_group = user.school_group&.name
         contact.country = user.school_group&.default_country&.humanize
         contact.tags = non_fsm_tags(existing_contact).join(',')
       elsif user.school_admin? && user.has_other_schools?
         contact.user_role = 'Cluster admin'
+        contact.staff_role = user&.staff_role&.title
+        contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
         contact.scoreboard = user.school.school_group&.default_scoreboard&.name
         contact.school_group = user.school.school_group&.name
         contact.country = user.school.school_group&.default_country&.humanize
@@ -161,7 +164,7 @@ module Marketing
       contact.email_address = existing_contact[:email_address]
       contact.contact_source = 'Organic'
       contact.locale = 'en'
-      contact.tags = existing_contact[:tags]
+      contact.tags = non_fsm_tags(existing_contact).join(',')
 
       # If this is present then we're updating an existing contact that should
       # have Newsletter set already
