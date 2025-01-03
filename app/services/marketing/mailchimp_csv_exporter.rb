@@ -1,9 +1,37 @@
 module Marketing
+  # Mailchimp defines an Audience as a list of Contacts. These contacts are
+  # classified into different types (https://mailchimp.com/help/about-your-contacts/)
+  # When an Audience is exported there are 4 CSV files, one for each contact type.
+  #
+  # This service accepts lists of Contacts parsed from a Mailchimp Audience export
+  # It processes these to normalise and update the data associated with each contact
+  # so that it matches our preferred schema.
+  #
+  # This allows us to migrate to a richer set of data in Mailchimp, whilst also allowing
+  # the contact data to be refreshed against the database.
+  #
+  # The original contact types are preserved to ensure we protect user's consent.
+  #
+  # As some users have signed up with Mailchimp, but are not registered users the
+  # service preserves those contacts so no data is lost. Fields are still normalised
+  # to match the preferred schema.
+  #
+  # The service will also produce a list of new "nonsubscribed" users from the
+  # database. These are users that are not currently subscribed to any emails.
+  # This is to allow us to use Mailchimp for some transactional emails with those
+  # users, as well as checking whether they want to opt into the newsletter or other
+  # comms as a one-off basis.
+  #
+  # The service will be driven by a Rake task that parses Mailchimp CSV files and
+  # dumps the new versions for manual importing into Mailchimp.
   class MailchimpCsvExporter
-    # hash of four categories, each containing a list of MailchimpContact
-    attr_reader :updated_audience, :new_nonsubscribed
+    # A hash containing an entry for each of the four Mailchimp contact types.
+    # The entry in each list is an object that can be dumped to a CSV file
+    attr_reader :updated_audience
+    # A list of new contacts. These are users not currently in the Mailchimp Audience.
+    attr_reader :new_nonsubscribed
 
-    # List of hashed fields from Mailchimp
+    # Initialise with lists of hashed fields parsed from Mailchimp export
     def initialize(subscribed:, nonsubscribed:, cleaned:, unsubscribed:)
       @audience = {}
       @updated_audience = { subscribed: [], nonsubscribed: [], cleaned: [], unsubscribed: [] }
@@ -11,39 +39,43 @@ module Marketing
       populate_audience(subscribed: subscribed, nonsubscribed: nonsubscribed, cleaned: cleaned, unsubscribed: unsubscribed)
     end
 
+    # Match contacts against database, updating with latest data and mapping to
+    # preferred schema
+    #
+    # Also find any unmatched users that copy those through, normalising fields if
+    # required.
     def perform
       match_and_update_contacts
-      # Process remaining audience that aren't in the database
-      # relies on matches being deleted in previous step
-      process_remaining_contacts
+      # relies on matched users being deleted in previous step
+      process_unmatched_contacts
     end
 
     private
 
+    # Ignore pupils and school onboarding users, process all other user types
     def match_and_update_contacts
-      # Ignore pupils and school onboarding users
       User.where.not(role: [:pupil, :school_onboarding]).find_each do |user|
         if in_mailchimp_audience?(user)
           mailchimp_contact_type = mailchimp_contact_type(user.email)
-          # remove matches
+          # remove matches from list
           contact = @audience[mailchimp_contact_type].delete(user.email)
           # update user
-          @updated_audience[mailchimp_contact_type] << user_to_mailchimp(user, contact)
+          @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact)
         else
-          @new_nonsubscribed << user_to_mailchimp(user)
+          @new_nonsubscribed << to_mailchimp_contact(user)
         end
       end
     end
 
-    def process_remaining_contacts
+    # Process any Mailchimp contacts that are not registered users
+    def process_unmatched_contacts
       @audience.each do |category, contacts|
-        updated_audience[category] = updated_audience[category] + contacts.values.map {|c| process_contact(c) }
+        updated_audience[category] = updated_audience[category] + contacts.values.map {|c| copy_contact(c) }
       end
     end
 
-    # convert User to mailchimp contact, preserving exiting fields if given
-    # TODO
-    def user_to_mailchimp(user, existing_contact = nil)
+    # convert User to Mailchimp contact, preserving exiting fields if given
+    def to_mailchimp_contact(user, existing_contact = nil)
       contact = ActiveSupport::OrderedOptions.new
       contact.email_address = user.email
       contact.name = user.name
@@ -96,6 +128,14 @@ module Marketing
       contact
     end
 
+    # Create the tags for school users and cluster admins
+    #
+    # The core set of tags are:
+    # - a tag for different % of free school meals at the school
+    # - a tag for the school slug (and one for each cluster school)
+    # - any existing tags are preserved
+    #
+    # Cluster admins will not have free school meal tags.
     def tags_for_school_user(user, existing_contact = nil, slugs = [], fsm_tags: true)
       core_tags = if fsm_tags
                     "#{slugs.join(',')},#{MailchimpTags.new(user.school).tags}"
@@ -110,17 +150,22 @@ module Marketing
       end
     end
 
+    # Parse existing tags in Mailchimp export, removing any free school meal tags as
+    # these will be refreshed from the database.
     def non_free_school_meal_tags(existing_contact)
       return [] unless existing_contact.present? && existing_contact[:tags].present?
       existing_contact[:tags].split(',').reject {|t| t.match?(/FSM/) }
     end
 
-    # Code checks for the fields we are using in the revised Mailchimp schema first
-    # and uses those values, otherwise older fields are mapped.
+    # Copies a Mailchimp contact that is not a registered user.
+    #
+    # We don't just pass through the current details as we may need to normalise some of
+    # the fields. So check whether those fields exist and copy them through before remapping
+    # any older fields.
     #
     # This is to allow for migration to be re-run before we tidy up and remove some of
     # the old fields.
-    def process_contact(existing_contact)
+    def copy_contact(existing_contact)
       contact = ActiveSupport::OrderedOptions.new
       contact.email_address = existing_contact[:email_address]
       contact.contact_source = 'Organic'
@@ -146,9 +191,11 @@ module Marketing
       if existing_contact[:school_group].present?
         contact.school_group = existing_contact[:school_group]
       else
-        # Local authority and Mats is the current fields, but not all groups present
-        # use the "other" fields present on the mailchimp form if a user has added them
-        # otherwise fall back to current field which might be set as "Other"
+        # :local_authority_and_mats is the current field, but not all groups are present
+        # due to limitations in number of groups in Mailchimp.
+        #
+        # So use the "other" fields presented to users on the mailchimp form in preference as
+        # these are hopefully more accurate, otherwise fall back to the current field.
         contact.school_group = if existing_contact[:other_mat].present?
                                  existing_contact[:other_mat]
                                elsif existing_contact[:other_la].present?
@@ -160,10 +207,12 @@ module Marketing
       contact
     end
 
+    # Is this user in Mailchimp? Check each of the 4 contact types
     def in_mailchimp_audience?(user)
       !mailchimp_contact_type(user.email).nil?
     end
 
+    # Identify the contact type for this email address.
     def mailchimp_contact_type(email_address)
       @audience.each do |category, hash|
         return category if hash.key?(email_address)
@@ -171,18 +220,24 @@ module Marketing
       nil
     end
 
+    # Lookup the mailchimp contact for an email address, by way of its
+    # contact type
     def mailchimp_contact(email_address)
       mailchimp_contact_type = mailchimp_contact_type(email_address)
       return nil if mailchimp_contact_type.nil?
       @audience[mailchimp_contact_type][email_address]
     end
 
+    # Take lists provided in constructor and build an internal hash:
+    # contact type => hash (email_address => exported contact)
     def populate_audience(**categories)
       categories.each do |category, list|
         @audience[category] = list_to_hash(list)
       end
     end
 
+    # Convert list of exported contacts to a hash, normalising emails as Mailchimp
+    # allows mixed case whereas application is all lower case.
     def list_to_hash(list)
       list.index_by {|c| c[:email_address].downcase}
     end
