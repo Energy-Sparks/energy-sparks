@@ -3,6 +3,12 @@ FactoryBot.define do
     sequence(:name) {|n| "School group #{n}"}
     public { true }
 
+    trait :with_default_scoreboard do
+      after(:create) do |school_group, _evaluator|
+        school_group.update(default_scoreboard: create(:scoreboard))
+      end
+    end
+
     trait :with_active_schools do
       transient do
         count { 1 }

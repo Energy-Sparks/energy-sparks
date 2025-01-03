@@ -75,5 +75,11 @@ FactoryBot.define do
         user.skip_confirmation_notification!
       end
     end
+
+    trait :subscribed_to_alerts do
+      after(:build) do |user, _evaluator|
+        user.contacts << create(:contact_with_name_email_phone, school: user.school)
+      end
+    end
   end
 end

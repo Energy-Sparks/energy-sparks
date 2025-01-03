@@ -30,6 +30,18 @@ FactoryBot.define do
       end
     end
 
+    trait :with_scoreboard do
+      after(:create) do |school, _evaluator|
+        school.update(scoreboard: create(:scoreboard))
+      end
+    end
+
+    trait :with_local_authority do
+      after(:create) do |school, _evaluator|
+        school.update(local_authority_area: create(:local_authority_area))
+      end
+    end
+
     trait :archived do
       active { false }
       removal_date { nil }
