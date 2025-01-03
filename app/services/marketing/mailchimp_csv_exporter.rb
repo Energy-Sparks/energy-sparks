@@ -54,7 +54,7 @@ module Marketing
 
     # Ignore pupils and school onboarding users, process all other user types
     def match_and_update_contacts
-      User.where.not(role: [:pupil, :school_onboarding]).find_each do |user|
+      User.where.not(role: [:pupil, :school_onboarding]).where.not(confirmed_at: nil).find_each do |user|
         if in_mailchimp_audience?(user)
           mailchimp_contact_type = mailchimp_contact_type(user.email)
           # remove matches from list
@@ -93,7 +93,13 @@ module Marketing
         contact.interests = 'Newsletter'
       end
 
-      if user.has_other_schools?
+      if user.group_admin?
+        contact.alert_subscriber = 'No'
+        contact.scoreboard = user.school_group&.default_scoreboard&.name
+        contact.school_group = user.school_group&.name
+        contact.country = user.school_group&.default_country&.humanize
+        contact.tags = non_fsm_tags(existing_contact).join(',')
+      elsif user.school_admin? && user.has_other_schools?
         contact.user_role = 'Cluster admin'
         contact.alert_subscriber = 'No'
         contact.scoreboard = user.school.school_group&.default_scoreboard&.name
@@ -118,12 +124,6 @@ module Marketing
         contact.country = user.school.country&.humanize
         contact.funder = user.school&.funder&.name
         contact.tags = tags_for_school_user(user, existing_contact, [user.school.slug])
-      elsif user.group_admin?
-        contact.alert_subscriber = 'No'
-        contact.scoreboard = user.school_group&.default_scoreboard&.name
-        contact.school_group = user.school_group&.name
-        contact.country = user.school_group&.default_country&.humanize
-        contact.tags = non_fsm_tags(existing_contact).join(',')
       end
       contact
     end
@@ -163,7 +163,7 @@ module Marketing
       contact.email_address = existing_contact[:email_address]
       contact.contact_source = 'Organic'
       contact.locale = 'en'
-      contact.tags = existing_contact.tags
+      contact.tags = existing_contact[:tags]
 
       # If this is present then we're updating an existing contact that should
       # have Newsletter set already
@@ -174,11 +174,13 @@ module Marketing
       if existing_contact[:name].present?
         contact.name = existing_contact[:name]
       else
-        contact.name = existing_contact[:first_name] + (existing_contact[:last_name].present? ? " #{existing_contact[:last_name]}" : '')
+        both_fields = existing_contact[:first_name] && existing_contact[:last_name]
+        join = both_fields ? ' ' : ''
+        contact.name = [existing_contact[:first_name], existing_contact[:last_name]].join(join)
       end
 
       # TODO: there are some historical fields, may need to rename those and check all of them? This is likely to be the current User type field
-      contact.staff_role = existing_contact[:staff_role] || existing_contact.user_type
+      contact.staff_role = existing_contact[:staff_role] || existing_contact[:user_type]
       contact.school = existing_contact[:school] || existing_contact[:school_or_organisation]
 
       if existing_contact[:school_group].present?

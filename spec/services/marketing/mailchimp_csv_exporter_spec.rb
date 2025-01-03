@@ -283,6 +283,18 @@ describe Marketing::MailchimpCsvExporter do
       it_behaves_like 'it correctly creates a contact'
     end
 
+    context 'with an unconfirmed user' do
+      let!(:user) { create(:school_admin, confirmed_at: nil) }
+
+      before do
+        service.perform
+      end
+
+      it 'ignores the user' do
+        expect(service.new_nonsubscribed).to be_empty
+      end
+    end
+
     context 'with a pupil' do
       let!(:user) { create(:pupil) }
 
