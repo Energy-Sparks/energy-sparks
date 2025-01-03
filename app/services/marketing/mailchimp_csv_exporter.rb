@@ -123,7 +123,7 @@ module Marketing
         contact.scoreboard = user.school_group&.default_scoreboard&.name
         contact.school_group = user.school_group&.name
         contact.country = user.school_group&.default_country&.humanize
-        contact.tags = non_free_school_meal_tags(existing_contact).join(',')
+        contact.tags = non_fsm_tags(existing_contact).join(',')
       end
       contact
     end
@@ -137,22 +137,15 @@ module Marketing
     #
     # Cluster admins will not have free school meal tags.
     def tags_for_school_user(user, existing_contact = nil, slugs = [], fsm_tags: true)
-      core_tags = if fsm_tags
-                    "#{slugs.join(',')},#{MailchimpTags.new(user.school).tags}"
-                  else
-                    slugs.join(',')
-                  end
-      existing_tags = non_free_school_meal_tags(existing_contact)
-      if existing_tags.any?
-        "#{existing_tags.join(',')},#{core_tags}"
-      else
-        core_tags
-      end
+      core_tags = slugs
+      core_tags = core_tags + MailchimpTags.new(user.school).tags_as_list if fsm_tags
+      existing_tags = non_fsm_tags(existing_contact)
+      (core_tags + existing_tags).join(',')
     end
 
     # Parse existing tags in Mailchimp export, removing any free school meal tags as
     # these will be refreshed from the database.
-    def non_free_school_meal_tags(existing_contact)
+    def non_fsm_tags(existing_contact)
       return [] unless existing_contact.present? && existing_contact[:tags].present?
       existing_contact[:tags].split(',').reject {|t| t.match?(/FSM/) }
     end
