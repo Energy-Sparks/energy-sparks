@@ -19,6 +19,16 @@ describe Marketing::MailchimpCsvExporter do
     contact
   end
 
+  shared_examples 'it adds interests correctly' do |newsletter: true|
+    it 'adds Newsletter', if: newsletter do
+      expect(contact.interests).to eq 'Newsletter'
+    end
+
+    it 'does not add Newsletter', unless: newsletter do
+      expect(contact.interests).to be_nil
+    end
+  end
+
   shared_examples 'it correctly creates a contact' do |school_user: false, group_admin: false, cluster_admin: false|
     it 'populates the common fields' do
       expect(contact.email_address).to eq user.email
@@ -26,7 +36,6 @@ describe Marketing::MailchimpCsvExporter do
       expect(contact.contact_source).to eq 'User'
       expect(contact.confirmed_date).to eq user.confirmed_at.to_date.iso8601
       expect(contact.locale).to eq user.preferred_locale
-      expect(contact.interests).to eq 'Newsletter'
     end
 
     it 'populates school user fields', if: school_user do
@@ -91,6 +100,7 @@ describe Marketing::MailchimpCsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact', school_user: true
+      it_behaves_like 'it adds interests correctly'
 
       it 'populates tags' do
         expect(contact.tags.split(',')).to contain_exactly('FSM30', user.school.slug)
@@ -132,6 +142,7 @@ describe Marketing::MailchimpCsvExporter do
         end
 
         it_behaves_like 'it correctly creates a contact', school_user: true
+        it_behaves_like 'it adds interests correctly'
       end
 
       context 'with archived school' do
@@ -166,6 +177,7 @@ describe Marketing::MailchimpCsvExporter do
         end
 
         it_behaves_like 'it correctly creates a contact', school_user: true
+        it_behaves_like 'it adds interests correctly'
       end
     end
 
@@ -173,6 +185,7 @@ describe Marketing::MailchimpCsvExporter do
       let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard)) }
 
       it_behaves_like 'it correctly creates a contact', group_admin: true
+      it_behaves_like 'it adds interests correctly'
 
       context 'when subscribed to alerts' do
         let!(:user) do
@@ -193,6 +206,7 @@ describe Marketing::MailchimpCsvExporter do
       let!(:user) { create(:school_admin, :with_cluster_schools, school: school) }
 
       it_behaves_like 'it correctly creates a contact', school_user: false, cluster_admin: true
+      it_behaves_like 'it adds interests correctly'
 
       it 'adds tags for each cluster school' do
         expect(contact.tags.split(',')).to match_array(user.cluster_schools.map(&:slug))
@@ -211,6 +225,7 @@ describe Marketing::MailchimpCsvExporter do
       let!(:user) { create(:admin) }
 
       it_behaves_like 'it correctly creates a contact'
+      it_behaves_like 'it adds interests correctly'
     end
   end
 
@@ -232,6 +247,8 @@ describe Marketing::MailchimpCsvExporter do
         expect(service.updated_audience[:subscribed].length).to eq(1)
       end
 
+      it_behaves_like 'it adds interests correctly'
+
       it 'populates the fields correctly' do
         expect(contact.email_address).to eq('user@example.org')
         expect(contact.name).to eq 'John Smith'
@@ -239,7 +256,6 @@ describe Marketing::MailchimpCsvExporter do
         expect(contact.confirmed_date).to be_nil
         expect(contact.user_role).to be_nil
         expect(contact.locale).to eq 'en'
-        expect(contact.interests).to eq 'Newsletter'
         expect(contact.staff_role).to eq 'School management'
         expect(contact.school).to eq 'DfE'
         expect(contact.school_group).to eq 'Unity Schools Partnership'
@@ -305,6 +321,8 @@ describe Marketing::MailchimpCsvExporter do
         [create_contact('user@example.org', name: 'John Smith', first_name: 'John', last_name: 'Smith', school: 'DfE', user_type: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'XDfE', other_la: 'Xbhcc', other_mat: 'XUnity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
       end
 
+      it_behaves_like 'it adds interests correctly'
+
       it 'populates the fields correctly' do
         expect(contact.email_address).to eq('user@example.org')
         expect(contact.name).to eq 'John Smith'
@@ -312,7 +330,6 @@ describe Marketing::MailchimpCsvExporter do
         expect(contact.confirmed_date).to be_nil
         expect(contact.user_role).to be_nil
         expect(contact.locale).to eq 'en'
-        expect(contact.interests).to eq 'Newsletter'
         expect(contact.tags).to eq 'trustee,external support'
 
         expect(contact.staff_role).to eq 'School management'
@@ -334,6 +351,7 @@ describe Marketing::MailchimpCsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact', school_user: true
+      it_behaves_like 'it adds interests correctly', newsletter: false
     end
 
     context 'with a group admin' do
@@ -344,6 +362,7 @@ describe Marketing::MailchimpCsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact', group_admin: true
+      it_behaves_like 'it adds interests correctly', newsletter: false
     end
 
     context 'with an admin' do
@@ -354,6 +373,7 @@ describe Marketing::MailchimpCsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact'
+      it_behaves_like 'it adds interests correctly', newsletter: false
     end
 
     context 'with an unconfirmed user' do

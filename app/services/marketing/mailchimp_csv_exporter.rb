@@ -62,7 +62,7 @@ module Marketing
           # update user
           @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact)
         else
-          @new_nonsubscribed << to_mailchimp_contact(user)
+          @new_nonsubscribed << to_mailchimp_contact(user, newsletter_subscriber: false)
         end
       end
     end
@@ -75,7 +75,7 @@ module Marketing
     end
 
     # convert User to Mailchimp contact, preserving exiting fields if given
-    def to_mailchimp_contact(user, existing_contact = nil)
+    def to_mailchimp_contact(user, existing_contact = nil, newsletter_subscriber: true)
       contact = ActiveSupport::OrderedOptions.new
       contact.email_address = user.email
       contact.name = user.name
@@ -89,7 +89,7 @@ module Marketing
         # If this is present then we're updating an existing contact that should
         # have Newsletter set already
         contact.interests = existing_contact[:interests]
-      else
+      elsif newsletter_subscriber
         contact.interests = 'Newsletter'
       end
 
