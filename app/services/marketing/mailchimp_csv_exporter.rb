@@ -171,16 +171,19 @@ module Marketing
       # TODO naming
       contact.interests = existing_contact[:interests] || 'Newsletter'
 
-      # Build combined name field if possible
-      if existing_contact[:name].present?
+      first_and_last_name_fields = existing_contact[:first_name] && existing_contact[:last_name]
+      first_and_name_fields = existing_contact[:first_name] && existing_contact[:name] && !existing_contact[:name].include?(existing_contact[:first_name])
+
+      if first_and_last_name_fields # older Mailchimp only fields
+        contact.name = [existing_contact[:first_name], existing_contact[:last_name]].join(' ')
+      elsif first_and_name_fields # some users have entered first/last names into the first_name and name fields
+        contact.name = [existing_contact[:first_name], existing_contact[:name]].join(' ')
+      elsif existing_contact[:name] # if set, this is usually full name
         contact.name = existing_contact[:name]
-      else
-        both_fields = existing_contact[:first_name] && existing_contact[:last_name]
-        join = both_fields ? ' ' : ''
-        contact.name = [existing_contact[:first_name], existing_contact[:last_name]].join(join)
+      else # combine whatever name fields we have
+        contact.name = [existing_contact[:first_name], existing_contact[:last_name]].join('')
       end
 
-      # TODO: there are some historical fields, may need to rename those and check all of them? This is likely to be the current User type field
       contact.staff_role = existing_contact[:staff_role] || existing_contact[:user_type]
       contact.school = existing_contact[:school] || existing_contact[:school_or_organisation]
 

@@ -248,11 +248,61 @@ describe Marketing::MailchimpCsvExporter do
       it 'copies tags, stripping free school meal tags' do
         expect(contact.tags).to eq 'trustee,external support'
       end
+
+      context 'with name and first name only' do
+        let(:subscribed) do
+          [create_contact('user@example.org', first_name: 'John', name: 'Smith')]
+        end
+
+        it 'builds the name correctly' do
+          expect(contact.name).to eq 'John Smith'
+        end
+      end
+
+      context 'with name only' do
+        let(:subscribed) do
+          [create_contact('user@example.org', name: 'John Smith')]
+        end
+
+        it 'builds the name correctly' do
+          expect(contact.name).to eq 'John Smith'
+        end
+      end
+
+      context 'with first name and name overlapping' do
+        let(:subscribed) do
+          [create_contact('user@example.org', name: 'John Smith', first_name: 'John')]
+        end
+
+        it 'builds the name correctly' do
+          expect(contact.name).to eq 'John Smith'
+        end
+      end
+
+      context 'with first name only' do
+        let(:subscribed) do
+          [create_contact('user@example.org', first_name: 'John')]
+        end
+
+        it 'builds the name correctly' do
+          expect(contact.name).to eq 'John'
+        end
+      end
+
+      context 'with last name only' do
+        let(:subscribed) do
+          [create_contact('user@example.org', last_name: 'Smith')]
+        end
+
+        it 'builds the name correctly' do
+          expect(contact.name).to eq 'Smith'
+        end
+      end
     end
 
     context 'with a post-migration contact' do
       let(:subscribed) do
-        [create_contact('user@example.org', name: 'John Smith', first_name: 'John', last_name: 'XSmith', school: 'DfE', user_type: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'XDfE', other_la: 'Xbhcc', other_mat: 'XUnity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
+        [create_contact('user@example.org', name: 'John Smith', first_name: 'John', last_name: 'Smith', school: 'DfE', user_type: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'XDfE', other_la: 'Xbhcc', other_mat: 'XUnity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
       end
 
       it 'populates the fields correctly' do
