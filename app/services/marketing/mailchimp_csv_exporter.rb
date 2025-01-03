@@ -61,8 +61,14 @@ module Marketing
         contact.interests = 'Newsletter'
       end
 
-      # TODO cluster users
-      if user.school.present?
+      if user.has_other_schools?
+        contact.user_role = 'Cluster admin'
+        contact.alert_subscriber = 'No'
+        contact.scoreboard = user.school.school_group&.default_scoreboard&.name
+        contact.school_group = user.school.school_group&.name
+        contact.country = user.school.school_group&.default_country&.humanize
+        contact.tags = tags_for_school_user(user, existing_contact, [user.cluster_schools.map(&:slug)], fsm_tags: false)
+      elsif user.school.present?
         contact.staff_role = user&.staff_role&.title
         contact.alert_subscriber = user.contacts.for_school(user.school).any? ? 'Yes' : 'No'
         contact.school = user.school&.name
@@ -79,21 +85,29 @@ module Marketing
         contact.region = user.school&.region&.humanize
         contact.country = user.school.country&.humanize
         contact.funder = user.school&.funder&.name
-
-        existing_tags = non_free_school_meal_tags(existing_contact)
-        if existing_tags.any?
-          contact.tags = "#{existing_tags.join(',')},#{MailchimpTags.new(user.school).tags}"
-        else
-          contact.tags = MailchimpTags.new(user.school).tags
-        end
+        contact.tags = tags_for_school_user(user, existing_contact, [user.school.slug])
       elsif user.group_admin?
         contact.alert_subscriber = 'No'
         contact.scoreboard = user.school_group&.default_scoreboard&.name
         contact.school_group = user.school_group&.name
         contact.country = user.school_group&.default_country&.humanize
-        contact.tags = existing_contact[:tags] if existing_contact
+        contact.tags = non_free_school_meal_tags(existing_contact).join(',')
       end
       contact
+    end
+
+    def tags_for_school_user(user, existing_contact = nil, slugs = [], fsm_tags: true)
+      core_tags = if fsm_tags
+                    "#{slugs.join(',')},#{MailchimpTags.new(user.school).tags}"
+                  else
+                    slugs.join(',')
+                  end
+      existing_tags = non_free_school_meal_tags(existing_contact)
+      if existing_tags.any?
+        "#{existing_tags.join(',')},#{core_tags}"
+      else
+        core_tags
+      end
     end
 
     def non_free_school_meal_tags(existing_contact)

@@ -19,18 +19,18 @@ describe Marketing::MailchimpCsvExporter do
     contact
   end
 
-  shared_examples 'it correctly creates a contact' do |school_user: false, group_admin: false|
+  shared_examples 'it correctly creates a contact' do |school_user: false, group_admin: false, cluster_admin: false|
     it 'populates the common fields' do
       expect(contact.email_address).to eq user.email
       expect(contact.name).to eq user.name
       expect(contact.contact_source).to eq 'User'
       expect(contact.confirmed_date).to eq user.confirmed_at.to_date.iso8601
-      expect(contact.user_role).to eq user.role.humanize
       expect(contact.locale).to eq user.preferred_locale
       expect(contact.interests).to eq 'Newsletter'
     end
 
     it 'populates school user fields', if: school_user do
+      expect(contact.user_role).to eq user.role.humanize
       expect(contact.staff_role).to eq user.staff_role.title
       expect(contact.alert_subscriber).to eq 'No'
       expect(contact.school_status).to eq 'Active'
@@ -42,7 +42,21 @@ describe Marketing::MailchimpCsvExporter do
       expect(contact.region).to eq user.school.region.humanize
     end
 
+    it 'populates cluster admin fields', if: cluster_admin do
+      expect(contact.user_role).to eq 'Cluster admin'
+      expect(contact.staff_role).to be_nil
+      expect(contact.alert_subscriber).to eq 'No'
+      expect(contact.school_status).to be_nil
+      expect(contact.school).to be_nil
+      expect(contact.scoreboard).to eq user.school.school_group.default_scoreboard.name
+      expect(contact.school_group).to eq user.school.school_group.name
+      expect(contact.local_authority).to be_nil
+      expect(contact.region).to be_nil
+      expect(contact.country).to eq user.school.school_group.default_country.humanize
+    end
+
     it 'populates group admin fields', if: group_admin do
+      expect(contact.user_role).to eq user.role.humanize
       expect(contact.staff_role).to be_nil
       expect(contact.alert_subscriber).to eq 'No'
       expect(contact.school_status).to be_nil
@@ -55,7 +69,7 @@ describe Marketing::MailchimpCsvExporter do
     end
   end
 
-  context 'when all the contacts are Users' do
+  context 'when the Mailchimp contacts are Users' do
     let(:subscribed) do
       [create_contact(user.email)]
     end
@@ -64,13 +78,13 @@ describe Marketing::MailchimpCsvExporter do
       service.updated_audience[:subscribed].first
     end
 
+    before do
+      service.perform
+    end
+
     context 'with a school admin' do
       let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35) }
       let!(:user) { create(:school_admin, school: school) }
-
-      before do
-        service.perform
-      end
 
       it 'matches the contact' do
         expect(service.updated_audience[:subscribed].length).to eq(1)
@@ -79,7 +93,7 @@ describe Marketing::MailchimpCsvExporter do
       it_behaves_like 'it correctly creates a contact', school_user: true
 
       it 'populates tags' do
-        expect(contact.tags).to eq('FSM30')
+        expect(contact.tags.split(',')).to contain_exactly('FSM30', user.school.slug)
       end
 
       context 'with existing interests' do
@@ -98,7 +112,7 @@ describe Marketing::MailchimpCsvExporter do
         end
 
         it 'preserves the tags' do
-          expect(contact.tags).to eq('external support,FSM30')
+          expect(contact.tags.split(',')).to contain_exactly('external support', 'FSM30', user.school.slug)
         end
       end
 
@@ -108,7 +122,7 @@ describe Marketing::MailchimpCsvExporter do
         end
 
         it 'overwrites the tags' do
-          expect(contact.tags).to eq('FSM30')
+          expect(contact.tags.split(',')).to contain_exactly('FSM30', user.school.slug)
         end
       end
 
@@ -158,40 +172,39 @@ describe Marketing::MailchimpCsvExporter do
     context 'with a group admin' do
       let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard)) }
 
-      before do
-        service.perform
-      end
-
       it_behaves_like 'it correctly creates a contact', group_admin: true
     end
 
     context 'with a cluster admin' do
-      it 'populates the fields correctly'
+      let!(:school) { create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35, school_group: create(:school_group, :with_default_scoreboard)) }
+      let!(:user) { create(:school_admin, :with_cluster_schools, school: school) }
+
+      it_behaves_like 'it correctly creates a contact', school_user: false, cluster_admin: true
+
+      it 'adds tags for each cluster school' do
+        expect(contact.tags.split(',')).to match_array(user.cluster_schools.map(&:slug))
+      end
     end
 
     context 'with an admin' do
       let!(:user) { create(:admin) }
 
-      before do
-        service.perform
-      end
-
       it_behaves_like 'it correctly creates a contact'
     end
   end
 
-  context 'when contacts are not Users' do
+  context 'when the Mailchimp contacts are not Users' do
+    let(:contact) do
+      service.updated_audience[:subscribed].first
+    end
+
+    before do
+      service.perform
+    end
+
     context 'with a pre-migration contact' do
       let(:subscribed) do
         [create_contact('user@example.org', first_name: 'John', last_name: 'Smith', school_or_organisation: 'DfE', user_type: 'School management', other_la: 'bhcc', other_mat: 'Unity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
-      end
-
-      let(:contact) do
-        service.updated_audience[:subscribed].first
-      end
-
-      before do
-        service.perform
       end
 
       it 'retains the contact' do
@@ -216,15 +229,7 @@ describe Marketing::MailchimpCsvExporter do
 
     context 'with a post-migration contact' do
       let(:subscribed) do
-        [create_contact('user@example.org', name: 'John Smith', first_name: 'John', last_name: 'XSmith', school: 'DfE', user_type: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'XDfE', user_type: 'School management', other_la: 'Xbhcc', other_mat: 'XUnity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
-      end
-
-      let(:contact) do
-        service.updated_audience[:subscribed].first
-      end
-
-      before do
-        service.perform
+        [create_contact('user@example.org', name: 'John Smith', first_name: 'John', last_name: 'XSmith', school: 'DfE', user_type: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'XDfE', other_la: 'Xbhcc', other_mat: 'XUnity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
       end
 
       it 'populates the fields correctly' do
@@ -244,17 +249,107 @@ describe Marketing::MailchimpCsvExporter do
     end
   end
 
-  context 'when there contacts that are Users and some that are not' do
-    it 'creates contacts for both'
+  context 'when there are Users not in Mailchimp' do
+    let(:contact) { service.new_nonsubscribed.first }
+
+    context 'with a school admin' do
+      let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35) }
+      let!(:user) { create(:school_admin, school: school) }
+
+      before do
+        service.perform
+      end
+
+      it_behaves_like 'it correctly creates a contact', school_user: true
+    end
+
+    context 'with a group admin' do
+      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard)) }
+
+      before do
+        service.perform
+      end
+
+      it_behaves_like 'it correctly creates a contact', group_admin: true
+    end
+
+    context 'with an admin' do
+      let!(:user) { create(:admin) }
+
+      before do
+        service.perform
+      end
+
+      it_behaves_like 'it correctly creates a contact'
+    end
 
     context 'with a pupil' do
       let!(:user) { create(:pupil) }
 
-      it 'ignores the user'
+      before do
+        service.perform
+      end
+
+      it 'ignores the user' do
+        expect(service.new_nonsubscribed).to be_empty
+      end
     end
 
     context 'with a school onboarding user' do
-      it 'ignores the user'
+      let!(:user) { create(:onboarding_user)}
+
+      before do
+        service.perform
+      end
+
+      it 'ignores the user' do
+        expect(service.new_nonsubscribed).to be_empty
+      end
+    end
+  end
+
+  context 'when there is a mixture of user types' do
+    let!(:school_group) { create(:school_group, :with_default_scoreboard) }
+    let!(:school) { create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35, school_group: school_group) }
+    let!(:school_admin) { create(:school_admin, school: school) }
+    let!(:group_admin) { create(:group_admin, school_group: school_group) }
+    let!(:staff) { create(:staff) }
+    let!(:volunteer) { create(:volunteer) }
+    let!(:admin) { create(:admin) }
+
+    let(:subscribed) do
+      [
+        create_contact('user@example.org', first_name: 'John', last_name: 'Smith', school_or_organisation: 'DfE', user_type: 'School management', other_la: 'bhcc', other_mat: 'Unity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support'),
+        create_contact(school_admin.email)
+      ]
+    end
+
+    let(:cleaned) do
+      [create_contact(group_admin.email)]
+    end
+
+    let(:unsubscribed) do
+      [create_contact(staff.email)]
+    end
+
+    let(:nonsubscribed) do
+      [create_contact(volunteer.email)]
+    end
+
+    before do
+      service.perform
+    end
+
+    it 'creates contacts for all user types' do
+      expect(service.updated_audience[:subscribed].map(&:email_address)).to contain_exactly('user@example.org', school_admin.email)
+
+      expect(service.updated_audience[:unsubscribed].map(&:email_address)).to contain_exactly(staff.email)
+
+      expect(service.updated_audience[:cleaned].map(&:email_address)).to contain_exactly(group_admin.email)
+
+      expect(service.updated_audience[:nonsubscribed].map(&:email_address)).to contain_exactly(volunteer.email)
+
+      expect(service.new_nonsubscribed.first.email_address).to eq admin.email
     end
   end
 end
