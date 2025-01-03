@@ -94,14 +94,12 @@ module Marketing
       end
 
       if user.group_admin?
-        contact.alert_subscriber = 'No'
         contact.scoreboard = user.school_group&.default_scoreboard&.name
         contact.school_group = user.school_group&.name
         contact.country = user.school_group&.default_country&.humanize
         contact.tags = non_fsm_tags(existing_contact).join(',')
       elsif user.school_admin? && user.has_other_schools?
         contact.user_role = 'Cluster admin'
-        contact.alert_subscriber = 'No'
         contact.scoreboard = user.school.school_group&.default_scoreboard&.name
         contact.school_group = user.school.school_group&.name
         contact.country = user.school.school_group&.default_country&.humanize

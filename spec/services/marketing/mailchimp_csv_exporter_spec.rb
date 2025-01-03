@@ -45,7 +45,7 @@ describe Marketing::MailchimpCsvExporter do
     it 'populates cluster admin fields', if: cluster_admin do
       expect(contact.user_role).to eq 'Cluster admin'
       expect(contact.staff_role).to be_nil
-      expect(contact.alert_subscriber).to eq 'No'
+      expect(contact.alert_subscriber).to be_nil
       expect(contact.school_status).to be_nil
       expect(contact.school).to be_nil
       expect(contact.scoreboard).to eq user.school.school_group.default_scoreboard.name
@@ -58,7 +58,7 @@ describe Marketing::MailchimpCsvExporter do
     it 'populates group admin fields', if: group_admin do
       expect(contact.user_role).to eq user.role.humanize
       expect(contact.staff_role).to be_nil
-      expect(contact.alert_subscriber).to eq 'No'
+      expect(contact.alert_subscriber).to be_nil
       expect(contact.school_status).to be_nil
       expect(contact.school).to be_nil
       expect(contact.scoreboard).to eq user.school_group.default_scoreboard.name
