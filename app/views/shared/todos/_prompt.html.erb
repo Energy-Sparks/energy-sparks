@@ -4,9 +4,9 @@
       <div class="col-lg-1 d-none d-lg-block align-self-center">
         <i class="fas fa-play-circle fa-3x"></i>
       </div>
-      <% if programme_type.all_activity_types_completed_for_school?(school) %>
+      <% if programme_type.tasks_already_completed_for?(school:) %>
         <div class="col-lg-8 col-sm-12 align-self-center">
-          <%= t('programme_types.prompt.completed_message_html', count: programme_type.bonus_score) %>
+          <%= t('programme_types.task_prompt.completed_message_html', count: programme_type.bonus_score) %>
         </div>
         <div class="col-lg-3 col-sm-12">
           <%= link_to t('common.labels.complete'),
@@ -15,8 +15,8 @@
         </div>
       <% else %>
         <div class="col-lg-8 col-sm-12 align-self-center">
-          <%= t('programme_types.prompt.message_html',
-                count: programme_type.activity_type_ids_for_school(school).length) %>
+          <%= t('programme_types.task_prompt.message_html',
+                count: programme_type.task_count_for(school:)) %>
         </div>
         <div class="col-lg-3 col-sm-12">
           <%= link_to t('common.labels.start'),

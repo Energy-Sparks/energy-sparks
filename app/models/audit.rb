@@ -94,6 +94,10 @@ class Audit < ApplicationRecord
     observations.audit_activities_completed.any?
   end
 
+  def tasks_completed_on
+    observations.audit_activities_completed.last.at
+  end
+
   ## NB: using same bonus score and observation as just activities being completed as above!
   def complete!
     # I think we should raise here too if the site has no bonus points set

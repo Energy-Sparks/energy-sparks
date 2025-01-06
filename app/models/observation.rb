@@ -52,6 +52,7 @@ class Observation < ApplicationRecord
   include Todos::Recording
 
   belongs_to :school
+
   has_many   :temperature_recordings
   has_many   :locations, through: :temperature_recordings
 
