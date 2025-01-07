@@ -27,7 +27,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.1'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.3'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -68,6 +68,7 @@ gem 'bootstrap-email'
 gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout
 gem 'cocoon' # nested forms
 gem 'simple_form'
+gem 'sortablejs-rails'
 gem 'view_component'
 
 # JS Templating
@@ -99,7 +100,7 @@ gem 'rollbar'
 
 # Internationalisation
 gem 'i18n-tasks', '~> 1.0.14'
-gem 'mobility', '~> 1.2.9'
+gem 'mobility', '~> 1.3.1'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
@@ -124,7 +125,6 @@ group :development, :test do
   gem 'climate_control'
   gem 'debug'
   gem 'factory_bot_rails'
-  gem 'fakefs', require: 'fakefs/safe'
   gem 'foreman'
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false

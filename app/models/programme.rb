@@ -23,6 +23,8 @@
 #
 
 class Programme < ApplicationRecord
+  include Todos::Completable
+
   belongs_to :programme_type
   belongs_to :school
   has_many :programme_activities
@@ -51,6 +53,12 @@ class Programme < ApplicationRecord
   scope :last_started, -> { in_reverse_start_order.limit(1) }
   scope :recently_ended, ->(date: 1.day.ago) { where('ended_on >= ?', date) }
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
+
+  scope :completable, -> { started.active }
+
+  def assignable
+    programme_type
+  end
 
   def points_for_completion
     programme_type.bonus_score

@@ -576,6 +576,7 @@ Rails.application.routes.draw do
     resources :programme_types do
       scope module: :programme_types do
         resource :activity_types, only: [:show, :update]
+        resource :todos, only: [:edit, :update]
         resources :programmes, only: [:index, :create]
       end
     end
@@ -669,6 +670,7 @@ Rails.application.routes.draw do
       resources :missing_alert_contacts, only: [:index]
       resources :work_allocation, only: [:index]
       resources :user_logins, only: [:index]
+      resources :meter_loading_reports, only: :index
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver

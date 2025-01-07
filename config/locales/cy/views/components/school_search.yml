@@ -1,0 +1,11 @@
+cy:
+  components:
+    school_search:
+      school_groups:
+        pagination: Llywio A-Z grŵp ysgol
+        tab: Dod o hyd i Grwpiau Ysgol
+      schools:
+        pagination: Llywio A-Z Ysgolion
+        tab: Dod o hyd i Ysgolion
+        total: 'Cyfanswm yr ysgolion: %{count}'
+        total_for_admins: 'Cyfanswm yr ysgolion (gweladwy + cofrestru): %{count}'

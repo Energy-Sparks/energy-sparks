@@ -40,4 +40,8 @@ module MetersHelper
     end
     options
   end
+
+  def options_for_perse_api
+    [['None', nil], ['Half Hourly', 'half_hourly']]
+  end
 end

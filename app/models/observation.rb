@@ -55,16 +55,21 @@ class Observation < ApplicationRecord
   has_many   :locations, through: :temperature_recordings
 
   belongs_to :programme, optional: true # to be removed when column is removed
-
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true # to be removed when column is removed
   belongs_to :school_target, optional: true # to be removed when column is removed
   belongs_to :created_by, optional: true, class_name: 'User'
   belongs_to :updated_by, optional: true, class_name: 'User'
+  has_many :completed_todos, as: :recording, dependent: :destroy
 
-  # If adding a new observation type remember to also modify the timeline component
-  # events: 3 has been removed
+  # When adding a new observation type, use the polymorphic `observable` relationship
+  # instead of adding a new foreign key / relationship. The goal is to transition existing relationships
+  # (e.g., programme, audit, school_target) to `observable` over time.
+  # Prioritize using the new model when working in these areas, as they are the easiest to migrate.
+  # If adding a new observation type, remember to also modify the timeline component
+
+  # NB: events: 3 has been removed
   enum :observation_type, { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6,
                             audit_activities_completed: 7, transport_survey: 8 }
 
@@ -100,7 +105,9 @@ class Observation < ApplicationRecord
   has_rich_text :description
 
   before_validation :set_defaults, if: -> { observable_id }, on: :create
+  before_save :add_points_for_activities, if: :activity?
   before_save :add_points_for_interventions, if: :intervention?
+
   before_save :add_bonus_points_for_included_images, if: proc { |observation|
     observation.activity? || observation.intervention?
   }
@@ -115,6 +122,14 @@ class Observation < ApplicationRecord
 
   private
 
+  def add_points_for_activities
+    self.points = activity.activity_type.score_when_recorded_at(school, at)
+  end
+
+  def add_points_for_interventions
+    self.points = intervention_type.score_when_recorded_at(school, at)
+  end
+
   def add_bonus_points_for_included_images
     # Only add bonus points if the site wide photo bonus points is set to non zero
     return unless SiteSettings.current.photo_bonus_points&.nonzero?
@@ -124,10 +139,6 @@ class Observation < ApplicationRecord
     return unless description_includes_images?
 
     self.points = (points || 0) + SiteSettings.current.photo_bonus_points
-  end
-
-  def add_points_for_interventions
-    self.points = intervention_type.score_when_recorded_at(school, at)
   end
 
   def reject_temperature_recordings(attributes)
