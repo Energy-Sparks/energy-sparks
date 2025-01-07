@@ -48,8 +48,8 @@ class AmrDataFeedConfig < ApplicationRecord
   scope :enabled,           -> { where(enabled: true) }
   scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
 
-  enum :process_type, { s3_folder: 0, low_carbon_hub_api: 1, solar_edge_api: 2, n3rgy_api: 3,
-                        rtone_variant_api: 4 }
+  enum :process_type, { s3_folder: 0, low_carbon_hub_api: 1, solar_edge_api: 2, n3rgy_api: 3, rtone_variant_api: 4,
+                        other_api: 5 }
   enum :source_type, { email: 0, manual: 1, api: 2, sftp: 3 }
 
   has_many :amr_data_feed_import_logs
