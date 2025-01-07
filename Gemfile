@@ -100,7 +100,7 @@ gem 'rollbar'
 
 # Internationalisation
 gem 'i18n-tasks', '~> 1.0.14'
-gem 'mobility', '~> 1.2.9'
+gem 'mobility', '~> 1.3.1'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
