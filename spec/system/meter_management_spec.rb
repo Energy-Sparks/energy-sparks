@@ -45,7 +45,12 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
   end
   let!(:setup_data) {}
 
-  context 'as school admin' do
+  around do |example|
+    create(:amr_data_feed_config, identifier: 'perse-half-hourly-api')
+    example.run
+  end
+
+  context 'when a school admin' do
     before do
       sign_in(school_admin)
       visit root_path
@@ -106,6 +111,11 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       it 'the reload button is not shown' do
         expect(page).to have_no_selector(:link_or_button, 'Reload')
       end
+
+      it 'does not admin only sections' do
+        expect(page).to have_no_text('DCC (SMETS2) information')
+        expect(page).to have_no_text('Perse Metering')
+      end
     end
 
     context 'Manage meters page' do
@@ -165,7 +175,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
     end
   end
 
-  context 'as admin' do
+  context 'when an admin' do
     before do
       sign_in(admin)
       visit school_path(school)
@@ -234,7 +244,6 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         create(:electricity_meter, dcc_meter: :smets2, name: 'Electricity meter', school:, mpan_mprn: 1_234_567_890_123)
       end
 
-
       before do
         stub_request(:get, 'https://n3rgy.test/find-mpxn/1234567890123').to_return(body: '{}')
         stub_request(:get, 'https://n3rgy.test/mpxn/1234567890123').to_return(body: '{}')
@@ -271,16 +280,53 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         expect(meter.reload.dcc_meter).to eq('smets2')
       end
 
-      it 'allows reloading the meter' do
-        create(:amr_data_feed_config, process_type: :n3rgy_api)
-        click_on meter.mpan_mprn.to_s
-        click_on 'Reload'
+      def expect_meter_reload
         expect(page).to have_text('Reload queued')
         expect { perform_enqueued_jobs }.to change { ActionMailer::Base.deliveries.count }.by(1)
         expect(ActionMailer::Base.deliveries.last.subject).to \
           eq("[energy-sparks-unknown] Reload of Meter Electricity meter for #{school.name} complete")
         expect(ActionMailer::Base.deliveries.last.to).to eq([admin.email])
         expect(ActionMailer::Base.deliveries.last.to_s).to include('0 records were imported and 0 were updated')
+      end
+
+      it 'allows reloading the meter' do
+        create(:amr_data_feed_config, process_type: :n3rgy_api)
+        click_on meter.mpan_mprn.to_s
+        expect { click_on 'Reload' }.to have_enqueued_job(N3rgyReloadJob)
+        expect_meter_reload
+      end
+
+      context 'with Perse' do
+        around do |example|
+          travel_to(Date.new(2024, 12, 10))
+          create(:amr_data_feed_reading, # make sure we're doing a full reload
+                 amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'perse-half-hourly-api'),
+                 reading_date: '2024-12-10',
+                 meter: meter)
+          stub_request(:get, 'http://perse/meterhistory/v2/realtime-data?MPAN=1234567890123&fromDate=2023-10-10')
+          meter.update!(perse_api: :half_hourly)
+          ClimateControl.modify PERSE_API_URL: 'http://perse', PERSE_API_KEY: 'key' do
+            example.run
+          end
+        end
+
+        it 'allows reloading the meter with Perse' do
+          click_on meter.mpan_mprn.to_s
+          expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
+          expect_meter_reload
+        end
+
+        it 'allows reloading the meter with Perse and no DCC' do
+          meter.update!(dcc_meter: :no)
+          click_on meter.mpan_mprn.to_s
+          expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
+          expect_meter_reload
+        end
+
+        it 'shows the last reading' do
+          click_on meter.mpan_mprn.to_s
+          expect(page).to have_text("Perse Metering\nPerse API Half Hourly Latest reading 2024-12-10\n")
+        end
       end
     end
 
@@ -360,6 +406,12 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       it 'does not show the CSV download button if no readings' do
         expect(gas_meter.amr_validated_readings.empty?).to be true
         expect(page).to have_no_content('CSV')
+      end
+
+      it 'has Perse details' do
+        stub_request(:get, "https://n3rgy.test/find-mpxn/#{gas_meter.mpan_mprn}")
+        click_on gas_meter.mpan_mprn.to_s
+        expect(page).to have_content('Perse API None')
       end
     end
 
