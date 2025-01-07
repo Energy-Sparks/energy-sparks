@@ -119,7 +119,7 @@ Rails.application.configure do
   # session cookie has configurable name so that live and test logins are separated
   config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME', '_energy-sparks_session'),
                                       domain: ENV.fetch('SESSION_COOKIE_DOMAIN', '.energysparks.uk')
-  config.cache_store = :file_store, "/var/cache/rails_cache_store"
+  config.cache_store = :file_store, '/var/cache/rails_cache_store', { expires_in: 3.days }
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
   config.good_job.execution_mode = :external
