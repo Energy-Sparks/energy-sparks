@@ -29,7 +29,7 @@ class MeterAttribute < ApplicationRecord
   include AnalyticsAttribute
   belongs_to :meter
 
-  def invalidate_school_cache_key
+  def invalidate_school_cache
     AggregateSchoolService.new(meter.school).invalidate_cache
   end
 
