@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'programme type management', type: :system do
+describe 'programme type management', :include_application_helper, type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
@@ -336,6 +336,7 @@ describe 'programme type management', type: :system do
         expect(page).to have_content('Total activities: 2')
         expect(page).to have_content(school.name)
         expect(page).to have_content('started')
+        expect(page).to have_content(nice_dates(programme.started_on))
         expect(page).to have_content('50 %')
       end
 
