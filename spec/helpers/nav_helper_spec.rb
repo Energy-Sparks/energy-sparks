@@ -21,7 +21,7 @@ describe NavHelper do
       end
     end
 
-    it 'returns the Engligh logo' do
+    it 'returns the English logo' do
       I18n.with_locale(:en) do
         expect(helper.navigation_image_link).to include 'navigation-brand-transparent-en'
       end
