@@ -83,7 +83,7 @@ Rails.application.routes.draw do
   end
 
   concern :unlisted do
-    get :unlisted, on: :collection
+    get :unlisted, on: :collection, :defaults => { :format => 'js' }
   end
 
   namespace :comparisons do
