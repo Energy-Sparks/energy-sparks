@@ -371,6 +371,16 @@ en:
         summary_html:
           one: Complete the final activity now to score <strong>%{activity_types_uncompleted_scores}</strong> points
           other: Complete the final <strong>%{count}</strong> activities now to score <strong>%{activity_types_uncompleted_scores}</strong> points
+      programme_todos:
+        choose_a_new_programme_message: It's time to choose a new programme of tasks. What challenge will you take on next?
+        message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions in the <strong>%{programme_type_title}</strong> programme
+        start_a_new_programme: Start a new programme
+        summary_bonus_html:
+          one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
+          other: Complete the final <strong>%{count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
+        summary_html:
+          one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points
+          other: Complete the final <strong>%{count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points
       recommendations:
         message: Complete one of our recommended pupil or adult led activities to start reducing your energy usage
       recommended_for_your_school:

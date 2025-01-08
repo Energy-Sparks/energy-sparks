@@ -1,5 +1,5 @@
-<% if Flipper.enabled?(:todos, current_user) %>
-  <% if school %>
+<% if school %>
+  <% if Flipper.enabled?(:todos, current_user) %>
     <% if (programme_type, count = school.suggested_programme_type) %>
       <% if programme_type.todos.length == count %>
         <%= component 'info_bar',
@@ -21,9 +21,7 @@
                       buttons: { t('common.labels.start') => programme_type_path(programme_type) } %>
       <% end %>
     <% end %>
-  <% end %>
-<% else %>
-  <% if school %>
+  <% else %>
     <% if programme_type = school.suggested_programme_types.first %>
       <% if programme_type.activity_types.length == programme_type.activity_type_count %>
         <%= component 'info_bar',
