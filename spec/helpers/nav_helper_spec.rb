@@ -3,10 +3,32 @@ require 'rails_helper'
 describe NavHelper do
   describe '#locale_name_for' do
     it 'returns the name for a given locale' do
-      I18n.locale = 'cy'
+      I18n.locale = :cy
       expect(helper.locale_name_for('en')).to eq('English')
-      I18n.locale = 'en'
+      I18n.locale = :en
       expect(helper.locale_name_for('cy')).to eq('Cymraeg')
+    end
+  end
+
+  describe '#navigation_image_link' do
+    it 'links to the home page' do
+      expect(helper.navigation_image_link).to have_link(href: '/home-page')
+    end
+
+    context 'when locale is cy' do
+      before { I18n.locale = :cy }
+
+      it 'returns Welsh logo' do
+        expect(helper.navigation_image_link).to include 'navigation-brand-transparent-cy'
+      end
+    end
+
+    context 'when locale is en' do
+      before { I18n.locale = :en }
+
+      it 'returns Engligh logo' do
+        expect(helper.navigation_image_link).to include 'navigation-brand-transparent-en'
+      end
     end
   end
 
