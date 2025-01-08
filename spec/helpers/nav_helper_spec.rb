@@ -15,18 +15,14 @@ describe NavHelper do
       expect(helper.navigation_image_link).to have_link(href: '/home-page')
     end
 
-    context 'when locale is cy' do
-      before { I18n.locale = :cy }
-
-      it 'returns Welsh logo' do
+    it 'returns the Welsh logo' do
+      I18n.with_locale(:cy) do
         expect(helper.navigation_image_link).to include 'navigation-brand-transparent-cy'
       end
     end
 
-    context 'when locale is en' do
-      before { I18n.locale = :en }
-
-      it 'returns Engligh logo' do
+    it 'returns the Engligh logo' do
+      I18n.with_locale(:en) do
         expect(helper.navigation_image_link).to include 'navigation-brand-transparent-en'
       end
     end
