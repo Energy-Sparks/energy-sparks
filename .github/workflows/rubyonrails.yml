@@ -40,6 +40,11 @@ jobs:
       # https://docs.knapsackpro.com/ruby/knapsack
       # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
       - run: bundle exec rake knapsack:rspec
+      - uses: actions/upload-artifact@v4
+        with:
+          name: capybara-screenshots
+          path: energy-sparks/tmp/capybara/
+          if-no-files-found: ignore
   overcommit:
     runs-on: ubuntu-latest
     steps:
