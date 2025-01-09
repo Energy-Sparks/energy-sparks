@@ -348,14 +348,6 @@ en:
         message_html:
           one: You've recently completed an activity that is part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
           other: You've recently completed %{count} activities that are part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
-      join_todos_programme:
-        completed_message_html:
-          one: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus point?
-          other: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus points?
-          zero: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it as complete?
-        message_html:
-          one: You've recently completed a task that is part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
-          other: You've recently completed %{count} tasks that are part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
       no_active_programmes:
         choose_programme: Choose programme
         message: Congratulations you've completed all your energy saving programmes! Time to choose your next programme
@@ -363,7 +355,25 @@ en:
         message: Make a plan for reducing energy use to save money and reduce emissions by focusing on these key areas
       programme:
         choose_a_new_programme_message: It's time to choose a new programme of activities. What challenge will you take on next?
+        join:
+          completed_message_html:
+            one: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus point?
+            other: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus points?
+            zero: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it as complete?
+          message_html:
+            one: You've recently completed an activity that is part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
+            other: You've recently completed %{count} activities that are part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
         message_html: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme
+        progress:
+          choose_a_new_programme_message: It's time to choose a new programme of tasks. What challenge will you take on next?
+          message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions in the <strong>%{title}</strong> programme
+          start_a_new_programme: Start a new programme
+          summary_bonus_html:
+            one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme
+            other: Complete the final <strong>%{count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme
+          summary_html:
+            one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points
+            other: Complete the final <strong>%{count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points
         start_a_new_programme: Start a new programme
         summary_bonus_html:
           one: Complete the final activity now to score <strong>%{activity_types_uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
@@ -371,16 +381,6 @@ en:
         summary_html:
           one: Complete the final activity now to score <strong>%{activity_types_uncompleted_scores}</strong> points
           other: Complete the final <strong>%{count}</strong> activities now to score <strong>%{activity_types_uncompleted_scores}</strong> points
-      programme_todos:
-        choose_a_new_programme_message: It's time to choose a new programme of tasks. What challenge will you take on next?
-        message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions in the <strong>%{programme_type_title}</strong> programme
-        start_a_new_programme: Start a new programme
-        summary_bonus_html:
-          one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
-          other: Complete the final <strong>%{count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
-        summary_html:
-          one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points
-          other: Complete the final <strong>%{count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points
       recommendations:
         message: Complete one of our recommended pupil or adult led activities to start reducing your energy usage
       recommended_for_your_school:
