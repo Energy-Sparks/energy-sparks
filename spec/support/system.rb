@@ -75,13 +75,15 @@ RSpec.configure do |config|
       retry_count = 0
       begin
         example.run
-      rescue Selenium::WebDriver::Error::UnknownError => e
+      rescue => e
+        puts "exception #{e} - #{e.message}"
         retry_count += 1
         raise unless retry_count < 3
         raise unless e.message.include?('Node with given id does not belong to the document')
 
+        puts 'retrying after "Node with given id does not belong to the document" error'
         Capybara.reset_sessions!
-        sleep(1)
+        sleep(retry_count)
         retry
       end
     end
