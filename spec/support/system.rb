@@ -80,8 +80,9 @@ RSpec.configure do |config|
         raise unless retry_count < 3
         raise unless e.message.include?('Node with given id does not belong to the document')
 
+        puts 'retrying after "Node with given id does not belong to the document" error'
         Capybara.reset_sessions!
-        sleep(1)
+        sleep(retry_count)
         retry
       end
     end
