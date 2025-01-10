@@ -25,7 +25,8 @@
   <%= component 'meter_selection_chart',
                 chart_type: :"group_by_week_#{fuel_type}",
                 meter_selection: meter_selection,
-                chart_subtitle_key: "advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}.subtitle_html" do |c| %>
+                chart_subtitle_key:
+                  "advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}.subtitle_html" do |c| %>
     <% c.with_title { t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}.title") } %>
     <% c.with_footer do %>
       <p><%= t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}.explanation_html") %></p>
@@ -38,7 +39,8 @@
   <%= component 'meter_selection_chart',
                 chart_type: chart_type,
                 meter_selection: meter_selection,
-                chart_subtitle_key: "advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}.subtitle_html",
+                chart_subtitle_key:
+                  "advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}.subtitle_html",
                 chart_config: { y_axis_units: select_y_axis(school, chart_type, :£) } do |c| %>
       <% c.with_title { t("advice_pages.#{fuel_type}_out_of_hours.analysis.holiday_usage.#{chart_type}.title") } %>
       <% c.with_footer do %>
@@ -51,17 +53,23 @@
 <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.subtitle_html') %>
 <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.subtitle_two_years_html') %>
 <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.subtitle_html') %>
-<% key_prefix = "advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_by_month_year" %>
-<% key_suffix = analysis_dates.one_years_data? ? '_two_years' : '' %>
+<% key_prefix = "advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_by_month_year"
+   key_suffix = '_two_years' if analysis_dates.one_years_data?
+   chart_type = Flipper.enabled?(:school_academic_year_comparisons, current_user) ? :acyear : :year %>
 <%= component 'meter_selection_chart',
-              chart_type: :"#{fuel_type}_by_month_year_0_1",
+              chart_type: :"#{fuel_type}_by_month_#{chart_type}_0_1",
               meter_selection: meter_selection,
               chart_subtitle_key: "#{key_prefix}.subtitle#{key_suffix}_html" do |c| %>
   <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.title_two_years') %>
+  <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.title_two_years_academic_year') %>
   <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.title') %>
   <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.title_two_years') %>
+  <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.title_two_years_academic_year') %>
   <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.title') %>
-  <% c.with_title { t("#{key_prefix}.title#{key_suffix}", fuel_type: fuel_type) } %>
+  <% if analysis_dates.one_years_data? && Flipper.enabled?(:school_academic_year_comparisons, current_user)
+       key_suffix += '_academic_year'
+     end
+     c.with_title { t("#{key_prefix}.title#{key_suffix}", fuel_type: fuel_type) } %>
   <% c.with_footer do %>
     <p><%= t("advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_by_month_year.explanation") %></p>
   <% end %>

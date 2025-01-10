@@ -38,11 +38,13 @@ en:
           subtitle_two_years_html: This chart shows the difference in gas consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months for <span class='meter'>%{meter}</span>
           title: Monthly gas consumption comparison
           title_two_years: Monthly gas consumption comparison over the last two years
+          title_two_years_academic_year: Monthly gas consumption comparison over the last few academic years
         gas_longterm_trend:
           explanation: Reducing gas consumption can be achieved by turning your school's thermostat down, reducing out of hours usage, insulating your buildings or installing a new more efficient gas boiler.
           subtitle_html: This chart, and the table below give the breakdown of gas consumption between school day open and closed, holidays and weekends for each full year of data we have for <span class='meter'>%{meter}</span>
           temp_compensation: There is no temperature compensation applied to this chart. You should expect the amount of gas used each year to vary and broadly follow degree days - the colder it is outside, the more gas should be used in the school.
           title: Change in gas consumption over the last few years
+          title_academic_year: Change in gas consumption over the last few academic years
         group_by_week_gas:
           explanation_html: |-
             <p>
