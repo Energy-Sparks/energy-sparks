@@ -40,6 +40,11 @@ jobs:
       # https://docs.knapsackpro.com/ruby/knapsack
       # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
       - run: bundle exec rake knapsack:rspec
+      - uses: actions/upload-artifact@v4
+        with:
+          name: capybara-screenshots
+          path: energy-sparks/tmp/capybara/
+          if-no-files-found: ignore
   overcommit:
     runs-on: ubuntu-latest
     steps:
@@ -56,5 +61,4 @@ jobs:
           # ForbiddenBranches fails when triggered by master push
           # ErbLint has too many failures right now
           SKIP: ForbiddenBranches,ErbLint
-      - run: bundle exec brakeman . --no-progress --no-exit-on-warn -o /dev/stdout -o tmp/brakeman.txt
-      - run: "grep 'Security Warnings: 19' tmp/brakeman.txt"
+      - run: bundle exec brakeman
