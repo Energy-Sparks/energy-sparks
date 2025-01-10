@@ -73,7 +73,6 @@ RSpec.configure do |config|
   if ENV.key?('CI')
     config.around(:each, :js) do |example|
       retry_count = 0
-      puts 'Running test with selenium'
       begin
         example.run
       rescue Selenium::WebDriver::Error::UnknownError => e
