@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_10_115749) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_09_112010) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1261,6 +1261,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_10_115749) do
     t.bigint "procurement_route_id"
     t.integer "meter_system", default: 0
     t.enum "perse_api", enum_type: "meter_perse_api"
+    t.bigint "solis_cloud_installation_id"
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
@@ -1269,6 +1270,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_10_115749) do
     t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
+    t.index ["solis_cloud_installation_id"], name: "index_meters_on_solis_cloud_installation_id"
   end
 
   create_table "mobility_string_translations", force: :cascade do |t|
@@ -1769,6 +1771,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_10_115749) do
     t.index ["area_id"], name: "index_solar_pv_tuos_readings_on_area_id"
   end
 
+  create_table "solis_cloud_installations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "amr_data_feed_config_id", null: false
+    t.text "api_id"
+    t.text "api_secret"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_solis_cloud_installations_on_amr_data_feed_config_id"
+    t.index ["school_id"], name: "index_solis_cloud_installations_on_school_id"
+  end
+
   create_table "staff_roles", force: :cascade do |t|
     t.string "title", null: false
     t.datetime "created_at", null: false
@@ -2096,6 +2109,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_10_115749) do
   add_foreign_key "meters", "meter_reviews"
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
+  add_foreign_key "meters", "solis_cloud_installations", on_delete: :cascade
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
@@ -2149,6 +2163,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_10_115749) do
   add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "schools", on_delete: :cascade
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
+  add_foreign_key "solis_cloud_installations", "amr_data_feed_configs", on_delete: :cascade
+  add_foreign_key "solis_cloud_installations", "schools", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade

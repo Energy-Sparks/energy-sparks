@@ -1,0 +1,57 @@
+# == Schema Information
+#
+# Table name: solis_cloud_installations
+#
+#  amr_data_feed_config_id :bigint(8)        not null
+#  api_id                  :text
+#  api_secret              :text
+#  created_at              :datetime         not null
+#  id                      :bigint(8)        not null, primary key
+#  school_id               :bigint(8)        not null
+#  updated_at              :datetime         not null
+#
+# Indexes
+#
+#  index_solis_cloud_installations_on_amr_data_feed_config_id  (amr_data_feed_config_id)
+#  index_solis_cloud_installations_on_school_id                (school_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (amr_data_feed_config_id => amr_data_feed_configs.id) ON DELETE => cascade
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
+#
+class SolisCloudInstallation < ApplicationRecord
+  belongs_to :school, inverse_of: :solar_edge_installations
+  belongs_to :amr_data_feed_config
+
+  has_many :meters, dependent: :destroy
+
+  # validates_presence_of :site_id, :mpan, :api_key
+
+  def display_name
+    "Solis Cloud Installation #{id}"
+  end
+
+  # def school_number
+  #   school.urn
+  # end
+
+  # def electricity_meter
+  #   meters.electricity.first if meters.electricity.present?
+  # end
+
+  # def latest_electricity_reading
+  #   if electricity_meter && electricity_meter.amr_data_feed_readings.any?
+  #     Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
+  #   end
+  # end
+
+  # def cached_api_information?
+  #   information.present?
+  # end
+
+  # def api_latest_data_date
+  #   return nil unless information['dates'].present?
+  #   return Date.parse(information['dates'].last)
+  # end
+end

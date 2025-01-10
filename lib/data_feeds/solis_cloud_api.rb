@@ -17,10 +17,11 @@ module DataFeeds
     end
 
     def user_station_list
-      get_data('/v1/api/userStationList', { 'pageNo': 1, 'pageSize': 10 })
+      get_data('/v1/api/userStationList', {})
     end
 
     def station_day(id, day)
+      sleep 2
       get_data('/v1/api/stationDay', { 'id': id, 'money': 'GBP', 'time': day.iso8601, 'timeZone': 44 })
     end
 
@@ -30,41 +31,34 @@ module DataFeeds
 
     private
 
-    def get_data(path, data)
-      content_type = 'application/json'
-      date = DateTime.now.httpdate
-
-      body = data.to_json
-      md5 = Digest::MD5.digest(body)
-      content_md5 = Base64.encode64(md5).chomp
-
-      signature = "POST\n#{content_md5}\n#{content_type}\n#{date}\n#{path}"
-
-      hmac = OpenSSL::HMAC.digest('sha1', @api_secret, signature.encode('utf-8'))
-      authorization = 'API ' + @api_id + ':' + Base64.encode64(hmac).chomp
-
-      headers = {
-          'Content-MD5': content_md5,
-          'Date': date,
-          'Content-Type': content_type,
-          'Authorization': authorization
-      }
-
-      response = Faraday.post(BASE_URL + path, body, headers)
-      handle_response(response)
+    def connection
+      Faraday.new(BASE_URL) do |f|
+        f.response :json
+        f.response :raise_error
+        f.response :logger if Rails.env.development?
+      end
     end
 
-    def handle_response(response)
-      raise NotAuthorised, response.body if response.status == 401
-      raise NotAllowed, response.body if response.status == 403
-      raise NotFound, response.body if response.status == 404
-      raise ApiFailure, response.body unless response.success?
+    def content_md5(body)
+      Base64.encode64(Digest::MD5.digest(body)).chomp
+    end
 
-      begin
-        JSON.parse(response.body)
-      rescue StandardError => e
-        raise ApiFailure, e.message
-      end
+    def authorization(path, headers)
+      signature = "POST\n#{headers['Content-MD5']}\n#{headers['Content-Type']}\n#{headers['Date']}\n#{path}"
+      hmac = OpenSSL::HMAC.digest('sha1', @api_secret, signature.encode('utf-8'))
+      "API #{@api_id}:#{Base64.encode64(hmac).chomp}"
+    end
+
+    def get_data(path, body)
+      body = body.to_json
+      headers = {
+        'Content-MD5' => content_md5(body),
+        'Date' => DateTime.now.httpdate,
+        'Content-Type' => 'application/json',
+      }
+      headers['Authorization'] = authorization(path, headers)
+      response = connection.post(path, body, headers)
+      response.body
     end
   end
 end
