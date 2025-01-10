@@ -61,5 +61,4 @@ jobs:
           # ForbiddenBranches fails when triggered by master push
           # ErbLint has too many failures right now
           SKIP: ForbiddenBranches,ErbLint
-      - run: bundle exec brakeman . --no-progress --no-exit-on-warn -o /dev/stdout -o tmp/brakeman.txt
-      - run: "grep 'Security Warnings: 19' tmp/brakeman.txt"
+      - run: bundle exec brakeman
