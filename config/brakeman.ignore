@@ -369,29 +369,6 @@
       "note": ""
     },
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "9c53fe28c11ec6c11818693206446c0829fbaf0d3b013f34703202416e7ad9af",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/controllers/admin/reports/amr_data_feed_import_logs_controller.rb",
-      "line": 28,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "AmrDataFeedImportLog.send(page).order(:import_time => :desc).where(\"file_name ILIKE '%#{params[:search]}%'\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::Reports::AmrDataFeedImportLogsController",
-        "method": "render_for"
-      },
-      "user_input": "params[:search]",
-      "confidence": "High",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
-    },
-    {
       "warning_type": "Mass Assignment",
       "warning_code": 105,
       "fingerprint": "a119d5c3ea5061c3b0ad346db8c65a5c371dda2bd02c9630f19e279ceb8b063a",
