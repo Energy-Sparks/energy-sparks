@@ -167,6 +167,7 @@ ignore_unused:
   - 'campaign_mailer.send_information.for_las.group_dashboard_html'
   - 'campaign_mailer.send_information.for_mats.group_dashboard_html'
   - 'pupils.default_equivalences.equivalence_*.*'
+  - 'schools.prompts.programme.progress.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
