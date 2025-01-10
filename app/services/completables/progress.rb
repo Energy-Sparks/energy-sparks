@@ -28,10 +28,6 @@ module Completables
       completable.uncompleted_todos.count
     end
 
-    def i18n_message_key
-      'message_html'
-    end
-
     def message
       I18n.t("schools.prompts.#{i18n_base}.#{i18n_message_key}",
         title: assignable.title,
@@ -54,6 +50,16 @@ module Completables
 
     def bonus_points
       assignable.bonus_score
+    end
+
+    def i18n_message_key
+      if assignable.activity_type_todos.any? && assignable.intervention_type_todos.none?
+        'message_activities_only_html'
+      elsif assignable.activity_type_todos.none? && assignable.intervention_type_todos.any?
+        'message_actions_only_html'
+      else
+        'message_html'
+      end
     end
 
     def i18n_base

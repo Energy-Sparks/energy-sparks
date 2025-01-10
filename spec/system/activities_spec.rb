@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'viewing and recording activities' do
   let!(:activity_category) { create(:activity_category) }
-  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
+  let!(:audit) {}
 
   let!(:subject)  { Subject.create(name: 'Science and Technology') }
   let!(:ks1)      { KeyStage.create(name: 'KS1') }
@@ -161,6 +161,8 @@ describe 'viewing and recording activities' do
       end
 
       context without_feature: :todos do
+        let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
+
         before do
           click_on 'Record this activity'
         end
@@ -273,6 +275,8 @@ describe 'viewing and recording activities' do
       end
 
       context with_feature: :todos do
+        let(:audit) { create(:audit, :with_todos, school:) }
+
         before do
           click_on 'Record this activity'
         end

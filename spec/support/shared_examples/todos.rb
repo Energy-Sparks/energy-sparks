@@ -128,7 +128,7 @@ RSpec.shared_examples 'a completable' do
     subject(:completable) { create(:audit) }
 
     it { expect(completable).to have_many(:completed_todos).dependent(:destroy) }
-    it { expect(completable).to have_many(:completed_tasks) }
+    it { expect(completable).to have_many(:todos_completed) }
     it { expect(completable).to have_many(:completed_activity_types) }
     it { expect(completable).to have_many(:completed_intervention_types) }
   end
@@ -223,7 +223,7 @@ RSpec.shared_examples 'a completable' do
         it { expect(completable.completed_todos.count).to be(3) }
 
         it 'completed items should all be activity types' do
-          expect(completable.completed_tasks.pluck(:task_type).uniq).to eq(['ActivityType'])
+          expect(completable.todos_completed.pluck(:task_type).uniq).to eq(['ActivityType'])
         end
 
         it 'does not marks completable as completed' do
@@ -243,7 +243,7 @@ RSpec.shared_examples 'a completable' do
         it { expect(completable.completed_todos.count).to be(3) }
 
         it 'completed items should all be intervention types' do
-          expect(completable.completed_tasks.pluck(:task_type).uniq).to eq(['InterventionType'])
+          expect(completable.todos_completed.pluck(:task_type).uniq).to eq(['InterventionType'])
         end
 
         it 'does not marks completable as completed' do

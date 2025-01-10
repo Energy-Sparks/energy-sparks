@@ -3,8 +3,7 @@
     <%= component 'info_bar',
                   status: :neutral,
                   style: local_assigns[:style],
-                  title: if Flipper.enabled?(:todos,
-                                             current_user)
+                  title: if Flipper.enabled?(:todos, current_user)
                            Completables::Progress.new(programme).notification
                          else
                            Programmes::Progress.new(programme).notification

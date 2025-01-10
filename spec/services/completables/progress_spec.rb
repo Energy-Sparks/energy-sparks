@@ -10,140 +10,164 @@ describe Completables::Progress, type: :service do
   let(:intervention_type_factory_score) { 30 }
 
   context 'when completable is a programme' do
-    let!(:assignable) { create(:programme_type, :with_todos, title: 'Programme Type title', bonus_score: 12) }
-    let!(:completable) { create(:programme, programme_type: assignable, started_on: '2020-01-01', school:) }
+    context 'when programme has both activities and actions' do
+      let!(:assignable) { create(:programme_type, :with_todos, title: 'Programme Type title', bonus_score: 12) }
+      let!(:completable) { create(:programme, programme_type: assignable, started_on: '2020-01-01', school:) }
 
-    describe '#title' do
-      it 'returns the title' do
-        expect(service.title).to eq(assignable.title)
+      describe '#title' do
+        it 'returns the title' do
+          expect(service.title).to eq(assignable.title)
+        end
       end
-    end
 
-    describe '#bonus_points' do
-      it 'returns the bonus score' do
-        expect(service.bonus_points).to eq(assignable.bonus_score)
+      describe '#bonus_points' do
+        it 'returns the bonus score' do
+          expect(service.bonus_points).to eq(assignable.bonus_score)
+        end
       end
-    end
 
-    context 'when no tasks have been completed' do
-      describe '#notification' do
-        let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 3 }
+      context 'when no tasks have been completed' do
+        describe '#notification' do
+          let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 3 }
 
-        it 'shows full message' do
-          expect(service.notification).to eq('You have completed <strong>0/3</strong> of the activities and ' \
+          it 'shows full message' do
+            expect(service.notification).to eq('You have completed <strong>0/3</strong> of the activities and ' \
+                                    '<strong>0/3</strong> of the actions ' \
+                                    'in the <strong>Programme Type title</strong> programme<br>' \
+                                    "Complete the final <strong>6</strong> tasks now to score <strong>#{expected_score}</strong> points " \
+                                    'and <strong>12</strong> bonus points for completing the programme')
+          end
+        end
+      end
+
+      context 'when one activity has been completed' do
+        let(:recording) do
+          build(:activity, school:, activity_type: assignable.activity_type_tasks.first, happened_on: Date.yesterday)
+        end
+
+        before do
+          Tasks::Recorder.new(recording, nil).process
+        end
+
+        describe '#message' do
+          subject(:message) { service.message }
+
+          it 'returns the message' do
+            expect(message).to eq('You have completed <strong>1/3</strong> of the activities and ' \
                                   '<strong>0/3</strong> of the actions ' \
-                                  'in the <strong>Programme Type title</strong> programme<br>' \
-                                  "Complete the final <strong>6</strong> tasks now to score <strong>#{expected_score}</strong> points " \
-                                  'and <strong>12</strong> bonus points for completing the programme')
+                                  'in the <strong>Programme Type title</strong> programme')
+          end
+        end
+
+        describe '#summary' do
+          subject(:summary) { service.summary }
+
+          let(:expected_score) { activity_type_factory_score * 2 + intervention_type_factory_score * 3 }
+
+          context 'with bonus points' do
+            it 'returns the summary with bonus mentioned' do
+              expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points "\
+                                    'and <strong>12</strong> bonus points for completing the programme')
+            end
+          end
+
+          context 'without bonus points' do
+            before { assignable.update!(bonus_score: 0) }
+
+            it 'returns the summary without mentioning bonus' do
+              expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points")
+            end
+          end
         end
       end
-    end
 
-    context 'when one activity has been completed' do
-      let(:recording) do
-        build(:activity, school:, activity_type: assignable.activity_type_tasks.first, happened_on: Date.yesterday)
+      context 'when one action has been completed' do
+        let(:recording) do
+          build(:observation, :intervention, school:, intervention_type: assignable.intervention_type_tasks.first, at: Date.yesterday)
+        end
+
+        before do
+          Tasks::Recorder.new(recording, nil).process
+        end
+
+        describe '#message' do
+          subject(:message) { service.message }
+
+          it 'returns the message' do
+            expect(message).to eq('You have completed <strong>0/3</strong> of the activities and ' \
+                                  '<strong>1/3</strong> of the actions ' \
+                                  'in the <strong>Programme Type title</strong> programme')
+          end
+        end
+
+        describe '#summary' do
+          subject(:summary) { service.summary }
+
+          let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 2 }
+
+          context 'with bonus points' do
+            it 'returns the summary with bonus mentioned' do
+              expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points "\
+                                    'and <strong>12</strong> bonus points for completing the programme')
+            end
+          end
+
+          context 'without bonus points' do
+            before { assignable.update!(bonus_score: 0) }
+
+            it 'returns the summary without mentioning bonus' do
+              expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points")
+            end
+          end
+        end
       end
 
-      before do
-        Tasks::Recorder.new(recording, nil).process
-      end
+      context 'when all but one have been completed' do
+        before do
+          recordings = []
+          assignable.activity_type_tasks.first(2).each do |activity_type|
+            recordings << build(:activity, school:, activity_type:, happened_on: Date.yesterday)
+          end
+          assignable.intervention_type_tasks.each do |intervention_type|
+            recordings << build(:observation, :intervention, school:, intervention_type:, at: Date.yesterday)
+          end
+          recordings.each {|recording| Tasks::Recorder.new(recording, nil).process }
+        end
 
-      describe '#message' do
-        subject(:message) { service.message }
+        let(:expected_score) { activity_type_factory_score * 1}
 
         it 'returns the message' do
-          expect(message).to eq('You have completed <strong>1/3</strong> of the activities and ' \
-                                '<strong>0/3</strong> of the actions ' \
+          expect(service.message).to eq('You have completed <strong>2/3</strong> of the activities and ' \
+                                '<strong>3/3</strong> of the actions ' \
                                 'in the <strong>Programme Type title</strong> programme')
         end
-      end
 
-      describe '#summary' do
-        subject(:summary) { service.summary }
-
-        let(:expected_score) { activity_type_factory_score * 2 + intervention_type_factory_score * 3 }
-
-        context 'with bonus points' do
-          it 'returns the summary with bonus mentioned' do
-            expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points "\
-                                  'and <strong>12</strong> bonus points for completing the programme')
-          end
-        end
-
-        context 'without bonus points' do
-          before { assignable.update!(bonus_score: 0) }
-
-          it 'returns the summary without mentioning bonus' do
-            expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points")
-          end
+        it 'returns the summary with bonus mentioned' do
+          expect(service.summary).to eq("Complete the final task now to score <strong>#{expected_score}</strong> points "\
+                                'and <strong>12</strong> bonus points for completing the programme')
         end
       end
     end
 
-    context 'when one action has been completed' do
-      let(:recording) do
-        build(:observation, :intervention, school:, intervention_type: assignable.intervention_type_tasks.first, at: Date.yesterday)
-      end
+    context 'when programme has just activities' do
+      let!(:assignable) { create(:programme_type, title: 'Programme Type title', bonus_score: 12) }
+      let!(:todo) { create(:activity_type_todo, assignable: assignable) }
+      let!(:completable) { create(:programme, programme_type: assignable, started_on: '2020-01-01', school:) }
 
-      before do
-        Tasks::Recorder.new(recording, nil).process
-      end
-
-      describe '#message' do
-        subject(:message) { service.message }
-
-        it 'returns the message' do
-          expect(message).to eq('You have completed <strong>0/3</strong> of the activities and ' \
-                                '<strong>1/3</strong> of the actions ' \
+      it 'only mentions activities' do
+        expect(service.message).to eq('You have completed <strong>0/1</strong> of the activities ' \
                                 'in the <strong>Programme Type title</strong> programme')
-        end
-      end
-
-      describe '#summary' do
-        subject(:summary) { service.summary }
-
-        let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 2 }
-
-        context 'with bonus points' do
-          it 'returns the summary with bonus mentioned' do
-            expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points "\
-                                  'and <strong>12</strong> bonus points for completing the programme')
-          end
-        end
-
-        context 'without bonus points' do
-          before { assignable.update!(bonus_score: 0) }
-
-          it 'returns the summary without mentioning bonus' do
-            expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points")
-          end
-        end
       end
     end
 
-    context 'when all but one have been completed' do
-      before do
-        recordings = []
-        assignable.activity_type_tasks.first(2).each do |activity_type|
-          recordings << build(:activity, school:, activity_type:, happened_on: Date.yesterday)
-        end
-        assignable.intervention_type_tasks.each do |intervention_type|
-          recordings << build(:observation, :intervention, school:, intervention_type:, at: Date.yesterday)
-        end
-        recordings.each {|recording| Tasks::Recorder.new(recording, nil).process }
-      end
+    context 'when programme has just actions' do
+      let!(:assignable) { create(:programme_type, title: 'Programme Type title', bonus_score: 12) }
+      let!(:todo) { create(:intervention_type_todo, assignable: assignable) }
+      let!(:completable) { create(:programme, programme_type: assignable, started_on: '2020-01-01', school:) }
 
-      let(:expected_score) { activity_type_factory_score * 1}
-
-      it 'returns the message' do
-        expect(service.message).to eq('You have completed <strong>2/3</strong> of the activities and ' \
-                              '<strong>3/3</strong> of the actions ' \
-                              'in the <strong>Programme Type title</strong> programme')
-      end
-
-      it 'returns the summary with bonus mentioned' do
-        expect(service.summary).to eq("Complete the final task now to score <strong>#{expected_score}</strong> points "\
-                              'and <strong>12</strong> bonus points for completing the programme')
+      it 'only mentions actions' do
+        expect(service.message).to eq('You have completed <strong>0/1</strong> of the actions ' \
+                                'in the <strong>Programme Type title</strong> programme')
       end
     end
   end
