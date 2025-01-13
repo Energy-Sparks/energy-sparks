@@ -49,7 +49,7 @@ module Todos
     def completable_for(school:)
       case self.class.to_s
       when 'ProgrammeType'
-        school.programmes.completable.where(programme_type: self).last
+        school.programmes.active.not_abandoned.where(programme_type: self).in_reverse_start_order.first
       when 'Audit'
         self
       else

@@ -50,9 +50,9 @@ class Programme < ApplicationRecord
   scope :recently_started, ->(date_range) { where(created_at: date_range) }
   scope :recently_started_non_default,
         ->(date_range) { recently_started(date_range).where.not(programme_type: ProgrammeType.default) }
-  scope :in_reverse_start_order, -> { started.order(started_on: :desc) }
+  scope :in_reverse_start_order, -> { order(started_on: :desc) }
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
-  scope :last_started, -> { in_reverse_start_order.limit(1) }
+  scope :last_started, -> { started.in_reverse_start_order.limit(1) }
   scope :recently_ended, ->(date: 1.day.ago) { where('ended_on >= ?', date) }
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
 

@@ -178,7 +178,7 @@ describe 'viewing and recording activities' do
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          it_behaves_like 'a task completed page with programme complete message'
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity
 
           context 'when viewing the activity' do
             before do
@@ -207,7 +207,7 @@ describe 'viewing and recording activities' do
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          it_behaves_like 'a task completed page with programme complete message'
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity
 
           context 'when viewing the activity' do
             before do
@@ -291,9 +291,8 @@ describe 'viewing and recording activities' do
             click_on 'Save activity'
           end
 
-          it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          # pending todos frontend
-          # it_behaves_like 'a task completed page with programme complete message'
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity, with_todos: true
 
           context 'when viewing the activity' do
             before do
@@ -321,9 +320,8 @@ describe 'viewing and recording activities' do
             click_on 'Save activity'
           end
 
-          it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          # Pending todos frontend
-          # it_behaves_like 'a task completed page with programme complete message'
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity, with_todos: true
 
           context 'when viewing the activity' do
             before do
