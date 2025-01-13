@@ -5,7 +5,7 @@ class CreateSolisCloudInstallation < ActiveRecord::Migration[7.1]
       t.references :amr_data_feed_config, null: false, foreign_key: { on_delete: :cascade }
       t.text       :api_id
       t.text       :api_secret
-      # t.jsonb       :information, default: {}
+      t.jsonb      :station_list, default: {}
       t.timestamps
     end
     add_reference :meters, :solis_cloud_installation, foreign_key: { on_delete: :cascade }

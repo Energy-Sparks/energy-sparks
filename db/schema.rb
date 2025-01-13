@@ -1776,6 +1776,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_09_112010) do
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_id"
     t.text "api_secret"
+    t.jsonb "station_list", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_solis_cloud_installations_on_amr_data_feed_config_id"

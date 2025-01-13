@@ -33,6 +33,7 @@ module Solar
     def download
       api = DataFeeds::SolisCloudApi.new(@installation.api_id, @installation.api_secret)
       stations = api.user_station_list.dig('data', 'page', 'records') || []
+      @installation.update(station_list: stations)
       stations.map do |station|
         station[:readings] = (@requested_start_date..@requested_end_date).map do |date|
           [date, create_kwh_data_x48(api.station_day(station['id'], date)['data'])]
