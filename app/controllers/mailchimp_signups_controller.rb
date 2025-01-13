@@ -38,6 +38,8 @@ class MailchimpSignupsController < ApplicationController
     @mailchimp_api ||= MailchimpApi.new
   end
 
+  # TODO create instance of new model
+  # TODO change form to use simple fields and a contact
   def mailchimp_signup_params(params)
     MailchimpSignupParams.new(
       email_address: params[:email_address],

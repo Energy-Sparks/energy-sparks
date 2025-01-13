@@ -75,6 +75,9 @@ module Marketing
     end
 
     # convert User to Mailchimp contact, preserving exiting fields if given
+    # TODO use new model methods
+    # Adjust tags for export (join)
+    # Adjust interests?? Will be names, not values
     def to_mailchimp_contact(user, existing_contact = nil, newsletter_subscriber: true)
       contact = ActiveSupport::OrderedOptions.new
       contact.email_address = user.email
@@ -160,6 +163,7 @@ module Marketing
     # This is to allow for migration to be re-run before we tidy up and remove some of
     # the old fields.
     def copy_contact(existing_contact)
+      # TODO use new model
       contact = ActiveSupport::OrderedOptions.new
       contact.email_address = existing_contact[:email_address]
       contact.contact_source = 'Organic'
