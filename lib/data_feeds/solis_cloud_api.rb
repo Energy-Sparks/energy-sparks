@@ -11,7 +11,7 @@ module DataFeeds
 
     BASE_URL = 'https://www.soliscloud.com:13333'
 
-    def initialize(api_id = ENV['SOLIS_API_ID'], api_secret = ENV['SOLIS_API_SECRET'])
+    def initialize(api_id, api_secret)
       @api_id = api_id
       @api_secret = api_secret
     end
