@@ -44,6 +44,6 @@
     aggregate_meter_mpan_mprn: @aggregate_meter_mpan_mprn,
     show_school_total: true %>
   <% if @analysis_dates.months_of_data > 23 %>
-    <%= render 'cost_comparison', school: @school, analysis_dates: @analysis_dates %>
+    <%= render 'cost_comparison', school: @school, analysis_dates: @analysis_dates, mpan_mprn: @aggregate_meter_mpan_mprn %>
   <% end %>
 <% end %>

@@ -29,6 +29,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
 
   context 'when a school admin' do
     before do
+      travel_to(Date.new(2024, 12, 1))
       sign_in(create(:school_admin, school:))
       visit school_advice_electricity_long_term_path(school)
     end

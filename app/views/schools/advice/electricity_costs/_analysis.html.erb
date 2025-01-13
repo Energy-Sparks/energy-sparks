@@ -45,6 +45,6 @@
     show_school_total: true,
     fuel_type: @advice_page.fuel_type %>
   <% if @analysis_dates.months_of_data > 23 %>
-    <%= render 'cost_comparison', school: @school, analysis_dates: @analysis_dates %>
+    <%= render 'cost_comparison', school: @school, analysis_dates: @analysis_dates, mpan_mprn: @aggregate_meter_mpan_mprn %>
   <% end %>
 <% end %>
