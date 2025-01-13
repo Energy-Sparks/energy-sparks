@@ -22,6 +22,7 @@ module Solar
         ) do |new_record|
           new_record.name = meter_type.to_s.humanize
           new_record.pseudo = true
+          new_record.active = false
           new_record.solar_edge_installation = @solar_edge_installation
         end
 
