@@ -13,7 +13,7 @@ module Marketing
     validates_presence_of :email_address
     validate :interests_specified?
 
-    def initialize(email_address:)
+    def initialize(email_address)
       @email_address = email_address
       @interests = {}
       @tags = []
@@ -37,7 +37,7 @@ module Marketing
         contact.scoreboard = user.school_group&.default_scoreboard&.name
         contact.school_group = user.school_group&.name
         contact.country = user.school_group&.default_country&.humanize
-        contact.tags = non_fsm_tags(tags)
+        contact.tags = self.non_fsm_tags(tags)
       elsif user.school_admin? && user.has_other_schools?
         contact.user_role = 'Cluster admin'
         contact.staff_role = user&.staff_role&.title
@@ -45,7 +45,7 @@ module Marketing
         contact.scoreboard = user.school.school_group&.default_scoreboard&.name
         contact.school_group = user.school.school_group&.name
         contact.country = user.school.school_group&.default_country&.humanize
-        contact.tags = tags_for_school_user(user, tags, [user.cluster_schools.map(&:slug)], fsm_tags: false)
+        contact.tags = self.tags_for_school_user(user, tags, [user.cluster_schools.map(&:slug)], fsm_tags: false)
       elsif user.school.present?
         contact.staff_role = user&.staff_role&.title
         contact.alert_subscriber = user.contacts.for_school(user.school).any? ? 'Yes' : 'No'
@@ -63,7 +63,7 @@ module Marketing
         contact.region = user.school&.region&.humanize
         contact.country = user.school.country&.humanize
         contact.funder = user.school&.funder&.name
-        contact.tags = tags_for_school_user(user, tags, [user.school.slug])
+        contact.tags = self.tags_for_school_user(user, tags, [user.school.slug])
       end
       contact
     end
@@ -96,18 +96,18 @@ module Marketing
     # - any existing tags are preserved
     #
     # Cluster admins will not have free school meal tags.
-    def tags_for_school_user(user, existing_tags = [], slugs = [], fsm_tags: true)
+    def self.tags_for_school_user(user, existing_tags = [], slugs = [], fsm_tags: true)
       core_tags = slugs
       core_tags = core_tags + MailchimpTags.new(user.school).tags_as_list if fsm_tags
-      existing_tags = non_fsm_tags(existing_tags)
+      existing_tags = self.non_fsm_tags(existing_tags)
       (core_tags + existing_tags)
     end
 
     # Parse existing tags in Mailchimp export, removing any free school meal tags as
     # these will be refreshed from the database.
-    def non_fsm_tags(existing_tags)
+    def self.non_fsm_tags(existing_tags)
       return [] unless existing_tags.present?
-      tags.reject {|t| t.match?(/FSM/) }
+      existing_tags.reject {|t| t.match?(/FSM/) }
     end
 
     def merge_fields
