@@ -15,7 +15,7 @@
         <tr>
           <% if show_positions? %>
             <td>
-              <%= position(observation.school)&.ordinal || '-' %>
+              <%= position(observation.school) || '-' %>
             </td>
           <% end %>
           <td>
