@@ -252,7 +252,7 @@ en:
         data_source: Data source
         dcc_smart_meter: DCC Smart Meter
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
-        leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
+        leave_this_blank_message: Leave this as "No" for new meters and system will check it is registered with n3rgy
         meter_point_number: Meter Point Number
         meter_system: Meter system
         name: Name
