@@ -9,9 +9,7 @@ module Marketing
     # TODO add school, school group and scoreboard urls as fields
     attr_accessor :alert_subscriber, :confirmed_date, :contact_source, :country, :funder, :locale, :local_authority, :name, :region, :staff_role, :school, :school_group, :school_status, :scoreboard, :user_role
 
-    # TODO other validations?
     validates_presence_of :email_address
-    validate :interests_specified?
 
     def initialize(email_address)
       @email_address = email_address
@@ -19,9 +17,6 @@ module Marketing
       @tags = []
     end
 
-    # TODO need to add interests to hash using ids when populating for new user
-    # TODO populating existing tags/interests
-    # TODO newsletter subscriber?
     def self.from_user(user, tags: [], interests: {})
       contact = MailchimpContact.new(user.email)
       contact.email_address = user.email
@@ -32,7 +27,9 @@ module Marketing
       contact.locale = user.preferred_locale
       contact.interests = interests
 
-      if user.group_admin?
+      if user.admin?
+        contact.tags = self.non_fsm_tags(tags)
+      elsif user.group_admin?
         contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
         contact.scoreboard = user.school_group&.default_scoreboard&.name
         contact.school_group = user.school_group&.name
@@ -68,25 +65,9 @@ module Marketing
       contact
     end
 
-    # already expressed using merge fields?
+    # TODO already expressed using merge fields?
     def self.from_signup_form(params)
     end
-
-    def self.from_mailchimp_csv_export(existing)
-    end
-
-    # Convert to hash for submitting to mailchimp api
-    def to_mailchimp_hash(status = 'subscribed')
-      {
-        "email_address": email_address,
-        "status": status,
-        "merge_fields": merge_fields,
-        "interests": interests,
-        "tags": tags
-      }
-    end
-
-    private
 
     # Create the tags for school users and cluster admins
     #
@@ -110,30 +91,37 @@ module Marketing
       existing_tags.reject {|t| t.match?(/FSM/) }
     end
 
-    def merge_fields
+    # Convert to hash for submitting to mailchimp api
+    def to_mailchimp_hash(status = 'subscribed')
       {
-        'ALERTSUBS' => alert_subscriber,
-        'CONFIRMED' => confirmed_date,
-        'COUNTRY' => country,
-        'FULLNAME' => name,
-        'FUNDER' => funder,
-        'LA' => local_authority,
-        'LOCALE' => locale,
-        'REGION' => region,
-        'SCHOOL' => school,
-        'SCOREBOARD' => scoreboard,
-        'SGROUP' => school_group,
-        'SOURCE' => contact_source,
-        'SSTATUS' => school_status,
-        'STAFFROLE' => staff_role,
-        'USERROLE' => user_role
+        "email_address": email_address,
+        "status": status,
+        "merge_fields": merge_fields,
+        "interests": interests,
+        "tags": tags
       }
     end
 
-    def interests_specified?
-      if @interests.blank? || @interests.values.all?(&:blank?)
-        errors.add(:interests, 'At least one group must be specified')
-      end
+    private
+
+    def merge_fields
+      {
+        'ALERTSUBS' => alert_subscriber || '',
+        'CONFIRMED' => confirmed_date || '',
+        'COUNTRY' => country || '',
+        'FULLNAME' => name || '',
+        'FUNDER' => funder || '',
+        'LA' => local_authority || '',
+        'LOCALE' => locale || '',
+        'REGION' => region || '',
+        'SCHOOL' => school || '',
+        'SCOREBOARD' => scoreboard || '',
+        'SGROUP' => school_group || '',
+        'SOURCE' => contact_source || '',
+        'SSTATUS' => school_status || '',
+        'STAFFROLE' => staff_role || '',
+        'USERROLE' => user_role || ''
+      }
     end
   end
 end

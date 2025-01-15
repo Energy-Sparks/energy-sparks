@@ -74,61 +74,21 @@ module Marketing
       end
     end
 
-    # convert User to Mailchimp contact, preserving exiting fields if given
-    # TODO use new model methods
-    # Adjust tags for export (join)
-    # Adjust interests?? Will be names, not values
     def to_mailchimp_contact(user, existing_contact = nil, newsletter_subscriber: true)
-      contact = ActiveSupport::OrderedOptions.new
-      contact.email_address = user.email
-      contact.name = user.name
-      contact.contact_source = 'User'
-      contact.confirmed_date = user.confirmed_at.to_date.iso8601
-      contact.user_role = user.role.humanize
-      contact.locale = user.preferred_locale
+      # Convert from comma-separated names to hash
+      interests = if existing_contact.present? && existing_contact[:interests].present?
+                    existing_contact[:interests].split(',').index_with { |_i| true }
+                  else
+                    {}
+                  end
+      interests['Newsletter'] = true if newsletter_subscriber
+      tags = existing_contact.present? && existing_contact[:tags].present? ? existing_contact[:tags].split(',') : []
+      contact = MailchimpContact.from_user(user, tags: tags, interests: interests)
 
-      # TODO naming
-      if existing_contact && existing_contact[:interests]
-        # If this is present then we're updating an existing contact that should
-        # have Newsletter set already
-        contact.interests = existing_contact[:interests]
-      elsif newsletter_subscriber
-        contact.interests = 'Newsletter'
-      end
-
-      if user.group_admin?
-        contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
-        contact.scoreboard = user.school_group&.default_scoreboard&.name
-        contact.school_group = user.school_group&.name
-        contact.country = user.school_group&.default_country&.humanize
-        contact.tags = non_fsm_tags(existing_contact).join(',')
-      elsif user.school_admin? && user.has_other_schools?
-        contact.user_role = 'Cluster admin'
-        contact.staff_role = user&.staff_role&.title
-        contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
-        contact.scoreboard = user.school.school_group&.default_scoreboard&.name
-        contact.school_group = user.school.school_group&.name
-        contact.country = user.school.school_group&.default_country&.humanize
-        contact.tags = tags_for_school_user(user, existing_contact, [user.cluster_schools.map(&:slug)], fsm_tags: false)
-      elsif user.school.present?
-        contact.staff_role = user&.staff_role&.title
-        contact.alert_subscriber = user.contacts.for_school(user.school).any? ? 'Yes' : 'No'
-        contact.school = user.school&.name
-        contact.school_status = if user.school.deleted?
-                                  'Deleted'
-                                elsif user.school.archived?
-                                  'Archived'
-                                else
-                                  'Active'
-                                end
-        contact.scoreboard = user.school&.scoreboard&.name
-        contact.school_group = user.school&.school_group&.name
-        contact.local_authority = user.school&.local_authority_area&.name
-        contact.region = user.school&.region&.humanize
-        contact.country = user.school.country&.humanize
-        contact.funder = user.school&.funder&.name
-        contact.tags = tags_for_school_user(user, existing_contact, [user.school.slug])
-      end
+      # For CSV we just join tags into single field
+      contact.tags = contact.tags.join(',')
+      # For CSV we use the name of the groups
+      contact.interests = contact.interests.keys.join(',')
       contact
     end
 

@@ -1,10 +1,24 @@
 require 'rails_helper'
 
 describe 'Mailchimp Sign-up' do
+  before do
+    Flipper.enable :footer
+  end
+
   describe 'when signing-up via the footer' do
     context 'with a signed-in user' do
+      let(:user) { create(:school_admin) }
+
+      before do
+        sign_in(user)
+        visit terms_and_conditions_path
+      end
+
       it 'does not show the email field'
-      it 'subscribes the user'
+
+      context 'when signing up' do
+        it 'subscribes the user'
+      end
     end
 
     context 'with a guest user' do

@@ -25,7 +25,7 @@ describe Marketing::MailchimpCsvExporter do
     end
 
     it 'does not add Newsletter', unless: newsletter do
-      expect(contact.interests).to be_nil
+      expect(contact.interests).to be_empty
     end
   end
 
