@@ -61,13 +61,12 @@ module Charts
 
     def date_ranges_by_meter
       meters = []
+      meters << [aggregate_meter, aggregate_meter_adapter] if @include_whole_school
       # if single meter, then the underlying meters is the aggregate meter
       # just return the range for aggregate adapter in this case so its labelled
       # correctly as "the whole school"
-      if @include_whole_school
-        meters << [aggregate_meter, aggregate_meter_adapter]
-      elsif underlying_meters.count > 1
-        meters += displayable_meters.map { |meter| [meter, meter] }
+      unless @include_whole_school && underlying_meters.count == 1
+        meters.concat(displayable_meters.map { |meter| [meter] * 2 })
       end
       meters.to_h do |meter, meter_adapter|
         [meter.mpan_mprn, { meter: meter_adapter, start_date: start_date(meter), end_date: end_date(meter) }]

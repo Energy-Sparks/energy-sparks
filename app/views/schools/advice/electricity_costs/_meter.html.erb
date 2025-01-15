@@ -1,6 +1,6 @@
 <%= render ChartComponent.new(chart_type: one_year_breakdown_chart,
                               school: school,
-                              chart_config: create_chart_config(school, one_year_breakdown_chart, mpan_mprn) do |c| %>
+                              chart_config: create_chart_config(school, one_year_breakdown_chart, mpan_mprn)) do |c| %>
   <% c.with_title { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.meter_title", meter: label) } %>
   <% c.with_subtitle do
        advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.meter_subtitle_html",
