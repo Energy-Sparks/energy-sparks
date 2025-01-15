@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Marketing::MailchimpCsvExporter do
+describe Mailchimp::CsvExporter do
   subject(:service) do
     described_class.new(subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
   end

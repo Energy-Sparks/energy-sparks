@@ -1,5 +1,5 @@
-module Marketing
-  class MailchimpContact
+module Mailchimp
+  class Contact
     include ActiveModel::Validations
 
     # Mailchimp fields

@@ -1,4 +1,4 @@
-module Marketing
+module Mailchimp
   # Mailchimp defines an Audience as a list of Contacts. These contacts are
   # classified into different types (https://mailchimp.com/help/about-your-contacts/)
   # When an Audience is exported there are 4 CSV files, one for each contact type.
@@ -24,7 +24,7 @@ module Marketing
   #
   # The service will be driven by a Rake task that parses Mailchimp CSV files and
   # dumps the new versions for manual importing into Mailchimp.
-  class MailchimpCsvExporter
+  class CsvExporter
     # A hash containing an entry for each of the four Mailchimp contact types.
     # The entry in each list is an object that can be dumped to a CSV file
     attr_reader :updated_audience
