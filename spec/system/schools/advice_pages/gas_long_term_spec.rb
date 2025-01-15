@@ -168,7 +168,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
           expect(page).to have_css('#chart_wrapper_group_by_week_gas')
           expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
           expect(page).to have_css('#chart_wrapper_gas_by_month_acyear_0_1')
-          expect(page).to have_css('#chart_wrapper_gas_longterm_trend')
+          expect(page).to have_css('#chart_wrapper_gas_longterm_trend_academic_year')
         end
       end
     end
