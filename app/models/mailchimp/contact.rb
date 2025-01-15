@@ -18,7 +18,7 @@ module Mailchimp
     end
 
     def self.from_user(user, tags: [], interests: {})
-      contact = MailchimpContact.new(user.email)
+      contact = self.new(user.email)
       contact.email_address = user.email
       contact.name = user.name
       contact.contact_source = 'User'

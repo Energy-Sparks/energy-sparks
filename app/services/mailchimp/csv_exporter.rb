@@ -83,7 +83,7 @@ module Mailchimp
                   end
       interests['Newsletter'] = true if newsletter_subscriber
       tags = existing_contact.present? && existing_contact[:tags].present? ? existing_contact[:tags].split(',') : []
-      contact = MailchimpContact.from_user(user, tags: tags, interests: interests)
+      contact = Mailchimp::Contact.from_user(user, tags: tags, interests: interests)
 
       # For CSV we just join tags into single field
       contact.tags = contact.tags.join(',')
