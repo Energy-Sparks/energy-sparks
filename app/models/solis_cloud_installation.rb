@@ -33,26 +33,7 @@ class SolisCloudInstallation < ApplicationRecord
     "Solis Cloud Installation #{id}"
   end
 
-  # def school_number
-  #   school.urn
-  # end
-
-  # def electricity_meter
-  #   meters.electricity.first if meters.electricity.present?
-  # end
-
-  # def latest_electricity_reading
-  #   if electricity_meter && electricity_meter.amr_data_feed_readings.any?
-  #     Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
-  #   end
-  # end
-
-  # def cached_api_information?
-  #   information.present?
-  # end
-
-  # def api_latest_data_date
-  #   return nil unless information['dates'].present?
-  #   return Date.parse(information['dates'].last)
-  # end
+  def latest_electricity_reading
+    AmrDataFeedReading.where(meter_id: meters).maximum(:reading_date)
+  end
 end

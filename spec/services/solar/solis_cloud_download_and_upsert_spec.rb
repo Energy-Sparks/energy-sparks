@@ -4,9 +4,7 @@ require 'rails_helper'
 
 describe Solar::SolisCloudDownloadAndUpsert do
   it 'downloads and saves readings' do
-    installation = SolisCloudInstallation.create(school: create(:school),
-                                                 amr_data_feed_config: create(:amr_data_feed_config),
-                                                 api_secret: 'secret')
+    installation = create(:solis_cloud_installation)
 
     stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/userStationList')
       .to_return(body: File.read('spec/fixtures/solis_cloud/user_station_list.json'),
