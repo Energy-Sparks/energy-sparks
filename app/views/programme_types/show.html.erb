@@ -37,29 +37,27 @@
 <% end %>
 
 <% if Flipper.enabled?(:todos, current_user) %>
-  <% assignable = @programme_type %>
-  <% completable = assignable.completable_for(school: current_user_school) if current_user_school %>
+  <% programme = @programme_type.programme_for_school(current_user_school) if current_user_school %>
 
-  <% if current_user_school && !assignable.enrolled?(user: current_user) && can?(:start_programme, current_user_school) %>
+  <% if !@user_progress.enrolled?(@programme_type) && can?(:start_programme, current_user_school) %>
     <%= render 'shared/todos/prompt', programme_type: @programme_type, school: current_user_school %>
   <% end %>
 
-  <% if completable %>
-    <% if completable.completed? %>
-      <%= render 'completed', programme_type: assignable, school: current_user_school %>
-    <% else %>
-     <%= render 'started', programme_type: assignable, school: current_user_school %>
-    <% end %>
+  <% if @user_progress.completed?(@programme_type) %>
+    <%= render 'completed', programme_type: @programme_type, school: current_user_school %>
+  <% elsif @user_progress.enrolled?(@programme_type) %>
+    <%= render 'started', programme_type: @programme_type, school: current_user_school %>
   <% end %>
+
   <%= render 'shared/todos/list',
-             assignable: assignable,
-             completable: completable,
+             assignable: @programme_type,
+             completable: programme,
              task_type: 'ActivityType',
              label: t('common.labels.pupil_led_activities') %>
 
   <%= render 'shared/todos/list',
-             assignable: assignable,
-             completable: completable,
+             assignable: @programme_type,
+             completable: programme,
              task_type: 'InterventionType',
              label: t('common.labels.energy_saving_actions') %>
 <% end %>

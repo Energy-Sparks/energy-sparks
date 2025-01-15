@@ -18,12 +18,6 @@ module Todos
       accepts_nested_attributes_for :intervention_type_todos, allow_destroy: true
     end
 
-    def enrolled?(user:)
-      return false unless user&.school
-
-      completable_for(school: user.school).present?
-    end
-
     # Has the provided school already completed all activity & intervention types this year?
     # regardless of having signed up to the programme
     def tasks_already_completed_for?(school:)

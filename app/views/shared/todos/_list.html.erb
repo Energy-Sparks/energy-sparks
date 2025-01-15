@@ -1,50 +1,53 @@
-<% if (todos = assignable.todos.by_task_type(task_type).positioned).any? %>
-  <h3><%= label %></h3>
+<div id='<%= task_type %>'>
+  <% if (todos = assignable.todos.by_task_type(task_type).positioned).any? %>
+    <h3><%= label %></h3>
 
-  <% todos.each_with_index do |todo, idx| %>
-    <div class="row mt-4">
-      <div class="col-sm-2 text-center align-self-center">
-        <% if completable %>
-          <span class="h4 check">
-            <% if todo.complete_for?(completable: completable) %>
-              <%= far_icon('check-circle text-success fa-2x') %>
-            <% else %>
-              <%= far_icon('circle text-muted fa-2x') %>
-            <% end %>
-          </span>
-        <% else %>
-          <span class="h4"><%= idx + 1 %>.</span>
-        <% end %>
-      </div>
-      <div class="col-sm-10">
-        <h4>
-          <% if completable && todo.complete_for?(completable: completable) %>
-            <%= todo.task.name %>
+    <% todos.each_with_index do |todo, idx| %>
+      <% recording = todo.recording_for(completable: completable) if completable %>
+      <div class="todo row mt-4">
+        <div class="col-sm-2 text-center align-self-center">
+          <% if completable %>
+            <span class="h4 check">
+              <% if recording %>
+                <%= far_icon('check-circle text-success fa-2x') %>
+              <% else %>
+                <%= far_icon('circle text-muted fa-2x') %>
+              <% end %>
+            </span>
           <% else %>
-            <%= link_to todo.task.name, polymorphic_path(todo.task) %>
-          <% end %>
-        </h4>
-        <p>
-          <%= todo.notes %>
-        </p>
-        <div class="row">
-          <div class="col-sm-2"><%= t('programme_types.show.points') %></div>
-          <div class="col-sm-1">
-            <%= render 'shared/tasks/score', task: todo.task %>
-          </div>
-          <% if recording = todo.recording_for(completable: completable) %>
-            <div class="col-sm-3">
-              <%= t('programme_types.show.completed_on') %>
-            </div>
-            <div class="col-sm-6">
-              <%= link_to nice_dates(recording.happened_on),
-                          recording_path(recording) %>
-            </div>
+            <span class="h4"><%= idx + 1 %>.</span>
           <% end %>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-10">
+          <h4>
+            <% if completable && recording %>
+              <%= todo.task.name %>
+            <% else %>
+              <%= link_to todo.task.name, polymorphic_path(todo.task) %>
+            <% end %>
+          </h4>
+          <p>
+            <%= todo.notes %>
+          </p>
+          <div class="row">
+            <div class="col-sm-2"><%= t('programme_types.show.points') %></div>
+            <div class="col-sm-1">
+              <%= render 'shared/tasks/score', task: todo.task %>
+            </div>
+            <% if recording %>
+              <div class="col-sm-3">
+                <%= t('programme_types.show.completed_on') %>
+              </div>
+              <div class="col-sm-6">
+                <%= link_to nice_dates(recording.happened_on),
+                            recording_path(recording) %>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-sm-2">
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>
