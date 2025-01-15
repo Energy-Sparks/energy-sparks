@@ -44,4 +44,8 @@ module MetersHelper
   def options_for_perse_api
     [['None', nil], ['Half Hourly', 'half_hourly']]
   end
+
+  def options_for_dcc_meters
+    Meter.dcc_meters.transform_keys(&:capitalize)
+  end
 end

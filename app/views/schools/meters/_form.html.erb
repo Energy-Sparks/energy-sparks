@@ -67,10 +67,10 @@
     <% if show_dcc_fields %>
       <p class="alert alert-warning"><%= t('schools.meters.form.admin_only_features_for_n3rgy_integration') %></p>
 
-      <div class="custom-control custom-checkbox">
-        <%= form.label :dcc_meter, t('schools.meters.form.dcc_smart_meter'), class: 'custom-control-label' %>
-        <%= form.check_box :dcc_meter, { class: 'custom-control-input' }, checked_value = 'smets2',
-                           unchecked_value = 'no' %>
+      <div class="form-group">
+        <%= form.label :dcc_meter, t('schools.meters.form.dcc_smart_meter') %>
+        <%= form.select(:dcc_meter, options_for_dcc_meters, { include_blank: false }, class: 'form-control') %>
+
         <small class="form-text text-muted">
           <%= t('schools.meters.form.leave_this_blank_message') %>
         </small>
