@@ -17,6 +17,13 @@ class ScoreboardActivityComponent < ApplicationComponent
   end
 
   def position(school)
-    @podium.position_for(school)
+    position = scored_schools.position(school)
+    "#{position}#{position.ordinal}" unless position.nil?
+  end
+
+  private
+
+  def scored_schools
+    @scored_schools ||= @podium.scoreboard.scored_schools.with_points(always_include: @podium.school)
   end
 end
