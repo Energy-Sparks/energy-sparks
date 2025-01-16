@@ -30,7 +30,7 @@ module Solar
       x48
     end
 
-    def start_date(station)
+    def start_date(station = {})
       if @requested_start_date
         @requested_start_date
       elsif latest_reading
