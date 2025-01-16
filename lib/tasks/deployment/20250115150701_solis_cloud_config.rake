@@ -5,7 +5,7 @@ namespace :after_party do
 
     config = {}
     config['description'] = 'SolisCloud'
-    config['identifier'] = 'soliscloud'
+    config['identifier'] = 'solis_cloud'
     config['date_format'] = 'n/a'
     config['mpan_mprn_field'] = 'n/a'
     config['reading_date_field'] = 'n/a'
