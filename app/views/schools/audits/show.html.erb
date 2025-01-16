@@ -85,7 +85,7 @@
              label: t('schools.audits.show.recommended_pupil_lead_activities') %>
 <% end %>
 <% if !Flipper.enabled?(:todos, current_user) || Flipper.enabled?(:todos_old, current_user) %>
-  <%= render TogglerDropdownComponent.new title: 'Deprecated', surround: Flipper.enabled?(:todos_old, current_user) do %>
+  <%= render TogglerDropdownComponent.new title: 'Deprecated', hide: Flipper.enabled?(:todos_old, current_user) do %>
     <% if @audit.audit_intervention_types.any? %>
       <h3><%= t('schools.audits.show.recommended_energy_saving_actions') %></h3>
 

@@ -396,6 +396,7 @@ class School < ApplicationRecord
                  .merge(observations.in_academic_year(current_academic_year))
   end
 
+  # returns array(ProgrammeType, count)
   def suggested_programme_type
     programme_types = suggested_programme_types_from_activities + suggested_programme_types_from_actions
 

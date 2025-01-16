@@ -256,10 +256,17 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last))
     end
 
-    it 'allows restarting' do
-      click_on('Restart')
-      expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
-        eq %w[abandoned started]
+    context 'when restarting' do
+      before do
+        travel_to 1.day.from_now do
+          click_on('Restart')
+        end
+      end
+
+      it 'returns started programme last' do
+        expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
+          eq %w[abandoned started]
+      end
     end
 
     context 'when viewing the programme types index page' do

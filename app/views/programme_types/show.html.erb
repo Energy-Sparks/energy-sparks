@@ -65,7 +65,7 @@
 <% if !Flipper.enabled?(:todos, current_user) || Flipper.enabled?(:todos_old, current_user) %>
   <%= render TogglerDropdownComponent.new(
         title: 'Deprecated',
-        surround: Flipper.enabled?(:todos_old, current_user)
+        hide: Flipper.enabled?(:todos_old, current_user)
       ) do %>
 
     <% if current_user_school && !@user_progress.enrolled?(@programme_type) && can?(:start_programme, current_user_school) %>

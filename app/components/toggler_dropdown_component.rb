@@ -1,12 +1,12 @@
 class TogglerDropdownComponent < ApplicationComponent
   include ApplicationHelper
 
-  attr_reader :title, :surround
+  attr_reader :title, :hide
 
-  def initialize(title: nil, surround: true, id: nil, classes: '')
+  def initialize(title: nil, hide: true, id: nil, classes: '')
     super(id: id, classes: classes)
     @title = title
-    @surround = surround
+    @hide = hide
   end
 
   def render?
