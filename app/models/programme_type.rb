@@ -50,7 +50,7 @@ class ProgrammeType < ApplicationRecord
     .joins("INNER JOIN activities on todos.task_id = activities.activity_type_id and todos.task_type = 'ActivityType'")
     .where(activity_types: { activities: { school: school } })
     .select('programme_types.*, count(distinct activities.activity_type_id) as recording_count')
-    .group('programme_types.id')
+    .group('programme_types.id').order(recording_count: :desc)
   }
 
   scope :with_school_intervention_type_task_count, ->(school) {
@@ -58,7 +58,7 @@ class ProgrammeType < ApplicationRecord
     .joins("INNER JOIN observations on todos.task_id = observations.intervention_type_id and todos.task_type = 'InterventionType'")
     .where(observations: { school_id: school.id })
     .select('programme_types.*, count(distinct observations.intervention_type_id) as recording_count')
-    .group('programme_types.id')
+    .group('programme_types.id').order(recording_count: :desc)
   }
 
   scope :not_in, ->(programme_types) { where.not(id: programme_types) }

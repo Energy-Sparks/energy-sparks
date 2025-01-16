@@ -390,14 +390,14 @@ class School < ApplicationRecord
                  .merge(activities.in_academic_year(current_academic_year))
   end
 
-  def suggested_programme_types_from_observations
+  def suggested_programme_types_from_actions
     ProgrammeType.active.not_in(programme_types)
                  .with_school_intervention_type_task_count(self)
                  .merge(observations.in_academic_year(current_academic_year))
   end
 
   def suggested_programme_type
-    programme_types = suggested_programme_types_from_activities + suggested_programme_types_from_observations
+    programme_types = suggested_programme_types_from_activities + suggested_programme_types_from_actions
 
     programme_types.each_with_object(Hash.new(0)) { |r, hash| hash[r] += r.recording_count }.max_by { |_, value| value }
   end

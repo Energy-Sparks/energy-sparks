@@ -33,7 +33,7 @@ class Todo < ApplicationRecord
 
   # todo.complete!(completable: Programme/Audit, recording: Activity/Obervation)
   def complete!(completable:, recording:)
-    # Should only ever be one but pick last one created just in case
+    # There should only ever be one but pick last one created just in case
     completed_todos.for(completable: completable).first_or_initialize.update!(recording: recording)
   end
 

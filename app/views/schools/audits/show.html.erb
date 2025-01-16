@@ -48,11 +48,13 @@
 </div>
 
 <% if Flipper.enabled?(:todos, current_user) %>
-  <p>
-    <%= t('schools.audits.show.completing_all_of_these_activities_will_award_you') %>
-    <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
-    <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
-  </p>
+  <% if @audit.has_todos? %>
+    <p>
+      <%= t('schools.audits.show.completing_all_of_these_activities_will_award_you') %>
+      <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
+      <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
+    </p>
+  <% end %>
 
   <% if @audit.completed? %>
     <div class="row">
