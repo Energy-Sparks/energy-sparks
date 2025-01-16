@@ -4,16 +4,11 @@ class MailchimpSignupsController < ApplicationController
   def new
     @list = audience_manager.list
     @email_types = list_of_email_types
-    if current_user
-      @contact = Mailchimp::Contact.new(current_user.email, current_user.name)
-      @contact.school = current_user.school
-    else
-      @contact = Mailchimp::Contact.new(params[:email_address], nil)
-    end
+    @contact = populate_contact_for_form(current_user, params)
   rescue => e
-    flash[:error] = 'Mailchimp API is not configured'
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"
     Rollbar.error(e)
+    raise e
   end
 
   def index
@@ -21,9 +16,9 @@ class MailchimpSignupsController < ApplicationController
 
   def create
     if params[:contact_source]
-      @contact = Mailchimp::Contact.from_user(current_user, interests: params[:interests].transform_values {|v| v == 'true' })
+      @contact = create_contact_from_user(current_user, sign_up_params)
     else
-      @contact = Mailchimp::Contact.from_params(sign_up_params)
+      @contact = create_contact(sign_up_params)
     end
     resp = subscribe_contact(@contact)
     if resp
@@ -50,6 +45,29 @@ class MailchimpSignupsController < ApplicationController
     Rails.logger.error(e)
     Rollbar.error(e)
     []
+  end
+
+  def populate_contact_for_form(user, params)
+    if user
+      contact = Mailchimp::Contact.new(user.email, user.name)
+      contact.school = user&.school&.name
+      contact
+    else
+      Mailchimp::Contact.new(params[:email_address], nil)
+    end
+  end
+
+  def create_contact(sign_up_params)
+    existing_user = User.find_by_email(sign_up_params[:email_address].downcase)
+    if existing_user
+      create_contact_from_user(existing_user, sign_up_params)
+    else
+      Mailchimp::Contact.from_params(sign_up_params)
+    end
+  end
+
+  def create_contact_from_user(user, sign_up_params)
+    Mailchimp::Contact.from_user(user, interests: sign_up_params[:interests].transform_values {|v| v == 'true' })
   end
 
   def subscribe_contact(contact)

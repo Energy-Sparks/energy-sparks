@@ -5,11 +5,15 @@ describe 'Mailchimp Sign-up' do
     Flipper.enable :footer
   end
 
-  shared_context 'with a signed-in user' do
+  shared_context 'with an existing user' do
     let(:user) { create(:school_admin) }
     let(:email) { user.email }
     let(:name) { user.name }
     let(:school) { user.school.name }
+  end
+
+  shared_context 'with a signed-in user' do
+    include_context 'with an existing user'
 
     before do
       sign_in(user)
@@ -28,6 +32,7 @@ describe 'Mailchimp Sign-up' do
     let(:audience_manager) { instance_double(Mailchimp::AudienceManager) }
 
     before do
+      # FIXME receive_messages
       allow(Mailchimp::AudienceManager).to receive(:new).and_return(audience_manager)
       allow(audience_manager).to receive_messages(list: list, categories: categories, interests: interests)
     end
@@ -109,7 +114,17 @@ describe 'Mailchimp Sign-up' do
       include_context 'with a stubbed audience manager'
 
       context 'when the email address is for a user' do
-        it 'subscribes the user'
+        include_context 'with an existing user'
+
+        before do
+          visit terms_and_conditions_path
+          within '#newsletter-signup' do
+            fill_in :email_address, with: email
+            click_on 'Sign-up now'
+          end
+        end
+
+        it_behaves_like 'a functioning sign-up form'
       end
 
       context 'with a new email address' do
@@ -162,7 +177,13 @@ describe 'Mailchimp Sign-up' do
       include_context 'with a stubbed audience manager'
 
       context 'when the email address is for a user' do
-        it 'subscribes the user'
+        include_context 'with an existing user'
+
+        before do
+          visit new_mailchimp_signup_path
+        end
+
+        it_behaves_like 'a functioning sign-up form'
       end
 
       context 'with a new email address' do
