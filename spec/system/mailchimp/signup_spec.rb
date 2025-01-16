@@ -5,6 +5,17 @@ describe 'Mailchimp Sign-up' do
     Flipper.enable :footer
   end
 
+  shared_context 'with a signed-in user' do
+    let(:user) { create(:school_admin) }
+    let(:email) { user.email }
+    let(:name) { user.name }
+    let(:school) { user.school.name }
+
+    before do
+      sign_in(user)
+    end
+  end
+
   shared_context 'with a stubbed audience manager' do
     let(:list) { OpenStruct.new(id: '1234') }
     let(:interests) { [OpenStruct.new(id: 'abcd', name: 'Newsletter')] }
@@ -22,8 +33,8 @@ describe 'Mailchimp Sign-up' do
     end
   end
 
-  shared_examples 'a functioning sign-up form' do
-    context 'when form is incomplete' do
+  shared_examples 'a functioning sign-up form' do |fill_in_form: true|
+    context 'when the form fields are incomplete', if: fill_in_form do
       before do
         click_on 'Subscribe'
       end
@@ -34,11 +45,29 @@ describe 'Mailchimp Sign-up' do
       end
     end
 
-    context 'when the form is completed' do
+    context 'when the form is complete', if: fill_in_form do
       before do
         allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
+      end
+
+      it 'subscribes the user' do
         fill_in :name, with: name
         fill_in :school, with: school
+        expect(audience_manager).to receive(:subscribe_or_update_contact)
+        click_on 'Subscribe'
+        expect(page).to have_content('Subscription confirmed')
+      end
+    end
+
+    context 'when the form is pre-filled', unless: fill_in_form do
+      before do
+        allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
+      end
+
+      it 'shows disabled email and name fields' do
+        expect(page).to have_field(:email_address, disabled: true, with: email)
+        expect(page).to have_field(:name, disabled: true, with: name)
+        expect(page).not_to have_field(:school)
       end
 
       it 'subscribes the user' do
@@ -50,19 +79,30 @@ describe 'Mailchimp Sign-up' do
   end
 
   describe 'when signing-up via the footer' do
-    context 'with a signed-in user' do
-      let(:user) { create(:school_admin) }
+    context 'with a logged in user' do
+      include_context 'with a stubbed audience manager'
+      include_context 'with a signed-in user'
 
       before do
-        sign_in(user)
         visit terms_and_conditions_path
+        within '#newsletter-signup' do
+          click_on 'Sign-up now'
+        end
       end
 
-      it 'does not show the email field'
+      context 'when user has no name' do
+        include_context 'with a signed-in user' do
+          let(:user) { create(:school_admin, name: nil) }
+        end
 
-      context 'when signing up' do
-        it 'subscribes the user'
+        it 'shows disabled email and editable name fields' do
+          expect(page).to have_field(:email_address, disabled: true, with: email)
+          expect(page).to have_field(:name, disabled: false)
+          expect(page).not_to have_field(:school)
+        end
       end
+
+      it_behaves_like 'a functioning sign-up form', fill_in_form: false
     end
 
     context 'with a guest user' do
@@ -95,6 +135,29 @@ describe 'Mailchimp Sign-up' do
   end
 
   describe 'when visiting the mailchimp form' do
+    context 'with a logged in user' do
+      include_context 'with a stubbed audience manager'
+      include_context 'with a signed-in user'
+
+      before do
+        visit new_mailchimp_signup_path
+      end
+
+      context 'when user has no name' do
+        include_context 'with a signed-in user' do
+          let(:user) { create(:school_admin, name: nil) }
+        end
+
+        it 'shows disabled email and editable name fields' do
+          expect(page).to have_field(:email_address, disabled: true, with: email)
+          expect(page).to have_field(:name, disabled: false)
+          expect(page).not_to have_field(:school)
+        end
+      end
+
+      it_behaves_like 'a functioning sign-up form', fill_in_form: false
+    end
+
     context 'with a guest user' do
       include_context 'with a stubbed audience manager'
 
@@ -112,10 +175,6 @@ describe 'Mailchimp Sign-up' do
           within '#mailchimp-form' do
             fill_in(:email_address, with: email)
           end
-        end
-
-        it 'populates the email address' do
-          expect(page).to have_field(:email_address, with: email)
         end
 
         it_behaves_like 'a functioning sign-up form'

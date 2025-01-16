@@ -4,7 +4,12 @@ class MailchimpSignupsController < ApplicationController
   def new
     @list = audience_manager.list
     @email_types = list_of_email_types
-    @contact = Mailchimp::Contact.new(params[:email_address], nil)
+    if current_user
+      @contact = Mailchimp::Contact.new(current_user.email, current_user.name)
+      @contact.school = current_user.school
+    else
+      @contact = Mailchimp::Contact.new(params[:email_address], nil)
+    end
   rescue => e
     flash[:error] = 'Mailchimp API is not configured'
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"
@@ -15,12 +20,14 @@ class MailchimpSignupsController < ApplicationController
   end
 
   def create
-    @contact = Mailchimp::Contact.from_params(sign_up_params)
-    if params[:email_address]
-      resp = subscribe_contact(@contact)
-      if resp
-        redirect_to mailchimp_signups_path and return
-      end
+    if params[:contact_source]
+      @contact = Mailchimp::Contact.from_user(current_user, interests: params[:interests].transform_values {|v| v == 'true' })
+    else
+      @contact = Mailchimp::Contact.from_params(sign_up_params)
+    end
+    resp = subscribe_contact(@contact)
+    if resp
+      redirect_to mailchimp_signups_path and return
     end
     @list = audience_manager.list
     @email_types = list_of_email_types

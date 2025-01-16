@@ -19,13 +19,6 @@ module Mailchimp
       interests['interests'].map { |interest| OpenStruct.new(interest) }.sort_by(&:name)
     end
 
-    # Subscribe a Marketing::MailchimpContact to our list
-    # Raises exception if a subscriber
-    def subscribe_contact(mailchimp_contact)
-      resp = @client.lists.add_list_member(list.id, mailchimp_contact.to_mailchimp_hash, subscribe_opts)
-      OpenStruct.new(resp)
-    end
-
     def subscribe_or_update_contact(mailchimp_contact, status_if_new: 'subscribed')
       hash = mailchimp_contact.to_mailchimp_hash
       hash['status_if_new'] = status_if_new
