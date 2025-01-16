@@ -1,0 +1,11 @@
+<%= simple_form_for [school, installation] do |form| %>
+  <%= render 'shared/errors', subject: installation, subject_name: 'solis cloud api feed' %>
+  <%= form.input :api_id, as: :string, label: 'API ID',
+                          hint: 'The code that authorises us to access data for this site.' %>
+  <%= form.input :api_secret, as: :string, label: 'API Secret',
+                              hint: 'The code that authorises us to access data for this site.' %>
+  <div class="actions">
+    <%= form.submit 'Submit', class: 'btn btn-primary' %>
+  </div>
+
+<% end %>

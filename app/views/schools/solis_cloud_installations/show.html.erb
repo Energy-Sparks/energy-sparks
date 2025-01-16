@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1>SolisCloud Site <%= @solis_cloud_installation.id %></h1>
+  <div class="h5">
+    <%= link_to 'All Solar API feeds', school_solar_feeds_configuration_index_path(@school), class: 'btn btn-default' %>
+  </div>
+</div>
+
+<% if @solis_cloud_installation.station_list.present? %>
+  <h2>Cached site information</h2>
+
+  <p>
+    The following is a summary of the site description. It was last refreshed on
+    <%= nice_date_times(@solis_cloud_installation.updated_at) %>. Edit and then save the site to update this cached copy.
+    Or click the links below to view live (raw) data.
+  </p>
+
+  <pre>
+    <%= JSON.pretty_generate(@solis_cloud_installation.station_list) %>
+  </pre>
+<% else %>
+  <p>There is no cached copy of the site metadata</p>
+<% end %>
+
+<p><%= link_to 'Delete', school_solis_cloud_installation_path(@school, @solis_cloud_installation),
+               method: :delete, data: { confirm: 'Are you sure? This will delete the meters' }, class: 'btn' %>

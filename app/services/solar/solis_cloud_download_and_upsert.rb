@@ -7,11 +7,11 @@ module Solar
       SolisCloudUpserter.new(installation: @installation, readings: readings, import_log: import_log).perform
     end
 
+    private
+
     def job
       :solis_cloud_download
     end
-
-    private
 
     def time_to_index(time)
       split = time.split(':')

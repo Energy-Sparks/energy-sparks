@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>Solar API feeds for <%= @school.name %></h1>
   <div class="h5">
-    <%= link_to "School meter management", school_meters_path(@school), class: 'btn btn-default' %>
+    <%= link_to 'School meter management', school_meters_path(@school), class: 'btn btn-default' %>
   </div>
 </div>
 
@@ -11,10 +11,15 @@
 
 <h3>Rtone</h3>
 
-<%= render 'rtone_feeds', school: @school, rtone_installations: @rtone_installations, start_time: @start_time, end_time: @end_time %>
+<%= render 'rtone_feeds', school: @school, rtone_installations: @rtone_installations,
+                          start_time: @start_time, end_time: @end_time %>
 
 <h3>Rtone (Newport Variant)</h3>
 
-<p>This configuration is used to setup rtone api feeds that use the alternate setup first seen in some Newport school</p>
+<p>This configuration is used to setup rtone api feeds that use the alternate setup first seen in some Newport
+   school</p>
 
 <%= render 'rtone_variant_feeds', school: @school, rtone_variant_installations: @rtone_variant_installations %>
+
+<h3>SolisCloud</h3>
+<%= render 'solis_cloud_feeds', school: @school %>
