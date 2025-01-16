@@ -13,12 +13,13 @@ module Solar
       Rails.logger.info "Upserting #{@readings.count} for #{@installation.display_name} at #{@installation.school.name}"
       @readings.each do |meter_type, details|
         mpan_mprn = synthetic_mpan(meter_type, details)
+        attributes = meter_model_attributes(details)
         meter = Meter.find_or_create_by!(meter_type: meter_type,
                                          mpan_mprn: mpan_mprn,
                                          school: @installation.school) do |new_record|
-          new_record.assign_attributes(meter_attributes(details))
+          new_record.assign_attributes(attributes)
         end
-        meter.update!(meter_attributes(details)) unless meter.attributes >= meter_attributes(details)
+        meter.update!(attributes) unless meter.attributes >= attributes
         Amr::DataFeedUpserter.new(@amr_data_feed_config,
                                   @amr_data_feed_import_log,
                                   data_feed_reading_array(details[:readings], meter.id, mpan_mprn)).perform

@@ -22,11 +22,11 @@ module DataFeeds
 
     def station_day(id, day)
       sleep 2
-      get_data('/v1/api/stationDay', { 'id': id, 'money': 'GBP', 'time': day.iso8601, 'timeZone': 44 })
+      get_data('/v1/api/stationDay', { id: id, money: 'GBP', time: day.iso8601, timeZone: 44 })
     end
 
     def inverter_day(serial_num, day)
-      get_data('/v1/api/inverterDay', { 'sn': serial_num, 'money': 'GBP', 'time': day.iso8601, 'timeZone': 44 })
+      get_data('/v1/api/inverterDay', { sn: serial_num, money: 'GBP', time: day.iso8601, timeZone: 44 })
     end
 
     private
@@ -54,7 +54,7 @@ module DataFeeds
       headers = {
         'Content-MD5' => content_md5(body),
         'Date' => DateTime.now.httpdate,
-        'Content-Type' => 'application/json',
+        'Content-Type' => 'application/json'
       }
       headers['Authorization'] = authorization(path, headers)
       response = connection.post(path, body, headers)
