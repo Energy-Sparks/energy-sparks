@@ -2,7 +2,9 @@ class MailchimpSignupsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def new
-    @contact = Mailchimp::Contact.new(params[:email_address])
+    @list = audience_manager.list
+    @email_types = list_of_email_types
+    @contact = Mailchimp::Contact.new(params[:email_address], nil)
   rescue => e
     flash[:error] = 'Mailchimp API is not configured'
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"

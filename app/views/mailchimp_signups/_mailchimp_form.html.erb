@@ -1,10 +1,8 @@
 <div>
 
-  <div class="indicates-required"><span class="asterisk">*</span> indicates required field</div>
+  <p class="indicates-required"><span class="asterisk">*</span> indicates required field</p>
 
-  <br>
-
-  <%= form_tag mailchimp_signups_path, class: 'mailchimp-form' do %>
+  <%= form_tag mailchimp_signups_path, id: 'mailchimp-form', class: 'mailchimp-form' do %>
 
     <%= hidden_field_tag :list_id, list.id %>
 

@@ -2,24 +2,24 @@ module Mailchimp
   class Contact
     include ActiveModel::Validations
 
-    # Mailchimp fields
+    # Mailchimp core fields
     attr_accessor :email_address, :interests, :tags
 
     # our Merge Fields
     # TODO add school, school group and scoreboard urls as fields
     attr_accessor :alert_subscriber, :confirmed_date, :contact_source, :country, :funder, :locale, :local_authority, :name, :region, :staff_role, :school, :school_group, :school_status, :scoreboard, :user_role
 
-    validates_presence_of :email_address
+    validates_presence_of :email_address, :name
 
-    def initialize(email_address)
+    def initialize(email_address, name)
       @email_address = email_address
+      @name = name
       @interests = {}
       @tags = []
     end
 
     def self.from_user(user, tags: [], interests: {})
-      contact = self.new(user.email)
-      contact.name = user.name
+      contact = self.new(user.email, user.name)
       contact.contact_source = 'User'
       contact.confirmed_date = user.confirmed_at.to_date.iso8601
       contact.user_role = user.role.humanize
@@ -65,8 +65,7 @@ module Mailchimp
     end
 
     def self.from_params(params)
-      contact = self.new(params[:email_address])
-      contact.name = params[:name]
+      contact = self.new(params[:email_address], params[:name])
       contact.school = params[:school]
       contact.contact_source = 'Organic'
       contact.interests = params[:interests].transform_values {|v| v == 'true' }

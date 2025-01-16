@@ -5,6 +5,50 @@ describe 'Mailchimp Sign-up' do
     Flipper.enable :footer
   end
 
+  shared_context 'with a stubbed audience manager' do
+    let(:list) { OpenStruct.new(id: '1234') }
+    let(:interests) { [OpenStruct.new(id: 'abcd', name: 'Newsletter')] }
+    let(:categories) do
+      [
+        OpenStruct.new(id: 1, title: 'Category'),
+        OpenStruct.new(id: 2, title: 'Email Preferences')
+      ]
+    end
+    let(:audience_manager) { instance_double(Mailchimp::AudienceManager) }
+
+    before do
+      allow(Mailchimp::AudienceManager).to receive(:new).and_return(audience_manager)
+      allow(audience_manager).to receive_messages(list: list, categories: categories, interests: interests)
+    end
+  end
+
+  shared_examples 'a functioning sign-up form' do
+    context 'when form is incomplete' do
+      before do
+        click_on 'Subscribe'
+      end
+
+      it 'redisplays the page' do
+        expect(page).to have_content("Name can't be blank")
+        expect(page).to have_field(:email_address, with: email)
+      end
+    end
+
+    context 'when the form is completed' do
+      before do
+        allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
+        fill_in :name, with: name
+        fill_in :school, with: school
+      end
+
+      it 'subscribes the user' do
+        expect(audience_manager).to receive(:subscribe_or_update_contact)
+        click_on 'Subscribe'
+        expect(page).to have_content('Subscription confirmed')
+      end
+    end
+  end
+
   describe 'when signing-up via the footer' do
     context 'with a signed-in user' do
       let(:user) { create(:school_admin) }
@@ -22,104 +66,59 @@ describe 'Mailchimp Sign-up' do
     end
 
     context 'with a guest user' do
+      include_context 'with a stubbed audience manager'
+
       context 'when the email address is for a user' do
         it 'subscribes the user'
       end
 
       context 'with a new email address' do
-        it 'allows the user to sign up'
+        let(:email) { 'person@example.org' }
+        let(:name) { 'Jane Smith' }
+        let(:school) { 'Bash St Primary' }
 
-        context 'when the user is already subscribed' do
-          it 'does not cause an error'
+        before do
+          visit terms_and_conditions_path
+          within '#newsletter-signup' do
+            fill_in :email_address, with: email
+            click_on 'Sign-up now'
+          end
         end
+
+        it 'populates the email address' do
+          expect(page).to have_field(:email_address, with: email)
+        end
+
+        it_behaves_like 'a functioning sign-up form'
       end
     end
   end
 
   describe 'when visiting the mailchimp form' do
     context 'with a guest user' do
+      include_context 'with a stubbed audience manager'
+
       context 'when the email address is for a user' do
         it 'subscribes the user'
       end
 
       context 'with a new email address' do
-        it 'allows the user to sign up'
+        let(:email) { 'person@example.org' }
+        let(:name) { 'Jane Smith' }
+        let(:school) { 'Bash St Primary' }
 
-        context 'when the user is already subscribed' do
-          it 'does not cause an error'
-        end
-      end
-    end
-  end
-
-  describe '(OLD) mailchimp signup page' do
-    let!(:newsletter) { create(:newsletter) }
-    let(:interests)             { [double(id: 1, name: 'Interest One')] }
-    let(:categories)            { [double(id: 1, title: 'Category One', interests: interests)] }
-    let(:list_with_interests)   { double(id: 1, categories: categories) }
-
-    before do
-      allow_any_instance_of(MailchimpApi).to receive(:list_with_interests).and_return(list_with_interests)
-      expect_any_instance_of(MailchimpApi).to receive(:subscribe).and_return(true)
-      visit root_path
-    end
-
-    it 'allows the user to sign up' do
-      within '.mailchimp' do
-        fill_in 'Your email address', with: 'foo@bar.com'
-        click_on 'Continue'
-      end
-
-      expect(page).to have_content('Sign up to the Energy Sparks newsletter')
-
-      fill_in :merge_fields_FULLNAME, with: 'Foo'
-      choose 'Interest One'
-      click_on 'Subscribe'
-
-      expect(page).to have_content('Subscription confirmed')
-    end
-  end
-
-  describe 'Newsletter Signup Footer' do
-    before do
-      Flipper.enable :footer
-      visit terms_and_conditions_path
-    end
-
-    # Not doing a full mailchimp test here, just that the form submits to the right place
-    context 'when signing up' do
-      let!(:newsletter) { create(:newsletter) }
-      let(:interests) { [OpenStruct.new(id: 1, name: 'Interest One')] }
-      let(:categories) { [OpenStruct.new(id: 1, title: 'Category One', interests: interests)] }
-      let(:list_with_interests) { OpenStruct.new(id: 1, categories: categories) }
-
-      before do
-        allow_any_instance_of(MailchimpApi).to receive(:list_with_interests).and_return(list_with_interests)
-        allow_any_instance_of(MailchimpApi).to receive(:subscribe).and_return(true)
-      end
-
-      context 'when email provided' do
         before do
-          within '#newsletter-signup' do
-            fill_in :email_address, with: 'foo@bar.com'
-            click_on 'Sign-up now'
+          visit new_mailchimp_signup_path
+          within '#mailchimp-form' do
+            fill_in(:email_address, with: email)
           end
         end
 
-        it { expect(page).to have_content('Sign up to the Energy Sparks newsletter') }
-        it { expect(page).to have_field(:email_address, with: 'foo@bar.com') }
-      end
-
-      context 'when email is not provided' do
-        before do
-          within '#newsletter-signup' do
-            fill_in :email_address, with: ''
-            click_on 'Sign-up now'
-          end
+        it 'populates the email address' do
+          expect(page).to have_field(:email_address, with: email)
         end
 
-        it { expect(page).to have_content('Sign up to the Energy Sparks newsletter') }
-        it { expect(page).to have_field(:email_address, with: nil) }
+        it_behaves_like 'a functioning sign-up form'
       end
     end
   end
