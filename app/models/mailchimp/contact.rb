@@ -19,7 +19,6 @@ module Mailchimp
 
     def self.from_user(user, tags: [], interests: {})
       contact = self.new(user.email)
-      contact.email_address = user.email
       contact.name = user.name
       contact.contact_source = 'User'
       contact.confirmed_date = user.confirmed_at.to_date.iso8601
@@ -65,8 +64,13 @@ module Mailchimp
       contact
     end
 
-    # TODO already expressed using merge fields?
     def self.from_params(params)
+      contact = self.new(params[:email_address])
+      contact.name = params[:name]
+      contact.school = params[:school]
+      contact.contact_source = 'Organic'
+      contact.interests = params[:interests].transform_values {|v| v == 'true' }
+      contact
     end
 
     # Create the tags for school users and cluster admins

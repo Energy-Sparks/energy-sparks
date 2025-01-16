@@ -161,4 +161,27 @@ describe Mailchimp::Contact do
       it_behaves_like 'it adds the interests'
     end
   end
+
+  describe '.from_params' do
+    let(:params) do
+      {
+        email_address: 'person@example.org',
+        name: 'John Smith',
+        school: 'Some School',
+        interests: {
+          '4abcd': 'true'
+        }
+      }
+    end
+
+    let(:contact) { described_class.from_params(params) }
+
+    it 'creates a contact' do
+      expect(contact.email_address).to eq('person@example.org')
+      expect(contact.name).to eq('John Smith')
+      expect(contact.school).to eq('Some School')
+      expect(contact.contact_source).to eq('Organic')
+      expect(contact.interests).to eq({ '4abcd': true })
+    end
+  end
 end
