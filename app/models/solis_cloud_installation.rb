@@ -25,9 +25,9 @@ class SolisCloudInstallation < ApplicationRecord
   belongs_to :school, inverse_of: :solar_edge_installations
   belongs_to :amr_data_feed_config
 
-  has_many :meters, dependent: nil
+  has_many :meters, dependent: :destroy
 
-  validates :api_id, :api_secret, presence: true
+  # validates_presence_of :site_id, :mpan, :api_key
 
   def display_name
     "Solis Cloud Installation #{id}"

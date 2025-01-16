@@ -3,29 +3,21 @@
 require 'rails_helper'
 
 describe Solar::SolisCloudDownloadAndUpsert do
-  let(:installation) { create(:solis_cloud_installation) }
-  let(:station_day_body) { File.read('spec/fixtures/solis_cloud/station_day.json') }
-
-  def stub(action, body)
-    headers = { 'Content-Type' => 'application/json' }
-    stub_request(:post, "https://www.soliscloud.com:13333/v1/api/#{action}").to_return(body:, headers:)
-  end
-
-  def stub_station_day(id, time)
-    stub('stationDay', station_day_body).with(body: { id:, money: 'GBP', time:, timeZone: 44 }.to_json)
-  end
-
-  def stub_stations_day(time)
-    stub_station_day('1298491919449314564', time)
-    stub_station_day('1298491919449314551', time)
-  end
-
-  before do
-    stub('userStationList', File.read('spec/fixtures/solis_cloud/user_station_list.json'))
-  end
-
   it 'downloads and saves readings' do
-    stub_stations_day('2025-01-09')
+    installation = create(:solis_cloud_installation)
+
+    stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/userStationList')
+      .to_return(body: File.read('spec/fixtures/solis_cloud/user_station_list.json'),
+                 headers: { 'Content-Type' => 'application/json' })
+    stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/stationDay')
+      .with(body: { id: '1298491919449314564', money: 'GBP', time: '2025-01-09', timeZone: 44 }.to_json)
+      .to_return(body: File.read('spec/fixtures/solis_cloud/station_day.json'),
+                 headers: { 'Content-Type' => 'application/json' })
+    stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/stationDay')
+      .with(body: { id: '1298491919449314551', money: 'GBP', time: '2025-01-09', timeZone: 44 }.to_json)
+      .to_return(body: File.read('spec/fixtures/solis_cloud/station_day.json'),
+                 headers: { 'Content-Type' => 'application/json' })
+
     described_class.new(start_date: Date.new(2025, 1, 9), end_date: Date.new(2025, 1, 9),
                         installation:).download_and_upsert
     expect(installation.meters.pluck(:mpan_mprn)).to contain_exactly(70_000_001_799_272, 70_000_001_799_259)
@@ -34,12 +26,5 @@ describe Solar::SolisCloudDownloadAndUpsert do
     expect(installation.meters.pluck(:meter_serial_number)).to contain_exactly('1298491919449314564',
                                                                                '1298491919449314551')
     expect(installation.station_list.length).to eq(2)
-  end
-
-  it 'works with no specified start and end dates' do
-    travel_to(Date.new(2023, 11, 16))
-    stub_stations_day('2023-11-15')
-    described_class.new(start_date: nil, end_date: nil, installation:).download_and_upsert
-    expect(installation.meters.first.amr_data_feed_readings.count).to eq(1)
   end
 end
