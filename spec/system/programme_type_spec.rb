@@ -258,7 +258,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
 
     context 'when restarting' do
       before do
-        travel_to 1.day.from_now do
+        travel_to 1.day.from_now do # so that programme start times are different
           click_on('Restart')
         end
       end
@@ -307,19 +307,25 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
           expect(page).to have_no_selector(:link_or_button, 'Repeat')
         end
 
-        it 'allows repetition' do
-          programme_type_1.programme_for_school(school).update(ended_on: 1.year.ago)
-          refresh
-          click_on('Repeat')
-          expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
-            eq %w[completed started]
-          expect(page).to have_content('You started this programme')
+        context 'when repeating' do
+          before do
+            programme_type_1.programme_for_school(school).update(ended_on: 1.year.ago)
+            refresh
+            travel_to 1.day.from_now do # so that programme start times are different
+              click_on('Repeat')
+            end
+          end
+
+          it 'returns started programme last' do
+            expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
+              eq %w[completed started]
+          end
+
+          it { expect(page).to have_content('You started this programme') }
         end
       end
     end
   end
-
-
 
   shared_examples 'a user that is enrolled in a programme with todos' do
     let(:activity_type) { programme_type_1.activity_type_tasks.first }
@@ -339,10 +345,17 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       let(:assignable) { programme_type_1 }
     end
 
-    it 'allows restarting' do
-      click_on('Restart')
-      expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
-        eq %w[abandoned started]
+    context 'when restarting' do
+      before do
+        travel_to 1.day.from_now do # so that programme start times are different
+          click_on('Restart')
+        end
+      end
+
+      it 'returns started programme last' do
+        expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
+          eq %w[abandoned started]
+      end
     end
 
     context 'when viewing the programme types index page' do
@@ -383,13 +396,21 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
           expect(page).to have_no_selector(:link_or_button, 'Repeat')
         end
 
-        it 'allows repetition' do
-          programme_type_1.programme_for_school(school).update(ended_on: 1.year.ago)
-          refresh
-          click_on('Repeat')
-          expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
-            eq %w[completed started]
-          expect(page).to have_content('You started this programme')
+        context 'when repeating' do
+          before do
+            programme_type_1.programme_for_school(school).update(ended_on: 1.year.ago)
+            refresh
+            travel_to 1.day.from_now do # so that programme start times are different
+              click_on('Repeat')
+            end
+          end
+
+          it 'returns started programme last' do
+            expect(school.programmes.where(programme_type: programme_type_1).order(:started_on).pluck(:status)).to \
+              eq %w[completed started]
+          end
+
+          it { expect(page).to have_content('You started this programme') }
         end
       end
     end
