@@ -7,9 +7,10 @@ en:
       your_subscription_has_been_confirmed: Your subscription to our list has been confirmed
     mailchimp_form:
       email_address: Email address *
+      email_preferences: Email preferences
       please_specify: Please specify
-      school_name: School name (if appropriate)
+      school_name: School (or other organisation) name
       subscribe: Subscribe
-      user_name: User name *
+      user_name: Name *
     new:
       sign_up_to_the_energy_sparks_newsletter: Sign up to the Energy Sparks newsletter

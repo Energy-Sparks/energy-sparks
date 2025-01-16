@@ -22,21 +22,25 @@ module Mailchimp
     # Subscribe a Marketing::MailchimpContact to our list
     # Raises exception if a subscriber
     def subscribe_contact(mailchimp_contact)
-      @client.lists.add_list_member(list.id, mailchimp_contact.to_mailchimp_hash, subscribe_opts)
+      resp = @client.lists.add_list_member(list.id, mailchimp_contact.to_mailchimp_hash, subscribe_opts)
+      OpenStruct.new(resp)
     end
 
     def subscribe_or_update_contact(mailchimp_contact, status_if_new: 'subscribed')
       hash = mailchimp_contact.to_mailchimp_hash
       hash['status_if_new'] = status_if_new
-      @client.lists.set_list_member(list.id, mailchimp_contact.email_address, hash, subscribe_opts)
+      resp = @client.lists.set_list_member(list.id, mailchimp_contact.email_address, hash, subscribe_opts)
+      OpenStruct.new(resp)
     end
 
     def archive_contact(email_address)
-      @client.lists.delete_list_member(list.id, Digest::MD5.hexdigest(email_address.downcase))
+      resp = @client.lists.delete_list_member(list.id, Digest::MD5.hexdigest(email_address.downcase))
+      OpenStruct.new(resp)
     end
 
     def update_contact(mailchimp_contact)
-      @client.lists.set_list_member(list.id, Digest::MD5.hexdigest(mailchimp_contact.email_address.downcase), mailchimp_contact.to_mailchimp_hash, subscribe_opts)
+      resp = @client.lists.set_list_member(list.id, Digest::MD5.hexdigest(mailchimp_contact.email_address.downcase), mailchimp_contact.to_mailchimp_hash, subscribe_opts)
+      OpenStruct.new(resp)
     end
 
     private

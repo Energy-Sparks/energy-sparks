@@ -66,7 +66,7 @@ module Mailchimp
     end
 
     # TODO already expressed using merge fields?
-    def self.from_signup_form(params)
+    def self.from_params(params)
     end
 
     # Create the tags for school users and cluster admins
