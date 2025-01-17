@@ -102,7 +102,7 @@ module Mailchimp
     # Cluster admins will not have free school meal tags.
     def tags_for_school_user(user, existing_contact = nil, slugs = [], fsm_tags: true)
       core_tags = slugs
-      core_tags = core_tags + MailchimpTags.new(user.school).tags_as_list if fsm_tags
+      core_tags = core_tags + self.free_school_meal_tags(user.school) if fsm_tags
       existing_tags = non_fsm_tags(existing_contact)
       (core_tags + existing_tags).join(',')
     end

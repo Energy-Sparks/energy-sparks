@@ -4,7 +4,7 @@ class MailchimpSignupsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def new
-    @list = audience_manager.list
+    audience_manager.list # load to ensure config is set
     @email_types = list_of_email_types
     @contact = populate_contact_for_form(current_user, params)
   rescue => e
@@ -23,7 +23,6 @@ class MailchimpSignupsController < ApplicationController
     if resp
       redirect_to subscribed_mailchimp_signups_path and return
     end
-    @list = audience_manager.list
     @email_types = list_of_email_types
     render :new
   end

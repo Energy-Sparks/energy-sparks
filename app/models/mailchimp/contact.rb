@@ -82,7 +82,7 @@ module Mailchimp
     # Cluster admins will not have free school meal tags.
     def self.tags_for_school_user(user, existing_tags = [], slugs = [], fsm_tags: true)
       core_tags = slugs
-      core_tags = core_tags + MailchimpTags.new(user.school).tags_as_list if fsm_tags
+      core_tags = core_tags + self.free_school_meal_tags(user.school) if fsm_tags
       existing_tags = self.non_fsm_tags(existing_tags)
       (core_tags + existing_tags)
     end
@@ -92,6 +92,22 @@ module Mailchimp
     def self.non_fsm_tags(existing_tags)
       return [] unless existing_tags.present?
       existing_tags.reject {|t| t.match?(/FSM/) }
+    end
+
+    def self.free_school_meal_tags(school)
+      tags = []
+      return tags unless school.percentage_free_school_meals
+      percent = school.percentage_free_school_meals
+      if percent >= 30
+        tags << 'FSM30'
+      elsif percent >= 25
+        tags << 'FSM25'
+      elsif percent >= 20
+        tags << 'FSM20'
+      elsif percent >= 15
+        tags << 'FSM15'
+      end
+      tags
     end
 
     # Convert to hash for submitting to mailchimp api

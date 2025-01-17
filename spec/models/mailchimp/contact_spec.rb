@@ -184,4 +184,24 @@ describe Mailchimp::Contact do
       expect(contact.interests).to eq({ '4abcd': true })
     end
   end
+
+  describe '.free_school_meal_tags' do
+    def expect_fsm_tag(fsm_percentage, expected_tags)
+      school = create(:school, percentage_free_school_meals: fsm_percentage)
+      expect(described_class.free_school_meal_tags(school)).to eq(expected_tags)
+    end
+
+    it 'creates correct tags' do
+      expect_fsm_tag(31, ['FSM30'])
+      expect_fsm_tag(30, ['FSM30'])
+      expect_fsm_tag(29, ['FSM25'])
+      expect_fsm_tag(25, ['FSM25'])
+      expect_fsm_tag(24, ['FSM20'])
+      expect_fsm_tag(20, ['FSM20'])
+      expect_fsm_tag(19, ['FSM15'])
+      expect_fsm_tag(15, ['FSM15'])
+      expect_fsm_tag(14, [])
+      expect_fsm_tag(nil, [])
+    end
+  end
 end
