@@ -23,7 +23,7 @@
                           class: 'btn btn-danger' %>
               <%= link_to "#{fa_icon('circle-question')} Check API".html_safe,
                           check_school_solis_cloud_installation_path(school, installation),
-                          id: "solar-edge-#{installation.id}-test",
+                          id: "#{Schools::SolisCloudInstallationsController::ID_PREFIX}-#{installation.id}-test",
                           method: :post, remote: true, class: 'btn check-button' %>
               <%= form_tag submit_job_school_solar_edge_installation_path(school, installation), method: :post do %>
                 <%= button_tag(type: 'submit', id: "solar-edge-#{installation.id}-run-load", class: 'btn') do %>

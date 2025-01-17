@@ -32,14 +32,14 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
 
       it 'allows an installation to be added' do
         click_on 'New Solar Edge API feed'
-        expect(page).to have_content('Add a new Solar Edge Site')
+        expect(page).to have_content('Add a new SolarEdge Site')
 
         fill_in(:solar_edge_installation_mpan, with: mpan)
         fill_in(:solar_edge_installation_site_id, with: site_id)
         fill_in(:solar_edge_installation_api_key, with: api_key)
 
         expect { click_on 'Submit'}.to change(SolarEdgeInstallation, :count).by(1)
-        expect(page).to have_content('Solar Edge installation was successfully created')
+        expect(page).to have_content('SolarEdge installation was successfully created')
 
         expect(page).to have_content(mpan)
         expect(page).to have_content(site_id)
@@ -75,7 +75,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
         fill_in(:solar_edge_installation_api_key, with: new_api_key)
         click_on 'Submit'
 
-        expect(page).to have_content('Solar Edge API feed was updated')
+        expect(page).to have_content('SolarEdge API feed was updated')
         expect(page).to have_content(new_api_key)
         expect(SolarEdgeInstallation.first.api_key).to eql new_api_key
       end
