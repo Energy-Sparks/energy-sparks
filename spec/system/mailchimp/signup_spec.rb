@@ -26,13 +26,12 @@ describe 'Mailchimp Sign-up' do
     let(:categories) do
       [
         OpenStruct.new(id: 1, title: 'Category'),
-        OpenStruct.new(id: 2, title: 'Email Preferences')
+        OpenStruct.new(id: 2, title: 'Interests')
       ]
     end
     let(:audience_manager) { instance_double(Mailchimp::AudienceManager) }
 
     before do
-      # FIXME receive_messages
       allow(Mailchimp::AudienceManager).to receive(:new).and_return(audience_manager)
       allow(audience_manager).to receive_messages(list: list, categories: categories, interests: interests)
     end
@@ -50,7 +49,7 @@ describe 'Mailchimp Sign-up' do
       end
     end
 
-    context 'when the form is complete', if: fill_in_form do
+    context 'when the form is completed', if: fill_in_form do
       before do
         allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
       end
@@ -58,7 +57,12 @@ describe 'Mailchimp Sign-up' do
       it 'subscribes the user' do
         fill_in :name, with: name
         fill_in :school, with: school
-        expect(audience_manager).to receive(:subscribe_or_update_contact)
+        expect(audience_manager).to receive(:subscribe_or_update_contact) do |subscribed_contact|
+          expect(subscribed_contact.email_address).to eq email
+          expect(subscribed_contact.name).to eq name
+          expect(subscribed_contact.user_role).to be_nil
+          expect(subscribed_contact.contact_source).to eq 'Organic'
+        end
         click_on 'Subscribe'
         expect(page).to have_content('Subscription confirmed')
       end
@@ -76,7 +80,12 @@ describe 'Mailchimp Sign-up' do
       end
 
       it 'subscribes the user' do
-        expect(audience_manager).to receive(:subscribe_or_update_contact)
+        expect(audience_manager).to receive(:subscribe_or_update_contact) do |subscribed_contact|
+          expect(subscribed_contact.email_address).to eq user.email
+          expect(subscribed_contact.name).to eq user.name
+          expect(subscribed_contact.user_role).to eq 'School admin'
+          expect(subscribed_contact.contact_source).to eq 'User'
+        end
         click_on 'Subscribe'
         expect(page).to have_content('Subscription confirmed')
       end
@@ -117,6 +126,7 @@ describe 'Mailchimp Sign-up' do
         include_context 'with an existing user'
 
         before do
+          allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
           visit terms_and_conditions_path
           within '#newsletter-signup' do
             fill_in :email_address, with: email
@@ -124,7 +134,17 @@ describe 'Mailchimp Sign-up' do
           end
         end
 
-        it_behaves_like 'a functioning sign-up form'
+        it 'subscribes the user' do
+          expect(audience_manager).to receive(:subscribe_or_update_contact) do |subscribed_contact|
+            expect(subscribed_contact.email_address).to eq user.email
+            expect(subscribed_contact.name).to eq user.name
+            expect(subscribed_contact.user_role).to eq 'School admin'
+            expect(subscribed_contact.contact_source).to eq 'User'
+          end
+          fill_in :name, with: name
+          click_on 'Subscribe'
+          expect(page).to have_content('Subscription confirmed')
+        end
       end
 
       context 'with a new email address' do
@@ -180,10 +200,24 @@ describe 'Mailchimp Sign-up' do
         include_context 'with an existing user'
 
         before do
+          allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
           visit new_mailchimp_signup_path
         end
 
-        it_behaves_like 'a functioning sign-up form'
+        it 'subscribes the user' do
+          expect(audience_manager).to receive(:subscribe_or_update_contact) do |subscribed_contact|
+            expect(subscribed_contact.email_address).to eq user.email
+            expect(subscribed_contact.name).to eq user.name
+            expect(subscribed_contact.user_role).to eq 'School admin'
+            expect(subscribed_contact.contact_source).to eq 'User'
+          end
+          within '#mailchimp-form' do
+            fill_in :email_address, with: email
+            fill_in :name, with: name
+          end
+          click_on 'Subscribe'
+          expect(page).to have_content('Subscription confirmed')
+        end
       end
 
       context 'with a new email address' do

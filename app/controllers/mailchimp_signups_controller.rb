@@ -35,10 +35,8 @@ class MailchimpSignupsController < ApplicationController
     @audience_manager ||= Mailchimp::AudienceManager.new
   end
 
-  # FIXME
-  # Capturing user preferences for types of email in a group called "Email Preferences"
   def list_of_email_types
-    category = audience_manager.categories.detect {|c| c.title == 'Email Preferences' }
+    category = audience_manager.categories.detect {|c| c.title == 'Interests' }
     return [] unless category
     return audience_manager.interests(category.id)
   rescue => e
@@ -76,6 +74,8 @@ class MailchimpSignupsController < ApplicationController
       begin
         resp = audience_manager.subscribe_or_update_contact(contact)
       rescue => e
+        puts e
+        puts e.backtrace
         Rails.logger.error(e)
         Rollbar.error(e)
         flash[:error] = 'Unable to process Mailchimp newsletter subscription'
