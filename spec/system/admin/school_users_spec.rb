@@ -1,8 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe 'School Users', :schools, type: :system do
+RSpec.describe 'User confirmations', :schools, type: :system do
   let(:confirmation_token) { 'abc123' }
   let(:valid_password) { 'valid password' }
+
+  include_context 'with a stubbed audience manager'
+
+  before do
+    allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
+  end
 
   context 'when confirming new user without school' do
     let!(:user) { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: nil, email: 'foo@bar.com', name: 'Foo Bar') }
@@ -45,7 +51,7 @@ RSpec.describe 'School Users', :schools, type: :system do
     end
 
     it 'allows newsletter to be subscribed (the default)' do
-      expect_any_instance_of(MailchimpSubscriber).to receive(:subscribe).with(user)
+      expect(audience_manager).to receive(:subscribe_or_update_contact)
       fill_in :user_password, with: valid_password
       fill_in :user_password_confirmation, with: valid_password
       check 'privacy'
@@ -54,11 +60,11 @@ RSpec.describe 'School Users', :schools, type: :system do
     end
 
     it 'allows newsletter to be unsubscribed' do
-      expect_any_instance_of(MailchimpSubscriber).not_to receive(:subscribe)
+      expect(audience_manager).not_to receive(:subscribe_or_update_contact)
       fill_in :user_password, with: valid_password
       fill_in :user_password_confirmation, with: valid_password
       check 'privacy'
-      uncheck 'Subscribe to newsletters'
+      uncheck 'Newsletter'
       click_button 'Complete registration'
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
     end
@@ -87,7 +93,7 @@ RSpec.describe 'School Users', :schools, type: :system do
       check 'privacy'
       fill_in :user_password, with: valid_password
       uncheck 'Subscribe to school alerts'
-      uncheck 'Subscribe to newsletters'
+      uncheck 'Newsletter'
       click_button 'Complete registration'
       expect(page).to have_content("Password confirmation doesn't match Password")
       expect(page).not_to have_checked_field('Subscribe to school alerts')

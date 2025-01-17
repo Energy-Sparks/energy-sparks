@@ -9,6 +9,7 @@ class PasswordsController < Devise::PasswordsController
     # the resource is NOT the actual user - have to find it ourselves
     user = User.with_reset_password_token(params[:reset_password_token])
     if user
+      @email_types = list_of_email_types
       @allow_newsletters = allow_newletters?(user)
       @allow_alerts = allow_alerts?(user)
       @subscribe_alerts = true
@@ -20,6 +21,7 @@ class PasswordsController < Devise::PasswordsController
   end
 
   def update
+    @email_types = list_of_email_types
     super do |resource|
       @allow_newsletters = allow_newletters?(resource)
       @allow_alerts = allow_alerts?(resource)
@@ -28,7 +30,7 @@ class PasswordsController < Devise::PasswordsController
       resource.preferred_locale = resource_params[:preferred_locale] if resource_params[:preferred_locale]
       if resource.errors.empty?
         create_or_update_alert_contact(resource.school, resource) if @subscribe_alerts
-        subscribe_newsletter(resource) if @subscribe_newsletters
+        subscribe_newsletter(resource, params.permit(interests: {})) if @subscribe_newsletters
       end
     end
   end
@@ -39,11 +41,20 @@ class PasswordsController < Devise::PasswordsController
     @confirmed = (params[:confirmed] == 'true')
   end
 
+  def auto_subscribe_newsletter?
+    params[:user] && params[:interests]&.value?('true')
+  end
+
   def allow_newletters?(user)
     @confirmed && user.present? && (user.school.present? || user.school_group.present?)
   end
 
   def allow_alerts?(user)
     @confirmed && user.present? && user.school.present?
+  end
+
+  def subscribe_newsletter(user, sign_up_params)
+    contact = create_contact_from_user(user, sign_up_params)
+    subscribe_contact(contact, show_errors: false)
   end
 end
