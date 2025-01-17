@@ -269,7 +269,7 @@ describe 'Audits', type: :system do
             attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
 
             click_on('Create')
-            expect(page).to have_content('Audit created')
+            with_retry { expect(page).to have_content('Audit created') }
 
             audit = Audit.last
             expect(audit.title).to eq('New audit')
