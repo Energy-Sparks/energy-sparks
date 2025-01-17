@@ -8,7 +8,6 @@ en:
     mailchimp_form:
       email_address: Email address *
       email_preferences: Email preferences
-      please_specify: Please specify
       school_name: School (or other organisation) name
       subscribe: Subscribe
       user_name: Name *

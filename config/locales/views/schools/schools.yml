@@ -653,7 +653,6 @@ en:
         newsletters_main_communication_channel_list_item_2: sharing featured activities
         newsletters_main_communication_channel_list_item_3: celebrating best practice and success stories at participating schools
         newsletters_main_communication_channel_list_item_4: promoting supporting services such as workshops, training and audits
-        subscribe_to_newsletters: Email preferences
         we_strongly_recommend_you_sign_up: We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else)
       edit:
         title: Edit %{user_role} account
