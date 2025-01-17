@@ -82,6 +82,7 @@ class Audit < ApplicationRecord
     activities_completed? ? 0 : SiteSettings.current.audit_activities_bonus_points
   end
 
+  ## To be removed when :todos feature removed
   def create_activities_completed_observation!
     return unless SiteSettings.current.audit_activities_bonus_points
     return unless activities_completed?

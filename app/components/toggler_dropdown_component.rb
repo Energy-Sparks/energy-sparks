@@ -9,6 +9,10 @@ class TogglerDropdownComponent < ApplicationComponent
     @hide = hide
   end
 
+  def identifier
+    @identifier ||= SecureRandom.hex
+  end
+
   def render?
     content
   end

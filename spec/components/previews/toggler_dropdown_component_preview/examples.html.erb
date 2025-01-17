@@ -1,18 +1,20 @@
 <div class="row">
   <div class="col">
-
-    <h2>title: 'Title'</h2>
-
-    <%= render TogglerDropdownComponent.new(title: 'Title') do %>
+    <h2>title: 'Deprecated', hide: true</h2>
+    <p>Content is hidden in the dropdown</p>
+    <%= render TogglerDropdownComponent.new(title: 'Deprecated', hide: true) do %>
       Content in here
     <% end %>
 
-    <h2>surround: false</h2>
-    <p>Just renders content as if component not there</p>
+    <h2>hide: false</h2>
+    <p>Does not hide content in dropdown - renders as normal</p>
 
-    <%= render TogglerDropdownComponent.new(title: 'Title', surround: false) do %>
+    <%= render TogglerDropdownComponent.new(title: 'Deprecated', hide: false) do %>
       Content in here
     <% end %>
 
+    <%= render TogglerDropdownComponent.new(title: 'Deprecated', hide: true) do %>
+      Second on page
+    <% end %>
   </div>
 </div>
