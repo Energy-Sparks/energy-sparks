@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Solar
@@ -10,29 +12,33 @@ module Solar
     end
 
     def perform
-      Rails.logger.info "Upserting #{@readings.count} for #{@installation.display_name} at #{@installation.school.name}"
+      log_perform_start
       @readings.each do |meter_type, details|
         mpan_mprn = synthetic_mpan(meter_type, details)
         attributes = meter_model_attributes(details)
         meter = Meter.find_or_create_by!(meter_type: meter_type,
                                          mpan_mprn: mpan_mprn,
                                          school: @installation.school) do |new_record|
-          new_record.assign_attributes(attributes)
+          new_record.assign_attributes({ name: meter_type.to_s.humanize, active: false }.merge(attributes))
         end
         meter.update!(attributes) unless meter.attributes >= attributes
         Amr::DataFeedUpserter.new(@amr_data_feed_config,
                                   @amr_data_feed_import_log,
                                   data_feed_reading_array(details[:readings], meter.id, mpan_mprn)).perform
-        Rails.logger.info "Upserted #{@amr_data_feed_import_log.records_updated} " \
-                          "inserted #{@amr_data_feed_import_log.records_imported} " \
-                          "for #{@installation.display_name} at #{@installation.school.name}"
+        log_perform_upsert
       end
     end
 
     private
 
-    def synthetic_mpan(meter_type, mpan)
-      Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(mpan, meter_type)
+    def log_perform_start
+      Rails.logger.info "Upserting #{@readings.count} for #{@installation.display_name} at #{@installation.school.name}"
+    end
+
+    def log_perform_upsert
+      Rails.logger.info "Updated #{@amr_data_feed_import_log.records_updated} " \
+                        "inserted #{@amr_data_feed_import_log.records_imported} " \
+                        "for #{@installation.display_name} at #{@installation.school.name}"
     end
 
     def data_feed_reading_array(readings_hash, meter_id, mpan_mprn)
