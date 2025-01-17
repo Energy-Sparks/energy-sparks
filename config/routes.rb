@@ -141,7 +141,11 @@ Rails.application.routes.draw do
 
   resources :help, controller: 'help_pages', only: [:show]
 
-  resources :mailchimp_signups, only: [:new, :create, :index]
+  resources :mailchimp_signups, only: [:new, :create] do
+    collection do
+      get 'subscribed', as: :subscribed
+    end
+  end
 
   concern :tariff_holder do
     scope module: 'energy_tariffs' do

@@ -22,7 +22,7 @@ class MailchimpSignupsController < ApplicationController
     end
     resp = subscribe_contact(@contact)
     if resp
-      redirect_to mailchimp_signups_path and return
+      redirect_to subscribed_mailchimp_signups_path and return
     end
     @list = audience_manager.list
     @email_types = list_of_email_types
@@ -74,8 +74,6 @@ class MailchimpSignupsController < ApplicationController
       begin
         resp = audience_manager.subscribe_or_update_contact(contact)
       rescue => e
-        puts e
-        puts e.backtrace
         Rails.logger.error(e)
         Rollbar.error(e)
         flash[:error] = 'Unable to process Mailchimp newsletter subscription'
