@@ -26,7 +26,7 @@ end
 RSpec.shared_examples 'a complete programme prompt' do |displayed: true, with_programme: false|
   let(:message) do
     if Flipper.enabled?(:todos)
-      with_programme ? "You haven't yet completed any tasks in the #{programme_type.title} programmeIf you complete them, you will score 165 points and 12 bonus points for completing the programme" : 'Start a new programme'
+      with_programme ? "You haven't yet completed any of the tasks in the #{programme_type.title} programmeIf you complete them, you will score 165 points and 12 bonus points for completing the programme" : 'Start a new programme'
     else
       with_programme ? "You have completed 0/3 of the activities in the #{programme_type.title} programmeComplete the final 3 activities now to score 75 points and 12 bonus points for completing the programme" : 'Start a new programme'
     end
@@ -99,7 +99,7 @@ end
 RSpec.shared_examples 'a rich audit prompt' do |displayed: true|
   let(:message) do
     if Flipper.enabled?(:todos)
-      "You haven't yet completed any tasks from your recent energy auditIf you complete them, you will score 165 points and 50 bonus points for completing all audit tasks"
+      "You haven't yet completed any of the tasks recommended in your recent energy auditIf you complete them, you will score 165 points and 50 bonus points for completing all audit tasks"
     else
       'You have completed 0/3 of the activities and 0/3 of the actions from your recent energy auditComplete the others to score 165 points and 50 bonus points for completing all audit tasks'
     end

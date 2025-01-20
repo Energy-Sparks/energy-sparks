@@ -335,11 +335,11 @@ en:
           message_html:
             one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your recent energy audit
             other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your recent energy audit
-            zero: You haven't yet completed any tasks from your recent energy audit
+            zero: You haven't yet completed any of the tasks recommended in your recent energy audit
           message_older_html:
             one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your energy audit
             other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your energy audit
-            zero: You haven't yet completed any tasks from your energy audit
+            zero: You haven't yet completed any of the tasks recommended in your energy audit
           summary_final_html: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
           summary_html: Complete the others to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
           summary_none_html: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
@@ -380,7 +380,7 @@ en:
           message_html:
             one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks in the <strong>%{title}</strong> programme
             other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks in the <strong>%{title}</strong> programme
-            zero: You haven't yet completed any tasks in the <strong>%{title}</strong> programme
+            zero: You haven't yet completed any of the tasks in the <strong>%{title}</strong> programme
           summary_final_html:
             one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus point for completing the programme
             other: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme

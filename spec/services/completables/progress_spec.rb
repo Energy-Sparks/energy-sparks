@@ -34,7 +34,7 @@ describe Completables::Progress, type: :service do
           let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 3 }
 
           it 'returns the message' do
-            expect(service.message).to eq("You haven't yet completed any tasks " \
+            expect(service.message).to eq("You haven't yet completed any of the tasks " \
                                     'in the <strong>Programme Type title</strong> programme')
           end
 
@@ -173,7 +173,7 @@ describe Completables::Progress, type: :service do
       let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 3 }
 
       it 'shows message' do
-        expect(service.message).to eq("You haven't yet completed any tasks from your recent energy audit")
+        expect(service.message).to eq("You haven't yet completed any of the tasks recommended in your recent energy audit")
       end
 
       it 'shows summary' do
