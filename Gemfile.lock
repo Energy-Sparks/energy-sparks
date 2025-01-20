@@ -893,6 +893,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec_rails
+  ruby-limiter
   sass-rails
   sassc!
   scenic
