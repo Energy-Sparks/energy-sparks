@@ -4,10 +4,7 @@ require 'base64'
 
 module DataFeeds
   class SolisCloudApi
-    class ApiFailure < StandardError; end
-    class NotFound < StandardError; end
-    class NotAllowed < StandardError; end
-    class NotAuthorised < StandardError; end
+    extend Limiter::Mixin
 
     BASE_URL = 'https://www.soliscloud.com:13333'
 
@@ -20,8 +17,8 @@ module DataFeeds
       get_data('/v1/api/userStationList', {})
     end
 
+    limit_method :station_day, rate: 1, interval: 2
     def station_day(id, day)
-      sleep 2
       get_data('/v1/api/stationDay', { id: id, money: 'GBP', time: day.iso8601, timeZone: 44 })
     end
 
@@ -36,6 +33,7 @@ module DataFeeds
         f.response :json
         f.response :raise_error
         f.response :logger if Rails.env.development?
+        f.request(:retry, { retry_statuses: [429], interval: 2.0, backoff_factor: 2 })
       end
     end
 
