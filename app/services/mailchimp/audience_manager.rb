@@ -16,7 +16,7 @@ module Mailchimp
 
     def interests(category_id)
       interests = @client.lists.list_interest_category_interests(list.id, category_id, count: 100)
-      interests['interests'].map { |interest| OpenStruct.new(interest) }.sort_by(&:name)
+      interests['interests'].map { |interest| create_interest(interest) }.sort_by(&:name)
     end
 
     def subscribe_or_update_contact(mailchimp_contact, status_if_new: 'subscribed')
@@ -45,6 +45,13 @@ module Mailchimp
       else
         OpenStruct.new(lists['lists'].first)
       end
+    end
+
+    def create_interest(interest)
+      interest = OpenStruct.new(interest)
+      key = interest.name.parameterize.underscore
+      interest.i18n_name = I18n.t("mailchimp.audience_manager.interests.#{key}", default: interest.name)
+      interest
     end
 
     def subscribe_opts

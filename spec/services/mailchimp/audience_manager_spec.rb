@@ -60,6 +60,7 @@ describe Mailchimp::AudienceManager do
       expect(interests.first.name).to eq('Building/ Site Manager or Caretaker')
       expect(interests.last.id).to eq('f407e4857e')
       expect(interests.last.name).to eq('Teacher or Teaching Assistant')
+      expect(interests.last.i18n_name).to eq('Teacher or Teaching Assistant')
     end
   end
 
