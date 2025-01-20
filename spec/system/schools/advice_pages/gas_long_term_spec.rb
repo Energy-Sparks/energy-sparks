@@ -121,7 +121,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         it 'includes expected charts' do
           expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.management_dashboard_group_by_week_gas.title'))
           expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_gas')
-          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
+          expect(page).to have_css('#chart_wrapper_gas_by_month_acyear_0_1')
           expect(page).to have_no_css('#chart_wrapper_group_by_week_gas_unlimited')
           expect(page).to have_no_css('#chart_wrapper_gas_longterm_trend')
         end
@@ -143,7 +143,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         it 'includes expected charts' do
           expect(page).to have_css('#chart_wrapper_group_by_week_gas')
           expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
-          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
+          expect(page).to have_css('#chart_wrapper_gas_by_month_acyear_0_1')
           # not enough data for these
           expect(page).to have_no_css('#chart_wrapper_gas_longterm_trend')
         end
@@ -167,8 +167,8 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         it 'includes expected charts' do
           expect(page).to have_css('#chart_wrapper_group_by_week_gas')
           expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
-          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
-          expect(page).to have_css('#chart_wrapper_gas_longterm_trend')
+          expect(page).to have_css('#chart_wrapper_gas_by_month_acyear_0_1')
+          expect(page).to have_css('#chart_wrapper_gas_longterm_trend_academic_year')
         end
       end
     end
