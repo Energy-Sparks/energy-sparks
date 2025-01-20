@@ -30,7 +30,7 @@ class SolisCloudInstallation < ApplicationRecord
   validates :api_id, :api_secret, presence: true
 
   def display_name
-    "Solis Cloud Installation #{id}"
+    api_id
   end
 
   def latest_electricity_reading
