@@ -24,6 +24,14 @@ module Completables
       completable.uncompleted_tasks.sum(&:score)
     end
 
+    def available_count
+      completable.assignable_todos.count
+    end
+
+    def completed_count
+      completable.completed_todos.count
+    end
+
     def uncompleted_count
       completable.uncompleted_todos.count
     end
@@ -31,11 +39,25 @@ module Completables
     def message
       I18n.t("schools.prompts.#{i18n_base}.#{i18n_message_key}",
         title: assignable.title,
-        completed_activities_count: completable.completed_activity_types.count,
-        total_activities_count: assignable.activity_type_todos.count,
-        completed_actions_count: completable.completed_intervention_types.count,
-        total_actions_count: assignable.intervention_type_todos.count
+        count: completed_count,
+        completed_tasks_count: completed_count,
+        total_tasks_count: available_count
       )
+    end
+
+    def summary
+      key = if completed_count == 0
+              'summary_none_html'
+            elsif uncompleted_count == 1
+              'summary_final_html'
+            else
+              'summary_html'
+            end
+      I18n.t("schools.prompts.#{i18n_base}.#{key}",
+        count: bonus_points,
+        uncompleted_count: uncompleted_count,
+        uncompleted_scores: uncompleted_scores,
+        bonus_points: bonus_points)
     end
 
     def notification
@@ -53,31 +75,17 @@ module Completables
     end
 
     def i18n_message_key
-      if assignable.activity_type_todos.any? && assignable.intervention_type_todos.none?
-        'message_activities_only_html'
-      elsif assignable.activity_type_todos.none? && assignable.intervention_type_todos.any?
-        'message_actions_only_html'
-      else
-        'message_html'
-      end
+      'message_html'
     end
 
     def i18n_base
       'programme.progress'
     end
-
-    def summary
-      key = bonus_points > 0 ? 'summary_bonus_html' : 'summary_html'
-      I18n.t("schools.prompts.#{i18n_base}.#{key}",
-        count: uncompleted_count,
-        uncompleted_scores: uncompleted_scores,
-        bonus_points: bonus_points)
-    end
   end
 
   class Audit < ProgressBase
     def i18n_base
-      'audit'
+      'audit.progress'
     end
 
     def bonus_points
@@ -90,13 +98,6 @@ module Completables
 
     def i18n_message_key
       recent? ? 'message_html' : 'message_older_html'
-    end
-
-    def summary
-      I18n.t("schools.prompts.#{i18n_base}.summary_html",
-        remaining_points: uncompleted_scores,
-        count: bonus_points
-      )
     end
   end
 end

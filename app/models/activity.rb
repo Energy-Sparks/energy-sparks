@@ -64,8 +64,4 @@ class Activity < ApplicationRecord
   def points
     observations.sum(:points)
   end
-
-  def recorded_on
-    happened_on
-  end
 end

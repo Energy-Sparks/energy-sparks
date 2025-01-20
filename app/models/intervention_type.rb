@@ -96,7 +96,7 @@ class InterventionType < ApplicationRecord
   end
 
   def public_type
-    'action'
+    :action
   end
 
   private

@@ -143,7 +143,7 @@ class ActivityType < ApplicationRecord
   end
 
   def public_type
-    'activity'
+    :activity
   end
 
   private
