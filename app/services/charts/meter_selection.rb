@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Charts
   # Encapsulates presenting a list of meters used to populate a select box for driving a MeterSelectionChartComponent
   #
@@ -40,7 +42,8 @@ module Charts
                    include_whole_school: true,
                    date_window: nil,
                    whole_school_title_key: 'advice_pages.charts.the_whole_school',
-                   whole_school_label_key: 'advice_pages.charts.whole_school')
+                   whole_school_label_key: 'advice_pages.charts.whole_school',
+                   academic_year: false)
       @school = school
       @meter_collection = meter_collection
       @fuel_type = fuel_type
@@ -49,6 +52,7 @@ module Charts
       @filter = filter
       @whole_school_title_key = whole_school_title_key
       @whole_school_label_key = whole_school_label_key
+      @academic_year = academic_year
     end
 
     def meter_selection_options
@@ -56,28 +60,15 @@ module Charts
     end
 
     def date_ranges_by_meter
-      ranges_by_meter = {}
-      if @include_whole_school
-        ranges_by_meter[aggregate_meter.mpan_mprn] = {
-          meter: aggregate_meter_adapter,
-          start_date: start_date(aggregate_meter),
-          end_date: aggregate_meter.amr_data.end_date
-        }
-      end
+      meters = []
+      meters << [aggregate_meter, aggregate_meter_adapter] if @include_whole_school
       # if single meter, then the underlying meters is the aggregate meter
       # just return the range for aggregate adapter in this case so its labelled
       # correctly as "the whole school"
-      return ranges_by_meter if @include_whole_school && underlying_meters.count == 1
-      displayable_meters.each do |analytics_meter|
-        end_date = analytics_meter.amr_data.end_date
-        start_date = start_date(analytics_meter)
-        ranges_by_meter[analytics_meter.mpan_mprn] = {
-          meter: analytics_meter,
-          start_date: start_date,
-          end_date: end_date
-        }
+      meters.concat(displayable_meters) unless @include_whole_school && underlying_meters.count == 1
+      meters.to_h do |meter, meter_adapter|
+        [meter.mpan_mprn, { meter: meter_adapter || meter, start_date: start_date(meter), end_date: end_date(meter) }]
       end
-      ranges_by_meter
     end
 
     def underlying_meters
@@ -97,7 +88,7 @@ module Charts
                when :gas
                  @meter_collection.heat_meters
                when :storage_heater, :storage_heaters
-                 @meter_collection.storage_heater_meters # TODO likely not used
+                 @meter_collection.storage_heater_meters # TODO: likely not used
                else
                  raise 'Unexpected fuel type'
                end
@@ -108,10 +99,18 @@ module Charts
 
     def start_date(meter)
       earliest_date = meter.amr_data.start_date
-      return earliest_date unless @date_window.present?
+      return earliest_date if @date_window.blank?
 
       desired_date = meter.amr_data.end_date - @date_window
       [desired_date, earliest_date].max
+    end
+
+    def end_date(meter)
+      if @academic_year
+        DateService.fixed_academic_year_end(meter.amr_data.end_date)
+      else
+        meter.amr_data.end_date
+      end
     end
 
     # Used to override default labelling methods for aggregate meter
