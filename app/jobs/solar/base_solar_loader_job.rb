@@ -13,7 +13,7 @@ module Solar
       @upserter.perform
       send_notification(notify_email)
     rescue StandardError => e
-      Rollbar.error(e, job: :import_solar_edge_readings)
+      EnergySparks::Log.exception(e, job: :import_solar_edge_readings)
       send_failure_notification(notify_email, e)
       false
     end

@@ -37,7 +37,7 @@ module Solar
         latest_reading
       elsif station['createDate']
         Time.at(station['createDate'] / 1000.0).utc.to_date
-      else
+      elsif station.present?
         raise 'unknown start date'
       end
     end
