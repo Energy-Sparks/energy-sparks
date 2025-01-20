@@ -19,7 +19,7 @@
 <div id="meter-costs">
   <%= render 'meter',
              mpan_mprn: default_meter,
-             label: default_meter_label,
+             label: options_for_meter_select.first.display_name,
              school: school,
              analysis_dates: analysis_dates,
              one_year_breakdown_chart: one_year_breakdown_chart,

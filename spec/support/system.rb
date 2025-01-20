@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by :rack_test
@@ -41,7 +43,7 @@ RSpec.configure do |config|
     Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
   end
 
-  config.before(:each, type: :system, js: true) do
+  config.before(:each, :js, type: :system) do
     @supports_js = true
 
     # register our custom driver configuration as a known adapter to allow access to
@@ -53,16 +55,36 @@ RSpec.configure do |config|
     # page.driver.browser.manage.window.resize_to(2800,10000)
   end
 
-  config.after(:each, type: :system, js: true) do |example|
+  config.after(:each, :js, type: :system) do |example|
     errors = page.driver.browser.logs.get(:browser)
     if errors.present? && !example.metadata.key?(:errors_expected)
       aggregate_failures 'javascript errors' do
         errors.each do |error|
           expect(error.level).not_to eq('SEVERE'), error.message
           next unless error.level == 'WARNING'
+
           warn 'WARN: javascript warning'
           warn error.message
         end
+      end
+    end
+  end
+
+  if ENV.key?('CI')
+    config.around(:each, :js) do |example|
+      retry_count = 0
+      begin
+        example.run
+      rescue => e
+        puts "exception #{e} - #{e.message}"
+        retry_count += 1
+        raise unless retry_count < 3
+        raise unless e.message.include?('Node with given id does not belong to the document')
+
+        puts 'retrying after "Node with given id does not belong to the document" error'
+        Capybara.reset_sessions!
+        sleep(retry_count)
+        retry
       end
     end
   end
