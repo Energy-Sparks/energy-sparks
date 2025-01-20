@@ -97,7 +97,13 @@ RSpec.shared_examples 'a basic audit prompt' do |displayed: true|
 end
 
 RSpec.shared_examples 'a rich audit prompt' do |displayed: true|
-  let(:message) { 'You have completed 0/3 of the activities and 0/3 of the actions from your recent energy auditComplete the others to score 165 points and 50 bonus points for completing all audit tasks' }
+  let(:message) do
+    if Flipper.enabled?(:todos)
+      "You haven't yet completed any tasks from your recent energy auditIf you complete them, you will score 165 points and 50 bonus points for completing all audit tasks"
+    else
+      'You have completed 0/3 of the activities and 0/3 of the actions from your recent energy auditComplete the others to score 165 points and 50 bonus points for completing all audit tasks'
+    end
+  end
   include_examples 'a standard prompt', displayed: displayed
 end
 
