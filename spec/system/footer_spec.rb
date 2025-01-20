@@ -59,6 +59,19 @@ RSpec.describe 'Footer', type: :system do
       it { expect(block).to have_field :email_address, placeholder: 'eg: hello@example.com' }
       it { expect(block).to have_button('Sign-up now') }
       it { expect(block).to have_content "We'll never share your email with anyone else" }
+
+      context 'when user is signed in' do
+        before do
+          sign_in(create(:school_admin))
+          refresh
+        end
+
+        it { expect(block).to have_content 'Newsletter Signup' }
+        it { expect(block).to have_content 'Get the latest news from Energy Sparks in your inbox' }
+        it { expect(block).not_to have_field :email_address, placeholder: 'eg: hello@example.com' }
+        it { expect(block).to have_button('Sign-up now') }
+        it { expect(block).to have_content "We'll never share your email with anyone else" }
+      end
     end
   end
 
