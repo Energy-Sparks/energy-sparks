@@ -65,11 +65,9 @@ module Charts
       # if single meter, then the underlying meters is the aggregate meter
       # just return the range for aggregate adapter in this case so its labelled
       # correctly as "the whole school"
-      unless @include_whole_school && underlying_meters.count == 1
-        meters.concat(displayable_meters.map { |meter| [meter] * 2 })
-      end
+      meters.concat(displayable_meters) unless @include_whole_school && underlying_meters.count == 1
       meters.to_h do |meter, meter_adapter|
-        [meter.mpan_mprn, { meter: meter_adapter, start_date: start_date(meter), end_date: end_date(meter) }]
+        [meter.mpan_mprn, { meter: meter_adapter || meter, start_date: start_date(meter), end_date: end_date(meter) }]
       end
     end
 
