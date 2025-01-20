@@ -39,8 +39,7 @@ module Schools
     end
 
     def update
-      if @solis_cloud_installation.update(solis_cloud_installation_params)
-        # Solar::SolarEdgeInstallationFactory.update_information(@solar_edge_installation)
+      if @installation.update(solis_cloud_installation_params)
         redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'SolisCloud API feed was updated'
       else
         render :edit
