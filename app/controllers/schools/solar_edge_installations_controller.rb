@@ -4,6 +4,7 @@ module Schools
   class SolarEdgeInstallationsController < BaseInstallationsController
     ID_PREFIX = 'solar-edge'
     NAME = 'SolarEdge'
+    JOB_CLASS = Solar::SolarEdgeLoaderJob
 
     def show
       @api_params = { api_key: @installation.api_key, format: :json }
@@ -53,12 +54,6 @@ module Schools
     def check
       @api_ok = Solar::SolarEdgeInstallationFactory.check(@installation)
       respond_to(&:js)
-    end
-
-    def submit_job
-      Solar::SolarEdgeLoaderJob.perform_later(installation: @installation, notify_email: current_user.email)
-      redirect_to school_solar_feeds_configuration_index_path(@school),
-                  notice: "Loading job has been submitted. An email will be sent to #{current_user.email} when complete."
     end
 
     private
