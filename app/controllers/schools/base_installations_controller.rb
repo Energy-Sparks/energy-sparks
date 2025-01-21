@@ -12,6 +12,15 @@ module Schools
 
     def edit; end
 
+    def update
+      if @installation.update(resource_params)
+        redirect_to school_solar_feeds_configuration_index_path(@school),
+                    notice: "#{self.class::NAME} API feed was updated"
+      else
+        render :edit
+      end
+    end
+
     def destroy
       @installation.meters.each { |meter| MeterManagement.new(meter).delete_meter! }
       @installation.destroy
