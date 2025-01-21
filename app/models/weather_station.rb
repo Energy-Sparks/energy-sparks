@@ -27,11 +27,11 @@ class WeatherStation < ApplicationRecord
   end
 
   def earliest_observation_date
-    weather_observations.earliest&.reading_date
+    weather_observations.by_date&.first&.reading_date
   end
 
   def latest_observation_date
-    weather_observations.latest&.reading_date
+    weather_observations.by_date&.last&.reading_date
   end
 
   def has_sufficient_readings?(latest_date, minimum_readings_per_year)

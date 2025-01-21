@@ -21,8 +21,6 @@
 class WeatherObservation < ApplicationRecord
   belongs_to :weather_station
   scope :by_date, -> { order(:reading_date) }
-  scope :earliest, -> { by_date.first }
-  scope :latest, -> { by_date.last }
   scope :since, ->(date) { where('reading_date >= ?', date) }
   scope :between, ->(start_date, end_date) { where(reading_date: start_date..end_date) }
   scope :any_zero_readings, -> { where('0.0 = ANY(temperature_celsius_x48)') }
