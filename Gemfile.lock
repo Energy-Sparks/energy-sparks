@@ -685,7 +685,7 @@ GEM
     ruby_parser (3.20.3)
       sexp_processor (~> 4.16)
     rubyvis (0.6.1)
-    rubyzip (2.3.2)
+    rubyzip (2.4.1)
     sanitize (6.1.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -714,7 +714,7 @@ GEM
       railties (>= 4.0.0)
     scout_apm (5.6.0)
       parser
-    selenium-webdriver (4.27.0)
+    selenium-webdriver (4.28.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
