@@ -63,7 +63,7 @@ RSpec.describe 'SolisCloud installation management' do
       before { click_on 'Manage Solar API feeds' }
 
       it 'displays the feed config' do
-        expect(page).to have_content(installation.id)
+        expect(page).to have_content(installation.api_id)
       end
 
       it 'allows editing' do
@@ -75,7 +75,7 @@ RSpec.describe 'SolisCloud installation management' do
 
         expect(page).to have_content('SolisCloud API feed was updated')
         expect(page).to have_content('new_id')
-        expect(SolisCloudInstallation.last.api_key).to eq('new_id')
+        expect(SolisCloudInstallation.last.api_id).to eq('new_id')
       end
 
       it 'allows deletion' do
