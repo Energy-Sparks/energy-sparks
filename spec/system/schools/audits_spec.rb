@@ -1,7 +1,14 @@
 require 'rails_helper'
 
-describe 'Audits', type: :system do
+describe 'Audits', :include_application_helper, type: :system do
   let!(:school) { create(:school) }
+  let(:audit) do
+    if Flipper.enabled?(:todos)
+      create(:audit, :with_todos, title: 'Our audit', description: 'Description of the audit', school:)
+    else
+      create(:audit, :with_activity_and_intervention_types, title: 'Our audit', description: 'Description of the audit', school:)
+    end
+  end
 
   describe 'as an admin' do
     let(:admin) { create(:admin) }
@@ -19,11 +26,7 @@ describe 'Audits', type: :system do
       expect(page).to have_content('New audit')
     end
 
-    context 'with todos switched on' do
-      before do
-        Flipper.enable :todos
-      end
-
+    context with_feature: :todos do
       it 'allows me to create, edit and delete an audit' do
         visit school_audits_path(school)
         click_on('New audit')
@@ -138,7 +141,7 @@ describe 'Audits', type: :system do
       end
     end
 
-    context 'with todos switched off' do
+    context without_feature: :todos do
       it 'allows me to create, edit and delete an audit' do
         visit school_audits_path(school)
         click_on('New audit')
@@ -303,7 +306,7 @@ describe 'Audits', type: :system do
       end
     end
 
-    context 'with an audit' do
+    context 'with an audit', without_feature: :todos do
       let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: 'Our audit', description: 'Description of the audit', school: school) }
 
       let!(:other_audit) { create(:audit, :with_activity_and_intervention_types, title: 'Unpublished', description: 'Description of the audit', school: school, published: false) }
@@ -371,8 +374,64 @@ describe 'Audits', type: :system do
         end
       end
 
-      it 'shows link to action is recorded since audit'
-      it 'shows link to activity if recorded since audit'
+      it 'shows audit in timeline' do
+        visit school_path(school)
+        expect(page).to have_content('Received an energy audit')
+      end
+    end
+
+    context 'with an audit', with_feature: :todos do
+      let!(:other_audit) { create(:audit, :with_todos, title: 'Unpublished', description: 'Description of the audit', school:, published: false) }
+
+      before do
+        Audits::AuditService.new(school).process(audit)
+        Audits::AuditService.new(school).process(other_audit)
+        visit school_audits_path(school)
+      end
+
+      it 'lets me view a list of audits' do
+        expect(page).not_to have_content('The Energy Sparks team have not carried out an energy audit for your school')
+        expect(page).to have_content('Our audit')
+        expect(page).to have_content(audit.created_at.strftime('%A, %d %B %Y'))
+      end
+
+      it 'doesnt show unpublished audits' do
+        expect(page).not_to have_content('Unpublished')
+      end
+
+      it 'gives link to book another audit' do
+        click_link 'Book another audit'
+        expect(page).to have_content('Energy Sparks offers two types of energy audits')
+      end
+
+      it 'doesnt show admin options on list of audits' do
+        expect(page).not_to have_content('New audit')
+        within '#audits' do
+          expect(page).not_to have_content('Edit')
+          expect(page).not_to have_content('Remove')
+        end
+      end
+
+      context 'when viewing an audit' do
+        before do
+          click_on('Our audit')
+        end
+
+        it 'lets me view an audit' do
+          expect(page).to have_content('Our audit')
+          expect(page).to have_content('Description of the audit')
+          expect(page).to have_link('View all audits')
+          expect(page).to have_link(href: rails_blob_path(audit.file))
+        end
+
+        it 'doesnt show admin options when viewing audit' do
+          expect(page).not_to have_css('#audit-admin-tools')
+        end
+
+        it_behaves_like 'a todo list when there is a completable' do
+          let(:assignable) { audit }
+        end
+      end
 
       it 'shows audit in timeline' do
         visit school_path(school)
@@ -381,58 +440,74 @@ describe 'Audits', type: :system do
     end
   end
 
-  describe 'as a staff member' do
-    let!(:staff) { create(:staff, school: school) }
-    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: 'Our audit', description: 'Description of the audit', school: school) }
+  context toggle_feature: :todos do
+    describe 'as a staff member' do
+      let!(:staff) { create(:staff, school: school) }
 
-    before do
-      Audits::AuditService.new(school).process(audit)
-      sign_in(staff)
-      visit school_path(school)
+      before do
+        Audits::AuditService.new(school).process(audit)
+        sign_in(staff)
+        visit school_path(school)
+      end
+
+      it 'shows audit in timeline' do
+        expect(page).to have_content('Received an energy audit')
+      end
+
+      context 'when viewing an audit', if: Flipper.enabled?(:todos) do
+        before do
+          visit school_audit_path(school, audit)
+        end
+
+        it_behaves_like 'a todo list when there is a completable' do
+          let(:assignable) { audit }
+        end
+      end
     end
 
-    it 'shows audit in timeline' do
-      visit school_path(school)
-      expect(page).to have_content('Received an energy audit')
-    end
-  end
+    describe 'as pupil' do
+      let(:pupil) { create(:pupil, school: school)}
 
-  describe 'as pupil' do
-    let(:pupil) { create(:pupil, school: school)}
-    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: 'Our audit', description: 'Description of the audit', school: school) }
+      before do
+        Audits::AuditService.new(school).process(audit)
+        sign_in(pupil)
+        visit school_path(school)
+      end
 
-    before do
-      Audits::AuditService.new(school).process(audit)
-      sign_in(pupil)
-      visit school_path(school)
-    end
+      it 'shows audit in timeline' do
+        expect(page).to have_content('Received an energy audit')
+      end
 
-    it 'shows audit in timeline' do
-      visit school_path(school)
-      expect(page).to have_content('Received an energy audit')
-    end
-  end
+      context 'when viewing an audit', if: Flipper.enabled?(:todos) do
+        before do
+          visit school_audit_path(school, audit)
+        end
 
-  describe 'as a guest user' do
-    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: 'Our audit', description: 'Description of the audit', school: school) }
-
-    before do
-      Audits::AuditService.new(school).process(audit)
+        it_behaves_like 'a todo list when there is a completable' do
+          let(:assignable) { audit }
+        end
+      end
     end
 
-    it 'shows audit in timeline' do
-      visit school_path(school)
-      expect(page).to have_content('Received an energy audit')
-    end
+    describe 'as a guest user' do
+      before do
+        Audits::AuditService.new(school).process(audit)
+      end
 
-    it 'does not let me view list of audits' do
-      visit school_audits_path(school)
-      expect(page).to have_content('You need to sign in')
-    end
+      it 'shows audit in timeline' do
+        visit school_path(school)
+        expect(page).to have_content('Received an energy audit')
+      end
 
-    it 'does not let me view an audit' do
-      visit school_audit_path(school, audit)
-      expect(page).to have_content('You need to sign in')
+      it 'does not let me view list of audits' do
+        visit school_audits_path(school)
+        expect(page).to have_content('You need to sign in')
+      end
+
+      it 'does not let me view an audit' do
+        visit school_audit_path(school, audit)
+        expect(page).to have_content('You need to sign in')
+      end
     end
   end
 end

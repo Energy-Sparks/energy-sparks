@@ -142,6 +142,10 @@ class ActivityType < ApplicationRecord
     school.activities.where(activity_type: self).where(happened_on: academic_year.start_date..academic_year.end_date).count
   end
 
+  def public_type
+    :activity
+  end
+
   private
 
   def copy_searchable_attributes

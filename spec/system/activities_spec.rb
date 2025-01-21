@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'viewing and recording activities' do
   let!(:activity_category) { create(:activity_category) }
-  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
+  let!(:audit) {}
 
   let!(:subject)  { Subject.create(name: 'Science and Technology') }
   let!(:ks1)      { KeyStage.create(name: 'KS1') }
@@ -161,6 +161,8 @@ describe 'viewing and recording activities' do
       end
 
       context without_feature: :todos do
+        let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
+
         before do
           click_on 'Record this activity'
         end
@@ -176,7 +178,7 @@ describe 'viewing and recording activities' do
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          it_behaves_like 'a task completed page with programme complete message'
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity
 
           context 'when viewing the activity' do
             before do
@@ -205,7 +207,7 @@ describe 'viewing and recording activities' do
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          it_behaves_like 'a task completed page with programme complete message'
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity
 
           context 'when viewing the activity' do
             before do
@@ -273,6 +275,8 @@ describe 'viewing and recording activities' do
       end
 
       context with_feature: :todos do
+        let(:audit) { create(:audit, :with_todos, school:) }
+
         before do
           click_on 'Record this activity'
         end
@@ -287,9 +291,8 @@ describe 'viewing and recording activities' do
             click_on 'Save activity'
           end
 
-          it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          # pending todos frontend
-          # it_behaves_like 'a task completed page with programme complete message'
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity, with_todos: true
 
           context 'when viewing the activity' do
             before do
@@ -317,9 +320,8 @@ describe 'viewing and recording activities' do
             click_on 'Save activity'
           end
 
-          it_behaves_like 'a task completed page', points: 25, task_type: :activity
-          # Pending todos frontend
-          # it_behaves_like 'a task completed page with programme complete message'
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity, with_todos: true
 
           context 'when viewing the activity' do
             before do
