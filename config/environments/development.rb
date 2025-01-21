@@ -104,4 +104,5 @@ Rails.application.configure do
   I18n::Backend::Simple.include(I18n::Backend::Mirror)
   # View components - Always place view in a sidecar directory when using the generator
   config.view_component.generate.sidecar = true
+  config.active_job.queue_adapter = :good_job
 end
