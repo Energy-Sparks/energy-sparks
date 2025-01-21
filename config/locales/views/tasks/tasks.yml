@@ -14,3 +14,6 @@ en:
       points: You've just scored %{points} points
       share: Share what you’ve done with others in the school community
       what_next: What do you want to do next?
+    score:
+      action: Score for this action
+      activity: Score for this activity
