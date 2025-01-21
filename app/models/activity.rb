@@ -30,6 +30,7 @@
 
 class Activity < ApplicationRecord
   include Description
+  include Todos::Recording
 
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities
@@ -39,7 +40,6 @@ class Activity < ApplicationRecord
   has_many :programme_activities
   has_many :programmes, through: :programme_activities
   has_many :observations
-  has_many :completed_todos, as: :recording, dependent: :destroy
 
   validates_presence_of :school, :activity_type, :activity_category, :happened_on
 

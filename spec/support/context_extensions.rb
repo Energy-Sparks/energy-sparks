@@ -20,6 +20,7 @@ module ContextExtensions
           before { Flipper.enable(name) }
 
           instance_eval(&block)
+
           after { Flipper.disable(name) }
         end
       end

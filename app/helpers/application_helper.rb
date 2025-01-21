@@ -541,4 +541,14 @@ module ApplicationHelper
     return '' unless label.present?
     label.gsub(%r{/}, '/<wbr>').html_safe
   end
+
+  def recording_path(recording)
+    if recording.is_a?(Activity)
+      school_activity_path(recording.school, recording)
+    elsif recording.is_a?(Observation) && recording.observation_type == 'intervention'
+      school_intervention_path(recording.school, recording)
+    else
+      raise StandardError, 'Unsupported recording type'
+    end
+  end
 end

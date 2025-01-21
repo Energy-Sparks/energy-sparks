@@ -342,15 +342,80 @@ describe User do
   end
 
   describe '#destroy' do
-    it 'allow deletion when there are linked observations' do
-      user = create(:user)
-      obs1 = create(:observation, :intervention, created_by: user)
-      obs2 = create(:observation, :intervention, created_by: create(:user), updated_by: user)
-      user.destroy
-      obs1.reload
-      expect(obs1.created_by).to be_nil
-      obs2.reload
-      expect(obs2.updated_by).to be_nil
+    shared_examples 'created by nullified on user destroy' do
+      before { user.destroy! }
+
+      it 'created_by is nullified' do
+        expect(object.reload.created_by).to be_nil
+      end
+    end
+
+    shared_examples 'updated by nullified on user destroy' do
+      before { user.destroy! }
+
+      it 'updated_by is nullified' do
+        expect(object.reload.updated_by).to be_nil
+      end
+    end
+
+    let!(:user) { create(:user) }
+
+    context 'when observation has been created by user' do
+      let!(:object) { create(:observation, :intervention, created_by: user) }
+
+      it_behaves_like 'created by nullified on user destroy'
+    end
+
+    context 'when observation has been updated by user' do
+      let!(:object) { create(:observation, :intervention, created_by: create(:user), updated_by: user) }
+
+      it_behaves_like 'updated by nullified on user destroy'
+    end
+
+    context 'when energy tariff has been created by user' do
+      let!(:object) { create(:energy_tariff, created_by: user) }
+
+      it_behaves_like 'created by nullified on user destroy'
+    end
+
+    context 'when energy tariff has been updated by user' do
+      let!(:object) { create(:energy_tariff, created_by: create(:user), updated_by: user) }
+
+      it_behaves_like 'updated by nullified on user destroy'
+    end
+
+    context 'when issue has been created by user' do
+      let!(:object) { create(:issue, created_by: user) }
+
+      it_behaves_like 'created by nullified on user destroy'
+    end
+
+    context 'when issue has been updated by user' do
+      let!(:object) { create(:issue, updated_by: user) }
+
+      it_behaves_like 'updated by nullified on user destroy'
+    end
+
+    context 'when activity has been updated by user' do
+      let!(:object) { create(:activity, updated_by: user) }
+
+      it_behaves_like 'updated by nullified on user destroy'
+    end
+
+    context 'with linked school groups for issues admin' do
+      let!(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before { user.destroy! }
+
+      it 'default_issues_admin is nullified' do
+        expect(school_group.reload.default_issues_admin_user).to be_nil
+      end
+    end
+
+    context 'when user has been created by another user' do
+      let!(:object) { create(:user, created_by: user) }
+
+      it_behaves_like 'created by nullified on user destroy'
     end
   end
 end

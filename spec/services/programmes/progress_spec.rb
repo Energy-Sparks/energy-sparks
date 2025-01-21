@@ -4,11 +4,11 @@ require 'rails_helper'
 
 describe Programmes::Progress, type: :service do
   let!(:school) { create(:school) }
+  let(:service) { described_class.new(programme) }
+
   let!(:activity_types) { create_list(:activity_type, 3, score: 25) }
   let!(:programme_type) { create(:programme_type, activity_types:, bonus_score: 12) }
   let!(:programme) { create(:programme, programme_type:, started_on: '2020-01-01', school:) }
-
-  let(:service) { described_class.new(programme) }
 
   context 'when a programme activity has been completed' do
     let(:activity) do

@@ -23,4 +23,9 @@ module Recordable
   def count_existing_for_academic_year(_school, _academic_year)
     nil
   end
+
+  # Publically we refer to ActivityType as activity and InterventionType as action
+  def public_type
+    raise NoMethodError, 'Implement in including class!'
+  end
 end

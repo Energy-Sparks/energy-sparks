@@ -130,7 +130,7 @@ Rails.application.configure do
   config.cache_store = :file_store, "/var/cache/rails_cache_store"
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
-  config.good_job.execution_mode = :external
+  config.active_job.queue_adapter = :good_job
   config.good_job.on_thread_error = -> (exception) { Rollbar.error(exception, from: :on_thread_error) }
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = { api_key: ENV['MG_API_KEY'], domain: ENV['MG_DOMAIN'] }

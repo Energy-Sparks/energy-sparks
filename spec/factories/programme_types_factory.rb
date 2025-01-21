@@ -13,6 +13,7 @@ FactoryBot.define do
       end
     end
 
+    # old way - remove when :todos feature removed
     factory :programme_type_with_activity_types do
       transient do
         count { 3 }
