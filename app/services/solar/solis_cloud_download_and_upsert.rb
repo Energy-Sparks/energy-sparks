@@ -47,8 +47,16 @@ module Solar
       stations = api.user_station_list.dig('data', 'page', 'records') || []
       @installation.update!(station_list: stations)
       stations.map do |station|
-        station[:readings] = (start_date(station)..end_date).map do |date|
-          [date, create_kwh_data_x48(api.station_day(station['id'], date)['data'])]
+        station[:readings] = (start_date(station)..end_date).filter_map do |date|
+          Rails.logger.debug { "SolisCloud download for #{station['id']} #{date}" }
+          begin
+            station_day = api.station_day(station['id'], date)
+            # sometimes the data attribute can be nil
+            [date, create_kwh_data_x48(station_day['data'])] if station_day['data']
+          rescue StandardError => e
+            EnergySparks::Log.exception(e, station_id: station['id'], date:, station_day:)
+            raise
+          end
         end
         [:solar_pv, station]
       end
