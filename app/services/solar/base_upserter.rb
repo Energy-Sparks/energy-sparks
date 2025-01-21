@@ -16,9 +16,7 @@ module Solar
       @readings.each do |meter_type, details|
         mpan_mprn = synthetic_mpan(meter_type, details)
         attributes = meter_model_attributes(details)
-        meter = Meter.find_or_create_by!(meter_type: meter_type,
-                                         mpan_mprn: mpan_mprn,
-                                         school: @installation.school) do |new_record|
+        meter = Meter.find_or_create_by!(meter_type:, mpan_mprn:, school: @installation.school) do |new_record|
           new_record.assign_attributes({ name: meter_type.to_s.humanize, active: false }.merge(attributes))
         end
         meter.update!(attributes) unless meter.attributes >= attributes
