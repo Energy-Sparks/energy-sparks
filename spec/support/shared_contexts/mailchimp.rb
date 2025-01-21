@@ -1,6 +1,10 @@
 RSpec.shared_context 'with a stubbed audience manager' do
   let(:list) { OpenStruct.new(id: '1234') }
-  let(:interests) { [OpenStruct.new(id: 'abcd', name: 'Newsletter')] }
+  let(:interests) do
+    [
+      OpenStruct.new(id: 'abcd', name: 'Newsletter', i18n_name: I18n.t('mailchimp.audience_manager.interests.newsletter'))
+    ]
+  end
   let(:categories) do
     [
       OpenStruct.new(id: 1, title: 'Category'),
