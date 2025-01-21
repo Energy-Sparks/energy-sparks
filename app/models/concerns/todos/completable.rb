@@ -6,7 +6,7 @@ module Todos
 
     included do
       has_many :completed_todos, as: :completable, dependent: :destroy
-      has_many :completed_tasks, through: :completed_todos, source: :todo, class_name: 'Todo'
+      has_many :todos_completed, through: :completed_todos, source: :todo, class_name: 'Todo'
       has_many :completed_activity_types, through: :completed_todos, source: :activity_type
       has_many :completed_intervention_types, through: :completed_todos, source: :intervention_type
 
@@ -39,8 +39,20 @@ module Todos
       has_todos? && todos_complete?
     end
 
+    def todos_incomplete?
+      (assignable_todo_ids - completed_todo_ids).any?
+    end
+
     def todos_complete?
       (assignable_todo_ids - completed_todo_ids).empty?
+    end
+
+    def uncompleted_todos
+      assignable_todos - todos_completed
+    end
+
+    def uncompleted_tasks
+      uncompleted_todos.map(&:task)
     end
 
     def task_complete!(task:, recording:)
