@@ -74,7 +74,7 @@ RSpec.describe 'SolisCloud installation management' do
         click_on 'Submit'
 
         expect(page).to have_content('SolisCloud API feed was updated')
-        expect(page).to have_content(new_api_key)
+        expect(page).to have_content('new_id')
         expect(SolisCloudInstallation.last.api_key).to eq('new_id')
       end
 
