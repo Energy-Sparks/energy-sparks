@@ -10,7 +10,6 @@ module DataFeeds
         f.response :json
         f.response :raise_error
         f.response :logger if Rails.env.development?
-        f.request(:retry, { retry_statuses: [429], interval: 0.5, backoff_factor: 2 })
       end
     end
 
