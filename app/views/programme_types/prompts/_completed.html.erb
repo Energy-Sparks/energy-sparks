@@ -1,15 +1,13 @@
-<%= render InfoBarComponent.new(
-      title: t('programme_types.completed.you_completed_this_programme_on',
-               date: nice_dates(programme_type.programme_for_school(school).ended_on)),
-      status: :neutral,
-      icon: fa_icon('check fa-3x'),
-      buttons:
-      if @programme_type.repeatable?(school)
-        { t('programme_types.completed.repeat') => {
-          url: school_programmes_path(school, programme_type_id: @programme_type),
-          method: :post
-        } }
-      else
-        {}
-      end
-    ) %>
+<%= render PromptComponent.new(icon: 'check', status: :positive) do |c| %>
+  <b>
+    <%= t('programme_types.completed.you_completed_this_programme_on',
+          date: nice_dates(programme_type.programme_for_school(school).ended_on)) %>
+  </b>
+  <% if programme_type.repeatable?(school) %>
+    <% c.with_link do %>
+      <%= link_to t('programme_types.completed.repeat'),
+                  school_programmes_path(school, programme_type_id: programme_type),
+                  method: :post %>
+    <% end %>
+  <% end %>
+<% end %>

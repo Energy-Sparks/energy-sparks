@@ -70,7 +70,7 @@
   <%# i18n-tasks-use t("common.labels.view_now") %>
   <% if Flipper.enabled?(:todos, user) %>
     <% add_prompt(id: :audit,
-                  check: last_audit.todos_incomplete?,
+                  check: last_audit&.todos_incomplete?,
                   list: list,
                   status: :neutral,
                   icon: 'laptop',
