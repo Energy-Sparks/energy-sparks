@@ -127,7 +127,7 @@
         <dt class="col-sm-3">Perse API</dt>
         <dd class="col-sm-9"><%= options_for_perse_api.to_h(&:reverse)[@meter.perse_api] %></dd>
         <dt class="col-sm-3">Latest reading</dt>
-        <dd class="col-sm-9"><%= Amr::PerseUpsert.new.latest_reading_date(config, @meter) || 'None' %></dd>
+        <dd class="col-sm-9"><%= Amr::PerseUpsert.new.latest_reading_date(@meter) || 'None' %></dd>
       </dl>
     </div>
 <% end %>

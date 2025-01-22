@@ -3,7 +3,6 @@
 module Amr
   class PerseUpsert
     def initialize
-      @api = DataFeeds::PerseApi.new
       @config = AmrDataFeedConfig.find_by(identifier: 'perse-half-hourly-api')
     end
 
@@ -43,6 +42,7 @@ module Amr
     end
 
     def meter_history_readings(mpan, from_date)
+      @api ||= DataFeeds::PerseApi.new
       @api.meter_history_realtime_data(mpan, from_date)['data']
           &.select { |data| data_ok(data) }
           &.map { |data| [data['Date'], (1..48).map { |i| to_f_if_not_nil(data["P#{i}"]) }] } || []
