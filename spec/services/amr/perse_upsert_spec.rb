@@ -4,6 +4,8 @@ require 'rails_helper'
 
 describe Amr::PerseUpsert do
   describe '#perform' do
+    subject(:upserter) { described_class.new }
+
     around do |example|
       travel_to(Date.new(2024, 12, 10))
       create(:amr_data_feed_config, identifier: 'perse-half-hourly-api')
@@ -17,7 +19,7 @@ describe Amr::PerseUpsert do
       stub_request(:get, "http://example.com/meterhistory/v2/realtime-data?MPAN=#{meter.mpan_mprn}&fromDate=2023-10-10")
         .to_return(body: File.read('spec/fixtures/perse/meter_history_v2_realtime-data.json'),
                    headers: { 'content-type': 'application/json' })
-      described_class.perform(meter)
+      upserter.perform(meter)
       expect(AmrDataFeedReading.where(meter: meter).count).to eq(331)
       expect(AmrDataFeedReading.where(meter: meter, reading_date: '2024-12-01').pluck(:readings)).to eq(
         [
@@ -33,12 +35,12 @@ describe Amr::PerseUpsert do
       stub_request(:get, "http://example.com/meterhistory/v2/realtime-data?MPAN=#{meter.mpan_mprn}&fromDate=2024-12-01")
         .to_return(body: File.read('spec/fixtures/perse/meter_history_v2_realtime-data.json'),
                    headers: { 'content-type': 'application/json' })
-      log = described_class.perform(meter)
+      log = upserter.perform(meter)
       expect(log.records_updated).to eq(331)
       WebMock.reset!
       stub_request(:get, "http://example.com/meterhistory/v2/realtime-data?MPAN=#{meter.mpan_mprn}&fromDate=2023-10-10")
         .to_return(body: { data: [] }.to_json, headers: { 'content-type': 'application/json' })
-      log = described_class.perform(meter, reload: true)
+      log = upserter.perform(meter, reload: true)
       expect(log.records_updated).to eq(0)
     end
   end
