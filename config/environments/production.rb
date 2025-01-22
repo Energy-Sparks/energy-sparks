@@ -109,10 +109,6 @@ Rails.application.configure do
   config.action_mailer.show_previews = true
   # Rspec makes rails use spec/mailers/previews as the mail previews path
   config.action_mailer.preview_paths << Rails.root.join('spec', 'mailers', 'previews')
-  # Attempt to read encrypted secrets from `config/secrets.yml.enc`.
-  # Requires an encryption key in `ENV["RAILS_MASTER_KEY"]` or
-  # `config/secrets.yml.key`.
-  config.read_encrypted_secrets = true
   if ENV['RAILS_SERVE_STATIC_FILES'].present?
     # serve the assets from a different folder so they aren't served by NGINX
     config.public_file_server.enabled = true
