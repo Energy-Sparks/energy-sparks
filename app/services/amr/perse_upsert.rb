@@ -12,7 +12,8 @@ module Amr
       date = 14.months.ago
       date = latest_reading_date(meter) || date unless reload
       log = create_log(meter, date)
-      reading_hashes = meter_history_readings(meter.mpan_mprn, date).map do |reading_date, readings|
+      data = api.meter_history_realtime_data(meter.mpan_mprn, date)
+      reading_hashes = process_data(data).map do |reading_date, readings|
         { mpan_mprn: meter.mpan_mprn,
           reading_date:,
           readings:,
@@ -21,7 +22,7 @@ module Amr
       end
       DataFeedUpserter.new(@config, log, reading_hashes).perform
     rescue StandardError => e
-      EnergySparks::Log.exception(e, job: :perse_upsert, meter_id: meter.mpan_mprn)
+      EnergySparks::Log.exception(e, job: :perse_upsert, meter_id: meter.mpan_mprn, date:, data:)
       log&.update!(error_messages: "Error downloading data for #{meter.mpan_mprn} from #{date} : #{e.message}")
       log
     end
@@ -41,15 +42,17 @@ module Amr
       )
     end
 
-    def meter_history_readings(mpan, from_date)
+    def api
       @api ||= DataFeeds::PerseApi.new
-      @api.meter_history_realtime_data(mpan, from_date)['data']
-          &.select { |data| data_ok(data) }
-          &.map { |data| [data['Date'], (1..48).map { |i| to_f_if_not_nil(data["P#{i}"]) }] } || []
     end
 
-    def data_ok(data)
-      data['MeasurementQuantity'] == 'AI' && (1..48).all? { |i| data["UT#{i}"] == 'A' }
+    def process_data(data)
+      data['data']&.select { |reading| reading_ok(reading) }
+                  &.map { |reading| [reading['Date'], (1..48).map { |i| to_f_if_not_nil(reading["P#{i}"]) }] } || []
+    end
+
+    def reading_ok(reading)
+      reading['MeasurementQuantity'] == 'AI' && (1..48).all? { |i| reading["UT#{i}"] == 'A' }
     end
 
     def to_f_if_not_nil(item)
