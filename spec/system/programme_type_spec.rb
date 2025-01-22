@@ -486,6 +486,14 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
             expect(page).to have_content('You can enrol your school in this programme')
           end
         end
+
+        context 'when programme type is not active' do
+          before do
+            visit programme_type_path(programme_type_2)
+          end
+
+          it { expect(page).to have_content('Page not found') }
+        end
       end
     end
 
@@ -574,6 +582,14 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
             expect(page).to have_content(programme_type_1.title)
             expect(page).to have_content('You can enrol your school in this programme')
           end
+        end
+
+        context 'when programme type is not active' do
+          before do
+            visit programme_type_path(programme_type_2)
+          end
+
+          it { expect(page).to have_content('Page not found') }
         end
       end
     end
