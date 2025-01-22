@@ -41,16 +41,6 @@ module AdvicePageHelper
     I18n.t('date.month_names')[date.month] + ' ' + date.year.to_s
   end
 
-  def partial_year_note(year, amr_start_date, amr_end_date)
-    if year == amr_start_date.year && (amr_start_date > Date.new(year, 1, 1))
-      I18n.t('advice_pages.tables.labels.partial')
-    elsif year == amr_end_date.year && amr_end_date < Date.new(year, 12, 31)
-      I18n.t('advice_pages.tables.labels.partial')
-    else
-      ''
-    end
-  end
-
   def advice_baseload_high?(estimated_savings_vs_benchmark)
     estimated_savings_vs_benchmark > 0.0
   end

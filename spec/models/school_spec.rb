@@ -648,7 +648,8 @@ describe School do
     it { is_expected.to validate_presence_of(:weather_station) }
   end
 
-  describe '#suggested_programme_types' do
+  # To be removed when todos feature removed
+  describe '#suggested_programme_types', without_feature: :todos do
     let(:school) { create(:school) }
 
     let!(:programme_type_1) { create(:programme_type_with_activity_types, title: 'programme 1') }
@@ -743,6 +744,278 @@ describe School do
       before { create_activity(create(:activity_type)) }
 
       it { expect(programme_types).to be_empty }
+    end
+  end
+
+  def create_observation(intervention_type, at: Time.zone.now)
+    school.observations.intervention.create!(intervention_type: intervention_type, at: at)
+  end
+
+  def create_activity(activity_type, happened_on: Time.zone.now)
+    school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: happened_on)
+  end
+
+  describe '#suggested_programme_types_from_activities' do
+    let(:school) { create(:school) }
+
+    let!(:programme_type_1) { create(:programme_type, :with_todos, title: 'programme 1') }
+    let!(:programme_type_2) { create(:programme_type, :with_todos, title: 'programme 2') }
+
+    subject(:programme_types) { school.suggested_programme_types_from_activities }
+
+    context 'when school has not completed any activities at all' do
+      it { expect(programme_types).to be_empty }
+    end
+
+    context 'when school has completed activities from a programme type' do
+      before do
+        create_activity(programme_type_1.activity_type_tasks.first)
+        create_activity(programme_type_1.activity_type_tasks.second)
+      end
+
+      it { expect(programme_types).to include(programme_type_1) }
+      it { expect(programme_types.length).to be(1) }
+
+      it 'includes a count of activity_types completed in programme' do
+        expect(programme_types.first.recording_count).to be(2)
+      end
+
+      context 'when school is already subscribed to programme type' do
+        before do
+          school.programmes.create!(programme_type: programme_type_1, started_on: Time.zone.now)
+        end
+
+        it 'is not suggested' do
+          expect(programme_types).to be_empty
+        end
+      end
+    end
+
+    context 'when school has completed activities from multiple programme types' do
+      before do
+        create_activity(programme_type_2.activity_type_tasks.first)
+        create_activity(programme_type_2.activity_type_tasks.second)
+
+        create_activity(programme_type_1.activity_type_tasks.first)
+      end
+
+      it 'orders by recording_count desc' do
+        expect(programme_types.first).to eq(programme_type_2)
+        expect(programme_types.second).to eq(programme_type_1)
+      end
+
+      it 'includes recording counts' do
+        expect(programme_types.first.recording_count).to be(2)
+        expect(programme_types.second.recording_count).to be(1)
+      end
+    end
+
+    context 'when school has completed the same activity several times' do
+      before do
+        3.times { create_activity(programme_type_1.activity_type_tasks.first) }
+      end
+
+      it 'counts the activity types once' do
+        expect(programme_types.first.recording_count).to be(1)
+      end
+    end
+
+    context 'when activity was completed in a previous academic year' do
+      before do
+        create_activity(programme_type_1.activity_type_tasks.first, happened_on: 2.years.ago)
+      end
+
+      it "doesn't include programme" do
+        expect(programme_types.length).to be(0)
+      end
+
+      context 'when another activity was in current year' do
+        before do
+          create_activity(programme_type_1.activity_type_tasks.second, happened_on: Time.zone.now)
+        end
+
+        it 'includes programme' do
+          expect(programme_types.first).to eq(programme_type_1)
+        end
+      end
+    end
+
+    context 'when school has completed activities not in existing programmes' do
+      before { create_activity(create(:activity_type)) }
+
+      it { expect(programme_types).to be_empty }
+    end
+  end
+
+  describe '#suggested_programme_types_from_actions' do
+    let(:school) { create(:school) }
+
+    let!(:programme_type_1) { create(:programme_type, :with_todos, title: 'programme 1') }
+    let!(:programme_type_2) { create(:programme_type, :with_todos, title: 'programme 2') }
+
+    subject(:programme_types) { school.suggested_programme_types_from_actions }
+
+    context 'when school has not completed any actions at all' do
+      it { expect(programme_types).to be_empty }
+    end
+
+    context 'when school has completed actions from a programme type' do
+      before do
+        create_observation(programme_type_1.intervention_type_tasks.first)
+        create_observation(programme_type_1.intervention_type_tasks.second)
+      end
+
+      it { expect(programme_types).to include(programme_type_1) }
+      it { expect(programme_types.length).to be(1) }
+
+      it 'includes a count of intervention_types completed in programme' do
+        expect(programme_types.first.recording_count).to be(2)
+      end
+
+      context 'when school is already subscribed to programme type' do
+        before do
+          school.programmes.create!(programme_type: programme_type_1, started_on: Time.zone.now)
+        end
+
+        it 'is not suggested' do
+          expect(programme_types).to be_empty
+        end
+      end
+    end
+
+    context 'when school has completed actions from multiple programme types' do
+      before do
+        create_observation(programme_type_2.intervention_type_tasks.first)
+        create_observation(programme_type_2.intervention_type_tasks.second)
+
+        create_observation(programme_type_1.intervention_type_tasks.first)
+      end
+
+      it 'orders by recording_count desc' do
+        expect(programme_types.first).to eq(programme_type_2)
+        expect(programme_types.second).to eq(programme_type_1)
+      end
+
+      it 'includes recording counts' do
+        expect(programme_types.first.recording_count).to be(2)
+        expect(programme_types.second.recording_count).to be(1)
+      end
+    end
+
+    context 'when school has completed the same action several times' do
+      before do
+        3.times { create_observation(programme_type_1.intervention_type_tasks.first) }
+      end
+
+      it 'counts the intervention types once' do
+        expect(programme_types.first.recording_count).to be(1)
+      end
+    end
+
+    context 'when action was completed in a previous academic year' do
+      before do
+        create_observation(programme_type_1.intervention_type_tasks.first, at: 2.years.ago)
+      end
+
+      it "doesn't include programme" do
+        expect(programme_types.length).to be(0)
+      end
+
+      context 'when another action was in current year' do
+        before do
+          create_observation(programme_type_1.intervention_type_tasks.second, at: Time.zone.now)
+        end
+
+        it 'includes programme' do
+          expect(programme_types.first).to eq(programme_type_1)
+        end
+      end
+    end
+
+    context 'when school has completed actions not in existing programmes' do
+      before { create_observation(create(:intervention_type)) }
+
+      it { expect(programme_types).to be_empty }
+    end
+  end
+
+  describe '#suggested_programme_type' do
+    let(:school) { create(:school) }
+
+    subject(:results) { school.suggested_programme_type }
+
+    let(:programme_type) { results.first }
+    let(:count) { results.second }
+
+    context 'when there are two programmes' do
+      let!(:programme_type_1) { create(:programme_type, :with_todos, title: 'programme 1') }
+      let!(:programme_type_2) { create(:programme_type, :with_todos, title: 'programme 2') }
+
+      context 'when school has not completed any tasks at all' do
+        it { expect(results).to be_nil }
+      end
+
+      context 'when school has completed both activities and actions from the same programme_type' do
+        before do
+          create_observation(programme_type_1.intervention_type_tasks.first)
+          create_observation(programme_type_1.intervention_type_tasks.second)
+          create_activity(programme_type_1.activity_type_tasks.first)
+
+          create_activity(programme_type_2.activity_type_tasks.first)
+          create_activity(programme_type_2.activity_type_tasks.first)
+        end
+
+        it 'returns programme_type' do
+          expect(programme_type).to eq(programme_type_1)
+        end
+
+        it 'counts both' do
+          expect(count).to eq(3)
+        end
+      end
+
+      context 'when two programmes have the same count' do
+        before do
+          create_observation(programme_type_1.intervention_type_tasks.first)
+          create_activity(programme_type_1.activity_type_tasks.first)
+
+          create_activity(programme_type_2.activity_type_tasks.first)
+          create_activity(programme_type_2.activity_type_tasks.second)
+        end
+
+        it 'returns count' do
+          expect(count).to eq(2)
+        end
+
+        it 'returns either of them' do
+          expect(programme_type).to eq(programme_type_2)
+
+          expect([programme_type_1, programme_type_2]).to include(programme_type)
+        end
+      end
+    end
+
+    context 'when there are several programme types and tasks have been completed for them all' do
+      let!(:programme_types) { create_list(:programme_type, 4, :with_todos) }
+
+      before do
+        programme_types.each do |programme_type|
+          # creates one of each intervention type for each programme
+          3.times {|count| create_observation(programme_type.intervention_type_tasks[count]) }
+          # creates the first two activity types for each programme
+          2.times {|count| create_activity(programme_type.activity_type_tasks[count]) }
+        end
+
+        # creates the first two intervention types again for the first programme (not counted again)
+        2.times {|count| create_observation(programme_types.first.intervention_type_tasks[count]) }
+        # creates all three intervention types for the last programme (adds one more to count for last programme type)
+        3.times {|count| create_activity(programme_types.last.activity_type_tasks[count]) }
+      end
+
+      it 'returns the programme with the greatest count' do
+        expect(programme_type).to eq(programme_types.last)
+        expect(count).to eq(6)
+      end
     end
   end
 

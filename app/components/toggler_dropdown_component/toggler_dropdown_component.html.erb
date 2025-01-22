@@ -1,0 +1,19 @@
+<% if hide %>
+  <div class="bg-light border rounded py-2 m-4">
+    <div class="col-12 clearfix">
+      <span data-toggle="collapse"
+            href="#target-<%= identifier %>"
+            role="button" aria-expanded="true" aria-controls="target"
+            class="px-2 toggler text-decoration-none collapsed">
+        <%= toggler %>
+        <strong><%= title %></strong>
+      </span>
+
+      <div id='target-<%= identifier %>' class='collapse p-4'>
+        <%= content %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <%= content %>
+<% end %>

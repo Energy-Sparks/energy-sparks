@@ -1,6 +1,14 @@
-<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: advice_t('electricity_costs.analysis.comparison.title') %>
+<%= render 'schools/advice/section_title', section_id: 'comparison',
+                                           section_title: advice_t('electricity_costs.analysis.comparison.title') %>
 
-<%= component 'chart', chart_type: :electricity_cost_comparison_last_2_years_accounting, school: school do |c| %>
+<%= render ChartComponent.new(
+      chart_type: :electricity_cost_comparison_last_2_years_accounting,
+      school: school,
+      chart_config: create_chart_config(school, :electricity_cost_comparison_last_2_years_accounting, mpan_mprn)
+    ) do |c| %>
   <% c.with_title { advice_t('electricity_costs.charts.cost_comparison_last_2_years_accounting.title') } %>
-  <% c.with_subtitle { advice_t('electricity_costs.charts.cost_comparison_last_2_years_accounting.subtitle_html', end_date: analysis_dates.end_date.to_fs(:es_short)) } %>
+  <% c.with_subtitle do
+       advice_t('electricity_costs.charts.cost_comparison_last_2_years_accounting.subtitle_html',
+                end_date: analysis_dates.fixed_academic_year_end.to_fs(:es_short))
+     end %>
 <% end %>

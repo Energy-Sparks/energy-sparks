@@ -275,9 +275,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
 
       it 'the dcc checkboxes and status are shown on the edit form' do
         click_on 'Edit'
-        check 'DCC Smart Meter'
+        expect(page).to have_select('DCC Smart Meter', selected: 'Smets2')
+        select 'Other', from: 'DCC Smart Meter'
         click_on 'Update Meter'
-        expect(meter.reload.dcc_meter).to eq('smets2')
+        expect(meter.reload.dcc_meter).to eq('other')
       end
 
       def expect_meter_reload
