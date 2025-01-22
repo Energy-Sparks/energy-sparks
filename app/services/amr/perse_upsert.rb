@@ -9,8 +9,7 @@ module Amr
     def perform(meter, reload: false)
       raise 'perse-half-hourly-api AmrDataFeedConfig missing' if @config.nil?
 
-      date = 14.months.ago
-      date = latest_reading_date(meter) || date unless reload
+      date = calculate_from_date(meter, reload)
       log = create_log(meter, date)
       data = api.meter_history_realtime_data(meter.mpan_mprn, date)
       reading_hashes = process_data(data).map do |reading_date, readings|
@@ -33,6 +32,15 @@ module Amr
     end
 
     private
+
+    def calculate_from_date(meter, reload)
+      date = 14.months.ago
+      unless reload
+        latest = latest_reading_date(meter)
+        date = latest - 7.days if latest
+      end
+      date
+    end
 
     def create_log(meter, date)
       AmrDataFeedImportLog.create(
