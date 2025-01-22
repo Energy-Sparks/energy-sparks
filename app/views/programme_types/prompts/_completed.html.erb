@@ -1,0 +1,15 @@
+<%= render InfoBarComponent.new(
+      title: t('programme_types.completed.you_completed_this_programme_on',
+               date: nice_dates(programme_type.programme_for_school(school).ended_on)),
+      status: :neutral,
+      icon: fa_icon('check fa-3x'),
+      buttons:
+      if @programme_type.repeatable?(school)
+        { t('programme_types.completed.repeat') => {
+          url: school_programmes_path(school, programme_type_id: @programme_type),
+          method: :post
+        } }
+      else
+        {}
+      end
+    ) %>

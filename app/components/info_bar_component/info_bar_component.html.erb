@@ -9,9 +9,17 @@
       <div class='<%= "col-md-#{base_columns - buttons.size * 2}" %>'>
         <%= title %>
       </div>
-      <% buttons.each do |title, path| %>
+      <% buttons.each do |title, target| %>
         <div class="col-md-2 d-flex justify-content-end">
-          <%= link_to sanitize(title), path, class: 'btn', style: 'height: fit-content;' %>
+          <% if target.is_a?(Hash) %>
+            <%= button_to sanitize(title),
+                          target[:url],
+                          method: target[:method],
+                          class: 'btn',
+                          style: 'height: fit-content;' %>
+          <% else %>
+            <%= link_to sanitize(title), target, class: 'btn', style: 'height: fit-content;' %>
+          <% end %>
         </div>
       <% end %>
     <% else %>

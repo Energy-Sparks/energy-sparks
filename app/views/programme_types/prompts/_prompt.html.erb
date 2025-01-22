@@ -1,0 +1,19 @@
+<% if programme_type.tasks_already_completed_for?(school:) %>
+  <%= render InfoBarComponent.new(
+        status: :neutral,
+        title: t('programme_types.prompt_todo.completed_message_html', count: programme_type.bonus_score),
+        icon: fa_icon('fas fa-play-circle fa-3x'),
+        buttons: { t('common.labels.complete') => {
+          url: school_programmes_path(school, programme_type_id: programme_type), method: :post
+        } }
+      ) %>
+<% else %>
+  <%= render InfoBarComponent.new(
+        status: :neutral,
+        title: t('programme_types.prompt_todo.message_html', count: programme_type.task_count_for(school:)),
+        icon: fa_icon('fas fa-play-circle fa-3x'),
+        buttons: { t('common.labels.start') => {
+          url: school_programmes_path(school, programme_type_id: programme_type), method: :post
+        } }
+      ) %>
+<% end %>
