@@ -647,6 +647,14 @@ class School < ApplicationRecord
     end
   end
 
+  def invalidate_cache_key
+    if Flipper.enabled?(:meter_collection_cache_delete_on_invalidate)
+      AggregateSchoolService.new(self).invalidate_cache
+    else
+      update_attribute(:validation_cache_key, SecureRandom.uuid)
+    end
+  end
+
   def process_data!
     raise ProcessDataError, "#{name} cannot process data as it has no meter readings" if meters_with_readings.empty?
     raise ProcessDataError, "#{name} cannot process data as it has no floor area" if floor_area.blank?

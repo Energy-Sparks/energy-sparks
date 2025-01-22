@@ -30,7 +30,7 @@ class SchoolGroupMeterAttribute < ApplicationRecord
   include AnalyticsAttribute
   belongs_to :school_group
 
-  def invalidate_school_cache
-    school_group.schools.map { |school| AggregateSchoolService.new(school).invalidate_cache }
+  def invalidate_school_cache_key
+    school_group.schools.map(&:invalidate_cache_key)
   end
 end

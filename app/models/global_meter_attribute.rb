@@ -29,8 +29,8 @@
 class GlobalMeterAttribute < ApplicationRecord
   include AnalyticsAttribute
 
-  def invalidate_school_cache
-    School.all.map { |school| AggregateSchoolService.new(school).invalidate_cache }
+  def invalidate_school_cache_key
+    School.all.map(&:invalidate_cache_key)
   end
 
   def self.for(meter)

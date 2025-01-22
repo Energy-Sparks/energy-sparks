@@ -12,7 +12,7 @@ module AnalyticsAttribute
 
     validate :input_data_valid
 
-    after_save :invalidate_school_cache
+    after_save :invalidate_school_cache_key
   end
 
   def to_analytics
