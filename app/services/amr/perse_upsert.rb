@@ -37,7 +37,7 @@ module Amr
       date = 14.months.ago
       unless reload
         latest = latest_reading_date(meter)
-        date = latest - 7.days if latest
+        date = Date.parse(latest) - 7.days if latest
       end
       date
     end

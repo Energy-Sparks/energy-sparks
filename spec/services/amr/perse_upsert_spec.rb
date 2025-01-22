@@ -32,7 +32,7 @@ describe Amr::PerseUpsert do
           ].map(&:to_s)
         ]
       )
-      stub_request(:get, "http://example.com/meterhistory/v2/realtime-data?MPAN=#{meter.mpan_mprn}&fromDate=2024-12-01")
+      stub_request(:get, "http://example.com/meterhistory/v2/realtime-data?MPAN=#{meter.mpan_mprn}&fromDate=2024-11-24")
         .to_return(body: File.read('spec/fixtures/perse/meter_history_v2_realtime-data.json'),
                    headers: { 'content-type': 'application/json' })
       log = upserter.perform(meter)
