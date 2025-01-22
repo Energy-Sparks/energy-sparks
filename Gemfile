@@ -15,6 +15,7 @@ gem 'rack'
 gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
+gem 'ruby-limiter'
 gem 'sprockets'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
 gem 'wisper' # publish subscribe for ruby objects

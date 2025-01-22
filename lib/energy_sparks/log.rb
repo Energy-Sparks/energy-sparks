@@ -3,11 +3,14 @@
 module EnergySparks
   module Log
     def self.exception(exception, context)
-      ["Exception occurred: #{exception.message}", exception.backtrace.first(10).join("\n")].each do |message|
-        puts message if Rails.env.development?
+      raise if ENV['RAISE_ON_LOG']
+
+      ["Exception occurred: #{exception.message} #{context}", exception.backtrace&.first].each do |message|
+        puts message if Rails.env.test? && !ENV['CI']
         Rails.logger.error message
       end
       Rollbar.error(exception, **context)
+      exception
     end
   end
 end
