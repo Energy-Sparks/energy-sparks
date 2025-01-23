@@ -17,23 +17,34 @@ describe 'Pupil analysis digital signage' do
   end
 
   context 'when viewing index' do
-    before do
-      visit school_digital_signage_path(school)
+    context 'when not signed in' do
+      before do
+        visit school_digital_signage_path(school)
+      end
+
+      it { expect(page).to have_content('You need to sign in or sign up before continuing') }
     end
 
-    it 'displays title' do
-      expect(page).to have_title(I18n.t('pupils.digital_signage.index.title'))
-      expect(page).to have_content(I18n.t('pupils.digital_signage.index.title'))
-    end
+    context 'when signed in' do
+      before do
+        sign_in(create(:school_admin, school: school))
+        visit school_digital_signage_path(school)
+      end
 
-    fuel_types = %i[electricity gas]
-    chart_types = %i[out_of_hours last_week]
+      it 'displays title' do
+        expect(page).to have_title(I18n.t('pupils.digital_signage.index.title'))
+        expect(page).to have_content(I18n.t('pupils.digital_signage.index.title'))
+      end
 
-    fuel_types.each do |fuel_type|
-      it { expect(page).to have_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type))}
+      fuel_types = %i[electricity gas]
+      chart_types = %i[out_of_hours last_week]
 
-      chart_types.each do |chart_type|
-        it { expect(page).to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type))}
+      fuel_types.each do |fuel_type|
+        it { expect(page).to have_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type))}
+
+        chart_types.each do |chart_type|
+          it { expect(page).to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type))}
+        end
       end
     end
   end
