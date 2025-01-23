@@ -15,8 +15,8 @@ describe Solar::SolisCloudDownloadAndUpsert do
   end
 
   def stub_stations_day(time)
-    station_day_body = File.read('spec/fixtures/solis_cloud/station_day.json')
     stub('userStationList', File.read('spec/fixtures/solis_cloud/user_station_list.json'))
+    station_day_body = File.read('spec/fixtures/solis_cloud/station_day.json')
     stub_station_day('1298491919449314564', time, station_day_body)
     stub_station_day('1298491919449314551', time, station_day_body)
   end
