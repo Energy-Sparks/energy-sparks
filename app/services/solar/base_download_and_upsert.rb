@@ -13,8 +13,8 @@ module Solar
     rescue StandardError => e
       EnergySparks::Log.exception(e, job: job, school: school.name, start_date:, end_date:,
                                      installation_id: @installation.id)
-      message = "Exception: downloading solar data from #{start_date} to #{end_date} : #{e.class} #{e.message}"
-      import_log.update!(error_messages: message)
+      import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date} : " \
+                                         "#{e.class} #{e.message}")
     end
 
     def import_log

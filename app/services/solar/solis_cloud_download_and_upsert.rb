@@ -4,7 +4,7 @@ module Solar
   class SolisCloudDownloadAndUpsert < BaseDownloadAndUpsert
     def download_and_upsert
       readings = download
-      SolisCloudUpserter.new(installation: @installation, readings: readings, import_log: import_log).perform
+      SolisCloudUpserter.new(installation: @installation, readings:, import_log:).perform
     end
 
     private
