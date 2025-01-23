@@ -10,7 +10,7 @@ module Solar
 
     def download_and_upsert
       readings = SolarEdgeDownloader.new(installation: @installation, start_date: start_date, end_date: end_date, api: solar_edge_api).readings
-      SolarEdgeUpserter.new(solar_edge_installation: @installation, readings: readings, import_log: import_log).perform
+      SolarEdgeUpserter.new(installation: @installation, readings: readings, import_log: import_log).perform
     end
 
     def job

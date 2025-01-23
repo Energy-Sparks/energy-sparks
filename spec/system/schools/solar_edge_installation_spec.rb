@@ -11,7 +11,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
   let!(:site_id) { '9999' }
   let!(:api_key) { 'api_key' }
 
-  context 'as an admin' do
+  context 'when an admin' do
     before do
       allow_any_instance_of(DataFeeds::SolarEdgeApi).to receive(:site_details).and_return({})
       allow_any_instance_of(DataFeeds::SolarEdgeApi).to receive(:site_start_end_dates).and_return([Date.yesterday, Time.zone.today])
@@ -21,7 +21,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
       visit school_meters_path(school)
     end
 
-    context 'adding a new installation' do
+    context 'when adding a new installation' do
       before do
         click_on 'Manage Solar API feeds'
       end
@@ -32,14 +32,14 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
 
       it 'allows an installation to be added' do
         click_on 'New Solar Edge API feed'
-        expect(page).to have_content('Add a new Solar Edge Site')
+        expect(page).to have_content('Add a new SolarEdge Site')
 
         fill_in(:solar_edge_installation_mpan, with: mpan)
         fill_in(:solar_edge_installation_site_id, with: site_id)
         fill_in(:solar_edge_installation_api_key, with: api_key)
 
         expect { click_on 'Submit'}.to change(SolarEdgeInstallation, :count).by(1)
-        expect(page).to have_content('Solar Edge installation was successfully created')
+        expect(page).to have_content('SolarEdge installation was successfully created')
 
         expect(page).to have_content(mpan)
         expect(page).to have_content(site_id)
@@ -75,7 +75,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
         fill_in(:solar_edge_installation_api_key, with: new_api_key)
         click_on 'Submit'
 
-        expect(page).to have_content('Solar Edge API feed was updated')
+        expect(page).to have_content('SolarEdge API feed was updated')
         expect(page).to have_content(new_api_key)
         expect(SolarEdgeInstallation.first.api_key).to eql new_api_key
       end
@@ -98,7 +98,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
         end
       end
 
-      context 'when checking an installation', js: true do
+      context 'when checking an installation', :js do
         before do
           allow(Solar::SolarEdgeInstallationFactory).to receive(:check).and_return(ok)
         end
