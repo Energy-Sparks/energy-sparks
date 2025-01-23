@@ -9,6 +9,7 @@ class ProgrammeTypesController < ApplicationController
   end
 
   def show
+    route_not_found unless @programme_type.active
   end
 
   private

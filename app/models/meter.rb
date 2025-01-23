@@ -22,6 +22,7 @@
 #  pseudo                         :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
+#  solis_cloud_installation_id    :bigint(8)
 #  updated_at                     :datetime         not null
 #
 # Indexes
@@ -34,6 +35,7 @@
 #  index_meters_on_procurement_route_id            (procurement_route_id)
 #  index_meters_on_school_id                       (school_id)
 #  index_meters_on_solar_edge_installation_id      (solar_edge_installation_id)
+#  index_meters_on_solis_cloud_installation_id     (solis_cloud_installation_id)
 #
 # Foreign Keys
 #
@@ -41,12 +43,14 @@
 #  fk_rails_...  (meter_review_id => meter_reviews.id)
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (solar_edge_installation_id => solar_edge_installations.id) ON DELETE => cascade
+#  fk_rails_...  (solis_cloud_installation_id => solis_cloud_installations.id) ON DELETE => cascade
 #
 
 class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
+  belongs_to :solis_cloud_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
   belongs_to :procurement_route, optional: true

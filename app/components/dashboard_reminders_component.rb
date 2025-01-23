@@ -27,7 +27,7 @@ class DashboardRemindersComponent < ApplicationComponent
   end
 
   def programmes_to_prompt
-    @school.programmes.last_started
+    @school.programmes.active.last_started
   end
 
   private

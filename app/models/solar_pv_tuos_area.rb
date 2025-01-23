@@ -33,16 +33,12 @@ class SolarPvTuosArea < Area
     solar_pv_tuos_readings.since(latest_date - back_fill_years.years).count >= minimum_readings_per_year * back_fill_years
   end
 
-  def first_reading_date
-    if reading_count > 0
-      solar_pv_tuos_readings.by_date.first.reading_date.strftime('%d %b %Y')
-    end
+  def earliest_reading_date
+    solar_pv_tuos_readings.by_date&.first&.reading_date
   end
 
-  def last_reading_date
-    if reading_count > 0
-      solar_pv_tuos_readings.by_date.last.reading_date.strftime('%d %b %Y')
-    end
+  def latest_reading_date
+    solar_pv_tuos_readings.by_date&.last&.reading_date
   end
 
   def cannot_be_inactive_if_attached_to_schools

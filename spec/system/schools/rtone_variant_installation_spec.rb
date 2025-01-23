@@ -1,10 +1,11 @@
-require 'rails_helper'
-require 'dashboard'
+# frozen_string_literal: true
 
-RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installations, type: :system do
+require 'rails_helper'
+
+RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installations do
   let!(:admin)                { create(:admin) }
   let!(:school)               { create(:school) }
-  let!(:meter)                { create(:electricity_meter, school: school)}
+  let!(:meter)                { create(:electricity_meter, school: school) }
   let(:rtone_meter_id) { '216057958' }
   let(:username)              { 'rtone-user' }
   let(:password)              { 'rtone-pass' }
@@ -12,7 +13,7 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
   let(:start_date)            { Date.parse('02/08/2016') }
   let(:end_date)              { start_date + 1.day }
 
-  context 'as an admin' do
+  context 'when an admin' do
     before do
       sign_in(admin)
       visit school_meters_path(school)
@@ -30,14 +31,12 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
 
       expect { click_on 'Submit' }.to change(RtoneVariantInstallation, :count).by(1)
 
-      expect(page).not_to have_content('This school has no Rtone Variant API feeds')
+      expect(page).to have_no_content('This school has no Rtone Variant API feeds')
       expect(page).to have_content(rtone_meter_id)
-      expect(school.rtone_variant_installations.first.meter).to eql meter
-      expect(school.rtone_variant_installations.first.username).to eql username
-      expect(school.rtone_variant_installations.first.password).to eql password
+      expect(school.rtone_variant_installations.first).to have_attributes(meter:, username:, password:)
 
       click_on 'Edit'
-      expect(page).to have_content('Update Rtone Variant API feed')
+      expect(page).to have_content('Update Rtone Variant')
 
       select 'in1', from: 'Rtone Meter Type'
       fill_in(:rtone_variant_installation_username, with: 'changed-user')
@@ -69,7 +68,7 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
         end
       end
 
-      context 'when checking an installation', js: true do
+      context 'when checking an installation', :js do
         before do
           allow(Solar::LowCarbonHubInstallationFactory).to receive(:check).and_return(ok)
         end
@@ -105,7 +104,8 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
 
         it 'submits the job' do
           # ...but check the method is called
-          expect(Solar::RtoneVariantLoaderJob).to receive(:perform_later).with(installation: installation, notify_email: admin.email)
+          expect(Solar::RtoneVariantLoaderJob).to receive(:perform_later).with(installation: installation,
+                                                                               notify_email: admin.email)
           expect(page).to have_content('Run Loader')
           find("#rtone-variant-#{installation.id}-run-load").click
           expect(page).to have_content("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")

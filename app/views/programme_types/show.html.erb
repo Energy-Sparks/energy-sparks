@@ -23,7 +23,7 @@
     <h3><%= t('programme_types.show.overview') %></h3>
     <p><%= @programme_type.description %></p>
   </div>
-  <div class="col-md-3 text-center programme-type-download-links" data-event-value="<%= @programme_type.id %>">
+  <div class="col-md-3 text-right programme-type-download-links" data-event-value="<%= @programme_type.id %>">
     <% if @programme_type.document_link.present? %>
       <%= link_to @programme_type.document_link, class: 'btn btn-lg', target: '_blank', rel: 'noopener' do %>
         <%= t('programme_types.show.download') %> <%= fa_icon('download') %>
@@ -39,14 +39,12 @@
 <% if Flipper.enabled?(:todos, current_user) %>
   <% programme = @programme_type.programme_for_school(current_user_school) if current_user_school %>
 
-  <% if current_user_school && !@user_progress.enrolled?(@programme_type) && can?(:start_programme, current_user_school) %>
-    <%= render 'shared/todos/prompt', programme_type: @programme_type, school: current_user_school %>
-  <% end %>
-
-  <% if @user_progress.completed?(@programme_type) %>
-    <%= render 'completed', programme_type: @programme_type, school: current_user_school %>
-  <% elsif @user_progress.enrolled?(@programme_type) %>
-    <%= render 'started', programme_type: @programme_type, school: current_user_school %>
+  <% if current_user_school && !programme && can?(:start_programme, current_user_school) %>
+    <%= render 'programme_types/prompts/prompt', programme_type: @programme_type, school: current_user_school %>
+  <% elsif programme&.completed? %>
+    <%= render 'programme_types/prompts/completed', programme: programme %>
+  <% elsif programme %>
+    <%= render 'programme_types/prompts/started', programme: programme %>
   <% end %>
 
   <%= render 'shared/todos/list',

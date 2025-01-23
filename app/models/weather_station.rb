@@ -26,16 +26,12 @@ class WeatherStation < ApplicationRecord
     weather_observations.count
   end
 
-  def first_observation_date
-    if observation_count > 0
-      weather_observations.by_date.first.reading_date.strftime('%d %b %Y')
-    end
+  def earliest_observation_date
+    weather_observations.by_date&.first&.reading_date
   end
 
-  def last_observation_date
-    if observation_count > 0
-      weather_observations.by_date.last.reading_date.strftime('%d %b %Y')
-    end
+  def latest_observation_date
+    weather_observations.by_date&.last&.reading_date
   end
 
   def has_sufficient_readings?(latest_date, minimum_readings_per_year)

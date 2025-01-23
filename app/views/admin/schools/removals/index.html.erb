@@ -1,6 +1,6 @@
 <h1>Schools that have been removed</h1>
 
-<table class="table table-striped">
+<table class="table table-sorted table-sm">
   <thead>
     <tr>
       <th>Name</th>
@@ -15,8 +15,8 @@
     <tr>
       <td><%= link_to school.name, admin_school_path(school) %></td>
       <td><%= y_n(school.archived?) %></td>
-      <td><%= nice_dates(school.archived_date) %></td>
-      <td><%= nice_dates(school.removal_date) %></td>
+      <td data-order="<%= school.archived_date&.iso8601 || 'last' %>"><%= nice_dates(school.archived_date) %></td>
+      <td data-order="<%= school.removal_date&.iso8601 || 'last' %>"><%= nice_dates(school.removal_date) %></td>
       <td>
         <% school.meters.each do |meter| %>
           <p><%= link_to meter.mpan_mprn, school_meters_path(meter.school) %></p>

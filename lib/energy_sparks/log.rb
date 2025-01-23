@@ -5,7 +5,8 @@ module EnergySparks
     def self.exception(exception, context)
       raise if ENV['RAISE_ON_LOG']
 
-      ["Exception occurred: #{exception.message} #{context}", exception.backtrace&.first].each do |message|
+      context[:exception_inspect] = exception.inspect
+      ["Exception occurred: #{exception.message}", context.to_s, exception.backtrace&.first].each do |message|
         puts message if Rails.env.test? && !ENV['CI']
         Rails.logger.error message
       end

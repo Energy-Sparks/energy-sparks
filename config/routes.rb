@@ -395,6 +395,12 @@ Rails.application.routes.draw do
           post :submit_job
         end
       end
+      resources :solis_cloud_installations, only: [:new, :show, :create, :edit, :update, :destroy] do
+        member do
+          post :check
+          post :submit_job
+        end
+      end
 
       resource :meter_readings_validation, only: [:create]
 

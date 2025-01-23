@@ -77,13 +77,14 @@ FactoryBot.define do
         reading_count { 1 }
         config        { create(:amr_data_feed_config) }
         readings      { Array.new(48, rand) }
+        reading_date_format { '%b %e %Y %I:%M%p' }
       end
 
       after(:create) do |meter, evaluator|
         end_date = Date.parse('01/06/2019')
         start_date = end_date - (evaluator.reading_count - 1).days
         (start_date..end_date).each do |this_date|
-          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'),
+          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime(evaluator.reading_date_format),
                                          readings: evaluator.readings, amr_data_feed_config: evaluator.config)
         end
       end

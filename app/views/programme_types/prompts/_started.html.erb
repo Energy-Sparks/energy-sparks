@@ -1,0 +1,9 @@
+<%= render PromptComponent.new(icon: 'check', status: :neutral) do |c| %>
+  <b><%= t('programme_types.started.you_started_this_programme_on',
+           date: nice_dates(programme.started_on)) %></b>
+  <% c.with_link do %>
+    <%= link_to t('programme_types.started.restart'),
+                school_programmes_path(programme.school, programme_type_id: programme.programme_type),
+                method: :post %>
+  <% end %>
+<% end %>

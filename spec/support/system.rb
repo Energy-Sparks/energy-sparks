@@ -69,23 +69,4 @@ RSpec.configure do |config|
       end
     end
   end
-
-  if ENV.key?('CI')
-    config.around(:each, :js) do |example|
-      retry_count = 0
-      begin
-        example.run
-      rescue => e
-        puts "exception #{e} - #{e.message}"
-        retry_count += 1
-        raise unless retry_count < 3
-        raise unless e.message.include?('Node with given id does not belong to the document')
-
-        puts 'retrying after "Node with given id does not belong to the document" error'
-        Capybara.reset_sessions!
-        sleep(retry_count)
-        retry
-      end
-    end
-  end
 end

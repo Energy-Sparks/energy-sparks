@@ -146,6 +146,7 @@ class School < ApplicationRecord
   has_many :low_carbon_hub_installations, inverse_of: :school
   has_many :solar_edge_installations, inverse_of: :school
   has_many :rtone_variant_installations, inverse_of: :school
+  has_many :solis_cloud_installations, inverse_of: :school, dependent: nil
 
   has_many :equivalences
 

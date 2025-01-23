@@ -50,9 +50,7 @@ describe Solar::LowCarbonHubLoaderJob do
       context 'with an unexpected exception' do
         before do
           allow(Solar::LowCarbonHubDownloadAndUpsert).to receive(:new).and_raise('Its broken')
-          # rubocop:disable RSpec/ExpectInHook
-          expect(Rollbar).to receive(:error).with(anything, job: :import_solar_edge_readings)
-          # rubocop:enable RSpec/ExpectInHook
+          expect(Rollbar).to receive(:error).with(anything, hash_including(job: :import_solar_edge_readings)) # rubocop:disable RSpec/ExpectInHook
           job_result
         end
 
