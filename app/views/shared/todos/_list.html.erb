@@ -8,7 +8,7 @@
                 else
                   (idx + 1).to_s
                 end %>
-      <%= render PromptComponent.new(icon: icon, status: recording ? :positive : :none, always_render: true) do |c| %>
+      <%= render PromptComponent.new(icon: icon, status: recording ? :positive : :none, always_render: true, classes: 'todo') do |c| %>
         <% if todo.notes %>
           <p>
             <%= todo.notes %>

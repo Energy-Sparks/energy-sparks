@@ -6,7 +6,7 @@
   <% if programme.programme_type.repeatable?(programme.school) %>
     <% c.with_link do %>
       <%= link_to t('programme_types.completed.repeat'),
-                  school_programmes_path(school, programme_type_id: programme.programe_type),
+                  school_programmes_path(programme.school, programme_type_id: programme.programme_type),
                   method: :post %>
     <% end %>
   <% end %>
