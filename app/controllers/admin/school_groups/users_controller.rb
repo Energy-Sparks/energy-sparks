@@ -49,6 +49,11 @@ module Admin
           csv << [
             'School Group',
             'School',
+            'School type',
+            'School active',
+            'School data enabled',
+            'Funder',
+            'Region',
             'Name',
             'Email',
             'Role',
@@ -73,7 +78,20 @@ module Admin
       def add_user_to_csv(csv, school_group, school, user)
         csv << [
           school_group.name,
-          school.present? ? school.name : 'N/A',
+          school&.name || '',
+          school&.school_type&.humanize || '',
+          if school
+            school&.active? ? 'Yes' : 'No'
+          else
+            ''
+          end,
+          if school
+            school&.data_enabled? ? 'Yes' : 'No'
+          else
+            ''
+          end,
+          school&.funder&.name || '',
+          school&.region&.to_s&.titleize || '',
           user.name,
           user.pupil? ? 'N/A' : user.email,
           user.role.titleize,
