@@ -31,21 +31,24 @@
   <tbody>
     <% @solar_pv_tuos_areas.each do |area| %>
       <tr>
-        <td><%= link_to "#{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id) %></td>
-        <td><%= fa_icon( area.active? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
+        <td><%= link_to area.title.to_s, data_feeds_solar_pv_tuos_readings_path(area.id) %></td>
+        <td><%= fa_icon(area.active? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
         <td><%= area.gsp_id %></td>
         <td><%= area.gsp_name %></td>
-        <td><%= link_to "#{area.latitude}, #{area.longitude}", "https://www.openstreetmap.org/?mlat=#{area.latitude}&mlon=#{area.longitude}", target: "_blank" %></td>
-        <td><%= area.first_reading_date %></td>
-        <td><%= area.last_reading_date %></td>
+        <td><%= link_to "#{area.latitude}, #{area.longitude}",
+                        "https://www.openstreetmap.org/?mlat=#{area.latitude}&mlon=#{area.longitude}",
+                        target: '_blank',
+                        rel: 'noopener' %></td>
+        <td data-order="<%= area.earliest_reading_date&.iso8601 %>"><%= nice_dates(area.earliest_reading_date) %></td>
+        <td data-order="<%= area.latest_reading_date&.iso8601 %>"><%= nice_dates(area.latest_reading_date) %></td>
         <td><%= area.solar_pv_tuos_readings.count %></td>
         <td><%= area.back_fill_years %></td>
         <td><%= area.schools.count %></td>
         <td>
           <div class='btn-group'>
             <%= link_to 'Edit', edit_admin_solar_pv_tuos_area_path(area), class: 'btn btn-sm' %>
-            <%= link_to "Report", data_feeds_solar_pv_tuos_readings_path(area.id), class: 'btn btn-sm' %>
-            <%= link_to "CSV", data_feeds_solar_pv_tuos_readings_path(area.id, format: "csv"), class: 'btn btn-sm' %>
+            <%= link_to 'Report', data_feeds_solar_pv_tuos_readings_path(area.id), class: 'btn btn-sm' %>
+            <%= link_to 'CSV', data_feeds_solar_pv_tuos_readings_path(area.id, format: 'csv'), class: 'btn btn-sm' %>
           </div>
         </td>
       </tr>
