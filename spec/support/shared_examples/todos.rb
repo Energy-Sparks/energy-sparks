@@ -292,24 +292,28 @@ end
 
 RSpec.shared_examples 'a todo list when there is a completable' do
   context 'when no tasks have been completed' do
-    it 'shows all tasks' do
+    it 'shows all activities' do
       page.all('div#ActivityType div.todo').each_with_index do |block, i|
         todo = assignable.activity_type_todos[i]
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).not_to have_css('i.fa-check-circle.text-success')
-        expect(block).to have_link(todo.task.name, href: activity_type_path(todo.task))
+        expect(block).not_to have_css('i.fa-circle-check.text-success')
+        expect(block).to have_content(todo.task.name)
+        expect(block).to have_link('Complete activity', href: activity_type_path(todo.task))
         expect(block).to have_content(todo.notes)
-        expect(block).to have_content(todo.task.score)
+        expect(block).to have_content("#{todo.task.score} points")
         expect(block).not_to have_content('Completed on')
       end
+    end
 
+    it 'shows all actions' do
       page.all('div#InterventionType div.todo').each_with_index do |block, i|
         todo = assignable.intervention_type_todos[i]
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).not_to have_css('i.fa-check-circle.text-success')
-        expect(block).to have_link(todo.task.name, href: intervention_type_path(todo.task))
+        expect(block).not_to have_css('i.fa-circle-check.text-success')
+        expect(block).to have_content(todo.task.name)
+        expect(block).to have_link('Complete action', href: intervention_type_path(todo.task))
         expect(block).to have_content(todo.notes)
-        expect(block).to have_content(todo.task.score)
+        expect(block).to have_content("#{todo.task.score} points")
         expect(block).not_to have_content('Completed on')
       end
     end
@@ -327,20 +331,19 @@ RSpec.shared_examples 'a todo list when there is a completable' do
     let(:block) { page.all('div#ActivityType div.todo').first }
 
     it 'indicates the activity has been completed' do
-      expect(block).to have_css('i.fa-check-circle.text-success')
-      expect(block).to have_content('Completed on')
-      expect(block).to have_link(nice_dates(activity.happened_on), href: school_activity_path(activity.school, activity))
+      expect(block).to have_css('i.fa-circle-check.text-success')
+      expect(block).to have_link("Completed on #{nice_dates(activity.happened_on)}", href: school_activity_path(activity.school, activity))
     end
 
     it "doesn't indicate other tasks are complete" do
       page.all('div#ActivityType div.todo')[1..2].each_with_index do |block, i|
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).to have_link(assignable.activity_type_todos[i + 1].task.name)
+        expect(block).to have_link('Complete activity', href: activity_type_path(assignable.activity_type_todos[i + 1].task))
       end
 
       page.all('div#InterventionType div.todo').each_with_index do |block, i|
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).to have_link(assignable.intervention_type_todos[i].task.name)
+        expect(block).to have_link('Complete action', href: intervention_type_path(assignable.intervention_type_todos[i].task))
       end
     end
   end
@@ -357,20 +360,19 @@ RSpec.shared_examples 'a todo list when there is a completable' do
     let(:block) { page.all('div#InterventionType div.todo').first }
 
     it 'indicates the action has been completed' do
-      expect(block).to have_css('i.fa-check-circle.text-success')
-      expect(block).to have_content('Completed on')
-      expect(block).to have_link(nice_dates(observation.at), href: school_intervention_path(observation.school, observation))
+      expect(block).to have_css('i.fa-circle-check.text-success')
+      expect(block).to have_link("Completed on #{nice_dates(observation.at)}", href: school_intervention_path(observation.school, observation))
     end
 
     it "doesn't indicate other tasks are complete" do
       page.all('div#InterventionType div.todo')[1..2].each_with_index do |block, i|
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).to have_link(assignable.intervention_type_todos[i + 1].task.name)
+        expect(block).to have_link('Complete action', href: intervention_type_path(assignable.intervention_type_todos[i + 1].task))
       end
 
       page.all('div#ActivityType div.todo').each_with_index do |block, i|
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).to have_link(assignable.activity_type_todos[i].task.name)
+        expect(block).to have_link('Complete activity', href: activity_type_path(assignable.activity_type_todos[i].task))
       end
     end
   end

@@ -42,7 +42,8 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
 
     it 'lists all the activities' do
       assignable.activity_type_tasks.each do |activity_type|
-        expect(page).to have_link(activity_type.name, href: activity_type_path(activity_type))
+        expect(page).to have_content(activity_type.name)
+        expect(page).to have_link('View activity', href: activity_type_path(activity_type))
       end
     end
 
@@ -52,7 +53,8 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
 
     it 'lists all the actions' do
       assignable.intervention_type_tasks.each do |intervention_type|
-        expect(page).to have_link(intervention_type.name, href: intervention_type_path(intervention_type))
+        expect(page).to have_content(intervention_type.name)
+        expect(page).to have_link('View action', href: intervention_type_path(intervention_type))
       end
     end
 
@@ -73,7 +75,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
 
     it 'does not have checklist' do
       expect(page).to have_no_css('i.fa-circle.text-muted')
-      expect(page).to have_no_css('i.fa-circle.text-success')
+      expect(page).to have_no_css('i.fa-circle-check.text-success')
     end
   end
 
