@@ -22,7 +22,7 @@
       <tr>
         <td><%= link_to audit.school.name, school_path(audit.school) %></td>
         <td><%= link_to audit.title, school_audit_path(audit.school, audit) %></td>
-        <td><%= nice_dates(audit.created_at) %></td>
+        <td data-order="<%= audit.created_at.iso8601 %>"><%= nice_dates(audit.created_at) %></td>
         <td class='text-center'>
           <% if audit.published %>
             <i class="fas fa-check"></i>

@@ -4,7 +4,7 @@ module Solar
   class SolisCloudDownloadAndUpsert < BaseDownloadAndUpsert
     def download_and_upsert
       readings = download
-      SolisCloudUpserter.new(installation: @installation, readings: readings, import_log: import_log).perform
+      SolisCloudUpserter.new(installation: @installation, readings:, import_log:).perform
     end
 
     private
@@ -34,7 +34,7 @@ module Solar
       if @requested_start_date
         @requested_start_date
       elsif latest_reading
-        latest_reading
+        latest_reading - 5.days
       elsif station['createDate']
         Time.at(station['createDate'] / 1000.0).utc.to_date
       elsif station.present?
@@ -54,7 +54,7 @@ module Solar
             # sometimes the data attribute can be nil
             [date, create_kwh_data_x48(station_day['data'])] if station_day['data']
           rescue StandardError => e
-            EnergySparks::Log.exception(e, station_id: station['id'], date:, station_day:)
+            e.rollbar_context = { station_id: station['id'], date:, station_day: }
             raise
           end
         end
