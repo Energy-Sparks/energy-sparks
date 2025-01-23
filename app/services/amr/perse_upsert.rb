@@ -21,8 +21,7 @@ module Amr
       end
       DataFeedUpserter.new(@config, log, reading_hashes).perform
     rescue StandardError => e
-      EnergySparks::Log.exception(e, source: :perse_upsert, meter_id: meter.mpan_mprn, date:, data:,
-                                     status: e&.response_status, body: e&.response_body)
+      EnergySparks::Log.exception(e, source: :perse_upsert, meter_id: meter.mpan_mprn, date:, data:)
       log&.update!(error_messages: "Error downloading data for #{meter.mpan_mprn} from #{date} : #{e.message}")
       log
     end
@@ -37,6 +36,7 @@ module Amr
       date = 14.months.ago
       unless reload
         latest = latest_reading_date(meter)
+        # go back 7 days in case any data was missing
         date = Date.parse(latest) - 7.days if latest
       end
       date

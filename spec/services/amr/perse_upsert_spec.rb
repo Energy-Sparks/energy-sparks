@@ -43,5 +43,13 @@ describe Amr::PerseUpsert do
       log = upserter.perform(meter, reload: true)
       expect(log.records_updated).to eq(0)
     end
+
+    it 'logs an error' do
+      meter = create(:gas_meter)
+      stub_request(:get, "http://example.com/meterhistory/v2/realtime-data?MPAN=#{meter.mpan_mprn}&fromDate=2023-10-10")
+        .to_return(status: 429)
+      log = upserter.perform(meter)
+      expect(log.error_messages).not_to be_nil
+    end
   end
 end
