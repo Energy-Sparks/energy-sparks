@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Pupil analysis digital signage' do
+describe 'Digital signage pages' do
   let!(:school) { create(:school, :with_fuel_configuration) }
 
   before do
