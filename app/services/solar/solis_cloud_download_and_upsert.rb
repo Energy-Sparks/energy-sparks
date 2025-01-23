@@ -7,11 +7,11 @@ module Solar
       SolisCloudUpserter.new(installation: @installation, readings: readings, import_log: import_log).perform
     end
 
+    private
+
     def job
       :solis_cloud_download
     end
-
-    private
 
     def time_to_index(time)
       split = time.split(':')
@@ -37,7 +37,7 @@ module Solar
         latest_reading
       elsif station['createDate']
         Time.at(station['createDate'] / 1000.0).utc.to_date
-      else
+      elsif station.present?
         raise 'unknown start date'
       end
     end
