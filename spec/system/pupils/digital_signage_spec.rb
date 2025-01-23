@@ -46,6 +46,27 @@ describe 'Pupil analysis digital signage' do
           it { expect(page).to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type))}
         end
       end
+
+      context 'when school does not have public data' do
+        let!(:school) { create(:school, :with_fuel_configuration, data_sharing: :within_group) }
+
+        it 'displays title' do
+          expect(page).to have_title(I18n.t('pupils.digital_signage.index.title'))
+          expect(page).to have_content(I18n.t('pupils.digital_signage.index.title'))
+        end
+
+        fuel_types.each do |fuel_type|
+          it { expect(page).not_to have_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type))}
+
+          chart_types.each do |chart_type|
+            it { expect(page).not_to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type))}
+          end
+        end
+
+        it 'displays a custom message' do
+          expect(page).to have_content('Our digital signage feature is currently only available to schools that are publicly sharing their analysis')
+        end
+      end
     end
   end
 

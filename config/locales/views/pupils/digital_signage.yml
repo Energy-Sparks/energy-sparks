@@ -25,9 +25,44 @@ en:
           intro_html: Display a random equivalence based on recent energy use.
           title: Energy equivalences
         intro_html: |-
-          <p>This page provides links to pages suitable for display on digital signage around the school.</p>
-          <p>The following sections provide links to pages that are suitable for this school.</p>
-          <p>If you have questions about using this feature then please contact us at <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a></p>
+          <p>Many schools use digital signage to make information available to staff, students and visitors.</p>
+          <p>Energy Sparks provides some options for displaying aspects of your energy analysis within a digital signage
+          system like TriplePlay.</p>
+          <p>The links below provide access to dedicated web pages that display:</p>
+          <ul>
+            <li>a random energy equivalence, that puts energy use into context</li>
+            <li>charts that summarise recent energy use, and a comparison of energy use during school hours, holidays
+            and weekend</li>
+          </ul>
+          <p>We have provided several options to allow you to choose what information will be displayed</p>
+          <p>The pages are formatted for display on panels, e.g. installed in public areas or classrooms. They can be
+          used in any digital signage system capable of displaying or embedding a web page. But your system must support
+          fetching content, data and javascript directly from our website.</p>
+          <p>The pages do not automatically update so are best incorporated into an existing carousel of content or
+          a regularly refreshing display.</p>
+          <p>If you have questions about using this feature then please contact us at
+          <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a></p>
+        public_data_html: |-
+          <p>Our digital signage feature is currently only available to schools that are publicly sharing their analysis
+          via their pupil and adult dashboards.</p>
+          <p>Please <a href='mailto:hello@energysparks.uk'>get in touch</a> if you would like to revise your data sharing
+          setting. Or are interested in discussing how we might be able to extend this feature to support schools with more
+          limited data sharing options.</p>
+        school_group:
+          data_sharing:
+            title: Public sharing
+          downloads:
+            intro_html: |-
+              <p>The links below allow you to download a complete list of URLs for the schools in your group that are publicly
+              sharing their analysis. These are intended
+              to help setting up displays if the digital signage system is managed centrally within a MAT or
+              Local Authority</p>
+              <p>If individual schools are responsible for their own signage then please refer to the school-specific pages.
+              These can be accessed from the "Manage School" menu when viewing a school dashboard.</p>
+            title: Centrally managed signage
+          links:
+            charts: charts
+            equivalences: equivalences
         title: Digital signage pages
       table:
         columns:

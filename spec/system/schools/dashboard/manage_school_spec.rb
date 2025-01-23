@@ -53,6 +53,7 @@ RSpec.describe 'manage school', type: :system do
         expect(page).to have_link('Manage users')
         expect(page).to have_link('Manage alert contacts')
         expect(page).to have_link('Manage meters')
+        expect(page).to have_link('Digital signage')
       end
     end
   end

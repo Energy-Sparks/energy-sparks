@@ -3,94 +3,120 @@
 <div class="row">
   <div class="col-12">
     <h1><%= t('pupils.digital_signage.index.title') %></h1>
-    <%= t('pupils.digital_signage.index.intro_html') %>
   </div>
 </div>
 
 <div class="row">
   <div class="col-12">
-    <h2><%= t('pupils.digital_signage.index.equivalences.title') %></h2>
-    <p><%= t('pupils.digital_signage.index.equivalences.intro_html') %></p>
+    <%= render PromptComponent.new status: :neutral, icon: 'info-circle' do |c| %>
+      <% c.with_link { link_to 'Get in touch', 'mailto:hello@energysparks.uk' } %>
+      <% c.with_title { 'We are inviting schools to try out this new feature of Energy Sparks' } %>
+      <p>
+        If you would like support in testing out how you can incorporate our analysis into your digital signage, or have
+        any questions or feedback then please get in touch. Our aim is to ensure this feature works with a range of different digital signage systems.
+      </p>
+    <% end %>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-12">
-    <table class="table advice-table">
-      <thead>
-        <tr>
-          <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
-          <th><%= t('pupils.digital_signage.table.columns.url_pattern') %></th>
-          <th><%= t('pupils.digital_signage.table.columns.link') %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if @school.has_electricity? %>
+<% if @school.data_sharing.to_sym == :public %>
+  <div class="row">
+    <div class="col-12">
+      <%= t('pupils.digital_signage.index.intro_html') %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h2><%= t('pupils.digital_signage.index.equivalences.title') %></h2>
+      <p><%= t('pupils.digital_signage.index.equivalences.intro_html') %></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table advice-table">
+        <thead>
           <tr>
-            <td><%= t('common.electricity') %></td>
-            <td><code>/pupils/schools/<%= @school.slug %>/digital_signage/electricity/equivalences</code></td>
-            <td><%= link_to t('pupils.digital_signage.table.columns.link'),
-                            pupils_school_digital_signage_equivalences_path(@school, :electricity) %></td>
+            <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
+            <th><%= t('pupils.digital_signage.table.columns.url_pattern') %></th>
+            <th><%= t('pupils.digital_signage.table.columns.link') %></th>
           </tr>
-        <% end %>
-        <% if @school.has_gas? %>
-          <tr>
-            <td><%= t('common.gas') %></td>
-            <td><code>/pupils/schools/<%= @school.slug %>/digital_signage/gas/equivalences</code></td>
-            <td><%= link_to t('pupils.digital_signage.table.columns.link'),
-                            pupils_school_digital_signage_equivalences_path(@school, :gas) %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12">
-    <h2><%= t('pupils.digital_signage.index.charts.title') %></h2>
-    <p><%= t('pupils.digital_signage.index.charts.intro_html') %></p>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12">
-    <table class="table advice-table">
-      <thead>
-        <tr>
-          <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
-          <th><%= t('pupils.digital_signage.table.columns.chart_type') %></th>
-          <th><%= t('pupils.digital_signage.table.columns.description') %></th>
-          <th><%= t('pupils.digital_signage.table.columns.url_pattern') %></th>
-          <th><%= t('pupils.digital_signage.table.columns.link') %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if @school.has_electricity? %>
-          <% %i[last_week out_of_hours].each do |chart_type| %>
+        </thead>
+        <tbody>
+          <% if @school.has_electricity? %>
             <tr>
               <td><%= t('common.electricity') %></td>
-              <td><%= t("pupils.digital_signage.index.charts.#{chart_type}.title") %></td>
-              <td><%= t("pupils.digital_signage.index.charts.#{chart_type}.description") %></td>
-              <td><code>/pupils/schools/<%= @school.slug %>/digital_signage/electricity/charts/<%= chart_type %></code></td>
+              <td><code>/pupils/schools/<%= @school.slug %>/digital_signage/electricity/equivalences</code></td>
               <td><%= link_to t('pupils.digital_signage.table.columns.link'),
-                              pupils_school_digital_signage_charts_path(@school, :electricity, chart_type) %></td>
+                              pupils_school_digital_signage_equivalences_path(@school, :electricity) %></td>
             </tr>
           <% end %>
-        <% end %>
-        <% if @school.has_gas? %>
-          <% %i[last_week out_of_hours].each do |chart_type| %>
+          <% if @school.has_gas? %>
             <tr>
               <td><%= t('common.gas') %></td>
-              <td><%= t("pupils.digital_signage.index.charts.#{chart_type}.title") %></td>
-              <td><%= t("pupils.digital_signage.index.charts.#{chart_type}.description") %></td>
-              <td><code>/pupils/schools/<%= @school.slug %>/digital_signage/gas/charts/<%= chart_type %></code></td>
+              <td><code>/pupils/schools/<%= @school.slug %>/digital_signage/gas/equivalences</code></td>
               <td><%= link_to t('pupils.digital_signage.table.columns.link'),
-                              pupils_school_digital_signage_charts_path(@school, :gas, chart_type) %></td>
+                              pupils_school_digital_signage_equivalences_path(@school, :gas) %></td>
             </tr>
           <% end %>
-        <% end %>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+
+  <div class="row">
+    <div class="col-12">
+      <h2><%= t('pupils.digital_signage.index.charts.title') %></h2>
+      <p><%= t('pupils.digital_signage.index.charts.intro_html') %></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table advice-table">
+        <thead>
+          <tr>
+            <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
+            <th><%= t('pupils.digital_signage.table.columns.chart_type') %></th>
+            <th><%= t('pupils.digital_signage.table.columns.description') %></th>
+            <th><%= t('pupils.digital_signage.table.columns.url_pattern') %></th>
+            <th><%= t('pupils.digital_signage.table.columns.link') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @school.has_electricity? %>
+            <% %i[last_week out_of_hours].each do |chart_type| %>
+              <tr>
+                <td><%= t('common.electricity') %></td>
+                <td><%= t("pupils.digital_signage.index.charts.#{chart_type}.title") %></td>
+                <td><%= t("pupils.digital_signage.index.charts.#{chart_type}.description") %></td>
+                <td><code>/pupils/schools/<%= @school.slug %>/digital_signage/electricity/charts/<%= chart_type %></code></td>
+                <td><%= link_to t('pupils.digital_signage.table.columns.link'),
+                                pupils_school_digital_signage_charts_path(@school, :electricity, chart_type) %></td>
+              </tr>
+            <% end %>
+          <% end %>
+          <% if @school.has_gas? %>
+            <% %i[last_week out_of_hours].each do |chart_type| %>
+              <tr>
+                <td><%= t('common.gas') %></td>
+                <td><%= t("pupils.digital_signage.index.charts.#{chart_type}.title") %></td>
+                <td><%= t("pupils.digital_signage.index.charts.#{chart_type}.description") %></td>
+                <td><code>/pupils/schools/<%= @school.slug %>/digital_signage/gas/charts/<%= chart_type %></code></td>
+                <td><%= link_to t('pupils.digital_signage.table.columns.link'),
+                                pupils_school_digital_signage_charts_path(@school, :gas, chart_type) %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-12">
+      <%= t('pupils.digital_signage.index.public_data_html') %>
+    </div>
+  </div>
+<% end %>

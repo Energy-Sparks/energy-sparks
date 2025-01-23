@@ -227,6 +227,12 @@ Rails.application.routes.draw do
       resources :chart_updates, only: [:index] do
         post :bulk_update_charts
       end
+      resources :digital_signage, path: 'digital-signage', only: [:index] do
+        collection do
+          get :equivalences
+          get :charts
+        end
+      end
       resources :clusters do
         member do
           post :unassign
