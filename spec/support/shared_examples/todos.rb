@@ -292,7 +292,7 @@ end
 
 RSpec.shared_examples 'a todo list when there is a completable' do
   context 'when no tasks have been completed' do
-    it 'shows all tasks' do
+    it 'shows all activities' do
       page.all('div#ActivityType div.todo').each_with_index do |block, i|
         todo = assignable.activity_type_todos[i]
         expect(block).to have_css('i.fa-circle.text-muted')
@@ -303,7 +303,9 @@ RSpec.shared_examples 'a todo list when there is a completable' do
         expect(block).to have_content("#{todo.task.score} points")
         expect(block).not_to have_content('Completed on')
       end
+    end
 
+    it 'shows all actions' do
       page.all('div#InterventionType div.todo').each_with_index do |block, i|
         todo = assignable.intervention_type_todos[i]
         expect(block).to have_css('i.fa-circle.text-muted')
