@@ -1,7 +1,7 @@
 ---
 en:
   pupils:
-    public_displays:
+    digital_signage:
       charts:
         last_week:
           dates: Showing energy used up to week ending %{last_end_date}

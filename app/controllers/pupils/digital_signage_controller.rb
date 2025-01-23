@@ -1,5 +1,5 @@
 module Pupils
-  class PublicDisplaysController < ApplicationController
+  class DigitalSignageController < ApplicationController
     load_resource :school
 
     include SchoolAggregation
@@ -12,7 +12,7 @@ module Pupils
     before_action :set_analysis_dates, except: :index
     after_action :allow_iframe, only: [:equivalences, :charts]
 
-    layout 'public_displays'
+    layout 'digital_signage'
 
     rescue_from StandardError do |exception|
       Rollbar.error(exception, school: @school.name, school_id: @school.id)
@@ -24,7 +24,7 @@ module Pupils
     end
 
     def index
-      render 'index', layout: 'application'
+      redirect_to school_digital_signage_path(@school)
     end
 
     def equivalences
@@ -45,7 +45,7 @@ module Pupils
       # avoid showing stale date on weekly comparion chart, issue temporary redirect
       # ensures pages don't break in case of lagging data or a meter fault
       if lagging_data?(@chart_type)
-        redirect_to pupils_school_public_displays_equivalences_path(@school, @fuel_type) and return
+        redirect_to pupils_school_digital_signage_equivalences_path(@school, @fuel_type) and return
       end
       @chart = find_chart(@fuel_type, @chart_type)
     end

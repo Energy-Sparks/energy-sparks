@@ -423,6 +423,8 @@ Rails.application.routes.draw do
       get :live_data, to: 'live_data#show'
       get :private, to: 'private#show'
 
+      get 'digital-signage', to: 'digital_signage#index'
+
       resources :cads do
         get :live_data, to: 'cads#live_data'
         get :test, to: 'cads#test'
@@ -731,9 +733,8 @@ Rails.application.routes.draw do
     resources :schools, only: :show do
       get :analysis, to: 'analysis#index'
       get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
-      get 'public-displays', to: 'public_displays#index'
-      get 'public-displays/:fuel_type/equivalences', to: 'public_displays#equivalences', as: :public_displays_equivalences
-      get 'public-displays/:fuel_type/charts/:chart_type', to: 'public_displays#charts', as: :public_displays_charts
+      get 'digital-signage/:fuel_type/equivalences', to: 'digital_signage#equivalences', as: :digital_signage_equivalences
+      get 'digital-signage/:fuel_type/charts/:chart_type', to: 'digital_signage#charts', as: :digital_signage_charts
     end
   end
 
