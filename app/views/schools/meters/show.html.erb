@@ -128,45 +128,47 @@
       </dd>
     </dl>
   </div>
-  <div>
-    <h3><%= t('schools.meters.show.dcc_information') %></h3>
-    <% if @meter.dcc_meter? %>
-      <dl class="row">
-        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
-        <dd class="col-sm-9"><%= "#{@n3rgy&.available?} (#{@meter.t_dcc_meter})" %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.user_consented') %>?</dt>
-        <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.dcc_consented') %>?</dt>
-        <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_consent_confirmed') %>?</dt>
-        <dd class="col-sm-9"><%= @n3rgy&.consented? %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_api_status') %></dt>
-        <dd class="col-sm-9"><%= @n3rgy&.status.to_s.humanize %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.available_cache_range') %></dt>
-        <dd class="col-sm-9"><%= @n3rgy&.available_data&.map(&:rfc2822) if @n3rgy&.consented? %></dd>
-      </dl>
-    <% else %>
-      <p><%= t('schools.meters.show.not_configured_as_a_dcc_meter') %></p>
-      <dl class="row">
-        <dt class="col-sm-3"><%= t('schools.meters.show.dcc_last_checked') %></dt>
-        <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
-        <dd class="col-sm-9"><%= @n3rgy&.available? %></dd>
-      </dl>
-    <% end %>
-  </div>
-  <div>
-    <h3>Perse Metering</h3>
-      <dl class="row">
-        <dt class="col-sm-3">Perse API</dt>
-        <dd class="col-sm-9">
-          <%= options_for_perse_api.to_h(&:reverse)[@meter.perse_api] %>
-        </dd>
-        <% config = AmrDataFeedConfig.find_by(identifier: 'perse-half-hourly-api') %>
-        <% if config %>
-          <dt class="col-sm-3">Latest reading</dt>
-          <dd class="col-sm-9"><%= Amr::PerseUpsert.latest_reading_date(config, @meter) || 'None' %></dd>
+  <% if Meter::MAIN_METER_TYPES.include?(@meter.meter_type.to_sym) %>
+    <div>
+      <h3><%= t('schools.meters.show.dcc_information') %></h3>
+      <% if @meter.dcc_meter? %>
+        <dl class="row">
+          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
+          <dd class="col-sm-9"><%= "#{@n3rgy&.available?} (#{@meter.t_dcc_meter})" %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.user_consented') %>?</dt>
+          <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.dcc_consented') %>?</dt>
+          <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_consent_confirmed') %>?</dt>
+          <dd class="col-sm-9"><%= @n3rgy&.consented? %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_api_status') %></dt>
+          <dd class="col-sm-9"><%= @n3rgy&.status.to_s.humanize %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.available_cache_range') %></dt>
+          <dd class="col-sm-9"><%= @n3rgy&.available_data&.map(&:rfc2822) if @n3rgy&.consented? %></dd>
         </dl>
-        <% end %>
+      <% else %>
+        <p><%= t('schools.meters.show.not_configured_as_a_dcc_meter') %></p>
+        <dl class="row">
+          <dt class="col-sm-3"><%= t('schools.meters.show.dcc_last_checked') %></dt>
+          <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
+          <dd class="col-sm-9"><%= @n3rgy&.available? %></dd>
+        </dl>
+      <% end %>
     </div>
+    <div>
+      <h3>Perse Metering</h3>
+        <dl class="row">
+          <dt class="col-sm-3">Perse API</dt>
+          <dd class="col-sm-9">
+            <%= options_for_perse_api.to_h(&:reverse)[@meter.perse_api] %>
+          </dd>
+          <% config = AmrDataFeedConfig.find_by(identifier: 'perse-half-hourly-api') %>
+          <% if config %>
+            <dt class="col-sm-3">Latest reading</dt>
+            <dd class="col-sm-9"><%= Amr::PerseUpsert.latest_reading_date(config, @meter) || 'None' %></dd>
+          </dl>
+          <% end %>
+    </div>
+  <% end %>
 <% end %>
