@@ -30,6 +30,7 @@ describe Solar::SolisCloudDownloadAndUpsert do
       eq(['1.9033333333333333'])
     expect(installation.meters.pluck(:meter_serial_number)).to contain_exactly('1298491919449314564',
                                                                                '1298491919449314551')
+    expect(installation.meters.pluck(:name)).to contain_exactly('SolisCloud Inverter 1', 'SolisCloud Inverter 2')
     expect(installation.station_list.length).to eq(2)
   end
 

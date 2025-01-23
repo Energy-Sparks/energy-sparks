@@ -5,7 +5,10 @@ module Solar
     private
 
     def meter_model_attributes(details)
-      { pseudo: true, solis_cloud_installation: @installation, meter_serial_number: details['id'] }
+      { pseudo: true,
+        solis_cloud_installation: @installation,
+        meter_serial_number: details['id'],
+        name: "SolisCloud #{details['stationName']}" }
     end
 
     def synthetic_mpan(meter_type, details)
