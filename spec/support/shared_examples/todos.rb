@@ -128,7 +128,7 @@ RSpec.shared_examples 'a completable' do
     subject(:completable) { create(:audit) }
 
     it { expect(completable).to have_many(:completed_todos).dependent(:destroy) }
-    it { expect(completable).to have_many(:completed_tasks) }
+    it { expect(completable).to have_many(:todos_completed) }
     it { expect(completable).to have_many(:completed_activity_types) }
     it { expect(completable).to have_many(:completed_intervention_types) }
   end
@@ -223,7 +223,7 @@ RSpec.shared_examples 'a completable' do
         it { expect(completable.completed_todos.count).to be(3) }
 
         it 'completed items should all be activity types' do
-          expect(completable.completed_tasks.pluck(:task_type).uniq).to eq(['ActivityType'])
+          expect(completable.todos_completed.pluck(:task_type).uniq).to eq(['ActivityType'])
         end
 
         it 'does not marks completable as completed' do
@@ -243,7 +243,7 @@ RSpec.shared_examples 'a completable' do
         it { expect(completable.completed_todos.count).to be(3) }
 
         it 'completed items should all be intervention types' do
-          expect(completable.completed_tasks.pluck(:task_type).uniq).to eq(['InterventionType'])
+          expect(completable.todos_completed.pluck(:task_type).uniq).to eq(['InterventionType'])
         end
 
         it 'does not marks completable as completed' do
@@ -288,4 +288,92 @@ RSpec.shared_examples 'a destroyed recording' do
   it { expect { completed_todo.reload }.to raise_error ActiveRecord::RecordNotFound }
   it { expect { task.reload }.not_to raise_error }
   it { expect { recording.reload }.to raise_error ActiveRecord::RecordNotFound }
+end
+
+RSpec.shared_examples 'a todo list when there is a completable' do
+  context 'when no tasks have been completed' do
+    it 'shows all activities' do
+      page.all('div#ActivityType div.todo').each_with_index do |block, i|
+        todo = assignable.activity_type_todos[i]
+        expect(block).to have_css('i.fa-circle.text-muted')
+        expect(block).not_to have_css('i.fa-circle-check.text-success')
+        expect(block).to have_content(todo.task.name)
+        expect(block).to have_link('Complete activity', href: activity_type_path(todo.task))
+        expect(block).to have_content(todo.notes)
+        expect(block).to have_content("#{todo.task.score} points")
+        expect(block).not_to have_content('Completed on')
+      end
+    end
+
+    it 'shows all actions' do
+      page.all('div#InterventionType div.todo').each_with_index do |block, i|
+        todo = assignable.intervention_type_todos[i]
+        expect(block).to have_css('i.fa-circle.text-muted')
+        expect(block).not_to have_css('i.fa-circle-check.text-success')
+        expect(block).to have_content(todo.task.name)
+        expect(block).to have_link('Complete action', href: intervention_type_path(todo.task))
+        expect(block).to have_content(todo.notes)
+        expect(block).to have_content("#{todo.task.score} points")
+        expect(block).not_to have_content('Completed on')
+      end
+    end
+  end
+
+  context 'when an activity has been completed' do
+    let(:activity_type) { assignable.activity_type_tasks.first }
+    let(:activity) { build(:activity, school:, activity_type:, happened_on: Date.yesterday) }
+
+    before do
+      Tasks::Recorder.new(activity, nil).process
+      refresh
+    end
+
+    let(:block) { page.all('div#ActivityType div.todo').first }
+
+    it 'indicates the activity has been completed' do
+      expect(block).to have_css('i.fa-circle-check.text-success')
+      expect(block).to have_link("Completed on #{nice_dates(activity.happened_on)}", href: school_activity_path(activity.school, activity))
+    end
+
+    it "doesn't indicate other tasks are complete" do
+      page.all('div#ActivityType div.todo')[1..2].each_with_index do |block, i|
+        expect(block).to have_css('i.fa-circle.text-muted')
+        expect(block).to have_link('Complete activity', href: activity_type_path(assignable.activity_type_todos[i + 1].task))
+      end
+
+      page.all('div#InterventionType div.todo').each_with_index do |block, i|
+        expect(block).to have_css('i.fa-circle.text-muted')
+        expect(block).to have_link('Complete action', href: intervention_type_path(assignable.intervention_type_todos[i].task))
+      end
+    end
+  end
+
+  context 'when an intervention has been completed' do
+    let(:intervention_type) { assignable.intervention_type_tasks.first }
+    let(:observation) { build(:observation, :intervention, school:, intervention_type:, at: Date.yesterday) }
+
+    before do
+      Tasks::Recorder.new(observation, nil).process
+      refresh
+    end
+
+    let(:block) { page.all('div#InterventionType div.todo').first }
+
+    it 'indicates the action has been completed' do
+      expect(block).to have_css('i.fa-circle-check.text-success')
+      expect(block).to have_link("Completed on #{nice_dates(observation.at)}", href: school_intervention_path(observation.school, observation))
+    end
+
+    it "doesn't indicate other tasks are complete" do
+      page.all('div#InterventionType div.todo')[1..2].each_with_index do |block, i|
+        expect(block).to have_css('i.fa-circle.text-muted')
+        expect(block).to have_link('Complete action', href: intervention_type_path(assignable.intervention_type_todos[i + 1].task))
+      end
+
+      page.all('div#ActivityType div.todo').each_with_index do |block, i|
+        expect(block).to have_css('i.fa-circle.text-muted')
+        expect(block).to have_link('Complete activity', href: activity_type_path(assignable.activity_type_todos[i].task))
+      end
+    end
+  end
 end

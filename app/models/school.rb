@@ -146,6 +146,7 @@ class School < ApplicationRecord
   has_many :low_carbon_hub_installations, inverse_of: :school
   has_many :solar_edge_installations, inverse_of: :school
   has_many :rtone_variant_installations, inverse_of: :school
+  has_many :solis_cloud_installations, inverse_of: :school, dependent: nil
 
   has_many :equivalences
 
@@ -377,10 +378,30 @@ class School < ApplicationRecord
     intervention_types.merge(observations.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
+  # to be removed when removing the todos feature
   def suggested_programme_types
     ProgrammeType.active.with_school_activity_type_count(self)
                  .merge(activities.in_academic_year(current_academic_year))
                  .not_in(programme_types)
+  end
+
+  def suggested_programme_types_from_activities
+    ProgrammeType.active.not_in(programme_types)
+                 .with_school_activity_type_task_count(self)
+                 .merge(activities.in_academic_year(current_academic_year))
+  end
+
+  def suggested_programme_types_from_actions
+    ProgrammeType.active.not_in(programme_types)
+                 .with_school_intervention_type_task_count(self)
+                 .merge(observations.in_academic_year(current_academic_year))
+  end
+
+  # returns array(ProgrammeType, count)
+  def suggested_programme_type
+    programme_types = suggested_programme_types_from_activities + suggested_programme_types_from_actions
+
+    programme_types.each_with_object(Hash.new(0)) { |r, hash| hash[r] += r.recording_count }.max_by { |_, value| value }
   end
 
   def national_calendar

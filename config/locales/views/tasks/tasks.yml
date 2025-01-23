@@ -1,6 +1,9 @@
 ---
 en:
   tasks:
+    complete:
+      action: Complete action
+      activity: Complete activity
     completed:
       action:
         no_points: We've recorded your action
@@ -14,3 +17,10 @@ en:
       points: You've just scored %{points} points
       share: Share what you’ve done with others in the school community
       what_next: What do you want to do next?
+    completed_on: Completed on %{date}
+    score:
+      action: Score for this action
+      activity: Score for this activity
+    view:
+      action: View action
+      activity: View activity
