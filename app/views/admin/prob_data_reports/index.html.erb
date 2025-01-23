@@ -23,7 +23,7 @@
           <%= link_to [row[4], row[5]].reject(&:blank?).join(': '),
                       admin_reports_amr_validated_reading_url(meter_id: row[6]) %>
         </td>
-        <td><%= Meter.meter_types.key(row[3]).humanize %></td>
+        <td><%= row[3] %></td>
         <td>
           <%= row[7] %>
         </td>
