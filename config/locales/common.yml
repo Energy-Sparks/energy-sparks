@@ -73,6 +73,7 @@ en:
       yes_label: 'Yes'
     line_graphs: Line graphs
     pie_charts: Pie charts
+    points_html: "%{count} points"
     privacy_policy: privacy policy
     school: School
     school_types:
