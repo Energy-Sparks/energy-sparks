@@ -8,10 +8,12 @@
                 else
                   (idx + 1).to_s
                 end %>
-      <%= render PromptComponent.new(icon: icon, status: recording ? :positive : :none) do |c| %>
-        <p>
-          <%= todo.notes %>
-        </p>
+      <%= render PromptComponent.new(icon: icon, status: recording ? :positive : :none, always_render: true) do |c| %>
+        <% if todo.notes %>
+          <p>
+            <%= todo.notes %>
+          </p>
+        <% end %>
         <% c.with_title do %>
           <%= todo.task.name %>
         <% end %>
@@ -23,10 +25,10 @@
             <% if recording %>
               <%= link_to "Completed on #{nice_dates(recording.happened_on)}", recording_path(recording) %>
             <% else %>
-              <%= link_to 'Complete task', polymorphic_path(todo.task) %>
+              <%= link_to "Complete #{todo.task.public_type}", polymorphic_path(todo.task) %>
             <% end %>
           <% else %>
-            <%= link_to 'View task', polymorphic_path(todo.task) %>
+            <%= link_to "View #{todo.task.public_type}", polymorphic_path(todo.task) %>
           <% end %>
         <% end %>
       <% end %>

@@ -1,4 +1,4 @@
-<%= render PromptComponent.new(icon: 'check', status: :positive) do |c| %>
+<%= render PromptComponent.new(icon: 'flag-checkered', status: :positive) do |c| %>
   <b>
     <%= t('programme_types.completed.you_completed_this_programme_on',
           date: nice_dates(programme_type.programme_for_school(school).ended_on)) %>

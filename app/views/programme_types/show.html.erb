@@ -39,14 +39,12 @@
 <% if Flipper.enabled?(:todos, current_user) %>
   <% programme = @programme_type.programme_for_school(current_user_school) if current_user_school %>
 
-  <% if current_user_school && !@user_progress.enrolled?(@programme_type) && can?(:start_programme, current_user_school) %>
+  <% if current_user_school && !programme && can?(:start_programme, current_user_school) %>
     <%= render 'programme_types/prompts/prompt', programme_type: @programme_type, school: current_user_school %>
-  <% end %>
-
-  <% if @user_progress.completed?(@programme_type) %>
+  <% elsif programme&.completed? %>
     <%= render 'programme_types/prompts/completed', programme_type: @programme_type, school: current_user_school %>
-  <% elsif @user_progress.enrolled?(@programme_type) %>
-    <%= render 'programme_types/prompts/started', programme_type: @programme_type, school: current_user_school %>
+  <% elsif programme %>
+    <%= render 'programme_types/prompts/started', programme: programme %>
   <% end %>
 
   <%= render 'shared/todos/list',
