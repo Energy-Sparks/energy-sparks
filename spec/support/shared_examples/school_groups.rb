@@ -141,7 +141,7 @@ RSpec.shared_examples 'a page with a manage school group menu including admin li
   end
 
   it 'shows standard items and admin links' do
-    expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
+    expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
   end
 end
 
@@ -151,7 +151,7 @@ RSpec.shared_examples 'a page with a manage school group menu not including admi
   end
 
   it 'shows standard items but not admin links' do
-    expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs'])
+    expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage'])
   end
 end
 
