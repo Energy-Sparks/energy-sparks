@@ -26,16 +26,6 @@ module Mailchimp
       OpenStruct.new(resp)
     end
 
-    def archive_contact(email_address)
-      resp = @client.lists.delete_list_member(list.id, Digest::MD5.hexdigest(email_address.downcase))
-      OpenStruct.new(resp)
-    end
-
-    def update_contact(mailchimp_contact)
-      resp = @client.lists.set_list_member(list.id, Digest::MD5.hexdigest(mailchimp_contact.email_address.downcase), mailchimp_contact.to_mailchimp_hash, subscribe_opts)
-      OpenStruct.new(resp)
-    end
-
     private
 
     def get_list

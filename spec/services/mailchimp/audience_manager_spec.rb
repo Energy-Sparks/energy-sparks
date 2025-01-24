@@ -34,12 +34,13 @@ describe Mailchimp::AudienceManager do
   end
 
   describe '#categories' do
+    subject(:categories) { service.categories }
+
     before do
       allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_interest_categories: categories_data)
     end
 
     it 'returns categories' do
-      categories = service.categories
       expect(categories.count).to eq(2)
       expect(categories.first.id).to eq('908f880968')
       expect(categories.first.title).to eq('User type')
@@ -49,12 +50,13 @@ describe Mailchimp::AudienceManager do
   end
 
   describe '#interests' do
+    subject(:interests) { service.interests('456') }
+
     before do
       allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_interest_categories: categories_data, list_interest_category_interests: interests_data)
     end
 
     it 'returns interests' do
-      interests = service.interests('456')
       expect(interests.count).to eq(8)
       expect(interests.first.id).to eq('85bb2d8115')
       expect(interests.first.name).to eq('Building/ Site Manager or Caretaker')
