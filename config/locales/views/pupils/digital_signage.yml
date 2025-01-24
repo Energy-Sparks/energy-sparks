@@ -3,21 +3,21 @@ en:
   pupils:
     digital_signage:
       charts:
-        last_week:
+        last-week:
           dates: Showing energy used up to week ending %{last_end_date}
           intro: Chart shows the energy used for each day
           title: How much %{fuel_type} did your school use over the last two weeks?
-        out_of_hours:
+        out-of-hours:
           dates: Showing energy used between %{start_date} and %{end_date}
           intro: Chart shows energy used during school days, weekends, holidays and outside of school hours
           title: When did your school use %{fuel_type} over the last year?
       index:
         charts:
           intro_html: Display an energy use chart.
-          last_week:
+          last-week:
             description: Chart showing comparison of energy use for last two weeks
             title: Last week
-          out_of_hours:
+          out-of-hours:
             description: Chart showing out of hours usage for last 12 months
             title: Out of hours
           title: Energy use charts
@@ -42,6 +42,10 @@ en:
           a regularly refreshing display.</p>
           <p>If you have questions about using this feature then please contact us at
           <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a></p>
+        prompt:
+          link_text: Get in touch
+          text: If you would like support in testing out how you can incorporate our analysis into your digital signage, or have any questions or feedback then please get in touch. Our aim is to ensure this feature works with a range of different digital signage systems.
+          title: We are inviting schools to try out this new feature of Energy Sparks
         public_data_html: |-
           <p>Our digital signage feature is currently only available to schools that are publicly sharing their analysis
           via their pupil and adult dashboards.</p>

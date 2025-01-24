@@ -37,12 +37,11 @@ describe 'Digital signage pages' do
       end
 
       fuel_types = %i[electricity gas]
-      chart_types = %i[out_of_hours last_week]
 
       fuel_types.each do |fuel_type|
         it { expect(page).to have_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type))}
 
-        chart_types.each do |chart_type|
+        Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
           it { expect(page).to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type))}
         end
       end
@@ -58,7 +57,7 @@ describe 'Digital signage pages' do
         fuel_types.each do |fuel_type|
           it { expect(page).not_to have_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type))}
 
-          chart_types.each do |chart_type|
+          Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
             it { expect(page).not_to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type))}
           end
         end
@@ -100,7 +99,7 @@ describe 'Digital signage pages' do
         let(:fuel_type) { :electricity }
 
         context 'with out of hours chart' do
-          let(:chart_type) { :out_of_hours }
+          let(:chart_type) { 'out-of-hours' }
 
           it_behaves_like 'a working chart page' do
             let(:expected_chart) { :daytype_breakdown_electricity_tolerant }
@@ -108,7 +107,7 @@ describe 'Digital signage pages' do
         end
 
         context 'with last week chart' do
-          let(:chart_type) { :last_week }
+          let(:chart_type) { 'last-week' }
 
           it_behaves_like 'a working chart page' do
             let(:expected_chart) { :public_displays_electricity_weekly_comparison }
@@ -120,7 +119,7 @@ describe 'Digital signage pages' do
         let(:fuel_type) { :gas }
 
         context 'with out of hours chart' do
-          let(:chart_type) { :out_of_hours }
+          let(:chart_type) { 'out-of-hours' }
 
           it_behaves_like 'a working chart page' do
             let(:expected_chart) { :daytype_breakdown_gas_tolerant }
@@ -128,7 +127,7 @@ describe 'Digital signage pages' do
         end
 
         context 'with last week chart' do
-          let(:chart_type) { :last_week }
+          let(:chart_type) { 'last-week' }
 
           it_behaves_like 'a working chart page' do
             let(:expected_chart) { :public_displays_gas_weekly_comparison }
@@ -139,13 +138,11 @@ describe 'Digital signage pages' do
 
     context 'when school does not have fuel type' do
       let!(:school) { create(:school, :with_fuel_configuration, has_gas: false) }
-      let(:fuel_type) { :gas }
-      let(:chart_type) { :out_of_hours }
 
       context 'when in production' do
         before do
           allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
-          visit pupils_school_digital_signage_charts_path(school, :gas, :out_of_hours)
+          visit pupils_school_digital_signage_charts_path(school, :gas, 'out-of-hours')
         end
 
         it 'shows an error message' do
@@ -160,7 +157,7 @@ describe 'Digital signage pages' do
       context 'when in production' do
         before do
           allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
-          visit pupils_school_digital_signage_charts_path(school, :electricity, :out_of_hours)
+          visit pupils_school_digital_signage_charts_path(school, :electricity, 'out-of-hours')
         end
 
         it 'shows an error message' do
@@ -175,7 +172,7 @@ describe 'Digital signage pages' do
       context 'when in production' do
         before do
           allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
-          visit pupils_school_digital_signage_charts_path(school, :gas, :out_of_hours)
+          visit pupils_school_digital_signage_charts_path(school, :gas, 'out-of-hours')
         end
 
         it 'shows an error message' do
@@ -199,7 +196,7 @@ describe 'Digital signage pages' do
         end
 
         context 'with out of hours chart' do
-          let(:chart_type) { :out_of_hours }
+          let(:chart_type) { 'out-of-hours' }
 
           it_behaves_like 'a working chart page' do
             let(:expected_chart) { :daytype_breakdown_electricity_tolerant }
@@ -207,7 +204,7 @@ describe 'Digital signage pages' do
         end
 
         context 'with last week chart' do
-          let(:chart_type) { :last_week }
+          let(:chart_type) { 'last-week' }
 
           it 'redirects to equivalences' do
             expect(page).to have_current_path pupils_school_digital_signage_equivalences_path(school, fuel_type), ignore_query: true
@@ -227,7 +224,7 @@ describe 'Digital signage pages' do
         end
 
         context 'with out of hours chart' do
-          let(:chart_type) { :out_of_hours }
+          let(:chart_type) { 'out-of-hours' }
 
           it_behaves_like 'a working chart page' do
             let(:expected_chart) { :daytype_breakdown_gas_tolerant }
@@ -235,7 +232,7 @@ describe 'Digital signage pages' do
         end
 
         context 'with last week chart' do
-          let(:chart_type) { :last_week }
+          let(:chart_type) { 'last-week' }
 
           it 'redirects to equivalences' do
             expect(page).to have_current_path pupils_school_digital_signage_equivalences_path(school, fuel_type), ignore_query: true

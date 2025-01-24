@@ -76,7 +76,7 @@ describe 'School group digital signage' do
           rows = []
           rows << ['School', 'Fuel', 'Chart Type', 'Description', 'Link']
           [:electricity, :gas].each do |fuel_type|
-            SchoolGroups::DigitalSignageController::CHART_TYPES.each do |chart_type|
+            Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
               rows << [
                 school.name,
                 I18n.t("common.#{fuel_type}"),

@@ -9,11 +9,10 @@
 <div class="row">
   <div class="col-12">
     <%= render PromptComponent.new status: :neutral, icon: 'info-circle' do |c| %>
-      <% c.with_link { link_to 'Get in touch', 'mailto:hello@energysparks.uk' } %>
-      <% c.with_title { 'We are inviting schools to try out this new feature of Energy Sparks' } %>
+      <% c.with_link { link_to t('pupils.digital_signage.index.prompt.link_text'), 'mailto:hello@energysparks.uk' } %>
+      <% c.with_title { t('pupils.digital_signage.index.prompt.title') } %>
       <p>
-        If you would like support in testing out how you can incorporate our analysis into your digital signage, or have
-        any questions or feedback then please get in touch. Our aim is to ensure this feature works with a range of different digital signage systems.
+        <%= t('pupils.digital_signage.index.prompt.text') %>
       </p>
     <% end %>
   </div>

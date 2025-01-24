@@ -2,8 +2,6 @@ module SchoolGroups
   class DigitalSignageController < ApplicationController
     load_and_authorize_resource :school_group
 
-    CHART_TYPES = %i[last_week out_of_hours].freeze
-
     def index
     end
 
@@ -12,7 +10,7 @@ module SchoolGroups
     end
 
     def equivalences
-      send_data equivalences_csv, filename: csv_filename_for(:charts)
+      send_data equivalences_csv, filename: csv_filename_for(:equivalences)
     end
 
     private
@@ -59,7 +57,7 @@ module SchoolGroups
         ]
         schools.each do |school|
           if school.has_electricity?
-            CHART_TYPES.each do |chart_type|
+            Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
               csv << [
                 school.name,
                 t('common.electricity'),
@@ -70,7 +68,7 @@ module SchoolGroups
             end
           end
           if school.has_gas?
-            CHART_TYPES.each do |chart_type|
+            Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
               csv << [
                 school.name,
                 t('common.gas'),
