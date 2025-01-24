@@ -32,14 +32,12 @@ en:
     sub_title: A unique school-specific energy management tool and education programme
     title: We help schools become more energy efficient and fight climate change.
   mailchimp:
-    continue: Continue
     example: 'eg: hello@example.com'
     latest_news_title: Get the latest news from Energy Sparks in your inbox
     more_newsletters: More newsletters
     never_share_your_email_promise: We'll never share your email with anyone else
     signup_now: Sign-up now
     title_html: Stay up to date&hellip;
-    your_email_address: Your email address
   newsletters:
     title: Newsletters
   school_count:

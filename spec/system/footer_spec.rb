@@ -60,41 +60,17 @@ RSpec.describe 'Footer', type: :system do
       it { expect(block).to have_button('Sign-up now') }
       it { expect(block).to have_content "We'll never share your email with anyone else" }
 
-      # Not doing a full mailchimp test here, just that the form submits to the right place
-      context 'when signing up' do
-        let!(:newsletter) { create(:newsletter) }
-        let(:interests) { [OpenStruct.new(id: 1, name: 'Interest One')] }
-        let(:categories) { [OpenStruct.new(id: 1, title: 'Category One', interests: interests)] }
-        let(:list_with_interests) { OpenStruct.new(id: 1, categories: categories) }
-
+      context 'when user is signed in' do
         before do
-          allow_any_instance_of(MailchimpApi).to receive(:list_with_interests).and_return(list_with_interests)
-          allow_any_instance_of(MailchimpApi).to receive(:subscribe).and_return(true)
+          sign_in(create(:school_admin))
+          refresh
         end
 
-        context 'when email provided' do
-          before do
-            within '#newsletter-signup' do
-              fill_in :email_address, with: 'foo@bar.com'
-              click_on 'Sign-up now'
-            end
-          end
-
-          it { expect(page).to have_content('Sign up to the Energy Sparks newsletter') }
-          it { expect(page).to have_field(:email_address, with: 'foo@bar.com') }
-        end
-
-        context 'when email is not provided' do
-          before do
-            within '#newsletter-signup' do
-              fill_in :email_address, with: ''
-              click_on 'Sign-up now'
-            end
-          end
-
-          it { expect(page).to have_content('Sign up to the Energy Sparks newsletter') }
-          it { expect(page).to have_field(:email_address, with: nil) }
-        end
+        it { expect(block).to have_content 'Newsletter Signup' }
+        it { expect(block).to have_content 'Get the latest news from Energy Sparks in your inbox' }
+        it { expect(block).not_to have_field :email_address, placeholder: 'eg: hello@example.com' }
+        it { expect(block).to have_button('Sign-up now') }
+        it { expect(block).to have_content "We'll never share your email with anyone else" }
       end
     end
   end

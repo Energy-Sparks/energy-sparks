@@ -1,49 +1,54 @@
 class MailchimpSignupsController < ApplicationController
+  include NewsletterSubscriber
+
   skip_before_action :authenticate_user!
 
   def new
-    @config = mailchimp_signup_params(params)
-    @onboarding_complete = params[:onboarding_complete]
-    @list = mailchimp_api.list_with_interests
+    audience_manager.list # load to ensure config is set
+    @email_types = list_of_email_types
+    @contact = populate_contact_for_form(current_user, params)
   rescue => e
-    flash[:error] = 'Mailchimp API is not configured'
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"
     Rollbar.error(e)
-  end
-
-  def index
+    raise e
   end
 
   def create
-    list_id = params[:list_id]
-    @config = mailchimp_signup_params(params)
-    if @config.valid?
-      begin
-        mailchimp_api.subscribe(list_id, @config)
-        redirect_to mailchimp_signups_path and return
-      rescue MailchimpApi::Error => e
-        flash[:error] = e.message
-      end
+    if params[:contact_source]
+      @contact = create_contact_from_user(current_user, sign_up_params)
     else
-      flash[:error] = @config.errors.full_messages.join(', ')
+      @contact = create_contact(sign_up_params)
     end
-
-    @list = mailchimp_api.list_with_interests
+    resp = subscribe_contact(@contact)
+    if resp
+      redirect_to subscribed_mailchimp_signups_path and return
+    end
+    @email_types = list_of_email_types
     render :new
   end
 
   private
 
-  def mailchimp_api
-    @mailchimp_api ||= MailchimpApi.new
+  def populate_contact_for_form(user, params)
+    if user
+      contact = Mailchimp::Contact.new(user.email, user.name)
+      contact.school = user&.school&.name
+      contact
+    else
+      Mailchimp::Contact.new(params[:email_address], nil)
+    end
   end
 
-  def mailchimp_signup_params(params)
-    MailchimpSignupParams.new(
-      email_address: params[:email_address],
-      tags: params[:tags],
-      interests: params[:interests],
-      merge_fields: params[:merge_fields]
-    )
+  def create_contact(sign_up_params)
+    existing_user = User.find_by_email(sign_up_params[:email_address].downcase)
+    if existing_user
+      create_contact_from_user(existing_user, sign_up_params)
+    else
+      Mailchimp::Contact.from_params(sign_up_params)
+    end
+  end
+
+  def sign_up_params
+    params.permit(:email_address, :name, :school, interests: {})
   end
 end

@@ -1,10 +1,10 @@
 <div class="application container mailchimp home-block">
   <div class="row pt-5">
     <% if @newsletters %>
-      <div class="col-7 pr-5">
+      <div class="col-12 pr-5">
         <div class="row">
           <div class="col">
-            <h2><%= t('mailchimp.title_html') %></h2>
+            <h1><%= t('mailchimp.title_html') %></h1>
           </div>
           <div class="col text-right">
             <%= link_to t('mailchimp.more_newsletters'), newsletters_path, class: 'btn mt-2' %>
@@ -27,19 +27,5 @@
         </div>
       </div>
     <% end %>
-
-    <div class="col-5 border-left">
-      <h4><%= t('mailchimp.latest_news_title') %></h4>
-      <%= form_with(url: new_mailchimp_signup_path, method: :get, local: true) do %>
-        <div class="form-group">
-          <%= label_tag(:email_address, t('mailchimp.your_email_address')) %>
-          <%= text_field_tag(:email_address, nil, class: 'form-control', placeholder: 'example@example.com') %>
-          <small id="emailHelp" class="form-text text-muted"><%= t('mailchimp.never_share_your_email_promise') %>.</small>
-        </div>
-        <div class="d-flex justify-content-center">
-          <%= submit_tag(t('mailchimp.continue'), class: 'btn btn-primary') %>
-        </div>
-      <% end %>
-    </div>
   </div>
 </div>
