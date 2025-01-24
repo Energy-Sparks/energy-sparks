@@ -25,6 +25,8 @@ class ProgrammeType < ApplicationRecord
   translates :document_link, type: :string, fallbacks: { cy: :en }
 
   t_has_one_attached :image
+
+  ## these two relationships to be removed when todos feature removed
   has_many :programme_type_activity_types
   has_many :activity_types, through: :programme_type_activity_types
 
@@ -36,6 +38,14 @@ class ProgrammeType < ApplicationRecord
 
   scope :default_first, -> { order(default: :desc) }
   scope :featured, -> { active.default_first.by_title }
+
+  ### not needed, leaving here for now
+  scope :with_activity_type_task_count, -> {
+    joins("INNER JOIN todos on todos.assignable_id = programme_types.id and todos.assignable_type = 'ProgrammeType'")
+    .where("todos.task_type = 'ActivityType'")
+    .select('programme_types.*, count(distinct todos.task_id) as task_count')
+    .group('programme_types.id').order(task_count: :desc)
+  }
 
   # to be removed when todos feature removed
   scope :with_school_activity_type_count, ->(school) {
