@@ -98,8 +98,8 @@ class ProgrammeType < ApplicationRecord
   end
 
   def repeatable?(school)
-    # Does the school have any programmes for this programme type completed before the beginning of this academic year?
-    school.programmes.where(programme_type: self).completed.where(ended_on: ..school.current_academic_year.start_date).any?
+    # Don't allow a repeat if the school has already completed this programe type this academic year
+    school.programmes.where(programme_type: self).completed.where(ended_on: school.current_academic_year.start_date..).none?
   end
 
   # Provide a list of activity types a school has already completed this year for this programme type
