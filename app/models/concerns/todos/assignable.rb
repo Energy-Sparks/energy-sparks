@@ -22,6 +22,14 @@ module Todos
       }
     end
 
+    def has_todos?
+      todos.any?
+    end
+
+    def no_todos?
+      todos.none?
+    end
+
     # Has the provided school already completed all activity & intervention types this year?
     # regardless of having signed up to the programme
     def tasks_already_completed_for?(school:)

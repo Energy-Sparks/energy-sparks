@@ -9,12 +9,14 @@ class ProgrammeTypesController < ApplicationController
   end
 
   def show
-    route_not_found unless @programme_type.active
+    route_not_found unless @programme_type.active && @programme_type.has_todos?
   end
 
   private
 
   def user_progress
-    @user_progress = Programmes::UserProgress.new(current_user)
+    if !Flipper.enabled?(:todos) || Flipper.enabled?(:todos_old)
+      @user_progress = Programmes::UserProgress.new(current_user)
+    end
   end
 end
