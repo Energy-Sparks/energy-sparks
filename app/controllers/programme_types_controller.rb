@@ -9,7 +9,11 @@ class ProgrammeTypesController < ApplicationController
   end
 
   def show
-    route_not_found unless @programme_type.active && @programme_type.has_todos?
+    if Flipper.enabled?(:todos)
+      route_not_found unless @programme_type.active && @programme_type.has_todos?
+    else
+      route_not_found unless @programme_type.active
+    end
   end
 
   private
