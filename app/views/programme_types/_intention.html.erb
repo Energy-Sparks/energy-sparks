@@ -1,7 +1,7 @@
 <% if programme_type.activity_type_todos.none? %>
   <%= render IconComponent.new(name: 'chalkboard-user') %> <%= t('programme_types.intention.adults') %>
 <% elsif programme_type.intervention_type_todos.none? %>
-  <%= render IconComponent.new(name: 'book-open-reader') %></i> <%= t('programme_types.intention.pupils') %>
+  <%= render IconComponent.new(name: 'book-open-reader') %> <%= t('programme_types.intention.pupils') %>
 <% else %>
   <%= render IconComponent.new(name: 'users') %> <%= t('programme_types.intention.all') %>
 <% end %>

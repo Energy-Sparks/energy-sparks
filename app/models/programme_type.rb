@@ -39,14 +39,6 @@ class ProgrammeType < ApplicationRecord
   scope :default_first, -> { order(default: :desc) }
   scope :featured, -> { active.default_first.by_title }
 
-  ### not needed, leaving here for now
-  scope :with_activity_type_task_count, -> {
-    joins("INNER JOIN todos on todos.assignable_id = programme_types.id and todos.assignable_type = 'ProgrammeType'")
-    .where("todos.task_type = 'ActivityType'")
-    .select('programme_types.*, count(distinct todos.task_id) as task_count')
-    .group('programme_types.id').order(task_count: :desc)
-  }
-
   # to be removed when todos feature removed
   scope :with_school_activity_type_count, ->(school) {
     joins(activity_types: :activities)
@@ -108,7 +100,7 @@ class ProgrammeType < ApplicationRecord
   end
 
   def repeatable?(school)
-    # Don't allow a repeat if the school has already completed this programe type this academic year
+    # Only allow a repeat if the school hasn't completed this programe type this academic year
     school.programmes.where(programme_type: self).completed.where(ended_on: school.current_academic_year.start_date..).none?
   end
 
