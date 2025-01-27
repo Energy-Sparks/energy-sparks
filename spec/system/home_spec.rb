@@ -129,6 +129,7 @@ RSpec.describe 'home', type: :system do
     let!(:newsletter_2) { create(:newsletter, published_on: Date.parse('02/01/2019')) }
     let!(:newsletter_3) { create(:newsletter, published_on: Date.parse('03/01/2019')) }
     let!(:newsletter_4) { create(:newsletter, published_on: Date.parse('04/01/2019')) }
+    let!(:newsletter_5) { create(:newsletter, published_on: Date.parse('05/01/2019')) }
 
     it 'shows the latest newsletters only' do
       visit root_path
@@ -137,6 +138,7 @@ RSpec.describe 'home', type: :system do
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
+      expect(page).to have_content(newsletter_5.title)
 
       click_on 'More newsletters'
 
@@ -144,6 +146,7 @@ RSpec.describe 'home', type: :system do
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
+      expect(page).to have_content(newsletter_5.title)
     end
   end
 

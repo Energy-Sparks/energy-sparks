@@ -1,0 +1,59 @@
+<%= content_for :page_title, t('pupils.digital_signage.index.title') %>
+
+<div class="row">
+  <div class="col-12">
+    <h1><%= t('pupils.digital_signage.index.title') %></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render PromptComponent.new status: :neutral, icon: 'info-circle' do |c| %>
+      <% c.with_link { link_to t('pupils.digital_signage.index.prompt.link_text'), 'mailto:hello@energysparks.uk' } %>
+      <% c.with_title { t('pupils.digital_signage.index.prompt.title') } %>
+      <p>
+        <%= t('pupils.digital_signage.index.prompt.text') %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= t('pupils.digital_signage.index.intro_html') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h2><%= t('pupils.digital_signage.index.school_group.data_sharing.title') %></h2>
+    <%= t('pupils.digital_signage.index.public_data_html') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h2><%= t('pupils.digital_signage.index.school_group.downloads.title') %></h2>
+    <%= t('pupils.digital_signage.index.school_group.downloads.intro_html') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12" id='equivalences-downloads'>
+    <h2><%= t('pupils.digital_signage.index.equivalences.title') %></h2>
+    <p><%= t('pupils.digital_signage.index.equivalences.intro_html') %></p>
+    <p><%= link_to t('common.labels.download'),
+                   equivalences_school_group_digital_signage_index_path(@school_group, format: :csv),
+                   class: 'btn btn-sm btn-default' %></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12" id='charts-downloads'>
+    <h2><%= t('pupils.digital_signage.index.charts.title') %></h2>
+    <p><%= t('pupils.digital_signage.index.charts.intro_html') %></p>
+    <p><%= link_to t('common.labels.download'),
+                   charts_school_group_digital_signage_index_path(@school_group, format: :csv),
+                   class: 'btn btn-sm btn-default' %></p>
+  </div>
+</div>

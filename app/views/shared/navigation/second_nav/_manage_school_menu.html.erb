@@ -1,5 +1,9 @@
 <li class="nav-item dropdown" id="manage-school-menu">
-  <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="manage_school" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('manage_school_menu.manage_school') %></a>
+  <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+     id="manage_school" href="#" role="button"
+     aria-haspopup="true" aria-expanded="false">
+     <%= t('manage_school_menu.manage_school') %>
+  </a>
   <div class="dropdown-menu" aria-labelledby="manage_school" id="manage_school_menu">
     <%= link_to t('manage_school_menu.edit_school_details'), edit_school_path(school), class: 'dropdown-item' %>
     <%= if can? :manage_school_times, school
@@ -22,7 +26,9 @@
     <%= if can? :manage, EnergyTariff
           link_to t('manage_school_menu.manage_tariffs'), school_energy_tariffs_path(school), class: 'dropdown-item'
         end %>
-
+    <%= if can? :show, school
+          link_to t('manage_school_menu.digital_signage'), school_digital_signage_path(school), class: 'dropdown-item'
+        end %>
     <% if current_user.admin? %>
       <div class="dropdown-divider"></div>
     <% end %>

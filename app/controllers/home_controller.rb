@@ -111,7 +111,7 @@ class HomeController < ApplicationController
   end
 
   def set_newsletters
-    @newsletters = Newsletter.order(published_on: :desc).limit(3)
+    @newsletters = Newsletter.order(published_on: :desc).limit(4)
   end
 
   def set_case_studies

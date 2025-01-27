@@ -1,4 +1,12 @@
 module Recordable
+  extend ActiveSupport::Concern
+
+  included do
+    has_many :todos, as: :task, inverse_of: :task, dependent: :destroy
+    has_many :programme_types_todo, through: :todos, source: :assignable, source_type: 'ProgrammeType'
+    has_many :audits_todo, through: :todos, source: :assignable, source_type: 'Audit'
+  end
+
   # Return the point score when a given school records this recordable on a given
   # date
   #

@@ -445,10 +445,18 @@ module ApplicationHelper
   end
 
   def dashboard_message_icon(messageable)
+    who = messageable.is_a?(SchoolGroup) ? 'schools in this group' : 'school'
+
     if messageable.dashboard_message
       title = 'Dashboard message is shown for '
-      title += messageable.is_a?(SchoolGroup) ? 'schools in this group' : 'school'
+      title += who
       tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+        fa_icon(:info)
+      end
+    else
+      title = 'Dashboard message is not set for '
+      title += who
+      tag.span class: 'badge badge-grey-light', title: title.to_s do
         fa_icon(:info)
       end
     end

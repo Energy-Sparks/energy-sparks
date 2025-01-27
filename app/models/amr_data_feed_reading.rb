@@ -54,6 +54,7 @@ class AmrDataFeedReading < ApplicationRecord
 
   PARSED_DATE = <<~SQL.squish.freeze
     CASE
+    WHEN reading_date ~ '\\d{4}/\\d{1,2}/\\d{1,2}' THEN to_date(reading_date, 'YYYY/MM/DD')
     WHEN reading_date ~ '\\d{1,2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{2}' THEN to_date(reading_date, 'DD-MON-YY')
     WHEN date_format='%d %b %Y %H:%M:%S' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d-%b-%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')

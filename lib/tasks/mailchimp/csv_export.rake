@@ -1,6 +1,6 @@
-namespace :marketing do
+namespace :mailchimp do
   desc "Schools set countries"
-  task :mailchimp_csv_export, [:dir] => :environment do |t,args|
+  task :csv_export, [:dir] => :environment do |t,args|
     puts "Loading from #{args.dir}"
 
     audience = {}
@@ -9,7 +9,7 @@ namespace :marketing do
       audience[category] = CSV.read("#{args.dir}/#{file}", headers: true, header_converters: :symbol)
     end
 
-    service = Marketing::MailchimpCsvExporter.new(**audience)
+    service = Mailchimp::CsvExporter.new(**audience)
     puts "#{DateTime.now.utc} Fetching data"
 
     service.perform
