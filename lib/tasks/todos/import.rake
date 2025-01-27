@@ -36,7 +36,7 @@ namespace :todos do
           notes: audit_intervention_type.notes)
 
         ## latest observation for this intervention_type completed since the audit was created
-        observation = audit.school.observations.intervention.where(
+        observation = audit.school.observations.intervention.visible.where(
           intervention_type: audit_intervention_type.intervention_type, at: audit.created_at..).order(at: :asc, id: :asc).last
         if observation
           audit.completed_todos.find_or_create_by!(

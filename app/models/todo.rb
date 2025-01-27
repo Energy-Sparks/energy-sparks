@@ -59,7 +59,7 @@ class Todo < ApplicationRecord
     when 'ActivityType'
       school.activities.where(activity_type: task)
     when 'InterventionType'
-      school.observations.intervention.where(intervention_type: task)
+      school.observations.intervention.visible.where(intervention_type: task)
     else
       raise StandardError, 'Unsupported task type'
     end

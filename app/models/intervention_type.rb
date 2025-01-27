@@ -79,7 +79,7 @@ class InterventionType < ApplicationRecord
   before_save :copy_searchable_attributes
 
   def actions_for_school(school)
-    observations.for_school(school)
+    observations.visible.for_school(school)
   end
 
   # override default name for this resource in transifex
