@@ -1,6 +1,6 @@
 cy:
   pupils:
-    public_displays:
+    digital_signage:
       charts:
         last_week:
           dates: Yn dangos ynni a ddefnyddiwyd hyd at yr wythnos sy'n dod i ben ar %{last_end_date}
