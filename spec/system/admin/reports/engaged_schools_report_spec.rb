@@ -6,13 +6,10 @@ describe 'Engaged Schools Report' do
   include ActiveJob::TestHelper
 
   let(:admin) { create(:admin) }
-  # let!(:school)       { create(:school, :with_school_group, :with_points, active: true) }
-
   let!(:school) do
     create(:school, :with_school_group, :with_points,
            calendar: create(:calendar, :with_previous_and_next_academic_years))
   end
-
   let(:last_sign_in)  { Time.zone.now }
   let!(:user)         { create(:school_admin, school: school, last_sign_in_at: last_sign_in) }
 
@@ -21,14 +18,14 @@ describe 'Engaged Schools Report' do
     visit admin_reports_engaged_schools_path
   end
 
-  def expect_email_with_report
+  def expect_email_with_report(activities: 1)
     email = ActionMailer::Base.deliveries.last
     expect(email.attachments.first.body.decoded.split("\r\n").map { |line| line.split(',') }).to eq(
-      [['School Group', 'School', 'Funder', 'Country',
-        'Activities', 'Actions', 'Programmes', 'Target?', 'Transport survey?', 'Temperatures?', 'Audit?',
-        'Active users', 'Last visit'],
-       [school.school_group.name, school.name, '', school.country.humanize,
-        '0', '0', '0', 'N', 'N', 'N', 'N',
+      [['School Group', 'School', 'Funder', 'Country', 'Active', 'Data Visible', 'Admin',
+        'Activities', 'Actions', 'Programmes', 'Target?', 'Transport Survey?', 'Temperatures?', 'Audit?',
+        'Active Users', 'Last Visit'],
+       [school.school_group.name, school.name, '', school.country.humanize, 'Y', 'Y', '',
+        activities.to_s, '0', '0', 'N', 'N', 'N', 'N',
         '1', last_sign_in.iso8601]]
     )
   end
@@ -40,12 +37,13 @@ describe 'Engaged Schools Report' do
 
   it 'previous year' do
     perform_enqueued_jobs { click_on 'Email Previous Year' }
-    expect_email_with_report
+    expect_email_with_report(activities: 0)
   end
 
   it 'filters school group' do
+    create(:school, :with_school_group, :with_points)
     select school.school_group.name, from: 'School Group'
-    perform_enqueued_jobs { click_on 'Email Previous Year' }
+    perform_enqueued_jobs { click_on 'Email Current Year' }
     expect_email_with_report
   end
 end

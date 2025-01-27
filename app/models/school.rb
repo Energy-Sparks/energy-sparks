@@ -745,6 +745,10 @@ class School < ApplicationRecord
                                             'school_groups.name as school_group_name').where(visible: true).order(:name)
   end
 
+  def data_visible?
+    data_enabled && visible
+  end
+
   private
 
   def valid_uk_postcode
