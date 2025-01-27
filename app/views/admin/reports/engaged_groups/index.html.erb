@@ -1,0 +1,20 @@
+<table class="table table-sorted table-sm">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>Admin</th>
+      <th>Active Schools</th>
+      <th>Engaged Schools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @engaged_groups.each do |school_group| %>
+      <tr>
+        <td><%= link_to school_group.name, school_group_path(school_group) %></td>
+        <td><%= school_group.admin_user_name %></td>
+        <td><%= school_group.active_count %></td>
+        <td><%= school_group.engaged_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
