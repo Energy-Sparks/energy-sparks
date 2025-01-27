@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_09_112010) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -22,6 +22,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_09_112010) do
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "half_hourly_labelling", ["start", "end"]
+  create_enum "mailchimp_update_status", ["pending", "processed"]
+  create_enum "mailchimp_update_type", ["update_contact", "archive_contact", "update_contact_tags"]
   create_enum "meter_perse_api", ["half_hourly"]
 
   create_table "academic_years", force: :cascade do |t|
@@ -1173,6 +1175,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_09_112010) do
     t.string "password"
     t.index ["amr_data_feed_config_id"], name: "index_low_carbon_hub_installations_on_amr_data_feed_config_id"
     t.index ["school_id"], name: "index_low_carbon_hub_installations_on_school_id"
+  end
+
+  create_table "mailchimp_updates", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.enum "update_type", enum_type: "mailchimp_update_type"
+    t.enum "status", enum_type: "mailchimp_update_status"
+    t.text "status_note"
+    t.date "processed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "status", "update_type"], name: "index_mailchimp_updates_on_user_id_and_status_and_update_type", unique: true
+    t.index ["user_id"], name: "index_mailchimp_updates_on_user_id"
   end
 
   create_table "management_dashboard_tables", force: :cascade do |t|
