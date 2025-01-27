@@ -8,7 +8,11 @@
                       class: 'btn btn-default' %>
         </div>
       </div>
-      <p><%= t('activity_categories.our_programmes.introduction') %></p>
+      <% if Flipper.enabled?(:todos, current_user) %>
+        <p><%= t('activity_categories.our_programmes.introduction') %></p>
+      <% else %>
+        <p><%= t('activity_categories.our_programmes.introduction_old') %></p>
+      <% end %>
     </div>
   </div>
 
