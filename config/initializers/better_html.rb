@@ -2,6 +2,6 @@
 
 if defined?(BetterHtml) && ENV['BETTER_HTML'].nil?
   BetterHtml.configure do |config|
-    config.template_exclusion_filter = ->(filename) { !File.fnmatch?('app/views/[a-b]*/**', filename) }
+    config.template_exclusion_filter = ->(_filename) { true }
   end
 end
