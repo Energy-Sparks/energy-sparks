@@ -25,7 +25,7 @@ module Completables
     end
 
     def available_count
-      completable.assignable_todos.count
+      completable.assignable.todos.count
     end
 
     def completed_count

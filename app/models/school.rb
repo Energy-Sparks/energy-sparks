@@ -130,11 +130,18 @@ class School < ApplicationRecord
   has_many :school_target_events, inverse_of: :school
   has_many :audits,               inverse_of: :school
 
+  # relationships to be removed when :todos removed
   has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
   has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
 
+  has_many :audit_todos, through: :audits, source: :todos
+  has_many :audit_activity_type_tasks, through: :audit_todos, source: :task, source_type: 'ActivityType'
+  has_many :audit_intervention_type_tasks, through: :audit_todos, source: :task, source_type: 'InterventionType'
+
   has_many :programmes,               inverse_of: :school
   has_many :programme_types, through: :programmes
+
+  # relationships to be removed when :todos removed
   has_many :programme_activity_types, through: :programmes, source: :activity_types
 
   has_many :alerts,                                   inverse_of: :school

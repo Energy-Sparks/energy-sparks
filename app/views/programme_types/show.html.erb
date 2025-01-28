@@ -9,6 +9,9 @@
   <div class="col-md-6">
     <h2><%= @programme_type.title %></h2>
     <p><%= @programme_type.short_description %></p>
+    <% if Flipper.enabled?(:todos) %>
+      <p><%= render 'intention', programme_type: @programme_type %></p>
+    <% end %>
     <p><%= t('programme_types.cards.bonus_points_html',
              bonus_score: tag.span(@programme_type.bonus_score, class: 'badge badge-success')) %></p>
   </div>
@@ -43,7 +46,7 @@
     <%= render 'programme_types/prompts/prompt', programme_type: @programme_type, school: current_user_school %>
   <% elsif programme&.completed? %>
     <%= render 'programme_types/prompts/completed', programme: programme %>
-  <% elsif programme %>
+  <% elsif programme&.started? %>
     <%= render 'programme_types/prompts/started', programme: programme %>
   <% end %>
 

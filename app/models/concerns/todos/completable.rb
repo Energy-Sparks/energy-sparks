@@ -15,40 +15,24 @@ module Todos
       scope :completable, -> { raise NoMethodError, 'Implement completable scope in subclass!' }
     end
 
-    def assignable_todos
-      assignable.todos
-    end
-
-    def assignable_todo_ids
-      assignable_todos.ids
-    end
-
     def completed_todo_ids
       completed_todos.pluck(:todo_id)
     end
 
-    def has_todos?
-      assignable_todo_ids.any?
-    end
-
-    def nothing_todo?
-      assignable_todo_ids.none?
-    end
-
     def completable?
-      has_todos? && todos_complete?
+      assignable.has_todos? && todos_complete?
     end
 
     def todos_incomplete?
-      (assignable_todo_ids - completed_todo_ids).any?
+      (assignable.todos.ids - completed_todo_ids).any?
     end
 
     def todos_complete?
-      (assignable_todo_ids - completed_todo_ids).empty?
+      (assignable.todos.ids - completed_todo_ids).empty?
     end
 
     def uncompleted_todos
-      assignable_todos - todos_completed
+      assignable.todos - todos_completed
     end
 
     def uncompleted_tasks

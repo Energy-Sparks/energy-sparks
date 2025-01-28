@@ -19,7 +19,7 @@ namespace :todos do
 
         ## latest activity for this activity_type completed since the audit was created
         activity = audit.school.activities.where(
-          activity_type: audit_activity_type.activity_type, happened_on: audit.created_at..).order(happened_on: :asc).last
+          activity_type: audit_activity_type.activity_type, happened_on: audit.created_at..).order(happened_on: :asc, id: :asc).last
 
         if activity
           audit.completed_todos.find_or_create_by!(
@@ -36,8 +36,8 @@ namespace :todos do
           notes: audit_intervention_type.notes)
 
         ## latest observation for this intervention_type completed since the audit was created
-        observation = audit.school.observations.intervention.where(
-          intervention_type: audit_intervention_type.intervention_type, at: audit.created_at..).order(at: :asc).last
+        observation = audit.school.observations.intervention.visible.where(
+          intervention_type: audit_intervention_type.intervention_type, at: audit.created_at..).order(at: :asc, id: :asc).last
         if observation
           audit.completed_todos.find_or_create_by!(
             todo: todo,

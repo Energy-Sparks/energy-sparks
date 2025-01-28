@@ -25,6 +25,8 @@ class ProgrammeType < ApplicationRecord
   translates :document_link, type: :string, fallbacks: { cy: :en }
 
   t_has_one_attached :image
+
+  ## these two relationships to be removed when todos feature removed
   has_many :programme_type_activity_types
   has_many :activity_types, through: :programme_type_activity_types
 
@@ -98,8 +100,8 @@ class ProgrammeType < ApplicationRecord
   end
 
   def repeatable?(school)
-    # Does the school have any programmes for this programme type completed before the beginning of this academic year?
-    school.programmes.where(programme_type: self).completed.where(ended_on: ..school.current_academic_year.start_date).any?
+    # Only allow a repeat if the school hasn't completed this programe type this academic year
+    school.programmes.where(programme_type: self).completed.where(ended_on: school.current_academic_year.start_date..).none?
   end
 
   # Provide a list of activity types a school has already completed this year for this programme type

@@ -13,6 +13,18 @@ FactoryBot.define do
       end
     end
 
+    trait :with_activity_type_todos do
+      after(:create) do |programme_type, _evaluator|
+        create_list(:activity_type_todo, 3, assignable: programme_type)
+      end
+    end
+
+    trait :with_intervention_type_todos do
+      after(:create) do |programme_type, _evaluator|
+        create_list(:intervention_type_todo, 3, assignable: programme_type)
+      end
+    end
+
     # old way - remove when :todos feature removed
     factory :programme_type_with_activity_types do
       transient do
