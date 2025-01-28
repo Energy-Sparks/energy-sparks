@@ -140,8 +140,8 @@ RSpec.shared_examples 'a completable' do
   end
 
   context 'when nothing to complete' do
-    it { expect(completable.has_todos?).to be(false) }
-    it { expect(completable.nothing_todo?).to be(true) }
+    it { expect(assignable.has_todos?).to be(false) }
+    it { expect(assignable.no_todos?).to be(true) }
     it { expect(completable.completable?).to be(false) }
     it { expect(completable.todos_complete?).to be(true) }
   end
@@ -150,17 +150,15 @@ RSpec.shared_examples 'a completable' do
     let!(:activity_type_todos) { create_list(:activity_type_todo, 3, assignable:) }
     let!(:intervention_type_todos) { create_list(:intervention_type_todo, 3, assignable:) }
 
-    it { expect(completable.has_todos?).to be(true) }
-    it { expect(completable.nothing_todo?).to be(false) }
+    it { expect(assignable.has_todos?).to be(true) }
+    it { expect(assignable.no_todos?).to be(false) }
     it { expect(completable.completable?).to be(false) }
     it { expect(completable.todos_complete?).to be(false) }
 
-    describe '#assignable_todos' do
-      it 'returns todos from completable' do
-        expect(completable.assignable_todos.count).to eq(6)
-        todos.each do |todo|
-          expect(Todo.where(task: todo.task, assignable:)).not_to be_nil
-        end
+    it 'returns todos' do
+      expect(assignable.todos.count).to eq(6)
+      todos.each do |todo|
+        expect(Todo.where(task: todo.task, assignable:)).not_to be_nil
       end
     end
 
@@ -174,8 +172,8 @@ RSpec.shared_examples 'a completable' do
         end
       end
 
-      it { expect(completable.has_todos?).to be(true) }
-      it { expect(completable.nothing_todo?).to be(false) }
+      it { expect(assignable.has_todos?).to be(true) }
+      it { expect(assignable.no_todos?).to be(false) }
       it { expect(completable.completable?).to be(true) }
       it { expect(completable.todos_complete?).to be(true) }
     end
