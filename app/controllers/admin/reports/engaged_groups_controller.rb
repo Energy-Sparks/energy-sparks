@@ -7,15 +7,15 @@ module Admin
         @engaged_groups =
           SchoolGroup
           .by_name
-          .joins("JOIN (#{School.active.group(:school_group_id).select(:school_group_id, 'count(*)').to_sql}) " \
+          .joins("LEFT JOIN (#{School.active.group(:school_group_id).select(:school_group_id, 'COUNT(*)').to_sql}) " \
                  'AS active ON school_groups.id = active.school_group_id')
-          .joins("JOIN (#{School.engaged(AcademicYear.current.start_date..).group(:school_group_id)
-                                .select(:school_group_id, 'count(*)').to_sql}) " \
+          .joins("LEFT JOIN (#{School.engaged(AcademicYear.current.start_date..).group(:school_group_id)
+                                .select(:school_group_id, 'COUNT(*)').to_sql}) " \
                  'AS engaged ON school_groups.id = engaged.school_group_id')
-          .joins(:default_issues_admin_user)
+          .left_joins(:default_issues_admin_user)
           .select('school_groups.*',
-                  'active.count AS active_count',
-                  'engaged.count AS engaged_count',
+                  'COALESCE(active.count, 0) AS active_count',
+                  'COALESCE(engaged.count, 0) AS engaged_count',
                   'users.name AS admin_user_name')
       end
     end
