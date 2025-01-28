@@ -20,6 +20,7 @@
 #  import_warning_days     :integer          default(10)
 #  lookup_by_serial_number :boolean          default(FALSE)
 #  meter_description_field :text
+#  missing_reading_window  :integer          default(5)
 #  missing_readings_limit  :integer
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
