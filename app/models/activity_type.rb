@@ -78,16 +78,18 @@ class ActivityType < ApplicationRecord
 
   has_many :activity_type_suggestions
   has_many :suggested_types, through: :activity_type_suggestions
-  has_many :programme_activities
   has_many :activities, inverse_of: :activity_type
 
+  # old relationships to be removed when todos feature removed
+  has_many :programme_activities
+
+  # old relationships to be removed when todos feature removed
   has_many :programme_type_activity_types
   has_many :programme_types, through: :programme_type_activity_types
 
+  # old relationships to be removed when todos feature removed
   has_many :audit_activity_types
   has_many :audits, through: :audit_activity_types
-
-  has_many :todos, as: :task, inverse_of: :task, dependent: :destroy
 
   has_many :link_rewrites, as: :rewriteable
 
