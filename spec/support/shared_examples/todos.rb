@@ -13,6 +13,7 @@ RSpec.shared_examples 'a completable getting latest recording for todo' do
 
     context 'when school has multiple recordings for task' do
       let!(:older) { create(:activity, activity_type:, school:, happened_on: 3.days.ago) }
+      let!(:new) { create(:activity, activity_type:, school:, happened_on: 2.days.ago) }
       let!(:newer) { create(:activity, activity_type:, school:, happened_on: 2.days.ago) }
       let!(:created_last) { create(:activity, activity_type:, school:, happened_on: 4.days.ago) }
 
@@ -58,6 +59,7 @@ RSpec.shared_examples 'a completable getting latest recording for todo' do
 
     context 'when school has multiple recordings for task' do
       let!(:older) { create(:observation, :intervention, intervention_type:, school:, at: 3.days.ago) }
+      let!(:new) { create(:observation, :intervention, intervention_type:, school:, at: 2.days.ago) }
       let!(:newer) { create(:observation, :intervention, intervention_type:, school:, at: 2.days.ago) }
       let!(:created_last) { create(:observation, :intervention, intervention_type:, school:, at: 4.days.ago) }
 

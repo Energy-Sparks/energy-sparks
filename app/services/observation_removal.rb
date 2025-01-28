@@ -9,6 +9,9 @@ class ObservationRemoval
       @observation.destroy
     else
       @observation.update_attribute(:visible, false)
+      if Flipper.enabled?(:todos)
+        CompletedTodo.where(recording: @observation).destroy_all if @observation.intervention?
+      end
     end
   end
 end
