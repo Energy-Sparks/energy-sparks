@@ -1,4 +1,4 @@
-require_relative 'context_extensions'
+require_relative '../support/context_extensions'
 require 'flipper'
 
 RSpec.describe ContextExtensions do

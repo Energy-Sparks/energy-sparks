@@ -4,52 +4,20 @@ module Admin
   module Reports
     class EngagedSchoolsController < AdminController
       def index
-        @previous_year = params.key?(:previous_year)
-        @engaged_schools = ::Schools::EngagedSchoolService
-                           .list_engaged_schools(previous_year: @previous_year)
+        @engaged_schools_count = ::Schools::EngagedSchoolService.engaged_schools_count
+        @visible_schools = School.visible.count
+        @percentage = percentage_engaged
+        return unless request.post?
 
-        respond_to do |format|
-          format.html do
-            @visible_schools = School.visible.count
-            @percentage = percentage_engaged
-          end
-          format.csv do
-            send_data csv_report(@engaged_schools),
-                      filename: "engaged-schools-report-#{Time.zone.now.iso8601.parameterize}" \
-                                "#{@previous_year ? '-previous-year' : ''}.csv"
-          end
-        end
+        EngagedSchoolsReportJob.perform_later(current_user.email, params[:previous], params[:school_group_id])
+        redirect_back fallback_location: admin_reports_engaged_schools_path,
+                      notice: "Report sent to #{current_user.email}"
       end
 
       private
 
       def percentage_engaged
-        format('%.2f', @engaged_schools.size / @visible_schools.to_f * 100)
-      end
-
-      def csv_report(engaged_schools)
-        CSV.generate(headers: true) do |csv|
-          csv << ['School Group', 'School', 'Funder', 'Country', 'Activities', 'Actions',
-                  'Programmes', 'Target?', 'Transport survey?', 'Temperatures?', 'Audit?',
-                  'Active users', 'Last visit']
-          engaged_schools.each do |service|
-            csv << [
-              service.school_group.name,
-              service.school.name,
-              service.school.funder.present? ? service.school.funder.name : nil,
-              service.school.country.humanize,
-              service.recent_activity_count,
-              service.recent_action_count,
-              service.recently_enrolled_programme_count,
-              service.active_target? ? 'Y' : 'N',
-              service.transport_surveys? ? 'Y' : 'N',
-              service.temperature_recordings? ? 'Y' : 'N',
-              service.audits? ? 'Y' : 'N',
-              service.recently_logged_in_user_count,
-              service.most_recent_login.present? ? service.most_recent_login.iso8601 : nil
-            ]
-          end
-        end
+        format('%.2f', @engaged_schools_count / @visible_schools.to_f * 100)
       end
     end
   end

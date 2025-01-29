@@ -682,7 +682,7 @@ Rails.application.routes.draw do
       resources :activity_types, only: [:index, :show]
       resources :dcc_status, only: [:index]
       resources :solar_panels, only: [:index]
-      resources :engaged_schools, only: [:index]
+      match 'engaged_schools', to: "engaged_schools#index", via: [:get, :post]
       resources :community_use, only: [:index]
       resources :intervention_types, only: [:index, :show]
       resources :missing_alert_contacts, only: [:index]

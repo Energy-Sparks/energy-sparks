@@ -51,6 +51,14 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: subject(title))
   end
 
+  def engaged_schools_report
+    now = Time.zone.now.iso8601
+    attachments["engaged-schools-report-#{now.tr(':', '-')}#{params[:previous_year] ? '-previous-year' : ''}.csv"] = \
+      { mime_type: 'text/csv', content: params[:csv] }
+
+    mail(to: params[:to], subject: subject("Engaged schools report #{now}"))
+  end
+
   private
 
   def build_issues_csv_for(issues)
