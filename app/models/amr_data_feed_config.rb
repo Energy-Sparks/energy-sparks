@@ -59,13 +59,12 @@ class AmrDataFeedConfig < ApplicationRecord
   has_rich_text :notes
 
   validates :identifier, :description, uniqueness: true, presence: true
-
   validates :row_per_reading, inclusion: [true], if: :positional_index
-  validate :period_or_time_field, if: :positional_index
-
   validates :msn_field, presence: { if: :lookup_by_serial_number }
 
+  validate :period_or_time_field, if: :positional_index
   validate :no_nil_array_of_reading_indexes, if: :header_example
+  validate :source_and_process_type
 
   BLANK_THRESHOLD = 1
 
@@ -136,5 +135,11 @@ class AmrDataFeedConfig < ApplicationRecord
     return unless array_of_reading_indexes.include?(nil)
 
     errors.add(:header_example, "can't find all reading_fields in header_example")
+  end
+
+  def source_and_process_type
+    return unless process_type != 's3_folder' && source_type != 'api'
+
+    errors.add(:source_type, 'source_api should be api if process_type is an api')
   end
 end
