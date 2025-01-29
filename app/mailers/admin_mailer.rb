@@ -55,8 +55,12 @@ class AdminMailer < ApplicationMailer
     now = Time.zone.now.iso8601
     attachments["engaged-schools-report-#{now.tr(':', '-')}#{params[:previous_year] ? '-previous-year' : ''}.csv"] = \
       { mime_type: 'text/csv', content: params[:csv] }
-
     mail(to: params[:to], subject: subject("Engaged schools report #{now}"))
+  end
+
+  def missing_reading_window
+    @missing = params[:missing]
+    mail(to: params[:to], subject: subject('Missing Data'))
   end
 
   private

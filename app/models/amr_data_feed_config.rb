@@ -55,6 +55,7 @@ class AmrDataFeedConfig < ApplicationRecord
 
   has_many :amr_data_feed_import_logs
   has_many :meters, -> { distinct }, through: :amr_data_feed_import_logs
+  has_many :amr_data_feed_readings
 
   has_rich_text :notes
 

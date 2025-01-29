@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+namespace :amr do
+  desc 'Send an email when readings not received for a AmrDataFeedConfig'
+  task missing_reading_window_email: :environment do |_t, _args|
+    next unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
+
+    now = Time.current
+    missing = AmrDataFeedConfig.where.not(missing_reading_window: nil).filter_map do |config|
+      latest = config.amr_data_feed_readings.maximum(:updated_at)
+      since_latest = latest && (now - latest)
+      [config, since_latest] if latest && since_latest > config.missing_reading_window.days
+    end
+    AdminMailer.with(to: 'operations@energysparks.uk', missing:).missing_reading_window.deliver if missing
+  end
+end
