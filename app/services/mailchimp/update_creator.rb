@@ -1,5 +1,8 @@
 module Mailchimp
   class UpdateCreator
+    # subclasses should redefine as required
+    FIELDS = [].freeze
+
     def initialize(model)
       @model = model
     end
@@ -10,17 +13,20 @@ module Mailchimp
       nil
     end
 
+    # TODO
+    def submit_job
+    end
+
+    def updates_required?
+      @model.previous_changes.symbolize_keys.keys.any? { |k| self.class::FIELDS.include?(k) }
+    end
+
     def perform
-      return false unless updates_required?
       create_updates(contacts)
       true
     end
 
     private
-
-    def updates_required?
-      raise 'Not implemented'
-    end
 
     def contacts
       raise 'Not implemented'
@@ -37,17 +43,80 @@ module Mailchimp
         returning: false
       )
     end
+
+    def all_school_users_where(**where)
+      contacts = []
+      School.where(where).find_each do |school|
+        contacts += school.all_adult_school_users
+      end
+      contacts.uniq
+    end
   end
 
   # TODO tags
   class UserUpdateCreator < UpdateCreator
-    # TODO fields
-    def updates_required?
-      @model.name_previously_changed?
-    end
+    FIELDS = [:confirmed_at, :email, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id].freeze
 
     def contacts
       [@model]
     end
+  end
+
+  class SchoolUpdateCreator < UpdateCreator
+    FIELDS = [:active, :country, :funder_id, :local_authority_area_id, :name, :region, :school_group_id, :school_type, :scoreboard_id].freeze
+
+    def contacts
+      @model.all_adult_school_users
+    end
+  end
+
+  class SchoolGroupUpdateCreator < UpdateCreator
+    FIELDS = [:name].freeze
+
+    # FIXME scopes?
+    def contacts
+      contacts = @model.users
+      @model.schools.each do |school|
+        contacts += school.all_adult_school_users
+      end
+      contacts.uniq
+    end
+  end
+
+  class FunderUpdateCreator < UpdateCreator
+    FIELDS = [:name].freeze
+
+    def contacts
+      all_school_users_where(funder: @model)
+    end
+  end
+
+  class LocalAuthorityAreaUpdateCreator < UpdateCreator
+    FIELDS = [:name].freeze
+
+    def contacts
+      all_school_users_where(local_authority_area: @model)
+    end
+  end
+
+  class StaffRoleUpdateCreator < UpdateCreator
+    FIELDS = [:title].freeze
+
+    def contacts
+      User.where(staff_role: @model)
+    end
+  end
+
+  class ScoreboardUpdateCreator < UpdateCreator
+    FIELDS = [:name].freeze
+
+    # Group admins for default?
+    def contacts
+      all_school_users_where(scoreboard: @model)
+    end
+  end
+
+  # FIXME, need to handle insert and delete, no updates???
+  class ContactUpdateCreator < UpdateCreator
   end
 end

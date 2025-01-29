@@ -13,11 +13,13 @@ FactoryBot.define do
       trait :with_cluster_schools do
         transient do
           count { 1 }
+          existing_school { nil }
         end
 
         after(:build) do |user, evaluator|
           user.cluster_schools = create_list(:school, evaluator.count, active: true, public: true)
           user.cluster_schools << user.school
+          user.cluster_schools << evaluator.existing_school if evaluator.existing_school
         end
       end
     end
