@@ -44,4 +44,10 @@ describe Funder do
       end
     end
   end
+
+  describe 'MailchimpUpdateable' do
+    subject { create(:funder) }
+
+    it_behaves_like 'a MailchimpUpdateable'
+  end
 end

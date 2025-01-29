@@ -1063,4 +1063,10 @@ describe School do
       expect(schools.last.school_group_name).to eq(nil)
     end
   end
+
+  describe 'MailchimpUpdateable' do
+    subject { create(:school) }
+
+    it_behaves_like 'a MailchimpUpdateable'
+  end
 end

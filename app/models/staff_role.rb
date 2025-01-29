@@ -9,6 +9,8 @@
 #
 
 class StaffRole < ApplicationRecord
+  include MailchimpUpdateable
+
   has_many :users
 
   attribute :dashboard, :string

@@ -24,6 +24,7 @@ class Scoreboard < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   include Scorable
+  include MailchimpUpdateable
 
   translates :name, type: :string, fallbacks: { cy: :en }
   before_save :update_name

@@ -74,4 +74,10 @@ describe Scoreboard, :scoreboards, type: :model do
 
     it_behaves_like 'a scorable'
   end
+
+  describe 'MailchimpUpdateable' do
+    subject { create(:scoreboard) }
+
+    it_behaves_like 'a MailchimpUpdateable'
+  end
 end

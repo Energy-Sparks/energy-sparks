@@ -418,4 +418,10 @@ describe User do
       it_behaves_like 'created by nullified on user destroy'
     end
   end
+
+  describe 'MailchimpUpdateable' do
+    subject { create(:user) }
+
+    it_behaves_like 'a MailchimpUpdateable'
+  end
 end

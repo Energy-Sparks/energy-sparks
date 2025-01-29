@@ -8,6 +8,8 @@
 #  name :string           not null
 #
 class Funder < ApplicationRecord
+  include MailchimpUpdateable
+
   has_many :schools
 
   scope :with_schools,  -> { where.associated(:schools) }

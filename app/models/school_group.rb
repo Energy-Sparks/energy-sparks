@@ -48,6 +48,7 @@ class SchoolGroup < ApplicationRecord
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
   include Scorable
+  include MailchimpUpdateable
 
   friendly_id :name, use: %i[finders slugged history]
 

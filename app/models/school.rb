@@ -101,6 +101,7 @@ class School < ApplicationRecord
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
   include EnumDataSharing
+  include MailchimpUpdateable
 
   class ProcessDataError < StandardError; end
 

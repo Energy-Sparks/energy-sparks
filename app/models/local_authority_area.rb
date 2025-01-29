@@ -9,6 +9,8 @@
 #  updated_at :datetime         not null
 #
 class LocalAuthorityArea < ApplicationRecord
+  include MailchimpUpdateable
+
   validates_presence_of :code, :name
   validates_uniqueness_of :code
 

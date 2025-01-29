@@ -51,6 +51,8 @@
 require 'securerandom'
 
 class User < ApplicationRecord
+  include MailchimpUpdateable
+
   encrypts :pupil_password
 
   belongs_to :school, optional: true
