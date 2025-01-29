@@ -20,8 +20,16 @@ describe Recommendations::Actions, type: :service do
   end
 
   describe '#based_on_energy_use' do
-    subject(:energy_use) { service.based_on_energy_use(limit) }
+    context without_feature: :todos do
+      subject(:energy_use) { service.based_on_energy_use(limit) }
 
-    it_behaves_like 'a service making recommendations based on energy use'
+      it_behaves_like 'a service making recommendations based on energy use', with_todos: false
+    end
+
+    context with_feature: :todos do
+      subject(:energy_use) { service.based_on_energy_use(limit) }
+
+      it_behaves_like 'a service making recommendations based on energy use', with_todos: true
+    end
   end
 end

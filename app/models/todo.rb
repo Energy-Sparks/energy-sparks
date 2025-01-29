@@ -49,7 +49,7 @@ class Todo < ApplicationRecord
   end
 
   def latest_recording_for(completable:)
-    recordings_for(school: completable.school).in_academic_year_for(completable.school, Time.zone.now).by_date(:desc).first
+    recordings_for(school: completable.school).in_academic_year_for(completable.school, Time.zone.now).by_date(:asc).order(id: :asc).last
   end
 
   private
@@ -59,7 +59,7 @@ class Todo < ApplicationRecord
     when 'ActivityType'
       school.activities.where(activity_type: task)
     when 'InterventionType'
-      school.observations.intervention.where(intervention_type: task)
+      school.observations.intervention.visible.where(intervention_type: task)
     else
       raise StandardError, 'Unsupported task type'
     end
