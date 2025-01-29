@@ -1,42 +1,46 @@
-<% content_for :page_title, 'Home' %>
+<% content_for :page_title, t('common.labels.home') %>
 
+<% if Flipper.enabled?(:new_home_page) %>
+
+<% else %>
 <!-- Header -->
-<header>
-  <div class="row masthead">
-    <div class="col-7">
+  <header>
+    <div class="row masthead">
+      <div class="col-7">
+      </div>
+      <div class="col-5 masthead-content">
+        <div class="row pt-5">
+          <div class="col">
+            <h2 class='text-white'><%= t('home.title') %></h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col pr-5">
+            <h4 class='text-white'><%= t('home.sub_title') %></h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 offset-md-3 pt-5">
+            <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-5 masthead-content">
-      <div class="row pt-5">
-        <div class="col">
-          <h2 class='text-white'><%= t('home.title') %></h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col pr-5">
-          <h4 class='text-white'><%= t('home.sub_title') %></h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8 offset-md-3 pt-5">
-          <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn btn-success' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+  </header>
 
-<%= render 'carousel' %>
+  <%= render 'carousel' %>
 
-<%= render 'funnels' %>
+  <%= render 'funnels' %>
 
-<%= render 'testimonial',
-           quote: t('home.quote.text_html'),
-           by: 'Jennie Nixon',
-           title: t('home.quote.job_title'),
-           location: 'Whiteways Primary School, Sheffield' %>
+  <%= render 'testimonial',
+             quote: t('home.quote.text_html'),
+             by: 'Jennie Nixon',
+             title: t('home.quote.job_title'),
+             location: 'Whiteways Primary School, Sheffield' %>
 
-<%= render 'videos' %>
+  <%= render 'videos' %>
 
-<%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
+  <%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
 
-<%= render 'mailchimp' %>
+  <%= render 'mailchimp' %>
+<% end %>
