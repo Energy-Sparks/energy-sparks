@@ -16,9 +16,9 @@ describe Mailchimp::UpdateCreator do
 
       it 'creates records as needed' do
         if existing + 1 == final
-          expect { service.perform }.not_to change(Mailchimp::Update, :count)
+          expect { service.create_updates }.not_to change(Mailchimp::Update, :count)
         else
-          expect { service.perform }.to change {
+          expect { service.create_updates }.to change {
             Mailchimp::Update.where(user: users, status: status, update_type: update_type).count
           }.from(existing + 1).to(final)
         end
@@ -31,14 +31,14 @@ describe Mailchimp::UpdateCreator do
       end
 
       it 'creates records as needed' do
-        expect { service.perform }.to change {
+        expect { service.create_updates }.to change {
           Mailchimp::Update.where(user: users, status: status, update_type: update_type).count
         }.from(existing).to(final)
       end
     end
 
     it 'creates records as needed' do
-      expect { service.perform }.to change {
+      expect { service.create_updates }.to change {
         Mailchimp::Update.where(user: users, status: status, update_type: update_type).count
       }.from(existing).to(final)
     end
@@ -190,7 +190,7 @@ describe Mailchimp::UpdateCreator do
     end
   end
 
-  describe '#perform' do
+  describe '#create_updates' do
     # create some existing users
     before do
       create(:admin)
@@ -277,6 +277,26 @@ describe Mailchimp::UpdateCreator do
 
       it_behaves_like 'updates are created' do
         let(:final) { users.count }
+      end
+    end
+  end
+
+  describe '#record_updates' do
+    let!(:model) do
+      u = create(:user)
+      u.reload # flush previous changes from the insert
+    end
+
+    it 'does nothing by default' do
+      expect(Mailchimp::UpdateJob).not_to receive(:perform_later)
+      service.record_updates
+    end
+
+    context 'when updates required' do
+      it 'submits job' do
+        expect(Mailchimp::UpdateJob).to receive(:perform_later).with(model)
+        model.update(name: 'New name')
+        service.record_updates
       end
     end
   end

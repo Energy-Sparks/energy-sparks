@@ -13,16 +13,16 @@ module Mailchimp
       nil
     end
 
-    # TODO
-    def submit_job
+    def record_updates
+      Mailchimp::UpdateJob.perform_later(@model) if updates_required?
     end
 
     def updates_required?
       @model.previous_changes.symbolize_keys.keys.any? { |k| self.class::FIELDS.include?(k) }
     end
 
-    def perform
-      create_updates(contacts)
+    def create_updates
+      upsert_updates(contacts)
       true
     end
 
@@ -35,7 +35,7 @@ module Mailchimp
     # TODO tags, could override and call base class multiple times
     # or pass in update_types as all contacts will also need tagging?
     # or a flag? Only need tags if school is added to user, or free schools meals change
-    def create_updates(contacts)
+    def upsert_updates(contacts)
       Mailchimp::Update.upsert_all(
         contacts.map {|c| { user_id: c.id, status: :pending, update_type: :update_contact } },
         unique_by: [:user_id, :status, :update_type],
