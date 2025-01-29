@@ -294,7 +294,8 @@ describe Mailchimp::UpdateCreator do
 
     context 'when updates required' do
       it 'submits job' do
-        expect(Mailchimp::UpdateJob).to receive(:perform_later).with(model)
+        # the MailchimpUpdateable concern will call the method anyway, so use at least once
+        expect(Mailchimp::UpdateJob).to receive(:perform_later).with(model).at_least(:once)
         model.update(name: 'New name')
         service.record_updates
       end
