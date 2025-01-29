@@ -208,7 +208,7 @@ RSpec.shared_examples 'a service making recommendations based on energy use' do 
       end
 
       it 'tops up from them' do
-        expect(audit_task_types).to include(*energy_use)
+        expect(energy_use).to all(be_in(audit_task_types))
       end
 
       context 'when one has been recently completed' do
