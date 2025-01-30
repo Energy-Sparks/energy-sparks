@@ -6,24 +6,28 @@
       <div class="row">
         <div class="col-md-6 col-12 my-auto">
           <div class='pt-3 pb-4 pr-4'>
-            <h3>Helping schools cut energy costs and fight climate change</h3>
-            <p>Save up to 40% on energy bills with our unique school-specific energy management tool and education programme.</p>
-            <%= link_to t('nav.enrol'), find_out_more_campaigns_path, class: 'btn btn-primary' %>
-            <%= link_to t('campaigns.find_out_more.book_demo'),
-                        book_demo_campaigns_path,
-                        class: 'btn btn-secondary' %>
+            <h2>Helping schools cut energy costs and fight climate change</h2>
+            <p class='header-font'>Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.</p>
+            <p>
+              <%= link_to t('nav.enrol'), find_out_more_campaigns_path, class: 'btn btn-primary' %>
+              <%= link_to t('campaigns.find_out_more.book_demo'),
+                          book_demo_campaigns_path,
+                          class: 'btn btn-secondary' %>
+            </p>
           </div>
         </div>
-        <div class="col-md-6 col-12 d-none d-md-block position-relative">
-          <%= image_tag 'laptop.jpg', class: 'right-half' %>
+        <div class="col-md-6 col-12">
+          <%= image_tag 'laptop.jpg', class: 'right-half d-none d-md-block' %>
         </div>
       </div>
     </div>
   </div>
-  <div>
-    Something else
+  <div class="container">
+    <div class='p-4 m-4 text-center'>
+      <h3>Are you looking to cut energy bills and take action on climate change?</h3>
+      <p class='header-font small'>We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.</p>
+    </div>
   </div>
-
 <% else %>
 <!-- Header -->
   <header>

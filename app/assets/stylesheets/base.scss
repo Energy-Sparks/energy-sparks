@@ -5,6 +5,10 @@ body {
   overflow-x: hidden;
 }
 
+header-font {
+  font-family: $header-font-family;
+}
+
 div.application.container {
   padding-bottom: 30px;
 }
