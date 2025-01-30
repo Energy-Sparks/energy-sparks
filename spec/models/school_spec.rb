@@ -1072,13 +1072,14 @@ describe School do
         {
           active: false,
           country: :scotland,
+          funder: create(:funder),
+          local_authority_area: create(:local_authority_area),
           name: 'New name',
+          percentage_free_school_meals: 15,
           region: :south_east,
           school_type: :special,
           school_group: create(:school_group),
-          scoreboard: create(:scoreboard),
-          local_authority_area: create(:local_authority_area),
-          funder: create(:funder)
+          scoreboard: create(:scoreboard)
         }
       end
 
