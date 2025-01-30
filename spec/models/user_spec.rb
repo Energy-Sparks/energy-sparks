@@ -477,4 +477,122 @@ describe User do
       end
     end
   end
+
+  describe '.mailchimp_update_required' do
+    context 'when mailchimp status is unknown' do
+      let(:user) { create(:user) }
+
+      it { expect(User.mailchimp_update_required).to be_empty }
+    end
+
+    context 'with school admin' do
+      let!(:school) { create(:school, :with_school_group) }
+
+      context 'when user has not been synchronised' do
+        let!(:user) { create(:school_admin, school: school, mailchimp_status: :subscribed) }
+
+        it { expect(User.mailchimp_update_required).to match_array([user])}
+      end
+
+      context 'when user is up to date' do
+        let!(:user) do
+          user = create(:school_admin, school: school, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now) # ensure timestamp is later
+          user
+        end
+
+        it { expect(User.mailchimp_update_required).to be_empty }
+      end
+
+      context 'when updates are pending' do
+        let!(:user) do
+          user = create(:school_admin, school: school, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now - 1.day) # ensure timestamp is later
+          user
+        end
+
+        context 'when user has been updated' do
+          before do
+            user.update!(name: 'New name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when funder has been updated' do
+          let!(:school) { create(:school, :with_school_group, funder: create(:funder)) }
+
+          before do
+            school.funder.update!(name: 'New funder name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when local authority has been updated' do
+          let!(:school) { create(:school, :with_school_group, local_authority_area: create(:local_authority_area)) }
+
+          before do
+            school.local_authority_area.update!(name: 'New area name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when scoreboard has been updated' do
+          let!(:school) { create(:school, :with_school_group, scoreboard: create(:scoreboard)) }
+
+          before do
+            school.scoreboard.update!(name: 'New scoreboard name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when school_group has been updated' do
+          let!(:school) { create(:school, :with_school_group) }
+
+          before do
+            school.school_group.update!(name: 'New group name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+      end
+    end
+
+    context 'with group admin' do
+      let!(:user) { create(:group_admin) }
+
+      context 'when user has not been synchronised' do
+        let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
+
+        it { expect(User.mailchimp_update_required).to match_array([user])}
+      end
+
+      context 'when updates are pending' do
+        let!(:user) do
+          user = create(:group_admin, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now - 1.day) # ensure timestamp is later
+          user
+        end
+
+        context 'when user has been updated' do
+          before do
+            user.update!(name: 'New name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when school_group has been updated' do
+          before do
+            user.school_group.update!(name: 'New group name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+      end
+    end
+  end
 end
