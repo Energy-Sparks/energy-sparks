@@ -1,17 +1,20 @@
 class MailchimpUpdates < ActiveRecord::Migration[7.1]
   def change
-    create_enum :mailchimp_update_status, ['pending', 'processed']
-    create_enum :mailchimp_update_type, ['update_contact', 'archive_contact', 'update_contact_tags']
+    # Columns to track when Mailchimp relevant fields or associations
+    # have been changed on this model
+    add_column :users, :mailchimp_fields_changed_at, :datetime, null: true
+    add_column :schools, :mailchimp_fields_changed_at, :datetime, null: true
+    add_column :school_groups, :mailchimp_fields_changed_at, :datetime, null: true
+    add_column :scoreboards, :mailchimp_fields_changed_at, :datetime, null: true
+    add_column :funders, :mailchimp_fields_changed_at, :datetime, null: true
+    add_column :local_authority_areas, :mailchimp_fields_changed_at, :datetime, null: true
+    add_column :staff_roles, :mailchimp_fields_changed_at, :datetime, null: true
 
-    create_table :mailchimp_updates do |t|
-      t.references :user, null: false
-      t.enum :update_type, enum_type: :mailchimp_update_type
-      t.enum :status, enum_type: :mailchimp_update_status
-      t.text :status_note, null: true
-      t.date :processed_at, null: true
-      t.timestamps
-    end
+    # Date when mailchimp last updated for the user
+    add_column :users, :mailchimp_updated_at, :datetime, null: true
 
-    add_index :mailchimp_updates, [:user_id, :status, :update_type], unique: true
+    # For tracking status of contact in Mailchimp audience
+    create_enum :mailchimp_status, ['subscribed', 'unsubscribed', 'cleaned', 'nonsubscribed']
+    add_column :users, :mailchimp_status, :enum, enum_type: :mailchimp_status, null: true
   end
 end

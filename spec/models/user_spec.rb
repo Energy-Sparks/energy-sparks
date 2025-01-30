@@ -420,8 +420,31 @@ describe User do
   end
 
   describe 'MailchimpUpdateable' do
-    subject { create(:user) }
+    subject! { create(:user) }
 
-    it_behaves_like 'a MailchimpUpdateable'
+    it 'handles cluster school changes'
+    it 'handles contact changes'
+
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          confirmed_at: Time.zone.now,
+          email: 'new@example.org',
+          name: 'New',
+          preferred_locale: :cy,
+          role: :admin,
+          school: create(:school),
+          school_group: create(:school_group),
+          staff_role: create(:staff_role, :management)
+        }
+      end
+
+      let(:ignored_field_changes) do
+        {
+          sign_in_count: 5,
+          unlock_token: 'XYZ'
+        }
+      end
+    end
   end
 end

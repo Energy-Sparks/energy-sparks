@@ -22,8 +22,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "half_hourly_labelling", ["start", "end"]
-  create_enum "mailchimp_update_status", ["pending", "processed"]
-  create_enum "mailchimp_update_type", ["update_contact", "archive_contact", "update_contact_tags"]
+  create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed"]
   create_enum "meter_perse_api", ["half_hourly"]
 
   create_table "academic_years", force: :cascade do |t|
@@ -943,6 +942,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
 
   create_table "funders", force: :cascade do |t|
     t.string "name", null: false
+    t.datetime "mailchimp_fields_changed_at"
   end
 
   create_table "global_meter_attributes", force: :cascade do |t|
@@ -1154,6 +1154,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "mailchimp_fields_changed_at"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -1175,18 +1176,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.string "password"
     t.index ["amr_data_feed_config_id"], name: "index_low_carbon_hub_installations_on_amr_data_feed_config_id"
     t.index ["school_id"], name: "index_low_carbon_hub_installations_on_school_id"
-  end
-
-  create_table "mailchimp_updates", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.enum "update_type", enum_type: "mailchimp_update_type"
-    t.enum "status", enum_type: "mailchimp_update_status"
-    t.text "status_note"
-    t.date "processed_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id", "status", "update_type"], name: "index_mailchimp_updates_on_user_id_and_status_and_update_type", unique: true
-    t.index ["user_id"], name: "index_mailchimp_updates_on_user_id"
   end
 
   create_table "management_dashboard_tables", force: :cascade do |t|
@@ -1527,6 +1516,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.bigint "default_procurement_route_gas_id"
     t.bigint "default_procurement_route_solar_pv_id"
     t.integer "group_type", default: 0
+    t.datetime "mailchimp_fields_changed_at"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
@@ -1715,6 +1705,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.text "alternative_heating_water_source_heat_pump_notes"
     t.date "archived_date"
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
+    t.datetime "mailchimp_fields_changed_at"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
@@ -1732,6 +1723,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "academic_year_calendar_id"
     t.boolean "public", default: true
+    t.datetime "mailchimp_fields_changed_at"
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
   end
 
@@ -1801,6 +1793,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "mailchimp_fields_changed_at"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -1966,6 +1959,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.string "preferred_locale", default: "en", null: false
     t.string "pupil_password"
     t.bigint "created_by_id"
+    t.datetime "mailchimp_fields_changed_at"
+    t.datetime "mailchimp_updated_at"
+    t.enum "mailchimp_status", enum_type: "mailchimp_status"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_by_id"], name: "index_users_on_created_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true

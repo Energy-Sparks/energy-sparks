@@ -2,14 +2,15 @@
 #
 # Table name: scoreboards
 #
-#  academic_year_calendar_id :bigint(8)
-#  created_at                :datetime         not null
-#  description               :string
-#  id                        :bigint(8)        not null, primary key
-#  name                      :string           not null
-#  public                    :boolean          default(TRUE)
-#  slug                      :string           not null
-#  updated_at                :datetime         not null
+#  academic_year_calendar_id   :bigint(8)
+#  created_at                  :datetime         not null
+#  description                 :string
+#  id                          :bigint(8)        not null, primary key
+#  mailchimp_fields_changed_at :datetime
+#  name                        :string           not null
+#  public                      :boolean          default(TRUE)
+#  slug                        :string           not null
+#  updated_at                  :datetime         not null
 #
 # Indexes
 #
@@ -25,6 +26,8 @@ class Scoreboard < ApplicationRecord
   include TransifexSerialisable
   include Scorable
   include MailchimpUpdateable
+
+  MAILCHIMP_FIELDS = [:name].freeze
 
   translates :name, type: :string, fallbacks: { cy: :en }
   before_save :update_name

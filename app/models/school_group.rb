@@ -23,6 +23,7 @@
 #  description                              :string
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
+#  mailchimp_fields_changed_at              :datetime
 #  name                                     :string           not null
 #  public                                   :boolean          default(TRUE)
 #  slug                                     :string           not null
@@ -49,6 +50,8 @@ class SchoolGroup < ApplicationRecord
   include ParentMeterAttributeHolder
   include Scorable
   include MailchimpUpdateable
+
+  MAILCHIMP_FIELDS = [:name].freeze
 
   friendly_id :name, use: %i[finders slugged history]
 

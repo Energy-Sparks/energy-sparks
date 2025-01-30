@@ -2,33 +2,36 @@
 #
 # Table name: users
 #
-#  confirmation_sent_at   :datetime
-#  confirmation_token     :string
-#  confirmed_at           :datetime
-#  created_at             :datetime         not null
-#  created_by_id          :bigint(8)
-#  current_sign_in_at     :datetime
-#  current_sign_in_ip     :inet
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  failed_attempts        :integer          default(0), not null
-#  id                     :bigint(8)        not null, primary key
-#  last_sign_in_at        :datetime
-#  last_sign_in_ip        :inet
-#  locked_at              :datetime
-#  name                   :string
-#  preferred_locale       :string           default("en"), not null
-#  pupil_password         :string
-#  remember_created_at    :datetime
-#  reset_password_sent_at :datetime
-#  reset_password_token   :string
-#  role                   :integer          default("guest"), not null
-#  school_group_id        :bigint(8)
-#  school_id              :bigint(8)
-#  sign_in_count          :integer          default(0), not null
-#  staff_role_id          :bigint(8)
-#  unlock_token           :string
-#  updated_at             :datetime         not null
+#  confirmation_sent_at        :datetime
+#  confirmation_token          :string
+#  confirmed_at                :datetime
+#  created_at                  :datetime         not null
+#  created_by_id               :bigint(8)
+#  current_sign_in_at          :datetime
+#  current_sign_in_ip          :inet
+#  email                       :string           default(""), not null
+#  encrypted_password          :string           default(""), not null
+#  failed_attempts             :integer          default(0), not null
+#  id                          :bigint(8)        not null, primary key
+#  last_sign_in_at             :datetime
+#  last_sign_in_ip             :inet
+#  locked_at                   :datetime
+#  mailchimp_fields_changed_at :datetime
+#  mailchimp_status            :enum
+#  mailchimp_updated_at        :datetime
+#  name                        :string
+#  preferred_locale            :string           default("en"), not null
+#  pupil_password              :string
+#  remember_created_at         :datetime
+#  reset_password_sent_at      :datetime
+#  reset_password_token        :string
+#  role                        :integer          default("guest"), not null
+#  school_group_id             :bigint(8)
+#  school_id                   :bigint(8)
+#  sign_in_count               :integer          default(0), not null
+#  staff_role_id               :bigint(8)
+#  unlock_token                :string
+#  updated_at                  :datetime         not null
 #
 # Indexes
 #
@@ -52,6 +55,8 @@ require 'securerandom'
 
 class User < ApplicationRecord
   include MailchimpUpdateable
+
+  MAILCHIMP_FIELDS = [:confirmed_at, :email, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id].freeze
 
   encrypts :pupil_password
 

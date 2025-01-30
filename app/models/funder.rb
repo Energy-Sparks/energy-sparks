@@ -4,11 +4,14 @@
 #
 # Table name: funders
 #
-#  id   :bigint(8)        not null, primary key
-#  name :string           not null
+#  id                          :bigint(8)        not null, primary key
+#  mailchimp_fields_changed_at :datetime
+#  name                        :string           not null
 #
 class Funder < ApplicationRecord
   include MailchimpUpdateable
+
+  MAILCHIMP_FIELDS = [:name].freeze
 
   has_many :schools
 

@@ -78,6 +78,12 @@ describe Scoreboard, :scoreboards, type: :model do
   describe 'MailchimpUpdateable' do
     subject { create(:scoreboard) }
 
-    it_behaves_like 'a MailchimpUpdateable'
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          name: 'Renamed scoreboard',
+        }
+      end
+    end
   end
 end

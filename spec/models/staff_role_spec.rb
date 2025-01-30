@@ -42,6 +42,12 @@ describe StaffRole, type: :model do
   describe 'MailchimpUpdateable' do
     subject { create(:staff_role, :management) }
 
-    it_behaves_like 'a MailchimpUpdateable'
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          title: 'New',
+        }
+      end
+    end
   end
 end

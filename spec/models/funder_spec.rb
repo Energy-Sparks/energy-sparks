@@ -48,12 +48,12 @@ describe Funder do
   describe 'MailchimpUpdateable' do
     subject(:funder) { create(:funder) }
 
-    it 'records updates' do
-      double = instance_double(Mailchimp::UpdateCreator)
-      expect(Mailchimp::UpdateCreator).to receive(:for).with(funder)
-      allow(Mailchimp::UpdateCreator).to receive(:for).with(funder).and_return(double)
-      allow(double).to receive(:record_updates).and_return(true)
-      funder.update!(name: 'New name')
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          name: 'New name',
+        }
+      end
     end
   end
 end

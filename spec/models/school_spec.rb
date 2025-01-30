@@ -1067,6 +1067,27 @@ describe School do
   describe 'MailchimpUpdateable' do
     subject { create(:school) }
 
-    it_behaves_like 'a MailchimpUpdateable'
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          active: false,
+          country: :scotland,
+          name: 'New name',
+          region: :south_east,
+          school_type: :special,
+          school_group: create(:school_group),
+          scoreboard: create(:scoreboard),
+          local_authority_area: create(:local_authority_area),
+          funder: create(:funder)
+        }
+      end
+
+      let(:ignored_field_changes) do
+        {
+          address: 'Address',
+          bill_requested: true
+        }
+      end
+    end
   end
 end
