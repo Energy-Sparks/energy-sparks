@@ -26,6 +26,13 @@ module Mailchimp
       OpenStruct.new(resp)
     end
 
+    def get_contact(email_address)
+      resp = @client.lists.get_list_member(list.id, email_address.downcase)
+      OpenStruct.new(resp)
+    rescue
+      nil
+    end
+
     private
 
     def get_list

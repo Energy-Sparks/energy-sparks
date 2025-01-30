@@ -85,4 +85,18 @@ describe Mailchimp::AudienceManager do
       service.subscribe_or_update_contact(contact)
     end
   end
+
+  describe 'get_contact' do
+    before do
+      contact = YAML.safe_load(File.read('spec/fixtures/mailchimp/contact.yml'))
+      allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_member: contact)
+    end
+
+    it 'finds a user' do
+      expect(lists_api).to receive(:get_list_member).with('ed205db324', 'john.smith@example.org')
+      contact = service.get_contact('john.smith@example.org')
+      expect(contact.email_address).to eq('john.smith@example.org')
+      expect(contact.status).to eq('subscribed')
+    end
+  end
 end
