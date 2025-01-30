@@ -61,6 +61,6 @@ class Contact < ApplicationRecord
   private
 
   def update_user_mailchimp_timestamp
-    user.touch_mailchimp_timestamp!
+    user&.touch_mailchimp_timestamp!
   end
 end
