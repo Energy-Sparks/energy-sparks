@@ -422,9 +422,6 @@ describe User do
   describe 'MailchimpUpdateable' do
     subject! { create(:user) }
 
-    it 'handles cluster school changes'
-    it 'handles contact changes'
-
     it_behaves_like 'a MailchimpUpdateable' do
       let(:mailchimp_field_changes) do
         {
@@ -444,6 +441,39 @@ describe User do
           sign_in_count: 5,
           unlock_token: 'XYZ'
         }
+      end
+    end
+  end
+
+  describe 'when changing associations used in Mailchimp' do
+    subject!(:user) { create(:user) }
+
+    context 'when changing cluster schools' do
+      it 'updates timestamp when added' do
+        user.add_cluster_school(create(:school))
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+
+      it 'updates timestamp when removed' do
+        school = create(:school)
+        user.add_cluster_school(school)
+        user.remove_school(school)
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+    end
+
+    context 'when changing contacts' do
+      subject!(:user) { create(:school_admin) }
+
+      it 'updates timestamp when contact added' do
+        user.contacts.create!(email_address: user.email, name: user.name, school: user.school)
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+
+      it 'updates timestamp when contact removed' do
+        user.contacts.create!(email_address: user.email, name: user.name, school: user.school)
+        user.contacts.first.delete
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
       end
     end
   end

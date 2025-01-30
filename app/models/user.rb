@@ -134,6 +134,7 @@ class User < ApplicationRecord
 
   def add_cluster_school(school)
     cluster_schools << school unless cluster_schools.include?(school)
+    touch_mailchimp_timestamp!
   end
 
   def has_other_schools?
@@ -148,6 +149,7 @@ class User < ApplicationRecord
 
   def remove_school(school_to_remove)
     cluster_schools.delete(school_to_remove)
+    touch_mailchimp_timestamp!
     return unless school == school_to_remove
 
     if cluster_schools.any?

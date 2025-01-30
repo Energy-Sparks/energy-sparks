@@ -7,18 +7,18 @@ module MailchimpUpdateable
     before_save :update_mailchimp_timestamp
   end
 
-  private
-
-  def touch_mailchimp_timestamp
-    self.mailchimp_fields_changed_at = Time.zone.now
+  def touch_mailchimp_timestamp!
+    self.update!(mailchimp_fields_changed_at: Time.zone.now)
   end
+
+  private
 
   def touch_mailchimp_timestamp?
     changes.symbolize_keys.keys.any? { |k| self.class.mailchimp_fields.include?(k) }
   end
 
   def update_mailchimp_timestamp
-    touch_mailchimp_timestamp if touch_mailchimp_timestamp?
+    self.mailchimp_fields_changed_at = Time.zone.now if touch_mailchimp_timestamp?
   end
 
   module ClassMethods
