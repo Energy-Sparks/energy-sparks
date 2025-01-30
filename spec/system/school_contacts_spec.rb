@@ -113,7 +113,7 @@ RSpec.describe 'school', type: :system do
         click_on('Edit phone number')
         fill_in 'Mobile phone number', with: '01122333444'
         click_on('Update details')
-        expect(page).to have_content contact.name
+        expect(page).to have_content teacher.name
 
         contact.reload
         expect(contact.mobile_phone_number).to eq('01122333444')
