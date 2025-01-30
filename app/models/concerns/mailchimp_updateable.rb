@@ -1,8 +1,6 @@
 module MailchimpUpdateable
   extend ActiveSupport::Concern
 
-  # TODO do we want CRUD for all?
-  # maybe use module ClassMethods and add method to customise
   included do
     before_save :update_mailchimp_timestamp
   end
