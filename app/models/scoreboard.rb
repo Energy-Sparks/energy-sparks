@@ -27,9 +27,9 @@ class Scoreboard < ApplicationRecord
   include Scorable
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:name].freeze
+  MAILCHIMP_FIELDS = [:name_en].freeze
 
-  translates :name, type: :string, fallbacks: { cy: :en }
+  translates :name, type: :string, fallbacks: { cy: :en }, dirty: true
   before_save :update_name
   extend FriendlyId
 
