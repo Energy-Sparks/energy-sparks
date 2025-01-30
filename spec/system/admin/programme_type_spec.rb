@@ -112,7 +112,7 @@ describe 'programme type management', :include_application_helper, type: :system
         displayed_activity_types = all('#activity-type-todos .nested-fields')
         activity_type_todos.each_with_index do |todo, idx|
           expect(displayed_activity_types[idx]).to have_content(todo.task.name)
-          expect(displayed_activity_types[idx]).to have_content(todo.notes)
+          expect(displayed_activity_types[idx]).not_to have_content(todo.notes)
         end
 
         expect(page).to have_css('#intervention-type-todos .nested-fields', count: 3)
@@ -120,7 +120,7 @@ describe 'programme type management', :include_application_helper, type: :system
         displayed_intervention_types = all('#intervention-type-todos .nested-fields')
         intervention_type_todos.each_with_index do |todo, idx|
           expect(displayed_intervention_types[idx]).to have_content(todo.task.name)
-          expect(displayed_intervention_types[idx]).to have_content(todo.notes)
+          expect(displayed_intervention_types[idx]).not_to have_content(todo.notes)
         end
       end
 
@@ -176,9 +176,9 @@ describe 'programme type management', :include_application_helper, type: :system
           it 'changes activity order to THREE, ONE, TWO' do
             displayed_todos = all('#activity-type-todos .nested-fields')
 
-            expect(displayed_todos[0]).to have_content(activity_type_todos[2].notes)
-            expect(displayed_todos[1]).to have_content(activity_type_todos[0].notes)
-            expect(displayed_todos[2]).to have_content(activity_type_todos[1].notes)
+            expect(displayed_todos[0]).to have_content(activity_type_todos[2].task.name)
+            expect(displayed_todos[1]).to have_content(activity_type_todos[0].task.name)
+            expect(displayed_todos[2]).to have_content(activity_type_todos[1].task.name)
           end
 
           context 'when saving' do
@@ -208,9 +208,9 @@ describe 'programme type management', :include_application_helper, type: :system
           it 'changes action order to THREE, ONE, TWO' do
             displayed_todos = all('#intervention-type-todos .nested-fields')
 
-            expect(displayed_todos[0]).to have_content(intervention_type_todos[2].notes)
-            expect(displayed_todos[1]).to have_content(intervention_type_todos[0].notes)
-            expect(displayed_todos[2]).to have_content(intervention_type_todos[1].notes)
+            expect(displayed_todos[0]).to have_content(intervention_type_todos[2].task.name)
+            expect(displayed_todos[1]).to have_content(intervention_type_todos[0].task.name)
+            expect(displayed_todos[2]).to have_content(intervention_type_todos[1].task.name)
           end
 
           context 'when saving' do

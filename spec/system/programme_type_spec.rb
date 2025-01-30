@@ -526,9 +526,12 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
 
   context with_feature: :todos do
     let!(:programme_type_1) { create(:programme_type, :with_todos) }
-    let!(:programme_type_2) { create(:programme_type, active: false) }
-    let!(:programme_type_3) { create(:programme_type) }
+    let!(:programme_type_2) { create(:programme_type, :with_todos, active: false) }
+    let!(:programme_type_3) { create(:programme_type, :with_todos) }
     let!(:programme_type_4) { create(:programme_type, :with_todos, bonus_score: bonus_points) }
+    let!(:programme_type_empty) { create(:programme_type) }
+    let!(:programme_type_activities) { create(:programme_type, :with_activity_type_todos) }
+    let!(:programme_type_actions) { create(:programme_type, :with_intervention_type_todos) }
 
     context 'as a public user' do
       before do
@@ -546,6 +549,26 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         expect(page).to have_no_content(programme_type_2.title)
       end
 
+      it 'does not show programme types without todos' do
+        expect(page).to have_no_content(programme_type_empty.title)
+      end
+
+      context 'viewing activity only programme type' do
+        before do
+          click_on programme_type_activities.title
+        end
+
+        it { expect(page).to have_content('This programme is intended for pupils')}
+      end
+
+      context 'viewing action only programme type' do
+        before do
+          click_on programme_type_actions.title
+        end
+
+        it { expect(page).to have_content('This programme is intended for adults')}
+      end
+
       context 'viewing a programme type' do
         before do
           click_on programme_type_1.title
@@ -556,6 +579,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
           expect(page).to have_content(programme_type_1.short_description)
           expect(page).to have_content(programme_type_1.description.body.to_plain_text)
           expect(page).to have_link(href: programme_type_1.document_link)
+          expect(page).to have_content('This programme is intended for the whole school')
         end
 
         it_behaves_like 'a todo list when user is not enrolled' do

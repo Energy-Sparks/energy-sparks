@@ -98,6 +98,7 @@ en:
       show:
         completed_message: Congratulations, you completed all recommended actions and activities on %{date}!
         completed_on: Completed on
+        completed_points: Completing all of these tasks will award you
         completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
         points:
