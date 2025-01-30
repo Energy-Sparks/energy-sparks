@@ -15,9 +15,11 @@
   <div class="col-md-5">
     <label for="<%= type %>"><%= label %></label>
   </div>
-  <div class="col-md-5">
-    <label for="notes"><%= t('schools.audits.form.notes') %></label>
-  </div>
+  <% if assignable.is_a?(Audit) %>
+    <div class="col-md-5">
+      <label for="notes"><%= t('schools.audits.form.notes') %></label>
+    </div>
+  <% end %>
   <div class="col-md-2">
   </div>
 </div>
@@ -26,6 +28,7 @@
   <%= f.simple_fields_for "#{type}_todos" do |todo| %>
     <%= render 'shared/todos/fields',
                f: todo,
+               assignable: assignable,
                tasks: tasks,
                task_type: type.camelcase %>
   <% end %>
@@ -37,6 +40,7 @@
                                 partial: 'shared/todos/fields',
                                 render_options: {
                                   locals: {
+                                    assignable: assignable,
                                     tasks: tasks,
                                     task_type: type.camelcase
                                   }
