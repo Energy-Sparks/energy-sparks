@@ -1,6 +1,28 @@
 <% content_for :page_title, t('common.labels.home') %>
 
 <% if Flipper.enabled?(:new_home_page) %>
+  <div class='hero-component bg-light'>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-12 my-auto">
+          <div class='pt-3 pb-4 pr-4'>
+            <h3>Helping schools cut energy costs and fight climate change</h3>
+            <p>Save up to 40% on energy bills with our unique school-specific energy management tool and education programme.</p>
+            <%= link_to t('nav.enrol'), find_out_more_campaigns_path, class: 'btn btn-primary' %>
+            <%= link_to t('campaigns.find_out_more.book_demo'),
+                        book_demo_campaigns_path,
+                        class: 'btn btn-secondary' %>
+          </div>
+        </div>
+        <div class="col-md-6 col-12 d-none d-md-block position-relative">
+          <%= image_tag 'laptop.jpg', class: 'right-half' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    Something else
+  </div>
 
 <% else %>
 <!-- Header -->

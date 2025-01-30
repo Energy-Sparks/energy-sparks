@@ -10,7 +10,7 @@ div.application.container {
 }
 
 .navigation-margin {
-  margin-top: 108px;
+  margin-top: 114px;
 }
 
 section.home.alerts .alert {
@@ -277,4 +277,12 @@ input, progress {
 
 .sortable-hide {
   opacity:0;
+}
+
+.right-half {
+  top: 0;
+  right: 0;
+  width: 50vw;
+  height: 100%;
+  object-fit: cover;
 }
