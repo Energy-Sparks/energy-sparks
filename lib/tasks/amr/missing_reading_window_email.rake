@@ -6,7 +6,9 @@ namespace :amr do
     next unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
 
     now = Time.current
-    missing = AmrDataFeedConfig.where.not(missing_reading_window: nil).filter_map do |config|
+    missing = AmrDataFeedConfig.enabled
+                               .where.not(source_type: :manual)
+                               .where.not(missing_reading_window: nil).filter_map do |config|
       latest = config.amr_data_feed_readings.maximum(:updated_at)
       since_latest = latest && (now - latest)
       [config, since_latest] if latest && since_latest > config.missing_reading_window.days

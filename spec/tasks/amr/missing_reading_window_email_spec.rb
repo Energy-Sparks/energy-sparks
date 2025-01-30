@@ -15,6 +15,9 @@ RSpec.describe 'amr:missing_reading_window_email' do # rubocop:disable RSpec/Des
     reading = create(:amr_data_feed_reading, updated_at: 6.days.ago)
     Rake::Task[self.class.description].invoke
     email = Capybara.string(ActionMailer::Base.deliveries.last.html_part.decoded)
-    expect(email.all('table td').map(&:text)).to eq([reading.amr_data_feed_config.description, '5 days', '6 days'])
+    expect(email.all('table thead tr th').map(&:text)).to \
+      eq(['AMR Data Feed Configuration Name', 'Missing reading window setting', 'Last reading update'])
+    expect(email.all('table tbody tr td').map(&:text)).to \
+      eq([reading.amr_data_feed_config.description, '5 days', '6 days'])
   end
 end
