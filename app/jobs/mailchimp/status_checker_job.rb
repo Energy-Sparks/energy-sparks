@@ -3,7 +3,7 @@ module Mailchimp
     def perform
       audience_manager = Mailchimp::AudienceManager.new
 
-      User.where.not(confirmed_at: nil).where.not(role: :pupil).find_each do |user|
+      User.mailchimp_roles.find_each do |user|
         begin
           contact = audience_manager.get_contact(user.email)
           user.update!(mailchimp_status: contact.status.to_sym) if contact
