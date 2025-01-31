@@ -299,7 +299,7 @@ class School < ApplicationRecord
 
   validates :heating_air_source_heat_pump_percent,
             :heating_biomass_percent,
-            :heating_cfp_percent,
+            :heating_chp_percent,
             :heating_district_heating_percent,
             :heating_electric_percent,
             :heating_gas_percent,
