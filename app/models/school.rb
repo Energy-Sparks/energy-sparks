@@ -51,6 +51,7 @@
 #  level                                               :integer          default(0)
 #  local_authority_area_id                             :bigint(8)
 #  longitude                                           :decimal(10, 6)
+#  mailchimp_fields_changed_at                         :datetime
 #  met_office_area_id                                  :bigint(8)
 #  name                                                :string
 #  number_of_pupils                                    :integer
@@ -101,6 +102,9 @@ class School < ApplicationRecord
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
   include EnumDataSharing
+  include MailchimpUpdateable
+
+  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
 
