@@ -24,5 +24,12 @@ module MailchimpUpdateable
       return [] unless const_defined?(:MAILCHIMP_FIELDS)
       const_get(:MAILCHIMP_FIELDS)
     end
+
+    def watch_mailchimp_fields(*fields)
+      raise ArgumentError, 'Fields must be symbols' unless fields.all? { |f| f.is_a?(Symbol) }
+      const_set(:MAILCHIMP_FIELDS, fields.freeze)
+    rescue NameError
+      raise 'Cannot modify frozen constant MAILCHIMP_FIELDS'
+    end
   end
 end

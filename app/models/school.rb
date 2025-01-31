@@ -104,7 +104,7 @@ class School < ApplicationRecord
   include EnumDataSharing
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id].freeze
+  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
 

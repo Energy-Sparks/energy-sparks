@@ -56,7 +56,7 @@ require 'securerandom'
 class User < ApplicationRecord
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:confirmed_at, :email, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id].freeze
+  watch_mailchimp_fields :confirmed_at, :email, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id
 
   encrypts :pupil_password
 

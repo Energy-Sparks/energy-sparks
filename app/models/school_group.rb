@@ -51,7 +51,7 @@ class SchoolGroup < ApplicationRecord
   include Scorable
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:name].freeze
+  watch_mailchimp_fields :name
 
   friendly_id :name, use: %i[finders slugged history]
 
