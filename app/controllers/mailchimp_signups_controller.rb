@@ -19,7 +19,7 @@ class MailchimpSignupsController < ApplicationController
     else
       @contact = create_contact(sign_up_params)
     end
-    resp = subscribe_contact(@contact)
+    resp = subscribe_contact(@contact, current_user)
     if resp
       redirect_to subscribed_mailchimp_signups_path and return
     end

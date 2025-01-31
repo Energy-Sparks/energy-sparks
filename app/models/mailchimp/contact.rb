@@ -111,10 +111,9 @@ module Mailchimp
     end
 
     # Convert to hash for submitting to mailchimp api
-    def to_mailchimp_hash(status = 'subscribed')
+    def to_mailchimp_hash
       {
         "email_address": email_address,
-        "status": status,
         "merge_fields": merge_fields,
         "interests": interests,
         "tags": tags
