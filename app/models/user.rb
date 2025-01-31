@@ -91,6 +91,10 @@ class User < ApplicationRecord
 
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin], User.roles[:volunteer]]) }
 
+  scope :mailchimp_roles, -> {
+    where.not(role: [:pupil, :school_onboarding]).where.not(confirmed_at: nil)
+  }
+
   scope :mailchimp_update_required, -> do
     joins('LEFT JOIN schools ON schools.id = users.school_id')
     .joins('LEFT JOIN school_groups ON school_groups.id = users.school_group_id')
