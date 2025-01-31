@@ -15,6 +15,7 @@ describe Mailchimp::Contact do
       expect(contact.staff_role).to eq user.staff_role.title
       expect(contact.alert_subscriber).to eq 'No'
       expect(contact.school_status).to eq 'Active'
+      expect(contact.school_type).to eq school.school_type.humanize
       expect(contact.school).to eq user.school.name
       expect(contact.school_group).to eq user.school.school_group.name
       expect(contact.country).to eq user.school.country.humanize
@@ -47,6 +48,22 @@ describe Mailchimp::Contact do
       expect(contact.local_authority).to be_nil
       expect(contact.region).to be_nil
       expect(contact.country).to eq user.school_group.default_country.humanize
+    end
+
+    it 'populates school links', if: school_user do
+      expect(contact.school_url).to eq "https://energysparks.uk/schools/#{school.slug}"
+      expect(contact.school_group_url).to eq "https://energysparks.uk/school_groups/#{school.school_group.slug}"
+      expect(contact.scoreboard_url).to eq "https://energysparks.uk/scoreboards/#{school.scoreboard.slug}"
+    end
+
+    it 'populates school group links', if: group_admin do
+      expect(contact.school_group_url).to eq "https://energysparks.uk/school_groups/#{user.school_group.slug}"
+      expect(contact.scoreboard_url).to eq "https://energysparks.uk/scoreboards/#{user.school_group.default_scoreboard.slug}"
+    end
+
+    it 'populates school group links', if: cluster_admin do
+      expect(contact.school_group_url).to eq "https://energysparks.uk/school_groups/#{school.school_group.slug}"
+      expect(contact.scoreboard_url).to eq "https://energysparks.uk/scoreboards/#{user.school.school_group.default_scoreboard.slug}"
     end
   end
 
