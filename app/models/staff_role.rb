@@ -12,7 +12,7 @@
 class StaffRole < ApplicationRecord
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:title].freeze
+  watch_mailchimp_fields :title
 
   has_many :users
 

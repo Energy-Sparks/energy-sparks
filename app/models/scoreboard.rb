@@ -27,7 +27,7 @@ class Scoreboard < ApplicationRecord
   include Scorable
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:name_en].freeze
+  watch_mailchimp_fields :name_en
 
   translates :name, type: :string, fallbacks: { cy: :en }, dirty: true
   before_save :update_name

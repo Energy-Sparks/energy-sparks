@@ -104,7 +104,7 @@ class School < ApplicationRecord
   include EnumDataSharing
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id].freeze
+  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
 
@@ -134,11 +134,18 @@ class School < ApplicationRecord
   has_many :school_target_events, inverse_of: :school
   has_many :audits,               inverse_of: :school
 
+  # relationships to be removed when :todos removed
   has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
   has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
 
+  has_many :audit_todos, through: :audits, source: :todos
+  has_many :audit_activity_type_tasks, through: :audit_todos, source: :task, source_type: 'ActivityType'
+  has_many :audit_intervention_type_tasks, through: :audit_todos, source: :task, source_type: 'InterventionType'
+
   has_many :programmes,               inverse_of: :school
   has_many :programme_types, through: :programmes
+
+  # relationships to be removed when :todos removed
   has_many :programme_activity_types, through: :programmes, source: :activity_types
 
   has_many :alerts,                                   inverse_of: :school
@@ -653,7 +660,11 @@ class School < ApplicationRecord
   end
 
   def invalidate_cache_key
-    update_attribute(:validation_cache_key, SecureRandom.uuid)
+    if Flipper.enabled?(:meter_collection_cache_delete_on_invalidate)
+      AggregateSchoolService.new(self).invalidate_cache
+    else
+      update_attribute(:validation_cache_key, SecureRandom.uuid)
+    end
   end
 
   def process_data!
@@ -747,6 +758,10 @@ class School < ApplicationRecord
   def self.school_list_for_login_form
     School.left_joins(:school_group).select(:id, :name,
                                             'school_groups.name as school_group_name').where(visible: true).order(:name)
+  end
+
+  def data_visible?
+    data_enabled && visible
   end
 
   private

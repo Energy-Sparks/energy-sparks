@@ -231,6 +231,12 @@ Rails.application.routes.draw do
       resources :chart_updates, only: [:index] do
         post :bulk_update_charts
       end
+      resources :digital_signage, path: 'digital-signage', only: [:index] do
+        collection do
+          get :equivalences
+          get :charts
+        end
+      end
       resources :clusters do
         member do
           post :unassign
@@ -432,6 +438,8 @@ Rails.application.routes.draw do
       get :inactive, to: 'inactive#show'
       get :live_data, to: 'live_data#show'
       get :private, to: 'private#show'
+
+      get 'digital-signage', to: 'digital_signage#index'
 
       resources :cads do
         get :live_data, to: 'cads#live_data'
@@ -674,7 +682,7 @@ Rails.application.routes.draw do
       resources :activity_types, only: [:index, :show]
       resources :dcc_status, only: [:index]
       resources :solar_panels, only: [:index]
-      resources :engaged_schools, only: [:index]
+      match 'engaged_schools', to: "engaged_schools#index", via: [:get, :post]
       resources :community_use, only: [:index]
       resources :intervention_types, only: [:index, :show]
       resources :missing_alert_contacts, only: [:index]
@@ -741,9 +749,8 @@ Rails.application.routes.draw do
     resources :schools, only: :show do
       get :analysis, to: 'analysis#index'
       get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
-      get 'public-displays', to: 'public_displays#index'
-      get 'public-displays/:fuel_type/equivalences', to: 'public_displays#equivalences', as: :public_displays_equivalences
-      get 'public-displays/:fuel_type/charts/:chart_type', to: 'public_displays#charts', as: :public_displays_charts
+      get 'digital-signage/:fuel_type/equivalences', to: 'digital_signage#equivalences', as: :digital_signage_equivalences
+      get 'digital-signage/:fuel_type/charts/:chart_type', to: 'digital_signage#charts', as: :digital_signage_charts
     end
   end
 

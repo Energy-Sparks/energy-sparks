@@ -12,7 +12,7 @@
 class LocalAuthorityArea < ApplicationRecord
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:name].freeze
+  watch_mailchimp_fields :name
 
   validates_presence_of :code, :name
   validates_uniqueness_of :code

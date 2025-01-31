@@ -11,7 +11,7 @@
 class Funder < ApplicationRecord
   include MailchimpUpdateable
 
-  MAILCHIMP_FIELDS = [:name].freeze
+  watch_mailchimp_fields :name
 
   has_many :schools
 

@@ -2,10 +2,10 @@
   <div class="row">
     <div class="col-12">
       <h1>
-        <%= t("pupils.public_displays.charts.#{@chart_type}.title", fuel_type: I18n.t("common.#{@fuel_type}").downcase) %>
+        <%= t("pupils.digital_signage.charts.#{@chart_type}.title", fuel_type: I18n.t("common.#{@fuel_type}").downcase) %>
       </h1>
       <h2>
-        <%= t("pupils.public_displays.charts.#{@chart_type}.intro") %>
+        <%= t("pupils.digital_signage.charts.#{@chart_type}.intro") %>
       </h2>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <div class="col-12 d-flex justify-content-between align-items-center flex-wrap">
       <h4>
         <% display_dates = @analysis_dates.transform_values { |d| short_dates(d) } %>
-        <%= t("pupils.public_displays.charts.#{@chart_type}.dates", **display_dates) %>
+        <%= t("pupils.digital_signage.charts.#{@chart_type}.dates", **display_dates) %>
       </h4>
       <div class="public-display-logo">
         <%= image_tag('navigation-brand-transparent-en.png') %>
