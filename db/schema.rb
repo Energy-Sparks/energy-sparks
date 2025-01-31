@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_30_175732) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1677,35 +1677,47 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
-    t.boolean "alternative_heating_oil", default: false, null: false
-    t.integer "alternative_heating_oil_percent", default: 0
-    t.text "alternative_heating_oil_notes"
-    t.boolean "alternative_heating_lpg", default: false, null: false
-    t.integer "alternative_heating_lpg_percent", default: 0
-    t.text "alternative_heating_lpg_notes"
-    t.boolean "alternative_heating_biomass", default: false, null: false
-    t.integer "alternative_heating_biomass_percent", default: 0
-    t.text "alternative_heating_biomass_notes"
-    t.boolean "alternative_heating_district_heating", default: false, null: false
-    t.integer "alternative_heating_district_heating_percent", default: 0
-    t.text "alternative_heating_district_heating_notes"
+    t.boolean "heating_oil", default: false, null: false
+    t.integer "heating_oil_percent", default: 0
+    t.text "heating_oil_notes"
+    t.boolean "heating_lpg", default: false, null: false
+    t.integer "heating_lpg_percent", default: 0
+    t.text "heating_lpg_notes"
+    t.boolean "heating_biomass", default: false, null: false
+    t.integer "heating_biomass_percent", default: 0
+    t.text "heating_biomass_notes"
+    t.boolean "heating_district_heating", default: false, null: false
+    t.integer "heating_district_heating_percent", default: 0
+    t.text "heating_district_heating_notes"
     t.integer "region"
     t.bigint "local_authority_area_id"
     t.datetime "bill_requested_at", precision: nil
     t.bigint "school_group_cluster_id"
     t.bigint "funder_id"
-    t.boolean "alternative_heating_ground_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_ground_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_ground_source_heat_pump_notes"
-    t.boolean "alternative_heating_air_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_air_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_air_source_heat_pump_notes"
-    t.boolean "alternative_heating_water_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_water_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_water_source_heat_pump_notes"
+    t.boolean "heating_ground_source_heat_pump", default: false, null: false
+    t.integer "heating_ground_source_heat_pump_percent", default: 0
+    t.text "heating_ground_source_heat_pump_notes"
+    t.boolean "heating_air_source_heat_pump", default: false, null: false
+    t.integer "heating_air_source_heat_pump_percent", default: 0
+    t.text "heating_air_source_heat_pump_notes"
+    t.boolean "heating_water_source_heat_pump", default: false, null: false
+    t.integer "heating_water_source_heat_pump_percent", default: 0
+    t.text "heating_water_source_heat_pump_notes"
     t.date "archived_date"
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.datetime "mailchimp_fields_changed_at"
+    t.boolean "heating_gas", default: false, null: false
+    t.integer "heating_gas_percent", default: 0
+    t.text "heating_gas_notes"
+    t.boolean "heating_electric", default: false, null: false
+    t.integer "heating_electric_percent", default: 0
+    t.text "heating_electric_notes"
+    t.boolean "heating_underfloor", default: false, null: false
+    t.integer "heating_underfloor_percent", default: 0
+    t.text "heating_underfloor_notes"
+    t.boolean "heating_chp", default: false, null: false
+    t.integer "heating_chp_percent", default: 0
+    t.text "heating_chp_notes"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"

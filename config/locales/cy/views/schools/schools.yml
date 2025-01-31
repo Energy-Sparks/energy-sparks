@@ -711,7 +711,7 @@ cy:
         title: Cyfrif %{user_role} newydd
     your_school_estates:
       edit:
-        alternative_heating_sources:
+        heating_sources:
           air_source_heat_pump:
             label: Mae gan ein hysgol bwmp gwres ffynhonnell aer
             percentage: Pa ganran o'r ysgol sy'n defnyddio'r pwmp gwres ffynhonnell aer ar gyfer gwresogi?
