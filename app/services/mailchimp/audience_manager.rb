@@ -10,7 +10,7 @@ module Mailchimp
     #
     # Preferring the documented versions as they will match internal user expectations
     def self.status(mailchimp_status)
-      mailchimp_status.status == 'transactional' ? :nonsubscribed : mailchimp_status.to_sym
+      mailchimp_status == 'transactional' ? :nonsubscribed : mailchimp_status.to_sym
     end
 
     # Fetch the description of our Mailchimp mailing list
