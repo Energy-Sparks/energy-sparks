@@ -14,12 +14,15 @@ class MailchimpSignupsController < ApplicationController
   end
 
   def create
+    user = nil
     if params[:contact_source]
+      user = current_user
       @contact = create_contact_from_user(current_user, sign_up_params)
     else
-      @contact = create_contact(sign_up_params)
+      user = User.find_by_email(sign_up_params[:email_address].downcase)
+      @contact = create_contact(user, sign_up_params)
     end
-    resp = subscribe_contact(@contact, current_user)
+    resp = subscribe_contact(@contact, user)
     if resp
       redirect_to subscribed_mailchimp_signups_path and return
     end
@@ -39,8 +42,7 @@ class MailchimpSignupsController < ApplicationController
     end
   end
 
-  def create_contact(sign_up_params)
-    existing_user = User.find_by_email(sign_up_params[:email_address].downcase)
+  def create_contact(existing_user, sign_up_params)
     if existing_user
       create_contact_from_user(existing_user, sign_up_params)
     else
