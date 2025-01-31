@@ -3,14 +3,11 @@ module Mailchimp
     def perform
       audience_manager = Mailchimp::AudienceManager.new
 
-      User.mailchimp_roles.find_each do |user|
-        begin
-          contact = audience_manager.get_contact(user.email)
-          user.update!(mailchimp_status: contact.status.to_sym) if contact
-        rescue => e
-          EnergySparks::Log.exception(e, job: :mailchimp_user_status)
-          Rollbar.log(e, :mailchimp_user_status, user: user)
-        end
+      audience_manager.process_list_members.each do |member|
+        user = User.find_by_email(member.email_address.downcase)
+        # API uses different code to audience export and public docs
+        status = member.status == 'transactional' ? :nonsubscribed : member.status.to_sym
+        user.update(mailchimp_status: status) if user
       end
     end
   end

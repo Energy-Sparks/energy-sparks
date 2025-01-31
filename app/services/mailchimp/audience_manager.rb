@@ -26,11 +26,42 @@ module Mailchimp
       OpenStruct.new(resp)
     end
 
-    def get_contact(email_address)
+    def get_list_member(email_address)
       resp = @client.lists.get_list_member(list.id, email_address.downcase)
       OpenStruct.new(resp)
     rescue
       nil
+    end
+
+    def list_members(offset: 0, page_size: 1000)
+      resp = @client.lists.get_list_members_info(list.id, offset: offset, count: page_size)
+      OpenStruct.new(resp)
+    end
+
+    # Page through entire list of Mailchimp users. Will return the full list, or yield
+    # each member if a block is given
+    def process_list_members(page_size: 1000)
+      offset = 0
+      members = []
+      resp = list_members(offset:, page_size:)
+      total_items = resp.total_items
+      members.concat(resp.members.map {|m| OpenStruct.new(m) })
+      if block_given?
+        resp.members.each do |member|
+          yield OpenStruct.new(member)
+        end
+      end
+      while offset + page_size < total_items
+        offset += page_size
+        resp = list_members(offset:, page_size:)
+        members.concat(resp.members.map {|m| OpenStruct.new(m) })
+        if block_given?
+          resp.members.each do |member|
+            yield OpenStruct.new(member)
+          end
+        end
+      end
+      members
     end
 
     private
