@@ -32,8 +32,8 @@
             heating_air_source_heat_pump
             heating_chp].each do |type| %>
         <% fields_class = "school_#{type}_fields" %>
-        <%= f.input :heating_gas,
-                    label: t("activerecord.attributes.school.#{type}", default: 'Translation Missing'),
+        <%= f.input type,
+                    label: t("activerecord.attributes.school.#{type}"),
                     input_html: { data: { reveals: ".#{fields_class}" } } %>
         <div class="<%= fields_class %>" data-revealed-by=".school_<%= type %>">
           <%= f.input :"#{type}_percent",
