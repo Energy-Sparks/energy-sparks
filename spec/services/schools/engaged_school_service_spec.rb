@@ -22,7 +22,7 @@ describe Schools::EngagedSchoolService, type: :service do
     end
 
     it 'wraps schools in the service' do
-      expect(schools.map(&:school)).to include(school)
+      expect(schools.first.school).to eq school
     end
 
     context 'with the previous year' do
