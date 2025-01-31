@@ -81,8 +81,61 @@ describe Mailchimp::AudienceUpdater do
         end
       end
 
-      context 'when user tags need updating' do
-        it 'also updates the tags'
+      context 'when handling tags' do
+        let!(:school) { create(:school, percentage_free_school_meals: 35) }
+        let!(:user) { create(:school_admin, school: school, mailchimp_status: 'archived') }
+
+        let(:member) { create_contact(user.email, status: 'subscribed', tags: tags) }
+
+        before do
+          allow(double).to receive(:update_contact).and_return(member)
+        end
+
+        context 'when no tags need updating' do
+          context 'with only defaults in mailchimp' do
+            let(:tags) do
+              [
+                { 'id' => 1234, 'name' => 'FSM30' },
+                { 'id' => 4567, 'name' => school.slug }
+              ]
+            end
+
+            it 'does not remove any' do
+              expect(double).not_to receive(:remove_tags_from_contact)
+              service.perform
+            end
+          end
+
+          context 'with extra tags in mailchimp' do
+            let(:tags) do
+              [
+                { 'id' => 1234, 'name' => 'FSM30' },
+                { 'id' => 4567, 'name' => school.slug },
+                { 'id' => 6789, 'name' => 'CUSTOM' }
+              ]
+            end
+
+            it 'does not remove any' do
+              expect(double).not_to receive(:remove_tags_from_contact)
+              service.perform
+            end
+          end
+        end
+
+        context 'when user tags need updating' do
+          let(:tags) do
+            [
+              { 'id' => 1234, 'name' => 'FSM30' },
+              { 'id' => 4567, 'name' => 'other-school-slug' },
+              { 'id' => 6789, 'name' => 'CUSTOM' }
+            ]
+          end
+
+          it 'removes the tags' do
+            expect(double).to receive(:remove_tags_from_contact).with(user.email, ['other-school-slug'])
+            service.perform
+          end
+        end
       end
     end
   end

@@ -44,6 +44,14 @@ module Mailchimp
       OpenStruct.new(resp)
     end
 
+    def remove_tags_from_contact(email_address, tags_to_remove)
+      tags = tags_to_remove.map { |t| { 'name' => t, 'status' => 'inactive' } }
+      @client.lists.update_list_member_tags(list.id,
+                                            Digest::MD5.hexdigest(email_address.downcase),
+                                            { 'tags': tags }
+                                          )
+    end
+
     def update_contact(mailchimp_contact)
       resp = @client.lists.set_list_member(list.id,
                                            Digest::MD5.hexdigest(mailchimp_contact.email_address.downcase),

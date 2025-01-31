@@ -9,9 +9,8 @@ module Mailchimp
           # Use update contact here, not subscribe_or_update as we're not adding all users initially
           mailchimp_member = audience_manager.update_contact(contact)
 
-          # TODO check whether we need to update the tags by checking those in the response versus user
-          # could just add all tags, then remove any that no longer apply??
-          # TODO update tags, if required
+          tags_to_remove = tags_to_remove(mailchimp_member, contact)
+          audience_manager.remove_tags_from_contact(contact.email_address, tags_to_remove) if tags_to_remove.any?
 
           # Update status as well seeing as its returned in the response
           user.update(
@@ -22,6 +21,25 @@ module Mailchimp
           EnergySparks::Log.exception(e, job: :audience_updater)
         end
       end
+    end
+
+    private
+
+    # Identify which tags are now in Mailchimp that have been added by the
+    # application and return a list of those that should be removed
+    #
+    # Ignore anything that isn't a school slug or a FSM* tag
+    #
+    # Remove any that we just added as part of the update
+    #
+    def tags_to_remove(mailchimp_member, contact)
+      return [] unless mailchimp_member&.tags
+      # Returned as array of hashes with id and name, extract the name
+      tags_in_mailchimp = mailchimp_member.tags.map { |t| t['name'] }
+      # Reject anything except the automatically added tags
+      tags_in_mailchimp.reject! {|t| !(t.include?('-') || t.start_with?('FSM')) }
+      # Return those we haven't just added
+      tags_in_mailchimp - contact.tags
     end
   end
 end
