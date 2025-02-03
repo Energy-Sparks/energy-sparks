@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Heating Types Reports' do
   before do
-    create(:school, :with_group, heating_gas: true)
+    create(:school, :with_school_group, heating_gas: true)
     sign_in(create(:admin))
     visit admin_reports_heating_types_path
   end
