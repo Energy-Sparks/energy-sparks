@@ -28,16 +28,23 @@
             <%= link_to(meter.mpan_mprn, school_meter_url(meter.school, meter)) %>
           </td>
           <td><%= meter.t_meter_system %></td>
-          <td><%= link_to(meter.name.present? ? meter.name : meter.meter_type.to_s.humanize, admin_reports_amr_validated_reading_url(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
+          <td><%= if AmrValidatedReading.where(meter_id: meter.id).any?
+                    link_to(meter.name.presence || meter.meter_type.to_s.humanize,
+                            admin_reports_amr_validated_reading_url(meter))
+                  end %></td>
           <% if local_assigns[:all_meters] %>
             <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
           <% end %>
           <td><%= nice_dates(meter.first_validated_reading_date) %></td>
-          <td class=<%= class_for_last_date(meter.last_validated_reading_date) %>><%= nice_dates(meter.last_validated_reading_date) %></td>
+          <td class="<%= class_for_last_date(meter.last_validated_reading_date) %>">
+            <%= nice_dates(meter.last_validated_reading_date) %>
+          </td>
           <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
           <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
-          <td class="<%= meter.zero_reading_days_warning? ? 'table-danger' : ''%>">
-            <span data-toggle="tooltip" title="<%= pluralize(meter.zero_reading_days_count, 'day') %>"><%= y_n(meter.zero_reading_days_count > 0) %></span>
+          <td class="<%= meter.zero_reading_days_warning? ? 'table-danger' : '' %>">
+            <span data-toggle="tooltip" title="<%= pluralize(meter.zero_reading_days_count, 'day') %>">
+              <%= y_n(meter.zero_reading_days_count.positive?) %>
+            </span>
           </td>
           <% if local_assigns[:email] %>
             <td>

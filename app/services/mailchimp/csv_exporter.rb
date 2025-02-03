@@ -24,7 +24,7 @@ module Mailchimp
   #
   # The service will be driven by a Rake task that parses Mailchimp CSV files and
   # dumps the new versions for manual importing into Mailchimp.
-  class CsvExporter
+  class CsvExporter < BaseAudienceExportProcessorService
     # A hash containing an entry for each of the four Mailchimp contact types.
     # The entry in each list is an object that can be dumped to a CSV file
     attr_reader :updated_audience
@@ -33,10 +33,9 @@ module Mailchimp
 
     # Initialise with lists of hashed fields parsed from Mailchimp export
     def initialize(subscribed:, nonsubscribed:, cleaned:, unsubscribed:)
-      @audience = {}
+      super(subscribed:, nonsubscribed:, cleaned:, unsubscribed:)
       @updated_audience = { subscribed: [], nonsubscribed: [], cleaned: [], unsubscribed: [] }
       @new_nonsubscribed = []
-      populate_audience(subscribed: subscribed, nonsubscribed: nonsubscribed, cleaned: cleaned, unsubscribed: unsubscribed)
     end
 
     # Match contacts against database, updating with latest data and mapping to
@@ -54,7 +53,7 @@ module Mailchimp
 
     # Ignore pupils and school onboarding users, process all other user types
     def match_and_update_contacts
-      User.where.not(role: [:pupil, :school_onboarding]).where.not(confirmed_at: nil).find_each do |user|
+      User.mailchimp_roles.find_each do |user|
         if in_mailchimp_audience?(user)
           mailchimp_contact_type = mailchimp_contact_type(user.email)
           # remove matches from list
@@ -168,41 +167,6 @@ module Mailchimp
                                end
       end
       contact
-    end
-
-    # Is this user in Mailchimp? Check each of the 4 contact types
-    def in_mailchimp_audience?(user)
-      !mailchimp_contact_type(user.email).nil?
-    end
-
-    # Identify the contact type for this email address.
-    def mailchimp_contact_type(email_address)
-      @audience.each do |category, hash|
-        return category if hash.key?(email_address)
-      end
-      nil
-    end
-
-    # Lookup the mailchimp contact for an email address, by way of its
-    # contact type
-    def mailchimp_contact(email_address)
-      mailchimp_contact_type = mailchimp_contact_type(email_address)
-      return nil if mailchimp_contact_type.nil?
-      @audience[mailchimp_contact_type][email_address]
-    end
-
-    # Take lists provided in constructor and build an internal hash:
-    # contact type => hash (email_address => exported contact)
-    def populate_audience(**categories)
-      categories.each do |category, list|
-        @audience[category] = list_to_hash(list)
-      end
-    end
-
-    # Convert list of exported contacts to a hash, normalising emails as Mailchimp
-    # allows mixed case whereas application is all lower case.
-    def list_to_hash(list)
-      list.index_by {|c| c[:email_address].downcase}
     end
   end
 end

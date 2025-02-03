@@ -9,7 +9,7 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
   let(:rtone_meter_id) { '216057958' }
   let(:username)              { 'rtone-user' }
   let(:password)              { 'rtone-pass' }
-  let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :rtone_variant_api) }
+  let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :rtone_variant_api, source_type: :api) }
   let(:start_date)            { Date.parse('02/08/2016') }
   let(:end_date)              { start_date + 1.day }
 

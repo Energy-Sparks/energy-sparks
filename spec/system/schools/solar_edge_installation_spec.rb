@@ -5,7 +5,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
   let!(:admin)  { create(:admin) }
   let!(:school) { create(:school) }
 
-  let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :solar_edge_api) }
+  let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :solar_edge_api, source_type: :api) }
 
   let!(:mpan) { '123456789' }
   let!(:site_id) { '9999' }

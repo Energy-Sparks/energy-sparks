@@ -86,8 +86,9 @@ class EnergyTariff < ApplicationRecord
   scope :count_by_school_group, -> { enabled.joins(:school_group).group(:slug).count(:id) }
 
   scope :for_schools_in_group, lambda { |school_group, source = :manually_entered|
-    enabled.where(source:).joins(:school).where({ schools: { school_group: } })
+    enabled.where(source:).joins(:school).where({ schools: { active: true, school_group: } })
   }
+
   scope :count_schools_with_tariff_by_group, lambda { |school_group, source = :manually_entered|
     for_schools_in_group(school_group, source).select(:tariff_holder_id).distinct.count
   }

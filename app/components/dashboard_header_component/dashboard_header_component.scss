@@ -6,8 +6,10 @@ div.container-fluid.pupil {
   background: white;
 }
 
-div.dashboard-header-component h1 {
-  padding-top: 0px;
+.dashboard-header-component {
+  h1, h4 {
+    padding-top: 0px;
+  }
 }
 
 div.dashboard-header-component.pupil {

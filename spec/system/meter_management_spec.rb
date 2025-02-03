@@ -291,7 +291,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       end
 
       it 'allows reloading the meter' do
-        create(:amr_data_feed_config, process_type: :n3rgy_api)
+        create(:amr_data_feed_config, process_type: :n3rgy_api, source_type: :api)
         click_on meter.mpan_mprn.to_s
         expect { click_on 'Reload' }.to have_enqueued_job(N3rgyReloadJob)
         expect_meter_reload

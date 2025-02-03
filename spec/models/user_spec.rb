@@ -418,4 +418,181 @@ describe User do
       it_behaves_like 'created by nullified on user destroy'
     end
   end
+
+  describe 'MailchimpUpdateable' do
+    subject! { create(:user) }
+
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          confirmed_at: Time.zone.now,
+          email: 'new@example.org',
+          name: 'New',
+          preferred_locale: :cy,
+          role: :admin,
+          school: create(:school),
+          school_group: create(:school_group),
+          staff_role: create(:staff_role, :management)
+        }
+      end
+
+      let(:ignored_field_changes) do
+        {
+          sign_in_count: 5,
+          unlock_token: 'XYZ'
+        }
+      end
+    end
+  end
+
+  describe 'when changing associations used in Mailchimp' do
+    subject!(:user) { create(:user) }
+
+    context 'when changing cluster schools' do
+      it 'updates timestamp when added' do
+        user.add_cluster_school(create(:school))
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+
+      it 'updates timestamp when removed' do
+        school = create(:school)
+        user.add_cluster_school(school)
+        user.remove_school(school)
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+    end
+
+    context 'when changing contacts' do
+      subject!(:user) { create(:school_admin) }
+
+      it 'updates timestamp when contact added' do
+        user.contacts.create!(email_address: user.email, name: user.name, school: user.school)
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+
+      it 'updates timestamp when contact removed' do
+        user.contacts.create!(email_address: user.email, name: user.name, school: user.school)
+        user.contacts.first.delete
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+    end
+  end
+
+  describe '.mailchimp_update_required' do
+    context 'when mailchimp status is unknown' do
+      let(:user) { create(:user) }
+
+      it { expect(User.mailchimp_update_required).to be_empty }
+    end
+
+    context 'with school admin' do
+      let!(:school) { create(:school, :with_school_group) }
+
+      context 'when user has not been synchronised' do
+        let!(:user) { create(:school_admin, school: school, mailchimp_status: :subscribed) }
+
+        it { expect(User.mailchimp_update_required).to match_array([user])}
+      end
+
+      context 'when user is up to date' do
+        let!(:user) do
+          user = create(:school_admin, school: school, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now) # ensure timestamp is later
+          user
+        end
+
+        it { expect(User.mailchimp_update_required).to be_empty }
+      end
+
+      context 'when updates are pending' do
+        let!(:user) do
+          user = create(:school_admin, school: school, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now - 1.day) # ensure timestamp is later
+          user
+        end
+
+        context 'when user has been updated' do
+          before do
+            user.update!(name: 'New name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when funder has been updated' do
+          let!(:school) { create(:school, :with_school_group, funder: create(:funder)) }
+
+          before do
+            school.funder.update!(name: 'New funder name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when local authority has been updated' do
+          let!(:school) { create(:school, :with_school_group, local_authority_area: create(:local_authority_area)) }
+
+          before do
+            school.local_authority_area.update!(name: 'New area name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when scoreboard has been updated' do
+          let!(:school) { create(:school, :with_school_group, scoreboard: create(:scoreboard)) }
+
+          before do
+            school.scoreboard.update!(name: 'New scoreboard name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when school_group has been updated' do
+          let!(:school) { create(:school, :with_school_group) }
+
+          before do
+            school.school_group.update!(name: 'New group name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+      end
+    end
+
+    context 'with group admin' do
+      let!(:user) { create(:group_admin) }
+
+      context 'when user has not been synchronised' do
+        let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
+
+        it { expect(User.mailchimp_update_required).to match_array([user])}
+      end
+
+      context 'when updates are pending' do
+        let!(:user) do
+          user = create(:group_admin, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now - 1.day) # ensure timestamp is later
+          user
+        end
+
+        context 'when user has been updated' do
+          before do
+            user.update!(name: 'New name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when school_group has been updated' do
+          before do
+            user.school_group.update!(name: 'New group name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+      end
+    end
+  end
 end

@@ -21,7 +21,7 @@ FactoryBot.define do
     factory :solar_edge_installation_with_meters_and_validated_readings do
       transient do
         reading_count { 1 }
-        config        { create(:amr_data_feed_config, process_type: :solar_edge_api) }
+        config        { create(:amr_data_feed_config, process_type: :solar_edge_api, source_type: :api) }
       end
 
       after(:create) do |solar_edge_installation, _evaluator|

@@ -689,6 +689,7 @@ Rails.application.routes.draw do
       resources :work_allocation, only: [:index]
       resources :user_logins, only: [:index]
       resources :meter_loading_reports, only: :index
+      resources :engaged_groups, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver

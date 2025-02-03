@@ -4,10 +4,15 @@
 #
 # Table name: funders
 #
-#  id   :bigint(8)        not null, primary key
-#  name :string           not null
+#  id                          :bigint(8)        not null, primary key
+#  mailchimp_fields_changed_at :datetime
+#  name                        :string           not null
 #
 class Funder < ApplicationRecord
+  include MailchimpUpdateable
+
+  watch_mailchimp_fields :name
+
   has_many :schools
 
   scope :with_schools,  -> { where.associated(:schools) }
