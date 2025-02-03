@@ -5,20 +5,12 @@ body {
   overflow-x: hidden;
 }
 
-header-font {
-  font-family: $header-font-family;
-}
-
 div.application.container {
   padding-bottom: 30px;
 }
 
 .navigation-margin {
   margin-top: 114px;
-}
-
-section.home.alerts .alert {
-  margin-bottom: 0px;
 }
 
 address {
@@ -44,10 +36,6 @@ p {
 
 .bg-light-blue {
   background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
-}
-
-section.padded-section {
-  padding: 100px 0;
 }
 
 div.padded-row {
@@ -122,10 +110,6 @@ input:invalid {
   color: $danger;
 }
 
-.funnel-image {
-  border-radius: 0.5rem 0.5rem;
-}
-
 .nav-anchor a {
   position: absolute;
   left: 0px;
@@ -134,16 +118,6 @@ input:invalid {
 
 .nav-anchor {
   position: relative;
-}
-
-.static-images {
-  height: 300px;
-  width: 400px;
-}
-
-.static-images.small {
-  height: 200px;
-  width: 300px;
 }
 
 .accordion-block {
@@ -281,12 +255,4 @@ input, progress {
 
 .sortable-hide {
   opacity:0;
-}
-
-.right-half {
-  top: 0;
-  right: 0;
-  width: 50vw;
-  height: 100%;
-  object-fit: cover;
 }
