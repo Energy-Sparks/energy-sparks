@@ -16,6 +16,18 @@ module Todos
 
       accepts_nested_attributes_for :activity_type_todos, allow_destroy: true
       accepts_nested_attributes_for :intervention_type_todos, allow_destroy: true
+
+      scope :with_task_type, ->(task_type) {
+        where(id: ProgrammeType.joins(:todos).where(todos: { task_type: task_type.name }).distinct)
+      }
+    end
+
+    def has_todos?
+      todos.any?
+    end
+
+    def no_todos?
+      todos.none?
     end
 
     # Has the provided school already completed all activity & intervention types this year?

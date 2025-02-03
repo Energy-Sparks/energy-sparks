@@ -98,6 +98,7 @@ en:
       show:
         completed_message: Congratulations, you completed all recommended actions and activities on %{date}!
         completed_on: Completed on
+        completed_points: Completing all of these tasks will award you
         completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
         points:
@@ -301,8 +302,10 @@ en:
         no_meter_issues: No issues or notes for meter
         title: Meter Issues & Notes - %{name}
       show:
+        admin_details: Admin details
         available_cache_range: Available date range
         basic_information: Basic information
+        data_feed_config_report: Data feed config report
         data_source: Data source
         dcc_consented: DCC Consented
         dcc_information: DCC (SMETS2) information
@@ -310,6 +313,7 @@ en:
         download_readings: Readings
         grant_consent: Grant consent
         inventory: Inventory
+        loading_report: Loading report
         meter: Meter
         n3rgy_api_status: n3rgy API Status
         n3rgy_consent_confirmed: n3rgy Confirm Consented
@@ -691,7 +695,6 @@ en:
         newsletters_main_communication_channel_list_item_2: sharing featured activities
         newsletters_main_communication_channel_list_item_3: celebrating best practice and success stories at participating schools
         newsletters_main_communication_channel_list_item_4: promoting supporting services such as workshops, training and audits
-        subscribe_to_newsletters: Subscribe to newsletters
         we_strongly_recommend_you_sign_up: We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else)
       edit:
         title: Edit %{user_role} account

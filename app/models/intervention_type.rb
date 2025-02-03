@@ -52,10 +52,9 @@ class InterventionType < ApplicationRecord
   has_many :alert_type_rating_intervention_types, dependent: nil
   has_many :alert_type_ratings, through: :alert_type_rating_intervention_types
 
+  # old relationships to be removed when todos feature removed
   has_many :audit_intervention_types, dependent: nil
   has_many :audits, through: :audit_intervention_types
-
-  has_many :todos, as: :task, inverse_of: :task, dependent: :destroy
 
   accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
 
@@ -79,7 +78,7 @@ class InterventionType < ApplicationRecord
   before_save :copy_searchable_attributes
 
   def actions_for_school(school)
-    observations.for_school(school)
+    observations.visible.for_school(school)
   end
 
   # override default name for this resource in transifex
