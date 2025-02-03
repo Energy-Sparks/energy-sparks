@@ -78,7 +78,7 @@ module ApplicationHelper
       'table-light'
     elsif last_date < Time.zone.now - 30.days
       'table-danger'
-    elsif last_date Time.zone.now - 5.days
+    elsif last_date < Time.zone.now - 5.days
       'table-warning'
     else
       'table-success'
