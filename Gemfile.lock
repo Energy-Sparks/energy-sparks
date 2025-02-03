@@ -823,6 +823,7 @@ DEPENDENCIES
   auto_strip_attributes (~> 2.5)
   aws-sdk-s3
   better_errors
+  better_html
   binding_of_caller
   bootsnap
   bootstrap (~> 4)
