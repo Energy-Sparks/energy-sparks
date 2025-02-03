@@ -18,7 +18,7 @@ address {
   font-size: initial;
 }
 
-p {
+p, .trix-content div {
   @include font(f6);
 }
 
@@ -56,40 +56,32 @@ div.callout-text {
   }
 }
 
-div.bio {
-  border: none;
-}
-
-div.hide {
+div.hide, .hidden {
   display: none;
 }
 
-.hidden {
-  display: none;
+table th {
+  &.actions {
+    width: 20%;
+  }
+
+  &.description {
+    width: 50%;
+  }
 }
 
-table th.actions {
-  width: 20%;
-}
+.table td {
+  &.fit {
+    white-space: nowrap;
+    width: 1px;
+  }
 
-table th.description {
-  width: 50%;
-}
-
-th.fixed-width-150 {
-  min-width: 150px;
-}
-
-.table td.fit {
-  white-space: nowrap;
-  width: 1px;
-}
-
-.table td.overflow {
-  white-space: nowrap;
-  text-overflow:ellipsis;
-  overflow: hidden;
-  max-width:1px;
+  &.overflow {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 1px;
+  }
 }
 
 div.meter-attributes {
@@ -110,14 +102,14 @@ input:invalid {
   color: $danger;
 }
 
-.nav-anchor a {
-  position: absolute;
-  left: 0px;
-  top: -60px;
-}
-
 .nav-anchor {
   position: relative;
+
+  a {
+    position: absolute;
+    left: 0px;
+    top: -60px;
+  }
 }
 
 .accordion-block {
@@ -158,13 +150,13 @@ input, progress {
   white-space: pre-line;
 }
 
-.main-breadcrumbs .breadcrumb-item+.breadcrumb-item::before {
-  content: quote(">");
-}
-
 .main-breadcrumbs {
   background-color: transparent;
   padding: 0;
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: quote(">");
+  }
 }
 
 .header-dark {
@@ -179,13 +171,13 @@ input, progress {
   color: $grey-light;
 }
 
+.text-dark-blue {
+  color: $blue-very-dark;
+}
+
 .badge-grey-light {
   background-color: $grey-light;
   color: $white;
-}
-
-.text-dark-blue {
-  color: $blue-very-dark;
 }
 
 .card .card-footer.plain {
