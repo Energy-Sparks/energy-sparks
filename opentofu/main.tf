@@ -28,6 +28,14 @@ locals {
   test_db = [for id in data.aws_db_instances.all.instance_identifiers : id if can(regex("energy-sparks-test.*", id))][0]
 }
 
+terraform {
+  backend "s3" {
+    bucket  = "es-opentofu-state"
+    key     = "opentofu.tfstate"
+    encrypt = true
+  }
+}
+
 resource "aws_cloudwatch_metric_alarm" "memory_usage_alarm" {
   alarm_name                = "Production Memory Use > 80%"
   actions_enabled           = true
