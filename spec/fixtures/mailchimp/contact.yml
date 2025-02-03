@@ -1,0 +1,105 @@
+---
+id: 2eea1beae0c0e9a4bd7b58df9545cd7e
+email_address: john.smith@example.org
+unique_email_id: a66be3fa62
+contact_id: 98bcc57920b809625d0d3564efd29519
+full_name: John Smith
+web_id: 578299579
+email_type: html
+status: subscribed
+consents_to_one_to_one_messaging: true
+sms_phone_number: ''
+sms_subscription_status: ''
+sms_subscription_last_updated: ''
+merge_fields:
+  FNAME: John
+  LNAME: Smith
+  ADDRESS: ''
+  OTHER_LA: ''
+  OTHER_MAT: ''
+  FULLNAME: John Smith
+  SCHOOL: ''
+  USERROLE: Admin
+  CONFIRMED: '2022-05-11'
+interests:
+  36d63da171: false
+  0c794fbd4a: false
+  c6f026ef14: false
+  2aa9fc86eb: false
+  b24143f45b: false
+  287385ea40: false
+  5d8715c0d8: false
+  abafab1e7a: false
+  '096324023f': false
+  e029918b37: false
+  4bb520e9fc: true
+stats:
+  avg_open_rate: 0
+  avg_click_rate: 0
+ip_signup: ''
+timestamp_signup: ''
+ip_opt: 86.8.248.55
+timestamp_opt: '2025-01-15T11:31:32+00:00'
+member_rating: 2
+last_changed: '2025-01-16T16:46:52+00:00'
+language: ''
+vip: false
+email_client: ''
+location:
+  latitude: 0
+  longitude: 0
+  gmtoff: 0
+  dstoff: 0
+  country_code: ''
+  timezone: ''
+  region: ''
+source: API - Generic
+tags_count: 2
+tags:
+- id: 8979256
+  name: CONSOLE
+- id: 8979217
+  name: TEST
+list_id: aff6ac9f1b
+_links:
+- rel: self
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json
+- rel: parent
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json
+- rel: update
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e
+  method: PATCH
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/PATCH.json
+- rel: upsert
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e
+  method: PUT
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/PUT.json
+- rel: delete
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e
+  method: DELETE
+- rel: activity
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e/activity
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Activity/Response.json
+- rel: goals
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e/goals
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Goals/Response.json
+- rel: notes
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e/notes
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Notes/CollectionResponse.json
+- rel: events
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e/events
+  method: POST
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Events/POST.json
+- rel: delete_permanent
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members/2eea1beae0c0e9a4bd7b58df9545cd7e/actions/delete-permanent
+  method: POST

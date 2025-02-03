@@ -1,6 +1,7 @@
 namespace :mailchimp do
-  desc "Schools set countries"
+  desc "Export new versions of Mailchimp export CSV files"
   task :csv_export, [:dir] => :environment do |t,args|
+    puts "#{DateTime.now.utc} Mailchimp CSV Export Started"
     puts "Loading from #{args.dir}"
 
     audience = {}
