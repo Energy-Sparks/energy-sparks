@@ -115,17 +115,9 @@
 <%= f.input :cooks_dinners_for_other_schools_count,
             wrapper_html: { data: { revealed_by: '.school_cooks_dinners_for_other_schools' } } %>
 
-<%= f.input :heating_gas %>
-<%= f.input :heating_electric %>
-<%= f.input :heating_oil %>
-<%= f.input :heating_lpg %>
-<%= f.input :heating_biomass %>
-<%= f.input :heating_underfloor %>
-<%= f.input :heating_district_heating %>
-<%= f.input :heating_ground_source_heat_pump %>
-<%= f.input :heating_air_source_heat_pump %>
-<%= f.input :heating_water_source_heat_pump %>
-<%= f.input :heating_chp %>
+<% School::HEATING_TYPES.each do |type| %>
+  <%= f.input :"heating_#{type}" %>
+<% end %>
 
 <h2 id="preferences"><%= t('schools.school_details.analysis_preferences') %></h2>
 

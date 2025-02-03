@@ -21,24 +21,15 @@
       <p><%= t('schools.your_school_estates.edit.heating_sources.description_1') %>.</p>
       <p><%= t('schools.your_school_estates.edit.heating_sources.description_2') %>.</p>
 
-      <% %i[heating_gas
-            heating_electric
-            heating_oil
-            heating_lpg
-            heating_biomass
-            heating_underfloor
-            heating_district_heating
-            heating_ground_source_heat_pump
-            heating_air_source_heat_pump
-            heating_chp].each do |type| %>
-        <% fields_class = "school_#{type}_fields" %>
-        <%= f.input type,
-                    label: t("activerecord.attributes.school.#{type}"),
+      <% School::HEATING_TYPES.each do |type| %>
+        <% fields_class = "school_heating_#{type}_fields" %>
+        <%= f.input :"heating_#{type}",
+                    label: t("activerecord.attributes.school.heating_#{type}"),
                     input_html: { data: { reveals: ".#{fields_class}" } } %>
-        <div class="<%= fields_class %>" data-revealed-by=".school_<%= type %>">
-          <%= f.input :"#{type}_percent",
-                      label: t(".heating_sources.#{type.to_s['heating_'.length..]}.percentage") %>
-          <%= f.input :"#{type}_notes",
+        <div class="<%= fields_class %>" data-revealed-by=".school_heating_<%= type %>">
+          <%= f.input :"heating_#{type}_percent",
+                      label: t(".heating_sources.#{type}.percentage") %>
+          <%= f.input :"heating_#{type}_notes",
                       label: t('.heating_sources.notes') %>
         </div>
       <% end %>

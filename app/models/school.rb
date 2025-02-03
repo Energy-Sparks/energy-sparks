@@ -120,6 +120,9 @@ class School < ApplicationRecord
 
   class ProcessDataError < StandardError; end
 
+  HEATING_TYPES = %i[gas electric oil lpg biomass underfloor district_heating ground_source_heat_pump
+                     air_source_heat_pump chp].freeze
+
   friendly_id :slug_candidates, use: %i[finders slugged history]
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
