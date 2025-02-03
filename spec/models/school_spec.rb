@@ -1063,4 +1063,32 @@ describe School do
       expect(schools.last.school_group_name).to eq(nil)
     end
   end
+
+  describe 'MailchimpUpdateable' do
+    subject { create(:school) }
+
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          active: false,
+          country: :scotland,
+          funder: create(:funder),
+          local_authority_area: create(:local_authority_area),
+          name: 'New name',
+          percentage_free_school_meals: 15,
+          region: :south_east,
+          school_type: :special,
+          school_group: create(:school_group),
+          scoreboard: create(:scoreboard)
+        }
+      end
+
+      let(:ignored_field_changes) do
+        {
+          address: 'Address',
+          bill_requested: true
+        }
+      end
+    end
+  end
 end
