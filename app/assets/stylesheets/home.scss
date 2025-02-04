@@ -301,7 +301,6 @@
   }
 
   .hero-component {
-
     .right-half {
       top: 0;
       right: 0;
@@ -310,20 +309,19 @@
       object-fit: cover;
     }
 
-
     @media (min-width: map-get($grid-breakpoints, 'xl')) {
       h1, h2, h3, h4 {
-        font-size: 3.5vw;
+        font-size: 3vw;
         line-height: 4vw;
       }
 
       p {
-        font-size: 1.5vw;
+        font-size: 1.3vw;
         line-height: 2vw;
       }
 
       .btn {
-        font-size: 1.5vw;
+        font-size: 1.3vw;
         line-height: 2vw;
       }
 
