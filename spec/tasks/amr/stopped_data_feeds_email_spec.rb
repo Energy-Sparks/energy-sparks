@@ -15,7 +15,7 @@ RSpec.describe 'amr:stopped_data_feeds_email' do # rubocop:disable RSpec/Describ
     ClimateControl.modify(SEND_AUTOMATED_EMAILS: 'true') { example.run }
   end
 
-  it 'executes successfully' do
+  it 'send an email with old reading' do
     reading = travel_to(6.days.ago) { create(:amr_data_feed_reading) }
     task.invoke
     email = Capybara.string(ActionMailer::Base.deliveries.last.html_part.decoded)
@@ -25,7 +25,7 @@ RSpec.describe 'amr:stopped_data_feeds_email' do # rubocop:disable RSpec/Describ
       eq([reading.amr_data_feed_config.description, '5 days', '6 days'])
   end
 
-  it 'sends nothing executes successfully' do
+  it 'sends nothing with recent reading' do
     create(:amr_data_feed_reading)
     expect { task.invoke }.not_to change(ActionMailer::Base.deliveries, :count)
   end
