@@ -13,6 +13,6 @@ namespace :amr do
       since_latest = latest && (now - latest)
       [config, since_latest] if latest && since_latest > config.missing_reading_window.days
     end
-    AdminMailer.with(to: 'operations@energysparks.uk', missing:).missing_reading_window.deliver if missing
+    AdminMailer.with(to: 'operations@energysparks.uk', missing:).missing_reading_window.deliver if missing.present?
   end
 end
