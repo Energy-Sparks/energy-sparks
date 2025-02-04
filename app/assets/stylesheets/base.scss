@@ -38,6 +38,11 @@ p, .trix-content div {
   background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
 }
 
+.fa-li.fa-check {
+  color: $positive-dark;
+  padding-bottom: 100px;
+}
+
 div.padded-row {
   padding-top: 30px;
   padding-bottom: 30px;

@@ -235,17 +235,6 @@
     }
   }
 
-  .fa-li.fa-check {
-    color: $positive-dark;
-    padding-bottom: 100px;
-  }
-
-  .info-page > .row {
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-bottom: 0px;
-  }
-
   .mailchimp  {
     @media (min-width: 992px) and (max-width: 1599.98px) {
       .card-deck {
@@ -309,10 +298,6 @@
 
   section.alerts .alert {
     margin-bottom: 0px;
-  }
-
-  .rounded {
-    border-radius: 8px;
   }
 
   .right-half {
