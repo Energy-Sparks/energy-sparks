@@ -13,7 +13,7 @@ module Schools
       School.engaged(AcademicYear.current.start_date..).count
     end
 
-    def self.list_schools(previous_year:, school_group_id:)
+    def self.list_schools(previous_year, school_group_id)
       current_year = AcademicYear.current
       date_range = if previous_year
                      previous_year = current_year.previous_year
