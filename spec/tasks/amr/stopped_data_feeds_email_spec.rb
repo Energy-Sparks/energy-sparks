@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'amr:missing_reading_window_email' do # rubocop:disable RSpec/DescribeClass
+RSpec.describe 'amr:stopped_data_feeds_email' do # rubocop:disable RSpec/DescribeClass
   before(:all) { Rails.application.load_tasks } # rubocop:disable RSpec/BeforeAfterAll
 
   let(:task) do
