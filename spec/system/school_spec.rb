@@ -11,7 +11,9 @@ RSpec.describe 'school adult dashboard', type: :system do
     context 'as guest user' do
       it 'does not show invisible school or the group' do
         visit root_path
-        click_on('View schools')
+        within('#our-schools') do
+          click_on('View schools')
+        end
         expect(page.has_content?(school_name)).to be true
         expect(page.has_content?('Invisible School')).not_to be true
         expect(page.has_content?('School Group')).not_to be true
@@ -37,7 +39,9 @@ RSpec.describe 'school adult dashboard', type: :system do
       before do
         sign_in(admin)
         visit root_path
-        click_on('View schools')
+        within('#our-schools') do
+          click_on('View schools')
+        end
       end
 
       it 'does show invisible school, but not the group' do
@@ -61,7 +65,9 @@ RSpec.describe 'school adult dashboard', type: :system do
     context 'as a guest user' do
       it 'is listed on school page' do
         visit root_path
-        click_on('View schools')
+        within('#our-schools') do
+          click_on('View schools')
+        end
 
         expect(page.has_content?(non_public_school.name)).to be true
         expect(page.has_content?('School Group')).to be true

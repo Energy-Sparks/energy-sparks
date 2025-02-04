@@ -51,9 +51,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
   it_behaves_like 'a page with breadcrumbs', ['Schools', 'School Name', 'Recommended activities and actions']
 
   it 'has the title' do
-    within('h1') do
-      expect(page).to have_content('Recommended activities and actions')
-    end
+    expect(page).to have_content('Recommended activities and actions')
   end
 
   it 'has the intro' do

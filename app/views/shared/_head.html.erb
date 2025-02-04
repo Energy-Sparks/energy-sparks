@@ -24,11 +24,7 @@
 <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Inter:400,600,700|Quicksand:600,700&display=swap' %>
 <%= stylesheet_link_tag 'https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css' %>
 
-<% if Flipper.enabled?(:footer, current_user, current_user&.school_group) %>
-  <%= stylesheet_link_tag 'redesign', media: 'all' %>
-<% else %>
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-<% end %>
+<%= stylesheet_link_tag 'application', media: 'all' %>
 
 <%= javascript_importmap_tags %>
 
