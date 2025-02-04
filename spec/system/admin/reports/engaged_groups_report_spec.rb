@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe 'Engaged Groups Report' do
+  let!(:school) { create(:school, :with_school_group, :with_points) }
+  let!(:inactive_school) { create(:school, :with_school_group, active: false) }
+
   before do
-    create(:school, :with_points, school_group: create(:school_group, name: 'Group 1'))
-    create(:school, active: false, school_group: create(:school_group, name: 'Group 2'))
     sign_in(create(:admin))
     visit admin_reports_engaged_groups_path
   end
@@ -16,8 +17,8 @@ describe 'Engaged Groups Report' do
         eq(['School Group', 'Admin', 'Active Schools', 'Engaged Schools', 'Percentage of Engaged Schools'])
       expect(all('tr').map { |tr| tr.all('td').map(&:text) }).to \
         eq([[],
-            ['Group 1', '', '1', '1', '100%'],
-            ['Group 2', '', '0', '0', '']])
+            [school.school_group.name, '', '1', '1', '100%'],
+            [inactive_school.school_group.name, '', '0', '0', '']])
     end
   end
 end
