@@ -58,7 +58,7 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:to], subject: subject("Engaged schools report #{now}"))
   end
 
-  def missing_reading_window
+  def stopped_data_feeds
     @missing = params[:missing]
     mail(to: params[:to], subject: subject('Stopped data feeds'))
   end
