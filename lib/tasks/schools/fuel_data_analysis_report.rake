@@ -28,10 +28,10 @@ namespace :schools do
         s.configuration.aggregate_meter_dates.dig("storage_heater", "end_date"),
         s.has_solar_pv?,
         s.has_swimming_pool,
-        s.alternative_heating_biomass,
-        s.alternative_heating_district_heating,
-        s.alternative_heating_lpg,
-        s.alternative_heating_oil
+        s.heating_biomass,
+        s.heating_district_heating,
+        s.heating_lpg,
+        s.heating_oil
       ]
      end
     end
