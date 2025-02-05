@@ -417,6 +417,56 @@ describe User do
 
       it_behaves_like 'created by nullified on user destroy'
     end
+
+    context 'when removing from mailchmp' do
+      context 'with user who isnt in the audience' do
+        let!(:user) { create(:school_admin, school: create(:school)) }
+
+        it 'does not submit a job' do
+          expect(Mailchimp::UserDeletionJob).not_to receive(:perform_later)
+          user.destroy!
+        end
+      end
+
+      context 'with subscribed user' do
+        let!(:user) { create(:school_admin, school: create(:school), mailchimp_status: :subscribed) }
+
+        it 'submits a job' do
+          expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+            email_address: user.email,
+            name: user.name,
+            school: user.school.name
+          )
+          user.destroy!
+        end
+
+        context 'with cluster admin' do
+          let!(:user) { create(:school_admin, :with_cluster_schools, mailchimp_status: :subscribed) }
+
+          it 'submits a job to remove all tags' do
+            expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+              email_address: user.email,
+              name: user.name,
+              school: user.school.name
+            )
+            user.destroy!
+          end
+        end
+
+        context 'with group admin' do
+          let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
+
+          it 'submits a job' do
+            expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+              email_address: user.email,
+              name: user.name,
+              school: user.school_group.name
+            )
+            user.destroy!
+          end
+        end
+      end
+    end
   end
 
   describe 'MailchimpUpdateable' do
