@@ -422,6 +422,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_31_140228) do
     t.boolean "delayed_reading", default: false, null: false
     t.enum "half_hourly_labelling", enum_type: "half_hourly_labelling"
     t.boolean "allow_merging", default: false, null: false
+    t.integer "missing_reading_window", default: 5
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end

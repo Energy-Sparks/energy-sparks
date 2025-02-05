@@ -261,11 +261,10 @@ class School < ApplicationRecord
 
   # combination of other scopes to define an engaged school
   def self.engaged(date_range)
-    active
-      .with_recent_engagement(date_range)
-      .or(with_recently_logged_in_users(date_range.begin))
-      .or(with_transport_survey(date_range))
-      .or(joined_programme(date_range))
+    active.and(with_recent_engagement(date_range)
+               .or(with_recently_logged_in_users(date_range.begin))
+               .or(with_transport_survey(date_range))
+               .or(joined_programme(date_range)))
   end
 
   validates :name, :address, :postcode, :website, :school_type, presence: true
