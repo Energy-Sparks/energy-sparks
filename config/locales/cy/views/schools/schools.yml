@@ -711,31 +711,24 @@ cy:
         title: Cyfrif %{user_role} newydd
     your_school_estates:
       edit:
-        alternative_heating_sources:
+        heating_sources:
           air_source_heat_pump:
-            label: Mae gan ein hysgol bwmp gwres ffynhonnell aer
             percentage: Pa ganran o'r ysgol sy'n defnyddio'r pwmp gwres ffynhonnell aer ar gyfer gwresogi?
           biomass:
-            label: Mae gan ein hysgol foeler biomas
             percentage: Pa ganran o'r ysgol sy'n defnyddio boeler biomas ar gyfer gwresogi?
           description_1: Dywedwch wrthym am unrhyw ffynonellau gwresogi eraill rydych yn eu defnyddio yn eich ysgol
           description_2: Ar hyn o bryd dim ond eich data nwy rydym yn eu dadansoddi. Ond trwy roi gwybod i ni am ffynonellau eraill, gallwn gymhwyso unrhyw arbedion cost neu argymhellion posibl
           district_heating:
-            label: Mae gan ein hysgol wresogi ardal
             percentage: Pa ganran o'r ysgol sy'n defnyddio gwresogi ardal ar gyfer gwresogi?
           ground_source_heat_pump:
-            label: Mae gan ein hysgol bwmp gwres o'r ddaear
             percentage: Pa ganran o'r ysgol sy'n defnyddio'r pwmp gwres ffynhonnell ddaear ar gyfer gwresogi?
           header: Ffynonellau gwresogi amgen
           lpg:
-            label: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
             percentage: Pa ganran o'r ysgol sy'n defnyddio LPG ar gyfer gwresogi?
           notes: A oes unrhyw beth arall y dylem ei wybod?
           oil:
-            label: Mae ein hysgol yn defnyddio olew ar gyfer gwresogi
             percentage: Pa ganran o'r ysgol sy'n cael ei gwresogi gan gwresogi olew?
           water_source_heat_pump:
-            label: Mae gan ein hysgol bwmp gwres ffynhonnell dŵr
             percentage: Pa ganran o'r ysgol sy'n defnyddio'r pwmp gwres ffynhonnell dŵr ar gyfer gwresogi?
         description: Mae Sbarcynni yn defnyddio amrywiaeth o ddata am eich ysgol i deilwra ein dadansoddiad a'n cyngor. Drwy ddweud ychydig mwy wrthym am eich ystâd ysgol gallwn wella'r cymorth rydym yn ei gynnig i chi
         school_was_successfully_updated: Diweddarwyd yr ysgol yn llwyddiannus
