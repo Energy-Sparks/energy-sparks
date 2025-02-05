@@ -2,7 +2,10 @@
 
 class EngagedSchoolsReportJob < ApplicationJob
   def perform(to, previous_year, school_group_id)
-    AdminMailer.with(to:, csv: csv_report(previous_year, school_group_id)).engaged_schools_report.deliver
+    AdminMailer.engaged_schools_report(to,
+                                       csv_report(previous_year, school_group_id),
+                                       previous_year,
+                                       school_group_id).deliver
   end
 
   private
@@ -31,7 +34,7 @@ class EngagedSchoolsReportJob < ApplicationJob
   end
 
   def csv_report(previous_year, school_group_id)
-    engaged_schools = Schools::EngagedSchoolService.list_schools(previous_year:, school_group_id:)
+    engaged_schools = Schools::EngagedSchoolService.list_schools(previous_year, school_group_id)
     CSV.generate(headers: true) do |csv|
       csv << row.keys.map { |header| header.to_s.titleize }
       engaged_schools.each do |service|

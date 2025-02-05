@@ -51,6 +51,9 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
+  # Skip http-to-https redirect for the default health check endpoint.
+  # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
+
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
@@ -71,6 +74,8 @@ Rails.application.configure do
   # config.active_job.queue_adapter = :resque
   # config.active_job.queue_name_prefix = "energy_sparks_production"
 
+  # Disable caching for Action Mailer templates even if Action Controller
+  # caching is enabled.
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -87,6 +92,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Only use :id for inspections in production.
+  config.active_record.attributes_for_inspect = [ :id ]
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
@@ -101,10 +109,6 @@ Rails.application.configure do
   config.action_mailer.show_previews = true
   # Rspec makes rails use spec/mailers/previews as the mail previews path
   config.action_mailer.preview_paths << Rails.root.join('spec', 'mailers', 'previews')
-  # Attempt to read encrypted secrets from `config/secrets.yml.enc`.
-  # Requires an encryption key in `ENV["RAILS_MASTER_KEY"]` or
-  # `config/secrets.yml.key`.
-  config.read_encrypted_secrets = true
   if ENV['RAILS_SERVE_STATIC_FILES'].present?
     # serve the assets from a different folder so they aren't served by NGINX
     config.public_file_server.enabled = true
@@ -122,7 +126,7 @@ Rails.application.configure do
   config.cache_store = :file_store, "/var/cache/rails_cache_store"
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
-  config.good_job.execution_mode = :external
+  config.active_job.queue_adapter = :good_job
   config.good_job.on_thread_error = -> (exception) { Rollbar.error(exception, from: :on_thread_error) }
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = { api_key: ENV['MG_API_KEY'], domain: ENV['MG_DOMAIN'] }
