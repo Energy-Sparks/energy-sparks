@@ -34,9 +34,9 @@
           <td><%= link_to(school.name, school_path(school)) %></td>
             <% School::HEATING_TYPES.each_with_index do |type, index| %>
               <% heating_type_boolean = school.public_send(:"heating_#{type}")
-                 class_ = 'bg-light' if index.even? %>
-              <%= tag.td(checkmark(heating_type_boolean), class: class_, "data-order": heating_type_boolean) %>
-              <%= tag.td(school.public_send("heating_#{type}_percent"), class: class_) %>
+                 css_class = 'bg-light' if index.even? %>
+              <%= tag.td(checkmark(heating_type_boolean), class: css_class, "data-order": heating_type_boolean) %>
+              <%= tag.td(school.public_send("heating_#{type}_percent"), class: css_class) %>
             <% end %>
         </tr>
       <% end %>
