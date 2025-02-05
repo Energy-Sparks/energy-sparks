@@ -276,11 +276,10 @@ class School < ApplicationRecord
 
   # combination of other scopes to define an engaged school
   def self.engaged(date_range)
-    active
-      .with_recent_engagement(date_range)
-      .or(with_recently_logged_in_users(date_range.begin))
-      .or(with_transport_survey(date_range))
-      .or(joined_programme(date_range))
+    active.and(with_recent_engagement(date_range)
+               .or(with_recently_logged_in_users(date_range.begin))
+               .or(with_transport_survey(date_range))
+               .or(joined_programme(date_range)))
   end
 
   validates :name, :address, :postcode, :website, :school_type, presence: true
@@ -300,17 +299,8 @@ class School < ApplicationRecord
 
   validates_associated :school_times, on: :school_time_update
 
-  validates :heating_air_source_heat_pump_percent,
-            :heating_biomass_percent,
-            :heating_chp_percent,
-            :heating_district_heating_percent,
-            :heating_electric_percent,
-            :heating_gas_percent,
-            :heating_ground_source_heat_pump_percent,
-            :heating_lpg_percent,
-            :heating_oil_percent,
-            :heating_underfloor_percent,
-            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
+  validates(*HEATING_TYPES.map { |type| :"heating_#{type}_percent" },
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true })
 
   validates :weather_station, presence: true
 
