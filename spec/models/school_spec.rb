@@ -76,7 +76,7 @@ describe School do
     end
 
     it 'validates alternative heating percentages' do
-      alternative_heating_fields.each do |field|
+      heating_fields.each do |field|
         expect(school).to validate_numericality_of(field).is_greater_than_or_equal_to(0).is_less_than_or_equal_to(100).allow_nil
       end
     end
