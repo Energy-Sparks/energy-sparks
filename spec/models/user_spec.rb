@@ -480,7 +480,7 @@ describe User do
 
   describe '.mailchimp_update_required' do
     context 'when mailchimp status is unknown' do
-      let(:user) { create(:user) }
+      let(:user) { create(:school_admin, school: create(:school, :with_school_group)) }
 
       it { expect(User.mailchimp_update_required).to be_empty }
     end
