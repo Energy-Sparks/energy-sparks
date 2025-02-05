@@ -53,7 +53,8 @@ module Amr
       # Creates the InsertAll object as the upset_all method would do
       # We specify no returning to exclude that clause so we can add it in later
       insert_all = ActiveRecord::InsertAll.new(
-        AmrValidatedReading,
+        AmrValidatedReading.none,
+        AmrValidatedReading.connection,
         values,
         on_duplicate: :update,
         unique_by: [:meter_id, :reading_date],
