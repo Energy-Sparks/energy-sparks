@@ -54,16 +54,20 @@ describe Mailchimp::Contact do
       expect(contact.school_url).to eq "https://energysparks.uk/schools/#{school.slug}"
       expect(contact.school_group_url).to eq "https://energysparks.uk/school_groups/#{school.school_group.slug}"
       expect(contact.scoreboard_url).to eq "https://energysparks.uk/scoreboards/#{school.scoreboard.slug}"
+      expect(contact.school_slug).to eq school.slug
+      expect(contact.school_group_slug).to eq school.school_group.slug
     end
 
     it 'populates school group links', if: group_admin do
       expect(contact.school_group_url).to eq "https://energysparks.uk/school_groups/#{user.school_group.slug}"
       expect(contact.scoreboard_url).to eq "https://energysparks.uk/scoreboards/#{user.school_group.default_scoreboard.slug}"
+      expect(contact.school_group_slug).to eq user.school_group.slug
     end
 
     it 'populates school group links', if: cluster_admin do
       expect(contact.school_group_url).to eq "https://energysparks.uk/school_groups/#{school.school_group.slug}"
       expect(contact.scoreboard_url).to eq "https://energysparks.uk/scoreboards/#{user.school.school_group.default_scoreboard.slug}"
+      expect(contact.school_group_slug).to eq user.school.school_group.slug
     end
   end
 
