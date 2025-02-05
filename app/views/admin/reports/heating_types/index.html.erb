@@ -1,5 +1,5 @@
 <h1>Heating Types</h1>
-<p>These table detail the heating system specified for active schools.</p>
+<p>These tables show the heating system specified for active schools.</p>
 <table id="heating-types" class="table table-sorted table-sm w-auto">
   <thead>
     <tr>
@@ -32,10 +32,12 @@
         <tr>
           <td><%= link_to(school.school_group.name, school_group_path(school.school_group)) %></td>
           <td><%= link_to(school.name, school_path(school)) %></td>
-          <% School::HEATING_TYPES.each do |type| %>
-            <td><%= school.public_send(:"heating_#{type}") ? '✔' : '✘' %></td>
-            <td><%= school.public_send(:"heating_#{type}_percent") %></td>
-          <% end %>
+            <% School::HEATING_TYPES.each_with_index do |type, index| %>
+              <% heating_type_boolean = school.public_send(:"heating_#{type}")
+                 class_ = 'bg-light' if index.even? %>
+              <%= tag.td(checkmark(heating_type_boolean), class: class_, "data-order": heating_type_boolean) %>
+              <%= tag.td(school.public_send("heating_#{type}_percent"), class: class_) %>
+            <% end %>
         </tr>
       <% end %>
   </tbody>
