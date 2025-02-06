@@ -8,6 +8,7 @@ describe Mailchimp::Contact do
       expect(contact.contact_source).to eq 'User'
       expect(contact.confirmed_date).to eq user.confirmed_at.to_date.iso8601
       expect(contact.locale).to eq user.preferred_locale
+      expect(contact.user_status).to eq 'Active'
     end
 
     it 'populates school user fields', if: school_user do
@@ -129,6 +130,14 @@ describe Mailchimp::Contact do
 
         it 'uses correct status' do
           expect(contact.alert_subscriber).to eq 'Yes'
+        end
+      end
+
+      context 'when account is disabled' do
+        let!(:user) { create(:school_admin, :subscribed_to_alerts, school: school, locked_at: Time.zone.now) }
+
+        it 'uses correct status' do
+          expect(contact.user_status).to eq 'Disabled'
         end
       end
     end
