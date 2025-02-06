@@ -8,7 +8,6 @@ module Mailchimp
       mailchimp_member = audience_manager.update_contact(contact)
       audience_manager.remove_tags_from_contact(email_address, tags_to_remove(mailchimp_member))
     rescue => e
-      Rollbar.log(e, job: :user_deletion)
       EnergySparks::Log.exception(e, job: :user_deletion)
     end
 
