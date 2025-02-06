@@ -4,6 +4,15 @@ module Mailchimp
       @client = client
     end
 
+    # The Mailchimp documentation and CSV exports use different status names than
+    # the API. Specifically "nonsubscribed" in the documentation is returned as "transactional"
+    # in the API responses. Ensure we're using codes that align with our enum.
+    #
+    # Preferring the documented versions as they will match internal user expectations
+    def self.status(mailchimp_status)
+      mailchimp_status == 'transactional' ? :nonsubscribed : mailchimp_status.to_sym
+    end
+
     # Fetch the description of our Mailchimp mailing list
     def list
       @list ||= get_list
@@ -19,10 +28,35 @@ module Mailchimp
       interests['interests'].map { |interest| create_interest(interest) }.sort_by(&:name)
     end
 
-    def subscribe_or_update_contact(mailchimp_contact, status_if_new: 'subscribed')
+    # Calls a Mailchimp API in a way that will add new contacts to the list if they're not already
+    # members or updates an existing contact.
+    #
+    # Care need to be taken with the status flags here, as if a user is already a member then we don't
+    # necessarily want to override their current status (e.g. unsubscribed or archived) unless a user
+    # has requested it.
+    #
+    # Status defaults to `nil` here to enforce a default that respects changes within Mailchimp.
+    def subscribe_or_update_contact(mailchimp_contact, status_if_new: 'subscribed', status: nil)
       hash = mailchimp_contact.to_mailchimp_hash
       hash['status_if_new'] = status_if_new
+      hash['status'] = status if status
       resp = @client.lists.set_list_member(list.id, mailchimp_contact.email_address, hash, subscribe_opts)
+      OpenStruct.new(resp)
+    end
+
+    def remove_tags_from_contact(email_address, tags_to_remove)
+      tags = tags_to_remove.map { |t| { 'name' => t, 'status' => 'inactive' } }
+      @client.lists.update_list_member_tags(list.id,
+                                            Digest::MD5.hexdigest(email_address.downcase),
+                                            { 'tags': tags }
+                                          )
+    end
+
+    def update_contact(mailchimp_contact)
+      resp = @client.lists.set_list_member(list.id,
+                                           Digest::MD5.hexdigest(mailchimp_contact.email_address.downcase),
+                                           mailchimp_contact.to_mailchimp_hash,
+                                           subscribe_opts)
       OpenStruct.new(resp)
     end
 
