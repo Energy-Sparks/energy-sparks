@@ -9,6 +9,17 @@ describe Mailchimp::StatusCheckerJob do
     allow(Mailchimp::AudienceManager).to receive(:new).and_return(double)
   end
 
+  describe '#can_run?' do
+    it 'can run in all environments' do
+      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
+        expect(job.can_run?).to be(true)
+      end
+      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'test' do
+        expect(job.can_run?).to be(true)
+      end
+    end
+  end
+
   describe '#perform' do
     let(:email_address) { 'test@example.org' }
     let!(:user) { create(:user, email: email_address) }
