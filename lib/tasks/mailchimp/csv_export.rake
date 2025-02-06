@@ -46,7 +46,7 @@ namespace :mailchimp do
       CSV.open("#{args.dir}/updated-#{category}.csv", "w") do |csv|
         csv << headers.map(&:to_s).map(&:humanize)
         contacts.each do |contact|
-          csv << headers.map { |f| contact[f] }
+          csv << headers.map { |f| contact.send(f) }
         end
       end
     end
@@ -54,7 +54,7 @@ namespace :mailchimp do
     CSV.open("#{args.dir}/new-nonsubscribed.csv", "w") do |csv|
       csv << headers.map(&:to_s).map(&:humanize)
       service.new_nonsubscribed.each do |contact|
-        csv << headers.map { |f| contact[f] }
+        csv << headers.map { |f| contact.send(f) }
       end
     end
 
