@@ -6,6 +6,10 @@ class ApplicationComponent < ViewComponent::Base
 
   def initialize(id: nil, classes: '')
     @id = id
-    @classes = classes
+    @classes = token_list(classes)
+  end
+
+  def container(&block)
+    content_tag(:div, id: id, class: classes, &block)
   end
 end

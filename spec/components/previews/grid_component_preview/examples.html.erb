@@ -1,0 +1,60 @@
+<div class='container'>
+
+  <h1>Grid Component</h1>
+  <h2>Inside a container</h2>
+
+  <h3>2 cols</h3>
+
+  <%= render GridComponent.new(
+        id: '2-cols',
+        cols: 2,
+        col_classes: 'mb-4',
+        block_classes: 'h-100 bg-light p-4 rounded'
+      ) do |grid| %>
+    <% grid.with_block do %>
+      <p><%= render IconComponent.new(name: 'house', size: 'f1') %> with Icon Component</p>
+    <% end %>
+    <% grid.with_block classes: %w[bg-exemplar_school text-white] do %>
+      <p>classes: ['bg-exemplar_school', 'text-white']</p>
+    <% end %>
+  <% end %>
+
+  <h3>3 cols</h3>
+
+  <%= render GridComponent.new(
+        id: '3-cols', cols: 3,
+        col_classes: 'mb-4',
+        block_classes: 'h-100 bg-light p-4 rounded text-center'
+      ) do |grid| %>
+    <% grid.with_block do %>
+      Content
+    <% end %>
+    <% grid.with_block do %>
+      Content
+    <% end %>
+    <% grid.with_block do %>
+      Content
+    <% end %>
+  <% end %>
+
+  <h3>4 cols</h3>
+
+  <%= render GridComponent.new(
+        id: '4-cols', cols: 4,
+        block_classes: 'h-100 bg-light p-4 rounded'
+      ) do |grid| %>
+    <% grid.with_block do %>
+      Content
+    <% end %>
+    <% grid.with_block classes: 'text-center' do %>
+      Content
+    <% end %>
+    <% grid.with_block classes: 'text-center' do %>
+      Content
+    <% end %>
+    <% grid.with_block classes: 'text-right' do %>
+      Content
+    <% end %>
+  <% end %>
+
+</div>
