@@ -58,6 +58,6 @@ class PasswordsController < Devise::PasswordsController
 
   def subscribe_newsletter(user, sign_up_params)
     contact = create_contact_from_user(user, sign_up_params)
-    subscribe_contact(contact, show_errors: false)
+    subscribe_contact(contact, user, show_errors: false)
   end
 end

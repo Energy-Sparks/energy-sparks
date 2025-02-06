@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_30_175732) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_31_140228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_30_175732) do
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "half_hourly_labelling", ["start", "end"]
-  create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed"]
+  create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_perse_api", ["half_hourly"]
 
   create_table "academic_years", force: :cascade do |t|

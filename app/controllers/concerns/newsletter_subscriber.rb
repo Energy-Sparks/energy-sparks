@@ -7,11 +7,13 @@ module NewsletterSubscriber
     Mailchimp::Contact.from_user(user, interests: sign_up_params[:interests].transform_values {|v| v == 'true' })
   end
 
-  def subscribe_contact(contact, show_errors: true)
+  def subscribe_contact(contact, user, show_errors: true)
     resp = nil
     if contact.valid?
       begin
-        resp = audience_manager.subscribe_or_update_contact(contact)
+        # as user has explicitly signed up, set their status to be subscribed if they're an existing contact in Mailchimp
+        resp = audience_manager.subscribe_or_update_contact(contact, status: 'subscribed')
+        user.update(mailchimp_status: 'subscribed', mailchimp_updated_at: Time.zone.now) if user
       rescue => e
         Rails.logger.error(e)
         Rollbar.error(e)

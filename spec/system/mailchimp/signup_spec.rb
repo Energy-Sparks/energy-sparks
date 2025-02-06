@@ -71,6 +71,9 @@ describe 'Mailchimp Sign-up' do
         end
         click_on 'Subscribe'
         expect(page).to have_content('Subscription confirmed')
+        user.reload
+        expect(user.mailchimp_status).to eq('subscribed')
+        expect(user.mailchimp_updated_at).not_to be_nil
       end
     end
   end
@@ -118,7 +121,8 @@ describe 'Mailchimp Sign-up' do
         end
 
         it 'subscribes the user' do
-          expect(audience_manager).to receive(:subscribe_or_update_contact) do |subscribed_contact|
+          expect(audience_manager).to receive(:subscribe_or_update_contact) do |subscribed_contact, opts|
+            expect(opts[:status]).to eq('subscribed')
             expect(subscribed_contact.email_address).to eq user.email
             expect(subscribed_contact.name).to eq user.name
             expect(subscribed_contact.user_role).to eq 'School admin'
@@ -127,6 +131,9 @@ describe 'Mailchimp Sign-up' do
           fill_in :name, with: name
           click_on 'Subscribe'
           expect(page).to have_content('Subscription confirmed')
+          user.reload
+          expect(user.mailchimp_status).to eq('subscribed')
+          expect(user.mailchimp_updated_at).not_to be_nil
         end
       end
 
@@ -188,7 +195,8 @@ describe 'Mailchimp Sign-up' do
         end
 
         it 'subscribes the user' do
-          expect(audience_manager).to receive(:subscribe_or_update_contact) do |subscribed_contact|
+          expect(audience_manager).to receive(:subscribe_or_update_contact) do |subscribed_contact, opts|
+            expect(opts[:status]).to eq('subscribed')
             expect(subscribed_contact.email_address).to eq user.email
             expect(subscribed_contact.name).to eq user.name
             expect(subscribed_contact.user_role).to eq 'School admin'

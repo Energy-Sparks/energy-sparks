@@ -69,10 +69,6 @@ a.badge {
   border-radius: 30px;
 }
 
-.btn-fixed-width-100 {
-  width: 100px;
-}
-
 .card-deck.activities {
   a,
   a:hover,
@@ -99,7 +95,7 @@ section.highlight {
     outline: none;
   }
 }
-
+/*
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
   .btn,
@@ -121,3 +117,4 @@ section.highlight {
     @include font(f9);
   }
 }
+*/

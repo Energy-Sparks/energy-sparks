@@ -1,8 +1,8 @@
 namespace :mailchimp do
-  desc "Check mailchimp status of confirmed users"
-  task :status_check, [:dir] => :environment do |t,args|
+  desc "Push database changes to Mailchimp"
+  task :audience_updater, [:dir] => :environment do |t,args|
     if ENV['ENVIRONMENT_IDENTIFIER'] == "production"
-      Mailchimp::StatusCheckerJob.perform_later
+      Mailchimp::AudienceUpdaterJob.perform_later
       puts "Job submitted"
     else
       puts "Skipping as not in production"

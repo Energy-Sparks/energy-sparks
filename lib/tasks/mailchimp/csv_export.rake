@@ -23,16 +23,23 @@ namespace :mailchimp do
       :locale,
       :contact_source,
       :confirmed_date,
+      :user_status,
       :user_role,
       :staff_role,
       :alert_subscriber,
       :school,
+      :school_url,
+      :school_slug,
       :school_status,
+      :school_type,
       :school_group,
+      :school_group_url,
+      :school_group_slug,
       :local_authority,
       :region,
       :country,
       :scoreboard,
+      :scoreboard_url,
       :funder,
       :interests,
       :tags
@@ -42,7 +49,7 @@ namespace :mailchimp do
       CSV.open("#{args.dir}/updated-#{category}.csv", "w") do |csv|
         csv << headers.map(&:to_s).map(&:humanize)
         contacts.each do |contact|
-          csv << headers.map { |f| contact[f] }
+          csv << headers.map { |f| contact.send(f) }
         end
       end
     end
@@ -50,7 +57,7 @@ namespace :mailchimp do
     CSV.open("#{args.dir}/new-nonsubscribed.csv", "w") do |csv|
       csv << headers.map(&:to_s).map(&:humanize)
       service.new_nonsubscribed.each do |contact|
-        csv << headers.map { |f| contact[f] }
+        csv << headers.map { |f| contact.send(f) }
       end
     end
 
