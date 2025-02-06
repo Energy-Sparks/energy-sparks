@@ -6,7 +6,6 @@ module Mailchimp
     attr_accessor :email_address, :interests, :tags
 
     # our Merge Fields
-    # TODO add school, school group and scoreboard urls as fields
     attr_accessor :alert_subscriber, :confirmed_date, :contact_source, :country, :funder, :locale, :local_authority, :name, :region, :staff_role, :school, :school_url, :school_group, :school_slug, :school_group_url, :school_group_slug, :school_status, :school_type, :scoreboard, :scoreboard_url, :user_role, :user_status
 
     validates_presence_of :email_address, :name
