@@ -10,11 +10,7 @@ div.application.container {
 }
 
 .navigation-margin {
-  margin-top: 108px;
-}
-
-section.home.alerts .alert {
-  margin-bottom: 0px;
+  margin-top: 114px;
 }
 
 address {
@@ -22,7 +18,7 @@ address {
   font-size: initial;
 }
 
-p {
+p, .trix-content div {
   @include font(f6);
 }
 
@@ -42,8 +38,9 @@ p {
   background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
 }
 
-section.padded-section {
-  padding: 100px 0;
+.fa-li.fa-check {
+  color: $positive-dark;
+  padding-bottom: 100px;
 }
 
 div.padded-row {
@@ -64,40 +61,32 @@ div.callout-text {
   }
 }
 
-div.bio {
-  border: none;
-}
-
-div.hide {
+div.hide, .hidden {
   display: none;
 }
 
-.hidden {
-  display: none;
+table th {
+  &.actions {
+    width: 20%;
+  }
+
+  &.description {
+    width: 50%;
+  }
 }
 
-table th.actions {
-  width: 20%;
-}
+.table td {
+  &.fit {
+    white-space: nowrap;
+    width: 1px;
+  }
 
-table th.description {
-  width: 50%;
-}
-
-th.fixed-width-150 {
-  min-width: 150px;
-}
-
-.table td.fit {
-  white-space: nowrap;
-  width: 1px;
-}
-
-.table td.overflow {
-  white-space: nowrap;
-  text-overflow:ellipsis;
-  overflow: hidden;
-  max-width:1px;
+  &.overflow {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 1px;
+  }
 }
 
 div.meter-attributes {
@@ -118,28 +107,14 @@ input:invalid {
   color: $danger;
 }
 
-.funnel-image {
-  border-radius: 0.5rem 0.5rem;
-}
-
-.nav-anchor a {
-  position: absolute;
-  left: 0px;
-  top: -60px;
-}
-
 .nav-anchor {
   position: relative;
-}
 
-.static-images {
-  height: 300px;
-  width: 400px;
-}
-
-.static-images.small {
-  height: 200px;
-  width: 300px;
+  a {
+    position: absolute;
+    left: 0px;
+    top: -60px;
+  }
 }
 
 .accordion-block {
@@ -180,13 +155,13 @@ input, progress {
   white-space: pre-line;
 }
 
-.main-breadcrumbs .breadcrumb-item+.breadcrumb-item::before {
-  content: quote(">");
-}
-
 .main-breadcrumbs {
   background-color: transparent;
   padding: 0;
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: quote(">");
+  }
 }
 
 .header-dark {
@@ -201,13 +176,13 @@ input, progress {
   color: $grey-light;
 }
 
+.text-dark-blue {
+  color: $blue-very-dark;
+}
+
 .badge-grey-light {
   background-color: $grey-light;
   color: $white;
-}
-
-.text-dark-blue {
-  color: $blue-very-dark;
 }
 
 .card .card-footer.plain {

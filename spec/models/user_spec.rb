@@ -2,6 +2,8 @@ require 'rails_helper'
 require 'cancan/matchers'
 
 describe User do
+  include ActiveJob::TestHelper
+
   it 'generates display name' do
     user = create(:user, name: 'Name')
     expect(user.display_name).to eql user.name
@@ -417,6 +419,56 @@ describe User do
 
       it_behaves_like 'created by nullified on user destroy'
     end
+
+    context 'when removing from mailchmp' do
+      context 'with user who isnt in the audience' do
+        let!(:user) { create(:school_admin, school: create(:school)) }
+
+        it 'does not submit a job' do
+          expect(Mailchimp::UserDeletionJob).not_to receive(:perform_later)
+          user.destroy!
+        end
+      end
+
+      context 'with subscribed user' do
+        let!(:user) { create(:school_admin, school: create(:school), mailchimp_status: :subscribed) }
+
+        it 'submits a job' do
+          expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+            email_address: user.email,
+            name: user.name,
+            school: user.school.name
+          )
+          user.destroy!
+        end
+
+        context 'with cluster admin' do
+          let!(:user) { create(:school_admin, :with_cluster_schools, mailchimp_status: :subscribed) }
+
+          it 'submits a job to remove all tags' do
+            expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+              email_address: user.email,
+              name: user.name,
+              school: user.school.name
+            )
+            user.destroy!
+          end
+        end
+
+        context 'with group admin' do
+          let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
+
+          it 'submits a job' do
+            expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+              email_address: user.email,
+              name: user.name,
+              school: user.school_group.name
+            )
+            user.destroy!
+          end
+        end
+      end
+    end
   end
 
   describe 'MailchimpUpdateable' do
@@ -426,7 +478,6 @@ describe User do
       let(:mailchimp_field_changes) do
         {
           confirmed_at: Time.zone.now,
-          email: 'new@example.org',
           name: 'New',
           preferred_locale: :cy,
           role: :admin,
@@ -480,7 +531,7 @@ describe User do
 
   describe '.mailchimp_update_required' do
     context 'when mailchimp status is unknown' do
-      let(:user) { create(:user) }
+      let(:user) { create(:school_admin, school: create(:school, :with_school_group)) }
 
       it { expect(User.mailchimp_update_required).to be_empty }
     end
@@ -591,6 +642,48 @@ describe User do
           end
 
           it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+      end
+    end
+  end
+
+  describe '#update_email_in_mailchimp' do
+    let(:email) { 'old@example.org'}
+    let(:user) { create(:user, email: email) }
+
+    context 'when email not changed' do
+      it 'does not update mailchimp' do
+        expect(Mailchimp::EmailUpdaterJob).not_to receive(:perform_later)
+        user.update!(name: 'New name')
+      end
+    end
+
+    context 'when email changed' do
+      context 'when user is not in mailchimp' do
+        it 'does not update mailchimp' do
+          expect(Mailchimp::EmailUpdaterJob).not_to receive(:perform_later)
+          user.update!(email: 'new@example.org')
+        end
+      end
+
+      context 'when user is in mailchimp' do
+        let(:user) { create(:user, email: email, mailchimp_status: :subscribed) }
+
+        before do
+          double = instance_double(Mailchimp::AudienceManager)
+          allow(Mailchimp::AudienceManager).to receive(:new).and_return(double)
+          member = ActiveSupport::OrderedOptions.new
+          member.email = email
+          member.status = 'subscribed'
+          allow(double).to receive(:update_contact).and_return(member)
+        end
+
+        it 'updates mailchimp' do
+          expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user, original_email: email).and_call_original
+          expect { user.update!(email: 'new@example.org') }.to have_enqueued_job
+          perform_enqueued_jobs
+          user.reload
+          expect(user.mailchimp_updated_at).not_to be_nil
         end
       end
     end
