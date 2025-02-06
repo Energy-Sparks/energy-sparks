@@ -5,10 +5,11 @@
   </head>
   <body>
     <%= render 'shared/navigation' %>
+
     <!-- don't render application container as you do for the other pages -->
-    <div class="navigation-margin">
+    <div class="navigation-margin <%= home_class %>">
       <% if flash.any? %>
-        <section class="home alerts">
+        <section class="alerts">
           <%= render 'shared/alerts' %>
         </section>
       <% end %>
