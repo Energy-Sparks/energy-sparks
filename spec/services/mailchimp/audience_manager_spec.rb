@@ -78,7 +78,7 @@ describe Mailchimp::AudienceManager do
     it 'subscribes a user with email address and interests' do
       expect(lists_api).to receive(:set_list_member).with(
         'ed205db324',
-        contact.email_address,
+        Digest::MD5.hexdigest(contact.email_address.downcase),
         contact.to_mailchimp_hash.merge({ 'status_if_new' => 'subscribed', 'status' => 'subscribed' }),
         { skip_merge_validation: true }
       )
@@ -88,11 +88,41 @@ describe Mailchimp::AudienceManager do
     it 'subscribes a user without a status by default' do
       expect(lists_api).to receive(:set_list_member).with(
         'ed205db324',
-        contact.email_address,
+        Digest::MD5.hexdigest(contact.email_address.downcase),
         contact.to_mailchimp_hash.merge({ 'status_if_new' => 'subscribed' }),
         { skip_merge_validation: true }
       )
       service.subscribe_or_update_contact(contact)
+    end
+  end
+
+  describe '#update_contact' do
+    let(:contact) do
+      Mailchimp::Contact.new('user@example.org', 'Jane Smith')
+    end
+
+    before do
+      allow(lists_api).to receive(:get_all_lists).and_return(lists_data)
+    end
+
+    it 'updates contact' do
+      expect(lists_api).to receive(:set_list_member).with(
+        'ed205db324',
+        Digest::MD5.hexdigest(contact.email_address.downcase),
+        contact.to_mailchimp_hash,
+        { skip_merge_validation: true }
+      )
+      service.update_contact(contact)
+    end
+
+    it 'updates contact using old email' do
+      expect(lists_api).to receive(:set_list_member).with(
+        'ed205db324',
+        Digest::MD5.hexdigest('old@example.org'),
+        contact.to_mailchimp_hash,
+        { skip_merge_validation: true }
+      )
+      service.update_contact(contact, 'old@example.org')
     end
   end
 
