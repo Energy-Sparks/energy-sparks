@@ -359,6 +359,7 @@ class User < ApplicationRecord
   end
 
   def update_email_in_mailchimp
+    return unless email_previously_was.present?
     Mailchimp::EmailUpdaterJob.perform_later(
       user: self,
       original_email: email_previously_was
