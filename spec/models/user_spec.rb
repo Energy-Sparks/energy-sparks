@@ -2,6 +2,8 @@ require 'rails_helper'
 require 'cancan/matchers'
 
 describe User do
+  include ActiveJob::TestHelper
+
   it 'generates display name' do
     user = create(:user, name: 'Name')
     expect(user.display_name).to eql user.name
@@ -667,9 +669,21 @@ describe User do
       context 'when user is in mailchimp' do
         let(:user) { create(:user, email: email, mailchimp_status: :subscribed) }
 
+        before do
+          double = instance_double(Mailchimp::AudienceManager)
+          allow(Mailchimp::AudienceManager).to receive(:new).and_return(double)
+          member = ActiveSupport::OrderedOptions.new
+          member.email = email
+          member.status = 'subscribed'
+          allow(double).to receive(:update_contact).and_return(member)
+        end
+
         it 'updates mailchimp' do
-          expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user, original_email: email)
-          user.update!(email: 'new@example.org')
+          expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user, original_email: email).and_call_original
+          expect { user.update!(email: 'new@example.org') }.to have_enqueued_job
+          perform_enqueued_jobs
+          user.reload
+          expect(user.mailchimp_updated_at).not_to be_nil
         end
       end
     end
