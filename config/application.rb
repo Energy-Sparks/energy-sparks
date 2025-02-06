@@ -1,7 +1,6 @@
 require_relative "boot"
 
 require "rails/all"
-require_relative "../lib/rack/x_robots_tag"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -15,7 +14,7 @@ module EnergySparks
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w(assets tasks))
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -31,6 +30,7 @@ module EnergySparks
     # For our application date helpers to use to optionally display times in configured zone
     config.display_timezone = 'London'
     config.middleware.use Rack::Attack
+    require_relative '../lib/rack/x_robots_tag'
     config.middleware.use Rack::XRobotsTag
     # uploaded SVG files are served as octet stream by default for security
     # this will remove them from the list of binary file types, but is a slight risk
@@ -50,12 +50,8 @@ module EnergySparks
     config.exceptions_app = self.routes
     # Default good job execution mode configuration for test
     # See https://github.com/bensheldon/good_job#configuration-options
-    config.active_job.queue_adapter = :good_job
-    config.good_job.execution_mode = :async
-    config.good_job.retry_on_unhandled_error = false
     config.good_job.max_threads = 5
-    config.good_job.enable_cron = false
-    config.good_job.cleanup_preserved_jobs_before_seconds_ago = 30.days.to_i
+    config.good_job.cleanup_preserved_jobs_before_seconds_ago = 30.days.to_i # default 14 days
     config.good_job.smaller_number_is_higher_priority = true
     config.i18n.available_locales = [:en, :cy]
     config.i18n.default_locale = :en
