@@ -40,7 +40,7 @@ module Mailchimp
       hash = mailchimp_contact.to_mailchimp_hash
       hash['status_if_new'] = status_if_new
       hash['status'] = status if status
-      resp = @client.lists.set_list_member(list.id, mailchimp_contact.email_address, hash, subscribe_opts)
+      resp = @client.lists.set_list_member(list.id, mailchimp_key(mailchimp_contact), hash, subscribe_opts)
       OpenStruct.new(resp)
     end
 
@@ -52,9 +52,9 @@ module Mailchimp
                                           )
     end
 
-    def update_contact(mailchimp_contact)
+    def update_contact(mailchimp_contact, original_email = nil)
       resp = @client.lists.set_list_member(list.id,
-                                           Digest::MD5.hexdigest(mailchimp_contact.email_address.downcase),
+                                           mailchimp_key(mailchimp_contact, original_email),
                                            mailchimp_contact.to_mailchimp_hash,
                                            subscribe_opts)
       OpenStruct.new(resp)
@@ -99,6 +99,14 @@ module Mailchimp
     end
 
     private
+
+    def mailchimp_key(contact, old_email_address = nil)
+      if old_email_address
+        Digest::MD5.hexdigest(old_email_address.downcase)
+      else
+        Digest::MD5.hexdigest(contact.email_address.downcase)
+      end
+    end
 
     def get_list
       lists = @client.lists.get_all_lists

@@ -1,42 +1,108 @@
-<% content_for :page_title, 'Home' %>
+<% content_for :page_title, t('common.labels.home') %>
 
-<!-- Header -->
-<header>
-  <div class="row masthead">
-    <div class="col-7">
-    </div>
-    <div class="col-5 masthead-content">
-      <div class="row pt-5">
-        <div class="col">
-          <h2 class='text-white'><%= t('home.title') %></h2>
-        </div>
-      </div>
+<% if Flipper.enabled?(:new_home_page, current_user) %>
+  <div class='hero-component bg-light'>
+    <div class="container">
       <div class="row">
-        <div class="col pr-5">
-          <h4 class='text-white'><%= t('home.sub_title') %></h4>
+        <div class="col-md-6 col-12">
+          <div class='pt-3 pb-4 pr-4'>
+            <h2>Helping schools cut energy costs and fight climate change</h2>
+            <p>Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.</p>
+            <p>
+              <%= link_to t('nav.enrol'), find_out_more_campaigns_path, class: 'btn btn-primary' %>
+              <%= link_to t('campaigns.find_out_more.book_demo'),
+                          book_demo_campaigns_path,
+                          class: 'btn btn-secondary' %>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8 offset-md-3 pt-5">
-          <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn btn-success' %>
+        <div class="col-md-6 col-12">
+          <%= image_tag 'laptop.jpg', class: 'right-half d-none d-md-block' %>
         </div>
       </div>
     </div>
   </div>
-</header>
 
-<%= render 'carousel' %>
+  <div class="container">
+    <div class='p-4 m-4 text-center'>
+      <h3>Are you looking to cut energy bills and take action on climate change?</h3>
+      <p class='small'>We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.</p>
+    </div>
 
-<%= render 'funnels' %>
+    <div class="row">
+      <div class="col-xl-3 col-sm-6 col-12 pb-4">
+        <div class='rounded text-center bg-light p-4 h-100'>
+          <h4>Save energy</h4>
+          <h3>10%</h3>
+          <p class='small'>Typical energy and carbon savings seen by schools in their first year with Energy Sparks.</p>
+        </div>
+      </div>
 
-<%= render 'testimonial',
-           quote: t('home.quote.text_html'),
-           by: 'Jennie Nixon',
-           title: t('home.quote.job_title'),
-           location: 'Whiteways Primary School, Sheffield' %>
+      <div class="col-xl-3 col-sm-6 col-12 pb-4">
+        <div class='rounded text-center bg-light p-4 h-100'>
+          <h4>Primary schools</h4>
+          <h3>£5,000</h3>
+          <p class='small'>and 7 tonnes CO₂ - average saving in 2023/24.</p>
+        </div>
+      </div>
 
-<%= render 'videos' %>
+      <div class="col-xl-3 col-sm-6 col-12 pb-4">
+        <div class='rounded text-center bg-light p-4 h-100'>
+          <h4>Secondary schools</h4>
+          <h3>£20,000</h3>
+          <p class='small'>and 26 tonnes CO₂ - average saving in 2023/24.</p>
+        </div>
+      </div>
 
-<%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
+      <div class="col-xl-3 col-sm-6 col-12 pb-4">
+        <div class='rounded text-center bg-light p-4 h-100'>
+          <h4>Empower pupils</h4>
+          <h3>70%</h3>
+          <p class='small'>Number of participating schools using Energy Sparks with their eco-team to inform impactful action.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<%= render 'mailchimp' %>
+<% else %>
+<!-- Header -->
+  <header>
+    <div class="row masthead">
+      <div class="col-7">
+      </div>
+      <div class="col-5 masthead-content">
+        <div class="row pt-5">
+          <div class="col">
+            <h2 class='text-white'><%= t('home.title') %></h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col pr-5">
+            <h4 class='text-white'><%= t('home.sub_title') %></h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 offset-md-3 pt-5">
+            <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <%= render 'carousel' %>
+
+  <%= render 'funnels' %>
+
+  <%= render 'testimonial',
+             quote: t('home.quote.text_html'),
+             by: 'Jennie Nixon',
+             title: t('home.quote.job_title'),
+             location: 'Whiteways Primary School, Sheffield' %>
+
+  <%= render 'videos' %>
+
+  <%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
+
+  <%= render 'mailchimp' %>
+<% end %>
