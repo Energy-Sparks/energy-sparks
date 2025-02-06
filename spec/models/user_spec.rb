@@ -657,9 +657,20 @@ describe User do
     end
 
     context 'when email changed' do
-      it 'updates mailchimp' do
-        expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user, original_email: email)
-        user.update!(email: 'new@example.org')
+      context 'when user is not in mailchimp' do
+        it 'does not update mailchimp' do
+          expect(Mailchimp::EmailUpdaterJob).not_to receive(:perform_later)
+          user.update!(email: 'new@example.org')
+        end
+      end
+
+      context 'when user is in mailchimp' do
+        let(:user) { create(:user, email: email, mailchimp_status: :subscribed) }
+
+        it 'updates mailchimp' do
+          expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user, original_email: email)
+          user.update!(email: 'new@example.org')
+        end
       end
     end
   end
