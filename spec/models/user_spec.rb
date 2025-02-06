@@ -476,7 +476,6 @@ describe User do
       let(:mailchimp_field_changes) do
         {
           confirmed_at: Time.zone.now,
-          email: 'new@example.org',
           name: 'New',
           preferred_locale: :cy,
           role: :admin,
@@ -642,6 +641,25 @@ describe User do
 
           it { expect(User.mailchimp_update_required).to match_array([user])}
         end
+      end
+    end
+  end
+
+  describe '#update_email_in_mailchimp' do
+    let(:email) { 'old@example.org'}
+    let(:user) { create(:user, email: email) }
+
+    context 'when email not changed' do
+      it 'does not update mailchimp' do
+        expect(Mailchimp::EmailUpdaterJob).not_to receive(:perform_later)
+        user.update!(name: 'New name')
+      end
+    end
+
+    context 'when email changed' do
+      it 'updates mailchimp' do
+        expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user, original_email: email)
+        user.update!(email: 'new@example.org')
       end
     end
   end

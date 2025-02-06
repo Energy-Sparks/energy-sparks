@@ -56,8 +56,12 @@ require 'securerandom'
 class User < ApplicationRecord
   include MailchimpUpdateable
 
-  watch_mailchimp_fields :confirmed_at, :email, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id
+  watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id
   after_destroy :reset_mailchimp_contact
+
+  # Email is primary key in Mailchimp, trigger immediate update if its is changed, otherwise
+  # subsequent updates will fail
+  after_commit :update_email_in_mailchimp, if: :email_previously_changed?
 
   encrypts :pupil_password
 
@@ -351,6 +355,13 @@ class User < ApplicationRecord
       email_address: email,
       name: name,
       school: organisation
+    )
+  end
+
+  def update_email_in_mailchimp
+    Mailchimp::EmailUpdaterJob.perform_later(
+      user: self,
+      original_email: email_previously_was
     )
   end
 end
