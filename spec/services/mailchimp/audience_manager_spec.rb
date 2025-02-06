@@ -79,6 +79,16 @@ describe Mailchimp::AudienceManager do
       expect(lists_api).to receive(:set_list_member).with(
         'ed205db324',
         contact.email_address,
+        contact.to_mailchimp_hash.merge({ 'status_if_new' => 'subscribed', 'status' => 'subscribed' }),
+        { skip_merge_validation: true }
+      )
+      service.subscribe_or_update_contact(contact, status: 'subscribed')
+    end
+
+    it 'subscribes a user without a status by default' do
+      expect(lists_api).to receive(:set_list_member).with(
+        'ed205db324',
+        contact.email_address,
         contact.to_mailchimp_hash.merge({ 'status_if_new' => 'subscribed' }),
         { skip_merge_validation: true }
       )

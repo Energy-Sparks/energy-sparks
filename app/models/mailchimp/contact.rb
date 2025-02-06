@@ -7,7 +7,7 @@ module Mailchimp
 
     # our Merge Fields
     # TODO add school, school group and scoreboard urls as fields
-    attr_accessor :alert_subscriber, :confirmed_date, :contact_source, :country, :funder, :locale, :local_authority, :name, :region, :staff_role, :school, :school_group, :school_status, :scoreboard, :user_role
+    attr_accessor :alert_subscriber, :confirmed_date, :contact_source, :country, :funder, :locale, :local_authority, :name, :region, :staff_role, :school, :school_url, :school_group, :school_slug, :school_group_url, :school_group_slug, :school_status, :school_type, :scoreboard, :scoreboard_url, :user_role
 
     validates_presence_of :email_address, :name
 
@@ -31,7 +31,10 @@ module Mailchimp
       elsif user.group_admin?
         contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
         contact.scoreboard = user.school_group&.default_scoreboard&.name
+        contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school_group.default_scoreboard.slug}" if user.school_group&.default_scoreboard
         contact.school_group = user.school_group&.name
+        contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school_group.slug}"
+        contact.school_group_slug = user.school_group.slug
         contact.country = user.school_group&.default_country&.humanize
         contact.tags = self.non_fsm_tags(tags)
       elsif user.school_admin? && user.has_other_schools?
@@ -39,7 +42,12 @@ module Mailchimp
         contact.staff_role = user&.staff_role&.title
         contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
         contact.scoreboard = user.school.school_group&.default_scoreboard&.name
+        if user.school.school_group.default_scoreboard
+          contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school.school_group.default_scoreboard.slug}"
+        end
         contact.school_group = user.school.school_group&.name
+        contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}"
+        contact.school_group_slug = user.school.school_group&.slug
         contact.country = user.school.school_group&.default_country&.humanize
         contact.tags = self.tags_for_school_user(user, tags, [user.cluster_schools.map(&:slug)], fsm_tags: false)
       elsif user.school.present?
@@ -53,8 +61,14 @@ module Mailchimp
                                 else
                                   'Active'
                                 end
+        contact.school_type = user.school.school_type.humanize
+        contact.school_url = "https://energysparks.uk/schools/#{user.school.slug}"
+        contact.school_slug = user.school.slug
         contact.scoreboard = user.school&.scoreboard&.name
+        contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school.scoreboard.slug}" if user.school.scoreboard
         contact.school_group = user.school&.school_group&.name
+        contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}" if user.school.school_group
+        contact.school_group_slug = user.school&.school_group&.slug
         contact.local_authority = user.school&.local_authority_area&.name
         contact.region = user.school&.region&.humanize
         contact.country = user.school.country&.humanize
@@ -111,10 +125,9 @@ module Mailchimp
     end
 
     # Convert to hash for submitting to mailchimp api
-    def to_mailchimp_hash(status = 'subscribed')
+    def to_mailchimp_hash
       {
         "email_address": email_address,
-        "status": status,
         "merge_fields": merge_fields,
         "interests": interests,
         "tags": tags
@@ -130,14 +143,20 @@ module Mailchimp
         'COUNTRY' => country || '',
         'FULLNAME' => name || '',
         'FUNDER' => funder || '',
+        'GROUP_SLUG' => school_group_slug || '',
+        'GROUP_URL' => school_group_url || '',
         'LA' => local_authority || '',
         'LOCALE' => locale || '',
         'REGION' => region || '',
         'SCHOOL' => school || '',
+        'SCHOOL_URL' => school_url || '',
         'SCOREBOARD' => scoreboard || '',
+        'SCORE_URL' => scoreboard_url || '',
         'SGROUP' => school_group || '',
         'SOURCE' => contact_source || '',
+        'SSLUG' => school_slug || '',
         'SSTATUS' => school_status || '',
+        'STYPE' => school_type || '',
         'STAFFROLE' => staff_role || '',
         'USERROLE' => user_role || ''
       }
