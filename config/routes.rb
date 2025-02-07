@@ -499,6 +499,8 @@ Rails.application.routes.draw do
     resources :funders
     resources :users do
       get 'unlock', to: 'users#unlock'
+      get 'disable', to: 'users#disable'
+      get 'enable', to: 'users#enable'
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
       end

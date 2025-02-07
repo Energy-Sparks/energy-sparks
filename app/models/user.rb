@@ -138,6 +138,11 @@ class User < ApplicationRecord
 
   after_save :update_contact
 
+  # Hook into devise so we can use our own status flag to permanently disable an account
+  def active_for_authentication?
+    active && super
+  end
+
   def default_scoreboard
     if group_admin? && school_group.default_scoreboard
       school_group.default_scoreboard

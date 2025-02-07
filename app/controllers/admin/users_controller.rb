@@ -53,6 +53,18 @@ module Admin
       redirect_to admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
     end
 
+    def disable
+      user = User.find(params['user_id'])
+      user.update!(active: false)
+      redirect_to admin_users_path, notice: "User '#{user.email}' was successfully disabled."
+    end
+
+    def enable
+      user = User.find(params['user_id'])
+      user.update!(active: true)
+      redirect_to admin_users_path, notice: "User '#{user.email}' was successfully activated."
+    end
+
     private
 
     def find_users
@@ -70,7 +82,7 @@ module Admin
 
     def user_params
       params.require(:user)
-            .permit(:name, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
+            .permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
     end
 
     def set_schools_options
