@@ -2,9 +2,7 @@
 
 <%= simple_form_for [:admin, @configuration] do |f| %>
   <%= f.input :description, as: :string, hint: 'A human-readable name for the configuration' %>
-  <%= f.input :owned_by_id, collection: User.admin.sort_by { |user| user.display_name.downcase }
-                                            .map { |user| [user.display_name, user.id] },
-                            prompt: 'No one',
+  <%= f.input :owned_by_id, collection: User.admins_by_name, label_method: :display_name, include_blank: 'Unassigned',
                             hint: 'Admin contact for the configuration' %>
   <%= f.input :notes, as: :rich_text_area, label: 'Notes',
                       hint: 'Provide additional notes about when the configuration is used' %>
