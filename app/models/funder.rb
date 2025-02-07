@@ -24,7 +24,9 @@ class Funder < ApplicationRecord
   # includes funders without any funded schools, but not schools without any source of funding. See Schools.unfunded.
   def self.funded_school_counts(visible: true, data_enabled: true)
     Funder.joins('LEFT JOIN schools ON funders.id = schools.funder_id ' \
-                 "AND schools.visible = #{visible} AND schools.data_enabled = #{data_enabled}")
+                 "AND #{ActiveRecord::Base.sanitize_sql_for_conditions(
+                   ['schools.visible = ? AND schools.data_enabled = ?', visible, data_enabled]
+                 )}")
           .group(:name).count('schools.id')
   end
 end
