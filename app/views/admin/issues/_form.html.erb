@@ -20,10 +20,10 @@
     <% if issue.school %>
       <%= f.input :meter_ids,
                   as: :check_boxes, collection: issue.issueable.meters.order('active desc'),
-                  label_method: lambda do |meter|
-                                  [fa_icon(fuel_type_icon(meter.meter_type)),
-                                   meter.display_summary(display_inactive: true)].join(' ').html_safe
-                                end,
+                  label_method: (lambda do |meter|
+                    [fa_icon(fuel_type_icon(meter.meter_type)),
+                     meter.display_summary(display_inactive: true)].join(' ').html_safe
+                  end),
                   input_html: { multiple: true },
                   label: "Affected meters #{link_to(fa_icon('external-link-alt'), school_meters_path(issue.school),
                                                     title: 'School meters', data: { toggle: 'tooltip' })}".html_safe %>
