@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe AmrDataFeedConfig do
   let!(:admin)              { create(:admin) }
-  let!(:config)             { create(:amr_data_feed_config, owned_by: admin) }
+  let!(:config)             { create(:amr_data_feed_config) }
   let!(:disabled_config)    { create(:amr_data_feed_config, description: 'Disabled', enabled: false) }
   let!(:api_config)         { create(:amr_data_feed_config, description: 'API', source_type: :api) }
 
@@ -31,7 +31,6 @@ describe AmrDataFeedConfig do
         click_on config.description
       end
       expect(page).to have_content(config.description)
-      expect(page).to have_content(config.owned_by.name)
     end
 
     it 'includes a limited view in the overview table' do
@@ -40,7 +39,6 @@ describe AmrDataFeedConfig do
         expect(page).to have_content(config.description)
         expect(page).to have_content(config.identifier)
         expect(page).to have_content(config.notes.to_plain_text)
-        expect(page).to have_content(config.owned_by.name)
         expect(page).to have_link('Upload')
         expect(page).to have_link('Edit')
       end
@@ -75,7 +73,6 @@ describe AmrDataFeedConfig do
       end
       fill_in 'Missing reading window', with: 2
       select 'Manual only', from: 'Source type'
-      select admin.name, from: 'Owned by'
       click_on 'Update'
       config.reload
       expect(config.import_warning_days).to eq(21)
@@ -83,7 +80,6 @@ describe AmrDataFeedConfig do
       expect(config.notes.to_plain_text).to eq('My notes')
       expect(config.missing_reading_window).to eq(2)
       expect(config.source_type).to eq('manual')
-      expect(config.owned_by).to eq(admin)
     end
   end
 end

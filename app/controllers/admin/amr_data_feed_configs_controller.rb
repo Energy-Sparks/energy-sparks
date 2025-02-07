@@ -24,7 +24,7 @@ module Admin
     def amr_data_feed_config_params
       params.require(:amr_data_feed_config)
             .permit(:description, :import_warning_days, :missing_readings_limit, :notes, :missing_reading_window,
-                    :source_type, :owned_by_id)
+                    :source_type)
     end
   end
 end

@@ -16,16 +16,13 @@ RSpec.describe 'amr:stopped_data_feeds_email' do # rubocop:disable RSpec/Describ
   end
 
   it 'send an email with old reading' do
-    reading = travel_to(6.days.ago) do
-      create(:amr_data_feed_reading,
-             amr_data_feed_config: create(:amr_data_feed_config, owned_by: create(:user, name: 'Owner')))
-    end
+    reading = travel_to(6.days.ago) { create(:amr_data_feed_reading) }
     task.invoke
     email = Capybara.string(ActionMailer::Base.deliveries.last.html_part.decoded)
     expect(email.all('table thead tr th').map(&:text)).to \
-      eq(['AMR Data Feed Configuration Name', 'Owned by', 'Missing reading window setting', 'Last reading update'])
+      eq(['AMR Data Feed Configuration Name', 'Missing reading window setting', 'Last reading update'])
     expect(email.all('table tbody tr td').map(&:text)).to \
-      eq([reading.amr_data_feed_config.description, 'Owner', '5 days', '6 days'])
+      eq([reading.amr_data_feed_config.description, '5 days', '6 days'])
   end
 
   it 'sends nothing with recent reading' do
