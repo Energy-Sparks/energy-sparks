@@ -11,6 +11,7 @@ module Admin
                             .group(:name).count('school_onboardings.id')
         @unfunded_visible = School.visible.unfunded.count
         @unfunded_visible_and_enabled = School.visible.data_enabled.unfunded.count
+        @unfunded_onboarding = SchoolOnboarding.where(funder: nil, school: nil).count
       end
 
       def deliver
