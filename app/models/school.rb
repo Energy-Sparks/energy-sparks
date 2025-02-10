@@ -283,7 +283,8 @@ class School < ApplicationRecord
   end
 
   validates :name, :address, :postcode, :website, :school_type, presence: true
-  validates :urn, presence: true, uniqueness: true
+  validates :urn, presence: true, uniqueness: true,
+                  numericality: { greater_than_or_equal_to: 100_000, less_than_or_equal_to: (2**31) - 1 }
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count,
             numericality: { greater_than: 0, allow_blank: true }
   validates :cooks_dinners_for_other_schools_count, presence: true, if: :cooks_dinners_for_other_schools?
