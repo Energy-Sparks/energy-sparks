@@ -659,6 +659,12 @@ describe User do
     end
 
     context 'when email changed' do
+      around do |example|
+        ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
+          example.run
+        end
+      end
+
       context 'when user is not in mailchimp' do
         it 'does not update mailchimp' do
           expect(Mailchimp::EmailUpdaterJob).not_to receive(:perform_later)

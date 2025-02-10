@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_31_140228) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_05_161410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -423,8 +423,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_31_140228) do
     t.enum "half_hourly_labelling", enum_type: "half_hourly_labelling"
     t.boolean "allow_merging", default: false, null: false
     t.integer "missing_reading_window", default: 5
+    t.bigint "owned_by_id"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
+    t.index ["owned_by_id"], name: "index_amr_data_feed_configs_on_owned_by_id"
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -2059,6 +2061,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_31_140228) do
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "comparison_reports"
   add_foreign_key "alerts", "schools", on_delete: :cascade
+  add_foreign_key "amr_data_feed_configs", "users", column: "owned_by_id"
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
