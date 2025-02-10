@@ -4,7 +4,7 @@
   <div class="bg-blue-very-dark text-white hero-component">
     <%= render GridComponent.new(cols: 2,
                                  classes: 'container') do |grid| %>
-      <% grid.with_column classes: 'py-4' do |block| %>
+      <% grid.with_column classes: 'py-4' do %>
           <h2 class='text-white'>Helping schools cut energy costs and fight climate change</h2>
           <p class='small'>Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.</p>
           <p>
@@ -14,7 +14,7 @@
                         class: 'btn btn-outline-white' %>
           </p>
       <% end %>
-      <%= grid.with_column :image, 'on-screen.jpg', classes: 'right-half d-none d-md-block' %>
+      <%= grid.with_image 'on-screen.jpg', classes: 'right-half d-none d-md-block' %>
     <% end %>
   </div>
 

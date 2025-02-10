@@ -1,7 +1,7 @@
 <%= tag.div id: id, class: classes do %>
-  <% rows.times.each do %>
-    <div class='row'>
-      <% while column = columns.shift %>
+  <% columns.each_slice(cols) do |column_group| %>
+    <div class="row">
+      <% column_group.each do |column| %>
         <%= tag.div class: token_list(@column_classes_map[column], column_classes) do %>
           <%= column %>
         <% end %>
