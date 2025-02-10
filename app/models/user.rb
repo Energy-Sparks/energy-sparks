@@ -309,6 +309,10 @@ class User < ApplicationRecord
     end
   end
 
+  def self.admins_by_name
+    admin.sort_by { |user| user.display_name.downcase }
+  end
+
   protected
 
   def preferred_locale_presence_in_available_locales
