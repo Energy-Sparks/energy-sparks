@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :school do
-    sequence(:urn)
+    sequence(:urn, 100_000)
     sequence(:number_of_pupils)
     sequence(:name, 'School AAAAA1')
     school_type     { :primary }
