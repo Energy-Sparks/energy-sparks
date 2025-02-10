@@ -47,22 +47,28 @@ module Admin
       redirect_to admin_users_path, notice: 'User was successfully destroyed.'
     end
 
+    def lock
+      user = User.find(params['user_id'])
+      user.lock_access!(send_instructions: false)
+      redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully locked."
+    end
+
     def unlock
       user = User.find(params['user_id'])
       user.unlock_access!
-      redirect_to admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
+      redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
     end
 
     def disable
       user = User.find(params['user_id'])
       user.update!(active: false)
-      redirect_to admin_users_path, notice: "User '#{user.email}' was successfully disabled."
+      redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully disabled."
     end
 
     def enable
       user = User.find(params['user_id'])
       user.update!(active: true)
-      redirect_to admin_users_path, notice: "User '#{user.email}' was successfully activated."
+      redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully activated."
     end
 
     private

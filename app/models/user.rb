@@ -119,6 +119,10 @@ class User < ApplicationRecord
            ' staff_roles.mailchimp_fields_changed_at) > mailchimp_updated_at')
   end
 
+  scope :for_school_group, ->(school_group) do
+    joins(:school, school: :school_group).where(schools: { school_group: school_group })
+  end
+
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
   validates :email, presence: true
 
