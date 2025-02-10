@@ -26,8 +26,16 @@ class GridComponent < ApplicationComponent
     @cols = cols
     @rows = rows
 
-    @column_classes = token_list(col_classes, column_classes)
+    @column_classes = token_list(base_column_classes, column_classes)
     @component_classes = token_list(component_classes)
+    @column_classes_map = {}
+  end
+
+  def with_column(type = 'block', *args, column_classes: '', **kwargs, &block)
+    kwargs[:classes] = token_list(kwargs[:classes], @component_classes)
+    slot = public_send("with_#{type}", *args, **kwargs, &block)
+    @column_classes_map[slot] = token_list(@column_classes, column_classes)
+    slot
   end
 
   def render?
@@ -37,11 +45,10 @@ class GridComponent < ApplicationComponent
   private
 
   def merge_classes(kwargs)
-    kwargs[:classes] = token_list(kwargs[:classes], @component_classes)
-    kwargs
+    kwargs.except(:column_classes).merge(classes: token_list(kwargs[:classes], @component_classes))
   end
 
-  def col_classes
+  def base_column_classes
     case cols
     when 2
       'col-12 col-md-6'

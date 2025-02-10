@@ -2,7 +2,7 @@
   <% rows.times.each do %>
     <div class='row'>
       <% while column = columns.shift %>
-        <%= tag.div class: column_classes do %>
+        <%= tag.div class: token_list(@column_classes_map[column], column_classes) do %>
           <%= column %>
         <% end %>
       <% end %>
