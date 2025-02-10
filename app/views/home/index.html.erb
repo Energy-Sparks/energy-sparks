@@ -1,26 +1,21 @@
 <% content_for :page_title, t('common.labels.home') %>
 
 <% if Flipper.enabled?(:new_home_page, current_user) %>
-  <div class='hero-component bg-light'>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 col-12">
-          <div class='pt-3 pb-4 pr-4'>
-            <h2>Helping schools cut energy costs and fight climate change</h2>
-            <p>Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.</p>
-            <p>
-              <%= link_to t('nav.enrol'), find_out_more_campaigns_path, class: 'btn btn-primary' %>
-              <%= link_to t('campaigns.find_out_more.book_demo'),
-                          book_demo_campaigns_path,
-                          class: 'btn btn-secondary' %>
-            </p>
-          </div>
-        </div>
-        <div class="col-md-6 col-12">
-          <%= image_tag 'laptop.jpg', class: 'right-half d-none d-md-block' %>
-        </div>
-      </div>
-    </div>
+  <div class="bg-blue-very-dark text-white hero-component">
+    <%= render GridComponent.new(cols: 2,
+                                 classes: 'container') do |grid| %>
+      <% grid.with_block classes: 'py-4' do |block| %>
+          <h2 class='text-white'>Helping schools cut energy costs and fight climate change</h2>
+          <p class='small'>Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.</p>
+          <p>
+            <%= link_to t('nav.enrol'), find_out_more_campaigns_path, class: 'btn btn-success' %>
+            <%= link_to t('campaigns.find_out_more.book_demo'),
+                        book_demo_campaigns_path,
+                        class: 'btn btn-outline-white' %>
+          </p>
+      <% end %>
+      <%= grid.with_image 'on-screen.jpg', classes: 'right-half d-none d-md-block' %>
+    <% end %>
   </div>
 
   <div class="container">
@@ -29,39 +24,35 @@
       <p class='small'>We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.</p>
     </div>
 
-    <div class="row">
-      <div class="col-xl-3 col-sm-6 col-12 pb-4">
-        <div class='rounded text-center bg-light p-4 h-100'>
-          <h4>Save energy</h4>
-          <h3>10%</h3>
-          <p class='small'>Typical energy and carbon savings seen by schools in their first year with Energy Sparks.</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-sm-6 col-12 pb-4">
-        <div class='rounded text-center bg-light p-4 h-100'>
-          <h4>Primary schools</h4>
-          <h3>£5,000</h3>
-          <p class='small'>and 7 tonnes CO₂ - average saving in 2023/24.</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-sm-6 col-12 pb-4">
-        <div class='rounded text-center bg-light p-4 h-100'>
-          <h4>Secondary schools</h4>
-          <h3>£20,000</h3>
-          <p class='small'>and 26 tonnes CO₂ - average saving in 2023/24.</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-sm-6 col-12 pb-4">
-        <div class='rounded text-center bg-light p-4 h-100'>
-          <h4>Empower pupils</h4>
-          <h3>70%</h3>
-          <p class='small'>Number of participating schools using Energy Sparks with their eco-team to inform impactful action.</p>
-        </div>
-      </div>
-    </div>
+    <%= render GridComponent.new(cols: 4,
+                                 classes: '',
+                                 column_classes: 'pb-4',
+                                 component_classes: 'rounded text-center bg-blue-very-dark p-4 h-100') do |grid| %>
+      <% grid.with_block do %>
+        <%= render IconComponent.new(fuel_type: :electricity, style: :circle) %>
+        <h4 class='text-white'>Save energy</h4>
+        <h3 class='text-blue-light'>10%</h3>
+        <p class='small text-blue-light'>Typical energy and carbon savings seen by schools in their first year with Energy Sparks.</p>
+      <% end %>
+      <% grid.with_block do %>
+        <%= render IconComponent.new(name: 'school', style: :circle) %>
+        <h4 class='text-white'>Primary schools</h4>
+        <h3 class='text-blue-light'>£5,000</h3>
+        <p class='small text-blue-light'>and 7 tonnes CO₂ - average saving in 2023/24.</p>
+      <% end %>
+      <% grid.with_block do %>
+        <%= render IconComponent.new(name: 'school', style: :circle) %>
+        <h4 class='text-white'>Secondary schools</h4>
+        <h3 class='text-blue-light'>£20,000</h3>
+        <p class='small text-blue-light'>and 26 tonnes CO₂ - average saving in 2023/24.</p>
+      <% end %>
+      <% grid.with_block do %>
+        <%= render IconComponent.new(name: :recycle, style: :circle) %>
+        <h4 class='text-white'>Empower pupils</h4>
+        <h3 class='text-blue-light'>70%</h3>
+        <p class='small text-blue-light'>Number of participating schools using Energy Sparks with their eco-team to inform impactful action.</p>
+      <% end %>
+    <% end %>
   </div>
 
 <% else %>

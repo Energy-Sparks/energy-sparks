@@ -176,8 +176,20 @@ input, progress {
   color: $grey-light;
 }
 
+.text-blue-medium {
+  color: $blue-medium;
+}
+
+.text-blue-light {
+  color: $blue-light;
+}
+
 .text-dark-blue {
   color: $blue-very-dark;
+}
+
+.bg-blue-very-dark {
+  background-color: $blue-very-dark;
 }
 
 .badge-grey-light {

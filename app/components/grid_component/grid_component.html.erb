@@ -1,11 +1,9 @@
 <%= tag.div id: id, class: classes do %>
   <% rows.times.each do %>
     <div class='row'>
-      <% while block = blocks.shift %>
-        <%= tag.div class: col_classes do %>
-          <%= tag.div class: [block_classes, block.classes] do %>
-            <%= block %>
-          <% end %>
+      <% while column = columns.shift %>
+        <%= tag.div class: column_classes do %>
+          <%= column %>
         <% end %>
       <% end %>
     </div>
