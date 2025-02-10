@@ -12,7 +12,7 @@ describe Schools::EngagedSchoolService, type: :service do
       create(:school, :with_school_group, :with_points,
              calendar: create(:calendar, :with_previous_and_next_academic_years))
     end
-    let(:schools) { described_class.list_schools(previous_year: false, school_group_id: nil) }
+    let(:schools) { described_class.list_schools(false, nil) }
 
     before { create(:school, :with_school_group, :with_points, active: false) }
 
@@ -22,11 +22,11 @@ describe Schools::EngagedSchoolService, type: :service do
     end
 
     it 'wraps schools in the service' do
-      expect(schools.first.school).to eq school
+      expect(schools.map(&:school)).to include(school)
     end
 
     context 'with the previous year' do
-      let(:schools) { described_class.list_schools(previous_year: true, school_group_id: nil) }
+      let(:schools) { described_class.list_schools(true, nil) }
 
       it 'returns active schools with recent activities' do
         expect(schools.count).to eq 2

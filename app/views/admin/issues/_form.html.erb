@@ -3,7 +3,8 @@
 
   <%= render 'header', title: "#{issue_type_icon(issue.issue_type)} #{title}".html_safe do %>
     <% if issue.issueable %>
-      <%= header_nav_link "All #{issue.issueable.model_name.human.downcase} issues & notes", url_for([:admin, issue.issueable, :issues]) %>
+      <%= header_nav_link "All #{issue.issueable.model_name.human.downcase} issues & notes",
+                          url_for([:admin, issue.issueable, :issues]) %>
     <% else %>
       <%= header_nav_link 'All issues & notes', admin_issues_url %>
     <% end %>
@@ -13,26 +14,40 @@
     <%= redirect_back_tag params %>
     <%= f.input :title %>
     <%= f.input :description, as: :rich_text_area %>
-    <%= f.input :fuel_type, collection: Issue.fuel_types.keys, label_method: lambda {|k| k.humanize}, include_blank: "Not applicable" %>
+    <%= f.input :fuel_type, collection: Issue.fuel_types.keys, label_method: :humanize,
+                            include_blank: 'Not applicable' %>
 
     <% if issue.school %>
-      <%= f.input :meter_ids, as: :check_boxes, collection: issue.issueable.meters.order('active desc'),
-        label_method: lambda {|meter| "#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.display_summary(display_inactive: true)}".html_safe},
-        input_html: { multiple: true},
-        label: "Affected meters #{link_to(fa_icon('external-link-alt'), school_meters_path(issue.school), title: "School meters", data: { toggle: 'tooltip'})}".html_safe %>
+      <%= f.input :meter_ids,
+                  as: :check_boxes, collection: issue.issueable.meters.order('active desc'),
+                  label_method: (lambda do |meter|
+                    [fa_icon(fuel_type_icon(meter.meter_type)),
+                     meter.display_summary(display_inactive: true)].join(' ').html_safe
+                  end),
+                  input_html: { multiple: true },
+                  label: "Affected meters #{link_to(fa_icon('external-link-alt'), school_meters_path(issue.school),
+                                                    title: 'School meters', data: { toggle: 'tooltip' })}".html_safe %>
     <% end %>
     <% if issue.issue? %>
-      <%= f.input :status, collection: Issue.statuses.keys, label_method: lambda {|k| k.humanize}, include_blank: false %>
+      <%= f.input :status, collection: Issue.statuses.keys, label_method: :humanize, include_blank: false %>
     <% else %>
       <%= f.hidden_field :status %>
     <% end %>
     <% unless issue.new_record? %>
-      <%= f.input :issue_type, collection: Issue.issue_types.keys, label_method: lambda {|k| k.humanize}, include_blank: false unless issue.new_record? %>
+      <%= unless issue.new_record?
+            f.input :issue_type, collection: Issue.issue_types.keys, label_method: :humanize, include_blank: false
+          end %>
     <% else %>
       <%= f.hidden_field :issue_type %>
     <% end %>
-    <%= f.input :owned_by_id, collection: User.admin, label: "Assigned to", label_method: lambda {|k| k.display_name}, include_blank: true, selected: (f.object.new_record? && params.dig(:issue,:owned_by_id).nil? ? issue.issueable.try(:default_issues_admin_user).try(:id) : f.object.owned_by_id) %>
-    <%= f.input :pinned, as: :boolean, label: "Pinned" %>
+    <%= f.input :owned_by_id, collection: User.admins_by_name, label: 'Assigned to', label_method: :display_name,
+                              include_blank: 'Unassigned',
+                              selected: if f.object.new_record? && params.dig(:issue, :owned_by_id).nil?
+                                          issue.issueable.try(:default_issues_admin_user).try(:id)
+                                        else
+                                          f.object.owned_by_id
+                                        end %>
+    <%= f.input :pinned, as: :boolean, label: 'Pinned' %>
     <%= f.submit 'Save', class: 'btn btn-primary' %>
   <% end %>
 

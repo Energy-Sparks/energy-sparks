@@ -84,7 +84,9 @@ RSpec.describe 'adult dashboard navigation', type: :system do
 
     it 'shows me the adult dashboard by default' do
       visit root_path
-      click_on('View schools')
+      within('#our-schools') do
+        click_on('View schools')
+      end
       expect(page.has_content?('Energy Sparks schools across the UK')).to be true
       click_on(school_name)
       expect(page.has_link?('Pupil dashboard')).to be true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_05_161410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "half_hourly_labelling", ["start", "end"]
-  create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed"]
+  create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_perse_api", ["half_hourly"]
 
   create_table "academic_years", force: :cascade do |t|
@@ -422,8 +422,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.boolean "delayed_reading", default: false, null: false
     t.enum "half_hourly_labelling", enum_type: "half_hourly_labelling"
     t.boolean "allow_merging", default: false, null: false
+    t.integer "missing_reading_window", default: 5
+    t.bigint "owned_by_id"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
+    t.index ["owned_by_id"], name: "index_amr_data_feed_configs_on_owned_by_id"
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -1677,35 +1680,47 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
-    t.boolean "alternative_heating_oil", default: false, null: false
-    t.integer "alternative_heating_oil_percent", default: 0
-    t.text "alternative_heating_oil_notes"
-    t.boolean "alternative_heating_lpg", default: false, null: false
-    t.integer "alternative_heating_lpg_percent", default: 0
-    t.text "alternative_heating_lpg_notes"
-    t.boolean "alternative_heating_biomass", default: false, null: false
-    t.integer "alternative_heating_biomass_percent", default: 0
-    t.text "alternative_heating_biomass_notes"
-    t.boolean "alternative_heating_district_heating", default: false, null: false
-    t.integer "alternative_heating_district_heating_percent", default: 0
-    t.text "alternative_heating_district_heating_notes"
+    t.boolean "heating_oil", default: false, null: false
+    t.integer "heating_oil_percent", default: 0
+    t.text "heating_oil_notes"
+    t.boolean "heating_lpg", default: false, null: false
+    t.integer "heating_lpg_percent", default: 0
+    t.text "heating_lpg_notes"
+    t.boolean "heating_biomass", default: false, null: false
+    t.integer "heating_biomass_percent", default: 0
+    t.text "heating_biomass_notes"
+    t.boolean "heating_district_heating", default: false, null: false
+    t.integer "heating_district_heating_percent", default: 0
+    t.text "heating_district_heating_notes"
     t.integer "region"
     t.bigint "local_authority_area_id"
     t.datetime "bill_requested_at", precision: nil
     t.bigint "school_group_cluster_id"
     t.bigint "funder_id"
-    t.boolean "alternative_heating_ground_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_ground_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_ground_source_heat_pump_notes"
-    t.boolean "alternative_heating_air_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_air_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_air_source_heat_pump_notes"
-    t.boolean "alternative_heating_water_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_water_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_water_source_heat_pump_notes"
+    t.boolean "heating_ground_source_heat_pump", default: false, null: false
+    t.integer "heating_ground_source_heat_pump_percent", default: 0
+    t.text "heating_ground_source_heat_pump_notes"
+    t.boolean "heating_air_source_heat_pump", default: false, null: false
+    t.integer "heating_air_source_heat_pump_percent", default: 0
+    t.text "heating_air_source_heat_pump_notes"
+    t.boolean "heating_water_source_heat_pump", default: false, null: false
+    t.integer "heating_water_source_heat_pump_percent", default: 0
+    t.text "heating_water_source_heat_pump_notes"
     t.date "archived_date"
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.datetime "mailchimp_fields_changed_at"
+    t.boolean "heating_gas", default: false, null: false
+    t.integer "heating_gas_percent", default: 0
+    t.text "heating_gas_notes"
+    t.boolean "heating_electric", default: false, null: false
+    t.integer "heating_electric_percent", default: 0
+    t.text "heating_electric_notes"
+    t.boolean "heating_underfloor", default: false, null: false
+    t.integer "heating_underfloor_percent", default: 0
+    t.text "heating_underfloor_notes"
+    t.boolean "heating_chp", default: false, null: false
+    t.integer "heating_chp_percent", default: 0
+    t.text "heating_chp_notes"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
@@ -2046,6 +2061,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_134937) do
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "comparison_reports"
   add_foreign_key "alerts", "schools", on_delete: :cascade
+  add_foreign_key "amr_data_feed_configs", "users", column: "owned_by_id"
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify

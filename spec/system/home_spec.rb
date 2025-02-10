@@ -67,7 +67,9 @@ RSpec.describe 'home', type: :system do
 
     it 'links to the marketing page from home page' do
       visit root_path
-      click_on('Find out more')
+      within('header') do
+        click_on('Find out more')
+      end
       expect(page).to have_current_path(find_out_more_campaigns_path)
     end
   end
@@ -119,10 +121,7 @@ RSpec.describe 'home', type: :system do
 
   it 'has a datasets page' do
     visit root_path
-    click_on('About us')
-    within('#about-menu') do
-      click_on('Datasets')
-    end
+    click_on('Datasets')
     expect(page.has_content?('Data used in Energy Sparks'))
   end
 

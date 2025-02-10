@@ -301,7 +301,7 @@
   }
 
   .hero-component {
-    img.right-half {
+    .right-half {
       top: 0;
       right: 0;
       width: 50vw;
@@ -328,3 +328,14 @@
     }
   }
 }
+
+
+/*
+      .break-left {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: 0;
+        margin-left: 0;
+      }
+*/

@@ -670,6 +670,7 @@ Rails.application.routes.draw do
       get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
       get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
 
+      resources :mailchimp_status, only: [:index]
       resources :recent_audits, only: [:index]
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
@@ -690,6 +691,7 @@ Rails.application.routes.draw do
       resources :user_logins, only: [:index]
       resources :meter_loading_reports, only: :index
       resources :engaged_groups, only: [:index]
+      resources :heating_types, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
@@ -722,7 +724,11 @@ Rails.application.routes.draw do
         resource :partners, only: [:show, :update]
         resources :meter_reviews
         resources :consent_requests
-        resources :bill_requests
+        resources :bill_requests do
+          collection do
+            post :clear
+          end
+        end
         resource :target_data, only: :show
       end
       member do
