@@ -61,6 +61,10 @@
                                                   [d.label, d.id]
                                                 end, { include_blank: true }, class: 'form-control') %>
     </div>
+    <div class="form-group">
+      <%= form.label :manual_reads, 'On Manual Reads?' %>
+      <%= form.check_box :manual_reads %>
+    </div>
   <% end %>
 
   <div class="form-group">
