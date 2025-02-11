@@ -147,6 +147,18 @@ class User < ApplicationRecord
     active && super
   end
 
+  def inactive?
+    !active?
+  end
+
+  def disable!
+    update!(active: false)
+  end
+
+  def enable!
+    update!(active: true)
+  end
+
   def default_scoreboard
     if group_admin? && school_group.default_scoreboard
       school_group.default_scoreboard

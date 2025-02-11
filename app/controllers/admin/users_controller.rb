@@ -61,13 +61,13 @@ module Admin
 
     def disable
       user = User.find(params['user_id'])
-      user.update!(active: false)
+      user.disable!
       redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully disabled."
     end
 
     def enable
       user = User.find(params['user_id'])
-      user.update!(active: true)
+      user.enable!
       redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully activated."
     end
 
