@@ -725,7 +725,11 @@ Rails.application.routes.draw do
         resource :partners, only: [:show, :update]
         resources :meter_reviews
         resources :consent_requests
-        resources :bill_requests
+        resources :bill_requests do
+          collection do
+            post :clear
+          end
+        end
         resource :target_data, only: :show
       end
       member do

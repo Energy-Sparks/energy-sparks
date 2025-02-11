@@ -145,7 +145,7 @@ en:
             </ul>
           title: On-site energy audits
         metering:
-          price: "£10 + VAT per meter"
+          price: "£25 + VAT per meter"
           title: Analysis of data from more than 10 meters
         private_tool:
           price: "£75 + VAT per school per year"

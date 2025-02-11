@@ -9,6 +9,17 @@ describe Mailchimp::UserDeletionJob do
     allow(Mailchimp::AudienceManager).to receive(:new).and_return(double)
   end
 
+  describe '#can_run?' do
+    it 'can only run in production' do
+      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
+        expect(job.can_run?).to be(true)
+      end
+      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'test' do
+        expect(job.can_run?).to be(false)
+      end
+    end
+  end
+
   describe '#perform' do
     let(:email_address) { 'test@example.org' }
     let(:name) { 'John Test' }
@@ -24,6 +35,12 @@ describe Mailchimp::UserDeletionJob do
         { 'id' => '789', 'name' => 'Other' }
       ]
       member
+    end
+
+    around do |example|
+      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
+        example.run
+      end
     end
 
     before do

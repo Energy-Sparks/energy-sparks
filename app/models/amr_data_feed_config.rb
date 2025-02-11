@@ -25,6 +25,7 @@
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
 #  number_of_header_rows   :integer          default(0), not null
+#  owned_by_id             :bigint(8)
 #  period_field            :string
 #  positional_index        :boolean          default(FALSE), not null
 #  postcode_field          :text
@@ -43,6 +44,11 @@
 #
 #  index_amr_data_feed_configs_on_description  (description) UNIQUE
 #  index_amr_data_feed_configs_on_identifier   (identifier) UNIQUE
+#  index_amr_data_feed_configs_on_owned_by_id  (owned_by_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (owned_by_id => users.id)
 #
 
 class AmrDataFeedConfig < ApplicationRecord
@@ -53,6 +59,7 @@ class AmrDataFeedConfig < ApplicationRecord
                         other_api: 5 }
   enum :source_type, { email: 0, manual: 1, api: 2, sftp: 3 }
 
+  belongs_to :owned_by, class_name: :User, optional: true
   has_many :amr_data_feed_import_logs
   has_many :meters, -> { distinct }, through: :amr_data_feed_import_logs
   has_many :amr_data_feed_readings

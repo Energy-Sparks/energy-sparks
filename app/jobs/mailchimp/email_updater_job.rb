@@ -1,6 +1,8 @@
 module Mailchimp
-  class EmailUpdaterJob < ApplicationJob
+  class EmailUpdaterJob < BaseJob
     def perform(user:, original_email:)
+      return unless can_run?
+
       contact = Mailchimp::Contact.from_user(user)
       mailchimp_member = Mailchimp::AudienceManager.new.update_contact(contact, original_email)
       # Update status as well seeing as its returned in the response
