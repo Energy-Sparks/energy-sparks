@@ -8,8 +8,4 @@ class ApplicationComponent < ViewComponent::Base
     @id = id
     @classes = token_list(classes)
   end
-
-  def container(&block)
-    content_tag(:div, id: id, class: classes, &block)
-  end
 end

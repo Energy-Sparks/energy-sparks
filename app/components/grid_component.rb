@@ -3,19 +3,19 @@ class GridComponent < ApplicationComponent
 
   renders_many :columns, types: {
     block: {
-      renders: ->(*args, **kwargs) { BlockComponent.new(*args, **merge_classes(kwargs)) },
+      renders: ->(*args, **kwargs) { BlockComponent.new(*args, **kwargs) },
       as: :block
     },
     icon: { # not sure this is useful but put it here for demo purposes
-      renders: ->(*args, **kwargs) { IconComponent.new(*args, **merge_classes(kwargs)) },
+      renders: ->(*args, **kwargs) { IconComponent.new(*args, **kwargs) },
       as: :icon
     },
     image: {
-      renders: ->(*args, **kwargs) { ImageComponent.new(*args, **merge_classes(kwargs)) },
+      renders: ->(*args, **kwargs) { ImageComponent.new(*args, **kwargs) },
       as: :image
     },
     prompt_list: {
-      renders: ->(*args, **kwargs) { PromptListComponent.new(*args, **merge_classes(kwargs)) },
+      renders: ->(*args, **kwargs) { PromptListComponent.new(*args, **kwargs) },
       as: :prompt_list
     }
   }
@@ -43,10 +43,6 @@ class GridComponent < ApplicationComponent
   end
 
   private
-
-  def merge_classes(kwargs)
-    kwargs.except(:column_classes).merge(classes: token_list(kwargs[:classes], @component_classes))
-  end
 
   def base_column_classes
     case cols
