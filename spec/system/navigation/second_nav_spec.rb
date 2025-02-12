@@ -484,25 +484,25 @@ RSpec.describe 'Navigation -> second nav' do
     context 'when school user signed in' do
       let(:user) { create(:school_admin) }
 
-      it { expect(nav).to have_link(href: user_path(user), title: I18n.t('nav.my_profile')) }
+      it { expect(nav).to have_link(href: user_path(user), title: I18n.t('nav.my_account')) }
     end
 
     context 'when pupil signed in' do
       let(:user) { create(:pupil) }
 
-      it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_profile')) }
+      it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_account')) }
     end
 
     context 'when school onboarding user signed in' do
       let(:user) { create(:onboarding_user) }
 
-      it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_profile')) }
+      it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_account')) }
     end
 
     context 'when user signed out' do
       let(:user) {}
 
-      it { expect(nav).to have_no_link(title: I18n.t('nav.my_profile')) }
+      it { expect(nav).to have_no_link(title: I18n.t('nav.my_account')) }
     end
   end
 end
