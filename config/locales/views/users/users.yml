@@ -1,13 +1,18 @@
 ---
 en:
   users:
+    edit:
+      account_updated: Account updated
+    edit_password:
+      current_password: Current password
+      password_updated: Password updated
     show:
       change_password: Change password
       joined: You joined Energy Sparks on %{date}
       manage_alerts: Manage alerts
       my_account: My account
       school_summary:
-        cluster_admin_html: You are a %{role} for %{count} schools.
+        cluster_admin_html: You are a %{role} for %{count} schools
         group_admin_html: You are a %{role} for %{count} schools in <a href="%{url}">%{link_text}</a>
         school_user_html: You are a %{role} user for <a href="%{url}">%{link_text}</a>
       update_account: Update account

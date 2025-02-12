@@ -38,10 +38,10 @@
       <%= I18n.t("languages.#{user.preferred_locale}") %>
     </div>
   </div>
-  <div class="row mt-2">
+  <div class="row mt-4 mb-4">
     <div class="col col-md-12">
       <%= link_to t('users.show.update_account'), edit_user_path(user), class: 'btn btn-primary' %>
-      <%= link_to t('users.show.change_password'), edit_user_path(user), class: 'btn btn-success' %>
+      <%= link_to t('users.show.change_password'), edit_password_user_path(user), class: 'btn btn-success' %>
     </div>
   </div>
 </div>

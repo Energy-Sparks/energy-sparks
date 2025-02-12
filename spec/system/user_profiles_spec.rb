@@ -81,6 +81,62 @@ RSpec.describe 'User profiles', :include_application_helper do
     end
   end
 
+  shared_examples 'a working account form' do |staff_role: true|
+    context 'when form is displayed' do
+      it 'has the expected fields' do
+        expect(page).to have_field('Name', with: user.name)
+        expect(page).to have_field('Email', with: user.email)
+        expect(page).to have_select('Preferred language', selected: 'English')
+      end
+
+      it 'has a staff role field', if: staff_role do
+        expect(page).to have_select('Role', selected: user.staff_role.translated_title)
+      end
+
+      it { expect(page).to have_link(I18n.t('common.labels.cancel', href: users_path(user))) }
+    end
+
+    context 'when updating' do
+      it 'saves changes' do
+        fill_in('Name', with: 'New name')
+        fill_in('Email', with: 'updated@example.org')
+        select('Welsh', from: 'Preferred language')
+        click_on('Update')
+        expect(page).to have_content('Account updated')
+        expect(page).to have_css('#profile-summary')
+        within('#profile-summary') do
+          expect(page).to have_content('New name')
+          expect(page).to have_content('updated@example.org')
+          expect(page).to have_content('Welsh')
+        end
+      end
+    end
+  end
+
+  shared_examples 'a working password form' do
+    it { expect(page).to have_link(I18n.t('common.labels.cancel', href: users_path(user))) }
+    it { expect(page).to have_content('12 characters minimum') }
+
+    context 'when updating' do
+      it 'saves password' do
+        fill_in('Current password', with: user.password)
+        fill_in('New password', with: 'thisismyupdatedpassword')
+        fill_in('Confirm new password', with: 'thisismyupdatedpassword')
+        click_on('Update')
+        expect(page).to have_content('Password updated')
+      end
+
+      it 'rejects if password is wrong' do
+        fill_in('Current password', with: 'this is wrong')
+        fill_in('New password', with: 'thisismyupdatedpassword')
+        fill_in('Confirm new password', with: 'thisismyupdatedpassword')
+        click_on('Update')
+        expect(page).not_to have_content('Password updated')
+        expect(page).to have_content('Change password')
+      end
+    end
+  end
+
   context 'when not logged in' do
     before do
       visit user_path(user)
@@ -117,20 +173,33 @@ RSpec.describe 'User profiles', :include_application_helper do
         sign_in(user)
       end
 
-      context 'when viewing my profile' do
+      context 'when viewing my account' do
         before { visit user_path(user) }
 
         it_behaves_like 'a profile page layout'
         it_behaves_like 'a profile page'
       end
 
-      context 'when updating my profile' do
-        it 'displays the right form fields'
-        it 'allows me to update my profile'
+      context 'when updating my account' do
+        before do
+          visit user_path(user)
+          within('#profile-summary') do
+            click_on('Update account')
+          end
+        end
+
+        it_behaves_like 'a working account form'
       end
 
       context 'when updating my password' do
-        it 'allows me to update my password'
+        before do
+          visit user_path(user)
+          within('#profile-summary') do
+            click_on('Change password')
+          end
+        end
+
+        it_behaves_like 'a working password form'
       end
 
       context 'when viewing my email preferences' do
@@ -158,6 +227,15 @@ RSpec.describe 'User profiles', :include_application_helper do
         it_behaves_like 'a profile page layout'
         it_behaves_like 'a profile page'
       end
+
+      context 'when updating my account' do
+        before do
+          visit user_path(user)
+          click_on('Update account')
+        end
+
+        it_behaves_like 'a working account form'
+      end
     end
 
     context 'with a cluster admin' do
@@ -172,6 +250,15 @@ RSpec.describe 'User profiles', :include_application_helper do
 
         it_behaves_like 'a profile page layout'
         it_behaves_like 'a profile page', cluster_admin: true, school_user: false
+      end
+
+      context 'when updating my account' do
+        before do
+          visit user_path(user)
+          click_on('Update account')
+        end
+
+        it_behaves_like 'a working account form'
       end
     end
 
@@ -188,6 +275,15 @@ RSpec.describe 'User profiles', :include_application_helper do
         it_behaves_like 'a profile page layout'
         it_behaves_like 'a profile page', group_admin: true, school_user: false
       end
+
+      context 'when updating my account' do
+        before do
+          visit user_path(user)
+          click_on('Update account')
+        end
+
+        it_behaves_like 'a working account form', staff_role: false
+      end
     end
 
     context 'with an admin account' do
@@ -202,6 +298,15 @@ RSpec.describe 'User profiles', :include_application_helper do
 
         it_behaves_like 'a profile page layout'
         it_behaves_like 'a profile page', school_user: false
+      end
+
+      context 'when updating my account' do
+        before do
+          visit user_path(user)
+          click_on('Update account')
+        end
+
+        it_behaves_like 'a working account form', staff_role: false
       end
     end
   end
