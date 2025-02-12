@@ -12,10 +12,10 @@ class GridComponent < ApplicationComponent
   private
 
   def column_div(component_name, *args, **kwargs, &block)
-    kwargs[:classes] = token_list(kwargs[:classes], @component_classes)
+    kwargs[:classes] = class_names(kwargs[:classes], @component_classes)
     cell_classes = kwargs.delete(:cell_classes)
 
-    tag.div(class: token_list(column_classes, cell_classes, @cell_classes)) do
+    tag.div(class: class_names(column_classes, cell_classes, @cell_classes)) do
       render(component_name.new(*args, **kwargs), &block)
     end
   end

@@ -6,10 +6,10 @@ class ApplicationComponent < ViewComponent::Base
 
   def initialize(id: nil, classes: '')
     @id = id
-    @classes = token_list(classes)
+    @classes = class_names(classes)
   end
 
   def add_classes(classes)
-    @classes = token_list(@classes, classes)
+    @classes = class_names(@classes, classes)
   end
 end
