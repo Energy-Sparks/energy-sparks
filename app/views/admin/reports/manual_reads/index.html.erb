@@ -1,0 +1,16 @@
+<h2>Manual read meters</h2>
+
+<table class="table">
+  <tr>
+    <% @html_columns.each do |column| %>
+      <th><%= column.name %></th>
+    <% end %>
+  </tr>
+  <% @meters.find_each do |meter| %>
+    <tr>
+      <% @html_columns.each do |column| %>
+        <td><%= column.td(meter) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
