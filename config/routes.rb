@@ -498,7 +498,10 @@ Rails.application.routes.draw do
     concerns :issueable
     resources :funders
     resources :users do
+      get 'lock', to: 'users#lock'
       get 'unlock', to: 'users#unlock'
+      get 'disable', to: 'users#disable'
+      get 'enable', to: 'users#enable'
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
       end
@@ -548,8 +551,6 @@ Rails.application.routes.draw do
           end
         end
         resource :users, only: [:show] do
-          get 'lock', to: 'users#lock'
-          get 'unlock', to: 'users#unlock'
           get 'lock_all', to: 'users#lock_all'
         end
         resource :partners, only: [:show, :update]
