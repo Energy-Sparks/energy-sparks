@@ -8,4 +8,8 @@ class ApplicationComponent < ViewComponent::Base
     @id = id
     @classes = token_list(classes)
   end
+
+  def add_classes(classes)
+    @classes = token_list(@classes, classes)
+  end
 end

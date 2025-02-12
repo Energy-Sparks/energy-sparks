@@ -300,15 +300,7 @@
     margin-bottom: 0px;
   }
 
-  .hero-component {
-    .right-half {
-      top: 0;
-      right: 0;
-      width: 50vw;
-      height: 100%;
-      object-fit: cover;
-    }
-
+  .hero {
     @media (min-width: map-get($grid-breakpoints, 'xl')) {
       h1, h2, h3, h4 {
         font-size: 3vw;
@@ -328,14 +320,3 @@
     }
   }
 }
-
-
-/*
-      .break-left {
-        width: 100%;
-        padding-right: 15px;
-        padding-left: 15px;
-        margin-right: 0;
-        margin-left: 0;
-      }
-*/
