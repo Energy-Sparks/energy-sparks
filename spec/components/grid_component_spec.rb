@@ -102,7 +102,7 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
   context 'with image' do
     let(:html) do
       render_inline(GridComponent.new(**params)) do |c|
-        c.with_image 'laptop.jpg', classes: 'component-classes'
+        c.with_image src: 'laptop.jpg', classes: 'component-classes'
         c.with_block { 'cell 2' }
       end
     end
