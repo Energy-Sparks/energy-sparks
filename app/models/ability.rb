@@ -123,6 +123,10 @@ class Ability
       can :read, Location
     end
 
+    unless user.pupil? || user.guest?
+      can :manage, User, { id: user.id }
+    end
+
     if user.admin? || user.analytics?
       can :manage, :all
       cannot :read, :my_school_menu

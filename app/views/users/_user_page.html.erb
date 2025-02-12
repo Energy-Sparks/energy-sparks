@@ -1,0 +1,40 @@
+<% content_for :page_title, user.name %>
+
+<% content_for :dashboard_header do %>
+  <div class="row" id="profile-header">
+    <div class="col">
+      <h1><%= user.name %></h1>
+    </div>
+  </div>
+<% end %>
+
+<div class="container">
+  <div class="row mt-2">
+    <div id="profile-page-navigation" class="col-md-3 col-lg-3 col-xl-2">
+      <ul class="nav flex-column flex-nowrap w-100">
+        <li class="nav-item overflow-hidden">
+          <div class="collapse show" id="" aria-expanded="false">
+            <ul class="flex-column pl-0">
+              <li class="nav-item">
+                Account
+              </li>
+              <li class="nav-item">
+                Security
+              </li>
+              <li class="nav-item">
+                Email preferences
+              </li>
+              <li class="nav-item">
+                Schools
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div id="page-body" class="col-md-9 col-lg-9 col-xl-10">
+      <%= yield %>
+    </div>
+  </div>
+</div>

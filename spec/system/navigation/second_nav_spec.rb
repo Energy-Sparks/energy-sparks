@@ -477,4 +477,32 @@ RSpec.describe 'Navigation -> second nav' do
       it { expect(nav).to have_no_link 'Sign Out' }
     end
   end
+
+  describe 'My Profile link' do
+    before { visit home_page_path }
+
+    context 'when school user signed in' do
+      let(:user) { create(:school_admin) }
+
+      it { expect(nav).to have_link(href: user_path(user), title: I18n.t('nav.my_profile')) }
+    end
+
+    context 'when pupil signed in' do
+      let(:user) { create(:pupil) }
+
+      it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_profile')) }
+    end
+
+    context 'when school onboarding user signed in' do
+      let(:user) { create(:onboarding_user) }
+
+      it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_profile')) }
+    end
+
+    context 'when user signed out' do
+      let(:user) {}
+
+      it { expect(nav).to have_no_link(title: I18n.t('nav.my_profile')) }
+    end
+  end
 end

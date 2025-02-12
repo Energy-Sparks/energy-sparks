@@ -1,0 +1,23 @@
+<%= render 'user_page', user: @user do %>
+  <div class="row">
+    <div class="col">
+      <h2>Update account</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <%= simple_form_for(@user, html: { class: 'admin-user-form' }) do |f| %>
+        <%= f.input :name %>
+        <%= f.input :email %>
+        <%= f.input :staff_role_id, label: 'Staff role', collection: StaffRole.order(:title), label_method: :title,
+                                    hint: 'For school admins and staff' %>
+        <%= f.submit class: 'btn btn-primary' %>
+      <% end %>
+
+      <div class="other-actions">
+        <%= link_to 'Cancel', user_path(@user), class: 'btn btn-secondary' %>
+      </div>
+    </div>
+  </div>
+<% end %>

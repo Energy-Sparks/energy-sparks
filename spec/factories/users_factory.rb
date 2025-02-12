@@ -64,6 +64,7 @@ FactoryBot.define do
     end
 
     factory :group_admin do
+      name { 'Group admin'}
       role { :group_admin }
       school_group
     end
