@@ -111,7 +111,8 @@ RSpec.describe 'onboarding', :schools do
       it 'shows an error message for an invalid URN' do
         complete_onboarding(urn: '9876543210')
         expect(page).to have_content('Step 2: Tell us about your school')
-        expect(page).to have_content("Unique Reference Number *\nmust be less than or equal to 2147483647")
+        expect(page).to have_content("Unique Reference Number *\n" \
+                                     'the URN or SEED you have supplied appears to be invalid')
         fill_in 'Unique Reference Number', with: '987654321'
         click_on 'Save school details'
         expect(page).to have_content('Step 3: Grant consent')
