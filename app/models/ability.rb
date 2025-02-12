@@ -123,8 +123,8 @@ class Ability
       can :read, Location
     end
 
-    unless user.pupil? || user.guest?
-      can :manage, User, { id: user.id }
+    unless user.pupil? || user.guest? || user.admin?
+      can :manage, User, id: user.id
     end
 
     if user.admin? || user.analytics?
