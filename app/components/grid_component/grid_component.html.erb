@@ -1,10 +1,8 @@
 <%= tag.div id: id, class: classes do %>
-  <% columns.each_slice(cols) do |column_group| %>
+  <% cells.each_slice(cols) do |cell_group| %>
     <div class="row">
-      <% column_group.each do |column| %>
-        <%= tag.div class: token_list(@column_classes_map[column], column_classes) do %>
-          <%= column %>
-        <% end %>
+      <% cell_group.each do |cell| %>
+          <%= cell %>
       <% end %>
     </div>
   <% end %>

@@ -1,50 +1,41 @@
 class GridComponent < ApplicationComponent
-  attr_reader :cols, :rows, :column_classes
+  attr_reader :cols, :rows
 
-  renders_many :columns, types: {
-    block: {
-      renders: ->(*args, **kwargs) { BlockComponent.new(*args, **kwargs) },
-      as: :block
-    },
-    icon: { # not sure this is useful but put it here for demo purposes
-      renders: ->(*args, **kwargs) { IconComponent.new(*args, **kwargs) },
-      as: :icon
-    },
-    image: {
-      renders: ->(*args, **kwargs) { ImageComponent.new(*args, **kwargs) },
-      as: :image
-    },
-    prompt_list: {
-      renders: ->(*args, **kwargs) { PromptListComponent.new(*args, **kwargs) },
-      as: :prompt_list
-    }
+  renders_many :cells, types: {
+    block: { renders: ->(*args, **kwargs, &block) { column_div(BlockComponent, *args, **kwargs, &block) }, as: :block },
+    icon: { renders: ->(*args, **kwargs, &block) { column_div(IconComponent, *args, **kwargs, &block) }, as: :icon },
+    image: { renders: ->(*args, **kwargs, &block) { column_div(ImageComponent, *args, **kwargs, &block) }, as: :image },
+    prompt_list: { renders: ->(*args, **kwargs, &block) { column_div(PromptListComponent, *args, **kwargs, &block) }, as: :prompt_list }
   }
 
-  def initialize(cols:, rows: 1, column_classes: '', component_classes: '', id: nil, classes: '')
+  private
+
+  def column_div(component_name, *args, **kwargs, &block)
+    kwargs[:classes] = token_list(kwargs[:classes], @component_classes)
+    extra_cell_classes = kwargs.delete(:cell_classes)
+
+    tag.div(class: token_list(column_classes, extra_cell_classes, @cell_classes)) do
+      render(component_name.new(*args, **kwargs), &block)
+    end
+  end
+
+  def initialize(cols:, rows: 1, cell_classes: '', component_classes: '', id: nil, classes: '')
     super(id: id, classes: ['grid-component', classes])
 
     @cols = cols
     @rows = rows
 
-    @column_classes = token_list(base_column_classes, column_classes)
-    @component_classes = token_list(component_classes)
-    @column_classes_map = {}
-  end
-
-  def with_column(type = 'block', *args, column_classes: '', **kwargs, &block)
-    kwargs[:classes] = token_list(kwargs[:classes], @component_classes)
-    slot = public_send("with_#{type}", *args, **kwargs, &block)
-    @column_classes_map[slot] = token_list(@column_classes, column_classes)
-    slot
+    @cell_classes = cell_classes
+    @component_classes = component_classes
   end
 
   def render?
-    columns.any?
+    cells.any?
   end
 
   private
 
-  def base_column_classes
+  def column_classes
     case cols
     when 2
       'col-12 col-md-6'

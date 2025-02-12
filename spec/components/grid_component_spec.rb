@@ -13,14 +13,14 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
   let(:rows) { html.css('div.row') }
   let(:row) { rows.first }
 
-  context 'with cols' do
+  context 'with cells' do
     let(:html) do
       render_inline(GridComponent.new(**params)) do |c|
-        c.with_column { 'cell 1' }
-        c.with_column { 'cell 2' }
-        c.with_column { 'cell 3' }
-        c.with_column { 'cell 4' }
-        c.with_column { 'cell 5' }
+        c.with_block { 'cell 1' }
+        c.with_block { 'cell 2' }
+        c.with_block { 'cell 3' }
+        c.with_block { 'cell 4' }
+        c.with_block { 'cell 5' }
       end
     end
 
@@ -55,8 +55,8 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
 
     let(:html) do
       render_inline(GridComponent.new(**params)) do |c|
-        c.with_column { 'cell 1' }
-        c.with_column { 'cell 2' }
+        c.with_block { 'cell 1' }
+        c.with_block { 'cell 2' }
       end
     end
 
@@ -66,44 +66,44 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
   context 'with inline component classes' do
     let(:html) do
       render_inline(GridComponent.new(**params)) do |c|
-        c.with_column(classes: 'component-classes') { 'cell 1' }
-        c.with_column { 'cell 2' }
+        c.with_block(classes: 'component-classes') { 'cell 1' }
+        c.with_block { 'cell 2' }
       end
     end
 
     it { expect(row).to have_css('div.component-classes', count: 1) }
   end
 
-  context 'with column classes' do
-    let(:params) { all_params.merge(column_classes: 'column-classes') }
+  context 'with cell classes' do
+    let(:params) { all_params.merge(cell_classes: 'cell-classes') }
 
     let(:html) do
       render_inline(GridComponent.new(**params)) do |c|
-        c.with_column { 'cell 1' }
-        c.with_column { 'cell 2' }
+        c.with_block { 'cell 1' }
+        c.with_block { 'cell 2' }
       end
     end
 
-    it { expect(rows[0]).to have_css('div.col-12.col-md-6.column-classes', count: 2) }
+    it { expect(rows[0]).to have_css('div.col-12.col-md-6.cell-classes', count: 2) }
   end
 
-  context 'with inline column classes' do
+  context 'with inline cell classes' do
     let(:html) do
       render_inline(GridComponent.new(**params)) do |c|
-        c.with_column(column_classes: 'column-classes') { 'cell 1' }
-        c.with_column { 'cell 2' }
+        c.with_block(cell_classes: 'cell-classes') { 'cell 1' }
+        c.with_block { 'cell 2' }
       end
     end
 
-    it { expect(row).to have_css('div.col-12.col-md-6.column-classes', count: 1) }
+    it { expect(row).to have_css('div.col-12.col-md-6.cell-classes', count: 1) }
   end
 
 
   context 'with image' do
     let(:html) do
       render_inline(GridComponent.new(**params)) do |c|
-        c.with_image('laptop.jpg', classes: 'component-classes')
-        c.with_column { 'cell 2' }
+        c.with_image 'laptop.jpg', classes: 'component-classes'
+        c.with_block { 'cell 2' }
       end
     end
 
