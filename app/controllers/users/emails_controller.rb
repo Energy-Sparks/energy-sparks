@@ -3,6 +3,7 @@ module Users
     load_resource :user
 
     def index
+      render :index, layout: 'dashboards'
     end
 
     def update
