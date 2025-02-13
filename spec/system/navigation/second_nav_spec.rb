@@ -478,31 +478,33 @@ RSpec.describe 'Navigation -> second nav' do
     end
   end
 
-  describe 'My Profile link' do
-    before { visit home_page_path }
+  context 'with profile feature', with_feature: :profile_pages do
+    describe 'My Profile link' do
+      before { visit home_page_path }
 
-    context 'when school user signed in' do
-      let(:user) { create(:school_admin) }
+      context 'when school user signed in' do
+        let(:user) { create(:school_admin) }
 
-      it { expect(nav).to have_link(href: user_path(user), title: I18n.t('nav.my_account')) }
-    end
+        it { expect(nav).to have_link(href: user_path(user), title: I18n.t('nav.my_account')) }
+      end
 
-    context 'when pupil signed in' do
-      let(:user) { create(:pupil) }
+      context 'when pupil signed in' do
+        let(:user) { create(:pupil) }
 
-      it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_account')) }
-    end
+        it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_account')) }
+      end
 
-    context 'when school onboarding user signed in' do
-      let(:user) { create(:onboarding_user) }
+      context 'when school onboarding user signed in' do
+        let(:user) { create(:onboarding_user) }
 
-      it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_account')) }
-    end
+        it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_account')) }
+      end
 
-    context 'when user signed out' do
-      let(:user) {}
+      context 'when user signed out' do
+        let(:user) {}
 
-      it { expect(nav).to have_no_link(title: I18n.t('nav.my_account')) }
+        it { expect(nav).to have_no_link(title: I18n.t('nav.my_account')) }
+      end
     end
   end
 end
