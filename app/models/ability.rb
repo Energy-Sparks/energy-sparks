@@ -125,7 +125,6 @@ class Ability
 
     unless user.pupil? || user.guest? || user.admin?
       can :manage, User, id: user.id
-      can :manage, Contact, user_id: user.id
     end
 
     if user.admin? || user.analytics?
@@ -200,6 +199,8 @@ class Ability
         show show_pupils_dash update manage_school_times manage_users
         show_management_dash read start_programme read_restricted_analysis read_restricted_advice
       ], School, school_scope
+
+      can %i[create update destroy], Contact, user_id: user.id
 
       can :manage, [EstimatedAnnualConsumption, SchoolTarget, Activity, Contact, Observation, TransportSurvey],
           related_school_scope

@@ -128,12 +128,6 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
 
       it_behaves_like 'the user is not authorised'
-
-      context 'when I am a school admin from their school' do
-        let!(:signed_in_user) { create(:school_admin, school: user.school) }
-
-        it 'does not allow access'
-      end
     end
 
     context 'with a pupil account' do

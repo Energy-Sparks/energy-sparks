@@ -21,4 +21,3 @@ en:
         group_admin_html: You are a %{role} for %{count} schools in <a href="%{url}">%{link_text}</a>
         school_user_html: You are a %{role} user for <a href="%{url}">%{link_text}</a>
       update_account: Update account
-      update_email_preferences: Update email preferences
