@@ -5,6 +5,7 @@
   <thead>
     <tr>
       <th>AMR Data Feed Configuration Name</th>
+      <th>Owned by</th>
       <th>Missing reading window setting</th>
       <th>Last reading update</th>
     </tr>
@@ -13,6 +14,7 @@
     <% @missing.each do |config, seconds_out_of_date| %>
       <tr>
         <td><%= link_to(config.description, admin_amr_data_feed_config_url(id: config.id)) %></td>
+        <td><%= config.owned_by&.name %></td>
         <td><%= if config.missing_reading_window
                   distance_of_time_in_words(config.missing_reading_window.days)
                 else

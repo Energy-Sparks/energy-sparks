@@ -22,24 +22,29 @@ latest grant of consent and a form to complete the review.
         <td><%= link_to school.name, school_path(school) %></td>
         <td><%= link_to school.meters.unreviewed_dcc_meter.count, school_meters_path(school) %></td>
         <td class="consent">
-          <%= fa_icon( school.consent_up_to_date? ? 'check-circle text-success' : 'times-circle text-danger') %>
+          <%= fa_icon(school.consent_up_to_date? ? 'check-circle text-success' : 'times-circle text-danger') %>
           <%= link_to school_consent_grants_path(school) do %>
              View
           <% end %>
         </td>
         <td class="bills">
-          <%= fa_icon( school.consent_documents.any? ? 'check-circle text-success' : 'times-circle text-danger') %>
+          <%= fa_icon(school.consent_documents.any? ? 'check-circle text-success' : 'times-circle text-danger') %>
           <%= link_to school_consent_documents_path(school) do %>
              View
           <% end %>
         </td>
         <td>
           <% if !school.consent_up_to_date? %>
-            <%= link_to "Request consent", new_admin_school_consent_request_path(school), class: 'btn btn-default' %>
+            <%= link_to 'Request consent', new_admin_school_consent_request_path(school), class: 'btn btn-default' %>
           <% end %>
-          <%= link_to "Request bill", new_admin_school_bill_request_path(school), class: 'btn btn-default' %>
+          <% if school.bill_requested %>
+            <%= link_to 'Clear bill request', clear_admin_school_bill_requests_path(school),
+                        method: :post, class: 'btn btn-default' %>
+          <% else %>
+            <%= link_to 'Request bill', new_admin_school_bill_request_path(school), class: 'btn btn-default' %>
+          <% end %>
           <% if school.consent_up_to_date? %>
-            <%= link_to "Perform review", new_admin_school_meter_review_path(school), class: 'btn btn-default' %>
+            <%= link_to 'Perform review', new_admin_school_meter_review_path(school), class: 'btn btn-default' %>
           <% end %>
         </td>
       </tr>

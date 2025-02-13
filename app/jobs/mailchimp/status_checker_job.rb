@@ -1,6 +1,8 @@
 module Mailchimp
-  class StatusCheckerJob < ApplicationJob
+  class StatusCheckerJob < BaseJob
     def perform
+      return unless can_run?
+
       audience_manager = Mailchimp::AudienceManager.new
 
       updated_users = []
@@ -15,6 +17,11 @@ module Mailchimp
       # Any other user with a status that was not just updated must have its status removed
       # Could happen if a user is deleted from Mailchimp, or their email address has changed.
       User.where.not(id: updated_users).where.not(mailchimp_status: nil).update_all(mailchimp_status: nil)
+    end
+
+    # This job can run safely in other environments
+    def can_run?
+      true
     end
   end
 end

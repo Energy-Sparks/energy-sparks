@@ -144,7 +144,7 @@ cy:
             </ul>
           title: Archwiliadau ynni ar y safle
         metering:
-          price: "£10 + TAW fesul mesurydd"
+          price: "£25 + TAW fesul mesurydd"
           title: Dadansoddiad o ddata o fwy na 10 mesurydd
         private_tool:
           price: "£75 + TAW fesul ysgol fesul blwyddyn"

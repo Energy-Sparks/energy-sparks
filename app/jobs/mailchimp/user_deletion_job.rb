@@ -1,8 +1,10 @@
 module Mailchimp
   # Triggered when we delete a user to reset the users contact details in Mailchimp so that they
   # are switched to being an "Organic" subscriber.
-  class UserDeletionJob < ApplicationJob
+  class UserDeletionJob < BaseJob
     def perform(email_address:, name:, school:)
+      return unless can_run?
+
       contact = Mailchimp::Contact.from_params({ email_address:, name:, school:, interests: {} })
       audience_manager = AudienceManager.new
       mailchimp_member = audience_manager.update_contact(contact)

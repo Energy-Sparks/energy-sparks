@@ -27,11 +27,11 @@ RSpec.describe 'school removal', :schools, type: :system do
 
       before do
         refresh
-        click_button 'Lock user accounts'
+        click_button 'Disable user accounts'
       end
 
       it 'removes the users' do
-        expect(page).to have_content('Users have been deactivated')
+        expect(page).to have_content('Users have been disabled')
       end
     end
 

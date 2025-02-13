@@ -7,7 +7,7 @@ describe 'Mailchimp Status Report' do
     create_list(:school_admin, 3, mailchimp_status: :subscribed, mailchimp_updated_at: 1.day.ago)
     create_list(:group_admin, 2, mailchimp_status: :unsubscribed, mailchimp_updated_at: 6.days.ago)
     create(:school_admin, mailchimp_status: :subscribed, mailchimp_updated_at: 8.days.ago)
-    create(:school_admin, mailchimp_status: :subscribed)
+    create(:school_admin, :skip_confirmed, confirmed_at: nil, mailchimp_status: :subscribed)
     create(:school_admin)
 
     sign_in(create(:admin, mailchimp_status: :cleaned))
@@ -20,7 +20,7 @@ describe 'Mailchimp Status Report' do
     within_table('sync-status') do
       expect(all('tr').map { |tr| tr.all('td').map(&:text) }).to \
         eq([[],
-            ['Pending updates', '8'],
+            ['Pending updates', '7'],
             ['Submitted in last 24 hours', '0'],
             ['Submitted in last week', '5']])
     end
@@ -33,7 +33,7 @@ describe 'Mailchimp Status Report' do
             %w[Archived 0],
             %w[Cleaned 1],
             %w[Nonsubscribed 0],
-            %w[Subscribed 5],
+            %w[Subscribed 4],
             %w[Unsubscribed 2],
             %w[Unknown 1]])
     end

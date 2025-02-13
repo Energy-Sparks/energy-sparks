@@ -60,6 +60,16 @@ RSpec.describe 'sign in', type: :system do
 
     it_behaves_like 'a user without a last_sign_in_at'
 
+    context 'when disabled' do
+      let!(:user) { create(:staff, active: false) }
+
+      let(:password) { user.password }
+
+      it_behaves_like 'a logged out user'
+      it_behaves_like 'a user with unmodified last_sign_in_at' do
+        let(:saved_last_sign_in_at) { last_sign_in_at }
+      end
+    end
 
     context 'with incorrect password' do
       let(:password) { 'incorrectpassword' }

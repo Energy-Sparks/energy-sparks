@@ -64,10 +64,15 @@
             <div class="card-footer">
               <%= link_to 'View documents', school_consent_documents_path(@school), class: 'btn btn-sm btn-default',
                                                                                     target: '_blank', rel: 'noopener' %>
-              <%= link_to 'Request bill', new_admin_school_bill_request_path(@school), class: 'btn btn-sm btn-default' %>
+              <% if @school.bill_requested %>
+                <%= link_to 'Clear bill request', clear_admin_school_bill_requests_path(@school),
+                            method: :post, class: 'btn btn-sm btn-default' %>
+              <% else %>
+                <%= link_to 'Request bill', new_admin_school_bill_request_path(@school),
+                            class: 'btn btn-sm btn-default' %>
+              <% end %>
             </div>
           </div>
-
       </div>
 
       <div class="row mt-1 mb-1">
