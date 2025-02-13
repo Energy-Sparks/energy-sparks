@@ -746,7 +746,9 @@ Rails.application.routes.draw do
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
       mount Flipper::UI.app(Flipper) => 'flipper', as: :flipper
-      mount Lookbook::Engine, as: :components, at: 'components'
+      unless Rails.env.test?
+        mount Lookbook::Engine, as: :components, at: 'components'
+      end
     end
   end # Admin name space
 
