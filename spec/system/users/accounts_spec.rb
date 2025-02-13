@@ -113,9 +113,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
   end
 
   context 'when not logged in' do
-    before do
-      visit user_path(user)
-    end
+    before { visit user_path(user) }
 
     it_behaves_like 'the page requires a login'
   end
@@ -139,13 +137,19 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     end
 
     context 'with a pupil account' do
-      it 'does not allow me to view my profile'
+      let(:user) { create(:pupil) }
+
+      before { sign_in(user) }
+
+      context 'when viewing my account' do
+        before { visit user_path(user) }
+
+        it_behaves_like 'the user is not authorised'
+      end
     end
 
     context 'with a school admin account' do
-      before do
-        sign_in(user)
-      end
+      before { sign_in(user) }
 
       context 'when viewing my account' do
         before { visit user_path(user) }
@@ -180,9 +184,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     context 'with a staff account' do
       let!(:user) { create(:staff) }
 
-      before do
-        sign_in(user)
-      end
+      before { sign_in(user) }
 
       context 'when viewing my profile' do
         before { visit user_path(user) }
@@ -204,9 +206,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     context 'with a cluster admin' do
       let!(:user) { create(:school_admin, :with_cluster_schools) }
 
-      before do
-        sign_in(user)
-      end
+      before { sign_in(user) }
 
       context 'when viewing my profile' do
         before { visit user_path(user) }
@@ -228,9 +228,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     context 'with a group admin' do
       let!(:user) { create(:group_admin, school_group: create(:school_group, :with_active_schools)) }
 
-      before do
-        sign_in(user)
-      end
+      before { sign_in(user) }
 
       context 'when viewing my profile' do
         before { visit user_path(user) }
@@ -252,9 +250,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     context 'with an admin account' do
       let!(:user) { create(:admin) }
 
-      before do
-        sign_in(user)
-      end
+      before { sign_in(user) }
 
       context 'when viewing my profile' do
         before { visit user_path(user) }
