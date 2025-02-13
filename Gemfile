@@ -131,7 +131,6 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'knapsack'
-  gem 'lookbook'
   gem 'rails-controller-testing'
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
@@ -139,6 +138,10 @@ group :development, :test do
   gem 'terminal-notifier-guard', require: false
   gem 'webmock'
   gem 'wisper-rspec', require: false
+end
+
+group :development, :production do
+  gem 'lookbook'
 end
 
 group :development do

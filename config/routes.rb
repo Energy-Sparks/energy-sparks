@@ -491,7 +491,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :mailer_previews, only: [:index]
-    resources :component_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
 
@@ -747,6 +746,7 @@ Rails.application.routes.draw do
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
       mount Flipper::UI.app(Flipper) => 'flipper', as: :flipper
+      mount Lookbook::Engine, as: :components, at: 'components'
     end
   end # Admin name space
 
@@ -793,7 +793,4 @@ Rails.application.routes.draw do
     code: /#{ErrorsController::CODES.join("|")}/
   }
 
-  if Rails.env.development?
-    mount Lookbook::Engine, at: "/lookbook"
-  end
 end
