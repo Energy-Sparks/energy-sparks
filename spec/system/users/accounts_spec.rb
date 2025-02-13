@@ -27,6 +27,12 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
     end
 
+    it 'displays links to manage emails' do
+      within('#my-schools-summary') do
+        expect(page).to have_link(I18n.t('users.show.update_email_preferences'), href: user_emails_path(user))
+      end
+    end
+
     it 'displays summary of my schools', if: school_user do
       expect(page).to have_css('#my-schools-summary')
       within('#my-schools-summary') do

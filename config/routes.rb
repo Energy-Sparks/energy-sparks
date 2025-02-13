@@ -283,6 +283,7 @@ Rails.application.routes.draw do
     end
     scope module: :users do
       resources :contacts, path: 'alerts', only: [:index, :create, :destroy]
+      resources :emails, only: [:index, :update]
     end
   end
 

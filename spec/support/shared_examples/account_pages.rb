@@ -31,4 +31,10 @@ RSpec.shared_examples 'an account page with navigation' do |admin: false|
       expect(page).not_to have_link(I18n.t('nav.my_schools'), href: user_contacts_path(user))
     end
   end
+
+  it 'displays links to manage emails' do
+    within('#profile-page-navigation') do
+      expect(page).to have_link(I18n.t('users.show.update_email_preferences'), href: user_emails_path(user))
+    end
+  end
 end
