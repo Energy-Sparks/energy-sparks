@@ -3,7 +3,6 @@
 module Admin
   module Reports
     class ManualReadsController < AdminController
-      # include Rails.application.routes.url_helpers
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
 
@@ -35,13 +34,17 @@ module Admin
         def display_html
           @display == :csv_and_html || @display == :html
         end
+
+        def display_csv
+          @display == :csv_and_html || @display == :csv
+        end
       end
 
       def index
-        @columns = [
+        columns = [
           Column.new(:group_name,
-                     ->(meter) { meter.school.school_group.name },
-                     ->(meter, csv) { link_to(csv, school_group_url(meter.school.school_group)) }),
+                     ->(meter) { meter.school.school_group&.name },
+                     ->(meter, csv) { csv && link_to(csv, school_group_url(meter.school.school_group)) }),
           Column.new(:school_name,
                      ->(meter) { meter.school.name },
                      ->(meter, csv) { link_to(csv, school_url(meter.school)) }),
@@ -68,8 +71,24 @@ module Admin
                      ->(meter) { meter.issues.note.count },
                      display: :csv)
         ]
-        @html_columns = @columns.filter(&:display_html)
-        @meters = Meter.active.where(manual_reads: false).limit(10)
+        @html_columns = columns.filter(&:display_html)
+        @meters = Meter.active.where(manual_reads: true)
+        respond_to do |format|
+          format.html
+          format.csv do
+            send_data csv_report(columns), filename: EnergySparks::Filenames.csv('manual-reads-report')
+          end
+        end
+      end
+
+      def csv_report(columns)
+        csv_columns = columns.filter(&:display_csv)
+        CSV.generate(headers: true) do |csv|
+          csv << csv_columns.map(&:name)
+          @meters.find_each do |meter|
+            csv << csv_columns.map { |column| column.csv(meter) }
+          end
+        end
       end
     end
   end
