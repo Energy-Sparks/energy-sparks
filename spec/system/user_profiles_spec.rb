@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'User profiles', :include_application_helper do
+RSpec.describe 'User profile pages and account updates', :include_application_helper do
   let!(:user) { create(:school_admin) }
 
   shared_examples 'requires a login' do
@@ -164,7 +164,6 @@ RSpec.describe 'User profiles', :include_application_helper do
     end
 
     context 'with a pupil account' do
-      it 'does not show link in navbar'
       it 'does not allow me to view my profile'
     end
 
