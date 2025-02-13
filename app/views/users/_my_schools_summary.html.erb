@@ -33,8 +33,7 @@
     </div>
     <div class="row mt-2 mb-4">
       <div class="col">
-        <%= link_to t('users.show.manage_alerts'), user_path(user), class: 'btn btn-primary' %>
-        <%= link_to t('users.show.update_email_preferences'), user_path(user), class: 'btn btn-success' %>
+        <%= link_to t('users.show.manage_alerts'), user_contacts_path(user), class: 'btn btn-primary' unless user.admin? %>
       </div>
     </div>
   </div>

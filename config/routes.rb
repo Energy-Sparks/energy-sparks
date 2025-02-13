@@ -281,6 +281,9 @@ Rails.application.routes.draw do
       get :edit_password
       patch :update_password
     end
+    scope module: :users do
+      resources :contacts, path: 'alerts', only: [:index, :create, :destroy]
+    end
   end
 
   resources :schools do

@@ -1,6 +1,11 @@
 ---
 en:
   users:
+    contacts:
+      create:
+        failed: Failed to subscribe to alerts
+        subscribed: Subscribed to alerts
+        unsubscribed: Unsubscribed to alerts
     edit:
       account_updated: Account updated
     edit_password:

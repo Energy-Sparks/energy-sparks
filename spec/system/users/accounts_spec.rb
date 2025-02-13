@@ -1,26 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe 'User profile pages and account updates', :include_application_helper do
+RSpec.describe 'User account page and updates', :include_application_helper do
   let!(:user) { create(:school_admin) }
-
-  shared_examples 'requires a login' do
-    it { expect(page).to have_content('Sign in to Energy Sparks') }
-  end
-
-  shared_examples 'user is not authorised' do
-    it { expect(page).to have_content('You are not authorized to access this page') }
-  end
-
-  shared_examples 'a profile page layout' do
-    it { expect(page).to have_title(user.name) }
-
-    it 'displays profile header' do
-      expect(page).to have_css('#profile-header')
-      within('#profile-header') do
-        expect(page).to have_content(user.name)
-      end
-    end
-  end
 
   shared_examples 'a profile page' do |group_admin: false, cluster_admin: false, school_user: true|
     it 'displays a basic profile summary' do
@@ -37,12 +18,6 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
     it 'displays staff role', if: school_user || cluster_admin do
       within('#profile-summary') do
         expect(page).to have_content(user.staff_role.try(:translated_title))
-      end
-    end
-
-    it 'displays links to manage emails', if: school_user || cluster_admin || group_admin do
-      within('#my-schools-summary') do
-        expect(page).to have_link(I18n.t('users.show.update_email_preferences'))
       end
     end
 
@@ -142,7 +117,7 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
       visit user_path(user)
     end
 
-    it_behaves_like 'requires a login'
+    it_behaves_like 'the page requires a login'
   end
 
   context 'when logged in' do
@@ -154,7 +129,7 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
         visit user_path(user)
       end
 
-      it_behaves_like 'user is not authorised'
+      it_behaves_like 'the user is not authorised'
 
       context 'when I am a school admin from their school' do
         let!(:signed_in_user) { create(:school_admin, school: user.school) }
@@ -175,7 +150,7 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
       context 'when viewing my account' do
         before { visit user_path(user) }
 
-        it_behaves_like 'a profile page layout'
+        it_behaves_like 'an account page with navigation'
         it_behaves_like 'a profile page'
       end
 
@@ -200,17 +175,6 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
 
         it_behaves_like 'a working password form'
       end
-
-      context 'when viewing my email preferences' do
-        it 'show my preferences in Mailchimp'
-        it 'allows me to update my preferences'
-        it 'links to managing alerts'
-      end
-
-      context 'when viewing my schools' do
-        it 'displays my schools'
-        it 'allows me to update my alert preferences'
-      end
     end
 
     context 'with a staff account' do
@@ -223,7 +187,7 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
       context 'when viewing my profile' do
         before { visit user_path(user) }
 
-        it_behaves_like 'a profile page layout'
+        it_behaves_like 'an account page with navigation'
         it_behaves_like 'a profile page'
       end
 
@@ -247,7 +211,7 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
       context 'when viewing my profile' do
         before { visit user_path(user) }
 
-        it_behaves_like 'a profile page layout'
+        it_behaves_like 'an account page with navigation'
         it_behaves_like 'a profile page', cluster_admin: true, school_user: false
       end
 
@@ -271,7 +235,7 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
       context 'when viewing my profile' do
         before { visit user_path(user) }
 
-        it_behaves_like 'a profile page layout'
+        it_behaves_like 'an account page with navigation'
         it_behaves_like 'a profile page', group_admin: true, school_user: false
       end
 
@@ -295,7 +259,7 @@ RSpec.describe 'User profile pages and account updates', :include_application_he
       context 'when viewing my profile' do
         before { visit user_path(user) }
 
-        it_behaves_like 'a profile page layout'
+        it_behaves_like 'an account page with navigation', admin: true
         it_behaves_like 'a profile page', school_user: false
       end
 

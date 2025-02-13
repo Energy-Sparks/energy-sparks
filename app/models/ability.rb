@@ -125,6 +125,7 @@ class Ability
 
     unless user.pupil? || user.guest? || user.admin?
       can :manage, User, id: user.id
+      can :manage, Contact, user_id: user.id
     end
 
     if user.admin? || user.analytics?
