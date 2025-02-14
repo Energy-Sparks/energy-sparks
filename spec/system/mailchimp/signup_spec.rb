@@ -151,6 +151,16 @@ describe 'Mailchimp Sign-up' do
   end
 
   describe 'when visiting the mailchimp form' do
+    context 'with a logged in user', with_feature: :profile_pages do
+      include_context 'with a signed-in user'
+
+      before do
+        visit new_mailchimp_signup_path
+      end
+
+      it { expect(page).to have_content(I18n.t('users.show.update_email_preferences')) }
+    end
+
     context 'with a logged in user' do
       include_context 'with a stubbed audience manager'
       include_context 'with a signed-in user'

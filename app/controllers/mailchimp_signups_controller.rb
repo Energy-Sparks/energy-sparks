@@ -2,6 +2,7 @@ class MailchimpSignupsController < ApplicationController
   include NewsletterSubscriber
 
   skip_before_action :authenticate_user!
+  before_action :redirect_if_signed_in, only: [:new]
 
   def new
     audience_manager.list # load to ensure config is set
@@ -52,5 +53,12 @@ class MailchimpSignupsController < ApplicationController
 
   def sign_up_params
     params.permit(:email_address, :name, :school, interests: {})
+  end
+
+  def redirect_if_signed_in
+    return unless Flipper.enabled?(:profile_pages, current_user)
+    return unless user_signed_in? && !(current_user.pupil? || current_user.school_onboarding?)
+
+    redirect_to user_emails_path(current_user)
   end
 end
