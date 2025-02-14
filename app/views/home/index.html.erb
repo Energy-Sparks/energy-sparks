@@ -26,8 +26,8 @@
 
     <%= render GridComponent.new(cols: 4,
                                  cell_classes: 'pb-4',
-                                 component_classes: 'rounded text-center bg-blue-very-dark p-4 h-100') do |grid| %>
-      <% grid.with_card(classes: 'bg-blue-very-dark') do |card| %>
+                                 component_classes: 'rounded-12 text-center bg-blue-very-dark p-4 h-100') do |grid| %>
+      <% grid.with_card do |card| %>
         <%= card.with_icon fuel_type: :electricity, style: :circle %>
         <%= card.with_header('Save energy') %>
         <%= card.with_figure('10%') %>
@@ -35,20 +35,20 @@
           Typical energy and carbon savings seen by schools in their first year with Energy Sparks
         <% end %>
       <% end %>
-      <% grid.with_card(classes: 'bg-blue-very-dark') do |card| %>
-        <%= card.with_icon name: 'school', style: :circle %>
+      <% grid.with_card do |card| %>
+        <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
         <%= card.with_header('Primary schools') %>
         <%= card.with_figure('£5,000') %>
         <%= card.with_subtext { 'and 7 tonnes CO₂ - average saving in 2023/24' } %>
       <% end %>
-      <% grid.with_card(classes: 'bg-blue-very-dark') do |card| %>
-        <%= card.with_icon name: 'school', style: :circle %>
+      <% grid.with_card do |card| %>
+        <%= card.with_icon name: 'school', style: :circle, classes: 'text-success' %>
         <%= card.with_header('Secondary schools') %>
         <%= card.with_figure('£20,000') %>
         <%= card.with_subtext { 'and 26 tonnes CO₂ - average saving in 2023/24' } %>
       <% end %>
-      <% grid.with_card(classes: 'bg-blue-very-dark') do |card| %>
-        <%= card.with_icon name: :recycle, style: :circle %>
+      <% grid.with_card do |card| %>
+        <%= card.with_icon name: 'book-open-reader', style: :circle, classes: 'text-yellow-light' %>
         <%= card.with_header('Empower pupils') %>
         <%= card.with_figure('70%') %>
         <%= card.with_subtext do %>
