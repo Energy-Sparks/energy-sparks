@@ -56,7 +56,7 @@
              link: link_to(t('advice_pages.baseload.analysis.meter_breakdown.link_text'), '#meter-breakdown')) %></p>
   <% end %>
 
-  <%= t('advice_pages.baseload.analysis.charts.baseload_chart_considerations') %>
+  <%= t('advice_pages.baseload.analysis.charts.baseload_chart_considerations').map { |p| "<p>#{p}</p>" }.join.html_safe %>
 
   <!--  LONG TERM TRENDS -->
   <%= render 'schools/advice/section_title', section_id: 'long-term-trends',
