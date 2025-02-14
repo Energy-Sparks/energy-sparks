@@ -6,7 +6,8 @@ class GridComponent < ApplicationComponent
     icon: { renders: ->(*args, **kwargs, &block) { column_div(IconComponent, *args, **kwargs, &block) }, as: :icon },
     image: { renders: ->(*args, **kwargs, &block) { column_div(Elements::ImageComponent, *args, **kwargs, &block) }, as: :image },
     prompt_list: { renders: ->(*args, **kwargs, &block) { column_div(PromptListComponent, *args, **kwargs, &block) }, as: :prompt_list },
-    stats_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::StatsComponent, *args, **kwargs, &block) }, as: :stats_card }
+    stats_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::StatsComponent, *args, **kwargs, &block) }, as: :stats_card },
+    feature_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::FeatureComponent, *args, **kwargs, &block) }, as: :feature_card }
   }
 
   private

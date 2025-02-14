@@ -13,6 +13,9 @@ en:
       message_5: Explore eco-team and classroom activities for pupils.
       message_6: Share energy saving ideas and compete against other schools.
     enrol_your_school: Find out more
+    feature:
+      description_html: Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.
+      header: Helping schools cut energy costs and fight climate change
     funnels:
       local_authority:
         button: Energy Sparks for Local Authorities

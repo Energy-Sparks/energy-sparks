@@ -4,15 +4,15 @@
   <div class="bg-blue-very-dark text-white hero">
     <%= render GridComponent.new(cols: 2,
                                  classes: 'container') do |grid| %>
-      <% grid.with_block classes: 'py-4' do %>
-          <h2 class='text-white'>Helping schools cut energy costs and fight climate change</h2>
-          <p class='small'>Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.</p>
-          <p>
+      <% grid.with_feature_card classes: 'py-4' do |feature| %>
+        <%= feature.with_header t('home.feature.header') %>
+        <%= feature.with_description { t('home.feature.description_html') } %>
+        <%= feature.with_buttons do %>
             <%= link_to t('nav.enrol'), find_out_more_campaigns_path, class: 'btn btn-success' %>
             <%= link_to t('campaigns.find_out_more.book_demo'),
                         book_demo_campaigns_path,
                         class: 'btn btn-outline-white' %>
-          </p>
+        <% end %>
       <% end %>
       <%= grid.with_image src: 'on-screen.jpg', stretch: :right, width: '50vw', collapse: true %>
     <% end %>
@@ -29,26 +29,26 @@
                                  component_classes: 'rounded-12 text-center bg-blue-very-dark p-4 h-100') do |grid| %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon fuel_type: :electricity, style: :circle %>
-        <%= card.with_header(t('home.stats.card_1.header')) %>
-        <%= card.with_figure(t('home.stats.card_1.figure')) %>
+        <%= card.with_header t('home.stats.card_1.header') %>
+        <%= card.with_figure t('home.stats.card_1.figure') %>
         <%= card.with_subtext { t('home.stats.card_1.subtext') } %>
       <% end %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
-        <%= card.with_header(t('home.stats.card_2.header')) %>
-        <%= card.with_figure(t('home.stats.card_2.figure')) %>
+        <%= card.with_header t('home.stats.card_2.header') %>
+        <%= card.with_figure t('home.stats.card_2.figure') %>
         <%= card.with_subtext { t('home.stats.card_2.subtext') } %>
       <% end %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon name: 'school', style: :circle, classes: 'text-success' %>
-        <%= card.with_header(t('home.stats.card_3.header')) %>
-        <%= card.with_figure(t('home.stats.card_3.figure')) %>
+        <%= card.with_header t('home.stats.card_3.header') %>
+        <%= card.with_figure t('home.stats.card_3.figure') %>
         <%= card.with_subtext { t('home.stats.card_3.subtext') } %>
       <% end %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon name: 'book-open-reader', style: :circle, classes: 'text-yellow-light' %>
-        <%= card.with_header(t('home.stats.card_4.header')) %>
-        <%= card.with_figure(t('home.stats.card_4.figure')) %>
+        <%= card.with_header t('home.stats.card_4.header') %>
+        <%= card.with_figure t('home.stats.card_4.figure') %>
         <%= card.with_subtext { t('home.stats.card_4.subtext') } %>
       <% end %>
     <% end %>
