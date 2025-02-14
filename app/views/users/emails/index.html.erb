@@ -13,9 +13,9 @@
     <div class="row mt-4 mb-4">
       <div class="col">
         <%= form_tag user_emails_path(@user), id: 'mailchimp-form', class: 'mailchimp-form' do %>
-          <% render 'mailchimp_interest_fields',
-                    email_types: @email_types,
-                    interests: @interests %>
+          <%= render 'mailchimp_interest_fields',
+                     email_types: @email_types,
+                     interests: @interests %>
 
           <div class="row">
             <div class="col-md-12">
