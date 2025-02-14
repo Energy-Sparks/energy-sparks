@@ -8,7 +8,7 @@ gem 'rails', '~> 7.2.2'
 
 # Rails/Core
 gem 'bootsnap'
-gem 'image_processing', '~> 1.13'
+gem 'image_processing', '~> 1.14'
 gem 'jbuilder', '~> 2.13' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
@@ -138,6 +138,10 @@ group :development, :test do
   gem 'terminal-notifier-guard', require: false
   gem 'webmock'
   gem 'wisper-rspec', require: false
+end
+
+group :development, :production do
+  gem 'lookbook'
 end
 
 group :development do
