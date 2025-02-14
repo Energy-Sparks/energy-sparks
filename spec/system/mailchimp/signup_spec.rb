@@ -152,6 +152,7 @@ describe 'Mailchimp Sign-up' do
 
   describe 'when visiting the mailchimp form' do
     context 'with a logged in user', with_feature: :profile_pages do
+      include_context 'with a stubbed audience manager'
       include_context 'with a signed-in user'
 
       before do
