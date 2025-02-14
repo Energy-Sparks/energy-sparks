@@ -1,9 +1,8 @@
 <% content_for :page_title, t('common.labels.home') %>
 
 <% if Flipper.enabled?(:new_home_page, current_user) %>
-  <div class="bg-blue-very-dark text-white hero">
-    <%= render GridComponent.new(cols: 2,
-                                 classes: 'container') do |grid| %>
+  <div class="bg-blue-very-dark text-white">
+    <%= render GridComponent.new(cols: 2, classes: 'container') do |grid| %>
       <% grid.with_feature_card classes: 'py-4' do |feature| %>
         <%= feature.with_header t('home.feature.header') %>
         <%= feature.with_description { t('home.feature.description_html') } %>

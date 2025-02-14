@@ -1,0 +1,18 @@
+  .feature-card-component {
+    @media (min-width: map-get($grid-breakpoints, 'xl')) {
+      h1, h2, h3, h4 {
+        font-size: 3vw;
+        line-height: 4vw;
+      }
+
+      p {
+        font-size: 1.3vw;
+        line-height: 2vw;
+      }
+
+      .btn {
+        font-size: 1.3vw;
+        line-height: 2vw;
+      }
+    }
+  }
