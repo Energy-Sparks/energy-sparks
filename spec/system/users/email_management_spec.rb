@@ -1,21 +1,52 @@
 require 'rails_helper'
 
 RSpec.describe 'User email management', :include_application_helper do
+  include_context 'with a stubbed audience manager'
+
   shared_examples 'an email preference page' do
-    context 'when opted out' do
-      it 'displays choices correctly'
+    it do
+      within('#email-preferences') do
+        expect(page).to have_content(I18n.t('users.show.update_email_preferences'))
+      end
     end
 
     context 'with existing preferences' do
-      it 'displays them correctly'
+      it 'displays them correctly' do
+        expect(page).to have_checked_field('Getting the most out of Energy Sparks')
+        expect(page).not_to have_checked_field('Engaging pupils in energy saving and climate')
+        expect(page).not_to have_checked_field('Energy saving leadership')
+        expect(page).not_to have_checked_field('Training opportunities')
+        expect(page).not_to have_checked_field('Tailored advice and support')
+      end
     end
 
     context 'when not in Mailchimp' do
-      it 'defaults form'
+      before do
+        allow(audience_manager).to receive(:get_list_member).and_return(nil)
+      end
+
+      it 'defaults form to all checked' do
+        refresh
+        expect(page).to have_checked_field('Getting the most out of Energy Sparks')
+        expect(page).to have_checked_field('Engaging pupils in energy saving and climate')
+        expect(page).to have_checked_field('Energy saving leadership')
+        expect(page).to have_checked_field('Training opportunities')
+        expect(page).to have_checked_field('Tailored advice and support')
+      end
     end
 
     context 'when submitting preferences' do
-      it 'updates Mailchimp correctly'
+      it 'updates Mailchimp correctly' do
+        expect(audience_manager).to receive(:subscribe_or_update_contact) do |contact, kwargs|
+          expect(contact.interests.values).to eq([true, true, false, false, false])
+          expect(kwargs[:status]).to eq('subscribed')
+        end
+        check('Engaging pupils in energy saving and climate')
+        within('#mailchimp-form') do
+          click_on('Update')
+        end
+        expect(page).to have_content(I18n.t('users.emails.update.updated'))
+      end
     end
   end
 

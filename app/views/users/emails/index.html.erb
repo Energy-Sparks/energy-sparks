@@ -1,5 +1,5 @@
 <%= render 'users/user_page', user: @user do %>
-  <div id="my-school-list">
+  <div id="email-preferences">
     <div class="row">
       <div class="col">
         <h2><%= t('users.show.update_email_preferences') %></h2>
@@ -32,6 +32,14 @@
               </div>
             </div>
           <% end %>
+
+          <div class="row">
+            <div class="col-md-12">
+              <p>
+                <%= t('users.emails.index.footer_html') %>
+              </p>
+            </div>
+          </div>
 
           <div class="row">
             <div class="col-md-12">

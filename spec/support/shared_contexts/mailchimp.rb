@@ -2,11 +2,11 @@ RSpec.shared_context 'with a stubbed audience manager' do
   let(:client) { instance_double(MailchimpMarketing::Client, lists: lists_api) }
 
   let(:lists_api) { instance_double(MailchimpMarketing::ListsApi) }
-  let!(:lists_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/lists.yml')) }
-  let!(:categories_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/categories.yml')) }
-  let!(:interests_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/interests.yml')) }
-  let!(:contact_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/contact.yml')) }
-  let!(:members_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/members.yml')) }
+  let(:lists_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/lists.yml')) }
+  let(:categories_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/categories.yml')) }
+  let(:interests_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/interests.yml')) }
+  let(:contact_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/contact.yml')) }
+  let(:members_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/members.yml')) }
 
   let(:audience_manager) { Mailchimp::AudienceManager.new(client) }
 
