@@ -16,7 +16,7 @@ module Admin
 
         def name
           string = @name.to_s
-          string.match?(/[A-Z]/) ? string : string.titleize
+          string.downcase == string ? string.titleize : string
         end
 
         def csv(arg)
@@ -32,11 +32,11 @@ module Admin
         end
 
         def display_html
-          @display == :csv_and_html || @display == :html
+          %i[csv_and_html html].include?(@display)
         end
 
         def display_csv
-          @display == :csv_and_html || @display == :csv
+          %i[csv_and_html csv].include?(@display)
         end
       end
 
