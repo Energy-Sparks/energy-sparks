@@ -64,7 +64,11 @@ RSpec.describe 'User confirmations', :schools, type: :system do
       fill_in :user_password, with: valid_password
       fill_in :user_password_confirmation, with: valid_password
       check 'privacy'
-      uncheck 'Newsletter'
+      all('input[type=checkbox]').each do |checkbox|
+        if checkbox.checked?
+          checkbox.click
+        end
+      end
       click_button 'Complete registration'
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
     end
@@ -93,7 +97,7 @@ RSpec.describe 'User confirmations', :schools, type: :system do
       check 'privacy'
       fill_in :user_password, with: valid_password
       uncheck 'Subscribe to school alerts'
-      uncheck 'Newsletter'
+      uncheck 'Getting the most out of Energy Sparks'
       click_button 'Complete registration'
       expect(page).to have_content("Password confirmation doesn't match Password")
       expect(page).not_to have_checked_field('Subscribe to school alerts')

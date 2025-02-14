@@ -13,7 +13,20 @@ en:
       password_updated: Password updated
     emails:
       index:
+        footer_html: |-
+          <p>
+            Note that if you decide to opt-out of all emails, we may still need
+            to contact you with important information about your account or your school's use of Energy Sparks.
+          </p>
+        intro_html: |-
+          <p>
+            We know how busy you are - let us know your interests below, so we can ensure we send you the information you will find most helpful.
+          </p>
+          <p>
+            You can update your preferences at any time.
+          </p>
       update:
+        updated: Email preferences updated
     show:
       change_password: Change password
       joined: You joined Energy Sparks on %{date}

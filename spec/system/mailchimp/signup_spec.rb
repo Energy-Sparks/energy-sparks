@@ -33,10 +33,6 @@ describe 'Mailchimp Sign-up' do
     end
 
     context 'when the form is completed', if: fill_in_form do
-      before do
-        allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
-      end
-
       it 'subscribes the user' do
         fill_in :name, with: name
         fill_in :school, with: school
@@ -52,10 +48,6 @@ describe 'Mailchimp Sign-up' do
     end
 
     context 'when the form is pre-filled', unless: fill_in_form do
-      before do
-        allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
-      end
-
       it 'shows disabled email and name fields' do
         expect(page).to have_field(:email_address, disabled: true, with: email)
         expect(page).to have_field(:name, disabled: true, with: name)
@@ -112,7 +104,6 @@ describe 'Mailchimp Sign-up' do
         include_context 'with an existing user'
 
         before do
-          allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
           visit terms_and_conditions_path
           within '#newsletter-signup' do
             fill_in :email_address, with: email
@@ -190,7 +181,6 @@ describe 'Mailchimp Sign-up' do
         include_context 'with an existing user'
 
         before do
-          allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
           visit new_mailchimp_signup_path
         end
 
