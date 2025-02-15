@@ -214,7 +214,7 @@ module Colours
           key = name.to_s.dasherize
           if value.is_a?(Hash)
             "  #{name}: (\n" +
-              value.map { |shade, _| "    #{shade}: $#{key}-#{shade.to_s.dasherize}," }.join("\n") +
+              value.map { |shade, _| "    #{shade.to_s.dasherize}: $#{key}-#{shade.to_s.dasherize}," }.join("\n") +
             "\n  ),"
           else
             "  #{name}: $#{key},"

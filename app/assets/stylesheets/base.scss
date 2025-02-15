@@ -34,8 +34,9 @@ p, .trix-content div {
   white-space: nowrap;
 }
 
-.bg-light-blue {
-  background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
+.rounded-12 {
+  border-radius: 12px;
+
 }
 
 .fa-li.fa-check {
@@ -168,16 +169,8 @@ input, progress {
   background-color: $header-dark;
 }
 
-.text-white {
-  color: $white;
-}
-
-.text-grey-light {
-  color: $grey-light;
-}
-
-.text-dark-blue {
-  color: $blue-very-dark;
+.bg-light-blue {
+  background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
 }
 
 .badge-grey-light {
@@ -194,6 +187,32 @@ input, progress {
   background: $grey-dark;
   border:2px solid $grey-dark;
   border-radius: 6px;
+}
+
+// palette styles
+
+@each $colour, $shades in $colours-palette {
+  $colour-name: $colour;
+
+  @if type-of($shades) == map {
+    @each $tone, $value in $shades {
+      $tone-name: $tone;
+
+      .text-#{$colour-name}-#{$tone-name} {
+        color: $value;
+      }
+      .bg-#{$colour-name}-#{$tone-name} {
+        background-color: $value;
+      }
+    }
+  } @else {
+    .text-#{$colour-name} {
+      color: $shades;
+    }
+    .bg-#{$colour-name} {
+      background-color: $shades;
+    }
+  }
 }
 
 // polarity styles
