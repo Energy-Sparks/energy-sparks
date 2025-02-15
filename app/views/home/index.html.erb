@@ -3,7 +3,7 @@
 <% if Flipper.enabled?(:new_home_page, current_user) %>
   <div class="bg-blue-very-dark text-white">
     <%= render GridComponent.new(cols: 2, classes: 'container') do |grid| %>
-      <% grid.with_feature_card classes: 'py-4' do |feature| %>
+      <% grid.with_feature_card classes: 'py-4 text-white' do |feature| %>
         <%= feature.with_header t('home.feature.header') %>
         <%= feature.with_description { t('home.feature.description_html') } %>
         <%= feature.with_buttons do %>
@@ -24,8 +24,7 @@
     <% end %>
 
     <%= render GridComponent.new(cols: 4,
-                                 cell_classes: 'pb-4',
-                                 component_classes: 'rounded-12 text-center bg-blue-very-dark p-4 h-100') do |grid| %>
+                                 cell_classes: 'pb-4') do |grid| %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon fuel_type: :electricity, style: :circle %>
         <%= card.with_header t('home.stats.card_1.header') %>

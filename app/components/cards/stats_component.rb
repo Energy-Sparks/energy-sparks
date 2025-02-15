@@ -7,7 +7,7 @@ module Cards
 
     def initialize(id: '', classes: '')
       super(id: id, classes: classes)
-      add_classes('stats-card-component')
+      add_classes('stats-card-component bg-blue-dark rounded-12 text-center p-4 h-100')
     end
   end
 end
