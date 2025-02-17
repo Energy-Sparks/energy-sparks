@@ -21,7 +21,7 @@ describe ImportNotifier do
   end
 
   before do
-    travel_to(Date.new(2025, 2, 12))
+    travel_to(Date.new(2025, 2, 17))
     meter_1
   end
 
@@ -306,21 +306,21 @@ describe ImportNotifier do
                'Last validated reading date', 'Admin meter status', 'Manual reads', '', 'Group admin name'],
               ['Meters with stale data'],
               [sheffield_school.school_group.name, 'Gas', sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR',
-               meter_1.data_source.name, '', 'Mon 3rd Feb 2025', '', 'N', '', '', 'Admin Two'],
+               meter_1.data_source.name, '', 'Sat 8th Feb 2025', '', 'N', '', '', 'Admin Two'],
               [bath_school.school_group.name, 'Gas', bath_school.name, meter_2.mpan_mprn.to_s, 'NHH AMR',
-               meter_2.data_source.name, '', 'Mon 3rd Feb 2025', '', 'N', '', '', 'Admin One']])
+               meter_2.data_source.name, '', 'Sat 8th Feb 2025', '', 'N', '', '', 'Admin One']])
       end
 
       it 'has an attachment' do
         attachment = email.attachments[0]
         expect(attachment.content_type).to include('text/csv')
         expect(attachment.filename).to \
-          eq('energy-sparks-import-report-2025-02-12T00-00-00Z.csv')
+          eq('energy-sparks-import-report-2025-02-17T00-00-00Z.csv')
         expect(attachment.body.raw_source.split("\r\n")).to \
           eq(['"",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,' \
               'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
               ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
-               sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', data_source.name, '', '03/02/2025', '""',
+               sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', data_source.name, '', '08/02/2025', '""',
                'N', '0', '0', 'Admin Two'].join(',')])
       end
     end
