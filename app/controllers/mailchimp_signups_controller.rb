@@ -7,7 +7,7 @@ class MailchimpSignupsController < ApplicationController
 
   def new
     audience_manager.list # load to ensure config is set
-    @interests = default_interests(user)
+    @interests = default_interests
     @contact = populate_contact_for_form(current_user, params)
   rescue => e
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"
@@ -32,7 +32,7 @@ class MailchimpSignupsController < ApplicationController
     else
       flash[:error] = I18n.t('mailchimp_signups.index.select_interests')
     end
-    @interests = @contact.interests || default_interests
+    @interests = @contact.interests || default_interests(user)
     render :new
   end
 
