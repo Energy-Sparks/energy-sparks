@@ -3,10 +3,10 @@ module Users
     include NewsletterSubscriber
 
     load_resource :user
+    before_action :set_email_types
 
     def index
       audience_manager.list # load to ensure config is set
-      @email_types = list_of_email_types
       @interests = user_interests
       render :index, layout: 'dashboards'
     rescue => e
@@ -32,7 +32,7 @@ module Users
       if mailchimp_contact
         mailchimp_contact[:interests] # Hash of id -> status
       else
-        Mailchimp::Contact.default_interests(list_of_email_types, @user)
+        default_interests(@user)
       end
     end
   end

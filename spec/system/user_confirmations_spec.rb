@@ -13,11 +13,10 @@ RSpec.describe 'User confirmations', :schools, type: :system do
   context 'when confirming new user without school' do
     let!(:user) { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: nil, email: 'foo@bar.com', name: 'Foo Bar') }
 
-    it 'does not show newsletter or alert subscription options' do
+    it 'does not show alert subscription options' do
       visit user_confirmation_path(confirmation_token: confirmation_token)
       expect(page).to have_content('Your email address has been successfully confirmed')
       expect(page).not_to have_content('Energy Sparks alerts:')
-      expect(page).not_to have_content('Newsletters are our main communication channel for:')
     end
   end
 
@@ -29,7 +28,7 @@ RSpec.describe 'User confirmations', :schools, type: :system do
       visit user_confirmation_path(confirmation_token: confirmation_token)
       expect(page).to have_content('Your email address has been successfully confirmed')
       expect(page).not_to have_content('Energy Sparks alerts:')
-      expect(page).to have_content('Newsletters are our main communication channel for:')
+      expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
     end
   end
 
@@ -59,8 +58,11 @@ RSpec.describe 'User confirmations', :schools, type: :system do
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
     end
 
-    it 'allows newsletter to be unsubscribed' do
-      expect(audience_manager).not_to receive(:subscribe_or_update_contact)
+    it 'allows newsletter to be unsubscribed, but still adds user to Mailchimp' do
+      expect(audience_manager).to receive(:subscribe_or_update_contact) do |contact, kwargs|
+        expect(contact.interests.values.any?).to be(false)
+        expect(kwargs[:status]).to eq('subscribed')
+      end
       fill_in :user_password, with: valid_password
       fill_in :user_password_confirmation, with: valid_password
       check 'privacy'
@@ -100,8 +102,7 @@ RSpec.describe 'User confirmations', :schools, type: :system do
       uncheck 'Getting the most out of Energy Sparks'
       click_button 'Complete registration'
       expect(page).to have_content("Password confirmation doesn't match Password")
-      expect(page).not_to have_checked_field('Subscribe to school alerts')
-      expect(page).not_to have_checked_field('Subscribe to newsletters')
+      expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
     end
   end
 
@@ -125,7 +126,7 @@ RSpec.describe 'User confirmations', :schools, type: :system do
     it 'does not show checkboxes for subscriptions' do
       expect(page).to have_content('Set your password')
       expect(page).not_to have_content('Energy Sparks alerts:')
-      expect(page).not_to have_content('Newsletters are our main communication channel for:')
+      expect(page).not_to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
     end
   end
 end

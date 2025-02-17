@@ -3,6 +3,14 @@ module NewsletterSubscriber
 
   private
 
+  def set_email_types
+    @email_types = list_of_email_types
+  end
+
+  def default_interests(user = nil)
+    Mailchimp::Contact.default_interests(@email_types, user)
+  end
+
   def create_contact_from_user(user, sign_up_params)
     Mailchimp::Contact.from_user(user, interests: sign_up_params[:interests].transform_values {|v| v == 'true' })
   end

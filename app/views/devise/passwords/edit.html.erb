@@ -51,12 +51,16 @@
                                                             checked: @subscribe_alerts %>
     <% end %>
 
-    <% if @show_newletter_options %>
-      <hr>
-      <%= render 'schools/users/auto_subscribe_newsletter', checked: @subscribe_newsletters %>
-    <% end %>
-
     <% if @confirmed %>
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %>
+        </div>
+      </div>
+      <%= render 'users/emails/mailchimp_interest_fields',
+                 email_types: @email_types,
+                 interests: @interests %>
+
       <%= render 'shared/agree_terms_checkbox' %>
     <% end %>
 
