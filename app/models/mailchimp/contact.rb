@@ -22,7 +22,7 @@ module Mailchimp
       contact.contact_source = 'User'
       contact.confirmed_date = user.confirmed_at.to_date.iso8601
       contact.user_role = user.role.humanize
-      contact.user_status = user.access_locked? ? 'Disabled' : 'Active'
+      contact.user_status = user.active? ? 'Active' : 'Disabled'
       contact.locale = user.preferred_locale
       contact.interests = interests
 
