@@ -677,7 +677,6 @@ cy:
         could_not_decrypt: "(methu â dadgryptio)"
         email: E-bost
         introduction: Mae gan gyfrifon gweinyddwr ysgolion fynediad at holl swyddogaethau Sbarcynni a gallant reoli defnyddwyr eraill a diweddaru manylion yr ysgol
-        lock: Cloi
         make_school_admin: Gwneud yn weinyddwr ysgol
         name: Enw
         new_pupil_account: Cyfrif disgybl newydd

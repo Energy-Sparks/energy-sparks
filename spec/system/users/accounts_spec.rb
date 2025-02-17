@@ -54,6 +54,10 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
     end
 
+    it 'does not display admin options', if: school_user || cluster_admin || group_admin do
+      expect(page).not_to have_css('#admin-options')
+    end
+
     it 'displays a profile footer' do
       expect(page).to have_css('#profile-footer')
       within('#profile-footer') do
@@ -274,6 +278,24 @@ RSpec.describe 'User account page and updates', :include_application_helper do
         end
 
         it_behaves_like 'a working account form', staff_role: false
+      end
+
+      context 'when viewing another profile' do
+        let(:school_admin) { create(:school_admin, locked_at: 1.day.ago, confirmed_at: nil, mailchimp_status: :subscribed) }
+
+        before do
+          visit user_path(school_admin)
+        end
+
+        it 'has admin links' do
+          within('#admin-options') do
+            expect(page).to have_link('View in Mailchimp', href: admin_user_mailchimp_redirect_path(school_admin))
+            expect(page).to have_button('Resend confirmation')
+            expect(page).to have_link('Unlock', href: admin_user_unlock_path(school_admin))
+            expect(page).to have_link('Disable', href: admin_user_disable_path(school_admin))
+            expect(page).to have_link('Delete', href: admin_user_path(school_admin))
+          end
+        end
       end
     end
   end

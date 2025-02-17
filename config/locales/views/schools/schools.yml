@@ -705,7 +705,6 @@ en:
         could_not_decrypt: "(could not decrypt)"
         email: Email
         introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
-        lock: Lock
         make_school_admin: Make school admin
         name: Name
         new_pupil_account: New pupil account
