@@ -3,8 +3,10 @@ en:
   mailchimp_signups:
     index:
       follow_up: You will shortly receive an email to confirm your subscription.
+      select_interests: You must select one or more email types to subscribe
       subscription_confirmed: Subscription confirmed
       thank_you_for_subscribing: Thank you for subscribing!
+      unable_to_process_subscription: Unable to process Mailchimp newsletter subscription
     mailchimp_form:
       email_address: Email address *
       email_preferences: Email preferences

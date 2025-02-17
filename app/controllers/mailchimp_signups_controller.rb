@@ -24,12 +24,17 @@ class MailchimpSignupsController < ApplicationController
       user = User.find_by_email(sign_up_params[:email_address].downcase)
       @contact = create_contact(user, sign_up_params)
     end
-    resp = subscribe_contact(@contact, user)
-    if resp
-      redirect_to subscribed_mailchimp_signups_path and return
+
+    if @contact.interests.values.any?
+      resp = subscribe_contact(@contact, user)
+      if resp
+        redirect_to subscribed_mailchimp_signups_path and return
+      end
+    else
+      flash[:error] = I18n.t('mailchimp_signups.index.select_interests')
     end
     @email_types = list_of_email_types
-    @interests = @email_types.map {|i| [i.id, true] }.to_h # TODO default based on role?
+    @interests = @contact.interests || @email_types.map {|i| [i.id, true] }.to_h # TODO default based on role?
 
     render :new
   end

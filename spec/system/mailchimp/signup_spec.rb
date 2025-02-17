@@ -47,6 +47,20 @@ describe 'Mailchimp Sign-up' do
       end
     end
 
+    context 'with no interests selected', if: fill_in_form do
+      it 'displays an error' do
+        fill_in :name, with: name
+        fill_in :school, with: school
+        all('input[type=checkbox]').each do |checkbox|
+          if checkbox.checked?
+            checkbox.click
+          end
+        end
+        click_on 'Subscribe'
+        expect(page).to have_content(I18n.t('mailchimp_signups.index.select_interests'))
+      end
+    end
+
     context 'when the form is pre-filled', unless: fill_in_form do
       it 'shows disabled email and name fields' do
         expect(page).to have_field(:email_address, disabled: true, with: email)

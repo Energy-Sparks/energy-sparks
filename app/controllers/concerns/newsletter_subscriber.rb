@@ -17,7 +17,7 @@ module NewsletterSubscriber
       rescue => e
         Rails.logger.error(e)
         Rollbar.error(e)
-        flash[:error] = 'Unable to process Mailchimp newsletter subscription' if show_errors
+        flash[:error] = I18n.t('mailchimp_signups.index.unable_to_process_subscription') if show_errors
       end
     elsif show_errors
       flash[:error] = contact.errors.full_messages.join(', ')
