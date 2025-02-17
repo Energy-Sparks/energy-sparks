@@ -37,6 +37,8 @@
   </div>
 
   <% if current_user.admin? %>
+    <h3><%= t('schools.meters.show.admin_details') %></h3>
+
     <div class="form-group">
       <%= form.label :meter_system, t('schools.meters.form.meter_system') %>
       <%= form.select(:meter_system, Meter.meter_systems.keys.map do |meter_system|
@@ -61,10 +63,15 @@
                                                   [d.label, d.id]
                                                 end, { include_blank: true }, class: 'form-control') %>
     </div>
+    <div class="form-group">
+      <%= form.label :manual_reads, t('schools.meters.index.manual_reads') %>
+      <%= form.check_box :manual_reads %>
+    </div>
   <% end %>
 
-  <div class="form-group">
-    <% if show_dcc_fields %>
+  <% if show_dcc_fields %>
+    <h3><%= t('schools.meters.show.dcc_information') %></h3>
+    <div class="form-group">
       <p class="alert alert-warning"><%= t('schools.meters.form.admin_only_features_for_n3rgy_integration') %></p>
 
       <div class="form-group">
@@ -75,7 +82,10 @@
           <%= t('schools.meters.form.leave_this_blank_message') %>
         </small>
       </div>
+    </div>
 
+    <h3>Perse Metering</h3>
+    <div class="form-group">
       <div>
         <%= form.label(:perse_api, 'Perse API') %>
         <%= form.select(:perse_api, options_for_perse_api, { include_blank: true },
@@ -84,8 +94,8 @@
           Setting this will enable loading readings data from Perse
         </small>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
   <div class="actions">
     <% submit_label = if action_name == 'edit'
