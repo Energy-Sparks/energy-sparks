@@ -126,6 +126,9 @@
           <span><%= label_with_wbr(@meter.admin_meter_status_label) %></span>
         <% end %>
       </dd>
+
+      <dt class="col-sm-3"><%= t('schools.meters.index.manual_reads') %></dt>
+      <dd class="col-sm-9"><%= @meter.manual_reads %></dd>
     </dl>
   </div>
   <% if Meter::MAIN_METER_TYPES.include?(@meter.meter_type.to_sym) %>

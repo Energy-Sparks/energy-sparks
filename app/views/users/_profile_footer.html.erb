@@ -1,0 +1,9 @@
+<% if user.confirmed_at %>
+  <div id='profile-footer'>
+    <div class="row mt-4 mb-4">
+      <div class="col col-md-12">
+        <%= t('users.show.joined', date: nice_date_times(user.confirmed_at)) %>
+      </div>
+    </div>
+  </div>
+<% end %>

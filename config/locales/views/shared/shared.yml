@@ -118,6 +118,7 @@ en:
     storage_heater_usage: Storage heater usage
   nav:
     enrol: Enrol
+    my_account: My account
     my_schools: My schools
     points: "%{count} points"
     sign_in: Sign In

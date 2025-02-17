@@ -167,6 +167,10 @@ class User < ApplicationRecord
     end
   end
 
+  def has_profile?
+    !(pupil? || school_onboarding?)
+  end
+
   def display_name
     name.presence || email
   end

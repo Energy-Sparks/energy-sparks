@@ -1,0 +1,47 @@
+<div id="profile-summary">
+  <div class="row">
+    <div class="col">
+      <h2><%= t('users.show.my_account') %></h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-md-3">
+      <%= t('schools.users.index.name') %>
+    </div>
+    <div class="col col-md-9">
+      <%= email_with_wbr(user.name) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-md-3">
+      <%= t('schools.users.index.email') %>
+    </div>
+    <div class="col col-md-9">
+      <%= email_with_wbr(user.email) %>
+    </div>
+  </div>
+  <% if user.staff_role %>
+  <div class="row">
+    <div class="col col-md-3">
+      <%= t('schools.users.index.role') %>
+    </div>
+    <div class="col col-md-9">
+      <%= user.staff_role.try(:translated_title) %>
+    </div>
+  </div>
+  <% end %>
+  <div class="row">
+    <div class="col col-md-3">
+      <%= t('schools.users.index.preferred_locale') %>
+    </div>
+    <div class="col col-md-9">
+      <%= I18n.t("languages.#{user.preferred_locale}") %>
+    </div>
+  </div>
+  <div class="row mt-4 mb-4">
+    <div class="col col-md-12">
+      <%= link_to t('users.show.update_account'), edit_user_path(user), class: 'btn btn-primary' %>
+      <%= link_to t('users.show.change_password'), edit_password_user_path(user), class: 'btn btn-success' %>
+    </div>
+  </div>
+</div>

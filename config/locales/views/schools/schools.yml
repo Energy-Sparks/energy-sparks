@@ -276,6 +276,7 @@ en:
         large_gaps: Gaps
         latest: To
         manage_solar_api_feeds: Manage Solar API feeds
+        manual_reads: Manual reads?
         meter: Meter
         meter_reviews: Completed DCC meter reviews
         meter_system: Meter system
