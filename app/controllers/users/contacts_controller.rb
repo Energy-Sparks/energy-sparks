@@ -7,7 +7,7 @@ module Users
       @schools = if @user.group_admin?
                    @user.school_group.schools.visible.by_name
                  elsif @user.has_other_schools?
-                   @user.cluster_schools.by_name
+                   @user.cluster_schools.visible.by_name
                  else
                    [@user.school]
                  end

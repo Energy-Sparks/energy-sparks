@@ -140,6 +140,10 @@ group :development, :test do
   gem 'wisper-rspec', require: false
 end
 
+group :development, :production do
+  gem 'lookbook'
+end
+
 group :development do
   gem 'annotate'
   gem 'better_errors'

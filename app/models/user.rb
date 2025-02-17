@@ -2,6 +2,7 @@
 #
 # Table name: users
 #
+#  active                      :boolean          default(TRUE), not null
 #  confirmation_sent_at        :datetime
 #  confirmation_token          :string
 #  confirmed_at                :datetime
@@ -118,6 +119,10 @@ class User < ApplicationRecord
            ' staff_roles.mailchimp_fields_changed_at) > mailchimp_updated_at')
   end
 
+  scope :for_school_group, ->(school_group) do
+    joins(:school, school: :school_group).where(schools: { school_group: school_group })
+  end
+
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
   validates :email, presence: true
 
@@ -136,6 +141,23 @@ class User < ApplicationRecord
   validate :preferred_locale_presence_in_available_locales
 
   after_save :update_contact
+
+  # Hook into devise so we can use our own status flag to permanently disable an account
+  def active_for_authentication?
+    active && super
+  end
+
+  def inactive?
+    !active?
+  end
+
+  def disable!
+    update!(active: false)
+  end
+
+  def enable!
+    update!(active: true)
+  end
 
   def default_scoreboard
     if group_admin? && school_group.default_scoreboard

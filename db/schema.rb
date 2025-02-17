@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_05_161410) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_07_162726) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1977,6 +1977,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_05_161410) do
     t.datetime "mailchimp_fields_changed_at"
     t.datetime "mailchimp_updated_at"
     t.enum "mailchimp_status", enum_type: "mailchimp_status"
+    t.boolean "active", default: true, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_by_id"], name: "index_users_on_created_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
