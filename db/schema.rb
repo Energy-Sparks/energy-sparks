@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_07_162726) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_11_122142) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1268,6 +1268,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_07_162726) do
     t.integer "meter_system", default: 0
     t.enum "perse_api", enum_type: "meter_perse_api"
     t.bigint "solis_cloud_installation_id"
+    t.boolean "manual_reads", default: false, null: false
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"

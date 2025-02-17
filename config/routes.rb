@@ -276,6 +276,16 @@ Rails.application.routes.draw do
 
   get 'analysis_page_finder/:urn/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
 
+  resources :users, path: 'profiles', except: [:index, :new, :destroy] do
+    member do
+      get :edit_password
+      patch :update_password
+    end
+    scope module: :users do
+      resources :contacts, path: 'alerts', only: [:index, :create, :destroy]
+    end
+  end
+
   resources :schools do
     resources :activities do
       member do
@@ -491,7 +501,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :mailer_previews, only: [:index]
-    resources :component_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
 
@@ -693,6 +702,7 @@ Rails.application.routes.draw do
       resources :meter_loading_reports, only: :index
       resources :engaged_groups, only: [:index]
       resources :heating_types, only: [:index]
+      resources :manual_reads, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
@@ -747,6 +757,11 @@ Rails.application.routes.draw do
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
       mount Flipper::UI.app(Flipper) => 'flipper', as: :flipper
+      if Rails.env.test?
+        get 'components', to: 'component_previews#index'
+      else
+        mount Lookbook::Engine, as: :components, at: 'components'
+      end
     end
   end # Admin name space
 
@@ -792,4 +807,5 @@ Rails.application.routes.draw do
   match "/:code", to: "errors#show", via: :all, constraints: {
     code: /#{ErrorsController::CODES.join("|")}/
   }
+
 end
