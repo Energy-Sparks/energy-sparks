@@ -124,6 +124,14 @@ module Mailchimp
       tags
     end
 
+    # Take Array of interests returned by AudienceManager and turn into hash
+    # for use on forms, setting the default opt-in state.
+    #
+    # TODO: change defaults based on user role/staff role
+    def self.default_interests(interests, _user = nil)
+      interests.map {|i| [i.id, true] }.to_h
+    end
+
     # Convert to hash for submitting to mailchimp api
     def to_mailchimp_hash
       {

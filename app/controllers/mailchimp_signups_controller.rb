@@ -7,7 +7,7 @@ class MailchimpSignupsController < ApplicationController
   def new
     audience_manager.list # load to ensure config is set
     @email_types = list_of_email_types
-    @interests = @email_types.map {|i| [i.id, true] }.to_h # TODO default based on role?
+    @interests = Mailchimp::Contact.default_interests(@email_types, nil)
     @contact = populate_contact_for_form(current_user, params)
   rescue => e
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"
@@ -24,7 +24,6 @@ class MailchimpSignupsController < ApplicationController
       user = User.find_by_email(sign_up_params[:email_address].downcase)
       @contact = create_contact(user, sign_up_params)
     end
-
     if @contact.interests.values.any?
       resp = subscribe_contact(@contact, user)
       if resp
@@ -34,8 +33,7 @@ class MailchimpSignupsController < ApplicationController
       flash[:error] = I18n.t('mailchimp_signups.index.select_interests')
     end
     @email_types = list_of_email_types
-    @interests = @contact.interests || @email_types.map {|i| [i.id, true] }.to_h # TODO default based on role?
-
+    @interests = @contact.interests || Mailchimp::Contact.default_interests(@email_types, user)
     render :new
   end
 

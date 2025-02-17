@@ -32,7 +32,7 @@ module Users
       if mailchimp_contact
         mailchimp_contact[:interests] # Hash of id -> status
       else
-        list_of_email_types.map {|i| [i.id, true] }.to_h # TODO default based on role?
+        Mailchimp::Contact.default_interests(list_of_email_types, @user)
       end
     end
   end
