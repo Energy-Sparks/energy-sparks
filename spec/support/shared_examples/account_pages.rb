@@ -20,15 +20,21 @@ RSpec.shared_examples 'an account page with navigation' do |admin: false|
     end
   end
 
+  it do
+    within('#profile-page-navigation') do
+      expect(page).to have_link(I18n.t('users.show.update_account'), href: edit_user_path(user))
+    end
+  end
+
   it 'links to schools page', unless: admin do
     within('#profile-page-navigation') do
-      expect(page).to have_link(I18n.t('nav.my_schools'), href: user_contacts_path(user))
+      expect(page).to have_link(I18n.t('users.show.manage_alerts'), href: user_contacts_path(user))
     end
   end
 
   it 'does not link to schools page', if: admin do
     within('#profile-page-navigation') do
-      expect(page).not_to have_link(I18n.t('nav.my_schools'), href: user_contacts_path(user))
+      expect(page).not_to have_link(I18n.t('users.show.manage_alerts'), href: user_contacts_path(user))
     end
   end
 

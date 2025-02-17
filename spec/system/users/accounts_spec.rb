@@ -196,7 +196,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       context 'when updating my account' do
         before do
           visit user_path(user)
-          click_on('Update account')
+          within('#profile-summary') do
+            click_on('Update account')
+          end
         end
 
         it_behaves_like 'a working account form'
@@ -218,7 +220,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       context 'when updating my account' do
         before do
           visit user_path(user)
-          click_on('Update account')
+          within('#profile-summary') do
+            click_on('Update account')
+          end
         end
 
         it_behaves_like 'a working account form'
@@ -240,7 +244,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       context 'when updating my account' do
         before do
           visit user_path(user)
-          click_on('Update account')
+          within('#profile-summary') do
+            click_on('Update account')
+          end
         end
 
         it_behaves_like 'a working account form', staff_role: false
@@ -262,7 +268,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       context 'when updating my account' do
         before do
           visit user_path(user)
-          click_on('Update account')
+          within('#profile-summary') do
+            click_on('Update account')
+          end
         end
 
         it_behaves_like 'a working account form', staff_role: false
