@@ -69,9 +69,15 @@
 <h5><%= t('alert_mailer.alert_email.why_am_i_receiving_these_emails') %></h5>
 <div class="s-3"></div>
 
-<p><%= t('alert_mailer.alert_email.you_have_been_signed_up') %>.</p>
-<div class="s-3"></div>
-
+<% if Flipper.enabled?(:profile_pages) %>
+  <p>
+    <%= t('alert_mailer.alert_email.you_have_been_signed_up') %>.
+    <%= t('alert_mailer.alert_email.unsubscribe_message_html', profiles_url: users_url) %>.
+  </p>
+<% else %>
+  <p><%= t('alert_mailer.alert_email.you_have_been_signed_up') %>.</p>
+  <div class="s-3"></div>
+<% end %>
 <% if @unsubscribe_emails %>
   <p><%= t('alert_mailer.alert_email.if_you_wish_to_completely_unsubscribe') %>: <%= @unsubscribe_emails %></p>
 <% end %>

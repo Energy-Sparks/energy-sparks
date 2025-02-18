@@ -24,6 +24,7 @@ en:
       take_action_choose: Choose activity
       take_action_message: Complete one of our recommended pupil or adult led activities to start reducing your energy usage
       title: Your weekly alerts
+      unsubscribe_message_html: You can unsubscribe from these emails by <a href="%{profiles_url}">updating your profile</a> on Energy Sparks
       view_your_progress_report: View your progress report
       view_your_school_dashboard: View your school dashboard
       why_am_i_receiving_these_emails: Why am I receiving these emails?

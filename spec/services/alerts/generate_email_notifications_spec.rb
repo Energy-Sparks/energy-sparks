@@ -116,6 +116,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
 
   describe '#perform' do
     before do
+      Flipper.enable(:profile_pages)
       alerts = %i[electricity storage_heater solar_pv].map { |fuel_type| create_email_alert(fuel_type) }
       shared_before(alerts:)
     end
@@ -149,6 +150,11 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
       expect(matcher.all('.negative')[2]).to have_css('img[src*="fa-bolt"]')
       expect(matcher.all('.negative')[3]).to have_css('img[src*="fa-fire-alt"]')
       expect(matcher.all('.negative')[4]).to have_css('img[src*="fa-sun"]')
+    end
+
+    it 'links to profiles page' do
+      expect(matcher).to have_link('updating your profile')
+      expect(matcher).not_to have_content(school_admin.email)
     end
   end
 

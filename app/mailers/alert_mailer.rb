@@ -18,7 +18,9 @@ class AlertMailer < LocaleMailer
     @school = params[:school]
     @target_prompt = params[:target_prompt]
 
-    @unsubscribe_emails = User.where(school: @school, role: :school_admin).pluck(:email).join(', ')
+    unless Flipper.enabled?(:profile_pages)
+      @unsubscribe_emails = User.where(school: @school, role: :school_admin).pluck(:email).join(', ')
+    end
     @alert_content = self.class.create_content(@events)
     @title = @school.name
 
