@@ -42,9 +42,9 @@ AllCops:
     - config/puma.rb
     - config/routes.rb
 plugins:
+  - rubocop-performance
   - rubocop-rails
 require:
-  - rubocop-performance
   - rubocop-rspec
   - rubocop-capybara
 # - rubocop-factory_bot
