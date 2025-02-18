@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ChartComponent < ViewComponent::Base
+  include ApplicationHelper
+
   renders_one :title
   renders_one :subtitle
   renders_one :header
