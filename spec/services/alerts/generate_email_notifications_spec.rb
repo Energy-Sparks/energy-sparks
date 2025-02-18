@@ -99,27 +99,11 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
     end
   end
 
-  def shared_before(method, alerts: [])
+  def shared_before(alerts: [])
     Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run:).perform([alert_1, alert_2] + alerts)
-    described_class.new(subscription_generation_run:).send(method)
+    described_class.new(subscription_generation_run:).perform
     alert_subscription_event_1.reload
     alert_subscription_event_2.reload
-  end
-
-  describe '#perform' do
-    before do
-      shared_before :perform
-    end
-
-    it_behaves_like 'an email was sent' do
-      let(:email_subject) { I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name) }
-    end
-
-    it 'send to correct users' do
-      expect(email.to).to contain_exactly(email_contact.email_address)
-    end
-
-    it_behaves_like 'an alert email was sent'
   end
 
   def create_email_alert(fuel_type)
@@ -130,14 +114,11 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
     alert
   end
 
-  describe '#batch_send' do
+  describe '#perform' do
     before do
-      flags.each { |flag| Flipper.enable(flag) }
       alerts = %i[electricity storage_heater solar_pv].map { |fuel_type| create_email_alert(fuel_type) }
-      shared_before(:batch_send, alerts:)
+      shared_before(alerts:)
     end
-
-    let(:flags) { [:batch_send_weekly_alerts] }
 
     it 'send to correct users' do
       expect(email.to).to contain_exactly(email_contact.email_address)
@@ -177,7 +158,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
 
       before do
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        shared_before :perform
+        shared_before
       end
 
       it 'prompts for first target if not set' do
@@ -191,7 +172,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
 
       before do
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        shared_before :perform
+        shared_before
       end
 
       it 'links to progress report' do
@@ -207,7 +188,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
       before do
         school.update!(enable_targets_feature: false)
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        shared_before :perform
+        shared_before
       end
 
       it 'the link isnt included' do
@@ -224,7 +205,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
 
       before do
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        shared_before :perform
+        shared_before
       end
 
       it 'prompts to set new target' do
@@ -241,7 +222,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
     before do
       alert_type_rating_1.update!(find_out_more_active: true)
       Alerts::GenerateContent.new(school).perform
-      shared_before :perform
+      shared_before
     end
 
     it 'links to a find out more if there is one associated with the content' do
