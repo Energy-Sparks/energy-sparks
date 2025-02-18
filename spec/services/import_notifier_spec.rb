@@ -15,14 +15,9 @@ describe ImportNotifier do
   let(:data_source)      { create(:data_source, import_warning_days: 5) }
   let(:school)           { create(:school, :with_school_group) }
 
-  let(:meter_1) do
+  let!(:meter_1) do
     create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
            school: school, start_date: start_date, end_date: end_date, data_source: data_source)
-  end
-
-  before do
-    travel_to(Date.new(2025, 2, 12))
-    meter_1
   end
 
   describe '#meters_running_behind' do
@@ -239,97 +234,81 @@ describe ImportNotifier do
   end
 
   describe '#notify' do
+    def notify
+      described_class.new(description:).notify(from: 2.days.ago, to: Time.zone.now)
+    end
+
     let!(:sheffield_school) do
-      create(:school, name: 'Sheffield School', school_group: create(:school_group, name: 'Sheffield'))
+      default_issues_admin_user = create(:admin, name: 'Sheffield Admin')
+      create(:school, name: 'Sheffield School',
+                      school_group: create(:school_group, name: 'Sheffield', default_issues_admin_user:))
     end
     let!(:bath_school) do
-      create(:school, name: 'Bath School', school_group: create(:school_group, name: 'Bath'))
+      default_issues_admin_user = create(:admin, name: 'Bath Admin')
+      create(:school, name: 'Bath School',
+                      school_group: create(:school_group, name: 'Bath', default_issues_admin_user:))
     end
-    let!(:amr_data_feed_config)      { create(:amr_data_feed_config, description: 'Sheffield') }
-    let!(:bath_amr_data_feed_config) { create(:amr_data_feed_config, description: 'Bath') }
-
-    let!(:log_1) do
-      create(:amr_data_feed_import_log,
-             amr_data_feed_config: amr_data_feed_config, records_imported: 200, import_time: 1.day.ago)
-    end
-    let!(:log_2) do
-      create(:amr_data_feed_import_log,
-             amr_data_feed_config: bath_amr_data_feed_config, records_imported: 1, import_time: 1.day.ago)
-    end
-
     let(:description)               { nil }
-
     let(:email)                     { ActionMailer::Base.deliveries.last }
 
-    before do
-      described_class.new(description: description).notify(from: 2.days.ago, to: Time.zone.now)
-    end
-
     it 'formats the email properly' do
+      notify
       expect(email.subject).to include('Energy Sparks import')
       email_body = email.html_part.body
       expect(email_body).to include('Data issues')
-    end
-
-    context 'with meter data' do
-      let!(:bath_import_log) do
-        create(:amr_data_feed_import_log, amr_data_feed_config: bath_amr_data_feed_config,
-                                          records_imported: 200, import_time: 1.day.ago)
-      end
-
-      let!(:meter_1) do
-        create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               start_date: start_date, end_date: end_date, school: sheffield_school, data_source: data_source)
-      end
-
-      let!(:meter_2) do
-        create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               start_date: start_date, end_date: end_date, school: bath_school,
-               data_source: create(:data_source, import_warning_days: 2))
-      end
-
-      let(:admin_1) { create(:admin, name: 'Admin One') }
-      let(:admin_2) { create(:admin, name: 'Admin Two') }
-
-      let!(:bath_school) do
-        create(:school, school_group: create(:school_group, default_issues_admin_user: admin_1))
-      end
-      let!(:sheffield_school) do
-        create(:school, school_group: create(:school_group, default_issues_admin_user: admin_2))
-      end
-
-      it 'contains the meter information in the email' do
-        described_class.new.notify(from: 2.days.ago, to: Time.zone.now)
-        page = Capybara.string(email.html_part.body.to_s)
-        expect(page.all('table tr').map { |tr| tr.all('td, th').map(&:text) }).to \
-          eq([['Area', 'Meter type', 'School', 'MPAN/MPRN', 'Half-Hourly', 'Data source', 'Procurement route',
-               'Last validated reading date', 'Admin meter status', 'Manual reads', '', 'Group admin name'],
-              ['Meters with stale data'],
-              [sheffield_school.school_group.name, 'Gas', sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR',
-               meter_1.data_source.name, '', 'Mon 3rd Feb 2025', '', 'N', '', '', 'Admin Two'],
-              [bath_school.school_group.name, 'Gas', bath_school.name, meter_2.mpan_mprn.to_s, 'NHH AMR',
-               meter_2.data_source.name, '', 'Mon 3rd Feb 2025', '', 'N', '', '', 'Admin One']])
-      end
-
-      it 'has an attachment' do
-        attachment = email.attachments[0]
-        expect(attachment.content_type).to include('text/csv')
-        expect(attachment.filename).to \
-          eq('energy-sparks-import-report-2025-02-12T00-00-00Z.csv')
-        expect(attachment.body.raw_source.split("\r\n")).to \
-          eq(['"",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,' \
-              'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
-              ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
-               sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', data_source.name, '', '03/02/2025', '""',
-               'N', '0', '0', 'Admin Two'].join(',')])
-      end
     end
 
     context 'with a description provided' do
       let(:description) { 'Energy Sparks early morning import' }
 
       it 'overrides the subject' do
+        notify
         expect(email.subject).to include(description)
+      end
+    end
+
+    context 'with meter data' do
+      let!(:meter_1) do
+        create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
+               start_date: start_date, end_date: end_date, school: sheffield_school, data_source: data_source)
+      end
+      let!(:bath_meter) do
+        create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
+               start_date: start_date, end_date: end_date, school: bath_school,
+               data_source: create(:data_source, import_warning_days: 2))
+      end
+
+      it 'contains the meter information in the email' do
+        notify
+        page = Capybara.string(email.html_part.body.to_s)
+        reading_date = end_date.strftime("%a #{end_date.day.ordinalize} %b %Y")
+        expect(page.all('table tr').map { |tr| tr.all('td, th').map(&:text) }).to \
+          eq([['Area', 'Meter type', 'School', 'MPAN/MPRN', 'Half-Hourly', 'Data source', 'Procurement route',
+               'Last validated reading date', 'Admin meter status', 'Manual reads', '', 'Group admin name'],
+              ['Meters with stale data'],
+              [bath_school.school_group.name, 'Gas', bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR',
+               bath_meter.data_source.name, '', reading_date, '', 'N', '', '', 'Bath Admin'],
+              [sheffield_school.school_group.name, 'Gas', sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR',
+               meter_1.data_source.name, '', reading_date, '', 'N', '', '', 'Sheffield Admin']])
+      end
+
+      it 'has an attachment' do
+        now = Time.current
+        travel_to(now)
+        notify
+        attachment = email.attachments[0]
+        expect(attachment.content_type).to include('text/csv')
+        expect(attachment.filename).to \
+          eq("energy-sparks-import-report-#{now.strftime('%Y-%m-%dT%H-%M-%S')}Z.csv")
+        expect(attachment.body.raw_source.split("\r\n")).to \
+          eq(['"",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,' \
+              'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
+              ['Meter with stale data', bath_school.school_group.name, bath_meter.meter_type.titleize,
+               bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR', bath_meter.data_source.name, '',
+               end_date.strftime('%d/%m/%Y'), '""', 'N', '0', '0', 'Bath Admin'].join(','),
+              ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
+               sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', meter_1.data_source.name, '',
+               end_date.strftime('%d/%m/%Y'), '""', 'N', '0', '0', 'Sheffield Admin'].join(',')])
       end
     end
   end
