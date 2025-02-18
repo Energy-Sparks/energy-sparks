@@ -5,7 +5,7 @@ RSpec.shared_examples 'the page requires a login' do
 end
 
 RSpec.shared_examples 'the page requires an adult login' do
-  it { expect(page).to have_content(I18n.t('devise.sessions.new.simple_title')) }
+  it { expect(page).to have_content(I18n.t('devise.sessions.new.adult_title')) }
   it { expect(page).not_to have_css('#pupil') }
 end
 

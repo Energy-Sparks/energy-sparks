@@ -134,7 +134,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
         it_behaves_like 'a profile page'
 
         it 'has redirected' do
-          expect(page).to eq have_current_path(user_path(user))
+          expect(page).to have_current_path user_path(user), ignore_query: true
         end
       end
     end
@@ -150,7 +150,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       it_behaves_like 'a profile page'
 
       it 'has redirected' do
-        expect(page).to eq have_current_path(user_path(user))
+        expect(page).to have_current_path user_path(user), ignore_query: true
       end
     end
   end
