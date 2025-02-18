@@ -11,6 +11,8 @@ en:
     edit_password:
       current_password: Current password
       password_updated: Password updated
+    index:
+      redirect: You need to login in order to view and update your account
     show:
       change_password: Change password
       joined: You joined Energy Sparks on %{date}

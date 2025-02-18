@@ -2,41 +2,66 @@
 
 <div class="row justify-content-md-center">
   <div class="col col-md-12 col-lg-8">
-    <h1 class='mt-lg-4 mt-sm-0'><%= t('devise.sessions.new.title') %>&hellip;</h1>
+    <h1 class='mt-lg-4 mt-sm-0'>
+      <% if params[:disable_pupil].present? %>
+        <%= t('devise.sessions.new.adult_title') %>
+      <% else %>
+        <%= t('devise.sessions.new.title') %>&hellip;
+      <% end %>
+    </h1>
 
-    <ul class="nav nav-tabs" id="signinTabs" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link font-weight-bold <%= 'active' if params[:role] != 'pupil'%>" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="true"><%= t('devise.sessions.new.email_address_and_password') %></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link font-weight-bold <%= 'active' if params[:role] == 'pupil' %>" id="pupil-tab" data-toggle="tab" href="#pupil" role="tab" aria-controls="pupil" aria-selected="false"><%= t('devise.sessions.new.pupil_password') %></a>
-      </li>
-    </ul>
+    <% unless params[:disable_pupil].present? %>
+      <ul class="nav nav-tabs" id="signinTabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link font-weight-bold <%= 'active' if params[:role] != 'pupil' %>"
+             id="staff-tab"
+             data-toggle="tab"
+             href="#staff"
+             role="tab"
+             aria-controls="staff"
+             aria-selected="true">
+             <%= t('devise.sessions.new.email_address_and_password') %>
+          </a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link font-weight-bold <%= 'active' if params[:role] == 'pupil' %>"
+               id="pupil-tab"
+               data-toggle="tab"
+               href="#pupil"
+               role="tab"
+               aria-controls="pupil"
+               aria-selected="false">
+               <%= t('devise.sessions.new.pupil_password') %>
+            </a>
+          </li>
+      </ul>
+    <% end %>
 
     <div class="tab-content" id="signinTabsContent">
-      <div class="tab-pane fade <%= 'show active' if params[:role] != 'pupil'%>" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+      <div class="tab-pane fade <%= 'show active' if params[:role] != 'pupil' %>" id="staff" role="tabpanel" aria-labelledby="staff-tab">
 
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal mt-3'}) do |f| %>
-          <%= render "devise/shared/error_messages", resource: resource %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name),
+                               html: { class: 'form-horizontal mt-3' }) do |f| %>
+          <%= render 'devise/shared/error_messages', resource: resource %>
           <div class="form-group row">
-            <%= f.label :email, class: "col-sm-4 col-form-label" %>
+            <%= f.label :email, class: 'col-sm-4 col-form-label' %>
             <div class="col-sm-6">
-              <%= f.email_field :email, autofocus: true , class: "form-control" %>
+              <%= f.email_field :email, autofocus: true, class: 'form-control' %>
             </div>
           </div>
 
           <div class="form-group row">
-            <%= f.label :password, class: "col-sm-4 col-form-label" %>
+            <%= f.label :password, class: 'col-sm-4 col-form-label' %>
             <div class="col-sm-6">
-              <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+              <%= f.password_field :password, autocomplete: 'off', class: 'form-control' %>
             </div>
           </div>
 
           <% if devise_mapping.rememberable? -%>
             <div class="form-group row">
-              <%= f.label :remember_me, t('devise.sessions.new.remember_me'), class: "col-sm-4 col-form-label" %>
+              <%= f.label :remember_me, t('devise.sessions.new.remember_me'), class: 'col-sm-4 col-form-label' %>
               <div class="col-sm-6">
-                <%= f.check_box :remember_me, class: "form-control col-1" %>
+                <%= f.check_box :remember_me, class: 'form-control col-1' %>
               </div>
             </div>
           <% end -%>
@@ -49,25 +74,30 @@
 
           <div class="form-group row">
             <div class="col-sm-6 offset-sm-4">
-              <%= render "devise/shared/links" %>
+              <%= render 'devise/shared/links' %>
             </div>
           </div>
         <% end %>
 
       </div>
-      <div class="tab-pane fade <%= 'show active' if params[:role] == 'pupil'%>" id="pupil" role="tabpanel" aria-labelledby="pupil-tab">
-        <%= simple_form_for :pupil, url: pupils_session_path, html: { autocomplete: 'off', class: 'mt-3'} do |f| %>
-          <%- if @school %>
-            <%= link_to t('devise.sessions.new.not_your_school'), url_for(role: 'pupil'), class: 'float-right'%>
-            <h3><%= t('devise.sessions.new.pupil_sign_in_for') %> <%= @school&.name %></h3>
-            <%= f.hidden_field :school_id, value: @school&.id %>
-          <% else %>
-            <%= f.input :school_id, as: :select, collection: @schools, label_method: lambda { |school| school_name_group(school) } , label: t('devise.sessions.new.select_your_school') %>
+      <% unless params[:disable_pupil].present? %>
+        <div class="tab-pane fade <%= 'show active' if params[:role] == 'pupil' %>" id="pupil" role="tabpanel" aria-labelledby="pupil-tab">
+          <%= simple_form_for :pupil, url: pupils_session_path, html: { autocomplete: 'off', class: 'mt-3' } do |f| %>
+            <%- if @school %>
+              <%= link_to t('devise.sessions.new.not_your_school'), url_for(role: 'pupil'), class: 'float-right' %>
+              <h3><%= t('devise.sessions.new.pupil_sign_in_for') %> <%= @school&.name %></h3>
+              <%= f.hidden_field :school_id, value: @school&.id %>
+            <% else %>
+              <%= f.input :school_id, as: :select, collection: @schools, label_method: lambda { |school|
+                    school_name_group(school)
+                  }, label: t('devise.sessions.new.select_your_school') %>
+            <% end %>
+            <%= f.input :password, as: :string, label: t('devise.sessions.new.your_pupil_password'),
+                                   input_html: { autocapitalize: :none } %>
+            <%= f.submit t('devise.sessions.new.sign_in'), class: 'btn btn-primary' %>
           <% end %>
-          <%= f.input :password, as: :string, label: t('devise.sessions.new.your_pupil_password'), input_html: {autocapitalize: :none}%>
-          <%= f.submit t('devise.sessions.new.sign_in'), class: 'btn btn-primary' %>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
 
   </div>
