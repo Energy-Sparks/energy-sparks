@@ -41,8 +41,9 @@ AllCops:
     - config/initializers/permissions_policy.rb
     - config/puma.rb
     - config/routes.rb
-require:
+plugins:
   - rubocop-rails
+require:
   - rubocop-performance
   - rubocop-rspec
   - rubocop-capybara
