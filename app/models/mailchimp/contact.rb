@@ -129,7 +129,7 @@ module Mailchimp
     #
     # TODO: change defaults based on user role/staff role
     def self.default_interests(interests, _user = nil)
-      interests.map {|i| [i.id, true] }.to_h
+      interests.to_h { |i| [i.id, true] }
     end
 
     # Convert to hash for submitting to mailchimp api
