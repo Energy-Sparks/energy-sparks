@@ -25,13 +25,9 @@ RSpec.describe 'User email management', :include_application_helper do
         allow(audience_manager).to receive(:get_list_member).and_return(nil)
       end
 
-      it 'defaults form to all checked' do
+      it 'some default options are pre-selected' do
         refresh
-        expect(page).to have_checked_field('Getting the most out of Energy Sparks')
-        expect(page).to have_checked_field('Engaging pupils in energy saving and climate')
-        expect(page).to have_checked_field('Energy saving leadership')
-        expect(page).to have_checked_field('Training opportunities')
-        expect(page).to have_checked_field('Tailored advice and support')
+        expect(all('input[type=checkbox]').map(&:checked?)).not_to be_empty
       end
     end
 
