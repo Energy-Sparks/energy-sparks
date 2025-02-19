@@ -12,7 +12,9 @@ class ChartComponent < ViewComponent::Base
 
   include ChartHelper
 
-  def initialize(chart_type:, school:, chart_config: nil, analysis_controls: true, no_zoom: true, axis_controls: true, html_class: 'analysis-chart', fuel_type: nil, autoload_chart: true)
+  def initialize(chart_type:, school:, chart_config: nil, analysis_controls: true, no_zoom: true, axis_controls: true,
+                 html_class: 'analysis-chart', fuel_type: nil, autoload_chart: true,
+                 show_how_have_we_analysed_your_data: true)
     @chart_type = chart_type
     @school = school
     @chart_config = chart_config
@@ -22,6 +24,7 @@ class ChartComponent < ViewComponent::Base
     @html_class = html_class
     @fuel_type = fuel_type
     @autoload_chart = autoload_chart
+    @show_how_have_we_analysed_your_data = show_how_have_we_analysed_your_data
   end
 
   def chart_config
