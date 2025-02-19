@@ -31,8 +31,8 @@
           <td>
             <% if user.has_profile? %>
               <%= link_to email_with_wbr(user.name || 'View profile'), user_path(user) %>
-            <% else %>
-              <%= email_with_wbr(user.name) if user.name %>
+            <% elsif user.name %>
+              <%= email_with_wbr(user.name) %>
             <% end %>
           </td>
           <td><%= user.pupil? ? 'N/A' : email_with_wbr(user.email) %></td>
