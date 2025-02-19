@@ -124,12 +124,47 @@ module Mailchimp
       tags
     end
 
+
+    # All the email types
+    # Using the names rather than the ids, as this allows us to test against the
+    # developer account
+    GETTING_THE_MOST = 'Getting the most out of Energy Sparks'.freeze
+    ENGAGING_PUPILS = 'Engaging pupils in energy saving and climate'.freeze
+    LEADERSHIP = 'Energy saving leadership'.freeze
+    TAILORED_ADVICE = 'Tailored advice and support'.freeze
+    TRAINING = 'Training opportunities'.freeze
+
+    LEADERSHIP_INTERESTS = [GETTING_THE_MOST, TRAINING, TAILORED_ADVICE, LEADERSHIP].freeze
+    TEACHING_INTERESTS =   [GETTING_THE_MOST, TRAINING, TAILORED_ADVICE, ENGAGING_PUPILS].freeze
+
+    ALL_INTERESTS = [GETTING_THE_MOST, TRAINING, TAILORED_ADVICE, LEADERSHIP, ENGAGING_PUPILS].freeze
+
+    SCHOOL_USER_INTERESTS = {
+      'Business manager' => LEADERSHIP_INTERESTS,
+      'Building/site manager or caretaker' => LEADERSHIP_INTERESTS,
+      'Governor' => LEADERSHIP_INTERESTS,
+      'Teacher or teaching assistant' => TEACHING_INTERESTS,
+      'Headteacher or Deputy Head' => ALL_INTERESTS,
+      'Council or MAT staff' => LEADERSHIP_INTERESTS,
+      'Parent or volunteer' => TEACHING_INTERESTS,
+      'Public' => [GETTING_THE_MOST, TRAINING, TAILORED_ADVICE]
+    }.freeze
+
+    ORGANIC_SIGN_UP_INTERESTS = [GETTING_THE_MOST, ENGAGING_PUPILS, LEADERSHIP].freeze
+
     # Take Array of interests returned by AudienceManager and turn into hash
     # for use on forms, setting the default opt-in state.
-    #
-    # TODO: change defaults based on user role/staff role
-    def self.default_interests(interests, _user = nil)
-      interests.to_h { |i| [i.id, true] }
+    def self.default_interests(interests, user = nil)
+      interest_list = if user&.group_admin?
+                        ALL_INTERESTS
+                      elsif user&.staff_role && SCHOOL_USER_INTERESTS.key?(user.staff_role.title)
+                        SCHOOL_USER_INTERESTS[user.staff_role.title]
+                      else
+                        ORGANIC_SIGN_UP_INTERESTS
+                      end
+      interests.to_h do |interest|
+        [interest.id, interest_list.include?(interest.name)]
+      end
     end
 
     # Convert to hash for submitting to mailchimp api
