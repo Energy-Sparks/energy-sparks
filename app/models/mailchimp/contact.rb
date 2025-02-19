@@ -22,7 +22,7 @@ module Mailchimp
       contact.contact_source = 'User'
       contact.confirmed_date = user.confirmed_at.to_date.iso8601
       contact.user_role = user.role.humanize
-      contact.user_status = user.access_locked? ? 'Disabled' : 'Active'
+      contact.user_status = user.active? ? 'Active' : 'Disabled'
       contact.locale = user.preferred_locale
       contact.interests = interests
 
@@ -129,7 +129,7 @@ module Mailchimp
     #
     # TODO: change defaults based on user role/staff role
     def self.default_interests(interests, _user = nil)
-      interests.map {|i| [i.id, true] }.to_h
+      interests.to_h { |i| [i.id, true] }
     end
 
     # Convert to hash for submitting to mailchimp api
