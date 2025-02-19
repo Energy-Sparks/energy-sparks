@@ -59,10 +59,11 @@ RSpec.describe 'User alert management', :include_application_helper do
 
       before do
         within('#profile-page-navigation') do
-          click_on(I18n.t('nav.my_schools'))
+          click_on(I18n.t('users.show.manage_alerts'))
         end
       end
 
+      it_behaves_like 'an account page with navigation'
       it_behaves_like 'an alert management page' do
         let(:schools) { [user.school] }
       end
@@ -73,10 +74,11 @@ RSpec.describe 'User alert management', :include_application_helper do
 
       before do
         within('#profile-page-navigation') do
-          click_on(I18n.t('nav.my_schools'))
+          click_on(I18n.t('users.show.manage_alerts'))
         end
       end
 
+      it_behaves_like 'an account page with navigation'
       it_behaves_like 'an alert management page' do
         let(:schools) { user.cluster_schools }
       end
@@ -87,10 +89,11 @@ RSpec.describe 'User alert management', :include_application_helper do
 
       before do
         within('#profile-page-navigation') do
-          click_on(I18n.t('nav.my_schools'))
+          click_on(I18n.t('users.show.manage_alerts'))
         end
       end
 
+      it_behaves_like 'an account page with navigation'
       it_behaves_like 'an alert management page' do
         let(:schools) { user.school_group.schools.visible }
       end
@@ -98,6 +101,8 @@ RSpec.describe 'User alert management', :include_application_helper do
 
     context 'with an admin' do
       let(:user) { create(:admin) }
+
+      it_behaves_like 'an account page with navigation', admin: true
 
       it 'does not show link to my alerts' do
         expect(page).not_to have_link(I18n.t('users.show.manage_alerts'), href: user_contacts_path(user))
@@ -109,8 +114,12 @@ RSpec.describe 'User alert management', :include_application_helper do
         before do
           visit user_path(school_admin)
           within('#profile-page-navigation') do
-            click_on(I18n.t('nav.my_schools'))
+            click_on(I18n.t('users.show.manage_alerts'))
           end
+        end
+
+        it_behaves_like 'an account page with navigation' do
+          let(:user) { school_admin}
         end
 
         it_behaves_like 'an alert management page' do
