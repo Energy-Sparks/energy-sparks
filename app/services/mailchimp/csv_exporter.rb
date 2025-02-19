@@ -32,10 +32,11 @@ module Mailchimp
     attr_reader :new_nonsubscribed
 
     # Initialise with lists of hashed fields parsed from Mailchimp export
-    def initialize(subscribed:, nonsubscribed:, cleaned:, unsubscribed:)
+    def initialize(subscribed:, nonsubscribed:, cleaned:, unsubscribed:, add_default_interests: false)
       super(subscribed:, nonsubscribed:, cleaned:, unsubscribed:)
       @updated_audience = { subscribed: [], nonsubscribed: [], cleaned: [], unsubscribed: [] }
       @new_nonsubscribed = []
+      @add_default_interests = add_default_interests
     end
 
     # Match contacts against database, updating with latest data and mapping to
@@ -61,7 +62,7 @@ module Mailchimp
           # update user
           @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact)
         else
-          @new_nonsubscribed << to_mailchimp_contact(user, newsletter_subscriber: false)
+          @new_nonsubscribed << to_mailchimp_contact(user)
         end
       end
     end
@@ -73,14 +74,16 @@ module Mailchimp
       end
     end
 
-    def to_mailchimp_contact(user, existing_contact = nil, newsletter_subscriber: true)
+    def to_mailchimp_contact(user, existing_contact = nil)
       # Convert from comma-separated names to hash
       interests = if existing_contact.present? && existing_contact[:interests].present?
                     existing_contact[:interests].split(',').index_with { |_i| true }
                   else
                     {}
                   end
-      interests['Newsletter'] = true if newsletter_subscriber
+
+      interests = default_interests(interests, user) if @add_default_interests
+
       tags = existing_contact.present? && existing_contact[:tags].present? ? existing_contact[:tags].split(',') : []
       contact = Mailchimp::Contact.from_user(user, tags: tags, interests: interests)
 
@@ -132,8 +135,9 @@ module Mailchimp
       # If this is present then we're updating an existing contact that should
       # have Newsletter set already
       # TODO naming
-      contact.interests = existing_contact[:interests] || 'Newsletter'
+      contact.interests = @add_default_interests ? default_interests(existing_contact[:interests]) : existing_contact[:interests]
 
+      # FIXME old fields have been removed, so simplify
       first_and_last_name_fields = existing_contact[:first_name] && existing_contact[:last_name]
       first_and_name_fields = existing_contact[:first_name] && existing_contact[:name] && !existing_contact[:name].include?(existing_contact[:first_name])
 
@@ -167,6 +171,34 @@ module Mailchimp
                                end
       end
       contact
+    end
+
+    def default_interests(interests, user = nil)
+      # hash of id to value
+      defaults = Mailchimp::Contact.default_interests(email_types, user)
+
+      id_to_name = email_types.to_h { |i| [i.id, i.name] }
+      named_defaults = defaults.transform_keys {|k| id_to_name[k] }
+      named_defaults.reject! { |_k, v| !v }
+      interests ? interests.merge(named_defaults) : named_defaults
+    end
+
+    def audience_manager
+      @audience_manager ||= Mailchimp::AudienceManager.new
+    end
+
+    def email_types
+      @email_types ||= list_of_email_types
+    end
+
+    def list_of_email_types
+      category = audience_manager.categories.detect {|c| c.title == 'Interests' }
+      return [] unless category
+      return audience_manager.interests(category.id)
+    rescue => e
+      Rails.logger.error(e)
+      Rollbar.error(e)
+      []
     end
   end
 end

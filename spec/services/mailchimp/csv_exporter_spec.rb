@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe Mailchimp::CsvExporter do
+  include_context 'with a stubbed audience manager'
+
   subject(:service) do
-    described_class.new(subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
+    described_class.new(add_default_interests: true, subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
   end
 
   let(:subscribed) { [] }
@@ -21,11 +23,7 @@ describe Mailchimp::CsvExporter do
 
   shared_examples 'it adds interests correctly' do |newsletter: true|
     it 'adds Newsletter', if: newsletter do
-      expect(contact.interests).to eq 'Newsletter'
-    end
-
-    it 'does not add Newsletter', unless: newsletter do
-      expect(contact.interests).to be_empty
+      expect(contact.interests).to include 'Getting the most out of Energy Sparks'
     end
   end
 
@@ -108,11 +106,12 @@ describe Mailchimp::CsvExporter do
 
       context 'with existing interests' do
         let(:subscribed) do
-          [create_contact(user.email, interests: 'Newsletter,Others')]
+          [create_contact(user.email, interests: 'Getting the most out of Energy Sparks,Others')]
         end
 
         it 'preserves the interests' do
-          expect(contact.interests).to eq('Newsletter,Others')
+          expect(contact.interests).to include('Getting the most out of Energy Sparks')
+          expect(contact.interests).to include('Others')
         end
       end
 
@@ -351,7 +350,7 @@ describe Mailchimp::CsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact', school_user: true
-      it_behaves_like 'it adds interests correctly', newsletter: false
+      it_behaves_like 'it adds interests correctly'
     end
 
     context 'with a group admin' do
@@ -362,7 +361,7 @@ describe Mailchimp::CsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact', group_admin: true
-      it_behaves_like 'it adds interests correctly', newsletter: false
+      it_behaves_like 'it adds interests correctly'
     end
 
     context 'with an admin' do
@@ -373,7 +372,7 @@ describe Mailchimp::CsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact'
-      it_behaves_like 'it adds interests correctly', newsletter: false
+      it_behaves_like 'it adds interests correctly'
     end
 
     context 'with an unconfirmed user' do
