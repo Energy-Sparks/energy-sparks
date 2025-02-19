@@ -25,7 +25,7 @@ module Mailchimp
 
     def interests(category_id)
       interests = @client.lists.list_interest_category_interests(list.id, category_id, count: 100)
-      interests['interests'].map { |interest| create_interest(interest) }.sort_by(&:name)
+      interests['interests'].map { |interest| create_interest(interest) }
     end
 
     # Calls a Mailchimp API in a way that will add new contacts to the list if they're not already
@@ -110,6 +110,7 @@ module Mailchimp
 
     def get_list
       lists = @client.lists.get_all_lists
+
       if lists.empty?
         nil
       else
@@ -120,7 +121,8 @@ module Mailchimp
     def create_interest(interest)
       interest = OpenStruct.new(interest)
       key = interest.name.parameterize.underscore
-      interest.i18n_name = I18n.t("mailchimp.audience_manager.interests.#{key}", default: interest.name)
+      interest.i18n_name = I18n.t("mailchimp.audience_manager.interests.#{key}.name", default: interest.name)
+      interest.i18n_description = I18n.t("mailchimp.audience_manager.interests.#{key}.description_html", default: '')
       interest
     end
 

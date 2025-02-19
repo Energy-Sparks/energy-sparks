@@ -12,52 +12,60 @@ sms_phone_number: ''
 sms_subscription_status: ''
 sms_subscription_last_updated: ''
 merge_fields:
-  FNAME: John
-  LNAME: Smith
   ADDRESS: ''
-  OTHER_LA: ''
-  OTHER_MAT: ''
   FULLNAME: John Smith
-  SCHOOL: ''
-  USERROLE: Admin
-  CONFIRMED: '2022-05-11'
+  SCHOOL: Freshford Church School
+  USERROLE: School admin
+  CONFIRMED: '2025-02-01'
+  LOCALE: en
+  SOURCE: User
+  STAFFROLE: Teacher or teaching assistant
+  ALERTSUBS: 'Yes'
+  SGROUP: Bath and Wells Multi Academy Trust
+  SSTATUS: Active
+  LA: Bath and North East Somerset
+  REGION: South west
+  COUNTRY: England
+  SCOREBOARD: South-West England
+  FUNDER: OVO Foundation
+  SCHOOL_URL: http://energysparks.uk/schools/freshford-church-school
+  GROUP_URL: http://energysparks.uk/school_groups/bath-and-wells-multi-academy-trust
+  SCORE_URL: http://energysparks.uk/scoreboards/south-west-england
+  STYPE: Primary
+  SSLUG: freshford-church-school
+  GROUP_SLUG: ''
+  USERSTATUS: ''
 interests:
-  36d63da171: false
-  0c794fbd4a: false
-  c6f026ef14: false
-  2aa9fc86eb: false
-  b24143f45b: false
-  287385ea40: false
-  5d8715c0d8: false
-  abafab1e7a: false
-  '096324023f': false
-  e029918b37: false
   4bb520e9fc: true
+  d6d21f73c1: false
+  c5c425b147: false
+  f2e12d6ba6: false
+  8f45c9c545: false
 stats:
   avg_open_rate: 0
   avg_click_rate: 0
 ip_signup: ''
 timestamp_signup: ''
 ip_opt: 86.8.248.55
-timestamp_opt: '2025-01-15T11:31:32+00:00'
+timestamp_opt: '2025-02-04T14:04:39+00:00'
 member_rating: 2
-last_changed: '2025-01-16T16:46:52+00:00'
+last_changed: '2025-02-04T14:35:04+00:00'
 language: ''
 vip: false
-email_client: ''
+email_client: Gmail
 location:
-  latitude: 0
-  longitude: 0
+  latitude: 51.38
+  longitude: -2.41
   gmtoff: 0
   dstoff: 0
-  country_code: ''
-  timezone: ''
-  region: ''
+  country_code: GB
+  timezone: europe/london
+  region: bas
 source: API - Generic
 tags_count: 2
 tags:
-- id: 8979256
-  name: CONSOLE
+- id: 8979300
+  name: freshford-church-school
 - id: 8979217
   name: TEST
 list_id: aff6ac9f1b
