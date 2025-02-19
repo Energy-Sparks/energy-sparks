@@ -59,22 +59,24 @@ module Mailchimp
           mailchimp_contact_type = mailchimp_contact_type(user.email)
           # remove matches from list
           contact = @audience[mailchimp_contact_type].delete(user.email)
-          # update user
-          @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact)
+          # update user, only adding default interests if we're overriding current prefs
+          @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact, add_default_interests: @add_default_interests)
         else
-          @new_nonsubscribed << to_mailchimp_contact(user)
+          # always add default interests
+          @new_nonsubscribed << to_mailchimp_contact(user, add_default_interests: true)
         end
       end
     end
 
     # Process any Mailchimp contacts that are not registered users
+    # Only add default interests if overriding current prefs
     def process_unmatched_contacts
       @audience.each do |category, contacts|
-        updated_audience[category] = updated_audience[category] + contacts.values.map {|c| copy_contact(c) }
+        updated_audience[category] = updated_audience[category] + contacts.values.map {|c| copy_contact(c, add_default_interests: @add_default_interests) }
       end
     end
 
-    def to_mailchimp_contact(user, existing_contact = nil)
+    def to_mailchimp_contact(user, existing_contact = nil, add_default_interests: false)
       # Convert from comma-separated names to hash
       interests = if existing_contact.present? && existing_contact[:interests].present?
                     existing_contact[:interests].split(',').index_with { |_i| true }
@@ -82,7 +84,7 @@ module Mailchimp
                     {}
                   end
 
-      interests = default_interests(interests, user) if @add_default_interests
+      interests = default_interests(interests, user) if add_default_interests
 
       tags = existing_contact.present? && existing_contact[:tags].present? ? existing_contact[:tags].split(',') : []
       contact = Mailchimp::Contact.from_user(user, tags: tags, interests: interests)
@@ -124,7 +126,7 @@ module Mailchimp
     #
     # This is to allow for migration to be re-run before we tidy up and remove some of
     # the old fields.
-    def copy_contact(existing_contact)
+    def copy_contact(existing_contact, add_default_interests: false)
       # TODO use new model
       contact = ActiveSupport::OrderedOptions.new
       contact.email_address = existing_contact[:email_address]
@@ -135,7 +137,7 @@ module Mailchimp
       # If this is present then we're updating an existing contact that should
       # have Newsletter set already
       # TODO naming
-      contact.interests = @add_default_interests ? default_interests(existing_contact[:interests]) : existing_contact[:interests]
+      contact.interests = add_default_interests ? default_interests(existing_contact[:interests]) : existing_contact[:interests]
 
       # FIXME old fields have been removed, so simplify
       first_and_last_name_fields = existing_contact[:first_name] && existing_contact[:last_name]
