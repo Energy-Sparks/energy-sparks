@@ -27,6 +27,12 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
     end
 
+    it 'displays links to manage emails' do
+      within('#my-schools-summary') do
+        expect(page).to have_link(I18n.t('users.show.update_email_preferences'), href: user_emails_path(user))
+      end
+    end
+
     it 'displays summary of my schools', if: school_user do
       expect(page).to have_css('#my-schools-summary')
       within('#my-schools-summary') do
@@ -46,6 +52,10 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       within('#my-schools-summary') do
         expect(page.body).to include(I18n.t('users.show.school_summary.group_admin_html', role: I18n.t("role.#{user.role}"), count: user.school_group.schools.count, url: school_group_path(user.school_group), link_text: user.school_group.name))
       end
+    end
+
+    it 'does not display admin options', if: school_user || cluster_admin || group_admin do
+      expect(page).not_to have_css('#admin-options')
     end
 
     it 'displays a profile footer' do
@@ -233,7 +243,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       context 'when updating my account' do
         before do
           visit user_path(user)
-          click_on('Update account')
+          within('#profile-summary') do
+            click_on('Update account')
+          end
         end
 
         it_behaves_like 'a working account form'
@@ -255,7 +267,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       context 'when updating my account' do
         before do
           visit user_path(user)
-          click_on('Update account')
+          within('#profile-summary') do
+            click_on('Update account')
+          end
         end
 
         it_behaves_like 'a working account form'
@@ -277,7 +291,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       context 'when updating my account' do
         before do
           visit user_path(user)
-          click_on('Update account')
+          within('#profile-summary') do
+            click_on('Update account')
+          end
         end
 
         it_behaves_like 'a working account form', staff_role: false
@@ -299,10 +315,30 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       context 'when updating my account' do
         before do
           visit user_path(user)
-          click_on('Update account')
+          within('#profile-summary') do
+            click_on('Update account')
+          end
         end
 
         it_behaves_like 'a working account form', staff_role: false
+      end
+
+      context 'when viewing another profile' do
+        let(:school_admin) { create(:school_admin, locked_at: 1.day.ago, confirmed_at: nil, mailchimp_status: :subscribed) }
+
+        before do
+          visit user_path(school_admin)
+        end
+
+        it 'has admin links' do
+          within('#admin-options') do
+            expect(page).to have_link('View in Mailchimp', href: admin_user_mailchimp_redirect_path(school_admin))
+            expect(page).to have_button('Resend confirmation')
+            expect(page).to have_link('Unlock', href: admin_user_unlock_path(school_admin))
+            expect(page).to have_link('Disable', href: admin_user_disable_path(school_admin))
+            expect(page).to have_link('Delete', href: admin_user_path(school_admin))
+          end
+        end
       end
     end
   end

@@ -33,10 +33,6 @@ describe 'Mailchimp Sign-up' do
     end
 
     context 'when the form is completed', if: fill_in_form do
-      before do
-        allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
-      end
-
       it 'subscribes the user' do
         fill_in :name, with: name
         fill_in :school, with: school
@@ -51,11 +47,21 @@ describe 'Mailchimp Sign-up' do
       end
     end
 
-    context 'when the form is pre-filled', unless: fill_in_form do
-      before do
-        allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
+    context 'with no interests selected', if: fill_in_form do
+      it 'displays an error' do
+        fill_in :name, with: name
+        fill_in :school, with: school
+        all('input[type=checkbox]').each do |checkbox|
+          if checkbox.checked?
+            checkbox.click
+          end
+        end
+        click_on 'Subscribe'
+        expect(page).to have_content(I18n.t('mailchimp_signups.index.select_interests'))
       end
+    end
 
+    context 'when the form is pre-filled', unless: fill_in_form do
       it 'shows disabled email and name fields' do
         expect(page).to have_field(:email_address, disabled: true, with: email)
         expect(page).to have_field(:name, disabled: true, with: name)
@@ -112,7 +118,6 @@ describe 'Mailchimp Sign-up' do
         include_context 'with an existing user'
 
         before do
-          allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
           visit terms_and_conditions_path
           within '#newsletter-signup' do
             fill_in :email_address, with: email
@@ -160,6 +165,17 @@ describe 'Mailchimp Sign-up' do
   end
 
   describe 'when visiting the mailchimp form' do
+    context 'with a logged in user', with_feature: :profile_pages do
+      include_context 'with a stubbed audience manager'
+      include_context 'with a signed-in user'
+
+      before do
+        visit new_mailchimp_signup_path
+      end
+
+      it { expect(page).to have_content(I18n.t('users.show.update_email_preferences')) }
+    end
+
     context 'with a logged in user' do
       include_context 'with a stubbed audience manager'
       include_context 'with a signed-in user'
@@ -190,7 +206,6 @@ describe 'Mailchimp Sign-up' do
         include_context 'with an existing user'
 
         before do
-          allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
           visit new_mailchimp_signup_path
         end
 

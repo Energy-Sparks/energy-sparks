@@ -33,15 +33,17 @@
       <% end %>
     </div>
 
-    <div class="form-group">
-      <%= f.label :preferred_locale, t('schools.users.form.preferred_locale'), class: 'col-form-label' %>
-      <%= f.select :preferred_locale,
-                   options_for_select(I18n.available_locales.map { |locale|
-                     [I18n.t("languages.#{locale}"), locale]
-                   }, resource.preferred_locale),
-                   { include_blank: false },
-                   { class: 'form-control' } %>
-    </div>
+    <% if @confirmed %>
+      <div class="form-group">
+        <%= f.label :preferred_locale, t('schools.users.form.preferred_locale'), class: 'col-form-label' %>
+        <%= f.select :preferred_locale,
+                     options_for_select(I18n.available_locales.map { |locale|
+                       [I18n.t("languages.#{locale}"), locale]
+                     }, resource.preferred_locale),
+                     { include_blank: false },
+                     { class: 'form-control' } %>
+      </div>
+    <% end %>
 
     <% if @allow_alerts %>
       <hr>
@@ -49,12 +51,16 @@
                                                             checked: @subscribe_alerts %>
     <% end %>
 
-    <% if @show_newletter_options %>
-      <hr>
-      <%= render 'schools/users/auto_subscribe_newsletter', checked: @subscribe_newsletters %>
-    <% end %>
-
     <% if @confirmed %>
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %>
+        </div>
+      </div>
+      <%= render 'users/emails/mailchimp_interest_fields',
+                 email_types: @email_types,
+                 interests: @interests %>
+
       <%= render 'shared/agree_terms_checkbox' %>
     <% end %>
 

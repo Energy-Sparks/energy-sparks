@@ -22,7 +22,7 @@ module Mailchimp
       contact.contact_source = 'User'
       contact.confirmed_date = user.confirmed_at.to_date.iso8601
       contact.user_role = user.role.humanize
-      contact.user_status = user.access_locked? ? 'Disabled' : 'Active'
+      contact.user_status = user.active? ? 'Active' : 'Disabled'
       contact.locale = user.preferred_locale
       contact.interests = interests
 
@@ -42,14 +42,14 @@ module Mailchimp
         contact.staff_role = user&.staff_role&.title
         contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
         contact.scoreboard = user.school.school_group&.default_scoreboard&.name
-        if user.school.school_group.default_scoreboard
+        if user.school.school_group&.default_scoreboard
           contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school.school_group.default_scoreboard.slug}"
         end
         contact.school_group = user.school.school_group&.name
-        contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}"
+        contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}" if user.school.school_group
         contact.school_group_slug = user.school.school_group&.slug
         contact.country = user.school.school_group&.default_country&.humanize
-        contact.tags = self.tags_for_school_user(user, tags, [user.cluster_schools.map(&:slug)], fsm_tags: false)
+        contact.tags = self.tags_for_school_user(user, tags, user.cluster_schools.map(&:slug), fsm_tags: false)
       elsif user.school.present?
         contact.staff_role = user&.staff_role&.title
         contact.alert_subscriber = user.contacts.for_school(user.school).any? ? 'Yes' : 'No'
@@ -122,6 +122,14 @@ module Mailchimp
         tags << 'FSM15'
       end
       tags
+    end
+
+    # Take Array of interests returned by AudienceManager and turn into hash
+    # for use on forms, setting the default opt-in state.
+    #
+    # TODO: change defaults based on user role/staff role
+    def self.default_interests(interests, _user = nil)
+      interests.to_h { |i| [i.id, true] }
     end
 
     # Convert to hash for submitting to mailchimp api

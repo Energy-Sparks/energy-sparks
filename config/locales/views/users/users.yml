@@ -11,6 +11,22 @@ en:
     edit_password:
       current_password: Current password
       password_updated: Password updated
+    emails:
+      index:
+        footer_html: |-
+          <p>
+            Note that if you decide to opt-out of all emails, we may still need
+            to contact you with important information about your account or your school's use of Energy Sparks.
+          </p>
+        intro_html: |-
+          <p>
+            We know how busy you are - let us know your interests below, so we can ensure we send you the information you will find most helpful.
+          </p>
+          <p>
+            You can update your preferences at any time.
+          </p>
+      update:
+        updated: Email preferences updated
     index:
       redirect: You need to login in order to view and update your account
     show:
@@ -23,3 +39,4 @@ en:
         group_admin_html: You are a %{role} for %{count} schools in <a href="%{url}">%{link_text}</a>
         school_user_html: You are a %{role} user for <a href="%{url}">%{link_text}</a>
       update_account: Update account
+      update_email_preferences: Update email preferences

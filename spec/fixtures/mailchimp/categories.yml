@@ -1,75 +1,47 @@
 ---
-list_id: ed205db324
+list_id: aff6ac9f1b
 categories:
-  - list_id: ed205db324
-    id: 908f880968
-    title: User type
-    display_order: 0
-    type: radio
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968
-        method: DELETE
-      - rel: interests
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-  - list_id: ed205db324
-    id: fc30f60658
-    title: Local Authority area or school group
-    display_order: 0
-    type: radio
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/fc30f60658
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/fc30f60658
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/fc30f60658
-        method: DELETE
-      - rel: interests
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/fc30f60658/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-total_items: 2
-_links:
+- list_id: aff6ac9f1b
+  id: 54eadf64cc
+  title: Interests
+  display_order: 0
+  type: checkboxes
+  _links:
   - rel: self
-    href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc
     method: GET
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json
-    schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
   - rel: parent
-    href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories
     method: GET
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json
-  - rel: create
-    href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories
-    method: POST
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
-    schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/POST.json
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json
+  - rel: update
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc
+    method: PATCH
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/PATCH.json
+  - rel: delete
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc
+    method: DELETE
+  - rel: interests
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
+total_items: 1
+_links:
+- rel: self
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json
+- rel: parent
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json
+- rel: create
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories
+  method: POST
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/POST.json
