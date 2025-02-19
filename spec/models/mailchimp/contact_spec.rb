@@ -172,7 +172,7 @@ describe Mailchimp::Contact do
       it_behaves_like 'it adds the interests'
 
       it 'adds tags for each cluster school' do
-        expect(contact.tags).to contain_exactly(user.cluster_schools.map(&:slug))
+        expect(contact.tags).to match_array(user.cluster_schools.map(&:slug))
       end
 
       context 'when subscribed to alerts' do

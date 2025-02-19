@@ -49,7 +49,7 @@ module Mailchimp
         contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}" if user.school.school_group
         contact.school_group_slug = user.school.school_group&.slug
         contact.country = user.school.school_group&.default_country&.humanize
-        contact.tags = self.tags_for_school_user(user, tags, [user.cluster_schools.map(&:slug)], fsm_tags: false)
+        contact.tags = self.tags_for_school_user(user, tags, user.cluster_schools.map(&:slug), fsm_tags: false)
       elsif user.school.present?
         contact.staff_role = user&.staff_role&.title
         contact.alert_subscriber = user.contacts.for_school(user.school).any? ? 'Yes' : 'No'
