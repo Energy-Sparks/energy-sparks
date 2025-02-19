@@ -78,7 +78,8 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
 
     it 'include unsubscription section' do
       expect(email_body).to include('Why am I receiving these emails?')
-      expect(email_body).to include(school_admin.email)
+      expect(matcher).to have_link('updating your profile')
+      expect(matcher).not_to have_content(school_admin.email)
     end
 
     it 'includes links to dashboard and analysis pages' do
@@ -150,11 +151,6 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
       expect(matcher.all('.negative')[2]).to have_css('img[src*="fa-bolt"]')
       expect(matcher.all('.negative')[3]).to have_css('img[src*="fa-fire-alt"]')
       expect(matcher.all('.negative')[4]).to have_css('img[src*="fa-sun"]')
-    end
-
-    it 'links to profiles page' do
-      expect(matcher).to have_link('updating your profile')
-      expect(matcher).not_to have_content(school_admin.email)
     end
   end
 
