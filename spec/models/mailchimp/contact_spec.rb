@@ -134,7 +134,7 @@ describe Mailchimp::Contact do
       end
 
       context 'when account is disabled' do
-        let!(:user) { create(:school_admin, :subscribed_to_alerts, school: school, locked_at: Time.zone.now) }
+        let!(:user) { create(:school_admin, :subscribed_to_alerts, school: school, active: false) }
 
         it 'uses correct status' do
           expect(contact.user_status).to eq 'Disabled'
