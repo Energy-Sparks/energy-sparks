@@ -1,212 +1,140 @@
 ---
 interests:
-  - category_id: 908f880968
-    list_id: ed205db324
-    id: be32b53ee1
-    name: Council /MAT
-    subscriber_count: '6'
-    display_order: 1
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/be32b53ee1
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/be32b53ee1
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/be32b53ee1
-        method: DELETE
-  - category_id: 908f880968
-    list_id: ed205db324
-    id: 06dc39a1f6
-    name: Parent/volunteer
-    subscriber_count: '3'
-    display_order: 2
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/06dc39a1f6
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/06dc39a1f6
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/06dc39a1f6
-        method: DELETE
-  - category_id: 908f880968
-    list_id: ed205db324
-    id: 0cb0959cde
-    name: Public
-    subscriber_count: '14'
-    display_order: 3
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/0cb0959cde
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/0cb0959cde
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/0cb0959cde
-        method: DELETE
-  - category_id: 908f880968
-    list_id: ed205db324
-    id: e2687f487b
-    name: Headteacher/ Deputy Head
-    subscriber_count: '60'
-    display_order: 4
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/e2687f487b
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/e2687f487b
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/e2687f487b
-        method: DELETE
-  - category_id: 908f880968
-    list_id: ed205db324
-    id: e695242a2f
-    name: Governor
-    subscriber_count: '0'
-    display_order: 5
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/e695242a2f
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/e695242a2f
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/e695242a2f
-        method: DELETE
-  - category_id: 908f880968
-    list_id: ed205db324
-    id: f407e4857e
-    name: Teacher or Teaching Assistant
-    subscriber_count: '8'
-    display_order: 6
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/f407e4857e
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/f407e4857e
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/f407e4857e
-        method: DELETE
-  - category_id: 908f880968
-    list_id: ed205db324
-    id: f99067e4ef
-    name: Business Manager
-    subscriber_count: '0'
-    display_order: 17
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/f99067e4ef
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/f99067e4ef
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/f99067e4ef
-        method: DELETE
-  - category_id: 908f880968
-    list_id: ed205db324
-    id: 85bb2d8115
-    name: Building/ Site Manager or Caretaker
-    subscriber_count: '0'
-    display_order: 18
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/85bb2d8115
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/85bb2d8115
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests/85bb2d8115
-        method: DELETE
-list_id: ed205db324
-category_id: 908f880968
-total_items: 8
-_links:
+- category_id: 54eadf64cc
+  list_id: aff6ac9f1b
+  id: 4bb520e9fc
+  name: Getting the most out of Energy Sparks
+  subscriber_count: '1'
+  display_order: 1
+  _links:
   - rel: self
-    href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/4bb520e9fc
     method: GET
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
-    schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
   - rel: parent
-    href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests
     method: GET
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
-  - rel: create
-    href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories/908f880968/interests
-    method: POST
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
-    schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/POST.json
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
+  - rel: update
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/4bb520e9fc
+    method: PATCH
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
+  - rel: delete
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/4bb520e9fc
+    method: DELETE
+- category_id: 54eadf64cc
+  list_id: aff6ac9f1b
+  id: d6d21f73c1
+  name: Engaging pupils in energy saving and climate
+  subscriber_count: '0'
+  display_order: 2
+  _links:
+  - rel: self
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/d6d21f73c1
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+  - rel: parent
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
+  - rel: update
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/d6d21f73c1
+    method: PATCH
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
+  - rel: delete
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/d6d21f73c1
+    method: DELETE
+- category_id: 54eadf64cc
+  list_id: aff6ac9f1b
+  id: c5c425b147
+  name: Energy saving leadership
+  subscriber_count: '0'
+  display_order: 3
+  _links:
+  - rel: self
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/c5c425b147
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+  - rel: parent
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
+  - rel: update
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/c5c425b147
+    method: PATCH
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
+  - rel: delete
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/c5c425b147
+    method: DELETE
+- category_id: 54eadf64cc
+  list_id: aff6ac9f1b
+  id: f2e12d6ba6
+  name: Training opportunities
+  subscriber_count: '0'
+  display_order: 4
+  _links:
+  - rel: self
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/f2e12d6ba6
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+  - rel: parent
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
+  - rel: update
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/f2e12d6ba6
+    method: PATCH
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
+  - rel: delete
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/f2e12d6ba6
+    method: DELETE
+- category_id: 54eadf64cc
+  list_id: aff6ac9f1b
+  id: 8f45c9c545
+  name: Tailored advice and support
+  subscriber_count: '0'
+  display_order: 5
+  _links:
+  - rel: self
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/8f45c9c545
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+  - rel: parent
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
+  - rel: update
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/8f45c9c545
+    method: PATCH
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/PATCH.json
+  - rel: delete
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests/8f45c9c545
+    method: DELETE
+list_id: aff6ac9f1b
+category_id: 54eadf64cc
+total_items: 5
+_links:
+- rel: self
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/CollectionResponse.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Interests/Collection.json
+- rel: parent
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/Response.json
+- rel: create
+  href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories/54eadf64cc/interests
+  method: POST
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/Response.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Interests/POST.json

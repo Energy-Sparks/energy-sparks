@@ -1,0 +1,19 @@
+<% email_types.each do |email_type| %>
+  <div class="form-group row">
+    <div class="col-sm-4">
+      <div class="custom-control custom-checkbox">
+        <%= hidden_field "interests[#{email_type.id}]", 'false' %>
+        <%= check_box_tag "interests[#{email_type.id}]",
+                          'true',
+                          interests[email_type.id],
+                          class: 'custom-control-input' %>
+        <%= label_tag "interests[#{email_type.id}]", email_type.i18n_name, class: 'custom-control-label' %>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <p>
+        <%= email_type.i18n_description.html_safe %>
+      </p>
+    </div>
+  </div>
+<% end %>

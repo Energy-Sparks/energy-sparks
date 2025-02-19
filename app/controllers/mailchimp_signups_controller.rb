@@ -2,10 +2,12 @@ class MailchimpSignupsController < ApplicationController
   include NewsletterSubscriber
 
   skip_before_action :authenticate_user!
+  before_action :redirect_if_signed_in, only: [:new]
+  before_action :set_email_types
 
   def new
     audience_manager.list # load to ensure config is set
-    @email_types = list_of_email_types
+    @interests = default_interests
     @contact = populate_contact_for_form(current_user, params)
   rescue => e
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"
@@ -22,11 +24,15 @@ class MailchimpSignupsController < ApplicationController
       user = User.find_by_email(sign_up_params[:email_address].downcase)
       @contact = create_contact(user, sign_up_params)
     end
-    resp = subscribe_contact(@contact, user)
-    if resp
-      redirect_to subscribed_mailchimp_signups_path and return
+    if @contact.interests.values.any?
+      resp = subscribe_contact(@contact, user)
+      if resp
+        redirect_to subscribed_mailchimp_signups_path and return
+      end
+    else
+      flash[:error] = I18n.t('mailchimp_signups.index.select_interests')
     end
-    @email_types = list_of_email_types
+    @interests = @contact.interests || default_interests(user)
     render :new
   end
 
@@ -52,5 +58,12 @@ class MailchimpSignupsController < ApplicationController
 
   def sign_up_params
     params.permit(:email_address, :name, :school, interests: {})
+  end
+
+  def redirect_if_signed_in
+    return unless Flipper.enabled?(:profile_pages, current_user)
+    return unless user_signed_in? && !(current_user.pupil? || current_user.school_onboarding?)
+
+    redirect_to user_emails_path(current_user)
   end
 end

@@ -19,13 +19,19 @@
                 <%= link_to t('nav.my_account'), user_path(user) %>
               </li>
               <li class="nav-item">
+                <%= link_to t('users.show.update_account'), edit_user_path(user) %>
+              </li>
+              <li class="nav-item">
                 <%= link_to t('users.show.change_password'), edit_password_user_path(user) %>
               </li>
               <% unless user.admin? %>
                 <li class="nav-item">
-                  <%= link_to t('nav.my_schools'), user_contacts_path(user) %>
+                  <%= link_to t('users.show.manage_alerts'), user_contacts_path(user) %>
                 </li>
               <% end %>
+              <li class="nav-item">
+                <%= link_to t('users.show.update_email_preferences'), user_emails_path(user) %>
+              </li>
             </ul>
           </div>
         </li>

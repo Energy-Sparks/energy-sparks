@@ -10,10 +10,9 @@ class PasswordsController < Devise::PasswordsController
     # the resource is NOT the actual user - have to find it ourselves
     user = User.with_reset_password_token(params[:reset_password_token])
     if user
-      @show_newletter_options = show_newletter_options?(user)
       @allow_alerts = allow_alerts?(user)
       @subscribe_alerts = true
-      @subscribe_newsletters = true
+      @interests = default_interests(user)
       resource.preferred_locale = user.preferred_locale
     else
       redirect_to new_user_password_path, notice: t('errors.messages.reset_password_token_is_invalid') and return
@@ -22,15 +21,14 @@ class PasswordsController < Devise::PasswordsController
 
   def update
     super do |user|
-      @show_newletter_options = show_newletter_options?(user)
       @allow_alerts = allow_alerts?(user)
       @subscribe_alerts = auto_create_alert_contact?
-      @subscribe_newsletters = subscribe_newsletter?
       user.preferred_locale = resource_params[:preferred_locale] if resource_params[:preferred_locale]
       if user.errors.empty?
         create_or_update_alert_contact(user.school, resource) if @subscribe_alerts
-        subscribe_newsletter(user, params.permit(interests: {})) if @subscribe_newsletters
+        subscribe_newsletter(user, params.permit(interests: {})) if @confirmed
       end
+      @interests = default_interests(user)
     end
   end
 
@@ -42,14 +40,6 @@ class PasswordsController < Devise::PasswordsController
 
   def set_confirmed
     @confirmed = (params[:confirmed] == 'true')
-  end
-
-  def subscribe_newsletter?
-    params[:user] && params[:interests]&.value?('true')
-  end
-
-  def show_newletter_options?(user)
-    @confirmed && user.present? && (user.school.present? || user.school_group.present?)
   end
 
   def allow_alerts?(user)

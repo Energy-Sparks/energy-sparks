@@ -3,6 +3,8 @@ require 'rails_helper'
 describe 'account confirmation' do
   let(:school) { create :school }
 
+  include_context 'with a stubbed audience manager'
+
   it 'requires my account is confirmed before I can log in' do
     teacher = create :staff, confirmed_at: nil, email: 'unconfirmed@test.com', school: school
 

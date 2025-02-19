@@ -1,5 +1,5 @@
-<% if user.school.present? || user.group_admin? %>
-  <div id="my-schools-summary">
+<div id="my-schools-summary">
+  <% if user.school.present? || user.group_admin? %>
     <div class="row mt-4">
       <div class="col">
         <h2><%= t('nav.my_schools') %></h2>
@@ -31,10 +31,11 @@
         <% end %>
       </div>
     </div>
-    <div class="row mt-2 mb-4">
-      <div class="col">
-        <%= link_to t('users.show.manage_alerts'), user_contacts_path(user), class: 'btn btn-primary' unless user.admin? %>
-      </div>
+  <% end %>
+  <div class="row mt-2 mb-4">
+    <div class="col">
+      <%= link_to t('users.show.manage_alerts'), user_contacts_path(user), class: 'btn btn-primary' unless user.admin? %>
+      <%= link_to t('users.show.update_email_preferences'), user_emails_path(user), class: 'btn btn-success' %>
     </div>
   </div>
-<% end %>
+</div>

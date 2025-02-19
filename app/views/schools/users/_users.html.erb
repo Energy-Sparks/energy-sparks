@@ -14,7 +14,13 @@
     <tbody>
       <% users.each do |user| %>
         <tr>
-            <td><%= email_with_wbr(user.name) %></td>
+            <td>
+              <% if current_user.admin? %>
+                <%= link_to email_with_wbr(user.name), user_path(user) %>
+              <% else %>
+                <%= email_with_wbr(user.name) %>
+              <% end %>
+            </td>
             <td><%= email_with_wbr(user.email) %></td>
             <td><%= y_n(user.confirmed?) %></td>
             <td><%= y_n(user.contacts.for_school(@school).present?) %></td>
@@ -26,15 +32,24 @@
                       link_to(t('common.labels.edit'), edit_school_user_path(@school, user),
                               class: 'btn btn-primary btn-sm')
                     end %>
-                <%= if can?(:delete, user)
-                      link_to(t('common.labels.delete'), school_user_path(@school, user),
-                              method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger btn-sm')
-                    end %>
                 <%= unless user.confirmed?
                       link_to(t('schools.users.index.resend_confirmation'),
                               resend_confirmation_school_user_path(@school, user),
                               class: 'btn btn-warning btn-sm', method: :post)
                     end %>
+                <% if can?(:manage, :admin_functions) %>
+                      <%= if user.access_locked?
+                            link_to t('schools.users.index.unlock'), unlock_school_user_path(@school, user),
+                                    method: :post, class: 'btn btn-warning btn-sm'
+                          end %>
+                      <% if user.active %>
+                        <%= link_to 'Disable', admin_user_disable_path(user_id: user.id),
+                                    class: 'btn btn-warning btn-sm' %>
+                      <% else %>
+                        <%= link_to 'Enable', admin_user_enable_path(user_id: user.id),
+                                    class: 'btn btn-warning btn-sm' %>
+                      <% end %>
+                <% end %>
                 <%= if can?(:edit, user) && !user.school_admin?
                       link_to(t('schools.users.index.make_school_admin'),
                               make_school_admin_school_user_path(@school, user),
@@ -42,14 +57,9 @@
                               data: { confirm: t('common.confirm') },
                               class: 'btn btn-danger btn-sm')
                     end %>
-                <%= if can?(:manage, :admin_functions)
-                      if user.access_locked?
-                        link_to t('schools.users.index.unlock'), unlock_school_user_path(@school, user),
-                                method: :post, class: 'btn btn-warning btn-sm'
-                      else
-                        link_to t('schools.users.index.lock'), lock_school_user_path(@school, user),
-                                method: :post, class: 'btn btn-warning btn-sm'
-                      end
+                <%= if can?(:delete, user)
+                      link_to(t('common.labels.delete'), school_user_path(@school, user),
+                              method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger btn-sm')
                     end %>
               </div>
             </td>

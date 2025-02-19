@@ -57,7 +57,7 @@ require 'securerandom'
 class User < ApplicationRecord
   include MailchimpUpdateable
 
-  watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id
+  watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id, :active
   after_destroy :reset_mailchimp_contact
 
   # Email is primary key in Mailchimp, trigger immediate update if its is changed, otherwise

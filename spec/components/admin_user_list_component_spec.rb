@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AdminUserListComponent, type: :component do
+RSpec.describe AdminUserListComponent, :include_url_helpers, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
@@ -63,7 +63,7 @@ RSpec.describe AdminUserListComponent, type: :component do
 
     it 'shows expected columns' do
       expect(html).to have_content(user.school.name)
-      expect(html).to have_content(user.name)
+      expect(html).to have_link(user.name, href: user_path(user))
       expect(html).to have_content(user.email)
       expect(html).to have_content('School Admin')
       expect(html).to have_content('Active')

@@ -483,7 +483,8 @@ describe User do
           role: :admin,
           school: create(:school),
           school_group: create(:school_group),
-          staff_role: create(:staff_role, :management)
+          staff_role: create(:staff_role, :management),
+          active: false
         }
       end
 

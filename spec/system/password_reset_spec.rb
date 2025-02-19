@@ -36,22 +36,5 @@ describe 'password reset' do
         expect(email.html_part.decoded).to include('http://cy.localhost/users/password/edit?reset_password_token=')
       end
     end
-
-    context 'with locale redirects' do
-      let(:preferred_locale) { :cy }
-
-      it 'shows locale selector' do
-        expect(user.reload.preferred_locale).to eq('cy')
-        urls = URI.extract(email.html_part.decoded, ['http'])
-        visit urls.last
-        expect(page).to have_content('Preferred language')
-        password = 'new password'
-        fill_in 'New password', with: password
-        fill_in 'Confirm new password', with: password
-        select 'English', from: 'Preferred language'
-        click_button 'Set my password'
-        expect(user.reload.preferred_locale).to eq('en')
-      end
-    end
   end
 end

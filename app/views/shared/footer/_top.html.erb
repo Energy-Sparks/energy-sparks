@@ -55,8 +55,14 @@
                                  'aria-describedby': 'emailHelp',
                                  autocomplete: 'off') %>
             <% end %>
-            <%= submit_tag t('mailchimp.signup_now'),
-                           class: 'btn btn-outline-white mt-2' %>
+            <% if user_signed_in? && Flipper.enabled?(:profile_pages, current_user) %>
+              <%= link_to t('mailchimp.signup_now'),
+                          user_emails_path(current_user),
+                          class: 'btn btn-outline-white mt-2' %>
+            <% else %>
+              <%= submit_tag t('mailchimp.signup_now'),
+                             class: 'btn btn-outline-white mt-2' %>
+            <% end %>
             <span id='emailHelp' class="form-text"><%= t('mailchimp.never_share_your_email_promise') %>.</span>
           </div>
         <% end %>
