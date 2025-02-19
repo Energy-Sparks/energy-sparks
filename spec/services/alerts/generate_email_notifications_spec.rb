@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Alerts::GenerateEmailNotifications do
+describe Alerts::GenerateEmailNotifications, :include_application_helper do
   include Rails.application.routes.url_helpers
 
   let(:school)               { create(:school) }
@@ -78,7 +78,8 @@ describe Alerts::GenerateEmailNotifications do
 
     it 'include unsubscription section' do
       expect(email_body).to include('Why am I receiving these emails?')
-      expect(email_body).to include(school_admin.email)
+      expect(matcher).to have_link('updating your profile')
+      expect(matcher).not_to have_content(school_admin.email)
     end
 
     it 'includes links to dashboard and analysis pages' do
@@ -99,32 +100,11 @@ describe Alerts::GenerateEmailNotifications do
     end
   end
 
-  def shared_before(method, alerts: [])
+  def shared_before(alerts: [])
     Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run:).perform([alert_1, alert_2] + alerts)
-    described_class.new(subscription_generation_run:).send(method)
+    described_class.new(subscription_generation_run:).perform
     alert_subscription_event_1.reload
     alert_subscription_event_2.reload
-  end
-
-  describe '#perform' do
-    before do
-      shared_before :perform
-    end
-
-    it_behaves_like 'an email was sent' do
-      let(:email_subject) { I18n.t('alert_mailer.alert_email.subject') }
-    end
-
-    it 'send to correct users' do
-      expect(email.to).to contain_exactly(email_contact.email_address)
-    end
-
-    it_behaves_like 'an alert email was sent'
-
-    it 'includes unsubscription links' do
-      expect(email_body).to include("Don't show me alerts like this")
-      expect(email_body).to include(alert_subscription_event_1.unsubscription_uuid)
-    end
   end
 
   def create_email_alert(fuel_type)
@@ -135,17 +115,11 @@ describe Alerts::GenerateEmailNotifications do
     alert
   end
 
-  describe '#batch_send' do
+  describe '#perform' do
     before do
-      flags.each { |flag| Flipper.enable(flag) }
+      Flipper.enable(:profile_pages)
       alerts = %i[electricity storage_heater solar_pv].map { |fuel_type| create_email_alert(fuel_type) }
-      shared_before(:batch_send, alerts:)
-    end
-
-    let(:flags) { [:batch_send_weekly_alerts] }
-
-    it_behaves_like 'an email was sent' do
-      let(:email_subject) { I18n.t('alert_mailer.alert_email.subject') }
+      shared_before(alerts:)
     end
 
     it 'send to correct users' do
@@ -158,31 +132,25 @@ describe Alerts::GenerateEmailNotifications do
       expect(email_body).not_to include("Don't show me alerts like this")
     end
 
-    context 'with alert_email_2024', :include_application_helper do
-      let(:flags) { %i[batch_send_weekly_alerts alert_email_2024] }
+    it_behaves_like 'an email was sent' do
+      let(:email_subject) { I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name) }
+    end
 
-      it_behaves_like 'an email was sent' do
-        let(:email_subject) { I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name) }
-      end
+    it 'has the new links' do
+      params = weekly_alert_utm_parameters
+      expect(matcher).to have_link('full list of alerts', href: alerts_school_advice_url(school, params:))
+      expect(matcher).to have_link('priority actions', href: priorities_school_advice_url(school, params:))
+      expect(matcher).to have_link('detailed analysis', href: school_advice_url(school, params:))
+      expect(matcher).to have_link('Choose activity', href: school_recommendations_url(school, params:))
+    end
 
-      it_behaves_like 'an alert email was sent'
-
-      it 'has the new links' do
-        params = weekly_alert_utm_parameters
-        expect(matcher).to have_link('full list of alerts', href: alerts_school_advice_url(school, params:))
-        expect(matcher).to have_link('priority actions', href: priorities_school_advice_url(school, params:))
-        expect(matcher).to have_link('detailed analysis', href: school_advice_url(school, params:))
-        expect(matcher).to have_link('Choose activity', href: school_recommendations_url(school, params:))
-      end
-
-      it 'has the new alerts list' do
-        expect(matcher).to have_css('h4', text: 'Long term trends and advice')
-        expect(matcher.first('.negative')).to have_text('You need to do something!')
-        expect(matcher.first('.negative')).to have_css('img[src*="fa-fire"]')
-        expect(matcher.all('.negative')[2]).to have_css('img[src*="fa-bolt"]')
-        expect(matcher.all('.negative')[3]).to have_css('img[src*="fa-fire-alt"]')
-        expect(matcher.all('.negative')[4]).to have_css('img[src*="fa-sun"]')
-      end
+    it 'has the new alerts list' do
+      expect(matcher).to have_css('h4', text: 'Long term trends and advice')
+      expect(matcher.first('.negative')).to have_text('You need to do something!')
+      expect(matcher.first('.negative')).to have_css('img[src*="fa-fire"]')
+      expect(matcher.all('.negative')[2]).to have_css('img[src*="fa-bolt"]')
+      expect(matcher.all('.negative')[3]).to have_css('img[src*="fa-fire-alt"]')
+      expect(matcher.all('.negative')[4]).to have_css('img[src*="fa-sun"]')
     end
   end
 
@@ -192,7 +160,7 @@ describe Alerts::GenerateEmailNotifications do
 
       before do
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        shared_before :perform
+        shared_before
       end
 
       it 'prompts for first target if not set' do
@@ -206,7 +174,7 @@ describe Alerts::GenerateEmailNotifications do
 
       before do
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        shared_before :perform
+        shared_before
       end
 
       it 'links to progress report' do
@@ -222,7 +190,7 @@ describe Alerts::GenerateEmailNotifications do
       before do
         school.update!(enable_targets_feature: false)
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        shared_before :perform
+        shared_before
       end
 
       it 'the link isnt included' do
@@ -239,7 +207,7 @@ describe Alerts::GenerateEmailNotifications do
 
       before do
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        shared_before :perform
+        shared_before
       end
 
       it 'prompts to set new target' do
@@ -256,7 +224,7 @@ describe Alerts::GenerateEmailNotifications do
     before do
       alert_type_rating_1.update!(find_out_more_active: true)
       Alerts::GenerateContent.new(school).perform
-      shared_before :perform
+      shared_before
     end
 
     it 'links to a find out more if there is one associated with the content' do
