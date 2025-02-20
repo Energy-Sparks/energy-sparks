@@ -444,6 +444,7 @@ Rails.application.routes.draw do
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show', defaults: {format: :json}
 
+      get :review, to: 'review#show'
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
