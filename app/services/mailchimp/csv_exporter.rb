@@ -127,51 +127,23 @@ module Mailchimp
     # This is to allow for migration to be re-run before we tidy up and remove some of
     # the old fields.
     def copy_contact(existing_contact, add_default_interests: false)
-      # TODO use new model
       contact = ActiveSupport::OrderedOptions.new
       contact.email_address = existing_contact[:email_address]
       contact.contact_source = 'Organic'
       contact.locale = 'en'
       contact.tags = non_fsm_tags(existing_contact).join(',')
 
-      # If this is present then we're updating an existing contact that should
-      # have Newsletter set already
-      # TODO naming
-      contact.interests = add_default_interests ? default_interests(existing_contact[:interests]) : existing_contact[:interests]
+      interests = if existing_contact[:interests].present?
+                    existing_contact[:interests].split(',').index_with { |_i| true }
+                  else
+                    {}
+                  end
 
-      # FIXME old fields have been removed, so simplify
-      first_and_last_name_fields = existing_contact[:first_name] && existing_contact[:last_name]
-      first_and_name_fields = existing_contact[:first_name] && existing_contact[:name] && !existing_contact[:name].include?(existing_contact[:first_name])
-
-      if first_and_last_name_fields # older Mailchimp only fields
-        contact.name = [existing_contact[:first_name], existing_contact[:last_name]].join(' ')
-      elsif first_and_name_fields # some users have entered first/last names into the first_name and name fields
-        contact.name = [existing_contact[:first_name], existing_contact[:name]].join(' ')
-      elsif existing_contact[:name] # if set, this is usually full name
-        contact.name = existing_contact[:name]
-      else # combine whatever name fields we have
-        contact.name = [existing_contact[:first_name], existing_contact[:last_name]].join('')
-      end
-
-      contact.staff_role = existing_contact[:staff_role] || existing_contact[:user_type]
-      contact.school = existing_contact[:school] || existing_contact[:school_or_organisation]
-
-      if existing_contact[:school_group].present?
-        contact.school_group = existing_contact[:school_group]
-      else
-        # :local_authority_and_mats is the current field, but not all groups are present
-        # due to limitations in number of groups in Mailchimp.
-        #
-        # So use the "other" fields presented to users on the mailchimp form in preference as
-        # these are hopefully more accurate, otherwise fall back to the current field.
-        contact.school_group = if existing_contact[:other_mat].present?
-                                 existing_contact[:other_mat]
-                               elsif existing_contact[:other_la].present?
-                                 existing_contact[:other_la]
-                               else
-                                 existing_contact[:local_authority_and_mats]
-                               end
-      end
+      contact.interests = add_default_interests ? default_interests(interests) : interests
+      contact.name = existing_contact[:name]
+      contact.staff_role = existing_contact[:staff_role]
+      contact.school = existing_contact[:school_or_organisation]
+      contact.school_group = existing_contact[:school_group]
       contact
     end
 
