@@ -62,6 +62,7 @@ RSpec.describe 'manage school', type: :system do
     it 'shows extra manage menu items' do
       expect(page).to have_css('#manage_school')
       within '#manage_school_menu' do
+        expect(page).to have_link('Review school setup')
         expect(page).to have_link('School configuration')
         expect(page).to have_link('Meter attributes')
         expect(page).to have_link('Manage CADs')
@@ -80,6 +81,7 @@ RSpec.describe 'manage school', type: :system do
     it 'does not shows extra manage menu items' do
       expect(page).to have_css('#manage_school')
       within '#manage_school_menu' do
+        expect(page).not_to have_link('Review school setup')
         expect(page).not_to have_link('School configuration')
         expect(page).not_to have_link('Meter attributes')
         expect(page).not_to have_link('Manage CADs')
