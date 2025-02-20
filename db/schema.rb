@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_11_122142) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_19_164411) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -21,6 +21,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_11_122142) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
+  create_enum "gas_unit", ["kwh", "cbm", "cbft", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_perse_api", ["half_hourly"]
@@ -1269,6 +1270,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_11_122142) do
     t.enum "perse_api", enum_type: "meter_perse_api"
     t.bigint "solis_cloud_installation_id"
     t.boolean "manual_reads", default: false, null: false
+    t.enum "gas_unit", enum_type: "gas_unit"
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
