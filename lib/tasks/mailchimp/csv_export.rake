@@ -1,8 +1,11 @@
 namespace :mailchimp do
   desc "Export new versions of Mailchimp export CSV files"
-  task :csv_export, [:dir] => :environment do |t,args|
+  task :csv_export, [:dir, :add_defaults] => :environment do |t,args|
+    args.with_defaults(add_defaults: false)
+    add_defaults = ActiveModel::Type::Boolean.new.cast( args.add_defaults )
+
     puts "#{DateTime.now.utc} Mailchimp CSV Export Started"
-    puts "Loading from #{args.dir}"
+    puts "Loading from #{args.dir}, add_defaults #{add_defaults}"
 
     audience = {}
     [:subscribed, :unsubscribed, :nonsubscribed, :cleaned].each do |category|
@@ -10,7 +13,7 @@ namespace :mailchimp do
       audience[category] = CSV.read("#{args.dir}/#{file}", headers: true, header_converters: :symbol)
     end
 
-    service = Mailchimp::CsvExporter.new(**audience)
+    service = Mailchimp::CsvExporter.new(add_default_interests: add_defaults, **audience)
     puts "#{DateTime.now.utc} Fetching data"
 
     service.perform

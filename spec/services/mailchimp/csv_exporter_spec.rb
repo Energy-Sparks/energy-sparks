@@ -4,9 +4,10 @@ describe Mailchimp::CsvExporter do
   include_context 'with a stubbed audience manager'
 
   subject(:service) do
-    described_class.new(add_default_interests: true, subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
+    described_class.new(add_default_interests: add_default_interests, subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
   end
 
+  let(:add_default_interests) { true }
   let(:subscribed) { [] }
   let(:nonsubscribed) { [] }
   let(:unsubscribed) { [] }
@@ -21,8 +22,8 @@ describe Mailchimp::CsvExporter do
     contact
   end
 
-  shared_examples 'it adds interests correctly' do |newsletter: true|
-    it 'adds Newsletter', if: newsletter do
+  shared_examples 'it adds interests correctly' do
+    it 'adds emails types' do
       expect(contact.interests).to include 'Getting the most out of Energy Sparks'
     end
   end
@@ -104,14 +105,31 @@ describe Mailchimp::CsvExporter do
         expect(contact.tags.split(',')).to contain_exactly('FSM30', user.school.slug)
       end
 
+      context 'when not adding in default interests' do
+        let(:add_default_interests) { false }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
+      end
+
       context 'with existing interests' do
         let(:subscribed) do
           [create_contact(user.email, interests: 'Getting the most out of Energy Sparks,Others')]
         end
 
-        it 'preserves the interests' do
+        it 'preserves the existing interests' do
           expect(contact.interests).to include('Getting the most out of Energy Sparks')
           expect(contact.interests).to include('Others')
+        end
+
+        context 'when not adding in the default interests' do
+          let(:add_default_interests) { false }
+
+          it 'preserves the existing interests' do
+            expect(contact.interests).to include('Getting the most out of Energy Sparks')
+            expect(contact.interests).to include('Others')
+          end
         end
       end
 
@@ -351,6 +369,13 @@ describe Mailchimp::CsvExporter do
 
       it_behaves_like 'it correctly creates a contact', school_user: true
       it_behaves_like 'it adds interests correctly'
+
+      context 'when not adding defaults' do
+        let(:add_default_interests) { false }
+
+        # still add them here as user has not expressed a preference yet
+        it_behaves_like 'it adds interests correctly'
+      end
     end
 
     context 'with a group admin' do
