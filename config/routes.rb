@@ -276,13 +276,14 @@ Rails.application.routes.draw do
 
   get 'analysis_page_finder/:urn/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
 
-  resources :users, path: 'profiles', except: [:index, :new, :destroy] do
+  resources :users, path: 'profiles', except: [:new, :destroy] do
     member do
       get :edit_password
       patch :update_password
     end
     scope module: :users do
       resources :contacts, path: 'alerts', only: [:index, :create, :destroy]
+      resources :emails, only: [:index, :create]
     end
   end
 
@@ -511,6 +512,8 @@ Rails.application.routes.draw do
       get 'unlock', to: 'users#unlock'
       get 'disable', to: 'users#disable'
       get 'enable', to: 'users#enable'
+      get 'mailchimp_redirect', to: 'users#mailchimp_redirect'
+
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
       end

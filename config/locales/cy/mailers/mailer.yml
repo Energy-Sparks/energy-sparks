@@ -1,19 +1,11 @@
 cy:
   alert_mailer:
     alert_email:
-      book_a_workshop: Archebu gweithdy
-      book_an_audit: Archebu archwiliad
       dashboard_and_analysis_message_2024_html: Mae eich <a href='%{school_url}'>dangosfwrdd ysgol</a> bob amser yn dangos crynodeb o'ch rhybuddion diweddar a'ch defnydd o ynni. I gael <a href='%{alerts_school_advice_url}'>rhestr lawn o rybuddion</a> a'n <a href='%{priorities_school_advice_url}'>camau gweithredu blaenoriaeth a awgrymir</a>, edrychwch ar ein <a href='%{school_analysis_index_url}'>dadansoddiad manwl</a>
-      dashboard_and_analysis_message_html: Mae <strong><a href='%{school_url}'>dangosfwrdd eich ysgol</a></strong> bob amser yn dangos eich rhybuddion diweddaraf a bydd ein <strong><a href='%{school_analysis_index_url}'>dadansoddiad manwl</a></strong> o'ch defnydd o ynni yn rhoi mewnwelediad pellach
-      do_not_show_me_alerts_like_this: Peidio â dangos rhybuddion fel hyn i fi
-      education_workshops_message: Mae Sbarcynni yn cynnig gweithdai addysg hanner diwrnod personol a rhithwir a gwasanaethau i ysgolion sy'n cymryd rhan ledled y DU
       find_out_more: Dysgu rhagor
-      get_your_pupils_involved: Cael eich disgyblion i gymryd rhan
       if_you_have_any_feedback: Os oes gennych unrhyw adborth ar yr e-byst hyn, cysylltwch â ni yn
       if_you_wish_to_completely_unsubscribe: Os ydych yn dymuno dad-danysgrifio o'r e-byst hyn yn llwyr yna cysylltwch â gweinyddwr/wyr eich ysgol
       latest_updates: Diweddariadau diweddaraf
-      need_more_help: Angen mwy o help
-      need_more_help_message: Mae Sbarcynni yn cynnig archwiliadau ynni rhithwir ar-lein ac archwiliadau ynni ar y safle i'ch cefnogi i ddatblygu cynllun gweithredu ynni eich ysgol
       paragraph_1_html: Rydym yn dadansoddi data ynni <a href='%{school_url}'>eich ysgol</a> i amlygu lle rydych yn gwneud cynnydd neu lle y gallech gymryd camau i leihau eich defnydd i arbed arian a lleihau allyriadau carbon
       set_a_new_target: Gosod targed newydd
       stay_up_to_date: Cadwch yn gyfoes
@@ -26,7 +18,6 @@ cy:
       view_your_progress_report: Gweld eich adroddiad cynnydd
       view_your_school_dashboard: Gweld dangosfwrdd eich ysgol
       why_am_i_receiving_these_emails: Pam ydw i'n derbyn yr e-byst hyn?
-      you_can_stop_receiving: Gallwch roi'r gorau i dderbyn, neu oedi dros dro rhybuddion unigol drwy glicio ar y dolenni a ddarperir yn yr e-bost hwn
       you_have_been_signed_up: Rydych wedi cofrestru i dderbyn rhybuddion ynni ar gyfer eich ysgol
       your_school_has_current_target_html: Mae eich ysgol wedi gosod targed i leihau ei defnydd o ynni erbyn%{target_date}. <strong><a href='%{school_targets_url}'>Bydd adroddiad cynnydd eich ysgol</a></strong>  yn eich helpu i fonitro cynnydd ac awgrymu ffyrdd o weithredu
       your_school_has_target_html: Gwnaeth eich ysgol osod targed i leihau ei defnydd o ynni erbyn %{target_date}. Mae'n bryd <a href='%{school_targets_url}'>adolygu eich cynnydd</a> a gosod targed newydd ar gyfer y flwyddyn i ddod

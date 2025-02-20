@@ -198,11 +198,21 @@ describe 'School admin user management' do
       end
 
       context 'when displaying users' do
-        it 'shows preferred language' do
-          create(:staff, school:, preferred_locale: :cy)
+        let!(:staff) { create(:staff, school:, preferred_locale: :cy) }
+
+        before do
           click_on 'Manage users'
+        end
+
+        it 'shows preferred language' do
           within '.staff' do
             expect(page).to have_content('Welsh')
+          end
+        end
+
+        it 'does not have link to profile' do
+          within('.staff') do
+            expect(page).not_to have_link(staff.name, href: user_path(staff))
           end
         end
       end
@@ -423,6 +433,12 @@ describe 'School admin user management' do
       click_on('Manage users')
     end
 
+    it 'can view profile' do
+      within('.staff') do
+        expect(page).to have_link(staff.name, href: user_path(staff))
+      end
+    end
+
     it 'send confirmation email' do
       expect(staff.confirmed?).to be false
       click_on('Resend confirmation')
@@ -435,9 +451,9 @@ describe 'School admin user management' do
       expect(page).to have_content('School admin accounts')
     end
 
-    it 'can lock users' do
-      within('.staff') { click_on 'Lock' }
-      expect(staff.reload.locked_at).not_to be_nil
+    it 'can disable users' do
+      within('.staff') { click_on 'Disable' }
+      expect(staff.reload.active).to be(false)
     end
 
     it 'can unlock users' do
@@ -447,9 +463,9 @@ describe 'School admin user management' do
       expect(staff.reload.locked_at).to be_nil
     end
 
-    it 'can lock pupils' do
-      within('.pupils') { click_on 'Lock' }
-      expect(pupil.reload.locked_at).not_to be_nil
+    it 'can disable pupils' do
+      within('.pupils') { click_on 'Disable' }
+      expect(pupil.reload.active).to be(false)
     end
 
     it 'can unlock pupils' do

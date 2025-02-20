@@ -71,6 +71,16 @@ module Admin
       redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully activated."
     end
 
+    def mailchimp_redirect
+      user = User.find(params['user_id'])
+      contact = Mailchimp::AudienceManager.new.get_list_member(user.email)
+      if contact
+        redirect_to "https://#{ENV.fetch('MAILCHIMP_SERVER')}.admin.mailchimp.com/audience/contact-profile?contact_id=#{contact.contact_id}"
+      else
+        redirect_back fallback_location: admin_users_path, notice: 'Cannot find user in Mailchimp'
+      end
+    end
+
     private
 
     def find_users
