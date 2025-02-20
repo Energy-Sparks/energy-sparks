@@ -276,7 +276,7 @@ Rails.application.routes.draw do
 
   get 'analysis_page_finder/:urn/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
 
-  resources :users, path: 'profiles', except: [:index, :new, :destroy] do
+  resources :users, path: 'profiles', except: [:new, :destroy] do
     member do
       get :edit_password
       patch :update_password

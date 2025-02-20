@@ -234,4 +234,188 @@ describe Mailchimp::Contact do
       expect_fsm_tag(nil, [])
     end
   end
+
+  describe '.default_interests' do
+    include_context 'with a stubbed audience manager'
+
+    let(:interests) { Mailchimp::AudienceManager.new.interests('abc') }
+
+    shared_examples 'interests have been selected' do
+      subject(:defaults) { described_class.default_interests(interests, user) }
+
+      def expect_all_interests(name_to_id, list, val)
+        list.each do |i|
+          interest_id = name_to_id[i]
+          expect(defaults[interest_id]).to be(val)
+        end
+      end
+
+      it 'with only expected options as true' do
+        name_to_id = interests.to_h { |i| [i.name, i.id] }
+        expect_all_interests(name_to_id, selected, true)
+        expect_all_interests(name_to_id, name_to_id.keys - selected, false)
+      end
+    end
+
+    shared_examples 'it maps all the roles correctly' do
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Business manager'))}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::LEADERSHIP,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Building/site manager or caretaker'))}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::LEADERSHIP,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Governor'))}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::LEADERSHIP,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Teacher or teaching assistant'))}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::ENGAGING_PUPILS,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Headteacher or Deputy Head'))}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::ENGAGING_PUPILS,
+            described_class::LEADERSHIP,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Council or MAT staff'))}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::LEADERSHIP,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Parent or volunteer'))}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::ENGAGING_PUPILS,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Public'))}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+    end
+
+    context 'with no user' do
+      it_behaves_like 'interests have been selected' do
+        let(:user) { nil }
+        let(:selected) do
+          [described_class::GETTING_THE_MOST, described_class::ENGAGING_PUPILS, described_class::LEADERSHIP]
+        end
+      end
+    end
+
+    context 'with group admin' do
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(:group_admin)}
+        let(:selected) do
+          [
+            described_class::GETTING_THE_MOST,
+            described_class::ENGAGING_PUPILS,
+            described_class::LEADERSHIP,
+            described_class::TRAINING,
+            described_class::TAILORED_ADVICE
+          ]
+        end
+      end
+    end
+
+    context 'with admin' do
+      it_behaves_like 'interests have been selected' do
+        let(:user) { create(:admin) }
+        let(:selected) do
+          [Mailchimp::Contact::GETTING_THE_MOST, Mailchimp::Contact::ENGAGING_PUPILS, Mailchimp::Contact::LEADERSHIP]
+        end
+      end
+    end
+
+    context 'with school users' do
+      context 'with staff' do
+        it_behaves_like 'it maps all the roles correctly' do
+          let(:role) { :staff }
+        end
+      end
+
+      context 'with school admin' do
+        it_behaves_like 'it maps all the roles correctly' do
+          let(:role) { :school_admin }
+        end
+      end
+
+      context 'with volunteer' do
+        it_behaves_like 'it maps all the roles correctly' do
+          let(:role) { :volunteer }
+        end
+      end
+
+      context 'with a user with no staff role' do
+        let(:user) { create(:volunteer, staff_role: nil) }
+
+        it_behaves_like 'interests have been selected' do
+          let(:selected) do
+            [Mailchimp::Contact::GETTING_THE_MOST, Mailchimp::Contact::ENGAGING_PUPILS, Mailchimp::Contact::LEADERSHIP]
+          end
+        end
+      end
+    end
+  end
 end
