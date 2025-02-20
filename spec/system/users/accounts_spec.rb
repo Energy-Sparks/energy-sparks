@@ -122,6 +122,49 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     end
   end
 
+  context 'when visiting index' do
+    context 'without a session' do
+      before do
+        visit users_path
+      end
+
+      it_behaves_like 'the page requires an adult login'
+
+      context 'with a successful login' do
+        let!(:user) { create(:school_admin, password: 'thisismyuserpassword') }
+
+        before do
+          fill_in 'Email', with: user.email
+          fill_in 'Password', with: user.password
+          within '#staff' do
+            click_on 'Sign in'
+          end
+        end
+
+        it_behaves_like 'a profile page'
+
+        it 'has redirected' do
+          expect(page).to have_current_path user_path(user), ignore_query: true
+        end
+      end
+    end
+
+    context 'with a session' do
+      let!(:user) { create(:school_admin) }
+
+      before do
+        sign_in(user)
+        visit users_path
+      end
+
+      it_behaves_like 'a profile page'
+
+      it 'has redirected' do
+        expect(page).to have_current_path user_path(user), ignore_query: true
+      end
+    end
+  end
+
   context 'when not logged in' do
     before { visit user_path(user) }
 

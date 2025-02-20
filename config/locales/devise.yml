@@ -63,6 +63,7 @@ en:
         send_me_reset_password_instructions: Send me reset password instructions
     sessions:
       new:
+        adult_title: Sign in to Energy Sparks
         email_address_and_password: email address and password
         log_in_with_your_email_address_and_password: Log in with your email address and password
         log_in_with_your_pupil_password: Log in with your pupil password

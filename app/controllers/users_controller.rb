@@ -2,7 +2,17 @@
 
 class UsersController < ApplicationController
   include ApplicationHelper
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:index]
+  skip_before_action :authenticate_user!, only: :index
+
+  def index
+    if current_user.present?
+      redirect_to user_path(current_user)
+    else
+      store_location_for(:user, users_path)
+      redirect_to new_user_session_path(disable_pupil: true), notice: I18n.t('users.index.redirect')
+    end
+  end
 
   def show
     authorize! :read, @user

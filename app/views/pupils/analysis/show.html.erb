@@ -14,11 +14,11 @@
       <h3></h3>
       <h5></h5>
   </div>
-  <%= component 'chart',
-                school: @school,
-                chart_type: @chart_type.to_s,
-                no_zoom: true,
-                axis_controls: false,
-                chart_config: create_chart_config(@school, @chart_type, apply_preferred_units: false),
-                fuel_type: @fuel_type %>
+  <%= render ChartComponent.new(school: @school,
+                                chart_type: @chart_type.to_s,
+                                no_zoom: true,
+                                axis_controls: false,
+                                chart_config: create_chart_config(@school, @chart_type, apply_preferred_units: false),
+                                fuel_type: @fuel_type,
+                                show_how_have_we_analysed_your_data: false) %>
 </div>

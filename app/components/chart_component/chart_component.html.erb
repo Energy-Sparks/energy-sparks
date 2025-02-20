@@ -25,6 +25,10 @@
 
   </div>
 
+  <% if @show_how_have_we_analysed_your_data %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption' %>
+  <% end %>
+
   <%= footer %>
 
 <% else %>

@@ -4,7 +4,7 @@ linters:
   Rubocop:
     enabled: true
     rubocop_config:
-      require:
+      plugins:
         - rubocop-rails
       Layout/InitialIndentation:
         Enabled: false # erb-lint recommended
