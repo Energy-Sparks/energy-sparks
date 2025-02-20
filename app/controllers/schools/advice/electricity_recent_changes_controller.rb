@@ -2,7 +2,7 @@ module Schools
   module Advice
     class ElectricityRecentChangesController < AdviceBaseController
       before_action :load_dashboard_alerts, only: %i[insights]
-      before_action :set_analysis_dates, only: %i[insights]
+      before_action :set_analysis_dates, only: %i[insights analysis]
 
       def insights
         @recent_usage = recent_changes_service.recent_usage
