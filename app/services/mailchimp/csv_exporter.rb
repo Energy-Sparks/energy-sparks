@@ -60,10 +60,10 @@ module Mailchimp
           # remove matches from list
           contact = @audience[mailchimp_contact_type].delete(user.email)
           # update user, only adding default interests if we're overriding current prefs
-          @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact, add_default_interests: @add_default_interests)
+          @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact, add_default_interests: user.active && @add_default_interests)
         else
           # always add default interests
-          @new_nonsubscribed << to_mailchimp_contact(user, add_default_interests: true)
+          @new_nonsubscribed << to_mailchimp_contact(user, add_default_interests: user.active)
         end
       end
     end
