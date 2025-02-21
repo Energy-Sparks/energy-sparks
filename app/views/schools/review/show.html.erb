@@ -7,13 +7,20 @@
 
 <div class="container">
   <div class='mt-4 d-flex justify-content-end align-items-baseline'>
-    <span class="badge border badge-pill border-secondary font-weight-normal">
-      <%= link_to 'View school issues', polymorphic_url([:admin, @school, Issue]), class: 'text-decoration-none' %>
-    </span>
-    &nbsp;
     <% if current_user.admin? && @school&.school_group %>
       <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school&.school_group %>
     <% end %>
+  </div>
+
+  <div class="row mt-4 mb-4">
+    <div class="col">
+      <p>
+        This page checks the current configuration of this school to identify possible errors that need to be resolved before making the school data visible.
+      </p>
+      <p>
+        It also provides warnings about other aspects of the school setup that might be problematic for the analysis or in terms of encouraging school engagement.
+      </p>
+    </div>
   </div>
 
   <%= render 'prompts',
@@ -63,6 +70,11 @@
                       data: { confirm: 'Are you sure?' } %>
         <% end %>
       <% end %>
+      <%= if @school.issues.status_open.any?
+            link_to "View school issues (#{@school.issues.status_open.count})",
+                    admin_school_issues_path(school_id: @school.slug),
+                    class: 'btn btn-secondary'
+          end %>
     </div>
   </div>
 

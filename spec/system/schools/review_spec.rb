@@ -169,6 +169,26 @@ describe 'School setup review', :include_application_helper, type: :system do
           let(:link) { edit_school_times_path(school) }
         end
       end
+
+      context 'with no consent' do
+        it_behaves_like 'an error is displayed' do
+          let(:id) { 'no-consent' }
+          let(:status) { :negative }
+          let(:msg) { 'We do not have consent from the school to publish their data' }
+          let(:link) { new_admin_school_consent_request_path(school) }
+        end
+      end
+
+      context 'with pending bill request' do
+        let!(:school) { create(:school, school_group: school_group, bill_requested: true) }
+
+        it_behaves_like 'a warning is displayed' do
+          let(:id) { 'pending-bill' }
+          let(:status) { :neutral }
+          let(:msg) { 'We are waiting for a bill from this school' }
+          let(:link) { school_consent_documents_path(school) }
+        end
+      end
     end
   end
 end
