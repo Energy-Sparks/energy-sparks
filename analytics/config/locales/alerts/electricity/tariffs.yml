@@ -1,0 +1,10 @@
+---
+en:
+  analytics:
+    alert_differential_tariff_opportunity:
+      timescale: year
+    alert_meter_asc_limit:
+      close_to_margin: You are very close to the agreed capacity limit, exceeding the list might result in a monthly penalty.
+      opportunity: There is an opportunity to save %{annual_saving} per year, or %{ten_year_saving} if considered over a 10 year period.
+      peak_power_consumption: For meter %{mpan} your ASC limit is %{asc_limit} but your peak power consumption is %{peak_kw}.
+      timescale: year

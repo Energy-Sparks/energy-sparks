@@ -1,0 +1,8 @@
+---
+en:
+  analytics:
+    modelling:
+      heating:
+        no_heating: no heating
+        on_time: on time
+        too_early: too early
