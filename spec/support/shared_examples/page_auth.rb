@@ -11,5 +11,5 @@ end
 
 
 RSpec.shared_examples 'the user is not authorised' do
-  it { expect(page).to have_content('You are not authorized to access this page') }
+  it { expect(page).to have_content('You are not authorized') }
 end

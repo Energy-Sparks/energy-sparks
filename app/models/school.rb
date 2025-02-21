@@ -323,6 +323,8 @@ class School < ApplicationRecord
     end
   end
 
+
+
   def deleted?
     not_active? and removal_date.present?
   end
@@ -775,6 +777,64 @@ class School < ApplicationRecord
 
   def data_visible?
     data_enabled && visible
+  end
+
+  def active_adult_users
+    users.active.where.not(role: :pupil)
+  end
+
+  def active_alert_contacts
+    users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
+  end
+
+  # Rough figures taken from:
+  # https://assets.publishing.service.gov.uk/media/5f23ec238fa8f57acac33720/BB103_Area_Guidelines_for_Mainstream_Schools.pdf
+  #
+  # Is the floor area less than twice the recommended maximum for a secondary
+  # school with similar number of pupils.
+  def floor_area_ok?
+    return true unless floor_area && number_of_pupils
+    floor_area < 2 * (1700 + 7 * number_of_pupils)
+  end
+
+  def has_configured_school_times?
+    school_times.where(usage_type: :school_day).where.not(opening_time: 850).any? || school_times.where(usage_type: :school_day).where.not(closing_time: 1520).any?
+  end
+
+  def has_community_use?
+    school_times.where(usage_type: :community_use).any?
+  end
+
+  def has_solar_configuration?
+    meters.active.with_active_meter_attributes(%w[solar_pv_mpan_meter_mapping solar_pv]).any?
+  end
+
+  def has_storage_heater_configuration?
+    meters.active.with_active_meter_attributes(%w[storage_heaters]).any?
+  end
+
+  def needs_solar_configuration?
+    return false unless indicated_has_solar_panels?
+    return !has_solar_configuration?
+  end
+
+  def needs_storage_heater_configuration?
+    return false unless indicated_has_storage_heaters?
+    return !has_storage_heater_configuration?
+  end
+
+  # From https://www.gov.uk/government/publications/new-homes-fact-sheet-5-new-homes-and-school-places/fact-sheet-5-new-homes-and-school-places#how-many-new-homes-are-served-by-an-average-sized-school
+  # Average primary is 276, ES max is ~2675
+  # Average secondary is 1,054, ES max is ~1030
+  # ES mixed max is ~2045
+  def pupil_numbers_ok?
+    return true unless number_of_pupils
+    case school_type
+    when 'primary', 'secondary', 'mixed_primary_and_secondary'
+      number_of_pupils.between?(10, 3000)
+    else
+      number_of_pupils.between?(10, 1500)
+    end
   end
 
   private
