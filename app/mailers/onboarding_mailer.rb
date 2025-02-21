@@ -29,13 +29,6 @@ class OnboardingMailer < LocaleMailer
     make_bootstrap_mail(to: email, subject: subject)
   end
 
-  def activation_email
-    @school = params[:school]
-    @title = @school.name
-    @to = user_emails(params[:users])
-    make_bootstrap_mail(to: @to, subject: default_i18n_subject(school: @school.name, locale: locale_param))
-  end
-
   def onboarded_email
     @school = params[:school]
     @title = @school.name
