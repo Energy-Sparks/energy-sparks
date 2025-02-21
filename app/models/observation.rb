@@ -86,6 +86,7 @@ class Observation < ApplicationRecord
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 
+  scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
