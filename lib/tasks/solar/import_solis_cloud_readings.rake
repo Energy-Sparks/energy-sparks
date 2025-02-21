@@ -9,7 +9,7 @@ namespace :solar do
     puts "#{DateTime.now.utc} import_solis_cloud_readings start"
     begin
       SolisCloudInstallation.find_each do |installation|
-        puts "Running for #{installation.school.name} #{installation.site_id}"
+        puts "Running for #{installation.school.name} #{installation.api_id}"
         Solar::SolisCloudDownloadAndUpsert.new(installation: installation, start_date: start_date,
                                                end_date: end_date).perform
       end
