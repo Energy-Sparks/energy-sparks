@@ -105,6 +105,14 @@ describe Mailchimp::CsvExporter do
         expect(contact.tags.split(',')).to contain_exactly('FSM30', user.school.slug)
       end
 
+      context 'when user is not active' do
+        let!(:user) { create(:school_admin, school: school, active: false) }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
+      end
+
       context 'when not adding in default interests' do
         let(:add_default_interests) { false }
 
@@ -291,6 +299,14 @@ describe Mailchimp::CsvExporter do
 
       it_behaves_like 'it correctly creates a contact', school_user: true
       it_behaves_like 'it adds interests correctly'
+
+      context 'when user is not active' do
+        let!(:user) { create(:school_admin, school: school, active: false) }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
+      end
 
       context 'when not adding defaults' do
         let(:add_default_interests) { false }
