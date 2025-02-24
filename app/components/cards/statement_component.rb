@@ -1,7 +1,11 @@
 module Cards
   class StatementComponent < ApplicationComponent
-    renders_one :header, ->(title) { Elements::HeaderComponent.new(title: title, level: 3) }
-    renders_one :description, -> { Elements::ParagraphComponent.new(classes: 'small') }
+    renders_one :header, ->(**kwargs) do
+      Elements::HeaderComponent.new(**({ level: 3 }.merge(kwargs)))
+    end
+    renders_one :description, ->(**kwargs) do
+      Elements::ParagraphComponent.new(**({ classes: 'small' }.merge(kwargs)))
+    end
 
     def initialize(id: '', classes: '')
       super(id: id, classes: classes)

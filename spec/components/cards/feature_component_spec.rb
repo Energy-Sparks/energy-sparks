@@ -9,9 +9,10 @@ RSpec.describe Cards::FeatureComponent, :include_application_helper, type: :comp
 
   let(:html) do
     render_inline(Cards::FeatureComponent.new(**params)) do |card|
-      card.with_header('Header')
+      card.with_header(title: 'Header')
       card.with_description { 'Description' }
-      card.with_buttons { 'Buttons' }
+      card.with_button('button 1', 'link_to_button_1', style: :primary)
+      card.with_button('button 2', 'link_to_button_2', style: :secondary)
     end
   end
 
@@ -24,6 +25,7 @@ RSpec.describe Cards::FeatureComponent, :include_application_helper, type: :comp
 
     it { expect(html).to have_content('Header') }
     it { expect(html).to have_content('Description') }
-    it { expect(html).to have_content('Buttons') }
+    it { expect(html).to have_link('button 1', href: 'link_to_button_1') }
+    it { expect(html).to have_link('button 2', href: 'link_to_button_2') }
   end
 end

@@ -9,7 +9,7 @@ RSpec.describe Cards::StatementComponent, :include_application_helper, type: :co
 
   let(:html) do
     render_inline(Cards::StatementComponent.new(**params)) do |card|
-      card.with_header('Header')
+      card.with_header(title: 'Header')
       card.with_description { 'Description' }
     end
   end

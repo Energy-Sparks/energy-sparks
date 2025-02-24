@@ -1,7 +1,9 @@
 module Cards
   class StatsComponent < ApplicationComponent
     renders_one :icon, 'IconComponent'
-    renders_one :header, ->(title) { Elements::HeaderComponent.new(title: title, level: 5, classes: 'text-white mt-2') }
+    renders_one :header, ->(**kwargs) do
+      Elements::HeaderComponent.new(**({ level: 5, classes: 'text-white mt-2' }.merge(kwargs)))
+    end
     renders_one :figure, ->(figure) { Elements::HeaderComponent.new(title: figure, level: 2, classes: 'figure text-blue-light') }
     renders_one :subtext, -> { Elements::ParagraphComponent.new(classes: 'very-small text-blue-light') }
 

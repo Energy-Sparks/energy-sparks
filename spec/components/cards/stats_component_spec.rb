@@ -10,7 +10,7 @@ RSpec.describe Cards::StatsComponent, :include_application_helper, type: :compon
   let(:html) do
     render_inline(Cards::StatsComponent.new(**params)) do |card|
       card.with_icon(name: :bolt, style: :circle)
-      card.with_header('Header')
+      card.with_header(title: 'Header')
       card.with_figure('90%')
       card.with_subtext { 'Subtext' }
     end
