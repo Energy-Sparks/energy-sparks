@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_19_164411) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
-  create_enum "gas_unit", ["kwh", "cbm", "cbft", "hcf"]
+  create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_perse_api", ["half_hourly"]
@@ -425,6 +425,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_19_164411) do
     t.boolean "allow_merging", default: false, null: false
     t.integer "missing_reading_window", default: 5
     t.bigint "owned_by_id"
+    t.boolean "check_meter_units", default: false, null: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
     t.index ["owned_by_id"], name: "index_amr_data_feed_configs_on_owned_by_id"

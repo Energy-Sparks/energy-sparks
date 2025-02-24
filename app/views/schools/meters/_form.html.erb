@@ -67,6 +67,12 @@
       <%= form.label :manual_reads, t('schools.meters.index.manual_reads') %>
       <%= form.check_box :manual_reads %>
     </div>
+    <div class="form-group">
+      <%= form.label(:gas_unit, 'Gas unit') %>
+      <%= form.select(:gas_unit, options_for_gas_unit, { include_blank: '' }, class: 'form-control') %>
+      <small class="form-text text-muted">For gas meters only</small>
+    </div>
+
   <% end %>
 
   <% if show_dcc_fields %>
@@ -88,11 +94,8 @@
     <div class="form-group">
       <div>
         <%= form.label(:perse_api, 'Perse API') %>
-        <%= form.select(:perse_api, options_for_perse_api, { include_blank: true },
-                        class: 'form-control') %>
-        <small class="form-text text-muted">
-          Setting this will enable loading readings data from Perse
-        </small>
+        <%= form.select(:perse_api, options_for_perse_api, { include_blank: true }, class: 'form-control') %>
+        <small class="form-text text-muted">Setting this will enable loading readings data from Perse</small>
       </div>
     </div>
   <% end %>

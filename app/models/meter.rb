@@ -113,7 +113,7 @@ class Meter < ApplicationRecord
   enum :meter_system, { nhh_amr: 0, nhh: 1, hh: 2, smets2_smart: 3 }
   enum :dcc_meter, %w[no smets2 other].to_h { |v| [v, v] }, prefix: true
   enum :perse_api, %i[half_hourly].index_with(&:to_s), prefix: true
-  enum :gas_unit, %i[kwh cbm cbft hcf].index_with(&:to_s), prefix: true
+  enum :gas_unit, %i[kwh m3 ft3 hcf].index_with(&:to_s), prefix: true
 
   delegate :area_name, to: :school
 
@@ -126,6 +126,7 @@ class Meter < ApplicationRecord
                                   message: 'for electricity meters should be a 13 to 14 digit number' }
   validates :mpan_mprn, format: { with: /\A\d{1,15}\Z/, if: :gas?,
                                   message: 'for gas meters should be a 1-15 digit number' }
+  validates :gas_unit, absence: true, if: -> { meter_type != 'gas' }
   validate :pseudo_meter_type_not_changed, on: :update, if: :pseudo
   validate :pseudo_mpan_mprn_not_changed, on: :update, if: :pseudo
 

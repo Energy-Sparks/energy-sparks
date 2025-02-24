@@ -246,6 +246,22 @@ describe Amr::DataFeedTranslator do
           expect(results.last[:readings].first).to eq(1.20800000 * 11.1)
         end
       end
+
+      context 'when using the meter gas unit' do
+        before do
+          config.check_meter_units = true
+        end
+
+        it 'converts ft3' do
+          create(:gas_meter, mpan_mprn: reading[1], gas_unit: :ft3)
+          expect(results.first[:readings].first).to be_within(0.001).of(0.380)
+        end
+
+        it 'converts hcf' do
+          create(:gas_meter, mpan_mprn: reading[1], gas_unit: :hcf)
+          expect(results.first[:readings].first).to be_within(0.01).of(37.97)
+        end
+      end
     end
 
     context 'when the config indicates there are delayed readings' do
