@@ -133,14 +133,8 @@ module Mailchimp
       contact.locale = 'en'
       contact.tags = non_fsm_tags(existing_contact).join(',')
 
-      # Turn existing interests into a hash to make it easier to set
-      # defaults
-      interests = if existing_contact[:interests].present?
-                    existing_contact[:interests].split(',').index_with { |_i| true }
-                  else
-                    {}
-                  end
 
+      interests = (existing_contact&.dig(:interests)&.split(',') || []).index_with { true }
       contact.interests = add_default_interests ? default_interests(interests) : interests
 
       # Convert interests back into a string for the CSV export

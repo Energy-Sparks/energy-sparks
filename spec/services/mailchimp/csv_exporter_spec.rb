@@ -24,8 +24,7 @@ describe Mailchimp::CsvExporter do
 
   shared_examples 'it adds interests correctly' do
     it 'adds emails types as a comma-separated list' do
-      expect(contact.interests).to be_a(String)
-      expect(contact.interests).to include 'Getting the most out of Energy Sparks'
+      expect(contact.interests.split(',')).to include 'Getting the most out of Energy Sparks'
     end
   end
 
