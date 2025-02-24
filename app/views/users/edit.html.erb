@@ -14,7 +14,8 @@
           <%= f.input :staff_role_id,
                       label: t('schools.users.form.role'),
                       required: true,
-                      collection: StaffRole.translated_names_and_ids %>
+                      collection: StaffRole.translated_names_and_ids,
+                      prompt: '' %>
         <% end %>
 
         <div class="form-group">

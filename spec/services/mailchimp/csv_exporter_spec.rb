@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 describe Mailchimp::CsvExporter do
+  include_context 'with a stubbed audience manager'
+
   subject(:service) do
-    described_class.new(subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
+    described_class.new(add_default_interests: add_default_interests, subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
   end
 
+  let(:add_default_interests) { true }
   let(:subscribed) { [] }
   let(:nonsubscribed) { [] }
   let(:unsubscribed) { [] }
@@ -19,13 +22,9 @@ describe Mailchimp::CsvExporter do
     contact
   end
 
-  shared_examples 'it adds interests correctly' do |newsletter: true|
-    it 'adds Newsletter', if: newsletter do
-      expect(contact.interests).to eq 'Newsletter'
-    end
-
-    it 'does not add Newsletter', unless: newsletter do
-      expect(contact.interests).to be_empty
+  shared_examples 'it adds interests correctly' do
+    it 'adds emails types' do
+      expect(contact.interests).to include 'Getting the most out of Energy Sparks'
     end
   end
 
@@ -106,13 +105,39 @@ describe Mailchimp::CsvExporter do
         expect(contact.tags.split(',')).to contain_exactly('FSM30', user.school.slug)
       end
 
+      context 'when user is not active' do
+        let!(:user) { create(:school_admin, school: school, active: false) }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
+      end
+
+      context 'when not adding in default interests' do
+        let(:add_default_interests) { false }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
+      end
+
       context 'with existing interests' do
         let(:subscribed) do
-          [create_contact(user.email, interests: 'Newsletter,Others')]
+          [create_contact(user.email, interests: 'Getting the most out of Energy Sparks,Others')]
         end
 
-        it 'preserves the interests' do
-          expect(contact.interests).to eq('Newsletter,Others')
+        it 'preserves the existing interests' do
+          expect(contact.interests).to include('Getting the most out of Energy Sparks')
+          expect(contact.interests).to include('Others')
+        end
+
+        context 'when not adding in the default interests' do
+          let(:add_default_interests) { false }
+
+          it 'preserves the existing interests' do
+            expect(contact.interests).to include('Getting the most out of Energy Sparks')
+            expect(contact.interests).to include('Others')
+          end
         end
       end
 
@@ -238,87 +263,9 @@ describe Mailchimp::CsvExporter do
       service.perform
     end
 
-    context 'with a pre-migration contact' do
-      let(:subscribed) do
-        [create_contact('user@example.org', first_name: 'John', last_name: 'Smith', school_or_organisation: 'DfE', user_type: 'School management', other_la: 'bhcc', other_mat: 'Unity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support,FSM30')]
-      end
-
-      it 'retains the contact' do
-        expect(service.updated_audience[:subscribed].length).to eq(1)
-      end
-
-      it_behaves_like 'it adds interests correctly'
-
-      it 'populates the fields correctly' do
-        expect(contact.email_address).to eq('user@example.org')
-        expect(contact.name).to eq 'John Smith'
-        expect(contact.contact_source).to eq 'Organic'
-        expect(contact.confirmed_date).to be_nil
-        expect(contact.user_role).to be_nil
-        expect(contact.locale).to eq 'en'
-        expect(contact.staff_role).to eq 'School management'
-        expect(contact.school).to eq 'DfE'
-        expect(contact.school_group).to eq 'Unity Schools Partnership'
-      end
-
-      it 'copies tags, stripping free school meal tags' do
-        expect(contact.tags).to eq 'trustee,external support'
-      end
-
-      context 'with name and first name only' do
-        let(:subscribed) do
-          [create_contact('user@example.org', first_name: 'John', name: 'Smith')]
-        end
-
-        it 'builds the name correctly' do
-          expect(contact.name).to eq 'John Smith'
-        end
-      end
-
-      context 'with name only' do
-        let(:subscribed) do
-          [create_contact('user@example.org', name: 'John Smith')]
-        end
-
-        it 'builds the name correctly' do
-          expect(contact.name).to eq 'John Smith'
-        end
-      end
-
-      context 'with first name and name overlapping' do
-        let(:subscribed) do
-          [create_contact('user@example.org', name: 'John Smith', first_name: 'John')]
-        end
-
-        it 'builds the name correctly' do
-          expect(contact.name).to eq 'John Smith'
-        end
-      end
-
-      context 'with first name only' do
-        let(:subscribed) do
-          [create_contact('user@example.org', first_name: 'John')]
-        end
-
-        it 'builds the name correctly' do
-          expect(contact.name).to eq 'John'
-        end
-      end
-
-      context 'with last name only' do
-        let(:subscribed) do
-          [create_contact('user@example.org', last_name: 'Smith')]
-        end
-
-        it 'builds the name correctly' do
-          expect(contact.name).to eq 'Smith'
-        end
-      end
-    end
-
     context 'with a post-migration contact' do
       let(:subscribed) do
-        [create_contact('user@example.org', name: 'John Smith', first_name: 'John', last_name: 'Smith', school: 'DfE', user_type: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'XDfE', other_la: 'Xbhcc', other_mat: 'XUnity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support')]
+        [create_contact('user@example.org', name: 'John Smith', staff_role: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'DfE', tags: 'trustee,external support')]
       end
 
       it_behaves_like 'it adds interests correctly'
@@ -351,7 +298,22 @@ describe Mailchimp::CsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact', school_user: true
-      it_behaves_like 'it adds interests correctly', newsletter: false
+      it_behaves_like 'it adds interests correctly'
+
+      context 'when user is not active' do
+        let!(:user) { create(:school_admin, school: school, active: false) }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
+      end
+
+      context 'when not adding defaults' do
+        let(:add_default_interests) { false }
+
+        # still add them here as user has not expressed a preference yet
+        it_behaves_like 'it adds interests correctly'
+      end
     end
 
     context 'with a group admin' do
@@ -362,7 +324,7 @@ describe Mailchimp::CsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact', group_admin: true
-      it_behaves_like 'it adds interests correctly', newsletter: false
+      it_behaves_like 'it adds interests correctly'
     end
 
     context 'with an admin' do
@@ -373,7 +335,7 @@ describe Mailchimp::CsvExporter do
       end
 
       it_behaves_like 'it correctly creates a contact'
-      it_behaves_like 'it adds interests correctly', newsletter: false
+      it_behaves_like 'it adds interests correctly'
     end
 
     context 'with an unconfirmed user' do
