@@ -1,4 +1,4 @@
-// outer div has the .home-page class when :new_home_page feature glad is switched off
+// outer div has the .home-page class when :new_home_page feature is switched off
 // and we're not currently looking at the home page
 
 .home-page {
@@ -283,7 +283,7 @@
   }
 }
 
-// outer div has this class when :new_home_page feature glad is switched on and if we're on the home page
+// outer div has this class when :new_home_page feature is switched on and if we're on the home page
 
 .home {
   p {
