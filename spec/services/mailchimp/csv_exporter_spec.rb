@@ -23,8 +23,8 @@ describe Mailchimp::CsvExporter do
   end
 
   shared_examples 'it adds interests correctly' do
-    it 'adds emails types' do
-      expect(contact.interests).to include 'Getting the most out of Energy Sparks'
+    it 'adds emails types as a comma-separated list' do
+      expect(contact.interests.split(',')).to include 'Getting the most out of Energy Sparks'
     end
   end
 
@@ -278,10 +278,17 @@ describe Mailchimp::CsvExporter do
         expect(contact.user_role).to be_nil
         expect(contact.locale).to eq 'en'
         expect(contact.tags).to eq 'trustee,external support'
-
         expect(contact.staff_role).to eq 'School management'
         expect(contact.school).to eq 'DfE'
         expect(contact.school_group).to eq 'Unity Schools Partnership'
+      end
+
+      context 'when not adding in default interests' do
+        let(:add_default_interests) { false }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
       end
     end
   end
