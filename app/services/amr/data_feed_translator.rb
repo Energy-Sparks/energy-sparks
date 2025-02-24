@@ -2,6 +2,9 @@
 
 module Amr
   class DataFeedTranslator
+    FT3_TO_M3 = 0.0283168
+    HCF_TO_M3 = FT3_TO_M3 * 100
+
     def initialize(config, array_of_rows)
       @config = config
       @array_of_rows = array_of_rows
@@ -95,9 +98,9 @@ module Amr
       factor = Amr::N3rgyDownloader::KWH_PER_M3_GAS
       case unit
       when :ft3
-        factor /= 35.315
+        factor *= FT3_TO_M3
       when :hcf
-        factor /= 0.35315
+        factor *= HCF_TO_M3
       end
       array_of_readings.map { |r| r.to_f * factor }
     end
