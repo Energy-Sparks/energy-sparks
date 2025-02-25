@@ -1,4 +1,4 @@
-<%= component 'search_results' do |c| %>
+<%= render SearchResultsComponent.new do |c| %>
   <% c.with_title do %>
     <% if keyword %>
       <%= I18n.t('components.search_results.keyword.title') %>
