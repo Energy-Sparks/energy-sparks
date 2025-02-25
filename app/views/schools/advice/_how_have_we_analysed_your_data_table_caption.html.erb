@@ -1,6 +1,6 @@
 <div class="text-right advice-table-caption">
   <%= additional_notice_text if defined? additional_notice_text %>
-  <%= render FootnoteModal::LinkComponent.new(
+  <%= render FootnoteModalComponent::Link.new(
         modal_id: defined?(data_target) ? data_target : 'how-have-we-analysed-your-data-footnotes'
       ) do %>
     <%= t('advice_pages.how_have_we_analysed_your_data.link_title') %>

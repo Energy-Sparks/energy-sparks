@@ -39,7 +39,7 @@
               </span>
             </td>
             <td>
-              <%= render FootnoteModal::LinkComponent.new(modal_id: "action-#{alert_type_rating.id}") do %>
+              <%= render FootnoteModalComponent::Link.new(modal_id: "action-#{alert_type_rating.id}") do %>
                 <%= alert_type_rating.current_content.management_priorities_title %>
               <% end %>
               <%= render FootnoteModalComponent.new(

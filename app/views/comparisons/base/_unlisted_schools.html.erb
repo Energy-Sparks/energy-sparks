@@ -1,7 +1,7 @@
 <% if unlisted_schools_count > 0 %>
   <div class="alert alert-secondary">
   <%= unlisted_message(@unlisted_schools_count) %>.
-  <%= render FootnoteModal::LinkComponent.new(modal_id: 'unlisted-schools',
+  <%= render FootnoteModalComponent::Link.new(modal_id: 'unlisted-schools',
                                               href: url_for({ action: :unlisted }.merge(index_params)),
                                               title: 'Title', remote: true) do
         t('comparisons.unlisted.link', count: @unlisted_schools_count)
