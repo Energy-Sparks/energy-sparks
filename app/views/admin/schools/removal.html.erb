@@ -10,7 +10,7 @@
   <% if @school.users.any? %>
     <h2>User status</h2>
     <% unless @school_remover.users_ready? %>
-      <%= component 'notice', status: :negative, classes: 'mb-4' do %>
+      <%= render NoticeComponent.new(status: :negative, classes: 'mb-4') do %>
         <p>School cannot be removed while it has active users.</p>
       <% end %>
     <% end %>
@@ -34,7 +34,7 @@
   <% if @school.meters.any? %>
     <h2>Meter status</h2>
     <% unless @school_remover.meters_ready? %>
-      <%= component 'notice', status: :negative, classes: 'mb-4' do %>
+      <%= render NoticeComponent.new(status: :negative, classes: 'mb-4') do %>
         <p>School cannot be removed while it has active meters</p>
       <% end %>
     <% end %>

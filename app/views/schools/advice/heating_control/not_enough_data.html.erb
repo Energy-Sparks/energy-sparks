@@ -1,7 +1,7 @@
 <%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page,
                                          tab: @tab, data_warning: nil do %>
   <h2>
-    <%= component 'page_nav/collapse_button', display: 'inline' %>
+    <%= render PageNav::CollapseButtonComponent.new(display: 'inline') %>
     <%= t('advice_pages.heating_control.not_enough_data.title') %>
   </h2>
   <p>

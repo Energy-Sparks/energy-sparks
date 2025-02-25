@@ -1,6 +1,7 @@
-<%= component 'energy_tariff_form_title',
-              energy_tariff: @energy_tariff,
-              skip_fields: %i[name dates] do |c| %>
+<%= render EnergyTariffFormTitleComponent.new(
+      energy_tariff: @energy_tariff,
+      skip_fields: %i[name dates]
+    ) do |c| %>
   <% c.with_page_title do %>
     <h1><%= t('schools.user_tariffs.choose_meters.title') %></h1>
   <% end %>
