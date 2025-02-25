@@ -1,7 +1,7 @@
 <div <%= "id=#{id}" if id %> class="timeline-component<%= classes %>">
   <div class="row">
     <div class="col">
-      <%= component 'titled_section' do |section| %>
+      <%= render TitledSectionComponent.new do |section| %>
         <% if show_header %>
           <% section.with_title do %>
             <h2 id="timeline"><%= t('timeline.whats_been_going_on') %></h2>
