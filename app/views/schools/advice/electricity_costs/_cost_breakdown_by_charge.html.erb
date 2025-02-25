@@ -11,7 +11,7 @@
   </p>
 <% end %>
 
-<%= render ChartComponent.new(chart_type: one_year_break) down_chart, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: one_year_breakdown_chart, school: school) do |c| %>
   <% c.with_title { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.title") } %>
   <% c.with_subtitle do
        advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.subtitle_html",
