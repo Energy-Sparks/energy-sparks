@@ -89,4 +89,18 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
       it { expect(component.other_schools?).to be(true) }
     end
   end
+
+  describe '#observations' do
+    context 'with points' do
+      let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+
+      it { expect(component.observations).not_to be_empty }
+    end
+
+    context 'with no points' do
+      let!(:other_school) { create :school, :with_points, score_points: 0, scoreboard: scoreboard }
+
+      it { expect(component.observations).to be_empty }
+    end
+  end
 end
