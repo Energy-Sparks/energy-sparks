@@ -13,7 +13,13 @@
   </p>
 <% end %>
 
-<%= render ChartComponent.new(chart_type: one_year_break) down_chart, school: school, chart_config: create_chart_config(school, one_year_breakdown_chart, aggregate_meter_mpan_mprn) do |c| %>
+<%= render ChartComponent.new(
+            chart_type: one_year_breakdown_chart,
+            school: school,
+            chart_config: create_chart_config(
+                school,
+                one_year_breakdown_chart,
+                aggregate_meter_mpan_mprn) do |c| %>
   <% c.with_title { advice_t("gas_costs.charts.#{one_year_breakdown_chart_key}.title") } %>
   <% c.with_subtitle do
        advice_t("gas_costs.charts.#{one_year_breakdown_chart_key}.subtitle_html",
