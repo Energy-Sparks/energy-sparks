@@ -3,42 +3,9 @@
 module Admin
   module Reports
     class ManualReadsController < AdminController
+      include Columns
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
-
-      class Column
-        def initialize(name, csv_lambda, td_lambda = nil, display: :csv_and_html)
-          @name = name
-          @csv_lambda = csv_lambda
-          @td_lambda = td_lambda
-          @display = display
-        end
-
-        def name
-          string = @name.to_s
-          string.downcase == string ? string.titleize : string
-        end
-
-        def csv(arg)
-          @csv_lambda.call(arg)
-        end
-
-        def td(arg)
-          if @td_lambda&.arity == 2
-            @td_lambda.call(arg, csv(arg))
-          else
-            (@td_lambda || @csv_lambda).call(arg)
-          end
-        end
-
-        def display_html
-          %i[csv_and_html html].include?(@display)
-        end
-
-        def display_csv
-          %i[csv_and_html csv].include?(@display)
-        end
-      end
 
       def index
         columns = [
@@ -77,16 +44,6 @@ module Admin
           format.html
           format.csv do
             send_data csv_report(columns), filename: EnergySparks::Filenames.csv('manual-reads-report')
-          end
-        end
-      end
-
-      def csv_report(columns)
-        csv_columns = columns.filter(&:display_csv)
-        CSV.generate(headers: true) do |csv|
-          csv << csv_columns.map(&:name)
-          @meters.find_each do |meter|
-            csv << csv_columns.map { |column| column.csv(meter) }
           end
         end
       end
