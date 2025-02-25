@@ -1,5 +1,5 @@
 <div class="advice-reminders-component <%= classes %>">
-  <%= component 'titled_section' do |section| %>
+  <%= render TitledSectionComponent.new do |section| %>
     <% section.with_title do %>
       <h2 id="<%= id %>" class="scrollable-title"><%= t('advice_pages.index.show.what_next') %></h2>
     <% end %>
