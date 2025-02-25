@@ -1,4 +1,4 @@
-<%= component 'titled_section', classes: classes do |section| %>
+<%= render TitledSectionComponent.new(classes: classes) do |section| %>
   <%= section.with_title do %>
     <h2 id="<%= id %>" class="scrollable-title"><%= t('components.comparison_overview.title') %></h2>
   <% end %>
@@ -23,9 +23,10 @@
               school_type: t("common.school_types.#{school.school_type}")) %>
       </p>
       <div class="col">
-        <%= component 'school_comparison',
-                      id: 'electricity-comparison',
-                      comparison: electricity_benchmarked_usage do |c| %>
+        <%= render SchoolComparisonComponent.new(
+              id: 'electricity-comparison',
+              comparison: electricity_benchmarked_usage
+            ) do |c| %>
           <% c.with_footer { advice_t('electricity_long_term.insights.comparison.callout_footer') } %>
         <% end %>
       </div>
@@ -38,9 +39,10 @@
               school_type: t("common.school_types.#{school.school_type}")) %>
       </p>
       <div class="col">
-        <%= component 'school_comparison',
-                      id: 'gas-comparison',
-                      comparison: gas_benchmarked_usage do |c| %>
+        <%= render SchoolComparisonComponent.new(
+              id: 'gas-comparison',
+              comparison: gas_benchmarked_usage
+            ) do |c| %>
           <% c.with_footer { advice_t('gas_long_term.insights.comparison.callout_footer') } %>
         <% end %>
       </div>

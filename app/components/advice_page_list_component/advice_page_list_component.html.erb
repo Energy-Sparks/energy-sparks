@@ -13,11 +13,12 @@
             <%= t("advice_pages.nav.sections.#{fuel_type}") %>
           </h4>
           <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, fuel_type)).each do |ap| %>
-            <%= component 'prompt',
-                          icon: fuel_type_icon(fuel_type),
-                          style: :compact,
-                          status: :none,
-                          fuel_type: fuel_type do |p| %>
+            <%= render PromptComponent.new(
+                  icon: fuel_type_icon(fuel_type),
+                  style: :compact,
+                  status: :none,
+                  fuel_type: fuel_type
+                ) do |p| %>
               <% p.with_title do %>
                 <%= translated_label(ap) %>
               <% end %>
