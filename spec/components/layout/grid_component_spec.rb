@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe GridComponent, :include_application_helper, type: :component do
+RSpec.describe Layout::GridComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:cols) { 2 }
@@ -15,7 +15,7 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
 
   context 'with cells' do
     let(:html) do
-      render_inline(GridComponent.new(**params)) do |c|
+      render_inline(described_class.new(**params)) do |c|
         c.with_block { 'cell 1' }
         c.with_block { 'cell 2' }
         c.with_block { 'cell 3' }
@@ -54,7 +54,7 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
     let(:params) { all_params.merge(component_classes: 'component-classes') }
 
     let(:html) do
-      render_inline(GridComponent.new(**params)) do |c|
+      render_inline(described_class.new(**params)) do |c|
         c.with_block { 'cell 1' }
         c.with_block { 'cell 2' }
       end
@@ -65,7 +65,7 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
 
   context 'with inline component classes' do
     let(:html) do
-      render_inline(GridComponent.new(**params)) do |c|
+      render_inline(described_class.new(**params)) do |c|
         c.with_block(classes: 'component-classes') { 'cell 1' }
         c.with_block { 'cell 2' }
       end
@@ -78,7 +78,7 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
     let(:params) { all_params.merge(cell_classes: 'cell-classes') }
 
     let(:html) do
-      render_inline(GridComponent.new(**params)) do |c|
+      render_inline(described_class.new(**params)) do |c|
         c.with_block { 'cell 1' }
         c.with_block { 'cell 2' }
       end
@@ -89,7 +89,7 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
 
   context 'with inline cell classes' do
     let(:html) do
-      render_inline(GridComponent.new(**params)) do |c|
+      render_inline(described_class.new(**params)) do |c|
         c.with_block(cell_classes: 'cell-classes') { 'cell 1' }
         c.with_block { 'cell 2' }
       end
@@ -101,7 +101,7 @@ RSpec.describe GridComponent, :include_application_helper, type: :component do
 
   context 'with image' do
     let(:html) do
-      render_inline(GridComponent.new(**params)) do |c|
+      render_inline(described_class.new(**params)) do |c|
         c.with_image src: 'laptop.jpg', classes: 'component-classes'
         c.with_block { 'cell 2' }
       end

@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe Cards::StatsComponent, :include_application_helper, type: :component do
+RSpec.describe Layout::Cards::StatsComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:all_params) { { id: id, classes: classes } }
 
   let(:html) do
-    render_inline(Cards::StatsComponent.new(**params)) do |card|
+    render_inline(described_class.new(**params)) do |card|
       card.with_icon(name: :bolt, style: :circle)
       card.with_header(title: 'Header')
       card.with_figure('90%')
