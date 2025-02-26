@@ -1,7 +1,7 @@
 <% if Flipper.enabled?(:new_dashboards_2024, current_user) %>
-  <%= component 'page_nav', name: t('advice_pages.nav.overview'),
-                            icon: nil, href: school_advice_path(@school),
-                            options: { user: current_user, match_controller: true } do |c| %>
+  <%= render PageNavComponent.new(name: t('advice_pages.nav.overview'),
+                                  icon: nil, href: school_advice_path(@school),
+                                  options: { user: current_user, match_controller: true }) do |c| %>
     <% c.with_section toggler: false, visible: @alert_count&.positive?,
                       options: { match_controller: false } do |s| %>
       <% s.with_item(name: "#{t('advice_pages.index.alerts.title')} (#{@alert_count})",
@@ -52,8 +52,8 @@
     <% end %>
   <% end %>
 <% else %>
-  <%= component 'page_nav', name: t('advice_pages.nav.name'), icon: 'home', href: school_advice_path(@school),
-                            options: { match_controller: true } do |c| %>
+  <%= render PageNavComponent.new(name: t('advice_pages.nav.name'), icon: 'home', href: school_advice_path(@school),
+                                  options: { match_controller: true }) do |c| %>
     <% c.with_section(name: t('advice_pages.nav.sections.electricity'), icon: 'bolt', classes: 'electric-section',
                       visible: @school.has_electricity?) do |s| %>
       <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, @school, :electricity)).each do |ap| %>

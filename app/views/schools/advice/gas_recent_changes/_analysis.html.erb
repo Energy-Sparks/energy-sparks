@@ -13,13 +13,14 @@
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-weeks',
                                            section_title: t('advice_pages.gas_recent_changes.analysis.compare_recent_weeks.title') %>
 <div class="charts">
-  <%= component 'chart',
-                chart_type: :calendar_picker_gas_week_example_comparison_chart,
-                school: @school,
-                analysis_controls: false,
-                no_zoom: true,
-                chart_config: @chart_config,
-                html_class: 'usage-chart' do |c| %>
+  <%= render ChartComponent.new(
+        chart_type: :calendar_picker_gas_week_example_comparison_chart,
+        school: @school,
+        analysis_controls: false,
+        no_zoom: true,
+        chart_config: @chart_config,
+        html_class: 'usage-chart'
+      ) do |c| %>
     <% c.with_title { t('advice_pages.gas_recent_changes.analysis.charts.compare_recent_weeks_chart_title') } %>
     <% c.with_subtitle { t('advice_pages.gas_recent_changes.analysis.charts.compare_recent_weeks_chart_subtitle') } %>
     <% c.with_header do %>
@@ -37,14 +38,15 @@
                                            section_title: t('advice_pages.gas_recent_changes.analysis.compare_recent_days.title') %>
 
 <div class="charts">
-  <%= component 'chart',
-                chart_type: :calendar_picker_gas_day_example_comparison_chart,
-                school: @school,
-                analysis_controls: false,
-                no_zoom: true,
-                chart_config: @chart_config,
-                axis_controls: false,
-                html_class: 'usage-chart' do |c| %>
+  <%= render ChartComponent.new(
+        chart_type: :calendar_picker_gas_day_example_comparison_chart,
+        school: @school,
+        analysis_controls: false,
+        no_zoom: true,
+        chart_config: @chart_config,
+        axis_controls: false,
+        html_class: 'usage-chart'
+      ) do |c| %>
     <% c.with_title { t('advice_pages.gas_recent_changes.analysis.charts.compare_recent_days_chart_title') } %>
     <% c.with_subtitle { t('advice_pages.gas_recent_changes.analysis.charts.compare_recent_days_chart_subtitle') } %>
     <% c.with_header do %>
@@ -63,17 +65,19 @@
 <%= render 'schools/advice/section_title', section_id: 'compare-last-week',
                                            section_title: t('advice_pages.gas_recent_changes.analysis.compare_last_week.title') %>
 
-<%= component 'alerts', school: @school,
-                        dashboard_alerts: @dashboard_alerts,
-                        alert_types: alert_types_for_class([AlertSchoolWeekComparisonGas, AlertWeekendGasConsumptionShortTerm]),
-                        show_links: false %>
+<%= render AlertsComponent.new(school: @school,
+                               dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class([AlertSchoolWeekComparisonGas,
+                                                                   AlertWeekendGasConsumptionShortTerm]),
+                               show_links: false) %>
 
-<%= component 'chart',
-              chart_type: :last_7_days_intraday_gas,
-              school: @school,
-              analysis_controls: true,
-              no_zoom: true,
-              axis_controls: false do |c| %>
+<%= render ChartComponent.new(
+      chart_type: :last_7_days_intraday_gas,
+      school: @school,
+      analysis_controls: true,
+      no_zoom: true,
+      axis_controls: false
+    ) do |c| %>
   <% c.with_title { t('advice_pages.gas_recent_changes.analysis.charts.compare_last_week_chart_title') } %>
   <% c.with_subtitle { t('advice_pages.gas_recent_changes.analysis.charts.compare_last_week_chart_subtitle') } %>
   <% c.with_header do %>
@@ -88,13 +92,14 @@
 <%= render 'schools/advice/section_title', section_id: 'impact-of-temperature',
                                            section_title: t('advice_pages.gas_recent_changes.analysis.impact_of_temperature.title') %>
 
-<%= component 'chart',
-              chart_type: :last_2_weeks_gas_degreedays,
-              school: @school,
-              analysis_controls: true,
-              no_zoom: true,
-              chart_config: @chart_config,
-              axis_controls: false do |c| %>
+<%= render ChartComponent.new(
+      chart_type: :last_2_weeks_gas_degreedays,
+      school: @school,
+      analysis_controls: true,
+      no_zoom: true,
+      chart_config: @chart_config,
+      axis_controls: false
+    ) do |c| %>
   <% c.with_title { t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_title') } %>
   <% c.with_subtitle do
        t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_subtitle_html',
@@ -103,6 +108,7 @@
   <% c.with_footer do %>
     <% more_detail_url = link_to(t('advice_pages.gas_recent_changes.analysis.see_more_detail'),
                                  'https://www.sustainabilityexchange.ac.uk/files/degree_days_for_energy_management_carbon_trust.pdf', target: '_blank', rel: 'noopener') %>
-    <p><%= t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_explanation_html', more_detail_url:) %></p>
+    <p><%= t('advice_pages.gas_recent_changes.analysis.charts.impact_of_temperature_chart_explanation_html',
+             more_detail_url:) %></p>
   <% end %>
 <% end %>
