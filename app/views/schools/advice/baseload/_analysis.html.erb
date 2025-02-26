@@ -34,7 +34,7 @@
   <p><%= t('advice_pages.baseload.analysis.usage_percent_html',
            percent: format_unit(@baseload_usage.percent, :percent)) %></p>
 
-  <%= component 'chart', chart_type: :baseload_lastyear, school: @school, fuel_type: @advice_page.fuel_type do |c| %>
+  <%= render ChartComponent.new(chart_type: :baseload_lastyear, school: @school, fuel_type: @advice_page.fuel_type) do |c| %>
     <% c.with_title do
          t('advice_pages.baseload.analysis.charts.baseload_chart_title',
            count: @analysis_dates.months_analysed)
@@ -70,7 +70,7 @@
   <%= render 'long_term_trends_table', school: @school, annual_average_baseloads: @annual_average_baseloads,
                                        analysis_dates: @analysis_dates %>
 
-  <%= component 'chart', chart_type: :baseload_versus_benchmarks, analysis_controls: true, school: @school do |c| %>
+  <%= render ChartComponent.new(chart_type: :baseload_versus_benchmarks, analysis_controls: true, school: @school) do |c| %>
     <% c.with_title { t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_title') } %>
     <% c.with_subtitle do
          t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_subtitle_html',
@@ -107,10 +107,10 @@
                section_id: 'seasonal-variation',
                section_title: t('advice_pages.baseload.analysis.seasonal_variation.title') %>
 
-    <%= component 'alerts', school: @school,
-                            dashboard_alerts: @dashboard_alerts,
-                            alert_types: alert_types_for_class(AlertSeasonalBaseloadVariation),
-                            show_links: false %>
+    <%= render AlertsComponent.new(school: @school,
+                                   dashboard_alerts: @dashboard_alerts,
+                                   alert_types: alert_types_for_class(AlertSeasonalBaseloadVariation),
+                                   show_links: false) %>
 
     <p><%= t('advice_pages.baseload.analysis.seasonal_variation.intro_1') %></p>
     <p><%= t('advice_pages.baseload.analysis.seasonal_variation.intro_2') %></p>
@@ -148,10 +148,11 @@
     <%= render 'schools/advice/section_title', section_id: 'meter-charts',
                                                section_title: t('advice_pages.baseload.analysis.meter_charts.title') %>
 
-    <%= component 'meter_selection_chart',
-                  meter_selection: @meter_selection,
-                  chart_type: :baseload,
-                  chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle' do |c| %>
+    <%= render MeterSelectionChartComponent.new(
+          meter_selection: @meter_selection,
+          chart_type: :baseload,
+          chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
+        ) do |c| %>
       <% c.with_title { I18n.t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title') } %>
     <% end %>
 
