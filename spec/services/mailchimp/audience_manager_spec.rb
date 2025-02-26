@@ -28,7 +28,7 @@ describe Mailchimp::AudienceManager do
       end
 
       it 'return lists' do
-        expect(service.list.id).to eq('ed205db324')
+        expect(service.list.id).to eq('aff6ac9f1b')
       end
     end
   end
@@ -41,28 +41,27 @@ describe Mailchimp::AudienceManager do
     end
 
     it 'returns categories' do
-      expect(categories.count).to eq(2)
-      expect(categories.first.id).to eq('908f880968')
-      expect(categories.first.title).to eq('User type')
-      expect(categories.last.id).to eq('fc30f60658')
-      expect(categories.last.title).to eq('Local Authority area or school group')
+      expect(categories.count).to eq(1)
+      expect(categories.first.id).to eq('54eadf64cc')
+      expect(categories.first.title).to eq('Interests')
     end
   end
 
   describe '#interests' do
-    subject(:interests) { service.interests('456') }
+    subject(:interests) { service.interests('54eadf64cc') }
 
     before do
       allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_interest_categories: categories_data, list_interest_category_interests: interests_data)
     end
 
     it 'returns interests' do
-      expect(interests.count).to eq(8)
-      expect(interests.first.id).to eq('85bb2d8115')
-      expect(interests.first.name).to eq('Building/ Site Manager or Caretaker')
-      expect(interests.last.id).to eq('f407e4857e')
-      expect(interests.last.name).to eq('Teacher or Teaching Assistant')
-      expect(interests.last.i18n_name).to eq('Teacher or Teaching Assistant')
+      expect(interests.count).to eq(5)
+      expect(interests.first.id).to eq('4bb520e9fc')
+      expect(interests.first.name).to eq('Getting the most out of Energy Sparks')
+      expect(interests.last.id).to eq('8f45c9c545')
+      expect(interests.last.name).to eq('Tailored advice and support')
+      expect(interests.last.i18n_name).to eq('Tailored advice and support')
+      expect(interests.last.i18n_description).to include('From time to time')
     end
   end
 
@@ -77,12 +76,52 @@ describe Mailchimp::AudienceManager do
 
     it 'subscribes a user with email address and interests' do
       expect(lists_api).to receive(:set_list_member).with(
-        'ed205db324',
-        contact.email_address,
+        'aff6ac9f1b',
+        Digest::MD5.hexdigest(contact.email_address.downcase),
+        contact.to_mailchimp_hash.merge({ 'status_if_new' => 'subscribed', 'status' => 'subscribed' }),
+        { skip_merge_validation: true }
+      )
+      service.subscribe_or_update_contact(contact, status: 'subscribed')
+    end
+
+    it 'subscribes a user without a status by default' do
+      expect(lists_api).to receive(:set_list_member).with(
+        'aff6ac9f1b',
+        Digest::MD5.hexdigest(contact.email_address.downcase),
         contact.to_mailchimp_hash.merge({ 'status_if_new' => 'subscribed' }),
         { skip_merge_validation: true }
       )
       service.subscribe_or_update_contact(contact)
+    end
+  end
+
+  describe '#update_contact' do
+    let(:contact) do
+      Mailchimp::Contact.new('user@example.org', 'Jane Smith')
+    end
+
+    before do
+      allow(lists_api).to receive(:get_all_lists).and_return(lists_data)
+    end
+
+    it 'updates contact' do
+      expect(lists_api).to receive(:set_list_member).with(
+        'aff6ac9f1b',
+        Digest::MD5.hexdigest(contact.email_address.downcase),
+        contact.to_mailchimp_hash,
+        { skip_merge_validation: true }
+      )
+      service.update_contact(contact)
+    end
+
+    it 'updates contact using old email' do
+      expect(lists_api).to receive(:set_list_member).with(
+        'aff6ac9f1b',
+        Digest::MD5.hexdigest('old@example.org'),
+        contact.to_mailchimp_hash,
+        { skip_merge_validation: true }
+      )
+      service.update_contact(contact, 'old@example.org')
     end
   end
 
@@ -93,7 +132,7 @@ describe Mailchimp::AudienceManager do
     end
 
     it 'finds a user' do
-      expect(lists_api).to receive(:get_list_member).with('ed205db324', 'john.smith@example.org')
+      expect(lists_api).to receive(:get_list_member).with('aff6ac9f1b', 'john.smith@example.org')
       contact = service.get_list_member('john.smith@example.org')
       expect(contact.email_address).to eq('john.smith@example.org')
       expect(contact.status).to eq('subscribed')
@@ -107,7 +146,7 @@ describe Mailchimp::AudienceManager do
     end
 
     it 'lists all contacts' do
-      expect(lists_api).to receive(:get_list_members_info).with('ed205db324', offset: 0, count: 1000)
+      expect(lists_api).to receive(:get_list_members_info).with('aff6ac9f1b', offset: 0, count: 1000)
       members = service.process_list_members
       expect(members.map(&:email_address)).to contain_exactly('jane.doe@example.org', 'john.smith@example.org')
     end

@@ -22,6 +22,7 @@ module Schools
 
     def show
       if Flipper.enabled?(:new_dashboards_2024, current_user)
+        @overview_data = Schools::ManagementTableService.new(@school).management_data
         render :new_show, layout: 'dashboards'
       else
         @advice_page_benchmarks = @school.advice_page_school_benchmarks

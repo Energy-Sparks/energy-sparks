@@ -276,6 +276,17 @@ Rails.application.routes.draw do
 
   get 'analysis_page_finder/:urn/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
 
+  resources :users, path: 'profiles', except: [:new, :destroy] do
+    member do
+      get :edit_password
+      patch :update_password
+    end
+    scope module: :users do
+      resources :contacts, path: 'alerts', only: [:index, :create, :destroy]
+      resources :emails, only: [:index, :create]
+    end
+  end
+
   resources :schools do
     resources :activities do
       member do
@@ -491,14 +502,18 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :mailer_previews, only: [:index]
-    resources :component_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
 
     concerns :issueable
     resources :funders
     resources :users do
+      get 'lock', to: 'users#lock'
       get 'unlock', to: 'users#unlock'
+      get 'disable', to: 'users#disable'
+      get 'enable', to: 'users#enable'
+      get 'mailchimp_redirect', to: 'users#mailchimp_redirect'
+
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
       end
@@ -548,8 +563,6 @@ Rails.application.routes.draw do
           end
         end
         resource :users, only: [:show] do
-          get 'lock', to: 'users#lock'
-          get 'unlock', to: 'users#unlock'
           get 'lock_all', to: 'users#lock_all'
         end
         resource :partners, only: [:show, :update]
@@ -670,6 +683,7 @@ Rails.application.routes.draw do
       get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
       get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
 
+      resources :mailchimp_status, only: [:index]
       resources :recent_audits, only: [:index]
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
@@ -689,6 +703,9 @@ Rails.application.routes.draw do
       resources :work_allocation, only: [:index]
       resources :user_logins, only: [:index]
       resources :meter_loading_reports, only: :index
+      resources :engaged_groups, only: [:index]
+      resources :heating_types, only: [:index]
+      resources :manual_reads, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
@@ -721,7 +738,11 @@ Rails.application.routes.draw do
         resource :partners, only: [:show, :update]
         resources :meter_reviews
         resources :consent_requests
-        resources :bill_requests
+        resources :bill_requests do
+          collection do
+            post :clear
+          end
+        end
         resource :target_data, only: :show
       end
       member do
@@ -739,6 +760,11 @@ Rails.application.routes.draw do
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
       mount Flipper::UI.app(Flipper) => 'flipper', as: :flipper
+      if Rails.env.test?
+        get 'components', to: 'component_previews#index'
+      else
+        mount Lookbook::Engine, as: :components, at: 'components'
+      end
     end
   end # Admin name space
 
@@ -784,4 +810,5 @@ Rails.application.routes.draw do
   match "/:code", to: "errors#show", via: :all, constraints: {
     code: /#{ErrorsController::CODES.join("|")}/
   }
+
 end

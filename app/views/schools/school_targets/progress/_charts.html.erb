@@ -13,14 +13,18 @@
 </ul>
 <div class="tab-content" id="targets-overview-tabs">
   <div class="tab-pane fade show active" id="cumulative-progress-<%= fuel_type.to_s %>" role="tabpanel" aria-labelledby="cumulative-progress-tab">
-    <%= component 'chart', chart_type: "targeting_and_tracking_weekly_#{fuel_type.to_s}_to_date_cumulative_line".to_sym, school: @school %>
+    <%= render ChartComponent.new(
+          chart_type: "targeting_and_tracking_weekly_#{fuel_type}_to_date_cumulative_line".to_sym, school: @school
+        ) %>
   </div>
   <div class="tab-pane fade show" id="to-date-progress-<%= fuel_type.to_s %>" role="tabpanel" aria-labelledby="to-date-progress-tab">
-    <%= component 'chart', chart_type: "targeting_and_tracking_weekly_#{fuel_type.to_s}_to_date_line".to_sym, school: @school %>
+    <%= render ChartComponent.new(chart_type: "targeting_and_tracking_weekly_#{fuel_type}_to_date_line".to_sym,
+                                  school: @school) %>
   </div>
   <% if !@progress.partial_target_data? %>
     <div class="tab-pane fade show" id="year-to-date-progress-<%= fuel_type.to_s %>" role="tabpanel" aria-labelledby="year-to-date-progress-tab">
-      <%= component 'chart', chart_type: "targeting_and_tracking_weekly_#{fuel_type.to_s}_one_year_line".to_sym, school: @school %>
+      <%= render ChartComponent.new(chart_type: "targeting_and_tracking_weekly_#{fuel_type}_one_year_line".to_sym,
+                                    school: @school) %>
     </div>
   <% end %>
 </div>

@@ -47,7 +47,7 @@ module ApplicationHelper
   def date_range_from_reading_gaps(readings_chunks)
     readings_chunks.map do |chunk|
       "#{chunk.size} days (#{short_dates(chunk.first.reading_date)} to #{short_dates(chunk.last.reading_date)})"
-    end.join('<br/>').html_safe
+    end.join('<br>').html_safe
   end
 
   def active(bool = true)
@@ -470,11 +470,6 @@ module ApplicationHelper
     (icon ? "#{fa_icon(icon, **kwargs)} #{text}" : text).html_safe
   end
 
-  def component(name, *args, **kwargs, &block)
-    component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
-    render(component.new(*args, **kwargs), &block)
-  end
-
   def school_name_group(school)
     if school.school_group_name
       "#{school.name} (#{school.school_group_name})"
@@ -557,6 +552,15 @@ module ApplicationHelper
       school_intervention_path(recording.school, recording)
     else
       raise StandardError, 'Unsupported recording type'
+    end
+  end
+
+  def home_class
+    if Flipper.enabled?(:new_home_page, current_user) &&
+       controller_name == 'home' && %w[index show].include?(action_name)
+      'home'
+    else
+      'home-page'
     end
   end
 end

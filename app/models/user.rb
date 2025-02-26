@@ -2,6 +2,7 @@
 #
 # Table name: users
 #
+#  active                      :boolean          default(TRUE), not null
 #  confirmation_sent_at        :datetime
 #  confirmation_token          :string
 #  confirmed_at                :datetime
@@ -56,7 +57,12 @@ require 'securerandom'
 class User < ApplicationRecord
   include MailchimpUpdateable
 
-  watch_mailchimp_fields :confirmed_at, :email, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id
+  watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id, :active
+  after_destroy :reset_mailchimp_contact
+
+  # Email is primary key in Mailchimp, trigger immediate update if its is changed, otherwise
+  # subsequent updates will fail
+  after_commit :update_email_in_mailchimp, if: :email_previously_changed?
 
   encrypts :pupil_password
 
@@ -89,6 +95,8 @@ class User < ApplicationRecord
   enum :role, { guest: 0, staff: 1, admin: 2, school_admin: 3, school_onboarding: 4, pupil: 5,
                 group_admin: 6, analytics: 7, volunteer: 8 }
 
+  enum :mailchimp_status, %w[subscribed unsubscribed cleaned nonsubscribed archived].to_h { |v| [v, v] }, prefix: true
+
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin], User.roles[:volunteer]]) }
 
   scope :mailchimp_roles, -> {
@@ -111,6 +119,10 @@ class User < ApplicationRecord
            ' staff_roles.mailchimp_fields_changed_at) > mailchimp_updated_at')
   end
 
+  scope :for_school_group, ->(school_group) do
+    joins(:school, school: :school_group).where(schools: { school_group: school_group })
+  end
+
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
   validates :email, presence: true
 
@@ -130,12 +142,33 @@ class User < ApplicationRecord
 
   after_save :update_contact
 
+  # Hook into devise so we can use our own status flag to permanently disable an account
+  def active_for_authentication?
+    active && super
+  end
+
+  def inactive?
+    !active?
+  end
+
+  def disable!
+    update!(active: false)
+  end
+
+  def enable!
+    update!(active: true)
+  end
+
   def default_scoreboard
     if group_admin? && school_group.default_scoreboard
       school_group.default_scoreboard
     elsif school
       school.scoreboard
     end
+  end
+
+  def has_profile?
+    !(pupil? || school_onboarding?)
   end
 
   def display_name
@@ -302,6 +335,10 @@ class User < ApplicationRecord
     end
   end
 
+  def self.admins_by_name
+    admin.sort_by { |user| user.display_name.downcase }
+  end
+
   protected
 
   def preferred_locale_presence_in_available_locales
@@ -328,5 +365,35 @@ class User < ApplicationRecord
     return unless existing_user && existing_user != self
 
     errors.add(:pupil_password, "is already in use for '#{existing_user.name}'")
+  end
+
+  private
+
+  def reset_mailchimp_contact
+    return unless mailchimp_status.present?
+
+    # name of school or organisation
+    organisation = if school.present?
+                     school.name
+                   elsif school_group.present?
+                     school_group.name
+                   else
+                     ''
+                   end
+
+    Mailchimp::UserDeletionJob.perform_later(
+      email_address: email,
+      name: name,
+      school: organisation
+    )
+  end
+
+  def update_email_in_mailchimp
+    return unless email_previously_was.present? && mailchimp_status.present?
+
+    Mailchimp::EmailUpdaterJob.perform_later(
+      user: self,
+      original_email: email_previously_was
+    )
   end
 end

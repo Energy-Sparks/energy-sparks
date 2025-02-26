@@ -3,6 +3,7 @@
     <tr>
       <th>Description</th>
       <th>Identifier</th>
+      <th>Owned by</th>
       <th data-orderable="false">Notes</th>
       <th data-orderable="false">Actions</th>
     </tr>
@@ -12,6 +13,7 @@
       <tr>
         <td><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
         <td class="no-wrap"><code><%= config.identifier %></code></td>
+        <td><%= config.owned_by&.name %></td>
         <td><%= config.notes %></td>
         <td>
           <div class="btn-group btn-group-sm" role="group">

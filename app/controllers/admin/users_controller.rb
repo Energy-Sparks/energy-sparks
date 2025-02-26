@@ -47,10 +47,38 @@ module Admin
       redirect_to admin_users_path, notice: 'User was successfully destroyed.'
     end
 
+    def lock
+      user = User.find(params['user_id'])
+      user.lock_access!(send_instructions: false)
+      redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully locked."
+    end
+
     def unlock
       user = User.find(params['user_id'])
       user.unlock_access!
-      redirect_to admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
+      redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
+    end
+
+    def disable
+      user = User.find(params['user_id'])
+      user.disable!
+      redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully disabled."
+    end
+
+    def enable
+      user = User.find(params['user_id'])
+      user.enable!
+      redirect_back fallback_location: admin_users_path, notice: "User '#{user.email}' was successfully activated."
+    end
+
+    def mailchimp_redirect
+      user = User.find(params['user_id'])
+      contact = Mailchimp::AudienceManager.new.get_list_member(user.email)
+      if contact
+        redirect_to "https://#{ENV.fetch('MAILCHIMP_SERVER')}.admin.mailchimp.com/audience/contact-profile?contact_id=#{contact.contact_id}"
+      else
+        redirect_back fallback_location: admin_users_path, notice: 'Cannot find user in Mailchimp'
+      end
     end
 
     private
@@ -70,7 +98,7 @@ module Admin
 
     def user_params
       params.require(:user)
-            .permit(:name, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
+            .permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
     end
 
     def set_schools_options

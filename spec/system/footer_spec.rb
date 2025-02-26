@@ -72,6 +72,19 @@ RSpec.describe 'Footer', type: :system do
         it { expect(block).to have_button('Sign-up now') }
         it { expect(block).to have_content "We'll never share your email with anyone else" }
       end
+
+      context 'when user is signed in', with_feature: :profile_pages do
+        let(:user) { create(:school_admin) }
+
+        before do
+          sign_in(user)
+          refresh
+        end
+
+        it { expect(block).to have_content 'Newsletter Signup' }
+        it { expect(block).to have_content 'Get the latest news from Energy Sparks in your inbox' }
+        it { expect(block).to have_link('Sign-up now', href: user_emails_path(user)) }
+      end
     end
   end
 

@@ -1,5 +1,5 @@
 <h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></strong></h4>
-<% if @advice_page.fuel_type %>
+<% if @advice_page&.fuel_type %>
   <p>
     <%= t('advice_pages.how_have_we_analysed_your_data.calculations_based_on_fuel_type',
           fuel_type: I18n.t("common.#{@advice_page.fuel_type}"),
@@ -66,7 +66,9 @@
 </table>
 
 <h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.cost_calculations') %></strong></h4>
-<%= t('advice_pages.how_have_we_analysed_your_data.cost_calculations_introduction_html') %>
+<% t('advice_pages.how_have_we_analysed_your_data.cost_calculations_introduction').each do |paragraph| %>
+  <p><%= paragraph %></p>
+<% end %>
 
 <% if @economic_tariffs_change_caveats %>
   <%= t('advice_pages.how_have_we_analysed_your_data.your_electricity_tariffs_html',

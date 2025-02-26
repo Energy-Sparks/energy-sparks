@@ -7,7 +7,7 @@
 </p>
 
 <div class="col">
-  <%= component 'school_comparison', id: 'gas-comparison', comparison: @benchmarked_usage do |c| %>
+  <%= render SchoolComparisonComponent.new(id: 'gas-comparison', comparison: @benchmarked_usage) do |c| %>
     <% c.with_footer { advice_t('gas_long_term.insights.comparison.callout_footer') } %>
   <% end %>
 </div>

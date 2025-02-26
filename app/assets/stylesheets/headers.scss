@@ -29,24 +29,22 @@ h1, .trix-content h1 {
 
 h2,
 .trix-content h2 {
-  padding-top: 10px;
-  padding-bottom: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
-h3, h4, h5, h6,
+h3, h4,
 .trix-content h3,
-.trix-content h4,
+.trix-content h4 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h5, h6,
 .trix-content h5,
 .trix-content h6 {
- padding-top: 10px;
- padding-bottom: 10px;
-}
-
-.sub-navbar h3,
-.sub-navbar h4 {
-  padding-top: 11px;
-  padding-bottom: 11px;
-  margin: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -63,9 +61,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.trix-content div {
-  @include font(f6);
-}
+/*
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
@@ -182,3 +178,4 @@ h1, h2, h3, h4, h5, h6 {
     @include font(f6);
   }
 }
+*/

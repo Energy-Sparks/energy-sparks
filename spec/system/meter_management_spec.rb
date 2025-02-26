@@ -28,6 +28,21 @@ RSpec.shared_examples_for 'a listed meter' do |admin: true|
   end
 end
 
+RSpec.shared_examples_for 'the show meter page' do |admin:|
+  it 'displays the correct fields' do
+    click_on meter.mpan_mprn.to_s
+    expect(page).to have_text('Basic information')
+    expect(page).to have_text("MPAN/MPRN #{meter.mpan_mprn} Serial Number Type #{meter.meter_type.titleize}")
+    expect(page).to have_selector(:link_or_button, 'Edit', exact: true)
+    if admin
+      expect(page).to have_text('Admin details')
+      expect(page).to have_text('Meter system NHH AMR Data source Data Co Contract Meter status Manual reads? false')
+    else
+      expect(page).to have_no_text('Admin details')
+    end
+  end
+end
+
 RSpec.describe 'meter management', :include_application_helper, :meters do
   include ActiveJob::TestHelper
 
@@ -72,12 +87,15 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         create(:electricity_meter_with_reading, name: 'Electricity meter', school:, mpan_mprn: 1_234_567_890_123)
       end
 
+      before { click_on 'Manage meters' }
+
       it 'the meter cannot be deleted' do
-        click_on 'Manage meters'
         click_on 'Deactivate'
         expect(meter.amr_data_feed_readings.count).to eq(1)
         expect(page).to have_button('Delete', disabled: true)
       end
+
+      it_behaves_like 'the show meter page', admin: false
     end
 
     context 'when the school has a DCC meter' do
@@ -173,6 +191,11 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         let(:meter) { inactive_meter }
       end
     end
+
+    it_behaves_like 'the show meter page', admin: false do
+      let(:setup_data) { meter }
+      let(:meter) { active_meter }
+    end
   end
 
   context 'when an admin' do
@@ -181,7 +204,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       visit school_path(school)
     end
 
-    context 'Manage meters page' do
+    context 'with the Manage meters page' do
       before do
         stub_request(:get, "https://n3rgy.test/find-mpxn/#{active_meter.mpan_mprn}")
         click_on 'Manage meters'
@@ -189,6 +212,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
 
       it_behaves_like 'admin dashboard messages' do
         let(:messageable) { school }
+      end
+
+      it_behaves_like 'the show meter page', admin: true do
+        let(:meter) { active_meter }
       end
 
       context 'listing meters' do
@@ -291,7 +318,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       end
 
       it 'allows reloading the meter' do
-        create(:amr_data_feed_config, process_type: :n3rgy_api)
+        create(:amr_data_feed_config, process_type: :n3rgy_api, source_type: :api)
         click_on meter.mpan_mprn.to_s
         expect { click_on 'Reload' }.to have_enqueued_job(N3rgyReloadJob)
         expect_meter_reload
@@ -370,10 +397,12 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         click_on 'Edit'
         fill_in 'Name', with: 'Natural Gas Meter'
         select 'Data Co', from: 'Data source'
+        check('Manual reads?')
         click_on 'Update Meter'
         gas_meter.reload
         expect(gas_meter.name).to eq('Natural Gas Meter')
         expect(gas_meter.data_source.name).to eq('Data Co')
+        expect(gas_meter.manual_reads).to be true
       end
 
       it 'allows deactivation and reactivation of a meter' do
