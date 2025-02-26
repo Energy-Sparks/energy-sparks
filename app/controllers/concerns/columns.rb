@@ -46,7 +46,7 @@ module Columns
     csv_columns = columns.filter(&:display_csv)
     CSV.generate(headers: true) do |csv|
       csv << csv_columns.map(&:name)
-      rows.find_each do |row|
+      rows.each do |row|
         csv << csv_columns.map { |column| column.csv(row) }
       end
     end

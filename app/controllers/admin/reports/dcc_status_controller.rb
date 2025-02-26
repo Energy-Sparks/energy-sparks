@@ -51,7 +51,8 @@ module Admin
         respond_to do |format|
           format.html
           format.csv do
-            send_data csv_report(@columns, @dcc_meters), filename: EnergySparks::Filenames.csv('dcc-status-report')
+            send_data(csv_report(@columns, @dcc_meters.order('schools.name')),
+                      filename: EnergySparks::Filenames.csv('dcc-status-report'))
           end
         end
       end

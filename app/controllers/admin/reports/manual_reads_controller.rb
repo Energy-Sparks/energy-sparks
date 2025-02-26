@@ -43,7 +43,7 @@ module Admin
         respond_to do |format|
           format.html
           format.csv do
-            send_data csv_report(columns), filename: EnergySparks::Filenames.csv('manual-reads-report')
+            send_data csv_report(columns, @meters), filename: EnergySparks::Filenames.csv('manual-reads-report')
           end
         end
       end
