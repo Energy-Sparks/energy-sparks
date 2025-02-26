@@ -8,6 +8,16 @@ module Admin
       before_action :set_consented_mpxns
 
       def index
+        meter_issue_counts =
+          Meter.joins(:issues).where(issues: { status: :open }).group('meters.id', 'issues.issue_type')
+               .count
+               .each_with_object(Hash.new do |hash, meter_id|
+                                   hash[meter_id] =
+                                     ActiveSupport::OrderedOptions.new.merge(id: meter_id, issues: Hash.new(0))
+                                 end) do |(k, v), h|
+            meter_id, issue_type = k
+            h[meter_id].issues[issue_type] = v
+          end
         @columns = [
           Column.new(:school_name,
                      ->(meter) { meter.school.name },
@@ -34,19 +44,24 @@ module Admin
           Column.new(:consented?,
                      ->(meter) { y_n(meter.consent_granted) }),
           Column.new(:earliest_validated,
-                     ->(meter) { meter.first_validated_reading }),
+                     ->(meter) { meter.min }),
           Column.new(:latest_validated,
-                     ->(meter) { meter.last_validated_reading }),
+                     ->(meter) { meter.max }),
           Column.new(:issues,
                      ->(meter) { meter.issues.issue.count },
-                     ->(meter) { render_to_string(partial: 'admin/issues/modal', locals: { meter: }) },
+                     lambda { |meter|
+                       render_to_string(partial: 'admin/issues/modal', locals: { meter: meter_issue_counts[meter.id] })
+                     },
                      html_data: { sortable: false })
         ]
-
+        reading_dates = AmrValidatedReading.select('meter_id, MIN(reading_date), MAX(reading_date)').group(:meter_id)
         @dcc_meters = Meter.dcc
-                           .includes(school: :school_group)
+                           .includes(school: { school_group: :default_issues_admin_user })
                            .includes(:data_source)
                            .includes(:issues)
+                           .joins("LEFT JOIN (#{reading_dates.to_sql}) " \
+                                  'AS reading_dates ON meters.id = reading_dates.meter_id')
+                           .select('meters.*, reading_dates.*')
         @schools_count = Meter.dcc.distinct.count(:school_id)
         respond_to do |format|
           format.html

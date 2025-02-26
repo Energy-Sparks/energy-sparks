@@ -1,8 +1,8 @@
-<%= render 'admin/reports/title', title: content_for(:page_title) %>
+<%= render 'admin/reports/title', title: 'DCC Meter Status' %>
 
 <h2>DCC Meter Summary</h2>
 
-<p>There are currently <strong><%= @dcc_meters.count %></strong> DCC meters in the system, across
+<p>There are currently <strong><%= @dcc_meters.count('meters.id') %></strong> DCC meters in the system, across
    <strong><%= @schools_count %> schools</strong>.</p>
 
 <p>This table summarises the current status of all the DCC meters in the system. For a list of MPANs that n3rgy
