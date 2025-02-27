@@ -51,7 +51,9 @@ namespace :after_party do
     today = Time.current.to_date
     meters.each do |mpan_mprn, gas_unit|
       puts mpan_mprn
-      meter = Meter.find_by!(mpan_mprn:)
+      meter = Meter.find_by(mpan_mprn:)
+      next if meter.nil?
+
       meter.update!(gas_unit:)
       meter.meter_attributes.where(attribute_type: 'meter_corrections_rescale_amr_data',
                                    replaced_by_id: nil, deleted_by_id: nil).find_each do |rescale_attribute|
