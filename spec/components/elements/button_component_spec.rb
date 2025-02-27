@@ -21,7 +21,7 @@ RSpec.describe Elements::ButtonComponent, :include_application_helper, type: :co
     end
   end
 
-  context 'with basic params' do
+  context 'with base params' do
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }

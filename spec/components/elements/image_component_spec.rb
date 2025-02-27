@@ -5,14 +5,14 @@ require 'rails_helper'
 RSpec.describe Elements::ImageComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:basic_params) { { src: 'laptop.jpg', id: id, classes: classes } }
+  let(:base_params) { { src: 'laptop.jpg', id: id, classes: classes } }
 
   let(:html) do
     render_inline(Elements::ImageComponent.new(**params))
   end
 
-  context 'with basic params' do
-    let(:params) { basic_params }
+  context 'with base params' do
+    let(:params) { base_params }
 
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
@@ -25,7 +25,7 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
 
   context 'with stretch params' do
     let(:stretch) { :right }
-    let(:params) { basic_params.merge({ stretch: stretch, width: '50vw' }) }
+    let(:params) { base_params.merge({ stretch: stretch, width: '50vw' }) }
 
     it { expect(html).to have_css('img.stretch.right') }
     it { expect(html).to have_css('img[style*="width: 50vw;"]') }
@@ -38,7 +38,7 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
   end
 
   context 'with collapse params' do
-    let(:params) { basic_params.merge(collapse: true) }
+    let(:params) { base_params.merge(collapse: true) }
 
     it { expect(html).to have_css('img.d-none.d-md-block') }
   end
