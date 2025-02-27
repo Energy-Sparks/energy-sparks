@@ -1,19 +1,21 @@
-<%= component 'titled_section', classes: 'mt-2'  do |section| %>
+<%= render TitledSectionComponent.new(classes: 'mt-2') do |section| %>
   <%= section.with_title do %>
     <h2><%= t('pupils.analysis.i_would_like_to_see') %></h2>
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: school, icon: 'chart-pie', fuel_type: fuel_type, classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: school, icon: 'chart-pie', fuel_type: fuel_type,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: energy, presentation: 'Pie', link_text: t('common.pie_charts') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: school, icon: 'chart-bar', fuel_type: fuel_type, classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: school, icon: 'chart-bar', fuel_type: fuel_type,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_category category: :"#{fuel_type}_bar", link_text: t('common.bar_charts') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: school, icon: 'chart-line', fuel_type: fuel_type,
-                                     classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: school, icon: 'chart-line', fuel_type: fuel_type,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_category category: :"#{fuel_type}_line", link_text: t('common.line_graphs') %>
       <% end %>
     </div>

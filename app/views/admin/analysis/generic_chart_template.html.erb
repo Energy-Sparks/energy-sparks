@@ -9,20 +9,23 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 <% end %>
 </p>
 
-<%= render 'shared/measurement_picker', measurement_options: @measurement_options, measurement: @measurement if @show_measurement_units %>
+<%= if @show_measurement_units
+      render 'shared/measurement_picker', measurement_options: @measurement_options, measurement: @measurement
+    end %>
 
 <%= render 'nav' %>
 
 <% @charts.each_with_index do |chart, index| %>
   <% unless index == 0 %>
-    <hr class="analysis"/>
+    <hr class="analysis">
   <% end %>
   <div id="chart_wrapper_<%= chart %>" class="chart-wrapper">
     <div class="dynamic-titles">
       <h3 class="analysis">Loading: <%= chart.to_s.humanize %></h3>
     </div>
     <div class="advice-header"></div>
-    <%= component 'chart', chart_type: chart.to_s, analysis_controls: true, school: @school, chart_config: @chart_config.merge!(show_advice: true) %>
+    <%= render ChartComponent.new(chart_type: chart.to_s, analysis_controls: true, school: @school,
+                                  chart_config: @chart_config.merge!(show_advice: true)) %>
     <div class="advice-footer"></div>
   </div>
 <% end %>

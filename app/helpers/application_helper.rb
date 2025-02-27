@@ -470,11 +470,6 @@ module ApplicationHelper
     (icon ? "#{fa_icon(icon, **kwargs)} #{text}" : text).html_safe
   end
 
-  def component(name, *args, **kwargs, &block)
-    component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
-    render(component.new(*args, **kwargs), &block)
-  end
-
   def school_name_group(school)
     if school.school_group_name
       "#{school.name} (#{school.school_group_name})"

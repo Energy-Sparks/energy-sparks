@@ -1,11 +1,13 @@
-<%= component 'notice', status: :neutral, classes: 'mb-4' do %>
+<%= render NoticeComponent.new(status: :neutral, classes: 'mb-4') do %>
   <div class="flex-wrap">
     <div class="col-md-2">
-      <%= link_to t('schools.school_targets.prompt_to_review_target.review_your_target'), edit_school_school_target_path(@school, @school_target), class: "btn btn-default" %>
+      <%= link_to t('schools.school_targets.prompt_to_review_target.review_your_target'),
+                  edit_school_school_target_path(@school, @school_target), class: 'btn btn-default' %>
     </div>
     <div class="col">
       <span class="align-middle">
-        <%= t('schools.school_targets.prompt_to_review_target.your_fuel_types_configuration_has_changed', fuel_types_changed: @fuel_types_changed.map(&:humanize).to_sentence) %>.
+        <%= t('schools.school_targets.prompt_to_review_target.your_fuel_types_configuration_has_changed',
+              fuel_types_changed: @fuel_types_changed.map(&:humanize).to_sentence) %>.
       </span>
     </div>
   </div>
