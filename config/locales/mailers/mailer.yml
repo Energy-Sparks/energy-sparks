@@ -103,21 +103,6 @@ en:
   mailer:
     get_in_touch: Get in touch
   onboarding_mailer:
-    activation_email:
-      explore_activities: Explore activities
-      get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions
-      header: "%{school_name} is now live on Energy Sparks"
-      join_a_webinar: Join a webinar
-      need_some_help: Need some help?
-      paragraph_1_html: You can now use Energy Sparks to begin recording your energy saving activities. Explore our pupil-led <strong><a href="%{activity_categories_url}">activities and educational resources</a></strong>which are designed to teach your pupils about energy whilst saving money for their school.
-      paragraph_2_html: We also have a range of <strong><a href="%{intervention_type_groups_url}">energy saving actions</a></strong> that you, other members of staff and volunteers can carry out to start improving you energy usage.
-      paragraph_3_html: View your <a href="%{school_url}">school dashboard</a> for suggestions for how to get started.
-      paragraph_4: We will be in touch shortly to confirm when we have completed getting access to your energy data.
-      paragraph_5_html: For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>, watch our <a href="%{user_guide_videos_url}">Training Videos</a> or join one of our <a href="%{training_url}">live webinar training</a> sessions.
-      paragraph_6: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
-      subject: "%{school} is live on Energy Sparks"
-      thanks_for_joining: Thanks for joining!
-      the_energy_sparks_team: The Energy Sparks Team
     completion_email:
       find_them_on_energy_sparks: Find them on Energy Sparks
       subject: "%{school} (%{school_group}) has completed the onboarding process"

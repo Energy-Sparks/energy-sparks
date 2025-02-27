@@ -7,10 +7,11 @@
 
 <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
 <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html') %>
-<%= component 'meter_selection_chart',
-             meter_selection: meter_selection,
-             chart_type: :gas_by_day_of_week_tolerant,
-             chart_subtitle_key: 'advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html' do |c| %>
+<%= render MeterSelectionChartComponent.new(
+      meter_selection: meter_selection,
+      chart_type: :gas_by_day_of_week_tolerant,
+      chart_subtitle_key: 'advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html'
+    ) do |c| %>
    <% c.with_title do %>
      <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
    <% end %>
@@ -30,7 +31,7 @@
 
   <%= t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.subtitle') %>
 
-  <%= component 'chart', chart_type: :gas_heating_season_intraday_up_to_1_year, school: school do |c| %>
+  <%= render ChartComponent.new(chart_type: :gas_heating_season_intraday_up_to_1_year, school: school) do |c| %>
     <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_through_the_school_day.gas_heating_season_intraday_up_to_1_year.title') %>
     <% c.with_title do %>
       <%= t('advice_pages.gas_out_of_hours.'\
