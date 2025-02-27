@@ -2,7 +2,7 @@
   <% if Flipper.enabled?(:new_dashboards_2024, user) %>
     <div class="row">
       <div class="col-12 <%= two_column_class %>">
-        <%= render EquivalenceCarouselComponent.new(
+        <%= render Layout::CarouselComponent.new(
               id: 'pupil-left-carousel',
               classes: "row bg-light pt-3 rounded #{two_column_margin(true)}"
             ) do |carousel| %>
@@ -32,7 +32,7 @@
       </div>
       <% unless single_fuel? %>
         <div class="col-12 <%= two_column_class %>">
-          <%= render EquivalenceCarouselComponent.new(
+          <%= render Layout::CarouselComponent.new(
                 id: 'pupil-right-carousel',
                 classes: "row bg-light pt-3 rounded #{two_column_margin(false)}"
               ) do |carousel| %>
@@ -63,7 +63,7 @@
       <% end %>
     </div>
   <% else %>
-    <%= render EquivalenceCarouselComponent.new(id: 'pupil_carousel', show_markers: false) do |carousel| %>
+    <%= render Layout::CarouselComponent.new(id: 'pupil_carousel', show_markers: false) do |carousel| %>
       <% equivalences.each_with_index do |equivalence_content, index| %>
         <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
                                      classes: "carousel-item #{'active' if index.zero?}" do |e| %>
