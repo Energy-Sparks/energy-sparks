@@ -10,7 +10,7 @@ module Layout
 
       def initialize(id: '', classes: '')
         super(id: id, classes: classes)
-        add_classes('stats-card-component bg-blue-very-dark rounded-12 text-center p-4 h-100')
+        add_classes('bg-blue-very-dark rounded-12 text-center p-4 h-100')
       end
     end
   end

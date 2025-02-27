@@ -14,7 +14,12 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
   context 'with basic params' do
     let(:params) { basic_params }
 
-    it { expect(html).to have_selector('img', id: 'custom-id', class: 'extra-classes image-component') }
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
+
+    it { expect(html).to have_selector('img') }
     it { expect(html).to have_xpath('.//img[contains(@src, "/assets/laptop-")]', visible: :all) }
   end
 
@@ -22,7 +27,7 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
     let(:stretch) { :right }
     let(:params) { basic_params.merge({ stretch: stretch, width: '50vw' }) }
 
-    it { expect(html).to have_selector('img', id: 'custom-id', class: 'extra-classes image-component stretch right') }
+    it { expect(html).to have_css('img.stretch.right') }
     it { expect(html).to have_css('img[style*="width: 50vw;"]') }
 
     context 'with unrecognised stretch' do
@@ -35,6 +40,6 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
   context 'with collapse params' do
     let(:params) { basic_params.merge(collapse: true) }
 
-    it { expect(html).to have_selector('img', id: 'custom-id', class: 'extra-classes image-component d-none d-md-block') }
+    it { expect(html).to have_css('img.d-none.d-md-block') }
   end
 end

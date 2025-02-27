@@ -10,7 +10,7 @@ module Layout
 
       def initialize(id: '', classes: '')
         super(id: id, classes: classes)
-        add_classes('statement-card-component p-4 m-4 text-center')
+        add_classes('p-4 m-4 text-center')
       end
     end
   end

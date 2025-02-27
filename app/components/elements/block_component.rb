@@ -9,7 +9,7 @@ module Elements
     end
 
     def call
-      @classes.present? || @id.present? ? tag.div(id: @id, class: @classes) { content } : content
+      tag.div(id: @id, class: @classes) { content }
     end
   end
 end

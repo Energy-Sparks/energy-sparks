@@ -13,7 +13,7 @@ module Layout
 
       def initialize(id: '', classes: '')
         super(id: id, classes: classes)
-        add_classes('feature-card-component py-4')
+        add_classes('py-4')
       end
     end
   end

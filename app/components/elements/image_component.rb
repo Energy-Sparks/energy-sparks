@@ -11,7 +11,6 @@ module Elements
     end
 
     def setup_classes
-      add_classes('image-component')
       if @stretch
         add_classes('stretch')
         add_classes('left') if @stretch == :left

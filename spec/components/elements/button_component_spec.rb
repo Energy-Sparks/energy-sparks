@@ -22,30 +22,13 @@ RSpec.describe Elements::ButtonComponent, :include_application_helper, type: :co
   end
 
   context 'with basic params' do
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
+
     it { expect(html).to have_link('name', href: url) }
-    it { expect(html).to have_css('a.btn.extra-classes') }
-    it { expect(html).to have_css('a.btn#custom-id') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'without optional parameters' do
-    let(:params) { {} }
-
     it { expect(html).to have_css('a.btn') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with classes' do
-    let(:params) { { classes: classes } }
-
-    it { expect(html).to have_css('a.btn.extra-classes') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with id' do
-    let(:params) { { id: id } }
-
-    it { expect(html).to have_css('a.btn#custom-id') }
     it { expect(html).to have_content('Content') }
   end
 

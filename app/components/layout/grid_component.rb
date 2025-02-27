@@ -23,7 +23,7 @@ module Layout
     end
 
     def initialize(cols:, rows: 1, cell_classes: '', component_classes: '', id: nil, classes: '')
-      super(id: id, classes: ['grid-component', classes])
+      super(id: id, classes: ['layout-grid-component', classes])
 
       @cols = cols
       @rows = rows

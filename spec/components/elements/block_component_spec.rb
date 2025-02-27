@@ -17,29 +17,12 @@ RSpec.describe Elements::BlockComponent, :include_application_helper, type: :com
   context 'with base params' do
     let(:params) { base_params }
 
-    it { expect(html).to have_css('div.extra-classes') }
-    it { expect(html).to have_css('div#custom-id') }
-    it { expect(html).to have_content('Content') }
-  end
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
 
-  context 'with no classes or id' do
-    let(:params) { {} }
-
-    it { expect(html).not_to have_css('div') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with classes' do
-    let(:params) { { classes: classes } }
-
-    it { expect(html).to have_css('div.extra-classes') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with id' do
-    let(:params) { { id: id } }
-
-    it { expect(html).to have_css('div#custom-id') }
+    it { expect(html).to have_css('div') }
     it { expect(html).to have_content('Content') }
   end
 
