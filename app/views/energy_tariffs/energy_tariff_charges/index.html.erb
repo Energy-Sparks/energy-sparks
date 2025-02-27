@@ -1,10 +1,11 @@
-<%= component 'energy_tariff_form_title',
-  energy_tariff: @energy_tariff do |c| %>
+<%= render EnergyTariffFormTitleComponent.new(
+      energy_tariff: @energy_tariff
+    ) do |c| %>
   <% c.with_page_title do %>
     <h1><%= t('schools.user_tariff_charges.index.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
   <% end %>
   <% c.with_notice do %>
-    <%= component 'notice', status: :neutral do |c| %>
+    <%= render NoticeComponent.new(status: :neutral) do |c| %>
       <div class="d-flex justify-content-between">
         <% if @energy_tariff.dcc? %>
           <%= t('schools.user_tariff_charges.index.smart_meter_notice') %>
@@ -26,19 +27,21 @@
         <%= t("schools.user_tariff_charges.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
       </p>
 
-      <br/>
+      <br>
 
       <% form_url = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
 
       <%= simple_form_for :energy_tariff_charges, url: form_url do |f| %>
 
         <% if @energy_tariff.gas? %>
-          <%= render 'charges_edit_gas', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+          <%= render 'charges_edit_gas', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges,
+                                         f: f %>
         <% else %>
-          <%= render 'charges_edit_electricity', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+          <%= render 'charges_edit_electricity', energy_tariff: @energy_tariff,
+                                                 energy_tariff_charges: @energy_tariff_charges, f: f %>
         <% end %>
 
-        <br/>
+        <br>
 
         <%= f.submit t('common.labels.continue'), class: 'btn btn-primary' %>
 

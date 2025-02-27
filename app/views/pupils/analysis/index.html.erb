@@ -1,9 +1,10 @@
 <% content_for :page_title, t('pupils.analysis.explore_energy_data') %>
 
-<%= component 'pupil_dashboard_learn_more',
-              classes: 'mt-4 mb-4',
-              school: @school,
-              user: current_user %>
+<%= render PupilDashboardLearnMoreComponent.new(
+      classes: 'mt-4 mb-4',
+      school: @school,
+      user: current_user
+    ) %>
 
 <% if @school.has_live_data? %>
   <div class="row mt-4" id="live-data-link">
@@ -14,7 +15,7 @@
               <div class="row">
                 <div class="col">
                   <h3>
-                    <%= component 'icon', name: 'tachometer-alt', style: :circle, size: 'f3' %>
+                    <%= render IconComponent.new(name: 'tachometer-alt', style: :circle, size: 'f3') %>
                   </h3>
                 </div>
               </div>

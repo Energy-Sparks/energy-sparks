@@ -3,8 +3,8 @@
            section_title:
           t("advice_pages.#{fuel_type}_out_of_hours.insights.your_out_of_hours_usage_title") %>
 
-<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts,
-                        alert_types: alert_types_for_class(alert_classes), show_links: false %>
+<%= render AlertsComponent.new(school: school, dashboard_alerts: dashboard_alerts,
+                               alert_types: alert_types_for_class(alert_classes), show_links: false) %>
 
 <% if analysis_dates.one_years_data? %>
   <%= t(

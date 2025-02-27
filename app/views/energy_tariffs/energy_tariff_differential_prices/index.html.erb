@@ -1,7 +1,9 @@
-<%= component 'energy_tariff_form_title',
-  energy_tariff: @energy_tariff do |c| %>
+<%= render EnergyTariffFormTitleComponent.new(
+      energy_tariff: @energy_tariff
+    ) do |c| %>
   <% c.with_page_title do %>
-    <h1><%= t('schools.user_tariff_differential_prices.index.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
+    <h1><%= t('schools.user_tariff_differential_prices.index.title',
+              fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
   <% end %>
 <% end %>
 
@@ -11,41 +13,40 @@
       <p>
         <%= t("schools.user_tariff_differential_prices.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
       </p>
-      <br/>
+      <br>
 
       <h3><%= t('schools.user_tariff_differential_prices.index.consumption_charges') %></h3>
 
       <p><%= energy_tariff_prices_text(@energy_tariff) %></p>
 
-      <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
+      <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true"></div>
       <% if @energy_tariff.energy_tariff_prices.invalid_prices? %>
-        <%= component 'notice', status: :negative do |c| %>
+        <%= render NoticeComponent.new(status: :negative) do |c| %>
           <%= t('schools.user_tariff_differential_prices.index.invalid_values_message') %>.
         <% end %>
       <% elsif @energy_tariff.energy_tariff_prices.complete? %>
-        <%= component 'notice', status: :positive do |c| %>
+        <%= render NoticeComponent.new(status: :positive) do |c| %>
           <%= t('schools.user_tariff_differential_prices.index.complete_message') %>.
         <% end %>
       <% elsif @energy_tariff.energy_tariff_prices.size.zero? %>
-        <%= component 'notice', status: :negative do |c| %>
+        <%= render NoticeComponent.new(status: :negative) do |c| %>
           <%= t('schools.user_tariff_differential_prices.index.incomplete_zero_prices_message') %>.
         <% end %>
       <% else %>
-        <%= component 'notice', status: :negative do |c| %>
+        <%= render NoticeComponent.new(status: :negative) do |c| %>
           <p><%= t('schools.user_tariff_differential_prices.index.incomplete_message') %></p>
           <ul>
             <% @energy_tariff.energy_tariff_prices.possible_time_range_gaps.each do |time_duration_gap| %>
               <li>
                 <%= t('schools.tariffs_helper.rate_from',
                       start_time: time_duration_gap.first.to_fs(:time),
-                      end_time: time_duration_gap.last.to_fs(:time)
-                ) %>
+                      end_time: time_duration_gap.last.to_fs(:time)) %>
               </li>
             <% end %>
           </ul>
         <% end %>
       <% end %>
-      <br />
+      <br>
       <table class="table table-charges">
         <tbody>
           <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
@@ -55,25 +56,24 @@
       <div class="d-flex justify-content-between mb-2 mt-2">
         <div>
           <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
-          <%= link_to t('common.labels.continue'), energy_tariffs_path(@energy_tariff), class: "btn#{@energy_tariff.usable? ? '' : ' disabled' }" %>
+          <%= link_to t('common.labels.continue'), energy_tariffs_path(@energy_tariff),
+                      class: "btn#{@energy_tariff.usable? ? '' : ' disabled'}" %>
         </div>
         <div>
           <%= link_to t('schools.user_tariff_differential_prices.index.reset_to_default'),
-            energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices], { action: 'reset' }),
-            data: { confirm: t('common.confirm') },
-            class: "btn#{@energy_tariff.energy_tariff_prices.complete? ? ' disabled' : ''}",
-            method: :get
-          %>
+                      energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices], { action: 'reset' }),
+                      data: { confirm: t('common.confirm') },
+                      class: "btn#{@energy_tariff.energy_tariff_prices.complete? ? ' disabled' : ''}",
+                      method: :get %>
           <%= link_to t('schools.user_tariff_differential_prices.index.add_rate'),
-            energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { action: 'new' }),
-            {
-              class: "btn#{@energy_tariff.energy_tariff_prices.complete? ? ' disabled' : ''}",
-              remote: true,
-              'data-toggle' =>  "modal",
-              'data-target' => '#modal-window',
-              method: :get
-            }
-          %>
+                      energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { action: 'new' }),
+                      {
+                        class: "btn#{@energy_tariff.energy_tariff_prices.complete? ? ' disabled' : ''}",
+                        remote: true,
+                        'data-toggle' => 'modal',
+                        'data-target' => '#modal-window',
+                        method: :get
+                      } %>
         </div>
       </div>
     </div>

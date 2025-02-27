@@ -1,67 +1,53 @@
 <% content_for :page_title, t('common.labels.home') %>
 
 <% if Flipper.enabled?(:new_home_page, current_user) %>
-  <div class='hero-component bg-light'>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 col-12">
-          <div class='pt-3 pb-4 pr-4'>
-            <h2>Helping schools cut energy costs and fight climate change</h2>
-            <p>Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.</p>
-            <p>
-              <%= link_to t('nav.enrol'), find_out_more_campaigns_path, class: 'btn btn-primary' %>
-              <%= link_to t('campaigns.find_out_more.book_demo'),
-                          book_demo_campaigns_path,
-                          class: 'btn btn-secondary' %>
-            </p>
-          </div>
-        </div>
-        <div class="col-md-6 col-12">
-          <%= image_tag 'laptop.jpg', class: 'right-half d-none d-md-block' %>
-        </div>
-      </div>
-    </div>
+  <div class="bg-blue-very-dark text-white">
+    <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
+      <% grid.with_feature_card classes: 'py-4' do |feature| %>
+        <%= feature.with_header title: t('home.feature.header'), classes: 'text-white' %>
+        <%= feature.with_description { t('home.feature.description_html') } %>
+        <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
+        <%= feature.with_button t('campaigns.find_out_more.book_demo'),
+                                book_demo_campaigns_path,
+                                style: :white, outline: true %>
+      <% end %>
+      <%= grid.with_image src: 'on-screen.jpg', stretch: :right, width: '50vw', collapse: true %>
+    <% end %>
   </div>
 
   <div class="container">
-    <div class='p-4 m-4 text-center'>
-      <h3>Are you looking to cut energy bills and take action on climate change?</h3>
-      <p class='small'>We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.</p>
-    </div>
+    <%= render Layout::Cards::StatementComponent.new do |statement| %>
+      <%= statement.with_header title: t('home.statement.header') %>
+      <%= statement.with_description { t('home.statement.description') } %>
+    <% end %>
 
-    <div class="row">
-      <div class="col-xl-3 col-sm-6 col-12 pb-4">
-        <div class='rounded text-center bg-light p-4 h-100'>
-          <h4>Save energy</h4>
-          <h3>10%</h3>
-          <p class='small'>Typical energy and carbon savings seen by schools in their first year with Energy Sparks.</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-sm-6 col-12 pb-4">
-        <div class='rounded text-center bg-light p-4 h-100'>
-          <h4>Primary schools</h4>
-          <h3>£5,000</h3>
-          <p class='small'>and 7 tonnes CO₂ - average saving in 2023/24.</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-sm-6 col-12 pb-4">
-        <div class='rounded text-center bg-light p-4 h-100'>
-          <h4>Secondary schools</h4>
-          <h3>£20,000</h3>
-          <p class='small'>and 26 tonnes CO₂ - average saving in 2023/24.</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-sm-6 col-12 pb-4">
-        <div class='rounded text-center bg-light p-4 h-100'>
-          <h4>Empower pupils</h4>
-          <h3>70%</h3>
-          <p class='small'>Number of participating schools using Energy Sparks with their eco-team to inform impactful action.</p>
-        </div>
-      </div>
-    </div>
+    <%= render Layout::GridComponent.new(cols: 4,
+                                         cell_classes: 'pb-4') do |grid| %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon fuel_type: :electricity, style: :circle %>
+        <%= card.with_header title: t('home.stats.card_1.header') %>
+        <%= card.with_figure t('home.stats.card_1.figure') %>
+        <%= card.with_subtext { t('home.stats.card_1.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
+        <%= card.with_header title: t('home.stats.card_2.header') %>
+        <%= card.with_figure t('home.stats.card_2.figure') %>
+        <%= card.with_subtext { t('home.stats.card_2.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'school', style: :circle, classes: 'text-success' %>
+        <%= card.with_header title: t('home.stats.card_3.header') %>
+        <%= card.with_figure t('home.stats.card_3.figure') %>
+        <%= card.with_subtext { t('home.stats.card_3.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'book-open-reader', style: :circle, classes: 'text-yellow-light' %>
+        <%= card.with_header title: t('home.stats.card_4.header') %>
+        <%= card.with_figure t('home.stats.card_4.figure') %>
+        <%= card.with_subtext { t('home.stats.card_4.subtext') } %>
+      <% end %>
+    <% end %>
   </div>
 
 <% else %>

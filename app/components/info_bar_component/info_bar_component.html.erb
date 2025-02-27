@@ -1,4 +1,4 @@
-<%= component 'notice', status: status, classes: classes, style: style do %>
+<%= render NoticeComponent.new(status: status, classes: classes, style: style) do %>
   <div class="row align-items-center">
     <% if icon %>
       <div class="col-md-<%= icon_cols %> d-flex justify-content-center align-content-center flex-wrap">

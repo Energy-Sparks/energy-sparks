@@ -1,0 +1,15 @@
+img.image-component {
+  &.stretch {
+    top: 0;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &.right {
+    right: 0;
+  }
+
+  &.left {
+    left: 0;
+  }
+}

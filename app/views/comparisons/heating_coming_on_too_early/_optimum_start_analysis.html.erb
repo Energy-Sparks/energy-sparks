@@ -1,11 +1,12 @@
 <%= t('analytics.benchmarking.content.optimum_start_analysis.introduction_text_html') %>
 <%= t('analytics.benchmarking.content.optimum_start_analysis.table_introduction_text_html') %>
-<%= component 'comparison_table',
-              report: report,
-              advice_page: nil,
-              table_name: table_name,
-              index_params: index_params,
-              headers: @headers_optimum_start_analysis do |c| %>
+<%= render ComparisonTableComponent.new(
+      report: report,
+      advice_page: nil,
+      table_name: table_name,
+      index_params: index_params,
+      headers: @headers_optimum_start_analysis
+    ) do |c| %>
   <% @results.each do |result| %>
     <% c.with_row do |row| %>
       <% row.with_school school: result.school %>

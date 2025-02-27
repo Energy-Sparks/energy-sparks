@@ -15,9 +15,10 @@
            section_id: 'comparison',
            section_title: t('advice_pages.electricity_intraday.analysis.comparison.title') %>
 
-<%= component 'chart',
-              chart_type: :intraday_line_school_days_reduced_data_versus_benchmarks,
-              school: @school do |c| %>
+<%= render ChartComponent.new(
+      chart_type: :intraday_line_school_days_reduced_data_versus_benchmarks,
+      school: @school
+    ) do |c| %>
   <% c.with_title do
        t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_title',
          count: @analysis_dates.one_years_data? ? 12 : 1)
@@ -44,10 +45,11 @@
 
 <%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle.since_html") %>
 <%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle.two_years_html") %>
-<%= component 'meter_selection_chart',
-              chart_type: :intraday_line_school_days_reduced_data,
-              meter_selection: @meter_selection,
-              chart_subtitle_key: "advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle.#{key_suffix}" do |c| %>
+<%= render MeterSelectionChartComponent.new(
+      chart_type: :intraday_line_school_days_reduced_data,
+      meter_selection: @meter_selection,
+      chart_subtitle_key: "advice_pages.electricity_intraday.analysis.charts.schooldays_chart_subtitle.#{key_suffix}"
+    ) do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.schooldays_chart_title') } %>
   <% c.with_footer do %>
     <p><%= t('advice_pages.electricity_intraday.analysis.charts.schooldays_chart_explanation_html') %></p>
@@ -60,10 +62,11 @@
 
 <%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle.since_html") %>
 <%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle.two_years_html") %>
-<%= component 'meter_selection_chart',
-              chart_type: :intraday_line_holidays,
-              meter_selection: @meter_selection,
-              chart_subtitle_key: "advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle.#{key_suffix}" do |c| %>
+<%= render MeterSelectionChartComponent.new(
+      chart_type: :intraday_line_holidays,
+      meter_selection: @meter_selection,
+      chart_subtitle_key: "advice_pages.electricity_intraday.analysis.charts.holidays_chart_subtitle.#{key_suffix}"
+    ) do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.holidays_chart_title') } %>
 <% end %>
 
@@ -73,10 +76,11 @@
 
 <%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle.since_html") %>
 <%# i18n-tasks-use t("advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle.two_years_html") %>
-<%= component 'meter_selection_chart',
-              chart_type: :intraday_line_weekends,
-              meter_selection: @meter_selection,
-              chart_subtitle_key: "advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle.#{key_suffix}" do |c| %>
+<%= render MeterSelectionChartComponent.new(
+      chart_type: :intraday_line_weekends,
+      meter_selection: @meter_selection,
+      chart_subtitle_key: "advice_pages.electricity_intraday.analysis.charts.weekends_chart_subtitle.#{key_suffix}"
+    ) do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.weekends_chart_title') } %>
 <% end %>
 
@@ -85,10 +89,11 @@
                                            section_title: t('advice_pages.electricity_intraday.analysis.trends.title') %>
 
 <%# i18n-tasks-use t('advice_pages.electricity_intraday.analysis.charts.trends_chart_subtitle_html') %>
-<%= component 'meter_selection_chart',
-              chart_type: :intraday_line_school_last7days,
-              meter_selection: @meter_selection,
-              chart_subtitle_key: 'advice_pages.electricity_intraday.analysis.charts.trends_chart_subtitle_html' do |c| %>
+<%= render MeterSelectionChartComponent.new(
+      chart_type: :intraday_line_school_last7days,
+      meter_selection: @meter_selection,
+      chart_subtitle_key: 'advice_pages.electricity_intraday.analysis.charts.trends_chart_subtitle_html'
+    ) do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.trends_chart_title') } %>
   <% c.with_footer do %>
     <p><%= t('advice_pages.electricity_intraday.analysis.charts.trends_chart_explanation') %></p>

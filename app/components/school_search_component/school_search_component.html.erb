@@ -56,7 +56,7 @@
         </div>
         <hr>
         <div id="<%= label(tab, 'results') %>">
-          <%= component 'search_results' do |c| %>
+          <%= render SearchResultsComponent.new do |c| %>
             <% c.with_title { default_results_title(tab) } %>
             <% c.with_subtitle { default_results_subtitle(tab) } %>
             <% default_results(tab).each do |result| %>

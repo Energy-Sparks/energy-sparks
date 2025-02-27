@@ -1,7 +1,7 @@
 <div <%= "id=#{id}" if id %> class="timeline-component<%= classes %>">
   <div class="row">
     <div class="col">
-      <%= component 'titled_section' do |section| %>
+      <%= render TitledSectionComponent.new do |section| %>
         <% if show_header %>
           <% section.with_title do %>
             <h2 id="timeline"><%= t('timeline.whats_been_going_on') %></h2>
@@ -34,8 +34,8 @@
                   <tr>
                     <td><%= observation.at.to_fs(:es_short) %></td>
                     <td><%= observation.points || '-' %></td>
-                    <td><%= component 'observation', observation: observation, show_actions: show_actions,
-                                                     style: observation_style %></td>
+                    <td><%= render ObservationComponent.new(observation: observation, show_actions: show_actions,
+                                                            style: observation_style) %></td>
                   </tr>
                 <% end %>
               </tbody>

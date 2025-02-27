@@ -1,6 +1,6 @@
-<%= component 'info_bar',
-    status: :neutral,
-    title: t('schools.show.set_targets'),
-    icon: fa_icon('tachometer-alt fa-3x'),
-    buttons: { t('schools.show.set_target') => school_school_targets_path(school) }
-%>
+<%= render InfoBarComponent.new(
+      status: :neutral,
+      title: t('schools.show.set_targets'),
+      icon: fa_icon('tachometer-alt fa-3x'),
+      buttons: { t('schools.show.set_target') => school_school_targets_path(school) }
+    ) %>

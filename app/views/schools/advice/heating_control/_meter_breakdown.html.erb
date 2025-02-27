@@ -1,9 +1,12 @@
-<%= render 'schools/advice/section_title', section_id: 'meter-breakdown', section_title: t('advice_pages.heating_control.analysis.meter_breakdown.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'meter-breakdown',
+           section_title: t('advice_pages.heating_control.analysis.meter_breakdown.title') %>
 
-<%= component 'meter_selection_chart',
-    meter_selection: meter_selection,
-    chart_type: :gas_heating_season_intraday_up_to_1_year,
-    chart_subtitle_key: 'advice_pages.heating_control.analysis.meter_breakdown.chart_subtitle_html' do |c| %>
+<%= render MeterSelectionChartComponent.new(
+      meter_selection: meter_selection,
+      chart_type: :gas_heating_season_intraday_up_to_1_year,
+      chart_subtitle_key: 'advice_pages.heating_control.analysis.meter_breakdown.chart_subtitle_html'
+    ) do |c| %>
     <% c.with_title do %>
       <%= t('advice_pages.heating_control.analysis.meter_breakdown.chart_title') %>
     <% end %>

@@ -1,24 +1,24 @@
 <%= render 'header', school: @school, fuel_type: :storage_heater %>
 <%= render 'know', school: @school, energy: 'Storage Heaters', fuel_type: :storage_heaters %>
 
-<%= component 'titled_section', classes: 'mt-2' do |section| %>
+<%= render TitledSectionComponent.new(classes: 'mt-2') do |section| %>
   <%= section.with_title do %>
     <h2><%= t('pupils.analysis.i_would_like_to_see') %></h2>
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'chart-pie', fuel_type: :storage_heaters,
-                                     classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-pie', fuel_type: :storage_heaters,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Pie', link_text: t('common.pie_charts') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: @school, icon: 'chart-bar', fuel_type: :storage_heaters,
-                                     classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-bar', fuel_type: :storage_heaters,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_category category: :storage_heaters_bar, link_text: t('common.bar_charts') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: @school, icon: 'chart-line', fuel_type: :storage_heaters,
-                                     classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-line', fuel_type: :storage_heaters,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Line', link_text: t('common.line_graphs') %>
       <% end %>
     </div>

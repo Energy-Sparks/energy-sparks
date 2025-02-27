@@ -8,10 +8,11 @@
 <% if analysis_dates.months_of_data > 23 %>
   <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.subtitle_html') %>
   <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_longterm_trend.subtitle_html') %>
-  <%= component 'meter_selection_chart',
-                chart_type: :"#{fuel_type}_longterm_trend_academic_year",
-                meter_selection: meter_selection,
-                chart_subtitle_key: "#{i18n_prefix}.charts.#{fuel_type}_longterm_trend.subtitle_html" do |c| %>
+  <%= render MeterSelectionChartComponent.new(
+        chart_type: :"#{fuel_type}_longterm_trend_academic_year",
+        meter_selection: meter_selection,
+        chart_subtitle_key: "#{i18n_prefix}.charts.#{fuel_type}_longterm_trend.subtitle_html"
+      ) do |c| %>
     <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.title') %>
     <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_longterm_trend.title') %>
     <% c.with_title { t("advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_longterm_trend.title_academic_year") } %>
@@ -28,10 +29,11 @@
 
 <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.group_by_week_electricity_unlimited.subtitle_html') %>
 <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.subtitle_html') %>
-<%= component 'meter_selection_chart',
-              chart_type: :"group_by_week_#{fuel_type}_unlimited",
-              meter_selection: meter_selection,
-              chart_subtitle_key: "#{i18n_prefix}.charts.group_by_week_#{fuel_type}_unlimited.subtitle_html" do |c| %>
+<%= render MeterSelectionChartComponent.new(
+      chart_type: :"group_by_week_#{fuel_type}_unlimited",
+      meter_selection: meter_selection,
+      chart_subtitle_key: "#{i18n_prefix}.charts.group_by_week_#{fuel_type}_unlimited.subtitle_html"
+    ) do |c| %>
   <% c.with_title { t("#{i18n_prefix}.charts.group_by_week_#{fuel_type}_unlimited.title") } %>
   <% c.with_header do %>
     <p><%= t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.header') %></p>

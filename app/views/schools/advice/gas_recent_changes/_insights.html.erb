@@ -1,4 +1,4 @@
-<%= component 'prompt', status: :none, icon: :lightbulb do |c| %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <% c.with_link do
        link_to t('advice_pages.gas_recent_changes.insights.link'),
                learn_more_school_advice_gas_recent_changes_path(@school)
@@ -9,10 +9,10 @@
            section_id: 'your_recent_gas_use',
            section_title: t('advice_pages.gas_recent_changes.insights.your_recent_gas_use.title') %>
 
-<%= component 'alerts', school: @school,
-                        dashboard_alerts: @dashboard_alerts,
-                        alert_types: alert_types_for_class([AlertSchoolWeekComparisonGas,
-                                                            AlertWeekendGasConsumptionShortTerm]),
-                        show_links: false %>
+<%= render AlertsComponent.new(school: @school,
+                               dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class([AlertSchoolWeekComparisonGas,
+                                                                   AlertWeekendGasConsumptionShortTerm]),
+                               show_links: false) %>
 
 <%= render 'your_recent_gas_use_table' %>

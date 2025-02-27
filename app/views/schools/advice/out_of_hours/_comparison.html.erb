@@ -11,7 +11,7 @@
   <div class="col">
     <%# i18n-tasks-use t("advice_pages.electricity_out_of_hours.insights.comparison.callout_footer") %>
     <%# i18n-tasks-use t("advice_pages.gas_out_of_hours.insights.comparison.callout_footer") %>
-    <%= component 'school_comparison', id: "comparison-#{fuel_type}-out-of-hours", comparison: benchmarked_usage do |c| %>
+    <%= render SchoolComparisonComponent.new(id: "comparison-#{fuel_type}-out-of-hours", comparison: benchmarked_usage) do |c| %>
       <% c.with_footer { advice_t("#{fuel_type}_out_of_hours.insights.comparison.callout_footer") } %>
     <% end %>
   </div>

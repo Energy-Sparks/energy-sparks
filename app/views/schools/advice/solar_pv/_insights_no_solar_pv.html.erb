@@ -1,11 +1,16 @@
-<%= component 'prompt', status: :none, icon: :lightbulb do |c| %>
-  <% c.with_link { link_to t('advice_pages.solar_pv.no_solar_pv.insights.link'), learn_more_school_advice_solar_pv_path(@school) } %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <% c.with_link do
+       link_to t('advice_pages.solar_pv.no_solar_pv.insights.link'), learn_more_school_advice_solar_pv_path(@school)
+     end %>
   <%= t('advice_pages.solar_pv.no_solar_pv.insights.advice_html') %>
 <% end %>
-<%= render 'schools/advice/section_title', section_id: 'potential_benefits_for_your_school', section_title: t('advice_pages.solar_pv.no_solar_pv.insights.potential_benefits_for_your_school') %>
+<%= render 'schools/advice/section_title', section_id: 'potential_benefits_for_your_school',
+                                           section_title: t('advice_pages.solar_pv.no_solar_pv.insights.potential_benefits_for_your_school') %>
 
-<%= component 'prompt', icon: :sun, fuel_type: :solar_pv, status: :positive do |c| %>
+<%= render PromptComponent.new(icon: :sun, fuel_type: :solar_pv, status: :positive) do |c| %>
 <p><%= t('advice_pages.solar_pv.no_solar_pv.insights.your_school_doesnt_have_solar_panels') %>.</p>
 <p><%= t('advice_pages.solar_pv.no_solar_pv.insights.if_you_do_get_solar_panels_installed_html') %>.</p>
-<p><%= t('advice_pages.solar_pv.no_solar_pv.insights.installing_solar_panels_could_reduce_html', optimum_mains_reduction_percent: format_unit(@potential_benefits_estimator.optimum_mains_reduction_percent, :percent)) %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.insights.installing_solar_panels_could_reduce_html',
+         optimum_mains_reduction_percent: format_unit(@potential_benefits_estimator.optimum_mains_reduction_percent,
+                                                      :percent)) %>.</p>
 <% end %>

@@ -1,19 +1,21 @@
 <% if Flipper.enabled?(:todos, current_user) %>
   <% if local_assigns[:audit] && audit.todos_incomplete? %>
-    <%= component 'info_bar',
-                  status: :neutral,
-                  style: local_assigns[:style],
-                  title: Completables::Progress.new(audit).notification,
-                  icon: fa_icon('fas fa-laptop fa-3x'),
-                  buttons: { t('common.labels.view_now') => school_audit_path(audit.school, audit) } %>
+    <%= render InfoBarComponent.new(
+          status: :neutral,
+          style: local_assigns[:style],
+          title: Completables::Progress.new(audit).notification,
+          icon: fa_icon('fas fa-laptop fa-3x'),
+          buttons: { t('common.labels.view_now') => school_audit_path(audit.school, audit) }
+        ) %>
   <% end %>
 <% else %>
   <% if local_assigns[:audit] && audit&.tasks_remaining? %>
-    <%= component 'info_bar',
-                  status: :neutral,
-                  style: local_assigns[:style],
-                  title: Audits::Progress.new(audit).notification,
-                  icon: fa_icon('fas fa-laptop fa-3x'),
-                  buttons: { t('common.labels.view_now') => school_audit_path(audit.school, audit) } %>
+    <%= render InfoBarComponent.new(
+          status: :neutral,
+          style: local_assigns[:style],
+          title: Audits::Progress.new(audit).notification,
+          icon: fa_icon('fas fa-laptop fa-3x'),
+          buttons: { t('common.labels.view_now') => school_audit_path(audit.school, audit) }
+        ) %>
   <% end %>
 <% end %>

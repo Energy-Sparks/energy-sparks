@@ -11,11 +11,12 @@
 <%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.subtitle_html') %>
 <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.title') %>
 <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.subtitle_html') %>
-<%= component 'meter_selection_chart',
-              meter_selection: meter_selection,
-              chart_type: chart,
-              analysis_controls: true,
-              chart_subtitle_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html" do |c| %>
+<%= render MeterSelectionChartComponent.new(
+      meter_selection: meter_selection,
+      chart_type: chart,
+      analysis_controls: true,
+      chart_subtitle_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html"
+    ) do |c| %>
   <% c.with_title do %>
     <%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.title") %>
   <% end %>

@@ -6,9 +6,10 @@
 <div class="alert alert-primary">
   Dates: <%= @equivalence.from_date.try(:strftime, '%d/%m/%Y') %> - <%= @equivalence.to_date.try(:strftime, '%d/%m/%Y') %>
 </div>
-<%= component 'equivalence',
-              image_name: @equivalence_content.equivalence_type.image_name,
-              classes: 'illustration-background' do |c| %>
+<%= render EquivalenceComponent.new(
+      image_name: @equivalence_content.equivalence_type.image_name,
+      classes: 'illustration-background'
+    ) do |c| %>
   <% c.with_header do %>
     <%= @equivalence_content.equivalence %>
   <% end %>

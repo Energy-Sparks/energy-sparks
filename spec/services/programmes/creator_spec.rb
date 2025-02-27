@@ -74,12 +74,12 @@ describe Programmes::Creator do
 
       context 'when school has multiple activities' do
         let!(:activities) do
-          [1.hour.ago, 1.day.ago, 1.year.ago].map do |time|
+          [1.hour.ago, 3.days.ago, 1.year.ago].map do |time|
             create(:activity_without_creator, school: school, activity_type: programme_type.activity_type_tasks.first, happened_on: time)
           end
         end
         let!(:observations) do
-          [1.hour.ago, 1.day.ago, 1.year.ago].map do |time|
+          [1.hour.ago, 3.days.ago, 1.year.ago].map do |time|
             create(:observation, :intervention, school: school, intervention_type: programme_type.intervention_type_tasks.first, at: time)
           end
         end
@@ -204,7 +204,7 @@ describe Programmes::Creator do
 
       context 'when school has multiple activities' do
         let!(:activities) do
-          [1.hour.ago, 1.day.ago, 1.year.ago].map do |time|
+          [1.hour.ago, 3.days.ago, 1.year.ago].map do |time|
             create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: time)
           end
         end

@@ -1,3 +1,3 @@
 <% @charts.each do |chart| %>
-  <%= component 'comparison_chart', **chart %>
+  <%= render ComparisonChartComponent.new(**chart) %>
 <% end %>

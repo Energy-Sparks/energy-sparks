@@ -20,7 +20,7 @@
     <% if data_enabled? %>
         <div class="row">
           <% if school.has_solar_pv? %>
-            <%= component 'pupil_explore', school: school, icon: 'sun', fuel_type: :electricity, classes: 'col' do |c| %>
+            <%= render PupilExploreComponent.new(school: school, icon: 'sun', fuel_type: :electricity, classes: 'col') do |c| %>
               <% c.with_category category: :solar_pv, link_text: t('common.electricity_and_solar_pv') %>
               <% c.with_note do %>
                 <div>
@@ -31,7 +31,7 @@
               <% end %>
             <% end %>
           <% elsif school.has_electricity? %>
-            <%= component 'pupil_explore', school: school, icon: 'bolt', fuel_type: :electricity, classes: 'col'  do |c| %>
+            <%= render PupilExploreComponent.new(school: school, icon: 'bolt', fuel_type: :electricity, classes: 'col') do |c| %>
               <% c.with_category category: :electricity, link_text: t('common.electricity') %>
               <% c.with_note do %>
                 <div>
@@ -43,13 +43,13 @@
             <% end %>
           <% end %>
           <% if school.has_gas? %>
-            <%= component 'pupil_explore', school: school, icon: 'fire', fuel_type: :gas, classes: 'col'  do |c| %>
+            <%= render PupilExploreComponent.new(school: school, icon: 'fire', fuel_type: :gas, classes: 'col') do |c| %>
               <% c.with_category category: :gas, link_text: t('common.gas') %>
             <% end %>
           <% end %>
           <% if school.has_storage_heaters? %>
-            <%= component 'pupil_explore', school: school, icon: 'intercom', icon_set: 'fab',
-                                           fuel_type: :storage_heaters, classes: 'col'  do |c| %>
+            <%= render PupilExploreComponent.new(school: school, icon: 'intercom', icon_set: 'fab',
+                                                 fuel_type: :storage_heaters, classes: 'col') do |c| %>
               <% c.with_category category: :storage_heaters, link_text: t('common.storage_heaters') %>
             <% end %>
           <% end %>

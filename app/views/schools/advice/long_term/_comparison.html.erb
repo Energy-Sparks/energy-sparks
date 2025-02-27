@@ -9,7 +9,7 @@
   </p>
 
   <div class="col">
-    <%= component 'school_comparison', id: "#{fuel_type}-comparison", comparison: @benchmarked_usage do |c| %>
+    <%= render SchoolComparisonComponent.new(id: "#{fuel_type}-comparison", comparison: @benchmarked_usage) do |c| %>
       <% c.with_footer { advice_t("#{fuel_type}_long_term.insights.comparison.callout_footer") } %>
     <% end %>
   </div>
