@@ -44,7 +44,7 @@ resource "aws_cloudwatch_metric_alarm" "filesystem_free_space_alarm" {
   period              = 900
   evaluation_periods  = 1
   datapoints_to_alarm = 1
-  threshold           = 5
+  threshold           = 5000000000
   comparison_operator = "LessThanOrEqualToThreshold"
   treat_missing_data  = "missing"
 }
@@ -68,7 +68,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   evaluation_periods  = 1
   datapoints_to_alarm = 1
   threshold           = 80
-  comparison_operator = "GreaterThanOrEqualToThreshold"
+  comparison_operator = "GreaterThanThreshold"
   treat_missing_data  = "missing"
 }
 
@@ -110,9 +110,9 @@ resource "aws_cloudwatch_metric_alarm" "production_postgres_free_space_alert" {
     DBInstanceIdentifier = "energy-sparks-production-db-2022"
   }
 
-  period              = 300
-  evaluation_periods  = 6
-  datapoints_to_alarm = 6
+  period              = 900
+  evaluation_periods  = 1
+  datapoints_to_alarm = 1
   threshold           = 10000000000
   comparison_operator = "LessThanOrEqualToThreshold"
   treat_missing_data  = "missing"
