@@ -68,7 +68,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   evaluation_periods  = 1
   datapoints_to_alarm = 1
   threshold           = 80
-  comparison_operator = "LessThanOrEqualToThreshold"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
   treat_missing_data  = "missing"
 }
 
