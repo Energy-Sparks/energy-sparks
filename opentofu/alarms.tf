@@ -73,7 +73,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "postgres_free_space_alert" {
-  alarm_name                = "Alert less than 4GB free in a Postgres database"
+  alarm_name                = "Any Postgres DB Warning < 4 GB"
   actions_enabled           = true
   alarm_actions             = ["arn:aws:sns:eu-west-2:110304303563:notifications"]
   ok_actions                = []
@@ -96,7 +96,7 @@ resource "aws_cloudwatch_metric_alarm" "postgres_free_space_alert" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "production_postgres_free_space_alert" {
-  alarm_name                = "Alert less than 10GB free in Production Postgres database"
+  alarm_name                = "Production DB Warning < 10 GB"
   actions_enabled           = true
   alarm_actions             = ["arn:aws:sns:eu-west-2:110304303563:notifications"]
   ok_actions                = []
