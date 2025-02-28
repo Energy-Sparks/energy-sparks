@@ -1,6 +1,4 @@
-<div
-  id="<%= @id %>"
-  class="school-comparison-component-callout-row row mt-2">
+<%= tag.div id: id, class: class_names(classes, 'row mt-2') do %>
   <% categories.each do |category| %>
     <div class="col-md-4 justify-content-center <%= category %> <%= responsive_classes(category) %>">
       <% if school_in_category?(category) %>
@@ -61,4 +59,4 @@
       </p>
     </div>
   </div>
-</div>
+<% end %>

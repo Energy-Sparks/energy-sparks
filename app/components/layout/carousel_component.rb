@@ -10,8 +10,8 @@ module Layout
       kwargs
     end
 
-    def initialize(id:, show_arrows: true, show_markers: true, classes: '')
-      super(id: id, classes: classes)
+    def initialize(show_arrows: true, show_markers: true, **_kwargs)
+      super
 
       @show_arrows = show_arrows
       @show_markers = show_markers

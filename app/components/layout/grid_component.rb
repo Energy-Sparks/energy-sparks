@@ -22,8 +22,8 @@ module Layout
       end
     end
 
-    def initialize(cols:, rows: 1, cell_classes: '', component_classes: '', id: nil, classes: '')
-      super(id: id, classes: ['layout-grid-component', classes])
+    def initialize(cols:, rows: 1, cell_classes: '', component_classes: '', **_kwargs)
+      super
 
       @cols = cols
       @rows = rows

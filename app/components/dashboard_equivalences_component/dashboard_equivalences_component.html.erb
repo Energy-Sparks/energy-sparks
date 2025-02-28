@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="dashboard-equivalences-component scrollable-title <%= classes %>">
+<%= tag.div id: id, class: class_names(classes, 'scrollable-title') do %>
   <% if Flipper.enabled?(:new_dashboards_2024, user) %>
     <div class="row">
       <div class="col-12 <%= two_column_class %>">
@@ -84,4 +84,4 @@
       <% end %>
     <% end %>
   <% end %>
-</div>
+<% end %>

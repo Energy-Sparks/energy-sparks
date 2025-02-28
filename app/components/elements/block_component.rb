@@ -1,9 +1,5 @@
 module Elements
   class BlockComponent < ApplicationComponent
-    def initialize(id: '', classes: '')
-      super(id: id, classes: classes)
-    end
-
     def render?
       content
     end

@@ -1,12 +1,12 @@
 # Displays a tabular view of a set of tariffs owned by the same tariff holder
 # and of the same type.
-class EnergyTariffTableComponent < ViewComponent::Base
+class EnergyTariffTableComponent < ApplicationComponent
   include EnergyTariffsHelper
 
   delegate :can?, :cannot?, to: :helpers
 
-  def initialize(id: 'tariff-table', tariff_holder:, tariffs:, show_actions: true, show_prices: true)
-    @id = id
+  def initialize(id: 'tariff-table', tariff_holder:, tariffs:, show_actions: true, show_prices: true, **_kwargs)
+    super
     @tariff_holder = tariff_holder
     @tariffs = tariffs
     @show_actions = show_actions

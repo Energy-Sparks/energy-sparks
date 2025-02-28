@@ -11,8 +11,8 @@ module Layout
         Elements::ButtonComponent.new(*args, **kwargs)
       end
 
-      def initialize(id: '', classes: '')
-        super(id: id, classes: classes)
+      def initialize(**_kwargs)
+        super
         add_classes('py-4')
       end
     end

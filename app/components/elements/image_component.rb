@@ -1,7 +1,7 @@
 module Elements
   class ImageComponent < ApplicationComponent
-    def initialize(src:, collapse: false, stretch: false, width: nil, id: '', classes: '')
-      super(id: id, classes: classes)
+    def initialize(src:, collapse: false, stretch: false, width: nil, **_kwargs)
+      super
       @src = src
       @collapse = collapse
       @stretch = stretch

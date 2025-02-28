@@ -1,4 +1,4 @@
-<div class="advice-page-list-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <%= render TitledSectionComponent.new do |section| %>
     <% section.with_title do %>
       <h2 id="<%= id %>" class="scrollable-title"><%= t('components.advice_page_list.title') %></h2>
@@ -49,4 +49,4 @@
       <% end %>
     <% end %>
   <% end %>
-</div>
+<% end %>

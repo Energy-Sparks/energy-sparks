@@ -1,7 +1,4 @@
-<div id="<%= id %>"
-     class="layout-carousel-component carousel slide <%= classes %>"
-     data-wrap="true"
-     data-interval="false">
+<%= tag.div id: id, class: class_names(classes, 'carousel slide'), 'data-wrap': true, 'data-interval': false do %>
   <div class="carousel-inner">
     <% panels.each do |panel| %>
       <%= panel %>
@@ -32,4 +29,4 @@
       </div>
     </div>
   <% end %>
-</div>
+<% end %>
