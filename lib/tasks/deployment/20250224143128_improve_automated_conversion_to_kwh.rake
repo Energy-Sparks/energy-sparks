@@ -3,7 +3,7 @@ namespace :after_party do
   task improve_automated_conversion_to_kwh: :environment do
     puts "Running deploy task 'improve_automated_conversion_to_kwh'"
 
-    AmrDataFeedConfig.find_by(identifier: 'my-sefe-portal-new').update!(convert_to_kwh: true, check_meter_units: true)
+    AmrDataFeedConfig.find_by!(identifier: 'my-sefe-portal-new').update!(convert_to_kwh: :meter)
 
     meters = {
       9117991110 => 'm3',

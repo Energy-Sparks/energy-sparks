@@ -72,7 +72,7 @@ module Amr
 
     def readings_as_array(data_feed_reading_hash, amr_data_feed_row, meter)
       array_of_readings = @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
-      if !array_of_readings.all?(&:blank?) && @config.convert_to_kwh
+      if array_of_readings.all?(&:present?) && @config.convert_to_kwh != 'no'
         unit = conversion_unit(data_feed_reading_hash, meter)
         if unit
           data_feed_reading_hash[:units] = 'kwh'
@@ -86,7 +86,7 @@ module Amr
       if data_feed_reading_hash[:units]&.casecmp?('m3')
         # if units are specified, then only convert if they are m3
         :m3
-      elsif @config.check_meter_units && meter&.gas_unit
+      elsif @config.convert_to_kwh == 'meter' && meter&.gas_unit
         meter.gas_unit.to_sym
       elsif data_feed_reading_hash[:units].blank?
         # if no units specified for each row, assume m3 and convert
