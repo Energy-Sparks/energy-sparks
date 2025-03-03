@@ -9,8 +9,10 @@
 #  data_source_id                 :bigint(8)
 #  dcc_checked_at                 :datetime
 #  dcc_meter                      :enum             default("no"), not null
+#  gas_unit                       :enum
 #  id                             :bigint(8)        not null, primary key
 #  low_carbon_hub_installation_id :bigint(8)
+#  manual_reads                   :boolean          default(FALSE), not null
 #  meter_review_id                :bigint(8)
 #  meter_serial_number            :text
 #  meter_system                   :integer          default("nhh_amr")
@@ -110,7 +112,8 @@ class Meter < ApplicationRecord
   # Other options are: NHH (Non Half-Hourly), HH (Half-Hourly), and SMETS2/smart (SMETS2 Smart Meters)
   enum :meter_system, { nhh_amr: 0, nhh: 1, hh: 2, smets2_smart: 3 }
   enum :dcc_meter, %w[no smets2 other].to_h { |v| [v, v] }, prefix: true
-  enum :perse_api, { half_hourly: 'half_hourly' }, prefix: true
+  enum :perse_api, %i[half_hourly].index_with(&:to_s), prefix: true
+  enum :gas_unit, %i[kwh m3 ft3 hcf].index_with(&:to_s), prefix: true
 
   delegate :area_name, to: :school
 
@@ -123,6 +126,7 @@ class Meter < ApplicationRecord
                                   message: 'for electricity meters should be a 13 to 14 digit number' }
   validates :mpan_mprn, format: { with: /\A\d{1,15}\Z/, if: :gas?,
                                   message: 'for gas meters should be a 1-15 digit number' }
+  validates :gas_unit, absence: true, if: -> { meter_type != 'gas' }
   validate :pseudo_meter_type_not_changed, on: :update, if: :pseudo
   validate :pseudo_mpan_mprn_not_changed, on: :update, if: :pseudo
 
