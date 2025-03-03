@@ -129,6 +129,9 @@
 
       <dt class="col-sm-3"><%= t('schools.meters.index.manual_reads') %></dt>
       <dd class="col-sm-9"><%= @meter.manual_reads %></dd>
+
+      <dt class="col-sm-3">Gas unit</dt>
+      <dd class="col-sm-9"><%= options_for_gas_unit.to_h(&:reverse)[@meter.gas_unit] %></dd>
     </dl>
   </div>
   <% if Meter::MAIN_METER_TYPES.include?(@meter.meter_type.to_sym) %>

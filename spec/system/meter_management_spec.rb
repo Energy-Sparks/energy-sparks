@@ -36,7 +36,8 @@ RSpec.shared_examples_for 'the show meter page' do |admin:|
     expect(page).to have_selector(:link_or_button, 'Edit', exact: true)
     if admin
       expect(page).to have_text('Admin details')
-      expect(page).to have_text('Meter system NHH AMR Data source Data Co Contract Meter status Manual reads? false')
+      expect(page).to have_text('Meter system NHH AMR Data source Data Co Contract Meter status Manual reads? false ' \
+                                'Gas unit Cubic Meters')
     else
       expect(page).to have_no_text('Admin details')
     end
@@ -53,7 +54,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
   let!(:school_admin)   { create(:school_admin, school_id: school.id) }
   let!(:data_source)    { create(:data_source, name: 'Data Co') }
   let(:active_meter)    do
-    create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:)
+    create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, gas_unit: :m3)
   end
   let(:inactive_meter) do
     create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, active: false)
@@ -398,11 +399,13 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         fill_in 'Name', with: 'Natural Gas Meter'
         select 'Data Co', from: 'Data source'
         check('Manual reads?')
+        select 'Cubic Feet', from: 'Gas unit'
         click_on 'Update Meter'
         gas_meter.reload
         expect(gas_meter.name).to eq('Natural Gas Meter')
         expect(gas_meter.data_source.name).to eq('Data Co')
         expect(gas_meter.manual_reads).to be true
+        expect(gas_meter.gas_unit).to eq('ft3')
       end
 
       it 'allows deactivation and reactivation of a meter' do

@@ -45,6 +45,10 @@ module MetersHelper
     [['None', nil], ['Half Hourly', 'half_hourly']]
   end
 
+  def options_for_gas_unit
+    [['kWh', 'kwh'], ['Cubic Meters', 'm3'], ['Cubic Feet', 'ft3'], ['Hundred Cubic Feet', 'hcf']]
+  end
+
   def options_for_dcc_meters
     Meter.dcc_meters.transform_keys(&:capitalize)
   end
