@@ -110,7 +110,6 @@ cy:
             <li>cymorth e-bost gydag addysg rheoli ynni ac cynaliadwyedd</li>
             <li>mynediad at >%{activities_count} o weithgareddau disgyblion gyda chynlluniau gwersi, gweithdai ac adnoddau ychwanegol y gellir eu lawrlwytho</li>
             <li>arweiniad ar >%{actions_count} o weithredoedd effeithlonrwydd ynni isel a di-gost a arweinir gan oedolion</li>
-            <li>dadansoddiad o hyd at 10 mesurydd nwy a thrydan</li>
             <li>data solar integredig (os yw'n berthnasol)</li>
             <li>cefnogaeth gydag uwchraddio mesuryddion i fesuryddion bob hanner awr (os oes angen)</li>
           </ul>
@@ -128,7 +127,7 @@ cy:
           </p>
         title: Lleoedd am ddim
       groups:
-        price: "£495 + TAW"
+        price: "£545 + TAW"
         title: Ymddiriedolaeth Aml-Academi a chlystyrau Awdurdodau Lleol
       independent_schools:
         price: "£595 + TAW"
@@ -145,9 +144,9 @@ cy:
           title: Archwiliadau ynni ar y safle
         metering:
           price: "£25 + TAW fesul mesurydd"
-          title: Dadansoddiad o ddata o fwy na 10 mesurydd
+          title: Dadansoddiad o ddata o fwy na 5 mesurydd
         private_tool:
-          price: "£75 + TAW fesul ysgol fesul blwyddyn"
+          price: "£90 + TAW fesul ysgol fesul blwyddyn"
           title: Offeryn rheoli ynni preifat, sy'n hygyrch i staff yn unig
         title: Gwasanaethau dewisol ychwanegol
         virtual_audits:
@@ -157,6 +156,9 @@ cy:
           price: "£250-£500, yn dibynnu ar leoliad"
           title: Gweithdai addysgol yn yr ysgol
       state_schools:
+        note: fesul ysgol fesul blwyddyn, <250 disgyblion
+        note_large: fesul ysgol fesul blwyddyn, >250 disgyblion
         price: "£545 + TAW"
+        price_large: "£595 + VAT"
         title: Ysgolion gwladol unigol
       title: Prisio

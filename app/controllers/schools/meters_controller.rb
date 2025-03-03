@@ -53,7 +53,7 @@ module Schools
       manager = MeterManagement.new(@meter)
       if @meter.save
         manager.process_mpan_mpnr_change! if @meter.mpan_mprn_previously_changed?
-        redirect_to school_meters_path(@school), notice: 'Meter updated'
+        redirect_back fallback_location: school_meters_path(@school), notice: 'Meter updated'
       else
         render :edit
       end
@@ -116,7 +116,7 @@ module Schools
     def meter_params
       params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :data_source_id,
                                     :procurement_route_id, :admin_meter_statuses_id, :meter_system, :perse_api,
-                                    :manual_reads)
+                                    :manual_reads, :gas_unit)
     end
   end
 end
