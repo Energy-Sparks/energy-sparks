@@ -1,4 +1,4 @@
-<h1>Engaged Groups</h1>
+<%= render 'admin/reports/title', title: 'Engaged Groups' %>
 <p>
   The table below lists "engaged schools" for each school group. An engaged school has done one of the following since
   the start of the current academic year (<%= nice_dates(AcademicYear.current.start_date) %>):
