@@ -16,7 +16,7 @@ module Schools
       errors << { id: :floor_area, msg: 'Missing floor area', link: 'Add floor area', path: edit_school_path(@school) } unless @school.floor_area.present?
       errors << { id: :active_meters, msg: 'No active meters', link: 'Configure meters', path: school_meters_path(@school) } unless @school.active_meters.any?
       errors << { id: :active_users, msg: 'No active users', link: 'Configure users', path: school_users_path(@school) } unless @school.active_adult_users.any?
-      errors << { id: :solar, msg: 'No solar panels configured', link: 'Configure solar', path: school_meters_path(@school) } if @school.needs_solar_configuration?
+      errors << { id: :solar, msg: 'No solar panels configured, but school has said they have solar', link: 'Configure solar', path: school_meters_path(@school) } if @school.needs_solar_configuration?
       errors << { id: :no_consent, msg: 'We do not have consent from the school to publish their data', link: 'Request consent', path: new_admin_school_consent_request_path(@school) } unless @school.consent_grants.any?
       errors
     end

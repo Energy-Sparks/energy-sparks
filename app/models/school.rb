@@ -787,14 +787,31 @@ class School < ApplicationRecord
     users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
   end
 
-  # Rough figures taken from:
+  # gov.uk have figures for recommended gross area for different sizes of schools.
+  #
+  # See:
   # https://assets.publishing.service.gov.uk/media/5f23ec238fa8f57acac33720/BB103_Area_Guidelines_for_Mainstream_Schools.pdf
   #
-  # Is the floor area less than twice the recommended maximum for a secondary
-  # school with similar number of pupils.
+  # Is the floor area greater than a sensible minimum and less than twice the
+  # gross recommended size. Base area and pupil sizes are taken from primary/secondary in the
+  # government figures.
   def floor_area_ok?
     return true unless floor_area && number_of_pupils
-    floor_area < 2 * (1700 + 7 * number_of_pupils)
+
+    # all following are in m2
+    case school_type.to_sym
+    when :middle, :mixed_primary_and_secondary, :secondary
+      minimum = 500
+      base_area = 1700
+      per_pupil = 7
+    else
+      minimum = 100
+      base_area = 400
+      per_pupil = 5
+    end
+
+    twice_recommended_size = 2 * (base_area + per_pupil * number_of_pupils)
+    floor_area.between?(minimum, twice_recommended_size)
   end
 
   def has_configured_school_times?
@@ -823,17 +840,23 @@ class School < ApplicationRecord
     return !has_storage_heater_configuration?
   end
 
-  # From https://www.gov.uk/government/publications/new-homes-fact-sheet-5-new-homes-and-school-places/fact-sheet-5-new-homes-and-school-places#how-many-new-homes-are-served-by-an-average-sized-school
-  # Average primary is 276, ES max is ~2675
-  # Average secondary is 1,054, ES max is ~1030
-  # ES mixed max is ~2045
+  # Estimated ranges based on what seems sensible for different school types looking
+  # across the registered schools
   def pupil_numbers_ok?
     return true unless number_of_pupils
     case school_type
-    when 'primary', 'secondary', 'mixed_primary_and_secondary'
-      number_of_pupils.between?(10, 3000)
+    when 'infant', 'primary'
+      number_of_pupils.between?(10, 800)
+    when 'junior'
+      number_of_pupils.between?(10, 1000)
+    when 'middle'
+      number_of_pupils.between?(250, 1000)
+    when 'mixed_primary_and_secondary'
+      number_of_pupils.between?(250, 1500)
+    when 'secondary'
+      number_of_pupils.between?(250, 1700)
     else
-      number_of_pupils.between?(10, 1500)
+      number_of_pupils.between?(10, 500)
     end
   end
 

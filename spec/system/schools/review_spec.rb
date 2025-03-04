@@ -94,7 +94,7 @@ describe 'School setup review', :include_application_helper, type: :system do
         it_behaves_like 'an error is displayed' do
           let(:id) { 'solar' }
           let(:status) { :negative }
-          let(:msg) { 'No solar panels configured' }
+          let(:msg) { 'No solar panels configured, but school has said they have solar' }
           let(:link) { school_meters_path(school) }
         end
       end
