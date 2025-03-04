@@ -1150,4 +1150,168 @@ describe School do
       expect(described_class.engaged(1.year.ago..)).to eq([school])
     end
   end
+
+  describe '#floor_area_ok?' do
+    shared_examples 'it checks boundaries' do
+      it 'checks lower bound' do
+        school = create(:school, school_type: school_type, number_of_pupils: 100, floor_area: low)
+        expect(school.floor_area_ok?).not_to be(true)
+      end
+
+      it 'checks middle' do
+        school = create(:school, school_type: school_type, number_of_pupils: 100, floor_area: ok)
+        expect(school.floor_area_ok?).to be(true)
+      end
+
+      it 'checks upper bound' do
+        school = create(:school, school_type: school_type, number_of_pupils: 100, floor_area: high)
+        expect(school.floor_area_ok?).not_to be(true)
+      end
+    end
+
+    context 'with middle' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :middle }
+        let(:low) { 499 }
+        let(:ok) { 1700 }
+        let(:high) { 4801 }
+      end
+    end
+
+    context 'with mixed_primary_and_secondary' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :mixed_primary_and_secondary }
+        let(:low) { 499 }
+        let(:ok) { 1700 }
+        let(:high) { 4801 }
+      end
+    end
+
+    context 'with secondary' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :secondary }
+        let(:low) { 499 }
+        let(:ok) { 1700 }
+        let(:high) { 4801 }
+      end
+    end
+
+    context 'with junior' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :junior }
+        let(:low) { 99 }
+        let(:ok) { 400 }
+        let(:high) { 1801 }
+      end
+    end
+
+    context 'with primary' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :primary }
+        let(:low) { 99 }
+        let(:ok) { 400 }
+        let(:high) { 1801 }
+      end
+    end
+
+    context 'with infant' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :infant }
+        let(:low) { 99 }
+        let(:ok) { 400 }
+        let(:high) { 1801 }
+      end
+    end
+
+    context 'with special' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :special }
+        let(:low) { 99 }
+        let(:ok) { 400 }
+        let(:high) { 1801 }
+      end
+    end
+  end
+
+  describe '#pupil_numbers_ok?' do
+    shared_examples 'it checks boundaries' do
+      it 'checks lower bound' do
+        school = create(:school, school_type: school_type, number_of_pupils: low)
+        expect(school.pupil_numbers_ok?).not_to be(true)
+      end
+
+      it 'checks middle' do
+        school = create(:school, school_type: school_type, number_of_pupils: ok)
+        expect(school.pupil_numbers_ok?).to be(true)
+      end
+
+      it 'checks upper bound' do
+        school = create(:school, school_type: school_type, number_of_pupils: high)
+        expect(school.pupil_numbers_ok?).not_to be(true)
+      end
+    end
+
+    context 'with middle' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :middle }
+        let(:low) { 249 }
+        let(:ok) { 500 }
+        let(:high) { 1001 }
+      end
+    end
+
+    context 'with mixed_primary_and_secondary' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :mixed_primary_and_secondary }
+        let(:low) { 249 }
+        let(:ok) { 500 }
+        let(:high) { 1501 }
+      end
+    end
+
+    context 'with secondary' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :secondary }
+        let(:low) { 249 }
+        let(:ok) { 500 }
+        let(:high) { 1701 }
+      end
+    end
+
+    context 'with junior' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :junior }
+        let(:low) { 9 }
+        let(:ok) { 500 }
+        let(:high) { 1001 }
+      end
+    end
+
+    context 'with primary' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :primary }
+        let(:low) { 9 }
+        let(:ok) { 500 }
+        let(:high) { 801 }
+      end
+    end
+
+    context 'with infant' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :infant }
+        let(:low) { 9 }
+        let(:ok) { 500 }
+        let(:high) { 801 }
+      end
+    end
+
+    context 'with special' do
+      it_behaves_like 'it checks boundaries' do
+        let(:school_type) { :special }
+        let(:low) { 9 }
+        let(:ok) { 250 }
+        let(:high) { 501 }
+      end
+    end
+  end
 end
