@@ -5,9 +5,9 @@ require 'rails_helper'
 RSpec.describe Elements::ParagraphComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
+
   let(:content) { 'Content' }
   let(:base_params) { { id: id, classes: classes } }
-
 
   let(:html) do
     render_inline(Elements::ParagraphComponent.new(**params)) do
@@ -18,29 +18,12 @@ RSpec.describe Elements::ParagraphComponent, :include_application_helper, type: 
   context 'with base params' do
     let(:params) { base_params }
 
-    it { expect(html).to have_css('p.extra-classes') }
-    it { expect(html).to have_css('p#custom-id') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with no classes or id' do
-    let(:params) { {} }
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
 
     it { expect(html).to have_css('p') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with classes' do
-    let(:params) { { classes: classes } }
-
-    it { expect(html).to have_css('p.extra-classes') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with id' do
-    let(:params) { { id: id } }
-
-    it { expect(html).to have_css('p#custom-id') }
     it { expect(html).to have_content('Content') }
   end
 

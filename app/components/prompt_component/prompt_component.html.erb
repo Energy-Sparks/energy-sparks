@@ -1,4 +1,4 @@
-<div <%= tag.attributes id: id, class: ['prompt-component', 'mb-2', classes] %>>
+<%= tag.div id: id, class: class_names(classes, 'mb-2') do %>
   <%# Padding added to create space within div %>
   <div class="row pt-3 pb-3">
     <% if render_icon? %>
@@ -45,4 +45,4 @@
       </div>
     </div>
   </div>
-</div>
+<% end %>

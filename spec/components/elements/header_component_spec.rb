@@ -8,7 +8,6 @@ RSpec.describe Elements::HeaderComponent, :include_application_helper, type: :co
   let(:title) { 'Title' }
   let(:base_params) { { id: id, classes: classes, title: title } }
 
-
   let(:html) do
     render_inline(Elements::HeaderComponent.new(**params))
   end
@@ -16,39 +15,25 @@ RSpec.describe Elements::HeaderComponent, :include_application_helper, type: :co
   context 'with base params' do
     let(:params) { base_params }
 
-    it { expect(html).to have_css('h1.extra-classes') }
-    it { expect(html).to have_css('h1#custom-id') }
-    it { expect(html).to have_content('Title') }
-  end
-
-  context 'with no classes or id' do
-    let(:params) { { title: title } }
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
 
     it { expect(html).to have_css('h1') }
     it { expect(html).to have_content('Title') }
   end
 
-  context 'with classes' do
-    let(:params) { { title: title, classes: classes } }
+  (1..6).each do |level|
+    context "with valid level #{level}" do
+      let(:params) { { level: level, title: title } }
 
-    it { expect(html).to have_css('h1.extra-classes') }
-    it { expect(html).to have_content('Title') }
+      it { expect(html).to have_css("h#{level}") }
+      it { expect(html).to have_content('Title') }
+    end
   end
 
-  context 'with id' do
-    let(:params) { { title: title, id: id } }
-
-    it { expect(html).to have_css('h1#custom-id') }
-    it { expect(html).to have_content('Title') }
-  end
-
-  context 'with level' do
-    let(:params) { { level: 2, title: title } }
-
-    it { expect(html).to have_css('h2') }
-  end
-
-  context 'when invalid level' do
+  context 'with invalid level' do
     let(:params) { { level: 7, title: title } }
 
     it { expect { html }.to raise_error(ArgumentError, 'Header level must be between 1 and 6') }

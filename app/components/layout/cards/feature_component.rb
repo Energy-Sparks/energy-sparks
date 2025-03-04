@@ -11,9 +11,9 @@ module Layout
         Elements::ButtonComponent.new(*args, **kwargs)
       end
 
-      def initialize(id: '', classes: '')
-        super(id: id, classes: classes)
-        add_classes('feature-card-component py-4')
+      def initialize(**_kwargs)
+        super
+        add_classes('py-4')
       end
     end
   end

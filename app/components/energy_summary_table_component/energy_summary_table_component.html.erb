@@ -1,4 +1,4 @@
-<div class="energy-summary-table-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if show_title? %>
     <h2 id="<%= id %>" class="scrollable-title">
       <%= t('schools.show.recent_energy_usage') %>
@@ -67,5 +67,4 @@
                                    user: user, css: 'strong' %>
     </div>
   <% end %>
-
-</div>
+<% end %>

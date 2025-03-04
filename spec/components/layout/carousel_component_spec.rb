@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EquivalenceCarouselComponent, type: :component do
+RSpec.describe Layout::CarouselComponent, type: :component do
   subject(:component) { described_class.new(**params) }
 
   let(:id) { 'custom-id' }
@@ -31,7 +31,7 @@ RSpec.describe EquivalenceCarouselComponent, type: :component do
 
     it { expect(html).to have_content('Television') }
 
-    it { expect(html).not_to have_css('div.equivalence-carousel-controls') }
+    it { expect(html).not_to have_css('div.carousel-controls') }
     it { expect(html).not_to have_css('a.carousel-control-prev') }
     it { expect(html).not_to have_css('a.carousel-control-next') }
     it { expect(html).not_to have_css('ol.carousel-indicators li') }
@@ -48,7 +48,7 @@ RSpec.describe EquivalenceCarouselComponent, type: :component do
         end
       end
 
-      it { expect(html).to have_css('div.equivalence-carousel-controls') }
+      it { expect(html).to have_css('div.carousel-controls') }
       it { expect(html).to have_css('a.carousel-control-prev') }
       it { expect(html).to have_css('a.carousel-control-next') }
       it { expect(html).to have_css('ol.carousel-indicators li') }
@@ -62,7 +62,7 @@ RSpec.describe EquivalenceCarouselComponent, type: :component do
       context 'with arrows switched off' do
         let(:params) { { id: id, show_arrows: false } }
 
-        it { expect(html).to have_css('div.equivalence-carousel-controls') }
+        it { expect(html).to have_css('div.carousel-controls') }
         it { expect(html).not_to have_css('a.carousel-control-prev') }
         it { expect(html).not_to have_css('a.carousel-control-next') }
         it { expect(html).to have_css('ol.carousel-indicators li') }
@@ -71,7 +71,7 @@ RSpec.describe EquivalenceCarouselComponent, type: :component do
       context 'with markers switched off' do
         let(:params) { { id: id, show_markers: false } }
 
-        it { expect(html).to have_css('div.equivalence-carousel-controls') }
+        it { expect(html).to have_css('div.carousel-controls') }
         it { expect(html).to have_css('a.carousel-control-prev') }
         it { expect(html).to have_css('a.carousel-control-next') }
         it { expect(html).not_to have_css('ol.carousel-indicators li') }

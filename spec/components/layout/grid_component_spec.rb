@@ -24,8 +24,10 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
       end
     end
 
-    it { expect(html).to have_css('div.extra-classes') }
-    it { expect(html).to have_css('div#custom-id') }
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
 
     context 'with 2 cols' do
       let(:cols) { 2 }

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Layout::Cards::StatsComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:all_params) { { id: id, classes: classes } }
+  let(:base_params) { { id: id, classes: classes } }
 
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
@@ -16,12 +16,13 @@ RSpec.describe Layout::Cards::StatsComponent, :include_application_helper, type:
     end
   end
 
-  context 'with all params' do
-    let(:params) { all_params }
+  context 'with base params' do
+    let(:params) { base_params }
 
-    it { expect(html).to have_css('div.stats-card-component') }
-    it { expect(html).to have_css('div.extra-classes') }
-    it { expect(html).to have_css('div#custom-id') }
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
 
     it { expect(html).to have_css('i.fa-bolt') }
     it { expect(html).to have_content('Header') }

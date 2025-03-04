@@ -1,7 +1,7 @@
 module Elements
   class ButtonComponent < ApplicationComponent
-    def initialize(name, url, style: nil, size: nil, outline: false, id: nil, classes: nil)
-      super(id: id, classes: classes)
+    def initialize(name, url, style: nil, size: nil, outline: false, **_kwargs)
+      super
       raise ArgumentError, 'Unknown button style' if style && !self.class.styles.include?(style)
       raise ArgumentError, 'Unknown button size' if size && !self.class.sizes.include?(size)
       @name = name

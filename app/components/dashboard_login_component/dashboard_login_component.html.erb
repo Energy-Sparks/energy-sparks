@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="container dashboard-login-component mt-4 mb-4 <%= classes %>">
+<%= tag.div id: id, class: class_names(classes, 'container mt-4 mb-4') do %>
   <div class="row ">
     <div class="col-md-6 bg-white p-3 border text-center">
       <div class="row">
@@ -29,4 +29,4 @@
       </div>
     </div>
   </div>
-</div>
+<% end %>
