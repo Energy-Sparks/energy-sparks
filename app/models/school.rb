@@ -323,6 +323,8 @@ class School < ApplicationRecord
     end
   end
 
+
+
   def deleted?
     not_active? and removal_date.present?
   end
@@ -775,6 +777,87 @@ class School < ApplicationRecord
 
   def data_visible?
     data_enabled && visible
+  end
+
+  def active_adult_users
+    users.active.where.not(role: :pupil)
+  end
+
+  def active_alert_contacts
+    users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
+  end
+
+  # gov.uk have figures for recommended gross area for different sizes of schools.
+  #
+  # See:
+  # https://assets.publishing.service.gov.uk/media/5f23ec238fa8f57acac33720/BB103_Area_Guidelines_for_Mainstream_Schools.pdf
+  #
+  # Is the floor area greater than a sensible minimum and less than twice the
+  # gross recommended size. Base area and pupil sizes are taken from primary/secondary in the
+  # government figures.
+  def floor_area_ok?
+    return true unless floor_area && number_of_pupils
+
+    # all following are in m2
+    case school_type.to_sym
+    when :middle, :mixed_primary_and_secondary, :secondary
+      minimum = 500
+      base_area = 1700
+      per_pupil = 7
+    else
+      minimum = 100
+      base_area = 400
+      per_pupil = 5
+    end
+
+    twice_recommended_size = 2 * (base_area + per_pupil * number_of_pupils)
+    floor_area.between?(minimum, twice_recommended_size)
+  end
+
+  def has_configured_school_times?
+    school_times.where(usage_type: :school_day).where.not(opening_time: 850).any? || school_times.where(usage_type: :school_day).where.not(closing_time: 1520).any?
+  end
+
+  def has_community_use?
+    school_times.where(usage_type: :community_use).any?
+  end
+
+  def has_solar_configuration?
+    meters.active.with_active_meter_attributes(%w[solar_pv_mpan_meter_mapping solar_pv]).any?
+  end
+
+  def has_storage_heater_configuration?
+    meters.active.with_active_meter_attributes(%w[storage_heaters]).any?
+  end
+
+  def needs_solar_configuration?
+    return false unless indicated_has_solar_panels?
+    return !has_solar_configuration?
+  end
+
+  def needs_storage_heater_configuration?
+    return false unless indicated_has_storage_heaters?
+    return !has_storage_heater_configuration?
+  end
+
+  # Estimated ranges based on what seems sensible for different school types looking
+  # across the registered schools
+  def pupil_numbers_ok?
+    return true unless number_of_pupils
+    case school_type
+    when 'infant', 'primary'
+      number_of_pupils.between?(10, 800)
+    when 'junior'
+      number_of_pupils.between?(10, 1000)
+    when 'middle'
+      number_of_pupils.between?(250, 1000)
+    when 'mixed_primary_and_secondary'
+      number_of_pupils.between?(250, 1500)
+    when 'secondary'
+      number_of_pupils.between?(250, 1700)
+    else
+      number_of_pupils.between?(10, 500)
+    end
   end
 
   private

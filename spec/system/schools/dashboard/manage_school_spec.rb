@@ -62,6 +62,7 @@ RSpec.describe 'manage school', type: :system do
     it 'shows extra manage menu items' do
       expect(page).to have_css('#manage_school')
       within '#manage_school_menu' do
+        expect(page).to have_link('Review school setup')
         expect(page).to have_link('School configuration')
         expect(page).to have_link('Meter attributes')
         expect(page).to have_link('Manage CADs')
@@ -80,6 +81,7 @@ RSpec.describe 'manage school', type: :system do
     it 'does not shows extra manage menu items' do
       expect(page).to have_css('#manage_school')
       within '#manage_school_menu' do
+        expect(page).not_to have_link('Review school setup')
         expect(page).not_to have_link('School configuration')
         expect(page).not_to have_link('Meter attributes')
         expect(page).not_to have_link('Manage CADs')
@@ -193,12 +195,21 @@ RSpec.describe 'manage school', type: :system do
         expect(school.process_data).to eq(false)
       end
 
-      it 'allows toggling of data enabled' do
+      it 'allows toggling of data enabled via the review page' do
         visit school_path(school)
         click_on('Data visible')
         school.reload
         expect(school).not_to be_data_enabled
         click_on('Data visible')
+
+        school.reload
+        expect(school).not_to be_data_enabled
+
+        expect(page).to have_content('School setup review')
+        within('#review-buttons') do
+          click_on 'Data visible' # actually enable the school
+        end
+
         school.reload
         expect(school).to be_data_enabled
       end

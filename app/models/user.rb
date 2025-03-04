@@ -97,6 +97,8 @@ class User < ApplicationRecord
 
   enum :mailchimp_status, %w[subscribed unsubscribed cleaned nonsubscribed archived].to_h { |v| [v, v] }, prefix: true
 
+  scope :active, -> { where(active: true) }
+
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin], User.roles[:volunteer]]) }
 
   scope :mailchimp_roles, -> {
