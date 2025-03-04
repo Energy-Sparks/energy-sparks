@@ -38,7 +38,7 @@
              icon: 'question' %>
 
   <div class="row mt-4 mb-4">
-    <div class="col">
+    <div class="col" id="review-buttons">
       <% if can?(:change_data_processing, @school) %>
         <% if @school.process_data? %>
           <%= link_to 'Process data',
