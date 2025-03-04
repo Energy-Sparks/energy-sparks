@@ -767,6 +767,8 @@ Rails.application.routes.draw do
         mount Lookbook::Engine, as: :components, at: 'components'
       end
     end
+
+    resources :local_distribution_zones, only: :index
   end # Admin name space
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
