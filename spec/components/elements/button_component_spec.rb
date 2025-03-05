@@ -10,10 +10,11 @@ RSpec.describe Elements::ButtonComponent, :include_application_helper, type: :co
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:style) { }
-  let(:size) { nil }
+  let(:size) { }
   let(:outline) { false }
+  let(:outline_style) {}
 
-  let(:kwargs) { { style: style, size: size, outline: outline, id: id, classes: classes } }
+  let(:kwargs) { { style: style, size: size, outline: outline, outline_style: outline_style, id: id, classes: classes } }
 
   let(:html) do
     render_inline(Elements::ButtonComponent.new(*args, **kwargs)) do
@@ -64,5 +65,11 @@ RSpec.describe Elements::ButtonComponent, :include_application_helper, type: :co
     let(:outline) { true }
 
     it { expect(html).to have_css('a.btn-outline') }
+  end
+
+  context 'with outline style' do
+    let(:outline_style) { :transparent }
+
+    it { expect(html).to have_css('a.btn.transparent') }
   end
 end

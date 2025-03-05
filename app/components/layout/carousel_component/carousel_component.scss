@@ -2,6 +2,15 @@
   padding-left: 20px;
   padding-right: 20px;
 
+  &.side {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+
+    .carousel-control-prev, .carousel-control-next {
+      width: 50px;
+    }
+  }
+
   .carousel-control-prev, .carousel-control-next, .carousel-indicators {
     height: $f6;
   }

@@ -2,10 +2,10 @@ module Layout
   module Cards
     class StatementComponent < ApplicationComponent
       renders_one :header, ->(**kwargs) do
-        Elements::HeaderComponent.new(**({ level: 3 }.merge(kwargs)))
+        Elements::HeaderComponent.new(**kwargs.merge({ level: 3 }))
       end
       renders_one :description, ->(**kwargs) do
-        Elements::ParagraphComponent.new(**({ classes: 'small' }.merge(kwargs)))
+        Elements::TagComponent.new(:p, **kwargs.merge({ classes: '' }))
       end
 
       def initialize(**_kwargs)

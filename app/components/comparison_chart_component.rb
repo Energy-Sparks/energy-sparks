@@ -6,7 +6,7 @@ class ComparisonChartComponent < ApplicationComponent
   renders_one :subtitle
   renders_one :introduction
 
-  def initialize(id:, x_axis:, x_data:, y_axis_label:, **_kwargs)
+  def initialize(x_axis:, x_data:, y_axis_label:, **_kwargs)
     super
     @x_axis = x_axis
     @x_data = x_data

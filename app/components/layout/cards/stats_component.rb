@@ -3,10 +3,10 @@ module Layout
     class StatsComponent < ApplicationComponent
       renders_one :icon, 'IconComponent'
       renders_one :header, ->(**kwargs) do
-        Elements::HeaderComponent.new(**({ level: 5, classes: 'text-white mt-2' }.merge(kwargs)))
+        Elements::HeaderComponent.new(**kwargs.merge({ level: 5, classes: 'text-white mt-2' }))
       end
       renders_one :figure, ->(figure) { Elements::HeaderComponent.new(title: figure, level: 2, classes: 'figure text-blue-light') }
-      renders_one :subtext, -> { Elements::ParagraphComponent.new(classes: 'very-small text-blue-light') }
+      renders_one :subtext, ->(**kwargs) { Elements::TagComponent.new(:p, **kwargs.merge({ classes: 'very-small text-blue-light' })) }
 
       def initialize(**_kwargs)
         super

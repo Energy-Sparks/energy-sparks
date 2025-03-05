@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TimelineComponent < ApplicationComponent
-  attr_reader :observations, :show_actions, :id, :user, :school, :show_header, :observation_style
+  attr_reader :observations, :show_actions, :user, :school, :show_header, :observation_style
 
   def initialize(observations:,
                  school: nil,

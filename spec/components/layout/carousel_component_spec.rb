@@ -15,7 +15,7 @@ RSpec.describe Layout::CarouselComponent, type: :component do
     }
   end
 
-  context 'when rendering' do
+  context 'with equivalences' do
     let(:html) do
       render_inline(described_class.new(**params)) do |c|
         c.with_equivalence image_name: 'television' do |e|
@@ -68,6 +68,25 @@ RSpec.describe Layout::CarouselComponent, type: :component do
         it { expect(html).to have_css('ol.carousel-indicators li') }
       end
 
+      context 'with arrows at the side' do
+        let(:params) { { id: id, show_arrows: :side } }
+
+        it { expect(html).to have_css('.side div.carousel-controls') }
+        it { expect(html).to have_css('.side a.carousel-control-prev') }
+        it { expect(html).to have_css('.side a.carousel-control-next') }
+        it { expect(html).to have_css('.side ol.carousel-indicators li') }
+      end
+
+      context 'with arrows at the bottom' do
+        let(:params) { { id: id, show_arrows: :bottom } }
+
+        it { expect(html).not_to have_css('.side') }
+        it { expect(html).to have_css('div.carousel-controls') }
+        it { expect(html).to have_css('a.carousel-control-prev') }
+        it { expect(html).to have_css('a.carousel-control-next') }
+        it { expect(html).to have_css('ol.carousel-indicators li') }
+      end
+
       context 'with markers switched off' do
         let(:params) { { id: id, show_markers: false } }
 
@@ -77,5 +96,28 @@ RSpec.describe Layout::CarouselComponent, type: :component do
         it { expect(html).not_to have_css('ol.carousel-indicators li') }
       end
     end
+  end
+
+  context 'with a grid and an equivalence' do
+    let(:html) do
+      render_inline(described_class.new(**params)) do |c|
+        c.with_grid cols: 2 do |grid|
+          grid.with_image(src: 'laptop.jpg')
+          grid.with_tag(:p) { 'Laptop description' }
+        end
+        c.with_equivalence image_name: 'tree' do |e|
+          e.with_title { 'Tree' }
+        end
+      end
+    end
+
+    it { expect(html).to have_xpath('.//img[contains(@src, "/assets/laptop-")]', visible: :all) }
+    it { expect(html).to have_content('Laptop description') }
+    it { expect(html).to have_content('Tree') }
+
+    it { expect(html).to have_css('div.carousel-controls') }
+    it { expect(html).to have_css('a.carousel-control-prev') }
+    it { expect(html).to have_css('a.carousel-control-next') }
+    it { expect(html).to have_css('ol.carousel-indicators li') }
   end
 end

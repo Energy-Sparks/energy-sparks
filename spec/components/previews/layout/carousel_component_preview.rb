@@ -54,5 +54,32 @@ module Layout
         end
       end
     end
+
+    def with_two_grids_side_arrows
+      render Layout::CarouselComponent.new(id: 'ex5', classes: 'bg-yellow-pale rounded p-4', show_arrows: :side, show_markers: false) do |carousel|
+        carousel.with_grid(cols: 2, classes: '') do |grid|
+          grid.with_image(src: 'laptop.jpg', classes: 'w-100 rounded')
+          grid.with_feature_card do |feature|
+            feature.with_header(title: 'Laptop header')
+            feature.with_description do
+              'Laptop description'
+            end
+            feature.with_button('primary', '/', style: :primary)
+            feature.with_button('hello', '/', outline_style: :transparent)
+          end
+        end
+        carousel.with_grid(cols: 2) do |grid|
+          grid.with_feature_card do |feature|
+            feature.with_header(title: 'Whiteboard header')
+            feature.with_description do
+              'Whiteboard description'
+            end
+            feature.with_button('primary', '/', style: :primary)
+            feature.with_button('goodbye', '/', outline_style: :transparent)
+          end
+          grid.with_image(src: 'whiteboard.jpg', classes: 'w-100 rounded')
+        end
+      end
+    end
   end
 end
