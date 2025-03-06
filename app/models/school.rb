@@ -860,6 +860,10 @@ class School < ApplicationRecord
     end
   end
 
+  def next_slug
+    School.active.where(id: (id + 1)..).first.slug
+  end
+
   private
 
   def valid_uk_postcode

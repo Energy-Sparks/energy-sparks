@@ -7,6 +7,9 @@
           <!-- Context: any page scoped to school -->
           <%= link_to current_school.name, school_path(current_school), class: 'nav-link font-weight-bold' %>
         </li>
+        <li><%= link_to 'next',
+                        url_for(controller: controller_name, action: action_name, school_id: current_school.next_slug),
+                        class: 'nav-link' %></ul>
       <% elsif current_user_school %>
         <li class="nav-item">
           <!-- Back to dashboard link -->
