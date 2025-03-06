@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: cb0d0397afcf92b01f5cd5b45abfcc96b70bd126
-  tag: 6.1.6
+  revision: e8f749bdb2007f1662ac63bcdda3e678a568ee6f
+  tag: 6.1.7
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 8.1)
@@ -13,7 +13,6 @@ GIT
       require_all (~> 3)
       roo (~> 2)
       roo-xls (~> 1)
-      ruby-limiter (~> 2)
       ruby-sun-times (~> 0)
       statsample (~> 2)
       structured_warnings (~> 0)
