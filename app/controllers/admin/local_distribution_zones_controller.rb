@@ -4,41 +4,33 @@ module Admin
   class LocalDistributionZonesController < AdminController
     load_and_authorize_resource
 
-    # def index
-    # end
+    def new
+    end
 
-    # def new
-    # end
+    def edit
+    end
 
-    # def create
-    #   if @weather_station.save
-    #     redirect_to admin_weather_stations_path, notice: 'New Weather Station created.'
-    #   else
-    #     render :new
-    #   end
-    # end
+    def create
+      if @local_distribution_zone.save
+        redirect_to admin_local_distribution_zones_path, notice: 'New Local Distribution Zone created.'
+      else
+        render :new
+      end
+    end
 
-    # def edit
-    # end
+    def update
+      if @local_distribution_zone.update(local_distribution_zone_params)
+        @local_distribution_zone.weather_observations.delete_all if lat_long_changed?
+        redirect_to admin_local_distribution_zone_path, notice: 'Local Distribution Zone was updated.'
+      else
+        render :edit
+      end
+    end
 
-    # def update
-    #   if @weather_station.update(weather_station_params)
-    #     @weather_station.weather_observations.delete_all if lat_long_changed?
-    #     redirect_to admin_weather_stations_path, notice: 'Weather Station was updated.'
-    #   else
-    #     render :edit
-    #   end
-    # end
+    private
 
-    # private
-
-    # def lat_long_changed?
-    #   changes = @weather_station.previous_changes
-    #   changes.key?(:latitude) || changes.key?(:longitude)
-    # end
-
-    # def weather_station_params
-    #   params.require(:weather_station).permit(:title, :description, :type, :latitude, :longitude, :active, :provider, :back_fill_years)
-    # end
+    def local_distribution_zone_params
+      params.require(:local_distribution_zone).permit(:name, :code, :publication_id)
+    end
   end
 end

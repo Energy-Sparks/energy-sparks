@@ -1,0 +1,6 @@
+<%= simple_form_for([:admin, local_distribution_zone]) do |f| %>
+  <%= f.input :name %>
+  <%= f.input :code %>
+  <%= f.input :publication_id %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

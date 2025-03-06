@@ -768,7 +768,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :local_distribution_zones, only: :index
+    resources :local_distribution_zones, except: [:destroy, :show]
   end # Admin name space
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
